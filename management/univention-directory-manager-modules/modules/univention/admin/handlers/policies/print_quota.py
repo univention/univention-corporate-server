@@ -48,73 +48,74 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class sharePrintQuotaFixedAttributes(univention.admin.syntax.select):
-	name='sharePrintQuotaFixedAttributes'
-	choices=[
+	name = 'sharePrintQuotaFixedAttributes'
+	choices = [
 		('univentionPrintQuotaGroups', _('Print quota for groups')),
 		('univentionPrintQuotaUsers', _('Print quota for users')),
 		('univentionPrintQuotaGroupsPerUsers', _('Print quota for groups per user'))
 	]
 
-module='policies/print_quota'
-operations=['add','edit','remove','search']
+module = 'policies/print_quota'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicySharePrintQuota'
-policy_apply_to=["shares/printer","shares/printergroup"]
-policy_position_dn_prefix="cn=printquota,cn=shares"
+policy_oc = 'univentionPolicySharePrintQuota'
+policy_apply_to = ["shares/printer", "shares/printergroup"]
+policy_position_dn_prefix = "cn=printquota,cn=shares"
 
-childs=0
-short_description=_('Policy: Print quota')
-policy_short_description=_('Print Quota')
-long_description=_('Print Quota for users/groups per printer')
+childs = 0
+short_description = _('Policy: Print quota')
+policy_short_description = _('Print Quota')
+long_description = _('Print Quota for users/groups per printer')
 
-options={}
+options = {}
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'quotaGroups': univention.admin.property(
-			short_description=_('Print quota for groups'),
-			long_description=_('Soft and hard limits for each allowed group'),
-			syntax=univention.admin.syntax.PrintQuotaGroup,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Print quota for groups'),
+		long_description=_('Soft and hard limits for each allowed group'),
+		syntax=univention.admin.syntax.PrintQuotaGroup,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'quotaGroupsPerUsers': univention.admin.property(
-			short_description=_('Print quota for groups per user'),
-			long_description=_('Soft and hard limits for each member of allowed group'),
-			syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Print quota for groups per user'),
+		long_description=_('Soft and hard limits for each member of allowed group'),
+		syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'quotaUsers': univention.admin.property(
-			short_description=_('Print quota for users'),
-			long_description=_('Soft and hard limits for each allowed user'),
-			syntax=univention.admin.syntax.PrintQuotaUser,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Print quota for users'),
+		long_description=_('Soft and hard limits for each allowed user'),
+		syntax=univention.admin.syntax.PrintQuotaUser,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 
 }
 property_descriptions.update(dict([
@@ -126,29 +127,31 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Print quota'), layout = [
-		Group( _( 'General print quota settings' ), layout = [
+	Tab(_('General'), _('Print quota'), layout=[
+		Group(_('General print quota settings'), layout=[
 			'name',
-			[ 'quotaUsers', 'quotaGroupsPerUsers' ],
+			['quotaUsers', 'quotaGroupsPerUsers'],
 			'quotaGroups'
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab(),
 ]
 
+
 def unmapQuotaEntries(old):
-	new=[]
+	new = []
 	for i in old:
-		new.append(i.split(' ',2))
+		new.append(i.split(' ', 2))
 	return new
 
+
 def mapQuotaEntries(old):
-	new=[]
+	new = []
 	for i in old:
 		new.append(string.join(i, ' '))
 	return new
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('quotaGroups', 'univentionPrintQuotaGroups', mapQuotaEntries, unmapQuotaEntries)
 mapping.register('quotaGroupsPerUsers', 'univentionPrintQuotaGroupsPerUsers', mapQuotaEntries, unmapQuotaEntries)
@@ -157,7 +160,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -167,40 +170,41 @@ class object(univention.admin.handlers.simplePolicy):
 		self.check_entries()
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySharePrintQuota']) ]
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicySharePrintQuota'])]
 
 	def check_entries(self):
 		if self.hasChanged('quotaGroups') and self.info.get('quotaGroups'):
 			for entry in self.info.get('quotaGroups'):
-				group_dn=self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', [entry[2]]))
+				group_dn = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', [entry[2]]))
 				if len(group_dn) < 1 and entry[2] != 'root':
-					raise univention.admin.uexceptions.notValidGroup,_('%s is not valid. ') % entry[2]
+					raise univention.admin.uexceptions.notValidGroup(_('%s is not valid. ') % entry[2])
 
 		if self.hasChanged('quotaUsers') and self.info.get('quotaUsers'):
 			for entry in self.info.get('quotaUsers'):
-				user_dn=self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', [entry[2]]))
+				user_dn = self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', [entry[2]]))
 				if len(user_dn) < 1 and entry[2] != 'root':
-					raise univention.admin.uexceptions.notValidUser,_('%s is not valid. ') % entry[2]
+					raise univention.admin.uexceptions.notValidUser(_('%s is not valid. ') % entry[2])
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicySharePrintQuota')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
 
+
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicySharePrintQuota' in attr.get('objectClass', [])
-

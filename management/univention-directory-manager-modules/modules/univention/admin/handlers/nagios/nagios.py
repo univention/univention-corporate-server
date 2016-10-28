@@ -35,8 +35,8 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.nagios')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
+_ = translation.translate
 
 import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
@@ -45,42 +45,44 @@ module = 'nagios/nagios'
 usewizard = 1
 help_link = _('http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring')
 wizardmenustring = _('Nagios')
-wizarddescription =  _('Add, edit, delete and search Nagios objects')
-wizardoperations = { 'add' : [ _('Add'), _('Add new Nagios object') ],
-					 'find' : [ _('Search'), _('Search Nagios objects') ] }
+wizarddescription = _('Add, edit, delete and search Nagios objects')
+wizardoperations = {
+	'add': [_('Add'), _('Add new Nagios object')],
+	'find': [_('Search'), _('Search Nagios objects')]
+}
 
-default_containers = [ 'cn=nagios' ]
+default_containers = ['cn=nagios']
 
-childmodules=[ 'nagios/service',
-			   'nagios/timeperiod' ]
+childmodules = ['nagios/service', 'nagios/timeperiod']
 
-childs=0
-short_description=_('Nagios object')
-long_description=''
-operations=[ 'search' ]
-virtual=1
-options={
+childs = 0
+short_description = _('Nagios object')
+long_description = ''
+operations = ['search']
+virtual = 1
+options = {
 }
 
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description = _( 'Name' ),
-		long_description = _( 'Nagios object name' ),
+		short_description=_('Name'),
+		long_description=_('Nagios object name'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
-		multivalue = False,
+		multivalue=False,
 		include_in_default_search=True,
-		options = [],
-		required = True,
-		may_change = False,
-		identifies = True
-		),
-	}
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
+}
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

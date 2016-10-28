@@ -51,113 +51,113 @@ options = {
 }
 
 property_descriptions = {
-		'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
-		'shortDescription': univention.admin.property(
-			short_description=_('Default short description'),
-			long_description=_('Short description for the option as shown on the Option tab.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
-		'longDescription': univention.admin.property(
-			short_description=_('Default long description'),
-			long_description=_('Long description for the option as shown on the Option tab.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-		'translationShortDescription': univention.admin.property(
-			short_description=_('Translations of short description'),
-			long_description=_('Translations of the short description for the option as shown on the Option tab'),
-			syntax=univention.admin.syntax.translationTupleShortDescription,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-		'translationLongDescription': univention.admin.property(
-			short_description=_('Translations of long description'),
-			long_description=_('Translations of the long description for the option as shown on the Option tab'),
-			syntax=univention.admin.syntax.translationTupleLongDescription,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-		'default': univention.admin.property(
-			short_description=_('Default'),
-			long_description=_('Enable option by default.'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-		'editable': univention.admin.property(
-			short_description=_('Editable'),
-			long_description=_('Option may be repeatedly turned on and off.'),
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-		'module': univention.admin.property(
-			short_description=_('Needed module'),
-			long_description=_('List of modules this option applies to.'),
-			syntax=univention.admin.syntax.univentionAdminModules,
-			multivalue=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
-		'objectClass': univention.admin.property(
-			short_description=_('LDAP object class'),
-			long_description=_('Mapping to LDAP objectClasses'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+	'name': univention.admin.property(
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
+	'shortDescription': univention.admin.property(
+		short_description=_('Default short description'),
+		long_description=_('Short description for the option as shown on the Option tab.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
+	'longDescription': univention.admin.property(
+		short_description=_('Default long description'),
+		long_description=_('Long description for the option as shown on the Option tab.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'translationShortDescription': univention.admin.property(
+		short_description=_('Translations of short description'),
+		long_description=_('Translations of the short description for the option as shown on the Option tab'),
+		syntax=univention.admin.syntax.translationTupleShortDescription,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'translationLongDescription': univention.admin.property(
+		short_description=_('Translations of long description'),
+		long_description=_('Translations of the long description for the option as shown on the Option tab'),
+		syntax=univention.admin.syntax.translationTupleLongDescription,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'default': univention.admin.property(
+		short_description=_('Default'),
+		long_description=_('Enable option by default.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'editable': univention.admin.property(
+		short_description=_('Editable'),
+		long_description=_('Option may be repeatedly turned on and off.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'module': univention.admin.property(
+		short_description=_('Needed module'),
+		long_description=_('List of modules this option applies to.'),
+		syntax=univention.admin.syntax.univentionAdminModules,
+		multivalue=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
+	'objectClass': univention.admin.property(
+		short_description=_('LDAP object class'),
+		long_description=_('Mapping to LDAP objectClasses'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab(_('General'), _('Basic values'), layout = [
-		Group( _( 'General extended options settings' ), layout = [
+	Tab(_('General'), _('Basic values'), layout=[
+		Group(_('General extended options settings'), layout=[
 			'name',
-			[ "shortDescription", "longDescription" ],
-			[ "translationShortDescription", "translationLongDescription" ],
-			[ "default", "editable" ],
-			[ 'module', "objectClass" ],
-		] ),
-	] ),
+			["shortDescription", "longDescription"],
+			["translationShortDescription", "translationLongDescription"],
+			["default", "editable"],
+			['module', "objectClass"],
+		]),
+	]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -168,6 +168,7 @@ mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin
 mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString)
 mapping.register('module', 'univentionUDMOptionModule')
 mapping.register('objectClass', 'univentionUDMOptionObjectClass')
+
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
@@ -187,7 +188,7 @@ class object(univention.admin.handlers.simpleLdap):
 				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
 					txt = self.oldattr.get(key)[0]
-					translations.append( (lang, txt) )
+					translations.append((lang, txt))
 
 			debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations))
 			self['translation%s' % transKey] = translations
@@ -204,14 +205,14 @@ class object(univention.admin.handlers.simpleLdap):
 				newlist = {}
 
 				for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
-					lang = lang.replace('_','-')
+					lang = lang.replace('_', '-')
 					oldlist[lang] = txt
 					if not lang in newlist:
 						newlist[lang] = ''
 
 				# duplicate lang entries will be removed due to use of dictionary
 				for lang, txt in self.info.get('translation%s' % transKey, []):
-					lang = lang.replace('_','-')
+					lang = lang.replace('_', '-')
 					newlist[lang] = txt
 					if not lang in oldlist:
 						oldlist[lang] = ''
@@ -219,22 +220,24 @@ class object(univention.admin.handlers.simpleLdap):
 				# modlist for new items
 				for lang, txt in oldlist.items():
 					if txt != newlist[lang]:
-						ml.append( ('univentionUDMOptionTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]) )
+						ml.append(('univentionUDMOptionTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]))
 
 		return ml
-	
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUDMOption')
-		])
+	])
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res = [object(co, lo, None, dn, attributes = attrs ) for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit)]
+	res = [object(co, lo, None, dn, attributes=attrs) for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit)]
 	return res
+
 
 def identify(dn, attr, canonical=False):
 	return 'univentionUDMOption' in attr.get('objectClass', [])

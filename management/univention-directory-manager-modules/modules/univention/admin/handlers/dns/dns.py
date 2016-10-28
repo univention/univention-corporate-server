@@ -70,7 +70,7 @@ childmodules = ['dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_r
 virtual = 1
 options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
 		long_description='',
@@ -81,7 +81,7 @@ property_descriptions={
 		required=True,
 		may_change=True,
 		identifies=True,
-		)
+	)
 }
 layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 mapping = univention.admin.mapping.mapping()

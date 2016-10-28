@@ -41,44 +41,44 @@ import univention.admin.handlers.users.user
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.users')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.users')
+_ = translation.translate
 
-module='users/passwd'
-operations=['edit']
+module = 'users/passwd'
+operations = ['edit']
 uid_umlauts = 0
 
-childs=0
-short_description=_('User: Password')
-long_description=''
-options={}
-property_descriptions={
+childs = 0
+short_description = _('User: Password')
+long_description = ''
+options = {}
+property_descriptions = {
 	'username': univention.admin.property(
-			short_description=_('User name'),
-			long_description='',
-			syntax=univention.admin.syntax.uid,
-			multivalue=False,
-			include_in_default_search=True,
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('User name'),
+		long_description='',
+		syntax=univention.admin.syntax.uid,
+		multivalue=False,
+		include_in_default_search=True,
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'password': univention.admin.property(
-			short_description=_('Password'),
-			long_description='',
-			syntax=univention.admin.syntax.userPasswd,
-			multivalue=False,
-			options=['posix', 'samba', 'kerberos', 'mail'],
-			required=True,
-			may_change=True,
-			identifies=False,
-			dontsearch=True
-		),
+		short_description=_('Password'),
+		long_description='',
+		syntax=univention.admin.syntax.userPasswd,
+		multivalue=False,
+		options=['posix', 'samba', 'kerberos', 'mail'],
+		required=True,
+		may_change=True,
+		identifies=False,
+		dontsearch=True
+	),
 }
 
 layout = [
-	Tab( _( 'Change password' ), _( 'Change password' ), [
-		'password' ] )
-	]
+	Tab(_('Change password'), _('Change password'), [
+		'password'])
+]
 
-object=univention.admin.handlers.users.user.object
+object = univention.admin.handlers.users.user.object

@@ -35,10 +35,11 @@ import os.path
 
 computers = []
 
-def __walk( root, dir, files ):
- 	for file in files:
- 		if file.endswith('.py') and not file.startswith('__') and not file == 'computer.py':
- 			computers.append( __import__( file[ : -3 ], globals(), locals(), [ '' ] ) )
 
-path = os.path.abspath( os.path.dirname( __file__ ) )
-os.path.walk( path, __walk, path )
+def __walk(root, dir, files):
+	for file in files:
+		if file.endswith('.py') and not file.startswith('__') and not file == 'computer.py':
+			computers.append(__import__(file[: -3], globals(), locals(), ['']))
+
+path = os.path.abspath(os.path.dirname(__file__))
+os.path.walk(path, __walk, path)

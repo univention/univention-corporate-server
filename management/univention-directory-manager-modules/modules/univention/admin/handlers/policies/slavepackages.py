@@ -45,61 +45,62 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class slavePackagesFixedAttributes(univention.admin.syntax.select):
-	name='slavePackagesFixedAttributes'
-	choices=[
+	name = 'slavePackagesFixedAttributes'
+	choices = [
 		('univentionSlavePackages', _('Package installation list')),
 		('univentionSlavePackagesRemove', _('Package removal list')),
-		]
+	]
 
-module='policies/slavepackages'
-operations=['add','edit','remove','search']
+module = 'policies/slavepackages'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyPackagesSlave'
-policy_apply_to=["computers/domaincontroller_slave"]
-policy_position_dn_prefix="cn=packages,cn=update"
+policy_oc = 'univentionPolicyPackagesSlave'
+policy_apply_to = ["computers/domaincontroller_slave"]
+policy_position_dn_prefix = "cn=packages,cn=update"
 
-childs=0
-short_description=_('Policy: Slave packages')
-policy_short_description=_('Slave packages')
-long_description=''
-options={
+childs = 0
+short_description = _('Policy: Slave packages')
+policy_short_description = _('Slave packages')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'slavePackages': univention.admin.property(
-			short_description=_('Package installation list'),
-			long_description='',
-			syntax=univention.admin.syntax.Packages,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Package installation list'),
+		long_description='',
+		syntax=univention.admin.syntax.Packages,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'slavePackagesRemove': univention.admin.property(
-			short_description=_('Package removal list'),
-			long_description='',
-			syntax=univention.admin.syntax.PackagesRemove,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Package removal list'),
+		long_description='',
+		syntax=univention.admin.syntax.PackagesRemove,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 
 }
 property_descriptions.update(dict([
@@ -111,17 +112,17 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'), policy_short_description, layout = [
-		Group( _( 'General slave packages settings' ), layout = [
+	Tab(_('General'), policy_short_description, layout=[
+		Group(_('General slave packages settings'), layout=[
 			'name',
 			'slavePackages',
 			'slavePackagesRemove'
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('slavePackages', 'univentionSlavePackages')
 mapping.register('slavePackagesRemove', 'univentionSlavePackagesRemove')
@@ -129,29 +130,31 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPackagesSlave']) ]
-	
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPackagesSlave'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyPackagesSlave')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyPackagesSlave' in attr.get('objectClass', [])

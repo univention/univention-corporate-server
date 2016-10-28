@@ -40,77 +40,78 @@ import univention.admin.uldap
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.computers')
+_ = translation.translate
 
-module='computers/trustaccount'
-operations=['add','edit','remove','search','move']
-usewizard=1
-docleanup=1
-childs=0
-short_description=_('Computer: Domain trust account')
-long_description=''
-options={
+module = 'computers/trustaccount'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+usewizard = 1
+docleanup = 1
+childs = 0
+short_description = _('Computer: Domain trust account')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsName_umlauts,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsName_umlauts,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),	
+		short_description=_('Description'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'password': univention.admin.property(
-			short_description=_('Machine Password'),
-			long_description='',
-			syntax=univention.admin.syntax.passwd,
-			multivalue=False,
-			options=[],
-			required=True,
-			dontsearch=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Machine Password'),
+		long_description='',
+		syntax=univention.admin.syntax.passwd,
+		multivalue=False,
+		options=[],
+		required=True,
+		dontsearch=True,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic values' ), layout = [
-		Group( _( 'Trust account' ), layout = [
-			[ "name", "description" ],
+	Tab(_('General'), _('Basic values'), layout=[
+		Group(_('Trust account'), layout=[
+			["name", "description"],
 			"password"
-		] ),
-		] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		super(object, self).open()
 
-		self.options=['samba']  # FIXME/TODO
-		self.modifypassword=1
+		self.options = ['samba']  # FIXME/TODO
+		self.modifypassword = 1
 		if self.exists():
-			self['password']='********'
-			self.modifypassword=0
+			self['password'] = '********'
+			self.modifypassword = 0
 
 		self.save()
 
@@ -119,25 +120,25 @@ class object(univention.admin.handlers.simpleLdap):
 		self.uidNum = None
 		self.machineSid = None
 		while not self.uidNum or not self.machineSid:
-			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			if self.uidNum:
-				self.alloc.append(('uidNumber',self.uidNum))
-				self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
+				self.alloc.append(('uidNumber', self.uidNum))
+				self.machineSid = univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
 				if not self.machineSid:
 					univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
 			else:
-				self.machineSid=None
+				self.machineSid = None
 
-		self.alloc.append(('sid',self.machineSid))
-		acctFlags=univention.admin.samba.acctFlags(flags={'I':1})
+		self.alloc.append(('sid', self.machineSid))
+		acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
-		al=[]
-		ocs=['top', 'person', 'sambaSamAccount']
+		al = []
+		ocs = ['top', 'person', 'sambaSamAccount']
 
 		al.append(('sambaSID', [self.machineSid]))
 		al.append(('sambaAcctFlags', [acctFlags.decode()]))
 		al.append(('sn', self['name']))
-			
+
 		al.insert(0, ('objectClass', ocs))
 
 		return al
@@ -149,71 +150,71 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if hasattr(self, 'uid') and self.uid:
 			univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
-			
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
 			if not self['password']:
-				self.modifypassword=0
+				self.modifypassword = 0
 			elif not self.info['password']:
-				self.modifypassword=0
+				self.modifypassword = 0
 			else:
-				self.modifypassword=1
+				self.modifypassword = 1
 
 	def _ldap_modlist(self):
-		ml=super(object, self)._ldap_modlist()
-		
+		ml = super(object, self)._ldap_modlist()
+
 		if self.hasChanged('name') and self['name']:
-			error=0
-			requested_uid="%s$" % self['name']
-			self.uid=None
+			error = 0
+			requested_uid = "%s$" % self['name']
+			self.uid = None
 			try:
-				self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
+				self.uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
 			except Exception:
-				error=1
-				
+				error = 1
+
 			if not self.uid or error:
 				del(self.info['name'])
-				self.oldinfo={}
-				self.dn=None
-				self._exists=0
-				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
+				self.oldinfo = {}
+				self.dn = None
+				self._exists = 0
+				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % requested_uid)
 				return []
 
 			self.alloc.append(('uid', self.uid))
 			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
-			
+
 		if self.modifypassword:
 			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		return ml
-	
+
 	def cancel(self):
-		for i,j in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i,j) )
+		for i, j in self.alloc:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i, j))
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
 		univention.admin.filter.expression('sambaAcctFlags', '[I          ]'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'sambaSamAccount' in attr.get('objectClass', []) and\
 		'[I          ]' in attr.get('sambaAcctFlags', [])

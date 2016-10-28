@@ -38,102 +38,107 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dns')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dns')
+_ = translation.translate
 
-module='dns/srv_record'
-operations=['add','edit','remove','search']
+module = 'dns/srv_record'
+operations = ['add', 'edit', 'remove', 'search']
 columns = ['location']
-superordinate='dns/forward_zone'
-usewizard=1
-childs=0
-short_description=_('DNS: Service record')
-long_description=''
-options={
+superordinate = 'dns/forward_zone'
+usewizard = 1
+childs = 0
+short_description = _('DNS: Service record')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsSRVName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsSRVName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'location': univention.admin.property(
-			short_description=_('Location'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsSRVLocation,
-			multivalue=True,
-			options=[],
-			required=True,
-			may_change=True
-		),
+		short_description=_('Location'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsSRVLocation,
+		multivalue=True,
+		options=[],
+		required=True,
+		may_change=True
+	),
 	'zonettl': univention.admin.property(
-			short_description=_('Zone time to live'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default = ( ( '3', 'hours' ), [] )
-		),
+		short_description=_('Zone time to live'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=(('3', 'hours'), [])
+	),
 }
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General service record settings' ), layout = [
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General service record settings'), layout=[
 			'name',
 			'location',
 			'zonettl'
-		] ),
-	] ),
+		]),
+	]),
 ]
 
+
 def unmapName(old):
-	items = old[ 0 ].split( '.', 2 )
-	items[ 0 ] = items[ 0 ][ 1 : ]
-	items[ 1 ] = items[ 1 ][ 1 : ]
+	items = old[0].split('.', 2)
+	items[0] = items[0][1:]
+	items[1] = items[1][1:]
 	return items
 
-def mapName(old):
-	if isinstance( old, basestring ):
-		return old
-	if len( old ) == 3 and old[ 2 ]:
-		return '_{0}._{1}.{2}'.format( *old )
 
-	return '_{0}._{1}'.format( *old[ : 2 ] )
+def mapName(old):
+	if isinstance(old, basestring):
+		return old
+	if len(old) == 3 and old[2]:
+		return '_{0}._{1}.{2}'.format(*old)
+
+	return '_{0}._{1}'.format(*old[: 2])
+
 
 def unmapLocation(old):
-	new=[]
+	new = []
 	for i in old:
 		new.append(i.split(' '))
 	return new
 
+
 def mapLocation(old):
-	new=[]
+	new = []
 	for i in old:
 		new.append(string.join(i, ' '))
 	return new
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', mapName, unmapName)
 mapping.register('location', 'sRVRecord', mapLocation, unmapLocation)
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _updateZone(self):
 		if self.update_zone:
 			self.superordinate.open()
 			self.superordinate.modify()
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
@@ -153,29 +158,31 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
-def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
 		univention.admin.filter.expression('sRVRecord', '*'),
-		])
+	])
 
 	if superordinate:
 		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		   not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa') and attr.get( 'sRVRecord', [] )
+		not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa') and attr.get('sRVRecord', [])

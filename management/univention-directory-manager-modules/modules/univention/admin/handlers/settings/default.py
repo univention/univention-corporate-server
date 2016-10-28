@@ -35,135 +35,136 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
+
 
 def plusBase(object, arg):
-	return [arg+','+object.position.getDomain()]
+	return [arg + ',' + object.position.getDomain()]
 
-module='settings/default'
-superordinate='settings/cn'
-childs=0
-operations=['search', 'edit']
-short_description=_('Preferences: Default')
-long_description=''
-options={
+module = 'settings/default'
+superordinate = 'settings/cn'
+childs = 0
+operations = ['search', 'edit']
+short_description = _('Preferences: Default')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-			default=('univention', [])
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+		default=('univention', [])
+	),
 	'defaultGroup': univention.admin.property(
-			short_description=_('Default Primary Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default Primary Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultComputerGroup': univention.admin.property(
-			short_description=_('Default Computer Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default Computer Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultDomainControllerGroup': univention.admin.property(
-			short_description=_('Default DC Slave Computer Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default DC Slave Computer Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultDomainControllerMBGroup': univention.admin.property(
-			short_description=_('Default DC Master & Backup Server Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default DC Master & Backup Server Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultMemberServerGroup': univention.admin.property(
-			short_description=_('Default Member Server Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default Member Server Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultClientGroup': univention.admin.property(
-			short_description=_('Default Client Computer Group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default Client Computer Group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+	),
 	'defaultKdeProfiles': univention.admin.property(
-			short_description=_('Default KDE Profiles'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Default KDE Profiles'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 }
 
 layout = [
-	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'Default settings description' ), layout = [
+	Tab(_('General'), _('Basic values'), layout=[
+		Group(_('Default settings description'), layout=[
 			"name"
-		] ),
-	] ),
-	Tab(_('Primary Groups'),_('Primary Groups'), layout = [
-		Group( _( 'Primary Groups' ), layout = [
+		]),
+	]),
+	Tab(_('Primary Groups'), _('Primary Groups'), layout=[
+		Group(_('Primary Groups'), layout=[
 			"defaultGroup",
 			"defaultComputerGroup",
 			"defaultDomainControllerMBGroup",
 			"defaultDomainControllerGroup",
 			"defaultMemberServerGroup",
 			"defaultClientGroup"
-		] ),
-	] ),
-	Tab(_('KDE Profiles'),_('KDE Profiles'), layout = [
-		Group( _( 'KDE Profiles' ), layout = [
+		]),
+	]),
+	Tab(_('KDE Profiles'), _('KDE Profiles'), layout=[
+		Group(_('KDE Profiles'), layout=[
 			"defaultKdeProfiles",
-		] ),
-	] ),
-	]
+		]),
+	]),
+]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('defaultGroup', 'univentionDefaultGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultComputerGroup', 'univentionDefaultComputerGroup', None, univention.admin.mapping.ListToString)
@@ -171,35 +172,36 @@ mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainContr
 mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles' )
+mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles')
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_dn(self):
 		return 'cn=default containers,cn=univention,%s' % (self.position.getDomain())
 
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionDefault'] ) ]
+		return [('objectClass', ['top', 'univentionDefault'])]
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionDefault')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes = attrs ))
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionDefault' in attr.get('objectClass', [])
-
-

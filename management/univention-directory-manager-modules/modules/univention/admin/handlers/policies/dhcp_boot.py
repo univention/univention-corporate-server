@@ -43,63 +43,65 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class dhcp_bootFixedAttributes(univention.admin.syntax.select):
-	name='dvcp_bootFixedAttributes'
-	choices=[(('univentionDhcpBootServer'),_('Boot server')),
-			 (('univentionDhcpBootFilename'),_('Boot filename'))
-			 ]
+	name = 'dvcp_bootFixedAttributes'
+	choices = [
+		(('univentionDhcpBootServer'), _('Boot server')),
+		(('univentionDhcpBootFilename'), _('Boot filename'))
+	]
 
 
-module='policies/dhcp_boot'
-operations=['add','edit','remove','search']
+module = 'policies/dhcp_boot'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc="univentionPolicyDhcpBoot"
-policy_apply_to=["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix="cn=boot,cn=dhcp"
-policies_group="dhcp"
-usewizard=1
-childs=0
-short_description=_('Policy: DHCP Boot')
-policy_short_description=_('Boot parameters')
-long_description=''
-options={
+policy_oc = "univentionPolicyDhcpBoot"
+policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
+policy_position_dn_prefix = "cn=boot,cn=dhcp"
+policies_group = "dhcp"
+usewizard = 1
+childs = 0
+short_description = _('Policy: DHCP Boot')
+policy_short_description = _('Boot parameters')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'boot_server': univention.admin.property(
-			short_description=_('Boot server'),
-			long_description=_('Numeric IP address or name of the \
+		short_description=_('Boot server'),
+		long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'boot_filename': univention.admin.property(
-			short_description=_('Boot filename'),
-			long_description=_('Initial boot file to be loaded by a client'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Boot filename'),
+		long_description=_('Initial boot file to be loaded by a client'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -110,50 +112,51 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('Boot'), _('Boot settings'), layout = [
-		Group( _( 'General DHCP boot settings' ), layout = [
+	Tab(_('Boot'), _('Boot settings'), layout=[
+		Group(_('General DHCP boot settings'), layout=[
 			'name',
-			[ 'boot_server', 'boot_filename' ]
-		] ),
-	] ),
+			['boot_server', 'boot_filename']
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('boot_server', 'univentionDhcpBootServer', None, univention.admin.mapping.ListToString)
 mapping.register('boot_filename', 'univentionDhcpBootFilename', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
 
-
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'])
 		]
-	
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpBoot'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionPolicyDhcpBoot' in attr.get('objectClass', [])

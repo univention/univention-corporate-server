@@ -42,317 +42,318 @@ from univention.admin.policy import (
 	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
-translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
+_ = translation.translate
+
 
 class xfreeFixedAttributes(univention.admin.syntax.select):
-	name='xfreeFixedAttributes'
-	choices=[
-		('univentionXAutoDetect',_('Automatic detection')),
-		('univentionXResolution',_('Resolution of primary display')),
-		('univentionXResolutionSecondary',_('Resolution of secondary display')),
-		('univentionXColorDepth',_('Color depth')),
-		('univentionXMouseProtocol',_('Mouse protocol')),
-		('univentionXMouseDevice',_('Mouse device')),
-		('univentionXKeyboardDevice',_('Keyboard layout')),
-		('univentionXKeyboardVariant',_('Keyboard variant')),
+	name = 'xfreeFixedAttributes'
+	choices = [
+		('univentionXAutoDetect', _('Automatic detection')),
+		('univentionXResolution', _('Resolution of primary display')),
+		('univentionXResolutionSecondary', _('Resolution of secondary display')),
+		('univentionXColorDepth', _('Color depth')),
+		('univentionXMouseProtocol', _('Mouse protocol')),
+		('univentionXMouseDevice', _('Mouse device')),
+		('univentionXKeyboardDevice', _('Keyboard layout')),
+		('univentionXKeyboardVariant', _('Keyboard variant')),
 		('univentionXKeyboardLayout', _('Keyboard layout')),
-		('univentionXHSync',_('Horizontal sync of primary display')),
-		('univentionXHSyncSecondary',_('Horizontal sync of secondary display')),
-		('univentionXVRefresh',_('Vertical refresh of primary display')),
-		('univentionXVRefreshSecondary',_('Vertical refresh of secondary display')),
-		('univentionXModule',_('Graphics adapter driver')),
-		('univentionXDisplaySize',_('Display size of primary display')),
-		('univentionXDisplaySizeSecondary',_('Display size of secondary display')),
-		('univentionXVNCExportType',_('Enable VNC export')),
-		('univentionXVNCExportViewonly',_('Viewonly VNC export')),
-		('univentionXVideoRam',_('Amount of RAM on the graphics adapter')),
-		('univentionXDisplayPrimary',_('Primary display')),
-		('univentionXDisplaySecondary',_('Secondary display')),
-		('univentionXDisplayPosition',_('Relative position of secondary display')),
-		('univentionXDisplayVirtualSize',_('Virtual size of dual monitor desktop')),
-		]
+		('univentionXHSync', _('Horizontal sync of primary display')),
+		('univentionXHSyncSecondary', _('Horizontal sync of secondary display')),
+		('univentionXVRefresh', _('Vertical refresh of primary display')),
+		('univentionXVRefreshSecondary', _('Vertical refresh of secondary display')),
+		('univentionXModule', _('Graphics adapter driver')),
+		('univentionXDisplaySize', _('Display size of primary display')),
+		('univentionXDisplaySizeSecondary', _('Display size of secondary display')),
+		('univentionXVNCExportType', _('Enable VNC export')),
+		('univentionXVNCExportViewonly', _('Viewonly VNC export')),
+		('univentionXVideoRam', _('Amount of RAM on the graphics adapter')),
+		('univentionXDisplayPrimary', _('Primary display')),
+		('univentionXDisplaySecondary', _('Secondary display')),
+		('univentionXDisplayPosition', _('Relative position of secondary display')),
+		('univentionXDisplayVirtualSize', _('Virtual size of dual monitor desktop')),
+	]
 
-module='policies/xfree'
-operations=['add','edit','remove','search']
+module = 'policies/xfree'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyXConfiguration'
-policy_apply_to=["computers/thinclient", "computers/managedclient", "computers/mobileclient"]
-policy_position_dn_prefix="cn=xfree"
-usewizard=1
-childs=0
-short_description=_('Policy: Display')
-policy_short_description=_('Display settings')
-long_description=''
-options={
+policy_oc = 'univentionPolicyXConfiguration'
+policy_apply_to = ["computers/thinclient", "computers/managedclient", "computers/mobileclient"]
+policy_position_dn_prefix = "cn=xfree"
+usewizard = 1
+childs = 0
+short_description = _('Policy: Display')
+policy_short_description = _('Display settings')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'resolution': univention.admin.property(
-			short_description=_('Resolution of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXResolutionChoices'
-		),
+		short_description=_('Resolution of primary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXResolutionChoices'
+	),
 	'secondaryresolution': univention.admin.property(
-			short_description=_('Resolution of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXResolutionSecondaryChoices'
-		),
+		short_description=_('Resolution of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXResolutionSecondaryChoices'
+	),
 	'colorDepth': univention.admin.property(
-			short_description=_('Color depth'),
-			long_description='',
-			syntax=univention.admin.syntax.XColorDepth,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXColorDepthChoices'
-		),
+		short_description=_('Color depth'),
+		long_description='',
+		syntax=univention.admin.syntax.XColorDepth,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXColorDepthChoices'
+	),
 	'mouseProtocol': univention.admin.property(
-			short_description=_('Mouse protocol'),
-			long_description='',
-			syntax=univention.admin.syntax.XMouseProtocol,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXMouseProtocolChoices'
-		),
+		short_description=_('Mouse protocol'),
+		long_description='',
+		syntax=univention.admin.syntax.XMouseProtocol,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXMouseProtocolChoices'
+	),
 	'mouseDevice': univention.admin.property(
-			short_description=_('Mouse device'),
-			long_description='',
-			syntax=univention.admin.syntax.XMouseDevice,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXMouseDeviceChoices'
-		),
+		short_description=_('Mouse device'),
+		long_description='',
+		syntax=univention.admin.syntax.XMouseDevice,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXMouseDeviceChoices'
+	),
 	'keyboardLayout': univention.admin.property(
-			short_description=_('Keyboard layout'),
-			long_description='',
-			syntax=univention.admin.syntax.XKeyboardLayout,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXKeyboardLayoutChoices'
-		),
+		short_description=_('Keyboard layout'),
+		long_description='',
+		syntax=univention.admin.syntax.XKeyboardLayout,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXKeyboardLayoutChoices'
+	),
 	'keyboardVariant': univention.admin.property(
-			short_description=_('Keyboard variant'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXKeyboardVariantChoices'
-		),
+		short_description=_('Keyboard variant'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXKeyboardVariantChoices'
+	),
 	'hSync': univention.admin.property(
-			short_description=_('Horizontal sync of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXHSyncChoices'
-		),
+		short_description=_('Horizontal sync of primary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXHSyncChoices'
+	),
 	'hSyncSecondary': univention.admin.property(
-			short_description=_('Horizontal sync of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXHSyncSecondaryChoices'
-		),
+		short_description=_('Horizontal sync of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXHSyncSecondaryChoices'
+	),
 	'vRefresh': univention.admin.property(
-			short_description=_('Vertical refresh of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXVRefreshChoices'
-		),
+		short_description=_('Vertical refresh of primary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXVRefreshChoices'
+	),
 	'vRefreshSecondary': univention.admin.property(
-			short_description=_('Vertical refresh of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXVRefreshSecondaryChoices'
-		),
+		short_description=_('Vertical refresh of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXVRefreshSecondaryChoices'
+	),
 	'xModule': univention.admin.property(
-			short_description=_('Graphics adapter driver'),
-			long_description='',
-			syntax=univention.admin.syntax.XModule,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXModuleChoices'
-		),
+		short_description=_('Graphics adapter driver'),
+		long_description='',
+		syntax=univention.admin.syntax.XModule,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXModuleChoices'
+	),
 	'displaySize': univention.admin.property(
-			short_description=_('Display size (mm) of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXDisplaySizeChoices'
-		),
+		short_description=_('Display size (mm) of primary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXDisplaySizeChoices'
+	),
 	'displaySizeSecondary': univention.admin.property(
-			short_description=_('Display size (mm) of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXDisplaySizeSecondaryChoices'
-		),
+		short_description=_('Display size (mm) of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		configObjectPosition='cn=xconfig choices,cn=univention',
+		configAttributeName='univentionXDisplaySizeSecondaryChoices'
+	),
 	'vncExport': univention.admin.property(
-			short_description=_('Enable VNC export'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('0', [])
-		),
+		short_description=_('Enable VNC export'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('0', [])
+	),
 	'vncExportViewonly': univention.admin.property(
-			short_description=_('Viewonly VNC export'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('1', [])
-		),
+		short_description=_('Viewonly VNC export'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('1', [])
+	),
 	'virtualsize': univention.admin.property(
-			short_description=_('Virtual size of dual monitor desktop'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('', [])
-		),
+		short_description=_('Virtual size of dual monitor desktop'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('', [])
+	),
 	'displayposition': univention.admin.property(
-			short_description=_('Position of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.XDisplayPosition,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('', [])
-		),
+		short_description=_('Position of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.XDisplayPosition,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('', [])
+	),
 	'primarydisplay': univention.admin.property(
-			short_description=_('Name of primary display'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('', [])
-		),
+		short_description=_('Name of primary display'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('', [])
+	),
 	'secondarydisplay': univention.admin.property(
-			short_description=_('Name of secondary display'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('', [])
-		),
+		short_description=_('Name of secondary display'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('', [])
+	),
 	'videoRam': univention.admin.property(
-			short_description=_('RAM on the graphics adapter in kB'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('RAM on the graphics adapter in kB'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 	'autodetect': univention.admin.property(
-			short_description=_( 'Automatic detection' ),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Automatic detection'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -363,31 +364,31 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Display settings'), layout = [
-		Group( _( 'General display settings' ), layout = [
+	Tab(_('General'), _('Display settings'), layout=[
+		Group(_('General display settings'), layout=[
 			'name',
 			'autodetect',
 			'xModule',
-			[ 'resolution', 'colorDepth' ],
-			[ 'secondaryresolution', 'displayposition' ] ] ),
-		Group( _( 'Input devices' ), layout = [
-			[ 'mouseProtocol', 'mouseDevice' ],
-			[ 'keyboardLayout', 'keyboardVariant' ] ] ),
-		Group( _( 'Advanced settings' ), layout = [
-			[ 'vncExport', 'vncExportViewonly' ],
-			[ 'videoRam', 'virtualsize' ] ] ),
-		Group( _( 'Advanced settings of primary display' ), layout = [
-			[ 'primarydisplay','displaySize' ],
-			[ 'hSync', 'vRefresh' ] ] ),
-		Group( _( 'Advanced settings of secondary display' ), layout = [
-			[ 'secondarydisplay','displaySizeSecondary' ],
-			[ 'hSyncSecondary', 'vRefreshSecondary' ]
-		] ),
-	] ),
+			['resolution', 'colorDepth'],
+			['secondaryresolution', 'displayposition']]),
+		Group(_('Input devices'), layout=[
+			['mouseProtocol', 'mouseDevice'],
+			['keyboardLayout', 'keyboardVariant']]),
+		Group(_('Advanced settings'), layout=[
+			['vncExport', 'vncExportViewonly'],
+			['videoRam', 'virtualsize']]),
+		Group(_('Advanced settings of primary display'), layout=[
+			['primarydisplay', 'displaySize'],
+			['hSync', 'vRefresh']]),
+		Group(_('Advanced settings of secondary display'), layout=[
+			['secondarydisplay', 'displaySizeSecondary'],
+			['hSyncSecondary', 'vRefreshSecondary']
+		]),
+	]),
 	policy_object_tab(),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('xModule', 'univentionXModule', None, univention.admin.mapping.ListToString)
 mapping.register('resolution', 'univentionXResolution', None, univention.admin.mapping.ListToString)
@@ -416,15 +417,16 @@ mapping.register('vRefreshSecondary', 'univentionXVRefreshSecondary', None, univ
 
 register_policy_mapping(mapping)
 
-class object(univention.admin.handlers.simplePolicy):
-	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+class object(univention.admin.handlers.simplePolicy):
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
@@ -433,24 +435,26 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyXConfiguration'])
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyXConfiguration'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 

@@ -36,67 +36,67 @@ import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
+_ = translation.translate
 
-module='dhcp/shared'
-operations=['add','edit','remove','search']
-superordinate='dhcp/service'
-childs=1
-short_description=_('DHCP: Shared network')
-long_description=''
-options={
+module = 'dhcp/shared'
+operations = ['add', 'edit', 'remove', 'search']
+superordinate = 'dhcp/service'
+childs = 1
+short_description = _('DHCP: Shared network')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Shared network name'),
-			long_description='',
-			syntax=univention.admin.syntax.uid,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		)
+		short_description=_('Shared network name'),
+		long_description='',
+		syntax=univention.admin.syntax.uid,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	)
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'DHCP shared network description' ), layout = [
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('DHCP shared network description'), layout=[
 			'name'
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'dhcpSharedNetwork'])
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'dhcpSharedNetwork')
-	])
+	filter = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'dhcpSharedNetwork')])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
 
-def identify(dn, attr):
-	
-	return 'dhcpSharedNetwork' in attr.get('objectClass', [])
 
+def identify(dn, attr):
+
+	return 'dhcpSharedNetwork' in attr.get('objectClass', [])

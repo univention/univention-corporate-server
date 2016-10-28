@@ -44,50 +44,51 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class registryFixedAttributes(univention.admin.syntax.select):
-	name='registryFixedAttributes'
-	choices=[
-		( 'registry', _( 'UCR Variables' ) )
-		]
+	name = 'registryFixedAttributes'
+	choices = [
+		('registry', _('UCR Variables'))
+	]
 
-module='policies/registry'
-operations=['add','edit','remove','search']
+module = 'policies/registry'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyRegistry'
-policy_apply_to=["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient", "computers/mobileclient", "computers/thinclient", "computers/ucc"]
-policy_position_dn_prefix="cn=config-registry"
-usewizard=1
-childs=0
-short_description=_('Policy: Univention Configuration Registry')
-policy_short_description=_('Univention Configuration Registry')
-long_description=''
-options={
+policy_oc = 'univentionPolicyRegistry'
+policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient", "computers/mobileclient", "computers/thinclient", "computers/ucc"]
+policy_position_dn_prefix = "cn=config-registry"
+usewizard = 1
+childs = 0
+short_description = _('Policy: Univention Configuration Registry')
+policy_short_description = _('Univention Configuration Registry')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'registry': univention.admin.property(
-			short_description=_('Configuration Registry'),
-			long_description='',
-			syntax=univention.admin.syntax.UCR_Variable,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Configuration Registry'),
+		long_description='',
+		syntax=univention.admin.syntax.UCR_Variable,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 
 }
 property_descriptions.update(dict([
@@ -99,22 +100,22 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('These configuration settings will be set on the local UCS system.'), layout = [
-		Group( _( 'General Univention Configuration Registry settings' ), layout = [
+	Tab(_('General'), _('These configuration settings will be set on the local UCS system.'), layout=[
+		Group(_('General Univention Configuration Registry settings'), layout=[
 			'name',
 			'registry',
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _post_unmap(self, info, values):
 		info['registry'] = []
@@ -140,57 +141,59 @@ class object(univention.admin.handlers.simplePolicy):
 
 				for var, value in old_dict.items():
 					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
-					if not var in new_dict: # variable has been removed
+					if not var in new_dict:  # variable has been removed
 						modlist.append((attr_name, value, None))
-					elif value != new_dict[var]: # value has been changed
+					elif value != new_dict[var]:  # value has been changed
 						modlist.append((attr_name, value, new_dict[var]))
 
 				for var, value in new_dict.items():
 					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
-					if var not in old_dict: # variable has been added
+					if var not in old_dict:  # variable has been added
 						modlist.append((attr_name, None, new_dict[var]))
 				break
 
 		return modlist
 
-	def _custom_policy_result_map( self ):
+	def _custom_policy_result_map(self):
 		values = {}
-		self.polinfo_more[ 'registry' ] = []
+		self.polinfo_more['registry'] = []
 		for attr_name, value_dict in self.policy_attrs.items():
-			values[ attr_name ] = value_dict[ 'value' ]
-			if attr_name.startswith( 'univentionRegistry;entry-hex-' ):
-				key_name = attr_name.split( 'univentionRegistry;entry-hex-', 1 )[ 1 ].decode( 'hex' )
-				value_dict[ 'value' ].insert( 0, key_name )
-				self.polinfo_more[ 'registry' ].append( value_dict )
+			values[attr_name] = value_dict['value']
+			if attr_name.startswith('univentionRegistry;entry-hex-'):
+				key_name = attr_name.split('univentionRegistry;entry-hex-', 1)[1].decode('hex')
+				value_dict['value'].insert(0, key_name)
+				self.polinfo_more['registry'].append(value_dict)
 			elif attr_name:
-				self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+				self.polinfo_more[self.mapping.unmapName(attr_name)] = value_dict
 
-		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
-		self.polinfo = self._post_unmap( self.polinfo, values )
+		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
+		self.polinfo = self._post_unmap(self.polinfo, values)
 
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyRegistry'])
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyRegistry'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyRegistry' in attr.get('objectClass', [])

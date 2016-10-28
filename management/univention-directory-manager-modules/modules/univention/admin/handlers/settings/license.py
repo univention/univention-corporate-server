@@ -38,281 +38,281 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
-module='settings/license'
-superordinate='settings/cn'
-operations=['remove','search']
+module = 'settings/license'
+superordinate = 'settings/cn'
+operations = ['remove', 'search']
 
-childs=0
-short_description=_('Settings: License')
-long_description=_('Univention License')
-options={
+childs = 0
+short_description = _('Settings: License')
+long_description = _('Univention License')
+options = {
 	'Version 1': univention.admin.option(
-			short_description=_('Version 1 license'),
-			editable=False,
-			default=0
-		),
+		short_description=_('Version 1 license'),
+		editable=False,
+		default=0
+	),
 	'Version 2': univention.admin.option(
-			short_description=_('Version 2 license'),
-			editable=False,
-			default=1
-		),
+		short_description=_('Version 2 license'),
+		editable=False,
+		default=1
+	),
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'expires': univention.admin.property(
-			short_description=_('Expiry date'),
-			long_description=_('License Expiration Date'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Expiry date'),
+		long_description=_('License Expiration Date'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=False,
+	),
 	'module': univention.admin.property(
-			short_description=_('Module'),
-			long_description=_('Module the license is valid for'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['Version 1'],
-			required=True,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Module'),
+		long_description=_('Module the license is valid for'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['Version 1'],
+		required=True,
+		may_change=False,
+		identifies=False,
+	),
 	'base': univention.admin.property(
-			short_description=_('Base DN'),
-			long_description=_('Base DN the license is valid for'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Base DN'),
+		long_description=_('Base DN the license is valid for'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=False,
+	),
 	'signature': univention.admin.property(
-			short_description=_('Signature'),
-			long_description=_('This Signature is used to verify the authenticity of the license.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Signature'),
+		long_description=_('This Signature is used to verify the authenticity of the license.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=False,
+	),
 	'accounts': univention.admin.property(
-			short_description=_('Max. user accounts'),
-			long_description=_('Maximum number of user accounts managed with the UCS infrastructure'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['Version 1'],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Max. user accounts'),
+		long_description=_('Maximum number of user accounts managed with the UCS infrastructure'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['Version 1'],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'clients': univention.admin.property(
-			short_description=_('Max. clients'),
-			long_description=_('Maximum number of client hosts managed with the UCS infrastructure'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['Version 1'],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Max. clients'),
+		long_description=_('Maximum number of client hosts managed with the UCS infrastructure'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['Version 1'],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'groupwareaccounts': univention.admin.property(
-			short_description=_('Max. groupware accounts'),
-			long_description=_('Maximum number of groupware accounts managed with the UCS infrastructure'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['Version 1'],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Max. groupware accounts'),
+		long_description=_('Maximum number of groupware accounts managed with the UCS infrastructure'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['Version 1'],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'desktops': univention.admin.property(
-			short_description=_('Max. desktops'),
-			long_description=_('Maximum number of Univention desktop accounts managed with the UCS infrastructure'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['Version 1'],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Max. desktops'),
+		long_description=_('Maximum number of Univention desktop accounts managed with the UCS infrastructure'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['Version 1'],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'productTypes': univention.admin.property(
-			short_description=_('Valid product types'),
-			long_description=_('Product types this license allows.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=['Version 1'],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Valid product types'),
+		long_description=_('Product types this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=['Version 1'],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'oemProductTypes': univention.admin.property(
-			short_description=_('Valid OEM product types'),
-			long_description=_('OEM Product types this license allows.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Valid OEM product types'),
+		long_description=_('OEM Product types this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'product': univention.admin.property(
-			short_description=_('Product type'),
-			long_description=_('Product type this license allows.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Product type'),
+		long_description=_('Product type this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 	'keyID': univention.admin.property(
-			short_description = _('Key ID'),
-			long_description = _('Key ID of this license.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Key ID'),
+		long_description=_('Key ID of this license.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'servers': univention.admin.property(
-			short_description = _('Servers'),
-			long_description = _('Maximum number of servers this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Servers'),
+		long_description=_('Maximum number of servers this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'support': univention.admin.property(
-			short_description = _('Servers with standard support'),
-			long_description = _('Servers with standard support.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Servers with standard support'),
+		long_description=_('Servers with standard support.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'premiumsupport': univention.admin.property(
-			short_description = _('Premium Support'),
-			long_description = _('Servers with premium support.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Premium Support'),
+		long_description=_('Servers with premium support.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'managedclients': univention.admin.property(
-			short_description = _('Managed Clients'),
-			long_description = _('Maximum number of managed clients this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Managed Clients'),
+		long_description=_('Maximum number of managed clients this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'users': univention.admin.property(
-			short_description = _('Users'),
-			long_description = _('Maximum number of users this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Users'),
+		long_description=_('Maximum number of users this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'virtualdesktopusers': univention.admin.property(
-			short_description = _('DVS users'),
-			long_description = _('Maximum number of DVS users this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('DVS users'),
+		long_description=_('Maximum number of DVS users this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'virtualdesktopclients': univention.admin.property(
-			short_description = _('DVS clients'),
-			long_description = _('Maximum number of DVS clients this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('DVS clients'),
+		long_description=_('Maximum number of DVS clients this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'corporateclients': univention.admin.property(
-			short_description = _('Corporate clients'),
-			long_description = _('Maximum number of corporate clients this license allows.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Corporate clients'),
+		long_description=_('Maximum number of corporate clients this license allows.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 	'version': univention.admin.property(
-			short_description = _('Version'),
-			long_description = _('Version format of this license.'),
-			syntax = univention.admin.syntax.string,
-			multivalue = 0,
-			options = ['Version 2'],
-			required = 0,
-			may_change = 0,
-			identifies = 0,
-		),
+		short_description=_('Version'),
+		long_description=_('Version format of this license.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=0,
+		options=['Version 2'],
+		required=0,
+		may_change=0,
+		identifies=0,
+	),
 
 }
 
 layout = [
-	Tab(_('License'),_('Licensing Information'), layout = [
-		Group( _( 'General license settings' ), layout = [
+	Tab(_('License'), _('Licensing Information'), layout=[
+		Group(_('General license settings'), layout=[
 			'name',
 			'module',
 			'expires',
 			'base',
 			'oemProductTypes',
 			'signature',
-		] ),
-		Group( _( 'Version 1 license informations' ), layout = [
+		]),
+		Group(_('Version 1 license informations'), layout=[
 			'productTypes',
 			['accounts', 'groupwareaccounts'],
 			['clients', 'desktops'],
-		] ),
-		Group( _( 'Version 2 license informations' ), layout = [
+		]),
+		Group(_('Version 2 license informations'), layout=[
 			'keyID',
 			['users', 'servers'],
 			['corporateclients', 'managedclients'],
 			['virtualdesktopusers', 'virtualdesktopclients'],
 			['support', 'premiumsupport'],
 			'version',
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('expires', 'univentionLicenseEndDate', None, univention.admin.mapping.ListToString)
 mapping.register('module', 'univentionLicenseModule', None, univention.admin.mapping.ListToString)
@@ -338,7 +338,7 @@ mapping.register('version', 'univentionLicenseVersion', None, univention.admin.m
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -351,26 +351,28 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionLicense']) ]
+		return [('objectClass', ['top', 'univentionLicense'])]
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionLicense')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append(object(co, lo, None, dn, attributes = attrs ))
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionLicense' in attr.get('objectClass', [])
