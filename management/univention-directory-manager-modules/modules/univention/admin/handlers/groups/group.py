@@ -312,12 +312,12 @@ class AgingCache(object):
 	def __new__(type, *args, **kwargs):
 		# Falls es noch keine Instanz dieser Klasse gibt, wird eine erstellt und in _the_instance abgelegt.
 		# Diese wird dann jedes mal zurückgegeben.
-		if not '_the_instance' in type.__dict__:
+		if '_the_instance' not in type.__dict__:
 			type._the_instance = object.__new__(type, *args, **kwargs)
 		return type._the_instance
 
 	def __init__(self):
-		if not '_ready' in dir(self):
+		if '_ready' not in dir(self):
 			self._ready = True
 			self.timeout = 300
 			self.data = {}
@@ -335,7 +335,7 @@ class AgingCache(object):
 		return self.data.get(item, {})
 
 	def set(self, item, data):
-		if not type(data) == dict:
+		if not isinstance(data, dict):
 			raise Exception('AgingCache.set() requires a dict as data value')
 		self.data[item] = copy.deepcopy(data)
 		self.timer[item] = time.time() + self.timeout
@@ -588,7 +588,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.hasChanged('sambaPrivileges'):
 				o = self.oldattr.get('objectClass', [])
 				# add univentionSambaPrivileges objectclass
-				if self['sambaPrivileges'] and not "univentionSambaPrivileges" in o:
+				if self['sambaPrivileges'] and "univentionSambaPrivileges" not in o:
 					ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
 
 			if self.hasChanged('sambaRID') and not hasattr(self, 'groupSid'):
@@ -714,7 +714,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, 'sid', self.groupSid)
 
 		for group in self.info.get('memberOf', []):
-			if type(group) == type([]):
+			if isinstance(group, type([])):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(self.dn, members):
@@ -735,7 +735,7 @@ class object(univention.admin.handlers.simpleLdap):
 		settings_object.modify()
 
 		for group in self.info.get('memberOf', []):
-			if type(group) == type([]):
+			if isinstance(group, type([])):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(olddn, members):
@@ -768,7 +768,7 @@ class object(univention.admin.handlers.simpleLdap):
 			newdn = self.dn
 			newdn = newdn.replace(old_name, new_name, 1)
 			for group in self.info.get('memberOf', []):
-				if type(group) == type([]):
+				if isinstance(group, type([])):
 					group = group[0]
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = copy.deepcopy(members)
@@ -788,7 +788,7 @@ class object(univention.admin.handlers.simpleLdap):
 				add_to_group.append(group)
 
 		for group in add_to_group:
-			if type(group) == type([]):
+			if isinstance(group, type([])):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if self.__case_insensitive_in_list(self.dn, members):
@@ -799,7 +799,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes(group, members, newmembers)
 
 		for group in remove_from_group:
-			if type(group) == type([]):
+			if isinstance(group, type([])):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(self.dn, members):
@@ -874,7 +874,7 @@ class object(univention.admin.handlers.simpleLdap):
 				self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, subgrp.lower(), [self.dn.lower()])
 
 	def _check_group_childs_for_recursion(self, grp_module, grpdn2childgrpdns, dn, parents=[]):
-		if not dn in grpdn2childgrpdns:
+		if dn not in grpdn2childgrpdns:
 			grpobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=dn)
 			grpobj.open()
 			childs = grpobj.info.get('nestedGroup', [])

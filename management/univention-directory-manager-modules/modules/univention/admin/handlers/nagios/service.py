@@ -310,7 +310,7 @@ class object(univention.admin.handlers.simpleLdap):
 		hosts = self.oldattr.get('univentionNagiosHostname', [])
 		for host in hosts:
 			# split into relDomainName and zoneName
-			if host and _re.match(host) != None:
+			if host and _re.match(host) is not None:
 				(relDomainName, zoneName) = _re.match(host).groups()
 				# find correct dNSZone entry
 				res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))

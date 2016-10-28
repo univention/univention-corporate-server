@@ -58,7 +58,7 @@ class syntax_timeperiod(univention.admin.syntax.simple):
 
 	@classmethod
 	def parse(self, text):
-		if text and self._re.match(text) != None:
+		if text and self._re.match(text) is not None:
 			for period in text.split(','):
 				(start, end) = period.split('-')
 				(shour, smin) = start.split(':')
@@ -237,7 +237,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# those lists are concatenated with hashes as delimiter
 		periodslist = [self['periodMonday'], self['periodTuesday'], self['periodWednesday'], self['periodThursday'], self['periodFriday'], self['periodSaturday'], self['periodSunday']]
 		for i in range(len(periodslist)):
-			if periodslist[i] == None:
+			if periodslist[i] is None:
 				periodslist[i] = ''
 		newperiods = '#'.join(periodslist)
 

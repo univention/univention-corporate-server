@@ -255,7 +255,7 @@ class object(univention.admin.handlers.simpleLdap):
 					if self.dn in entries:
 						changes.append((self.ldapKeys[i], self.dn, ''))
 				else:
-					if not self.dn in entries:
+					if self.dn not in entries:
 						changes.append((self.ldapKeys[i], '', self.dn))
 
 		if changes:
@@ -324,4 +324,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 def identify(dn, attr, canonical=0):
 
-	return 'organizationalUnit' in attr.get('objectClass', []) and not 'univentionBase' in attr.get('objectClass', [])
+	return 'organizationalUnit' in attr.get('objectClass', []) and 'univentionBase' not in attr.get('objectClass', [])

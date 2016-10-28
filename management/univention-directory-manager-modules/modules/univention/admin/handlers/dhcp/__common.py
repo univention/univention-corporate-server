@@ -69,7 +69,7 @@ def add_dhcp_options(properties, mapping, layout):
 def add_dhcp_objectclass(self, ml):
 	oldOCs = self.oldattr.get('objectClass', [])
 	newOCs = copy.copy(oldOCs)
-	if self.info.get('option', []) and not 'dhcpOptions' in oldOCs:
+	if self.info.get('option', []) and 'dhcpOptions' not in oldOCs:
 		newOCs.append('dhcpOptions')
 		ml.append(('objectClass', oldOCs, newOCs))
 

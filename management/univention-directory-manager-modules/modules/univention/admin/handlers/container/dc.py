@@ -226,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
 		directoryObject.create()
 
 		rootSambaSID = None
-		while rootSambaSID == None:
+		while rootSambaSID is None:
 			rootSambaSID = univention.admin.allocators.requestUserSid(self.lo, tmpPosition, '0')
 		# FIXME
 		self.lo.add('uid=root,cn=users,' + self.dn, [

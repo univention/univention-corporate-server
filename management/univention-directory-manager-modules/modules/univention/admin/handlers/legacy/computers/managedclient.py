@@ -402,7 +402,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.modifypassword = 0
 
 	def _ldap_addlist(self):
-		if not 'posix' in self.options and not 'kerberos' in self.options:
+		if 'posix' not in self.options and 'kerberos' not in self.options:
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
 
 		ocs = ['top', 'person', 'univentionHost', 'univentionClient']
