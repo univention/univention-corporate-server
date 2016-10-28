@@ -94,7 +94,7 @@ if opts.createsubnet or opts.modifysubnet:
 		print >> sys.stderr, "Option --site needed for subnet creation"
 		sys.exit(1)
 
-if not (opts.createsitelink or opts.createsite or opts.createsubnet or opts.modifysubnet): 
+if not (opts.createsitelink or opts.createsite or opts.createsubnet or opts.modifysubnet):
 	parser.print_help()
 
 lp = sambaopts.get_loadparm()
@@ -107,10 +107,10 @@ samdb = SamDB(opts.database_url, credentials=creds, session_info=system_session(
 
 samba4_ldap_base = configRegistry.get('samba4/ldap/base')
 ldif_dict = {
-'branchsite_name': opts.site,
-'sitelink': opts.sitelink,
-'branchsite_subnet': opts.subnet,
-'samba4_ldap_base': samba4_ldap_base
+	'branchsite_name': opts.site,
+	'sitelink': opts.sitelink,
+	'branchsite_subnet': opts.subnet,
+	'samba4_ldap_base': samba4_ldap_base
 }
 
 if opts.createsite:
@@ -129,7 +129,7 @@ if opts.createsite:
 			print >> sys.stderr, "sitelink %s not found" % opts.sitelink
 			sys.exit(1)
 
-	site_add_ldif='''
+	site_add_ldif = '''
 dn: CN=%(branchsite_name)s,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 objectClass: site
 cn: %(branchsite_name)s
@@ -158,8 +158,8 @@ objectCategory: CN=Servers-Container,CN=Schema,CN=Configuration,%(samba4_ldap_ba
 	print "created site %s" % opts.site
 
 	if opts.sitelink and not opts.createsitelink:
-		## and add it to the sitelink
-		sitelink_modify_ldif='''
+		# and add it to the sitelink
+		sitelink_modify_ldif = '''
 dn: CN=%(sitelink)s,CN=IP,CN=Inter-Site Transports,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 changetype: modify
 add: siteList
@@ -181,7 +181,7 @@ if opts.createsitelink:
 		if not opts.ignore_exists:
 			sys.exit(1)
 
-	sitelink_add_ldif='''
+	sitelink_add_ldif = '''
 dn: CN=%(sitelink)s,CN=IP,CN=Inter-Site Transports,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 objectClass: siteLink
 cn: %(sitelink)s
@@ -204,7 +204,7 @@ if opts.createsubnet:
 		if not opts.ignore_exists:
 			sys.exit(1)
 
-	subnet_add_ldif='''
+	subnet_add_ldif = '''
 dn: CN=%(branchsite_subnet)s,CN=Subnets,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 objectClass: subnet
 cn: %(branchsite_subnet)s
@@ -231,8 +231,8 @@ elif opts.modifysubnet:
 
 	site_dn = res[0]['dn']
 	subnet_dn = "CN=$(branchsite_subnet)s,CN=Subnets,CN=Sites,CN=Configuration,%(samba4_ldap_base)s" % ldif_dict
-		
-	subnet_modify_ldif='''
+
+	subnet_modify_ldif = '''
 dn: %s
 changetype: modify
 replace: siteObject
@@ -241,4 +241,3 @@ siteObject: %s
 
 	samdb.modify_ldif(subnet_modify_ldif)
 	print "associated subnet %s with site %s" % (opts.subnet, opts.site)
-

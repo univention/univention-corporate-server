@@ -40,13 +40,14 @@ import sys
 import subprocess
 import time
 
-    
+
 def _sysvol_directory(ucr):
 	return '/var/lib/samba/sysvol/%s/Policies/' % ucr.get('domainname')
 
+
 def getLDAPGPOs(options):
-	ldapGPOs=[]
-	
+	ldapGPOs = []
+
 	p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	res = p1.communicate()
 	if p1.returncode != 0:
@@ -61,14 +62,14 @@ def getLDAPGPOs(options):
 	currentGPO = None
 	for line in stdout.split('\n'):
 		# The result looks like this:
-		#   # record 1
+		# record 1
 		#   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
 		#   cn: {31B2F340-016D-11D2-945F-00C04FB984F9}
 		#   ...
-		# 
+		#
 
 		if line.startswith('cn: '):
-			currentGPO = line.split('cn: ',1)[1]
+			currentGPO = line.split('cn: ', 1)[1]
 		elif line.startswith(' '):
 			# if the attributes value uses more than one line
 			currentGPO += line.split(' ', 1)[1]
@@ -88,13 +89,14 @@ def getLDAPGPOs(options):
 				print 'Unknown GPO format: "%s"' % gpo
 			continue
 
-		ldapGPOs.append( gpo[bracketOpen:bracketClose+1] )
-		
+		ldapGPOs.append(gpo[bracketOpen:bracketClose + 1])
+
 	return ldapGPOs
 
+
 def getFileSystemGPOs(sysvolDirectory):
-	return filter( lambda x: x.startswith('{'), os.listdir(sysvolDirectory) )
-	
+	return filter(lambda x: x.startswith('{'), os.listdir(sysvolDirectory))
+
 if __name__ == '__main__':
 	usage = '''%s [options]''' % sys.argv[0]
 	parser = OptionParser(usage=usage)
@@ -148,4 +150,3 @@ if __name__ == '__main__':
 		shutil.move(src, dest)
 
 	sys.exit(0)
-
