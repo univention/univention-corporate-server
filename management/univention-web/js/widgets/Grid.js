@@ -239,6 +239,10 @@ define([
 		},
 
 		_onScroll: function() {
+			var isActiveTab = !!document.getElementById(this.id).offsetParent;
+			if (!isActiveTab) {
+				return;
+			}
 			var viewPortHeight = dojoWindow.getBox().h;
 			var atBottom = (window.pageYOffset + viewPortHeight) === win.body().clientHeight;
 			if (atBottom) {
@@ -260,8 +264,11 @@ define([
 		},
 
 		_setInitialGridHeight: function() {
-			this._scrollSignal.remove();
+			if (this._scrollSignal) {
+				this._scrollSignal.remove();
+			}
 			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
+			this.own(this._scrollSignal);
 			style.set(this._pleaseWait.domNode, "display", "block");
 			var viewPortHeight = dojoWindow.getBox().h;
 			var gridHeight = Math.round(viewPortHeight + viewPortHeight / 3);
@@ -339,10 +346,11 @@ define([
 			this._contextMenu = new Menu({
 				targetNodeIds: [this._grid.domNode]
 			});
+			this.own(this._contextMenu);
 			this._pleaseWait = new Text({
 				content: _("Please wait...")
 			});
-			this.own(this._contextMenu);
+			this.own(this._pleaseWait);
 
 			this.setColumnsAndActions(this.columns, this.actions);
 
@@ -357,9 +365,6 @@ define([
 			this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged', false));
 
 			this._grid.on(".dgrid-row:contextmenu", lang.hitch(this, '_updateContextItem'));
-
-			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
-			this.own(this._scrollSignal);
 
 			this.on('filterDone', lang.hitch(this, '_updateGlobalCanExecute'));
 

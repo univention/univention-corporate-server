@@ -1,3 +1,9 @@
+univention-web (1.0.2-12) unstable; urgency=medium
+
+  * Bug #32027: Ignore scroll signal on non active tabs
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 28 Oct 2016 11:57:53 +0200
+
 univention-web (1.0.2-11) unstable; urgency=medium
 
   * Bug #32027: Use declare() global
