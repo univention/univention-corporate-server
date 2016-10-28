@@ -42,7 +42,7 @@ def escapeSOAemail(email):
     'first\\.last.domain.tld'
     """
     SPECIAL_CHARACTERS = set('"(),.:;<>@[\\]')
-    if not '@' in email:
+    if '@' not in email:
         raise ValueError()
     (local, domain) = email.rsplit('@', 1)
     tmp = ''

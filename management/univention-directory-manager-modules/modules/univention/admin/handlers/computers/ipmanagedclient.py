@@ -325,4 +325,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and not 'posixAccount' in attr.get('objectClass', [])
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and 'posixAccount' not in attr.get('objectClass', [])

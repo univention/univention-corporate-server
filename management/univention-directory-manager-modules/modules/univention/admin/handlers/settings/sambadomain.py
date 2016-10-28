@@ -388,4 +388,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 def identify(dn, attr, canonical=0):
 
-	return 'sambaDomain' in attr.get('objectClass', []) and not 'univentionDomain' in attr.get('objectClass', [])
+	return 'sambaDomain' in attr.get('objectClass', []) and 'univentionDomain' not in attr.get('objectClass', [])
