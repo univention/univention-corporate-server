@@ -32,7 +32,7 @@ Univention Samba 4
 This tool overwrites the sambaSID attribute with the attribute univentionSamba4SID
 '''
 
-import sys, copy
+import sys
 import optparse
 import univention.admin
 import univention.admin.uldap
@@ -43,12 +43,16 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 parser = optparse.OptionParser(usage='Usage: %prog (-n|-a)\nReplaces the attribute sambaSID with the attribute univentionSamba4SID for user and groups.')
-parser.add_option('-n', '--no-action',
-                  dest='action', action='store_false',
-                  help='do not modify the directory, show what would have been done')
-parser.add_option('-a', '--action',
-                  dest='action', action='store_true',
-                  help='do modify the directory')
+parser.add_option(
+	'-n', '--no-action',
+	dest='action', action='store_false',
+	help='do not modify the directory, show what would have been done'
+)
+parser.add_option(
+	'-a', '--action',
+	dest='action', action='store_true',
+	help='do modify the directory'
+)
 (options, args, ) = parser.parse_args()
 
 if options.action is None:
@@ -56,7 +60,7 @@ if options.action is None:
 	parser.print_help()
 	sys.exit(3)
 if args:
-	print >>sys.stderr, 'Unknown arguments %r!' % (args, )
+	print >> sys.stderr, 'Unknown arguments %r!' % (args, )
 	parser.print_help()
 	sys.exit(3)
 
@@ -67,14 +71,14 @@ except IOError:
 
 res = lo.search(filter='univentionSamba4SID=*', attr=['dn', 'sambaSID', 'univentionSamba4SID'])
 
-modify=False
+modify = False
 for user in res:
-	sambaSID=user[1].get('sambaSID',[])[0]
-	univentionSamba4SID=user[1].get('univentionSamba4SID',[])[0]
+	sambaSID = user[1].get('sambaSID', [])[0]
+	univentionSamba4SID = user[1].get('univentionSamba4SID', [])[0]
 	if sambaSID == univentionSamba4SID:
 		continue
 
-	modify=True
+	modify = True
 	if not options.action:
 		print 'Would set sambaSID to %s for %s' % (univentionSamba4SID, user[0])
 		continue
@@ -83,6 +87,3 @@ for user in res:
 
 if not modify:
 	print 'No object was found.'
-
-
-
