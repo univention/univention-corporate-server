@@ -1,3 +1,9 @@
+univention-net-installer (10.0.0-2) unstable; urgency=medium
+
+  * Bug #42326: add French translation of debconf template
+
+ -- Eduard Mai <mai@univention.de>  Fri, 28 Oct 2016 20:24:21 +0200
+
 univention-net-installer (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
