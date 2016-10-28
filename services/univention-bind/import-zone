@@ -36,70 +36,71 @@
 #
 # dig axfr +nocomment +nostats +nocmd office.univention.de @localhost | ./import-zone dc=mkgbank,dc=de office.univention.de 604800
 
-import sys, re
+import sys
+import re
 
-ldapbase=sys.argv[1]
-zone=sys.argv[2]
-ttl=sys.argv[3]
+ldapbase = sys.argv[1]
+zone = sys.argv[2]
+ttl = sys.argv[3]
 
-ldap_types={
-	'NS':	'nSRecord',
-	'SOA':	'sOARecord',
-	'CNAME':'cNAMERecord',
-	'A':	'aRecord',
-	'MX':	'mXRecord',
-	'SRV':	'sRVRecord',
-	'TXT':	'tXTRecord',
-	'PTR':	'pTRRecord'
+ldap_types = {
+	'NS': 'nSRecord',
+	'SOA': 'sOARecord',
+	'CNAME': 'cNAMERecord',
+	'A': 'aRecord',
+	'MX': 'mXRecord',
+	'SRV': 'sRVRecord',
+	'TXT': 'tXTRecord',
+	'PTR': 'pTRRecord'
 }
-record_pattern=re.compile('^([^\t ]+)[\t ]+([0-9]+)[\t ]+([^\t ]+)[\t ]+([^\t ]+)[\t ]+(.+)$')
+record_pattern = re.compile('^([^\t ]+)[\t ]+([0-9]+)[\t ]+([^\t ]+)[\t ]+([^\t ]+)[\t ]+(.+)$')
 
-all={}
+all = {}
 
 for line in sys.stdin.readlines():
 
-	line=line[0:-1]
-	records=record_pattern.findall(line)
+	line = line[0:-1]
+	records = record_pattern.findall(line)
 	if not records:
 		print 'WARNING:', line
 		continue
-	record=records[0]
+	record = records[0]
 
-	r_full_name=record[0]
+	r_full_name = record[0]
 
-	pos=r_full_name.rfind(zone+'.')
+	pos = r_full_name.rfind(zone + '.')
 	if pos == -1:
 		print 'WARNING: %s not in zone' % r_full_name
 		continue
-	r_name=r_full_name[:pos]
+	r_name = r_full_name[:pos]
 	if r_name == '':
-		r_name='@'
+		r_name = '@'
 	elif r_name[-1]:
-		r_name=r_name[:-1]
+		r_name = r_name[:-1]
 	else:
 		print 'WARNING: %s is not valid' % r_full_name
 
-	r_ttl=record[1]
-	r_class=record[2].upper()
+	r_ttl = record[1]
+	r_class = record[2].upper()
 
-	r_type=record[3].upper()
+	r_type = record[3].upper()
 
-	r_record=record[4]
+	r_record = record[4]
 
-	if not all.has_key(r_name):
-		all[r_name]={}
-	if not all[r_name].has_key(r_type):
-		all[r_name][r_type]=[]
+	if r_name not in all:
+		all[r_name] = {}
+	if r_type not in all[r_name]:
+		all[r_name][r_type] = []
 
-	if not r_record in all[r_name][r_type]:
+	if r_record not in all[r_name][r_type]:
 		all[r_name][r_type].append(r_record)
 
 	if r_ttl == ttl:
 		pass
-	elif all[r_name].has_key('ttl') and all[r_name]['ttl'] != r_ttl:
+	elif 'ttl' in all[r_name] and all[r_name]['ttl'] != r_ttl:
 		print 'WARNING: %s: TTLs do not match: %s %s' % (r_name, all[r_name]['ttl'], r_ttl)
 	else:
-		all[r_name]['ttl']=r_ttl
+		all[r_name]['ttl'] = r_ttl
 
 
 def print_record(name, record):
@@ -108,7 +109,7 @@ def print_record(name, record):
 	print 'zoneName: %s' % zone
 	print 'relativeDomainName: %s' % name
 	for r_type, r_records in record.items():
-		ldap_type=ldap_types[r_type]
+		ldap_type = ldap_types[r_type]
 		for r_record in r_records:
 			print '%s: %s' % (ldap_type, r_record)
 	print

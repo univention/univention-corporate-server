@@ -35,31 +35,33 @@
 import hashlib
 import univention.pyDes as pyDes
 
+
 def md4(data):
 	md = hashlib.new('md4')
 	md.update(data)
 	return md.digest()
 
+
 def DesEncrypt(data, key):
 
-
-	def convertKey (key):
+	def convertKey(key):
 		"""
 		Converts a 7-bytes key to an 8-bytes key based on an algorithm.
 		"""
 		assert len(key) == 7, "NTLM convertKey needs 7-byte key"
-		bytes = [key[0],
+		bytes = [
+			key[0],
 			chr(((ord(key[0]) << 7) & 0xFF) | (ord(key[1]) >> 1)),
 			chr(((ord(key[1]) << 6) & 0xFF) | (ord(key[2]) >> 2)),
 			chr(((ord(key[2]) << 5) & 0xFF) | (ord(key[3]) >> 3)),
 			chr(((ord(key[3]) << 4) & 0xFF) | (ord(key[4]) >> 4)),
 			chr(((ord(key[4]) << 3) & 0xFF) | (ord(key[5]) >> 5)),
 			chr(((ord(key[5]) << 2) & 0xFF) | (ord(key[6]) >> 6)),
-			chr( (ord(key[6]) << 1) & 0xFF),
+			chr((ord(key[6]) << 1) & 0xFF),
 		]
-		return "".join([ setOddParity(b) for b in bytes ])
+		return "".join([setOddParity(b) for b in bytes])
 
-	def setOddParity (byte):
+	def setOddParity(byte):
 		"""
 		Turns one-byte into odd parity. Odd parity means that a number in
 		binary has odd number of 1's.
@@ -83,8 +85,9 @@ def DesEncrypt(data, key):
 
 	# as alternative, this seems to work too, but
 	# the package python-passlib has to be installed
-	#import passlib.utils.des
-	#return passlib.utils.des.des_encrypt_block(key, data)
+	# import passlib.utils.des
+	# return passlib.utils.des.des_encrypt_block(key, data)
+
 
 def GenerateNtResponse(AuthenticatorChallenge, PeerChallenge, UserName, Password):
 	Challenge = ChallengeHash(PeerChallenge, AuthenticatorChallenge, UserName)
@@ -92,24 +95,29 @@ def GenerateNtResponse(AuthenticatorChallenge, PeerChallenge, UserName, Password
 	Response = ChallengeResponse(Challenge, PasswordHash)
 	return Response
 
+
 def ChallengeHash(PeerChallenge, AuthenticatorChallenge, UserName):
 	Challenge = hashlib.sha1(PeerChallenge + AuthenticatorChallenge + UserName).digest()
 	return Challenge[:8]
+
 
 def NtPasswordHash(Password):
 	PasswordHash = md4(Password)
 	return PasswordHash
 
+
 def HashNtPasswordHash(PasswordHash):
 	PasswordHashHash = md4(PasswordHash)
 	return PasswordHashHash
 
+
 def ChallengeResponse(Challenge, PasswordHash):
 	ZPasswordHash = PasswordHash.ljust(21, '\0')
 	Response = DesEncrypt(Challenge, ZPasswordHash[0:7])
-	Response+= DesEncrypt(Challenge, ZPasswordHash[7:14])
-	Response+= DesEncrypt(Challenge, ZPasswordHash[14:21])
+	Response += DesEncrypt(Challenge, ZPasswordHash[7:14])
+	Response += DesEncrypt(Challenge, ZPasswordHash[14:21])
 	return Response
+
 
 def GenerateAuthenticatorResponse(Password, NtResponse, PeerChallenge, AuthenticatorChallenge, UserName):
 	Magic1 = '\x4D\x61\x67\x69\x63\x20\x73\x65\x72\x76\x65\x72\x20\x74\x6F\x20\x63\x6C\x69\x65\x6E\x74\x20\x73\x69\x67\x6E\x69\x6E\x67\x20\x63\x6F\x6E\x73\x74\x61\x6E\x74'
@@ -118,9 +126,10 @@ def GenerateAuthenticatorResponse(Password, NtResponse, PeerChallenge, Authentic
 	PasswordHashHash = HashNtPasswordHash(PasswordHash)
 	Challenge = ChallengeHash(PeerChallenge, AuthenticatorChallenge, UserName)
 	Digest = hashlib.sha1(PasswordHashHash + NtResponse + Magic1).digest()
-	Digest = hashlib.sha1(Digest           + Challenge  + Magic2).digest()
+	Digest = hashlib.sha1(Digest + Challenge + Magic2).digest()
 	AuthenticatorResponse = 'S=' + Digest.encode('hex').upper()
 	return AuthenticatorResponse
+
 
 def CheckAuthenticatorResponse(Password, NtResponse, PeerChallenge, AuthenticatorChallenge, UserName, ReceivedResponse):
 	ResponseOK = False
@@ -128,6 +137,7 @@ def CheckAuthenticatorResponse(Password, NtResponse, PeerChallenge, Authenticato
 	if (MyResponse == ReceivedResponse):
 		ResponseOK = True
 	return ResponseOK
+
 
 def executeTestVectors():
 	UserName = '\x55\x73\x65\x72'

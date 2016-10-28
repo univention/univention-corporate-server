@@ -30,22 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.config_registry
 import os
 import subprocess
 import univention.debug
 
-name='samba4wins'
-description='Samba4WINS configuration'
-filter="(objectClass=univentionSamba4WinsHost)"
-attributes=['univentionSamba4WinsNetbiosName', 'univentionSamba4WinsSecondaryIp']
+name = 'samba4wins'
+description = 'Samba4WINS configuration'
+filter = "(objectClass=univentionSamba4WinsHost)"
+attributes = ['univentionSamba4WinsNetbiosName', 'univentionSamba4WinsSecondaryIp']
+
 
 def pipe(input, cmd1argv, uid=-1, wait=1):
 	output = None
 	if uid > -1:
-		olduid=os.getuid()
+		olduid = os.getuid()
 		listener.setuid(uid)
 	try:
 		p1 = subprocess.Popen(cmd1argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -58,8 +59,10 @@ def pipe(input, cmd1argv, uid=-1, wait=1):
 			listener.setuid(olduid)
 	return output
 
+
 def initialize():
 	pass
+
 
 def handler(dn, new, old):
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -74,7 +77,7 @@ def handler(dn, new, old):
 				if new.get('univentionSamba4WinsSecondaryIp'):
 					samba4wins_dict['address'] = new['univentionSamba4WinsSecondaryIp'][0]
 
-				## determine network interface to use
+				# determine network interface to use
 				samba4wins_interface = None
 				if configRegistry.get('samba4wins/interface'):
 					samba4wins_interface = configRegistry['samba4wins/interface']
@@ -87,83 +90,77 @@ def handler(dn, new, old):
 								break
 
 				if samba4wins_interface and samba4wins_dict.get('netbios/name') and samba4wins_dict.get('address'):
-					## determine netmask, network and broadcast from parent interface
+					# determine netmask, network and broadcast from parent interface
 					parentinterface = configRegistry['samba/interfaces']
 					for rkey in ['netmask', 'network', 'broadcast']:
-						samba4wins_dict[rkey] = configRegistry.get('samba4wins/%s' % rkey) \
-										or configRegistry.get('interfaces/%s/%s' % (parentinterface, rkey) )
+						samba4wins_dict[rkey] = configRegistry.get('samba4wins/%s' % rkey) or configRegistry.get('interfaces/%s/%s' % (parentinterface, rkey))
 
-					## setup network interface
-					ucrcmd = ['univention-config-registry','set']
+					# setup network interface
+					ucrcmd = ['univention-config-registry', 'set']
 					for rkey in ['address', 'netmask', 'network', 'broadcast']:
-						ucrcmd.append('interfaces/%s/%s=%s' % (samba4wins_interface, rkey, samba4wins_dict[rkey]) )
+						ucrcmd.append('interfaces/%s/%s=%s' % (samba4wins_interface, rkey, samba4wins_dict[rkey]))
 					listener.run('/usr/sbin/univention-config-registry', ucrcmd, uid=0)
 
-					## activate samba4wins variables
-					ucrcmd = ['univention-config-registry','set']
+					# activate samba4wins variables
+					ucrcmd = ['univention-config-registry', 'set']
 					for key in ['address', 'netbios/name']:
-						ucrcmd.append('samba4wins/%s=%s' % (key, samba4wins_dict[key]) )
-					## and deactivate "wins support" in Samba3
+						ucrcmd.append('samba4wins/%s=%s' % (key, samba4wins_dict[key]))
+					# and deactivate "wins support" in Samba3
 					ucrcmd.append('windows/wins-support=no')
-					ucrcmd.append('windows/wins-server=%s' % samba4wins_dict['address'] )
+					ucrcmd.append('windows/wins-server=%s' % samba4wins_dict['address'])
 					listener.run('/usr/sbin/univention-config-registry', ucrcmd, uid=0)
 
 			elif old:
-				## determine network interface
+				# determine network interface
 				samba4wins_interface = None
 				if configRegistry.get('samba4wins/interface'):
 					samba4wins_interface = configRegistry['samba4wins/interface']
 
-				## reactivate "wins support" in Samba3 in case we are on a master
+				# reactivate "wins support" in Samba3 in case we are on a master
 				if configRegistry.get('server/role') == 'domaincontroller_master':
-					listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set',
-						'wins/wins-support=yes'], uid=0)
+					listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry', 'set', 'wins/wins-support=yes'], uid=0)
 
-				## deactivate samba4wins variables
-				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','unset',
-						'samba4wins/netbios/name', 'samba4wins/address'], uid=0)
+				# deactivate samba4wins variables
+				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry', 'unset', 'samba4wins/netbios/name', 'samba4wins/address'], uid=0)
 
-				## unset network interface
+				# unset network interface
 				if samba4wins_interface:
-					ucrcmd = ['univention-config-registry','unset']
+					ucrcmd = ['univention-config-registry', 'unset']
 					for rkey in ['address', 'netmask', 'network', 'broadcast']:
-						ucrcmd.append('interfaces/%s/%s' % (samba4wins_interface, rkey) )
+						ucrcmd.append('interfaces/%s/%s' % (samba4wins_interface, rkey))
 
 					listener.run('/usr/sbin/univention-config-registry', ucrcmd, uid=0)
 
-		else: # not my dn, so a Samba4WINS "Partner" server changed
+		else:  # not my dn, so a Samba4WINS "Partner" server changed
 			if new:
-				## modify samba4wins ldb
+				# modify samba4wins ldb
 				samba4wins_dict = {}
 				if new.get('univentionSamba4WinsNetbiosName'):
 					samba4wins_dict['netbios/name'] = new['univentionSamba4WinsNetbiosName'][0]
 				if new.get('univentionSamba4WinsSecondaryIp'):
 					samba4wins_dict['address'] = new['univentionSamba4WinsSecondaryIp'][0]
 
-				ldbadd=True
+				ldbadd = True
 				if old:
 					old_name = None
 					old_ip = None
 					if old.get('univentionSamba4WinsNetbiosName'):
-						old_name= old['univentionSamba4WinsNetbiosName'][0]
+						old_name = old['univentionSamba4WinsNetbiosName'][0]
 					if old.get('univentionSamba4WinsSecondaryIp'):
-						old_ip= old['univentionSamba4WinsSecondaryIp'][0]
+						old_ip = old['univentionSamba4WinsSecondaryIp'][0]
 					if old_name and old_ip:
 						if samba4wins_dict.get('netbios/name') != old_name or samba4wins_dict.get('address') != old_ip:
-							listener.run('/usr/bin/ldbdel',
-								['ldbdel', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb',
-								'CN=%s,CN=PARTNERS' % old_name] , uid=0)
-						#else:
+							listener.run('/usr/bin/ldbdel', ['ldbdel', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb', 'CN=%s,CN=PARTNERS' % old_name], uid=0)
+						# else:
 						#	ldbadd=False
 				if ldbadd and samba4wins_dict.get('netbios/name') and samba4wins_dict.get('address'):
-					ldif='dn: CN=%(netbios/name)s,CN=PARTNERS\nobjectClass: wreplPartner\naddress: %(address)s\n' % samba4wins_dict
-					pipe(ldif, ['/usr/bin/ldbadd', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb'] , uid=0)
+					ldif = 'dn: CN=%(netbios/name)s,CN=PARTNERS\nobjectClass: wreplPartner\naddress: %(address)s\n' % samba4wins_dict
+					pipe(ldif, ['/usr/bin/ldbadd', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb'], uid=0)
 
 			elif old:
 				if old.get('univentionSamba4WinsNetbiosName'):
-					old_name= old['univentionSamba4WinsNetbiosName'][0]
-					listener.run('/usr/bin/ldbdel', ['ldbdel', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb',
-						'CN=%s,CN=PARTNERS' % old_name] , uid=0)
+					old_name = old['univentionSamba4WinsNetbiosName'][0]
+					listener.run('/usr/bin/ldbdel', ['ldbdel', '-d0', '-H', '/var/lib/samba4wins/private/wins_config.ldb', 'CN=%s,CN=PARTNERS' % old_name], uid=0)
 
 	finally:
 		listener.unsetuid()

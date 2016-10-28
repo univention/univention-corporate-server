@@ -52,16 +52,16 @@ filter = '(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*))'
 attributes = []
 
 NAMED_CONF_FILE = "/etc/bind/univention.conf"
-NAMED_CONF_DIR  = "/etc/bind/univention.conf.d"
+NAMED_CONF_DIR = "/etc/bind/univention.conf.d"
 PROXY_CONF_FILE = "/etc/bind/univention.conf.proxy"
 NAMED_CACHE_DIR = "/var/cache/bind"
 PROXY_CACHE_DIR = "/var/cache/univention-bind-proxy"
 RNDC_BIN = "/usr/sbin/rndc"
 
-SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if
-	_.startswith('SIG') and not _.startswith('SIG_')])
+SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if _.startswith('SIG') and not _.startswith('SIG_')])
 
 __zone_created_or_removed = False
+
 
 def initialize():
 	"""Initialize module on first run."""
@@ -71,6 +71,7 @@ def initialize():
 def prerun():
 	"""Called before busy period."""
 	listener.configRegistry.load()
+
 
 def chgrp_bind(filename):
 	try:
@@ -102,7 +103,7 @@ def handler(dn, new, old):
 			zonefile = os.path.join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
 			proxy_cache = open(zonefile, 'w')
 			proxy_cache.close()
-			os.chmod(zonefile, 0640)
+			os.chmod(zonefile, 0o640)
 			chgrp_bind(zonefile)
 	finally:
 		listener.unsetuid()
@@ -123,23 +124,23 @@ def _new_zone(ucr, zonename, dn):
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
 	if not os.path.exists(NAMED_CONF_DIR):
 		os.mkdir(NAMED_CONF_DIR)
-		os.chmod(NAMED_CONF_DIR, 0755)
+		os.chmod(NAMED_CONF_DIR, 0o755)
 
 	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
 
 	# Create empty file and restrict permission
 	named_zone = open(zonefile, 'w')
 	named_zone.close()
-	os.chmod(zonefile, 0640)
+	os.chmod(zonefile, 0o640)
 	chgrp_bind(zonefile)
 
 	# Now fill zone file
 	ldap_uri = "ldap://%s:%s/%s%s" % (
-			ucr.get('bind/ldap/server/ip', '127.0.0.1'),
-			ucr.get('ldap/server/port', '7389'),
-			dn,
-			_ldap_auth_string(ucr)
-			)
+		ucr.get('bind/ldap/server/ip', '127.0.0.1'),
+		ucr.get('ldap/server/port', '7389'),
+		dn,
+		_ldap_auth_string(ucr)
+	)
 	named_zone = open(zonefile, 'w+')
 	named_zone.write('zone "%s" {\n' % (zonename,))
 	named_zone.write('\ttype master;\n')
@@ -149,7 +150,7 @@ def _new_zone(ucr, zonename, dn):
 	named_zone.close()
 
 	# Create proxy configuration file
-	proxy_file = os.path.join(NAMED_CONF_DIR, zonename+'.proxy')
+	proxy_file = os.path.join(NAMED_CONF_DIR, zonename + '.proxy')
 	proxy_zone = open(proxy_file, 'w')
 	proxy_zone.write('zone "%s" {\n' % (zonename,))
 	proxy_zone.write('\ttype slave;\n')
@@ -157,7 +158,7 @@ def _new_zone(ucr, zonename, dn):
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
-	os.chmod(proxy_file, 0640)
+	os.chmod(proxy_file, 0o640)
 	chgrp_bind(proxy_file)
 
 	global __zone_created_or_removed
@@ -236,7 +237,7 @@ def _wait_children(pids, timeout=15):
 	while pids:
 		try:
 			pid, status = os.waitpid(0, os.WNOHANG)  # non-blocking
-		except OSError, ex:
+		except OSError as ex:
 			if ex.errno == errno.ECHILD:
 				break  # no more own children
 			else:
@@ -248,21 +249,17 @@ def _wait_children(pids, timeout=15):
 				if os.WIFSIGNALED(status):
 					sig = os.WTERMSIG(status)
 					sig = SIGNAL.get(sig, sig)
-					ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited by signal %s' % \
-							(pid, ' '.join(cmd), sig))
+					ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited by signal %s' % (pid, ' '.join(cmd), sig))
 				elif os.WIFEXITED(status):
 					ret = os.WEXITSTATUS(status)
 					if ret:
-						ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited with %d' % \
-								(pid, ' '.join(cmd), ret))
+						ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited with %d' % (pid, ' '.join(cmd), ret))
 				else:
-					ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited status %d' % \
-							(pid, ' '.join(cmd), status))
+					ud.debug(ud.LISTENER, ud.WARN, 'DNS: %d="%s" exited status %d' % (pid, ' '.join(cmd), status))
 				continue
 
 		if time.time() > timeout:
-			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % \
-					(' '.join([str(pid) for pid in pids]),))
+			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % (' '.join([str(pid) for pid in pids]),))
 			break
 		time.sleep(1)
 
@@ -272,14 +269,14 @@ def _kill_children(pids, timeout=5):
 	for pid in pids:
 		try:
 			os.kill(pid, signal.SIGTERM)
-		except OSError, ex:
+		except OSError as ex:
 			if ex.errno != errno.ESRCH:
 				ud.debug(ud.LISTENER, ud.WARN, 'DNS: Unexpected error: %s' % (ex,))
 	_wait_children(pids, timeout)
 	for pid in pids:
 		try:
 			os.kill(pid, signal.SIGKILL)
-		except OSError, ex:
+		except OSError as ex:
 			if ex.errno != errno.ESRCH:
 				ud.debug(ud.LISTENER, ud.WARN, 'DNS: Unexpected error: %s' % (ex,))
 	_wait_children(pids, timeout)
@@ -306,8 +303,8 @@ def postrun():
 		named_conf.close()
 		proxy_conf.close()
 
-		os.chmod(NAMED_CONF_FILE, 0644)
-		os.chmod(PROXY_CONF_FILE, 0644)
+		os.chmod(NAMED_CONF_FILE, 0o644)
+		os.chmod(PROXY_CONF_FILE, 0o644)
 
 		# Restart is needed when new zones are added or old zones removed.
 		restart = False
@@ -318,7 +315,7 @@ def postrun():
 		if dns_backend == 'samba4':
 			if not __zone_created_or_removed:
 				do_reload = False
-			else:	## reset flag and continue with reload
+			else:  # reset flag and continue with reload
 				__zone_created_or_removed = False
 		elif dns_backend == 'ldap':
 			for filename in os.listdir(PROXY_CACHE_DIR):
