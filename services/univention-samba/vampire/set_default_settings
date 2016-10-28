@@ -43,24 +43,24 @@ import univention.admin.handlers.settings.default
 
 lo, position = univention.admin.uldap.getAdminConnection()
 
-domain_sid=sys.argv[1]
-domain_users_sid=domain_sid+'-513'
+domain_sid = sys.argv[1]
+domain_users_sid = domain_sid + '-513'
 
-default=univention.admin.handlers.settings.default.lookup(None, lo, 'cn=default', required=1, unique=1)[0]
+default = univention.admin.handlers.settings.default.lookup(None, lo, 'cn=default', required=1, unique=1)[0]
 
-res=lo.search(filter='(&(objectClass=sambaGroupMapping)(sambaSID=%s))' % domain_users_sid, scope='domain')
+res = lo.search(filter='(&(objectClass=sambaGroupMapping)(sambaSID=%s))' % domain_users_sid, scope='domain')
 if len(res) != 1:
 	print 'Not setting default users group: %d objects found' % len(res)
 else:
-	dn=res[0][0]
+	dn = res[0][0]
 	print 'Setting default users group to %s...' % repr(dn),
-	default['defaultGroup']=dn
+	default['defaultGroup'] = dn
 	print 'done'
 
 position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group'))
-windows_hosts_group=univention.admin.handlers.groups.group.object(None, lo, position=position)
+windows_hosts_group = univention.admin.handlers.groups.group.object(None, lo, position=position)
 windows_hosts_group.open()
-windows_hosts_group['name']='Windows Hosts'
+windows_hosts_group['name'] = 'Windows Hosts'
 try:
 	windows_hosts_group.create()
 	groupdn = windows_hosts_group.dn
@@ -70,7 +70,7 @@ except univention.admin.uexceptions.groupNameAlreadyUsed:
 	groupdn = default['defaultComputerGroup']
 
 print 'Setting default computers group to %s...' % repr(groupdn),
-default['defaultComputerGroup']=groupdn
+default['defaultComputerGroup'] = groupdn
 print 'done'
 
 default.modify()

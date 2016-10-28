@@ -30,22 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
-import os, re, string
 import univention.debug
 import tdb
 
 SAMBA_PRIVILEGES = {
-	"SeMachineAccountPrivilege" : { "number" :  16, "index" : 0 },
-	"SeAddUsersPrivilege"       : { "number" :  64, "index" : 0 },
-	"SeTakeOwnershipPrivilege"  : { "number" :   8, "index" : 1 },
-	"SeBackupPrivilege"         : { "number" :   2, "index" : 1 },
-	"SeRestorePrivilege"        : { "number" :   4, "index" : 1 },
-	"SeRemoteShutdownPrivilege" : { "number" :   1, "index" : 1 },
-	"SeSecurityPrivilege"       : { "number" :  16, "index" : 1 },
-	"SePrintOperatorPrivilege"  : { "number" :  32, "index" : 0 },
-	"SeDiskOperatorPrivilege"   : { "number" : 128, "index" : 0 },
+	"SeMachineAccountPrivilege": {"number": 16, "index": 0},
+	"SeAddUsersPrivilege": {"number": 64, "index": 0},
+	"SeTakeOwnershipPrivilege": {"number": 8, "index": 1},
+	"SeBackupPrivilege": {"number": 2, "index": 1},
+	"SeRestorePrivilege": {"number": 4, "index": 1},
+	"SeRemoteShutdownPrivilege": {"number": 1, "index": 1},
+	"SeSecurityPrivilege": {"number": 16, "index": 1},
+	"SePrintOperatorPrivilege": {"number": 32, "index": 0},
+	"SeDiskOperatorPrivilege": {"number": 128, "index": 0},
 }
 
 ALL_SAMBA_PRIVILEGES = SAMBA_PRIVILEGES.keys()
@@ -56,6 +55,7 @@ name = 'samba-privileges'
 description = 'Manages samba privileges'
 filter = '(&(objectClass=univentionSambaPrivileges)(sambaSID=*))'
 atributes = ['univentionSambaPrivilegeList', 'sambaSID']
+
 
 def handler(dn, new, old):
 
@@ -76,7 +76,7 @@ def handler(dn, new, old):
 
 	# modified
 	if new and old:
-	
+
 		newPrivs = new.get("univentionSambaPrivilegeList")
 		oldPrivs = old.get("univentionSambaPrivilegeList")
 		sid = new["sambaSID"][0]
@@ -96,51 +96,56 @@ def handler(dn, new, old):
 			removePrivileges(sid, oldPrivs)
 			addPrivileges(sid, newPrivs)
 
+
 def initialize():
 	pass
+
 
 def clean():
 	pass
 
+
 def postrun():
 	pass
 
-def addPrivileges( sambaSID, privileges ):
+
+def addPrivileges(sambaSID, privileges):
 
 	listener.setuid(0)
 
 	try:
-		tdbKey='PRIV_%s\x00' % ( sambaSID )
-		tdbFile=tdb.Tdb(SAMBA_POLICY_TDB)
+		tdbKey = 'PRIV_%s\x00' % (sambaSID)
+		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
 		privs = tdbFile.get(tdbKey)
 		if not privs:
-			privs='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-	
+			privs = '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
 		for privilege in privileges:
 			if SAMBA_PRIVILEGES.get(privilege, ""):
 				index = SAMBA_PRIVILEGES[privilege].get("index", 0)
 				number = SAMBA_PRIVILEGES[privilege].get("number", 0)
 				if (ord(privs[index]) & number) == 0:
 					new = chr(ord(privs[index]) + number)
-					privs = privs[0:index] + new + privs[(index+1):len(privs)]
-	
-		tdbFile[tdbKey]=privs
+					privs = privs[0:index] + new + privs[(index + 1):len(privs)]
+
+		tdbFile[tdbKey] = privs
 		tdbFile.unlock_all()
 		tdbFile.close()
 	finally:
 		listener.unsetuid()
 
-def removePrivileges( sambaSID, privileges ):
-	
+
+def removePrivileges(sambaSID, privileges):
+
 	listener.setuid(0)
 
 	try:
-		tdbKey = 'PRIV_%s\x00' % ( sambaSID )
+		tdbKey = 'PRIV_%s\x00' % (sambaSID)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
 		privs = tdbFile.get(tdbKey)
-	
+
 		if privs:
 			for privilege in privileges:
 				if SAMBA_PRIVILEGES.get(privilege, ""):
@@ -148,7 +153,7 @@ def removePrivileges( sambaSID, privileges ):
 					number = SAMBA_PRIVILEGES[privilege].get("number", "")
 					if ord(privs[index]) & number:
 						new = chr(ord(privs[index]) - number)
-						privs = privs[0:index] + new + privs[(index+1):len(privs)]
+						privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 						tdbFile[tdbKey] = privs
 
 			# delete key if no privileges are assigned
@@ -159,4 +164,3 @@ def removePrivileges( sambaSID, privileges ):
 		tdbFile.close()
 	finally:
 		listener.unsetuid()
-

@@ -45,21 +45,21 @@ lo, position = univention.admin.uldap.getAdminConnection()
 sid = sys.argv[1]
 
 for dn, attrs in lo.search(filter='(objectClass=sambaSamAccount)', scope='domain', attr=['sambaSID']):
-	oldsid=attrs['sambaSID'][0]
-	if oldsid.startswith(sid+'-'):
+	oldsid = attrs['sambaSID'][0]
+	if oldsid.startswith(sid + '-'):
 		continue
 	print 'Setting new SID in %s...' % repr(dn),
-	num=0
-	newsid=''
+	num = 0
+	newsid = ''
 	while not newsid or newsid == 'None':
-		num = str(int(num)+1)
+		num = str(int(num) + 1)
 		try:
-			newsid=univention.admin.allocators.requestUserSid(lo, position, num)
+			newsid = univention.admin.allocators.requestUserSid(lo, position, num)
 		except:
-			num = str(int(num)+1)
+			num = str(int(num) + 1)
 
 	print 'newsid=%s' % newsid
-	ml=[
+	ml = [
 		('sambaSID', oldsid, newsid)
 	]
 	lo.modify(dn, ml)

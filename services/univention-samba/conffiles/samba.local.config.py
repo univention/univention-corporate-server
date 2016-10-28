@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Samba 
+# Univention Samba
 #  this script creates samba configurations from ucr values
 #
 # Copyright 2004-2016 Univention GmbH

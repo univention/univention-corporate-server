@@ -42,12 +42,12 @@ import univention.admin.handlers.groups.group
 
 lo, position = univention.admin.uldap.getAdminConnection()
 
-gids={}
+gids = {}
 for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(objectClass=posixAccount)(sambaPrimaryGroupSID=*)(gidNumber=65534))'):
 	print 'Fixing primary GID for %s...' % repr(dn),
-	groupsid=attrs['sambaPrimaryGroupSID'][0]
+	groupsid = attrs['sambaPrimaryGroupSID'][0]
 	if not gids.get(groupsid):
-		gids[groupsid]=lo.search('(&(objectClass=posixGroup)(objectClass=sambaGroupMapping)(gidNumber=*)(sambaSID=%s))' % groupsid, required=1, unique=1, attr=['gidNumber'])[0][1]['gidNumber'][0]
+		gids[groupsid] = lo.search('(&(objectClass=posixGroup)(objectClass=sambaGroupMapping)(gidNumber=*)(sambaSID=%s))' % groupsid, required=1, unique=1, attr=['gidNumber'])[0][1]['gidNumber'][0]
 	lo.modify(dn, [
 		('gidNumber', '65534', gids[groupsid])
 	])

@@ -44,14 +44,14 @@ lo, position = univention.admin.uldap.getAdminConnection()
 
 domain, sid = sys.argv[1:]
 
-res=lo.search(filter='(objectClass=sambaDomain)', scope='domain')
+res = lo.search(filter='(objectClass=sambaDomain)', scope='domain')
 if len(res) != 1:
 	print 'Not setting new SID for domain object: %d objects found' % len(res)
 	sys.exit(1)
-dn, attrs=res[0]
+dn, attrs = res[0]
 
 print 'Setting new SID in %s...' % repr(dn),
-ml=[
+ml = [
 	('sambaDomainName', attrs.get('sambaDomainName', ''), domain),
 	('sambaSID', attrs.get('sambaSID', ''), sid)
 ]
