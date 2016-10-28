@@ -229,7 +229,7 @@ prepare_docker_app_container ()
 		docker start "$container_id"
 		sleep 5 # some startup time...
 
-		docker exec -ti "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
+		docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
 			repository/app_center/server="$(ucr get repository/app_center/server)" \
 			appcenter/index/verify="$(ucr get appcenter/index/verify)" \
 			update/secure_apt="$(ucr get update/secure_apt)"
@@ -241,7 +241,7 @@ prepare_docker_app_container ()
 			name=$(app_get_name $the_app)
 			component=$(app_get_component $the_app)
 			component_prefix="repository/online/component/"
-			docker exec -ti "$container_id" ucr set ${component_prefix}${component}/description="$name" \
+			docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
 					${component_prefix}${component}/localmirror=false \
 					${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
 					${component_prefix}${component}/unmaintained=disabled \
@@ -253,16 +253,16 @@ prepare_docker_app_container ()
 			fi
 		done
 
-		"$php7_required" && docker exec -ti "$container_id" ucr set repository/online/component/php7=enabled \
+		"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
 			repository/online/component/php7/version=current \
 			repository/online/component/php7/server=http://updates-test.software-univention.de \
 			repository/online/component/php7/description="PHP 7 for UCS" \
 			repository/online/unmaintained=yes
 
 		# provide required packages inside container
-		docker exec -ti "$container_id" apt-get update
-		docker exec -ti "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
-		docker exec -ti "$container_id" apt-get update
+		docker exec "$container_id" apt-get update
+		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
+		docker exec "$container_id" apt-get update
 
 		# shutdown container and use it as app base
 		docker stop "$container_id"
@@ -284,6 +284,7 @@ prepare_docker_app_container ()
 
  if [ -z "\$root_password" ]; then
 __EOF__
+		univention-install -y patch
 		patch -p0 < /root/provide_joinpwdfile.patch
 		rm /root/provide_joinpwdfile.patch
 
