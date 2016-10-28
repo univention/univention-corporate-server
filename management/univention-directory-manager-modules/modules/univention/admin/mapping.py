@@ -51,7 +51,7 @@ def ListUniq(list):
 	result = []
 	if list:
 		for element in list:
-			if not element in result:
+			if element not in result:
 				result.append(element)
 	return result
 
@@ -153,7 +153,7 @@ def mapBase64(value):
 	if value == '*':
 		# special case for filter pattern '*'
 		return value
-	if type(value) == types.ListType:
+	if isinstance(value, types.ListType):
 		try:
 			return map(base64.b64decode, value)
 		except Exception, e:

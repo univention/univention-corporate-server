@@ -102,7 +102,7 @@ def update_choices():
 def is_syntax(syntax_obj, syntax_type):
 	"""Returns True if the syntax object/class matches the given type."""
 
-	return type(syntax_obj) == type and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
+	return isinstance(syntax_obj, type) and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
 
 
 class ClassProperty(object):
@@ -206,7 +206,7 @@ class MultiSelect(ISyntax):
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
 		key_list = map(lambda x: x[0], self.choices)
 		for item in value:
-			if not item in key_list:
+			if item not in key_list:
 				raise univention.admin.uexceptions.valueError(self.error_message)
 
 		return value
@@ -241,7 +241,7 @@ class complex(ISyntax):
 				s = self.subsyntaxes[i][1]
 			else:
 				s = self.subsyntaxes[i][1]()
-			if texts[i] == None:
+			if texts[i] is None:
 				if self.min_elements is None or (i + 1) < self.min_elements:
 					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
 			p = s.parse(texts[i])
@@ -264,18 +264,18 @@ class complex(ISyntax):
 						res = self.subsyntaxes[i][1]().parse(texts[i])
 					if res:
 						newTexts.append(res)
-				elif self.all_required == True:
+				elif self.all_required:
 					return ''
 
 		if not newTexts:
 			return ''
 
 		txt = ''
-		if type(self.delimiter) == type([]):
+		if isinstance(self.delimiter, type([])):
 			for i in range(0, len(newTexts)):
 				txt += self.delimiter[i] + newTexts[i]
 			txt += self.delimiter[-1]
-		elif type(self.delimiter) == type(''):
+		elif isinstance(self.delimiter, type('')):
 			txt = self.delimiter.join(newTexts)
 
 		return txt
@@ -317,7 +317,7 @@ class UDM_Objects(ISyntax):
 	def parse(self, text):
 		if not self.empty_value and not text:
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
-		if not text or not self.regex or self.regex.match(text) != None:
+		if not text or not self.regex or self.regex.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
 
@@ -340,7 +340,7 @@ class UDM_Attribute(ISyntax):
 	def parse(self, text):
 		if not self.empty_value and not text:
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
-		if not text or not self.regex or self.regex.match(text) != None:
+		if not text or not self.regex or self.regex.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
 
@@ -416,7 +416,7 @@ class DebianPackageVersion(string):
 	@classmethod
 	def parse(self, value):
 		m = self.invalid_chars_regex.search(value)
-		if m != None:
+		if m is not None:
 			raise univention.admin.uexceptions.valueError(_('Invalid character in debian package version: %s') % m.group())
 		p = value.find(':')
 		if p != -1 and not value[:p].isdigit():
@@ -570,7 +570,7 @@ class Localesubdirname(string):
 
 	@classmethod
 	def parse(self, text):
-		if not text in os.listdir('/usr/share/locale'):
+		if text not in os.listdir('/usr/share/locale'):
 			raise univention.admin.uexceptions.valueError(_('Not a valid locale subdir name: %s') % str(text))
 		return text
 
@@ -612,7 +612,7 @@ class integer(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
@@ -943,7 +943,7 @@ class uid_umlauts(simple):
 	def parse(self, text):
 		if " " in text:
 			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
-		if self._re.match(text.decode("utf-8")) != None and text != 'admin':
+		if self._re.match(text.decode("utf-8")) is not None and text != 'admin':
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
@@ -961,7 +961,7 @@ class uid_umlauts_lower_except_first_letter(simple):
 			if c.isupper():
 				raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
-		if self._re.match(unicode_text) != None and unicode_text != 'admin':
+		if self._re.match(unicode_text) is not None and unicode_text != 'admin':
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
@@ -1076,7 +1076,7 @@ class hostOrIP(simple):
 	@classmethod
 	def hostName(self, text):
 		_re = re.compile("(^[a-zA-Z])(([a-zA-Z0-9-]*)([a-zA-Z0-9]$))?$")
-		if text and _re.match(text) != None:
+		if text and _re.match(text) is not None:
 			return True
 		else:
 			return False
@@ -1188,7 +1188,7 @@ class absolutePath(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Not an absolute path!"))
@@ -1210,7 +1210,7 @@ class emailAddressTemplate(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
 
@@ -1223,9 +1223,9 @@ class emailAddressValidDomain(emailAddress):
 	def checkLdap(self, lo, mailaddresses):
 		# convert mailaddresses to array if neccessary
 		mailaddresses = copy.deepcopy(mailaddresses)
-		if type(mailaddresses) == str:
+		if isinstance(mailaddresses, str):
 			mailaddresses = [mailaddresses]
-		if type(mailaddresses) != list:
+		if not isinstance(mailaddresses, list):
 			return
 
 		faillist = []
@@ -1234,7 +1234,7 @@ class emailAddressValidDomain(emailAddress):
 		for mailaddress in mailaddresses:
 			if mailaddress:
 				domain = mailaddress.rsplit('@', 1)[-1]
-				if not domain in domainCache:
+				if domain not in domainCache:
 					ldapfilter = '(&(objectClass=univentionMailDomainname)(cn=%s))' % domain
 					result = lo.searchDn(filter=ldapfilter)
 					domainCache[domain] = bool(result)
@@ -1374,9 +1374,9 @@ class dnsName(simple):
 
 	@classmethod
 	def parse(self, text):
-		if text == None:
+		if text is None:
 			raise univention.admin.uexceptions.valueError(_("Missing value!"))
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters and dots!"))
 
@@ -1611,7 +1611,7 @@ class ldapDnOrNone(simple):
 	def parse(self, text):
 		if not text or text == 'None':
 			return text
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
@@ -3070,7 +3070,7 @@ class languageCode(string):
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_('Language code must be in format "xx_XX"!'))
@@ -3165,7 +3165,7 @@ class printerName(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) != None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!"))
@@ -3207,7 +3207,7 @@ class PrinterURI(complex):
 		if self.min_elements is not None:
 			count = self.min_elements
 		else:
-			count = len(self.subsyntaxes) if not 'pdf' in texts[0] else len(self.subsyntaxes) - 1
+			count = len(self.subsyntaxes) if 'pdf' not in texts[0] else len(self.subsyntaxes) - 1
 
 		if len(texts) < count:
 			raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination have to be specified.'))
@@ -3221,7 +3221,7 @@ class PrinterURI(complex):
 				s = self.subsyntaxes[i][1]
 			else:
 				s = self.subsyntaxes[i][1]()
-			if texts[i] == None:
+			if texts[i] is None:
 				if self.min_elements is None or (i + 1) < self.min_elements:
 					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
 			p = s.parse(texts[i])

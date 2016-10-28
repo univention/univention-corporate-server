@@ -182,7 +182,7 @@ class property:
 			readonly_when_synced=False, size=None):
 		self.short_description = short_description
 		self.long_description = long_description
-		if type(syntax) == types.ClassType:
+		if isinstance(syntax, types.ClassType):
 			self.syntax = syntax()
 		else:
 			self.syntax = syntax
@@ -249,7 +249,7 @@ class property:
 					self.base_default[i] = self._replace(self.base_default[i], object)
 				else:  # must be a list of loaded extended attributes then, so we return it if it has content
 					if len(self.base_default[i]) > 0:
-						if self.multivalue and type(self.base_default[i]) != types.ListType:
+						if self.multivalue and not isinstance(self.base_default[i], types.ListType):
 							return [self.base_default[i]]
 						else:
 							return self.base_default[i]
@@ -322,7 +322,7 @@ class option:
 		if not self.objectClasses:
 			return True
 		for oc in self.objectClasses:
-			if not oc in objectClasses:
+			if oc not in objectClasses:
 				return False
 		return True
 
@@ -482,7 +482,7 @@ class policiesGroup:
 
 	def __init__(self, id, short_description=None, long_description='', members=[]):
 		self.id = id
-		if short_description == None:
+		if short_description is None:
 			self.short_description = id
 		else:
 			self.short_description = short_description

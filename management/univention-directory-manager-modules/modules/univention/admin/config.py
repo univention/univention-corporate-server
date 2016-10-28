@@ -58,7 +58,7 @@ class config:
 
 
 def getDefaultContainer(lo, module):
-	if type(module) == type('str'):
+	if isinstance(module, type('str')):
 		if module == 'users/user':
 			att = 'univentionUsersObject'
 		elif module == 'groups/group':

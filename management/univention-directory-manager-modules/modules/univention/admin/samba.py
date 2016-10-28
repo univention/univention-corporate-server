@@ -41,14 +41,14 @@ class acctFlags:
 			self.__flags = flags
 			return
 		if not flagstring or not isinstance(flagstring, types.StringTypes) or len(flagstring) != 13:
-			if fallbackflags != None:
+			if fallbackflags is not None:
 				self.__flags = fallbackflags
 				return
 			flagstring = "[U          ]"
 		flags = {}
 		flagstring = flagstring[1:-1]
 		for letter in flagstring:
-			if not letter in string.whitespace:
+			if letter not in string.whitespace:
 				flags[letter] = 1
 		self.__flags = flags
 

@@ -137,7 +137,7 @@ def _pykota_set_quota(callback, **kwargs):
 
 	# check for boolean arguments
 	for arg in ['add', 'delete', 'reset', 'hardreset']:
-		if kwargs.get(arg) == True:
+		if kwargs.get(arg):
 			cmd += '--%s ' % arg
 
 	if kwargs.get('printers'):
