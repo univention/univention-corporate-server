@@ -32,36 +32,36 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import ldap, string, sys
+import ldap
+import string
+import sys
 
 import univention.baseconfig
 
-baseConfig=univention.baseconfig.baseConfig()
+baseConfig = univention.baseconfig.baseConfig()
 baseConfig.load()
 
-baseDN=baseConfig['ldap/base']
+baseDN = baseConfig['ldap/base']
 
 if baseConfig['interfaces/eth0/netmask'] != "255.255.0.0":
 	print 'Only for Class B'
 	sys.exit(1)
 
-lo=ldap.open('localhost', 7389)
-bindpw=open('/etc/ldap.secret').read()
+lo = ldap.open('localhost', 7389)
+bindpw = open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
-        bindpw=bindpw[0:-1]
-	lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+	bindpw = bindpw[0:-1]
+	lo.simple_bind_s("cn=admin," + baseDN, bindpw)
 
-computers=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
+computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
 
-for i in range(0,len(computers)):
+for i in range(0, len(computers)):
 	print 'DN: %s' % computers[i][0]
-	if computers[i][1].has_key('aRecord'):
-		entry=computers[i][1]['aRecord'][0].split('.')[2:4]
-		reverse=lo.search_s('cn=dns,%s' %baseDN, ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(pTRRecord=%s*))' % (string.join(entry,'.'),ldap.explode_dn(computers[i][0],1)[0]))
+	if 'aRecord' in computers[i][1]:
+		entry = computers[i][1]['aRecord'][0].split('.')[2:4]
+		reverse = lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(pTRRecord=%s*))' % (string.join(entry, '.'), ldap.explode_dn(computers[i][0], 1)[0]))
 		if len(reverse) != 0:
 			print 'Wrong DNS Reverse Entry for %s: %s' % (computers[i][0], reverse[0][0])
 			entry.reverse()
-			entry=string.join(entry,'.')
-			lo.modrdn_s(reverse[0][0],'relativeDomainName=%s' % entry)
-
-
+			entry = string.join(entry, '.')
+			lo.modrdn_s(reverse[0][0], 'relativeDomainName=%s' % entry)

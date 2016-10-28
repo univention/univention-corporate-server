@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpBootTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_boot'
 		super(PolicyDhcpBootTestCase,
@@ -45,16 +46,17 @@ class PolicyDhcpBootTestCase(GenericTestCase):
 		self.createProperties = {
 			'boot_server': 'nohost.nowhere',
 			'boot_filename': 'narf',
-			}
+		}
 		self.modifyProperties = {
 			'boot_server': 'somehost.somewhere',
 			'boot_filename': 'blargh',
-			}
+		}
 		self.name = 'testdhcpbootpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpBootTestCase())
 	return suite

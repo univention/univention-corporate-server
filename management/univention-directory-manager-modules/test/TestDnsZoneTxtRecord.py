@@ -36,6 +36,7 @@ from TestDnsForwardZone import DnsForwardZoneTestCase
 
 
 class DnsZoneTxtRecordTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/zone_txt_record'
 		super(DnsZoneTxtRecordTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DnsZoneTxtRecordTestCase(GenericTestCase):
 		self.__zone = zone
 
 	def __removeZone(self):
-		proc = self.__zone.remove(dn = self.__zone.dn)
+		proc = self.__zone.remove(dn=self.__zone.dn)
 		self.__checkProcess(proc, self.__zone, 'remove')
 		self.__zone.tearDown()
 
@@ -64,10 +65,10 @@ class DnsZoneTxtRecordTestCase(GenericTestCase):
 		self.superordinate(self.__zone)
 		self.createProperties = {
 			'txt': 'noch ein test text',
-			}
+		}
 		self.modifyProperties = {
 			'txt': 'ein esel lese nie',
-			}
+		}
 		self.dn = self.__zone.dn
 
 	def hookAfterCreated(self, dn):
@@ -80,7 +81,7 @@ class DnsZoneTxtRecordTestCase(GenericTestCase):
 	# object non-existence by DN, so we need to override this method and
 	# disable the check for object non-existence.
 	def testRemove(self):
-		proc = self.remove(dn = self.dn)
+		proc = self.remove(dn=self.dn)
 		self._checkProcess(proc, 'remove')
 		self.hookAfterRemoved(self.dn)
 

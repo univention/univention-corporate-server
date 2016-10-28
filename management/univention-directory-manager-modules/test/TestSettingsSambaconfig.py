@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsSambaConfigTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/sambaconfig'
 		super(SettingsSambaConfigTestCase,
@@ -45,34 +46,35 @@ class SettingsSambaConfigTestCase(GenericTestCase):
 		super(SettingsSambaConfigTestCase, self).setUp()
 		self.uncheckedProperties.add('logonToChangePW')
 		self.createProperties = {
-			'passwordLength':        '9',
-			'passwordHistory':       '3',
-			'minPasswordAge':        '50',
-			'maxPasswordAge':        '60',
-			'badLockoutAttempts':    '5',
-			'lockoutDuration':       '33',
-			'resetCountMinutes':     '22',
-			'logonToChangePW':       '1',
-			'disconnectTime':        '24',
+			'passwordLength': '9',
+			'passwordHistory': '3',
+			'minPasswordAge': '50',
+			'maxPasswordAge': '60',
+			'badLockoutAttempts': '5',
+			'lockoutDuration': '33',
+			'resetCountMinutes': '22',
+			'logonToChangePW': '1',
+			'disconnectTime': '24',
 			'refuseMachinePWChange': '0',
-			}
+		}
 		self.modifyProperties = {
-			'passwordLength':        '10',
-			'passwordHistory':       '4',
-			'minPasswordAge':        '51',
-			'maxPasswordAge':        '61',
-			'badLockoutAttempts':    '6',
-			'lockoutDuration':       '34',
-			'resetCountMinutes':     '23',
-			'logonToChangePW':       '0',
-			'disconnectTime':        '25',
+			'passwordLength': '10',
+			'passwordHistory': '4',
+			'minPasswordAge': '51',
+			'maxPasswordAge': '61',
+			'badLockoutAttempts': '6',
+			'lockoutDuration': '34',
+			'resetCountMinutes': '23',
+			'logonToChangePW': '0',
+			'disconnectTime': '25',
 			'refuseMachinePWChange': '1',
-			}
+		}
 		self.name = 'testsambaconfigsetting'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsSambaConfigTestCase())
 	return suite

@@ -38,6 +38,7 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
+
 def change(username, password):
 	"""
 	Change the password of the given user
@@ -54,21 +55,19 @@ def change(username, password):
 	except:
 		lo, pos = univention.admin.uldap.getMachineConnection()
 
-	module=univention.admin.modules.get('users/user')
+	module = univention.admin.modules.get('users/user')
 
-	univention.admin.modules.init(lo,pos,module)
+	univention.admin.modules.init(lo, pos, module)
 
-	if username.find('@') > 0: #krb5Principal
-		filter='krb5PrincipalName=%s' % username
+	if username.find('@') > 0:  # krb5Principal
+		filter = 'krb5PrincipalName=%s' % username
 	else:
-		filter='uid=%s' % username
+		filter = 'uid=%s' % username
 	objects = module.lookup(co, lo, filter, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
 
 	# search was unique and required
 	object = objects[0]
 
 	object.open()
-	object['password']=unicode(password)
-	dn=object.modify()
-
-	
+	object['password'] = unicode(password)
+	dn = object.modify()

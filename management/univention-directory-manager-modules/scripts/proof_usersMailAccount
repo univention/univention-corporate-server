@@ -32,29 +32,31 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, ldap, string
+import sys
+import ldap
+import string
 
 import univention.baseconfig
 
-baseConfig=univention.baseconfig.baseConfig()
+baseConfig = univention.baseconfig.baseConfig()
 baseConfig.load()
 
-baseDN=baseConfig['ldap/base']
+baseDN = baseConfig['ldap/base']
 
-lo=ldap.open('localhost', 7389)
-bindpw=open('/etc/ldap.secret').read()
+lo = ldap.open('localhost', 7389)
+bindpw = open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
-	bindpw=bindpw[0:-1]
-lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+	bindpw = bindpw[0:-1]
+lo.simple_bind_s("cn=admin," + baseDN, bindpw)
 
 count_changes = 0
 warning = 0
 
 
 print "\n  proof if user-accounts have objectClass univentionMail and activate it."
-print "  call %s all to activate all users without questions.\n"%sys.argv[0]
+print "  call %s all to activate all users without questions.\n" % sys.argv[0]
 
-res_pA=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$))(!(objectClass=univentionMail)))', ['objectClass'])
+res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$))(!(objectClass=univentionMail)))', ['objectClass'])
 
 print "found %s Users which may be changed:\n" % len(res_pA)
 
@@ -64,22 +66,20 @@ if len(sys.argv) > 1:
 	if sys.argv[1] == "all":
 		activate_all = True
 
-for i in range(0,len(res_pA)):
-	modlist = [(ldap.MOD_ADD,'objectClass','univentionMail')]
+for i in range(0, len(res_pA)):
+	modlist = [(ldap.MOD_ADD, 'objectClass', 'univentionMail')]
 	try:
 		inp = ""
-		print "found user without mail: %s"%res_pA[i][0]
+		print "found user without mail: %s" % res_pA[i][0]
 		if not activate_all:
 			print "activate mail? (y/N)?"
 			inp = sys.stdin.readline()
 		if activate_all or inp == "y":
-			lo.modify_s(res_pA[i][0],modlist)
-			count_changes = count_changes +1
-			print "Modified %s"%res_pA[i][0]
+			lo.modify_s(res_pA[i][0], modlist)
+			count_changes = count_changes + 1
+			print "Modified %s" % res_pA[i][0]
 	except:
-		print "Warning: failed to modify User %s"%res_pA[i][0]
+		print "Warning: failed to modify User %s" % res_pA[i][0]
 		warning = warning + 1
 
-print "changing of",len(res_pA),"Users finished, changed",count_changes,"of them (",warning," warnings).\n"
-
-
+print "changing of", len(res_pA), "Users finished, changed", count_changes, "of them (", warning, " warnings).\n"

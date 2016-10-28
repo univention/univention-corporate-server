@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase, PropertyInvalidError
 
 
 class PolicyPrintQuotaTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/print_quota'
 		super(PolicyPrintQuotaTestCase,
@@ -46,17 +47,18 @@ class PolicyPrintQuotaTestCase(GenericTestCase):
 			'quotaUsers': '5 4 Administrator',
 			'quotaGroups': '6 7 Administrators',
 			'quotaGroupsPerUsers': '9 10 Administrators',
-			}
+		}
 		self.modifyProperties = {
 			'quotaUsers': '50 40 Administrator',
 			'quotaGroups': '60 70 Administrators',
 			'quotaGroupsPerUsers': '90 100 Administrators',
-			}
+		}
 		self.name = 'testprintquotapolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyPrintQuotaTestCase())
 	return suite

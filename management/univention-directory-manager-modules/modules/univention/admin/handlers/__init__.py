@@ -52,11 +52,11 @@ try:
 	import univention.lib.admember
 	_prevent_to_change_ad_properties = univention.lib.admember.is_localhost_in_admember_mode()
 except ImportError:
-	univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, "Failed to import univention.lib.admember")
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Failed to import univention.lib.admember")
 	_prevent_to_change_ad_properties = False
 
-translation=univention.admin.localization.translation('univention/admin/handlers')
-_=translation.translate
+translation = univention.admin.localization.translation('univention/admin/handlers')
+_ = translation.translate
 
 # global caching variable
 if configRegistry.is_true('directory/manager/samba3/legacy', False):
@@ -74,32 +74,32 @@ def disable_ad_restrictions(disable=True):
 
 class base(object):
 
-	def __init__(self, co, lo, position, dn='', superordinate = None ):
+	def __init__(self, co, lo, position, dn='', superordinate=None):
 		self.co = co
 		self.lo = lo
 		self.dn = dn
 		self.superordinate = superordinate
 
 		self.set_defaults = 0
-		if not self.dn: # this object is newly created and so we can use the default values
+		if not self.dn:  # this object is newly created and so we can use the default values
 			self.set_defaults = 1
 
 		if not hasattr(self, 'position'):
-			self.position=position
+			self.position = position
 		if not hasattr(self, 'info'):
-			self.info={}
+			self.info = {}
 		if not hasattr(self, 'oldinfo'):
-			self.oldinfo={}
+			self.oldinfo = {}
 		if not hasattr(self, 'policies'):
-			self.policies=[]
+			self.policies = []
 		if not hasattr(self, 'oldpolicies'):
-			self.oldpolicies=[]
+			self.oldpolicies = []
 		if not hasattr(self, 'policyObjects'):
-			self.policyObjects={}
-		self.__no_default=[]
+			self.policyObjects = {}
+		self.__no_default = []
 
 		if not self.position:
-			self.position=univention.admin.uldap.position(lo.base)
+			self.position = univention.admin.uldap.position(lo.base)
 			if dn:
 				self.position.setDn(dn)
 		self._open = False
@@ -187,7 +187,7 @@ class base(object):
 			yield self.descriptions[key].editable
 			if not self.descriptions[key].may_change:
 				yield key not in self.oldinfo or self.oldinfo[key] == value
-			#if _prevent_to_change_ad_properties:  # FIXME: users.user.object.__init__ modifies firstname and lastname by hand
+			# if _prevent_to_change_ad_properties:  # FIXME: users.user.object.__init__ modifies firstname and lastname by hand
 			#	yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
 
 		# property does not exist
@@ -196,12 +196,12 @@ class base(object):
 			try:
 				self.descriptions[key]
 			except KeyError:
-				#raise univention.admin.uexceptions.noProperty(key)
+				# raise univention.admin.uexceptions.noProperty(key)
 				raise
 			return
 		# attribute may not be changed
 		elif not all(_changeable()):
-			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new':value})
+			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new': value})
 		# required attribute may not be removed
 		elif self.descriptions[key].required and not value:
 			raise univention.admin.uexceptions.valueRequired, _('The property %s is required') % self.descriptions[key].short_description
@@ -217,63 +217,63 @@ class base(object):
 
 			# make sure value is list
 			if isinstance(value, basestring):
-				value=[value]
+				value = [value]
 			elif not isinstance(value, list):
 				raise univention.admin.uexceptions.valueInvalidSyntax(key)
 
-			self.info[key]=[]
+			self.info[key] = []
 			for v in value:
 				if not v:
 					continue
-				err=""
-				p=None
+				err = ""
+				p = None
 				try:
-					s=self.descriptions[key].syntax
-					p=s.parse(v)
+					s = self.descriptions[key].syntax
+					p = s.parse(v)
 
-				except univention.admin.uexceptions.valueError,emsg:
-					err=emsg
+				except univention.admin.uexceptions.valueError, emsg:
+					err = emsg
 				if not p:
 					if not err:
-						err=""
+						err = ""
 					try:
-						raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s"%(key,err)
-					except UnicodeEncodeError, e: # raise fails if err contains umlauts or other non-ASCII-characters
-						raise univention.admin.uexceptions.valueInvalidSyntax( self.descriptions[key].short_description )
+						raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s" % (key, err)
+					except UnicodeEncodeError, e:  # raise fails if err contains umlauts or other non-ASCII-characters
+						raise univention.admin.uexceptions.valueInvalidSyntax(self.descriptions[key].short_description)
 				self.info[key].append(p)
 
 		elif not value and key in self.info:
 			del self.info[key]
 
 		elif value:
-			err=""
-			p=None
+			err = ""
+			p = None
 			try:
-				s=self.descriptions[key].syntax
-				p=s.parse(value)
-			except univention.admin.uexceptions.valueError,e:
-				err=e
+				s = self.descriptions[key].syntax
+				p = s.parse(value)
+			except univention.admin.uexceptions.valueError, e:
+				err = e
 			if not p:
 				if not err:
-					err=""
+					err = ""
 				try:
-					raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s"%(self.descriptions[key].short_description,err)
-				except UnicodeEncodeError, e: # raise fails if err contains umlauts or other non-ASCII-characters
-					raise univention.admin.uexceptions.valueInvalidSyntax, "%s"%self.descriptions[key].short_description
-			self.info[key]=p
+					raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s" % (self.descriptions[key].short_description, err)
+				except UnicodeEncodeError, e:  # raise fails if err contains umlauts or other non-ASCII-characters
+					raise univention.admin.uexceptions.valueInvalidSyntax, "%s" % self.descriptions[key].short_description
+			self.info[key] = p
 
 	def __getitem__(self, key):
-		_d = univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
+		_d = univention.debug.function('admin.handlers.base.__getitem__ key = %s' % key)
 		if not key:
 			return None
 
 		if key in self.info:
 			if self.descriptions[key].multivalue and not isinstance(self.info[key], list):
 				# why isn't this correct in the first place?
-				self.info[ key ] = [ self.info[ key ] ]
-			return self.info[ key ]
-		elif not key in self.__no_default and self.descriptions[key].editable:
-			self.info[key]=self.descriptions[key].default(self)
+				self.info[key] = [self.info[key]]
+			return self.info[key]
+		elif key not in self.__no_default and self.descriptions[key].editable:
+			self.info[key] = self.descriptions[key].default(self)
 			return self.info[key]
 		elif self.descriptions[key].multivalue:
 			return []
@@ -304,7 +304,7 @@ class base(object):
 
 		return self._create()
 
-	def modify(self, modify_childs=1,ignore_license=0):
+	def modify(self, modify_childs=1, ignore_license=0):
 		'''modify object'''
 
 		if not self.exists():
@@ -313,7 +313,7 @@ class base(object):
 		self._ldap_pre_ready()
 		self.ready()
 
-		return self._modify(modify_childs,ignore_license=ignore_license)
+		return self._modify(modify_childs, ignore_license=ignore_license)
 
 	def _create_temporary_ou(self):
 		name = 'temporary_move_container_%s' % time.time()
@@ -333,7 +333,7 @@ class base(object):
 		if not temporary_ou:
 			return
 
-		dn = '%s,%s' %(temporary_ou,self.lo.base)
+		dn = '%s,%s' % (temporary_ou, self.lo.base)
 
 		module = univention.admin.modules.get('container/ou')
 		temporary_object = univention.admin.modules.lookup(module, None, self.lo, scope='base', base=dn, required=True, unique=True)[0]
@@ -345,14 +345,13 @@ class base(object):
 
 	def move(self, newdn, ignore_license=0, temporary_ou=None):
 		'''move object'''
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s to %s'% (self.dn,newdn))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s to %s' % (self.dn, newdn))
 
-		if not (univention.admin.modules.supports(self.module,'move')
-				or univention.admin.modules.supports(self.module,'subtree_move')): # this should have been checked before, but I want to be sure...
-			raise univention.admin.uexceptions.invalidOperation
+		if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):  # this should have been checked before, but I want to be sure...
+			raise univention.admin.uexceptions.invalidOperation()
 
 		if not self.exists():
-			raise univention.admin.uexceptions.noObject
+			raise univention.admin.uexceptions.noObject()
 
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be moved.'))
@@ -360,7 +359,7 @@ class base(object):
 		goaldn = ','.join(ldap.explode_dn(newdn)[1:])
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
 		goalmodule = univention.admin.modules.get(goalmodule)
-		if not goalmodule or not hasattr(goalmodule,'childs') or not goalmodule.childs == 1:
+		if not goalmodule or not hasattr(goalmodule, 'childs') or not goalmodule.childs == 1:
 			raise univention.admin.uexceptions.invalidOperation, _("Destination object can't have sub objects.")
 
 		if self.dn.lower() == newdn.lower():
@@ -370,14 +369,14 @@ class base(object):
 				# We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
 				temporary_ou = self._create_temporary_ou()
 				new_rdn = ldap.explode_rdn(newdn)[0]
-				new_dn = '%s,%s,%s' %(new_rdn,temporary_ou,self.lo.base)
+				new_dn = '%s,%s,%s' % (new_rdn, temporary_ou, self.lo.base)
 				self.move(new_dn, ignore_license, temporary_ou)
 				self.dn = new_dn
 
 		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
 			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed.")
 
-		if univention.admin.modules.supports(self.module,'subtree_move'):
+		if univention.admin.modules.supports(self.module, 'subtree_move'):
 			# check if is subtree:
 			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
@@ -390,10 +389,10 @@ class base(object):
 				copyobject = module.object(None, self.lo, position)
 				copyobject.open()
 				for key in self.keys():
-					copyobject[key]=self[key]
-				copyobject.policies=self.policies
+					copyobject[key] = self[key]
+				copyobject.policies = self.policies
 				copyobject.create()
-				moved=[]
+				moved = []
 				try:
 					for subolddn, suboldattrs in subelements:
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %s' % subolddn)
@@ -404,21 +403,20 @@ class base(object):
 						#   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
 						rdn = ldap.explode_dn(subolddn)[0]
 						subolddn_dn_without_rdn_lower = ','.join(ldap.explode_dn(subolddn)[1:]).lower()
-						subnewdn = '%s,%s' % (rdn, subolddn_dn_without_rdn_lower.replace(self.dn.lower(),newdn))
+						subnewdn = '%s,%s' % (rdn, subolddn_dn_without_rdn_lower.replace(self.dn.lower(), newdn))
 						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 						submodule = univention.admin.modules.get(submodule)
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
-						if not subobject or not (univention.admin.modules.supports(submodule,'move') or
-												 univention.admin.modules.supports(submodule,'subtree_move')):
-							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.' ) % {'name': subolddn[:subolddn.find(',')], 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
+						if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
+							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subolddn[:subolddn.find(',')], 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 						subobject.open()
 						subobject.move(subnewdn)
-						moved.append((subolddn,subnewdn))
+						moved.append((subolddn, subnewdn))
 					self.remove()
 					self._delete_temporary_ou_if_empty(temporary_ou)
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, trying to move back.')
-					position=univention.admin.uldap.position(self.lo.base)
+					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(','.join(ldap.explode_dn(olddn)[1:]))
 					for subolddn, subnewdn in moved:
 						submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
@@ -440,7 +438,7 @@ class base(object):
 			self._delete_temporary_ou_if_empty(temporary_ou)
 			return res
 
-	def move_subelements(self, olddn, newdn, subelements, ignore_license = False):
+	def move_subelements(self, olddn, newdn, subelements, ignore_license=False):
 		if subelements:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: found subelements, do subtree move')
 			moved = []
@@ -451,12 +449,11 @@ class base(object):
 					submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 					submodule = univention.admin.modules.get(submodule)
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
-					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or
-								 univention.admin.modules.supports(submodule, 'subtree_move')):
+					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
 						raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subolddn[:subolddn.find(',')], 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 					subobject.open()
 					subobject._move(subnewdn)
-					moved.append((subolddn,subnewdn))
+					moved.append((subolddn, subnewdn))
 					return moved
 			except:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, try to move back')
@@ -529,6 +526,7 @@ class base(object):
 	def _ldap_post_remove(self):
 		pass
 
+
 def _not_implemented_method(attr):
 	def _not_implemented_error(self, *args, **kwargs):
 		raise NotImplementedError('%s() not implemented by %s.%s().' % (attr, self.__module__, self.__class__.__name__))
@@ -592,7 +590,7 @@ class simpleLdap(base):
 		self.__set_options()
 		self.save()
 
-	def exists( self ):
+	def exists(self):
 		return self._exists
 
 	def _validate_superordinate(self):
@@ -625,13 +623,13 @@ class simpleLdap(base):
 			dn = self.lo.parentDn(dn)
 		return False
 
-	def call_udm_property_hook(self, hookname, module, changes = None):
-		m = univention.admin.modules.get( module.module )
+	def call_udm_property_hook(self, hookname, module, changes=None):
+		m = univention.admin.modules.get(module.module)
 		if hasattr(m, 'extended_udm_attributes'):
 			for prop in m.extended_udm_attributes:
-				if prop.hook != None:
+				if prop.hook is not None:
 					func = getattr(prop.hook, hookname, None)
-					if changes == None:
+					if changes is None:
 						func(module)
 					else:
 						changes = func(module, changes)
@@ -639,13 +637,13 @@ class simpleLdap(base):
 
 	def open(self):
 		base.open(self)
-		self.exceptions=[]
+		self.exceptions = []
 		self.call_udm_property_hook('hook_open', self)
 		self.save()
 
-	def _remove_option( self, name ):
+	def _remove_option(self, name):
 		if name in self.options:
-			self.options.remove( name )
+			self.options.remove(name)
 
 	def __set_options(self):
 		self.options = []
@@ -659,12 +657,12 @@ class simpleLdap(base):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'reset options to default by _define_options')
 			self._define_options(options)
 
-	def _define_options( self, module_options ):
+	def _define_options(self, module_options):
 		# enable all default options
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules/__init__.py _define_options: reset to default options')
 		for name, opt in module_options.items():
 			if not opt.disabled and opt.default:
-				self.options.append( name )
+				self.options.append(name)
 
 	def option_toggled(self, option):
 		'''Checks if an option was changed. This does not work for not yet existing objects.'''
@@ -673,16 +671,16 @@ class simpleLdap(base):
 	def description(self):
 		if self.dn:
 			rdn = self.lo.explodeDn(self.dn)[0]
-			return rdn[rdn.find('=')+1:]
+			return rdn[rdn.find('=') + 1:]
 		else:
 			return 'none'
 
-	def _post_unmap( self, info, values ):
+	def _post_unmap(self, info, values):
 		"""This method can be overwritten to define special un-map
 		methods that can not be done with the default mapping API"""
 		return info
 
-	def _post_map( self, modlist, diff ):
+	def _post_map(self, modlist, diff):
 		"""This method can be overwritten to define special map methods
 		that can not be done with the default mapping API"""
 		return modlist
@@ -724,7 +722,7 @@ class simpleLdap(base):
 		# evaluate extended attributes
 		ocs = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r'% (prop.name, self.has_key(prop.name), self.info.get(prop.name)))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_key(prop.name), self.info.get(prop.name)))
 			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
 				continue
 			if self.has_key(prop.name) and self.info.get(prop.name):
@@ -750,8 +748,8 @@ class simpleLdap(base):
 		al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
 
 		# ensure univentionObject is set
-		al.append(('objectClass', ['univentionObject',]))
-		al.append(('univentionObjectType', [self.module,]))
+		al.append(('objectClass', ['univentionObject', ]))
+		al.append(('univentionObjectType', [self.module, ]))
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "create object with dn: %s" % (self.dn,))
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
@@ -763,7 +761,8 @@ class simpleLdap(base):
 			self._ldap_post_create()
 		except:
 			# ensure that there is no lock left
-			import traceback, sys
+			import traceback
+			import sys
 			exc = sys.exc_info()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
 			try:
@@ -803,7 +802,7 @@ class simpleLdap(base):
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 		ml = self._ldap_object_classes(ml)
 
-		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
+		# FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
 
@@ -836,7 +835,7 @@ class simpleLdap(base):
 
 		# evaluate extended attributes
 		for prop in getattr(m, 'extended_udm_attributes', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r' % (prop.name, prop.objClass))
 
 			if self.has_key(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
 				required_ocs |= set([prop.objClass])
@@ -909,8 +908,8 @@ class simpleLdap(base):
 	def _move_in_groups(self, olddn):
 		for group in self.oldinfo.get('groups', []) + [self.oldinfo.get('machineAccountGroup', '')]:
 			if group != '':
-				members=self.lo.getAttr(group, 'uniqueMember')
-				newmembers=[]
+				members = self.lo.getAttr(group, 'uniqueMember')
+				newmembers = []
 				for member in members:
 					if not member.lower() in (olddn.lower(), self.dn.lower(), ):
 						newmembers.append(member)
@@ -925,20 +924,19 @@ class simpleLdap(base):
 		self.dn = newdn
 
 		try:
-			self._move_in_groups(olddn) # can be done always, will do nothing if oldinfo has no attribute 'groups'
+			self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
 			self._move_in_subordinates(olddn)
 			self._ldap_post_move(olddn)
 		except:
 			# move back
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN,
-								   'simpleLdap._move: self._ldap_post_move failed, move object back to %s'%olddn)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
 			self.lo.rename(self.dn, olddn)
 			self.dn = olddn
 			raise
 
 	def _remove(self, remove_childs=0):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() called for %s' % self.dn)
-		self.exceptions=[]
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() called for %s' % self.dn)
+		self.exceptions = []
 
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be removed.'))
@@ -947,7 +945,7 @@ class simpleLdap(base):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() children of base dn %s' % self.dn)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() children of base dn %s' % self.dn)
 			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
 				try:
@@ -969,26 +967,26 @@ class simpleLdap(base):
 		self.save()
 
 	def loadPolicyObject(self, policy_type, reset=0):
-		pathlist=[]
-		errors=0
-		pathResult=None
+		pathlist = []
+		errors = 0
+		pathResult = None
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: policy_type: %s" % policy_type)
-		policy_module=univention.admin.modules.get(policy_type)
+		policy_module = univention.admin.modules.get(policy_type)
 
 		# overwrite property descriptions
-		univention.admin.ucr_overwrite_properties( policy_module, self.lo )
+		univention.admin.ucr_overwrite_properties(policy_module, self.lo)
 		# re-build layout if there any overwrites defined
-		univention.admin.ucr_overwrite_module_layout( policy_module )
+		univention.admin.ucr_overwrite_module_layout(policy_module)
 
 		# retrieve path info from 'cn=directory,cn=univention,<current domain>' object
 		try:
-			pathResult = self.lo.get('cn=directory,cn=univention,'+self.position.getDomain())
+			pathResult = self.lo.get('cn=directory,cn=univention,' + self.position.getDomain())
 			if not pathResult:
-				pathResult = self.lo.get('cn=default containers,cn=univention,'+self.position.getDomain())
+				pathResult = self.lo.get('cn=default containers,cn=univention,' + self.position.getDomain())
 		except:
-			errors=1
-		infoattr="univentionPolicyObject"
+			errors = 1
+		infoattr = "univentionPolicyObject"
 		if pathResult.has_key(infoattr) and pathResult[infoattr]:
 			for i in pathResult[infoattr]:
 				try:
@@ -998,15 +996,15 @@ class simpleLdap(base):
 				except Exception:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: invalid path setting: %s does not exist in LDAP" % i)
 					continue  # looking for next policy container
-				break # at least one item has been found; so we can stop here since only pathlist[0] is used
+				break  # at least one item has been found; so we can stop here since only pathlist[0] is used
 
 		if not pathlist or errors:
-			policy_position=self.position
+			policy_position = self.position
 		else:
-			policy_position=univention.admin.uldap.position(self.position.getBase())
-			policy_path=pathlist[0]
+			policy_position = univention.admin.uldap.position(self.position.getBase())
+			policy_path = pathlist[0]
 			try:
-				prefix=univention.admin.modules.policyPositionDnPrefix(policy_module)
+				prefix = univention.admin.modules.policyPositionDnPrefix(policy_module)
 				self.lo.searchDn(base="%s,%s" % (prefix, policy_path), scope='base')
 				policy_position.setDn("%s,%s" % (prefix, policy_path))
 			except:
@@ -1017,35 +1015,35 @@ class simpleLdap(base):
 				return self.policyObjects[policy_type]
 
 		for dn in self.policies:
-			modules=univention.admin.modules.identify(dn, self.lo.get(dn))
+			modules = univention.admin.modules.identify(dn, self.lo.get(dn))
 			for module in modules:
 				if univention.admin.modules.name(module) == policy_type:
-					self.policyObjects[policy_type]=univention.admin.objects.get(module, None, self.lo, policy_position, dn=dn)
+					self.policyObjects[policy_type] = univention.admin.objects.get(module, None, self.lo, policy_position, dn=dn)
 					self.policyObjects[policy_type].clone(self)
-					self._init_ldap_search( self.policyObjects[ policy_type ] )
+					self._init_ldap_search(self.policyObjects[policy_type])
 
 					return self.policyObjects[policy_type]
 			if not modules:
 				self.policies.remove(dn)
 
 		if not self.policyObjects.get(policy_type, None) or reset:
-			self.policyObjects[policy_type]=univention.admin.objects.get(policy_module, None, self.lo, policy_position)
+			self.policyObjects[policy_type] = univention.admin.objects.get(policy_module, None, self.lo, policy_position)
 			self.policyObjects[policy_type].copyIdentifier(self)
-			self._init_ldap_search( self.policyObjects[ policy_type ] )
+			self._init_ldap_search(self.policyObjects[policy_type])
 
 		return self.policyObjects[policy_type]
 
-	def _init_ldap_search( self, policy ):
+	def _init_ldap_search(self, policy):
 		properties = {}
-		if hasattr( policy, 'property_descriptions' ):
+		if hasattr(policy, 'property_descriptions'):
 			properties = policy.property_descriptions
-		elif hasattr( policy, 'descriptions' ):
+		elif hasattr(policy, 'descriptions'):
 			properties = policy.descriptions
 		for pname, prop in properties.items():
 			if prop.syntax.name == 'LDAP_Search':
-				prop.syntax._load( self.lo )
+				prop.syntax._load(self.lo)
 				if prop.syntax.viewonly:
-					policy.mapping.unregister( pname )
+					policy.mapping.unregister(pname)
 
 	def _update_policies(self):
 		_d = univention.debug.function('admin.handlers.simpleLdap._update_policies')
@@ -1058,7 +1056,7 @@ class simpleLdap(base):
 				univention.admin.objects.replacePolicyReference(self, policy_type, policy_object.dn)
 
 	def closePolicyObjects(self):
-		self.policyObjects={}
+		self.policyObjects = {}
 
 	def savePolicyObjects(self):
 		self._update_policies()
@@ -1095,47 +1093,47 @@ class simpleLdap(base):
 		return 'synced' in self.oldattr.get('univentionObjectFlag', [])
 
 
-class simpleComputer( simpleLdap ):
-	MAC_REGEX = re.compile( '^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$' )
+class simpleComputer(simpleLdap):
+	MAC_REGEX = re.compile('^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$')
 
-	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
-		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes )
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes)
 
-		self.newPrimaryGroupDn=0
-		self.oldPrimaryGroupDn=0
-		self.ip = [ ]
+		self.newPrimaryGroupDn = 0
+		self.oldPrimaryGroupDn = 0
+		self.ip = []
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
 		self.macRequest = 0
 		self.ipRequest = 0
 		# read-only attribute containing the FQDN of the host
-		self.descriptions[ 'fqdn' ] = univention.admin.property(
-			short_description = 'FQDN',
-			long_description = '',
+		self.descriptions['fqdn'] = univention.admin.property(
+			short_description='FQDN',
+			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = False,
-			identifies = 0
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=False,
+			identifies=0
 		)
-		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
+		self['dnsAlias'] = []  # defined here to avoid pseudo non-None value of [''] in modwizard search
 		self.oldinfo['ip'] = []
 		self.info['ip'] = []
 		if self.exists():
 			if 'aRecord' in self.oldattr:
 				self.oldinfo['ip'].extend(self.oldattr['aRecord'])
-				self.info['ip'].extend(   self.oldattr['aRecord'])
+				self.info['ip'].extend(self.oldattr['aRecord'])
 			if 'aAAARecord' in self.oldattr:
 				self.oldinfo['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-				self.info['ip'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+				self.info['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def getMachineSid(self, lo, position, uidNum, rid=None):
 		if rid:
-			searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			domainsid=searchResult[0][1]['sambaSID'][0]
-			sid = domainsid+'-'+rid
+			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+			domainsid = searchResult[0][1]['sambaSID'][0]
+			sid = domainsid + '-' + rid
 			univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			return sid
 		else:
@@ -1145,69 +1143,69 @@ class simpleComputer( simpleLdap ):
 				try:
 					machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
 				except univention.admin.uexceptions.noLock:
-					num = str(int(num)+1)
+					num = str(int(num) + 1)
 			return machineSid
 
 	# HELPER
-	def __ip_from_ptr( self, zoneName, relativeDomainName ):
+	def __ip_from_ptr(self, zoneName, relativeDomainName):
 		if 'ip6' in zoneName:
 			return self.__ip_from_ptr_ipv6(zoneName, relativeDomainName)
 		else:
 			return self.__ip_from_ptr_ipv4(zoneName, relativeDomainName)
 
-	def __ip_from_ptr_ipv4( self, zoneName, relativeDomainName ):
+	def __ip_from_ptr_ipv4(self, zoneName, relativeDomainName):
 		return '%s.%s' % (
 			'.'.join(reversed(zoneName.replace('.in-addr.arpa', '').split('.'))),
 			'.'.join(reversed(relativeDomainName.split('.'))))
 
-	def __ip_from_ptr_ipv6( self, zoneName, relativeDomainName ):
+	def __ip_from_ptr_ipv6(self, zoneName, relativeDomainName):
 		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
 		fullName = fullName.split('.')
-		fullName = [''.join(reversed(fullName[i:i+4])) for i in xrange(0, len(fullName), 4)]
-		fullName.reverse( )
+		fullName = [''.join(reversed(fullName[i:i + 4])) for i in xrange(0, len(fullName), 4)]
+		fullName.reverse()
 		return ':'.join(fullName)
 
-	def __is_mac( self, mac ):
-		return mac is not None and simpleComputer.MAC_REGEX.match( mac ) is not None
+	def __is_mac(self, mac):
+		return mac is not None and simpleComputer.MAC_REGEX.match(mac) is not None
 
-	def __is_ip( self, ip ):
+	def __is_ip(self, ip):
 		# return True if valid IPv4 (0.0.0.0 is allowed) or IPv6 address
 		try:
 			ipaddr.IPAddress(ip)
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> Yes' % ip )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> Yes' % ip)
 			return True
 		except ValueError:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> No' % ip )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> No' % ip)
 			return False
 
-	def open( self ):
-		simpleLdap.open( self )
+	def open(self):
+		simpleLdap.open(self)
 
-		self.newPrimaryGroupDn=0
-		self.oldPrimaryGroupDn=0
+		self.newPrimaryGroupDn = 0
+		self.oldPrimaryGroupDn = 0
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False
 
 		self.open_warning = None
-		open_warnings = [ ]
+		open_warnings = []
 
 		self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
-		self[ 'dnsEntryZoneForward' ] = [ ]
-		self[ 'dnsEntryZoneReverse' ] = [ ]
-		self[ 'dhcpEntryZone' ] = [ ]
-		self[ 'groups' ] = [ ]
-		self[ 'dnsEntryZoneAlias' ] = [ ]
+		self['dnsEntryZoneForward'] = []
+		self['dnsEntryZoneReverse'] = []
+		self['dhcpEntryZone'] = []
+		self['groups'] = []
+		self['dnsEntryZoneAlias'] = []
 
 		# search forward zone and insert into the object
-		if self [ 'name' ]:
-			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+		if self['name']:
+			tmppos = univention.admin.uldap.position(self.position.getDomain())
 
 			searchFilter = filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(!(cNAMERecord=*)))', [self['name']])
 			try:
-				result = self.lo.search( base = tmppos.getBase( ),scope = 'domain', filter = searchFilter, attr = [ 'zoneName', 'aRecord', 'aAAARecord' ], unique = 0 )
+				result = self.lo.search(base=tmppos.getBase(), scope='domain', filter=searchFilter, attr=['zoneName', 'aRecord', 'aAAARecord'], unique=0)
 
-				zoneNames = [ ]
+				zoneNames = []
 
 				if result:
 					for dn, attr in result:
@@ -1216,360 +1214,361 @@ class simpleComputer( simpleLdap ):
 						if 'aAAARecord' in attr:
 							zoneNames.append((attr['zoneName'][0], map(lambda x: ipaddr.IPv6Address(x).exploded, attr['aAAARecord'])))
 
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'zoneNames: %s' % zoneNames )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'zoneNames: %s' % zoneNames)
 
 				if zoneNames:
 					for zoneName in zoneNames:
 						searchFilter = filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', [zoneName[0]])
 
 						try:
-							results = self.lo.searchDn( base = tmppos.getBase( ),scope = 'domain', filter = searchFilter, unique = 0 )
+							results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=0)
 						except univention.admin.uexceptions.insufficientInformation, msg:
 							raise univention.admin.uexceptions.insufficientInformation, msg
 
-						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'results: %s' % results )
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'results: %s' % results)
 						if results:
 							for result in results:
-								for ip in zoneName[ 1 ]:
-									self[ 'dnsEntryZoneForward' ].append( [ result, ip ] )
-							univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dnsEntryZoneForward: %s' % str( self[ 'dnsEntryZoneForward' ] ) )
+								for ip in zoneName[1]:
+									self['dnsEntryZoneForward'].append([result, ip])
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'dnsEntryZoneForward: %s' % str(self['dnsEntryZoneForward']))
 
 			except univention.admin.uexceptions.insufficientInformation, msg:
-				self[ 'dnsEntryZoneForward' ] = [ ]
+				self['dnsEntryZoneForward'] = []
 				raise univention.admin.uexceptions.insufficientInformation, msg
 
 			if zoneNames:
 				for zoneName in zoneNames:
 					searchFilter = filter_format('(&(objectClass=dNSZone)(|(PTRRecord=%s)(PTRRecord=%s.%s.)))', (self['name'], self['name'], zoneName[0]))
 					try:
-						results = self.lo.search( base = tmppos.getBase( ),scope = 'domain', attr = [ 'relativeDomainName', 'zoneName' ], filter = searchFilter, unique = 0 )
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'zoneName'], filter=searchFilter, unique=0)
 						for dn, attr in results:
-							ip = self.__ip_from_ptr( attr[ 'zoneName' ][ 0 ], attr[ 'relativeDomainName' ][ 0 ] )
+							ip = self.__ip_from_ptr(attr['zoneName'][0], attr['relativeDomainName'][0])
 							if not self.__is_ip(ip):
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'simpleComputer: dnsEntryZoneReverse: invalid IP address generated: %r' % (ip,))
 								continue
 							entry = [','.join(univention.admin.uldap.explodeDn(dn, 0)[1:]), ip]
 							if entry not in self['dnsEntryZoneReverse']:
-								self[ 'dnsEntryZoneReverse' ].append( entry )
+								self['dnsEntryZoneReverse'].append(entry)
 					except univention.admin.uexceptions.insufficientInformation, msg:
-						self[ 'dnsEntryZoneReverse' ] = [ ]
+						self['dnsEntryZoneReverse'] = []
 						raise univention.admin.uexceptions.insufficientInformation, msg
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneReverse: %s' % self[ 'dnsEntryZoneReverse' ] )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneReverse: %s' % self['dnsEntryZoneReverse'])
 
 			if zoneNames:
 				for zoneName in zoneNames:
 					searchFilter = filter_format('(&(objectClass=dNSZone)(|(cNAMERecord=%s)(cNAMERecord=%s.%s.)))', (self['name'], self['name'], zoneName[0]))
 					try:
-						results = self.lo.search( base = tmppos.getBase( ),scope = 'domain', attr = [ 'relativeDomainName', 'cNAMERecord', 'zoneName' ], filter = searchFilter, unique = 0 )
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'cNAMERecord', 'zoneName'], filter=searchFilter, unique=0)
 						for dn, attr in results:
-							dnsAlias = attr[ 'relativeDomainName' ][0]
-							self[ 'dnsAlias' ].append(dnsAlias)
+							dnsAlias = attr['relativeDomainName'][0]
+							self['dnsAlias'].append(dnsAlias)
 							dnsAliasZoneContainer = ','.join(univention.admin.uldap.explodeDn(dn, 0)[1:])
-							if attr[ 'cNAMERecord' ][0] == self[ 'name' ]:
-								dnsForwardZone = attr[ 'zoneName' ][0]
+							if attr['cNAMERecord'][0] == self['name']:
+								dnsForwardZone = attr['zoneName'][0]
 							else:
 								dnsForwardZone = zoneName[0]
 
-							entry = [ dnsForwardZone, dnsAliasZoneContainer, dnsAlias ]
-							if not entry in self[ 'dnsEntryZoneAlias' ]:
-								self[ 'dnsEntryZoneAlias' ].append( entry )
+							entry = [dnsForwardZone, dnsAliasZoneContainer, dnsAlias]
+							if entry not in self['dnsEntryZoneAlias']:
+								self['dnsEntryZoneAlias'].append(entry)
 					except univention.admin.uexceptions.insufficientInformation, msg:
-						self[ 'dnsEntryZoneAlias' ] = [ ]
+						self['dnsEntryZoneAlias'] = []
 						raise univention.admin.uexceptions.insufficientInformation, msg
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self[ 'dnsEntryZoneAlias' ] )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self['dnsEntryZoneAlias'])
 
-			if self[ 'mac' ]:
-				for macAddress in self[ 'mac' ]:
+			if self['mac']:
+				for macAddress in self['mac']:
 					# mac address may be an empty string (Bug #21958)
 					if not macAddress:
 						continue
 
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we have a mac address: %s' % macAddress )
-					ethernet = 'ethernet '+ macAddress
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we have a mac address: %s' % macAddress)
+					ethernet = 'ethernet ' + macAddress
 					searchFilter = filter_format('(&(dhcpHWAddress=%s)(objectClass=univentionDhcpHost))', (ethernet,))
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we search for "%s"' % searchFilter )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we search for "%s"' % searchFilter)
 					try:
-						results = self.lo.search( base = tmppos.getBase( ),scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter = searchFilter, unique = 0 )
-						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; the result: "%s"' % results )
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=searchFilter, unique=0)
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; the result: "%s"' % results)
 						for dn, attr in results:
 							service = ','.join(univention.admin.uldap.explodeDn(dn, 0)[1:])
 							if 'univentionDhcpFixedAddress' in attr:
 								for ip in attr['univentionDhcpFixedAddress']:
 									entry = [service, ip, macAddress]
-									if not entry in self[ 'dhcpEntryZone' ]:
-										self[ 'dhcpEntryZone' ].append( entry )
+									if entry not in self['dhcpEntryZone']:
+										self['dhcpEntryZone'].append(entry)
 
 							else:
 								entry = [service, macAddress]
-								if not entry in self[ 'dhcpEntryZone' ]:
-									self[ 'dhcpEntryZone' ].append( entry )
-						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self[ 'dhcpEntryZone' ] )
+								if entry not in self['dhcpEntryZone']:
+									self['dhcpEntryZone'].append(entry)
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self['dhcpEntryZone'])
 
 					except univention.admin.uexceptions.insufficientInformation, msg:
 						raise univention.admin.uexceptions.insufficientInformation, msg
 
 		if self.exists():
-			if self.has_key( 'network' ):
-				self.old_network = self[ 'network' ]
+			if self.has_key('network'):
+				self.old_network = self['network']
 
 			# get groupmembership
-			result=self.lo.search(base=self.lo.base, filter=filter_format('(&(objectclass=univentionGroup)(uniqueMember=%s))', [self.dn]), attr=['dn'])
+			result = self.lo.search(base=self.lo.base, filter=filter_format('(&(objectclass=univentionGroup)(uniqueMember=%s))', [self.dn]), attr=['dn'])
 			self['groups'] = [(x[0]) for x in result]
 
-		if len( open_warnings ) > 0:
+		if len(open_warnings) > 0:
 			self.open_warning = ''
 			for warn in open_warnings:
-				self.open_warning += '\n'+warn
+				self.open_warning += '\n' + warn
 
 		if 'name' in self.info and 'domain' in self.info:
-			self.info[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
+			self.info['fqdn'] = '%s.%s' % (self['name'], self['domain'])
 
-	def __modify_dhcp_object( self, position, name, ip, mac ):
+	def __modify_dhcp_object(self, position, name, ip, mac):
 		# identify the dhcp object with the mac address
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '__modify_dhcp_object: position: "%s"; name: "%s"; mac: "%s"; ip: "%s"' % ( position, name, mac, ip ) )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__modify_dhcp_object: position: "%s"; name: "%s"; mac: "%s"; ip: "%s"' % (position, name, mac, ip))
 
 		ethernet = 'ethernet %s' % mac
 
-		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+		tmppos = univention.admin.uldap.position(self.position.getDomain())
 		if not position:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
-			position = tmppos.getBase( )
-		results = self.lo.search( base = position, scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique = 0 )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
+			position = tmppos.getBase()
+		results = self.lo.search(base=position, scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
 
 		if not results:
 			# if the dhcp object doesn't exists, then we create it
 			# but it is possible, that the hostname for the dhcp object is already used, so we use the _uv$NUM extension
 
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" does not exists, we create one' % ethernet )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" does not exists, we create one' % ethernet)
 
-			results = self.lo.searchDn( base = position, scope = 'domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique = 0 )
+			results = self.lo.searchDn(base=position, scope='domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique=0)
 			if not results:
-				self.lo.add( 'cn = %s,%s'% ( name, position ), [
-						( 'objectClass', [ 'top', 'univentionObject', 'univentionDhcpHost' ] ),\
-						( 'univentionObjectType', [ 'dhcp/host' ]),\
-						( 'cn', name ),\
-						( 'univentionDhcpFixedAddress', [ ip ] ),\
-						( 'dhcpHWAddress', [ ethernet ] ) ] )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s,%s"' % ( name, position ) )
+				self.lo.add('cn = %s,%s' % (name, position), [
+					('objectClass', ['top', 'univentionObject', 'univentionDhcpHost']),
+					('univentionObjectType', ['dhcp/host']),
+					('cn', name),
+					('univentionDhcpFixedAddress', [ip]),
+					('dhcpHWAddress', [ethernet])
+				])
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s,%s"' % (name, position))
 			else:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % ( name ) )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % (name))
 				n = 0
 				for result in results:
-					val = result.split( ',' )[ 0 ].split( "_uv" )
-					if len( val ) > 1:
+					val = result.split(',')[0].split("_uv")
+					if len(val) > 1:
 						try:
-							n = int( val[ 1 ] )
+							n = int(val[1])
 							n += 1
 						except ValueError:
 							if n == 0:
 								n = 1
 
-				self.lo.add( 'cn = %s_uv%d,%s'% ( name, n, position ), [
-						( 'objectClass', [ 'top', 'univentionObject', 'univentionDhcpHost' ] ),\
-						( 'univentionObjectType', [ 'dhcp/host' ]),\
-						( 'cn', '%s_uv%d' % ( name,n ) ),\
-						( 'univentionDhcpFixedAddress', [ ip ] ),\
-						( 'dhcpHWAddress', [ ethernet ] ) ] )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s_uv%d,%s"' % ( name, n, position ) )
+				self.lo.add('cn = %s_uv%d,%s' % (name, n, position), [
+					('objectClass', ['top', 'univentionObject', 'univentionDhcpHost']),
+					('univentionObjectType', ['dhcp/host']),
+					('cn', '%s_uv%d' % (name, n)),
+					('univentionDhcpFixedAddress', [ip]),
+					('dhcpHWAddress', [ethernet])
+				])
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s_uv%d,%s"' % (name, n, position))
 		else:
 			# if the object already exists, we append or remove the ip address
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" exists, we change the ip' % ethernet )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" exists, we change the ip' % ethernet)
 			for dn, attr in results:
 				if ip:
 					if ip in attr.get('univentionDhcpFixedAddress', []):
 						continue
-					self.lo.modify( dn, [ ( 'univentionDhcpFixedAddress', '',  ip ) ] )
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we added the ip "%s"' % ip )
+					self.lo.modify(dn, [('univentionDhcpFixedAddress', '', ip)])
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we added the ip "%s"' % ip)
 				else:
-					self.lo.modify( dn, [ ( 'univentionDhcpFixedAddress', ip,  '' ) ] )
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we removed the ip "%s"' % ip )
+					self.lo.modify(dn, [('univentionDhcpFixedAddress', ip, '')])
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we removed the ip "%s"' % ip)
 
-	def __rename_dns_object( self, position = None, old_name = None, new_name = None ):
-		for dns_line in self[ 'dnsEntryZoneForward' ]:
+	def __rename_dns_object(self, position=None, old_name=None, new_name=None):
+		for dns_line in self['dnsEntryZoneForward']:
 			# dns_line may be the empty string
 			if not dns_line:
 				continue
-			dn, ip = self.__split_dns_line( dns_line )
-			if ':' in ip: # IPv6
-				results = self.lo.searchDn( base = dn, scope = 'domain', filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (old_name, ip)), unique = 0 )
+			dn, ip = self.__split_dns_line(dns_line)
+			if ':' in ip:  # IPv6
+				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (old_name, ip)), unique=0)
 			else:
-				results = self.lo.searchDn( base = dn, scope = 'domain', filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (old_name, ip)), unique = 0 )
+				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (old_name, ip)), unique=0)
 			for result in results:
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/host_record' ), self.co, self.lo, position = self.position, dn = result )
-				object.open( )
-				object[ 'name' ] = new_name
-				object.modify( )
-		for dns_line in self[ 'dnsEntryZoneReverse' ]:
+				object = univention.admin.objects.get(univention.admin.modules.get('dns/host_record'), self.co, self.lo, position=self.position, dn=result)
+				object.open()
+				object['name'] = new_name
+				object.modify()
+		for dns_line in self['dnsEntryZoneReverse']:
 			# dns_line may be the empty string
 			if not dns_line:
 				continue
-			dn, ip = self.__split_dns_line( dns_line )
-			results = self.lo.searchDn( base = dn, scope = 'domain', filter=filter_format('(|(pTRRecord=%s)(pTRRecord=%s.*))', (old_name, old_name)), unique = 0 )
+			dn, ip = self.__split_dns_line(dns_line)
+			results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(|(pTRRecord=%s)(pTRRecord=%s.*))', (old_name, old_name)), unique=0)
 			for result in results:
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/ptr_record' ), self.co, self.lo, position = self.position, dn = result )
-				object.open( )
+				object = univention.admin.objects.get(univention.admin.modules.get('dns/ptr_record'), self.co, self.lo, position=self.position, dn=result)
+				object.open()
 				object['ptr_record'] = [ptr_record.replace(old_name, new_name) for ptr_record in object.get('ptr_record', [])]
-				object.modify( )
-		for entry in self[ 'dnsEntryZoneAlias' ]:
+				object.modify()
+		for entry in self['dnsEntryZoneAlias']:
 			# entry may be the empty string
 			if not entry:
 				continue
 			dnsforwardzone, dnsaliaszonecontainer, alias = entry
-			results = self.lo.searchDn( base = dnsaliaszonecontainer, scope = 'domain', filter=filter_format('relativedomainname=%s', [alias]), unique = 0 )
+			results = self.lo.searchDn(base=dnsaliaszonecontainer, scope='domain', filter=filter_format('relativedomainname=%s', [alias]), unique=0)
 			for result in results:
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/alias' ), self.co, self.lo, position = self.position, dn = result )
-				object.open( )
-				object[ 'cname' ] = '%s.%s.' % (new_name, dnsforwardzone)
-				object.modify( )
+				object = univention.admin.objects.get(univention.admin.modules.get('dns/alias'), self.co, self.lo, position=self.position, dn=result)
+				object.open()
+				object['cname'] = '%s.%s.' % (new_name, dnsforwardzone)
+				object.modify()
 
-	def __rename_dhcp_object( self, position = None, old_name = None, new_name = None ):
-		module = univention.admin.modules.get( 'dhcp/host' )
-		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-		for mac in self[ 'mac' ]:
+	def __rename_dhcp_object(self, position=None, old_name=None, new_name=None):
+		module = univention.admin.modules.get('dhcp/host')
+		tmppos = univention.admin.uldap.position(self.position.getDomain())
+		for mac in self['mac']:
 			# mac may be the empty string
 			if not mac:
 				continue
 			ethernet = 'ethernet %s' % mac
 
-			results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique = 0 )
+			results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
 			if not results:
 				continue
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: filter [ dhcpHWAddress = %s ]; results: %s' % ( ethernet, results ) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: filter [ dhcpHWAddress = %s ]; results: %s' % (ethernet, results))
 
 			for result in results:
-				object = univention.admin.objects.get(module, self.co, self.lo, position = self.position, dn = result)
-				object.open( )
-				object[ 'host' ] = object[ 'host' ].replace( old_name, new_name )
-				object.modify( )
+				object = univention.admin.objects.get(module, self.co, self.lo, position=self.position, dn=result)
+				object.open()
+				object['host'] = object['host'].replace(old_name, new_name)
+				object.modify()
 
-
-	def __remove_from_dhcp_object( self, position = None, name = None, oldname = None, mac = None, ip = None ):
+	def __remove_from_dhcp_object(self, position=None, name=None, oldname=None, mac=None, ip=None):
 		# if we got the mac address, then we remove the object
 		# if we only got the ip address, we remove the ip address
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % ( position, name, oldname, mac, ip ) )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % (position, name, oldname, mac, ip))
 
 		dn = None
 
-		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+		tmppos = univention.admin.uldap.position(self.position.getDomain())
 		if ip and mac:
 			ethernet = 'ethernet %s' % mac
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we only remove the ip "%s" from the dhcp object' % ip )
-			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique = 0 )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we only remove the ip "%s" from the dhcp object' % ip)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique=0)
 			for dn, attr in results:
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
-				object.open( )
-				if ip in object[ 'fixedaddress' ]:
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'fixedaddress: "%s"' % object[ 'fixedaddress' ] )
-					object[ 'fixedaddress' ].remove( ip )
-					if len( object[ 'fixedaddress' ] ) == 0:
-						object.remove( )
+				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
+				object.open()
+				if ip in object['fixedaddress']:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'fixedaddress: "%s"' % object['fixedaddress'])
+					object['fixedaddress'].remove(ip)
+					if len(object['fixedaddress']) == 0:
+						object.remove()
 					else:
-						object.modify( )
+						object.modify()
 					dn = object.dn
 
 		elif mac:
 			ethernet = 'ethernet %s' % mac
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Remove the following mac: ethernet: "%s"' % ethernet )
-			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique = 0 )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Remove the following mac: ethernet: "%s"' % ethernet)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
 			for dn, attr in results:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '... done' )
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
-				object.remove( )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '... done')
+				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
+				object.remove()
 				dn = object.dn
 
 		elif ip:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Remove the following ip: "%s"' % ip )
-			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique = 0 )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Remove the following ip: "%s"' % ip)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=0)
 			for dn, attr in results:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '... done' )
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
-				object.remove( )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '... done')
+				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
+				object.remove()
 				dn = object.dn
 
 		return dn
 
-	def __split_dhcp_line( self, entry ):
+	def __split_dhcp_line(self, entry):
 		try:
 			# sanitize mac address
 			#   0011.2233.4455 -> 00:11:22:33:44:55 -> is guaranteed to work together with our DHCP server
 			#   __split_dhcp_line may be used outside of UDM which means that MAC_Address.parse may not be called.
 			#   if __is_mac would return True for 0011.2233.4455 and MAC_Address.parse is not called afterwards DHCP may not work.
-			#   See Bug #30140
+			# See Bug #30140
 			entry[-1] = univention.admin.syntax.MAC_Address.parse(entry[-1])
 		except univention.admin.uexceptions.valueError:
 			# the mac address is invalid, __is_mac will check again if it has the right format
 			pass
-		if self.__is_mac ( entry[ -1 ] ):
-			if self.__is_ip ( entry[ -2 ] ):
+		if self.__is_mac(entry[-1]):
+			if self.__is_ip(entry[-2]):
 				return entry
 			else:
-				return ( entry[ 0 ], None, entry[ -1 ] )
+				return (entry[0], None, entry[-1])
 
-		return ( entry[ 0 ], None, None )
+		return (entry[0], None, None)
 
-	def __split_dns_line( self, entry ):
-		zone = entry[ 0 ]
-		if len( entry ) > 1:
-			ip = self.__is_ip( entry[ 1 ] ) and entry[ 1 ] or None
+	def __split_dns_line(self, entry):
+		zone = entry[0]
+		if len(entry) > 1:
+			ip = self.__is_ip(entry[1]) and entry[1] or None
 		else:
 			ip = None
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry %s into zone %s and ip %s' % ( entry, zone, ip ) )
-		return ( zone, ip )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Split entry %s into zone %s and ip %s' % (entry, zone, ip))
+		return (zone, ip)
 
-	def __remove_dns_reverse_object( self, name, dnsEntryZoneReverse , ip ):
+	def __remove_dns_reverse_object(self, name, dnsEntryZoneReverse, ip):
 		def modify(rdn, zoneDN):
 			zone_name = zoneDN.split('=')[1].split(',')[0]
 			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
 				if len(attributes['pTRRecord']) == 1:
 					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(rdn), zoneDN))
 				else:
-					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False ):
-						self.lo.modify( dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')] )
+					for dn2, attributes2 in self.lo.search(scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False):
+						self.lo.modify(dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')])
 
-				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDN)
+				zone = univention.admin.handlers.dns.reverse_zone.object(self.co, self.lo, self.position, zoneDN)
 				zone.open()
 				zone.modify()
 
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns reverse object: dnsEntryZoneReverse="%s", name="%s", ip="%s"' % ( dnsEntryZoneReverse, name, ip ) )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns reverse object: dnsEntryZoneReverse="%s", name="%s", ip="%s"' % (dnsEntryZoneReverse, name, ip))
 		if dnsEntryZoneReverse:
-			rdn = self.calc_dns_reverse_entry_name( ip, dnsEntryZoneReverse )
+			rdn = self.calc_dns_reverse_entry_name(ip, dnsEntryZoneReverse)
 			if rdn:
 				modify(rdn, dnsEntryZoneReverse)
 
 		elif ip:
-			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'zoneDn' ], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique = 0 )
+			tmppos = univention.admin.uldap.position(self.position.getDomain())
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneDn'], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique=0)
 			for dn, attr in results:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: dn: "%s"' % dn )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: dn: "%s"' % dn)
 				zone = ','.join(ldap.explode_dn(dn)[1:])
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: zone: "%s"' % zone )
-				rdn = self.calc_dns_reverse_entry_name( ip, zone )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: rdn: "%s"' % rdn )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: zone: "%s"' % zone)
+				rdn = self.calc_dns_reverse_entry_name(ip, zone)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: rdn: "%s"' % rdn)
 				if rdn:
 					try:
 						modify(rdn, zone)
 					except univention.admin.uexceptions.noObject:
 						pass
 
-	def __add_dns_reverse_object( self, name, zoneDn, ip ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
+	def __add_dns_reverse_object(self, name, zoneDn, ip):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
 		if name and zoneDn and ip:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dns reverse object: start' )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'dns reverse object: start')
 			hostname_list = []
-			if ':' in ip: # IPv6, e.g. ip=2001:db8:100::5
+			if ':' in ip:  # IPv6, e.g. ip=2001:db8:100::5
 				# 0.1.8.b.d.0.1.0.0.2.ip6.arpa → 0.1.8.b.d.1.0.0.2 → ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ]
 				subnet = ldap.explode_dn(zoneDn, 1)[0].replace('.ip6.arpa', '').split('.')
 				# ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ] → ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ]
 				subnet.reverse()
 				# ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ] → ['2001', '0db8', '10', ] → '2001:0db8:10'
-				subnet = ':'.join([''.join(subnet[i:i+4]) for i in xrange(0, len(subnet), 4)])
+				subnet = ':'.join([''.join(subnet[i:i + 4]) for i in xrange(0, len(subnet), 4)])
 				# '2001:db8:100:5' → '2001:0db8:0100:0000:0000:0000:0000:0005'
 				ip = ipaddr.IPv6Address(ip).exploded
 				if not ip.startswith(subnet):
-					raise univention.admin.uexceptions.missingInformation, _( 'Reverse zone and IP address are incompatible.' )
+					raise univention.admin.uexceptions.missingInformation, _('Reverse zone and IP address are incompatible.')
 				# '2001:0db8:0100:0000:0000:0000:0000:0005' → '00:0000:0000:0000:0000:0005'
 				ipPart = ip[len(subnet):]
 				# '00:0000:0000:0000:0000:0005' → '0000000000000000000005' → ['0', '0', …, '0', '0', '5', ]
@@ -1578,14 +1577,14 @@ class simpleComputer( simpleLdap ):
 				pointer.reverse()
 				# ['5', '0', '0', …, '0', '0', ] → '5.0.0.….0.0'
 				ipPart = '.'.join(pointer)
-				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+				tmppos = univention.admin.uldap.position(self.position.getDomain())
 				# check in which forward zone the ip is set
-				results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, ip)), unique = 0 )
+				results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, ip)), unique=0)
 			else:
 				subnet = '%s.' % ('.'.join(reversed(ldap.explode_dn(zoneDn, 1)[0].replace('.in-addr.arpa', '').split('.'))))
 				ipPart = re.sub('^%s' % (re.escape(subnet),), '', ip)
 				if ipPart == ip:
-					raise univention.admin.uexceptions.InvalidDNS_Information, _( 'Reverse zone and IP address are incompatible.' )
+					raise univention.admin.uexceptions.InvalidDNS_Information, _('Reverse zone and IP address are incompatible.')
 				ipPart = '.'.join(reversed(ipPart.split('.')))
 				tmppos = univention.admin.uldap.position(self.position.getDomain())
 				# check in which forward zone the ip is set
@@ -1602,37 +1601,38 @@ class simpleComputer( simpleLdap ):
 				return
 
 			# check if the object exists
-			results = self.lo.search( base = tmppos.getBase() , scope = 'domain', attr = [ 'dn' ], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), ldap.explode_dn(zoneDn)[0]), unique = 0 )
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), ldap.explode_dn(zoneDn)[0]), unique=0)
 			if not results:
-				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(ipPart), zoneDn), [ \
-						( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ] ), \
-						( 'univentionObjectType', ['dns/ptr_record']), \
-						( 'zoneName', [ ldap.explode_dn( zoneDn, 1 )[ 0 ] ] ), \
-						( 'relativeDomainName', [ ipPart ] ) ,
-						( 'PTRRecord',  hostname_list  ) ] )
+				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(ipPart), zoneDn), [
+					('objectClass', ['top', 'dNSZone', 'univentionObject']),
+					('univentionObjectType', ['dns/ptr_record']),
+					('zoneName', [ldap.explode_dn(zoneDn, 1)[0]]),
+					('relativeDomainName', [ipPart]),
+					('PTRRecord', hostname_list)
+				])
 
-				#update Serial
-				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDn )
-				zone.open( )
-				zone.modify( )
+				# update Serial
+				zone = univention.admin.handlers.dns.reverse_zone.object(self.co, self.lo, self.position, zoneDn)
+				zone.open()
+				zone.modify()
 
-	def __remove_dns_forward_object( self, name, zoneDn, ip = None ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
+	def __remove_dns_forward_object(self, name, zoneDn, ip=None):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns forward object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
 		if name:
 			# check if dns forward object has more than one ip address
 			if not ip:
 				if zoneDn:
 					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn))
-					zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
-					zone.open( )
-					zone.modify( )
+					zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
+					zone.open()
+					zone.modify()
 			else:
 				if zoneDn:
 					base = zoneDn
 				else:
-					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-					base = tmppos.getBase( )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
+					tmppos = univention.admin.uldap.position(self.position.getDomain())
+					base = tmppos.getBase()
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base)
 				if ':' in ip:
 					ip = ipaddr.IPv6Address(ip).exploded
 					(attrEdit, attrOther, ) = ('aAAARecord', 'aRecord', )
@@ -1640,21 +1640,21 @@ class simpleComputer( simpleLdap ):
 					(attrEdit, attrOther, ) = ('aRecord', 'aAAARecord', )
 				results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=False, required=False)
 				for dn, attr in results:
-					if attr[attrEdit] == [ip, ] and not attr.get(attrOther): # the <ip> to be removed is the last on the object
+					if attr[attrEdit] == [ip, ] and not attr.get(attrOther):  # the <ip> to be removed is the last on the object
 						# remove the object
-						self.lo.delete( dn )
+						self.lo.delete(dn)
 						if not zoneDn:
 							zone = ','.join(ldap.explode_dn(dn)[1:])
 						else:
 							zone = zoneDn
 
-						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-						zone.open( )
-						zone.modify( )
+						zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
+						zone.open()
+						zone.modify()
 					else:
 						# remove only the ip address attribute
 						new_ip_list = copy.deepcopy(attr[attrEdit])
-						new_ip_list.remove( ip )
+						new_ip_list.remove(ip)
 
 						self.lo.modify(dn, [(attrEdit, attr[attrEdit], new_ip_list, ), ])
 
@@ -1663,9 +1663,9 @@ class simpleComputer( simpleLdap ):
 						else:
 							zone = zoneDn
 
-						zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-						zone.open( )
-						zone.modify( )
+						zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
+						zone.open()
+						zone.modify()
 
 	def __add_related_ptrrecords(self, zoneDN, ip):
 		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
@@ -1687,40 +1687,40 @@ class simpleComputer( simpleLdap ):
 				self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
 
 	def check_common_name_length(self):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
 		if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
 			for zone in self['dnsEntryZoneForward']:
 				if zone == '':
 					continue
-				zoneName = univention.admin.uldap.explodeDn( zone[ 0 ], 1 )[ 0 ]
+				zoneName = univention.admin.uldap.explodeDn(zone[0], 1)[0]
 				if len(zoneName) + len(self['name']) >= 63:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: length of Common Name is too long: %d' % (len(zoneName) + len(self['name']) + 1))
 					raise univention.admin.uexceptions.commonNameTooLong
 
-	def __modify_dns_forward_object( self, name, zoneDn, new_ip, old_ip ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should modify a dns forward object: zoneDn="%s", name="%s", new_ip="%s", old_ip="%s"' % ( zoneDn, name, new_ip, old_ip ) )
+	def __modify_dns_forward_object(self, name, zoneDn, new_ip, old_ip):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should modify a dns forward object: zoneDn="%s", name="%s", new_ip="%s", old_ip="%s"' % (zoneDn, name, new_ip, old_ip))
 		zone = None
 		if old_ip and new_ip:
 			if not zoneDn:
-				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-				base = tmppos.getBase( )
+				tmppos = univention.admin.uldap.position(self.position.getDomain())
+				base = tmppos.getBase()
 			else:
 				base = zoneDn
-			if ':' in old_ip: # IPv6
+			if ':' in old_ip:  # IPv6
 				old_ip = ipaddr.IPv6Address(old_ip).exploded
-				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aAAARecord' ], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, old_ip)), unique = 0 )
+				results = self.lo.search(base=base, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, old_ip)), unique=0)
 			else:
-				results = self.lo.search( base = base, scope = 'domain', attr = [ 'aRecord' ], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, old_ip)), unique = 0 )
+				results = self.lo.search(base=base, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, old_ip)), unique=0)
 			for dn, attr in results:
-				old_aRecord    =               attr.get('aRecord', [])
-				new_aRecord    = copy.deepcopy(attr.get('aRecord', []))
-				old_aAAARecord =               attr.get('aAAARecord', [])
+				old_aRecord = attr.get('aRecord', [])
+				new_aRecord = copy.deepcopy(attr.get('aRecord', []))
+				old_aAAARecord = attr.get('aAAARecord', [])
 				new_aAAARecord = copy.deepcopy(attr.get('aAAARecord', []))
-				if ':' in old_ip: # IPv6
+				if ':' in old_ip:  # IPv6
 					new_aAAARecord.remove(old_ip)
 				else:
 					new_aRecord.remove(old_ip)
-				if ':' in new_ip: # IPv6
+				if ':' in new_ip:  # IPv6
 					new_ip = ipaddr.IPv6Address(new_ip).exploded
 					if new_ip not in new_aAAARecord:
 						new_aAAARecord.append(new_ip)
@@ -1730,10 +1730,10 @@ class simpleComputer( simpleLdap ):
 				modlist = []
 				if ':' in old_ip or ':' in new_ip:
 					if old_aAAARecord != new_aAAARecord:
-						modlist.append( ('aAAARecord', old_aAAARecord, new_aAAARecord, ) )
+						modlist.append(('aAAARecord', old_aAAARecord, new_aAAARecord, ))
 				if ':' not in old_ip or ':' not in new_ip:
 					if old_aRecord != new_aRecord:
-						modlist.append( ('aRecord', old_aRecord, new_aRecord, ) )
+						modlist.append(('aRecord', old_aRecord, new_aRecord, ))
 				self.lo.modify(dn, modlist)
 				if not zoneDn:
 					zone = ','.join(ldap.explode_dn(dn)[1:])
@@ -1742,330 +1742,334 @@ class simpleComputer( simpleLdap ):
 				zone = zoneDn
 
 			if zone:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'update the zon sOARecord for the zone: %s' % zone)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'update the zon sOARecord for the zone: %s' % zone)
 
-				zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-				zone.open( )
-				zone.modify( )
+				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
+				zone.open()
+				zone.modify()
 
-	def __add_dns_forward_object( self, name, zoneDn, ip ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
-		if ip.find(':')!=-1: #IPv6
+	def __add_dns_forward_object(self, name, zoneDn, ip):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
+		if ip.find(':') != -1:  # IPv6
 			self.__add_dns_forward_object_ipv6(name, zoneDn, ipaddr.IPv6Address(ip).exploded)
 		else:
 			self.__add_dns_forward_object_ipv4(name, zoneDn, ip)
 
-	def __add_dns_forward_object_ipv6( self, name, zoneDn, ip ):
+	def __add_dns_forward_object_ipv6(self, name, zoneDn, ip):
 		if name and ip and zoneDn:
 			ip = ipaddr.IPv6Address(ip).exploded
-			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aAAARecord' ], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique = 0 )
+			results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=0)
 			if not results:
 				try:
-					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [\
-										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
-										( 'univentionObjectType', ['dns/host_record']),\
-										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
-										( 'aAAARecord', [ ip ]),\
-										( 'relativeDomainName', [ name ])])
+					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [
+						('objectClass', ['top', 'dNSZone', 'univentionObject']),
+						('univentionObjectType', ['dns/host_record']),
+						('zoneName', univention.admin.uldap.explodeDn(zoneDn, 1)[0]),
+						('aAAARecord', [ip]),
+						('relativeDomainName', [name])
+					])
 				except univention.admin.uexceptions.objectExists, dn:
 					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
-				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
+				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 				zone.open()
 				zone.modify()
 			else:
 				for dn, attr in results:
 					if 'aAAARecord' in attr:
-						new_ip_list = copy.deepcopy( attr[ 'aAAARecord' ] )
-						if not ip in new_ip_list:
-							new_ip_list.append( ip )
-							self.lo.modify( dn, [ ( 'aAAARecord', attr[ 'aAAARecord' ],  new_ip_list ) ] )
+						new_ip_list = copy.deepcopy(attr['aAAARecord'])
+						if ip not in new_ip_list:
+							new_ip_list.append(ip)
+							self.lo.modify(dn, [('aAAARecord', attr['aAAARecord'], new_ip_list)])
 					else:
-						self.lo.modify( dn, [ ( 'aAAARecord', '' ,  ip ) ] )
+						self.lo.modify(dn, [('aAAARecord', '', ip)])
 
-	def __add_dns_forward_object_ipv4( self, name, zoneDn, ip ):
+	def __add_dns_forward_object_ipv4(self, name, zoneDn, ip):
 		if name and ip and zoneDn:
-			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aRecord' ], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique = 0 )
+			results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=0)
 			if not results:
 				try:
-					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [\
-										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
-										( 'univentionObjectType', ['dns/host_record']),\
-										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
-										( 'ARecord', [ ip ]),\
-										( 'relativeDomainName', [ name ])])
+					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [
+						('objectClass', ['top', 'dNSZone', 'univentionObject']),
+						('univentionObjectType', ['dns/host_record']),
+						('zoneName', univention.admin.uldap.explodeDn(zoneDn, 1)[0]),
+						('ARecord', [ip]),
+						('relativeDomainName', [name])
+					])
 				except univention.admin.uexceptions.objectExists, dn:
 					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
-				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
+				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 				zone.open()
 				zone.modify()
 			else:
 				for dn, attr in results:
 					if 'aRecord' in attr:
-						new_ip_list = copy.deepcopy( attr[ 'aRecord' ] )
-						if not ip in new_ip_list:
-							new_ip_list.append( ip )
-							self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+						new_ip_list = copy.deepcopy(attr['aRecord'])
+						if ip not in new_ip_list:
+							new_ip_list.append(ip)
+							self.lo.modify(dn, [('aRecord', attr['aRecord'], new_ip_list)])
 					else:
-						self.lo.modify( dn, [ ( 'aRecord', '' ,  ip ) ] )
+						self.lo.modify(dn, [('aRecord', '', ip)])
 
-
-	def __add_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % ( name, dnsForwardZone, dnsAliasZoneContainer, alias ) )
+	def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
 		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
-			results = self.lo.search( base = dnsAliasZoneContainer, scope = 'domain', attr = [ 'cNAMERecord' ], filter=filter_format('relativeDomainName=%s', (alias,)), unique = 0 )
+			results = self.lo.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=0)
 			if not results:
-				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer), [\
-									( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
-									( 'univentionObjectType', [ 'dns/alias' ] ),\
-									( 'zoneName', univention.admin.uldap.explodeDn( dnsAliasZoneContainer, 1 )[ 0 ]),\
-									( 'cNAMERecord', [ "%s.%s." % (name, dnsForwardZone) ]),\
-									( 'relativeDomainName', [ alias ])])
+				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer), [
+					('objectClass', ['top', 'dNSZone', 'univentionObject']),
+					('univentionObjectType', ['dns/alias']),
+					('zoneName', univention.admin.uldap.explodeDn(dnsAliasZoneContainer, 1)[0]),
+					('cNAMERecord', ["%s.%s." % (name, dnsForwardZone)]),
+					('relativeDomainName', [alias])
+				])
 
 				# TODO: check if dnsAliasZoneContainer really is a forwardZone, maybe it is a container under a zone
-				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, dnsAliasZoneContainer )
+				zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, dnsAliasZoneContainer)
 				zone.open()
 				zone.modify()
 			else:
 				# thow exeption, cNAMERecord is single value
 				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
 
-	def __remove_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias = None ):
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % ( name, dnsForwardZone, dnsAliasZoneContainer, alias ) )
+	def __remove_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias=None):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
 		if name:
 			if alias:
 				if dnsAliasZoneContainer:
 					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer))
-					zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, dnsAliasZoneContainer )
-					zone.open( )
-					zone.modify( )
+					zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, dnsAliasZoneContainer)
+					zone.open()
+					zone.modify()
 				elif dnsForwardZone:
-					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-					base = tmppos.getBase( )
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
-					results = self.lo.search( base = base, scope = 'domain', attr = [ 'zoneName' ], filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)), unique = 0, required = 0 )
+					tmppos = univention.admin.uldap.position(self.position.getDomain())
+					base = tmppos.getBase()
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base)
+					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)), unique=0, required=0)
 					for dn, attr in results:
 						# remove the object
-						self.lo.delete( dn )
+						self.lo.delete(dn)
 						# and update the SOA version number for the zone
-						results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique = 0 )
+						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=0)
 						for zoneDn in results:
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
-							zone.open( )
-							zone.modify( )
+							zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
+							zone.open()
+							zone.modify()
 					else:
 						# could thow some exeption
 						pass
 			else:
 				if dnsForwardZone:
-					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
-					base = tmppos.getBase( )
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
-					results = self.lo.search( base = base, scope = 'domain', attr = [ 'zoneName' ], filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)), unique = 0, required = 0 )
+					tmppos = univention.admin.uldap.position(self.position.getDomain())
+					base = tmppos.getBase()
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base)
+					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)), unique=0, required=0)
 					for dn, attr in results:
 						# remove the object
-						self.lo.delete( dn )
+						self.lo.delete(dn)
 						# and update the SOA version number for the zone
-						results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique = 0 )
+						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=0)
 						for zoneDn in results:
-							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
-							zone.open( )
-							zone.modify( )
-				else: # not enough info to remove alias entries
+							zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
+							zone.open()
+							zone.modify()
+				else:  # not enough info to remove alias entries
 					pass
 
-	def _ldap_post_modify( self ):
+	def _ldap_post_modify(self):
 
 		self.__multiip |= len(self['mac']) > 1 or len(self['ip']) > 1
 
-		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
+		for entry in self.__changes['dhcpEntryZone']['remove']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % (entry,))
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = self.__split_dhcp_line(entry)
 			if not ip and not mac and not self.__multiip:
 				mac = ''
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__remove_from_dhcp_object( dn,  mac = mac )
+				self.__remove_from_dhcp_object(dn, mac=mac)
 			else:
-				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
+				self.__remove_from_dhcp_object(dn, ip=ip, mac=mac)
 
-		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
+		for entry in self.__changes['dhcpEntryZone']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = self.__split_dhcp_line(entry)
 			if not ip and not mac and not self.__multiip:
 				ip, mac = ('', '')
 				if self['ip']:
 					ip = self['ip'][0]
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
+				self.__modify_dhcp_object(dn, self['name'], ip, mac)
 			else:
-				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
+				self.__modify_dhcp_object(dn, self['name'], ip, mac)
 
-		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneForward']['remove']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_forward_object(self['name'], dn, ip)
 				self.__remove_related_ptrrecords(dn, ip)
 			else:
-				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_forward_object(self['name'], dn, ip)
 				self.__remove_related_ptrrecords(dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'add' ]:
+		for entry in self.__changes['dnsEntryZoneForward']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % (entry,))
-			dn, ip = self.__split_dns_line( entry )
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
+			dn, ip = self.__split_dns_line(entry)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % (dn, ip))
 			if not ip and not self.__multiip:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__add_dns_forward_object(self['name'], dn, ip)
 				self.__add_related_ptrrecords(dn, ip)
 			else:
-				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__add_dns_forward_object(self['name'], dn, ip)
 				self.__add_related_ptrrecords(dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneReverse']['remove']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_reverse_object(self['name'], dn, ip)
 			else:
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_reverse_object(self['name'], dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneReverse']['add']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__add_dns_reverse_object(self['name'], dn, ip)
 			else:
-				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__add_dns_reverse_object(self['name'], dn, ip)
 
-
-		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
+		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			if not alias:
 				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
-				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
-				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
 
-		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
+		for entry in self.__changes['dnsEntryZoneAlias']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % (entry,))
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
 			if not alias:
-				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+				self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
-				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+				self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
 
-		for entry in self.__changes[ 'mac' ][ 'remove' ]:
-			self.__remove_from_dhcp_object(  mac = entry )
+		for entry in self.__changes['mac']['remove']:
+			self.__remove_from_dhcp_object(mac=entry)
 
 		changed_ip = False
-		for entry in self.__changes[ 'ip' ][ 'remove' ]:
+		for entry in self.__changes['ip']['remove']:
 			# self.__remove_from_dhcp_object(  ip = entry )
 			if not self.__multiip:
-				if len( self.__changes[ 'ip' ][ 'add' ]) > 0:
+				if len(self.__changes['ip']['add']) > 0:
 					# we change
-					self.__modify_dns_forward_object( self[ 'name' ], None, self.__changes[ 'ip' ][ 'add' ][ 0 ], self.__changes[ 'ip' ][ 'remove' ][ 0 ] )
+					self.__modify_dns_forward_object(self['name'], None, self.__changes['ip']['add'][0], self.__changes['ip']['remove'][0])
 					changed_ip = True
-					if len (self[ 'mac' ] ) > 0:
-						dn = self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
+					if len(self['mac']) > 0:
+						dn = self.__remove_from_dhcp_object(None, self['name'], entry, self['mac'][0])
 						try:
 							dn = ','.join(dn.split(',')[1:])
-							self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
+							self.__modify_dhcp_object(dn, self['name'], self.__changes['ip']['add'][0], self['mac'][0])
 						except:
 							pass
 				else:
 					# remove the dns objects
-					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
+					self.__remove_dns_forward_object(self['name'], None, entry)
 			else:
-				self.__remove_dns_forward_object( self[ 'name' ], None, entry )
-				self.__remove_from_dhcp_object(  ip = entry )
+				self.__remove_dns_forward_object(self['name'], None, entry)
+				self.__remove_from_dhcp_object(ip=entry)
 
-			self.__remove_dns_reverse_object( self[ 'name' ], None, entry )
+			self.__remove_dns_reverse_object(self['name'], None, entry)
 
-		for entry in self.__changes[ 'ip' ][ 'add' ]:
+		for entry in self.__changes['ip']['add']:
 			if not self.__multiip:
 				if self.get('dnsEntryZoneForward', []) and not changed_ip:
-					self.__add_dns_forward_object( self[ 'name' ], self[ 'dnsEntryZoneForward' ][ 0 ][ 0 ], entry )
+					self.__add_dns_forward_object(self['name'], self['dnsEntryZoneForward'][0][0], entry)
 				for dnsEntryZoneReverse in self.get('dnsEntryZoneReverse', []):
 					x, ip = self.__split_dns_line(dnsEntryZoneReverse)
 					zoneIsV6 = ldap.explode_dn(x, 1)[0].endswith('.ip6.arpa')
 					entryIsV6 = ':' in entry
 					if zoneIsV6 == entryIsV6:
-						self.__add_dns_reverse_object( self[ 'name' ], x, entry )
+						self.__add_dns_reverse_object(self['name'], x, entry)
 
-		if self.__changes[ 'name' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed' )
+		if self.__changes['name']:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed')
 			self.__update_groups_after_namechange()
-			self.__rename_dhcp_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
-			self.__rename_dns_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
+			self.__rename_dhcp_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
+			self.__rename_dns_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 
-		if self.ipRequest == 1 and self[ 'ip' ]:
-			for ipAddress in self[ 'ip' ]:
+		if self.ipRequest == 1 and self['ip']:
+			for ipAddress in self['ip']:
 				if ipAddress:
-					univention.admin.allocators.confirm( self.lo, self.position, 'aRecord', ipAddress )
+					univention.admin.allocators.confirm(self.lo, self.position, 'aRecord', ipAddress)
 			self.ipRequest = 0
 
-		if self.macRequest == 1 and self[ 'mac' ]:
-			for macAddress in self[ 'mac' ]:
+		if self.macRequest == 1 and self['mac']:
+			for macAddress in self['mac']:
 				if macAddress:
-					univention.admin.allocators.confirm( self.lo, self.position, 'mac', macAddress )
+					univention.admin.allocators.confirm(self.lo, self.position, 'mac', macAddress)
 			self.macRequest = 0
 
 		self.update_groups()
 
-	def __remove_associated_domain( self, entry ):
-		dn, ip = self.__split_dns_line( entry )
+	def __remove_associated_domain(self, entry):
+		dn, ip = self.__split_dns_line(entry)
 		domain = '='.join(ldap.explode_rdn(dn)[0].split('=')[1:])
 		if self.info.get('domain', None) == domain:
 			self.info['domain'] = None
 
-	def __set_associated_domain( self, entry ):
-		dn, ip = self.__split_dns_line( entry )
+	def __set_associated_domain(self, entry):
+		dn, ip = self.__split_dns_line(entry)
 		domain = '='.join(ldap.explode_rdn(dn)[0].split('=')[1:])
 		if not self.info.get('domain', None):
 			self.info['domain'] = domain
 
-
-	def _ldap_modlist( self ):
-		self.__changes =  {	'mac': {'remove': [ ], 'add': [ ]}, 'ip': {'remove': [ ], 'add': [ ]}, 'name': None,
-							'dnsEntryZoneForward': { 'remove': [ ], 'add': [ ] },
-							'dnsEntryZoneReverse': { 'remove': [ ], 'add': [ ] },
-							'dnsEntryZoneAlias': { 'remove': [ ], 'add': [ ] },
-							'dhcpEntryZone': { 'remove': [ ], 'add': [ ] } }
-		ml = [ ]
-		if self.hasChanged( 'mac' ):
-			for macAddress in self.info.get( 'mac', [] ):
+	def _ldap_modlist(self):
+		self.__changes = {
+			'mac': {'remove': [], 'add': []},
+			'ip': {'remove': [], 'add': []},
+			'name': None,
+			'dnsEntryZoneForward': {'remove': [], 'add': []},
+			'dnsEntryZoneReverse': {'remove': [], 'add': []},
+			'dnsEntryZoneAlias': {'remove': [], 'add': []},
+			'dhcpEntryZone': {'remove': [], 'add': []}
+		}
+		ml = []
+		if self.hasChanged('mac'):
+			for macAddress in self.info.get('mac', []):
 				if macAddress in self.oldinfo.get('mac', []):
 					continue
 				try:
-					mac = univention.admin.allocators.request( self.lo, self.position, 'mac', value = macAddress )
+					mac = univention.admin.allocators.request(self.lo, self.position, 'mac', value=macAddress)
 					if not mac:
-						self.cancel( )
+						self.cancel()
 						raise univention.admin.uexceptions.noLock
-					self.alloc.append( ( 'mac', macAddress ) )
-					self.__changes[ 'mac' ][ 'add' ].append( macAddress )
+					self.alloc.append(('mac', macAddress))
+					self.__changes['mac']['add'].append(macAddress)
 				except univention.admin.uexceptions.noLock:
-					self.cancel( )
+					self.cancel()
 					univention.admin.allocators.release(self.lo, self.position, "mac", macAddress)
 					raise univention.admin.uexceptions.macAlreadyUsed, ' %s' % macAddress
 				self.macRequest = 1
 			for macAddress in self.oldinfo.get('mac', []):
-				if macAddress in self.info.get( 'mac', [] ):
+				if macAddress in self.info.get('mac', []):
 					continue
-				self.__changes[ 'mac' ][ 'remove' ].append( macAddress )
+				self.__changes['mac']['remove'].append(macAddress)
 
 		oldAddresses = self.oldinfo.get('ip')
 		newAddresses = self.info.get('ip')
@@ -2075,55 +2079,54 @@ class simpleComputer( simpleLdap ):
 		newAaaaRecord = []
 		if oldAddresses != newAddresses:
 			if oldAddresses:
-			    for address in oldAddresses:
-					if ':' in address: # IPv6
+				for address in oldAddresses:
+					if ':' in address:  # IPv6
 						oldAaaaRecord.append(address)
 					else:
 						oldARecord.append(address)
 			if newAddresses:
-			    for address in newAddresses:
-					if ':' in address: # IPv6
+				for address in newAddresses:
+					if ':' in address:  # IPv6
 						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
-			ml.append(('aRecord',    oldARecord,    newARecord, ))
+			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 
-		if self.hasChanged( 'ip' ):
-			for ipAddress in self[ 'ip' ]:
+		if self.hasChanged('ip'):
+			for ipAddress in self['ip']:
 				if not ipAddress:
 					continue
 				if ipAddress in self.oldinfo.get('ip'):
 					continue
 				if not self.ip_alredy_requested:
 					try:
-						IpAddr = univention.admin.allocators.request( self.lo, self.position, 'aRecord', value = ipAddress )
+						IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=ipAddress)
 						if not IpAddr:
-							self.cancel( )
+							self.cancel()
 							raise univention.admin.uexceptions.noLock
-						self.alloc.append( ( 'aRecord', ipAddress ) )
+						self.alloc.append(('aRecord', ipAddress))
 					except univention.admin.uexceptions.noLock:
-						self.cancel( )
+						self.cancel()
 						univention.admin.allocators.release(self.lo, self.position, "aRecord", ipAddress)
 						self.ip_alredy_requested = 0
 						raise univention.admin.uexceptions.ipAlreadyUsed, ' %s' % ipAddress
 				else:
 					IpAddr = ipAddress
 
-				self.alloc.append( ( 'aRecord', IpAddr ) )
+				self.alloc.append(('aRecord', IpAddr))
 
 				self.ipRequest = 1
-				self.__changes[ 'ip' ][ 'add' ].append( ipAddress )
+				self.__changes['ip']['add'].append(ipAddress)
 
 			for ipAddress in self.oldinfo.get('ip', []):
-				if ipAddress in self.info[ 'ip' ]:
+				if ipAddress in self.info['ip']:
 					continue
-				self.__changes[ 'ip' ][ 'remove' ].append( ipAddress )
+				self.__changes['ip']['remove'].append(ipAddress)
 
-
-		if self.hasChanged( 'name' ):
-			ml.append( ( 'sn', self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] ) )
-			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
+		if self.hasChanged('name'):
+			ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name']))
+			self.__changes['name'] = (self.oldattr.get('sn', [None])[0], self['name'])
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
 
@@ -2134,10 +2137,10 @@ class simpleComputer( simpleLdap ):
 				# the ip address associated with the computer ldap object, but this would
 				# be erroneous anyway. We therefore update the dhcp entry to correspond to
 				# the current ip and mac address. (Bug #20315)
-				dn, ip, mac = self.__split_dhcp_line( self.info['dhcpEntryZone'][0] )
+				dn, ip, mac = self.__split_dhcp_line(self.info['dhcpEntryZone'][0])
 
 				if dn and ip and mac:
-					self.info['dhcpEntryZone'] = [ [ dn, self.info['ip'][0], self.info['mac'][0] ] ]
+					self.info['dhcpEntryZone'] = [[dn, self.info['ip'][0], self.info['mac'][0]]]
 				else:
 					self.info['dhcpEntryZone'] = []
 			else:
@@ -2145,69 +2148,69 @@ class simpleComputer( simpleLdap ):
 				# mac addresses (Bug #18966)
 
 				# get all IP addresses that have been removed
-				removedIPs = [ ip for ip in self.oldinfo.get('ip', []) if ip and ip not in self['ip'] ]
+				removedIPs = [ip for ip in self.oldinfo.get('ip', []) if ip and ip not in self['ip']]
 
 				# get all MAC addresses that have been removed
-				removedMACs = [ mac for mac in self.oldinfo.get('mac', []) if mac and mac not in self['mac'] ]
+				removedMACs = [mac for mac in self.oldinfo.get('mac', []) if mac and mac not in self['mac']]
 
 				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
 				newDhcpEntries = []
 				for entry in self.get('dhcpEntryZone', []):
-					dn, ip, mac = self.__split_dhcp_line( entry )
+					dn, ip, mac = self.__split_dhcp_line(entry)
 					if ip not in removedIPs and mac not in removedMACs:
 						newDhcpEntries.append(entry)
 
 				# update the value
 				self.info['dhcpEntryZone'] = newDhcpEntries
 
-		if self.hasChanged( 'dhcpEntryZone' ):
+		if self.hasChanged('dhcpEntryZone'):
 			if 'dhcpEntryZone' in self.oldinfo:
 				if 'dhcpEntryZone' in self.info:
-					for entry in self.oldinfo[ 'dhcpEntryZone' ]:
-						if not entry in self.info[ 'dhcpEntryZone' ]:
-							self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
+					for entry in self.oldinfo['dhcpEntryZone']:
+						if entry not in self.info['dhcpEntryZone']:
+							self.__changes['dhcpEntryZone']['remove'].append(entry)
 				else:
-					for entry in self.oldinfo[ 'dhcpEntryZone' ]:
-						self.__changes[ 'dhcpEntryZone' ][ 'remove' ].append( entry )
+					for entry in self.oldinfo['dhcpEntryZone']:
+						self.__changes['dhcpEntryZone']['remove'].append(entry)
 			if 'dhcpEntryZone' in self.info:
-				for entry in self.info[ 'dhcpEntryZone' ]:
-					#check if line is valid
-					dn, ip, mac = self.__split_dhcp_line( entry )
+				for entry in self.info['dhcpEntryZone']:
+					# check if line is valid
+					dn, ip, mac = self.__split_dhcp_line(entry)
 					if dn and ip and mac:
 						if entry not in self.oldinfo.get('dhcpEntryZone', []):
-							self.__changes[ 'dhcpEntryZone' ][ 'add' ].append( entry )
+							self.__changes['dhcpEntryZone']['add'].append(entry)
 					else:
 						raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
 
-		if self.hasChanged( 'dnsEntryZoneForward' ):
+		if self.hasChanged('dnsEntryZoneForward'):
 			for entry in self.oldinfo.get('dnsEntryZoneForward', []):
-				if not entry in self.info.get('dnsEntryZoneForward', []):
+				if entry not in self.info.get('dnsEntryZoneForward', []):
 					self.__changes['dnsEntryZoneForward']['remove'].append(entry)
 					self.__remove_associated_domain(entry)
 			for entry in self.info.get('dnsEntryZoneForward', []):
 				if entry == '':
 					continue
-				if not entry in self.oldinfo.get('dnsEntryZoneForward', []):
+				if entry not in self.oldinfo.get('dnsEntryZoneForward', []):
 					self.__changes['dnsEntryZoneForward']['add'].append(entry)
 				self.__set_associated_domain(entry)
 
 		if self.hasChanged('dnsEntryZoneReverse'):
 			for entry in self.oldinfo.get('dnsEntryZoneReverse', []):
-				if not entry in self.info.get('dnsEntryZoneReverse', []):
-						self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ].append(entry)
+				if entry not in self.info.get('dnsEntryZoneReverse', []):
+						self.__changes['dnsEntryZoneReverse']['remove'].append(entry)
 			for entry in self.info.get('dnsEntryZoneReverse', []):
-				if not entry in self.oldinfo.get('dnsEntryZoneReverse', []):
+				if entry not in self.oldinfo.get('dnsEntryZoneReverse', []):
 					self.__changes['dnsEntryZoneReverse']['add'].append(entry)
 
-		if self.hasChanged( 'dnsEntryZoneAlias' ):
+		if self.hasChanged('dnsEntryZoneAlias'):
 			for entry in self.oldinfo.get('dnsEntryZoneAlias', []):
-				if not entry in self.info.get('dnsEntryZoneAlias', []):
+				if entry not in self.info.get('dnsEntryZoneAlias', []):
 					self.__changes['dnsEntryZoneAlias']['remove'].append(entry)
 			for entry in self.info.get('dnsEntryZoneAlias', []):
-				#check if line is valid
+				# check if line is valid
 				dnsForwardZone, dnsAliasZoneContainer, alias = entry
 				if dnsForwardZone and dnsAliasZoneContainer and alias:
-					if not entry in self.oldinfo.get('dnsEntryZoneAlias', []):
+					if entry not in self.oldinfo.get('dnsEntryZoneAlias', []):
 						self.__changes['dnsEntryZoneAlias']['add'].append(entry)
 				else:
 					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
@@ -2221,20 +2224,21 @@ class simpleComputer( simpleLdap ):
 	# for ip='10.200.2.5' and subnet='2.200.10.in-addr.arpa' -> rmIP='5' ('5.2' for 200.10.in-addr.arpa)
 	def calc_dns_reverse_entry_name(self, sip, reverseDN):
 		if ':' in sip:
-			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.ip6.arpa','').split('.')
+			subnet = ldap.explode_dn(reverseDN, 1)[0].replace('.ip6.arpa', '').split('.')
 			# '2001::db8::3' → '2001:0db8:0000:…:003' → '20010db800…003' → ['2', '0', '0', '1', …]
-			ip=list(ipaddr.IPv6Address(sip).exploded.replace(':', ''))
+			ip = list(ipaddr.IPv6Address(sip).exploded.replace(':', ''))
 			return self.calc_dns_reverse_entry_name_do(32, subnet, ip)
 		else:
-			subnet=ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa','').split('.')
-			ip=sip.split('.')
+			subnet = ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa', '').split('.')
+			ip = sip.split('.')
 			return self.calc_dns_reverse_entry_name_do(4, subnet, ip)
+
 	def calc_dns_reverse_entry_name_do(self, maxLength, zoneNet, ip):
 		zoneNet.reverse()
 		if not ip[:len(zoneNet)] == zoneNet:
 			return 0
 		ip.reverse()
-		return '.'.join(ip[ : maxLength-len(zoneNet) ])
+		return '.'.join(ip[: maxLength - len(zoneNet)])
 
 	def _ldap_pre_create(self):
 		super(simpleComputer, self)._ldap_pre_create()
@@ -2244,108 +2248,107 @@ class simpleComputer( simpleLdap ):
 		self.check_common_name_length()
 
 	def _ldap_post_create(self):
-		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
+		for entry in self.__changes['dhcpEntryZone']['remove']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % (entry,))
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = self.__split_dhcp_line(entry)
 			if not ip and not mac and not self.__multiip:
 				mac = ''
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__remove_from_dhcp_object( dn,  mac = mac )
+				self.__remove_from_dhcp_object(dn, mac=mac)
 			else:
-				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
+				self.__remove_from_dhcp_object(dn, ip=ip, mac=mac)
 
-		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
+		for entry in self.__changes['dhcpEntryZone']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
-			dn, ip, mac = self.__split_dhcp_line( entry )
+			dn, ip, mac = self.__split_dhcp_line(entry)
 			if not ip and not mac and not self.__multiip:
-				if len( self[ 'ip' ] ) > 0 and len( self[ 'mac' ] ) > 0:
-					self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
+				if len(self['ip']) > 0 and len(self['mac']) > 0:
+					self.__modify_dhcp_object(dn, self['name'], self['ip'][0], self['mac'][0])
 			else:
-				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
+				self.__modify_dhcp_object(dn, self['name'], ip, mac)
 
-
-		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneForward']['remove']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_forward_object(self['name'], dn, ip)
 			else:
-				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_forward_object(self['name'], dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'add' ]:
+		for entry in self.__changes['dnsEntryZoneForward']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % (entry,))
-			dn, ip = self.__split_dns_line( entry )
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
+			dn, ip = self.__split_dns_line(entry)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % (dn, ip))
 			if not ip and not self.__multiip:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__add_dns_forward_object(self['name'], dn, ip)
 			else:
-				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
+				self.__add_dns_forward_object(self['name'], dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneReverse']['remove']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_reverse_object(self['name'], dn, ip)
 			else:
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__remove_dns_reverse_object(self['name'], dn, ip)
 
-		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ]:
-			dn, ip = self.__split_dns_line( entry )
+		for entry in self.__changes['dnsEntryZoneReverse']['add']:
+			dn, ip = self.__split_dns_line(entry)
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
 					ip = self['ip'][0]
-				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__add_dns_reverse_object(self['name'], dn, ip)
 			else:
-				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
+				self.__add_dns_reverse_object(self['name'], dn, ip)
 
 		if not self.__multiip:
 			if len(self.get('dhcpEntryZone', [])) > 0:
-				dn, ip, mac =  self[ 'dhcpEntryZone' ][ 0 ]
-				for entry in self.__changes[ 'mac' ][ 'add' ]:
-					if len( self[ 'ip' ] ) > 0:
-						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry, ip = self[ 'ip' ][ 0 ] )
+				dn, ip, mac = self['dhcpEntryZone'][0]
+				for entry in self.__changes['mac']['add']:
+					if len(self['ip']) > 0:
+						self.__modify_dhcp_object(dn, self['name'], mac=entry, ip=self['ip'][0])
 					else:
-						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry )
-				for entry in self.__changes[ 'ip' ][ 'add' ]:
-					if len( self[ 'mac' ] ) > 0:
-						self.__modify_dhcp_object( dn, self[ 'name' ], mac = self[ 'mac' ][ 0 ], ip = entry )
+						self.__modify_dhcp_object(dn, self['name'], mac=entry)
+				for entry in self.__changes['ip']['add']:
+					if len(self['mac']) > 0:
+						self.__modify_dhcp_object(dn, self['name'], mac=self['mac'][0], ip=entry)
 
-		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
+		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			if not alias:
 				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but this case does not seem to occur
-				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
-				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
-		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
+				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
+		for entry in self.__changes['dnsEntryZoneAlias']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % (entry,))
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
 			if not alias:
-				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+				self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
-				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+				self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
 
-		if self.ipRequest == 1 and self[ 'ip' ]:
-			for ipAddress in self[ 'ip' ]:
+		if self.ipRequest == 1 and self['ip']:
+			for ipAddress in self['ip']:
 				if ipAddress:
-					univention.admin.allocators.confirm( self.lo, self.position, 'aRecord', ipAddress )
+					univention.admin.allocators.confirm(self.lo, self.position, 'aRecord', ipAddress)
 			self.ipRequest = 0
 
-		if self.macRequest == 1 and self[ 'mac' ]:
-			for macAddress in self[ 'mac' ]:
+		if self.macRequest == 1 and self['mac']:
+			for macAddress in self['mac']:
 				if macAddress:
-					univention.admin.allocators.confirm( self.lo, self.position, 'mac', macAddress )
+					univention.admin.allocators.confirm(self.lo, self.position, 'mac', macAddress)
 			self.macRequest = 0
 
 		self.update_groups()
@@ -2354,20 +2357,19 @@ class simpleComputer( simpleLdap ):
 		if self['mac']:
 			for macAddress in self['mac']:
 				if macAddress:
-					univention.admin.allocators.release( self.lo, self.position, 'mac', macAddress )
+					univention.admin.allocators.release(self.lo, self.position, 'mac', macAddress)
 		if self['ip']:
 			for ipAddress in self['ip']:
 				if ipAddress:
-					univention.admin.allocators.release( self.lo, self.position, 'aRecord', ipAddress )
+					univention.admin.allocators.release(self.lo, self.position, 'aRecord', ipAddress)
 
 		# remove computer from groups
 		groups = copy.deepcopy(self['groups'])
 		if self.oldinfo.get('primaryGroup'):
-			groups.append( self.oldinfo.get('primaryGroup') )
+			groups.append(self.oldinfo.get('primaryGroup'))
 		for group in groups:
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.fast_member_remove( [ self.dn ], self.oldattr.get('uid',[]), ignore_license=1 )
-
+			groupObject.fast_member_remove([self.dn], self.oldattr.get('uid', []), ignore_license=1)
 
 	def __update_groups_after_namechange(self):
 		oldname = self.oldinfo.get('name')
@@ -2384,7 +2386,7 @@ class simpleComputer( simpleLdap ):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
 
-		for group in self.info.get('groups',[]):
+		for group in self.info.get('groups', []):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: grp=%s' % group)
 
 			# Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
@@ -2396,7 +2398,7 @@ class simpleComputer( simpleLdap ):
 			newUniqueMembers = copy.deepcopy(oldUniqueMembers)
 			if olddn in newUniqueMembers:
 				newUniqueMembers.remove(olddn)
-			if not newdn in newUniqueMembers:
+			if newdn not in newUniqueMembers:
 				newUniqueMembers.append(newdn)
 
 			oldUid = '%s$' % oldname
@@ -2405,26 +2407,25 @@ class simpleComputer( simpleLdap ):
 			newMemberUids = copy.deepcopy(oldMemberUids)
 			if oldUid in newMemberUids:
 				newMemberUids.remove(oldUid)
-			if not newUid in newMemberUids:
+			if newUid not in newMemberUids:
 				newMemberUids.append(newUid)
 
 			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
 
-
 	def update_groups(self):
 		if not self.hasChanged('groups') and \
-			   not ('oldPrimaryGroupDn' in self.__dict__ and self.oldPrimaryGroupDn) and \
-			   not ('newPrimaryGroupDn' in self.__dict__ and self.newPrimaryGroupDn):
-			return
+			not ('oldPrimaryGroupDn' in self.__dict__ and self.oldPrimaryGroupDn) and \
+			not ('newPrimaryGroupDn' in self.__dict__ and self.newPrimaryGroupDn):
+				return
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating groups')
 
-		add_to_group=[]
-		remove_from_group=[]
+		add_to_group = []
+		remove_from_group = []
 		for group in self.oldinfo.get('groups', []):
-			if not group in self.info.get('groups', []):
+			if group not in self.info.get('groups', []):
 				remove_from_group.append(group)
 		for group in self.info.get('groups', []):
-			if not group in self.oldinfo.get('groups', []):
+			if group not in self.oldinfo.get('groups', []):
 				add_to_group.append(group)
 
 		if 'oldPrimaryGroupDn' in self.__dict__:
@@ -2441,19 +2442,18 @@ class simpleComputer( simpleLdap ):
 				remove_from_group.remove(self['machineAccountGroup'])
 
 		for group in add_to_group:
-			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
 			groupObject.open()
-			if not self.dn in groupObject['hosts']:
+			if self.dn not in groupObject['hosts']:
 				groupObject['hosts'].append(self.dn)
 				groupObject.modify(ignore_license=1)
 
 		for group in remove_from_group:
-			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
 			groupObject.open()
 			if self.dn in groupObject['hosts']:
 				groupObject['hosts'].remove(self.dn)
 				groupObject.modify(ignore_license=1)
-
 
 	def primary_group(self):
 		if not self.hasChanged('primaryGroup'):
@@ -2461,7 +2461,7 @@ class simpleComputer( simpleLdap ):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating primary groups')
 
 		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
-		self.newPrimaryGroupDn=self['primaryGroup']
+		self.newPrimaryGroupDn = self['primaryGroup']
 		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
 
 		if 'samba' in self.options:
@@ -2472,34 +2472,34 @@ class simpleComputer( simpleLdap ):
 		self.open()
 		if self['dnsEntryZoneForward']:
 			for dnsEntryZoneForward in self['dnsEntryZoneForward']:
-				dn, ip = self.__split_dns_line( dnsEntryZoneForward )
+				dn, ip = self.__split_dns_line(dnsEntryZoneForward)
 				try:
-					self.__remove_dns_forward_object( self[ 'name' ], dn, None )
-				except Exception,e:
+					self.__remove_dns_forward_object(self['name'], dn, None)
+				except Exception, e:
 					self.exceptions.append([_('DNS forward zone'), _('delete'), e])
 
 		if self['dnsEntryZoneReverse']:
 			for dnsEntryZoneReverse in self['dnsEntryZoneReverse']:
-				dn, ip = self.__split_dns_line( dnsEntryZoneReverse )
+				dn, ip = self.__split_dns_line(dnsEntryZoneReverse)
 				try:
-					self.__remove_dns_reverse_object( self[ 'name' ], dn , ip )
-				except Exception,e:
+					self.__remove_dns_reverse_object(self['name'], dn, ip)
+				except Exception, e:
 					self.exceptions.append([_('DNS reverse zone'), _('delete'), e])
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
-				dn, ip, mac = self.__split_dhcp_line( dhcpEntryZone )
+				dn, ip, mac = self.__split_dhcp_line(dhcpEntryZone)
 				try:
-					self.__remove_from_dhcp_object( dn, self[ 'name' ],  None, mac )
-				except Exception,e:
+					self.__remove_from_dhcp_object(dn, self['name'], None, mac)
+				except Exception, e:
 					self.exceptions.append([_('DHCP'), _('delete'), e])
 
 		if self['dnsEntryZoneAlias']:
 			for entry in self['dnsEntryZoneAlias']:
 				dnsForwardZone, dnsAliasZoneContainer, alias = entry
 				try:
-					self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
-				except Exception,e:
+					self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
+				except Exception, e:
 					self.exceptions.append([_('DNS Alias'), _('delete'), e])
 
 		# remove service record entries (see Bug #26400)
@@ -2513,9 +2513,9 @@ class simpleComputer( simpleLdap ):
 			# load zone object
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'clean up entries for zone: %s' % zone)
 			if len(zone) < 1:
-			        continue
+				continue
 			zoneObj = univention.admin.objects.get(
-				univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn = zone[0])
+				univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn=zone[0])
 			zoneObj.open()
 
 			# clean up nameserver records
@@ -2530,7 +2530,6 @@ class simpleComputer( simpleLdap ):
 						zoneObj['nameserver'].remove(fqdnDot)
 						zoneObj.modify()
 
-
 		# iterate over all forward zones
 		for zone in self['dnsEntryZoneForward'] or []:
 			# load zone object
@@ -2538,7 +2537,7 @@ class simpleComputer( simpleLdap ):
 			if len(zone) < 1:
 				continue
 			zoneObj = univention.admin.objects.get(
-				univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn = zone[0])
+				univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn=zone[0])
 			zoneObj.open()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'zone aRecords: %s' % zoneObj['a'])
 
@@ -2571,7 +2570,7 @@ class simpleComputer( simpleLdap ):
 			# clean up service records
 			for irecord in univention.admin.modules.lookup('dns/srv_record', self.co, self.lo, base=self.lo.base, scope='sub', superordinate=zoneObj):
 				irecord.open()
-				new_entries = [ j for j in irecord['location'] if fqdn not in j and fqdnDot not in j ]
+				new_entries = [j for j in irecord['location'] if fqdn not in j and fqdnDot not in j]
 				if len(new_entries) != len(irecord['location']):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Entry found in "%s":\n%s ==> %s' % (irecord.dn, irecord['location'], new_entries))
 					irecord['location'] = new_entries
@@ -2591,149 +2590,151 @@ class simpleComputer( simpleLdap ):
 		if key == 'network':
 			if self.old_network != value:
 				if value and value != 'None':
-					network_object=univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
+					network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
 					network_object.open()
 
-					if not self['ip'] or len( self['ip'] ) < 1 or not self['ip'][ 0 ] or  not univention.admin.ipaddress.ip_is_in_network(network_object['network'],
-													     network_object['netmask'], self['ip'][ 0 ]):
+					if not self['ip'] or len(self['ip']) < 1 or not self['ip'][0] or not univention.admin.ipaddress.ip_is_in_network(network_object['network'], network_object['netmask'], self['ip'][0]):
 						if self.ip_freshly_set:
 							raise_after = univention.admin.uexceptions.ipOverridesNetwork
 						else:
-							#get next IP
+							# get next IP
 							network_object.refreshNextIp()
 							self['ip'] = network_object['nextIp']
 							try:
-								IpAddr=univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][ 0 ])
-								self.ip_alredy_requested=1
-								self.alloc.append(('aRecord',IpAddr))
-								self.ip=IpAddr
+								IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][0])
+								self.ip_alredy_requested = 1
+								self.alloc.append(('aRecord', IpAddr))
+								self.ip = IpAddr
 							except:
 								pass
 
 						self.network_object = network_object
 					if network_object['dnsEntryZoneForward']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self[ 'dnsEntryZoneForward' ] = [ [ network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] ], ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+							self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], self['ip'][0]], ]
 					if network_object['dnsEntryZoneReverse']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneReverse'] = [ [ network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] ], ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+							self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], self['ip'][0]], ]
 					if network_object['dhcpEntryZone']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) == 1:
-							self[ 'dhcpEntryZone' ] = [ [ network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] ], ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) == 1:
+							self['dhcpEntryZone'] = [[network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0]], ]
 						else:
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
-					self.old_network=value
+					self.old_network = value
 
 		elif key == 'ip':
 			self.ip_freshly_set = True
 			if not self.ip or self.ip != value:
 				if self.ip_alredy_requested:
 					univention.admin.allocators.release(self.lo, self.position, 'aRecord', self.ip)
-					self.ip_alredy_requested=0
+					self.ip_alredy_requested = 0
 				if value and self.network_object:
 					if self.network_object['dnsEntryZoneForward']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self[ 'dnsEntryZoneForward' ] = [ [ self.network_object['dnsEntryZoneForward'], self[ 'ip' ][ 0 ] ], ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+							self['dnsEntryZoneForward'] = [[self.network_object['dnsEntryZoneForward'], self['ip'][0]], ]
 					if self.network_object['dnsEntryZoneReverse']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
-							self['dnsEntryZoneReverse'] = [ [ self.network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] ] ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+							self['dnsEntryZoneReverse'] = [[self.network_object['dnsEntryZoneReverse'], self['ip'][0]]]
 					if self.network_object['dhcpEntryZone']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) > 0:
-							self['dhcpEntryZone'] = [ [ self.network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] ], ]
+						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) > 0:
+							self['dhcpEntryZone'] = [[self.network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0]], ]
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
-			if not self.ip or self.ip == None:
+			if not self.ip or self.ip is None:
 				self.ip_freshly_set = False
 
 		elif key == 'mac' and self.__saved_dhcp_entry:
-			if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self[ 'mac' ] and len( self[ 'mac' ] ) > 0:
-				if type( value ) == type( [ ] ):
-					self['dhcpEntryZone'] = [ [ self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value[ 0 ] ], ]
+			if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self['mac'] and len(self['mac']) > 0:
+				if isinstance(value, list):
+					self['dhcpEntryZone'] = [[self.__saved_dhcp_entry, self['ip'][0], value[0]], ]
 				else:
-					self['dhcpEntryZone'] = [ [ self.__saved_dhcp_entry, self[ 'ip' ][ 0 ], value ], ]
+					self['dhcpEntryZone'] = [[self.__saved_dhcp_entry, self['ip'][0], value], ]
 
 		super(simpleComputer, self).__setitem__(key, value)
 		if raise_after:
 			raise raise_after
 
+
 class simpleLdapSub(simpleLdap):
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		base.__init__(self, co, lo, position, dn, superordinate )
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+		base.__init__(self, co, lo, position, dn, superordinate)
 
 	def _create(self):
 		self._modify()
 
 	def _remove(self, remove_childs=0):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'_remove() called')
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '_remove() called')
 		self._ldap_pre_remove()
 
-		ml=self._ldap_dellist()
+		ml = self._ldap_dellist()
 		self.lo.modify(self.dn, ml)
 
 		self._ldap_post_remove()
 
-class simplePolicy(simpleLdap):
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 
-		self.resultmode=0
-		self.dn=dn
+class simplePolicy(simpleLdap):
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+
+		self.resultmode = 0
+		self.dn = dn
 
 		if not hasattr(self, 'cloned'):
-			self.cloned=None
+			self.cloned = None
 
 		if not hasattr(self, 'changes'):
-			self.changes=0
+			self.changes = 0
 
 		if not hasattr(self, 'policy_attrs'):
-			self.policy_attrs={}
+			self.policy_attrs = {}
 
 		if not hasattr(self, 'referring_object_dn'):
-			self.referring_object_dn=None
+			self.referring_object_dn = None
 
-		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes )
+		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 	def copyIdentifier(self, from_object):
 		"""Activate the result mode and set the referring object"""
 
-		self.resultmode=1
+		self.resultmode = 1
 		for key, property in from_object.descriptions.items():
 			if property.identifies:
 				for key2, property2 in self.descriptions.items():
 					if property2.identifies:
-						self.info[key2]=from_object.info[key]
-		self.referring_object_dn=from_object.dn
+						self.info[key2] = from_object.info[key]
+		self.referring_object_dn = from_object.dn
 		if not self.referring_object_dn:
-			self.referring_object_dn=from_object.position.getDn()
-		self.referring_object_position_dn=from_object.position.getDn()
+			self.referring_object_dn = from_object.position.getDn()
+		self.referring_object_position_dn = from_object.position.getDn()
 
-	def clone (self, referring_object ):
+	def clone(self, referring_object):
 		"""Marks the object as a not existing one containing values
 		retrieved by evaluating the policies for the given object"""
 
 		self.cloned = self.dn
 		self.dn = ''
-		self.copyIdentifier( referring_object )
+		self.copyIdentifier(referring_object)
 
 	def getIdentifier(self):
 		for key, property in self.descriptions.items():
-			if property.identifies and key in self.info and self.info[ key ]:
+			if property.identifies and key in self.info and self.info[key]:
 				return key
 
 	def __makeUnique(self):
 		_d = univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
-		identifier=self.getIdentifier()
-		components=self.info[identifier].split("_uv")
+		identifier = self.getIdentifier()
+		components = self.info[identifier].split("_uv")
 		if len(components) > 1:
 			try:
-				n=int(components[1])
-				n+=1
+				n = int(components[1])
+				n += 1
 			except ValueError:
-				n=1
+				n = 1
 		else:
-			n=0
-		self.info[identifier]="%s_uv%d" % (components[0], n)
+			n = 0
+		self.info[identifier] = "%s_uv%d" % (components[0], n)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__makeUnique: result: %s' % self.info[identifier])
 
 	def create(self):
@@ -2743,14 +2744,14 @@ class simplePolicy(simpleLdap):
 
 		self._exists = False
 		try:
-			self.oldinfo={}
+			self.oldinfo = {}
 			simpleLdap.create(self)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
 		except univention.admin.uexceptions.objectExists:
 			self.__makeUnique()
 			self.create()
 
-	def policy_result( self, faked_policy_reference = None ):
+	def policy_result(self, faked_policy_reference=None):
 		"""This method retrieves the policy values currently effective
 		for this object. If the 'resultmode' is not active the evaluation
 		is cancelled.
@@ -2763,38 +2764,38 @@ class simplePolicy(simpleLdap):
 		if not self.resultmode:
 			return
 
-		self.polinfo_more={}
+		self.polinfo_more = {}
 		if not self.policy_attrs:
 			policies = []
 			if isinstance(faked_policy_reference, (list, tuple)):
 				policies.extend(faked_policy_reference)
 			elif faked_policy_reference:
-				policies.append( faked_policy_reference )
+				policies.append(faked_policy_reference)
 
 			# the referring object does not exist yet
 			if not self.referring_object_dn == self.referring_object_position_dn:
-				result = self.lo.getPolicies( self.lo.parentDn( self.referring_object_dn ), policies = policies )
+				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=policies)
 			else:
-				result = self.lo.getPolicies( self.referring_object_position_dn, policies = policies )
+				result = self.lo.getPolicies(self.referring_object_position_dn, policies=policies)
 			for policy_oc, attrs in result.items():
 				if univention.admin.objects.ocToType(policy_oc) == self.module:
-					self.policy_attrs=attrs
+					self.policy_attrs = attrs
 
-		if hasattr( self, '_custom_policy_result_map' ):
+		if hasattr(self, '_custom_policy_result_map'):
 			self._custom_policy_result_map()
 		else:
 			values = {}
 			for attr_name, value_dict in self.policy_attrs.items():
-				values[ attr_name ] = value_dict[ 'value' ]
-				self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+				values[attr_name] = value_dict['value']
+				self.polinfo_more[self.mapping.unmapName(attr_name)] = value_dict
 
-			self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
-			self.polinfo = self._post_unmap( self.polinfo, values )
+			self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
+			self.polinfo = self._post_unmap(self.polinfo, values)
 
 	def __getitem__(self, key):
 		if not self.resultmode:
-			if self.has_key('emptyAttributes') and self.mapping.mapName(key) and self.mapping.mapName(key) in simpleLdap.__getitem__(self,'emptyAttributes'):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__getitem__: empty Attribute %s'%key)
+			if self.has_key('emptyAttributes') and self.mapping.mapName(key) and self.mapping.mapName(key) in simpleLdap.__getitem__(self, 'emptyAttributes'):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__getitem__: empty Attribute %s' % key)
 				if self.descriptions[key].multivalue:
 					return []
 				else:
@@ -2803,14 +2804,14 @@ class simplePolicy(simpleLdap):
 
 		self.policy_result()
 
-		if ( key in self.polinfo and not ( key in self.info or key in self.oldinfo ) ) or ( key in self.polinfo_more and 'fixed' in self.polinfo_more[ key ] and self.polinfo_more[ key ][ 'fixed' ] ):
-			if self.descriptions[key].multivalue and not type(self.polinfo[key]) == types.ListType:
+		if (key in self.polinfo and not (key in self.info or key in self.oldinfo)) or (key in self.polinfo_more and 'fixed' in self.polinfo_more[key] and self.polinfo_more[key]['fixed']):
+			if self.descriptions[key].multivalue and not isinstance(self.polinfo[key], types.ListType):
 				# why isn't this correct in the first place?
-				self.polinfo[key]=[self.polinfo[key]]
+				self.polinfo[key] = [self.polinfo[key]]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__getitem__: presult: %s=%s' % (key, self.polinfo[key]))
 			return self.polinfo[key]
 
-		result=simpleLdap.__getitem__(self, key)
+		result = simpleLdap.__getitem__(self, key)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__getitem__: result: %s=%s' % (key, result))
 		return result
 
@@ -2820,32 +2821,32 @@ class simplePolicy(simpleLdap):
 		if not self.resultmode:
 			return {}
 
-		fixed_attributes={}
+		fixed_attributes = {}
 		if not self.policy_attrs:
 			if not self.referring_object_dn == self.referring_object_position_dn:
-				result=self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn))
+				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn))
 			else:
-				result=self.lo.getPolicies(self.referring_object_position_dn)
+				result = self.lo.getPolicies(self.referring_object_position_dn)
 			for key, value in result.items():
 				if univention.admin.objects.ocToType(key) == self.module:
-					self.policy_attrs=value
+					self.policy_attrs = value
 
 		for attr_name, value_dict in self.policy_attrs.items():
-			if value_dict.has_key( 'fixed' ):
-				fixed_attributes[self.mapping.unmapName(attr_name)]=value_dict['fixed']
+			if value_dict.has_key('fixed'):
+				fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict['fixed']
 			else:
-				fixed_attributes[self.mapping.unmapName(attr_name)]=0
+				fixed_attributes[self.mapping.unmapName(attr_name)] = 0
 
 		return fixed_attributes
 
 	def emptyAttributes(self):
 		'''return effectively empty attributes. '''
 
-		empty_attributes={}
+		empty_attributes = {}
 
 		if self.has_key('emptyAttributes'):
-			for attrib in simpleLdap.__getitem__(self,'emptyAttributes'):
-				empty_attributes[self.mapping.unmapName(attrib)]=1
+			for attrib in simpleLdap.__getitem__(self, 'emptyAttributes'):
+				empty_attributes[self.mapping.unmapName(attrib)] = 1
 
 		return empty_attributes
 
@@ -2858,33 +2859,34 @@ class simplePolicy(simpleLdap):
 
 		if self.polinfo.has_key(key):
 
-			if self.polinfo[key] != newvalue or self.polinfo_more[key]['policy'] == self.cloned or ( self.info.has_key( key ) and self.info[ key ] != newvalue ):
+			if self.polinfo[key] != newvalue or self.polinfo_more[key]['policy'] == self.cloned or (self.info.has_key(key) and self.info[key] != newvalue):
 				if self.polinfo_more[key]['fixed'] and self.polinfo_more[key]['policy'] != self.cloned:
 					raise univention.admin.uexceptions.policyFixedAttribute, key
 				simpleLdap.__setitem__(self, key, newvalue)
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'polinfo: set key %s to newvalue %s' % (key,newvalue) )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'polinfo: set key %s to newvalue %s' % (key, newvalue))
 				if self.hasChanged(key):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'polinfo: key:%s hasChanged' % (key) )
-					self.changes=1
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'polinfo: key:%s hasChanged' % (key))
+					self.changes = 1
 			return
 
 		# this object did not exist before
 		if not self.oldinfo:
 			# if this attribute is of type boolean and the new value is equal to the default, than ignore this "change"
-			if isinstance( self.descriptions[ key ].syntax, univention.admin.syntax.boolean ):
-				if self.descriptions.has_key( key ):
-					default = self.descriptions[ key ].base_default
-					if type( self.descriptions[ key ].base_default ) in ( tuple, list ):
-						default = self.descriptions[ key ].base_default[ 0 ]
-					if ( not default and newvalue == '0' ) or default == newvalue:
+			if isinstance(self.descriptions[key].syntax, univention.admin.syntax.boolean):
+				if self.descriptions.has_key(key):
+					default = self.descriptions[key].base_default
+					if type(self.descriptions[key].base_default) in (tuple, list):
+						default = self.descriptions[key].base_default[0]
+					if (not default and newvalue == '0') or default == newvalue:
 						return
 
 		simpleLdap.__setitem__(self, key, newvalue)
 		if self.hasChanged(key):
-			self.changes=1
+			self.changes = 1
 
 
 class _MergedAttributes(object):
+
 	"""Evaluates old attributes and the modlist to get a new representation of the object."""
 
 	def __init__(self, obj, modlist):

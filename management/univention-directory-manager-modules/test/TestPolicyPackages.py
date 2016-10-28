@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyPackagesBaseCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/%spackages' % self.type
 		super(PolicyPackagesBaseCase,
@@ -45,40 +46,49 @@ class PolicyPackagesBaseCase(GenericTestCase):
 		self.createProperties = {
 			'%sPackages' % self.type: 'this',
 			'%sPackagesRemove' % self.type: 'that',
-			}
+		}
 		self.modifyProperties = {
 			'%sPackages' % self.type: 'these',
 			'%sPackagesRemove' % self.type: 'those',
-			}
+		}
 		self.name = 'test%spackagespolicy' % self.type
 
 
 class PolicyMasterPackagesTestCase(PolicyPackagesBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'master'
 		super(PolicyMasterPackagesTestCase,
 		      self).__init__(*args, **kwargs)
 
+
 class PolicySlavePackagesTestCase(PolicyPackagesBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'slave'
 		super(PolicySlavePackagesTestCase,
 		      self).__init__(*args, **kwargs)
 
+
 class PolicyMemberPackagesTestCase(PolicyPackagesBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'member'
 		super(PolicyMemberPackagesTestCase,
 		      self).__init__(*args, **kwargs)
 
+
 class PolicyManagedClientPackagesTestCase(PolicyPackagesBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'managedclient'
 		super(PolicyManagedClientPackagesTestCase,
 		      self).__init__(*args, **kwargs)
 		self.type = 'client'
 
+
 class PolicyMobileClientPackagesTestCase(PolicyPackagesBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'mobileclient'
 		super(PolicyMobileClientPackagesTestCase,
@@ -87,7 +97,8 @@ class PolicyMobileClientPackagesTestCase(PolicyPackagesBaseCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyMasterPackagesTestCase())
 	suite.addTest(PolicySlavePackagesTestCase())

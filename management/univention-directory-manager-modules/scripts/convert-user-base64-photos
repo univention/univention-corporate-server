@@ -38,18 +38,18 @@ import univention.uldap
 import ldap
 import ldap.modlist
 
-ACTIONS = ( 'test', 'convert' )
+ACTIONS = ('test', 'convert')
 JPEG_HEADER = '\xff\xd8\xff\xe0'
 
 ucr = config.ConfigRegistry()
 ucr.load()
 
 
-def find_users( lo ):
+def find_users(lo):
 	return udm_modules.lookup('users/user', None, lo, filter='jpegPhoto=*', base=ucr['ldap/base'], scope='sub')
 
 
-def run(action, verbose = False):
+def run(action, verbose=False):
 	lo = univention.uldap.getAdminConnection()
 
 	# find all users with a jpegPhoto attribute
@@ -58,14 +58,14 @@ def run(action, verbose = False):
 
 	# iterate over user objects
 	for idn, iobj in result:
-		def log(msg, force = False):
+		def log(msg, force=False):
 			if verbose or force:
 				print 'DN: %s\n%s\n' % (idn, msg)
 
 		msg = ''
 		try:
 			b64 = iobj['jpegPhoto'][0]
-		except Exception, e:
+		except Exception as e:
 			log('ERROR: failed to open LDAP object: %s' % e)
 			continue
 
@@ -80,7 +80,7 @@ def run(action, verbose = False):
 		try:
 			bin = b64.decode('base64')
 			_b64 = bin.encode('base64')
-		except Error, e:
+		except Error as e:
 			# no base64 encoded jpeg photo
 			log('jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
 			continue
@@ -99,23 +99,23 @@ def run(action, verbose = False):
 
 if __name__ == '__main__':
 	# parse arguments and options
-	parser = optparse.OptionParser( usage = 'Usage: %%prog [options] (%s)\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.' % '|'.join( ACTIONS ) )
+	parser = optparse.OptionParser(usage='Usage: %%prog [options] (%s)\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.' % '|'.join(ACTIONS))
 	parser.add_option("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
 	(options, args, ) = parser.parse_args()
 
 	# check argument (action)
 	if not args:
 		print >>sys.stderr, 'warning: no action given. default is test'
-		args = [ 'test' ]
+		args = ['test']
 
-	if args[ 0 ] not in ( 'test', 'convert' ):
-		print >>sys.stderr, 'error: unknown action %s' % args[ 0 ]
+	if args[0] not in ('test', 'convert'):
+		print >>sys.stderr, 'error: unknown action %s' % args[0]
 		parser.print_help()
-		sys.exit( 3 )
+		sys.exit(3)
 
 	# action!
 	try:
-		run(args[0], verbose = options.verbose)
+		run(args[0], verbose=options.verbose)
 	except ldap.SERVER_DOWN as e:
 		print >>sys.stderr, 'ERROR: could not contact LDAP server: %s' % e
 		sys.exit(1)

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyPrintServerTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/printserver'
 		super(PolicyPrintServerTestCase,
@@ -44,15 +45,16 @@ class PolicyPrintServerTestCase(GenericTestCase):
 		super(PolicyPrintServerTestCase, self).setUp()
 		self.createProperties = {
 			'printServer': 'nohost.local'
-			}
+		}
 		self.modifyProperties = {
 			'printServer': 'anyhost.anywhere'
-			}
+		}
 		self.name = 'testprintserverpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyPrintServerTestCase())
 	return suite

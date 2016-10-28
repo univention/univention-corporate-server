@@ -41,28 +41,30 @@ _ = translation.translate
 
 
 def lockDn(lo, position, type, value, scope):
-	dn = [ [('cn', value,        ldap.AVA_STRING)],
-	       [('cn', type,         ldap.AVA_STRING)],
-	       [('cn', 'temporary',  ldap.AVA_STRING)],
-	       [('cn', 'univention', ldap.AVA_STRING)],
-	       ]
+	dn = [
+		[('cn', value, ldap.AVA_STRING)],
+		[('cn', type, ldap.AVA_STRING)],
+		[('cn', 'temporary', ldap.AVA_STRING)],
+		[('cn', 'univention', ldap.AVA_STRING)],
+	]
 	if scope == 'domain':
 		dn += ldap.dn.str2dn(position.getDomain())
 	else:
 		dn += ldap.dn.str2dn(position.getBase())
 	return ldap.dn.dn2str(dn)
 
+
 def lock(lo, position, type, value, scope='domain', timeout=300):
 
-	_d=univention.debug.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
-	dn=lockDn(lo, position, type, value, scope)
+	_d = univention.debug.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
+	dn = lockDn(lo, position, type, value, scope)
 
-	now=int(time.time())
+	now = int(time.time())
 	if timeout > 0:
-		locktime=now+timeout
+		locktime = now + timeout
 	else:
-		locktime=0
-	al=[
+		locktime = 0
+	al = [
 		('objectClass', ['top', 'lock']),
 		('cn', [value]),
 		('lockTime', [str(locktime)]),
@@ -76,15 +78,15 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 		except univention.admin.uexceptions.permissionDenied:
 			raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
-	oldlocktime=lo.getAttr(dn, 'lockTime')
+	oldlocktime = lo.getAttr(dn, 'lockTime')
 	if oldlocktime and oldlocktime[0]:
-		oldlocktime=int(oldlocktime[0])
+		oldlocktime = int(oldlocktime[0])
 	else:
-		oldlocktime=0
+		oldlocktime = 0
 
 	# lock is old, try again
 	if oldlocktime > 0 and oldlocktime < now:
-		ml=[
+		ml = [
 			('lockTime', str(oldlocktime), str(locktime))
 		]
 		try:
@@ -95,17 +97,18 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
+
 def relock(lo, position, type, value, scope='domain', timeout=300):
 
-	_d=univention.debug.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
-	dn=lockDn(lo, position, type, value, scope)
+	_d = univention.debug.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
+	dn = lockDn(lo, position, type, value, scope)
 
-	now=int(time.time())
+	now = int(time.time())
 	if timeout > 0:
-		locktime=now+timeout
+		locktime = now + timeout
 	else:
-		locktime=0
-	ml=[
+		locktime = 0
+	ml = [
 		('lockTime', 1, str(locktime))
 	]
 	try:
@@ -113,21 +116,23 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 		return locktime
 	except ldap.INSUFFICIENT_ACCESS:
 		raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
-	
+
 	# locking failed
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
+
 def unlock(lo, position, type, value, scope='domain'):
-	
-	_d=univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
-	dn=lockDn(lo, position, type, value, scope)
+
+	_d = univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
+	dn = lockDn(lo, position, type, value, scope)
 	try:
 		lo.delete(dn, exceptions=True)
 	except ldap.NO_SUCH_OBJECT:
 		pass
-	
+
+
 def getLock(lo, position, type, value, scope='domain'):
-	dn=lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value, scope)
 	try:
 		return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
 	except ldap.NO_SUCH_OBJECT:

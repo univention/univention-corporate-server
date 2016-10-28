@@ -34,10 +34,12 @@ import optparse
 import sys
 import univention.uldap
 
+
 def buildModuleIdentifyMapping():
 	import univention.admin.modules
 	univention.admin.modules.update()
 	return dict([(name, module.identify, ) for (name, module, ) in univention.admin.modules.modules.items() if 'identify' in dir(module)])
+
 
 def parseOptions():
 	parser = optparse.OptionParser(usage='Usage: %prog (-n|-a) [options]\nSet the attribute univentionObjectType for each directory object')
@@ -67,6 +69,7 @@ def parseOptions():
 		sys.exit(3)
 	return options
 
+
 def warningSupressed(dn, attributes):
 	# cn=admin,$ldap_base cn=backup,$ldap_base
 	if set(attributes.keys()) == set(('objectClass', 'userPassword', 'cn', 'sn', )):
@@ -76,7 +79,7 @@ def warningSupressed(dn, attributes):
 	# Kerberos principal objects
 	if set(attributes['objectClass']) == set(('top', 'account', 'krb5Principal', 'krb5KDCEntry', )):
 		return True
-	if set(attributes['objectClass']) == set(('top', 'person' , 'krb5Principal', 'krb5KDCEntry', )):
+	if set(attributes['objectClass']) == set(('top', 'person', 'krb5Principal', 'krb5KDCEntry', )):
 		return True
 	# samba idmap objects
 	if set(attributes['objectClass']) == set(('sambaIdmapEntry', 'sambaSidEntry', )):
@@ -100,6 +103,7 @@ def warningSupressed(dn, attributes):
 		return True
 	return warningHidden(dn, attributes)
 
+
 def warningHidden(dn, attributes):
 	if warningHidden.verbose:
 		return False
@@ -114,12 +118,13 @@ def warningHidden(dn, attributes):
 	return False
 warningHidden.verbose = False
 
+
 def main(options):
 	errorsOccurred = False
 	if options.verify:
-		searchFilter='(objectClass=*)'
+		searchFilter = '(objectClass=*)'
 	else:
-		searchFilter='(!(objectClass=univentionObject))'
+		searchFilter = '(!(objectClass=univentionObject))'
 	moduleIdentify = buildModuleIdentifyMapping()
 	uldap = univention.uldap.getAdminConnection()
 	if options.action is not True:
@@ -134,9 +139,9 @@ def main(options):
 			if 'univentionObject' not in attributes['objectClass']:
 				try:
 					changes = [
-						('objectClass', attributes['objectClass'], attributes ['objectClass'] + ['univentionObject'], ),
+						('objectClass', attributes['objectClass'], attributes['objectClass'] + ['univentionObject'], ),
 						('univentionObjectType', [], [matches[0], ], ),
-						]
+					]
 					uldap.modify(dn, changes)
 				except univention.uldap.ldap.INVALID_SYNTAX as e:
 					# this error should not happen, in case it does, it is an indicator that

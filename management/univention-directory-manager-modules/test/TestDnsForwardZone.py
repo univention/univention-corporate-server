@@ -35,11 +35,12 @@ from GenericTest import GenericTestCase
 
 
 class DnsForwardZoneTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/forward_zone'
 		super(DnsForwardZoneTestCase, self).__init__(*args, **kwargs)
 
-	def setUp(self, subnet = None):
+	def setUp(self, subnet=None):
 		super(DnsForwardZoneTestCase, self).setUp()
 		if subnet is None:
 			subnet = self.random(2)
@@ -56,7 +57,7 @@ class DnsForwardZoneTestCase(GenericTestCase):
 			'expire': '12',
 			'serial': '4',
 			'nameserver': {'append': hosts[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'refresh': '11',
 			'zonettl': '12',
@@ -67,7 +68,7 @@ class DnsForwardZoneTestCase(GenericTestCase):
 			'serial': '16',
 			'nameserver': {'remove': hosts[:1],
 				       'append': hosts[2:]},
-			}
+		}
 		self.name = 'testdnsforwardzone' + str(subnet)
 
 

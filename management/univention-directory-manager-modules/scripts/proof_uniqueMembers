@@ -77,8 +77,7 @@ def check_primary(conn, basedn):
 	info("Checking if users are member of their primary group...")
 	try:
 		# GID's will only be found in posixAccount
-		user_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
-				'(objectClass=posixAccount)', ['gidNumber', 'uid'])
+		user_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(objectClass=posixAccount)', ['gidNumber', 'uid'])
 	except ldap.NO_SUCH_OBJECT:
 		fatal("ldap search in %s failed (no such base dn)", basedn)
 	count_changes = 0
@@ -89,14 +88,15 @@ def check_primary(conn, basedn):
 			warn("posixAccount without gidNumber: %s", user_dn)
 
 		# search corresponding group
-		group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
-				'(&(objectClass=univentionGroup)(gidNumber=%s))' % (user_gid,),
-				['uniqueMember', 'memberUid'])
+		group_result = conn.search_s(
+			basedn, ldap.SCOPE_SUBTREE,
+			'(&(objectClass=univentionGroup)(gidNumber=%s))' % (user_gid,),
+			['uniqueMember', 'memberUid']
+		)
 
 		# there must be exactly one group with this gid
 		if len(group_result) > 1:
-			warn("found more than one univentionGroup for gidNumber=%s!",
-					user_gid)
+			warn("found more than one univentionGroup for gidNumber=%s!", user_gid)
 		elif len(group_result) < 1 and not user_gid == "0":
 			warn("found no univentionGroup for gidNumber=%s!", user_gid)
 		# we change them all -- the user needs to delete all but one of them
@@ -111,23 +111,20 @@ def check_primary(conn, basedn):
 				modlist.append((ldap.MOD_ADD, 'memberUid', user_uid))
 			# no entry found, gonna add one
 			if modlist:
-				info("Adding uniqueMember and memberUid entry for '%s' in '%s'",
-						user_dn, group_dn)
+				info("Adding uniqueMember and memberUid entry for '%s' in '%s'", user_dn, group_dn)
 				try:
 					conn.modify_s(group_dn, modlist)
 					count_changes += 1
 				except ldap.LDAPError:
 					warn("failed to modify group %s", group_dn)
-	info("Checked %d posixAccounts, fixed %d issues.",
-			len(user_result), count_changes)
+	info("Checked %d posixAccounts, fixed %d issues.", len(user_result), count_changes)
 
 
 def check_groups(conn, basedn):
 	"""Check if members of group exist."""
 	info("Checking if group-members exist...")
 	try:
-		group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
-				'(objectClass=posixGroup)', ['uniqueMember', 'memberUid'])
+		group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(objectClass=posixGroup)', ['uniqueMember', 'memberUid'])
 	except ldap.NO_SUCH_OBJECT:
 		fatal("ldap search in %s failed (no such base dn)", basedn)
 
@@ -136,8 +133,7 @@ def check_groups(conn, basedn):
 		count_changes += check_groups_by_dn(conn, group_dn, group)
 		count_changes += check_groups_by_uid(conn, basedn, group_dn, group)
 
-	info("Checked %d posixGroups, fixed %d issues.",
-			len(group_result), count_changes)
+	info("Checked %d posixGroups, fixed %d issues.", len(group_result), count_changes)
 
 
 def check_groups_by_dn(conn, group_dn, group):
@@ -154,15 +150,12 @@ def check_groups_by_dn(conn, group_dn, group):
 			continue
 
 		try:
-			member_result = conn.search_s(base, ldap.SCOPE_ONELEVEL,
-					member_filter, ['objectClass'])
+			member_result = conn.search_s(base, ldap.SCOPE_ONELEVEL, member_filter, ['objectClass'])
 		except ldap.LDAPError:
-			warn("Manual: Search for member DN '%s' of group '%s' failed",
-					member_dn, group_dn)
+			warn("Manual: Search for member DN '%s' of group '%s' failed", member_dn, group_dn)
 		else:
 			if len(member_result) > 1:
-				warn("Manual: Multiple members for DN '%s' of group '%s'",
-						member_dn, group_dn)
+				warn("Manual: Multiple members for DN '%s' of group '%s'", member_dn, group_dn)
 			elif len(member_result) < 1:
 				warn("No member for DN '%s', will be removed", member_dn)
 				remmembers.add(member_dn)
@@ -173,8 +166,7 @@ def check_groups_by_dn(conn, group_dn, group):
 			conn.modify_s(group_dn, modlist)
 			count_changes += 1
 		except ldap.LDAPError:
-			warn("failed to remove DN '%s' from group '%s'",
-					member_dn, group_dn)
+			warn("failed to remove DN '%s' from group '%s'", member_dn, group_dn)
 	return count_changes
 
 
@@ -185,15 +177,12 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
 	remmembers = set()
 	for member_uid in group_member_uids:
 		try:
-			member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE,
-					'(uid=%s)' % (member_uid,), ['objectClass'])
+			member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(uid=%s)' % (member_uid,), ['objectClass'])
 		except ldap.LDAPError:
-			warn("Manual: Search for member UID '%s' of group '%s' failed",
-					member_uid, group_dn)
+			warn("Manual: Search for member UID '%s' of group '%s' failed", member_uid, group_dn)
 		else:
 			if len(member_result) > 1:
-				warn("Manual: Multiple members for UID '%s' of group '%s'",
-						member_uid, group_dn)
+				warn("Manual: Multiple members for UID '%s' of group '%s'", member_uid, group_dn)
 			elif len(member_result) < 1:
 				warn("No member for UID '%s', will be removed", member_uid)
 				remmembers.add(member_uid)
@@ -204,20 +193,15 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
 			conn.modify_s(group_dn, modlist)
 			count_changes += 1
 		except ldap.LDAPError:
-			warn("Failed to remove UID '%s' from group '%s'",
-					member_uid, group_dn)
+			warn("Failed to remove UID '%s' from group '%s'", member_uid, group_dn)
 	return count_changes
 
 
 def main():
 	"""Check group membership."""
 	parser = OptionParser()
-	parser.add_option("-b", "--base-dn",
-			dest="basedn", action="store",
-			help="ldap base DN for user search")
-	parser.add_option("-c", "--check",
-			dest="check", action="store_true",
-			help="Only check, do not modify")
+	parser.add_option("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")
+	parser.add_option("-c", "--check", dest="check", action="store_true", help="Only check, do not modify")
 	(options, _args) = parser.parse_args()
 
 	ucr = ConfigRegistry()

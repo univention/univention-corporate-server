@@ -37,6 +37,7 @@ from TestDhcpSubnet import DhcpSubnetTestCase
 
 
 class DhcpPoolTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dhcp/pool'
 		super(DhcpPoolTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DhcpPoolTestCase(GenericTestCase):
 		self.__subnet = subnet
 
 	def __removeSubnet(self):
-		proc = self.__subnet.remove(dn = self.__subnet.dn)
+		proc = self.__subnet.remove(dn=self.__subnet.dn)
 		self.__checkProcess(proc, self.__subnet, 'remove')
 		self.__subnet.tearDown()
 
@@ -72,7 +73,7 @@ class DhcpPoolTestCase(GenericTestCase):
 			'known_clients': 'allow',
 			'unknown_clients': 'allow',
 			'range': {'append': ranges[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'all_clients': 'deny',
 			'failover_peer': '',
@@ -81,7 +82,7 @@ class DhcpPoolTestCase(GenericTestCase):
 			'unknown_clients': 'deny',
 			'range': {'append': ranges[2:],
 				  'remove': ranges[:1]},
-			}
+		}
 		self.name = 'testdhcppool'
 
 	def tearDown(self):

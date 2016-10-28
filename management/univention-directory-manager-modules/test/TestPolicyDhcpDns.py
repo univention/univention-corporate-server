@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpDnsTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_dns'
 		super(PolicyDhcpDnsTestCase,
@@ -50,7 +51,7 @@ class PolicyDhcpDnsTestCase(GenericTestCase):
 			'domain_name': 'moo.bla',
 			'domain_name_servers': {'append': servers[:2]},
 			'position': self.rdn('cn=policies'),
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'person',
@@ -58,12 +59,13 @@ class PolicyDhcpDnsTestCase(GenericTestCase):
 			'domain_name': 'bla.moo',
 			'domain_name_servers': {'append': servers[2:],
 						'remove': servers[:1]},
-			}
+		}
 		self.name = 'testdhcpdnspolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpDnsTestCase())
 	return suite

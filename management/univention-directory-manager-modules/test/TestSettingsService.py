@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsServiceTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/service'
 		super(SettingsServiceTestCase,
@@ -47,7 +48,8 @@ class SettingsServiceTestCase(GenericTestCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsServiceTestCase())
 	return suite

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpRoutingTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_routing'
 		super(PolicyDhcpRoutingTestCase,
@@ -48,19 +49,20 @@ class PolicyDhcpRoutingTestCase(GenericTestCase):
 			'prohibitedObjectClasses': 'posixAccount',
 			'fixedAttributes': 'univentionDhcpRouters',
 			'routers': {'append': routers[:2]}
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
 			'fixedAttributes': 'univentionDhcpRouters',
 			'routers': {'append': routers[2:],
 				    'remove': routers[:1]}
-			}
+		}
 		self.name = 'testdhcproutingpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpRoutingTestCase())
 	return suite

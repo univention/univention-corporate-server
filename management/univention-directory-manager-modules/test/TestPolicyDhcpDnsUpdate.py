@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpDnsUpdateTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_dnsupdate'
 		super(PolicyDhcpDnsUpdateTestCase,
@@ -55,7 +56,7 @@ class PolicyDhcpDnsUpdateTestCase(GenericTestCase):
 			'ddnsUpdates': 'on',
 			'ddnsUpdateStyle': 'ad-hoc',
 			'position': self.rdn('cn=policies'),
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -68,12 +69,13 @@ class PolicyDhcpDnsUpdateTestCase(GenericTestCase):
 			'ddnsDoForwardUpdate': 'false',
 			'ddnsUpdates': 'off',
 			'ddnsUpdateStyle': 'interim',
-			}
+		}
 		self.name = 'testdhcpcndupdatepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpDnsUpdateTestCase())
 	return suite

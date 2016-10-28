@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase, TestError
 
 
 class MissingObjectClassError(TestError):
+
 	def __init__(self, test, dn, missing, classes):
 		e1 = 'Object %s at DN %s (module %s)' \
 		     % (test.name, dn, test.modname)
@@ -43,7 +44,9 @@ class MissingObjectClassError(TestError):
 		error = e1 + e2 + e3
 		TestError.__init__(self, error, test)
 
+
 class ErroneousObjectClassError(TestError):
+
 	def __init__(self, test, dn, present, classes):
 		e1 = 'Object %s at DN %s (module %s)' \
 		     % (test.name, dn, test.modname)
@@ -53,14 +56,16 @@ class ErroneousObjectClassError(TestError):
 		error = e1 + e2 + e3
 		TestError.__init__(self, error, test)
 
+
 class SharesShareBaseCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'shares/share'
 		super(SharesShareBaseCase, self).__init__(*args, **kwargs)
 
 	# Ensure that the present objectClasses match the desired share types.
 	def hookAfterCreated(self, dn):
-		attr = self.ldap.get(dn = dn, attr = ['objectClass'])
+		attr = self.ldap.get(dn=dn, attr=['objectClass'])
 		nfs = bool('univentionShareNFS' in attr['objectClass'])
 		smb = bool('univentionShareSamba' in attr['objectClass'])
 		if nfs != self.nfs:
@@ -81,36 +86,36 @@ class SharesShareBaseCase(GenericTestCase):
 		propsAdd = {
 			'host': self.bc('hostname'),
 			'path': '/home/share',
-			}
+		}
 		propsAddNfs = {
 			'writeable': '1',
-			}
+		}
 		propsAddSamba = {
-			'sambaName':               'mootestshare',
-			'sambaPublic':             '0',
-			'sambaBrowseable':         '1',
-			'sambaWriteable':          '1',
-			'sambaCreateMode':         '666',
-			'sambaDirectoryMode':      '777',
-			'sambaForceCreateMode':    '888',
+			'sambaName': 'mootestshare',
+			'sambaPublic': '0',
+			'sambaBrowseable': '1',
+			'sambaWriteable': '1',
+			'sambaCreateMode': '666',
+			'sambaDirectoryMode': '777',
+			'sambaForceCreateMode': '888',
 			'sambaForceDirectoryMode': '999',
-			}
+		}
 		propsMod = {
 			'path': '/home/sharez',
-			}
+		}
 		propsModNfs = {
 			'writeable': '0',
-			}
+		}
 		propsModSamba = {
-			'sambaName':               'mootestsharez',
-			'sambaPublic':             '1',
-			'sambaBrowseable':         '0',
-			'sambaWriteable':          '0',
-			'sambaCreateMode':         '555',
-			'sambaDirectoryMode':      '444',
-			'sambaForceCreateMode':    '333',
+			'sambaName': 'mootestsharez',
+			'sambaPublic': '1',
+			'sambaBrowseable': '0',
+			'sambaWriteable': '0',
+			'sambaCreateMode': '555',
+			'sambaDirectoryMode': '444',
+			'sambaForceCreateMode': '333',
 			'sambaForceDirectoryMode': '222',
-			}
+		}
 		options = []
 		if self.nfs:
 			propsAdd.update(propsAddNfs)
@@ -134,18 +139,23 @@ class SharesShareBaseCase(GenericTestCase):
 
 
 class SharesNfsShareTestCase(SharesShareBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.nfs = True
 		self.smb = False
 		super(SharesNfsShareTestCase, self).__init__(*args, **kwargs)
 
+
 class SharesSambaShareTestCase(SharesShareBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.nfs = False
 		self.smb = True
 		super(SharesSambaShareTestCase, self).__init__(*args, **kwargs)
 
+
 class SharesNfsSambaShareTestCase(SharesShareBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.nfs = True
 		self.smb = True
@@ -153,7 +163,8 @@ class SharesNfsSambaShareTestCase(SharesShareBaseCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SharesNfsShareTestCase())
 	suite.addTest(SharesSambaShareTestCase())

@@ -32,16 +32,18 @@ Univention Directory Manager Tools
 This tool removes the sambaPwdMustChange value from all accounts
 '''
 
-import sys, copy, ldap
+import sys
+import copy
+import ldap
 import univention.admin
 import univention.admin.uldap
 from optparse import OptionParser
 
 if __name__ == '__main__':
 
-	ACTIONS = ( 'test', 'remove' )
+	ACTIONS = ('test', 'remove')
 
-	parser = OptionParser( usage = 'Usage: %%prog (%s)\nremove the sambaPwdMustChange value from all accounts' % '|'.join(ACTIONS) )
+	parser = OptionParser(usage='Usage: %%prog (%s)\nremove the sambaPwdMustChange value from all accounts' % '|'.join(ACTIONS))
 	(options, args) = parser.parse_args()
 
 	# check argument (action)
@@ -69,10 +71,9 @@ if __name__ == '__main__':
 		print 'No user with sambaPwdMustChange was found.'
 	else:
 		for ob in res:
-			print 'Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0], ob[0],), 
+			print 'Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0], ob[0],),
 			if action == 'remove':
 				lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), '')])
 				print 'done'
 			else:
 				print '(testing mode)'
-

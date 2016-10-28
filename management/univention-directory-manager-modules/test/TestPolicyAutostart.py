@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyAutostartTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/autostart'
 		super(PolicyAutostartTestCase,
@@ -44,15 +45,16 @@ class PolicyAutostartTestCase(GenericTestCase):
 		super(PolicyAutostartTestCase, self).setUp()
 		self.createProperties = {
 			'autostartScript': 'reboot'
-			}
+		}
 		self.modifyProperties = {
 			'autostartScript': 'nuke'
-			}
+		}
 		self.name = 'testautostartpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyAutostartTestCase())
 	return suite

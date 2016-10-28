@@ -33,10 +33,13 @@
 
 from GenericTest import GenericTestCase, PropertyInvalidError
 
-import os, random, string
+import os
+import random
+import string
 
 
 class ComputerTrustAccountTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'computers/trustaccount'
 		super(ComputerTrustAccountTestCase,
@@ -45,9 +48,9 @@ class ComputerTrustAccountTestCase(GenericTestCase):
 	def __checkPassword(self, dn, password):
 		hashes = ['sambaNTPassword', 'sambaLMPassword']
 		prop = 'password'
-		attr = self.ldap.get(dn = dn, attr = hashes)
+		attr = self.ldap.get(dn=dn, attr=hashes)
 		try:
-			pipe = os.popen('echo "%s" | univention-smbencrypt' \
+			pipe = os.popen('echo "%s" | univention-smbencrypt'
 					% password)
 			lm1, nt1 = pipe.readline().strip().split(':')
 			lm2 = attr['sambaLMPassword'][0]
@@ -75,10 +78,10 @@ class ComputerTrustAccountTestCase(GenericTestCase):
 		self.createProperties = {
 			'position': self.rdn('cn=computers'),
 			'password': ''.join(random.sample(string.letters, 8)),
-			}
+		}
 		self.modifyProperties = {
 			'password': ''.join(random.sample(string.letters, 8)),
-			}
+		}
 		self.name = 'testtrustaccount'
 
 

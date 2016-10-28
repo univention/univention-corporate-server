@@ -36,6 +36,7 @@ from TestDhcpService import DhcpServiceTestCase
 
 
 class DhcpHostTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dhcp/host'
 		super(DhcpHostTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DhcpHostTestCase(GenericTestCase):
 		self.__service = service
 
 	def __removeService(self):
-		proc = self.__service.remove(dn = self.__service.dn)
+		proc = self.__service.remove(dn=self.__service.dn)
 		self.__checkProcess(proc, self.__service, 'remove')
 		self.__service.tearDown()
 
@@ -66,12 +67,12 @@ class DhcpHostTestCase(GenericTestCase):
 		self.createProperties = {
 			'hwaddress': 'ethernet 55:44:33:22:11:00',
 			'fixedaddress': {'append': ips[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'hwaddress': 'ethernet 55:44:33:22:11:01',
 			'fixedaddress': {'append': ips[2:],
 					 'remove': ips[:1]},
-			}
+		}
 		self.name = 'testdhcphost'
 
 	def tearDown(self):

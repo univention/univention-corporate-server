@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyXFreeTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/xfree'
 		super(PolicyXFreeTestCase,
@@ -55,7 +56,7 @@ class PolicyXFreeTestCase(GenericTestCase):
 			'mouseProtocol': 'PS/2',
 			'hSync': '30-60',
 			'vRefresh': '40-100',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -69,12 +70,13 @@ class PolicyXFreeTestCase(GenericTestCase):
 			'mouseProtocol': 'Auto',
 			'hSync': '30-50',
 			'vRefresh': '40-50',
-			}
+		}
 		self.name = 'testxfreepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyXFreeTestCase())
 	return suite

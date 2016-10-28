@@ -62,6 +62,8 @@ _ = translation.translate
 #
 # load all additional syntax files from */site-packages/univention/admin/syntax.d/*.py
 #
+
+
 def import_syntax_files():
 	global _  # don't allow syntax to overwrite our global _ function.
 	gettext = _
@@ -78,56 +80,66 @@ def import_syntax_files():
 						exec fd in sys.modules[__name__].__dict__
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc() )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
 				finally:
 					_ = gettext
 
 
 choice_update_functions = []
+
+
 def __register_choice_update_function(func):
 	choice_update_functions.append(func)
+
 
 def update_choices():
 	''' update choices which are defined in LDAP '''
 	for func in choice_update_functions:
 		func()
 
-def is_syntax( syntax_obj, syntax_type ):
+
+def is_syntax(syntax_obj, syntax_type):
 	"""Returns True if the syntax object/class matches the given type."""
 
-	return type( syntax_obj ) == type and issubclass( syntax_obj, syntax_type ) or isinstance( syntax_obj, syntax_type )
+	return type(syntax_obj) == type and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
 
-class ClassProperty( object ):
+
+class ClassProperty(object):
+
 	'''A decorator that can be used to define read-only class properties'''
-	def __init__( self, getter ):
+
+	def __init__(self, getter):
 		self.getter = getter
 
-	def __get__( self, instance, owner ):
-		return self.getter( owner )
+	def __get__(self, instance, owner):
+		return self.getter(owner)
 
 # widget sizes
-SIZES = ( 'OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'FiveThirds' )
+SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'FiveThirds')
 
-class ISyntax( object ):
+
+class ISyntax(object):
+
 	'''A base class for all syntax classes'''
 	size = 'One'
 
 	@ClassProperty
-	def name( cls ):
+	def name(cls):
 		return cls.__name__
 
 	@ClassProperty
-	def type( cls ):
+	def type(cls):
 		return cls.__name__
 
 	@classmethod
 	def tostring(self, text):
 		return text
 
-class simple( ISyntax ):
+
+class simple(ISyntax):
 	regex = None
-	error_message = _( 'Invalid value' )
+	error_message = _('Invalid value')
 
 	@classmethod
 	def parse(self, text):
@@ -145,7 +157,7 @@ class simple( ISyntax ):
 		return '*'
 
 	@classmethod
-	def checkLdap( self, lo, value ):
+	def checkLdap(self, lo, value):
 		""" parseLdap() checks the given value against the current LDAP state by
 			reading directly from LDAP directory. The function returns nothing
 			or raises an exception, if the value does not match with predefined
@@ -154,7 +166,8 @@ class simple( ISyntax ):
 		pass
 
 
-class select( ISyntax ):
+class select(ISyntax):
+
 	"""Select item from list of choices.
 	self.choice = [(id, _("Display text"), ...]
 	"""
@@ -163,10 +176,10 @@ class select( ISyntax ):
 	@classmethod
 	def parse(self, text):
 		# for the UDM CLI
-		if not hasattr( self, 'choices' ):
+		if not hasattr(self, 'choices'):
 			return text
 
-		if text in map( lambda x: x[ 0 ], self.choices ) or ( not text and select.empty_value ):
+		if text in map(lambda x: x[0], self.choices) or (not text and select.empty_value):
 			return text
 
 	@classmethod
@@ -177,27 +190,29 @@ class select( ISyntax ):
 	def any(self):
 		return '*'
 
-class MultiSelect( ISyntax ):
+
+class MultiSelect(ISyntax):
 	choices = ()
 	empty_value = True
-	error_message = _( 'Invalid value' )
+	error_message = _('Invalid value')
 
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		# required for UDM CLI
-		if isinstance( value, basestring ):
-			value = map( lambda x: x, shlex.split( value ) )
+		if isinstance(value, basestring):
+			value = map(lambda x: x, shlex.split(value))
 
 		if not self.empty_value and not value:
-			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
-		key_list = map( lambda x: x[ 0 ], self.choices )
+			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
+		key_list = map(lambda x: x[0], self.choices)
 		for item in value:
 			if not item in key_list:
-				raise univention.admin.uexceptions.valueError( self.error_message )
+				raise univention.admin.uexceptions.valueError(self.error_message)
 
 		return value
 
-class complex( ISyntax ):
+
+class complex(ISyntax):
 	delimiter = ' '
 	# possible delimiters:
 	# delimiter = '='   ==> single string is used to concatenate all subitems
@@ -207,29 +222,29 @@ class complex( ISyntax ):
 
 	@classmethod
 	def parse(self, texts):
-		parsed=[]
+		parsed = []
 
 		if self.min_elements is not None:
 			count = self.min_elements
 		else:
-			count = len( self.subsyntaxes )
+			count = len(self.subsyntaxes)
 
 		if len(texts) < count:
-			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
+			raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
 
-		if len(texts) > len( self.subsyntaxes ):
-			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
+		if len(texts) > len(self.subsyntaxes):
+			raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
-		for i in range( len( texts ) ):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
-			if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
-				s = self.subsyntaxes[ i ][ 1 ]
+		for i in range(len(texts)):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
+			if not inspect.isclass(self.subsyntaxes[i][1]):
+				s = self.subsyntaxes[i][1]
 			else:
-				s = self.subsyntaxes[ i ][ 1 ]()
+				s = self.subsyntaxes[i][1]()
 			if texts[i] == None:
-				if self.min_elements is None or ( i + 1 ) < self.min_elements:
-					raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
-			p = s.parse( texts[ i ] )
+				if self.min_elements is None or (i + 1) < self.min_elements:
+					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
+			p = s.parse(texts[i])
 			if not p:
 				break
 			parsed.append(p)
@@ -237,16 +252,16 @@ class complex( ISyntax ):
 
 	@classmethod
 	def tostring(self, texts):
-		newTexts=[]
+		newTexts = []
 		if len(self.subsyntaxes) != len(texts):
 			return ''
 		else:
-			for i in range(0,len(texts)):
-				if  texts[i]:
-					if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
-						res=self.subsyntaxes[i][1].parse(texts[i])
+			for i in range(0, len(texts)):
+				if texts[i]:
+					if not inspect.isclass(self.subsyntaxes[i][1]):
+						res = self.subsyntaxes[i][1].parse(texts[i])
 					else:
-						res=self.subsyntaxes[i][1]().parse(texts[i])
+						res = self.subsyntaxes[i][1]().parse(texts[i])
 					if res:
 						newTexts.append(res)
 				elif self.all_required == True:
@@ -257,7 +272,7 @@ class complex( ISyntax ):
 
 		txt = ''
 		if type(self.delimiter) == type([]):
-			for i in range(0,len(newTexts)):
+			for i in range(0, len(newTexts)):
 				txt += self.delimiter[i] + newTexts[i]
 			txt += self.delimiter[-1]
 		elif type(self.delimiter) == type(''):
@@ -267,46 +282,48 @@ class complex( ISyntax ):
 
 	@classmethod
 	def new(self):
-		s=[]
+		s = []
 		for desc, syntax in self.subsyntaxes:
-			if not inspect.isclass( syntax ):
+			if not inspect.isclass(syntax):
 				s.append(syntax.new())
 			else:
 				s.append(syntax().new())
 		return s
 
 	def any(self):
-		s=[]
+		s = []
 		for desc, syntax in self.subsyntaxes:
-			if not inspect.isclass( syntax ):
+			if not inspect.isclass(syntax):
 				s.append(syntax.any())
 			else:
 				s.append(syntax().any())
 		return s
 
-class UDM_Objects( ISyntax ):
+
+class UDM_Objects(ISyntax):
 	udm_modules = ()
 	udm_filter = ''
 	key = 'dn'
 	label = None
-	regex = re.compile( '^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$' )
+	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	static_values = None
 	empty_value = False
 	depends = None
-	error_message = _( "Not a valid LDAP DN" )
-	simple = False # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
+	error_message = _("Not a valid LDAP DN")
+	simple = False  # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
 	use_objects = True
 
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		if not self.empty_value and not text:
-			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
-		if not text or not self.regex or self.regex.match( text ) != None:
+			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
+		if not text or not self.regex or self.regex.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError( self.error_message )
+		raise univention.admin.uexceptions.valueError(self.error_message)
 
-class UDM_Attribute( ISyntax ):
-	udm_module =None
+
+class UDM_Attribute(ISyntax):
+	udm_module = None
 	udm_filter = ''
 	attribute = None
 	is_complex = False
@@ -317,134 +334,160 @@ class UDM_Attribute( ISyntax ):
 	static_values = None
 	empty_value = False
 	depends = None
-	error_message = _( 'Invalid value' )
+	error_message = _('Invalid value')
 
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		if not self.empty_value and not text:
-			raise univention.admin.uexceptions.valueError( _( 'An empty value is not allowed' ) )
-		if not text or not self.regex or self.regex.match( text ) != None:
+			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
+		if not text or not self.regex or self.regex.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError( self.error_message )
+		raise univention.admin.uexceptions.valueError(self.error_message)
+
 
 class none(simple):
 	pass
 
+
 class string(simple):
-	min_length=0
-	max_length=0
+	min_length = 0
+	max_length = 0
 
 	@classmethod
 	def parse(self, text):
 		return text
+
 
 class string64(simple):
 
 	@classmethod
 	def parse(self, text):
-		self.min_length=0
-		self.max_length=64
+		self.min_length = 0
+		self.max_length = 64
 
 		if len(text) > self.max_length:
-			raise univention.admin.uexceptions.valueError( _('The value must not be longer than %d characters.') % self.max_length)
+			raise univention.admin.uexceptions.valueError(_('The value must not be longer than %d characters.') % self.max_length)
 		return text
 
-class OneThirdString( string ):
+
+class OneThirdString(string):
 	size = 'OneThird'
 
-class HalfString( string ):
+
+class HalfString(string):
 	size = 'Half'
 
-class TwoThirdsString( string ):
+
+class TwoThirdsString(string):
 	size = 'TwoThirds'
 
-class FourThirdsString( string ):
+
+class FourThirdsString(string):
 	size = 'FourThirds'
 
-class OneAndAHalfString( string ):
+
+class OneAndAHalfString(string):
 	size = 'OneAndAHalf'
 
-class FiveThirdsString( string ):
+
+class FiveThirdsString(string):
 	size = 'FiveThirds'
 
-class TextArea( string ):
+
+class TextArea(string):
 	pass
 
-class UCSVersion( string ):
+
+class UCSVersion(string):
+
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		try:
 			UCS_Version(value)
 		except ValueError:
-			raise univention.admin.uexceptions.valueError( _( 'Invalid UCS version: %s' ) % (value, ))
+			raise univention.admin.uexceptions.valueError(_('Invalid UCS version: %s') % (value, ))
 
 		return value
 
-class DebianPackageVersion( string ):
+
+class DebianPackageVersion(string):
 	invalid_chars_regex = re.compile('[^-+:.0-9a-zA-Z~]')
 
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		m = self.invalid_chars_regex.search(value)
 		if m != None:
-			raise univention.admin.uexceptions.valueError( _( 'Invalid character in debian package version: %s' ) % m.group() )
-		p=value.find(':')
+			raise univention.admin.uexceptions.valueError(_('Invalid character in debian package version: %s') % m.group())
+		p = value.find(':')
 		if p != -1 and not value[:p].isdigit():
-			raise univention.admin.uexceptions.valueError( _( 'Non-integer epoch in debian package version: %s' ) % str( value[:p] ) )
+			raise univention.admin.uexceptions.valueError(_('Non-integer epoch in debian package version: %s') % str(value[:p]))
 
 		return value
 
-class BaseFilename( string ):
+
+class BaseFilename(string):
+
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		if '/' in value:
-			raise univention.admin.uexceptions.valueError( _( 'Filename must not contain slashes: %s' ) % str( value ) )
+			raise univention.admin.uexceptions.valueError(_('Filename must not contain slashes: %s') % str(value))
 		else:
 			return value
 
 # upload classes
-class Upload( ISyntax ):
+
+
+class Upload(ISyntax):
+
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		return value
 
-class Base64GzipText( TextArea ):
+
+class Base64GzipText(TextArea):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			gziped_data = base64.decodestring( text )
+			gziped_data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
 			zlib.decompress(gziped_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Value must be gzip compressed and Base64 encoded: %s') % str(text))
 		return text
 
-class Base64Bzip2Text( TextArea ):
+
+class Base64Bzip2Text(TextArea):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			compressed_data = base64.decodestring( text )
+			compressed_data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
 			bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be bzip2 compressed and Base64 encoded: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % str(text))
 		return text
 
-class Base64Upload( Upload ):
+
+class Base64Upload(Upload):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			base64.decodestring( text )
+			base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		else:
 			return text
 
-class jpegPhoto( Upload ):
+
+class jpegPhoto(Upload):
+
 	@classmethod
 	def tostring(self, value):
 		if value:
@@ -462,7 +505,8 @@ class jpegPhoto( Upload ):
 					fp = BytesIO(raw)
 					text = BytesIO()
 					image = PIL.Image.open(fp)
-					def _fileno(*a,**k):
+
+					def _fileno(*a, **k):
 						raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
 					text.fileno = _fileno
 					image.save(text, format='jpeg')
@@ -472,63 +516,73 @@ class jpegPhoto( Upload ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
-			## this is what imghdr.py probably does in  the future:
+			# this is what imghdr.py probably does in  the future:
 			if raw[0:2] != b'\xff\xd8':
 				raise ValueError
 			return text
 		except (base64.binascii.Error, ValueError, TypeError):
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg.'))
 
-class Base64Bzip2XML( TextArea ):
+
+class Base64Bzip2XML(TextArea):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			compressed_data = base64.decodestring( text )
+			compressed_data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
 			data = bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be bzip2 compressed and Base64 encoded: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % str(text))
 		if get_mime_type(data) != 'application/xml':
-			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded XML data: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded XML data: %s') % str(text))
 		return text
 
-class Base64UMCIcon( TextArea ):
+
+class Base64UMCIcon(TextArea):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			data = base64.decodestring( text )
+			data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
-		image_mime_type_of_buffer(data) ## exact return value irrelevant, only exceptions matter at this point
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
+		image_mime_type_of_buffer(data)  # exact return value irrelevant, only exceptions matter at this point
 		return text
 
-class GNUMessageCatalog( TextArea ):
+
+class GNUMessageCatalog(TextArea):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			data = base64.decodestring( text )
+			data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		if not get_mime_description(data).startswith('GNU message catalog'):
-			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded GNU message catalog (.mo) data: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded GNU message catalog (.mo) data: %s') % str(text))
 		return text
 
-class Localesubdirname( string ):
+
+class Localesubdirname(string):
+
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		if not text in os.listdir('/usr/share/locale'):
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid locale subdir name: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError(_('Not a valid locale subdir name: %s') % str(text))
 		return text
 
-class Localesubdirname_and_GNUMessageCatalog( complex ):
+
+class Localesubdirname_and_GNUMessageCatalog(complex):
 	delimiter = ': '
-	subsyntaxes = [ ( _( 'Locale subdir name' ), Localesubdirname ), ( _( 'GNU message catalog' ), GNUMessageCatalog ) ]
+	subsyntaxes = [(_('Locale subdir name'), Localesubdirname), (_('GNU message catalog'), GNUMessageCatalog)]
 	all_required = True
 
 
 class integer(simple):
+
 	"""
 	>>> integer().parse('1')
 	'1'
@@ -551,8 +605,8 @@ class integer(simple):
 		...
 	valueError:
 	"""
-	min_length=1
-	max_length=0
+	min_length = 1
+	max_length = 0
 	_re = re.compile('^[0-9]+$')
 	size = 'Half'
 
@@ -561,9 +615,11 @@ class integer(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value must be a number!")
+			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
+
 
 class boolean(simple):
+
 	"""
 	>>> boolean().parse('')
 	''
@@ -584,18 +640,20 @@ class boolean(simple):
 		...
 	valueError:
 	"""
-	min_length=1
-	max_length=1
+	min_length = 1
+	max_length = 1
 	regex = re.compile('^[01]?$')
-	error_message = _( "Value must be 0 or 1" )
+	error_message = _("Value must be 0 or 1")
 
 	@classmethod
 	def parse(self, text):
-		if isinstance( text, bool ):
+		if isinstance(text, bool):
 			return text and '1' or '0'
-		return super( boolean, self ).parse( text )
+		return super(boolean, self).parse(text)
+
 
 class filesize(simple):
+
 	"""
 	>>> filesize().parse('0')
 	'0'
@@ -624,12 +682,14 @@ class filesize(simple):
 		...
 	valueError:
 	"""
-	min_length=1
-	max_length=0
+	min_length = 1
+	max_length = 0
 	regex = re.compile('^[0-9]+(|[gGmMkK])(|[bB])$')
-	error_message = _( "Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!" )
+	error_message = _("Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!")
+
 
 class mail_folder_name(simple):
+
 	"""
 	>>> mail_folder_name().parse('folder_name')
 	'folder_name'
@@ -647,13 +707,15 @@ class mail_folder_name(simple):
 	valueError:
 	"""
 	@classmethod
-	def parse(self,text):
-		if  "!" in text or " " in text or "\t" in text:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain whitespace or exclamation mark !")
+	def parse(self, text):
+		if "!" in text or " " in text or "\t" in text:
+			raise univention.admin.uexceptions.valueError(_("Value may not contain whitespace or exclamation mark !"))
 		else:
 			return text
 
+
 class mail_folder_type(select):
+
 	"""
 	>>> mail_folder_type().parse('')
 	''
@@ -671,18 +733,20 @@ class mail_folder_type(select):
 	'journal'
 	>>> mail_folder_type().parse('invalid')
 	"""
-	name='mail_folder_type'
-	choices=[
-		('',        _('undefined') ),
-		('mail',    _('mails' ) ),
-		('event',   _('events') ),
-		('contact', _('contacts') ),
-		('task',    _('tasks') ),
-		('note',    _('notes') ),
-		('journal', _('journals') ),
+	name = 'mail_folder_type'
+	choices = [
+		('', _('undefined')),
+		('mail', _('mails')),
+		('event', _('events')),
+		('contact', _('contacts')),
+		('task', _('tasks')),
+		('note', _('notes')),
+		('journal', _('journals')),
 	]
 
+
 class string_numbers_letters_dots(simple):
+
 	"""
 	>>> string_numbers_letters_dots().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -723,9 +787,11 @@ class string_numbers_letters_dots(simple):
 	"""
 
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
-	error_message = _( 'Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!' )
+	error_message = _('Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!')
+
 
 class string_numbers_letters_dots_spaces(simple):
+
 	"""
 	>>> string_numbers_letters_dots_spaces().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -774,7 +840,9 @@ class string_numbers_letters_dots_spaces(simple):
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
 	error_message = _("Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!")
 
+
 class phone(simple):
+
 	"""
 	>>> phone().parse('+49 421 22232-0')
 	'+49 421 22232-0'
@@ -787,12 +855,14 @@ class phone(simple):
 		...
 	valueError:
 	"""
-	min_length=1
-	max_length=16
+	min_length = 1
+	max_length = 16
 	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
 	error_message = _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
+
 class IA5string(string):
+
 	"""
 	>>> IA5string().parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
 	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
@@ -807,10 +877,12 @@ class IA5string(string):
 		try:
 			text.decode("utf-8").encode('ascii')
 		except UnicodeEncodeError:
-			raise univention.admin.uexceptions.valueError, _("Field must only contain ASCII characters!")
+			raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
 		return text
 
+
 class uid(simple):
+
 	"""
 	>>> uid().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -855,66 +927,71 @@ class uid(simple):
 	>>> uid().parse('Admin')
 	'Admin'
 	"""
-	min_length=1
-	max_length=16
+	min_length = 1
+	max_length = 16
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
 	error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
+
 class uid_umlauts(simple):
-	name='uid'
-	min_length=1
-	max_length=16
+	name = 'uid'
+	min_length = 1
+	max_length = 16
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
 
 	@classmethod
 	def parse(self, text):
 		if " " in text:
-			raise univention.admin.uexceptions.valueError, _("Spaces are not allowed in the username!")
+			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
 		if self._re.match(text.decode("utf-8")) != None and text != 'admin':
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
+			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
+
 
 class uid_umlauts_lower_except_first_letter(simple):
-	min_length=1
-	max_length=16
+	min_length = 1
+	max_length = 16
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
 
 	@classmethod
 	def parse(self, text):
-		unicode_text=text.decode("utf-8")
+		unicode_text = text.decode("utf-8")
 		for c in unicode_text[1:]:
 			if c.isupper():
-				raise univention.admin.uexceptions.valueError, _("Only the first letter of the username may be uppercase!")
+				raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
 		if self._re.match(unicode_text) != None and unicode_text != 'admin':
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
+			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
+
 
 class gid(simple):
-	min_length=1
-	max_length=32
-	regex = re.compile( ur"(?u)^\w([\w -.’]*\w)?$" )
+	min_length = 1
+	max_length = 32
+	regex = re.compile(ur"(?u)^\w([\w -.’]*\w)?$")
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
-class sharePath( simple ):
+
+class sharePath(simple):
 	regex = re.compile('^([^"])+$')
 	error_message = _('Value may not contain double quotes (")!')
 
 	@classmethod
 	def parse(self, text):
 		if not text[0] == '/':
-			raise univention.admin.uexceptions.valueInvalidSyntax, _('A path must begin with "/"!')
+			raise univention.admin.uexceptions.valueInvalidSyntax(_('A path must begin with "/"!'))
 		for path in ["tmp", "root", "proc", "dev", "sys"]:
 			if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
-				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !') % path
+				raise univention.admin.uexceptions.valueError(_('Path may not start with "%s" !') % path)
 
-		return super( sharePath, self ).parse( text )
+		return super(sharePath, self).parse(text)
+
 
 class passwd(simple):
-	min_length=8
-	max_length=0
+	min_length = 8
+	max_length = 0
 	_re1 = re.compile(r"[A-Z]")
 	_re2 = re.compile(r"[a-z]")
 	_re3 = re.compile(r"[0-9]")
@@ -924,58 +1001,68 @@ class passwd(simple):
 		if len(text) >= self.min_length:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.') % self.min_length
+			raise univention.admin.uexceptions.valueError(_('The password is too short, at least %d characters needed.') % self.min_length)
+
 
 class userPasswd(simple):
+
 	@classmethod
 	def parse(self, text):
 		if text and len(text) > 0:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('Empty password not allowed!')
+			raise univention.admin.uexceptions.valueError(_('Empty password not allowed!'))
+
 
 class hostName(simple):
-	min_length=0
-	max_length=0
+	min_length = 0
+	max_length = 0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
 	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
 	error_message = _("This is not a valid hostname.")
+
 
 class DNS_Name(simple):
 	# Regular expression for DNS entries (based on RFC 1123)
 	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
 	error_message = _("This is not a valid DNS entry name. A valid name can only consist of numbers, letters, dots and hyphens.")
 
+
 class windowsHostName(simple):
-	min_length=0
-	max_length=0
+	min_length = 0
+	max_length = 0
 	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
 	# windows hostnames are allowed to begin with digits
 	regex = re.compile('^([0-9]*)([a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$')
 	error_message = _("Not a valid windows hostname!")
 
+
 class ipv4Address(simple):
 	# match IPv4 (0.0.0.0 is allowed)
+
 	@classmethod
 	def parse(self, text):
 		try:
 			return str(ipaddr.IPv4Address(text))
 		except ValueError:
-			raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
+			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+
 
 class ipAddress(simple):
 
 	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
+
 	@classmethod
 	def parse(self, text):
 		try:
 			return str(ipaddr.IPAddress(text))
 		except ValueError:
-			raise univention.admin.uexceptions.valueError, _("Not a valid IP address!")
+			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+
 
 class hostOrIP(simple):
-	min_length=0
-	max_length=0
+	min_length = 0
+	max_length = 0
 
 	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
 	@classmethod
@@ -999,11 +1086,12 @@ class hostOrIP(simple):
 		if self.hostName(text) or self.ipAddress(text):
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('Not a valid hostname or IP address!')
+			raise univention.admin.uexceptions.valueError(_('Not a valid hostname or IP address!'))
+
 
 class v4netmask(simple):
-	min_length=1
-	max_length=15
+	min_length = 1
+	max_length = 15
 
 	@classmethod
 	def netmaskBits(self, dotted):
@@ -1012,26 +1100,27 @@ class v4netmask(simple):
 
 			i = 0
 			for q in ip.split('.'):
-				if i > 3: break
+				if i > 3:
+					break
 				quad[i] = int(q)
 				i += 1
 
 			return quad
 
-		dotted=splitDotted(dotted)
+		dotted = splitDotted(dotted)
 
 		bits = 0
 		for d in dotted:
-			for i in range(0,8):
+			for i in range(0, 8):
 				if ((d & 2**i) == 2**i):
 					bits += 1
 		return bits
 
 	@classmethod
 	def parse(self, text):
-		_ip=ipv4Address()
-		_int=integer()
-		errors=0
+		_ip = ipv4Address()
+		_int = integer()
+		errors = 0
 		try:
 			_ip.parse(text)
 			return "%d" % self.netmaskBits(text)
@@ -1041,11 +1130,13 @@ class v4netmask(simple):
 				if int(text) > 0 and int(text) < 32:
 					return text
 			except Exception:
-				errors=1
+				errors = 1
 		if errors:
-			raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
+			raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
+
 
 class netmask(simple):
+
 	@classmethod
 	def parse(self, text):
 		if text.isdigit() and int(text) > 0 and int(text) < max(ipaddr.IPV4LENGTH, ipaddr.IPV6LENGTH):
@@ -1054,38 +1145,45 @@ class netmask(simple):
 			return str(ipaddr.IPv4Network('0.0.0.0/%s' % (text, )).prefixlen)
 		except ValueError:
 			pass
-		raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
+		raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
+
 
 class ipnetwork(simple):
+
 	@classmethod
 	def parse(self, text):
 		try:
 			ipaddr.IPNetwork(text)
 		except ValueError:
-			raise univention.admin.uexceptions.valueError, _("Not a valid network!")
+			raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
-class IPv4_AddressRange( complex ):
+
+class IPv4_AddressRange(complex):
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
-		(_( 'Last address'), string),
-		)
+		(_('Last address'), string),
+	)
 
-class IP_AddressRange( complex ):
+
+class IP_AddressRange(complex):
 	subsyntaxes = (
 		(_('First address'), ipAddress),
-		(_( 'Last address'), ipAddress),
-		)
+		(_('Last address'), ipAddress),
+	)
+
 
 class ipProtocol(select):
-	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
+	choices = [('tcp', 'TCP'), ('udp', 'UDP')]
+
 
 class ipProtocolSRV(select):
-	choices=[ ( 'tcp', 'TCP' ), ( 'udp', 'UDP' ), ( 'msdcs', 'MSDCS' ), ( 'sites', 'SITES' ), ( 'DomainDnsZones', 'DOMAINDNSZONES'), ('ForestDnsZones', 'FORESTDNSZONES') ]
+	choices = [('tcp', 'TCP'), ('udp', 'UDP'), ('msdcs', 'MSDCS'), ('sites', 'SITES'), ('DomainDnsZones', 'DOMAINDNSZONES'), ('ForestDnsZones', 'FORESTDNSZONES')]
 	size = 'OneThird'
 
+
 class absolutePath(simple):
-	min_length=1
-	max_length=0
+	min_length = 1
+	max_length = 0
 	_re = re.compile('^/.*')
 
 	@classmethod
@@ -1093,25 +1191,29 @@ class absolutePath(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError,_("Not an absolute path!")
+			raise univention.admin.uexceptions.valueError(_("Not an absolute path!"))
+
 
 class emailAddress(simple):
+
 	@classmethod
 	def parse(self, text):
 		if '@' not in text:
-			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (No "@"-character to separate local-part and domain-part)')
+			raise univention.admin.uexceptions.valueError(_('Not a valid email address! (No "@"-character to separate local-part and domain-part)'))
 		return text
 
+
 class emailAddressTemplate(simple):
-	min_length=4
-	max_length=0
+	min_length = 4
+	max_length = 0
 	_re = re.compile("^.*@.*$")
 
 	@classmethod
 	def parse(self, text):
 		if self._re.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid email address!")
+		raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
+
 
 class emailAddressValidDomain(emailAddress):
 	name = 'emailAddressValidDomain'
@@ -1122,7 +1224,7 @@ class emailAddressValidDomain(emailAddress):
 		# convert mailaddresses to array if neccessary
 		mailaddresses = copy.deepcopy(mailaddresses)
 		if type(mailaddresses) == str:
-			mailaddresses = [ mailaddresses ]
+			mailaddresses = [mailaddresses]
 		if type(mailaddresses) != list:
 			return
 
@@ -1131,7 +1233,7 @@ class emailAddressValidDomain(emailAddress):
 		# iterate over mail addresses
 		for mailaddress in mailaddresses:
 			if mailaddress:
-				domain = mailaddress.rsplit('@',1)[-1]
+				domain = mailaddress.rsplit('@', 1)[-1]
 				if not domain in domainCache:
 					ldapfilter = '(&(objectClass=univentionMailDomainname)(cn=%s))' % domain
 					result = lo.searchDn(filter=ldapfilter)
@@ -1142,7 +1244,8 @@ class emailAddressValidDomain(emailAddress):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
 
 		if faillist:
-			raise univention.admin.uexceptions.valueError, self.errMsgDomain % (', '.join(faillist),)
+			raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),))
+
 
 class primaryEmailAddressValidDomain(emailAddressValidDomain):
 	name = 'primaryEmailAddressValidDomain'
@@ -1150,6 +1253,7 @@ class primaryEmailAddressValidDomain(emailAddressValidDomain):
 
 
 class iso8601Date(simple):
+
 	'''A date of the format:
 	yyyy-ddd   (2009-213)
 	yyyy-mm    (2009-05)
@@ -1163,7 +1267,9 @@ class iso8601Date(simple):
 	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
 	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
+
 class date(simple):
+
 	"""
 	Either a date in ISO (YYYY-MM-DD) or German (DD.MM.YY) format.
 	Bug: Centuries are always stripped!
@@ -1193,9 +1299,9 @@ class date(simple):
 	...
 	valueError:
 	"""
-	name='date'
-	min_length=5
-	max_length=0
+	name = 'date'
+	min_length = 5
+	max_length = 0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 	_re_de = re.compile('^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
 
@@ -1210,7 +1316,7 @@ class date(simple):
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text
 		if text is not None:
-			raise univention.admin.uexceptions.valueError,_("Not a valid Date")
+			raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
 		return ''
 
 
@@ -1228,7 +1334,7 @@ class date2(date):  # fixes the century
 			day, month, year = map(lambda(x): int(x), text.split('.'))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return '20%02d-%02d-%02d' % (year, month, day)
-		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
+		raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
 
 
 class reverseLookupSubnet(simple):
@@ -1239,11 +1345,13 @@ class reverseLookupSubnet(simple):
 	regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6, ))
 	error_message = _('A subnet for reverse lookup consists of the first one to three parts of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an IPv6 address with leading zeroes and without :: substitution (example: "2001:0db8:010")')
 
+
 class reverseLookupZoneName(simple):
 	#                       <-    IPv6 reverse zone   -> <-                           IPv4 reverse zone                           ->
 	#                       nibble dot-separated ...arpa   <-                      0-255                     -> dot-separated .arpa
 	regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
 	error_message = _("The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in nibble format followed by .ip6.arpa (example: \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")")
+
 
 class dnsZone(simple):
 	_re_label = r'[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?'
@@ -1260,35 +1368,42 @@ class dnsZone(simple):
 			raise univention.admin.uexceptions.valueError(self.error_message)
 		return text
 
+
 class dnsName(simple):
 	_re = re.compile('^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9.]$')
 
 	@classmethod
 	def parse(self, text):
-		if text==None:
-			raise univention.admin.uexceptions.valueError, _("Missing value!")
+		if text == None:
+			raise univention.admin.uexceptions.valueError(_("Missing value!"))
 		if self._re.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
+		raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters and dots!"))
+
 
 class dnsName_umlauts(simple):
 	regex = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
+
 class dnsNameDot(simple):
 	regex = re.compile('^[0-9a-zA-Z.-]+$')
 	error_message = _("Value may not contain other than numbers, letters and dots!")
+
 
 class keyAndValue(complex):
 	delimiter = ' = '
 	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
 	all_required = 1
 
+
 class dnsMX(complex):
-	subsyntaxes=[(_('Priority'), integer), (_('Mail server'), dnsNameDot)]
-	all_required=True
+	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsNameDot)]
+	all_required = True
+
 
 class dnsSRVName(complex):
+
 	"""DNS Service Record.
 
 	>>> dnsSRVName().parse(['ldap', 'tcp'])
@@ -1296,82 +1411,94 @@ class dnsSRVName(complex):
 	"""
 	min_elements = 2
 	all_required = False
-	subsyntaxes = ( ( _( 'Service' ), string ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
-	size = ( 'Half', 'Half', 'One' )
+	subsyntaxes = ((_('Service'), string), (_('Protocol'), ipProtocolSRV), (_('Extension'), string))
+	size = ('Half', 'Half', 'One')
 
-class postalAddress( complex ):
+
+class postalAddress(complex):
 	delimiter = ', '
-	subsyntaxes = [ ( _( 'Street' ), string ), ( _( 'Postal code' ), OneThirdString ), ( _( 'City' ), TwoThirdsString ) ]
+	subsyntaxes = [(_('Street'), string), (_('Postal code'), OneThirdString), (_('City'), TwoThirdsString)]
 	all_required = True
 
+
 class dnsSRVLocation(complex):
-	subsyntaxes=[(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
-	size = ( 'OneThird', 'OneThird', 'OneThird', 'One' )
-	all_required=True
+	subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
+	size = ('OneThird', 'OneThird', 'OneThird', 'One')
+	all_required = True
+
 
 class unixTime(simple):
 	regex = re.compile('^[0-9]+$')
 	error_message = _("Not a valid time format")
 
-class TimeUnits( select ):
+
+class TimeUnits(select):
 	size = 'Half'
 	choices = (
-		( 'seconds', _( 'seconds' ) ),
-		( 'minutes', _( 'minutes' ) ),
-		( 'hours', _( 'hours' ) ),
-		( 'days', _( 'days' ) )
-		)
+		('seconds', _('seconds')),
+		('minutes', _('minutes')),
+		('hours', _('hours')),
+		('days', _('days'))
+	)
 
-class TimeString( simple ):
+
+class TimeString(simple):
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
-class UNIX_TimeInterval( complex ):
+
+class UNIX_TimeInterval(complex):
 	min_elements = 1
-	subsyntaxes = ( ( '', integer ), ( '', TimeUnits ) )
-	size = ( 'Half', 'Half' )
+	subsyntaxes = (('', integer), ('', TimeUnits))
+	size = ('Half', 'Half')
 
-class NetworkType( select ):
-	choices = ( ( 'ethernet', _( 'Ethernet' ) ), ( 'fddi', _( 'FDDI' ) ), ( 'token-ring', _( 'Token-Ring' ) ) )
 
-class MAC_Address( simple ):
-	regexLinuxFormat = re.compile( r'^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$' )
-	regexWindowsFormat = re.compile( r'^([0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}$' )
-	regexRawFormat = re.compile( r'^[0-9a-fA-F]{12}$' )
-	regexCiscoFormat = re.compile( r'^([0-9a-fA-F]{4}\.){2}[0-9a-fA-F]{4}$' )
-	error_message = _( 'This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)' )
+class NetworkType(select):
+	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
+
+
+class MAC_Address(simple):
+	regexLinuxFormat = re.compile(r'^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
+	regexWindowsFormat = re.compile(r'^([0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}$')
+	regexRawFormat = re.compile(r'^[0-9a-fA-F]{12}$')
+	regexCiscoFormat = re.compile(r'^([0-9a-fA-F]{4}\.){2}[0-9a-fA-F]{4}$')
+	error_message = _('This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)')
 
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		if self.regexLinuxFormat.match(text) is not None:
-			return  text.lower()
+			return text.lower()
 		elif self.regexWindowsFormat.match(text) is not None:
-			return  text.replace('-', ':').lower()
+			return text.replace('-', ':').lower()
 		elif self.regexRawFormat.match(text) is not None:
 			temp = []
-			for i in range(0, len(text)-1, 2):
-				temp.append(text[i:i+2])
+			for i in range(0, len(text) - 1, 2):
+				temp.append(text[i:i + 2])
 			return ':'.join(temp).lower()
 		elif self.regexCiscoFormat.match(text) is not None:
 			tmpList = []
 			tmpStr = text.translate(None, '.')
-			for i in range(0, len(tmpStr)-1, 2):
-				tmpList.append(tmpStr[i:i+2])
+			for i in range(0, len(tmpStr) - 1, 2):
+				tmpList.append(tmpStr[i:i + 2])
 			return ':'.join(tmpList).lower()
 		else:
-			raise univention.admin.uexceptions.valueError( self.error_message )
+			raise univention.admin.uexceptions.valueError(self.error_message)
 
-class DHCP_HardwareAddress( complex ):
-	subsyntaxes = ( ( _( 'Type' ), NetworkType ), ( _( 'Address' ), MAC_Address ) )
-	size = ( 'One', 'One' )
-	all_required=True
 
-class Packages( UDM_Attribute ):
+class DHCP_HardwareAddress(complex):
+	subsyntaxes = ((_('Type'), NetworkType), (_('Address'), MAC_Address))
+	size = ('One', 'One')
+	all_required = True
+
+
+class Packages(UDM_Attribute):
 	udm_module = 'settings/packages'
 	attribute = 'packageList'
 	label_format = '%(name)s: %($attribute$)s'
 
+
 class PackagesRemove(Packages):
+
 	@classmethod
 	def parse(cls, text):
 		text = super(PackagesRemove, cls).parse(text)
@@ -1380,13 +1507,16 @@ class PackagesRemove(Packages):
 			raise univention.admin.uexceptions.valueError(_('The package "%s" can not be removed as it would uninstall necessary components.') % (text,))
 		return text
 
+
 class userAttributeList(string):
+
 	@classmethod
 	def parse(self, text):
 		return text
 
-# DEPRECATED! Derive from UDM_Objects
-class ldapDn(simple):
+
+class ldapDn(simple):  # DEPRECATED! Derive from UDM_Objects
+
 	"""LDAP distinguished name.
 
 	>>> ldapDn().parse('dc=foo,dc=bar,dc=test')
@@ -1395,74 +1525,87 @@ class ldapDn(simple):
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	error_message = _("Not a valid LDAP DN")
 
-class UMC_OperationSet( UDM_Objects ):
-	udm_modules = ( 'settings/umc_operationset', )
+
+class UMC_OperationSet(UDM_Objects):
+	udm_modules = ('settings/umc_operationset', )
 	label = '%(description)s (%(name)s)'
 	simple = True
 
-class UMC_CommandPattern( complex ):
-	subsyntaxes = ( ( _( 'Command pattern' ), string ), ( _( 'Option Pattern' ), string ) )
-	min_elements = 1
-	all_required = False # empty values are allowed
-	size = ( 'One', 'One' )
 
-class LDAP_Server( UDM_Objects ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
+class UMC_CommandPattern(complex):
+	subsyntaxes = ((_('Command pattern'), string), (_('Option Pattern'), string))
+	min_elements = 1
+	all_required = False  # empty values are allowed
+	size = ('One', 'One')
+
+
+class LDAP_Server(UDM_Objects):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	label = '%(fqdn)s'
 	simple = True
 
-class IMAP_POP3( select ):
-	choices = (
-		( 'IMAP', _('IMAP') ),
-		( 'POP3', _('POP3') ),
-		)
 
-class IMAP_Right( select ):
+class IMAP_POP3(select):
 	choices = (
-		( 'none', _( 'No access' ) ),
-		( 'read', _( 'Read' ) ),
-		( 'post', _( 'Post' ) ),
-		( 'append', _( 'Append' ) ),
-		( 'write', _( 'Write' ) ),
-		( 'all', _( 'All' ) )
-		)
+		('IMAP', _('IMAP')),
+		('POP3', _('POP3')),
+	)
 
-class UserMailAddress( UDM_Objects ):
-	udm_modules = ( 'users/user', )
+
+class IMAP_Right(select):
+	choices = (
+		('none', _('No access')),
+		('read', _('Read')),
+		('post', _('Post')),
+		('append', _('Append')),
+		('write', _('Write')),
+		('all', _('All'))
+	)
+
+
+class UserMailAddress(UDM_Objects):
+	udm_modules = ('users/user', )
 	udm_filter = '(mailPrimaryAddress=*)'
 	key = '%(mailPrimaryAddress)s'
-	static_values = ( ( 'anyone', _( 'Anyone' ) ), )
-	regex = re.compile( '^([^\s]+@[^\s]+|anyone)$' )
+	static_values = (('anyone', _('Anyone')), )
+	regex = re.compile('^([^\s]+@[^\s]+|anyone)$')
 
-class GroupName( UDM_Objects ):
-	udm_modules = ( 'groups/group', )
+
+class GroupName(UDM_Objects):
+	udm_modules = ('groups/group', )
 	key = '%(name)s'
-	regex = re.compile( '^.+$' )
+	regex = re.compile('^.+$')
 	simple = True
 	use_objects = False
 
-class UserName( UDM_Objects ):
-	udm_modules = ( 'users/user', )
+
+class UserName(UDM_Objects):
+	udm_modules = ('users/user', )
 	key = '%(username)s'
-	regex = re.compile( '^.+$' )
+	regex = re.compile('^.+$')
 	simple = True
 	use_objects = False
 
-class SharedFolderUserACL( complex ):
-	subsyntaxes = ( ( _( 'User' ), UserMailAddress ), ( _( 'Access right' ), IMAP_Right ) )
 
-class SharedFolderGroupACL( complex ):
-	subsyntaxes = ( ( _( 'Group' ), GroupName ), ( _( 'Access right' ), IMAP_Right ) )
+class SharedFolderUserACL(complex):
+	subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
 
-class SharedFolderSimpleUserACL( complex ):
-	subsyntaxes = ( ( _( 'User' ), string ), ( _( 'Access right' ), IMAP_Right ) )
 
-class SharedFolderSimpleGroupACL( complex ):
-	subsyntaxes = ( ( _( 'Group' ), string ), ( _( 'Access right' ), IMAP_Right ) )
+class SharedFolderGroupACL(complex):
+	subsyntaxes = ((_('Group'), GroupName), (_('Access right'), IMAP_Right))
+
+
+class SharedFolderSimpleUserACL(complex):
+	subsyntaxes = ((_('User'), string), (_('Access right'), IMAP_Right))
+
+
+class SharedFolderSimpleGroupACL(complex):
+	subsyntaxes = ((_('Group'), string), (_('Access right'), IMAP_Right))
+
 
 class ldapDnOrNone(simple):
-	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
+	_re = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
 	@classmethod
 	def parse(self, text):
@@ -1470,17 +1613,22 @@ class ldapDnOrNone(simple):
 			return text
 		if self._re.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid LDAP DN")
+		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
+
 
 class ldapObjectClass(simple):
+
 	@classmethod
 	def parse(self, text):
 		return text
 
+
 class ldapAttribute(simple):
+
 	@classmethod
 	def parse(self, text):
 		return text
+
 
 class ldapFilter(simple):
 
@@ -1498,19 +1646,23 @@ class ldapFilter(simple):
 			lo.unbind()
 		return text
 
+
 class XResolution(simple):
 	regex = re.compile('^[0-9]+x[0-9]+$')
 	error_message = _("Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")")
+
 
 class XSync(simple):
 	regex = re.compile('^[0-9]+(-[0-9]+)?( +[0-9]+(-[0-9]+)?)*$')
 	error_message = _("Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")")
 
+
 class XColorDepth(simple):
 	regex = re.compile('^[0-9]+$')
 
+
 class XModule(select):
-	choices=[
+	choices = [
 		('', ''),
 		('apm', 'apm'),
 		('ark', 'Ark'),
@@ -1547,7 +1699,7 @@ class XModule(select):
 		('siliconmotion', 'Siliconmotion'),
 		('sis', 'SiS'),
 		('sisusb', 'SiS USB'),
-		('tdfx','tdfx'),
+		('tdfx', 'tdfx'),
 		('tga', 'Tga'),
 		('trident', 'Trident'),
 		('tseng', 'Tseng'),
@@ -1557,8 +1709,9 @@ class XModule(select):
 		('vmware', 'VMWare')
 	]
 
+
 class XMouseProtocol(select):
-	choices=[
+	choices = [
 		('', ''),
 		('Auto', 'Auto'),
 		('IMPS/2', 'IMPS/2'),
@@ -1576,8 +1729,9 @@ class XMouseProtocol(select):
 		('ms', 'Serial')
 	]
 
+
 class XDisplayPosition(select):
-	choices=[
+	choices = [
 		('', ''),
 		('left', _('Left of primary display')),
 		('right', _('Right of primary display')),
@@ -1585,16 +1739,18 @@ class XDisplayPosition(select):
 		('below', _('Below primary display'))
 	]
 
+
 class XMouseDevice(select):
-	choices=[
+	choices = [
 		('', ''),
 		('/dev/psaux', 'PS/2'),
 		('/dev/input/mice', 'USB'),
 		('/dev/ttyS0', 'Serial')
 	]
 
+
 class XKeyboardLayout(select):
-	choices=[
+	choices = [
 		('', ''),
 		('ad', 'Andorra'),
 		('af', 'Afghanistan'),
@@ -1683,291 +1839,317 @@ class XKeyboardLayout(select):
 		('za', 'South Africa')
 	]
 
+
 class soundModule(select):
-	choices=[
+	choices = [
 		('', ''),
 		('auto', 'auto detect'),
-		( 'snd-ad1816a', 'AD1816A, AD1815' ),
-		( 'snd-adlib', 'AdLib FM' ),
-		( 'snd-ak4114', 'AK4114 IEC958 (S/PDIF) receiver by Asahi Kasei' ),
-		( 'snd-ak4117', 'AK4117 IEC958 (S/PDIF) receiver by Asahi Kasei' ),
-		( 'snd-ali5451', 'ALI M5451' ),
-		( 'snd-opl3-synth', 'ALSA driver for OPL3 FM synth' ),
-		( 'snd-sb16-csp', 'ALSA driver for SB16 Creative Signal Processor' ),
-		( 'snd-sb-common', 'ALSA lowlevel driver for Sound Blaster cards' ),
-		( 'snd-interwave', 'AMD InterWave' ),
-		( 'snd-interwave-stb', 'AMD InterWave STB with TEA6330T' ),
-		( 'snd-ad1889', 'Analog Devices AD1889 ALSA sound driver' ),
-		( 'snd-atiixp', 'ATI IXP AC97 controller' ),
-		( 'snd-atiixp-modem', 'ATI IXP MC97 controller' ),
-		( 'aedsp16', 'Audio Excel DSP 16 Driver Version 1.3' ),
-		( 'snd-au8810', 'Aureal vortex 8810' ),
-		( 'snd-au8820', 'Aureal vortex 8820' ),
-		( 'snd-au8830', 'Aureal vortex 8830' ),
-		( 'snd-als100', 'Avance Logic ALS1X0' ),
-		( 'snd-als300', 'Avance Logic ALS300' ),
-		( 'snd-als4000', 'Avance Logic ALS4000' ),
-		( 'snd-azt3328', 'Aztech AZF3328 (PCI168)' ),
-		( 'snd-sgalaxy', 'Aztech Sound Galaxy' ),
-		( 'snd-azt2320', 'Aztech Systems AZT2320' ),
-		( 'snd-bt87x', 'Brooktree Bt87x audio driver' ),
-		( 'snd-ca0106', 'CA0106' ),
-		( 'snd-cs4232', 'Cirrus Logic CS4232' ),
-		( 'snd-cs4236', 'Cirrus Logic CS4235-9' ),
-		( 'snd-cs4281', 'Cirrus Logic CS4281' ),
-		( 'snd-cmi8330', 'C-Media CMI8330' ),
-		( 'snd-cmipci', 'C-Media CMI8x38 PCI' ),
-		( 'snd-vx-lib', 'Common routines for Digigram VX drivers' ),
-		( 'snd-cs5535audio', 'CS5535 Audio' ),
-		( 'snd-dt019x', 'Diamond Technologies DT-019X / Avance Logic ALS-007' ),
-		( 'snd-mixart', 'Digigram miXart' ),
-		( 'snd-pcxhr', 'Digigram pcxhr 0.8.4' ),
-		( 'snd-vx222', 'Digigram VX222 V2/Mic' ),
-		( 'snd-vxpocket', 'Digigram VXPocket' ),
-		( 'snd-dummy', 'Dummy soundcard (/dev/null)' ),
-		( 'snd-virmidi', 'Dummy soundcard for virtual rawmidi devices' ),
-		( 'snd-darla20', 'Echoaudio Darla20 soundcards driver' ),
-		( 'snd-darla24', 'Echoaudio Darla24 soundcards driver' ),
-		( 'snd-echo3g', 'Echoaudio Echo3G soundcards driver' ),
-		( 'snd-gina20', 'Echoaudio Gina20 soundcards driver' ),
-		( 'snd-gina24', 'Echoaudio Gina24 soundcards driver' ),
-		( 'snd-indigodj', 'Echoaudio Indigo DJ soundcards driver' ),
-		( 'snd-indigoio', 'Echoaudio Indigo IO soundcards driver' ),
-		( 'snd-indigo', 'Echoaudio Indigo soundcards driver' ),
-		( 'snd-layla20', 'Echoaudio Layla20 soundcards driver' ),
-		( 'snd-layla24', 'Echoaudio Layla24 soundcards driver' ),
-		( 'snd-mia', 'Echoaudio Mia soundcards driver' ),
-		( 'snd-mona', 'Echoaudio Mona soundcards driver' ),
-		( 'snd-emu10k1', 'EMU10K1' ),
-		( 'snd-emu10k1x', 'EMU10K1X' ),
-		( 'snd-emu8000-synth', 'Emu8000 synth plug-in routine' ),
-		( 'snd-ens1370', 'Ensoniq AudioPCI ES1370' ),
-		( 'snd-ens1371', 'Ensoniq/Creative AudioPCI ES1371+' ),
-		( 'snd-sscape', 'ENSONIQ SoundScape PnP driver' ),
-		( 'snd-es968', 'ESS AudioDrive ES968' ),
-		( 'snd-es18xx', 'ESS ES18xx AudioDrive' ),
-		( 'snd-es1688-lib', 'ESS ESx688 lowlevel module' ),
-		( 'snd-es1968', 'ESS Maestro' ),
-		( 'snd-maestro3', 'ESS Maestro3 PCI' ),
-		( 'snd-es1938', 'ESS Solo-1' ),
-		( 'snd-fm801', 'ForteMedia FM801' ),
-		( 'snd-ad1848', 'Generic AD1848/AD1847/CS4248' ),
-		( 'snd-cs4231', 'Generic CS4231' ),
-		( 'snd-es1688', 'Generic ESS ES1688/ES688 AudioDrive' ),
-		( 'snd-i2c', 'Generic i2c interface for ALSA' ),
-		( 'snd-util-mem', 'Generic memory management routines for soundcard memory allocation' ),
-		( 'snd-gusclassic', 'Gravis UltraSound Classic' ),
-		( 'snd-gusextreme', 'Gravis UltraSound Extreme' ),
-		( 'snd-gusmax', 'Gravis UltraSound MAX' ),
-		( 'snd-ice1712', 'ICEnsemble ICE1712 (Envy24)' ),
-		( 'snd-ice17xx-ak4xxx', 'ICEnsemble ICE17xx <-> AK4xxx AD/DA chip interface' ),
-		( 'snd-cs8427', 'IEC958 (S/PDIF) receiver & transmitter by Cirrus Logic' ),
-		( 'snd-intel8x0', 'Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440; SiS 7012; Ali 5455' ),
-		( 'snd-intel8x0m', 'Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440; SiS 7013; NVidia MCP/2/2S/3 modems' ),
-		( 'snd-hda-intel', 'Intel HDA driver' ),
-		( 'kahlua', 'Kahlua VSA1 PCI Audio' ),
-		( 'snd-korg1212', 'korg1212' ),
-		( 'snd-serial-u16550', 'MIDI serial u16550' ),
-		( 'snd-miro', 'Miro miroSOUND PCM1 pro, PCM12, PCM20 Radio' ),
-		( 'pss', 'Module for PSS sound cards (based on AD1848, ADSP-2115 and ESC614).' ),
-		( 'snd-mtpav', 'MOTU MidiTimePiece AV multiport MIDI' ),
-		( 'snd-mpu401', 'MPU-401 UART' ),
-		( 'snd-nm256', 'NeoMagic NM256AV/ZX' ),
-		( 'snd-opl4-lib', 'OPL4 driver' ),
-		( 'snd-opl4-synth', 'OPL4 wavetable synth driver' ),
-		( 'snd-opti92x-ad1848', 'OPTi92X - AD1848' ),
-		( 'snd-opti92x-cs4231', 'OPTi92X - CS4231' ),
-		( 'snd-opti93x', 'OPTi93X' ),
-		( 'sb', 'OSS Soundblaster ISA PnP and legacy sound driver' ),
-		( 'snd-riptide', 'riptide' ),
-		( 'snd-rme32', 'RME Digi32, Digi32/8, Digi32 PRO' ),
-		( 'snd-rme9652', 'RME Digi9652/Digi9636' ),
-		( 'snd-rme96', 'RME Digi96, Digi96/8, Digi96/8 PRO, Digi96/8 PST, Digi96/8 PAD' ),
-		( 'snd-hdsp', 'RME Hammerfall DSP' ),
-		( 'snd-hdspm', 'RME HDSPM' ),
-		( 'snd-sb16-dsp', 'Routines for control of 16-bit SoundBlaster cards and clones' ),
-		( 'snd-sb8-dsp', 'Routines for control of 8-bit SoundBlaster cards and clones' ),
-		( 'snd-ad1848-lib', 'Routines for control of AD1848/AD1847/CS4248' ),
-		( 'snd-opl3-lib', 'Routines for control of AdLib FM cards (OPL2/OPL3/OPL4 chips)' ),
-		( 'snd-ak4xxx-adda', 'Routines for control of AK452x / AK43xx AD/DA converters' ),
-		( 'snd-cs4231-lib', 'Routines for control of CS4231(A)/CS4232/InterWave & compatible chips' ),
-		( 'snd-cs4236-lib', 'Routines for control of CS4235/4236B/4237B/4238B/4239 chips' ),
-		( 'snd-emu10k1-synth', 'Routines for control of EMU10K1 WaveTable synth' ),
-		( 'snd-emux-synth', 'Routines for control of EMU WaveTable chip' ),
-		( 'snd-mpu401-uart', 'Routines for control of MPU-401 in UART mode' ),
-		( 'snd-tea575x-tuner', 'Routines for control of TEA5757/5759 Philips AM/FM radio tuner chips' ),
-		( 'snd-tea6330t', 'Routines for control of the TEA6330T circuit via i2c bus' ),
-		( 'snd-gus-lib', 'Routines for Gravis UltraSound soundcards' ),
-		( 'snd-sonicvibes', 'S3 SonicVibes PCI' ),
-		( 'snd-sb8', 'Sound Blaster 1.0/2.0/Pro' ),
-		( 'snd-sb16', 'Sound Blaster 16' ),
-		( 'snd-sbawe', 'Sound Blaster AWE' ),
-		( 'snd-pdaudiocf', 'Sound Core PDAudio-CF' ),
-		( 'snd-usb-usx2y', 'TASCAM US-X2Y Version 0.8.7.2' ),
-		( 'snd-trident', 'Trident 4D-WaveDX/NX & SiS SI7018' ),
-		( 'trident', 'Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST CyberPro5050 PCI Audio Driver' ),
-		( 'snd-wavefront', 'Turtle Beach Wavefront' ),
-		( 'snd-ac97-codec', 'Universal interface for Audio Codec \'97' ),
-		( 'snd-ak4531-codec', 'Universal routines for AK4531 codec' ),
-		( 'snd-usb-audio', 'USB Audio' ),
-		( 'snd-usb-lib', 'USB Audio/MIDI helper module' ),
-		( 'snd-ice1724', 'VIA ICEnsemble ICE1724/1720 (Envy24HT/PT)' ),
-		( 'snd-via82xx', 'VIA VT82xx audio' ),
-		( 'snd-via82xx-modem', 'VIA VT82xx modem' ),
-		( 'snd-ymfpci', 'Yamaha DS-1 PCI' ),
-		( 'snd-opl3sa2', 'Yamaha OPL3SA2+' ),
+		('snd-ad1816a', 'AD1816A, AD1815'),
+		('snd-adlib', 'AdLib FM'),
+		('snd-ak4114', 'AK4114 IEC958 (S/PDIF) receiver by Asahi Kasei'),
+		('snd-ak4117', 'AK4117 IEC958 (S/PDIF) receiver by Asahi Kasei'),
+		('snd-ali5451', 'ALI M5451'),
+		('snd-opl3-synth', 'ALSA driver for OPL3 FM synth'),
+		('snd-sb16-csp', 'ALSA driver for SB16 Creative Signal Processor'),
+		('snd-sb-common', 'ALSA lowlevel driver for Sound Blaster cards'),
+		('snd-interwave', 'AMD InterWave'),
+		('snd-interwave-stb', 'AMD InterWave STB with TEA6330T'),
+		('snd-ad1889', 'Analog Devices AD1889 ALSA sound driver'),
+		('snd-atiixp', 'ATI IXP AC97 controller'),
+		('snd-atiixp-modem', 'ATI IXP MC97 controller'),
+		('aedsp16', 'Audio Excel DSP 16 Driver Version 1.3'),
+		('snd-au8810', 'Aureal vortex 8810'),
+		('snd-au8820', 'Aureal vortex 8820'),
+		('snd-au8830', 'Aureal vortex 8830'),
+		('snd-als100', 'Avance Logic ALS1X0'),
+		('snd-als300', 'Avance Logic ALS300'),
+		('snd-als4000', 'Avance Logic ALS4000'),
+		('snd-azt3328', 'Aztech AZF3328 (PCI168)'),
+		('snd-sgalaxy', 'Aztech Sound Galaxy'),
+		('snd-azt2320', 'Aztech Systems AZT2320'),
+		('snd-bt87x', 'Brooktree Bt87x audio driver'),
+		('snd-ca0106', 'CA0106'),
+		('snd-cs4232', 'Cirrus Logic CS4232'),
+		('snd-cs4236', 'Cirrus Logic CS4235-9'),
+		('snd-cs4281', 'Cirrus Logic CS4281'),
+		('snd-cmi8330', 'C-Media CMI8330'),
+		('snd-cmipci', 'C-Media CMI8x38 PCI'),
+		('snd-vx-lib', 'Common routines for Digigram VX drivers'),
+		('snd-cs5535audio', 'CS5535 Audio'),
+		('snd-dt019x', 'Diamond Technologies DT-019X / Avance Logic ALS-007'),
+		('snd-mixart', 'Digigram miXart'),
+		('snd-pcxhr', 'Digigram pcxhr 0.8.4'),
+		('snd-vx222', 'Digigram VX222 V2/Mic'),
+		('snd-vxpocket', 'Digigram VXPocket'),
+		('snd-dummy', 'Dummy soundcard (/dev/null)'),
+		('snd-virmidi', 'Dummy soundcard for virtual rawmidi devices'),
+		('snd-darla20', 'Echoaudio Darla20 soundcards driver'),
+		('snd-darla24', 'Echoaudio Darla24 soundcards driver'),
+		('snd-echo3g', 'Echoaudio Echo3G soundcards driver'),
+		('snd-gina20', 'Echoaudio Gina20 soundcards driver'),
+		('snd-gina24', 'Echoaudio Gina24 soundcards driver'),
+		('snd-indigodj', 'Echoaudio Indigo DJ soundcards driver'),
+		('snd-indigoio', 'Echoaudio Indigo IO soundcards driver'),
+		('snd-indigo', 'Echoaudio Indigo soundcards driver'),
+		('snd-layla20', 'Echoaudio Layla20 soundcards driver'),
+		('snd-layla24', 'Echoaudio Layla24 soundcards driver'),
+		('snd-mia', 'Echoaudio Mia soundcards driver'),
+		('snd-mona', 'Echoaudio Mona soundcards driver'),
+		('snd-emu10k1', 'EMU10K1'),
+		('snd-emu10k1x', 'EMU10K1X'),
+		('snd-emu8000-synth', 'Emu8000 synth plug-in routine'),
+		('snd-ens1370', 'Ensoniq AudioPCI ES1370'),
+		('snd-ens1371', 'Ensoniq/Creative AudioPCI ES1371+'),
+		('snd-sscape', 'ENSONIQ SoundScape PnP driver'),
+		('snd-es968', 'ESS AudioDrive ES968'),
+		('snd-es18xx', 'ESS ES18xx AudioDrive'),
+		('snd-es1688-lib', 'ESS ESx688 lowlevel module'),
+		('snd-es1968', 'ESS Maestro'),
+		('snd-maestro3', 'ESS Maestro3 PCI'),
+		('snd-es1938', 'ESS Solo-1'),
+		('snd-fm801', 'ForteMedia FM801'),
+		('snd-ad1848', 'Generic AD1848/AD1847/CS4248'),
+		('snd-cs4231', 'Generic CS4231'),
+		('snd-es1688', 'Generic ESS ES1688/ES688 AudioDrive'),
+		('snd-i2c', 'Generic i2c interface for ALSA'),
+		('snd-util-mem', 'Generic memory management routines for soundcard memory allocation'),
+		('snd-gusclassic', 'Gravis UltraSound Classic'),
+		('snd-gusextreme', 'Gravis UltraSound Extreme'),
+		('snd-gusmax', 'Gravis UltraSound MAX'),
+		('snd-ice1712', 'ICEnsemble ICE1712 (Envy24)'),
+		('snd-ice17xx-ak4xxx', 'ICEnsemble ICE17xx <-> AK4xxx AD/DA chip interface'),
+		('snd-cs8427', 'IEC958 (S/PDIF) receiver & transmitter by Cirrus Logic'),
+		('snd-intel8x0', 'Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440; SiS 7012; Ali 5455'),
+		('snd-intel8x0m', 'Intel 82801AA,82901AB,i810,i820,i830,i840,i845,MX440; SiS 7013; NVidia MCP/2/2S/3 modems'),
+		('snd-hda-intel', 'Intel HDA driver'),
+		('kahlua', 'Kahlua VSA1 PCI Audio'),
+		('snd-korg1212', 'korg1212'),
+		('snd-serial-u16550', 'MIDI serial u16550'),
+		('snd-miro', 'Miro miroSOUND PCM1 pro, PCM12, PCM20 Radio'),
+		('pss', 'Module for PSS sound cards (based on AD1848, ADSP-2115 and ESC614).'),
+		('snd-mtpav', 'MOTU MidiTimePiece AV multiport MIDI'),
+		('snd-mpu401', 'MPU-401 UART'),
+		('snd-nm256', 'NeoMagic NM256AV/ZX'),
+		('snd-opl4-lib', 'OPL4 driver'),
+		('snd-opl4-synth', 'OPL4 wavetable synth driver'),
+		('snd-opti92x-ad1848', 'OPTi92X - AD1848'),
+		('snd-opti92x-cs4231', 'OPTi92X - CS4231'),
+		('snd-opti93x', 'OPTi93X'),
+		('sb', 'OSS Soundblaster ISA PnP and legacy sound driver'),
+		('snd-riptide', 'riptide'),
+		('snd-rme32', 'RME Digi32, Digi32/8, Digi32 PRO'),
+		('snd-rme9652', 'RME Digi9652/Digi9636'),
+		('snd-rme96', 'RME Digi96, Digi96/8, Digi96/8 PRO, Digi96/8 PST, Digi96/8 PAD'),
+		('snd-hdsp', 'RME Hammerfall DSP'),
+		('snd-hdspm', 'RME HDSPM'),
+		('snd-sb16-dsp', 'Routines for control of 16-bit SoundBlaster cards and clones'),
+		('snd-sb8-dsp', 'Routines for control of 8-bit SoundBlaster cards and clones'),
+		('snd-ad1848-lib', 'Routines for control of AD1848/AD1847/CS4248'),
+		('snd-opl3-lib', 'Routines for control of AdLib FM cards (OPL2/OPL3/OPL4 chips)'),
+		('snd-ak4xxx-adda', 'Routines for control of AK452x / AK43xx AD/DA converters'),
+		('snd-cs4231-lib', 'Routines for control of CS4231(A)/CS4232/InterWave & compatible chips'),
+		('snd-cs4236-lib', 'Routines for control of CS4235/4236B/4237B/4238B/4239 chips'),
+		('snd-emu10k1-synth', 'Routines for control of EMU10K1 WaveTable synth'),
+		('snd-emux-synth', 'Routines for control of EMU WaveTable chip'),
+		('snd-mpu401-uart', 'Routines for control of MPU-401 in UART mode'),
+		('snd-tea575x-tuner', 'Routines for control of TEA5757/5759 Philips AM/FM radio tuner chips'),
+		('snd-tea6330t', 'Routines for control of the TEA6330T circuit via i2c bus'),
+		('snd-gus-lib', 'Routines for Gravis UltraSound soundcards'),
+		('snd-sonicvibes', 'S3 SonicVibes PCI'),
+		('snd-sb8', 'Sound Blaster 1.0/2.0/Pro'),
+		('snd-sb16', 'Sound Blaster 16'),
+		('snd-sbawe', 'Sound Blaster AWE'),
+		('snd-pdaudiocf', 'Sound Core PDAudio-CF'),
+		('snd-usb-usx2y', 'TASCAM US-X2Y Version 0.8.7.2'),
+		('snd-trident', 'Trident 4D-WaveDX/NX & SiS SI7018'),
+		('trident', 'Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST CyberPro5050 PCI Audio Driver'),
+		('snd-wavefront', 'Turtle Beach Wavefront'),
+		('snd-ac97-codec', 'Universal interface for Audio Codec \'97'),
+		('snd-ak4531-codec', 'Universal routines for AK4531 codec'),
+		('snd-usb-audio', 'USB Audio'),
+		('snd-usb-lib', 'USB Audio/MIDI helper module'),
+		('snd-ice1724', 'VIA ICEnsemble ICE1724/1720 (Envy24HT/PT)'),
+		('snd-via82xx', 'VIA VT82xx audio'),
+		('snd-via82xx-modem', 'VIA VT82xx modem'),
+		('snd-ymfpci', 'Yamaha DS-1 PCI'),
+		('snd-opl3sa2', 'Yamaha OPL3SA2+'),
 	]
 
-class GroupDN( UDM_Objects ):
-	udm_modules = ( 'groups/group', )
+
+class GroupDN(UDM_Objects):
+	udm_modules = ('groups/group', )
 	use_objects = False
 
-class UserDN( UDM_Objects ):
-	udm_modules = ( 'users/user', )
+
+class UserDN(UDM_Objects):
+	udm_modules = ('users/user', )
 	use_objects = False
 
-class HostDN( UDM_Objects ):
-	udm_modules = ( 'computers/computer', )
+
+class HostDN(UDM_Objects):
+	udm_modules = ('computers/computer', )
 	udm_filter = '!(univentionObjectFlag=docker)'
 
-class UserID( UDM_Objects ):
-	udm_modules = ( 'users/user', )
+
+class UserID(UDM_Objects):
+	udm_modules = ('users/user', )
 	key = '%(uidNumber)s'
 	label = '%(username)s'
-	regex = re.compile( '^[0-9]+$' )
-	static_values = ( ( '0', 'root' ), )
+	regex = re.compile('^[0-9]+$')
+	static_values = (('0', 'root'), )
 	use_objects = False
 
-class GroupID( UDM_Objects ):
-	udm_modules = ( 'groups/group', )
+
+class GroupID(UDM_Objects):
+	udm_modules = ('groups/group', )
 	key = '%(gidNumber)s'
 	label = '%(name)s'
-	regex = re.compile( '^[0-9]+$' )
-	static_values = ( ( '0', 'root' ), )
+	regex = re.compile('^[0-9]+$')
+	static_values = (('0', 'root'), )
 	use_objects = False
 
-class IComputer_FQDN( UDM_Objects ):
+
+class IComputer_FQDN(UDM_Objects):
 	udm_modules = ()
-	key = '%(name)s.%(domain)s' # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
-	label = '%(name)s.%(domain)s' # '%(fqdn)s'
-	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
-	error_message = _( 'Not a valid FQDN' )
+	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
+	label = '%(name)s.%(domain)s'  # '%(fqdn)s'
+	regex = re.compile('(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	error_message = _('Not a valid FQDN')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	simple = True
 
-class DomainController( IComputer_FQDN ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
+
+class DomainController(IComputer_FQDN):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	use_objects = False
 
-class Windows_Server( IComputer_FQDN ):
-	udm_modules = ( 'computers/windows', 'computers/windows_domaincontroller' )
 
-class UCS_Server( IComputer_FQDN ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+class Windows_Server(IComputer_FQDN):
+	udm_modules = ('computers/windows', 'computers/windows_domaincontroller')
+
+
+class UCS_Server(IComputer_FQDN):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	use_objects = False
 
-class ServicePrint_FQDN( IComputer_FQDN ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+
+class ServicePrint_FQDN(IComputer_FQDN):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
-class MailHomeServer( IComputer_FQDN ):
-	udm_modules = ( 'computers/computer', )
+
+class MailHomeServer(IComputer_FQDN):
+	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(service=IMAP))'
 	empty_value = True
 
-class KDE_Profile( UDM_Attribute ):
+
+class KDE_Profile(UDM_Attribute):
 	udm_module = 'settings/default'
 	attribute = 'defaultKdeProfiles'
 
-# DEPRECATED! Use GroupDN
-class primaryGroup(ldapDn):
-	searchFilter='objectClass=posixGroup'
-	description=_('Primary Group')
 
-# DEPRECATED! Use GroupDN
-class primaryGroup2(ldapDn):
-	searchFilter='objectClass=posixGroup'
-	description=_('Primary Group')
+class primaryGroup(ldapDn):  # DEPRECATED! Use GroupDN
+	searchFilter = 'objectClass=posixGroup'
+	description = _('Primary Group')
 
-class network( UDM_Objects ):
-	udm_modules = ( 'networks/network', )
-	description=_('Network')
+
+class primaryGroup2(ldapDn):  # DEPRECATED! Use GroupDN
+	searchFilter = 'objectClass=posixGroup'
+	description = _('Primary Group')
+
+
+class network(UDM_Objects):
+	udm_modules = ('networks/network', )
+	description = _('Network')
 	label = '%(name)s'
 	empty_value = True
 
-class IP_AddressList( select ):
+
+class IP_AddressList(select):
 	choices = ()
 	depends = 'ip'
 
 	@classmethod
-	def parse( cls, text ):
+	def parse(cls, text):
 		return text
 
-class MAC_AddressList( select ):
+
+class MAC_AddressList(select):
 	choices = ()
 	depends = 'mac'
 
 	@classmethod
-	def parse( cls, text ):
+	def parse(cls, text):
 		return text
 
-class DNS_ForwardZone( UDM_Objects ):
-	description=_('DNS forward zone')
-	udm_modules = ( 'dns/forward_zone', )
+
+class DNS_ForwardZone(UDM_Objects):
+	description = _('DNS forward zone')
+	udm_modules = ('dns/forward_zone', )
 	empty_value = True
 	use_objects = False
 
-class DNS_ReverseZone( UDM_Objects ):
-	description=_('DNS reverse zone')
-	udm_modules = ( 'dns/reverse_zone', )
+
+class DNS_ReverseZone(UDM_Objects):
+	description = _('DNS reverse zone')
+	udm_modules = ('dns/reverse_zone', )
 	label = '%(subnet)s'
 	empty_value = True
 	use_objects = False
 
-class dnsEntry( complex ):
-	description=_('DNS Entry')
-	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
-	size = ( 'One', 'One' )
+
+class dnsEntry(complex):
+	description = _('DNS Entry')
+	subsyntaxes = ((_('DNS forward zone'), DNS_ForwardZone), (_('IP address'), IP_AddressList))
+	size = ('One', 'One')
 	min_elements = 1
 
-class dnsEntryReverse( complex ):
-	description=_('DNS Entry Reverse')
-	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
-	size = ( 'One', 'One' )
+
+class dnsEntryReverse(complex):
+	description = _('DNS Entry Reverse')
+	subsyntaxes = ((_('DNS reverse zone'), DNS_ReverseZone), (_('IP address'), IP_AddressList))
+	size = ('One', 'One')
 	min_elements = 1
 
-class DNS_ForwardZoneList( select ):
+
+class DNS_ForwardZoneList(select):
 	depends = 'dnsEntryZoneForward'
 
-class dnsEntryAlias( complex ):
-	description=_('DNS Entry Alias')
-	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), DNS_Name ) )
-	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
 
-class dhcpService( UDM_Objects ):
-	udm_modules = ( 'dhcp/service', )
-	description=_('DHCP service')
+class dnsEntryAlias(complex):
+	description = _('DNS Entry Alias')
+	subsyntaxes = ((_('Zone of existing host record'), DNS_ForwardZoneList), (_('DNS forward zone'), DNS_ForwardZone), (_('Alias'), DNS_Name))
+	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
+
+
+class dhcpService(UDM_Objects):
+	udm_modules = ('dhcp/service', )
+	description = _('DHCP service')
 	label = '%(name)s'
 	empty_value = True
 
-class dhcpEntry( complex ):
-	subsyntaxes= ( ( _( 'DHCP service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
-	description=_( 'DHCP Entry' )
-	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
+
+class dhcpEntry(complex):
+	subsyntaxes = ((_('DHCP service'), dhcpService), (_('IP address'), IP_AddressList), (_('MAC address'), MAC_AddressList))
+	description = _('DHCP Entry')
+	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		return value
 
-class DHCP_Option( complex ):
-	subsyntaxes = ( ( _( 'Name' ), string ), ( _( 'Value' ), string ) )
-	description = _( 'DHCP option' )
-	size = ( 'One', 'One' )
 
-class WritableShare( UDM_Objects ):
-	udm_modules = ( 'shares/share', )
+class DHCP_Option(complex):
+	subsyntaxes = ((_('Name'), string), (_('Value'), string))
+	description = _('DHCP option')
+	size = ('One', 'One')
+
+
+class WritableShare(UDM_Objects):
+	udm_modules = ('shares/share', )
 	udm_filter = 'writeable=1'
-	label = _('%(name)s (%(path)s on %(host)s)') # ldap-optimized for shares/share.description()
+	label = _('%(name)s (%(path)s on %(host)s)')  # ldap-optimized for shares/share.description()
 	size = 'OneAndAHalf'
 	empty_value = True
 	use_objects = False
@@ -1976,94 +2158,106 @@ class WritableShare( UDM_Objects ):
 # 	searchFilter='(objectClass=univentionShare)'
 # 	description=_('Share')
 
+
 class AllowDenyIgnore(select):
-	choices=[
+	choices = [
 		('', ''),
 		('allow', _('allow')),
 		('deny', _('deny')),
 		('ignore', _('ignore'))
 	]
 
-class IStates( select ):
+
+class IStates(select):
 	values = []
 
 	@ClassProperty
-	def choices( cls ):
-		return map( lambda x: ( x[ 1 ] ), cls.values )
+	def choices(cls):
+		return map(lambda x: (x[1]), cls.values)
 
 	@classmethod
-	def parse( cls, text ):
-		if isinstance( text, basestring ):
+	def parse(cls, text):
+		if isinstance(text, basestring):
 			return text
 		for value, choice in cls.values:
 			if text == value:
-				return choice[ 0 ]
+				return choice[0]
 		return text
 
-class AllowDeny( IStates ):
+
+class AllowDeny(IStates):
 	values = (
-		( None, ('', '') ),
-		( True, ( 'allow', _('allow') ) ),
-		( False, ('deny', _('deny')) )
+		(None, ('', '')),
+		(True, ('allow', _('allow'))),
+		(False, ('deny', _('deny')))
 	)
 
-class booleanNone( IStates ):
+
+class booleanNone(IStates):
 	values = (
-		( None, ( '', '' ) ),
-		( True, ('yes', _('Yes') ) ),
-		( False, ( 'no', _('No') ) )
+		(None, ('', '')),
+		(True, ('yes', _('Yes'))),
+		(False, ('no', _('No')))
 	)
 
-class auto_one_zero( select ):
-	choices=[
+
+class auto_one_zero(select):
+	choices = [
 		('Auto', _('Auto')),
 		('1', _('Yes')),
 		('0', _('No'))
 	]
 
-class TrueFalse( IStates ):
+
+class TrueFalse(IStates):
 	values = (
-		( None, ( '', '' ) ),
-		( True, ( 'true', _('True') ) ),
-		( False, ( 'false', _('False')) )
+		(None, ('', '')),
+		(True, ('true', _('True'))),
+		(False, ('false', _('False')))
 	)
 
-class TrueFalseUpper( IStates ):
+
+class TrueFalseUpper(IStates):
 	values = (
-		( None, ( '', '' ) ),
-		( True, ( 'TRUE', _('True') ) ),
-		( False, ( 'FALSE', _('False') ) )
+		(None, ('', '')),
+		(True, ('TRUE', _('True'))),
+		(False, ('FALSE', _('False')))
 	)
 
-class TrueFalseUp( IStates ):
+
+class TrueFalseUp(IStates):
 	values = (
-		( True, ( 'TRUE', _('True') ) ),
-		( False, ( 'FALSE', _('False') ) )
+		(True, ('TRUE', _('True'))),
+		(False, ('FALSE', _('False')))
 	)
 
-class OkOrNot( IStates ):
+
+class OkOrNot(IStates):
 	values = (
-		( True, ( 'OK', _('OK') ) ),
-		( False, ( 'Not', _('Not OK') ) )
+		(True, ('OK', _('OK'))),
+		(False, ('Not', _('Not OK')))
 	)
+
 
 class ddnsUpdateStyle(select):
-	choices=[
+	choices = [
 		('', ''),
 		('ad-hoc', _('ad-hoc')),
 		('interim', _('interim')),
 		('none', _('none'))
 	]
 
-class ddnsUpdates( IStates ):
+
+class ddnsUpdates(IStates):
 	values = (
-		( None, ( '', '' ) ),
-		( True, ( 'on', _('on') ) ),
-		( False, ( 'off', _('off') ) )
+		(None, ('', '')),
+		(True, ('on', _('on'))),
+		(False, ('off', _('off')))
 	)
 
+
 class netbiosNodeType(select):
-	choices=[
+	choices = [
 		('', ''),
 		('1', '1 B-node: Broadcast - no WINS'),
 		('2', '2 P-node: Peer - WINS only'),
@@ -2071,17 +2265,17 @@ class netbiosNodeType(select):
 		('8', '8 H-node: Hybrid - WINS, then broadcast'),
 	]
 
+
 class kdeProfile(select):
-	choices=[
+	choices = [
 		('', 'none'),
 		('/home/kde.restricted', 'restricted'),
 		('/home/kde.lockeddown', 'locked down'),
 	]
 
 
-
 class language(select):
-	choices=[
+	choices = [
 		('', ''),
 		('af_ZA', 'Afrikaans/South Africa'),
 		('af_ZA.UTF-8', 'Afrikaans/South Africa(UTF-8)'),
@@ -2366,41 +2560,44 @@ class language(select):
 		('zu_ZA.UTF-8', 'Zulu/South Africa(UTF-8)'),
 	]
 
+
 class Month(select):
-	choices=[
+	choices = [
 		('', ''),
-		('all', _( 'all' ) ),
-		('January', _( 'January' ) ),
-		('February', _( 'February' ) ),
-		('March', _( 'March' ) ),
-		('April', _( 'April' ) ),
-		('May', _( 'May' ) ),
-		('June', _( 'June' ) ),
-		('July', _( 'July' ) ),
-		('August', _( 'August' ) ),
-		('September', _( 'September' ) ),
-		('October', _( 'October' ) ),
-		('November', _( 'November' ) ),
-		('December', _( 'December' ) ),
+		('all', _('all')),
+		('January', _('January')),
+		('February', _('February')),
+		('March', _('March')),
+		('April', _('April')),
+		('May', _('May')),
+		('June', _('June')),
+		('July', _('July')),
+		('August', _('August')),
+		('September', _('September')),
+		('October', _('October')),
+		('November', _('November')),
+		('December', _('December')),
 	]
+
 
 class Weekday(select):
-	choices=[
+	choices = [
 		('', ''),
-		('all', _( 'all' ) ),
-		('Monday', _( 'Monday' ) ),
-		('Tuesday', _( 'Tuesday' ) ),
-		('Wednesday', _( 'Wednesday' ) ),
-		('Thursday', _( 'Thursday' ) ),
-		('Friday', _( 'Friday' ) ),
-		('Saturday', _( 'Saturday' ) ),
-		('Sunday', _( 'Sunday' ) ),
+		('all', _('all')),
+		('Monday', _('Monday')),
+		('Tuesday', _('Tuesday')),
+		('Wednesday', _('Wednesday')),
+		('Thursday', _('Thursday')),
+		('Friday', _('Friday')),
+		('Saturday', _('Saturday')),
+		('Sunday', _('Sunday')),
 	]
 
+
 class Day(select):
-	choices=[
+	choices = [
 		('', ''),
-		('all', _( 'all' ) ),
+		('all', _('all')),
 		('1', '1'),
 		('2', '2'),
 		('3', '3'),
@@ -2434,10 +2631,11 @@ class Day(select):
 		('31', '31'),
 	]
 
+
 class Hour(select):
-	choices=[
+	choices = [
 		('', ''),
-		('all', _( 'all' ) ),
+		('all', _('all')),
 		('00', '0'),
 		('1', '1'),
 		('2', '2'),
@@ -2463,9 +2661,10 @@ class Hour(select):
 		('22', '22'),
 		('23', '23'),
 	]
+
 
 class HourSimple(select):
-	choices=[
+	choices = [
 		('00', '0'),
 		('1', '1'),
 		('2', '2'),
@@ -2492,10 +2691,11 @@ class HourSimple(select):
 		('23', '23'),
 	]
 
+
 class Minute(select):
-	choices=[
+	choices = [
 		('', ''),
-		('all', _( 'all' ) ),
+		('all', _('all')),
 		('00', '0'),
 		('5', '5'),
 		('10', '10'),
@@ -2509,9 +2709,10 @@ class Minute(select):
 		('50', '50'),
 		('55', '55'),
 	]
+
 
 class MinuteSimple(select):
-	choices=[
+	choices = [
 		('00', '0'),
 		('5', '5'),
 		('10', '10'),
@@ -2526,23 +2727,28 @@ class MinuteSimple(select):
 		('55', '55'),
 	]
 
-class UNIX_AccessRight( simple ):
+
+class UNIX_AccessRight(simple):
 	pass
 
-# Widget supports setgid/sticky bit 
-class UNIX_AccessRight_extended( simple ):
+# Widget supports setgid/sticky bit
+
+
+class UNIX_AccessRight_extended(simple):
 	pass
+
 
 class sambaGroupType(select):
-	choices=[
+	choices = [
 		('', ''),
 		('2', _('Domain Group')),
 		('3', _('Local Group')),
 		('5', _('Well-Known Group'))
 	]
 
+
 class adGroupType(select):
-	choices=[
+	choices = [
 		('', ''),
 		('-2147483643', _('Local (Type: Security)')),
 		('-2147483646', _('Global (Type: Security)')),
@@ -2553,103 +2759,120 @@ class adGroupType(select):
 		('8', _('Universal (Type: Distribution)')),
 	]
 
-class SambaLogonHours( MultiSelect ):
-	choices = [ ( idx *24 + hour, '%s %d-%d' % (day, hour, hour +1) ) for idx, day in ( ( 0, _( 'Sun' ) ), ( 1, _( 'Mon' ) ), ( 2, _( 'Tue' ) ), ( 3, _( 'Wed' ) ), ( 4, _( 'Thu' ) ), ( 5, _( 'Fri' ) ), ( 6, _( 'Sat' ) ) ) for hour in range( 24 ) ]
+
+class SambaLogonHours(MultiSelect):
+	choices = [(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1)) for idx, day in ((0, _('Sun')), (1, _('Mon')), (2, _('Tue')), (3, _('Wed')), (4, _('Thu')), (5, _('Fri')), (6, _('Sat'))) for hour in range(24)]
 
 	@classmethod
-	def parse( self, value ):
+	def parse(self, value):
 		# required for UDM CLI: in this case the keys MUST be of type int
-		if isinstance( value, basestring ):
-			value = map( lambda x: int( x ), shlex.split( value ) )
+		if isinstance(value, basestring):
+			value = map(lambda x: int(x), shlex.split(value))
 
-		return MultiSelect.parse.im_func( self, value )
+		return MultiSelect.parse.im_func(self, value)
 
-class SambaPrivileges( select ):
+
+class SambaPrivileges(select):
 	empty_value = True
 	choices = [
-		( 'SeMachineAccountPrivilege', _( 'Add machines to domain' ) ),
-		( 'SeSecurityPrivilege', _( 'Manage auditing and security log' ) ),
-		( 'SeTakeOwnershipPrivilege', _( 'Take ownership of files or other objects' ) ),
-		( 'SeBackupPrivilege', _( 'Back up files and directories' ) ),
-		( 'SeRestorePrivilege', _( 'Restore files and directories' ) ),
-		( 'SeRemoteShutdownPrivilege', _( 'Force shutdown from a remote system' ) ),
-		( 'SePrintOperatorPrivilege', _( 'Manage printers' ) ),
-		( 'SeAddUsersPrivilege', _( 'Add users and groups to the domain' ) ),
-		( 'SeDiskOperatorPrivilege', _( 'Manage disk shares' ) ),
+		('SeMachineAccountPrivilege', _('Add machines to domain')),
+		('SeSecurityPrivilege', _('Manage auditing and security log')),
+		('SeTakeOwnershipPrivilege', _('Take ownership of files or other objects')),
+		('SeBackupPrivilege', _('Back up files and directories')),
+		('SeRestorePrivilege', _('Restore files and directories')),
+		('SeRemoteShutdownPrivilege', _('Force shutdown from a remote system')),
+		('SePrintOperatorPrivilege', _('Manage printers')),
+		('SeAddUsersPrivilege', _('Add users and groups to the domain')),
+		('SeDiskOperatorPrivilege', _('Manage disk shares')),
 	]
 
-class UCSServerRole( select ):
+
+class UCSServerRole(select):
 	empty_value = True
 	choices = [
-		( 'domaincontroller_master', _( 'Domaincontroller Master' ) ),
-		( 'domaincontroller_backup', _( 'Domaincontroller Backup' ) ),
-		( 'domaincontroller_slave', _( 'Domaincontroller Slave' ) ),
-		( 'memberserver', _( 'Memberserver' ) ),
+		('domaincontroller_master', _('Domaincontroller Master')),
+		('domaincontroller_backup', _('Domaincontroller Backup')),
+		('domaincontroller_slave', _('Domaincontroller Slave')),
+		('memberserver', _('Memberserver')),
 	]
 
-class ServiceMail( UDM_Objects ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+
+class ServiceMail(UDM_Objects):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=SMTP))'
 
-class ServicePrint( UDM_Objects ):
-	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+
+class ServicePrint(UDM_Objects):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
-class Service( UDM_Objects ):
-	udm_modules = ( 'settings/service', )
+
+class Service(UDM_Objects):
+	udm_modules = ('settings/service', )
 	regex = None
 	key = '%(name)s'
 	label = '%(name)s'
 	simple = True
 
+
 class nfssync(select):
-	choices=[
-		('sync', _( 'synchronous' ) ),
-		('async', _( 'asynchronous' ) )
+	choices = [
+		('sync', _('synchronous')),
+		('async', _('asynchronous'))
 	]
+
 
 class univentionAdminModules(select):
 	# we need a fallback
-	choices=[('computers/managedclient', 'Computer: Managed Client'), ('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'), ('computers/domaincontroller_master', 'Computer: Domain Controller Master'), ('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'), ('computers/trustaccount', 'Computer: Domain Trust Account'), ('computers/ipmanagedclient', 'Computer: IP Managed Client'), ('computers/macos', 'Computer: Mac OS X Client'), ('computers/memberserver', 'Computer: Member Server'), ('computers/mobileclient', 'Computer: Mobile Client'), ('computers/thinclient', 'Computer: Thin Client'), ('computers/windows', 'Computer: Windows'), ('container/cn', 'Container: Container'), ('container/dc', 'Container: Domain'), ('container/ou', 'Container: Organizational Unit'), ('dhcp/host', 'DHCP: Host'), ('dhcp/pool', 'DHCP: Pool'), ('dhcp/server', 'DHCP: Server'), ('dhcp/service', 'DHCP: Service'), ('dhcp/shared', 'DHCP: Shared Network'), ('dhcp/sharedsubnet', 'DHCP: Shared Subnet'), ('dhcp/subnet', 'DHCP: Subnet'), ('dns/alias', 'DNS: Alias Record'), ('dns/forward_zone', 'DNS: Forward Lookup Zone'), ('dns/host_record', 'DNS: Host Record'), ('dns/ptr_record', 'DNS: Pointer'), ('dns/reverse_zone', 'DNS: Reverse Lookup Zone'), ('dns/srv_record', 'DNS: Service Record'), ('dns/zone_mx_record', 'DNS: Zone Mail Exchanger'), ('dns/zone_txt_record', 'DNS: Zone Text'), ('groups/group', 'Group: Group'), ('mail/folder', 'Mail: IMAP Folder'), ('mail/domain', 'Mail: Mail Domains'), ('mail/lists', 'Mail: Mailing Lists'), ('networks/network', 'Networks: Network'), ('policies/autostart', 'Policy: Autostart'), ('policies/clientdevices', 'Policy: Client Devices'), ('policies/dhcp_scope', 'Policy: DHCP Allow/Deny'), ('policies/dhcp_boot', 'Policy: DHCP Boot'), ('policies/dhcp_dns', 'Policy: DHCP DNS'), ('policies/dhcp_dnsupdate', 'Policy: DHCP DNS Update'), ('policies/dhcp_leasetime', 'Policy: DHCP Lease Time'), ('policies/dhcp_netbios', 'Policy: DHCP Netbios'), ('policies/dhcp_routing', 'Policy: DHCP Routing'), ('policies/dhcp_statements', 'Policy: DHCP Statements'), ('policies/desktop', 'Policy: Desktop'), ('policies/xfree', 'Policy: Display'), ('policies/ldapserver', 'Policy: LDAP Server'), ('policies/maintenance', 'Policy: Maintenance'), ('policies/managedclientpackages', 'Policy: Packages Managed Client'), ('policies/masterpackages', 'Policy: Packages Master'), ('policies/memberpackages', 'Policy: Packages Member'), ('policies/mobileclientpackages', 'Policy: Packages Mobile Client'), ('policies/slavepackages', 'Policy: Packages Slave'), ('policies/pwhistory', 'Policy: Password Policy'), ('policies/print_quota', 'Policy: Print Quota'), ('policies/printserver', 'Policy: Print Server'), ('policies/release', 'Policy: Release'), ('policies/repositoryserver', 'Policy: Repository Server'), ('policies/repositorysync', 'Policy: Repository Sync'), ('policies/sound', 'Policy: Sound'), ('policies/thinclient', 'Policy: Thin Client'), ('policies/admin_container', 'Policy: Univention Admin Container Settings'), ('policies/share_userquota', 'Policy: Userquota-Policy'), ('settings/default', 'Preferences: Default'), ('settings/directory', 'Preferences: Path'), ('settings/admin', 'Preferences: Univention Admin Global Settings'), ('settings/user', 'Preferences: Univention Admin User Settings'), ('settings/xconfig_choices', 'Preferences: X Configuration Choices'), ('shares/printer', 'Print-Share: Printer'), ('shares/printergroup', 'Print-Share: Printer Group'), ('settings/license', 'Settings: License'), ('settings/lock', 'Settings: Lock'), ('settings/packages', 'Settings: Package List'), ('settings/printermodel', 'Settings: Printer Driver List'), ('settings/printeruri', 'Settings: Printer URI List'), ('settings/prohibited_username', 'Settings: Prohibited Usernames'), ('settings/sambaconfig', 'Settings: Samba Configuration'), ('settings/sambadomain', 'Settings: Samba Domain'), ('settings/service', 'Settings: Service'), ('settings/usertemplate', 'Settings: User Template'), ('shares/share', 'Share: Directory'), ('settings/cn', 'Univention Settings'), ('users/user', 'User'), ('users/passwd', 'User: Password'), ('users/self', 'User: Self')]
+	choices = [('computers/managedclient', 'Computer: Managed Client'), ('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'), ('computers/domaincontroller_master', 'Computer: Domain Controller Master'), ('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'), ('computers/trustaccount', 'Computer: Domain Trust Account'), ('computers/ipmanagedclient', 'Computer: IP Managed Client'), ('computers/macos', 'Computer: Mac OS X Client'), ('computers/memberserver', 'Computer: Member Server'), ('computers/mobileclient', 'Computer: Mobile Client'), ('computers/thinclient', 'Computer: Thin Client'), ('computers/windows', 'Computer: Windows'), ('container/cn', 'Container: Container'), ('container/dc', 'Container: Domain'), ('container/ou', 'Container: Organizational Unit'), ('dhcp/host', 'DHCP: Host'), ('dhcp/pool', 'DHCP: Pool'), ('dhcp/server', 'DHCP: Server'), ('dhcp/service', 'DHCP: Service'), ('dhcp/shared', 'DHCP: Shared Network'), ('dhcp/sharedsubnet', 'DHCP: Shared Subnet'), ('dhcp/subnet', 'DHCP: Subnet'), ('dns/alias', 'DNS: Alias Record'), ('dns/forward_zone', 'DNS: Forward Lookup Zone'), ('dns/host_record', 'DNS: Host Record'), ('dns/ptr_record', 'DNS: Pointer'), ('dns/reverse_zone', 'DNS: Reverse Lookup Zone'), ('dns/srv_record', 'DNS: Service Record'), ('dns/zone_mx_record', 'DNS: Zone Mail Exchanger'), ('dns/zone_txt_record', 'DNS: Zone Text'), ('groups/group', 'Group: Group'), ('mail/folder', 'Mail: IMAP Folder'), ('mail/domain', 'Mail: Mail Domains'), ('mail/lists', 'Mail: Mailing Lists'), ('networks/network', 'Networks: Network'), ('policies/autostart', 'Policy: Autostart'), ('policies/clientdevices', 'Policy: Client Devices'), ('policies/dhcp_scope', 'Policy: DHCP Allow/Deny'), ('policies/dhcp_boot', 'Policy: DHCP Boot'), ('policies/dhcp_dns', 'Policy: DHCP DNS'), ('policies/dhcp_dnsupdate', 'Policy: DHCP DNS Update'), ('policies/dhcp_leasetime', 'Policy: DHCP Lease Time'), ('policies/dhcp_netbios', 'Policy: DHCP Netbios'), ('policies/dhcp_routing', 'Policy: DHCP Routing'), ('policies/dhcp_statements', 'Policy: DHCP Statements'), ('policies/desktop', 'Policy: Desktop'), ('policies/xfree', 'Policy: Display'), ('policies/ldapserver', 'Policy: LDAP Server'), ('policies/maintenance', 'Policy: Maintenance'), ('policies/managedclientpackages', 'Policy: Packages Managed Client'), ('policies/masterpackages', 'Policy: Packages Master'), ('policies/memberpackages', 'Policy: Packages Member'), ('policies/mobileclientpackages', 'Policy: Packages Mobile Client'), ('policies/slavepackages', 'Policy: Packages Slave'), ('policies/pwhistory', 'Policy: Password Policy'), ('policies/print_quota', 'Policy: Print Quota'), ('policies/printserver', 'Policy: Print Server'), ('policies/release', 'Policy: Release'), ('policies/repositoryserver', 'Policy: Repository Server'), ('policies/repositorysync', 'Policy: Repository Sync'), ('policies/sound', 'Policy: Sound'), ('policies/thinclient', 'Policy: Thin Client'), ('policies/admin_container', 'Policy: Univention Admin Container Settings'), ('policies/share_userquota', 'Policy: Userquota-Policy'), ('settings/default', 'Preferences: Default'), ('settings/directory', 'Preferences: Path'), ('settings/admin', 'Preferences: Univention Admin Global Settings'), ('settings/user', 'Preferences: Univention Admin User Settings'), ('settings/xconfig_choices', 'Preferences: X Configuration Choices'), ('shares/printer', 'Print-Share: Printer'), ('shares/printergroup', 'Print-Share: Printer Group'), ('settings/license', 'Settings: License'), ('settings/lock', 'Settings: Lock'), ('settings/packages', 'Settings: Package List'), ('settings/printermodel', 'Settings: Printer Driver List'), ('settings/printeruri', 'Settings: Printer URI List'), ('settings/prohibited_username', 'Settings: Prohibited Usernames'), ('settings/sambaconfig', 'Settings: Samba Configuration'), ('settings/sambadomain', 'Settings: Samba Domain'), ('settings/service', 'Settings: Service'), ('settings/usertemplate', 'Settings: User Template'), ('shares/share', 'Share: Directory'), ('settings/cn', 'Univention Settings'), ('users/user', 'User'), ('users/passwd', 'User: Password'), ('users/self', 'User: Self')]
 
 	@classmethod
 	def parse(self, text):
 		for choice in self.choices:
 			if choice[0] == text:
 				return text
-		raise univention.admin.uexceptions.valueInvalidSyntax, _('"%s" is not a Univention Admin Module.') % text
+		raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not a Univention Admin Module.') % text)
 
 # Unfortunately, Python doesn't seem to support (static) class methods;
 # however, (static) class variables such as "choices" seem to work;
 # so, we'll modify "choices" using this global method
+
+
 def univentionAdminModules_update():
 	temp = []
 	for name, mod in univention.admin.modules.modules.items():
-		if not univention.admin.modules.virtual( mod ):
-			temp.append( ( name, univention.admin.modules.short_description( mod ) ) )
+		if not univention.admin.modules.virtual(mod):
+			temp.append((name, univention.admin.modules.short_description(mod)))
 
-	univentionAdminModules.choices = sorted( temp, key = operator.itemgetter( 1 ) )
+	univentionAdminModules.choices = sorted(temp, key=operator.itemgetter(1))
 
 __register_choice_update_function(univentionAdminModules_update)
 
-class UDM_PropertySelect( complex ):
-	subsyntaxes = ( ( _( 'UDM module' ), string ), ( _( 'property' ), string ) )
+
+class UDM_PropertySelect(complex):
+	subsyntaxes = ((_('UDM module'), string), (_('property'), string))
 
 # old syntax required by settings/syntax. Should be removed after migrating to UDM_PropertySelect
+
+
 class listAttributes(string):
+
 	@classmethod
 	def parse(self, text):
 		return text
 
+
 class timeSpec(select):
+
 	"""Time format used by 'at'."""
-	_times  = [(time, time) for hour in range(0, 24)
+	_times = [(time, time) for hour in range(0, 24)
 				for minute in range(0, 60, 15)
 				for time in ('%02d:%02d' % (hour, minute),)]
 	choices = [
 		('', _('No Reboot')),
 		('now', _('Immediately')),
 	] + _times
+
 
 class optionsUsersUser(select):
 	choices = [
@@ -2661,54 +2884,67 @@ class optionsUsersUser(select):
 		('mail', _('Mail Account')),
 	]
 
-class CTX_BrokenTimedoutSession( select ):
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		( '0000', _( 'Disconnect' ) ),
-		( '0400', _( 'Reset' ) ),
-		)
 
-class CTX_ReconnectSession( select ):
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		( '0000', _( 'All Clients' ) ),
-		( '0200', _( 'Previously used Client' ) ),
-		)
+class CTX_BrokenTimedoutSession(select):
 
-class CTX_Shadow( select ):
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
 	choices = (
-		( '00000000', _( 'Disabled' ) ),
-		( '01000000', _( 'Enabled: Input: on, Message: on' ) ),
-		( '02000000', _( 'Enabled: Input: on, Message: off' ) ),
-		( '03000000', _( 'Enabled: Input: off, Message: on' ) ),
-		( '04000000', _( 'Enabled: Input: off, Message: off' ) ),
-		)
-class CTX_RASDialin( select ):
+		('0000', _('Disconnect')),
+		('0400', _('Reset')),
+	)
+
+
+class CTX_ReconnectSession(select):
+
 	'''The keys of the choices are the hexdecimal values that represent
 	the options value within the munged dial flags'''
 	choices = (
-		( 'E', _( 'Disabled' ) ),
-		( 'w', _( 'Enabled: Set by Caller' ) ),
-		( 'k', _( 'Enabled: No Call Back' ) ),
-		)
+		('0000', _('All Clients')),
+		('0200', _('Previously used Client')),
+	)
+
+
+class CTX_Shadow(select):
+
+	'''The keys of the choices are the hexdecimal values that represent
+	the options value within the munged dial flags'''
+	choices = (
+		('00000000', _('Disabled')),
+		('01000000', _('Enabled: Input: on, Message: on')),
+		('02000000', _('Enabled: Input: on, Message: off')),
+		('03000000', _('Enabled: Input: off, Message: on')),
+		('04000000', _('Enabled: Input: off, Message: off')),
+	)
+
+
+class CTX_RASDialin(select):
+
+	'''The keys of the choices are the hexdecimal values that represent
+	the options value within the munged dial flags'''
+	choices = (
+		('E', _('Disabled')),
+		('w', _('Enabled: Set by Caller')),
+		('k', _('Enabled: No Call Back')),
+	)
 	#( ' ', _( 'Enabled: Preset To' ) ),
 
 
-class nagiosHostsEnabledDn( UDM_Objects ):
-	udm_modules = ( 'computers/computer', )
+class nagiosHostsEnabledDn(UDM_Objects):
+	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
 
-class nagiosServiceDn( UDM_Objects ):
-	udm_modules = ( 'nagios/service', )
 
-class UCR_Variable( complex ):
-	subsyntaxes = ( ( _( 'Variable' ), string ), ( _( 'Value' ), string ) )
+class nagiosServiceDn(UDM_Objects):
+	udm_modules = ('nagios/service', )
 
-class LDAP_Search( select ):
+
+class UCR_Variable(complex):
+	subsyntaxes = ((_('Variable'), string), (_('Value'), string))
+
+
+class LDAP_Search(select):
+
 	"""Selection list from LDAP search.
 
 	Searches can be either defined dynamically via a UDM settings/syntax
@@ -2722,7 +2958,7 @@ class LDAP_Search( select ):
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
-	def __init__( self, syntax_name = None, filter = None, attribute = [], base = '', value = 'dn', viewonly = False, addEmptyValue = False, appendEmptyValue = False ):
+	def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
 		"""Creates an syntax object providing a list of choices defined
 		by a LDAP objects
 
@@ -2763,10 +2999,10 @@ class LDAP_Search( select ):
 		self.appendEmptyValue = appendEmptyValue
 
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		return text
 
-	def _load( self, lo ):
+	def _load(self, lo):
 		"""Loads an LDAP_Search object from the LDAP directory. If no
 		syntax name is given the object is expected to be created with
 		the required settings programmatically."""
@@ -2780,53 +3016,56 @@ class LDAP_Search( select ):
 		# get values from UDM settings/syntax
 		try:
 			filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax])
-			dn, attrs = lo.search( filter = filter )[ 0 ]
+			dn, attrs = lo.search(filter=filter)[0]
 		except:
 			return
 
 		if dn:
 			self.__dn = dn
-			self.filter = attrs[ 'univentionSyntaxLDAPFilter' ][ 0 ]
-			self.attributes = attrs[ 'univentionSyntaxLDAPAttribute' ]
-			if attrs.has_key( 'univentionSyntaxLDAPBase' ):
-				self.base = attrs[ 'univentionSyntaxLDAPBase' ][ 0 ]
+			self.filter = attrs['univentionSyntaxLDAPFilter'][0]
+			self.attributes = attrs['univentionSyntaxLDAPAttribute']
+			if attrs.has_key('univentionSyntaxLDAPBase'):
+				self.base = attrs['univentionSyntaxLDAPBase'][0]
 			else:
 				self.__base = ''
-			if attrs.has_key( 'univentionSyntaxLDAPValue' ):
-				self.value = attrs[ 'univentionSyntaxLDAPValue' ][ 0 ]
+			if attrs.has_key('univentionSyntaxLDAPValue'):
+				self.value = attrs['univentionSyntaxLDAPValue'][0]
 			else:
 				self.value = 'dn'
-			if attrs.get( 'univentionSyntaxViewOnly', [ 'FALSE' ] )[ 0 ] == 'TRUE':
+			if attrs.get('univentionSyntaxViewOnly', ['FALSE'])[0] == 'TRUE':
 				self.viewonly = True
 				self.value = 'dn'
-			self.addEmptyValue = ( attrs.get( 'univentionSyntaxAddEmptyValue', [ '0' ] )[ 0 ].upper() in [ 'TRUE', '1' ] )
-			self.appendEmptyValue = ( attrs.get( 'univentionSyntaxAppendEmptyValue', [ '0' ] )[ 0 ].upper() in [ 'TRUE', '1' ] )
+			self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', ['0'])[0].upper() in ['TRUE', '1'])
+			self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', ['0'])[0].upper() in ['TRUE', '1'])
 
-	def _prepare( self, lo, filter = None ):
+	def _prepare(self, lo, filter=None):
 		if filter is None:
 			filter = self.filter
 		self.choices = []
 		self.values = []
-		for dn in lo.searchDn( filter = filter, base = self.base ):
+		for dn in lo.searchDn(filter=filter, base=self.base):
 			# self.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
 			if not self.viewonly:
-				self.values.append( ( dn, self.value, self.attributes ) )
+				self.values.append((dn, self.value, self.attributes))
 			else:
-				self.values.append( ( dn, self.attributes ) )
+				self.values.append((dn, self.attributes))
+
 
 class nfsShare(UDM_Objects):
-	udm_modules = ( 'shares/share', )
-	label = '%(name)s (%(host)s)' # '%(printablename)s' optimized for performance...
+	udm_modules = ('shares/share', )
+	label = '%(name)s (%(host)s)'  # '%(printablename)s' optimized for performance...
 	udm_filter = 'objectClass=univentionShareNFS'
 	use_objects = False
 
+
 class nfsMounts(complex):
-	subsyntaxes=[(_('NFS share'), nfsShare), ('Mount point', string)]
-	all_required=True
+	subsyntaxes = [(_('NFS share'), nfsShare), ('Mount point', string)]
+	all_required = True
+
 
 class languageCode(string):
-	min_length=5
-	max_length=5
+	min_length = 5
+	max_length = 5
 	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
 
 	@classmethod
@@ -2834,7 +3073,7 @@ class languageCode(string):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('Language code must be in format "xx_XX"!')
+			raise univention.admin.uexceptions.valueError(_('Language code must be in format "xx_XX"!'))
 
 
 class translationTuple(complex):
@@ -2842,74 +3081,86 @@ class translationTuple(complex):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
 	all_required = 1
 
+
 class translationTupleShortDescription(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated short description'), string)]
+
 
 class translationTupleLongDescription(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated long description'), string)]
 
+
 class translationTupleTabName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 
-class I18N_GroupName( translationTuple ):
-	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), ( _( 'Translated group name' ), string )]
 
-class disabled( select ):
+class I18N_GroupName(translationTuple):
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated group name'), string)]
+
+
+class disabled(select):
 	choices = (
-		( 'none', _( 'None' ) ),
-		( 'all', _( 'All disabled' ) ),
-		( 'none2', '----' ),
-		( 'windows', _( 'Windows disabled' ) ),
-		( 'kerberos', _( 'Kerberos disabled' ) ),
-		( 'posix', _( 'POSIX disabled' ) ),
-		( 'windows_posix', _( 'Windows and POSIX disabled' ) ),
-		( 'windows_kerberos', _( 'Windows and Kerberos disabled' ) ),
-		( 'posix_kerberos', _( 'POSIX and Kerberos disabled' ) ),
+		('none', _('None')),
+		('all', _('All disabled')),
+		('none2', '----'),
+		('windows', _('Windows disabled')),
+		('kerberos', _('Kerberos disabled')),
+		('posix', _('POSIX disabled')),
+		('windows_posix', _('Windows and POSIX disabled')),
+		('windows_kerberos', _('Windows and Kerberos disabled')),
+		('posix_kerberos', _('POSIX and Kerberos disabled')),
 	)
 
-class locked( select ):
+
+class locked(select):
 	choices = (
-		( 'none', _( 'None' ) ),
-		( 'all', _( 'Lock all login methods' ) ),
-		( 'windows', _( 'Lock Windows/Kerberos only' ) ),
-		( 'posix', _( 'Lock POSIX/LDAP only' ) ),
+		('none', _('None')),
+		('all', _('Lock all login methods')),
+		('windows', _('Lock Windows/Kerberos only')),
+		('posix', _('Lock POSIX/LDAP only')),
 	)
 
 # printing stuff
 
-class Printers( UDM_Objects ):
-	udm_modules = ( 'shares/printer', )
+
+class Printers(UDM_Objects):
+	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
 	simple = True
 	key = '%(name)s'
 
 	@classmethod
-	def udm_filter( self, options ):
-		return 'spoolHost=%s' % '|'.join( options[ Printers.depends ] )
+	def udm_filter(self, options):
+		return 'spoolHost=%s' % '|'.join(options[Printers.depends])
 
-class PrinterNames( UDM_Objects ):
-	udm_modules = ( 'shares/printer', )
+
+class PrinterNames(UDM_Objects):
+	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
 	simple = True
 	key = '%(name)s'
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
 
 	@classmethod
-	def udm_filter( self, options ):
-		return 'spoolHost=%s' % '|'.join( options[ Printers.depends ] )
+	def udm_filter(self, options):
+		return 'spoolHost=%s' % '|'.join(options[Printers.depends])
 
-class PrintQuotaGroup( complex ):
-	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'Group' ), GroupName ) )
 
-class PrintQuotaGroupPerUser( complex ):
-	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'Group' ), GroupName ) )
+class PrintQuotaGroup(complex):
+	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
 
-class PrintQuotaUser( complex ):
-	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'User' ), UserName ) )
+
+class PrintQuotaGroupPerUser(complex):
+	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
+
+
+class PrintQuotaUser(complex):
+	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('User'), UserName))
+
 
 class printerName(simple):
-	min_length=1
-	max_length=16
+	min_length = 1
+	max_length = 16
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
 
 	@classmethod
@@ -2917,13 +3168,15 @@ class printerName(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!")
+			raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!"))
+
 
 class printerModel(complex):
-	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
-	all_required=True
+	subsyntaxes = [(_('Driver'), string), (_('Description'), string)]
+	all_required = True
 
-class PrinterDriverList( UDM_Attribute ):
+
+class PrinterDriverList(UDM_Attribute):
 	udm_module = 'settings/printermodel'
 	attribute = 'printmodel'
 	is_complex = True
@@ -2932,43 +3185,46 @@ class PrinterDriverList( UDM_Attribute ):
 	udm_filter = 'dn'
 	depends = 'producer'
 
-class PrinterProducerList( UDM_Objects ):
-	udm_modules = ( 'settings/printermodel', )
+
+class PrinterProducerList(UDM_Objects):
+	udm_modules = ('settings/printermodel', )
 	label = '%(name)s'
 
-class PrinterProtocol( UDM_Attribute ):
+
+class PrinterProtocol(UDM_Attribute):
 	udm_module = 'settings/printeruri'
 	attribute = 'printeruri'
 	is_complex = False
 
-class PrinterURI( complex ):
-	subsyntaxes = ( ( _( 'Protocol' ), PrinterProtocol ), ( _( 'Destination' ), string ) )
+
+class PrinterURI(complex):
+	subsyntaxes = ((_('Protocol'), PrinterProtocol), (_('Destination'), string))
 
 	@classmethod
 	def parse(self, texts):
-		parsed=[]
+		parsed = []
 
 		if self.min_elements is not None:
 			count = self.min_elements
 		else:
-			count = len( self.subsyntaxes ) if not 'pdf' in texts[0] else len( self.subsyntaxes )-1
+			count = len(self.subsyntaxes) if not 'pdf' in texts[0] else len(self.subsyntaxes) - 1
 
 		if len(texts) < count:
-			raise univention.admin.uexceptions.valueInvalidSyntax, _('Protocol and destination have to be specified.')
+			raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination have to be specified.'))
 
-		if len(texts) > len( self.subsyntaxes ):
-			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")
+		if len(texts) > len(self.subsyntaxes):
+			raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
-		for i in range( len( texts ) ):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
-			if not inspect.isclass( self.subsyntaxes[ i ][ 1 ] ):
-				s = self.subsyntaxes[ i ][ 1 ]
+		for i in range(len(texts)):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
+			if not inspect.isclass(self.subsyntaxes[i][1]):
+				s = self.subsyntaxes[i][1]
 			else:
-				s = self.subsyntaxes[ i ][ 1 ]()
+				s = self.subsyntaxes[i][1]()
 			if texts[i] == None:
-				if self.min_elements is None or ( i+1 ) < self.min_elements:
-					raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
-			p = s.parse( texts[ i ] )
+				if self.min_elements is None or (i + 1) < self.min_elements:
+					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
+			p = s.parse(texts[i])
 			if p:
 				parsed.append(p)
 		return parsed
@@ -2982,24 +3238,26 @@ class policyName(string):
 		if self._re.match(text):
 			return text
 		raise univention.admin.uexceptions.valueError(
-			_('May only contain letters (except umlauts), digits, space as well as the ' \
-			'characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit ' \
+			_('May only contain letters (except umlauts), digits, space as well as the '
+			'characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit '
 			'and must not end with space.')
 		)
 
 
-# DEPRECATED! Use MailHomeServer
-class mailHomeServer(LDAP_Search):
+class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
+
 	def __init__(self):
 		LDAP_Search.__init__(
 			self,
-			filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(univentionService=IMAP))',
-			attribute = [ 'computers/computer: fqdn' ],
-			value = 'computers/computer: fqdn',
-			appendEmptyValue = True
+			filter='(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(univentionService=IMAP))',
+			attribute=['computers/computer: fqdn'],
+			value='computers/computer: fqdn',
+			appendEmptyValue=True
 		)
 
+
 class hostname_or_ipadress_or_network(simple):
+
 	"""
 	>>> hostname_or_ipadress_or_network().parse('hostname')
 	'hostname'
@@ -3025,23 +3283,24 @@ class hostname_or_ipadress_or_network(simple):
 	valueError:
 	"""
 	@classmethod
-	def parse( self, text ):
+	def parse(self, text):
 		try:
-			if '/' in text: # a network
+			if '/' in text:  # a network
 				ipnetwork.parse(text)
-			else: # a hostname or ip address
+			else:  # a hostname or ip address
 				hostOrIP.parse(text)
 		except univention.admin.uexceptions.valueError as exc:
 			error = _('Error: %(text)s - %(exc)s')
 			raise univention.admin.uexceptions.valueError(error % {'text': text, 'exc': exc})
 		return text
 
-class ObjectFlag( select ):
+
+class ObjectFlag(select):
 	empty_value = True
 	choices = [
-		( 'hidden', _( 'Mark this object as hidden' ) ),
-		( 'temporary', _( 'Mark this object as temporary' ) ),
-		( 'functional', _( 'Ignore this object in standard UDM modules' ) ),
+		('hidden', _('Mark this object as hidden')),
+		('temporary', _('Mark this object as temporary')),
+		('functional', _('Ignore this object in standard UDM modules')),
 	]
 
 

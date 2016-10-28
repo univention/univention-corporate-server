@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsPackagesTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/packages'
 		super(SettingsPackagesTestCase, self).__init__(*args, **kwargs)
@@ -43,16 +44,17 @@ class SettingsPackagesTestCase(GenericTestCase):
 		super(SettingsPackagesTestCase, self).setUp()
 		self.createProperties = {
 			'packageList': {'append': ['vi', 'emacs']},
-			}
+		}
 		self.modifyProperties = {
 			'packageList': {'append': ['vim'],
 					'remove': ['vi']},
-			}
+		}
 		self.name = 'testpackagesetting'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsPackagesTestCase())
 	return suite

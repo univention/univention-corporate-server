@@ -35,11 +35,12 @@ from GenericTest import GenericTestCase
 
 
 class DhcpServiceTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dhcp/service'
 		super(DhcpServiceTestCase, self).__init__(*args, **kwargs)
 
-	def setUp(self, subnet = None):
+	def setUp(self, subnet=None):
 		super(DhcpServiceTestCase, self).setUp()
 		if subnet is None:
 			subnet = self.random(2)

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyRepositoryServerTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/repositoryserver'
 		super(PolicyRepositoryServerTestCase,
@@ -44,15 +45,16 @@ class PolicyRepositoryServerTestCase(GenericTestCase):
 		super(PolicyRepositoryServerTestCase, self).setUp()
 		self.createProperties = {
 			'repositoryServer': 'baba'
-			}
+		}
 		self.modifyProperties = {
 			'repositoryServer': 'bubu'
-			}
+		}
 		self.name = 'testrepositoryserverpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyRepositoryServerTestCase())
 	return suite

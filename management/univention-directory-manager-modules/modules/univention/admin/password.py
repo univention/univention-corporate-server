@@ -35,11 +35,11 @@ import types
 import smbpasswd
 import univention.config_registry
 
-configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 
-def crypt(password, method_id = None, salt = None):
+def crypt(password, method_id=None, salt=None):
 	"""return crypt hash"""
 	hashing_method = configRegistry.get('password/hashing/method', 'sha-512').upper()
 
@@ -50,11 +50,11 @@ def crypt(password, method_id = None, salt = None):
 			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
 			'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
-			'6', '7', '8', '9' ]
+			'6', '7', '8', '9']
 		urandom = open("/dev/urandom", "r")
-		for i in xrange(0, 16): # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+		for i in xrange(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
-			while not o < 256 / len(valid) * len(valid): # make sure not to skew the distribution when using modulo
+			while not o < 256 / len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
 				o = ord(urandom.read(1))
 			salt = salt + valid[(o % len(valid))]
 		urandom.close()
@@ -65,7 +65,7 @@ def crypt(password, method_id = None, salt = None):
 					 'SHA-256': '5',
 					 'SHA512': '6',
 					 'SHA-512': '6',
-					 }.get(hashing_method, '6')
+               }.get(hashing_method, '6')
 
 	import crypt
 	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
@@ -85,11 +85,11 @@ def ntlm(password):
 
 
 def krb5_asn1(principal, password, krb5_context=None):
-	list=[]
+	list = []
 	if type(principal) == types.UnicodeType:
-		principal = str( principal )
+		principal = str(principal)
 	if type(password) == types.UnicodeType:
-		password = str( password )
+		password = str(password)
 	if not krb5_context:
 		krb5_context = heimdal.context()
 	for krb5_etype in krb5_context.get_permitted_enctypes():

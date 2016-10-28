@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsSambaDomainTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/sambadomain'
 		super(SettingsSambaDomainTestCase,
@@ -43,21 +44,22 @@ class SettingsSambaDomainTestCase(GenericTestCase):
 	def setUp(self):
 		super(SettingsSambaDomainTestCase, self).setUp()
 		self.createProperties = {
-			'SID':          '2.3.4.5',
-			'NextUserRid':  '114',
+			'SID': '2.3.4.5',
+			'NextUserRid': '114',
 			'NextGroupRid': '215',
-			'NextRid':      '316',
-			}
+			'NextRid': '316',
+		}
 		self.modifyProperties = {
-			'NextUserRid':  '115',
+			'NextUserRid': '115',
 			'NextGroupRid': '216',
-			'NextRid':      '317',
-			}
+			'NextRid': '317',
+		}
 		self.name = 'testsambadomainsetting'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsSambaDomainTestCase())
 	return suite
