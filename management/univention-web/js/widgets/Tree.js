@@ -48,13 +48,17 @@ define([
 	"./_RegisterOnShowMixin",
 	"xstyle/css!../../dgrid/css/dgrid.css"
 ], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
+	
+	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
+	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
+	
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
 		postMixInProperties: function() {
 			this.inherited(arguments);
 		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
-			var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
 			this._gridTree = new GridTree(lang.mixin({
 				collection: null,
 				collapseOnRefresh: true,
@@ -80,8 +84,8 @@ define([
 				this._onNodeMouseEnter(legacyObject);
 			}));
 		},
+
 		_getStore: function() {
-			var MemoryTree = declare([Memory, Trackable, TreeDstore]);
 			var store = new MemoryTree({
 				getChildren: lang.hitch(this, function(parentItem) {
 					var childrenStore = new MemoryTree();
@@ -103,17 +107,21 @@ define([
 			}));
 			return store;
 		},
+
 		startup: function() {
 			this.inherited(arguments);
 			this._loadGridTreeData();
 			this._registerAtParentOnShowEvents(lang.hitch(this._gridTree, 'resize'));
 		},
+
 		_loadGridTreeData: function() {
 			this._gridTree.set('collection', this._getStore());
 		},
+
 		reload: function() {
 			this._loadGridTreeData();
 		},
+
 		shouldExpandAndSelect: function(row) {
 			var isItemOnPath = array.some(this.path, function(itemOnPath) {
 				return itemOnPath.id === row.id;
@@ -123,6 +131,7 @@ define([
 			}
 			return isItemOnPath;
 		},
+
 		getRowIconHTML: function(icon) {
 			var html = lang.replace('<img src="{url}/umc/icons/16x16/{icon}.png" role="presentation" class="dgrid-tree-icon"/>', {
 				icon: icon,
@@ -130,7 +139,9 @@ define([
 			});
 			return html;
 		},
+
 		path: [],
+
 		_selectionChanged: function() {
 			var selectedObject = this._getSelectedObjects()[0];
 			var path = [];
@@ -144,11 +155,14 @@ define([
 			path.push(selectedObject);
 			this._set('path', path);
 		},
+
 		selectedItems: null,
+
 		_getSelectedItemsAttr: function() {
 			this.selectedItems = this._getSelectedObjects();
 			return this.selectedItems;
 		},
+
 		_getSelectedObjects: function() {
 			var selectedItems = [];
 			for (var id in this._gridTree.selection) {
@@ -163,6 +177,7 @@ define([
 			var row = this._gridTree.row(id);
 			return row.data;
 		},
+
 		_setPathAttr: function(pathTemp) {
 			var path = [];
 			var pathChanged = false;
@@ -188,9 +203,11 @@ define([
 				this._gridTree.refresh();
 			}
 		},
+
 		_onNodeMouseEnter: function() {
 			return;
 		},
+
 		indentDetector: {
 			style: ''
 		}

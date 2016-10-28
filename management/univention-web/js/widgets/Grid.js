@@ -76,6 +76,8 @@ define([
  		}
  	});
 
+	var TrackableStoreAdapter = declare([ Trackable, Memory, StoreAdapter ]);
+
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
 			// dont propagate any event here - otherwise dropDown gets closed.
@@ -284,7 +286,6 @@ define([
 			this.inherited(arguments);
 
 			this._disabledIDs = {};
-			var TrackableStoreAdapter = declare([ Trackable, Memory, StoreAdapter ]);
 			this._store = (new TrackableStoreAdapter({
 				objectStore: this.moduleStore,
 				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function"
