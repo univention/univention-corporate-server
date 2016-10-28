@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+import argparse
+import polib
+import re
+import subprocess
+import sys
+
+UCR_ASSIGNMENT = re.compile(r'(ucs\/web\/overview\/entries.*(?:link|description|label))(?:=|\?)(.*)')
+# directory names to ignore
+DIR_BLACKLIST = set(['.git', '.svn', 'doc', 'test'])
+
+
+def write_po_file(ucrv_assingments, file_name):
+	pof = polib.POFile(check_for_duplicates=True)
+	for ucrv, value in ucrv_assingments:
+		po_ent = polib.POEntry(occurrences=[(ucrv, None)],
+				msgid=value)
+		try:
+			pof.append(po_ent)
+		except ValueError:
+			dupe = pof.find(po_ent.msgid)
+			if ucrv in [dupe_ucrv for dupe_ucrv, _ in dupe.occurrences]:
+				continue
+			else:
+				dupe.occurrences.append((ucrv, None))
+	pof.save(file_name)
+
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-s',
+						'--source',
+						type=str,
+						help="SVN checkout to search for overview page translations")
+	parser.add_argument('-l',
+						'--language_code',
+						type=str,
+						help="two char language code, e.g. 'fr'")
+	args = parser.parse_args()
+	cmd = ['grep',
+			'--recursive',
+			'--no-filename',
+			'overview/.*\(link\|description\|label\)\(=\|\?\)',
+			args.source]
+	cmd.extend(['--exclude-dir={}'.format(dname) for dname in DIR_BLACKLIST])
+	try:
+		out = subprocess.check_output(cmd)
+	except subprocess.CalledProcessError as exc:
+		raise SystemExit('Failed to execute grep')
+	out = [line.strip() for line in out.split('\n') if line]
+	ucrv_assingments = []
+	for line in out:
+		line = line.replace('ucr set ', '').replace('"', '').replace('\'', '')
+		line = line.strip(' \\')
+		matches = UCR_ASSIGNMENT.match(line)
+		if not matches:
+			sys.exit('Error: Recieved unexpected input from grep:\n{}\n'.format(line))
+		ucrv_assingments.append(matches.groups())
+
+	write_po_file(ucrv_assingments, 'ucr-l10n.po')
