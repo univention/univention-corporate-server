@@ -47,8 +47,7 @@ class Attributes:
 		license_type.sort()
 
 		for key in self._options.keys():
-			skey = list(key)
-			skey.sort()
+			skey = sorted(key)
 			if license_type == skey:
 				return self._options[key]
 

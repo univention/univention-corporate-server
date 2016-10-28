@@ -86,9 +86,9 @@ def ntlm(password):
 
 def krb5_asn1(principal, password, krb5_context=None):
 	list = []
-	if type(principal) == types.UnicodeType:
+	if isinstance(principal, types.UnicodeType):
 		principal = str(principal)
-	if type(password) == types.UnicodeType:
+	if isinstance(password, types.UnicodeType):
 		password = str(password)
 	if not krb5_context:
 		krb5_context = heimdal.context()
