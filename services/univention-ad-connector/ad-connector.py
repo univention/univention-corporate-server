@@ -31,18 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
-import listener, cPickle, time, os
+__package__ = ''  # workaround for PEP 366
+import listener
+import cPickle
+import time
+import os
 import univention.debug
 
-name='ad-connector'
-description='AD Connector replication'
-filter='(objectClass=*)'
-attributes=[]
+name = 'ad-connector'
+description = 'AD Connector replication'
+filter = '(objectClass=*)'
+attributes = []
 
 
 # use the modrdn listener extension
-modrdn="1"
+modrdn = "1"
 
 # While initialize copy all group objects into a list:
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
@@ -50,49 +53,53 @@ init_mode = False
 group_objects = []
 
 dirs = [listener.baseConfig['connector/ad/listener/dir']]
-if listener.baseConfig.has_key('connector/listener/additionalbasenames') and listener.baseConfig['connector/listener/additionalbasenames']:
+if 'connector/listener/additionalbasenames' in listener.baseConfig and listener.baseConfig['connector/listener/additionalbasenames']:
 	for configbasename in listener.baseConfig['connector/listener/additionalbasenames'].split(' '):
-		if listener.baseConfig.has_key('%s/ad/listener/dir' % configbasename) and listener.baseConfig['%s/ad/listener/dir' % configbasename]:
+		if '%s/ad/listener/dir' % configbasename in listener.baseConfig and listener.baseConfig['%s/ad/listener/dir' % configbasename]:
 			dirs.append(listener.baseConfig['%s/ad/listener/dir' % configbasename])
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
-def _save_old_object(directory, dn, old):
-	filename=os.path.join(directory, 'tmp','old_dn')
 
-	f=open(filename, 'w+')
+def _save_old_object(directory, dn, old):
+	filename = os.path.join(directory, 'tmp', 'old_dn')
+
+	f = open(filename, 'w+')
 	os.chmod(filename, 0600)
-	p=cPickle.Pickler(f)
-	old_dn=p.dump((dn,old))
+	p = cPickle.Pickler(f)
+	old_dn = p.dump((dn, old))
 	p.clear_memo()
 	f.close()
- 
+
+
 def _load_old_object(directory):
-	f=open(os.path.join(directory, 'tmp','old_dn'),'r')
-	p=cPickle.Unpickler(f)
-	(old_dn,old_object)=p.load()
+	f = open(os.path.join(directory, 'tmp', 'old_dn'), 'r')
+	p = cPickle.Unpickler(f)
+	(old_dn, old_object) = p.load()
 	f.close()
 
-	return (old_dn,old_object)
-			       
+	return (old_dn, old_object)
+
+
 def _dump_object_to_file(filename, ob):
-	f=open(filename, 'w+')
+	f = open(filename, 'w+')
 	os.chmod(filename, 0600)
-	p=cPickle.Pickler(f)
+	p = cPickle.Pickler(f)
 	p.dump(ob)
 	p.clear_memo()
 	f.close()
 
+
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
-	ob=(dn, new, old, old_dn)
+	ob = (dn, new, old, old_dn)
 
-	filename=os.path.join(directory,"%f"%time.time())
+	filename = os.path.join(directory, "%f" % time.time())
 
 	_dump_object_to_file(filename, ob)
 
 	tmp_array = []
-	f=open(filename, 'r')
+	f = open(filename, 'r')
 	tmp_array = cPickle.load(f)
 	f.close()
 
@@ -102,13 +109,14 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 		_dump_object_to_file(filename, ob)
 
 		tmp_array = []
-		f=open(filename, 'r')
+		f = open(filename, 'r')
 		tmp_array = cPickle.load(f)
 		f.close()
 
 		tmp_array_len = len(tmp_array)
 		if tmp_array_len != 4:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
+
 
 def handler(dn, new, old, command):
 
@@ -124,8 +132,8 @@ def handler(dn, new, old, command):
 			old_dn = None
 			old_object = {}
 
-			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
-				(old_dn,old_object) = _load_old_object(directory)
+			if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
+				(old_dn, old_object) = _load_old_object(directory)
 			if command == 'r':
 				_save_old_object(directory, dn, old)
 			else:
@@ -143,8 +151,8 @@ def handler(dn, new, old, command):
 
 				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
 
-				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
-					os.unlink(os.path.join(directory, 'tmp','old_dn'))
+				if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
+					os.unlink(os.path.join(directory, 'tmp', 'old_dn'))
 					pass
 
 	finally:
@@ -157,12 +165,13 @@ def clean():
 		for directory in dirs:
 			for filename in os.listdir(directory):
 				if os.path.isfile(filename):
-					os.remove(os.path.join(directory,filename))
-			if os.path.exists(os.path.join(directory,'tmp')):
-				for filename in os.listdir(os.path.join(directory,'tmp')):
-					os.remove(os.path.join(directory,filename))
+					os.remove(os.path.join(directory, filename))
+			if os.path.exists(os.path.join(directory, 'tmp')):
+				for filename in os.listdir(os.path.join(directory, 'tmp')):
+					os.remove(os.path.join(directory, filename))
 	finally:
 		listener.unsetuid()
+
 
 def postrun():
 	global init_mode
@@ -173,10 +182,10 @@ def postrun():
 			init_mode = False
 			for ob in group_objects:
 				for directory in dirs:
-					filename=os.path.join(directory,"%f"%time.time())
-					f=open(filename, 'w+')
+					filename = os.path.join(directory, "%f" % time.time())
+					f = open(filename, 'w+')
 					os.chmod(filename, 0600)
-					p=cPickle.Pickler(f)
+					p = cPickle.Pickler(f)
 					p.dump(ob)
 					p.clear_memo()
 					f.close()
@@ -185,8 +194,8 @@ def postrun():
 		finally:
 			listener.unsetuid()
 
+
 def initialize():
 	global init_mode
 	init_mode = True
 	clean()
-

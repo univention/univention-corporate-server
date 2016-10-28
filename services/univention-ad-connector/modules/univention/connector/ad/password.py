@@ -31,8 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, time
-import array, socket, ldap
+import ldap
 import univention.debug2 as ud
 import univention.connector.ad
 
@@ -42,35 +41,32 @@ import binascii
 from struct import pack
 from Crypto.Cipher import DES, ARC4
 
-from samba.credentials import Credentials, DONT_USE_KERBEROS
-from samba.param import LoadParm
 from samba.dcerpc import drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack
-from samba.net import Net
 import samba.dcerpc.samr
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
 	# all arcfour-hmac-md5 keys begin this way
-	key='0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
-	
+	key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+
 	for i in range(0, 16):
-		o=nt_password[2*i:2*i+2]
-		key+=chr(int(o, 16))
+		o = nt_password[2 * i:2 * i + 2]
+		key += chr(int(o, 16))
 	return key
-	
+
 
 def transformKey(InputKey):
 	# Section 5.1.3
 	OutputKey = []
-	OutputKey.append( chr(ord(InputKey[0]) >> 0x01) )
-	OutputKey.append( chr(((ord(InputKey[0])&0x01)<<6) | (ord(InputKey[1])>>2)) )
-	OutputKey.append( chr(((ord(InputKey[1])&0x03)<<5) | (ord(InputKey[2])>>3)) )
-	OutputKey.append( chr(((ord(InputKey[2])&0x07)<<4) | (ord(InputKey[3])>>4)) )
-	OutputKey.append( chr(((ord(InputKey[3])&0x0F)<<3) | (ord(InputKey[4])>>5)) )
-	OutputKey.append( chr(((ord(InputKey[4])&0x1F)<<2) | (ord(InputKey[5])>>6)) )
-	OutputKey.append( chr(((ord(InputKey[5])&0x3F)<<1) | (ord(InputKey[6])>>7)) )
-	OutputKey.append( chr(ord(InputKey[6]) & 0x7F) )
+	OutputKey.append(chr(ord(InputKey[0]) >> 0x01))
+	OutputKey.append(chr(((ord(InputKey[0]) & 0x01) << 6) | (ord(InputKey[1]) >> 2)))
+	OutputKey.append(chr(((ord(InputKey[1]) & 0x03) << 5) | (ord(InputKey[2]) >> 3)))
+	OutputKey.append(chr(((ord(InputKey[2]) & 0x07) << 4) | (ord(InputKey[3]) >> 4)))
+	OutputKey.append(chr(((ord(InputKey[3]) & 0x0F) << 3) | (ord(InputKey[4]) >> 5)))
+	OutputKey.append(chr(((ord(InputKey[4]) & 0x1F) << 2) | (ord(InputKey[5]) >> 6)))
+	OutputKey.append(chr(((ord(InputKey[5]) & 0x3F) << 1) | (ord(InputKey[6]) >> 7)))
+	OutputKey.append(chr(ord(InputKey[6]) & 0x7F))
 	for i in range(8):
 		OutputKey[i] = chr((ord(OutputKey[i]) << 1) & 0xfe)
 	return "".join(OutputKey)
@@ -90,6 +86,7 @@ def mySamEncryptNTLMHash(hash, key):
 	plain2 = Crypt2.encrypt(Block2)
 	return plain1 + plain2
 
+
 def deriveKey(baseKey):
 	# 2.2.11.1.3 Deriving Key1 and Key2 from a Little-Endian, Unsigned Integer Key
 	# Let I be the little-endian, unsigned integer.
@@ -97,14 +94,14 @@ def deriveKey(baseKey):
 	# Note that because I is in little-endian byte order, I[0] is the least significant byte.
 	# Key1 is a concatenation of the following values: I[0], I[1], I[2], I[3], I[0], I[1], I[2].
 	# Key2 is a concatenation of the following values: I[3], I[0], I[1], I[2], I[3], I[0], I[1]
-	key = pack('<L',baseKey)
+	key = pack('<L', baseKey)
 	key1 = key[0] + key[1] + key[2] + key[3] + key[0] + key[1] + key[2]
 	key2 = key[3] + key[0] + key[1] + key[2] + key[3] + key[0] + key[1]
-	return transformKey(key1),transformKey(key2)
+	return transformKey(key1), transformKey(key2)
 
 
 def removeDESLayer(cryptedHash, rid):
-	Key1,Key2 = deriveKey(rid)
+	Key1, Key2 = deriveKey(rid)
 	Crypt1 = DES.new(Key1, DES.MODE_ECB)
 	Crypt2 = DES.new(Key2, DES.MODE_ECB)
 	decryptedHash = Crypt1.decrypt(cryptedHash[:8]) + Crypt2.decrypt(cryptedHash[8:])
@@ -125,7 +122,7 @@ def decrypt(key, data, rid):
 
 
 def set_password_in_ad(connector, samaccountname, pwd):
-	_d=ud.function('ldap.ad.set_password_in_ad')
+	_d = ud.function('ldap.ad.set_password_in_ad')
 
 	# print "Static Session Key: %s" % (samr.session_key,)
 	if not connector.samr:
@@ -136,9 +133,9 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	try:
 		sam_accountname = lsa.String()
 		sam_accountname.string = samaccountname
-		(rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname,])
+		(rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname, ])
 
-		rid=rids.ids[0]
+		rid = rids.ids[0]
 		user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
 
 		userinfo18 = samba.dcerpc.samr.UserInfo18()
@@ -160,7 +157,7 @@ def set_password_in_ad(connector, samaccountname, pwd):
 
 
 def get_password_from_ad(connector, user_dn):
-	_d=ud.function('ldap.ad.get_password_from_ad')
+	_d = ud.function('ldap.ad.get_password_from_ad')
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
 
 	nt_hash = None
@@ -187,75 +184,74 @@ def get_password_from_ad(connector, user_dn):
 			break
 		for i in ctr.first_object.object.attribute_ctr.attributes:
 			if str(i.attid) == "589970":
-			# DRSUAPI_ATTID_objectSid
+				# DRSUAPI_ATTID_objectSid
 				if i.value_ctr.values:
 					for j in i.value_ctr.values:
 						sid = ndr_unpack(security.dom_sid, j.blob)
 						_tmp, rid = sid.split()
 			if str(i.attid) == "589914":
-			# DRSUAPI_ATTID_unicodePwd
+				# DRSUAPI_ATTID_unicodePwd
 				if i.value_ctr.values:
 					for j in i.value_ctr.values:
 						unicode_blob = j.blob
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
 		if rid and unicode_blob:
 			nt_hash = decrypt(connector.drs.user_session_key, unicode_blob, rid).upper()
-		
+
 		if ctr.more_data == 0:
 			break
-	
+
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: AD Hash: %s" % nt_hash)
 
 	return nt_hash
 
 
 def password_sync_ucs(connector, key, object):
-	_d=ud.function('ldap.ad.password_sync_ucs')
+	_d = ud.function('ldap.ad.password_sync_ucs')
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
 
 	compatible_modstring = univention.connector.ad.compatible_modstring
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
-	except: # FIXME: which exception is to be caught?
+	except:  # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
-		
+
 	ucs_object = connector._object_mapping(key, object, 'con')
 
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
-	except: # FIXME: which exception is to be caught?
+	except:  # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	try:
-		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet'])
+		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet'])
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
 		return
-	
+
 	sambaPwdLastSet = None
-	if res[0][1].has_key('sambaPwdLastSet'):
+	if 'sambaPwdLastSet' in res[0][1]:
 		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
-	
+
 	pwd = None
-	if res[0][1].has_key('sambaNTPassword'):
-		pwd=res[0][1]['sambaNTPassword'][0]
+	if 'sambaNTPassword' in res[0][1]:
+		pwd = res[0][1]['sambaNTPassword'][0]
 	else:
-		pwd='NO PASSWORDXXXXXX'
+		pwd = 'NO PASSWORDXXXXXX'
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
 
 	if pwd in ['NO PASSWORDXXXXXX', 'NO PASSWORD*********************']:
 		ud.debug(ud.LDAP, ud.PROCESS, "The sambaNTPassword hash is set to %s. Skip the synchronisation of this hash to AD." % pwd)
-		
 
-	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
+	res = connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
+	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
 	rid = None
-	if res[0][1].has_key('objectSid'):
+	if 'objectSid' in res[0][1]:
 		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	# Only sync passwords from UCS to AD when the password timestamp in UCS is newer
@@ -266,7 +262,7 @@ def password_sync_ucs(connector, key, object):
 		# be disbled by setting connector/ad/password/timestamp/syncreset/ucs to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if sambaPwdLastSet > 1 or ( sambaPwdLastSet <= 2 and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
+		if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(ad_password_last_set) >= long(sambaPwdLastSet):
@@ -279,27 +275,27 @@ def password_sync_ucs(connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: Sync the passwords from UCS to AD.")
 		ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
-	
+
 	pwd_set = False
 	pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 	if not pwd_ad:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")
 	res = ''
 
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s"%(pwd_ad,pwd))
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s" % (pwd_ad, pwd))
 	if not pwd == pwd_ad:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD and Hash UCS differ")
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
 
 	if not pwd_set or pwd_ad:
-		newpwdlastset = "-1" # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0		
-		#if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
-		#	# password expired, must be changed on next login
+		newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
+		# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
+		# password expired, must be changed on next login
 		#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
 		#	newpwdlastset = "0"
 		if sambaPwdLastSet <= 1:
-			newpwdlastset = "0" # User must change his password
+			newpwdlastset = "0"  # User must change his password
 		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
 			newpwdlastset = "1"
 		if long(newpwdlastset) != 1:
@@ -308,19 +304,20 @@ def password_sync_ucs(connector, key, object):
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
 
-def password_sync_kinit(connector, key, ucs_object):
-	_d=ud.function('ldap.ad.password_sync_kinit')
 
-	object=connector._object_mapping(key, ucs_object, 'ucs')
+def password_sync_kinit(connector, key, ucs_object):
+	_d = ud.function('ldap.ad.password_sync_kinit')
+
+	object = connector._object_mapping(key, ucs_object, 'ucs')
 
 	attr = {'userPassword': '{KINIT}', 'sambaNTPassword': 'NO PASSWORD*********************', 'sambaLMPassword': 'NO PASSWORD*********************'}
 
-	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=attr.keys())
-	
+	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=attr.keys())
+
 	modlist = []
 	for attribute in attr.keys():
 		expected_value = attr[attribute]
-		if ucs_result[0][1].has_key(attribute):
+		if attribute in ucs_result[0][1]:
 			userPassword = ucs_result[0][1][attribute][0]
 			if userPassword != expected_value:
 				modlist.append((ldap.MOD_REPLACE, attribute, expected_value))
@@ -328,13 +325,14 @@ def password_sync_kinit(connector, key, ucs_object):
 	if modlist:
 		connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), modlist)
 
+
 def password_sync(connector, key, ucs_object):
-	_d=ud.function('ldap.ad.password_sync')
+	_d = ud.function('ldap.ad.password_sync')
 	# externes Programm zum holen des Hash aufrufen
 	# "kerberos_now"
 
-	object=connector._object_mapping(key, ucs_object, 'ucs')
-	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['objectSid','pwdLastSet'])
+	object = connector._object_mapping(key, ucs_object, 'ucs')
+	res = connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet'])
 
 	if connector.isInCreationList(object['dn']):
 		connector.removeFromCreationList(object['dn'])
@@ -342,19 +340,19 @@ def password_sync(connector, key, ucs_object):
 		return
 
 	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
+	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet,res))
+	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet, res))
 
 	rid = None
-	if res[0][1].has_key('objectSid'):
+	if 'objectSid' in res[0][1]:
 		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet','sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
+	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
 	sambaPwdLastSet = None
-	if ucs_result[0][1].has_key('sambaPwdLastSet'):
-		sambaPwdLastSet=ucs_result[0][1]['sambaPwdLastSet'][0]
+	if 'sambaPwdLastSet' in ucs_result[0][1]:
+		sambaPwdLastSet = ucs_result[0][1]['sambaPwdLastSet'][0]
 	ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
@@ -366,7 +364,7 @@ def password_sync(connector, key, ucs_object):
 		# be disabled by setting connector/ad/password/timestamp/syncreset/ad to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
-		if (pwdLastSet > 1) or (pwdLastSet in [0,1] and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ad' % connector.CONFIGBASENAME, False)):
+		if (pwdLastSet > 1) or (pwdLastSet in [0, 1] and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ad' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
 				if long(sambaPwdLastSet) >= long(ad_password_last_set) and long(sambaPwdLastSet) != 1:
@@ -388,14 +386,14 @@ def password_sync(connector, key, ucs_object):
 		userPassword = ''
 
 		ntPwd = res
-		modlist=[]
+		modlist = []
 
-		if ucs_result[0][1].has_key('sambaNTPassword'):
+		if 'sambaNTPassword' in ucs_result[0][1]:
 			ntPwd_ucs = ucs_result[0][1]['sambaNTPassword'][0]
-		if ucs_result[0][1].has_key('krb5PrincipalName'):
-			krb5Principal=ucs_result[0][1]['krb5PrincipalName'][0]
-		if ucs_result[0][1].has_key('userPassword'):
-			userPassword=ucs_result[0][1]['userPassword'][0]
+		if 'krb5PrincipalName' in ucs_result[0][1]:
+			krb5Principal = ucs_result[0][1]['krb5PrincipalName'][0]
+		if 'userPassword' in ucs_result[0][1]:
+			userPassword = ucs_result[0][1]['userPassword'][0]
 
 		pwd_changed = False
 
@@ -406,16 +404,15 @@ def password_sync(connector, key, ucs_object):
 				pwd_changed = True
 				modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))
 				if krb5Principal:
-					connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']),
-									[(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
+					connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
 		if pwd_changed:
 			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
 			# Remove the POSIX and Kerberos password expiry interval
-			if ucs_result[0][1].has_key('shadowLastChange'):
+			if 'shadowLastChange' in ucs_result[0][1]:
 				modlist.append(('shadowLastChange', ucs_result[0][1]['shadowLastChange'][0], None))
-			if ucs_result[0][1].has_key('shadowMax'):
+			if 'shadowMax' in ucs_result[0][1]:
 				modlist.append(('shadowMax', ucs_result[0][1]['shadowMax'][0], None))
-			if ucs_result[0][1].has_key('krb5PasswordEnd'):
+			if 'krb5PasswordEnd' in ucs_result[0][1]:
 				modlist.append(('krb5PasswordEnd', ucs_result[0][1]['krb5PasswordEnd'][0], None))
 
 			if pwdLastSet or pwdLastSet == 0:
@@ -424,18 +421,13 @@ def password_sync(connector, key, ucs_object):
 				if sambaPwdLastSet:
 					if sambaPwdLastSet != newSambaPwdLastSet:
 						modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
-						ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" %
-											newSambaPwdLastSet)
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" % newSambaPwdLastSet)
 				else:
-					modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet ))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" %
-										newSambaPwdLastSet)
+					modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet))
+					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" % newSambaPwdLastSet)
 
-		if len(modlist)>0:	
+		if len(modlist) > 0:
 			connector.lo.lo.modify(ucs_object['dn'], modlist)
 
-
 	else:
-		ud.debug(ud.LDAP, ud.ERROR, "password_sync: sync failed, no result from AD" )
-
-
+		ud.debug(ud.LDAP, ud.ERROR, "password_sync: sync failed, no result from AD")

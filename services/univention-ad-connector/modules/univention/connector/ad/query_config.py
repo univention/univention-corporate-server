@@ -32,27 +32,28 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, codecs, string, os, ConfigParser, cPickle, types, random, traceback
+import os
+import ConfigParser
 
 
 def fixup(s):
-    # add proper padding to a base64 string
-    n = len(s) & 3
-    if n:
-        s = s + "="*(4-n)
-    return s
+	# add proper padding to a base64 string
+	n = len(s) & 3
+	if n:
+		s = s + "=" * (4 - n)
+	return s
 
-configfile='/etc/univention/connector/internal.cfg'
+configfile = '/etc/univention/connector/internal.cfg'
 if not os.path.exists(configfile):
-    print "ERROR: Config-File not found, maybe connector was never started"
+	print "ERROR: Config-File not found, maybe connector was never started"
 config = ConfigParser.ConfigParser()
 config.readfp(open(configfile))
 
 for section in config.sections():
-    print "SECTION: %s" % section
-    for name, value in config.items(section):
-        if section == "AD GUID":
-            print " --%s: %s" % (name,value)
-            print " --%s: %s" % (fixup(name).decode('base64'),fixup(value).decode('base64'))
-        else:
-            print " -- %50s : %s" % (name,value)
+	print "SECTION: %s" % section
+	for name, value in config.items(section):
+		if section == "AD GUID":
+			print " --%s: %s" % (name, value)
+			print " --%s: %s" % (fixup(name).decode('base64'), fixup(value).decode('base64'))
+		else:
+			print " -- %50s : %s" % (name, value)

@@ -32,7 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, string, time
+import sys
+import string
+import time
 from optparse import OptionParser
 
 import ldap
@@ -51,6 +53,7 @@ LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'
 
 LOGFILE = "/var/log/univention/connector.log"
 
+
 def log(level, msg):
 	prefix = {
 		ud.ERROR: "Error",
@@ -58,12 +61,14 @@ def log(level, msg):
 		ud.PROCESS: "Process",
 		ud.INFO: "Info",
 		ud.ALL: "Debug",
-		}
+	}
 	ud.debug(ud.LDAP, level, msg)
 	if level <= ud.get_level(ud.LDAP):
 		print "%s: %s" % (prefix.get(level), msg)
 
+
 class AD_Connection():
+
 	''' stripped down univention.connector.ad.ad class
 		difference: accept "bindpwd" directly instead of "bindpw" filename
 		difference: don't require mapping
@@ -85,23 +90,23 @@ class AD_Connection():
 		self.baseConfig = baseConfig
 
 		tls_mode = 0
-		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
+		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
 
-		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+		self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 
-		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
 		try:
-			result = self.lo_ad.lo.search_ext_s(ad_ldap_base,ldap.SCOPE_BASE,
-					'objectclass=domain',['objectSid'],
-					timeout=-1, sizelimit=0)
+			result = self.lo_ad.lo.search_ext_s(ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)
 			objectSid_blob = result[0][1]['objectSid'][0]
 			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
 		except Exception, msg:
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
 
+
 class AD_DSACL_modifier():
+
 	''' Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
 		NOTE: copied from univention-management-console-module-adtakeover
 	'''
@@ -118,13 +123,13 @@ class AD_DSACL_modifier():
 			difference: pass "bindpwd" directly instead of "bindpw" filename
 		'''
 
-		if not self.ucr.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
+		if '%s/ad/ldap/host' % CONFIGBASENAME not in self.ucr:
 			print '%s/ad/ldap/host not set' % CONFIGBASENAME
 			sys.exit(1)
-		if not self.ucr.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
+		if '%s/ad/ldap/port' % CONFIGBASENAME not in self.ucr:
 			print '%s/ad/ldap/port not set' % CONFIGBASENAME
 			sys.exit(1)
-		if not self.ucr.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
+		if '%s/ad/ldap/base' % CONFIGBASENAME not in self.ucr:
 			print '%s/ad/ldap/base not set' % CONFIGBASENAME
 			sys.exit(1)
 
@@ -138,50 +143,46 @@ class AD_DSACL_modifier():
 				new_ca = open(new_ca_filename, 'w')
 
 				ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
-				new_ca.write(string.join(ca.readlines(),''))
+				new_ca.write(string.join(ca.readlines(), ''))
 				ca.close()
 
 				ca = open(self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME])
-				new_ca.write(string.join(ca.readlines(),''))
+				new_ca.write(string.join(ca.readlines(), ''))
 				ca.close()
 
 				new_ca.close()
-				
-				ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
+
+				ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
 			else:
 				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-		
 
-		poll_sleep=int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
-		ad_init=None
+		poll_sleep = int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
+		ad_init = None
 		while not ad_init:
 			try:
-				self.ad = AD_Connection(	CONFIGBASENAME,
-								self.ucr,
-								self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
-								self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
-								self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
-								self.ad_ldap_binddn,
-								self.ad_ldap_bindpwd,
-								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
-								)
-				ad_init=True
+				self.ad = AD_Connection(
+					CONFIGBASENAME,
+					self.ucr,
+					self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
+					self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
+					self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
+					self.ad_ldap_binddn,
+					self.ad_ldap_bindpwd,
+					self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
+				)
+				ad_init = True
 			except ldap.SERVER_DOWN:
 				print "Warning: Can't initialize LDAP-Connections, wait..."
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
 				pass
 
-
 	def get_nTSecurityDescriptor_of_Deleted_Objects(self):
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
 
-		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,),
-			ldap.SCOPE_BASE,
-			"(objectClass=*)", attrlist=["nTSecurityDescriptor",],
-			serverctrls=ctrls)
-		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,), ldap.SCOPE_BASE, "(objectClass=*)", attrlist=["nTSecurityDescriptor", ], serverctrls=ctrls)
+		if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 			self.deleted_objects_dn = result[0][0]
 			obj = result[0][1]
 			desc_ndr = obj.get("nTSecurityDescriptor", [None])[0]
@@ -191,11 +192,11 @@ class AD_DSACL_modifier():
 
 		desc_sddl = None
 		if desc_ndr:
-			desc = ds_sd=ndr_unpack(security.descriptor, desc_ndr)
+			desc = ds_sd = ndr_unpack(security.descriptor, desc_ndr)
 			desc_sddl = desc.as_sddl()
 
 		return desc_sddl
-			
+
 	def initialize_nTSecurityDescriptor_of_Deleted_Objects(self):
 		# Probably only the O:DAG:SY fields matter here, because
 		# we use LDAP_SERVER_SD_FLAGS_OID with OWNER_SECURITY_INFORMATION only.
@@ -205,17 +206,13 @@ class AD_DSACL_modifier():
 		desc_ndr = ndr_pack(desc)
 		modify_ctrls = []
 		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
-		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SD_FLAGS_OID, criticality=1,
-			encodedControlValue='0\x03\x02\x01\x01')) ## this is a 1 encoded as ASN1 SEQUENCE { INTEGER }
-		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn),
-			[(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)],
-			serverctrls=modify_ctrls)
+		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SD_FLAGS_OID, criticality=1, encodedControlValue='0\x03\x02\x01\x01'))  # this is a 1 encoded as ASN1 SEQUENCE { INTEGER }
+		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=modify_ctrls)
 
 	def grant_DSACL_LCRP_to_local_system(self):
 		ldap_filter = "(sAMAccountName=%s$)" % (self.ucr["hostname"],)
-		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base,ldap.SCOPE_SUBTREE,
-			univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid",])
-		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid", ])
+		if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 			obj = result[0][1]
 			objectSid_ndr = obj.get("objectSid", [None])[0]
 			machine_sid = ndr_unpack(security.dom_sid, objectSid_ndr)
@@ -236,7 +233,7 @@ class AD_DSACL_modifier():
 		if new_ace in desc_sddl:
 			print "INFO: DSACL of Deleted Objects is already OK."
 			sys.exit(0)
-			
+
 		if desc_sddl.find("(") >= 0:
 			desc_sddl = desc_sddl[:desc_sddl.index("(")] + new_ace + desc_sddl[desc_sddl.index("("):]
 		else:
@@ -245,9 +242,7 @@ class AD_DSACL_modifier():
 		desc_ndr = ndr_pack(desc)
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
-		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn),
-			[(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)],
-			serverctrls=ctrls)
+		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
 		print "INFO: DSACL of Deleted Objects adjusted."
 
 
@@ -258,10 +253,10 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 		bindpw = bindpwd
 	else:
 		bindpw_file = ucr.get('connector/ldap/bindpw', '/etc/ldap.secret')
-		binddn = ucr.get('connector/ldap/binddn', 'cn=admin,'+ucr['ldap/base'])
-		bindpw=open(bindpw_file).read()
+		binddn = ucr.get('connector/ldap/binddn', 'cn=admin,' + ucr['ldap/base'])
+		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
+			bindpw = bindpw[0:-1]
 
 	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
 
@@ -278,12 +273,9 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 if __name__ == "__main__":
 
 	parser = OptionParser()
-	parser.add_option("--configbasename", dest="configbasename",
-			  help="", metavar="CONFIGBASENAME", default="connector")
-	parser.add_option("--binddn", dest="binddn",
-			  help="", metavar="BINDDN")
-	parser.add_option("--bindpwd", dest="bindpwd",
-			  help="", metavar="BINDPWD")
+	parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("--binddn", dest="binddn", help="", metavar="BINDDN")
+	parser.add_option("--bindpwd", dest="bindpwd", help="", metavar="BINDPWD")
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename

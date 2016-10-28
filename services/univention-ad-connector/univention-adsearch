@@ -32,7 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, codecs, os
+import sys
+import os
 import univention.config_registry
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
@@ -40,91 +41,92 @@ import ldap
 import ldap.sasl
 import subprocess
 import string
+import base64
 
-class kerberosAuthenticationFailed(Exception): pass
+
+class kerberosAuthenticationFailed(Exception):
+	pass
 
 
 def encode_object_sid(sid_string, encode_in_base64=True):
-    binary_encoding = ""
+	binary_encoding = ""
 
-    for i in sid.split("-")[1:]:
-        j = int(i)
+	for i in sid.split("-")[1:]:
+		j = int(i)
 
-        oc1 = (j >> 24)
-        oc2 = (j - (oc1 * (2 << 23))) >> 16
-        oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
-        oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
+		oc1 = (j >> 24)
+		oc2 = (j - (oc1 * (2 << 23))) >> 16
+		oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
+		oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
 
-        binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
-        binary_encoding += binary_encoding_chunk
+		binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
+		binary_encoding += binary_encoding_chunk
 
-    if encode_in_base64:
-        return base64.encodestring(binary_encoding)
+	if encode_in_base64:
+		return base64.encodestring(binary_encoding)
 
-    return binary_encoding
+	return binary_encoding
+
 
 def encode_object_sid_to_binary_ldapfilter(sid_string):
-    binary_encoding = ""
+	binary_encoding = ""
 
-    # The first two bytes do not seem to follow the expected binary LDAP filter
-    # conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
-    # statically
-    for i in sid_string.split("-")[3:]:
-        j = hex(int(i))
-        hex_repr = (((8-len(j[2:]))*"0") + j[2:])
+	# The first two bytes do not seem to follow the expected binary LDAP filter
+	# conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
+	# statically
+	for i in sid_string.split("-")[3:]:
+		j = hex(int(i))
+		hex_repr = (((8 - len(j[2:])) * "0") + j[2:])
 
-        binary_encoding_chunk  = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
-        binary_encoding += binary_encoding_chunk
+		binary_encoding_chunk = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
+		binary_encoding += binary_encoding_chunk
 
-    return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
+	return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
+
 
 def usage():
-    print ""
-    print "This is univention-adsearch"
-    print ""
-    print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
-    print ""
-    print "Usage:"
-    print "univention-adsearch [-c configbase] filter <attributes>"
-    print ""
-    print "The default configbase is \"connector\"."
+	print ""
+	print "This is univention-adsearch"
+	print ""
+	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
+	print ""
+	print "Usage:"
+	print "univention-adsearch [-c configbase] filter <attributes>"
+	print ""
+	print "The default configbase is \"connector\"."
 
 
-if len(sys.argv)<2 or sys.argv[1] in ["-h","-?","--help"]:
-    usage()
-    sys.exit(1)
+if len(sys.argv) < 2 or sys.argv[1] in ["-h", "-?", "--help"]:
+	usage()
+	sys.exit(1)
 
 CONFIGBASENAME = "connector"
 oiterator = 1
 if sys.argv[oiterator] == "-c":
-    if len(sys.argv) < oiterator+1:
-        print "ERROR: need argument for option -c"
-        usage()
-        sys.exit(1)
-    else:
-        CONFIGBASENAME = sys.argv[oiterator+1]
-        oiterator = oiterator+2
+	if len(sys.argv) < oiterator + 1:
+		print "ERROR: need argument for option -c"
+		usage()
+		sys.exit(1)
+	else:
+		CONFIGBASENAME = sys.argv[oiterator + 1]
+		oiterator = oiterator + 2
 
-if len(sys.argv) < oiterator+1:
-    print "ERROR: no filter given"
-    usage()
-    sys.exit(1)
+if len(sys.argv) < oiterator + 1:
+	print "ERROR: no filter given"
+	usage()
+	sys.exit(1)
 filter_tmp = sys.argv[oiterator].decode('latin')
 
-if len(sys.argv) > oiterator+1:
-    filter_attributes = sys.argv[oiterator+1].split(',')
+if len(sys.argv) > oiterator + 1:
+	filter_attributes = sys.argv[oiterator + 1].split(',')
 else:
-    filter_attributes = None
+	filter_attributes = None
 
-configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-if not (configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
-	and configRegistry.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
-	and configRegistry.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
-	and configRegistry.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
-	and configRegistry.has_key('%s/ad/ldap/base' % CONFIGBASENAME)):
-        print ""
+if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/port' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/binddn' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/bindpw' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/base' % CONFIGBASENAME in configRegistry):
+	print ""
 	print "This is univention-adsearch"
 	print ""
 	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
@@ -134,18 +136,18 @@ if not (configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	print "%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME)
 	print "%s/ad/ldap/base" % (CONFIGBASENAME)
 	sys.exit(1)
-	
 
-protocol='ldap'
-ldaps = configRegistry.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower() # tls or ssl
-if ldaps in [ 'yes', 'true', 'enabled', '1']:
-	protocol='ldaps'
 
-ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME],int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
+protocol = 'ldap'
+ldaps = configRegistry.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower()  # tls or ssl
+if ldaps in ['yes', 'true', 'enabled', '1']:
+	protocol = 'ldaps'
+
+ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME], int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
 pw_file = configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]
-fp = open(pw_file,'r')
+fp = open(pw_file, 'r')
 login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
@@ -154,10 +156,10 @@ ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
 
 
 start_tls = 2
-if configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
+if '%s/ad/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
 	start_tls = 0
 elif ca_file:
-	ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
+	ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_file)
 else:
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -174,10 +176,10 @@ def get_kerberos_ticket():
 	if p1.returncode != 0:
 		raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
 
-lo.set_option(ldap.OPT_REFERRALS,0)
+lo.set_option(ldap.OPT_REFERRALS, 0)
 
 if configRegistry.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
-	os.environ['KRB5CCNAME']='/var/cache/univention-ad-connector/krb5.cc.search'
+	os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc.search'
 	get_kerberos_ticket()
 	auth = ldap.sasl.gssapi("")
 	lo.sasl_interactive_bind_s("", auth)
@@ -185,7 +187,7 @@ else:
 	lo.simple_bind_s(login_dn, login_pw)
 
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
+lc1 = LDAPControl('1.2.840.113556.1.4.417', criticality=1)
 page_size = 1000
 
 lc2 = SimplePagedResultsControl(True, page_size, '')
@@ -199,9 +201,9 @@ for i in filter_tmp.split(","):
 	filter += (j[0] + "=" + j[1])
 
 if filter_attributes:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1,lc2])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
 else:
-	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1,lc2])
+	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
 
 res = []
 while True:
@@ -211,16 +213,16 @@ while True:
 		c
 		for c in serverctrls
 		if c.controlType == SimplePagedResultsControl.controlType
-    ]
+	]
 	if pctrls:
 		cookie = pctrls[0].cookie
 		if cookie:
 			lc2.controlValue = (page_size, cookie)
 			lc2.cookie = cookie
 			if filter_attributes:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1,lc2])
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
 			else:
-				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1,lc2])
+				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), serverctrls=[lc1, lc2])
 		else:
 			break
 	else:
@@ -235,37 +237,37 @@ print "# filter: %s" % filter.encode('latin')
 print "#"
 
 for r in res:
-	if r[0] == None or r[0] == 'None':
+	if r[0] is None or r[0] == 'None':
 		n_referrals += 1
 		continue
 	print ""
-	print "%s: %s"%('DN',unicode(r[0],'utf8').encode('latin'))
+	print "%s: %s" % ('DN', unicode(r[0], 'utf8').encode('latin'))
 	for key in r[1]:
-		if key in ["objectGUID",'ipsecData','repsFrom','replUpToDateVector']:
-			print "%s: %s"%(key,r[1][key])
-			continue			
-		for val in r[1][key]:			
+		if key in ["objectGUID", 'ipsecData', 'repsFrom', 'replUpToDateVector']:
+			print "%s: %s" % (key, r[1][key])
+			continue
+		for val in r[1][key]:
 			if key in ["objectSid"]:
 				value = r[1][key][0]
-				sid='S-'
-				sid+="%d" % ord(value[0])
+				sid = 'S-'
+				sid += "%d" % ord(value[0])
 
-				sid_len=ord(value[1])
-	
-				sid+="-%d" % ord(value[7])
-	
-				for i in range(0,sid_len):
-					res=ord(value[8+(i*4)]) + (ord(value[9+(i*4)]) << 8) + (ord(value[10+(i*4)]) << 16) + (ord(value[11+(i*4)]) << 24)
-					sid+="-%u" % res
-				print "%s: %s"%(key,sid)		
+				sid_len = ord(value[1])
+
+				sid += "-%d" % ord(value[7])
+
+				for i in range(0, sid_len):
+					res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
+					sid += "-%u" % res
+				print "%s: %s" % (key, sid)
 			else:
 				try:
-					print "%s: %s"%(key,unicode(val,'utf8').encode('latin'))
+					print "%s: %s" % (key, unicode(val, 'utf8').encode('latin'))
 				except:
-					print "failed: %s"%key
+					print "failed: %s" % key
 
 print ""
-print "#"	
+print "#"
 print "# results: %s" % (n_results - n_referrals)
 print "#"
 print ""
