@@ -218,7 +218,7 @@ def mapMX(old):
 	lst = []
 	if old == '*':
 		return str('*')
-	if type(old) is list and len(old) == 2 and type(old[0]) is unicode and type(old[1]) is unicode:
+	if isinstance(old, list) and len(old) == 2 and isinstance(old[0], unicode) and isinstance(old[1], unicode):
 		return str('%s %s' % (old[0], old[1], ))
 	for entry in old:
 		lst.append('%s %s' % (entry[0], entry[1]))

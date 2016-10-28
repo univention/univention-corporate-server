@@ -1572,11 +1572,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if not acctFlags and not krb5Flags and not shadowExpire:
 				return False
 			if self['disabled'] == 'all':
-				return not 'D' in acctFlags or \
+				return 'D' not in acctFlags or \
 						'126' in krb5Flags or \
-						not '1' in shadowExpire
+						'1' not in shadowExpire
 			elif self['disabled'] == 'windows':
-				return not 'D' in acctFlags or \
+				return 'D' not in acctFlags or \
 						'254' in krb5Flags or \
 						'1' in shadowExpire
 			elif self['disabled'] == 'kerberos':
@@ -1586,19 +1586,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			elif self['disabled'] == 'posix':
 				return 'D' in acctFlags or \
 						'254' in krb5Flags or \
-						not '1' in shadowExpire
+						'1' not in shadowExpire
 			elif self['disabled'] == 'windows_kerberos':
-				return not 'D' in acctFlags or \
+				return 'D' not in acctFlags or \
 						'126' in krb5Flags or \
 						'1' in shadowExpire
 			elif self['disabled'] == 'windows_posix':
-				return not 'D' in acctFlags or \
+				return 'D' not in acctFlags or \
 						'254' in krb5Flags or \
-						not '1' in shadowExpire
+						'1' not in shadowExpire
 			elif self['disabled'] == 'posix_kerberos':
 				return 'D' in acctFlags or \
 						'126' in krb5Flags or \
-						not '1' in shadowExpire
+						'1' not in shadowExpire
 			else:  # enabled
 				return 'D' in acctFlags or \
 						'254' in krb5Flags or \
@@ -1610,10 +1610,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				return False
 			if self['locked'] == 'all':
 				return not self.__pwd_is_locked(password) or \
-					not 'L' in acctFlags
+					'L' not in acctFlags
 			elif self['locked'] == 'windows':
 				return self.__pwd_is_locked(password) or \
-					not 'L' in acctFlags
+					'L' not in acctFlags
 			elif self['locked'] == 'posix':
 				return not self.__pwd_is_locked(password) or \
 					'L' in acctFlags
@@ -1990,7 +1990,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					pwhlen = int(pwhistoryPolicy['length'])
 					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhlen)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
-			if pwhistoryPolicy != None and pwhistoryPolicy['pwLength'] != None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
+			if pwhistoryPolicy is not None and pwhistoryPolicy['pwLength'] is not None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
 					if len(self['password']) < int(pwhistoryPolicy['pwLength']):
 						for i, j in self.alloc:
 							univention.admin.allocators.release(self.lo, self.position, i, j)
@@ -2001,7 +2001,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 						for i, j in self.alloc:
 							univention.admin.allocators.release(self.lo, self.position, i, j)
 						raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % self.password_length)
-			if pwhistoryPolicy != None and pwhistoryPolicy['pwQualityCheck'] != None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
+			if pwhistoryPolicy is not None and pwhistoryPolicy['pwQualityCheck'] is not None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
 				if self['overridePWLength'] != '1':
 					pwdCheck = univention.password.Check(self.lo)
 					pwdCheck.enableQualityCheck = True
@@ -2010,7 +2010,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					except ValueError as e:
 						raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
-			if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
+			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
 				try:
 					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
 				except:
@@ -2096,7 +2096,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				sambaPwdLastSetValue = str(long(time.time()))
 
 				smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-				if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] != None and len(smbpwhistoryPolicy['length']) > 0:
+				if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] is not None and len(smbpwhistoryPolicy['length']) > 0:
 					smbpwhlen = int(pwhistoryPolicy['length'])
 					smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
 					newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
@@ -2211,7 +2211,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
 			if 'posix' in self.options or 'mail' in self.options:
 				pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-				if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
+				if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
 					try:
 						expiryInterval = int(pwhistoryPolicy['expiryInterval'])
 					except:
@@ -2250,7 +2250,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		elif pwd_change_next_login == 2:  # pwdChangeNextLogin changed from 1 to 0
 			# 1. determine expiryInterval (could be done once before "if self.modifypassword" above)
 			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-			if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
+			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
 				try:
 					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
 				except:
@@ -2686,7 +2686,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 def identify(dn, attr, canonical=0):
 
-	if type(attr.get('uid', [])) == type([]) and len(attr.get('uid', [])) > 0 and ('$' in attr.get('uid', [])[0]):
+	if isinstance(attr.get('uid', []), type([])) and len(attr.get('uid', [])) > 0 and ('$' in attr.get('uid', [])[0]):
 		return False
 
 	return (

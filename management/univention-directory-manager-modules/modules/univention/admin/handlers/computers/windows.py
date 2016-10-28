@@ -652,4 +652,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and not 'windows_domaincontroller' in attr.get('univentionServerRole', [])
+	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and 'windows_domaincontroller' not in attr.get('univentionServerRole', [])

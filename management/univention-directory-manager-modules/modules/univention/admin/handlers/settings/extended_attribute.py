@@ -499,14 +499,14 @@ class object(univention.admin.handlers.simpleLdap):
 				for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
 					lang = lang.replace('_', '-')
 					oldlist[lang] = txt
-					if not lang in newlist:
+					if lang not in newlist:
 						newlist[lang] = ''
 
 				# duplicate lang entries will be removed due to use of dictionary
 				for lang, txt in self.info.get('translation%s' % transKey, []):
 					lang = lang.replace('_', '-')
 					newlist[lang] = txt
-					if not lang in oldlist:
+					if lang not in oldlist:
 						oldlist[lang] = ''
 
 				# modlist for new items
