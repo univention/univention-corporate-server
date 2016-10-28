@@ -1,3 +1,9 @@
+univention-web (1.0.2-10) unstable; urgency=medium
+
+  * Bug #32027: Explain getItem better
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 28 Oct 2016 10:06:01 +0200
+
 univention-web (1.0.2-9) unstable; urgency=medium
 
   * Bug #32027: Fix memory leak by removing old widgets

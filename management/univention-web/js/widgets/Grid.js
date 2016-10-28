@@ -69,9 +69,9 @@ define([
 		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
-		getItem: function(rowIndex) {
-			// workaround -> in dgrid it's easier :)
-			var item = rowIndex;
+		getItem: function(item) {
+			// For legacy dojox grid compability
+			// e.g. formaters that expect to be working with a dojox grid
 			return item;
  		}
  	});
