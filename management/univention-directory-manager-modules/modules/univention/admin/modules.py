@@ -400,12 +400,12 @@ def update_extended_attributes(lo, module, position):
 				overwriteProp = None
 
 			# add tab name to list if missing
-			if not tabname in properties4tabs and not layoutDisabled:
+			if tabname not in properties4tabs and not layoutDisabled:
 				properties4tabs[tabname] = []
 				ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
 			# remember tab for purging if required
-			if overwriteTab and not tabname in overwriteTabList and not layoutDisabled:
+			if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
 				overwriteTabList.append(tabname)
 
 			if not layoutDisabled:
@@ -450,7 +450,7 @@ def update_extended_attributes(lo, module, position):
 
 	# overwrite tabs that have been added by UDM extended attributes
 	for tab in module.extended_attribute_tabnames:
-		if not tab in overwriteTabList:
+		if tab not in overwriteTabList:
 			overwriteTabList.append(tab)
 
 	if properties4tabs:
@@ -463,8 +463,7 @@ def update_extended_attributes(lo, module, position):
 				tab.layout = []
 
 		for tabname in properties4tabs.keys():
-			priofields = properties4tabs[tabname]
-			priofields.sort()
+			priofields = sorted(properties4tabs[tabname])
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
@@ -478,7 +477,7 @@ def update_extended_attributes(lo, module, position):
 				currentTab = Tab(tabname, tabname, advanced=True)
 				module.layout.append(currentTab)
 				# remember tabs that have been added by UDM extended attributes
-				if not tabname in module.extended_attribute_tabnames:
+				if tabname not in module.extended_attribute_tabnames:
 					module.extended_attribute_tabnames.append(tabname)
 
 			# check if tab is empty ==> overwritePosition is impossible
@@ -819,7 +818,7 @@ def findObject(co, lo, dn, type, attr=None, module_base=None):
 			return None
 	ndn = dn
 	nattr = attr
-	while 1:
+	while True:
 		for module in identify(ndn, nattr):
 			if module and module.module == type:
 				s = superordinate(module)
@@ -855,11 +854,9 @@ def policies():
 	if not res:
 		return []
 	policies = []
-	groupnames = res.keys()
-	groupnames.sort()
+	groupnames = sorted(res.keys())
 	for groupname in groupnames:
-		members = res[groupname]
-		members.sort()
+		members = sorted(res[groupname])
 		policies.append(univention.admin.policiesGroup(id=groupname, members=members))
 	return policies
 
@@ -870,7 +867,7 @@ def policyTypes(module_name):
 
 	res = []
 
-	if not module_name or not module_name in modules:
+	if not module_name or module_name not in modules:
 		return res
 	for name, module in modules.items():
 		if not name.startswith('policies/') or not hasattr(module, 'policy_apply_to'):

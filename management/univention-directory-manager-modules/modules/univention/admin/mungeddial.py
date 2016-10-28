@@ -396,7 +396,7 @@ class Support(object):
 					enc[val] = ''
 					# enc[val]=chr(0)
 			for val in self.sambaMungedValues:
-				if not val in self.sambaMungedHexValues:
+				if val not in self.sambaMungedHexValues:
 					enc[val] = self[val]
 
 			# sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAAkCAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAQAA==')

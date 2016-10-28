@@ -157,7 +157,7 @@ class Support(object):
 		parentlist = []
 		parents = self.oldattr.get('univentionNagiosParent', [])
 		for parent in parents:
-			if parent and _re.match(parent) != None:
+			if parent and _re.match(parent) is not None:
 				(relDomainName, zoneName) = _re.match(parent).groups()
 
 				res = self.lo.search(filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))

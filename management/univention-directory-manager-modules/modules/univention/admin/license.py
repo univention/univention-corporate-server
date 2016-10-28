@@ -393,7 +393,7 @@ class License(object):
 	def __countObject(self, obj, lo):
 		if self.licenses[self.version][obj] and not self.licenses[self.version][obj] == 'unlimited':
 			result = lo.searchDn(filter=self.filters[self.version][obj])
-			if result == None:
+			if result is None:
 				self.real[self.version][obj] = 0
 			else:
 				self.real[self.version][obj] = len(result)
@@ -421,7 +421,7 @@ class License(object):
 					'LICENSE: Univention %s allowed %s' % (name, str(value)))
 		except:
 			if self.searchResult:
-				if type(default) == type([]):
+				if isinstance(default, type([])):
 					value = self.searchResult[0][1].get(key, default)
 				else:
 					value = self.searchResult[0][1].get(key, [default])[0]
