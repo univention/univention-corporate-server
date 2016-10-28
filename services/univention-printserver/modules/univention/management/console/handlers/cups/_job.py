@@ -39,23 +39,25 @@ import univention.debug as ud
 import notifier
 import notifier.popen
 
-_ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
+_ = umc.Translation('univention.management.console.handlers.cups').translate
 
-class Commands( object ):
-	def cups_job_cancel( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.job_cancel: options: %s' % \
-				  object.options )
+
+class Commands(object):
+
+	def cups_job_cancel(self, object):
+		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.job_cancel: options: %s' %
+				  object.options)
 		if object.options.get('printer'):
 			cmd = '/usr/bin/cancel -U %s\$ %s %s' % \
-				  ( umc.registry[ 'hostname' ], ' '.join( object.options[ 'jobs' ] ),
-					object.options[ 'printer' ] )
-			ud.debug( ud.ADMIN, ud.INFO, 'CUPS.job_cancel: command: %s' % cmd )
-			proc = notifier.popen.Shell( cmd, stdout = False )
-			cb = notifier.Callback( self._cups_job_cancel_return, object )
-			proc.signal_connect( 'finished', cb )
+				  (umc.registry['hostname'], ' '.join(object.options['jobs']),
+					object.options['printer'])
+			ud.debug(ud.ADMIN, ud.INFO, 'CUPS.job_cancel: command: %s' % cmd)
+			proc = notifier.popen.Shell(cmd, stdout=False)
+			cb = notifier.Callback(self._cups_job_cancel_return, object)
+			proc.signal_connect('finished', cb)
 			proc.start()
 		else:
-			self.finished( object.id(), [] )
+			self.finished(object.id(), [])
 
-	def _cups_job_cancel_return( self, pid, status, object ):
-		self.finished( object.id(), [] )
+	def _cups_job_cancel_return(self, pid, status, object):
+		self.finished(object.id(), [])

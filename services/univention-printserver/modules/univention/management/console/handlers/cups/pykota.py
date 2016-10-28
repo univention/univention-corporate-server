@@ -37,7 +37,7 @@ import notifier.popen
 import univention.debug as ud
 import univention.management.console as umc
 
-_ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
+_ = umc.Translation('univention.management.console.handlers.cups').translate
 
 RE_PRINTERNAME = re.compile('.*?on printer (?P<printername>.*?) \(.*?\)')
 RE_GRACETIME = re.compile('^Pages grace time: (?P<gracetime>[0-9]+ days)')
@@ -48,8 +48,9 @@ RE_TOTAL = re.compile('^ *Total : *(?P<totalpages>[0-9]+) *(?P<totalpaid>[.0-9]+
 RE_REAL = re.compile('^ *Real : *(?P<realpages>([0-9]+|unknown))')
 
 
-class PrinterQuotaUser( object ):
-	def __init__( self, data ):
+class PrinterQuotaUser(object):
+
+	def __init__(self, data):
 		datacopy = copy.deepcopy(data)
 		for key in ['user', 'overcharge', 'pagecounter', 'softlimit', 'hardlimit', 'balance', 'datelimit', 'lifetimepagecounter', 'lifetimepaid', 'warncounter']:
 			if key in datacopy:
@@ -57,8 +58,10 @@ class PrinterQuotaUser( object ):
 			else:
 				self.__dict__[key] = ''
 
-class PrinterQuotaStatus( object ):
-	def __init__( self, data ):
+
+class PrinterQuotaStatus(object):
+
+	def __init__(self, data):
 		datacopy = copy.deepcopy(data)
 		for key in ['printername', 'gracetime', 'jobprice', 'pageprice', 'totalpages', 'totalpaid', 'realpages', 'userlist', 'grouplist']:
 			if key in datacopy:
@@ -70,45 +73,48 @@ class PrinterQuotaStatus( object ):
 # printernamelist ==> [ string, ... ]
 # callback ==> callback( status, [ PrinterQuotaStatus, ... ] )
 #
-def _pykota_get_quota_users( printernamelist, callback ):
+
+
+def _pykota_get_quota_users(printernamelist, callback):
 	cmd = 'LC_ALL="C" LANG="C" /usr/bin/repykota -P%s' % ','.join(printernamelist)
 
-	ud.debug( ud.ADMIN, ud.INFO, 'CUPS.quota command: %s' % cmd )
-	proc = notifier.popen.Shell( cmd, stdout = True )
-	cb = notifier.Callback( _pykota_get_quota_users_return, callback )
-	proc.signal_connect( 'finished', cb )
+	ud.debug(ud.ADMIN, ud.INFO, 'CUPS.quota command: %s' % cmd)
+	proc = notifier.popen.Shell(cmd, stdout=True)
+	cb = notifier.Callback(_pykota_get_quota_users_return, callback)
+	proc.signal_connect('finished', cb)
 	proc.start()
 
-def _pykota_get_quota_users_return( pid, status, buffer, callback ):
+
+def _pykota_get_quota_users_return(pid, status, buffer, callback):
 	result = []
 
 	usrinfo = []
-	prninfo = { }
+	prninfo = {}
 
 	for line in buffer:
 		if len(line) == 0:
 			if prninfo.get('printername'):
 				prninfo['userlist'] = usrinfo
-				result.append( PrinterQuotaStatus( prninfo ) )
+				result.append(PrinterQuotaStatus(prninfo))
 				usrinfo = []
-				prninfo = { }
+				prninfo = {}
 
 		# match user quota regex
 		matches = RE_USERQUOTA.match(line)
 		if matches:
 			grps = matches.groupdict()
-			usrinfo.append( PrinterQuotaUser(grps) )
+			usrinfo.append(PrinterQuotaUser(grps))
 			continue
 
 		# match other regex
-		for regex in [ RE_PRINTERNAME, RE_GRACETIME, RE_JOBPRICE, RE_PAGEPRICE, RE_TOTAL, RE_REAL ]:
+		for regex in [RE_PRINTERNAME, RE_GRACETIME, RE_JOBPRICE, RE_PAGEPRICE, RE_TOTAL, RE_REAL]:
 			matches = regex.match(line)
 			if matches:
 				for key in matches.groupdict().keys():
 					prninfo[key] = matches.groupdict()[key]
 					continue
 
-	callback( status, result )
+	callback(status, result)
 
 #
 # printers: may be unset ==> all printers
@@ -124,11 +130,13 @@ def _pykota_get_quota_users_return( pid, status, buffer, callback ):
 # reset: yes            resets pagecounter on all / specified printer
 # hardreset: yes        resets pagecounter and lifetimecounter on all / specified printer
 #
-def _pykota_set_quota( callback, **kwargs ):
+
+
+def _pykota_set_quota(callback, **kwargs):
 	cmd = '/usr/bin/edpykota '
 
 	# check for boolean arguments
-	for arg in [ 'add', 'delete', 'reset', 'hardreset' ]:
+	for arg in ['add', 'delete', 'reset', 'hardreset']:
 		if kwargs.get(arg) == True:
 			cmd += '--%s ' % arg
 
@@ -153,7 +161,7 @@ def _pykota_set_quota( callback, **kwargs ):
 	if kwargs.get('userlist'):
 		cmd += ' %s ' % ' '.join(kwargs['userlist'])
 
-	ud.debug( ud.ADMIN, ud.PROCESS, 'run: %s' % cmd )
-	proc = notifier.popen.RunIt( cmd )
-	proc.signal_connect( 'finished', callback )
+	ud.debug(ud.ADMIN, ud.PROCESS, 'run: %s' % cmd)
+	proc = notifier.popen.RunIt(cmd)
+	proc.signal_connect('finished', callback)
 	proc.start()
