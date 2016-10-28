@@ -1,0 +1,2 @@
+#rgrep 'overview/.*\(link\|description\|label\)\(=\|\?\)' | sed "s/[\"']//g; s/\\\s*\$//g; s|^.*ucs/web/overview|ucs/web/overview|; s/[?=]/=/" | sort
+rgrep 'overview/.*\(link\|description\|label\)\(=\|\?\)' | sed "s/\\\s*\$//g; s|^.*ucs/web/overview|ucs/web/overview|; s/[?=]/=/" | sort
