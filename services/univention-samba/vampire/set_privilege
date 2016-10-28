@@ -39,23 +39,24 @@ import os.path
 import sys
 
 
-def setMachineAccountPrivilege( sambaSID ):
-	tdbKey='PRIV_%s\x00' % (sambaSID )
+def setMachineAccountPrivilege(sambaSID):
+	tdbKey = 'PRIV_%s\x00' % (sambaSID)
 
-	tdbFile=tdb.Tdb('/var/lib/samba/account_policy.tdb')
+	tdbFile = tdb.Tdb('/var/lib/samba/account_policy.tdb')
 	tdbFile.lock_all()
 	privs = tdbFile.get(tdbKey)
 	if not privs:
-		privs='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+		privs = '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
-	privs='\x10'+privs[1:len(privs)]
+	privs = '\x10' + privs[1:len(privs)]
 
-	tdbFile[tdbKey]=privs
+	tdbFile[tdbKey] = privs
 
 	tdbFile.unlock_all()
 
-def username2sid( username ):
-	lo=univention.uldap.getMachineConnection()
+
+def username2sid(username):
+	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter='(&(objectClass=sambaSamAccount)(uid=%s))' % username, attr=['sambaSID'])
 	try:
 		return res[0][1]['sambaSID'][0]
@@ -66,13 +67,17 @@ def username2sid( username ):
 
 
 if __name__ == '__main__':
-	parser = OptionParser( usage="usage: %prog [options]" )
-	parser.add_option('-u', '--user',
-			action='store', dest='username', default=None,
-			help='Username to set given privilege for')
-	parser.add_option('-p', '--privilege',
-			action='store', dest='privilege', default=None,
-			help='Set this privilege for given username. Currently supported privilege is SeMachineAccountPrivilege')
+	parser = OptionParser(usage="usage: %prog [options]")
+	parser.add_option(
+		'-u', '--user',
+		action='store', dest='username', default=None,
+		help='Username to set given privilege for'
+	)
+	parser.add_option(
+		'-p', '--privilege',
+		action='store', dest='privilege', default=None,
+		help='Set this privilege for given username. Currently supported privilege is SeMachineAccountPrivilege'
+	)
 
 	(options, arguments) = parser.parse_args()
 
@@ -88,7 +93,7 @@ if __name__ == '__main__':
 		parser.error("privilege is required")
 		parser.usage()
 
-	if not options.privilege.lower() in [ 'semachineaccountprivilege' ]:
+	if not options.privilege.lower() in ['semachineaccountprivilege']:
 		print 'Error: The given privilege "%s" is not supported by this program' % (options.privilege)
 		sys.exit(2)
 
@@ -99,4 +104,3 @@ if __name__ == '__main__':
 
 	if options.privilege.lower() == 'semachineaccountprivilege':
 		setMachineAccountPrivilege(sambaSID)
-	

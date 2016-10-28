@@ -31,7 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, ldap, re, codecs, os, copy
+import sys
+import string
+import ldap
+import re
+import codecs
+import os
+import copy
 
 import univention.debug
 univention.debug.init('/var/log/univention/pdc-takeover.log', 1, 0)
@@ -43,51 +49,50 @@ if len(sys.argv) != 2:
 	print "Expect exactly one argument: LDAP-Filter matching the Objects to modify"
 	sys.exit(1)
 
-configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-ldap_base=configRegistry['ldap/base']
+ldap_base = configRegistry['ldap/base']
 
-secretFile=open('/etc/ldap.secret','r')
-pwdLine=secretFile.readline()
-pwd=re.sub('\n','',pwdLine)
+secretFile = open('/etc/ldap.secret', 'r')
+pwdLine = secretFile.readline()
+pwd = re.sub('\n', '', pwdLine)
 
 try:
-	lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=ldap_base, binddn='cn=admin,'+ldap_base, bindpw=pwd, start_tls=2)
-except Exception, e:
+	lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], base=ldap_base, binddn='cn=admin,' + ldap_base, bindpw=pwd, start_tls=2)
+except Exception as e:
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 	print 'authentication error: %s' % str(e)
 	sys.exit(1)
 
-tomod=lo.search(filter=sys.argv[1], base=ldap_base, attr=['objectClass'])
+tomod = lo.search(filter=sys.argv[1], base=ldap_base, attr=['objectClass'])
 
 for entry in tomod:
 	modlist = ''
 	if 'sambaSamAccount' in entry[1]['objectClass']:
-		attrs=lo.get(entry[0])
-		modlist=[("objectclass","sambaSamAccount","")]
+		attrs = lo.get(entry[0])
+		modlist = [("objectclass", "sambaSamAccount", "")]
 
 		for key in attrs.keys():
 			if key[:5] == 'samba' or key == 'displayName':
-				modlist.append((key,attrs[key],''))
+				modlist.append((key, attrs[key], ''))
 
 	if 'sambaGroupMapping' in entry[1]['objectClass']:
-		attrs=lo.get(entry[0])
+		attrs = lo.get(entry[0])
 		if not modlist:
-			modlist=[("objectclass","sambaGroupMapping","")]
+			modlist = [("objectclass", "sambaGroupMapping", "")]
 			for key in attrs.keys():
 				if key[:5] == 'samba' or key == 'displayName':
-					modlist.append((key,attrs[key],''))
+					modlist.append((key, attrs[key], ''))
 		else:
-			modlist.append(("objectclass","sambaGroupMapping",''))
-
+			modlist.append(("objectclass", "sambaGroupMapping", ''))
 
 	if modlist:
-		#print modlist
+		# print modlist
 		try:
-			lo.modify(entry[0],modlist)
+			lo.modify(entry[0], modlist)
 		except:
 			try:
-				print "failed to modify entry: %s"%entry[0]
+				print "failed to modify entry: %s" % entry[0]
 			except:
 				print "failed to modify entry"

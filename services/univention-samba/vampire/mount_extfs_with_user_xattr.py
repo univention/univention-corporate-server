@@ -50,18 +50,19 @@
 from univention.lib import fstab
 import subprocess
 
+
 def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
 	fstab_modified = False
 	for option in options:
 		if activate:
-			if not option in fstab_partition.options:
+			if option not in fstab_partition.options:
 				fstab_partition.options.append(option)
 				fstab_modified = True
 			else:
 				# operation successful: nothing to be done
 				continue
 		else:
-			if not option in fstab_partition.options:
+			if option not in fstab_partition.options:
 				continue
 			else:
 				fstab_partition.options.remove(option)
@@ -74,7 +75,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 	target_partitions = []
 	if devices:
 		for device in devices:
-			fstab_partition = fs.find(spec = device)
+			fstab_partition = fs.find(spec=device)
 			if fstab_partition and fstab_partition.type in ('ext3', 'ext4'):
 				target_partitions.append(fstab_partition)
 			else:

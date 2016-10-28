@@ -40,16 +40,16 @@ import univention.admin.modules
 import univention.admin.handlers.users.user
 import univention.admin.handlers.groups.group
 
-co=None
+co = None
 lo, position = univention.admin.uldap.getAdminConnection()
 
-for o in univention.admin.handlers.users.user.lookup(co, lo, '')+univention.admin.handlers.computers.windows.lookup(co, lo, '')+univention.admin.handlers.groups.group.lookup(co, lo, ''):
+for o in univention.admin.handlers.users.user.lookup(co, lo, '') + univention.admin.handlers.computers.windows.lookup(co, lo, '') + univention.admin.handlers.groups.group.lookup(co, lo, ''):
 	print 'Removing %s...' % repr(o.dn),
 	o.remove()
 	print 'done'
 
-nogroup_dn='cn=nogroup,'+univention.admin.config.getDefaultContainer(lo, 'groups/group')
-al=[
+nogroup_dn = 'cn=nogroup,' + univention.admin.config.getDefaultContainer(lo, 'groups/group')
+al = [
 	('objectClass', ['posixGroup']),
 	('cn', 'nogroup'),
 	('gidNumber', '65534')
@@ -59,8 +59,8 @@ try:
 except univention.admin.uexceptions.objectExists:
 	pass
 
-dn='cn=default,cn=univention,'+position.getBase()
-ml=[
+dn = 'cn=default,cn=univention,' + position.getBase()
+ml = [
 	('univentionDefaultGroup', 'FIXME', nogroup_dn),
 	('univentionDefaultComputerGroup', 'FIXME', nogroup_dn)
 ]

@@ -43,27 +43,27 @@ import univention.admin.allocators
 lo, position = univention.admin.uldap.getAdminConnection()
 
 for udn, attrs in lo.search(filter='(&(objectClass=posixAccount)(objectClass=inetOrgPerson))', scope='domain', attr=['gidNumber']):
-	gNumber=attrs['gidNumber'][0]
+	gNumber = attrs['gidNumber'][0]
 	if gNumber == '0':
 		continue
 
-	for dn, attr in lo.search(filter='(&(objectClass=univentionGroup)(gidNumber=%s))'% gNumber, scope='domain', attr=['uniqueMember']):
-		found=0
+	for dn, attr in lo.search(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % gNumber, scope='domain', attr=['uniqueMember']):
+		found = 0
 
 		try:
 			attr['uniqueMember']
 		except KeyError:
-			attr['uniqueMember']=[]
+			attr['uniqueMember'] = []
 		if udn in attr['uniqueMember']:
-			found=1
+			found = 1
 		else:
-			newUniqueMember=attr['uniqueMember']
+			newUniqueMember = attr['uniqueMember']
 			newUniqueMember.append(udn)
-			ml=[
+			ml = [
 				('uniqueMember', attr['uniqueMember'], newUniqueMember)
 			]
-			print 'Add to %s: %s' % (dn,udn)
+			print 'Add to %s: %s' % (dn, udn)
 			lo.modify(dn, ml)
-			found=1
+			found = 1
 		if found:
 			break

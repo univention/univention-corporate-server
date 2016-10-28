@@ -30,27 +30,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import os
 import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
-## for the ucr commit below in postrun we need ucr configHandlers
+# for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers, ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 
-domainname=listener.baseConfig['domainname']
+domainname = listener.baseConfig['domainname']
 
-name='samba-shares'
-description='Create configuration for Samba shares'
-filter='(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'	# filter fqdn/ip in handler
-attributes=[]
-modrdn='1'
+name = 'samba-shares'
+description = 'Create configuration for Samba shares'
+filter = '(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'  # filter fqdn/ip in handler
+attributes = []
+modrdn = '1'
 
 tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
+
 
 def handler(dn, new, old, command):
 
@@ -63,12 +64,12 @@ def handler(dn, new, old, command):
 	current_ip = str(interfaces.get_default_ip_address().ip)
 
 	new_univentionShareHost = new.get('univentionShareHost', [None])[0]
-	if new and not new_univentionShareHost in (current_fqdn, current_ip):
-		new = {}	## new object is not for this host
+	if new and new_univentionShareHost not in (current_fqdn, current_ip):
+		new = {}  # new object is not for this host
 
 	old_univentionShareHost = old.get('univentionShareHost', [None])[0]
-	if old and not old_univentionShareHost in (current_fqdn, current_ip):
-		old = {}	## old object is not for this host
+	if old and old_univentionShareHost not in (current_fqdn, current_ip):
+		old = {}  # old object is not for this host
 
 	if not (new or old):
 		return
@@ -79,7 +80,7 @@ def handler(dn, new, old, command):
 	try:
 		if not os.path.exists(tmpDir):
 			os.makedirs(tmpDir)
-	except Exception, e:
+	except Exception as e:
 		univention.debug.debug(
 			univention.debug.LISTENER, univention.debug.ERROR,
 			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
@@ -100,8 +101,8 @@ def handler(dn, new, old, command):
 		# object was renamed -> save old object
 		if command == "r" and old:
 			f = open(tmpFile, "w+")
-			os.chmod(tmpFile, 0600)
-			cPickle.dump({"dn":dn, "old":old}, f)
+			os.chmod(tmpFile, 0o600)
+			cPickle.dump({"dn": dn, "old": old}, f)
 			f.close()
 		elif command == "a" and not old and os.path.isfile(tmpFile):
 			f = open(tmpFile, "r")
@@ -110,7 +111,7 @@ def handler(dn, new, old, command):
 			oldObject = p.get("old", {})
 			oldDn = p.get("dn", {})
 			os.remove(tmpFile)
-	except Exception, e:
+	except Exception as e:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)
 		univention.debug.debug(
@@ -138,7 +139,7 @@ def handler(dn, new, old, command):
 			print >>fp, '[%s]' % new['univentionShareSambaName'][0]
 			if new['univentionShareSambaName'][0] != 'homes':
 				print >>fp, 'path = %s' % new['univentionSharePath'][0]
-			mapping=[
+			mapping = [
 				('description', 'comment'),
 				('univentionShareSambaMSDFS', 'msdfs root'),
 				('univentionShareSambaWriteable', 'writeable'),
@@ -202,8 +203,8 @@ def handler(dn, new, old, command):
 					continue
 				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] == '/tmp':
 					continue
-				if attr in ( 'univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny' ) :
-					print >>fp, '%s = %s' % ( var, ', '.join( new[ attr ] ) )
+				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
+					print >>fp, '%s = %s' % (var, ', '.join(new[attr]))
 				else:
 					print >>fp, '%s = %s' % (var, new[attr][0])
 			# try to create directory to share
@@ -224,7 +225,7 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 
-	if ( not (new and old) ) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
+	if (not (new and old)) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
 		global ucr_handlers
 		listener.setuid(0)
 		try:
@@ -243,6 +244,7 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 
+
 def initialize():
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
@@ -251,6 +253,7 @@ def initialize():
 		finally:
 			listener.unsetuid()
 
+
 def prerun():
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
@@ -258,6 +261,7 @@ def prerun():
 			os.mkdir('/etc/samba/shares.conf.d')
 		finally:
 			listener.unsetuid()
+
 
 def clean():
 	global ucr_handlers
@@ -273,10 +277,11 @@ def clean():
 	finally:
 		listener.unsetuid()
 
+
 def postrun():
 	listener.setuid(0)
 	try:
-		initscript='/etc/init.d/samba'
+		initscript = '/etc/init.d/samba'
 		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()
