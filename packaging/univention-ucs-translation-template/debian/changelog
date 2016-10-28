@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.1.0-2) unstable; urgency=medium
+
+  * Bug #42260: fix special case processing
+
+ -- Eduard Mai <mai@univention.de>  Fri, 28 Oct 2016 19:15:06 +0200
+
 univention-ucs-translation-template (3.1.0-1) unstable; urgency=medium
 
   * Bug #42260: fix processing of UCS@school SVN checkouts
