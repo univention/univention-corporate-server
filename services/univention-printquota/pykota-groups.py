@@ -30,25 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug
 import univention.misc
 import univention.config_registry
-import os
 
-name='pykota-groups'
-description='manage pykota groups'
-filter='(objectClass=univentionGroup)'
-attributes=["cn", "memberUid"]
+name = 'pykota-groups'
+description = 'manage pykota groups'
+filter = '(objectClass=univentionGroup)'
+attributes = ["cn", "memberUid"]
+
 
 def initialize():
 	univention.debug.debug(
 		univention.debug.LISTENER,
-		univention.debug.INFO, 
+		univention.debug.INFO,
 		'%s: Initialize' % name
 	)
 	return
+
 
 def callPkusers(cmd):
 
@@ -66,6 +67,7 @@ def callPkusers(cmd):
 
 	return 0
 
+
 def cleanUsers(users):
 
 	cUsers = []
@@ -74,6 +76,7 @@ def cleanUsers(users):
 			cUsers.append(user)
 
 	return cUsers
+
 
 def addMembers(group, users):
 
@@ -87,8 +90,9 @@ def addMembers(group, users):
 
 	return 0
 
+
 def delMembers(group, users):
-	
+
 	univention.debug.debug(
 		univention.debug.LISTENER,
 		univention.debug.INFO,
@@ -99,6 +103,7 @@ def delMembers(group, users):
 	callPkusers(cmd)
 
 	return 0
+
 
 def addGroup(group):
 
@@ -118,6 +123,7 @@ def addGroup(group):
 
 	return 0
 
+
 def delGroup(group):
 
 	cn = group["cn"][0]
@@ -133,6 +139,7 @@ def delGroup(group):
 
 	return 0
 
+
 def modifyGroup(old, new):
 
 	cn = new["cn"][0]
@@ -142,7 +149,7 @@ def modifyGroup(old, new):
 		univention.debug.INFO,
 		'%s: modify group %s' % (name, cn)
 	)
-	
+
 	oldUsers = cleanUsers(old.get("memberUid", []))
 	newUsers = cleanUsers(new.get("memberUid", []))
 	usersToAdd = list(set(newUsers) - set(oldUsers))
@@ -153,6 +160,7 @@ def modifyGroup(old, new):
 		addMembers(cn, usersToAdd)
 
 	return 0
+
 
 def handler(dn, new, old):
 
@@ -167,9 +175,10 @@ def handler(dn, new, old):
 		modifyGroup(old, new)
 	return
 
+
 def clean():
 	return
 
+
 def postrun():
 	return
-

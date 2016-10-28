@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention NFS
-#  listener module: create users home share path on share 
+#  listener module: create users home share path on share
 #
 # Copyright 2012-2016 Univention GmbH
 #
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 
 import listener
 import univention.debug
@@ -46,6 +46,7 @@ name = "nfs-homes"
 description = "Create user home dirs on nfs share host"
 filter = "(&(objectClass=posixAccount)(automountInformation=*))"
 attributes = ["uid", "automountInformation", "gidNumber", "uidNumber"]
+
 
 def handler(dn, new, old):
 
@@ -95,10 +96,9 @@ def handler(dn, new, old):
 						os.makedirs(path)
 						os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
 						os.chown(path, uidNumber, gidNumber)
-					except Exception, e:
+					except Exception as e:
 						univention.debug.debug(
 							univention.debug.LISTENER, univention.debug.ERROR,
 							"%s: failed to create home path %s for user %s (%s)" % (name, path, uid, e))
 					finally:
 						listener.unsetuid()
-

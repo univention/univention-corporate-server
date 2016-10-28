@@ -30,55 +30,57 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, glob
+import os
+import glob
 import univention.config_registry as ucr
 
 TEMPLATE_PATH = '/etc/univention/templates/files/etc/dansguardian/'
 CONFIG_PATH = '/etc/dansguardian'
 files_written = []
 
-def handler( configRegistry, changes ):
-	groups = configRegistry.get( 'dansguardian/groups', 'defaultgroup' ).split( ';' )
-	for i in range( len( groups ) ):
+
+def handler(configRegistry, changes):
+	groups = configRegistry.get('dansguardian/groups', 'defaultgroup').split(';')
+	for i in range(len(groups)):
 		if groups[i] == '':
 			continue
-		ucr.handler_set( [ 'dansguardian/current/groupno=%d' % ( i + 1 ), 'dansguardian/current/group=%s' % groups[ i ] ] )
+		ucr.handler_set(['dansguardian/current/groupno=%d' % (i + 1), 'dansguardian/current/group=%s' % groups[i]])
 		configRegistry.load()
 
 		# primary filter group configuration file
-		src = os.path.join( TEMPLATE_PATH, 'dansguardianfX.conf' )
-		src_fd = open( src )
-		conf = os.path.join( CONFIG_PATH, 'dansguardianf%d.conf' % ( i + 1 ) )
-		content = ucr.filter( src_fd.read(), configRegistry, srcfiles = [ src ] )
+		src = os.path.join(TEMPLATE_PATH, 'dansguardianfX.conf')
+		src_fd = open(src)
+		conf = os.path.join(CONFIG_PATH, 'dansguardianf%d.conf' % (i + 1))
+		content = ucr.filter(src_fd.read(), configRegistry, srcfiles=[src])
 		src_fd.close()
-		fd = open( conf, 'w' )
-		fd.write( content )
+		fd = open(conf, 'w')
+		fd.write(content)
 		fd.close()
 
 		ignore_templates_for_groups = ['bannediplist', 'exceptioniplist']
 		# several lists for filter groups
-		for entry in os.listdir( os.path.join( TEMPLATE_PATH, 'lists' ) ):
+		for entry in os.listdir(os.path.join(TEMPLATE_PATH, 'lists')):
 			if entry not in ignore_templates_for_groups:
-				abs_filename = os.path.join( TEMPLATE_PATH, 'lists', entry )
-				if os.path.isfile( abs_filename ):
-					template = open( abs_filename )
-					conf = os.path.join( CONFIG_PATH, 'lists', '%s-%s' % (groups[ i ], entry ) )
-					content = ucr.filter( template.read(), configRegistry, srcfiles = [ abs_filename ] )
+				abs_filename = os.path.join(TEMPLATE_PATH, 'lists', entry)
+				if os.path.isfile(abs_filename):
+					template = open(abs_filename)
+					conf = os.path.join(CONFIG_PATH, 'lists', '%s-%s' % (groups[i], entry))
+					content = ucr.filter(template.read(), configRegistry, srcfiles=[abs_filename])
 					template.close()
-					fd = open( conf, 'w' )
-					fd.write( content )
+					fd = open(conf, 'w')
+					fd.write(content)
 					fd.close()
-			 		files_written.append(conf)
+					files_written.append(conf)
 
 	# remove old filter lists
-	for f in glob.iglob( os.path.join( CONFIG_PATH, 'lists', '*-*list' ) ):
-		if not f in files_written and os.path.isfile( f ):
-			os.unlink( f )
+	for f in glob.iglob(os.path.join(CONFIG_PATH, 'lists', '*-*list')):
+		if f not in files_written and os.path.isfile(f):
+			os.unlink(f)
 
-	ucr.handler_unset( [ 'dansguardian/current/groupno', 'dansguardian/current/group' ] )
+	ucr.handler_unset(['dansguardian/current/groupno', 'dansguardian/current/group'])
 
 # test
 if __name__ == '__main__':
 	configRegistry = ucr.ConfigRegistry()
 	configRegistry.load()
-	handler( configRegistry, [] )
+	handler(configRegistry, [])

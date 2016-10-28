@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import os
 import re
@@ -39,20 +39,21 @@ import univention.lib.listenerSharePath
 import cPickle
 from univention.config_registry.interfaces import Interfaces
 
-hostname=listener.baseConfig['hostname']
-domainname=listener.baseConfig['domainname']
+hostname = listener.baseConfig['hostname']
+domainname = listener.baseConfig['domainname']
 interfaces = Interfaces(listener.configRegistry)
 ip = interfaces.get_default_ip_address().ip
 
-name='nfs-shares'
-description='Create configuration for NFS shares'
-filter='(&(objectClass=univentionShare)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
-modrdn='1'
+name = 'nfs-shares'
+description = 'Create configuration for NFS shares'
+filter = '(&(objectClass=univentionShare)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
+modrdn = '1'
 
 __exports = '/etc/exports'
 __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 
 tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
+
 
 def handler(dn, new, old, command):
 
@@ -62,7 +63,7 @@ def handler(dn, new, old, command):
 	try:
 		if not os.path.exists(tmpDir):
 			os.makedirs(tmpDir)
-	except Exception, e:
+	except Exception as e:
 		univention.debug.debug(
 			univention.debug.LISTENER, univention.debug.ERROR,
 			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
@@ -74,7 +75,7 @@ def handler(dn, new, old, command):
 	# 'r'+'a' -> renamed
 	# command='r' and "not new and old"
 	# command='a' and "new and not old"
-	
+
 	# write old object to pickle file
 	oldObject = {}
 	oldDn = ""
@@ -83,8 +84,8 @@ def handler(dn, new, old, command):
 		# object was renamed -> save old object
 		if command == "r" and old:
 			f = open(tmpFile, "w+")
-			os.chmod(tmpFile, 0600)
-			cPickle.dump({"dn":dn, "old":old}, f)
+			os.chmod(tmpFile, 0o600)
+			cPickle.dump({"dn": dn, "old": old}, f)
 			f.close()
 		elif command == "a" and not old:
 			if os.path.isfile(tmpFile):
@@ -94,7 +95,7 @@ def handler(dn, new, old, command):
 				oldObject = p.get("old", {})
 				oldDn = p.get("dn", {})
 				os.remove(tmpFile)
-	except Exception, e:
+	except Exception as e:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)
 		univention.debug.debug(
@@ -108,43 +109,43 @@ def handler(dn, new, old, command):
 	fp = open(__exports)
 	new_lines = []
 	for line in fp.readlines():
-		line=line[0:-1]
+		line = line[0:-1]
 		s = __comment_pattern.findall(line)
 		if not s or s[0] != dn:
 			new_lines.append(line)
 	fp.close()
-	if new and new.has_key('objectClass') and 'univentionShareNFS' in new['objectClass']:
+	if new and 'objectClass' in new and 'univentionShareNFS' in new['objectClass']:
 		path = new['univentionSharePath'][0]
 		options = ''
 		if new.get('univentionShareNFSSync', [''])[0] == 'async':
-			sync_mode='async'
+			sync_mode = 'async'
 		else:
-			sync_mode='sync'
+			sync_mode = 'sync'
 
 		if new.get('univentionShareWriteable', [''])[0] == 'yes':
-			read_write='rw'
+			read_write = 'rw'
 		else:
-			read_write='ro'
+			read_write = 'ro'
 
 		if new.get('univentionShareNFSRootSquash', [''])[0] == 'yes':
-			root_squash='root_squash'
+			root_squash = 'root_squash'
 		else:
-			root_squash='no_root_squash'
+			root_squash = 'no_root_squash'
 
 		if new.get('univentionShareNFSSubTree', [''])[0] == 'yes':
-			subtree='subtree_check'
+			subtree = 'subtree_check'
 		else:
-			subtree='no_subtree_check'
+			subtree = 'no_subtree_check'
 
 		custom_settings = ""
-		if new.has_key('univentionShareNFSCustomSetting'):
+		if 'univentionShareNFSCustomSetting' in new:
 			for custom_setting in new['univentionShareNFSCustomSetting']:
 				custom_settings += ",%s" % custom_setting
 
-		if new.has_key( 'univentionShareNFSAllowed' ):
+		if 'univentionShareNFSAllowed' in new:
 			permitted = new['univentionShareNFSAllowed']
 		else:
-			permitted=['*']
+			permitted = ['*']
 
 		for p in permitted:
 			options += ' %s(%s,%s,%s,%s%s)' % (p, read_write, root_squash, sync_mode, subtree, custom_settings)
@@ -154,7 +155,7 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			fp = open(__exports, 'w')
-			fp.write('\n'.join(new_lines)+'\n')
+			fp.write('\n'.join(new_lines) + '\n')
 			fp.close()
 
 			# object was renamed
@@ -172,11 +173,12 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			fp = open(__exports, 'w')
-			fp.write('\n'.join(new_lines)+'\n')
+			fp.write('\n'.join(new_lines) + '\n')
 			fp.close()
 
 		finally:
 			listener.unsetuid()
+
 
 def clean():
 	global __exports, __comment_pattern
@@ -184,7 +186,7 @@ def clean():
 	fp = open(__exports)
 	new_lines = []
 	for line in fp.readlines():
-		line=line[0:-1]
+		line = line[0:-1]
 		s = __comment_pattern.findall(line)
 		if not s:
 			new_lines.append(line)
@@ -193,16 +195,16 @@ def clean():
 	listener.setuid(0)
 	try:
 		fp = open(__exports, 'w')
-		fp.write('\n'.join(new_lines)+'\n')
+		fp.write('\n'.join(new_lines) + '\n')
 		fp.close()
 	finally:
 		listener.unsetuid()
 
 
 def postrun():
-	if listener.baseConfig.has_key('nfsserver/ha/master') and listener.baseConfig['nfsserver/ha/master']:
-		initscript='/etc/heartbeat/resource.d/nfs-kernel-server'
+	if 'nfsserver/ha/master' in listener.baseConfig and listener.baseConfig['nfsserver/ha/master']:
+		initscript = '/etc/heartbeat/resource.d/nfs-kernel-server'
 	else:
-		initscript='/etc/init.d/nfs-kernel-server'
+		initscript = '/etc/init.d/nfs-kernel-server'
 	listener.run(initscript, ['nfs-kernel-server', 'start'], uid=0)
 	listener.run(initscript, ['nfs-kernel-server', 'reload'], uid=0)

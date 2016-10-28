@@ -32,13 +32,15 @@
 # <http://www.gnu.org/licenses/>.
 
 import operator
-import time
 import univention.admin.filter
 import univention.config_registry
+from functools import reduce
 
-userToGroup = {} # { "user": ["group1", "group2", ], }
-groupInfo = {} # { "group1": (23, True, ), }
+userToGroup = {}  # { "user": ["group1", "group2", ], }
+groupInfo = {}  # { "group1": (23, True, ), }
 whitelisting = None
+
+
 def loadInfo():
 	global whitelisting
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -64,6 +66,7 @@ def loadInfo():
 			if wlanEnabled is not None:
 				groupInfo[group] = (priority, wlanEnabled, )
 
+
 def checkProxyFilterPolicy(username):
 	groups = userToGroup.get(username)
 	if groups is None:
@@ -72,9 +75,10 @@ def checkProxyFilterPolicy(username):
 	if not groups:
 		return False
 	(maxPriority, _, ) = max(groups)
-	if not True in [wlanEnabled for (priority, wlanEnabled, ) in groups if priority == maxPriority]:
+	if True not in [wlanEnabled for (priority, wlanEnabled, ) in groups if priority == maxPriority]:
 		return False
 	return True
+
 
 def traceProxyFilterPolicy(username):
 	message = ''
@@ -101,17 +105,20 @@ def traceProxyFilterPolicy(username):
 					message += '-> Group %r: deny (ignored) (priority %r)\n' % (group, priority, )
 		else:
 			message += '-> Group %r: not specified\n' % (group, )
-	if not True in [wlanEnabled for (priority, wlanEnabled, ) in groupInfos if priority == maxPriority]:
+	if True not in [wlanEnabled for (priority, wlanEnabled, ) in groupInfos if priority == maxPriority]:
 		return False, message + '\n'
 	else:
 		return True, message + '\n'
 
+
 def curried(function):
 	return lambda args: function(*args)
+
 
 def concat(list_of_lists):
 	'''concatenate all lists in a list of lists into one list'''
 	return reduce(operator.add, list_of_lists, [])
+
 
 @curried
 def checkAccessAttribute(dn, attributes):
@@ -122,24 +129,30 @@ def checkAccessAttribute(dn, attributes):
 		return dn, False
 	return dn, False
 
+
 def reducePolicies(policies):
 	'''evaluate list of same-level policy values ("or" == allow trumps deny)'''
 	return reduce(operator.or_, policies)
+
 
 def filterPolicyGroups(groupPolicies):
 	policies = [policy for (groupDn, policy) in groupPolicies]
 	groupsWithout = [groupDn for (groupDn, policy) in groupPolicies]
 	return policies, groupsWithout
 
+
 def findUser(ldapConnection, uid):
 	return ldapConnection.search(filter=str(univention.admin.filter.expression('uid', uid)), attr=['univentionNetworkAccess'])
+
 
 def findStation(ldapConnection, station):
 	station = ':'.join([byte.encode('hex') for byte in station])
 	return ldapConnection.search(filter=str(univention.admin.filter.expression('macAddress', station)), attr=['univentionNetworkAccess'])
 
+
 def findDnGroups(ldapConnection, dn):
 	return ldapConnection.search(filter=str(univention.admin.filter.expression('uniqueMember', dn)), attr=['univentionNetworkAccess'])
+
 
 def evaluateLdapPolicies(ldapConnection, searchResult):
 	def _findDnGroups(dn):
@@ -154,14 +167,16 @@ def evaluateLdapPolicies(ldapConnection, searchResult):
 	else:
 		return policy
 
+
 def traceLdapPolicies(ldapConnection, searchResult, level=''):
 	def _findDnGroups(dn):
 		return findDnGroups(ldapConnection, dn)
+
 	@curried
 	def formatPolicyGroup(group, policy):
-		if policy == True:
+		if policy:
 			return level + 'ALLOW %r' % (group, )
-		if policy == False:
+		if not policy:
 			return level + 'DENY %r' % (group, )
 		return ''
 	policyGroups = map(checkAccessAttribute, searchResult)
@@ -186,11 +201,13 @@ def traceLdapPolicies(ldapConnection, searchResult, level=''):
 	else:
 		return False, message
 
+
 def checkNetworkAccess(ldapConnection, username):
 	result = findUser(ldapConnection, username)
 	if not result:
 		return False
 	return evaluateLdapPolicies(ldapConnection, result)
+
 
 def checkStationWhitelist(ldapConnection, stationId):
 	if not whitelisting:
@@ -200,8 +217,9 @@ def checkStationWhitelist(ldapConnection, stationId):
 		return False
 	return evaluateLdapPolicies(ldapConnection, result)
 
+
 def traceNetworkAccess(ldapConnection, username):
-	if userToGroup or groupInfo: # proxy UCRV set, UCS@school mode
+	if userToGroup or groupInfo:  # proxy UCRV set, UCS@school mode
 		resultProxy, message = traceProxyFilterPolicy(username)
 	else:
 		resultProxy, message = False, ''
@@ -216,6 +234,7 @@ def traceNetworkAccess(ldapConnection, username):
 	else:
 		message += 'Thus access for user is DENIED.\n'
 	return bool(resultProxy or resultLdap), message
+
 
 def traceStationWhitelist(ldapConnection, stationId):
 	result = findStation(ldapConnection, stationId)
@@ -238,21 +257,23 @@ SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED, ))
 
+
 def parseUsername(username):
 	'''convert username from host/-format to $-format if required'''
 	if not username.startswith('host/'):
 		return username
-	username = username.split('/', 1)[1] # remove host/
-	username = username.split('.', 1)[0] # remove right of '.'
+	username = username.split('/', 1)[1]  # remove host/
+	username = username.split('.', 1)[0]  # remove right of '.'
 	return username + '$'
+
 
 def getNTPasswordHash(ldapConnection, username, stationId):
 	'stationId may be None if it was not supplied to the program'
 	username = parseUsername(username)
-	if userToGroup or groupInfo: # proxy UCRV set, UCS@school mode
+	if userToGroup or groupInfo:  # proxy UCRV set, UCS@school mode
 		if not (checkProxyFilterPolicy(username) or checkNetworkAccess(ldapConnection, username)):
 			return None
-	else: # UCS mode
+	else:  # UCS mode
 		if not checkNetworkAccess(ldapConnection, username):
 			return None
 	if not checkStationWhitelist(ldapConnection, stationId):

@@ -31,11 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
+import sys
 
-def handler(bc,changes):
+
+def handler(bc, changes):
 	if bc.get('php/memory/limit') or bc.get('php/limit/filesize') or bc.get('php/limit/postsize') \
-	or bc.get('php/memory/executiontime') or bc.get('php/limit/inputtime') or bc.get('php/limit/sockettimeout'):
+		or bc.get('php/memory/executiontime') or bc.get('php/limit/inputtime') or bc.get('php/limit/sockettimeout'):
 		memlimit = bc.get('php/memory/limit')
 		if memlimit and memlimit[-1:].lower() == 'm':
 			memlimit = memlimit[:-1]
@@ -52,7 +53,7 @@ def handler(bc,changes):
 		if executiontime and executiontime[-1:].lower() == 's':
 			executiontime = executiontime[:-1]
 
-		inputtime = bc.get('php/limit/inputtime') 
+		inputtime = bc.get('php/limit/inputtime')
 		if inputtime and inputtime[-1:].lower() == 's':
 			inputtime = inputtime[:-1]
 
@@ -62,7 +63,7 @@ def handler(bc,changes):
 
 		try:
 			f = open('/etc/php5/apache2/php.ini', 'r')
-		except IOError, e:
+		except IOError as e:
 			print e
 			sys.exit(1)
 		tmp = []
@@ -94,7 +95,7 @@ def handler(bc,changes):
 		# rewrite file
 		try:
 			f = open('/etc/php5/apache2/php.ini', 'w')
-		except IOError, e:
+		except IOError as e:
 			print e
 			sys.exit(1)
 		f.truncate()

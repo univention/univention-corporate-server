@@ -5,7 +5,7 @@
 #
 # Copyright 2012-2016 Univention GmbH
 # Copyright 2002 Yee Man Chan
-# Copyright 2001 Dmitry A. Rozmanov 
+# Copyright 2001 Dmitry A. Rozmanov
 #
 # http://www.univention.de/
 #
@@ -32,23 +32,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-# see also 
+# see also
 #   * http://code.google.com/p/python-ntlm/
 #   * http://davenport.sourceforge.net/ntlm.html
 #   * http://squid.sourceforge.net/ntlm/squid_helper_protocol.html
 #   * http://www.innovation.ch/personal/ronald/ntlm.html
 #   * http://www.koders.com/python/fidEE921E55A2EC9CF12BE39BFAA74346769EE6F2FF.aspx
 
-# # auth negotiate
+# auth negotiate
 # auth_param negotiate program /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego
 # auth_param negotiate children 10
-# 
-# # auth ntlm
-# auth_param ntlm program /usr/lib/squid3/squid_ldap_ntlm_auth 
+#
+# auth ntlm
+# auth_param ntlm program /usr/lib/squid3/squid_ldap_ntlm_auth
 # auth_param ntlm children 10
 # auth_param ntlm keep_alive on
 #
-# # debug
+# debug
 # squid/debug/level: ALL,1 29,9
 # /usr/lib/squid3/squid_ldap_ntlm_auth --debug
 
@@ -68,96 +68,132 @@ import subprocess
 import univention.uldap
 import univention.config_registry
 
-NTLM_NegotiateUnicode                =  0x00000001
-NTLM_NegotiateOEM                    =  0x00000002
-NTLM_RequestTarget                   =  0x00000004
-NTLM_Unknown9                        =  0x00000008
-NTLM_NegotiateSign                   =  0x00000010
-NTLM_NegotiateSeal                   =  0x00000020
-NTLM_NegotiateDatagram               =  0x00000040
-NTLM_NegotiateLanManagerKey          =  0x00000080
-NTLM_Unknown8                        =  0x00000100
-NTLM_NegotiateNTLM                   =  0x00000200
-NTLM_NegotiateNTOnly                 =  0x00000400
-NTLM_Anonymous                       =  0x00000800
-NTLM_NegotiateOemDomainSupplied      =  0x00001000
-NTLM_NegotiateOemWorkstationSupplied =  0x00002000
-NTLM_Unknown6                        =  0x00004000
-NTLM_NegotiateAlwaysSign             =  0x00008000
-NTLM_TargetTypeDomain                =  0x00010000
-NTLM_TargetTypeServer                =  0x00020000
-NTLM_TargetTypeShare                 =  0x00040000
-NTLM_NegotiateExtendedSecurity       =  0x00080000
-NTLM_NegotiateIdentify               =  0x00100000
-NTLM_Unknown5                        =  0x00200000
-NTLM_RequestNonNTSessionKey          =  0x00400000
-NTLM_NegotiateTargetInfo             =  0x00800000
-NTLM_Unknown4                        =  0x01000000
-NTLM_NegotiateVersion                =  0x02000000
-NTLM_Unknown3                        =  0x04000000
-NTLM_Unknown2                        =  0x08000000
-NTLM_Unknown1                        =  0x10000000
-NTLM_Negotiate128                    =  0x20000000
-NTLM_NegotiateKeyExchange            =  0x40000000
-NTLM_Negotiate56                     =  0x80000000
+NTLM_NegotiateUnicode = 0x00000001
+NTLM_NegotiateOEM = 0x00000002
+NTLM_RequestTarget = 0x00000004
+NTLM_Unknown9 = 0x00000008
+NTLM_NegotiateSign = 0x00000010
+NTLM_NegotiateSeal = 0x00000020
+NTLM_NegotiateDatagram = 0x00000040
+NTLM_NegotiateLanManagerKey = 0x00000080
+NTLM_Unknown8 = 0x00000100
+NTLM_NegotiateNTLM = 0x00000200
+NTLM_NegotiateNTOnly = 0x00000400
+NTLM_Anonymous = 0x00000800
+NTLM_NegotiateOemDomainSupplied = 0x00001000
+NTLM_NegotiateOemWorkstationSupplied = 0x00002000
+NTLM_Unknown6 = 0x00004000
+NTLM_NegotiateAlwaysSign = 0x00008000
+NTLM_TargetTypeDomain = 0x00010000
+NTLM_TargetTypeServer = 0x00020000
+NTLM_TargetTypeShare = 0x00040000
+NTLM_NegotiateExtendedSecurity = 0x00080000
+NTLM_NegotiateIdentify = 0x00100000
+NTLM_Unknown5 = 0x00200000
+NTLM_RequestNonNTSessionKey = 0x00400000
+NTLM_NegotiateTargetInfo = 0x00800000
+NTLM_Unknown4 = 0x01000000
+NTLM_NegotiateVersion = 0x02000000
+NTLM_Unknown3 = 0x04000000
+NTLM_Unknown2 = 0x08000000
+NTLM_Unknown1 = 0x10000000
+NTLM_Negotiate128 = 0x20000000
+NTLM_NegotiateKeyExchange = 0x40000000
+NTLM_Negotiate56 = 0x80000000
 
 NTLMSSP_CHALLENGE = 2
 
-NTLM_TYPE2_FLAGS = (NTLM_NegotiateUnicode | \
-	NTLM_RequestTarget | \
-	NTLM_NegotiateNTLM | \
-	NTLM_NegotiateExtendedSecurity | \
-	NTLM_Negotiate128 | \
-	NTLM_NegotiateTargetInfo | \
-	NTLM_TargetTypeDomain | \
+NTLM_TYPE2_FLAGS = (
+	NTLM_NegotiateUnicode |
+	NTLM_RequestTarget |
+	NTLM_NegotiateNTLM |
+	NTLM_NegotiateExtendedSecurity |
+	NTLM_Negotiate128 |
+	NTLM_NegotiateTargetInfo |
+	NTLM_TargetTypeDomain |
 	NTLM_Negotiate56)
+
 
 def dumpNegotiateFlags(NegotiateFlags):
 
 	flags = []
 
-	if NegotiateFlags & NTLM_NegotiateUnicode: flags.append("NTLM_NegotiateUnicode set")
-	if NegotiateFlags & NTLM_NegotiateOEM: flags.append("NTLM_NegotiateOEM set")
-	if NegotiateFlags & NTLM_RequestTarget: flags.append("NTLM_RequestTarget set")
-	if NegotiateFlags & NTLM_Unknown9: flags.append("NTLM_Unknown9 set")
-	if NegotiateFlags & NTLM_NegotiateSign: flags.append("NTLM_NegotiateSign set")
-	if NegotiateFlags & NTLM_NegotiateSeal: flags.append("NTLM_NegotiateSeal set")
-	if NegotiateFlags & NTLM_NegotiateDatagram: flags.append("NTLM_NegotiateDatagram set")
-	if NegotiateFlags & NTLM_NegotiateLanManagerKey: flags.append("NTLM_NegotiateLanManagerKey set")
-	if NegotiateFlags & NTLM_Unknown8: flags.append("NTLM_Unknown8 set")
-	if NegotiateFlags & NTLM_NegotiateNTLM: flags.append("NTLM_NegotiateNTLM set")
-	if NegotiateFlags & NTLM_NegotiateNTOnly: flags.append("NTLM_NegotiateNTOnly set")
-	if NegotiateFlags & NTLM_Anonymous: flags.append("NTLM_Anonymous set")
-	if NegotiateFlags & NTLM_NegotiateOemDomainSupplied: flags.append("NTLM_NegotiateOemDomainSupplied set")
-	if NegotiateFlags & NTLM_NegotiateOemWorkstationSupplied: flags.append("NTLM_NegotiateOemWorkstationSupplied set")
-	if NegotiateFlags & NTLM_Unknown6: flags.append("NTLM_Unknown6 set")                       
-	if NegotiateFlags & NTLM_NegotiateAlwaysSign: flags.append("NTLM_NegotiateAlwaysSign set")
-	if NegotiateFlags & NTLM_TargetTypeDomain: flags.append("NTLM_TargetTypeDomain set")
-	if NegotiateFlags & NTLM_TargetTypeServer: flags.append("NTLM_TargetTypeServer set")
-	if NegotiateFlags & NTLM_TargetTypeShare: flags.append("NTLM_TargetTypeShare set")
-	if NegotiateFlags & NTLM_NegotiateExtendedSecurity: flags.append("NTLM_NegotiateExtendedSecurity set")
-	if NegotiateFlags & NTLM_NegotiateIdentify: flags.append("NTLM_NegotiateIdentify set")
-	if NegotiateFlags & NTLM_Unknown5: flags.append("NTLM_Unknown5 set")
-	if NegotiateFlags & NTLM_RequestNonNTSessionKey: flags.append("NTLM_RequestNonNTSessionKey set")
-	if NegotiateFlags & NTLM_NegotiateTargetInfo: flags.append("NTLM_NegotiateTargetInfo set")
-	if NegotiateFlags & NTLM_Unknown4: flags.append("NTLM_Unknown4 set")
-	if NegotiateFlags & NTLM_NegotiateVersion: flags.append("NTLM_NegotiateVersion set")
-	if NegotiateFlags & NTLM_Unknown3: flags.append("NTLM_Unknown3 set")
-	if NegotiateFlags & NTLM_Unknown2: flags.append("NTLM_Unknown2 set")
-	if NegotiateFlags & NTLM_Unknown1: flags.append("NTLM_Unknown1 set")
-	if NegotiateFlags & NTLM_Negotiate128: flags.append("NTLM_Negotiate128 set")
-	if NegotiateFlags & NTLM_NegotiateKeyExchange: flags.append("NTLM_NegotiateKeyExchange set")
-	if NegotiateFlags & NTLM_Negotiate56: flags.append("NTLM_Negotiate56 set")
+	if NegotiateFlags & NTLM_NegotiateUnicode:
+		flags.append("NTLM_NegotiateUnicode set")
+	if NegotiateFlags & NTLM_NegotiateOEM:
+		flags.append("NTLM_NegotiateOEM set")
+	if NegotiateFlags & NTLM_RequestTarget:
+		flags.append("NTLM_RequestTarget set")
+	if NegotiateFlags & NTLM_Unknown9:
+		flags.append("NTLM_Unknown9 set")
+	if NegotiateFlags & NTLM_NegotiateSign:
+		flags.append("NTLM_NegotiateSign set")
+	if NegotiateFlags & NTLM_NegotiateSeal:
+		flags.append("NTLM_NegotiateSeal set")
+	if NegotiateFlags & NTLM_NegotiateDatagram:
+		flags.append("NTLM_NegotiateDatagram set")
+	if NegotiateFlags & NTLM_NegotiateLanManagerKey:
+		flags.append("NTLM_NegotiateLanManagerKey set")
+	if NegotiateFlags & NTLM_Unknown8:
+		flags.append("NTLM_Unknown8 set")
+	if NegotiateFlags & NTLM_NegotiateNTLM:
+		flags.append("NTLM_NegotiateNTLM set")
+	if NegotiateFlags & NTLM_NegotiateNTOnly:
+		flags.append("NTLM_NegotiateNTOnly set")
+	if NegotiateFlags & NTLM_Anonymous:
+		flags.append("NTLM_Anonymous set")
+	if NegotiateFlags & NTLM_NegotiateOemDomainSupplied:
+		flags.append("NTLM_NegotiateOemDomainSupplied set")
+	if NegotiateFlags & NTLM_NegotiateOemWorkstationSupplied:
+		flags.append("NTLM_NegotiateOemWorkstationSupplied set")
+	if NegotiateFlags & NTLM_Unknown6:
+		flags.append("NTLM_Unknown6 set")
+	if NegotiateFlags & NTLM_NegotiateAlwaysSign:
+		flags.append("NTLM_NegotiateAlwaysSign set")
+	if NegotiateFlags & NTLM_TargetTypeDomain:
+		flags.append("NTLM_TargetTypeDomain set")
+	if NegotiateFlags & NTLM_TargetTypeServer:
+		flags.append("NTLM_TargetTypeServer set")
+	if NegotiateFlags & NTLM_TargetTypeShare:
+		flags.append("NTLM_TargetTypeShare set")
+	if NegotiateFlags & NTLM_NegotiateExtendedSecurity:
+		flags.append("NTLM_NegotiateExtendedSecurity set")
+	if NegotiateFlags & NTLM_NegotiateIdentify:
+		flags.append("NTLM_NegotiateIdentify set")
+	if NegotiateFlags & NTLM_Unknown5:
+		flags.append("NTLM_Unknown5 set")
+	if NegotiateFlags & NTLM_RequestNonNTSessionKey:
+		flags.append("NTLM_RequestNonNTSessionKey set")
+	if NegotiateFlags & NTLM_NegotiateTargetInfo:
+		flags.append("NTLM_NegotiateTargetInfo set")
+	if NegotiateFlags & NTLM_Unknown4:
+		flags.append("NTLM_Unknown4 set")
+	if NegotiateFlags & NTLM_NegotiateVersion:
+		flags.append("NTLM_NegotiateVersion set")
+	if NegotiateFlags & NTLM_Unknown3:
+		flags.append("NTLM_Unknown3 set")
+	if NegotiateFlags & NTLM_Unknown2:
+		flags.append("NTLM_Unknown2 set")
+	if NegotiateFlags & NTLM_Unknown1:
+		flags.append("NTLM_Unknown1 set")
+	if NegotiateFlags & NTLM_Negotiate128:
+		flags.append("NTLM_Negotiate128 set")
+	if NegotiateFlags & NTLM_NegotiateKeyExchange:
+		flags.append("NTLM_NegotiateKeyExchange set")
+	if NegotiateFlags & NTLM_Negotiate56:
+		flags.append("NTLM_Negotiate56 set")
 
 	return flags
+
 
 def debug(msg):
 
 	if options.debug:
 		fh = open(options.debugFile, "a")
-		os.chmod(options.debugFile, 0600)
+		os.chmod(options.debugFile, 0o600)
 		fh.write("%s - %s\n" % (time.time(), msg))
 		fh.close()
+
 
 def parseNtlmTypeThree(data):
 
@@ -180,7 +216,7 @@ def parseNtlmTypeThree(data):
 	domain = data[domainOffset:usernameOffset]
 	host = data[hostOffset:hostOffset + hostLength]
 	lmResp = data[lmOffset:(lmOffset + lmLen)]
-	ntResp = data[ntOffset:(ntOffset + ntLen)]	
+	ntResp = data[ntOffset:(ntOffset + ntLen)]
 
 	if domainOffset == 0:
 		domain = ""
@@ -196,28 +232,29 @@ def parseNtlmTypeThree(data):
 
 	return (username, domain, host, lmResp, ntResp, flags)
 
-def convertKey (key):
 
+def convertKey(key):
 	"""
 	Converts a 7-bytes key to an 8-bytes key based on an algorithm.
 	"""
-	
+
 	assert len(key) == 7, "NTLM convertKey needs 7-byte key"
-	
-	bytes = [key[0],
+
+	bytes = [
+		key[0],
 		chr(((ord(key[0]) << 7) & 0xFF) | (ord(key[1]) >> 1)),
 		chr(((ord(key[1]) << 6) & 0xFF) | (ord(key[2]) >> 2)),
 		chr(((ord(key[2]) << 5) & 0xFF) | (ord(key[3]) >> 3)),
 		chr(((ord(key[3]) << 4) & 0xFF) | (ord(key[4]) >> 4)),
 		chr(((ord(key[4]) << 3) & 0xFF) | (ord(key[5]) >> 5)),
 		chr(((ord(key[5]) << 2) & 0xFF) | (ord(key[6]) >> 6)),
-		chr( (ord(key[6]) << 1) & 0xFF),
+		chr((ord(key[6]) << 1) & 0xFF),
 	]
-	
-	return "".join([ setOddParity(b) for b in bytes ])
 
-def setOddParity (byte):
+	return "".join([setOddParity(b) for b in bytes])
 
+
+def setOddParity(byte):
 	"""
 	Turns one-byte into odd parity. Odd parity means that a number in
 	binary has odd number of 1's.
@@ -240,8 +277,8 @@ def setOddParity (byte):
 
 	return chr(ordbyte)
 
-def verifyNtlm (key, nonce):
 
+def verifyNtlm(key, nonce):
 	"""
 	Takes a 21 byte array and treats it as 3 56-bit DES keys. The
 	8 byte plaintext is encrypted with each key and the resulting 24
@@ -257,8 +294,8 @@ def verifyNtlm (key, nonce):
 
 	return "%s%s%s" % (res1, res2, res3)
 
-def verifyNtlm2(ResponseKeyNT, ServerChallenge, ClientChallenge):
 
+def verifyNtlm2(ResponseKeyNT, ServerChallenge, ClientChallenge):
 	"""
 	http://davenport.sourceforge.net/ntlm.html#theNtlm2SessionResponse
 	"""
@@ -269,38 +306,39 @@ def verifyNtlm2(ResponseKeyNT, ServerChallenge, ClientChallenge):
 
 	return NtChallengeResponse
 
-def verifyNtlmV2(ntResp, challenge, user, domain, ntHashV1):
 
+def verifyNtlmV2(ntResp, challenge, user, domain, ntHashV1):
 	"""
 	http://davenport.sourceforge.net/ntlm.html#theType3Message
 	"""
 
 	# nt v2 hash
-	inf = (user.upper()+domain).encode('utf-16le')
+	inf = (user.upper() + domain).encode('utf-16le')
 	ntHashV2 = hmac.new(ntHashV1, inf).digest()
-	
+
 	# get data from nt resp
 	clientChallenge = ntResp[32:40]
 	timestamp = ntResp[24:32]
 	targetInformation = ntResp[44:]
-	
+
 	# const
 	version = u'\x01' + u'\x01' + u'\x00' * 2
 	reservered = u'\x00' * 4
 	unknown = u'\x00' * 4
-	
+
 	# create blob
 	blob = version.encode("hex") + reservered.encode("hex") + timestamp.encode("hex")
 	blob = blob + clientChallenge.encode("hex") + unknown.encode("hex") + targetInformation.encode("hex")
 	challengeBlob = challenge.encode("hex") + blob
-	
+
 	# secret
 	secret = hmac.new(ntHashV2, challengeBlob.decode("hex")).digest()
-	
+
 	# response
 	myResp = secret.encode("hex") + blob
-	
+
 	return myResp.decode("hex")
+
 
 def getNtHash(user):
 
@@ -327,7 +365,7 @@ def getNtHash(user):
 	ntHash = ""
 	ldapFilter = "(uid=%s)" % user
 	attr = ["sambaNTPassword", "sambaAcctFlags"]
-	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file = "/etc/squid3.secret")
+	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/squid3.secret")
 	result = ldap.search(base=cr["ldap/base"], filter=ldapFilter, attr=attr)
 	if options.debug:
 		debug("  ldapsearch for sambaNTPassword of user %s" % user)
@@ -344,6 +382,7 @@ def getNtHash(user):
 
 	return ntHash
 
+
 def verifyNtlmTypeThree(data, challenge):
 
 	if options.debug:
@@ -352,7 +391,7 @@ def verifyNtlmTypeThree(data, challenge):
 	# parse ntlm 3 message
 	try:
 		username, domain, host, lmResp, ntResp, flags = parseNtlmTypeThree(data)
-	except Exception, e:
+	except Exception as e:
 		return "NA could not parse ntlmTypeThree: %s" % e
 
 	# get nt hash
@@ -360,7 +399,7 @@ def verifyNtlmTypeThree(data, challenge):
 	if not ntHash:
 		return "NA no ntHash found for user %s" % username
 	else:
-		ntHash = ntHash.decode("hex") + '\x00'*5
+		ntHash = ntHash.decode("hex") + '\x00' * 5
 
 	# nthash is valid, check if user account is disabled/locked
 	global users
@@ -421,9 +460,10 @@ def verifyNtlmTypeThree(data, challenge):
 			return "AF * %s" % username
 		else:
 			return "AF %s" % username
-	
+
 	# not authenticated
 	return "NA end of verifyNtlmTypeThree() and still not authenticated"
+
 
 def parseNtlmTypeTwo(msg):
 
@@ -440,7 +480,8 @@ def parseNtlmTypeTwo(msg):
 	print msgtype
 	print signature
 
-	return 
+	return
+
 
 def createNtlmTypeTwo():
 
@@ -454,7 +495,7 @@ def createNtlmTypeTwo():
 	server = server.encode('utf-16le')
 	dns = cr.get("domainname", "")
 	dns = dns.encode('utf-16le')
-	fqdn =  cr.get("hostname", "") + "." + cr.get("domainname", "")
+	fqdn = cr.get("hostname", "") + "." + cr.get("domainname", "")
 	fqdn = fqdn.encode('utf-16le')
 
 	ms = 'NTLMSSP\x00'
@@ -477,7 +518,7 @@ def createNtlmTypeTwo():
 	ms += struct.pack("<H", mylen)
 	ms += struct.pack("<I", 48 + len(target))
 	# 48 target-type-domain
-	ms  += target
+	ms += target
 	# Target Information Data
 	ms += struct.pack("<H", 2)
 	ms += struct.pack("<H", len(domain))
@@ -504,6 +545,7 @@ def createNtlmTypeTwo():
 			debug("    %s" % i)
 
 	return tt, challenge
+
 
 def ntlmType(data):
 
@@ -540,7 +582,7 @@ def ntlmType(data):
 # tests
 
 # test parse ntml msg 3
-kk="KK TlRMTVNTUAADAAAAGAAYAHQAAAAYABgAjAAAAAoACgBIAAAAGgAaAFIAAAAIAAgAbAAAAAAAAACkAAAABYKIogUBKAoAAAAPUwBRAFUASQBEAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAVABFAFMAVAAzm2w/FR6FjQAAAAAAAAAAAAAAAAAAAABB+vMG7iLgUM+rJXuo/uwPwWPX84XA64c="
+kk = "KK TlRMTVNTUAADAAAAGAAYAHQAAAAYABgAjAAAAAoACgBIAAAAGgAaAFIAAAAIAAgAbAAAAAAAAACkAAAABYKIogUBKAoAAAAPUwBRAFUASQBEAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAVABFAFMAVAAzm2w/FR6FjQAAAAAAAAAAAAAAAAAAAABB+vMG7iLgUM+rJXuo/uwPwWPX84XA64c="
 a, b, c, d, e, f = parseNtlmTypeThree(kk)
 assert a == "Administrator"
 assert b == "SQUID"
@@ -551,11 +593,11 @@ assert f == 2726855173
 
 # test NTML
 resp = "1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c"
-assert resp == verifyNtlm("CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00'*5, "L)eNCnxD").encode("hex")
+assert resp == verifyNtlm("CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00' * 5, "L)eNCnxD").encode("hex")
 
 # test NTML2
 a = verifyNtlm2(
-	"CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00'*5,
+	"CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00' * 5,
 	"83219623",
 	"d6e6507e3e5be1e700000000000000000000000000000000".decode("hex")[0:8])
 assert a.encode("hex") == "42f0cfd6fcbb4660dbace7fab6e5d82cff1572ad8fd72b5a"
@@ -592,10 +634,10 @@ assert "3305b58f6c30f84fd634a119259780e1367bc82fb7074f00".decode("hex") == e
 # main
 if __name__ == '__main__':
 
-	usage  = '%prog [options]'
+	usage = '%prog [options]'
 	parser = optparse.OptionParser(usage=usage)
 	parser.add_option("-d", "--domain", dest="domain", help="domain in ntlm authentication")
-	parser.add_option("-c", "--cache-lifetime", dest="cacheLifeTime", type="int" ,
+	parser.add_option("-c", "--cache-lifetime", dest="cacheLifeTime", type="int",
 		default=3600, help="password cache lifetime (3600)")
 	parser.add_option("-t", "--debug", dest="debug", help="debug modus (Attention, cleartext password hashes!)",
 		action="store_true", default=False)
@@ -619,7 +661,7 @@ if __name__ == '__main__':
 		kerbPipe = subprocess.Popen(['/usr/lib/squid3/squid_kerb_auth'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
-	
+
 		# python -u is required for unbufferd streams
 		data = sys.stdin.readline()
 		data = data.strip()
@@ -629,19 +671,19 @@ if __name__ == '__main__':
 			debug("from squid -> " + data)
 
 		if data:
-			if data.startswith("YR "): 
+			if data.startswith("YR "):
 				ntype = ntlmType(data)
 				if ntype == 1:
 					try:
 						answer, challenge = createNtlmTypeTwo()
-					except Exception, e:
+					except Exception as e:
 						answer = "BH failed to createNtlmTypeTwo(): %s" % e
 				# office 2013 workaround
 				elif ntype == 3:
 					try:
 						data = data.replace("YR ", "", 1)
 						answer = verifyNtlmTypeThree(data, challenge)
-					except Exception, e:
+					except Exception as e:
 						answer = "BH failed to verifyNtlmTypeThree(): %s" % e
 				# kerberos
 				else:
@@ -673,21 +715,20 @@ if __name__ == '__main__':
 						#  login = login.split("@", 1)[0]
 						#  kerberos.authGSSServerClean(context)
 						#  answer = "AF %s %s" % (gssstring, login)
-					except Exception, e:
+					except Exception as e:
 						answer = "BH failed doing kerberos: %s" % e
-						
+
 			if data.startswith("KK "):
 				try:
 					answer = verifyNtlmTypeThree(data, challenge)
-				except Exception, e:
+				except Exception as e:
 					answer = "BH failed to verifyNtlmTypeThree(): %s" % e
 		else:
 			answer = "ERR"
-	
+
 		if options.debug:
 			debug("to squid <- " + answer)
 		sys.stdout.write(answer + "\n")
 		sys.stdout.flush()
 
 sys.exit(0)
-

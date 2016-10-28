@@ -50,57 +50,70 @@ assert pgdb.paramstyle == 'pyformat'
 # TODO add <order> parameter to sql_get* functions to change/disable sort
 # TODO: pkgdbu should not be able to create roles, instead do it as postgres from listener script as root
 
+
 def parse_options():
-	'''parse options and return <options> with
-	<options.debug>
-	<options.action>
-	<options.system>
-	<options.db_server>
-	set'''
+	'''
+	parse options and return <options> with
+		<options.debug>
+		<options.action>
+		<options.system>
+		<options.db_server>
+		set
+	'''
 	parser = optparse.OptionParser(add_help_option=False)
 	actions = optparse.OptionGroup(parser, 'Actions', 'Select an action, default is --scan')
 	parser.add_option_group(actions)
 	parser.usage = '%prog [options]\nScan all packages in the local system and send this data to the database pkgdb.'
-	actions.add_option("--scan",
-	                   help='Scan this systems packages and sent them to the package database',
-	                   action='append_const', dest='action', const='scan', default=[])
-	actions.add_option("--remove-system", metavar='SYSTEM',
-	                   help='Removes SYSTEM from the package database',
-	                   action='store', dest='removesystem')
-	actions.add_option("--test-superuser",
-	                   help='Test for ability to add or delete database users',
-	                   action='append_const', dest='action', const='test-superuser')
-	actions.add_option('--dump-all',
-	                   help='Dump entire content of the database',
-	                   action='append_const', dest='action', const='dump-all')
-	actions.add_option('--dump-systems',
-	                   help='Dump systems-table of the database',
-	                   action='append_const', dest='action', const='dump-systems')
-	actions.add_option('--dump-packages',
-	                   help='Dump packages-table (query) of the database',
-	                   action='append_const', dest='action', const='dump-packages')
-	actions.add_option('--dump-systems-packages',
-	                   help='Dump systems-packages-table of the database',
-	                   action='append_const', dest='action', const='dump-systems-packages')
-	actions.add_option('--fill-testdb',
-	                   help="Scan all packages of the local system and add them to the database using system name 'testsystemX', using 0001 to 1500 for X. For testing purposes only.",
-	                   action='append_const', dest='action', const='fill-testdb')
-	actions.add_option('--version',
-	                   help='Print version information and exit',
-	                   action='append_const', dest='action', const='version')
-	actions.add_option("--add-system", metavar='SYSTEM',
-	                   help='Add a SYSTEM as db-user-account. Normally this will be used by univention-listener',
-	                   action='store', dest='addsystem')
-	actions.add_option("--del-system", metavar='SYSTEM',
-	                   help='Delete a SYSTEM as db-user-account. Normally this will be used by univention-listener',
-	                   action='store', dest='delsystem')
+	actions.add_option(
+		"--scan",
+		help='Scan this systems packages and sent them to the package database',
+		action='append_const', dest='action', const='scan', default=[])
+	actions.add_option(
+		"--remove-system", metavar='SYSTEM',
+		help='Removes SYSTEM from the package database',
+		action='store', dest='removesystem')
+	actions.add_option(
+		"--test-superuser",
+		help='Test for ability to add or delete database users',
+		action='append_const', dest='action', const='test-superuser')
+	actions.add_option(
+		'--dump-all',
+		help='Dump entire content of the database',
+		action='append_const', dest='action', const='dump-all')
+	actions.add_option(
+		'--dump-systems',
+		help='Dump systems-table of the database',
+		action='append_const', dest='action', const='dump-systems')
+	actions.add_option(
+		'--dump-packages',
+		help='Dump packages-table (query) of the database',
+		action='append_const', dest='action', const='dump-packages')
+	actions.add_option(
+		'--dump-systems-packages',
+		help='Dump systems-packages-table of the database',
+		action='append_const', dest='action', const='dump-systems-packages')
+	actions.add_option(
+		'--fill-testdb',
+		help="Scan all packages of the local system and add them to the database using system name 'testsystemX', using 0001 to 1500 for X. For testing purposes only.",
+		action='append_const', dest='action', const='fill-testdb')
+	actions.add_option(
+		'--version',
+		help='Print version information and exit',
+		action='append_const', dest='action', const='version')
+	actions.add_option(
+		"--add-system", metavar='SYSTEM',
+		help='Add a SYSTEM as db-user-account. Normally this will be used by univention-listener',
+		action='store', dest='addsystem')
+	actions.add_option(
+		"--del-system", metavar='SYSTEM',
+		help='Delete a SYSTEM as db-user-account. Normally this will be used by univention-listener',
+		action='store', dest='delsystem')
 	parser.add_option("-?", "-h", "--help", action='help', help='show this help message and exit')
-	parser.add_option('--debug',
-	                  help='Print more output',
-	                  action='count', dest='debug', default=0)
-	parser.add_option('--db-server', metavar='SERVER',
-	                  help='The database server',
-	                  action='store', dest='db_server')
+	parser.add_option('--debug', help='Print more output', action='count', dest='debug', default=0)
+	parser.add_option(
+		'--db-server', metavar='SERVER',
+		help='The database server',
+		action='store', dest='db_server')
 	(options, args, ) = parser.parse_args()
 	if args:
 		parser.error('Additional arguments not supported!')
@@ -123,15 +136,17 @@ def parse_options():
 	options.action = options.action[0]
 	return options
 
+
 def log(message):
 	'''Log-Funktion'''
 	try:
-		logfile = open("/var/log/univention/pkgdb.log", "a") # TODO: persistent handle?
+		logfile = open("/var/log/univention/pkgdb.log", "a")  # TODO: persistent handle?
 		logfile.write(time.strftime('%G-%m-%d %H:%M:%S') + ' ' + message + '\n')
 		logfile.close()
 	except EnvironmentError:
 		# no log, no real problem
 		pass
+
 
 def build_sysversion(config_registry):
 	sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'], )
@@ -140,6 +155,7 @@ def build_sysversion(config_registry):
 	if config_registry.get('version/erratalevel'):
 		sysversion = "%s errata%s" % (sysversion, config_registry['version/erratalevel'], )
 	return sysversion
+
 
 def sql_check_privileges(cursor):
 	'''DB-Privs testen (leerer Zugriff)'''
@@ -152,17 +168,19 @@ def sql_check_privileges(cursor):
 	log('OK')
 	return 1
 
+
 def get_dbservername(domainname):
 	'''Datenbankserver ermitteln'''
 	log('get dbservername for ' + domainname)
 	DNS.DiscoverNameServers()
 	dbsrvname = None
 	try:
-		dbsrvname = map(lambda(x): x['data'], DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers)[0][3]
+		dbsrvname = map(lambda x: x['data'], DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers)[0][3]
 	except:
 		log('Cannot find service-record of _pkgdb._tcp.')
 		print 'Cannot find service-record of _pkgdb._tcp.'
 	return dbsrvname
+
 
 def sql_test_superuser(cursor):
 	'Prüfe auf Superuser'
@@ -172,6 +190,7 @@ def sql_test_superuser(cursor):
 		return 1
 	log('pkgdbu OK')
 	return 0
+
 
 def sql_grant_system(connection, cursor, sysname):
 	'''Datenbankbenutzer hinzufügen'''
@@ -198,6 +217,7 @@ def sql_grant_system(connection, cursor, sysname):
 			log('not OK. ignore it')
 	return 0
 
+
 def sql_revoke_system(connection, cursor, sysname):
 	'''Datenbankbenutzer entfernen'''
 	log('del (revoke) user ' + sysname + ' from database')
@@ -207,14 +227,16 @@ def sql_revoke_system(connection, cursor, sysname):
 	connection.commit()
 	return 0
 
+
 def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture):
 	'''insert a system name into the system-table (or update its data)'''
-	parameters = {'sysname': sysname,
-	              'sysversion': sysversion,
-	              'sysrole': sysrole,
-	              'ldaphostdn': ldaphostdn,
-	              'architecture': architecture,
-	              }
+	parameters = {
+		'sysname': sysname,
+		'sysversion': sysversion,
+		'sysrole': sysrole,
+		'ldaphostdn': ldaphostdn,
+		'architecture': architecture,
+	}
 	cursor.execute('SELECT true FROM systems WHERE sysname = %(sysname)s', parameters)
 	if cursor.rowcount == 0:
 		sql_command = '''
@@ -242,17 +264,19 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
 		'''
 	try:
 		cursor.execute(sql_command, parameters)
-	except pgdb.Error, error:
+	except pgdb.Error as error:
 		log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
 		raise
 
+
 def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn):
 	'''insert a system name into the old system-table (or update its data)'''
-	parameters = {'sysname': sysname,
-	              'sysversion': sysversion,
-	              'sysrole': sysrole,
-	              'ldaphostdn': ldaphostdn,
-	              }
+	parameters = {
+		'sysname': sysname,
+		'sysversion': sysversion,
+		'sysrole': sysrole,
+		'ldaphostdn': ldaphostdn,
+	}
 	cursor.execute('SELECT true FROM systems WHERE sysname = %(sysname)s', parameters)
 	if cursor.rowcount == 0:
 		sql_command = '''
@@ -277,13 +301,14 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
 		'''
 	try:
 		cursor.execute(sql_command, parameters)
-	except pgdb.Error, error:
+	except pgdb.Error as error:
 		log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
 		raise
 
+
 def sql_select(cursor, sqlcmd):
 	'''SQL Selects'''
-	log('SQL: ' + sqlcmd) # TODO: why?
+	log('SQL: ' + sqlcmd)  # TODO: why?
 	try:
 		cursor.execute(sqlcmd)
 		result = cursor.fetchall()
@@ -292,35 +317,41 @@ def sql_select(cursor, sqlcmd):
 		log('Cannot read from the database:' + sqlcmd)
 		return []
 
+
 def sql_getall_systems(cursor):
 	sqlcmd = "SELECT sysname, sysversion, sysrole, to_char(scandate,'YYYY-MM-DD HH24:MI:SS'), ldaphostdn FROM systems ORDER BY sysname"
 	return sql_select(cursor, sqlcmd)
+
 
 def sql_getall_systemroles(cursor):
 	query = "SELECT DISTINCT sysrole FROM systems ORDER BY sysrole"
 	return sql_select(cursor, query)
 
+
 def sql_getall_systemversions(cursor):
 	sqlcmd = "SELECT DISTINCT sysversion FROM systems ORDER BY sysversion"
 	return sql_select(cursor, sqlcmd)
+
 
 def sql_getall_packages_in_systems(cursor):
 	sqlcmd = "SELECT sysname, pkgname, vername, to_char(scandate,'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems ORDER BY sysname, pkgname, vername"
 	return sql_select(cursor, sqlcmd)
 
+
 def sql_get_systems_by_query(cursor, query):
 	if not query:
 		return []
-	sqlcmd = "SELECT sysname, sysversion, sysrole, to_char(scandate,'YYYY-MM-DD HH24:MI:SS'), ldaphostdn FROM systems WHERE " + query + " ORDER BY sysname" # FIXME
+	sqlcmd = "SELECT sysname, sysversion, sysrole, to_char(scandate,'YYYY-MM-DD HH24:MI:SS'), ldaphostdn FROM systems WHERE " + query + " ORDER BY sysname"  # FIXME
 	return sql_select(cursor, sqlcmd)
+
 
 def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None, orderby='sysname, pkgname, vername'):
 	if not query:
 		return []
 	if join_systems:
-		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems JOIN systems USING(sysname) WHERE " + query # FIXME
+		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems JOIN systems USING(sysname) WHERE " + query  # FIXME
 	else:
-		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems WHERE " + query # FIXME
+		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems WHERE " + query  # FIXME
 
 	if orderby:
 		sqlcmd += " ORDER BY %s" % (orderby)
@@ -328,6 +359,7 @@ def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None
 	if limit is not None:
 		sqlcmd += " LIMIT %d" % (limit)
 	return sql_select(cursor, sqlcmd)
+
 
 def dump_systems(cursor):
 	'''writes CSV with all systems and their system-specific information to stdout'''
@@ -344,6 +376,7 @@ def dump_systems(cursor):
 		writer.writerow(row)
 	return 0
 
+
 def dump_packages(cursor):
 	# TODO: What use is this functionality?
 	query = "SELECT DISTINCT ON (pkgname, vername) pkgname, vername, inststatus FROM packages_on_systems ORDER BY pkgname, vername, inststatus"
@@ -353,6 +386,7 @@ def dump_packages(cursor):
 	for row in cursor:
 		writer.writerow(row)
 	return 0
+
 
 def dump_systems_packages(cursor):
 	cursor.execute("SET datestyle = 'ISO'")
@@ -368,6 +402,7 @@ def dump_systems_packages(cursor):
 		writer.writerow(row)
 	return 0
 
+
 def action_remove_system(connection, cursor, sysname):
 	'''removes system <sysname> from the database'''
 	connection.rollback()
@@ -380,8 +415,9 @@ def action_remove_system(connection, cursor, sysname):
 	       WHERE sysname = %(sysname)s
 	'''
 	cursor.execute(delete_packages, {'sysname': sysname, })
-	cursor.execute(delete_system  , {'sysname': sysname, })
+	cursor.execute(delete_system, {'sysname': sysname, })
 	connection.commit()
+
 
 def scan_and_store_packages(cursor, sysname, fake_null=False):
 	'''updates the system <sysname> with the current package state
@@ -417,14 +453,15 @@ def scan_and_store_packages(cursor, sysname, fake_null=False):
 	cursor.execute(delete_packages, {'sysname': sysname, })
 	insert_values = []
 	for package in scan_and_store_packages.cache.packages:
-		parameters = {'sysname':       sysname,
-		              'currentstate':  package.current_state,
-		              'inststate':     package.inst_state,
-		              'inststatus':    'n',
-		              'pkgname':       package.name,
-		              'selectedstate': package.selected_state,
-		              'vername':       None,
-		              }
+		parameters = {
+			'sysname': sysname,
+			'currentstate': package.current_state,
+			'inststate': package.inst_state,
+			'inststatus': 'n',
+			'pkgname': package.name,
+			'selectedstate': package.selected_state,
+			'vername': None,
+		}
 		if fake_null:
 			parameters['vername'] = ''
 		if package.current_ver:
@@ -436,11 +473,12 @@ def scan_and_store_packages(cursor, sysname, fake_null=False):
 		cursor.execute(insert_statement)
 scan_and_store_packages.cache = None
 
+
 def action_fill_testdb(connection, cursor, config_registry):
 	'''Fülle Testdatenbank'''
 	connection.rollback()
 	sysversion = build_sysversion(config_registry)
-	sysrole    = config_registry['server/role']
+	sysrole = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()
 	architecture = apt_pkg.Config.find("APT::Architecture")
@@ -454,18 +492,19 @@ def action_fill_testdb(connection, cursor, config_registry):
 			connection.rollback()
 			# retry for old schema
 			sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
-			fake_null = True # old schema has NOT NULL, thus we have to use '' instead of None
+			fake_null = True  # old schema has NOT NULL, thus we have to use '' instead of None
 		scan_and_store_packages(cursor, sysname, fake_null)
 		connection.commit()
 	log('end of fill testdb')
 	return 0
+
 
 def action_scan(connection, cursor, config_registry):
 	'''put systems <sysname> in the database and updates it with the current package state'''
 	connection.rollback()
 	sysname = config_registry['hostname']
 	sysversion = build_sysversion(config_registry)
-	sysrole    = config_registry['server/role']
+	sysrole = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()
 	architecture = apt_pkg.config.find("APT::Architecture")
@@ -478,22 +517,19 @@ def action_scan(connection, cursor, config_registry):
 		connection.rollback()
 		# retry for old schema
 		sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
-		fake_null = True # old schema has NOT NULL, thus we have to use '' instead of None
+		fake_null = True  # old schema has NOT NULL, thus we have to use '' instead of None
 	scan_and_store_packages(cursor, sysname, fake_null)
 	connection.commit()
 	log('end of scan for system %r' % (sysname, ))
 	return 0
 
-PRIVILEGED_OPERATIONS = frozenset(('add-system',
-                                   'del-system',
-                                   'fill-testdb',
-                                   'test-superuser',
-                                   ))
+PRIVILEGED_OPERATIONS = frozenset(('add-system', 'del-system', 'fill-testdb', 'test-superuser',))
+
 
 def open_database_connection(config_registry, pkgdbu=False, db_server=None):
-	connection_info = { # see <http://www.postgresql.org/docs/8.4/static/libpq-connect.html>
+	connection_info = {  # see <http://www.postgresql.org/docs/8.4/static/libpq-connect.html>
 		'dbname': 'pkgdb',
-		}
+	}
 	if config_registry.is_true('pkgdb/requiressl'):
 		connection_info['sslmode'] = 'require'
 	if pkgdbu:
@@ -509,17 +545,14 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
 		connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
 		password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
 	connection_info['password'] = open(password_file, 'rb').read().rstrip('\n')
-	connectstring = ' '.join(
-		[
-			"%s='%s'" % (key,
-			             value.replace('\\', '\\\\').replace("'", "\\'"),
-			             )
-			for (key, value, )
-			in connection_info.items()
-			]
-		)
+	connectstring = ' '.join([
+		"%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"),)
+		for (key, value, )
+		in connection_info.items()
+	])
 	connection = pgdb.connect(database=connectstring)
 	return connection
+
 
 def main():
 	'''main function for univention-pkgdb-scan'''
@@ -550,10 +583,9 @@ def main():
 	elif options.action == 'dump-systems-packages':
 		return dump_systems_packages(cursor)
 	elif options.action == 'dump-all':
-		return \
-		    dump_systems(cursor) or \
-		    dump_packages(cursor) or \
-		    dump_systems_packages(cursor)
+		return dump_systems(cursor) or \
+			dump_packages(cursor) or \
+			dump_systems_packages(cursor)
 	elif not sql_check_privileges(cursor):
 		print 'PKGDB: no privileges to access the database'
 		print 'You must first add this system with --add-system on the db-server (or join the system)'

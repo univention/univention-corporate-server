@@ -74,7 +74,7 @@ if __name__ == "__main__":
 		modules_list_0 = modules_0.split(',')
 
 		if opts.remove:
-			## LDB Modules are organised as a stack, remove the last occurence
+			# LDB Modules are organised as a stack, remove the last occurence
 			modules_list_0.reverse()
 			for module in opts.remove:
 				try:
@@ -82,19 +82,19 @@ if __name__ == "__main__":
 				except ValueError:
 					print "Module %s not in @LIST, ignoring" % module
 			modules_list_0.reverse()
-		
+
 		updated_modules = []
 		for module in opts.prepend:
 			if opts.ignore_exists and module in modules_list_0:
 				continue
 			else:
-				updated_modules.append( module )
-		updated_modules.extend( modules_list_0 )
+				updated_modules.append(module)
+		updated_modules.extend(modules_list_0)
 		for module in opts.append:
 			if opts.ignore_exists and module in modules_list_0:
 				continue
 			else:
-				updated_modules.append( module )
+				updated_modules.append(module)
 		updated_modules_str = ','.join(updated_modules)
 
 		if opts.dry_run:
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
 		modify_msg = ldb.Message()
 		modify_msg.dn = ldb.Dn(ldb_object, "@MODULES")
-		modify_msg["@LIST"] = ldb.MessageElement( [ updated_modules_str ] , ldb.FLAG_MOD_REPLACE, "@LIST")
+		modify_msg["@LIST"] = ldb.MessageElement([updated_modules_str], ldb.FLAG_MOD_REPLACE, "@LIST")
 		ldb_object.modify(modify_msg)
 		if opts.verbose:
 			msg = ldb_object.search(base="@MODULES", scope=ldb.SCOPE_BASE, attrs=['@LIST'])
@@ -111,4 +111,3 @@ if __name__ == "__main__":
 	else:
 		print "Current @LIST attribute is multivalued, can't handle this"
 		sys.exit(1)
-

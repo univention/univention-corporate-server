@@ -49,11 +49,11 @@ RECORD_LIMIT = 100000			# never return more than this many records
 
 CRITERIA = {
 	'systems': [
-		'all_properties', 'sysname','sysrole','sysversion', 'sysversion_greater', 'sysversion_lower'
+		'all_properties', 'sysname', 'sysrole', 'sysversion', 'sysversion_greater', 'sysversion_lower'
 	],
-	'packages':	[
-		'pkgname','currentstate',		# head fields
-		'selectedstate','inststate',	# state fields
+	'packages': [
+		'pkgname', 'currentstate',		# head fields
+		'selectedstate', 'inststate',  # state fields
 	]
 }
 
@@ -114,24 +114,24 @@ PROPOSALS = {
 QUERIES = {
 	# 'select sysname,sysversion,sysrole,to_char(scandate,\'YYYY-MM-DD HH24:MI:SS\'),ldaphostdn from systems where '+query+' order by sysname
 	'systems': {
-		'columns':	['sysname','sysversion','sysrole','inventory_date'],
-		'function':	updb.sql_get_systems_by_query
+		'columns': ['sysname', 'sysversion', 'sysrole', 'inventory_date'],
+		'function': updb.sql_get_systems_by_query
 	},
 	# 'select sysname,pkgname,vername,to_char(packages_on_systems.scandate,\'YYYY-MM-DD HH24:MI:SS\'),inststatus,selectedstate,inststate,currentstate from packages_on_systems join systems using(sysname) where '+query+' order by sysname,pkgname,vername
 	'packages': {
-		'columns':		['sysname','pkgname','vername',                               'selectedstate','inststate','currentstate' ],
-		'db_fields':	['sysname','pkgname','vername','inventory_date', 'inststatus','selectedstate','inststate','currentstate' ],
-		'function':		updb.sql_get_packages_in_systems_by_query,
+		'columns': ['sysname', 'pkgname', 'vername', 'selectedstate', 'inststate', 'currentstate'],
+		'db_fields': ['sysname', 'pkgname', 'vername', 'inventory_date', 'inststatus', 'selectedstate', 'inststate', 'currentstate'],
+		'function': updb.sql_get_packages_in_systems_by_query,
 		# They allow querying for the UCS version, and then they don't display it? Who would use that at all?
 		# But nevertheless, if 'sysversion' is an allowed search key we have to switch this 'Join' flag on,
 		# or we get always empty result sets.
 		# (No, this join is not the performance bottleneck, believe me.)
 		'args': {
-			'join_systems':		True,
-			'limit':			RECORD_LIMIT,
-#			'orderby' ..avoids doing a sort that only consumes time and memory, and afterwards
-#						the data is sorted again by the grid or its store
-			'orderby':			''
+			'join_systems': True,
+			'limit': RECORD_LIMIT,
+			# 'orderby' ..avoids doing a sort that only consumes time and memory, and afterwards
+			# 			the data is sorted again by the grid or its store
+			'orderby': ''
 		}
 	}
 
@@ -143,9 +143,9 @@ QUERIES = {
 # in the ComboBox data arrays.
 #
 CODED_VALUES = {
-	'selectedstate':	{ '0': 'unknown', '1':'install', '2':'hold', '3':'deinstall', '4':'purge' },
-	'currentstate':		{ '0': 'notinstalled', '1': 'unpacked', '2': 'halfconfigured', '3': 'uninstalled', '4': 'halfinstalled', '5': 'configfiles', '6': 'installed', '7': 'triggers-awaited', '8': 'triggers-pending' },
-	'inststate':		{ '0': 'ok', '1': 'reinst_req', '2': 'hold', '3': 'hold_reinst_req' },
+	'selectedstate': {'0': 'unknown', '1': 'install', '2': 'hold', '3': 'deinstall', '4': 'purge'},
+	'currentstate': {'0': 'notinstalled', '1': 'unpacked', '2': 'halfconfigured', '3': 'uninstalled', '4': 'halfinstalled', '5': 'configfiles', '6': 'installed', '7': 'triggers-awaited', '8': 'triggers-pending'},
+	'inststate': {'0': 'ok', '1': 'reinst_req', '2': 'hold', '3': 'hold_reinst_req'},
 }
 
 # We introduce a 'reverse index' of the CODED_VALUES here.
@@ -155,60 +155,63 @@ DECODED_VALUES = dict((f, dict((CODED_VALUES[f][key], key) for key in CODED_VALU
 # or such things as we don't have any name clashes.
 LABELS = {
 	# ------------- search fields (keys) ---------
-#	'incomplete_packages':		_("Find packages installed incompletely"),
-	'inststate':				_("Installation state"),
-	'inventory_date':			_("Inventory date"),
-#	'compare_with_version':		_("Compared to version"),
-	'pkgname':					_("Package name"),
-#	'vername':					_("Package version"),
-	'currentstate':				_("Package state"),
-	'selectedstate':			_("Selection state"),
-	'sysname':					_("Hostname"),
-	'sysrole':					_("System role"),
-	'sysversion':				_("UCS Version"),
-	'sysversion_greater':		_("UCS Version is greater than"),
-	'sysversion_lower':			_("UCS Version is lower than"),
-	'all_properties':			_("All properties"),
+	# 'incomplete_packages':		_("Find packages installed incompletely"),
+	'inststate': _("Installation state"),
+	'inventory_date': _("Inventory date"),
+	# 'compare_with_version':		_("Compared to version"),
+	'pkgname': _("Package name"),
+	# 'vername':					_("Package version"),
+	'currentstate': _("Package state"),
+	'selectedstate': _("Selection state"),
+	'sysname': _("Hostname"),
+	'sysrole': _("System role"),
+	'sysversion': _("UCS Version"),
+	'sysversion_greater': _("UCS Version is greater than"),
+	'sysversion_lower': _("UCS Version is lower than"),
+	'all_properties': _("All properties"),
 	# ----------- server roles --------------------
-	'domaincontroller_master':	_("Domain controller Master"),
-	'domaincontroller_backup':	_("Domain controller Backup"),
-	'domaincontroller_slave':	_("Domain controller Slave"),
-	'memberserver':				_("Member Server"),
+	'domaincontroller_master': _("Domain controller Master"),
+	'domaincontroller_backup': _("Domain controller Backup"),
+	'domaincontroller_slave': _("Domain controller Slave"),
+	'memberserver': _("Member Server"),
 	# ------------------ selection states --------------
-	'install':					_("Install"),
-	'hold':						_("Hold"),
-	'deinstall':				_("Deinstall"),
-	'purge':					_("Purge"),
-	'unknown':					_("Not installed"),
+	'install': _("Install"),
+	'hold': _("Hold"),
+	'deinstall': _("Deinstall"),
+	'purge': _("Purge"),
+	'unknown': _("Not installed"),
 	# ----------------- installation states ------------
-	'ok':						_("OK"),
-	'reinst_req':				_("Reinstall required"),
+	'ok': _("OK"),
+	'reinst_req': _("Reinstall required"),
 	# 'hold' already defined
-	'hold_reinst_req':			_("Hold + Reinstall required"),
+	'hold_reinst_req': _("Hold + Reinstall required"),
 	# -------------------- package states --------------
-	'notinstalled':				_("Not installed"),
-	'unpacked':					_("Unpacked"),
-	'halfconfigured':			_("Half-configured"),
-	'uninstalled':				_("Uninstalled"),
-	'halfinstalled':			_("Half-installed"),
-	'configfiles':				_("Config files only"),
-	'installed':				_("Installed"),
-	'incomplete':				_("Incomplete"),
-	'triggers-pending':			_("Triggers pending"),
-	'triggers-awaited':			_("Triggers awaited"),
+	'notinstalled': _("Not installed"),
+	'unpacked': _("Unpacked"),
+	'halfconfigured': _("Half-configured"),
+	'uninstalled': _("Uninstalled"),
+	'halfinstalled': _("Half-installed"),
+	'configfiles': _("Config files only"),
+	'installed': _("Installed"),
+	'incomplete': _("Incomplete"),
+	'triggers-pending': _("Triggers pending"),
+	'triggers-awaited': _("Triggers awaited"),
 }
 
 PAGES = ('systems', 'packages')
 
+
 def _server_not_running_msg():
 	return _('Maybe the PostgreSQL server is not running.\nIt can be started with the UMC module "System services".')
 
+
 class Instance(Base):
+
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 
-		self.connect()		
+		self.connect()
 
 		self._update_system_roles_and_versions()
 
@@ -261,7 +264,7 @@ class Instance(Base):
 	@connection
 	def _get_system_roles(self):
 		return [role[0] for role in updb.sql_getall_systemroles(self.cursor)]
-			
+
 	@connection
 	def _get_system_versions(self):
 		return [version[0] for version in updb.sql_getall_systemversions(self.cursor)]
@@ -327,9 +330,11 @@ class Instance(Base):
 		"""
 		return QUERIES[page]['columns']
 
+
 def _combobox_data(data):
 	"""	returns a (id, label) dict with translated values """
 	return [dict(id=identifier, label=_id_to_label(identifier)) for identifier in data]
+
 
 def _make_query(key, operator, pattern):
 	"""	consumes a tuple of 'key','operator','pattern' and converts it
@@ -354,11 +359,11 @@ def _make_query(key, operator, pattern):
 		if '~' in operator:
 
 			# 1. dot is not a wildcard here but rather a literal dot
-			pattern = pattern.replace('.','\.')
+			pattern = pattern.replace('.', '\.')
 
 			# 2. a * indicates to not do a substring search
 			if '*' in pattern:
-				pattern = pattern.replace('*','.*')
+				pattern = pattern.replace('*', '.*')
 				pattern = '^%s$' % (pattern)
 
 			# 3. empty pattern means search for everything
@@ -374,6 +379,7 @@ def _make_query(key, operator, pattern):
 		keys = MAPPED_TABLES.get(key, [key])
 		return ' OR '.join(__make_query(key, operator, pattern) for key in keys)
 
+
 def _decoded_value(field, key):
 	"""	accepts a field name and the database value of this field
 		and translates this into the codeword that represents this value.
@@ -383,6 +389,7 @@ def _decoded_value(field, key):
 		return CODED_VALUES[field].get(str(key), key)
 	# unchanged if no match
 	return key
+
 
 def _coded_value(field, value):
 	"""	this is the inverse of the above function: it accepts a field name
@@ -394,6 +401,7 @@ def _coded_value(field, value):
 		return DECODED_VALUES[field].get(str(value), value)
 	# unchanged if no match
 	return value
+
 
 def _convert_to_grid(data, names):
 	"""	The queries here return arrays of values. But our grid
@@ -408,6 +416,7 @@ def _convert_to_grid(data, names):
 	#	(2)	converts database representation into keyed values (_decoded_value)
 	#	(3)	translates keyed values for display (_id_to_label)
 	return dict((names[i], _id_to_label(_decoded_value(names[i], data[i]))) for i in range(l))
+
 
 def _id_to_label(identifier):
 	"""	translates any id into the corresponding label.

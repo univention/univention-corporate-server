@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention pykota users
-#  listener 
+#  listener
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -30,21 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug
 import univention.misc
 import univention.config_registry
-import os
 
-name='pykota-users'
-description='manage pykota users'
-filter='(&(objectClass=posixAccount)(objectClass=person)(!(objectClass=univentionHost)))'
-attributes=["uid", "mailPrimaryAddress"]
+name = 'pykota-users'
+description = 'manage pykota users'
+filter = '(&(objectClass=posixAccount)(objectClass=person)(!(objectClass=univentionHost)))'
+attributes = ["uid", "mailPrimaryAddress"]
+
 
 def initialize():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: Initialize' % name)
 	return
+
 
 def callPkusers(cmd):
 
@@ -58,11 +59,12 @@ def callPkusers(cmd):
 
 	return 0
 
+
 def addUser(user):
 
-	if user.has_key('uid'):
+	if 'uid' in user:
 		uid = user['uid'][0]
-		if user.has_key('mailPrimaryAddress'):
+		if 'mailPrimaryAddress' in user:
 			uid = uid + "/" + user['mailPrimaryAddress'][0]
 
 		cmd = ["--add", uid]
@@ -70,36 +72,38 @@ def addUser(user):
 
 	return 0
 
+
 def delUser(user):
 
-	if user.has_key('uid'):
+	if 'uid' in user:
 		uid = user['uid'][0]
 		cmd = ["--delete", uid]
 		callPkusers(cmd)
+
 
 def handler(dn, new, old):
 
 	# added
 	if new and not old:
-		if new.has_key('uid'):			
+		if 'uid' in new:
 			addUser(new)
 	# removed
 	elif old and not new:
-		if old.has_key('uid'):
+		if 'uid' in old:
 			delUser(old)
 	# modified
 	else:
 		# uid changed -> new pykota user
-		if old.has_key('uid') and new.has_key('uid'):
-			if new['uid'][0] != old ['uid'][0]:
+		if 'uid' in old and 'uid' in new:
+			if new['uid'][0] != old['uid'][0]:
 				delUser(old)
 				addUser(new)
 
 		# email changed
-		if new.has_key('mailPrimaryAddress') and not old.has_key('mailPrimaryAddress'):
+		if 'mailPrimaryAddress' in new and 'mailPrimaryAddress' not in old:
 			# email new
 			addUser(new)
-		elif new.has_key('mailPrimaryAddress') and old.has_key('mailPrimaryAddress'):	
+		elif 'mailPrimaryAddress' in new and 'mailPrimaryAddress' in old:
 			if new['mailPrimaryAddress'][0] != old['mailPrimaryAddress'][0]:
 				# email changed
 				addUser(new)
@@ -108,9 +112,10 @@ def handler(dn, new, old):
 			pass
 	return
 
+
 def clean():
 	return
 
+
 def postrun():
 	return
-
