@@ -34,23 +34,25 @@
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
-_ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
+_ = umc.Translation('univention.management.console.handlers.cups').translate
 
-class CUPS_SearchKeys( umc.StaticSelection ):
-	def __init__( self, required = True ):
-		umc.StaticSelection.__init__( self, unicode( _( 'Search key' ) ), required = required )
 
-	def choices( self ):
-		return ( ( 'printer', _( 'Printer name' ) ), ( 'description', _( 'Description' ) ),
-				 ( 'location', _( 'Location' ) ) )
+class CUPS_SearchKeys(umc.StaticSelection):
 
-umcd.copy( umc.StaticSelection, CUPS_SearchKeys )
+	def __init__(self, required=True):
+		umc.StaticSelection.__init__(self, unicode(_('Search key')), required=required)
 
-printername = umc.String( _( 'Printer' ) )
+	def choices(self):
+		return (('printer', _('Printer name')), ('description', _('Description')),
+				 ('location', _('Location')))
+
+umcd.copy(umc.StaticSelection, CUPS_SearchKeys)
+
+printername = umc.String(_('Printer'))
 searchkey = CUPS_SearchKeys()
-filter = umc.String( '&nbsp;' , required = False )
-printers = umc.StringList( _( 'Printer list' ) )
-jobs = umc.StringList( _( 'Job list' ) )
-user = umc.String( _( 'User' ) )
-pagesoftlimit = umc.Integer( _( 'Page quota soft limit' ) )
-pagehardlimit = umc.Integer( _( 'Page quota hard limit' ) )
+filter = umc.String('&nbsp;', required=False)
+printers = umc.StringList(_('Printer list'))
+jobs = umc.StringList(_('Job list'))
+user = umc.String(_('User'))
+pagesoftlimit = umc.Integer(_('Page quota soft limit'))
+pagehardlimit = umc.Integer(_('Page quota hard limit'))

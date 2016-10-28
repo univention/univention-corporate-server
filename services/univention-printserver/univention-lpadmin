@@ -33,41 +33,43 @@
 
 import sys
 import re
-import pwd, os
+import pwd
+import os
 from pexpect import *
 import univention.config_registry
 
-args=sys.argv[1:]
+args = sys.argv[1:]
 
-baseConfig=univention.config_registry.ConfigRegistry()
+baseConfig = univention.config_registry.ConfigRegistry()
 baseConfig.load()
 
 lpadminexec = '/usr/sbin/lpadmin'
-for path in [ '/usr/bin/enable', '/usr/sbin/cupsenable' ]:
+for path in ['/usr/bin/enable', '/usr/sbin/cupsenable']:
 	if os.path.exists(path):
 		enableexec = path
-for path in [ '/usr/sbin/accept', '/usr/sbin/cupsaccept' ]:
+for path in ['/usr/sbin/accept', '/usr/sbin/cupsaccept']:
 	if os.path.exists(path):
 		acceptexec = path
 
-if not '-h' in args:
+if '-h' not in args:
 	args = args + ['-h', 'localhost']
 
 # read machine password
-secretFile=open('/etc/machine.secret','r')
-pwdLine=secretFile.readline()
-machine_password=re.sub('\n','',pwdLine)
+secretFile = open('/etc/machine.secret', 'r')
+pwdLine = secretFile.readline()
+machine_password = re.sub('\n', '', pwdLine)
 
-machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
-old_uid=os.getuid()
+machine_uid = pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
+old_uid = os.getuid()
 os.setuid(machine_uid)
 
-child = spawn( lpadminexec, args )
+child = spawn(lpadminexec, args)
 
-i=0
-timeout=60
-attempt=0
+i = 0
+timeout = 60
+attempt = 0
 rc = 0
+
 
 def show_child_before_message(child):
 	""" Method shows only lpadmin error/info message that comes only with "lpadmin: """
@@ -80,11 +82,11 @@ def enableaccept(command, groupname, timeout, machine_password):
 	""" Method for enabling and accept classes """
 	i = 0
 	child = spawn(command, [groupname])
-	#print child
+	# print child
 	while not i == 3:
-		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
-		#print command, " %s" % i
-		if i in [0,1,2]:
+		i = child.expect(['%s\.%s.*\?' % (baseConfig['hostname'], baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
+		# print command, " %s" % i
+		if i in [0, 1, 2]:
 			child.sendline(machine_password)
 
 	if child.isalive():
@@ -96,8 +98,8 @@ def enableaccept(command, groupname, timeout, machine_password):
 
 
 while not i == 3:
-	i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
-	if i in [0,1,2]:
+	i = child.expect(['%s\.%s.*\?' % (baseConfig['hostname'], baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
+	if i in [0, 1, 2]:
 		show_child_before_message(child)
 		child.sendline(machine_password)
 		attempt += 1
@@ -115,17 +117,17 @@ if child.isalive():
 	child.close()
 
 if child.exitstatus and child.exitstatus != 0:
-	print 'The command "%s %s" returned %d' % (lpadminexec, ' '.join(args) , child.exitstatus)
+	print 'The command "%s %s" returned %d' % (lpadminexec, ' '.join(args), child.exitstatus)
 	sys.exit(child.exitstatus)
 
 # check for several classes
 if '-c' in args:
-	i=0
+	i = 0
 	for arg in args:
 		if arg == '-c':
-			#print "arg: ", args[i+1]
-			enableaccept(enableexec, args[i+1], timeout, machine_password)
-			enableaccept(acceptexec, args[i+1], timeout, machine_password)
+			# print "arg: ", args[i+1]
+			enableaccept(enableexec, args[i + 1], timeout, machine_password)
+			enableaccept(acceptexec, args[i + 1], timeout, machine_password)
 		i += 1
 
 sys.exit(0)

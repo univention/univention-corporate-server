@@ -41,44 +41,46 @@ import notifier.popen
 
 import tools
 
-_ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
+_ = umc.Translation('univention.management.console.handlers.cups').translate
 
-class Commands( object ):
-	def cups_printer_quota_show( self, object ):
+
+class Commands(object):
+
+	def cups_printer_quota_show(self, object):
 		if object.incomplete:
-			self.finished( object.id(), [] )
+			self.finished(object.id(), [])
 			return
 
-		cmd = '/usr/bin/lpstat -o %s' % object.options[ 'printer' ]
-		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: command: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = True )
-		cb = notifier.Callback( self._cups_printer_show_return, object )
-		proc.signal_connect( 'finished', cb )
+		cmd = '/usr/bin/lpstat -o %s' % object.options['printer']
+		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.show: command: %s' % cmd)
+		proc = notifier.popen.Shell(cmd, stdout=True)
+		cb = notifier.Callback(self._cups_printer_show_return, object)
+		proc.signal_connect('finished', cb)
 		proc.start()
 
-	def _cups_printer_show_return( self, pid, status, buffer, object ):
-		jobs = tools.parse_lpstat_o( buffer )
-		self.finished( object.id(), jobs )
+	def _cups_printer_show_return(self, pid, status, buffer, object):
+		jobs = tools.parse_lpstat_o(buffer)
+		self.finished(object.id(), jobs)
 
-	def cups_printer_enable( self, object ):
-		cmd = '/usr/bin/univention-cups-enable %s' % ' '.join( object.options[ 'printers' ] )
-		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = False )
-		cb = notifier.Callback( self._cups_printer_enable_return, object )
-		proc.signal_connect( 'finished', cb )
+	def cups_printer_enable(self, object):
+		cmd = '/usr/bin/univention-cups-enable %s' % ' '.join(object.options['printers'])
+		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd)
+		proc = notifier.popen.Shell(cmd, stdout=False)
+		cb = notifier.Callback(self._cups_printer_enable_return, object)
+		proc.signal_connect('finished', cb)
 		proc.start()
 
-	def _cups_printer_enable_return( self, pid, status, object ):
-		self.finished( object.id(), [] )
+	def _cups_printer_enable_return(self, pid, status, object):
+		self.finished(object.id(), [])
 
-	def cups_printer_disable( self, object ):
+	def cups_printer_disable(self, object):
 		cmd = '/usr/bin/univention-cups-disable %s' % \
-			  ' '.join( object.options[ 'printers' ] )
-		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = False )
-		cb = notifier.Callback( self._cups_printer_disable_return, object )
-		proc.signal_connect( 'finished', cb )
+			  ' '.join(object.options['printers'])
+		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd)
+		proc = notifier.popen.Shell(cmd, stdout=False)
+		cb = notifier.Callback(self._cups_printer_disable_return, object)
+		proc.signal_connect('finished', cb)
 		proc.start()
 
-	def _cups_printer_disable_return( self, pid, status, object ):
-		self.finished( object.id(), [] )
+	def _cups_printer_disable_return(self, pid, status, object):
+		self.finished(object.id(), [])

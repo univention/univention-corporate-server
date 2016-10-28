@@ -32,16 +32,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, re
-import pwd, os, os.path
+import sys
+import string
+import re
+import pwd
+import os
+import os.path
 from pexpect import *
 import univention.config_registry
 
-args=sys.argv[1:]
-cmd=sys.argv[0]
+args = sys.argv[1:]
+cmd = sys.argv[0]
 
 # check if we are called directly
-if cmd[-len("univention-cupsadmin"):]=="univention-cupsadmin":
+if cmd[-len("univention-cupsadmin"):] == "univention-cupsadmin":
 	print("univention-cupsadmin is not to be called directly, but rather by")
 	print("links from one of univention-cups-{accept,reject,enable,disalbe}.")
 	print("See man accept, man reject, man enable, and man disable for")
@@ -52,35 +56,35 @@ if cmd[-len("univention-cupsadmin"):]=="univention-cupsadmin":
 # univention-cups from it
 #
 # cupsenable and -disable aren't located in /usr/bin anymore
-#if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
+# if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
 #	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
-#else:
+# else:
 
-cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")
+cmd = os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")
 
 # check if target executable exists
 if not(os.path.exists(cmd)):
-	print("Target executable %s does not exist. Exiting."%cmd)
+	print("Target executable %s does not exist. Exiting." % cmd)
 	sys.exit(2)
 
-baseConfig=univention.config_registry.ConfigRegistry()
+baseConfig = univention.config_registry.ConfigRegistry()
 baseConfig.load()
 
 # read machine password
-secretFile=open('/etc/machine.secret','r')
-pwdLine=secretFile.readline()
-machine_password=re.sub('\n','',pwdLine)
+secretFile = open('/etc/machine.secret', 'r')
+pwdLine = secretFile.readline()
+machine_password = re.sub('\n', '', pwdLine)
 
-machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
-old_uid=os.getuid()
+machine_uid = pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
+old_uid = os.getuid()
 os.setuid(machine_uid)
 
 child = spawn('%s %s' % (cmd, string.join(args, ' ')))
-i=0
-timeout=60
+i = 0
+timeout = 60
 while not i == 2:
-	i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), 'localhost.*\?', EOF], timeout=timeout)
-	if i in [0,1]:
+	i = child.expect(['%s\.%s.*\?' % (baseConfig['hostname'], baseConfig['domainname']), 'localhost.*\?', EOF], timeout=timeout)
+	if i in [0, 1]:
 		child.sendline(machine_password)
 	elif i == 2:
 		if child.before:

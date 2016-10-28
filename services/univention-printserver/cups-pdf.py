@@ -30,19 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug as ud
 import univention.config_registry
 
-name='cups-pdf'
-description='Manage Samba share for CUPS pdf printer'
-filter='(objectClass=univentionShareSamba)'
-attributes=['cn', 'univentionSharePath']
-sharename="pdfPrinterShare"
+name = 'cups-pdf'
+description = 'Manage Samba share for CUPS pdf printer'
+filter = '(objectClass=univentionShareSamba)'
+attributes = ['cn', 'univentionSharePath']
+sharename = "pdfPrinterShare"
 
 # set two ucr variables (template cups-pdf) if the share for
 # the pdf pseudo printer is changed
+
+
 def handler(dn, new, old):
 
 	if new.get('cn', ('',))[0] == sharename:

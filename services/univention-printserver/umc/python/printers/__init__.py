@@ -48,6 +48,7 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, C
 
 _ = Translation('univention-management-console-module-printers').translate
 
+
 class Instance(Base):
 
 	def init(self):
@@ -130,16 +131,16 @@ class Instance(Base):
 						data.append(b.text_content().strip())
 					if data and len(data) >= 11:
 						user = data[0]
-						#limitby = data[1]
-						#overcharge = data[2]
+						# limitby = data[1]
+						# overcharge = data[2]
 						used = data[3]
 						soft = data[4]
 						hard = data[5]
-						#balance = data[6]
-						#grace = data[7]
+						# balance = data[6]
+						# grace = data[7]
 						total = data[8]
-						#paid = data[9]
-						#warn = data[10]
+						# paid = data[9]
+						# warn = data[10]
 						result.append(dict(
 							user=user,
 							used=used,
@@ -164,7 +165,7 @@ class Instance(Base):
 
 		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$)))', attr=['uid'])
-		return [ obj[1]["uid"][0] for obj in objs ]
+		return [obj[1]["uid"][0] for obj in objs]
 
 	@simple_response
 	@log
@@ -192,7 +193,7 @@ class Instance(Base):
 			optionally tries to create the corresponding user entry.
 		"""
 
-		if printer=='' or user=='':
+		if printer == '' or user == '':
 			return "Required parameter missing"
 		else:
 			return self._set_quota(printer, user, soft, hard)
@@ -221,10 +222,10 @@ class Instance(Base):
 				mobj = expr.match(line)
 				if mobj:
 					entry = {
-						'job':		mobj.group(1),
-						'owner':	mobj.group(2),
-						'size':		mobj.group(3),
-						'date':		mobj.group(4)
+						'job': mobj.group(1),
+						'owner': mobj.group(2),
+						'size': mobj.group(3),
+						'date': mobj.group(4)
 					}
 					result.append(entry)
 		return result
@@ -234,19 +235,19 @@ class Instance(Base):
 
 		result = []
 		expr = re.compile('printer\s+(\S+)\s.*?(\S+abled)')
-		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				mobj = expr.match(line)
 				if mobj:
-					entry = { 'printer' : mobj.group(1), 'status': mobj.group(2) }
+					entry = {'printer': mobj.group(1), 'status': mobj.group(2)}
 					result.append(entry)
 		return result
 
 	def _printer_status(self, printer):
 		""" returns the 'enabled' status of a printer """
 
-		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'})
 		if status == 0:
 			if ' enabled ' in stdout:
 				return 'enabled'
@@ -259,7 +260,7 @@ class Instance(Base):
 
 		result = {}
 		expr = re.compile('\s+([^\s\:]+)\:\s*(.*?)$')
-		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				mobj = expr.match(line)
@@ -299,7 +300,7 @@ class Instance(Base):
 		# already known to PyKota. Fortunately these tools don't complain
 		# if we try to create a user that doesn't already exist.
 
-		self._shell_command(['/usr/bin/pkusers', '--skipexisting', '--add', user], {'LANG':'C'})
+		self._shell_command(['/usr/bin/pkusers', '--skipexisting', '--add', user], {'LANG': 'C'})
 
 		# Caution! order of args is important!
 
@@ -309,7 +310,7 @@ class Instance(Base):
 			'--softlimit', str(soft),
 			'--hardlimit', str(hard),
 			'--add', user
-		], {'LANG':'C'})
+		], {'LANG': 'C'})
 
 		# not all errors are propagated in exit codes...
 		# but at least they adhere to the general rule that
@@ -322,12 +323,12 @@ class Instance(Base):
 	def _reset_quota(self, printer, users):
 		""" resets the 'used' counter on a quota entry. """
 
-		cmd = [	'/usr/bin/edpykota', '--printer', printer, '--reset' ]
+		cmd = [	'/usr/bin/edpykota', '--printer', printer, '--reset']
 		# appending user names to the args array -> spaces in user names
 		# don't confuse edpykota (In 2.4, this was a problem)
 		for user in users:
 			cmd.append(user)
-		(stdout, stderr, status) = self._shell_command(cmd, {'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(cmd, {'LANG': 'C'})
 
 		if status or stderr:
 			return stderr
@@ -341,7 +342,7 @@ class Instance(Base):
 
 		result = {}
 		expr = re.compile('device for (\S+)\:\s*(\S+)$')
-		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-v'], {'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-v'], {'LANG': 'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				match = expr.match(line)
