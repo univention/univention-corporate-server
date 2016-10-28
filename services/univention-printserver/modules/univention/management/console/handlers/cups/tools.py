@@ -36,67 +36,71 @@ from fnmatch import *
 import re
 import univention.management.console.locales as locales
 
-_ = locales.Translation( 'univention.management.console.handlers.cups' ).translate
+_ = locales.Translation('univention.management.console.handlers.cups').translate
 
-def parse_lpstat_v( buffer, printers ):
-	regex = re.compile( '^device for (?P<printer>.+?)\: (?P<device>.+)$' )
+
+def parse_lpstat_v(buffer, printers):
+	regex = re.compile('^device for (?P<printer>.+?)\: (?P<device>.+)$')
 
 	for line in buffer:
 		matches = regex.match(line)
 		if matches:
 			items = matches.groupdict()
-			if printers.get( items['printer'] ):
+			if printers.get(items['printer']):
 				if items['device'].startswith('cupspykota:'):
-					printers[ items['printer'] ][ 'quotastate' ] = True
+					printers[items['printer']]['quotastate'] = True
 				else:
-					printers[ items['printer'] ][ 'quotastate' ] = False
+					printers[items['printer']]['quotastate'] = False
 
 	for key in printers.keys():
 		if not printers[key].get('quotastate'):
-			printers[key]['quotastate'] = _( 'inactive' )
+			printers[key]['quotastate'] = _('inactive')
 
 	return printers
 
-def parse_lpstat_l( buffer, filter = '*', key = 'printer' ):
+
+def parse_lpstat_l(buffer, filter='*', key='printer'):
 	printers = {}
 	current = None
 	for prt in buffer:
 		if not prt:
 			continue
-		if prt.startswith( 'printer ' ):
-			dummy, printer, status = prt.split( ' ', 2 )
-			printers[ printer ] = {}
+		if prt.startswith('printer '):
+			dummy, printer, status = prt.split(' ', 2)
+			printers[printer] = {}
 			current = printer
-			if not status.startswith( 'disabled' ):
-				printers[ printer ][ 'state' ] = _( 'active' )
+			if not status.startswith('disabled'):
+				printers[printer]['state'] = _('active')
 			else:
-				printers[ printer ][ 'state' ] = _( 'inactive' )
+				printers[printer]['state'] = _('inactive')
 			continue
 
 		if not current:
 			continue
 		prt = prt.strip()
-		for attribute in ( 'Description', 'Location' ):
+		for attribute in ('Description', 'Location'):
 			pattern = '%s:' % attribute
-			if prt.startswith( pattern ):
-				value = prt[ prt.find( pattern ) + len( pattern )  + 1 : ]
-				printers[ printer ][ attribute.lower() ] = unicode( value, 'utf8' )
+			if prt.startswith(pattern):
+				value = prt[prt.find(pattern) + len(pattern) + 1:]
+				printers[printer][attribute.lower()] = unicode(value, 'utf8')
 
 	filtered = {}
 	for printer, attrs in printers.items():
-		if key == 'printer' and not fnmatch( printer, filter ):
+		if key == 'printer' and not fnmatch(printer, filter):
 			continue
 		elif attrs.get(key) and not fnmatch(attrs[key], filter):
 			continue
-		filtered[ printer ] = attrs
+		filtered[printer] = attrs
 	return filtered
 
-def parse_lpstat_o( buffer ):
+
+def parse_lpstat_o(buffer):
 	jobs = []
 	for line in buffer:
-		if not line: continue
-		job, owner, size, date = line.split( None, 3 )
-		job_id = job.split( '-' )[ -1 ]
-		jobs.append( ( job_id, owner, size, date ) )
+		if not line:
+			continue
+		job, owner, size, date = line.split(None, 3)
+		job_id = job.split('-')[-1]
+		jobs.append((job_id, owner, size, date))
 
 	return jobs
