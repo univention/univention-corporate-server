@@ -33,7 +33,6 @@
 
 import subprocess
 import sys
-import string
 import ldap
 from optparse import OptionParser
 import univention.config_registry

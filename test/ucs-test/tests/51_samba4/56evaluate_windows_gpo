@@ -11,7 +11,6 @@
 from os import path
 from sys import exit
 from re import search
-from time import sleep
 from subprocess import Popen, PIPE
 import xml.etree.ElementTree as ET
 

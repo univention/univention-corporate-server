@@ -32,7 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, string, os, time, signal, shutil
+import os
+import signal
+import sys
+import time
 from optparse import OptionParser
 
 import fcntl

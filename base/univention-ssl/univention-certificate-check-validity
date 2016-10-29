@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import time
-import datetime
 import calendar
 
 from M2Crypto import X509

@@ -11,7 +11,6 @@ import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
 from univention.testing.strings import random_name, random_version
 from univention.testing.udm_extensions import *
-import os
 import bz2
 import base64
 

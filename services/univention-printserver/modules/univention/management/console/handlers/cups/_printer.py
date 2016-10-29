@@ -43,7 +43,6 @@ import notifier.popen
 import tools
 import pykota
 
-import subprocess
 
 _ = umc.Translation('univention.management.console.handlers.cups').translate
 

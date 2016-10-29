@@ -31,7 +31,6 @@
 convert base64 encoded jpegPhoto LDAP entries to binary entries (Bug #26872)'''
 
 import optparse
-import re
 import sys
 import univention.config_registry as config
 import univention.uldap

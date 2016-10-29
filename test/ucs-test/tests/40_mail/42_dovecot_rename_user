@@ -7,7 +7,6 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-import imaplib
 import os
 import time
 import subprocess

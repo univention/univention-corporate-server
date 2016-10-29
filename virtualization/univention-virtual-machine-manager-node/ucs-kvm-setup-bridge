@@ -32,7 +32,7 @@ Rewrite existing ethenet interface into bridge setup.
 import os
 import re
 import sys
-from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
+from optparse import OptionGroup, OptionParser
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces, RE_IFACE

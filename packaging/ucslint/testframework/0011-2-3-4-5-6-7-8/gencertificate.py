@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from listener import *
-import grp
 
 import univention.debug
 import univention.misc

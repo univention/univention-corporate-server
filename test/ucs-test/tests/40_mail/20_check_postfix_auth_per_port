@@ -11,7 +11,6 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.config_registry
-import time
 
 
 def main():

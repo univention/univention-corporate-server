@@ -56,7 +56,6 @@ import sys
 import inspect
 import time
 import types
-import traceback
 import notifier
 import notifier.threads
 import functools

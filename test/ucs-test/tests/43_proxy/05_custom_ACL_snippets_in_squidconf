@@ -16,7 +16,6 @@ from univention.testing.network import NetworkRedirector
 import BaseHTTPServer
 import itertools
 import pycurl
-import subprocess
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test

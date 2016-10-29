@@ -32,7 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__=''  # workaround for PEP 366
-import listener, cPickle, pickle, time, os
+import cPickle
+import listener
+import os
+import time
 import univention.debug
 
 name='s4-connector'

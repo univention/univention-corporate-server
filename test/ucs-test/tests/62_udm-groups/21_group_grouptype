@@ -9,8 +9,6 @@
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
-from time import sleep
-import string
 
 def _sid_is_builtin(sid):
 	return sid.startswith('S-1-5-32-')

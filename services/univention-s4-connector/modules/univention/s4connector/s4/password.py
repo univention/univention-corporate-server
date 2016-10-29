@@ -32,12 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import os, time
+import time
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 import binascii
-import types
 
 from samba.ndr import ndr_unpack, ndr_pack
 from samba.dcerpc import drsblobs
