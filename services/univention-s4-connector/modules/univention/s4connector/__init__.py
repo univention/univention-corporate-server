@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Basic class for the UCS connector part
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,12 +48,13 @@ import univention.admin.objects
 import univention.debug2 as ud
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
-from signal import *
-term_signal_caught = False
+from signal import signal, SIGTERM, SIG_DFL
 
 from univention.s4connector.s4cache import S4Cache
 from univention.s4connector.lockingdb import LockingDB
 import sqlite3 as lite
+
+term_signal_caught = False
 
 univention.admin.modules.update()
 
@@ -67,7 +68,7 @@ def make_lower(mlValue):
 	'''
 	lower string cases for mlValue which can be string or a list of values which can be given to mlValue
 	'''
-	if hasattr(mlValue,'lower'):
+	if hasattr(mlValue, 'lower'):
 		return mlValue.lower()
 	if type(mlValue) == type([]):
 		return [make_lower(x) for x in mlValue]
@@ -78,7 +79,8 @@ password_charsets = [
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	'0123456789',
 	'^!\$%&/()=?{[]}+~#-_.:,;<>|\\',
-	]
+]
+
 
 def generate_strong_password(length=24):
 	pwd = []
@@ -88,11 +90,13 @@ def generate_strong_password(length=24):
 		charset = random.choice(list(set(password_charsets) - set([charset])))
 	return "".join(pwd)
 
+
 def set_ucs_passwd_user(s4connector, key, ucs_object):
 	'''
 	set random password to fulfill required values
 	'''
 	ucs_object['password'] = generate_strong_password()
+
 
 def check_ucs_lastname_user(s4connector, key, ucs_object):
 	'''
@@ -100,6 +104,7 @@ def check_ucs_lastname_user(s4connector, key, ucs_object):
 	'''
 	if not ucs_object.has_key('lastname') or not ucs_object['lastname']:
 		ucs_object['lastname'] = 'none'
+
 
 def set_primary_group_user(s4connector, key, ucs_object):
 	'''
@@ -110,41 +115,47 @@ def set_primary_group_user(s4connector, key, ucs_object):
 # compare functions
 
 # helper
+
+
 def dictonary_lowercase(dict):
 	if type(dict) == type({}):
-		ndict={}
+		ndict = {}
 		for key in dict.keys():
-			ndict[key]=[]
+			ndict[key] = []
 			for val in dict[key]:
 				ndict[key].append(val.lower())
 		return ndict
 	elif type(dict) == type([]):
-		nlist=[]
+		nlist = []
 		for d in dict:
 			nlist.append(d.lower())
 		return nlist
 	else:
-		try: # should be string
+		try:  # should be string
 			return dict.lower()
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except: # FIXME: which exception is to be caught?
+		except:  # FIXME: which exception is to be caught?
 			pass
 
+
 def compare_lowercase(val1, val2):
-	try: # TODO: failes if conversion to ascii-str raises exception
+	try:  # TODO: failes if conversion to ascii-str raises exception
 		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
 			return True
 		else:
 			return False
 	except (ldap.SERVER_DOWN, SystemExit):
 		raise
-	except: # FIXME: which exception is to be caught?
+	except:  # FIXME: which exception is to be caught?
 		return False
 
 # helper classes
+
+
 class configdb:
-	def __init__ (self, filename):
+
+	def __init__(self, filename):
 		self.filename = filename
 		self._dbcon = lite.connect(self.filename)
 
@@ -163,19 +174,18 @@ class configdb:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
-		
 
 	def set(self, section, option, value):
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("""
-		INSERT OR REPLACE INTO '%s' (key,value) 
+		INSERT OR REPLACE INTO '%s' (key,value)
 			VALUES (  ?, ?
-		);""" % section , [option, value] )
+		);""" % section, [option, value])
 				self._dbcon.commit()
 				cur.close()
-				return 
+				return
 			except lite.Error, e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
@@ -228,7 +238,7 @@ class configdb:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
-	
+
 	def add_section(self, section):
 		for i in [1, 2]:
 			try:
@@ -236,13 +246,13 @@ class configdb:
 				cur.execute("CREATE TABLE IF NOT EXISTS '%s'(Key TEXT PRIMARY KEY, Value TEXT)" % section)
 				self._dbcon.commit()
 				cur.close()
-				return 
+				return
 			except lite.Error, e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
-	
+
 	def has_option(self, section, option):
 		for i in [1, 2]:
 			try:
@@ -261,25 +271,27 @@ class configdb:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
 
+
 class configsaver:
-	def __init__ (self, filename):
+
+	def __init__(self, filename):
 		self.filename = filename
 		try:
-			f = file(filename,'r')
+			f = file(filename, 'r')
 			self.config = cPickle.load(f)
 		except IOError:
 			self.config = {}
 		except EOFError:
 			self.config = {}
 
-	def write(self, ignore=''):		
+	def write(self, ignore=''):
 		def signal_handler(sig, frame):
 			ud.debug(ud.LDAP, ud.INFO, "configsaver.write: SIGTERM caught")
 			univention.s4connector.term_signal_caught = True
 
 		signal(SIGTERM, signal_handler)
 
-		f = file(self.filename,'w')
+		f = file(self.filename, 'w')
 		cPickle.dump(self.config, f)
 		f.flush()
 		f.close()
@@ -303,7 +315,7 @@ class configsaver:
 	def items(self, section):
 		ret = []
 		for key in self.config[section].keys():
-			ret.append((key,self.config[section][key]))
+			ret.append((key, self.config[section][key]))
 		return ret
 
 	def remove_option(self, section, option):
@@ -315,72 +327,101 @@ class configsaver:
 		return self.config.has_key(section)
 
 	def add_section(self, section):
-		self.config[section]={}
+		self.config[section] = {}
 		self.write()
-	
+
 	def has_option(self, section, option):
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
+
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync' ):
-		self.ucs_attribute=ucs_attribute
-		self.ldap_attribute=ldap_attribute
-		self.con_attribute=con_attribute
-		self.con_other_attribute=con_other_attribute
-		self.required=required
-		self.compare_function=compare_function
+
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync'):
+		self.ucs_attribute = ucs_attribute
+		self.ldap_attribute = ldap_attribute
+		self.con_attribute = con_attribute
+		self.con_other_attribute = con_other_attribute
+		self.required = required
+		self.compare_function = compare_function
 		if mapping:
-			self.mapping=mapping
+			self.mapping = mapping
 		# Make a reverse check of this mapping. This is necassary if the attribute is
 		# available in UCS and in AD but the mapping is not 1:1.
 		# For example the homeDirectory attribute is in UCS and in AD, but the mapping is
 		# from homeDirectory in AD to sambaHomePath in UCS. The homeDirectory in UCS is not
-		# considered. 
+		# considered.
 		# Seee https://forge.univention.org/bugzilla/show_bug.cgi?id=25823
-		self.reverse_attribute_check=reverse_attribute_check
+		self.reverse_attribute_check = reverse_attribute_check
 		self.sync_mode = sync_mode
-		self.single_value=single_value
+		self.single_value = single_value
+
 
 class property:
-	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
-					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], con_create_extenstions=[], post_con_create_functions=[],
-					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[], con_sync_function = None, ucs_sync_function = None, disable_delete_in_ucs = False,
-					identify = None, con_subtree_delete_objects = [] ):
 
-		self.ucs_default_dn=ucs_default_dn
+	def __init__(
+		self,
+		ucs_default_dn='',
+		con_default_dn='',
+		ucs_module='',
+		ucs_module_others=[],
+		sync_mode='',
+		scope='',
+		con_search_filter='',
+		ignore_filter=None,
+		match_filter=None,
+		ignore_subtree=[],
+		con_create_objectclass=[],
+		con_create_attributes=[],
+		dn_mapping_function=[],
+		attributes=None,
+		ucs_create_functions=[],
+		con_create_extenstions=[],
+		post_con_create_functions=[],
+		post_con_modify_functions=[],
+		post_ucs_modify_functions=[],
+		post_attributes=None,
+		mapping_table=None,
+		position_mapping=[],
+		con_sync_function=None,
+		ucs_sync_function=None,
+		disable_delete_in_ucs=False,
+		identify=None,
+		con_subtree_delete_objects=[]):
 
-		self.con_default_dn=con_default_dn
+		self.ucs_default_dn = ucs_default_dn
 
-		self.ucs_module=ucs_module
+		self.con_default_dn = con_default_dn
+
+		self.ucs_module = ucs_module
 
 		# allow a 1:n mapping, for example a Windows client
 		# could be a computers/windows or a computers/memberserver
 		# object
-		self.ucs_module_others=ucs_module_others
-		self.sync_mode=sync_mode
+		self.ucs_module_others = ucs_module_others
+		self.sync_mode = sync_mode
 
-		self.scope=scope
+		self.scope = scope
 
-		self.con_search_filter=con_search_filter
-		self.ignore_filter=ignore_filter
-		self.match_filter=match_filter
-		self.ignore_subtree=ignore_subtree
+		self.con_search_filter = con_search_filter
+		self.ignore_filter = ignore_filter
+		self.match_filter = match_filter
+		self.ignore_subtree = ignore_subtree
 
-		self.con_create_objectclass=con_create_objectclass
-		self.con_create_attributes=con_create_attributes
-		self.dn_mapping_function=dn_mapping_function
-		self.attributes=attributes
+		self.con_create_objectclass = con_create_objectclass
+		self.con_create_attributes = con_create_attributes
+		self.dn_mapping_function = dn_mapping_function
+		self.attributes = attributes
 
-		self.ucs_create_functions=ucs_create_functions
-		self.con_create_extenstions=con_create_extenstions
+		self.ucs_create_functions = ucs_create_functions
+		self.con_create_extenstions = con_create_extenstions
 
-		self.post_con_create_functions=post_con_create_functions
-		self.post_con_modify_functions=post_con_modify_functions
-		self.post_ucs_modify_functions=post_ucs_modify_functions
+		self.post_con_create_functions = post_con_create_functions
+		self.post_con_modify_functions = post_con_modify_functions
+		self.post_ucs_modify_functions = post_ucs_modify_functions
 
-		self.post_attributes=post_attributes
-		self.mapping_table=mapping_table
-		self.position_mapping=position_mapping
+		self.post_attributes = post_attributes
+		self.mapping_table = mapping_table
+		self.position_mapping = position_mapping
 
 		if con_sync_function:
 			self.con_sync_function = con_sync_function
@@ -395,33 +436,34 @@ class property:
 
 		self.disable_delete_in_ucs = disable_delete_in_ucs
 
-	
+
 class ucs:
+
 	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):
-		_d=ud.function('ldap.__init__')
+		_d = ud.function('ldap.__init__')
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword', 'userCertificate']
+		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate']
 
-		self.baseConfig=baseConfig
-		self.property=_property
+		self.baseConfig = baseConfig
+		self.property = _property
 
 		self.init_debug()
-		
-		self.co=univention.admin.config.config()
-		self.listener_dir=listener_dir
 
-		configdbfile='/etc/univention/%s/s4internal.sqlite' % self.CONFIGBASENAME
+		self.co = univention.admin.config.config()
+		self.listener_dir = listener_dir
+
+		configdbfile = '/etc/univention/%s/s4internal.sqlite' % self.CONFIGBASENAME
 		self.config = configdb(configdbfile)
 
-		s4cachedbfile='/etc/univention/%s/s4cache.sqlite' % self.CONFIGBASENAME
+		s4cachedbfile = '/etc/univention/%s/s4cache.sqlite' % self.CONFIGBASENAME
 		self.s4cache = S4Cache(s4cachedbfile)
 
-		lockingdbfile='/etc/univention/%s/lockingdb.sqlite' % self.CONFIGBASENAME
+		lockingdbfile = '/etc/univention/%s/lockingdb.sqlite' % self.CONFIGBASENAME
 		self.lockingdb = LockingDB(lockingdbfile)
 
-		configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
+		configfile = '/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
 		if os.path.exists(configfile):
 			ud.debug(ud.LDAP, ud.PROCESS, "Converting %s into a sqlite database" % configfile)
 			config = configsaver(configfile)
@@ -429,19 +471,19 @@ class ucs:
 			for section in config.config.keys():
 				ud.debug(ud.LDAP, ud.PROCESS, "Converting section %s" % section)
 				self.config.add_section(section)
-				for key in config.config[section].keys():                                                                                                                                                  
+				for key in config.config[section].keys():
 					ud.debug(ud.LDAP, ud.INFO, "Adding key: %s" % key)
 					self.config.set(section, key, config.get(section, key))
 
-			new_file='%s_converted_%f' % (configfile,time.time())
+			new_file = '%s_converted_%f' % (configfile, time.time())
 			os.rename(configfile, new_file)
 			ud.debug(ud.LDAP, ud.PROCESS, "Converting done")
-		
+
 		self.open_ucs()
 
-		for section in ['DN Mapping UCS','DN Mapping CON','UCS rejected', 'UCS deleted']:
+		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted']:
 			if not self.config.has_section(section):
-				self.config.add_section(section)				
+				self.config.add_section(section)
 
 		ud.debug(ud.LDAP, ud.INFO, "init finished")
 
@@ -456,12 +498,12 @@ class ucs:
 		else:
 			return dn
 
-	def open_ucs( self ):
+	def open_ucs(self):
 		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
-		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,'+self.baseConfig['ldap/base'])
-		bindpw=open(bindpw_file).read()
+		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.baseConfig['ldap/base'])
+		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
+			bindpw = bindpw[0:-1]
 
 		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
 
@@ -470,83 +512,82 @@ class ucs:
 		except:
 			port = 7389
 
-		self.lo=univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
+		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
 
-	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
+	def search_ucs(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
-			result = self.lo.search( filter = filter, base = base, scope = scope, attr = attr, unique = unique, required = required, timeout = timeout, sizelimit = sizelimit )
+			result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 			return result
 		except univention.admin.uexceptions.ldapError, search_exception:
-			ud.debug( ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...' )
+			ud.debug(ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...')
 			try:
 				self.open_ucs()
-				result = self.lo.search( filter = filter, base = base, scope = scope, attr = attr, unique = unique, required = required, timeout = timeout, sizelimit = sizelimit )
+				result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 				return result
 			except ldap.SERVER_DOWN, e:
-				ud.debug( ud.LDAP, ud.INFO, 'LDAP-Server seems to be down' )
+				ud.debug(ud.LDAP, ud.INFO, 'LDAP-Server seems to be down')
 				raise search_exception
-					
-				
+
 	def init_debug(self):
-		_d=ud.function('ldap.init_debug')
+		_d = ud.function('ldap.init_debug')
 		if self.baseConfig.has_key('%s/debug/function' % self.CONFIGBASENAME):
 			try:
-				function_level=int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
+				function_level = int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
-			except: # FIXME: which exception is to be caught?
+			except:  # FIXME: which exception is to be caught?
 				function_level = 0
 		else:
-			function_level=0
+			function_level = 0
 		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, function_level)
 		if self.baseConfig.has_key('%s/debug/level' % self.CONFIGBASENAME):
-			debug_level=self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
+			debug_level = self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
 		else:
-			debug_level=2
+			debug_level = 2
 		ud.set_level(ud.LDAP, int(debug_level))
 
 	def close_debug(self):
-		_d=ud.function('ldap.close_debug')
+		_d = ud.function('ldap.close_debug')
 		ud.debug(ud.LDAP, ud.INFO, "close debug")
 
 	def _get_config_option(self, section, option):
-		_d=ud.function('ldap._get_config_option')
-		return self.config.get(section,option)
+		_d = ud.function('ldap._get_config_option')
+		return self.config.get(section, option)
 
 	def _set_config_option(self, section, option, value):
-		_d=ud.function('ldap._set_config_option')
-		self.config.set(section,option, value)
+		_d = ud.function('ldap._set_config_option')
+		self.config.set(section, option, value)
 
 	def _remove_config_option(self, section, option):
-		_d=ud.function('ldap._remove_config_option')
+		_d = ud.function('ldap._remove_config_option')
 		self.config.remove_option(section, option)
 
 	def _get_config_items(self, section):
-		_d=ud.function('ldap._get_config_items')
+		_d = ud.function('ldap._get_config_items')
 		return self.config.items(section)
-	
+
 	def _save_rejected_ucs(self, filename, dn):
-		_d=ud.function('ldap._save_rejected_ucs')
+		_d = ud.function('ldap._save_rejected_ucs')
 		modstring_dn = univention.s4connector.s4.compatible_modstring(dn)
 		self._set_config_option('UCS rejected', filename, modstring_dn)
 
 	def _get_rejected_ucs(self, filename):
-		_d=ud.function('ldap._get_rejected_ucs')
-		return self._get_config_option('UCS rejected',filename)
+		_d = ud.function('ldap._get_rejected_ucs')
+		return self._get_config_option('UCS rejected', filename)
 
-	def _remove_rejected_ucs(self,filename):
-		_d=ud.function('ldap._remove_rejected_ucs')
-		self._remove_config_option('UCS rejected',filename)
+	def _remove_rejected_ucs(self, filename):
+		_d = ud.function('ldap._remove_rejected_ucs')
+		self._remove_config_option('UCS rejected', filename)
 
 	def _list_rejected_ucs(self):
-		_d=ud.function('ldap._list_rejected_ucs')
+		_d = ud.function('ldap._list_rejected_ucs')
 		result = []
 		for i in self._get_config_items('UCS rejected'):
 			result.append(i)
 		return result
 
 	def _list_rejected_filenames_ucs(self):
-		_d=ud.function('ldap._list_rejected_filenames_ucs')
+		_d = ud.function('ldap._list_rejected_filenames_ucs')
 		result = []
 		for filename, dn in self._get_config_items('UCS rejected'):
 			result.append(filename)
@@ -554,7 +595,7 @@ class ucs:
 
 	def list_rejected_ucs(self):
 		return self._get_config_items('UCS rejected')
-		
+
 	def _encode_dn_as_config_option(self, dn):
 		return dn
 
@@ -562,32 +603,26 @@ class ucs:
 		return dn
 
 	def _set_dn_mapping(self, dn_ucs, dn_con):
-		_d=ud.function('ldap._set_dn_mapping')
-		self._set_config_option('DN Mapping UCS',
-					self._encode_dn_as_config_option(dn_ucs.lower()),
-					self._encode_dn_as_config_option(dn_con.lower()))
-		self._set_config_option('DN Mapping CON',
-					self._encode_dn_as_config_option(dn_con.lower()),
-					self._encode_dn_as_config_option(dn_ucs.lower()))
+		_d = ud.function('ldap._set_dn_mapping')
+		self._set_config_option('DN Mapping UCS', self._encode_dn_as_config_option(dn_ucs.lower()), self._encode_dn_as_config_option(dn_con.lower()))
+		self._set_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower()), self._encode_dn_as_config_option(dn_ucs.lower()))
 
 	def _remove_dn_mapping(self, dn_ucs, dn_con):
-		_d=ud.function('ldap._remove_dn_mapping')
+		_d = ud.function('ldap._remove_dn_mapping')
 		# delete all if mapping failed in the past
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
 		dn_con_re_mapped = self._get_dn_by_ucs(dn_ucs_mapped.lower())
 		dn_ucs_re_mapped = self._get_dn_by_con(dn_con_mapped.lower())
-		
+
 		for ucs, con in [(dn_ucs, dn_con), (dn_ucs_mapped, dn_con_mapped), (dn_ucs_re_mapped, dn_con_re_mapped)]:
 			if con:
-				self._remove_config_option('DN Mapping CON',
-							   self._encode_dn_as_config_option(con.lower()))
+				self._remove_config_option('DN Mapping CON', self._encode_dn_as_config_option(con.lower()))
 			if ucs:
-				self._remove_config_option('DN Mapping UCS',
-							   self._encode_dn_as_config_option(ucs.lower()))
+				self._remove_config_option('DN Mapping UCS', self._encode_dn_as_config_option(ucs.lower()))
 
 	def _get_dn_by_ucs(self, dn_ucs):
-		_d=ud.function('ldap._get_dn_by_ucs')
+		_d = ud.function('ldap._get_dn_by_ucs')
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping UCS', self._encode_dn_as_config_option(dn_ucs.lower())))
 
 	def get_dn_by_ucs(self, dn_ucs):
@@ -597,17 +632,17 @@ class ucs:
 		return self.dn_mapped_to_base(dn, self.lo_s4.base)
 
 	def _get_dn_by_con(self, dn_con):
-		_d=ud.function('ldap._get_dn_by_con')
+		_d = ud.function('ldap._get_dn_by_con')
 		if not dn_con:
 			return dn_con
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower())))
 
 	def get_dn_by_con(self, dn_con):
 		dn = self._get_dn_by_con(dn_con)
-		return 	self.dn_mapped_to_base(dn, self.lo.base)
+		return self.dn_mapped_to_base(dn, self.lo.base)
 
 	def _check_dn_mapping(self, dn_ucs, dn_con):
-		_d=ud.function('ldap._check_dn_mapping')
+		_d = ud.function('ldap._check_dn_mapping')
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
 		if dn_con_mapped != dn_con.lower() or dn_ucs_mapped != dn_ucs.lower():
@@ -616,20 +651,20 @@ class ucs:
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
 	def _list_dn_mappings(self, config_space):
-		ret =[]
+		ret = []
 		for d1, d2 in self._get_config_items(config_space):
 			return_update = False
 			count = 0
-			while not return_update and count<3:
+			while not return_update and count < 3:
 				try:
-					ret.append((self._decode_dn_from_config_option(d1),self._decode_dn_from_config_option(self._get_config_option(config_space, d1))))
+					ret.append((self._decode_dn_from_config_option(d1), self._decode_dn_from_config_option(self._get_config_option(config_space, d1))))
 					return_update = True
 				except (ldap.SERVER_DOWN, SystemExit):
-					raise				
-				except: # FIXME: which exception is to be caught?
+					raise
+				except:  # FIXME: which exception is to be caught?
 					count = count + 1
-					d1=d1+" ="
-			ret.append(("failed",self._decode_dn_from_config_option(d1)))
+					d1 = d1 + " ="
+			ret.append(("failed", self._decode_dn_from_config_option(d1)))
 		return ret
 
 	def list_dn_mappings_by_con(self):
@@ -638,49 +673,47 @@ class ucs:
 	def list_dn_mappings_by_ucs(self):
 		return self._list_dn_mappings('DN Mapping UCS')
 
-
 	def _debug_traceback(self, level, text):
 		'''
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
-		_d=ud.function('ldap._debug_traceback')
+		_d = ud.function('ldap._debug_traceback')
 		exc_info = sys.exc_info()
 
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
-
-	def _get_rdn(self,dn):
-		_d=ud.function('ldap._get_rdn')
+	def _get_rdn(self, dn):
+		_d = ud.function('ldap._get_rdn')
 		'''
 		return rdn from dn
 		'''
-		return dn.split(',',1)[0]
+		return dn.split(',', 1)[0]
 
-	def _get_subtree(self,dn):
-		_d=ud.function('ldap._get_subtree')
+	def _get_subtree(self, dn):
+		_d = ud.function('ldap._get_subtree')
 		'''
 		return subtree from dn
 		'''
-		return dn.split(',',1)[1]
+		return dn.split(',', 1)[1]
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
-		_d=ud.function('ldap._sync_file_from_ucs')
+		_d = ud.function('ldap._sync_file_from_ucs')
 		'''
 		sync changes from UCS stored in given file
 		'''
 		try:
-			f=file(filename,'r')
-		except IOError: # file not found so there's nothing to sync
+			f = file(filename, 'r')
+		except IOError:  # file not found so there's nothing to sync
 			return True
-			
-		dn,new,old,old_dn=cPickle.load(f)
+
+		dn, new, old, old_dn = cPickle.load(f)
 
 		if dn == 'cn=Subschema':
 			return True
 
 		def recode_attribs(attribs):
-			nattribs={}
+			nattribs = {}
 			for key in attribs.keys():
 				if key in self.ucs_no_recode:
 					nattribs[key] = attribs[key]
@@ -688,8 +721,8 @@ class ucs:
 					try:
 						nvals = []
 						for val in attribs[key]:
-							nvals.append(unicode(val,'utf8'))
-						nattribs[unicode(key,'utf8')]=nvals
+							nvals.append(unicode(val, 'utf8'))
+						nattribs[unicode(key, 'utf8')] = nvals
 					except UnicodeDecodeError:
 						nattribs[key] = attribs[key]
 
@@ -697,39 +730,39 @@ class ucs:
 		new = recode_attribs(new)
 		old = recode_attribs(old)
 
-		key=None
+		key = None
 
 		# if the object was moved into a ignored tree
 		# we should delete this object
 		ignore_subtree_match = False
-		
+
 		if not new:
-			change_type="delete"
+			change_type = "delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
 			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn,'utf8'), old):
-					key=k
+				if self.modules[k].identify(unicode(dn, 'utf8'), old):
+					key = k
 					break
 				elif self.modules_others[k]:
 					for m in self.modules_others[k]:
-						if m and m.identify(unicode(dn,'utf8'), old):
-							key=k
+						if m and m.identify(unicode(dn, 'utf8'), old):
+							key = k
 							break
 				if key:
 					break
 		else:
 			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn,'utf8'), new):
-					key=k
+				if self.modules[k].identify(unicode(dn, 'utf8'), new):
+					key = k
 					break
 				elif self.modules_others[k]:
 					for m in self.modules_others[k]:
-						if m and m.identify(unicode(dn,'utf8'), new):
-							key=k
+						if m and m.identify(unicode(dn, 'utf8'), new):
+							key = k
 							break
 				if key:
 					break
-				
+
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
@@ -742,29 +775,29 @@ class ucs:
 				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s", (dn,))
 				return False
 
-			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
-			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
+			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
+			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
 			if old and new:
 				change_type = "modify"
 				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was modified")
 				if old_dn and not old_dn == dn:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
 					# object was moved
-					new_object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
-					old_object = { 'dn': unicode(old_dn,'utf8'), 'modtype': change_type, 'attributes': old}
+					new_object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
+					old_object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
 					if self._ignore_object(key, new_object):
 						# moved into ignored subtree, delete:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
 						change_type = 'delete'
 						ignore_subtree_match = True
-					
+
 					if self._ignore_object(key, old_object):
 						# moved from ignored subtree, add:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object was ignored, will add it")
 						change_type = 'add'
-				
+
 			else:
-				object = { 'dn': unicode(dn,'utf8'), 'modtype': 'modify', 'attributes': new}
+				object = {'dn': unicode(dn, 'utf8'), 'modtype': 'modify', 'attributes': new}
 				try:
 					if self._ignore_object(key, object):
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
@@ -773,40 +806,39 @@ class ucs:
 						return True
 					else:
 						if old_dn and not old_dn == dn:
-							change_type="modify"
+							change_type = "modify"
 							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
 						else:
-							change_type="add"
-							old_dn = '' # there may be an old_dn if object was moved from ignored container
+							change_type = "add"
+							old_dn = ''  # there may be an old_dn if object was moved from ignored container
 							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:
 					# the ignore_object method might throw an exception if the subschema will be synced
-					change_type="add"
-					old_dn = '' # there may be an old_dn if object was moved from ignored container
+					change_type = "add"
+					old_dn = ''  # there may be an old_dn if object was moved from ignored container
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
 
 		if key:
 			if change_type == 'delete':
 				if old_dn:
-					object = { 'dn': unicode(old_dn,'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
 				else:
-					object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': old}
 			else:
-				object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
+				object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
 
 			if change_type == 'modify' and old_dn:
-				object['olddn'] = unicode(old_dn, 'utf8') # needed for correct samaccount-mapping
+				object['olddn'] = unicode(old_dn, 'utf8')  # needed for correct samaccount-mapping
 
-			if not self._ignore_object(key,object) or ignore_subtree_match:
+			if not self._ignore_object(key, object) or ignore_subtree_match:
 				premapped_ucs_dn = object['dn']
 				object = self._object_mapping(key, object, 'ucs')
-				if not self._ignore_object(key,object) or ignore_subtree_match:
+				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
-					try:				
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8'), old, new))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
+					try:
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), old, new)) or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -828,20 +860,20 @@ class ucs:
 					return True
 			else:
 				return True
-		else:				
+		else:
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: No mapping was found for dn: %s" % dn)
 			return True
 
 	def get_ucs_ldap_object_dn(self, dn):
-		_d=ud.function('ldap.get_ucs_ldap_object_dn')
+		_d = ud.function('ldap.get_ucs_ldap_object_dn')
 
-		for i in [0, 1]: # do it twice if the LDAP connection was closed
+		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			if type(dn) == type(u''):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
-			try:			
-				return self.lo.lo.lo.search_s( searchdn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
+			try:
+				return self.lo.lo.lo.search_s(searchdn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
 			except ldap.NO_SUCH_OBJECT:
 				return None
 			except ldap.INVALID_DN_SYNTAX:
@@ -853,15 +885,15 @@ class ucs:
 				continue
 
 	def get_ucs_ldap_object(self, dn):
-		_d=ud.function('ldap.get_ucs_ldap_object')
+		_d = ud.function('ldap.get_ucs_ldap_object')
 
-		for i in [0, 1]: # do it twice if the LDAP connection was closed
+		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			if type(dn) == type(u''):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
-			try:			
-				return self.lo.get(searchdn,required=1)
+			try:
+				return self.lo.get(searchdn, required=1)
 			except ldap.NO_SUCH_OBJECT:
 				return None
 			except ldap.INVALID_DN_SYNTAX:
@@ -873,64 +905,64 @@ class ucs:
 				continue
 
 	def get_ucs_object(self, property_type, dn):
-		_d=ud.function('ldap.get_ucs_object')
+		_d = ud.function('ldap.get_ucs_object')
 		ucs_object = None
 		if type(dn) == type(u''):
 			searchdn = dn
 		else:
 			searchdn = unicode(dn)
 		try:
-			if not self.get_ucs_ldap_object(searchdn): # fails if object doesn't exist
-				ud.debug(ud.LDAP, ud.INFO,"get_ucs_object: object not found: %s"%searchdn)
+			if not self.get_ucs_ldap_object(searchdn):  # fails if object doesn't exist
+				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
 			module = self.modules[property_type]
-			ucs_object = univention.admin.objects.get(module, co='', lo=self.lo, position='', dn=searchdn) # does not fail if object doesn't exist
-			ud.debug(ud.LDAP, ud.INFO,"get_ucs_object: object found: %s"%searchdn)
+			ucs_object = univention.admin.objects.get(module, co='', lo=self.lo, position='', dn=searchdn)  # does not fail if object doesn't exist
+			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except: # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.INFO,"get_ucs_object: object search failed: %s"%searchdn)
+		except:  # FIXME: which exception is to be caught?
+			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object search failed: %s" % searchdn)
 			self._debug_traceback(ud.WARN, "get_ucs_object: failure was: \n\t")
 			return None
 
 		return ucs_object
 
 	def initialize_ucs(self):
-		_d=ud.function('ldap.initialize_ucs')
+		_d = ud.function('ldap.initialize_ucs')
 		print "--------------------------------------"
 		print "Initialize sync from UCS"
 		sys.stdout.flush()
 
 		# load UCS Modules
-		self.modules={}
-		self.modules_others={}
-		position=univention.admin.uldap.position(self.lo.base)
+		self.modules = {}
+		self.modules_others = {}
+		position = univention.admin.uldap.position(self.lo.base)
 		for key in self.property.keys():
 			if self.property[key].ucs_module:
-				self.modules[key]=univention.admin.modules.get(self.property[key].ucs_module)
+				self.modules[key] = univention.admin.modules.get(self.property[key].ucs_module)
 				if hasattr(self.property[key], 'identify'):
-					ud.debug(ud.LDAP, ud.INFO,"Override identify function for %s" % key)
+					ud.debug(ud.LDAP, ud.INFO, "Override identify function for %s" % key)
 					self.modules[key].identify = self.property[key].identify
 			else:
-				self.modules[key]=None
-			univention.admin.modules.init(self.lo,position,self.modules[key])
+				self.modules[key] = None
+			univention.admin.modules.init(self.lo, position, self.modules[key])
 
-			self.modules_others[key]=[]
+			self.modules_others[key] = []
 			if self.property[key].ucs_module_others:
 				for m in self.property[key].ucs_module_others:
 					if m:
 						self.modules_others[key].append(univention.admin.modules.get(m))
 				for m in self.modules_others[key]:
 					if m:
-						univention.admin.modules.init(self.lo,position,m)
-		
+						univention.admin.modules.init(self.lo, position, m)
+
 		# try to resync rejected changes
 		self.resync_rejected_ucs()
 		# call poll_ucs to sync
 		self.poll_ucs()
 		print "--------------------------------------"
 		sys.stdout.flush()
-		
+
 	def initialize(self):
 		# dummy
 		pass
@@ -939,7 +971,7 @@ class ucs:
 		'''
 		tries to resync rejected changes from UCS
 		'''
-		_d=ud.function('ldap.resync_rejected_ucs')
+		_d = ud.function('ldap.resync_rejected_ucs')
 		rejected = self._list_rejected_ucs()
 		change_counter = 0
 		print "--------------------------------------"
@@ -953,20 +985,19 @@ class ucs:
 					if self.__sync_file_from_ucs(filename, append_error=' rejected'):
 						try:
 							os.remove(os.path.join(filename))
-						except OSError: # file not found
+						except OSError:  # file not found
 							pass
 						self._remove_rejected_ucs(filename)
 						change_counter += 1
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except: # FIXME: which exception is to be caught?
+				except:  # FIXME: which exception is to be caught?
 					self._save_rejected_ucs(filename, dn)
-					self._debug_traceback(ud.WARN,
-										  "sync failed, saved as rejected \n\t%s" % filename)
+					self._debug_traceback(ud.WARN, "sync failed, saved as rejected \n\t%s" % filename)
 
 		print "restored %s rejected changes" % change_counter
 		print "--------------------------------------"
-		sys.stdout.flush()		
+		sys.stdout.flush()
 
 	def resync_rejected(self):
 		# dummy
@@ -976,7 +1007,7 @@ class ucs:
 		'''
 		poll changes from UCS: iterates over files exported by directory-listener module
 		'''
-		_d=ud.function('ldap.poll_ucs')
+		_d = ud.function('ldap.poll_ucs')
 		# check for changes from ucs ldap directory
 
 		change_counter = 0
@@ -985,7 +1016,7 @@ class ucs:
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
 		print "--------------------------------------"
-		print "try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir))-1,MAX_SYNC_IN_ONE_INTERVAL))
+		print "try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir)) - 1, MAX_SYNC_IN_ONE_INTERVAL))
 		print "done:",
 		sys.stdout.flush()
 		done_counter = 0
@@ -1005,13 +1036,13 @@ class ucs:
 			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
 				if not filename in self.rejected_files:
 					try:
-						f=file(filename,'r')
-					except IOError: # file not found so there's nothing to sync
+						f = file(filename, 'r')
+					except IOError:  # file not found so there's nothing to sync
 						continue
 
-					dn,new,old,old_dn=cPickle.load(f)
+					dn, new, old, old_dn = cPickle.load(f)
 
-					for i in [0, 1]: # do it twice if the LDAP connection was closed
+					for i in [0, 1]:  # do it twice if the LDAP connection was closed
 						try:
 							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
 						except (ldap.SERVER_DOWN, SystemExit):
@@ -1023,52 +1054,53 @@ class ucs:
 						except:
 							self._save_rejected_ucs(filename, dn)
 							# We may dropped the parent object, so don't show this warning
-							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)					
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
 						if sync_successfull:
-							os.remove(os.path.join(self.listener_dir,listener_file))
+							os.remove(os.path.join(self.listener_dir, listener_file))
 							change_counter += 1
 						break
 
 				done_counter += 1
-				print "%s"%done_counter,
+				print "%s" % done_counter,
 				sys.stdout.flush()
 
-		print ""	
-		
+		print ""
+
 		self.rejected_files = self._list_rejected_filenames_ucs()
-		
+
 		if self.rejected_files:
 			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files))
 		else:
 			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, '0')
 		print "--------------------------------------"
 		sys.stdout.flush()
-		return change_counter	
+		return change_counter
 
 	def poll(self, show_deleted=True):
 		# dummy
 		pass
 
 	def __set_values(self, property_type, object, ucs_object, modtype='modify'):
-		_d=ud.function('ldap.__set_value')
+		_d = ud.function('ldap.__set_value')
 		if not modtype == 'add':
 			ucs_object.open()
 		ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
+
 		def set_values(attributes):
 			if object['attributes'].has_key(attributes.ldap_attribute):
 				ucs_key = attributes.ucs_attribute
 				if ucs_key:
 					value = object['attributes'][attributes.ldap_attribute]
-					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key,value))
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
 
 					# check if ucs_key is an custom attribute
 					detected_ca = False
 
 					ucs_module = self.modules[property_type]
-					position=univention.admin.uldap.position(self.lo.base)
+					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo,position,ucs_module)
-					
+					univention.admin.modules.init(self.lo, position, ucs_module)
+
 					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has custom attributes' % ucs_object.module)
 						for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in ucs_module.ldap_extra_objectclasses:
@@ -1078,34 +1110,34 @@ class ucs:
 								old_value = ''
 								if modtype == 'modify':
 									old_value_result = self.search_ucs(base=ucs_object.dn, attr=[ldapMapping])
-									if len(old_value_result) >0 and old_value_result[0][1].has_key(ldapMapping):
+									if len(old_value_result) > 0 and old_value_result[0][1].has_key(ldapMapping):
 										old_value = old_value_result[0][1][ldapMapping]
-										
+
 								if object.has_key('custom_attributes'):
-									object['custom_attributes']['modlist'].append( (ldapMapping,old_value,value) )
+									object['custom_attributes']['modlist'].append((ldapMapping, old_value, value))
 								else:
-									object['custom_attributes'] = {'modlist' : [(ldapMapping,old_value,value)], 'extraOC' : []}
-								object['custom_attributes']['extraOC'].append(oc);
+									object['custom_attributes'] = {'modlist': [(ldapMapping, old_value, value)], 'extraOC': []}
+								object['custom_attributes']['extraOC'].append(oc)
 								ud.debug(ud.LDAP, ud.INFO, '__set_values: extended list of custom attributes: %s' % object['custom_attributes'])
 								continue
 					else:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
 
-					if not detected_ca:					
+					if not detected_ca:
 						if type(value) == type(types.ListType()) and len(value) == 1:
 							value = value[0]
 						equal = False
 
 						# set encoding
-						compare=[ucs_object[ucs_key],value]
-						for i in [0,1]:
+						compare = [ucs_object[ucs_key], value]
+						for i in [0, 1]:
 							if type(compare[i]) == type([]):
 								compare[i] = univention.s4connector.s4.compatible_list(compare[i])
 							else:
 								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
 
 						if attributes.compare_function:
-							equal = attributes.compare_function(compare[0],compare[1])
+							equal = attributes.compare_function(compare[0], compare[1])
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
@@ -1113,21 +1145,20 @@ class ucs:
 								ucs_object[ucs_key] = list(set(value))
 							else:
 								ucs_object[ucs_key] = value
-							ud.debug(ud.LDAP, ud.INFO,
-											   "set key in ucs-object: %s" % ucs_key)
+							ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
-				
+
 				# prevent value resets of mandatory attributes
 				mandatory_attrs = ['lastname']
 
 				ucs_key = attributes.ucs_attribute
 				if ucs_object.has_key(ucs_key):
 					ucs_module = self.modules[property_type]
-					position=univention.admin.uldap.position(self.lo.base)
+					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo,position,ucs_module)
+					univention.admin.modules.init(self.lo, position, ucs_module)
 
 					# Special handling for con other attributes, see Bug #20599
 					if attributes.con_other_attribute:
@@ -1185,7 +1216,7 @@ class ucs:
 					else:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
-	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype = "modify"):
+	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
 		if object.has_key('custom_attributes'):
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
 			modlist = object['custom_attributes']['modlist']
@@ -1193,7 +1224,7 @@ class ucs:
 
 			# set extra objectClasses
 			if len(extraOC) > 0:
-				oc = self.search_ucs(base = ucs_object.dn, scope='base', attr=['objectClass'])
+				oc = self.search_ucs(base=ucs_object.dn, scope='base', attr=['objectClass'])
 				ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: should have extraOC %s, got %s' % (extraOC, oc))
 				noc = []
 				for i in range(len(oc[0][1]['objectClass'])):
@@ -1204,33 +1235,33 @@ class ucs:
 						noc.append(extraOC[i])
 
 				if oc[0][1]['objectClass'] != noc:
-					ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modify objectClasses' )
-					modlist.append(('objectClass',oc[0][1]['objectClass'],noc))
+					ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modify objectClasses')
+					modlist.append(('objectClass', oc[0][1]['objectClass'], noc))
 
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modlist: %s' % modlist)
-			self.lo.modify(ucs_object.dn,modlist)
-			
+			self.lo.modify(ucs_object.dn, modlist)
+
 			return True
 		else:
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: no custom attributes found')
 			return True
 
 	def add_in_ucs(self, property_type, object, module, position):
-		_d=ud.function('ldap.add_in_ucs')
-		ucs_object=module.object(None, self.lo, position=position)
+		_d = ud.function('ldap.add_in_ucs')
+		ucs_object = module.object(None, self.lo, position=position)
 		if property_type == 'group':
 			ucs_object.open()
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
 			self.group_members_cache_ucs[object['dn'].lower()] = []
 		else:
 			ucs_object.open()
-		self.__set_values(property_type,object,ucs_object, modtype='add')
+		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
 		return ucs_object.create() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
-		
+
 	def modify_in_ucs(self, property_type, object, module, position):
-		_d=ud.function('ldap.modify_in_ucs')
+		_d = ud.function('ldap.modify_in_ucs')
 		module = self.modules[property_type]
 
 		if object.has_key('olddn'):
@@ -1240,23 +1271,22 @@ class ucs:
 
 		ucs_object_dn = object[dntype]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
-		self.__set_values(property_type,object,ucs_object)
+		self.__set_values(property_type, object, ucs_object)
 		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
 
 	def move_in_ucs(self, property_type, object, module, position):
-		_d=ud.function('ldap.move_in_ucs')
+		_d = ud.function('ldap.move_in_ucs')
 		module = self.modules[property_type]
 		try:
 			if object['olddn'].lower() == object['dn'].lower():
-				ud.debug(ud.LDAP, ud.WARN,
-						       "move_in_ucs: cancel move, old and new dn are the same ( %s to %s)"%(object['olddn'],object['dn']))
+				ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same ( %s to %s)" % (object['olddn'], object['dn']))
 				return True
 			else:
-				ud.debug(ud.LDAP, ud.INFO,"move_in_ucs: move object from %s to %s"%(object['olddn'],object['dn']))
+				ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object from %s to %s" % (object['olddn'], object['dn']))
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except: # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.INFO,"move_in_ucs: move object in UCS")			
+		except:  # FIXME: which exception is to be caught?
+			ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object in UCS")
 
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
 		ucs_object.open()
@@ -1278,7 +1308,7 @@ class ucs:
 			return
 		# use a dummy value
 		if not objectGUID:
-			objectGUID_str='objectGUID'
+			objectGUID_str = 'objectGUID'
 		else:
 			objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
 		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID_str))
@@ -1290,10 +1320,9 @@ class ucs:
 			return True
 		else:
 			return False
-			
-			
+
 	def delete_in_ucs(self, property_type, object, module, position):
-		_d=ud.function('ldap.delete_in_ucs')		
+		_d = ud.function('ldap.delete_in_ucs')
 
 		if self.property[property_type].disable_delete_in_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
@@ -1301,7 +1330,7 @@ class ucs:
 
 		if object['attributes'].get('objectGUID'):
 			guid_unicode = object['attributes'].get('objectGUID')[0]
-			objectGUID = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+			objectGUID = guid_unicode.encode('ISO-8859-1')  # to compensate for __object_from_element
 		else:
 			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
@@ -1330,40 +1359,39 @@ class ucs:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
 		except Exception, e:
-			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
-			if str(e).startswith("Operation not allowed on non-leaf"): # need to delete subtree
-				ud.debug(ud.LDAP, ud.INFO,"remove object from UCS failed, need to delete subtree")
+			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
+			if str(e).startswith("Operation not allowed on non-leaf"):  # need to delete subtree
+				ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
 				for result in self.search_ucs(base=object['dn'], attr=['*', '+']):
 					if compare_lowercase(result[0], object['dn']):
 						continue
-					ud.debug(ud.LDAP, ud.INFO,"delete: %s"% result[0])
-					subobject={'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
+					subobject = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
 					key = None
 					for k in self.property.keys():
 						if self.modules[k].identify(result[0], result[1]):
-							key=k
+							key = k
 							break
 					object_mapping = self._object_mapping(key, subobject, 'ucs')
-					ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
-					if not self._ignore_object(key,object_mapping):
+					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
+					if not self._ignore_object(key, object_mapping):
 						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
 							try:
-								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
+								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
 							except (ldap.SERVER_DOWN, SystemExit):
-								raise							
-							except: # FIXME: which exception is to be caught?
-								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
+								raise
+							except:  # FIXME: which exception is to be caught?
+								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
 							return False
 
-
 				return self.delete_in_ucs(property_type, object, module, position)
-			elif str(e) == "noObject": #already deleted #TODO: check if it's really match
+			elif str(e) == "noObject":  # already deleted #TODO: check if it's really match
 				return True
 			else:
 				raise
 
 	def sync_to_ucs(self, property_type, object, premapped_s4_dn, original_object):
-		_d=ud.function('ldap.sync_to_ucs')
+		_d = ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the s4 class, which should be converted into a ucs modul
 
 		# if sync is write (sync to S4) or none, there is nothing to do
@@ -1372,9 +1400,9 @@ class ucs:
 			return True
 
 		if object.has_key('olddn'):
-			old_object = self.get_ucs_object(property_type,object['olddn'])
+			old_object = self.get_ucs_object(property_type, object['olddn'])
 		else:
-			old_object = self.get_ucs_object(property_type,object['dn'])
+			old_object = self.get_ucs_object(property_type, object['dn'])
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
@@ -1386,23 +1414,21 @@ class ucs:
 			self.group_mapping_cache_ucs[object['dn'].lower()] = None
 
 		try:
-			ud.debug(ud.LDAP, ud.PROCESS,
-							   'sync to ucs:   [%14s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
+			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except: # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.PROCESS,'sync to ucs...')
-		
+		except:  # FIXME: which exception is to be caught?
+			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
+
 		module = self.modules[property_type]
-		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
+		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
 		if object['dn'] != self.baseConfig['ldap/base']:
 			try:
 				# parent_dn = string.join(ldap.explode_dn(object_dn_mapped_to_ucr_ldap_base_case)[1:], ",")
 				parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
 				position.setDn(parent_dn)
-				ud.debug(ud.LDAP, ud.INFO,
-							   'sync_to_ucs: set position to %s' % parent_dn)
+				ud.debug(ud.LDAP, ud.INFO, 'sync_to_ucs: set position to %s' % parent_dn)
 			except univention.admin.uexceptions.noObject:
 				# In this case we use the base DN
 				pass
@@ -1416,7 +1442,7 @@ class ucs:
 
 		try:
 			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
-			guid_blob = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+			guid_blob = guid_unicode.encode('ISO-8859-1')  # to compensate for __object_from_element
 			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
 			object['changed_attributes'] = []
@@ -1435,13 +1461,13 @@ class ucs:
 				else:
 					object['changed_attributes'] = original_object['attributes'].keys()
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
-						
+
 			result = False
 			if object['modtype'] == 'add':
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: lock S4 guid: %s" % guid)
 				self.lockingdb.lock_s4(guid)
 
-			if hasattr(self.property[property_type],"ucs_sync_function"):
+			if hasattr(self.property[property_type], "ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
 			else:
 				if object['modtype'] == 'add':
@@ -1450,8 +1476,7 @@ class ucs:
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
-						ud.debug(ud.LDAP, ud.WARN,
-											   "Object to delete doesn't exsist, ignore (%s)" % object['dn'])
+						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exsist, ignore (%s)" % object['dn'])
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
@@ -1459,7 +1484,7 @@ class ucs:
 					self.s4cache.remove_entry(guid)
 				if object['modtype'] == 'move':
 					result = self.move_in_ucs(property_type, object, module, position)
-					self._remove_dn_mapping(object['olddn'],  '') # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
+					self._remove_dn_mapping(object['olddn'], '')  # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
 					# Check S4cache
 
@@ -1467,69 +1492,66 @@ class ucs:
 					result = self.modify_in_ucs(property_type, object, module, position)
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
-					
+
 			if not result:
-				ud.debug(ud.LDAP, ud.WARN,
-						       "Failed to get Result for DN (%s)" % object['dn'])
+				ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%s)" % object['dn'])
 				return False
 
 			try:
-				if object['modtype'] in ['add','modify']:
+				if object['modtype'] in ['add', 'modify']:
 					for f in self.property[property_type].post_ucs_modify_functions:
 						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
 						f(self, property_type, object)
 						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
-			except: # FIXME: which exception is to be caught?
-				self._debug_traceback(ud.ERROR,
-									  "failed in post_con_modify_functions")
-				result = False				
+			except:  # FIXME: which exception is to be caught?
+				self._debug_traceback(ud.ERROR, "failed in post_con_modify_functions")
+				result = False
 
 			if result:
 				# Always unlock if the sync was successful
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: unlock S4 guid: %s" % guid)
 				self.lockingdb.unlock_s4(guid)
 
-			ud.debug(ud.LDAP, ud.INFO,
-					       "Return  result for DN (%s)" % object['dn'])
+			ud.debug(ud.LDAP, ud.INFO, "Return  result for DN (%s)" % object['dn'])
 			return result
-		
+
 		except univention.admin.uexceptions.valueInvalidSyntax, msg:
 			try:
-				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg,object['dn']))
-			except: # FIXME: which exception is to be caught?
+				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg, object['dn']))
+			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s" % msg)
 			return False
 		except univention.admin.uexceptions.valueMayNotChange, msg:
-			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg,object['dn']))
+			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg, object['dn']))
 			return False
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except: # FIXME: which exception is to be caught?
+		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object = None, new_ucs_object = None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
 		# dummy
 		return False
 
 	# internal functions
 
 	def _subtree_match(self, dn, subtree):
-		_d=ud.function('ldap._subtree_match')
+		_d = ud.function('ldap._subtree_match')
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[len(dn)-len(subtree):].lower():
+		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
 			return True
 		return False
 
-	def _subtree_replace(self, dn, subtree, subtreereplace): #FIXME: may raise an exception if called with umlauts
-		_d=ud.function('ldap._subtree_replace')
+	def _subtree_replace(self, dn, subtree, subtreereplace):  # FIXME: may raise an exception if called with umlauts
+		_d = ud.function('ldap._subtree_replace')
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[len(dn)-len(subtree):].lower():
-			return dn[:len(dn)-len(subtree)]+subtreereplace
+		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
+			return dn[:len(dn) - len(subtree)] + subtreereplace
 		return dn
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
@@ -1541,18 +1563,19 @@ class ucs:
 		- nur * als Wildcard
 		- geht "lachser" mit Verschachtelten Klammern um
 		'''
-		_d=ud.function('ldap._filter_match')
+		_d = ud.function('ldap._filter_match')
 
-		filter_connectors=['!','&','|']
+		filter_connectors = ['!', '&', '|']
 
 		def list_lower(elements):
 			if type(elements) == type([]):
-				retlist=[]
+				retlist = []
 				for l in elements:
 					retlist.append(l.lower())
 				return retlist
 			else:
 				return elements
+
 		def dict_lower(dict):
 			if type(dict) == type({}):
 				retdict = {}
@@ -1565,23 +1588,23 @@ class ucs:
 		def attribute_filter(filter, attributes):
 			attributes = dict_lower(attributes)
 
-			pos = string.find(filter,'=')
+			pos = string.find(filter, '=')
 			if pos < 0:
-				raise ValueError,'missing "=" in filter: %s' % filter
+				raise ValueError('missing "=" in filter: %s' % filter)
 			attribute = filter[:pos].lower()
 			if not attribute:
-				raise ValueError,'missing attribute in filter: %s' % filter
-			value = filter[pos+1:]
+				raise ValueError('missing attribute in filter: %s' % filter)
+			value = filter[pos + 1:]
 
 			if attribute.endswith(':1.2.840.113556.1.4.803:'):
 				# bitwise filter
-				attribute_name=attribute.replace(':1.2.840.113556.1.4.803:','')
-				attribute_value=attributes.get(attribute_name)
+				attribute_name = attribute.replace(':1.2.840.113556.1.4.803:', '')
+				attribute_value = attributes.get(attribute_name)
 				if attribute_value:
 					try:
 						if type(attribute_value) == type([]):
-							attribute_value=int(attribute_value[0])
-						int_value=int(value)
+							attribute_value = int(attribute_value[0])
+						int_value = int(value)
 						if ((attribute_value & int_value) == int_value):
 							return True
 						else:
@@ -1604,32 +1627,36 @@ class ucs:
 			def walk(filter, attributes):
 
 				def split(filter):
-					opened=[]
-					closed=[]
+					opened = []
+					closed = []
 					pos = 0
 					level = 0
 					for char in filter:
-						if char == '(' :
-							if level == 0: opened.append(pos)						
+						if char == '(':
+							if level == 0:
+								opened.append(pos)
 							level += 1
 						elif char == ')':
-							if level == 1: closed.append(pos)
+							if level == 1:
+								closed.append(pos)
 							level -= 1
-						if level < 0: raise ValueError,"too many ')' in filter: %s" % filter			
+						if level < 0:
+							raise ValueError("too many ')' in filter: %s" % filter)
 						pos += 1
 
-					if len(opened) != len(closed): raise ValueError,"'(' and ')' don't match in filter: %s" % filter
+					if len(opened) != len(closed):
+						raise ValueError("'(' and ')' don't match in filter: %s" % filter)
 					filters = []
 					for i in range(len(opened)):
-						filters.append(filter[opened[i]+1:closed[i]])
+						filters.append(filter[opened[i] + 1:closed[i]])
 					return filters
 
 				if filter[0] == '(':
 					if not filter[-1] == ')':
-						raise ValueError,"matching ) missing in filter: %s" % filter
+						raise ValueError("matching ) missing in filter: %s" % filter)
 					else:
 						filters = split(filter)
-						results=[]
+						results = []
 						for filter in filters:
 							results.append(subfilter(filter, attributes))
 						return results
@@ -1639,18 +1666,17 @@ class ucs:
 			if filter[0] == '!':
 				return not subfilter(filter[1:], attributes)
 			elif filter[0] == '|':
-				return 1 in walk(filter[1:],attributes)
+				return 1 in walk(filter[1:], attributes)
 			elif filter[0] == '&':
-				return not 0 in walk(filter[1:],attributes)
-
+				return not 0 in walk(filter[1:], attributes)
 
 		def subfilter(filter, attributes):
 
 			if filter[0] == '(':
 				if not filter[-1] == ')':
-					raise ValueError,"matching ) missing in filter: %s" % filter
+					raise ValueError("matching ) missing in filter: %s" % filter)
 				else:
-					return subfilter(filter[1:-1],attributes)
+					return subfilter(filter[1:-1], attributes)
 
 			elif filter[0] in filter_connectors:
 				return connecting_filter(filter, attributes)
@@ -1660,27 +1686,26 @@ class ucs:
 
 		return subfilter(filter, attributes)
 
-
 	def _ignore_object(self, key, object):
 		'''
 		parse if object should be ignored because of ignore_subtree or ignore_filter
 		'''
-		_d=ud.function('ldap._ignore_object')
+		_d = ud.function('ldap._ignore_object')
 		if not object.has_key('dn'):
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN")
-			return True # ignore not existing object
+			return True  # ignore not existing object
 
 		if self.property.get(key):
 			for subtree in self.property[key].ignore_subtree:
 				if self._subtree_match(object['dn'], subtree):
 					ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%s]" % object['dn'])
-					return True		
+					return True
 
-			if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter,object['attributes']):
+			if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
 				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter")
 				return True
 
-			if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter,object['attributes']):
+			if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
 				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter")
 				return True
 
@@ -1688,10 +1713,9 @@ class ucs:
 
 		return False
 
-
 	def _object_mapping(self, key, old_object, object_type='con'):
-		_d=ud.function('ldap._object_mapping')
-		ud.debug(ud.LDAP, ud.INFO,"_object_mapping: map with key %s and type %s" % (key,object_type))
+		_d = ud.function('ldap._object_mapping')
+		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
 		object = copy.deepcopy(old_object)
 		# Eingehendes Format object:
 		#	'dn': dn
@@ -1709,19 +1733,19 @@ class ucs:
 		# ignore_filter
 		# attributes
 		# post_attributes
-		object_out={}
-		object_out['attributes']={}
+		object_out = {}
+		object_out['attributes'] = {}
 		if object and object.has_key('modtype'):
-			object_out['modtype']=object['modtype']
+			object_out['modtype'] = object['modtype']
 		else:
-			object_out['modtype']=''
+			object_out['modtype'] = ''
 
 		# DN mapping
 
 		dn_mapping_stored = []
-		for dntype in ['dn','olddn']: # check if all available dn's are already mapped
+		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
 			if object.has_key(dntype):
-				ud.debug(ud.LDAP, ud.INFO,"_dn_type %s" % (object_type)) # don't send str(object) to debug, may lead to segfaults
+				ud.debug(ud.LDAP, ud.INFO, "_dn_type %s" % (object_type))  # don't send str(object) to debug, may lead to segfaults
 
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype])):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
@@ -1730,44 +1754,44 @@ class ucs:
 				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype])):
 					object[dntype] = self._get_dn_by_con(object[dntype])
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
-					dn_mapping_stored.append(dntype)		
-		
+					dn_mapping_stored.append(dntype)
+
 		if self.property.has_key(key):
 			if hasattr(self.property[key], 'dn_mapping_function'):
 				# DN mapping functions
 				for function in self.property[key].dn_mapping_function:
-					object=function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
+					object = function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
 
 		if object_type == 'ucs':
 			if self.property.has_key(key):
 				if hasattr(self.property[key], 'position_mapping'):
-					for dntype in ['dn','olddn']:
+					for dntype in ['dn', 'olddn']:
 						if object.has_key(dntype) and dntype not in dn_mapping_stored:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
-								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1])
+								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[0].lower(), mapping[1])
 
-							if self.lo_s4.base == object[dntype][len(object[dntype])-len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
-								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the S4 base, don't do this again." % object[dntype])
-							else:	
-								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_s4.base) # FIXME: lo_s4 may change with other connectors
+							if self.lo_s4.base == object[dntype][len(object[dntype]) - len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
+								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % object[dntype])
+							else:
+								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_s4.base)  # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 		else:
 			if self.property.has_key(key):
 				if hasattr(self.property[key], 'position_mapping'):
-					for dntype in ['dn','olddn']:
+					for dntype in ['dn', 'olddn']:
 						if object.has_key(dntype) and dntype not in dn_mapping_stored:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
-								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0])
+								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[1].lower(), mapping[0])
 
-							if self.lo.base == object[dntype][len(object[dntype])-len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
-								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
+							if self.lo.base == object[dntype][len(object[dntype]) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
+								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
 							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_s4.base.lower(),self.lo.base) # FIXME: lo_s4 may change with other connectors
+								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo_s4.base.lower(), self.lo.base)  # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 
@@ -1783,25 +1807,25 @@ class ucs:
 								# mapping function
 								if hasattr(self.property[key].attributes[attr_key], 'mapping'):
 									if self.property[key].attributes[attr_key].mapping[0]:
-										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=self.property[key].attributes[attr_key].mapping[0](self, key, object)
+										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = self.property[key].attributes[attr_key].mapping[0](self, key, object)
 								# direct mapping
 								else:
 									if self.property[key].attributes[attr_key].con_other_attribute:
-										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=[values[0]]
-										object_out['attributes'][self.property[key].attributes[attr_key].con_other_attribute]=values[1:]
+										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = [values[0]]
+										object_out['attributes'][self.property[key].attributes[attr_key].con_other_attribute] = values[1:]
 									else:
-										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]=values
+										object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = values
 
-								# mapping_table	
+								# mapping_table
 								if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 									for ucsval, conval in self.property[key].mapping_table[attr_key]:
 										if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
 
 											ucsval_lower = make_lower(ucsval)
 											objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute])
-												
+
 											if ucsval_lower in objectval_lower:
-												object_out['attributes'][self.property[key].attributes[attr_key].con_attribute][ objectval_lower.index(ucsval_lower) ] = conval
+												object_out['attributes'][self.property[key].attributes[attr_key].con_attribute][objectval_lower.index(ucsval_lower)] = conval
 											elif ucsval_lower == objectval_lower:
 												object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = conval
 
@@ -1810,13 +1834,13 @@ class ucs:
 							if attribute == self.property[key].post_attributes[attr_key].ldap_attribute:
 								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 									if self.property[key].post_attributes[attr_key].mapping[0]:
-										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
+										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
 								else:
 									if self.property[key].post_attributes[attr_key].con_other_attribute:
-										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=[values[0]]
-										object_out['attributes'][self.property[key].post_attributes[attr_key].con_other_attribute]=values[1:]
+										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = [values[0]]
+										object_out['attributes'][self.property[key].post_attributes[attr_key].con_other_attribute] = values[1:]
 									else:
-										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute]=values
+										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = values
 
 		else:
 			if self.property.has_key(key):
@@ -1830,23 +1854,24 @@ class ucs:
 									if hasattr(self.property[key].attributes[attr_key], 'mapping'):
 										# direct mapping
 										if self.property[key].attributes[attr_key].mapping[1]:
-											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=self.property[key].attributes[attr_key].mapping[1](self, key, object)
+											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = self.property[key].attributes[attr_key].mapping[1](self, key, object)
 									else:
 										if self.property[key].attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute):
-											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values+object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute)
+											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = values + \
+												object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute)
 										else:
-											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values
+											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = values
 
-										# mapping_table	
+										# mapping_table
 									if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 										for ucsval, conval in self.property[key].mapping_table[attr_key]:
 											if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
 
 												conval_lower = make_lower(conval)
 												objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
-											
+
 												if conval_lower in objectval_lower:
-													object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute][ objectval_lower.index(conval_lower) ] = ucsval
+													object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute][objectval_lower.index(conval_lower)] = ucsval
 												elif conval_lower == objectval_lower:
 													object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = ucsval
 
@@ -1855,12 +1880,12 @@ class ucs:
 								if attribute == self.property[key].post_attributes[attr_key].con_attribute:
 									if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 										if self.property[key].post_attributes[attr_key].mapping[1]:
-											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
+											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
 									else:
 										if self.property[key].post_attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute):
-											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values+object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute)
+											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values + \
+												object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute)
 										else:
-											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values
+											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values
 
 		return object_out
-

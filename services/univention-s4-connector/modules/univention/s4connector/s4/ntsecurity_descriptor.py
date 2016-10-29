@@ -37,66 +37,73 @@ import univention.debug2 as ud
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 
+
 def encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl):
 	ntsd = security.descriptor.from_sddl(ntsd_sddl, domain_sid)
 	ntsd_ndr = ndr_pack(ntsd)
 	return ntsd_ndr
 
+
 def decode_sd_in_ndr_to_sddl(domain_sid, value):
 	ntsd = ndr_unpack(security.descriptor, value)
 	return ntsd.as_sddl(domain_sid)
 
-### Mappings for normal direct attribute mapping
-### only useful if the default S4 search attrlist would be changed to ['*', 'nTSecurityDescriptor']
+# Mappings for normal direct attribute mapping
+# only useful if the default S4 search attrlist would be changed to ['*', 'nTSecurityDescriptor']
+
+
 def ntsd_to_s4_mapping(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_s4_mapping")
 
 	ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
-		
+
 	domain_sid = security.dom_sid(s4connector.s4_sid)
 	new_ntsd_ndr = encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl)
 	return [new_ntsd_ndr]
+
 
 def ntsd_to_ucs_mapping(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_ucs_mapping")
 
 	ntsd_ndr_unicode = s4_object['attributes']['nTSecurityDescriptor'][0]
-	ntsd_ndr = ntsd_ndr_unicode.encode('Latin-1') ## revert conversion done in __object_from_element
+	ntsd_ndr = ntsd_ndr_unicode.encode('Latin-1')  # revert conversion done in __object_from_element
 
 	domain_sid = security.dom_sid(s4connector.s4_sid)
 	return decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr)
 
-### Post-create/modify functions
+# Post-create/modify functions
+
+
 def ntsd_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_s4 object: %s" % object)
 
 	# object dn was already mapped to the s4 DN:
 	s4_dn = object['dn']
 	modlist = []
-	
-	# search the ucs object via 
+
+	# search the ucs object via
 	if not 'msNTSecurityDescriptor' in object['attributes']:
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: UCS object does not have a msNTSecurityDescriptor')
 		return
 
 	ucs_ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
-	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor'] )[0]
+	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor'])[0]
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 	if ntsd_ndr:
 		domain_sid = security.dom_sid(s4connector.s4_sid)
-		s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid,  ntsd_ndr[0])
+		s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0])
 		if s4_ntsd_sddl == ucs_ntsd_sddl:
 			ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: nTSecurityDescriptors are equal')
 			return
 
-		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: changing nTSecurityDescriptor from %s to %s' % (s4_ntsd_sddl, ucs_ntsd_sddl) )
-		
+		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: changing nTSecurityDescriptor from %s to %s' % (s4_ntsd_sddl, ucs_ntsd_sddl))
+
 		ucs_ntsd_ndr = encode_sddl_to_sd_in_ndr(domain_sid, ucs_ntsd_sddl)
-	 	modlist.append((ldap.MOD_REPLACE, 'nTSecurityDescriptor', ucs_ntsd_ndr))
+		modlist.append((ldap.MOD_REPLACE, 'nTSecurityDescriptor', ucs_ntsd_ndr))
 
 		s4connector.lo_s4.lo.modify_ext_s(s4_dn, modlist)
 
-	
+
 def ntsd_to_ucs(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_ucs S4 object: %s" % s4_object)
 	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_ucs S4 key: %s" % key)
@@ -104,13 +111,13 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 	# modlist
 	ml = []
 
-	## search Samba DS expicitly for hidden attribute
+	# search Samba DS expicitly for hidden attribute
 	# object dn is already mapped to the UCS DN:
 	s4_dn = s4_object.get('dn')
 	if not s4_dn:
-		return # ignore
-	
-	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor'] )[0]
+		return  # ignore
+
+	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor'])[0]
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 	if not ntsd_ndr:
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_ucs: nTSecurityDescriptor not found in attributes!')
@@ -120,7 +127,7 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 		ud.debug(ud.LDAP, ud.WARN, 'ntsd_to_ucs: S4 object (%s) not found' % s4_dn)
 		return
 
-	## search in UCS/OpenLDAP DS to determine modify/add
+	# search in UCS/OpenLDAP DS to determine modify/add
 	ucs_dn = s4_dn
 	(ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=['msNTSecurityDescriptor'])[0]
 
@@ -130,7 +137,7 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 	domain_sid = security.dom_sid(s4connector.s4_sid)
-	s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid,  ntsd_ndr[0])
+	s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0])
 	ucs_ntsd_sddl = ucs_attributes.get('msNTSecurityDescriptor', [None])[0]
 	if not ucs_ntsd_sddl or ucs_ntsd_sddl != s4_ntsd_sddl:
 		ml.append(('msNTSecurityDescriptor', ucs_ntsd_sddl, s4_ntsd_sddl))

@@ -46,17 +46,16 @@ from samba.credentials import Credentials
 if __name__ == '__main__':
 	parser = OptionParser(usage='DN2base64Guid.py dn')
 	(options, args) = parser.parse_args()
-	
+
 	if len(args) != 1:
 		parser.print_help()
 		sys.exit(2)
-		
 
 	dn = args[0]
 
 	lp = LoadParm()
 	creds = Credentials()
-	creds.guess(lp) 
+	creds.guess(lp)
 	samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
 	domain_dn = samdb.domain_dn()

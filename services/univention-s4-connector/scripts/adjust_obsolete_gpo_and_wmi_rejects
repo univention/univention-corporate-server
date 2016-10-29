@@ -42,18 +42,20 @@ import univention.s4connector.s4
 import subprocess
 
 CONFIGBASENAME = "connector"
-sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
+sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 import mapping
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
+
 class S4ConnectorWrapper(univention.s4connector.s4.s4):
+
 	def __init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir):
 		univention.s4connector.s4.s4.__init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=False)
 
 	def recode_attribs(self, attribs):
-		nattribs={}
+		nattribs = {}
 		for key in attribs.keys():
 			if key in self.ucs_no_recode:
 				nattribs[key] = attribs[key]
@@ -61,8 +63,8 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 				try:
 					nvals = []
 					for val in attribs[key]:
-						nvals.append(unicode(val,'utf8'))
-					nattribs[unicode(key,'utf8')]=nvals
+						nvals.append(unicode(val, 'utf8'))
+					nattribs[unicode(key, 'utf8')] = nvals
 				except UnicodeDecodeError:
 					nattribs[key] = attribs[key]
 
@@ -80,10 +82,10 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 		old = self.recode_attribs(old)
 
 		change_type = 'modify'
-		object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
+		object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
 
 		if old_dn:
-			object['olddn'] = unicode(old_dn, 'utf8') # needed for correct samaccount-mapping
+			object['olddn'] = unicode(old_dn, 'utf8')  # needed for correct samaccount-mapping
 
 		# premapped_ucs_dn = object['dn']
 		s4_object = self._object_mapping(key, object, 'ucs')
@@ -101,7 +103,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 				if not attr in rejectClass.attributes_of_interest:
 					continue
 
-				## check values (according to s4connector diffmode)
+				# check values (according to s4connector diffmode)
 				old_val = old.get(attr, [])
 				if val == old_val:
 					continue
@@ -110,35 +112,34 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 			if not list_of_interesting_modified_attributes:
 				return
 		else:
-			list_of_interesting_modified_attributes = None	## i.e. all
+			list_of_interesting_modified_attributes = None  # i.e. all
 
-		### Map dn and attributes from the openldap_changeset pickle to Samba4 dn and attrs:
+		# Map dn and attributes from the openldap_changeset pickle to Samba4 dn and attrs:
 		s4_object_from_openldap_changeset = self.__map_openldap_changeset_to_s4_object_like_the_s4_connector_does_it(rejectClass.mapping_key, changeset)
 
-		### Get the current OpenLDAP object
+		# Get the current OpenLDAP object
 		ldap_object_ucs = self.get_ucs_ldap_object(dn)
 		if not ldap_object_ucs:
 			print "INFO: Object %s does not exist any longer in UCS LDAP"
 			return
-		#if not "msGPOContainer" in ldap_object_ucs.get("objectClass", []):
+		# if not "msGPOContainer" in ldap_object_ucs.get("objectClass", []):
 		#	return
 		if not set(list_of_interesting_modified_attributes) & set(ldap_object_ucs.keys()):
 			print "INFO: Object %s does not have any of the modified attributes any longer in UCS LDAP : %s" % (dn, ', '.join(list_of_interesting_modified_attributes))
 			print "      Ok, skipping"
 			return
 
-
-		### Get the current Samba4 object
+		# Get the current Samba4 object
 		ldap_object_s4 = self.get_object(s4_object_from_openldap_changeset['dn'])
 		if not ldap_object_s4:
 			print "INFO: Object %s does not exist any longer in Samba4"
 			return
-			
-		### Map the Samba object attributes to OpenLDAP
+
+		# Map the Samba object attributes to OpenLDAP
 		s4_object = {'dn': dn, 'modtype': 'modify', 'attributes': ldap_object_s4}
 		mapped_s4_object = self._object_mapping(rejectClass.mapping_key, s4_object)
 
-		### Compare the interesting attributes:
+		# Compare the interesting attributes:
 		recoded_ldap_object_ucs = self.recode_attribs(ldap_object_ucs)
 		adjusted = False
 		for attr in list_of_interesting_modified_attributes:
@@ -156,6 +157,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 			print '      In case the reason for this reject gets fixed it might result in the Samba4 value getting set to %s.' % (new[attr],)
 			print '      The values should be checked and possibly adjusted manually in case this not desired.'
 
+
 class UCSReject(object):
 	objectclasses_of_interest = set()
 	attributes_of_interest = set()
@@ -169,20 +171,24 @@ class UCSReject(object):
 
 		return True
 
+
 class UCSReject_msGPO(UCSReject):
 	mapping_key = 'msGPO'
 	objectclasses_of_interest = set(("msGPOContainer",))
 	attributes_of_interest = set(("msGPOFlags", "msGPOVersionNumber", "msGPOSystemFlags", "msGPOFunctionalityVersion", "msGPOFileSysPath", "msGPOMachineExtensionNames", "msGPOUserExtensionNames", "msGPOWQLFilter",))
+
 
 class UCSReject_msWMIFilter(UCSReject):
 	mapping_key = 'msWMIFilter'
 	objectclasses_of_interest = set(("msWMISom",))
 	attributes_of_interest = set(("msWMIAuthor", "msWMICreationDate", "msWMIChangeDate", "msWMIParm1", "msWMIParm2", "msWMIParm3", "msWMIParm4", "msWMIintFlags1", "msWMIintFlags2", "msWMIintFlags3", "msWMIintFlags4", "msWMISourceOrganization"))
 
+
 class UCSReject_sambaUserWorkstations(UCSReject):
 	mapping_key = 'user'
 	objectclasses_of_interest = set(("sambaSamAccount",))
 	attributes_of_interest = set(("sambaUserWorkstations",))
+
 
 def dump_object_to_file(filename, object_data):
 	tmp_file = os.path.join('/var/lib/univention-connector/s4/tmp', os.path.basename(filename))
@@ -196,30 +202,34 @@ def dump_object_to_file(filename, object_data):
 
 	os.rename(tmp_file, filename)
 
+
 def invoke_s4_connector_init_script(action_string):
 	cmd = ('invoke-rc.d', 'univention-s4-connector', action_string)
 	p = subprocess.Popen(cmd, close_fds=True)
 	p.wait()
 
+
 def connect():
 	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
-		s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		s4_ldap_bindpw = open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
 	else:
-		s4_ldap_bindpw=None
-	
+		s4_ldap_bindpw = None
+
 	try:
-		s4c = S4ConnectorWrapper(CONFIGBASENAME,
-						mapping.s4_mapping,
-						configRegistry,
-						configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
-						configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
-						configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
-						configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
-						s4_ldap_bindpw,
-						configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
-						configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
+		s4c = S4ConnectorWrapper(
+			CONFIGBASENAME,
+			mapping.s4_mapping,
+			configRegistry,
+			configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
+			configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
+			configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
+			configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
+			s4_ldap_bindpw,
+			configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
+			configRegistry['%s/s4/listener/dir' % CONFIGBASENAME]
+		)
 	except ldap.SERVER_DOWN:
 		print "ERROR: Can't initialize LDAP-Connections."
 		raise
@@ -265,4 +275,3 @@ if __name__ == '__main__':
 	finally:
 		print ''
 		invoke_s4_connector_init_script('start')
-

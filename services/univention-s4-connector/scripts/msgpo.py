@@ -39,6 +39,7 @@ import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
 
+
 def _connect_ucs(configRegistry, binddn, bindpwd):
 	''' Connect to OpenLDAP '''
 
@@ -46,10 +47,10 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 		bindpw = bindpwd
 	else:
 		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
-		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,'+configRegistry['ldap/base'])
-		bindpw=open(bindpw_file).read()
+		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
+		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
+			bindpw = bindpw[0:-1]
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
@@ -65,50 +66,51 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 
 def search_s4():
 	''' Search all S4 objects with gPLink attribute and return a
-		dictonary with dn as key and gPLink as result. The gPLink
-		will only be set on containers, OUs and DCs, therefore
-		is a mapping not necessary.
+			dictonary with dn as key and gPLink as result. The gPLink
+			will only be set on containers, OUs and DCs, therefore
+			is a mapping not necessary.
 	'''
 
 	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb gPLink=* dn gPLink | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout,stderr) = p1.communicate()
+	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
 		print stderr
 		sys.exit(p1.returncode)
 
 	result = {}
-	dn=None
+	dn = None
 
 	for line in stdout.split('\n'):
-		line=line.strip()
+		line = line.strip()
 		if line.startswith('dn: '):
-			dn=line[4:]
+			dn = line[4:]
 		if line.startswith('gPLink: '):
-			gPLink=line[len('gPLink: '):]
+			gPLink = line[len('gPLink: '):]
 			result[dn] = gPLink
-			dn=None
+			dn = None
 
 	return result
+
 
 def _get_s4_object(dn):
 	''' Search for a Samba 4 object and put it into one dictonary '''
 	result = {}
 
 	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb -b "%s" -s base | ldapsearch-wrapper' % dn], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout,stderr) = p1.communicate()
+	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode == 0:
 		for line in stdout.split('\n'):
-			line=line.strip()
+			line = line.strip()
 			if not line or line.startswith('#'):
 				continue
 			key = line.split(':')[0]
-			value = line[len(key)+2:]
+			value = line[len(key) + 2:]
 			if result.get(key):
 				result[key].append(value)
 			else:
-				result[key]=[]
+				result[key] = []
 	return result
 
 
@@ -128,7 +130,7 @@ def write_to_s4(configRegistry, ucs_result):
 			mod_str += 'replace: gPLink\ngPLink: %s\n' % ucs_result[ucs_dn]
 			mod_str += '\n'
 			p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
-			(stdout,stderr) = p1.communicate(mod_str)
+			(stdout, stderr) = p1.communicate(mod_str)
 			if p1.returncode != 0:
 				print 'Failed to set gPLink for Samba 4 object (%s)' % (s4_dn)
 			else:
@@ -137,7 +139,7 @@ def write_to_s4(configRegistry, ucs_result):
 
 def search_ucs(configRegistry, binddn, bindpwd):
 	''' Search all UCS objects with msGPOLink attribute and return a
-		dictonary with dn as key and msGPOLink as result
+			dictonary with dn as key and msGPOLink as result
 	'''
 
 	lo = _connect_ucs(configRegistry, binddn, bindpwd)
@@ -150,12 +152,12 @@ def search_ucs(configRegistry, binddn, bindpwd):
 	return result
 
 
-def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
+def write_to_ucs(configRegistry, s4_result, binddn, bindpwd):
 	''' Write the result from search_s4 to UCS LDAP '''
 
 	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
-	s4_ldap_base = configRegistry.get('connector/s4/ldap/base' ).lower()
+	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
 	for s4_dn in s4_result.keys():
 		ucs_dn = s4_dn.lower().replace(s4_ldap_base, ucs_ldap_base)
@@ -163,8 +165,8 @@ def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
 		try:
 			for dn, attributes in lo.search(base=ucs_dn, scope=ldap.SCOPE_BASE):
 				if not 'msGPO' in attributes.get('objectClass'):
-					ml.append( ('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']) )
-				ml.append( ('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]) )
+					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']))
+				ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
 			if ml:
 				print 'Set msGPOLink for UCS object (%s)' % (ucs_dn)
 				lo.modify(ucs_dn, ml)
@@ -197,4 +199,3 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	sys.exit(0)
-
