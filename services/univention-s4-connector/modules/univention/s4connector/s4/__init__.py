@@ -241,10 +241,10 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 	dn_attr_val = ''
 
 	if object['dn'] is not None:
-		if object['attributes'].has_key('sAMAccountName'):
+		if 'sAMAccountName' in object['attributes']:
 			samaccountname = object['attributes']['sAMAccountName'][0]
 		if dn_attr:
-			if object['attributes'].has_key(dn_attr):
+			if dn_attr in object['attributes']:
 				dn_attr_val = object['attributes'][dn_attr][0]
 
 	def dn_premapped(object, dn_key, dn_mapping_stored):
@@ -286,7 +286,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 
 	for dn_key in ['dn', 'olddn']:
 		ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: check newdn for key %s:" % dn_key)
-		if object.has_key(dn_key) and not dn_premapped(object, dn_key, dn_mapping_stored):
+		if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
 
 			dn = object[dn_key]
 
@@ -327,7 +327,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					s4dn = encode_attrib(result[0][0])
 					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0])
-					if dn_key == 'olddn' or (dn_key == 'dn' and not object.has_key('olddn')):
+					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
 						newdn = s4dn
 					else:
 						s4dn = s4dn[:s4pos2] + dn[pos2:]
@@ -346,7 +346,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				while (not samaccountname):  # in case of olddn this is already set
 					i = i + 1
 					search_dn = dn
-					if object.has_key('deleted_dn'):
+					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
 					try:
 						samaccountname = encode_attrib(
@@ -376,7 +376,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
 					ucsdn = ucsdn_result[0][0]
 
-				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and not object.has_key('olddn'))):
+				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
@@ -437,12 +437,12 @@ def old_user_dn_mapping(s4connector, given_object):
 	ctrls = [LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)]
 	samaccountname = ''
 
-	if object.has_key('sAMAccountName'):
+	if 'sAMAccountName' in object:
 		samaccountname = object['sAMAccountName']
 
 	for dn_key in ['dn', 'olddn']:
 		ud.debug(ud.LDAP, ud.INFO, "check newdn for key %s:" % dn_key)
-		if object.has_key(dn_key):
+		if dn_key in object:
 
 			dn = object[dn_key]
 
@@ -472,7 +472,7 @@ def old_user_dn_mapping(s4connector, given_object):
 				while (not samaccountname):  # in case of olddn this is already set
 					i = i + 1
 					search_dn = dn
-					if object.has_key('deleted_dn'):
+					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
 					try:
 						samaccountname = encode_attrib(
@@ -893,7 +893,7 @@ class s4(univention.s4connector.ucs):
 
 	def open_s4(self):
 		tls_mode = 2
-		if self.baseConfig.has_key('%s/s4/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
+		if '%s/s4/ldap/ssl' % self.CONFIGBASENAME in self.baseConfig and self.baseConfig['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
 			ud.debug(ud.LDAP, ud.INFO, "__init__: The LDAP connection to S4 does not use SSL (switched off by UCR \"%s/s4/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
 
@@ -1067,9 +1067,9 @@ class s4(univention.s4connector.ucs):
 			return 0
 		usnchanged = 0
 		usncreated = 0
-		if object['attributes'].has_key('uSNCreated'):
+		if 'uSNCreated' in object['attributes']:
 			usncreated = int(object['attributes']['uSNCreated'][0])
-		if object['attributes'].has_key('uSNChanged'):
+		if 'uSNChanged' in object['attributes']:
 			usnchanged = int(object['attributes']['uSNChanged'][0])
 
 		return max(usnchanged, usncreated)
@@ -1225,7 +1225,7 @@ class s4(univention.s4connector.ucs):
 
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
 		rdn = object['dn'][:string.find(object['dn'], 'DEL:') - 3]
-		if object['attributes'].has_key('lastKnownParent'):
+		if 'lastKnownParent' in object['attributes']:
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)" % (object['attributes']['lastKnownParent'][0], rdn))
 			except:  # FIXME: which exception is to be caught?
@@ -1249,7 +1249,7 @@ class s4(univention.s4connector.ucs):
 		GUID = element[1]['objectGUID'][0]  # don't send this GUID to univention-debug
 
 		# modtype
-		if element[1].has_key('isDeleted') and element[1]['isDeleted'][0] == 'TRUE':
+		if 'isDeleted' in element[1] and element[1]['isDeleted'][0] == 'TRUE':
 			object['modtype'] = 'delete'
 			deleted_object = True
 
@@ -1285,7 +1285,7 @@ class s4(univention.s4connector.ucs):
 
 	def __identify(self, object):
 		_d = ud.function('ldap.__identify')
-		if not object or not object.has_key('attributes'):
+		if not object or 'attributes' not in object:
 			return None
 		for key in self.property.keys():
 			if self._filter_match(self.property[key].con_search_filter, object['attributes']):
@@ -1372,7 +1372,7 @@ class s4(univention.s4connector.ucs):
 		s4_group_object = self._object_mapping(member_key, {'dn': ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
 		ldap_object_s4_group = self.get_object(s4_group_object['dn'])
 		rid = "513"  # FIXME: Fallback: should be configurable
-		if ldap_object_s4_group and ldap_object_s4_group.has_key('objectSid'):
+		if ldap_object_s4_group and 'objectSid' in ldap_object_s4_group:
 			sid = ldap_object_s4_group['objectSid'][0]
 			rid = sid[string.rfind(sid, "-") + 1:]
 		else:
@@ -1383,12 +1383,12 @@ class s4(univention.s4connector.ucs):
 		# - proove that the user is member of this group, so: at first we need the s4_object for this element
 		# this means we need to map the user to get it's S4-DN which would call this function recursively
 
-		if ldap_object_s4.has_key("primaryGroupID") and ldap_object_s4["primaryGroupID"][0] == rid:
+		if "primaryGroupID" in ldap_object_s4 and ldap_object_s4["primaryGroupID"][0] == rid:
 			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group is correct, no changes needed")
 			return True  # nothing left to do
 		else:
 			is_member = False
-			if ldap_object_s4_group.has_key('member'):
+			if 'member' in ldap_object_s4_group:
 				for member in ldap_object_s4_group['member']:
 					if compatible_modstring(object['dn']).lower() == compatible_modstring(member).lower():
 						is_member = True  # FIXME: should left the for-loop here for better perfomance
@@ -1396,7 +1396,7 @@ class s4(univention.s4connector.ucs):
 
 			if not is_member:  # add as member
 				s4_members = []
-				if ldap_object_s4_group.has_key('member'):
+				if 'member' in ldap_object_s4_group:
 					for member in ldap_object_s4_group['member']:
 						s4_members.append(compatible_modstring(member))
 				s4_members.append(compatible_modstring(object['dn']))
@@ -1572,7 +1572,7 @@ class s4(univention.s4connector.ucs):
 					continue
 
 				# check if this is members primary group, if true it shouldn't be added to s4
-				if member_object['attributes'].has_key('gidNumber') and ldap_object_ucs.has_key('gidNumber') and member_object['attributes']['gidNumber'] == ldap_object_ucs['gidNumber']:
+				if 'gidNumber' in member_object['attributes'] and 'gidNumber' in ldap_object_ucs and member_object['attributes']['gidNumber'] == ldap_object_ucs['gidNumber']:
 					# is primary group
 					continue
 
@@ -1703,7 +1703,7 @@ class s4(univention.s4connector.ucs):
 
 		object_s4 = self._object_mapping(key, object)
 
-		if object['attributes'].has_key('memberOf'):
+		if 'memberOf' in object['attributes']:
 			for groupDN in object['attributes']['memberOf']:
 				s4_object = {'dn': groupDN, 'attributes': self.get_object(groupDN), 'modtype': 'modify'}
 				if not self._ignore_object('group', s4_object):
@@ -1810,7 +1810,7 @@ class s4(univention.s4connector.ucs):
 
 		# FIXME: does not use dn-mapping-function
 		ldap_object_s4 = self.get_object(s4_object['dn'])  # FIXME: may fail if object doesn't exist
-		if ldap_object_s4 and ldap_object_s4.has_key('member'):
+		if ldap_object_s4 and 'member' in ldap_object_s4:
 			s4_members = ldap_object_s4['member']
 		else:
 			s4_members = []
@@ -1982,13 +1982,13 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "Disabled state: %s" % ucs_admin_object['disabled'].lower())
 		if not (ucs_admin_object['disabled'].lower() in ['none', '0']):
 			# user disabled in UCS
-			if ldap_object_s4.has_key('userAccountControl') and (int(ldap_object_s4['userAccountControl'][0]) & 2) == 0:
+			if 'userAccountControl' in ldap_object_s4 and (int(ldap_object_s4['userAccountControl'][0]) & 2) == 0:
 				# user enabled in S4 -> change
 				res = str(int(ldap_object_s4['userAccountControl'][0]) | 2)
 				modlist.append((ldap.MOD_REPLACE, 'userAccountControl', [res]))
 		else:
 			# user enabled in UCS
-			if ldap_object_s4.has_key('userAccountControl') and (int(ldap_object_s4['userAccountControl'][0]) & 2) > 0:
+			if 'userAccountControl' in ldap_object_s4 and (int(ldap_object_s4['userAccountControl'][0]) & 2) > 0:
 				# user disabled in S4 -> change
 				res = str(int(ldap_object_s4['userAccountControl'][0]) - 2)
 				modlist.append((ldap.MOD_REPLACE, 'userAccountControl', [res]))
@@ -1997,12 +1997,12 @@ class s4(univention.s4connector.ucs):
 		# This value represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the account never expires.
 		if not ucs_admin_object['userexpiry']:
 			# ucs account not expired
-			if ldap_object_s4.has_key('accountExpires') and (long(ldap_object_s4['accountExpires'][0]) != long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
+			if 'accountExpires' in ldap_object_s4 and (long(ldap_object_s4['accountExpires'][0]) != long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
 				# s4 account expired -> change
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', ['9223372036854775807']))
 		else:
 			# ucs account expired
-			if ldap_object_s4.has_key('accountExpires') and ldap_object_s4['accountExpires'][0] != unix2s4_time(ucs_admin_object['userexpiry']):
+			if 'accountExpires' in ldap_object_s4 and ldap_object_s4['accountExpires'][0] != unix2s4_time(ucs_admin_object['userexpiry']):
 				# s4 account not expired -> change
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', [str(unix2s4_time(ucs_admin_object['userexpiry']))]))
 
@@ -2022,7 +2022,7 @@ class s4(univention.s4connector.ucs):
 		ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 		ucs_admin_object.open()
 
-		if ldap_object_s4.has_key('userAccountControl') and (int(ldap_object_s4['userAccountControl'][0]) & 2) == 0:
+		if 'userAccountControl' in ldap_object_s4 and (int(ldap_object_s4['userAccountControl'][0]) & 2) == 0:
 			# user enabled in S4
 			if not ucs_admin_object['disabled'].lower() in ['none', '0']:
 				# user disabled in UCS -> change
@@ -2034,7 +2034,7 @@ class s4(univention.s4connector.ucs):
 				# user enabled in UCS -> change
 				ucs_admin_object['disabled'] = 'all'
 				modified = 1
-		if ldap_object_s4.has_key('accountExpires') and (long(ldap_object_s4['accountExpires'][0]) == long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
+		if 'accountExpires' in ldap_object_s4 and (long(ldap_object_s4['accountExpires'][0]) == long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
 			# s4 account not expired
 			if ucs_admin_object['userexpiry']:
 				# ucs account expired -> change
@@ -2322,7 +2322,7 @@ class s4(univention.s4connector.ucs):
 
 		ud.debug(ud.LDAP, ud.PROCESS, 'sync from ucs: [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
 
-		if object.has_key('olddn'):
+		if 'olddn' in object:
 			object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
 		old_dn = None
 

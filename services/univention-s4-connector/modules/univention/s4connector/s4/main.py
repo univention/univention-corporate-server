@@ -115,30 +115,30 @@ def connect():
 	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
-	if not baseConfig.has_key('%s/s4/ldap/host' % CONFIGBASENAME):
+	if '%s/s4/ldap/host' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/host not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('%s/s4/ldap/port' % CONFIGBASENAME):
+	if '%s/s4/ldap/port' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/port not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('%s/s4/ldap/base' % CONFIGBASENAME):
+	if '%s/s4/ldap/base' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/base not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
+	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in baseConfig and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in baseConfig and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/s4/listener/dir' % CONFIGBASENAME):
+	if '%s/s4/listener/dir' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/listener/dir not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/s4/retryrejected' % CONFIGBASENAME):
+	if '%s/s4/retryrejected' % CONFIGBASENAME not in baseConfig:
 		baseconfig_retry_rejected = 10
 	else:
 		baseconfig_retry_rejected = baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]

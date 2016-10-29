@@ -506,12 +506,12 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		return
 
 	sambaPwdLastSet = None
-	if res[0][1].has_key('sambaPwdLastSet'):
+	if 'sambaPwdLastSet' in res[0][1]:
 		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
 	sambaPwdMustChange = -1
-	if res[0][1].has_key('sambaPwdMustChange'):
+	if 'sambaPwdMustChange' in res[0][1]:
 		sambaPwdMustChange = long(res[0][1]['sambaPwdMustChange'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdMustChange: %s" % sambaPwdMustChange)
 
@@ -531,7 +531,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	res = s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
+	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	objectSid = univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
@@ -668,7 +668,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		return
 
 	pwdLastSet = None
-	if res[0][1].has_key('pwdLastSet'):
+	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, res))
 	objectSid = univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0])
@@ -703,20 +703,20 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: %s is a S4 SlavePDC server, skip password sync" % ucs_object['dn'])
 			return
 
-		if res[0][1].has_key('sambaNTPassword'):
+		if 'sambaNTPassword' in res[0][1]:
 			ntPwd_ucs = res[0][1]['sambaNTPassword'][0]
-		if res[0][1].has_key('sambaLMPassword'):
+		if 'sambaLMPassword' in res[0][1]:
 			lmPwd_ucs = res[0][1]['sambaLMPassword'][0]
-		if res[0][1].has_key('krb5PrincipalName'):
+		if 'krb5PrincipalName' in res[0][1]:
 			krb5Principal = res[0][1]['krb5PrincipalName'][0]
-		if res[0][1].has_key('userPassword'):
+		if 'userPassword' in res[0][1]:
 			userPassword = res[0][1]['userPassword'][0]
 		sambaPwdLastSet = None
-		if res[0][1].has_key('sambaPwdLastSet'):
+		if 'sambaPwdLastSet' in res[0][1]:
 			sambaPwdLastSet = res[0][1]['sambaPwdLastSet'][0]
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 		sambaPwdMustChange = ''
-		if res[0][1].has_key('sambaPwdMustChange'):
+		if 'sambaPwdMustChange' in res[0][1]:
 			sambaPwdMustChange = res[0][1]['sambaPwdMustChange'][0]
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
 		krb5Key_ucs = res[0][1].get('krb5Key', [])
