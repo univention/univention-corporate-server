@@ -41,7 +41,6 @@ import univention.admin.config
 import univention.admin.uldap
 import ldap
 from ldap.dn import escape_dn_chars
-import operator
 from random import choice
 
 

@@ -32,12 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-import string
 import ldap
 import re
-import codecs
-import os
-import copy
 
 import univention.debug
 univention.debug.init('/var/log/univention/pdc-takeover.log', 1, 0)

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import re
 import requests
-import cookielib
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry

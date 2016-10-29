@@ -19,8 +19,6 @@ from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from atexit import register
-import os
 import sys
 
 

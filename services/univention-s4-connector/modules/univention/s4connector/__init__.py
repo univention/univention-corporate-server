@@ -31,16 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, codecs, string, os, cPickle, types, random, traceback, copy, time
+import cPickle
+import copy
+import os
+import random
+import string
+import sys
+import time
+import traceback
+import types
 import ldap
-import pdb
-import univention_baseconfig
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
 import univention.debug2 as ud
-import base64
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
 from signal import *

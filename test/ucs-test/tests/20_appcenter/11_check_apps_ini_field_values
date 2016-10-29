@@ -9,7 +9,7 @@
 
 from os import path
 from glob import glob
-from ConfigParser import RawConfigParser, Error, NoOptionError
+from ConfigParser import RawConfigParser, Error
 
 import univention.testing.utils as utils
 from univention.management.console.modules.appcenter.app_center import CACHE_DIR

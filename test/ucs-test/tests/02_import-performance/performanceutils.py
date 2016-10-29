@@ -1,9 +1,6 @@
 import subprocess
-import sys
 import time
 
-import os
-import string
 import sqlite3
 
 import univention.testing.utils as utils

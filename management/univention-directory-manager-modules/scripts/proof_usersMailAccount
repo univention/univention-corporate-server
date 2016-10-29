@@ -34,7 +34,6 @@
 
 import sys
 import ldap
-import string
 
 import univention.baseconfig
 

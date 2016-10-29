@@ -7,7 +7,6 @@
 ## bugs:
 ##  - 42200
 
-import subprocess
 from dockertest import *
 from univention.testing.utils import package_installed
 
