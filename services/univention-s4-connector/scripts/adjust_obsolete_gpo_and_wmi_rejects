@@ -100,7 +100,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 		if rejectClass.attributes_of_interest:
 			list_of_interesting_modified_attributes = []
 			for attr, val in new.items():
-				if not attr in rejectClass.attributes_of_interest:
+				if attr not in rejectClass.attributes_of_interest:
 					continue
 
 				# check values (according to s4connector diffmode)

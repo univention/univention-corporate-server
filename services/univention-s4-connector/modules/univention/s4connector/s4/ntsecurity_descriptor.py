@@ -82,7 +82,7 @@ def ntsd_to_s4(s4connector, key, object):
 	modlist = []
 
 	# search the ucs object via
-	if not 'msNTSecurityDescriptor' in object['attributes']:
+	if 'msNTSecurityDescriptor' not in object['attributes']:
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: UCS object does not have a msNTSecurityDescriptor')
 		return
 

@@ -124,20 +124,20 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	s4_RR_filter = u'(objectClass=dnsNode)'  # This also matches the DC=@ SOA object
 	s4_RR_attr = 'dc'  # Note: the S4 attribute itself is lowercase
 
-	if obj['dn'] != None:
+	if obj['dn'] is not None:
 		try:
 			s4_RR_val = obj['attributes'][s4_RR_attr][0]
 		except (KeyError, IndexError):
 			s4_RR_val = ''
 
 	def dn_premapped(given_object, dn_key, dn_mapping_stored):
-		if (not dn_key in dn_mapping_stored) or (not given_object[dn_key]):
+		if (dn_key not in dn_mapping_stored) or (not given_object[dn_key]):
 			ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: not premapped (in first instance)")
 			return False
 		else:  # check if DN exists
 			if isUCSobject:
 				premapped_dn = s4connector.get_object_dn(given_object[dn_key])
-				if premapped_dn != None:
+				if premapped_dn is not None:
 					# ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: premapped S4 object found")
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: premapped S4 object: %s" % premapped_dn)
 					return True
@@ -146,7 +146,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					return False
 			else:
 				premapped_dn = s4connector.get_ucs_ldap_object_dn(given_object[dn_key])
-				if premapped_dn != None:
+				if premapped_dn is not None:
 					# ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: premapped UCS object found")
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: premapped UCS object: %s" % premapped_dn)
 					return True
@@ -162,7 +162,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 			ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: dn: %s" % dn)
 
 			# Skip Configuration objects with empty DNs
-			if dn == None:
+			if dn is None:
 				break
 
 			pos = string.find(dn, '=')
@@ -273,7 +273,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					s4dn = univention.s4connector.s4.encode_attrib(s4dn_utf16_le)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got s4dn %s" % (s4dn,))
 					s4pos2 = len(explodeDn(s4dn)[0])
-					if dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj):
+					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj):
 						# Cases: ("delete") or ("add" but exists already)
 						newdn = s4dn
 					else:
@@ -380,7 +380,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					ucsdn = None
 
 				ud.debug(ud.LDAP, ud.ALL, "dns_dn_mapping: Found ucsdn: %s" % ucsdn)
-				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
+				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
 					# Cases: ("delete") or ("add" but exists already)
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: newdn is ucsdn")
@@ -402,7 +402,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					else:
 						newdn = 'relativeDomainName=%s,%s' % (s4_RR_val, zone_dn)
 
-					if not (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
+					if not (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
 						# Case: "moved" (?)
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 
@@ -1251,15 +1251,15 @@ def s4_srv_record_create(s4connector, object):
 		target = None
 		for v in ucr_locations.split(' '):
 			# Check explicit for None, because the int values may be 0
-			if priority == None:
+			if priority is None:
 				priority = int(v)
-			elif weight == None:
+			elif weight is None:
 				weight = int(v)
-			elif port == None:
+			elif port is None:
 				port = int(v)
 			elif not target:
 				target = __remove_dot(v)
-			if priority != None and weight != None and port != None and target:
+			if priority is not None and weight is not None and port is not None and target:
 				ud.debug(ud.LDAP, ud.INFO, 'priority=%d weight=%d port=%d target=%s' % (priority, weight, port, target))
 				s = SRVRecord(target, port, priority, weight)
 				dnsRecords.append(ndr_pack(s))

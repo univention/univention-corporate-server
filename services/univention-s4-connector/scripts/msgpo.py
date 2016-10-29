@@ -164,7 +164,7 @@ def write_to_ucs(configRegistry, s4_result, binddn, bindpwd):
 		ml = []
 		try:
 			for dn, attributes in lo.search(base=ucs_dn, scope=ldap.SCOPE_BASE):
-				if not 'msGPO' in attributes.get('objectClass'):
+				if 'msGPO' not in attributes.get('objectClass'):
 					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']))
 				ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
 			if ml:
