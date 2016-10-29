@@ -319,19 +319,19 @@ class configsaver:
 		return ret
 
 	def remove_option(self, section, option):
-		if self.config[section].has_key(option):
+		if option in self.config[section]:
 			self.config[section].pop(option)
 		self.write()
 
 	def has_section(self, section):
-		return self.config.has_key(section)
+		return section in self.config
 
 	def add_section(self, section):
 		self.config[section] = {}
 		self.write()
 
 	def has_option(self, section, option):
-		return self.config.has_key(section) and self.config[section].has_key(option)
+		return section in self.config and option in self.config[section]
 
 
 class attribute:
@@ -530,7 +530,7 @@ class ucs:
 
 	def init_debug(self):
 		_d = ud.function('ldap.init_debug')
-		if self.baseConfig.has_key('%s/debug/function' % self.CONFIGBASENAME):
+		if '%s/debug/function' % self.CONFIGBASENAME in self.baseConfig:
 			try:
 				function_level = int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
 			except (ldap.SERVER_DOWN, SystemExit):
@@ -540,7 +540,7 @@ class ucs:
 		else:
 			function_level = 0
 		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, function_level)
-		if self.baseConfig.has_key('%s/debug/level' % self.CONFIGBASENAME):
+		if '%s/debug/level' % self.CONFIGBASENAME in self.baseConfig:
 			debug_level = self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
 		else:
 			debug_level = 2
@@ -1086,7 +1086,7 @@ class ucs:
 		ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
 
 		def set_values(attributes):
-			if object['attributes'].has_key(attributes.ldap_attribute):
+			if attributes.ldap_attribute in object['attributes']:
 				ucs_key = attributes.ucs_attribute
 				if ucs_key:
 					value = object['attributes'][attributes.ldap_attribute]
@@ -1109,10 +1109,10 @@ class ucs:
 								old_value = ''
 								if modtype == 'modify':
 									old_value_result = self.search_ucs(base=ucs_object.dn, attr=[ldapMapping])
-									if len(old_value_result) > 0 and old_value_result[0][1].has_key(ldapMapping):
+									if len(old_value_result) > 0 and ldapMapping in old_value_result[0][1]:
 										old_value = old_value_result[0][1][ldapMapping]
 
-								if object.has_key('custom_attributes'):
+								if 'custom_attributes' in object:
 									object['custom_attributes']['modlist'].append((ldapMapping, old_value, value))
 								else:
 									object['custom_attributes'] = {'modlist': [(ldapMapping, old_value, value)], 'extraOC': []}
@@ -1216,7 +1216,7 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
-		if object.has_key('custom_attributes'):
+		if 'custom_attributes' in object:
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
 			modlist = object['custom_attributes']['modlist']
 			extraOC = object['custom_attributes']['extraOC']
@@ -1263,7 +1263,7 @@ class ucs:
 		_d = ud.function('ldap.modify_in_ucs')
 		module = self.modules[property_type]
 
-		if object.has_key('olddn'):
+		if 'olddn' in object:
 			dntype = 'olddn'
 		else:
 			dntype = 'dn'
@@ -1398,7 +1398,7 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
 
-		if object.has_key('olddn'):
+		if 'olddn' in object:
 			old_object = self.get_ucs_object(property_type, object['olddn'])
 		else:
 			old_object = self.get_ucs_object(property_type, object['dn'])
@@ -1616,7 +1616,7 @@ class ucs:
 
 			if value == '*':
 				return attribute in list_lower(attributes.keys())
-			elif attributes.has_key(attribute):
+			elif attribute in attributes:
 				return value.lower() in list_lower(attributes[attribute])
 			else:
 				return False
@@ -1690,7 +1690,7 @@ class ucs:
 		parse if object should be ignored because of ignore_subtree or ignore_filter
 		'''
 		_d = ud.function('ldap._ignore_object')
-		if not object.has_key('dn'):
+		if 'dn' not in object:
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN")
 			return True  # ignore not existing object
 
@@ -1734,7 +1734,7 @@ class ucs:
 		# post_attributes
 		object_out = {}
 		object_out['attributes'] = {}
-		if object and object.has_key('modtype'):
+		if object and 'modtype' in object:
 			object_out['modtype'] = object['modtype']
 		else:
 			object_out['modtype'] = ''
@@ -1743,7 +1743,7 @@ class ucs:
 
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
-			if object.has_key(dntype):
+			if dntype in object:
 				ud.debug(ud.LDAP, ud.INFO, "_dn_type %s" % (object_type))  # don't send str(object) to debug, may lead to segfaults
 
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype])):
@@ -1755,17 +1755,17 @@ class ucs:
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
 					dn_mapping_stored.append(dntype)
 
-		if self.property.has_key(key):
+		if key in self.property:
 			if hasattr(self.property[key], 'dn_mapping_function'):
 				# DN mapping functions
 				for function in self.property[key].dn_mapping_function:
 					object = function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
 
 		if object_type == 'ucs':
-			if self.property.has_key(key):
+			if key in self.property:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
-						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+						if dntype in object and dntype not in dn_mapping_stored:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
@@ -1778,10 +1778,10 @@ class ucs:
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 		else:
-			if self.property.has_key(key):
+			if key in self.property:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
-						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+						if dntype in object and dntype not in dn_mapping_stored:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
@@ -1798,7 +1798,7 @@ class ucs:
 
 		# other mapping
 		if object_type == 'ucs':
-			if self.property.has_key(key):
+			if key in self.property:
 				for attribute, values in object['attributes'].items():
 					if self.property[key].attributes:
 						for attr_key in self.property[key].attributes.keys():
@@ -1842,7 +1842,7 @@ class ucs:
 										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = values
 
 		else:
-			if self.property.has_key(key):
+			if key in self.property:
 				# Filter out Configuration objects w/o DN
 				if object['dn'] is not None:
 					for attribute, values in object['attributes'].items():

@@ -109,7 +109,7 @@ def sid_to_s4(s4connector, key, object):
 	modlist = []
 
 	# search the ucs object via
-	if not object['attributes'].has_key(sidAttribute):
+	if sidAttribute not in object['attributes']:
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: UCS object does not have a %s' % sidAttribute)
 		return
 
@@ -160,7 +160,7 @@ def sid_to_ucs(s4connector, key, s4_object):
 	ucs_dn = s4_object['dn']
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4: UCS DN %s" % ucs_dn)
 
-	if s4_object.has_key('attributes') and s4_object['attributes'].has_key('objectSid'):
+	if 'attributes' in s4_object and 'objectSid' in s4_object['attributes']:
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid found: %s' % s4_object['attributes']['objectSid'])
 	else:
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid not found in attributes!')
