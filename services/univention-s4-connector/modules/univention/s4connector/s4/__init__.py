@@ -109,7 +109,7 @@ def add_primary_group_to_addlist(s4connector, property_type, object, addlist, se
 	gidNumber = object.get('attributes', {}).get('gidNumber')
 	primary_group_sid = object.get('attributes', {}).get('sambaPrimaryGroupSID')
 	if gidNumber:
-		if type(gidNumber) == type([]):
+		if isinstance(gidNumber, type([])):
 			gidNumber = gidNumber[0]
 		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: gidNumber: %s' % gidNumber)
 
@@ -157,13 +157,13 @@ def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_t
 
 
 def encode_attrib(attrib):
-	if not attrib or type(attrib) == type(u''):  # referral or already unicode
+	if not attrib or isinstance(attrib, type(u'')):  # referral or already unicode
 		return attrib
 	return unicode(attrib, 'utf8')
 
 
 def encode_attriblist(attriblist):
-	if not type(attriblist) == type([]):
+	if not isinstance(attriblist, type([])):
 		return encode_attrib(attriblist)
 	else:
 		for i in range(len(attriblist)):
@@ -172,7 +172,7 @@ def encode_attriblist(attriblist):
 
 
 def encode_s4_object(s4_object):
-	if type(s4_object) == type([]):
+	if isinstance(s4_object, type([])):
 		return encode_attriblist(s4_object)
 	else:
 		for key in s4_object.keys():
@@ -240,7 +240,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 	samaccountname = ''
 	dn_attr_val = ''
 
-	if object['dn'] != None:
+	if object['dn'] is not None:
 		if object['attributes'].has_key('sAMAccountName'):
 			samaccountname = object['attributes']['sAMAccountName'][0]
 		if dn_attr:
@@ -248,7 +248,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				dn_attr_val = object['attributes'][dn_attr][0]
 
 	def dn_premapped(object, dn_key, dn_mapping_stored):
-		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
+		if (dn_key not in dn_mapping_stored) or (not object[dn_key]):
 			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: not premapped (in first instance)")
 			return False
 
@@ -270,14 +270,14 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					return True
 
 		if ucsobject:
-			if s4connector.get_object(object[dn_key]) != None:
+			if s4connector.get_object(object[dn_key]) is not None:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object found")
 				return True
 			else:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object not found")
 				return False
 		else:
-			if s4connector.get_ucs_ldap_object(object[dn_key]) != None:
+			if s4connector.get_ucs_ldap_object(object[dn_key]) is not None:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object found")
 				return True
 			else:
@@ -291,7 +291,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			dn = object[dn_key]
 
 			# Skip Configuration objects with empty DNs
-			if dn == None:
+			if dn is None:
 				break
 
 			pos = string.find(dn, '=')
@@ -600,7 +600,7 @@ def decode_list(list, encoding):
 	if not list:
 		return list
 	for val in list:
-		if hasattr(val, 'decode') and not type(val) == types.UnicodeType:
+		if hasattr(val, 'decode') and not isinstance(val, types.UnicodeType):
 			newlist.append(val.decode(encoding))
 		else:
 			newlist.append(val)
@@ -630,7 +630,7 @@ def encode_modlist(list, encoding):
 			newlist.append((modtype, newattr, values))
 			continue
 
-		if type(values) == type([]):
+		if isinstance(values, type([])):
 			newlist.append((modtype, newattr, encode_list(values, encoding)))
 		else:
 			newlist.append((modtype, newattr, encode_list(values, encoding)))
@@ -640,7 +640,7 @@ def encode_modlist(list, encoding):
 def decode_modlist(list, encoding):
 	newlist = []
 	for (modtype, attr, values) in list:
-		if hasattr(attr, 'decode') and not type(attr) == types.UnicodeType:
+		if hasattr(attr, 'decode') and not isinstance(attr, types.UnicodeType):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
@@ -649,7 +649,7 @@ def decode_modlist(list, encoding):
 			newlist.append((modtype, newattr, values))
 			continue
 
-		if type(values) == type([]):
+		if isinstance(values, type([])):
 			newlist.append((modtype, newattr, decode_list(values, encoding)))
 		else:
 			newlist.append((modtype, newattr, decode_list(values, encoding)))
@@ -668,7 +668,7 @@ def encode_addlist(list, encoding):
 			newlist.append((newattr, values))
 			continue
 
-		if type(values) == type([]):
+		if isinstance(values, type([])):
 			newlist.append((newattr, encode_list(values, encoding)))
 		else:
 			newlist.append((newattr, encode_list(values, encoding)))
@@ -678,7 +678,7 @@ def encode_addlist(list, encoding):
 def decode_addlist(list, encoding):
 	newlist = []
 	for (attr, values) in list:
-		if hasattr(attr, 'decode') and not type(attr) == types.UnicodeType:
+		if hasattr(attr, 'decode') and not isinstance(attr, types.UnicodeType):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
@@ -687,7 +687,7 @@ def decode_addlist(list, encoding):
 			newlist.append((newattr, values))
 			continue
 
-		if type(values) == type([]):
+		if isinstance(values, type([])):
 			newlist.append((newattr, decode_list(values, encoding)))
 		else:
 			newlist.append((newattr, decode_list(values, encoding)))
@@ -707,7 +707,7 @@ def compatible_addlist(list):
 
 
 def compatible_modstring(string):
-	if hasattr(string, 'decode') and not type(string) == types.UnicodeType:
+	if hasattr(string, 'decode') and not isinstance(string, types.UnicodeType):
 		string = string.decode('latin')
 	if hasattr(string, 'encode'):
 		string = string.encode('utf8')
@@ -953,7 +953,7 @@ class s4(univention.s4connector.ucs):
 
 	def __encode_GUID(self, GUID):
 		# GUID may be unicode
-		if type(GUID) == type(u''):
+		if isinstance(GUID, type(u'')):
 			return GUID.encode('ISO-8859-1').encode('base64')
 		else:
 			return unicode(GUID, 'latin').encode('ISO-8859-1').encode('base64')
@@ -1241,7 +1241,7 @@ class s4(univention.s4connector.ucs):
 
 		"""
 		_d = ud.function('ldap.__object_from_element')
-		if element[0] == 'None' or element[0] == None:
+		if element[0] == 'None' or element[0] is None:
 			return None  # referrals
 		object = {}
 		object['dn'] = self.encode(element[0])
@@ -1632,7 +1632,7 @@ class s4(univention.s4connector.ucs):
 			prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, 'primaryGroupID=%s' % group_rid, ['cn'])
 
 			for prim_dn, prim_object in prim_members_s4:
-				if not prim_dn in ['None', '', None]:  # filter referrals
+				if prim_dn not in ['None', '', None]:  # filter referrals
 					if prim_dn.lower() in s4_members_from_ucs:
 						s4_members_from_ucs.remove(prim_dn.lower())
 					elif prim_dn in s4_members_from_ucs:
@@ -1822,7 +1822,7 @@ class s4(univention.s4connector.ucs):
 		prim_members_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, 'primaryGroupID=%s' % group_rid, timeout=-1, sizelimit=0))
 
 		for prim_dn, prim_object in prim_members_s4:
-			if not prim_dn in ['None', '', None]:  # filter referrals
+			if prim_dn not in ['None', '', None]:  # filter referrals
 				s4_members.append(prim_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
@@ -2100,7 +2100,7 @@ class s4(univention.s4connector.ucs):
 					if not elements or len(elements) < 1 or not elements[0][0]:
 						ud.debug(ud.LDAP, ud.INFO, "rejected change with id %s not found, don't need to sync" % id)
 						self._remove_rejected(id)
-					elif len(elements) > 1 and not (elements[1][0] == 'None' or elements[1][0] == None):  # all except the first should be referrals
+					elif len(elements) > 1 and not (elements[1][0] == 'None' or elements[1][0] is None):  # all except the first should be referrals
 						ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % id)
 					else:
 						object = self.__object_from_element(elements[0])
@@ -2369,17 +2369,17 @@ class s4(univention.s4connector.ucs):
 				# Copy the LDAP controls, because they may be modified
 				# in an ucs_create_extenstions
 				ctrls = copy.deepcopy(self.serverctrls_for_add_and_modify)
-				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
+				if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes is not None:
 					for attr, value in object['attributes'].items():
 						for attribute in self.property[property_type].attributes.keys():
 							if self.property[property_type].attributes[attribute].con_attribute == attr:
 								addlist.append((attr, value))
 							if self.property[property_type].attributes[attribute].con_other_attribute == attr:
 								addlist.append((attr, value))
-				if hasattr(self.property[property_type], 'con_create_extenstions') and self.property[property_type].con_create_extenstions != None:
+				if hasattr(self.property[property_type], 'con_create_extenstions') and self.property[property_type].con_create_extenstions is not None:
 					for f in self.property[property_type].con_create_extenstions:
 						f(self, property_type, object, addlist, ctrls)
-				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
+				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
 					for attr, value in object['attributes'].items():
 						for attribute in self.property[property_type].post_attributes.keys():
 							if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
@@ -2463,7 +2463,7 @@ class s4(univention.s4connector.ucs):
 			else:
 				# Iterate over attributes and post_attributes
 				for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes), ('post_attributes', self.property[property_type].post_attributes)]:
-					if hasattr(self.property[property_type], attribute_type_name) and attribute_type != None:
+					if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
 						for attr in attribute_list:
 							value = new_ucs_object.get(attr)
 							if not self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object):

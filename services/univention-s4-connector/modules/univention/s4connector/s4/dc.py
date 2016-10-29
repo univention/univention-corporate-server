@@ -44,7 +44,7 @@ import univention.admin.handlers.container.dc
 
 
 def _unixTimeInverval2seconds(unixTime):
-	if type(unixTime) != type([]):
+	if not isinstance(unixTime, type([])):
 		return unixTime
 
 	if len(unixTime) != 2:
@@ -176,7 +176,7 @@ def con2ucs(s4connector, key, object):
 		s4_val = object['attributes'].get('gPLink')
 
 		if ucs_val != s4_val:
-			if not 'msGPO' in attr.get('objectClass', []):
+			if 'msGPO' not in attr.get('objectClass', []):
 				ml.append(('objectClass', '', 'msGPO'))
 
 			ml.append(('msGPOLink', ucs_val, s4_val))
