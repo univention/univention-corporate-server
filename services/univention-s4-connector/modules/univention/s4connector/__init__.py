@@ -70,7 +70,7 @@ def make_lower(mlValue):
 	'''
 	if hasattr(mlValue, 'lower'):
 		return mlValue.lower()
-	if type(mlValue) == type([]):
+	if isinstance(mlValue, type([])):
 		return [make_lower(x) for x in mlValue]
 	return mlValue
 
@@ -118,14 +118,14 @@ def set_primary_group_user(s4connector, key, ucs_object):
 
 
 def dictonary_lowercase(dict):
-	if type(dict) == type({}):
+	if isinstance(dict, type({})):
 		ndict = {}
 		for key in dict.keys():
 			ndict[key] = []
 			for val in dict[key]:
 				ndict[key].append(val.lower())
 		return ndict
-	elif type(dict) == type([]):
+	elif isinstance(dict, type([])):
 		nlist = []
 		for d in dict:
 			nlist.append(d.lower())
@@ -868,7 +868,7 @@ class ucs:
 		_d = ud.function('ldap.get_ucs_ldap_object_dn')
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
-			if type(dn) == type(u''):
+			if isinstance(dn, type(u'')):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
@@ -888,7 +888,7 @@ class ucs:
 		_d = ud.function('ldap.get_ucs_ldap_object')
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
-			if type(dn) == type(u''):
+			if isinstance(dn, type(u'')):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
@@ -907,7 +907,7 @@ class ucs:
 	def get_ucs_object(self, property_type, dn):
 		_d = ud.function('ldap.get_ucs_object')
 		ucs_object = None
-		if type(dn) == type(u''):
+		if isinstance(dn, type(u'')):
 			searchdn = dn
 		else:
 			searchdn = unicode(dn)
@@ -1020,8 +1020,7 @@ class ucs:
 		print "done:",
 		sys.stdout.flush()
 		done_counter = 0
-		files = os.listdir(self.listener_dir)
-		files.sort()
+		files = sorted(os.listdir(self.listener_dir))
 
 		# Only synchronize the first MAX_SYNC_IN_ONE_INTERVAL changes otherwise
 		# the change list is too long and it took too much time
@@ -1034,7 +1033,7 @@ class ucs:
 			sync_successfull = False
 			filename = os.path.join(self.listener_dir, listener_file)
 			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
-				if not filename in self.rejected_files:
+				if filename not in self.rejected_files:
 					try:
 						f = file(filename, 'r')
 					except IOError:  # file not found so there's nothing to sync
@@ -1124,14 +1123,14 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
 
 					if not detected_ca:
-						if type(value) == type(types.ListType()) and len(value) == 1:
+						if isinstance(value, type(types.ListType())) and len(value) == 1:
 							value = value[0]
 						equal = False
 
 						# set encoding
 						compare = [ucs_object[ucs_key], value]
 						for i in [0, 1]:
-							if type(compare[i]) == type([]):
+							if isinstance(compare[i], type([])):
 								compare[i] = univention.s4connector.s4.compatible_list(compare[i])
 							else:
 								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
@@ -1456,7 +1455,7 @@ class ucs:
 							object['changed_attributes'].append(attr)
 					for attr in old_s4_object:
 						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
-							if not attr in object['changed_attributes']:
+							if attr not in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
 				else:
 					object['changed_attributes'] = original_object['attributes'].keys()
@@ -1568,7 +1567,7 @@ class ucs:
 		filter_connectors = ['!', '&', '|']
 
 		def list_lower(elements):
-			if type(elements) == type([]):
+			if isinstance(elements, type([])):
 				retlist = []
 				for l in elements:
 					retlist.append(l.lower())
@@ -1577,7 +1576,7 @@ class ucs:
 				return elements
 
 		def dict_lower(dict):
-			if type(dict) == type({}):
+			if isinstance(dict, type({})):
 				retdict = {}
 				for key in dict:
 					retdict[key.lower()] = dict[key]
@@ -1602,7 +1601,7 @@ class ucs:
 				attribute_value = attributes.get(attribute_name)
 				if attribute_value:
 					try:
-						if type(attribute_value) == type([]):
+						if isinstance(attribute_value, type([])):
 							attribute_value = int(attribute_value[0])
 						int_value = int(value)
 						if ((attribute_value & int_value) == int_value):
@@ -1668,7 +1667,7 @@ class ucs:
 			elif filter[0] == '|':
 				return 1 in walk(filter[1:], attributes)
 			elif filter[0] == '&':
-				return not 0 in walk(filter[1:], attributes)
+				return 0 not in walk(filter[1:], attributes)
 
 		def subfilter(filter, attributes):
 
@@ -1819,7 +1818,7 @@ class ucs:
 								# mapping_table
 								if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 									for ucsval, conval in self.property[key].mapping_table[attr_key]:
-										if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
+										if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
 
 											ucsval_lower = make_lower(ucsval)
 											objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute])
@@ -1829,7 +1828,7 @@ class ucs:
 											elif ucsval_lower == objectval_lower:
 												object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = conval
 
-					if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes != None:
+					if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
 						for attr_key in self.property[key].post_attributes.keys():
 							if attribute == self.property[key].post_attributes[attr_key].ldap_attribute:
 								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
@@ -1845,7 +1844,7 @@ class ucs:
 		else:
 			if self.property.has_key(key):
 				# Filter out Configuration objects w/o DN
-				if object['dn'] != None:
+				if object['dn'] is not None:
 					for attribute, values in object['attributes'].items():
 						if self.property[key].attributes:
 							for attr_key in self.property[key].attributes.keys():
@@ -1865,7 +1864,7 @@ class ucs:
 										# mapping_table
 									if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 										for ucsval, conval in self.property[key].mapping_table[attr_key]:
-											if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
+											if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
 
 												conval_lower = make_lower(conval)
 												objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
@@ -1875,7 +1874,7 @@ class ucs:
 												elif conval_lower == objectval_lower:
 													object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = ucsval
 
-						if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes != None:
+						if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
 							for attr_key in self.property[key].post_attributes.keys():
 								if attribute == self.property[key].post_attributes[attr_key].con_attribute:
 									if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):

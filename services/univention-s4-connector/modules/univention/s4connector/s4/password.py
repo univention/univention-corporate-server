@@ -119,7 +119,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 		except Exception:
 			import sys
 			exc = sys.exc_info()[1]
-			if type(exc.args) == type(()) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
+			if isinstance(exc.args, type(())) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: '%s' while unpacking supplementalCredentials:: %s" % (exc, binascii.b2a_base64(sc_blob)))
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
 			else:
@@ -616,7 +616,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: samba pwd expired, set newpwdLastSet to 0")
 			newpwdlastset = "0"
 		else:
-			if sambaPwdLastSet == None:
+			if sambaPwdLastSet is None:
 				sambaPwdLastSet = int(time.time())
 				newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
 			elif sambaPwdLastSet in [0, 1]:
@@ -633,7 +633,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: No password change to sync to S4 ")
 
 		# check pwdLastSet
-		if sambaPwdLastSet != None:
+		if sambaPwdLastSet is not None:
 			newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
@@ -655,7 +655,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs called")
 
 	if ucs_object['modtype'] == 'modify':
-		if not 'pwdLastSet' in ucs_object.get('changed_attributes', []):
+		if 'pwdLastSet' not in ucs_object.get('changed_attributes', []):
 			ud.debug(ud.LDAP, ud.INFO, 'password_sync_s4_to_ucs: the password for %s has not been changed. Skipping password sync.' % (ucs_object['dn']))
 			return
 

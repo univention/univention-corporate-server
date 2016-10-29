@@ -201,7 +201,7 @@ class S4Cache:
 	def _guid_exists(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
 
-		return self._get_guid_id(guid.strip()) != None
+		return self._get_guid_id(guid.strip()) is not None
 
 	def _get_guid_id(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
@@ -243,7 +243,7 @@ class S4Cache:
 	def _attr_exists(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
 
-		return self._get_attr_id(guid) != None
+		return self._get_attr_id(guid) is not None
 
 	def _create_attr(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())
