@@ -77,25 +77,25 @@ def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if not configRegistry.has_key('%s/s4/ldap/host' % CONFIGBASENAME):
+	if '%s/s4/ldap/host' % CONFIGBASENAME not in configRegistry:
 		print '%s/s4/ldap/host not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not configRegistry.has_key('%s/s4/ldap/port' % CONFIGBASENAME):
+	if '%s/s4/ldap/port' % CONFIGBASENAME not in configRegistry:
 		print '%s/s4/ldap/port not set' % CONFIGBASENAME
 		sys.exit(1)
-	if not configRegistry.has_key('%s/s4/ldap/base' % CONFIGBASENAME):
+	if '%s/s4/ldap/base' % CONFIGBASENAME not in configRegistry:
 		print '%s/s4/ldap/base not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if not configRegistry.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (configRegistry.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
+	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in configRegistry and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if not configRegistry.has_key('%s/s4/listener/dir' % CONFIGBASENAME):
+	if '%s/s4/listener/dir' % CONFIGBASENAME not in configRegistry:
 		print '%s/s4/listener/dir not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if not configRegistry.has_key('%s/s4/retryrejected' % CONFIGBASENAME):
+	if '%s/s4/retryrejected' % CONFIGBASENAME not in configRegistry:
 		baseconfig_retry_rejected = 10
 	else:
 		baseconfig_retry_rejected = configRegistry['%s/s4/retryrejected' % CONFIGBASENAME]
