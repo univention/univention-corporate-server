@@ -42,7 +42,6 @@ configRegistry.load()
 
 def ucs2s4_sid(s4connector, key, object):
 	_d=ud.function('mapping.ucs2s4_sid -- not implemented')
-	pass
 
 def s42ucs_sid(s4connector, key, object):
 	_d=ud.function('mapping.s42ucs_sid')
@@ -59,7 +58,6 @@ def ucs2s4_givenName(s4connector, key, object):
 
 def s42ucs_givenName(s4connector, key, object):
 	_d=ud.function('mapping.s42ucs_givenName -- not implemented')
-	pass
 
 def ucs2s4_dn_string(dn):
 	_d=ud.function('mapping.ucs2s4_dn_string')
@@ -91,5 +89,4 @@ def ucs2s4_sambaGroupType(s4connector, key, object):
 
 def s42ucs_sambaGroupType(s4connector, key, object):
 	_d=ud.function('mapping.s42ucs_sambaGroupType -- not implemented')
-	pass
 

@@ -188,7 +188,6 @@ class Well_Known_SID_object_renamer():
 				print "Warning: Can't initialize LDAP-Connections, wait..."
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
-				pass
 
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
 

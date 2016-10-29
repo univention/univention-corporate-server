@@ -45,7 +45,6 @@ logger = logging.getLogger('uvmmd.network')
 class NetworkError(TranslatableException):
 
 	'''Error occurred during operation on network object'''
-	pass
 
 
 def network_is_active(conn, name):

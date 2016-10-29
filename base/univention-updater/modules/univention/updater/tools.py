@@ -87,7 +87,6 @@ except AttributeError:
 
         def emit(self, record):
             """This method does nothing."""
-            pass
 
 
 def verify_script(script, signature):

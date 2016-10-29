@@ -557,7 +557,6 @@ class _RemovedDevice(Device):
 class Ethernet(Device):
 
 	"""A physical network interface"""
-	pass
 
 
 class VLAN(Device):

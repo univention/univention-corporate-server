@@ -1745,7 +1745,6 @@ class ad(univention.connector.ucs):
 				# This might happen, if we synchronize a rejected file with old informations
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
-				pass
 
 	def one_group_member_sync_from_ucs(self, ad_group_object, object):
 		"""
@@ -1763,7 +1762,6 @@ class ad(univention.connector.ucs):
 				# This might happen, if we synchronize a rejected file with old informations
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (ad_group_object['dn'], ml))
-				pass
 
 		# The user has been removed from the cache. He must be added in any case
 		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to group con cache of %s" % (object['dn'].lower(), ad_group_object['dn'].lower()))
@@ -2006,7 +2004,6 @@ class ad(univention.connector.ucs):
 
 		if modlist:
 			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-		pass
 
 	def disable_user_to_ucs(self, key, object):
 		object_key = key
@@ -2049,7 +2046,6 @@ class ad(univention.connector.ucs):
 
 		if modified:
 			ucs_admin_object.modify()
-		pass
 
 	def initialize(self):
 		_d = ud.function('ldap.initialize')

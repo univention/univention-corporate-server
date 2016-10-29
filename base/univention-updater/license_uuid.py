@@ -52,4 +52,3 @@ def handler(dn, new, old):
             univention.config_registry.handler_set(ucrVars)
         finally:
             listener.unsetuid()
-    pass

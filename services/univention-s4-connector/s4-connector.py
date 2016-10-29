@@ -156,7 +156,6 @@ def handler(dn, new, old, command):
 
 				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
 					os.unlink(os.path.join(directory, 'tmp','old_dn'))
-					pass
 
 	finally:
 		listener.unsetuid()

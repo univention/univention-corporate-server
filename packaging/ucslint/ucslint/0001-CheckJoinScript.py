@@ -62,7 +62,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-		pass
 
 	RE_LINE_ENDS_WITH_TRUE = re.compile('\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile('\n[\t ]*set -e', re.M)
@@ -186,7 +185,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					parser = uub.ParserDebianControl(fn_control)
 				except uub.UCSLintException:
 					self.debug('Errors in debian/control. Skipping here')
-					pass
 				else:
 					for binary_package in parser.binary_sections:
 						package = binary_package.get('Package')

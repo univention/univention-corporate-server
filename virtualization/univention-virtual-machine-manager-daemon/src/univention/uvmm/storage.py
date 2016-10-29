@@ -69,7 +69,6 @@ logger = logging.getLogger('uvmmd.storage')
 class StorageError(TranslatableException):
 
 	"""Error while handling storage."""
-	pass
 
 
 def create_storage_pool(conn, path, pool_name='default'):

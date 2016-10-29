@@ -295,7 +295,6 @@ class UserBaseCase(GenericTestCase):
 
 	def tearDown(self):
 		super(UserBaseCase, self).tearDown()
-		pass
 
 	def shortDescription(self):
 		desc = super(UserBaseCase, self).shortDescription()

@@ -98,11 +98,9 @@ class UniventionPackageCheckBase(object):
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-		pass
 
 	def check(self, path):
 		""" the real check """
-		pass
 
 	def result(self):
 		""" return result """
@@ -123,19 +121,16 @@ class UniventionPackageCheckDebian(UniventionPackageCheckBase):
 class UCSLintException(Exception):
 
     """Top level exception."""
-    pass
 
 
 class DebianControlNotEnoughSections(UCSLintException):
 
     """Content exception."""
-    pass
 
 
 class DebianControlParsingError(UCSLintException):
 
     """Parsing exception."""
-    pass
 
 
 class FailedToReadFile(UCSLintException):

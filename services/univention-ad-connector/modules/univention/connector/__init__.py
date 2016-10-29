@@ -396,7 +396,6 @@ class property:
 		self.mapping_table = mapping_table
 		self.position_mapping = position_mapping
 
-		pass
 
 
 class ucs:

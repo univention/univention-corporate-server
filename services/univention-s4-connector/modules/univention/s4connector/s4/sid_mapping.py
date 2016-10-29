@@ -135,7 +135,6 @@ def sid_to_s4(s4connector, key, object):
 		controls = [ LDAPControl(LDB_CONTROL_PROVISION_OID,criticality=0) ]
 		s4connector.lo_s4.lo.modify_ext_s(s4_dn, modlist, serverctrls=controls)
 
-	pass
 	
 def sid_to_ucs(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 object: %s" % s4_object)

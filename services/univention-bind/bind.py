@@ -65,7 +65,6 @@ __zone_created_or_removed = False
 
 def initialize():
 	"""Initialize module on first run."""
-	pass
 
 
 def prerun():

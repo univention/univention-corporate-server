@@ -122,7 +122,6 @@ def trigger_ldap2sd(configRegistry, binddn, bindpwd):
 			pass
 		except ldap.LDAPError, ex:
 			print 'Failure touching UCS object %s (%s)' % (dn, str(ex))
-	pass
 
 def trigger_sd2ldap(configRegistry):
 	# Add CN=System to the reject list

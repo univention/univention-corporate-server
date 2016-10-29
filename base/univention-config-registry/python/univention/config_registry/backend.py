@@ -46,7 +46,6 @@ INVALID_VALUE_CHARS = '\r\n'
 class StrictModeException(Exception):
 
 	"""Attempt to store non-UTF-8 characters in strict UTF-8 mode."""
-	pass
 
 
 def exception_occured(out=sys.stderr):
