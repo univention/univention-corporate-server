@@ -47,11 +47,10 @@ from samba.credentials import Credentials
 if __name__ == '__main__':
 	parser = OptionParser(usage='base64Guid2DN.py base64_guid')
 	(options, args) = parser.parse_args()
-	
+
 	if len(args) != 1:
 		parser.print_help()
 		sys.exit(2)
-		
 
 	base64_guid = args[0]
 
@@ -59,12 +58,10 @@ if __name__ == '__main__':
 
 	lp = LoadParm()
 	creds = Credentials()
-	creds.guess(lp) 
+	creds.guess(lp)
 	samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
 	domain_dn = samdb.domain_dn()
-	res = samdb.search(domain_dn, scope=ldb.SCOPE_SUBTREE,
-					   expression=("(objectGuid=%s)" % (guid)),
-					   attrs=["dn"])
+	res = samdb.search(domain_dn, scope=ldb.SCOPE_SUBTREE, expression=("(objectGuid=%s)" % (guid)), attrs=["dn"])
 	for msg in res:
 		print msg.get("dn", idx=0)

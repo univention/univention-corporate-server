@@ -39,6 +39,7 @@ import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
 
+
 def _connect_ucs(configRegistry, binddn, bindpwd):
 	''' Connect to OpenLDAP '''
 
@@ -46,10 +47,10 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 		bindpw = bindpwd
 	else:
 		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
-		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,'+configRegistry['ldap/base'])
-		bindpw=open(bindpw_file).read()
+		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
+		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
+			bindpw = bindpw[0:-1]
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
@@ -68,19 +69,19 @@ def _get_s4_object(dn):
 	result = {}
 
 	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb -b "%s" -s base | ldapsearch-wrapper' % dn], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout,stderr) = p1.communicate()
+	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode == 0:
 		for line in stdout.split('\n'):
-			line=line.strip()
+			line = line.strip()
 			if not line or line.startswith('#'):
 				continue
 			key = line.split(':')[0]
-			value = line[len(key)+2:]
+			value = line[len(key) + 2:]
 			if result.get(key):
 				result[key].append(value)
 			else:
-				result[key]=[value]
+				result[key] = [value]
 	return result
 
 
@@ -89,7 +90,7 @@ def write_to_s4(configRegistry, mod_str):
 	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
 	p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
-	(stdout,stderr) = p1.communicate(mod_str)
+	(stdout, stderr) = p1.communicate(mod_str)
 	if p1.returncode != 0:
 		print 'Failed to write to Samba 4: %s' % (mod_str)
 	else:
@@ -110,8 +111,12 @@ def search_ucs_sambadomain_object(configRegistry, lo, SID):
 
 # Time inverval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
+
+
 def _s2nano(seconds):
 	return seconds * 10000000
+
+
 def _nano2s(nanoseconds):
 	return nanoseconds / 10000000
 
@@ -134,13 +139,13 @@ if __name__ == '__main__':
 		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
 		ucs_object_dn, ucs_object_attr = search_ucs_sambadomain_object(configRegistry, lo, s4_object.get('objectSid')[0])
 		ml = []
-		sync_times = [ ('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration') ]
+		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
 			s4_time = _nano2s(long(s4_object.get(s4_attr, [0])[0]) * -1)
-			ml.append( (ucs_attr, ucs_object_attr.get(ucs_attr), [str(s4_time)] ) )
-		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
+			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), [str(s4_time)]))
+		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength')]
 		for (ucs_attr, s4_attr) in sync_integers:
-			ml.append( (ucs_attr, ucs_object_attr.get(ucs_attr),s4_object.get(s4_attr, [0]) ) )
+			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), s4_object.get(s4_attr, [0])))
 		lo.modify(ucs_object_dn, ml)
 	elif options.write2samba4:
 		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
@@ -148,21 +153,19 @@ if __name__ == '__main__':
 
 		# Convert UCS attributes to Samba 4 values
 		mod_str = 'dn: %s\nchangetype: modify\n' % configRegistry.get('samba4/ldap/base')
-		sync_times = [ ('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration') ]
+		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
 			ucs_value = long(ucs_object[1].get(ucs_attr, [0])[0])
 			new_value = str(_s2nano(ucs_value) * -1)
 			mod_str += 'replace: %s\n%s: %s\n' % (s4_attr, s4_attr, new_value)
-		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
+		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength')]
 		for (ucs_attr, s4_attr) in sync_integers:
 			mod_str += 'replace: %s\n%s: %s\n' % (s4_attr, s4_attr, ucs_object[1].get(ucs_attr, [0])[0])
 		mod_str += '\n'
 		write_to_s4(configRegistry, mod_str)
-		
+
 	else:
 		parser.print_help()
 		sys.exit(1)
 
 	sys.exit(0)
-
-

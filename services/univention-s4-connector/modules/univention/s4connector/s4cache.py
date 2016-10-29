@@ -41,13 +41,17 @@ import binascii
 def func_name():
 	return inspect.currentframe().f_back.f_code.co_name
 
+
 def _decode_base64(val):
 	return base64.decodestring(val)
+
 
 def _encode_base64(val):
 	return base64.encodestring(val)
 
+
 class EntryDiff(object):
+
 	def __init__(self, old, new):
 		self.old = old
 		self.new = new
@@ -70,13 +74,15 @@ class EntryDiff(object):
 
 
 class S4Cache:
+
 	"""
-		Local cache for the current Samba 4 state of the s4connector.
-		With this cache the connector has the possibility to create
-		a diff between the new Samba 4 object and the old one from
-		cache.
+			Local cache for the current Samba 4 state of the s4connector.
+			With this cache the connector has the possibility to create
+			a diff between the new Samba 4 object and the old one from
+			cache.
 	"""
-	def __init__ (self, filename):
+
+	def __init__(self, filename):
 		_d = ud.function('S4Cache.%s' % func_name())
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
@@ -92,7 +98,6 @@ class S4Cache:
 		else:
 			self._update_entry(guid, entry)
 		self.s4cache[guid] = entry
-
 
 	def diff_entry(self, old_entry, new_entry):
 		_d = ud.function('S4Cache.%s' % func_name())
@@ -148,8 +153,8 @@ class S4Cache:
 			return None
 
 		sql_commands = [
-			("DELETE FROM data WHERE guid_id=?;" , (str(guid_id),)),
-			("DELETE FROM guids WHERE id=?;" , (str(guid_id),))
+			("DELETE FROM data WHERE guid_id=?;", (str(guid_id),)),
+			("DELETE FROM guids WHERE id=?;", (str(guid_id),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -179,7 +184,6 @@ class S4Cache:
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
-
 	def __create_tables(self):
 		_d = ud.function('S4Cache.%s' % func_name())
 
@@ -194,12 +198,10 @@ class S4Cache:
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-
 	def _guid_exists(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		return self._get_guid_id(guid.strip()) != None
-
 
 	def _get_guid_id(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
@@ -215,7 +217,6 @@ class S4Cache:
 
 		return None
 
-
 	def _append_guid(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
 
@@ -224,7 +225,6 @@ class S4Cache:
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
-
 
 	def _get_attr_id(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())
@@ -240,7 +240,6 @@ class S4Cache:
 
 		return None
 
-
 	def _attr_exists(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
 
@@ -254,7 +253,6 @@ class S4Cache:
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
-
 
 	def _get_attr_id_and_create_if_not_exists(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())
@@ -298,7 +296,7 @@ class S4Cache:
 		for attribute in diff['removed']:
 			sql_commands.append(
 				(
-				"DELETE FROM data WHERE data.id IN (\
+					"DELETE FROM data WHERE data.id IN (\
 				SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
 					where attributes.attribute=? and guid_id=? \
 				);", (str(attribute), str(guid_id))
@@ -334,7 +332,6 @@ class S4Cache:
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 
-
 if __name__ == '__main__':
 
 	print 'Starting S4cache test example ',
@@ -345,7 +342,7 @@ if __name__ == '__main__':
 
 	entry = {
 		'attr1': ['foobar'],
-		'attr2': [ 'val1', 'val2', 'val3']
+		'attr2': ['val1', 'val2', 'val3']
 	}
 
 	s4cache.add_entry(guid, entry)

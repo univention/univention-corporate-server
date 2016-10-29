@@ -36,7 +36,10 @@ import sqlite3
 import sys
 from optparse import OptionParser
 
-class ObjectNotFound(BaseException): pass
+
+class ObjectNotFound(BaseException):
+	pass
+
 
 def remove_ucs_rejected(ucs_dn):
 	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
@@ -57,11 +60,11 @@ def remove_ucs_rejected(ucs_dn):
 if __name__ == '__main__':
 	parser = OptionParser(usage='remove_ucs_rejected.py dn')
 	(options, args) = parser.parse_args()
-	
+
 	if len(args) != 1:
 		parser.print_help()
 		sys.exit(2)
-		
+
 	ucs_dn = args[0]
 
 	try:
@@ -69,8 +72,7 @@ if __name__ == '__main__':
 	except ObjectNotFound:
 		print 'ERROR: The object %s was not found.' % ucs_dn
 		sys.exit(1)
-	
+
 	print 'The rejected UCS object %s has been removed.' % ucs_dn
 
 	sys.exit(0)
-

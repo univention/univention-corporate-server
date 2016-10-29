@@ -35,16 +35,18 @@ import univention.debug2 as ud
 import univention.s4connector.s4
 import ldap
 
+
 def _shouldBeMacClient(attributes):
 	if not attributes:
 		return False
 
-	os =  attributes.get('operatingSystem', [None])[0]
+	os = attributes.get('operatingSystem', [None])[0]
 
 	if os == 'Mac OS X':
 		return True
 
 	return False
+
 
 def _isAlreadyMac(attributes):
 	if not attributes:
@@ -55,17 +57,19 @@ def _isAlreadyMac(attributes):
 
 	return False
 
+
 def _replaceListElement(l, oldValue, newValue):
-	return map(lambda x:x if x!= oldValue else newValue,l)
+	return map(lambda x: x if x != oldValue else newValue, l)
+
 
 def _convertWinToMac(s4connector, sync_object):
-	modlist=[]
+	modlist = []
 
 	ucs_object = s4connector.get_ucs_ldap_object(sync_object['dn'])
 
 	oldObjectClass = ucs_object.get('objectClass')
 	newObjectClass = _replaceListElement(oldObjectClass, 'univentionWindows', 'univentionMacOSClient')
-	
+
 	modlist.append(('univentionObjectType', ucs_object.get('univentionObjectType'), ['computers/macos']))
 	modlist.append(('objectClass', oldObjectClass, newObjectClass))
 	modlist.append(('univentionServerRole', ucs_object.get('univentionServerRole'), []))
@@ -73,6 +77,7 @@ def _convertWinToMac(s4connector, sync_object):
 	ud.debug(ud.LDAP, ud.PROCESS, "Convert Windows client to Mac OS X: %s", sync_object['dn'])
 
 	s4connector.lo.lo.modify(sync_object['dn'], modlist)
+
 
 def checkAndConvertToMacOSX(s4connector, key, sync_object):
 	ud.debug(ud.LDAP, ud.INFO, "checkAndConvertToMacOSX: ucs_object: %s" % sync_object)
@@ -86,4 +91,3 @@ def checkAndConvertToMacOSX(s4connector, key, sync_object):
 		return
 
 	_convertWinToMac(s4connector, sync_object)
-

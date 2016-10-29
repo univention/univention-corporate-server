@@ -39,29 +39,30 @@ import univention.config_registry
 
 def search_s4(filter, attribute):
 	''' Search all S4 objects with objectClass=groupPolicyContainer
-		and return a dictonary with dn as key and uSNChanged as result.
+			and return a dictonary with dn as key and uSNChanged as result.
 	'''
 
 	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb %s %s | ldapsearch-wrapper' % (filter, attribute)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout,stderr) = p1.communicate()
+	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
 		print stderr
 		sys.exit(p1.returncode)
 
 	result = {}
-	dn=None
+	dn = None
 
 	for line in stdout.split('\n'):
-		line=line.strip()
+		line = line.strip()
 		if line.startswith('dn: '):
-			dn=line[4:]
-		if line.startswith('%s: '%attribute):
-			attr=line[len('%s: '%attribute):]
+			dn = line[4:]
+		if line.startswith('%s: ' % attribute):
+			attr = line[len('%s: ' % attribute):]
 			result[dn] = attr
-			dn=None
+			dn = None
 
 	return result
+
 
 def add_to_sqlite(result):
 	dbcon = lite.connect('/etc/univention/connector/s4internal.sqlite')
@@ -69,7 +70,7 @@ def add_to_sqlite(result):
 	for dn in result.keys():
 		print 'Add (%s) to the Samba 4 reject list.' % (dn)
 		cur.execute("""
-			INSERT OR REPLACE INTO '%(table)s' (key,value) 
+			INSERT OR REPLACE INTO '%(table)s' (key,value)
 				VALUES (  '%(key)s', '%(value)s'
 			);""" % {'key': result[dn], 'value': dn, 'table': 'S4 rejected'})
 	dbcon.commit()
