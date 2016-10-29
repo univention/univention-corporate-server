@@ -52,7 +52,6 @@ def uvmm(mode, uri):
 
 def initialize():
 	"""Called once on first initialization."""
-	pass
 
 
 def handler(dn, new, old):
@@ -89,11 +88,9 @@ def handler(dn, new, old):
 
 def postrun():
 	"""Called 15s after handler."""
-	pass
 
 
 def clean():
 	"""Called before resync."""
-	pass
 
 # vim:set ft=python ts=4 sw=4 noet:

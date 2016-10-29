@@ -127,7 +127,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-		pass
 
 	def check_invalid_variable_name(self, var):
 		"""

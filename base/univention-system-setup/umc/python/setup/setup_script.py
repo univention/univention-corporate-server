@@ -335,14 +335,12 @@ class SetupScript(object):
 		It is called during __init__ with the very same parameters
 		as __init__ was called.
 		'''
-		pass
 
 	def down(self):
 		'''Override this method if needed.
 		It is called at the end of run() even when an error in up()
 		or inner_run() occurred.
 		'''
-		pass
 
 
 from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler

@@ -52,7 +52,6 @@ logger = logging.getLogger('uvmmd.cloudconnection')
 class CloudConnectionError(TranslatableException):
 
 	"""Error while handling cloud connection."""
-	pass
 
 
 class CloudConnection(object):

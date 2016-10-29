@@ -83,7 +83,6 @@ def doit(arglist):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 		out.append('authentication error: %s' % e)
 		return out
-		pass
 
 	try:
 		dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=1)

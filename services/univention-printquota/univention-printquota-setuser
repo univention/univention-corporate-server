@@ -91,7 +91,6 @@ try:
 	user_dn, attrs = lo.search('(&(objectClass=person)(uid=%s))' % usr_filter, required=1, unique=1, attr=['uid'])[0]
 except:
 	log(1, "WARNING: Exception while searching for user-dn")
-	pass
 
 groups = {}
 try:

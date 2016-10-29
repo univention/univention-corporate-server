@@ -48,7 +48,6 @@ MAX_MSG_SIZE = 4096
 class PacketError(TranslatableException):
 
 	"""Packet framing error."""
-	pass
 
 
 class Packet(object):

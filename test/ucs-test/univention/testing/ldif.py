@@ -33,7 +33,6 @@ class LdifError(Exception):
     """
     Error in input processing.
     """
-    pass
 
 
 class SlapError(Exception):
@@ -41,7 +40,6 @@ class SlapError(Exception):
     """
     Error in slapcat processing.
     """
-    pass
 
 
 class LdifSource(object):

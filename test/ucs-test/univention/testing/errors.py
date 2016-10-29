@@ -8,7 +8,6 @@ class TestError(Exception):
     """
     General test error.
     """
-    pass
 
 
 class TestConditionError(Exception):

@@ -494,22 +494,18 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 
 class UCSTest_Mail_Exception(Exception):
 	""" Generic ucstest mail error """
-	pass
 
 
 class UCSTest_Mail_InvalidFolderName(UCSTest_Mail_Exception):
 	""" The given folder name is invalid """
-	pass
 
 
 class UCSTest_Mail_InvalidMailAddress(UCSTest_Mail_Exception):
 	""" The given mail address is invalid """
-	pass
 
 
 class UCSTest_Mail_InvalidRecipientList(UCSTest_Mail_Exception):
 	""" The given recipient list is invalid """
-	pass
 
 
 class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
@@ -518,7 +514,6 @@ class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
 		- the list of checked mailboxes
 		- the list of missing mailboxes (a subset of the first list)
 	"""
-	pass
 
 
 def get_dovecot_maildir(mail_address, folder=None):

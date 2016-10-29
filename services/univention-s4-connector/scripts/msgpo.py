@@ -173,7 +173,6 @@ def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
 			pass
 		except:
 			print 'Failed to set msGPOLink for UCS object (%s)' % (ucs_dn)
-	pass
 
 
 if __name__ == '__main__':

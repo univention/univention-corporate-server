@@ -413,7 +413,6 @@ class Processor(Base):
 				res.result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
 			except IOError:
 				res.status = BAD_REQUEST_FORBIDDEN
-				pass
 		elif 'modules/list' in msg.arguments:
 			categoryManager.load()
 			moduleManager.load()

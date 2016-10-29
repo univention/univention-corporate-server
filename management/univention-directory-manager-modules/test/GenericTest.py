@@ -414,7 +414,6 @@ class GenericTestCase(BaseCase):
 		Override this method to plug in additional code after the
 		object was created.
 		'''
-		pass
 
 	def hookAfterModified(self, dn):
 		'''Perform additional actions after modifying an object.
@@ -422,7 +421,6 @@ class GenericTestCase(BaseCase):
 		Override this method to plug in additional code after the
 		object was modified.
 		'''
-		pass
 
 	def hookAfterRemoved(self, dn):
 		'''Perform additional tests after removing an object.
@@ -430,7 +428,6 @@ class GenericTestCase(BaseCase):
 		Override this method to plug in additional code after the
 		object was removed.
 		'''
-		pass
 
 	def setUp(self):
 		'''Hook method for setting up the test fixture before exercising it.

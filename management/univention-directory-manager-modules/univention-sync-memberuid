@@ -45,7 +45,6 @@ import univention.debug as ud
 class ConsistencyError(Exception):
 
 	"""Inconsistence detected."""
-	pass
 
 
 def main():

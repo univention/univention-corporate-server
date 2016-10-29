@@ -64,7 +64,6 @@ class LockError(Exception):
 	'''Lock error for the package manager.
 	Not to be confused with LockFailedException (apt)
 	'''
-	pass
 
 
 class ProgressState(object):

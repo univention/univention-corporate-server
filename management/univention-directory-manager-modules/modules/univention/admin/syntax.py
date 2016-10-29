@@ -163,7 +163,6 @@ class simple(ISyntax):
 			or raises an exception, if the value does not match with predefined
 			constrains.
 		"""
-		pass
 
 
 class select(ISyntax):

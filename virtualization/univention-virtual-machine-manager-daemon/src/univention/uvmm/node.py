@@ -77,7 +77,6 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 class NodeError(TranslatableException):
 
 	"""Error while handling node."""
-	pass
 
 
 class StoragePool(object):

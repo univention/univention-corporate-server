@@ -91,7 +91,6 @@ class UpdateError(Exception):
 class UpToDateNoError(Exception):
 
     """ Exception to signal when no update needs to be done """
-    pass
 
 
 def log(str):

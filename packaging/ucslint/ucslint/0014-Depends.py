@@ -67,7 +67,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def postinit(self, path):
         """Checks to be run before real check or to create pre-calculated data for several runs. Only called once!"""
-        pass
 
     def _split_field(self, s):
         """Split control field into parts. Returns generator."""

@@ -261,12 +261,10 @@ class Base(signals.Provider, Translation):
 	def init(self):
 		'''this function is invoked after the initial UMCP SET command
 		that passes the base configuration to the module process'''
-		pass
 
 	def destroy(self):
 		'''this function is invoked before the module process is
 		exiting.'''
-		pass
 
 	def execute(self, method, request):
 		self.__requests[request.id] = (request, method)

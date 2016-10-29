@@ -309,28 +309,22 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_create(self):
 		u"""Wird nach dem Anlegen des Objektes aufgerufen."""
-		pass
 
 	def _ldap_pre_modify(self):
 		u"""Wird vor dem Modifizieren des Objektes aufgerufen."""
-		pass
 
 	def _ldap_post_modify(self):
 		u"""Wird nach dem Modifizieren des Objektes aufgerufen."""
-		pass
 
 	def _ldap_pre_remove(self):
 		u"""Wird vor dem Löschen des Objektes aufgerufen."""
-		pass
 
 	def _ldap_post_remove(self):
 		u"""Wird nach dem Löschen des Objektes aufgerufen."""
-		pass
 
 	def _update_policies(self):
 		u""""Wird bim Anlegen und Modifizieren des Objekts aufgerufen, um ggf.
 		aktivierte Policies auf das Objekt anzuwenden."""
-		pass
 
 	def _ldap_addlist(self):
 		u"""Diese Funktion muss definiert werden, weil sie von 'create' verwendet wird.

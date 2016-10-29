@@ -51,7 +51,6 @@ need_restart = False
 
 def initialize():
 	"""Called once on first initialization."""
-	pass
 
 
 def handler(dn, new, old):
@@ -112,4 +111,3 @@ def postrun():
 
 def clean():
 	"""Called before resync."""
-	pass
