@@ -45,18 +45,21 @@ from samba.credentials import Credentials
 from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
 
-class GuidNotFound(BaseException): pass
+
+class GuidNotFound(BaseException):
+	pass
+
 
 class S4Resync:
+
 	def __init__(self):
 		self.configRegistry = ConfigRegistry()
 		self.configRegistry.load()
 
 		lp = LoadParm()
 		creds = Credentials()
-		creds.guess(lp) 
+		creds.guess(lp)
 		self.samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
-		
 
 	def _remove_cache_entries(self, guid):
 		cache_db = sqlite3.connect('/etc/univention/connector/s4cache.sqlite')
@@ -76,7 +79,6 @@ class S4Resync:
 		c.execute("INSERT OR REPLACE INTO 'S4 rejected' (key,value) VALUES ('%(key)s', '%(value)s');" % {'key': usn, 'value': s4_dn})
 		db.commit()
 		db.close()
-		
 
 	def resync(self, s4_dns=None, ldapfilter=None):
 		if s4_dns and not type(s4_dns) in (type(()), type([])):
@@ -97,7 +99,7 @@ class S4Resync:
 			if not type(s4_dns) in (type(()), type([])):
 				raise ValueError("'s4_dns' is of type %s, must be list or tuple" % type(s4_dns))
 			if not ldapfilter:
-				ldapfilter='(objectClass=*)'
+				ldapfilter = '(objectClass=*)'
 
 			error_dns = []
 			missing_dns = []
@@ -135,13 +137,12 @@ class S4Resync:
 		return search_result
 
 
-
 if __name__ == '__main__':
 
 	parser = OptionParser(usage='resync_object_from_s4.py [--filter <LDAP filter>] [dn]')
 	parser.add_option("--filter", dest="ldapfilter", help="LDAP Filter")
 	(options, args) = parser.parse_args()
-	
+
 	if len(args) != 1 and not options.ldapfilter:
 		parser.print_help()
 		sys.exit(2)
@@ -168,7 +169,6 @@ if __name__ == '__main__':
 		for dn in treated_dns:
 			print 'resync triggered for %s' % dn
 
-
 	if treated_dns:
 		estimated_delay = 60
 		try:
@@ -179,6 +179,5 @@ if __name__ == '__main__':
 		print 'Estimated sync in %s seconds.' % (estimated_delay,)
 	else:
 		print 'No matching objects.'
-	
-	sys.exit(0)
 
+	sys.exit(0)

@@ -41,6 +41,8 @@ import univention.admin.handlers.settings.sambadomain
 import univention.admin.handlers.container.dc
 
 # [u'10', 'days']
+
+
 def _unixTimeInverval2seconds(unixTime):
 	if type(unixTime) != type([]):
 		return unixTime
@@ -57,44 +59,47 @@ def _unixTimeInverval2seconds(unixTime):
 	elif unixTime[1] == 'minutes':
 		return long(unixTime[0]) * 60
 	elif unixTime[1] == 'hours':
-		return long(unixTime[0]) * 3600 # 60 * 60
+		return long(unixTime[0]) * 3600  # 60 * 60
 	elif unixTime[1] == 'days':
-		return long(unixTime[0]) * 86400 # 60 * 60 * 24
+		return long(unixTime[0]) * 86400  # 60 * 60 * 24
 	else:
 		ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time unit: %s' % unixTime)
 		return 0
-	
+
 # Time inverval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
+
+
 def _s2nano(seconds):
 	return seconds * 10000000
-	
+
+
 def _nano2s(nanoseconds):
 	return nanoseconds / 10000000
 
 
-def ucs2con (s4connector, key, object):
-	_d=ud.function('dc: ucs2con')
+def ucs2con(s4connector, key, object):
+	_d = ud.function('dc: ucs2con')
 
 	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: Object (%s): %s' % (object['dn'], object))
-	s4base_dn,s4base_attr = s4connector.lo_s4.lo.search_s(s4connector.s4_ldap_base, ldap.SCOPE_BASE, '(objectClass=*)')[0]
+	s4base_dn, s4base_attr = s4connector.lo_s4.lo.search_s(s4connector.s4_ldap_base, ldap.SCOPE_BASE, '(objectClass=*)')[0]
 	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %s' % (s4base_dn))
 	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %s' % (s4base_attr))
 
 	if 'univentionBase' in object['attributes'].get('objectClass'):
 		# DC object → sync GPO
-	 	if s4connector.configRegistry.is_true('connector/s4/mapping/gpo', True):
-			ucs_val = object['attributes'].get('msGPOLink', [None])[0]	# msGPOLink is a single value
+		if s4connector.configRegistry.is_true('connector/s4/mapping/gpo', True):
+			ucs_val = object['attributes'].get('msGPOLink', [None])[0]  # msGPOLink is a single value
 			s4_val = s4base_attr.get('msGPOLink')
 			if ucs_val != s4_val:
 				s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, [(ldap.MOD_REPLACE, 'gPLink', univention.s4connector.s4.compatible_modstring(ucs_val))])
-		
+
 	elif 'sambaDomain' in object['attributes'].get('objectClass'):
 		# Samba Domain object
 
 		ml = []
 
-		sync_times = [ ('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration') ]
+		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
 			ucs_time = long(object['attributes'].get(ucs_attr, [0])[0])
 			s4_time = _nano2s(long(s4base_attr.get(s4_attr, [0])[0]) * -1)
@@ -107,23 +112,24 @@ def ucs2con (s4connector, key, object):
 					s4_time = str(_s2nano(ucs_time) * -1)
 				else:
 					s4_time = "0"
-				ml.append( (ldap.MOD_REPLACE, s4_attr, [ s4_time ] ) )
-		
-		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties') ]
+				ml.append((ldap.MOD_REPLACE, s4_attr, [s4_time]))
+
+		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties')]
 		for (ucs_attr, s4_attr) in sync_integers:
 			ucs_val = object['attributes'].get(ucs_attr, str(0))
 			s4_val = s4base_attr.get(s4_attr, [0])[0]
 			if ucs_val != s4_val:
-				ml.append( (ldap.MOD_REPLACE, s4_attr, ucs_val ) )
+				ml.append((ldap.MOD_REPLACE, s4_attr, ucs_val))
 
 		if ml:
 			ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object modlist: %s' % (ml))
 			s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, univention.s4connector.s4.compatible_modlist(ml))
-		
+
 	return True
 
-def con2ucs (s4connector, key, object):
-	_d=ud.function('dns: con2ucs')
+
+def con2ucs(s4connector, key, object):
+	_d = ud.function('dns: con2ucs')
 
 	ud.debug(ud.LDAP, ud.INFO, 'dc con2ucs: Object (%s): %s' % (object['dn'], object))
 
@@ -140,7 +146,7 @@ def con2ucs (s4connector, key, object):
 		# Do we modify this UCS object
 		modify = False
 
-		sync_times = [ ('maxPasswordAge', 'maxPwdAge'), ('minPasswordAge', 'minPwdAge'), ('lockoutDuration', 'lockoutDuration') ]
+		sync_times = [('maxPasswordAge', 'maxPwdAge'), ('minPasswordAge', 'minPwdAge'), ('lockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
 			ucs_time = _unixTimeInverval2seconds(sambadomainnameObject.get(ucs_attr, 0))
 			s4_time = _nano2s(long(object['attributes'].get(s4_attr, [0])[0]) * -1)
@@ -148,23 +154,22 @@ def con2ucs (s4connector, key, object):
 			if ucs_time != s4_time:
 				sambadomainnameObject[ucs_attr] = [str(s4_time), 'seconds']
 				modify = True
-		
-		sync_integers = [ ('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength'), ('domainPwdProperties', 'pwdProperties') ]
+
+		sync_integers = [('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength'), ('domainPwdProperties', 'pwdProperties')]
 		for (ucs_attr, s4_attr) in sync_integers:
 			ucs_val = sambadomainnameObject.get(ucs_attr, 0)
 			s4_val = object['attributes'].get(s4_attr, [None])[0]
 			if ucs_val != s4_val:
 				sambadomainnameObject[ucs_attr] = s4_val
 				modify = True
-			
+
 		if modify:
 			sambadomainnameObject.modify()
-		
 
 	if s4connector.configRegistry.is_true('connector/s4/mapping/gpo', True):
 		# Search DC object via ldap search
 
-		dn,attr = s4connector.lo.search('objectClass=*', scope='base')[0]
+		dn, attr = s4connector.lo.search('objectClass=*', scope='base')[0]
 		ml = []
 
 		ucs_val = attr.get('msGPOLink')
@@ -181,9 +186,8 @@ def con2ucs (s4connector, key, object):
 
 	return True
 
+
 def identify(dn, attr, canonical=0):
-	_d=ud.function('dc: identify')
-	
+	_d = ud.function('dc: identify')
+
 	return 'univentionBase' in attr.get('objectClass', []) or 'sambaDomain' in attr.get('objectClass', [])
-
-

@@ -31,20 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import cPickle
 import listener
 import os
 import time
 import univention.debug
 
-name='s4-connector'
-description='S4 Connector replication'
-filter='(objectClass=*)'
-attributes=[]
+name = 's4-connector'
+description = 'S4 Connector replication'
+filter = '(objectClass=*)'
+attributes = []
 
 # use the modrdn listener extension
-modrdn="1"
+modrdn = "1"
 
 # While initialize copy all group objects into a list:
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
@@ -59,42 +59,46 @@ if listener.configRegistry.has_key('connector/listener/additionalbasenames') and
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
-def _save_old_object(directory, dn, old):
-	filename=os.path.join(directory, 'tmp','old_dn')
 
-	f=open(filename, 'w+')
+def _save_old_object(directory, dn, old):
+	filename = os.path.join(directory, 'tmp', 'old_dn')
+
+	f = open(filename, 'w+')
 	os.chmod(filename, 0600)
-	p=cPickle.Pickler(f)
-	old_dn=p.dump((dn,old))
+	p = cPickle.Pickler(f)
+	old_dn = p.dump((dn, old))
 	p.clear_memo()
 	f.close()
- 
+
+
 def _load_old_object(directory):
-	f=open(os.path.join(directory, 'tmp','old_dn'),'r')
-	p=cPickle.Unpickler(f)
-	(old_dn,old_object)=p.load()
+	f = open(os.path.join(directory, 'tmp', 'old_dn'), 'r')
+	p = cPickle.Unpickler(f)
+	(old_dn, old_object) = p.load()
 	f.close()
 
-	return (old_dn,old_object)
-			       
+	return (old_dn, old_object)
+
+
 def _dump_object_to_file(filename, ob):
-	f=open(filename, 'w+')
+	f = open(filename, 'w+')
 	os.chmod(filename, 0600)
-	p=cPickle.Pickler(f)
+	p = cPickle.Pickler(f)
 	p.dump(ob)
 	p.clear_memo()
 	f.close()
 
+
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
-	ob=(dn, new, old, old_dn)
+	ob = (dn, new, old, old_dn)
 
-	filename=os.path.join(directory,"%f"%time.time())
+	filename = os.path.join(directory, "%f" % time.time())
 
 	_dump_object_to_file(filename, ob)
 
 	tmp_array = []
-	f=open(filename, 'r')
+	f = open(filename, 'r')
 	tmp_array = cPickle.load(f)
 	f.close()
 
@@ -104,7 +108,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 		_dump_object_to_file(filename, ob)
 
 		tmp_array = []
-		f=open(filename, 'r')
+		f = open(filename, 'r')
 		tmp_array = cPickle.load(f)
 		f.close()
 
@@ -112,13 +116,14 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 		if tmp_array_len != 4:
 			ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
 
+
 def _is_module_disabled():
-	disabled=False
+	disabled = False
 	if listener.baseConfig.is_true('connector/s4/listener/disabled', False):
 		return True
 	else:
 		return False
-	
+
 
 def handler(dn, new, old, command):
 
@@ -138,8 +143,8 @@ def handler(dn, new, old, command):
 			old_dn = None
 			old_object = {}
 
-			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
-				(old_dn,old_object) = _load_old_object(directory)
+			if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
+				(old_dn, old_object) = _load_old_object(directory)
 			if command == 'r':
 				_save_old_object(directory, dn, old)
 			else:
@@ -150,15 +155,15 @@ def handler(dn, new, old, command):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
 					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
 					old_dn = None
-						
+
 				if s4_init_mode:
 					if new and 'univentionGroup' in new.get('objectClass', []):
 						group_objects.append((dn, new, old, old_dn))
 
 				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
 
-				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
-					os.unlink(os.path.join(directory, 'tmp','old_dn'))
+				if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
+					os.unlink(os.path.join(directory, 'tmp', 'old_dn'))
 
 	finally:
 		listener.unsetuid()
@@ -172,12 +177,13 @@ def clean():
 				continue
 			for filename in os.listdir(directory):
 				if filename != "tmp":
-					os.remove(os.path.join(directory,filename))
-			if os.path.exists(os.path.join(directory,'tmp')):
-				for filename in os.listdir(os.path.join(directory,'tmp')):
-					os.remove(os.path.join(directory,filename))
+					os.remove(os.path.join(directory, filename))
+			if os.path.exists(os.path.join(directory, 'tmp')):
+				for filename in os.listdir(os.path.join(directory, 'tmp')):
+					os.remove(os.path.join(directory, filename))
 	finally:
 		listener.unsetuid()
+
 
 def postrun():
 	global s4_init_mode
@@ -189,10 +195,10 @@ def postrun():
 			s4_init_mode = False
 			for ob in group_objects:
 				for directory in dirs:
-					filename=os.path.join(directory,"%f"%time.time())
-					f=open(filename, 'w+')
+					filename = os.path.join(directory, "%f" % time.time())
+					f = open(filename, 'w+')
 					os.chmod(filename, 0600)
-					p=cPickle.Pickler(f)
+					p = cPickle.Pickler(f)
 					p.dump(ob)
 					p.clear_memo()
 					f.close()
@@ -201,8 +207,8 @@ def postrun():
 		finally:
 			listener.unsetuid()
 
+
 def initialize():
 	global s4_init_mode
 	s4_init_mode = True
 	clean()
-

@@ -31,23 +31,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import cPickle, time, os
+import cPickle
+import time
+import os
 import ldap
 import sys
 import univention.uldap
 from optparse import OptionParser
 from univention.config_registry import ConfigRegistry
 
+
 class UCSResync:
+
 	def __init__(self):
 		self.configRegistry = ConfigRegistry()
 		self.configRegistry.load()
-		
+
 		self.lo = univention.uldap.getMachineConnection()
 
 	def _get_listener_dir(self):
 		return self.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')
-		
+
 	def _generate_filename(self):
 		directory = self._get_listener_dir()
 		return os.path.join(directory, "%f" % time.time())
@@ -91,7 +95,7 @@ class UCSResync:
 				raise ValueError("'ucs_dns' is of type %s, must be list or tuple" % type(ucs_dns))
 
 			if not ldapfilter:
-				ldapfilter='(objectClass=*)'
+				ldapfilter = '(objectClass=*)'
 
 			ldap_result = []
 			missing_dns = []
@@ -114,7 +118,7 @@ if __name__ == '__main__':
 	parser = OptionParser(usage='resync_object_from_ucs.py [--filter <LDAP filter>] [dn]')
 	parser.add_option("--filter", dest="ldapfilter", help="LDAP Filter")
 	(options, args) = parser.parse_args()
-	
+
 	if len(args) != 1 and not options.ldapfilter:
 		parser.print_help()
 		sys.exit(2)
@@ -140,4 +144,3 @@ if __name__ == '__main__':
 		print 'No matching objects.'
 
 	sys.exit(0)
-

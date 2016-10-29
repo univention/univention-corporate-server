@@ -40,6 +40,7 @@ import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
 
+
 def _connect_ucs(configRegistry, binddn, bindpwd):
 	''' Connect to OpenLDAP '''
 
@@ -47,10 +48,10 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 		bindpw = bindpwd
 	else:
 		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
-		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,'+configRegistry['ldap/base'])
-		bindpw=open(bindpw_file).read()
+		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
+		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
+			bindpw = bindpw[0:-1]
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
@@ -64,32 +65,32 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 	return lo
 
 
-
 def search_s4(filter, attribute):
 	''' Search all S4 objects with objectClass=msWMI-Som
-		and return a dictonary with dn as key and uSNChanged as result.
+			and return a dictonary with dn as key and uSNChanged as result.
 	'''
 
 	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb %s %s | ldapsearch-wrapper' % (filter, attribute)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout,stderr) = p1.communicate()
+	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
 		print stderr
 		sys.exit(p1.returncode)
 
 	result = {}
-	dn=None
+	dn = None
 
 	for line in stdout.split('\n'):
-		line=line.strip()
+		line = line.strip()
 		if line.startswith('dn: '):
-			dn=line[4:]
-		if line.startswith('%s: '%attribute):
-			attr=line[len('%s: '%attribute):]
+			dn = line[4:]
+		if line.startswith('%s: ' % attribute):
+			attr = line[len('%s: ' % attribute):]
 			result[dn] = attr
-			dn=None
+			dn = None
 
 	return result
+
 
 def add_to_sqlite(result):
 	dbcon = lite.connect('/etc/univention/connector/s4internal.sqlite')
@@ -97,12 +98,13 @@ def add_to_sqlite(result):
 	for dn in result.keys():
 		print 'Add (%s) to the Samba 4 reject list.' % (dn)
 		cur.execute("""
-			INSERT OR REPLACE INTO '%(table)s' (key,value) 
+			INSERT OR REPLACE INTO '%(table)s' (key,value)
 				VALUES (  '%(key)s', '%(value)s'
 			);""" % {'key': result[dn], 'value': dn, 'table': 'S4 rejected'})
 	dbcon.commit()
 	cur.close()
 	dbcon.close()
+
 
 def trigger_ldap2sd(configRegistry, binddn, bindpwd):
 	''' Touch all UCS objects with objectClass=msWMISom.
@@ -122,6 +124,7 @@ def trigger_ldap2sd(configRegistry, binddn, bindpwd):
 			pass
 		except ldap.LDAPError, ex:
 			print 'Failure touching UCS object %s (%s)' % (dn, str(ex))
+
 
 def trigger_sd2ldap(configRegistry):
 	# Add CN=System to the reject list
@@ -162,4 +165,3 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	sys.exit(0)
-

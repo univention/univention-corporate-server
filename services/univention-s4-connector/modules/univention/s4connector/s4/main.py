@@ -39,7 +39,8 @@ import time
 from optparse import OptionParser
 
 import fcntl
-import ldap, traceback
+import ldap
+import traceback
 import univention
 import univention.s4connector
 import univention.s4connector.s4
@@ -49,8 +50,7 @@ from univention.config_registry import ConfigRegistry
 # parse commandline options
 
 parser = OptionParser()
-parser.add_option("--configbasename", dest="configbasename",
-                  help="", metavar="CONFIGBASENAME", default="connector")
+parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 (options, args) = parser.parse_args()
 
 CONFIGBASENAME = "connector"
@@ -58,7 +58,7 @@ if options.configbasename:
 	CONFIGBASENAME = options.configbasename
 STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
 
-sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
+sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 
 
 import mapping
@@ -81,7 +81,7 @@ def daemon(lock_file):
 			os.chdir("/")
 			os.umask(0)
 		else:
-			pf=open('/var/run/univention-s4-%s' % CONFIGBASENAME, 'w+')
+			pf = open('/var/run/univention-s4-%s' % CONFIGBASENAME, 'w+')
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
@@ -108,8 +108,8 @@ def daemon(lock_file):
 
 def connect():
 
-	f=open(STATUSLOGFILE, 'w+')
-	sys.stdout=f
+	f = open(STATUSLOGFILE, 'w+')
+	sys.stdout = f
 	print time.ctime()
 
 	baseConfig = ConfigRegistry()
@@ -128,7 +128,7 @@ def connect():
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no') :
+	if not baseConfig.has_key('%s/s4/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/s4/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
@@ -139,81 +139,81 @@ def connect():
 		sys.exit(1)
 
 	if not baseConfig.has_key('%s/s4/retryrejected' % CONFIGBASENAME):
-		baseconfig_retry_rejected=10
+		baseconfig_retry_rejected = 10
 	else:
-		baseconfig_retry_rejected=baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
+		baseconfig_retry_rejected = baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
 
 	if baseConfig.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
-		s4_ldap_bindpw=open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		s4_ldap_bindpw = open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
 	else:
-		s4_ldap_bindpw=None
+		s4_ldap_bindpw = None
 
-	poll_sleep=int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
-	s4_init=None
+	poll_sleep = int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
+	s4_init = None
 	while not s4_init:
 		try:
-			s4=univention.s4connector.s4.s4(	CONFIGBASENAME,
-							mapping.s4_mapping,
-							baseConfig,
-							baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],
-							baseConfig['%s/s4/ldap/port' % CONFIGBASENAME],
-							baseConfig['%s/s4/ldap/base' % CONFIGBASENAME],
-							baseConfig.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
-							s4_ldap_bindpw,
-							baseConfig['%s/s4/ldap/certificate' % CONFIGBASENAME],
-							baseConfig['%s/s4/listener/dir' % CONFIGBASENAME])
-			s4_init=True
+			s4 = univention.s4connector.s4.s4(
+				CONFIGBASENAME,
+				mapping.s4_mapping,
+				baseConfig,
+				baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],
+				baseConfig['%s/s4/ldap/port' % CONFIGBASENAME],
+				baseConfig['%s/s4/ldap/base' % CONFIGBASENAME],
+				baseConfig.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
+				s4_ldap_bindpw,
+				baseConfig['%s/s4/ldap/certificate' % CONFIGBASENAME],
+				baseConfig['%s/s4/listener/dir' % CONFIGBASENAME]
+			)
+			s4_init = True
 		except ldap.SERVER_DOWN:
 			print "Warning: Can't initialize LDAP-Connections, wait..."
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
-
 	# Initialisierung auf UCS und S4 Seite durchfuehren
-	s4_init=None
-	ucs_init=None
+	s4_init = None
+	ucs_init = None
 
 	while not ucs_init:
 		try:
 			s4.initialize_ucs()
-			ucs_init=True
+			ucs_init = True
 		except ldap.SERVER_DOWN:
 			print "Can't contact LDAP server during ucs-poll, sync not possible."
- 			sys.stdout.flush()
+			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			s4.open_s4()
 			s4.open_ucs()
 
-
 	while not s4_init:
 		try:
 			s4.initialize()
-			s4_init=True
+			s4_init = True
 		except ldap.SERVER_DOWN:
 			print "Can't contact LDAP server during ucs-poll, sync not possible."
- 			sys.stdout.flush()
+			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			s4.open_s4()
 			s4.open_ucs()
 
 	f.close()
-	retry_rejected=0
+	retry_rejected = 0
 	connected = True
 	while connected:
-		f=open(STATUSLOGFILE, 'w+')
-		sys.stdout=f
+		f = open(STATUSLOGFILE, 'w+')
+		sys.stdout = f
 		print time.ctime()
 		# Aenderungen pollen
 		sys.stdout.flush()
 		while True:
 			# Read changes from OpenLDAP
 			try:
-				change_counter=s4.poll_ucs()
+				change_counter = s4.poll_ucs()
 				if change_counter > 0:
 					# UCS changes, read again from UCS
-					retry_rejected=0
+					retry_rejected = 0
 					time.sleep(1)
 					continue
 				else:
@@ -226,10 +226,10 @@ def connect():
 
 		while True:
 			try:
-				change_counter=s4.poll()
+				change_counter = s4.poll()
 				if change_counter > 0:
 					# S4 changes, read again from S4
-					retry_rejected=0
+					retry_rejected = 0
 					time.sleep(1)
 					continue
 				else:
@@ -244,26 +244,28 @@ def connect():
 			if str(retry_rejected) == baseconfig_retry_rejected:
 				s4.resync_rejected_ucs()
 				s4.resync_rejected()
-				retry_rejected=0
+				retry_rejected = 0
 			else:
-				retry_rejected+=1
+				retry_rejected += 1
 		except ldap.SERVER_DOWN:
 			print "Can't contact LDAP server during resync rejected, sync not possible."
 			connected = False
- 			sys.stdout.flush()
-			change_counter=0
-			retry_rejected+=1
+			sys.stdout.flush()
+			change_counter = 0
+			retry_rejected += 1
 
-		print '- sleep %s seconds (%s/%s until resync) -'%(poll_sleep, retry_rejected, baseconfig_retry_rejected)
+		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
 		f.close()
 	s4.close_debug()
 
+
 def lock(filename):
 	lock_file = open(filename, "a+")
 	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
 	return lock_file
+
 
 def main():
 
@@ -282,8 +284,8 @@ def main():
 			lock_file.close()
 			raise
 		except:
-			f=open(STATUSLOGFILE, 'w+')
-			sys.stdout=f
+			f = open(STATUSLOGFILE, 'w+')
+			sys.stdout = f
 			print time.ctime()
 
 			text = ''
@@ -304,4 +306,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-

@@ -42,13 +42,15 @@ def func_name():
 
 
 class LockingDB:
+
 	"""
-		A local database which includes the list of objects
-		which are currently locked. That means the
-		synchronisation of these objects has not been finished.
-		https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
+			A local database which includes the list of objects
+			which are currently locked. That means the
+			synchronisation of these objects has not been finished.
+			https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
 	"""
-	def __init__ (self, filename):
+
+	def __init__(self, filename):
 		_d = ud.function('LockingDB.%s' % func_name())
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
@@ -84,7 +86,6 @@ class LockingDB:
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
-		
 
 	def lock_s4(self, guid):
 		_d = ud.function('LockingDB.%s' % func_name())
@@ -97,7 +98,6 @@ class LockingDB:
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
-
 
 	def unlock_s4(self, guid):
 		_d = ud.function('LockingDB.%s' % func_name())
@@ -116,7 +116,7 @@ class LockingDB:
 
 		if not uuid:
 			return False
-		
+
 		sql_commands = [
 			("SELECT id FROM UCS_LOCK WHERE uuid=?;", (str(uuid),))
 		]
