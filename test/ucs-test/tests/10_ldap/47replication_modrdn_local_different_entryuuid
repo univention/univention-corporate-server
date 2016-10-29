@@ -20,7 +20,6 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
 import univention.uldap
-import os
 import ldap
 import re
 import sys

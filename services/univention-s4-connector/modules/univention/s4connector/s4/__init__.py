@@ -32,7 +32,13 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
+import base64
+import copy
+import ldap
+import string
+import sys
+import time
+import types
 import array
 import univention.uldap
 import univention.s4connector

@@ -6,9 +6,6 @@
 ## packages: [univention-management-console-module-appcenter]
 ## exposure: careful
 
-from os import path
-from glob import glob
-from re import findall
 from urllib2 import urlopen, URLError, HTTPError, Request
 from multiprocessing import Process, Pipe as m_Pipe
 

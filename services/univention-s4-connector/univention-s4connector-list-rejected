@@ -32,9 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, string, os, time, signal, shutil
+import signal
+import sys
 
-import ldap, traceback
+import ldap
 import univention
 import univention.s4connector
 import univention.s4connector.s4

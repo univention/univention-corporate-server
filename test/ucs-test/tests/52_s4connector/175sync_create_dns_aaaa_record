@@ -11,7 +11,6 @@ import univention.testing.udm as udm_test
 from univention.testing.utils import fail, wait_for_replication_and_postrun
 import dnstests
 import s4connector
-import subprocess
 import sys
 
 if __name__ == '__main__':

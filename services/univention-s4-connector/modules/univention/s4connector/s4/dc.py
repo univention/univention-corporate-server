@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap, string
+import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap

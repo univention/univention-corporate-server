@@ -43,7 +43,6 @@ import univention.debug
 univention.debug.init('/dev/null', 1, 1)
 import univention.uldap
 from datetime import datetime
-from time import strftime
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

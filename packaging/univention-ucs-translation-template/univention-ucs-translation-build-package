@@ -29,7 +29,6 @@
 # <http://www.gnu.org/licenses/>.
 from optparse import OptionParser
 import os
-import sys
 import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 

@@ -9,7 +9,6 @@ import httplib
 import shutil
 from optparse import OptionParser
 import base64
-import sys
 import os
 
 PORT = 3128

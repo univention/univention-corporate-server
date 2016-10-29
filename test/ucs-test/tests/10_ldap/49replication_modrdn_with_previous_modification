@@ -23,7 +23,6 @@ import univention.uldap as uldap
 from univention.config_registry import ConfigRegistry
 import os
 import ldap
-import re
 import sys
 
 success = True

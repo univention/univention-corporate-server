@@ -2,7 +2,6 @@ import ldap
 from univention.config_registry import ConfigRegistry
 from ldap.controls import LDAPControl
 import ldap.modlist as modlist
-import time
 import ldap_glue
 import univention.connector.ad as ad
 

@@ -10,7 +10,6 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import ldap
-import os
 import subprocess
 import quota_cache as qc
 

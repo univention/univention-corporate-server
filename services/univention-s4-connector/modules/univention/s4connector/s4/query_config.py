@@ -32,7 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import sys, codecs, string, os, ConfigParser, cPickle, types, random, traceback
+import ConfigParser
+import cPickle
+import os
 
 
 def fixup(s):

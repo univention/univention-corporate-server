@@ -8,7 +8,6 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 from univention.config_registry import ConfigRegistry
 import subprocess
-import time
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -30,7 +29,6 @@ if __name__ == '__main__':
 		new_ip = '1.2.3.4'
 		
 		iface = ucr.get('interfaces/primary', 'eth0')
-		import string
 		p1 = subprocess.Popen(['/usr/sbin/umc-command', '-U', '%s$' % computerName, '-P', 'univention', '-s', ucr.get('ldap/master'), 'ip/change', '-o' ,'ip=%s' % new_ip, '-o', 'oldip=%s' % ip, '-o', 'netmask=%s' % ucr.get('interfaces/%s/netmask' % iface), '-o',  'role=%s' % role], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		res = p1.communicate()
 		if p1.returncode != 0:
