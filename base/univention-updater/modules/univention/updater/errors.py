@@ -35,7 +35,6 @@
 class UpdaterException(Exception):
 
     """The root of all updater excptions."""
-    pass
 
 
 class RequiredComponentError(UpdaterException):

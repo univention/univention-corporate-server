@@ -1761,7 +1761,6 @@ class s4(univention.s4connector.ucs):
 				# This might happen, if we synchronize a rejected file with old informations
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
-				pass
 
 	def one_group_member_sync_from_ucs(self, s4_group_object, object):
 		"""
@@ -1780,7 +1779,6 @@ class s4(univention.s4connector.ucs):
 				# This might happen, if we synchronize a rejected file with old informations
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (s4_group_object['dn'], ml))
-				pass
 
 		# The user has been removed from the cache. He must be added in any case
 		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to group con cache of %s" % (object['dn'].lower(), s4_group_object['dn'].lower()))
@@ -2017,7 +2015,6 @@ class s4(univention.s4connector.ucs):
 		if modlist:
 			ud.debug(ud.LDAP, ud.ALL, "disable_user_from_ucs: modlist: %s" % modlist)
 			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
-		pass
 
 	def disable_user_to_ucs(self, key, object):
 		object_key = key
@@ -2061,7 +2058,6 @@ class s4(univention.s4connector.ucs):
 
 		if modified:
 			ucs_admin_object.modify()
-		pass
 
 
 

@@ -48,7 +48,6 @@ __all__ = [
 class ClientError(TranslatableException):
 
 	"""Error during communication with UVMM daemon."""
-	pass
 
 
 class UVMM_ClientSocket(object):

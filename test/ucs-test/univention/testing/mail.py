@@ -38,7 +38,6 @@ from smtpd import SMTPServer
 class UCSTest_Mail_Exception(Exception):
 
     """ Generic ucstest mail error """
-    pass
 
 
 class MailSink(object):

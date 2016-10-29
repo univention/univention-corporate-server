@@ -66,19 +66,16 @@ LDAP_CLOUD_TYPE_RDN = "cn=CloudType,%s" % LDAP_UVMM_RDN
 class LdapError(TranslatableException):
 
 	"""LDAP error."""
-	pass
 
 
 class LdapConfigurationError(LdapError):
 
 	"""LDAP configuration error."""
-	pass
 
 
 class LdapConnectionError(LdapError):
 
 	"""LDAP connection error."""
-	pass
 
 
 def ldap2fqdn(ldap_result):

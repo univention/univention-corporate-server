@@ -390,7 +390,6 @@ class property:
 
 		self.disable_delete_in_ucs = disable_delete_in_ucs
 
-		pass
 	
 class ucs:
 	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):

@@ -67,11 +67,9 @@ class simpleHook(object):
 
 	def hook_open(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _open called')
-		pass
 
 	def hook_ldap_pre_create(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
-		pass
 
 	def hook_ldap_addlist(self, module, al=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
@@ -79,11 +77,9 @@ class simpleHook(object):
 
 	def hook_ldap_post_create(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
-		pass
 
 	def hook_ldap_pre_modify(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
-		pass
 
 	def hook_ldap_modlist(self, module, ml=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
@@ -91,12 +87,9 @@ class simpleHook(object):
 
 	def hook_ldap_post_modify(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
-		pass
 
 	def hook_ldap_pre_remove(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
-		pass
 
 	def hook_ldap_post_remove(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
-		pass

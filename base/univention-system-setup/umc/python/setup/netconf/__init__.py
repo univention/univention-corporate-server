@@ -132,19 +132,16 @@ class Phase(object):
 		Check if the phase should be activated.
 		Throw SkipPhase to skip this phase.
 		"""
-		pass
 
 	def pre(self):
 		"""
 		Called before the changes are applied to UCR.
 		"""
-		pass
 
 	def post(self):
 		"""
 		Called after the changes have been applied to UCR.
 		"""
-		pass
 
 	def call(self, command):
 		"""

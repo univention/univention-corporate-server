@@ -45,7 +45,6 @@ class LDAP_ConnectionError(Exception):
 	"""
 	Error connecting LDAP server.
 	"""
-	pass
 
 
 def LDAP_Connection(func):

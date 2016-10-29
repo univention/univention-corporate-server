@@ -56,7 +56,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-		pass
 
 	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
 

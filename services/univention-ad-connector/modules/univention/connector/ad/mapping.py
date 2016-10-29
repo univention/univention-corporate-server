@@ -41,7 +41,6 @@ baseConfig.load()
 
 def ucs2ad_sid(connector, key, object):
 	_d = ud.function('mapping.ucs2ad_sid -- not implemented')
-	pass
 
 
 def ad2ucs_sid(connector, key, object):
@@ -61,7 +60,6 @@ def ucs2ad_givenName(connector, key, object):
 
 def ad2ucs_givenName(connector, key, object):
 	_d = ud.function('mapping.ad2ucs_givenName -- not implemented')
-	pass
 
 
 def ucs2ad_dn_string(dn):
@@ -101,4 +99,3 @@ def ucs2ad_sambaGroupType(connector, key, object):
 
 def ad2ucs_sambaGroupType(connector, key, object):
 	_d = ud.function('mapping.ad2ucs_sambaGroupType -- not implemented')
-	pass

@@ -50,7 +50,6 @@ class CredentialsMissing(Exception):
     """
     A custom exception to be raised when a 'license.secret' file is not found
     """
-    pass
 
 
 class TestLicenseClient(HTMLParser):

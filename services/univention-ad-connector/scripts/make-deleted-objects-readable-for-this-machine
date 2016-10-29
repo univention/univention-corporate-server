@@ -175,7 +175,6 @@ class AD_DSACL_modifier():
 				print "Warning: Can't initialize LDAP-Connections, wait..."
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
-				pass
 
 	def get_nTSecurityDescriptor_of_Deleted_Objects(self):
 		ctrls = []

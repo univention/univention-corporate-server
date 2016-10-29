@@ -194,7 +194,6 @@ def connect():
 			print "Warning: Can't initialize LDAP-Connections, wait..."
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
-			pass
 
 	# Initialisierung auf UCS und AD Seite durchfuehren
 	ad_init = None
@@ -210,7 +209,6 @@ def connect():
 			time.sleep(poll_sleep)
 			ad.open_ad()
 			ad.open_ucs()
-			pass
 
 	while not ad_init:
 		try:
@@ -222,7 +220,6 @@ def connect():
 			time.sleep(poll_sleep)
 			ad.open_ad()
 			ad.open_ucs()
-			pass
 
 	f.close()
 	retry_rejected = 0

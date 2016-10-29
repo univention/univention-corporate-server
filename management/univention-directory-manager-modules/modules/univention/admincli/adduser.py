@@ -69,10 +69,8 @@ def nscd_invalidate(table):
 			univention.misc.close_fd_spawn('/usr/sbin/nscd', ['nscd', '--invalidate', table])
 		except:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'NSCD: failed')
-			pass
 		else:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'NSCD: ok')
-			pass
 
 
 def get_user_object(user, position, lo, co):
@@ -145,7 +143,6 @@ def doit(arglist):
 			out.append('authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e2))
 			return out
-			pass
 
 	for i in range(0, len(args)):
 		try:
