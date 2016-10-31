@@ -496,6 +496,9 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The S4-Connector has been adjusted to use the tombstone reanimation feature of Samba 4.5.1 (<u:bug>42120</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
