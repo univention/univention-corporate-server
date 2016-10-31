@@ -19,17 +19,18 @@ from univention.config_registry import ConfigRegistry
 import univention.s4connector.s4
 
 CONFIGBASENAME = "connector"
-sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
+sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 import mapping
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
+
 class S4ConnectorWrapper(univention.s4connector.s4.s4):
+
 	def __init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir):
 		univention.s4connector.s4.s4.__init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=False)
 		self.schema_basedn = 'CN=Schema,CN=Configuration,%s' % (self.lo_s4.base,)
-
 
 	def single_value_mapping_is_ok_for_s4_connector_attributes(self):
 		result = True
@@ -57,7 +58,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 
 	def is_single_value_in_s4(self, s4_attribute):
 		ldap_filter = 'lDAPDisplayName=%s' % (s4_attribute,)
-		resultlist = self._s4__search_s4(base=self.schema_basedn, scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist= ['isSingleValued'], show_deleted=False)
+		resultlist = self._s4__search_s4(base=self.schema_basedn, scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist=['isSingleValued'], show_deleted=False)
 		if not resultlist:
 			print "WARN: con_attribute %s not found in Samba4 schema"
 			return
@@ -65,13 +66,14 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 		if resultlist[0][1]['isSingleValued'][0] == 'TRUE':
 			return True
 
+
 def connect():
 	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
-		s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		s4_ldap_bindpw = open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
 	else:
-		s4_ldap_bindpw=None
+		s4_ldap_bindpw = None
 
 	try:
 		s4c = S4ConnectorWrapper(CONFIGBASENAME,
@@ -96,4 +98,3 @@ if __name__ == '__main__':
 	s4c = connect()
 	if not s4c.single_value_mapping_is_ok_for_s4_connector_attributes():
 		utils.fail("ERROR: Some single valued Samba4 attributes are not configured properly in the S4-Connector mapping.")
-

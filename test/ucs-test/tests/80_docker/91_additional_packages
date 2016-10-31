@@ -10,8 +10,14 @@
 from dockertest import *
 from univention.testing.utils import package_installed
 
-class UCSTest_AppCenter_PackageIsNotInstalled(Exception): pass
-class UCSTest_AppCenter_PackageIsInstalled(Exception): pass
+
+class UCSTest_AppCenter_PackageIsNotInstalled(Exception):
+		pass
+
+
+class UCSTest_AppCenter_PackageIsInstalled(Exception):
+		pass
+
 
 def create_app(addapp=False):
 
@@ -23,14 +29,12 @@ def create_app(addapp=False):
 
 		app = App(name=app_name, version=app_version)
 
-
 		package_name1 = get_app_name()
 		package_name2 = get_app_name()
 		package_name3 = get_app_name()
 
-
 		if ucr.get('server/role') == 'domaincontroller_master':
-			app.set_ini_parameter(AdditionalPackagesMaster='%s,%s' % (package_name1,package_name2))
+			app.set_ini_parameter(AdditionalPackagesMaster='%s,%s' % (package_name1, package_name2))
 			app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
 		elif ucr.get('server/role') == 'domaincontroller_backup':
 			app.set_ini_parameter(AdditionalPackagesMaster='%s' % (package_name2))
@@ -58,7 +62,6 @@ def create_app(addapp=False):
 		package3 = DebianPackage(name=package_name3, version='0.1')
 		package3.build()
 		copy_package_to_appcenter(ucr['version/version'], app.app_directory, package3.get_binary_name())
-
 
 		try:
 			appcenter.update()
@@ -107,4 +110,3 @@ if __name__ == '__main__':
 		create_app(addapp=False)
 		## Install via univention-add-app
 		create_app(addapp=True)
-

@@ -15,8 +15,8 @@ import univention.testing.udm as udm_test
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		user = udm.create_user()
-		group = udm.create_group(users = user[0])[0]
+		group = udm.create_group(users=user[0])[0]
 		utils.verify_ldap_object(group, {'memberUid': [user[1]], 'uniqueMember': [user[0]]})
 
-		udm.remove_object('users/user', dn = user[0])
+		udm.remove_object('users/user', dn=user[0])
 		utils.verify_ldap_object(group, {'memberUid': [], 'uniqueMember': []})

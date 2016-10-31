@@ -29,7 +29,7 @@ success = True
 ucr = ConfigRegistry()
 ucr.load()
 
-UDM_MODULE='computers/linux'
+UDM_MODULE = 'computers/linux'
 
 name = random_name()
 dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
@@ -47,17 +47,19 @@ addlist_subobject = [
 	('univentionObjectType', ['container/cn']),
 ]
 
+
 def get_entryUUID(lo, dn):
 	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
 	print 'DN: %s\n%s' % (dn, result)
 	return result[0][1].get('entryUUID')[0]
 
+
 def get_rootpw():
-	pwd=''
+	pwd = ''
 	f = open('/etc/ldap/rootpw.conf', 'r')
-	rootdn_pattern=re.compile('^rootpw[ \t]+"([^"]+)"')
+	rootdn_pattern = re.compile('^rootpw[ \t]+"([^"]+)"')
 	for line in f.readlines():
-		line=line[0:-1]
+		line = line[0:-1]
 		if rootdn_pattern.match(line):
 			pwd = rootdn_pattern.findall(line)[0]
 			break
@@ -70,7 +72,7 @@ computer = udm.create_object(UDM_MODULE, name=name, position=ucr.get('ldap/base'
 
 rootpw = get_rootpw()
 lo = ldap.open('127.0.0.1', 7389)
-lo.simple_bind_s('cn=update,'+ucr.get('ldap/base'), rootpw)
+lo.simple_bind_s('cn=update,' + ucr.get('ldap/base'), rootpw)
 
 # read computer uuid
 computer_UUID = get_entryUUID(lo, computer)
@@ -103,7 +105,7 @@ if os.path.exists(BACKUP_DIR):
 	for f in os.listdir(BACKUP_DIR):
 		fd = open(os.path.join(BACKUP_DIR, f), 'r')
 		for line in fd.readlines():
-			if re.match('entryUUID: %s' % container_UUID, line ):
+			if re.match('entryUUID: %s' % container_UUID, line):
 				found_backup_container = True
 			elif re.match('entryUUID: %s' % subcontainer_UUID, line):
 				found_backup_subcontainer = True
@@ -115,7 +117,7 @@ if not found_backup_container:
 if not found_backup_subcontainer:
 	print 'ERROR: Backup of subcontainer with UUID %s was not found' % subcontainer_UUID
 	success = False
-		
+
 
 udm.cleanup()
 wait_for_replication()

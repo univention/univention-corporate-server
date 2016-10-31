@@ -31,12 +31,12 @@ def main():
 			localpart = ut_strings.random_name(length=15)
 			domain = '%s.local' % ut_strings.random_name(length=15)
 			ok = not check_mailbox(localpart, domain)
-			address ='%s@%s' % (localpart, domain, )
+			address = '%s@%s' % (localpart, domain, )
 
 		# create trigger file
 		print 'Creating trigger file for address %s' % address
 		triggerfn = '/var/spool/cyrus/jobs/mailbox/create/user/%s' % address
-		fd = open(triggerfn,'w')
+		fd = open(triggerfn, 'w')
 		fd.close()
 
 		# run test against locally install cyrus version (2.2 vs. 2.4)

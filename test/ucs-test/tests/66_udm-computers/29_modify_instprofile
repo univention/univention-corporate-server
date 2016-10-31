@@ -15,9 +15,9 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup' , 'computers/memberserver'):
+		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'):
 			instprofile = uts.random_string()
 
-			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, instprofile = instprofile)
+			computer = udm.create_object(role, name=uts.random_name())
+			udm.modify_object(role, dn=computer, instprofile=instprofile)
 			utils.verify_ldap_object(computer, {'univentionServerInstallationProfile': [instprofile]})

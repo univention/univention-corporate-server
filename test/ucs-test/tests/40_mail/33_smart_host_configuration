@@ -16,7 +16,8 @@ import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-TIMEOUT = 90 #sec
+TIMEOUT = 90  # sec
+
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
@@ -30,6 +31,7 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 			time.sleep(1)
 	if should_be_delivered != delivered:
 		utils.fail('Mail sent with token = %r, Delivered to the mail sink = %r' % (token, delivered))
+
 
 def wait_for_dns(hosts):
 	for host, ip in hosts:
@@ -55,9 +57,9 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'ip'                  : dcslave_ip,
-						'name'                : dcslave,
-						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						'ip': dcslave_ip,
+						'name': dcslave,
+						'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, dcslave_ip)
 					},
 					position='cn=computers,%s' % basedn,

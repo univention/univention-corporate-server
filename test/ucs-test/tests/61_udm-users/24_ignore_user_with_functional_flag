@@ -15,7 +15,7 @@ import atexit
 import subprocess
 
 if __name__ == '__main__':
-	license_before  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	# Since the S4 connector uses a object based synchronization,
 	# it is a problem to change the same object in short intervals,
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 			utils.fail('Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout))
 
 		# perform a license check
-		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 		if license_before == license_after:
 			utils.fail('License check failed to detect normal user')
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 			utils.fail('"udm users/user list" still finds user object with functional flag')
 
 		# perform a license check
-		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 		if license_before != license_after:
 			utils.fail('License check detected to "functional" user')
 
@@ -58,6 +58,6 @@ if __name__ == '__main__':
 			utils.fail('Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout))
 
 		# perform a license check
-		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 		if license_before == license_after:
 			utils.fail('License check failed to detect normal user')

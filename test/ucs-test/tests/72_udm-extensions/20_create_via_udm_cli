@@ -33,17 +33,16 @@ if __name__ == '__main__':
 				version_end = random_ucs_version(min_major=5)
 
 				dn = udm.create_object('settings/udm_%s' % extension_type,
-									   name = extension_name,
-									   data = base64.b64encode(bz2.compress(extension_buffer)),
-									   filename = extension_filename,
-									   packageversion = package_version,
-									   appidentifier = app_id,
-									   package = package_name,
-									   ucsversionstart = version_start,
-									   ucsversionend = version_end,
-									   active = active,
-									   position = 'cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
-
+									   name=extension_name,
+									   data=base64.b64encode(bz2.compress(extension_buffer)),
+									   filename=extension_filename,
+									   packageversion=package_version,
+									   appidentifier=app_id,
+									   package=package_name,
+									   ucsversionstart=version_start,
+									   ucsversionend=version_end,
+									   active=active,
+									   position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 				verify_ldap_object(dn, {
 						'cn': [extension_name],

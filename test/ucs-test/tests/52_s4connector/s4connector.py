@@ -11,13 +11,14 @@ import univention.testing.utils as utils
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
+
 class S4Connection(ldap_glue_s4.LDAPConnection):
 	'''helper functions to modify AD-objects'''
 
 	def __init__(self, configbase='connector', no_starttls=False):
 		self.configbase = configbase
 		self.adldapbase = configRegistry['%s/s4/ldap/base' % configbase]
-		self.addomain = self.adldapbase.replace (',DC=', '.').replace ('DC=', '')
+		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
 		self.login_dn = configRegistry['%s/s4/ldap/binddn' % configbase]
 		self.pw_file = configRegistry['%s/s4/ldap/bindpw' % configbase]
 		self.host = configRegistry['%s/s4/ldap/host' % configbase]
@@ -26,7 +27,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.ca_file = configRegistry['%s/s4/ldap/certificate' % configbase]
 		self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
-		self.connect (no_starttls)
+		self.connect(no_starttls)
 
 	def createuser(self, username, position=None, cn=None, sn=None, description=None):
 		if not position:
@@ -72,22 +73,22 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		primaryGroupID = res[0][1]['primaryGroupID'][0]
 		res = self.lo.search_ext_s(self.adldapbase,
 								   ldap.SCOPE_SUBTREE,
-								   'objectClass=group'.encode ('utf8'),
+								   'objectClass=group'.encode('utf8'),
 								   timeout=10)
 
 		import re
 		regex = '^(.*?)-%s$' % primaryGroupID
 		for r in res:
 			if r[0] is None or r[0] == 'None':
-				continue # Referral
-			if re.search (regex, s4.decode_sid(r[1]['objectSid'][0])):
+				continue  # Referral
+			if re.search(regex, s4.decode_sid(r[1]['objectSid'][0])):
 				return r[0]
 
 	def setprimarygroup(self, user_dn, group_dn):
 		res = self.lo.search_ext_s(group_dn, ldap.SCOPE_BASE, timeout=10)
 		import re
-		groupid = (re.search ('^(.*)-(.*?)$', s4.decode_sid (res[0][1]['objectSid'][0]))).group (2)
-		self.set_attribute (user_dn, 'primaryGroupID', groupid)
+		groupid = (re.search('^(.*)-(.*?)$', s4.decode_sid(res[0][1]['objectSid'][0]))).group(2)
+		self.set_attribute(user_dn, 'primaryGroupID', groupid)
 
 	def container_create(self, name, position=None, description=None):
 
@@ -116,9 +117,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.create('ou=%s,%s' % (name, position), attrs)
 
 
-
-
-def check_object(object_dn, sid = None, old_object_dn = None):
+def check_object(object_dn, sid=None, old_object_dn=None):
 	S4 = S4Connection()
 	object_dn_modified = _replace_uid_with_cn(object_dn)
 	object_found = S4.exists(object_dn_modified)
@@ -136,11 +135,13 @@ def check_object(object_dn, sid = None, old_object_dn = None):
 		else:
 			sys.exit("Object not synced")
 
+
 def get_object_sid(dn):
 	S4 = S4Connection()
 	dn_modified = _replace_uid_with_cn(dn)
-	sid = S4.get_attribute(dn_modified,'objectSid')
+	sid = S4.get_attribute(dn_modified, 'objectSid')
 	return sid
+
 
 def _replace_uid_with_cn(dn):
 	if dn.startswith('uid') or dn.startswith('UID'):
@@ -149,28 +150,33 @@ def _replace_uid_with_cn(dn):
 		dn_modified = dn
 	return dn_modified
 
-def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn = False):
+
+def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn=False):
 	tmp = group_dn.split(',')
 	modified_group_dn = 'cn={0},{1},{2},{3}'.format(groupname2, tmp[1], tmp[2], tmp[3])
 	udm_test_instance._cleanup['groups/group'].append(modified_group_dn)
 	if return_new_dn:
 		return modified_group_dn
 
-def verify_users(group_dn,users):
+
+def verify_users(group_dn, users):
 	print (" Checking Ldap Objects")
 	utils.verify_ldap_object(group_dn, {
 	'uniqueMember': [user for user in users],
 	'memberUid': [(user.split('=')[1]).split(',')[0] for user in users]
 	})
 
+
 def modify_username(user_dn, new_user_name, udm_instance):
 	newdn = 'uid=%s,%s' % (new_user_name, user_dn.split(",", 1)[1])
 	udm_instance._cleanup['users/user'].append(newdn)
-	udm_instance.modify_object('users/user', dn = user_dn, username = new_user_name)
+	udm_instance.modify_object('users/user', dn=user_dn, username=new_user_name)
 	return newdn
+
 
 def connector_running_on_this_host():
 	return configRegistry.is_true("connector/s4/autostart")
+
 
 def exit_if_connector_not_running():
 	if not connector_running_on_this_host():
@@ -179,10 +185,11 @@ def exit_if_connector_not_running():
 		print
 		sys.exit(77)
 
+
 def wait_for_sync(min_wait_time=0):
-	synctime = int(configRegistry.get("connector/s4/poll/sleep",7))
-	synctime = ((synctime + 3)*2)
+	synctime = int(configRegistry.get("connector/s4/poll/sleep", 7))
+	synctime = ((synctime + 3) * 2)
 	if min_wait_time > synctime:
 		synctime = min_wait_time
 	print ("Waiting {0} seconds for sync...".format(synctime))
-	sleep (synctime)
+	sleep(synctime)

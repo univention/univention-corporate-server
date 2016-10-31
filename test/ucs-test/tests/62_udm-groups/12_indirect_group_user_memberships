@@ -14,8 +14,8 @@ import univention.testing.udm as udm_test
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		group = udm.create_group()
-		nested_group = udm.create_group(memberOf = group[0])
-		user = udm.create_user(groups = nested_group[0])
+		nested_group = udm.create_group(memberOf=group[0])
+		user = udm.create_user(groups=nested_group[0])
 
 		for group in grp.getgrall():
 			if group.gr_name == group[1]:

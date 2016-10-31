@@ -47,7 +47,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
 		Queries UDM's users/user from UMC
 		"""
 		response = self.make_query_request('udm', {'objectType': 'users/user', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
-		if not response: # udm/query not rejected but does not work
+		if not response:  # udm/query not rejected but does not work
 			utils.fail("Cannot find myself with udm/query!")
 
 	def authenticate_to_umc(self, username, password):

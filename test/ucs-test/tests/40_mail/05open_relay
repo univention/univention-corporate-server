@@ -13,8 +13,10 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def set_postfix_networks(networks='127.0.0.0/8'):
 	handler_set(['main/postfix/mynetworks=%s' % networks])
+
 
 def restart_postfix():
 	print '\n* restarting postfix'
@@ -25,6 +27,7 @@ def restart_postfix():
 # def networks_set():
 # 	return True
 
+
 def get_eth0_ip():
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
@@ -34,13 +37,16 @@ def get_eth0_ip():
 	else:
 		utils.fail('IP address is not set for eth0')
 
+
 def reverse_dns_name(ip):
-	reverse=ip.split('.')
+	reverse = ip.split('.')
 	reverse.reverse()
 	return '%s.in-addr.arpa' % '.'.join(reverse)
 
+
 def print_header(section_string):
 	print 'info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+'
+
 
 def create_bad_mailheader(mailfrom, rcptto):
 	ucr = ucr_test.UCSTestConfigRegistry()
@@ -57,7 +63,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 
 	def get_reply(s):
 		try:
-			buff_size=1024
+			buff_size = 1024
 			reply = ''
 			while (True):
 				part = s.recv(buff_size)
@@ -95,6 +101,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 		return 0
 	else:
 		return 1
+
 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:

@@ -14,11 +14,11 @@ import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	uid_number = str( random.randint(3000, 5000) )
+	uid_number = str(random.randint(3000, 5000))
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(uidNumber = uid_number)
+		udm.create_user(uidNumber=uid_number)
 		try:
-			udm.create_user(uidNumber = uid_number)
+			udm.create_user(uidNumber=uid_number)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

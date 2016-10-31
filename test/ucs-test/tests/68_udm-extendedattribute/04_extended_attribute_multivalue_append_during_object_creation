@@ -24,9 +24,9 @@ if __name__ == '__main__':
 			'multivalue': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		# create user object and set extended attribute
 		extended_attribute_values = [uts.random_string(), uts.random_string()]
-		user = udm.create_user(append = {properties['CLIName']: extended_attribute_values})[0]
+		user = udm.create_user(append={properties['CLIName']: extended_attribute_values})[0]
 		utils.verify_ldap_object(user, {properties['ldapMapping']: extended_attribute_values})

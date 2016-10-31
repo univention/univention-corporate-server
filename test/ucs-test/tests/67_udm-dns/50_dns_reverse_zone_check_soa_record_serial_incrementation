@@ -31,7 +31,7 @@ if __name__ == '__main__':
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
 
 		reverse_zone_properties['ttl'] = '12'
-		udm.modify_object('dns/reverse_zone', dn = reverse_zone, ttl = reverse_zone_properties['ttl'])
+		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'])
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
 											   reverse_zone_properties['contact'].replace('@', '.'),
 											   '2',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
 
 		reverse_zone_properties['ttl'] = '12'
-		udm.modify_object('dns/reverse_zone', dn = reverse_zone, ttl = reverse_zone_properties['ttl'])
+		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'])
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
 											   reverse_zone_properties['contact'].replace('@', '.'),
 											   '2',

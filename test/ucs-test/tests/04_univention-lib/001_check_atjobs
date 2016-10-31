@@ -12,12 +12,15 @@ import univention.lib.atjobs as atjobs
 from subprocess import Popen, PIPE
 import datetime
 
+
 def get_output(cmd):
 	p = Popen(cmd, stdout=PIPE, stderr=PIPE)
 	return '%s\n%s' % p.communicate()
 
+
 def print_job(job, msg=''):
 	print '%s%r\nNumber: %r\nCommand: %r\nComments: %r\nExecTime: %r\nOwner: %r' % (msg, job, job.nr, job.command, job.comments, job.execTime, job.owner)
+
 
 def main():
 	# save old job list
@@ -30,7 +33,7 @@ def main():
 		job_comments[strings.random_name()] = strings.random_string(length=30)
 
 	try:
-		job = atjobs.add(job_command, execTime=(datetime.datetime.now()+datetime.timedelta(days=3)), comments=job_comments)
+		job = atjobs.add(job_command, execTime=(datetime.datetime.now() + datetime.timedelta(days=3)), comments=job_comments)
 		job_number = job.nr
 		print_job(job, '\nCreated atjob ')
 

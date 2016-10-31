@@ -12,6 +12,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 
+
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -28,18 +29,18 @@ def main():
 			usermail1 = '%s@%s' % (uts.random_name(), domain)
 			udm.create_user(
 				set={
-					'password'           : password,
-					'mailHomeServer'     : host,
-					'mailPrimaryAddress' : usermail1,
+					'password': password,
+					'mailHomeServer': host,
+					'mailPrimaryAddress': usermail1,
 					'disabled': 'all'
 				}
 			)
 			usermail = '%s@%s' % (uts.random_name(), domain)
 			udm.create_user(
 				set={
-					'password'           : password,
-					'mailHomeServer'     : host,
-					'mailPrimaryAddress' : usermail,
+					'password': password,
+					'mailHomeServer': host,
+					'mailPrimaryAddress': usermail,
 				}
 			)
 			token = str(time.time())

@@ -43,23 +43,22 @@ class %s(univention.admin.hook.simpleHook):
 			except univention.testing.utils.LDAPObjectNotFound:
 				fp.write('\\nObject had already been removed when LDAP pre remove hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
-					
 
 	with udm_test.UCSTestUDM() as udm:
 		udm.stop_cli_server()
 		cli_name = uts.random_string()
-		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
-			name = uts.random_name(),
-			shortDescription = uts.random_string(),
-			CLIName = cli_name,
-			module = 'users/user',
-			objectClass = 'univentionFreeAttributes',
-			ldapMapping = 'univentionFreeAttribute15',
-			hook = hook_name
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+			name=uts.random_name(),
+			shortDescription=uts.random_string(),
+			CLIName=cli_name,
+			module='users/user',
+			objectClass='univentionFreeAttributes',
+			ldapMapping='univentionFreeAttribute15',
+			hook=hook_name
 		)
 
 		user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
-		udm.remove_object('users/user', dn = user)
+		udm.remove_object('users/user', dn=user)
 
 		with open('/tmp/%s_executed' % hook_name) as fp:
 			fails = fp.read()

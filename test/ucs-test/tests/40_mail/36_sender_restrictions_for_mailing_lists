@@ -46,9 +46,9 @@ def main():
 					alt = '%s@%s' % (uts.random_name(), domain)
 					user_dn, username = udm.create_user(
 						set={
-							'password'           : password,
-							'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
-							'mailPrimaryAddress' : mail,
+							'password': password,
+							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailPrimaryAddress': mail,
 							'mailAlternativeAddress': alt
 						}
 					)
@@ -58,8 +58,8 @@ def main():
 				group1_mail = '%s@%s' % (uts.random_name(), domain)
 				group1_dn, group1_name = udm.create_group(
 					set={
-						'mailAddress' : group1_mail,
-						'users'       : users[0],
+						'mailAddress': group1_mail,
+						'users': users[0],
 					}
 				)
 				list1_name = uts.random_name()
@@ -84,7 +84,6 @@ def main():
 						'allowedEmailGroups': group1_dn,
 					}
 				)
-
 
 				print ""
 				for i in xrange(5):

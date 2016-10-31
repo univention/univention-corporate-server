@@ -17,10 +17,10 @@ import univention.testing.strings as uts
 
 
 def get_current_v2license_client_count():
-	for line in subprocess.Popen(['univention-license-check'], stdout = subprocess.PIPE).communicate()[0].split('\n'):
+	for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].split('\n'):
 		if line.startswith('Managed Clients:'):
 			return int(line.split('of')[0].split()[-1])
-	
+
 	raise ValueError('Could not determine license client count')
 
 
@@ -60,6 +60,3 @@ if __name__ == '__main__':
 			license_client_count_current = get_current_v2license_client_count()
 			if license_client_count_current != license_client_count_initial + 1:
 				utils.fail("After disabling ad/member mode, the 'synced' client is still ignored (initial: %s, current: %s)" % (license_client_count_initial, license_client_count_current))
-
-
-

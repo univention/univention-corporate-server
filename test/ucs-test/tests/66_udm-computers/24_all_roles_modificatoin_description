@@ -14,11 +14,11 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	
+
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
 			description = uts.random_string()
 
-			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, description = description)
+			computer = udm.create_object(role, name=uts.random_name())
+			udm.modify_object(role, dn=computer, description=description)
 			utils.verify_ldap_object(computer, {'description': [description]})

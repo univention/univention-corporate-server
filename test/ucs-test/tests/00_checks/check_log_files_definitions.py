@@ -3,6 +3,7 @@ import re
 
 
 class LogMessage(object):
+
 	def __init__(self, wanted=None, ignore=None):
 		self.wanted = self.recomp(self.wanted_list + (wanted or [])).match
 		self.ignore = self.recomp(self.ignore_list + (ignore or [])).match
@@ -73,22 +74,22 @@ class Errors(LogMessage):
 		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
 		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
 		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
-		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*', #Bug #39123
-		'DNS Update for .* failed: ERROR_DNS_UPDATE_FAILED', #Bug #39622
-		'DNS update failed: NT_STATUS_UNSUCCESSFUL', #Bug #39622
-		'rndc: connect failed: 127.0.0.1#953: connection refused', #Bug #39691
-		'.*Ignoring import error: No module named ucs_version', #Bug #39692
-		'\[!\] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib', #Bug #39646
-		'\[!\] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib', #Bug #39646
-		'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory', #Bug #39646
-		'\[!\] Service \[memcached\]: Failed to initialize SSL context', #Bug #39646
-		'failed', #Bug #39646
-		'Failed to process Subfile /etc/univention/templates/files/etc/postgresql/.*/main/pg_hba.conf.d/.*-pg_.*.conf', #39595
-		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.', #Bug #38911
-		r'Checking grub-pc/install_devices for errors[.]+', #  Bug #40733
-		r'Done checking grub-pc/install_devices for errors[.]', #  Bug #40733
-		'.*failed to receive current ID.*', #Bug 40962
-		'.*error 104: Connection reset by peer while receiving from notifier.*', #Bug 40962
+		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*',  # Bug #39123
+		'DNS Update for .* failed: ERROR_DNS_UPDATE_FAILED',  # Bug #39622
+		'DNS update failed: NT_STATUS_UNSUCCESSFUL',  # Bug #39622
+		'rndc: connect failed: 127.0.0.1#953: connection refused',  # Bug #39691
+		'.*Ignoring import error: No module named ucs_version',  # Bug #39692
+		'\[!\] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib',  # Bug #39646
+		'\[!\] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib',  # Bug #39646
+		'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory',  # Bug #39646
+		'\[!\] Service \[memcached\]: Failed to initialize SSL context',  # Bug #39646
+		'failed',  # Bug #39646
+		'Failed to process Subfile /etc/univention/templates/files/etc/postgresql/.*/main/pg_hba.conf.d/.*-pg_.*.conf',  # 39595
+		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.',  # Bug #38911
+		r'Checking grub-pc/install_devices for errors[.]+',  # Bug #40733
+		r'Done checking grub-pc/install_devices for errors[.]',  # Bug #40733
+		'.*failed to receive current ID.*',  # Bug 40962
+		'.*error 104: Connection reset by peer while receiving from notifier.*',  # Bug 40962
 	]
 
 	# extra ignore patterns for case when line == 'failed.'

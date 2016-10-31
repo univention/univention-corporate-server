@@ -19,5 +19,5 @@ if __name__ == '__main__':
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['samba'])[0]
+		user = udm.create_user(primaryGroup='cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options=['samba'])[0]
 		utils.verify_ldap_object(user)

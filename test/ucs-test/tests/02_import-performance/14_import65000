@@ -14,14 +14,14 @@ from performanceutils import *
 
 if __name__ == '__main__':
 
-	MAX_SECONDS_IMPORT = 16*3600
-	MAX_SECONDS_SAMBA_IMPORT = 31*3600+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_IMPORT = 16 * 3600
+	MAX_SECONDS_SAMBA_IMPORT = 31 * 3600 + CONNECTOR_WAIT_TIME
 	MAX_SECONDS_ADMIN_AUTH = 8
-	MAX_SECONDS_USER_CREATION = 110+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_USER_CREATION = 110 + CONNECTOR_WAIT_TIME
 	MAX_SECONDS_USER_AUTH = 2
-	MAX_SECONDS_PASSWORD_RESET = 120+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_PASSWORD_RESET = 120 + CONNECTOR_WAIT_TIME
 
-	CSV_IMPORT_FILE='65000.csv'
+	CSV_IMPORT_FILE = '65000.csv'
 
 	returnCode = 100
 
@@ -36,12 +36,12 @@ if __name__ == '__main__':
 
 	if not execute_timing('create test user', MAX_SECONDS_USER_CREATION, create_test_user):
 		returnCode = 1
-	
+
 	if not execute_timing('samba4 auth', MAX_SECONDS_USER_AUTH, s4_user_auth, 'Administrator', 'univention'):
 		returnCode = 1
 
 	user_dns = get_user_dn_list(CSV_IMPORT_FILE)
-	
+
 	if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
 		returnCode = 1
 

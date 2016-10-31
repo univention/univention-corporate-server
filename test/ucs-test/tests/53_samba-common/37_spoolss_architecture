@@ -18,6 +18,7 @@ import subprocess
 import os
 import sys
 
+
 def get_testparm_var(sectionname, varname):
 	path_testparm = "/usr/bin/testparm"
 	if not os.path.exists(path_testparm):
@@ -30,6 +31,7 @@ def get_testparm_var(sectionname, varname):
 	(out, err) = p1.communicate()
 	return out.strip()
 
+
 def check_spoolss_architecture(expected_value):
 	spoolss_architecture = get_testparm_var("global", "spoolss: architecture")
 	if spoolss_architecture != expected_value:
@@ -37,6 +39,7 @@ def check_spoolss_architecture(expected_value):
 			% (expected_value, spoolss_architecture))
 	else:
 		print "Ok, samba option 'spoolss: architecture' is set to '%s'" % (expected_value,)
+
 
 def host_architecture():
 	if sys.maxsize > 2**32:
@@ -48,6 +51,7 @@ expected_spoolss_architecture = {
 	"x32": "Windows NT x86",
 	"x64": "Windows x64",
 }
+
 
 def test_run(ucr, arch):
 	ucr_var = "samba/spoolss/architecture"

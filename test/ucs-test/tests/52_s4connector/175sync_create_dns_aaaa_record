@@ -21,7 +21,7 @@ if __name__ == '__main__':
 		random_zone = dnstests.random_zone()
 		test_nameserver = dnstests.get_hostname_of_ldap_master()
 		ip = dnstests.make_random_ipv6()
-		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = test_nameserver, a = ip)
+		test_zone_dn = udm.create_object('dns/forward_zone', zone=random_zone, nameserver=test_nameserver, a=ip)
 		dnstests.check_ldap_object(test_zone_dn, 'AAAA Record', 'aAAARecord', ip)
 		s4connector.wait_for_sync(30)
 		## Adding a DNS zone triggers bind reload in postrun
@@ -33,10 +33,10 @@ if __name__ == '__main__':
 		dnstests.get_kerberos_ticket_for_machine()
 
 		## Adding a DNS zone triggers bind reload in postrun, better check:
-		dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds
+		dnstests.fail_if_cant_resolve_own_hostname()  # wait up to 17 seconds
 
 		ip2 = dnstests.make_random_ipv6()
-		nsupdate_add_request='''server %(hostname)s.%(domainname)s
+		nsupdate_add_request = '''server %(hostname)s.%(domainname)s
 zone %(zonename)s.
 ; debug yes
 ; update delete %(zonename)s. AAAA
@@ -61,4 +61,4 @@ quit''' % {
 
 	s4connector.wait_for_sync()
 	## Removing a DNS zone triggers bind reload in postrun, better check:
-	dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds
+	dnstests.fail_if_cant_resolve_own_hostname()  # wait up to 17 seconds

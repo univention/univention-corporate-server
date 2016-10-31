@@ -20,9 +20,10 @@ from univention.config_registry import ConfigRegistry
 RETURN_PASS_CODE = 100
 RETURN_FAIL_CODE = 110
 
+
 def main():
 	"""A main method stores almost completely code."""
-	exit_code = None # use for exitcode of the entire test
+	exit_code = None  # use for exitcode of the entire test
 
 	filenames_groups = [
 		("/etc/ldap.secret", "DC Backup Hosts"),
@@ -53,14 +54,15 @@ def main():
 
 	sys.exit(exit_code)
 
+
 def check_owner_groupname(filename, shouldowner, shouldgroup):
 	"""Checks a given file for a right owner and a right group."""
 	return_code = True
-	stat_info = os.stat(filename) # statistics about a given file
-	uid = stat_info.st_uid # userid
-	gid = stat_info.st_gid # groupid
-	owner = pwd.getpwuid(uid)[0] # get username/owner
-	group = grp.getgrgid(gid)[0] # get groupname
+	stat_info = os.stat(filename)  # statistics about a given file
+	uid = stat_info.st_uid  # userid
+	gid = stat_info.st_gid  # groupid
+	owner = pwd.getpwuid(uid)[0]  # get username/owner
+	group = grp.getgrgid(gid)[0]  # get groupname
 	if owner != shouldowner:
 		print >> sys.stderr, "ERROR: '%s' has wrong owner '%s' but should be '%s'" % (filename, owner, shouldowner)
 		return_code = False
@@ -68,6 +70,7 @@ def check_owner_groupname(filename, shouldowner, shouldgroup):
 		print >> sys.stderr, "ERROR: '%s' has wrong group '%s' but should be '%s'" % (filename, group, shouldgroup)
 		return_code = False
 	return return_code
+
 
 def check_permissions(filename):
 	"""Checks file permissions for -rw-r-----"""

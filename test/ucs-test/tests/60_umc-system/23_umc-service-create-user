@@ -131,7 +131,7 @@ class TestUMCUserCreation(TestUMCSystem):
         test_username = 'umc_test_user_' + random_username(6)
         test_username_admin = test_username + '_admin'
         test_password = 'Univention@99'
-        
+
         # get localized groups translations if any:
         domain_users = self.get_groupname_translation('domainusers')
         domain_admins = self.get_groupname_translation('domainadmins')
@@ -156,7 +156,7 @@ class TestUMCUserCreation(TestUMCSystem):
             print "Modifing simple user '%s' groups" % test_username
             test_groupnames = ["cn=" + domain_users + ",cn=groups,"
                                + self.ldap_base,
-                               "cn=" + print_admins +",cn=groups,"
+                               "cn=" + print_admins + ",cn=groups,"
                                + self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 

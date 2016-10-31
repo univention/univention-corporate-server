@@ -15,9 +15,9 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	reinstall = '1'
-	
+
 	with udm_test.UCSTestUDM() as udm:
-		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup' , 'computers/memberserver'):
-			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, reinstall = reinstall)
+		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'):
+			computer = udm.create_object(role, name=uts.random_name())
+			udm.modify_object(role, dn=computer, reinstall=reinstall)
 			utils.verify_ldap_object(computer, {'univentionServerReinstall': [reinstall]})

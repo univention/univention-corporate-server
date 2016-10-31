@@ -30,10 +30,10 @@ if __name__ == "__main__":
 		authusername = opts.username
 		authpassword = opts.password
 	cmd += ' %s' % (opts.username,)
-		
-	kpasswd = pexpect.spawn(cmd, timeout=20) # logfile=sys.stdout
-	status = kpasswd.expect([pexpect.TIMEOUT, "%s@%s's Password: " % (authusername, ucr['kerberos/realm']),])
-	if status == 0: # timeout
+
+	kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
+	status = kpasswd.expect([pexpect.TIMEOUT, "%s@%s's Password: " % (authusername, ucr['kerberos/realm']), ])
+	if status == 0:  # timeout
 		print 'kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,)
 		sys.exit(120)
 
@@ -41,18 +41,17 @@ if __name__ == "__main__":
 
 	kpasswd.sendline(authpassword)
 
-
 	status = kpasswd.expect([pexpect.TIMEOUT, 'New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), "kpasswd: krb5_get_init_creds: Preauthentication failed", ])
-	if status == 0: # timeout
+	if status == 0:  # timeout
 		print 'kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before,)
 		sys.exit(120)
-	elif status == 2: # timeout
+	elif status == 2:  # timeout
 		print 'Preauthentication failed!'
 		sys.exit(120)
 	kpasswd.sendline(opts.newpassword)
-	status = kpasswd.expect([pexpect.TIMEOUT, 'Verify password - New password for %s@%s:' % (opts.username, ucr['kerberos/realm']),])
+	status = kpasswd.expect([pexpect.TIMEOUT, 'Verify password - New password for %s@%s:' % (opts.username, ucr['kerberos/realm']), ])
 	kpasswd.sendline(opts.newpassword)
-	status = kpasswd.expect(['Success : Password changed', pexpect.TIMEOUT,])
+	status = kpasswd.expect(['Success : Password changed', pexpect.TIMEOUT, ])
 	if status != 0:
 		sys.exit(1)
 	else:

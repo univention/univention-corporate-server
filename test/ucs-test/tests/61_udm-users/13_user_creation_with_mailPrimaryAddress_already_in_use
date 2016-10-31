@@ -17,13 +17,11 @@ if __name__ == '__main__':
 	mailDomainName = '%s.%s' % (uts.random_name(), uts.random_name())
 	emailaddr = uts.random_name()
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_object('mail/domain', name = mailDomainName)
-		udm.create_user(mailPrimaryAddress = '%s@%s' % (emailaddr, mailDomainName), options = ['mail', 'posix'])
+		udm.create_object('mail/domain', name=mailDomainName)
+		udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName), options=['mail', 'posix'])
 		try:
-			udm.create_user(mailPrimaryAddress = '%s@%s' % (emailaddr, mailDomainName), options = ['mail', 'posix'])
+			udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName), options=['mail', 'posix'])
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
 	utils.fail('Successfully created a user with a "mailPrimaryAddres" which is already in use, which should not be possible.')
-	
-

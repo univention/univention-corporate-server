@@ -19,7 +19,7 @@ from essential.dns_helper import resolveDnsEntry
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			
+
 			duration = 120
 
 			resourceRecord = 'SRV'
@@ -43,9 +43,9 @@ if __name__ == '__main__':
 			}
 
 			baseDn = ucr.get('domainname').split('.')
-			
+
 			pos = 'cn=dns'
-			
+
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 				'txt': uts.random_string()
 			}
 
-			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
+			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
 			name = uts.random_string()
 
@@ -70,17 +70,17 @@ if __name__ == '__main__':
 			srv_record_properties = {
 				'name': '%s tcp %s' % (name, name_extension),
 				'location': '0 1 2 %s.%s' % (host, zone),
-				'zonettl' : '128'
+				'zonettl': '128'
 			}
 
-			srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, **srv_record_properties)
+			srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_properties)
 
-			zoneName = '_'+name+'.'+'_'+protocol+'.'+name_extension+'.'+forward_zone_properties['zone']
+			zoneName = '_' + name + '.' + '_' + protocol + '.' + name_extension + '.' + forward_zone_properties['zone']
 
-			query = resolveDnsEntry(duration,zoneName,resourceRecord, resourceRecord_Number)
+			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')

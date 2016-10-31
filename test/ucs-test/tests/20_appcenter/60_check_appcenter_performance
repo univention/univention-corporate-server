@@ -14,16 +14,17 @@ import univention.testing.utils as utils
 from univention.appcenter import actions
 import time
 
+
 def main():
 	print("Appcenter update starting")
 	appcenter_update = actions.update.Update()
 	appcenter_update.call()
-	
+
 	print("Appcenter update done")
 	max_time = 5
 	account = utils.UCSTestDomainAdminCredentials()
 	request_query = ('appcenter/query', {}, )
-	
+
 	print("Getting umc_connection")
 	c = UMCC.UMCConnection('localhost')
 	c.auth(account.username, account.bindpw)
@@ -35,7 +36,7 @@ def main():
 	c.request(*request_query)
 	end_time = time.time()
 	print("Request finished")
-	
+
 	if end_time - start_time > max_time:
 		utils.fail("The appcenter answered too slow\nThreshold is %s sec; Appcenter replied in %s sec." % (max_time, end_time - start_time, ))
 	else:

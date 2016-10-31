@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
-			forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
-			nagiosService = udm.create_object('nagios/service', name = uts.random_name(), checkCommand = uts.random_string(), checkPeriod = uts.random_string(), notificationPeriod = uts.random_string())
+			forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string())
+			nagiosService = udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string())
 
 			nagiosParentProperties = {
 				'options': ['nagios'],
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 				'dnsEntryZoneForward': forwardZone,
 				'nagiosServices': nagiosService,
 				'nagiosContactEmail': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
-				'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward = forwardZone, **nagiosParentProperties),
+				'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward=forwardZone, **nagiosParentProperties),
 				'name': uts.random_name(),
 				'ip': '10.20.30.3',
 				'options': ['posix', 'nagios']
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 			udm.addCleanupLock('aRecord', computerProperties['ip'])
 
 			computer = udm.create_object(role, **computerProperties)
-			
+
 			# validate that nagios related properties of computer are set correctly
 			utils.verify_ldap_object(computer, {
 				'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],

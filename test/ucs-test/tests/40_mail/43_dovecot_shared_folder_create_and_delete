@@ -18,6 +18,7 @@ TIMEOUT_MAIL = 10
 
 
 class Bunch(object):
+
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
 
@@ -64,7 +65,7 @@ def main():
 							utils.wait_for_replication()
 
 							# create folder
-							dn, name, address = create_shared_mailfolder(udm, fqdn,	mailAddress=with_mailaddress,
+							dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress,
 								user_permission=['"%s" "%s"' % (user_addr, 'all')])
 							folder = Bunch(dn=dn, name=name, mail_address=address)
 

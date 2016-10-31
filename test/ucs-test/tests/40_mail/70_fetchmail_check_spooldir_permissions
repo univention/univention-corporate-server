@@ -15,6 +15,7 @@ EXPECTED_USER = 'listener'
 EXPECTED_GROUP = 'root'
 EXPECTED_MODE = '0700'
 
+
 def main():
 	if not os.path.exists(DIR_SPOOL_DOVECOT):
 		utils.fail('%r does not exist' % (DIR_SPOOL_DOVECOT,))

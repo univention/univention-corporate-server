@@ -18,18 +18,18 @@ if __name__ == '__main__':
 			schema_name = uts.random_name()
 			filename = '90%s' % uts.random_name()
 			data = '# schema test'
-			package_version='99.%s-%s' % (uts.random_int(), uts.random_int())
+			package_version = '99.%s-%s' % (uts.random_int(), uts.random_int())
 			package = uts.random_name(),
 			appidentifier = '%s' % uts.random_name(),
 
 			schema = udm.create_object('settings/ldapschema',
-							name = schema_name,
-							data = base64.encodestring(bz2.compress(data)),
-							filename = filename,
-							packageversion = package_version,
-							appidentifier = appidentifier,
-							package = package[0],
-							active = active)
+							name=schema_name,
+							data=base64.encodestring(bz2.compress(data)),
+							filename=filename,
+							packageversion=package_version,
+							appidentifier=appidentifier,
+							package=package[0],
+							active=active)
 
 			utils.verify_ldap_object(schema, {
 							'cn': [schema_name],
@@ -41,5 +41,3 @@ if __name__ == '__main__':
 							'univentionLDAPSchemaActive': [active],
 							'univentionObjectType': ['settings/ldapschema'],
 						})
-
-

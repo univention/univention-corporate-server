@@ -56,7 +56,7 @@ if __name__ == '__main__':
 				extension_filename = get_extension_filename(extension_type, extension_name)
 				extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-				properties = { 'data': base64.b64encode(bz2.compress(extension_buffer)),
+				properties = {'data': base64.b64encode(bz2.compress(extension_buffer)),
 							   'filename': '%s.py' % extension_name,
 							   'packageversion': package_version,
 							   'appidentifier': app_id,
@@ -64,11 +64,11 @@ if __name__ == '__main__':
 							   'ucsversionstart': version_start,
 							   'ucsversionend': version_end,
 							   'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
-							   'active': 'FALSE' }
+							   'active': 'FALSE'}
 
 				if not dn:
 					dn = udm.create_object('settings/udm_%s' % extension_type,
-										   name = extension_name,
+										   name=extension_name,
 										   **properties)
 				else:
 					udm.modify_object('settings/udm_%s' % extension_type,

@@ -52,6 +52,7 @@ def doJobs(job, num):
 
 
 class Job(object):
+
 	def __init__(self, ucr):
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.host = '%(hostname)s.%(domainname)s' % ucr

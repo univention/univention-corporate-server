@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Custom ACL snippets in squid.conf 
+## desc: Custom ACL snippets in squid.conf
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
 ## tags: [apptest]
 ## exposure: dangerous
@@ -21,12 +21,13 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
+
 def startHttpServer(host='127.0.0.1', port=80):
 	"""Start a simple Http server in the working directory
 	"""
 	HandlerClass = SimpleHTTPRequestHandler
-	ServerClass  = BaseHTTPServer.HTTPServer
-	Protocol	 = "HTTP/1.0"
+	ServerClass = BaseHTTPServer.HTTPServer
+	Protocol = "HTTP/1.0"
 	server_address = (host, port)
 
 	HandlerClass.protocol_version = Protocol
@@ -35,6 +36,7 @@ def startHttpServer(host='127.0.0.1', port=80):
 	sa = httpd.socket.getsockname()
 	print "Serving HTTP on", sa[0], "port", sa[1], "..."
 	httpd.serve_forever()
+
 
 def perform_test(test_case):
 	((permission, expected_response), acl_type, (value_type, value)) = test_case
@@ -138,7 +140,8 @@ def do_test(test_case):
 			utils.fail("Unexpected Response: %d != %d" % (response, expected_response))
 		else:
 			print ':::: OK ::::'
-	
+
+
 def set_ucr_variables(name, permission, acl_type, value_type, value):
 	squid = SimpleSquid()
 	handler_set(['squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
@@ -146,14 +149,15 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
 
 	squid.restart()
 
+
 def main():
 	try:
  		permissions = ['allow', 'deny']
  		responses = [200, 403]
  		value_types = ['string', 'substring', 'regex']
- 		
+
  		# Test user-agent variable with random data
- 		acl_types = ['browser','browser-i']
+ 		acl_types = ['browser', 'browser-i']
  		values = [
  				"%s%s%s" % (uts.random_string(3),
  					uts.random_string(2, numeric=False).upper(),
@@ -170,7 +174,7 @@ def main():
  		for i in xrange(itertion_length):
  			with ucr_test.UCSTestConfigRegistry() as ucr:
  				perform_test(next(tests))
- 
+
  		# Test dstdomain variable with univention related sites
  		acl_types = ['dstdomain', 'dstdomain-i']
  		values = [
@@ -188,20 +192,20 @@ def main():
 			nethelper.add_redirection('82.198.197.8', 21, 60025)
 
 			# start http server in a different thread on (127.0.0.1:60025)
-			p = Process(target=startHttpServer, kwargs={'port':60025})
+			p = Process(target=startHttpServer, kwargs={'port': 60025})
 			p.start()
 			print p, p.is_alive()
-			
+
 			# Test port variable (21, 443, 80)
 			try:
 				with ucr_test.UCSTestConfigRegistry() as ucr:
-					do_test([('allow', 200, 'port','number', 21, 21)])
+					do_test([('allow', 200, 'port', 'number', 21, 21)])
 				with ucr_test.UCSTestConfigRegistry() as ucr:
-					do_test([('allow', 407, 'port','number', 443, 21)])
+					do_test([('allow', 407, 'port', 'number', 443, 21)])
 				with ucr_test.UCSTestConfigRegistry() as ucr:
-					do_test([('deny', 403, 'port','number', 21, 21)])
+					do_test([('deny', 403, 'port', 'number', 21, 21)])
 				with ucr_test.UCSTestConfigRegistry() as ucr:
-					do_test([('deny', 200, 'port','number', 443, 21)])
+					do_test([('deny', 200, 'port', 'number', 443, 21)])
 
 			finally:
 				# Terminating Http server

@@ -66,7 +66,7 @@ def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=N
 def fail_after(user, x, retry_after):
 	print 'We should fail after', x
 	for i in range(x):
-		print 'Attempt', i+1
+		print 'Attempt', i + 1
 		user.send_token('email')
 
 	try:

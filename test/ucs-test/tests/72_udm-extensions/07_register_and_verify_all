@@ -13,6 +13,7 @@ from univention.testing.utils import fail, wait_for_replication, verify_ldap_obj
 from univention.testing.udm_extensions import *
 import bz2
 
+
 def test_all():
 	package_name = get_package_name()
 	package_version = get_package_version()
@@ -26,7 +27,7 @@ def test_all():
 		extension_buffer[extension_type] = get_extension_buffer(extension_type, extension_name[extension_type])
 		extension_filename[extension_type] = get_extension_filename(extension_type, extension_name[extension_type])
 
-	data = { 'package': package_name }
+	data = {'package': package_name}
 	data.update(extension_filename)
 	joinscript_buffer = '''#!/bin/sh
 VERSION=1

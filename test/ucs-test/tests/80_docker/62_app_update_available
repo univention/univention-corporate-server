@@ -11,7 +11,7 @@ from univention.testing.utils import get_ldap_connection, fail, UCSTestDomainAdm
 from univention.config_registry import ConfigRegistry
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 
 		ucr = ConfigRegistry()
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
 		app_name = get_app_name()
 		package_name = get_app_name()
-		
+
 		app = App(name=app_name, version='1', package_name=package_name)
 		app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
 
@@ -68,4 +68,3 @@ if __name__ == '__main__':
 		finally:
 			app.uninstall()
 			app.remove()
-

@@ -36,7 +36,6 @@ class Test():
 		self.installed = {}
 		self.failed = {}
 
-
 	def _get_other_arch(self):
 		proc = Popen(('dpkg', '--print-architecture'), stdout=PIPE)
 		stdout, _stderr = proc.communicate()
@@ -44,7 +43,6 @@ class Test():
 		assert len(other) == 1
 		print ' '.join(other)
 		return ' '.join(other)
-
 
 	def get_installed_default_packages(self):
 		print "Gathering packages of installed apps "
@@ -84,9 +82,8 @@ class Test():
 				for package in packages:
 					_list.append(package)
 
-
 	def get_appcenter_packages_from_cache(self, pkg, ignore_if_not_installed=False):
-		new_pkg_name =  pkg[0].name
+		new_pkg_name = pkg[0].name
 		try:
 			new_pkg = self.cache[new_pkg_name]
 		except KeyError:
@@ -100,7 +97,6 @@ class Test():
 		if new_pkg and new_pkg.installed and new_pkg.installed.uri:
 			if '://appcenter.' in new_pkg.installed.uri:
 				return(new_pkg_name)
-
 
 	def check_packages_available(self):
 		print "Checking if packages are available"
@@ -120,10 +116,9 @@ class Test():
 				else:
 					amd64 = group.find_package('amd64').version_list[0].ver_str
 					if not i386 and all:
-						self.failed[app] = { app_package : 'version expected: %s, version found: %s' % (str(amd64), 'none found', )}
+						self.failed[app] = {app_package: 'version expected: %s, version found: %s' % (str(amd64), 'none found', )}
 				if i386 and i386 != amd64:
-					self.failed[app] = { app_package : 'version expected: %s, version found: %s' % (str(amd64), str(i386),)}
-
+					self.failed[app] = {app_package: 'version expected: %s, version found: %s' % (str(amd64), str(i386),)}
 
 	def set_multi_architecture(self):
 		if self._other_arch:
@@ -138,11 +133,10 @@ class Test():
 		else:
 			self.pkg_cache = apt.apt_pkg.Cache()
 
-
 	def unset_multi_architecture(self):
 		if self._other_arch:
 			print "Restoring architecture settings"
-			ucr_update(ucr, {UCR_ARCH : self._ucr_arch_settings})
+			ucr_update(ucr, {UCR_ARCH: self._ucr_arch_settings})
 			call(('dpkg', '--remove-architecture', self._other_arch))
 
 

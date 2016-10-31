@@ -46,12 +46,12 @@ if __name__ == '__main__':
 		else:
 			raise ValueError('no ucs-sso host found.')
 
-		lo.modify(ucs_sso_dn, [('aRecord', ips, ips+ip)])
+		lo.modify(ucs_sso_dn, [('aRecord', ips, ips + ip)])
 		try:
 			new_ip = '1.2.3.10'
-			
+
 			iface = ucr.get('interfaces/primary', 'eth0')
-			p1 = subprocess.Popen(['/usr/sbin/umc-command', '-U', '%s$' % computerName, '-P', 'univention', '-s', ucr.get('ldap/master'), 'ip/change', '-o' ,'ip=%s' % new_ip, '-o', 'oldip=%s' % ip[0], '-o', 'netmask=%s' % ucr.get('interfaces/%s/netmask' % iface), '-o',  'role=%s' % role], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			p1 = subprocess.Popen(['/usr/sbin/umc-command', '-U', '%s$' % computerName, '-P', 'univention', '-s', ucr.get('ldap/master'), 'ip/change', '-o', 'ip=%s' % new_ip, '-o', 'oldip=%s' % ip[0], '-o', 'netmask=%s' % ucr.get('interfaces/%s/netmask' % iface), '-o', 'role=%s' % role], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			res = p1.communicate()
 			if p1.returncode != 0:
 				print 'umc-command stdout: %s' % res[1]
@@ -60,7 +60,6 @@ if __name__ == '__main__':
 
 			utils.wait_for_replication()
 			utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)
-			utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips+[new_ip]}, strict=True)
+			utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips + [new_ip]}, strict=True)
 		finally:
 			lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)])
-

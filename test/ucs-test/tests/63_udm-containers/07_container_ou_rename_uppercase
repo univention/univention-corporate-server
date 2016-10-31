@@ -23,17 +23,17 @@ if __name__ == '__main__':
 		def test_organizational_unit(parent, add_user):
 			if parent is None:
 				parent = ucr.get('ldap/base')
-			user_name = 'X' + uts.random_string() # test preserving name (case sensitivity)
+			user_name = 'X' + uts.random_string()  # test preserving name (case sensitivity)
 
 			ou_name = uts.random_string()
 			ou_name_new = ou_name.upper()
 
-			ou = udm.create_object('container/ou', position=parent, name = ou_name)
+			ou = udm.create_object('container/ou', position=parent, name=ou_name)
 			if add_user:
 				user = udm.create_user(position=ou, username=user_name)
 
 			try:
-				udm.modify_object('container/ou', dn = ou, name = ou_name_new)
+				udm.modify_object('container/ou', dn=ou, name=ou_name_new)
 			except AssertionError:
 				pass
 			lo = utils.get_ldap_connection()
@@ -48,12 +48,12 @@ if __name__ == '__main__':
 			new_ou = 'ou=%s,%s' % (ou_name_new, parent)
 			new_user = 'uid=%s,%s' % (user_name, new_ou)
 
-			utils.verify_ldap_object(new_ou, should_exist = True)
+			utils.verify_ldap_object(new_ou, should_exist=True)
 			if add_user:
 				for dn, entry in lo.search(filter='uid=%s' % user_name):
 					if entry.get('uid')[0] != user_name:
 						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
-				utils.verify_ldap_object(new_user, should_exist = True)
+				utils.verify_ldap_object(new_user, should_exist=True)
 
 			for dn, entry in lo.search(filter='ou=%s' % ou_name_new):
 				if entry.get('ou')[0] != ou_name_new:
@@ -73,4 +73,3 @@ if __name__ == '__main__':
 
 		# SECOND LEVEL
 		test_organizational_unit(parent=first_level_unit, add_user=True)
-

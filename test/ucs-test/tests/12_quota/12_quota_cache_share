@@ -39,4 +39,3 @@ if __name__ == '__main__':
 
 	qc.cache_must_not_exists(share1)
 	qc.cache_must_not_exists(share2)
-

@@ -8,16 +8,14 @@
 ##   - univention-directory-manager-tools
 
 
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		dhcp_service = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcp_subnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcp_service)
-
+		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
+		dhcp_subnet = udm.create_object('dhcp/subnet', subnet='10.20.30.0', subnetmask='24', superordinate=dhcp_service)
 
 		dhcp_pool_properties = {
 			'name': uts.random_string(),
@@ -29,9 +27,8 @@ if __name__ == '__main__':
 			'all_clients': 'allow'
 		}
 
-		dhcp_pool = udm.create_object('dhcp/pool', superordinate = dhcp_subnet, **dhcp_pool_properties)
+		dhcp_pool = udm.create_object('dhcp/pool', superordinate=dhcp_subnet, **dhcp_pool_properties)
 
 		utils.verify_ldap_object(dhcp_pool, {'dhcpRange': [dhcp_pool_properties['range']],
 											 'univentionDhcpFailoverPeer': [dhcp_pool_properties['failover_peer']],
 											 'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']})
-

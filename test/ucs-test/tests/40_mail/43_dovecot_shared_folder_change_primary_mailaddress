@@ -20,11 +20,15 @@ from essential.mail import send_mail, random_email, imap_search_mail, get_doveco
 
 TIMEOUT_MAIL = 10
 
+
 class Bunch(object):
+
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
+
 	def __repr__(self):
 		return repr(self.__dict__)
+
 
 def main():
 	with utils.AutomaticListenerRestart() as alr:
@@ -39,7 +43,7 @@ def main():
 					})
 
 				# create folder with mailPrimaryAddress (mpa)
-				dn, name, address = create_shared_mailfolder(udm, fqdn,	mailAddress=True, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+				dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=True, user_permission=['"%s" "%s"' % (user_addr, 'all')])
 				folder = Bunch(dn=dn, name=name, mail_address=address)
 
 				# check folder with mail address

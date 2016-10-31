@@ -15,17 +15,17 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	ipAddresses = ('10.20.30.40', '10.20.30.41', '10.20.30.42', '10.20.30.43')
-	
+
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
-			for ip in ipAddresses: #FIXME: workaround for remaining locks
+			for ip in ipAddresses:  # FIXME: workaround for remaining locks
 				udm.addCleanupLock('aRecord', ip)
 
-			computer = udm.create_object(role, name = uts.random_name(), append = {'ip': ipAddresses[:2]})
+			computer = udm.create_object(role, name=uts.random_name(), append={'ip': ipAddresses[:2]})
 			utils.verify_ldap_object(computer, {'aRecord': ipAddresses[:2]})
 
-			udm.modify_object(role, dn = computer, append = {'ip': ipAddresses[2:]})
+			udm.modify_object(role, dn=computer, append={'ip': ipAddresses[2:]})
 			utils.verify_ldap_object(computer, {'aRecord': ipAddresses})
 
-			udm.modify_object(role, dn = computer, remove = {'ip': ipAddresses[:2]})
+			udm.modify_object(role, dn=computer, remove={'ip': ipAddresses[:2]})
 			utils.verify_ldap_object(computer, {'aRecord': ipAddresses[2:]})

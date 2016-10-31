@@ -15,12 +15,12 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	unixHome = '/home/'
-	
+
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
 			if role == 'computers/ipmanagedclient':
 				continue
 
-			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, unixhome = unixHome)
+			computer = udm.create_object(role, name=uts.random_name())
+			udm.modify_object(role, dn=computer, unixhome=unixHome)
 			utils.verify_ldap_object(computer, {'homeDirectory': [unixHome]})

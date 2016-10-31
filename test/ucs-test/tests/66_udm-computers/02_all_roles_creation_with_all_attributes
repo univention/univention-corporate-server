@@ -27,27 +27,27 @@ if __name__ == '__main__':
 
 	available_ip_nums = range(1, 10)  # will be used for IP endings
 	available_mac_nums = range(11, 99)  # will be used for MAC endings
-	
+
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		if role == 'computers/macos':
 			continue
 		with udm_test.UCSTestUDM() as udm:
-			dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
-			
+			dhcpZone = udm.create_object('dhcp/service', service=uts.random_name())
+
 			# get random, but unique IP and MAC endings Bug #38212:
 			rand_ip = choice(available_ip_nums)
 			available_ip_nums.remove(rand_ip)  # so it won't be used again
 			rand_mac = choice(available_mac_nums)
 			available_mac_nums.remove(rand_mac)  # so it won't be used again
-			
+
 			properties = {
 				'name': uts.random_name(),
 				'description': uts.random_string(),
 				'mac': '01:23:45:67:89:%s' % rand_mac,
-				'network': udm.create_object('networks/network', name = uts.random_name(), network = '10.20.30.0', netmask = '24'),
+				'network': udm.create_object('networks/network', name=uts.random_name(), network='10.20.30.0', netmask='24'),
 				'ip': '10.20.30.%s' % rand_ip,
-				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string()),
-				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string()),
+				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string()),
+				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string()),
 				'inventoryNumber': uts.random_string(),
 				'domain': '%s.%s' % (uts.random_name(), uts.random_name())
 			}
@@ -65,34 +65,31 @@ if __name__ == '__main__':
 			}
 
 			if role != 'computers/ipmanagedclient':
-				properties['password'] =  uts.random_string()
+				properties['password'] = uts.random_string()
 				properties['unixhome'] = '/home/'
-				properties['shell'] =  uts.random_string()
-				properties['primaryGroup'] =  udm.create_group(check_for_drs_replication=False)[0]
+				properties['shell'] = uts.random_string()
+				properties['primaryGroup'] = udm.create_group(check_for_drs_replication=False)[0]
 				properties['groups'] = [udm.create_group(check_for_drs_replication=False)[0], udm.create_group(check_for_drs_replication=False)[0]]
-				expectedLdap['gidNumber'] = ldap.search(base = properties['primaryGroup'], attr = ['gidNumber'])[0][1].get('gidNumber', [])
-				expectedLdap['loginShell'] =  [properties['shell']]
-				expectedLdap['sambaPrimaryGroupSID'] =  [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
+				expectedLdap['gidNumber'] = ldap.search(base=properties['primaryGroup'], attr=['gidNumber'])[0][1].get('gidNumber', [])
+				expectedLdap['loginShell'] = [properties['shell']]
+				expectedLdap['sambaPrimaryGroupSID'] = [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
 				expectedLdap['homeDirectory'] = [properties['unixhome']]
 				expectedLdap['uid'] = ['%s$' % properties['name']]
 				expectedLdap['displayName'] = [properties['name']]
 				expectedLdap['sambaNTPassword'] = [smbpasswd.nthash(properties['password'].lower())]
 				expectedLdap['krb5PrincipalName'] = ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
-
 			if not role in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',
 							'computers/domaincontroller_slave', 'computers/memberserver',
 							'computers/ipmanagedclient'):
-				properties['operatingSystem'] =  uts.random_string()
-				properties['operatingSystemVersion'] =  uts.random_string()
-				expectedLdap['univentionOperatingSystem'] =  [properties['operatingSystem']]
+				properties['operatingSystem'] = uts.random_string()
+				properties['operatingSystemVersion'] = uts.random_string()
+				expectedLdap['univentionOperatingSystem'] = [properties['operatingSystem']]
 				expectedLdap['univentionOperatingSystemVersion'] = [properties['operatingSystemVersion']]
-
-
 
 			# create object
 			computer_DN = udm.create_object(role, **properties)
-			
+
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', ldap.getAttr(computer_DN, 'aRecord')[0])
 			udm.addCleanupLock('mac', ldap.getAttr(computer_DN, 'macAddress')[0])
@@ -112,7 +109,7 @@ if __name__ == '__main__':
 				'relativeDomainName': [properties['name']],
 				'zoneName': [properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0]]
 			})
-			
+
 			# validate related PTR record
 			utils.verify_ldap_object('relativeDomainName=%s,%s' % (rand_ip, properties['dnsEntryZoneReverse']), {
 				'relativeDomainName': str(rand_ip),
@@ -128,7 +125,7 @@ if __name__ == '__main__':
 					if not computer_sambaSID.startswith('S-1-4'):
 						utils.fail('"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN)
 				else:
-					sambaDomainSID = ldap.search(filter = 'objectClass=sambaDomain', attr = ['sambaSID'])[0][1]['sambaSID'][0]
+					sambaDomainSID = ldap.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0]
 					if not computer_sambaSID.startswith(sambaDomainSID):
 						utils.fail('"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID))
 

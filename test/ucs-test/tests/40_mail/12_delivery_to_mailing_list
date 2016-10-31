@@ -33,9 +33,9 @@ def main():
 				userdn, username = udm.create_user(
 					username=name,
 					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailHomeServer': host,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				mails.append(usermail)

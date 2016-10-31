@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
 			inventoryNumber = uts.random_string()
-	
-			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, inventoryNumber = inventoryNumber)
+
+			computer = udm.create_object(role, name=uts.random_name())
+			udm.modify_object(role, dn=computer, inventoryNumber=inventoryNumber)
 			utils.verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]})

@@ -25,14 +25,14 @@ if __name__ == '__main__':
 		ou_name = uts.random_string()
 		ou_name_new = uts.random_string()
 
-		ou = udm.create_object('container/ou', name = ou_name)
+		ou = udm.create_object('container/ou', name=ou_name)
 		user = udm.create_user(position=ou, username=user_name)
 
-		udm.modify_object('container/ou', dn = ou, name = ou_name_new)
-		utils.verify_ldap_object(ou, should_exist = False)
-		utils.verify_ldap_object(user[0], should_exist = False)
+		udm.modify_object('container/ou', dn=ou, name=ou_name_new)
+		utils.verify_ldap_object(ou, should_exist=False)
+		utils.verify_ldap_object(user[0], should_exist=False)
 
-		new_ou = 'ou=%s,%s' % (ou_name_new,ucr.get('ldap/base'))
+		new_ou = 'ou=%s,%s' % (ou_name_new, ucr.get('ldap/base'))
 		new_user = 'uid=%s,ou=%s,%s' % (user_name, ou_name_new, ucr.get('ldap/base'))
-		utils.verify_ldap_object(new_ou, should_exist = True)
-		utils.verify_ldap_object(new_user, should_exist = True)
+		utils.verify_ldap_object(new_ou, should_exist=True)
+		utils.verify_ldap_object(new_user, should_exist=True)

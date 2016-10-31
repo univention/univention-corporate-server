@@ -26,24 +26,29 @@ if __name__ == '__main__':
 	if utils.package_installed('univention-samba4'):
 		sys.exit(138)
 
+
 def _get_name_normal():
 	return random_name()
 
+
 def _get_name_case_mix():
-	return 'A'+random_name()
+	return 'A' + random_name()
+
 
 def _get_name_with_space():
-	return 'A '+random_name()
+	return 'A ' + random_name()
+
 
 def _get_name_with_umlauts():
-	return 'Aü '+random_name()
+	return 'Aü ' + random_name()
+
 
 def _get_ou_name():
 	return random_name()
 
-UDM_MODULE='computers/linux'
+UDM_MODULE = 'computers/linux'
 
-names=[]
+names = []
 names.append(_get_name_normal())
 names.append(_get_name_case_mix())
 # Depends on the UDM_MODULE syntax
@@ -62,28 +67,31 @@ destination_ou2 = udm.create_object('container/ou', name=destination_ou2_name)
 destination_ou3 = udm.create_object('container/ou', name=destination_ou3_name)
 wait_for_replication()
 
+
 def check_listener_stop(consider_listener):
 	if consider_listener:
 		stop_listener()
 
+
 def check_listener_start(consider_listener):
 	if consider_listener:
 		start_listener()
+
 
 def dump_status(consider_listener, wait_after_each_step, name):
 	print 'Consider listener: %s' % consider_listener
 	print 'Wait for replication after each step: %s' % wait_after_each_step
 	print 'Computer name: %s\n' % name
 
-for consider_listener in [False,True]:
-	for wait_after_each_step in [False,True]:
+for consider_listener in [False, True]:
+	for wait_after_each_step in [False, True]:
 		# wait is not possible if the listener should be not running
 		if wait_after_each_step and consider_listener:
 			continue
 
 		for computer_name in names:
 			check_listener_stop(consider_listener)
-			name = computer_name+random_name(4) # make name uniq
+			name = computer_name + random_name(4)  # make name uniq
 			print '\n***** Move once *****'
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
@@ -94,7 +102,7 @@ for consider_listener in [False,True]:
 			utils.verify_ldap_object(computer, should_exist=False)
 
 			check_listener_stop(consider_listener)
-			name = computer_name+random_name(4) # make name uniq
+			name = computer_name + random_name(4)  # make name uniq
 			print '\n***** Move twice *****'
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
@@ -109,7 +117,7 @@ for consider_listener in [False,True]:
 			utils.verify_ldap_object(computer_new2)
 
 			check_listener_stop(consider_listener)
-			name = computer_name+random_name(4) # make name uniq
+			name = computer_name + random_name(4)  # make name uniq
 			print '\n***** Move thrice *****'
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
@@ -130,7 +138,7 @@ for consider_listener in [False,True]:
 
 			# create and delete target before starting
 			print '\n***** Create delete and move once *****'
-			name = computer_name+random_name(4) # make name uniq
+			name = computer_name + random_name(4)  # make name uniq
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=destination_ou1, wait_for_replication=True)
 			udm.remove_object(UDM_MODULE, dn=computer, wait_for_replication=True)

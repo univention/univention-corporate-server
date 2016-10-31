@@ -16,7 +16,7 @@ import ldap
 import time
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()
@@ -45,10 +45,9 @@ univention-install --yes --no-install-recommends univention-server-slave univent
 				print 'LDAP connection failed. Wait for ten seconds and try again.'
 				time.sleep(60)
 				lo = get_ldap_connection()
-				
+
 			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionDomainController)(univentionServerRole=slave)(!(aRecord=*)))' % app_name, unique=True, required=True)
 
 		finally:
 			app.uninstall()
 			app.remove()
-

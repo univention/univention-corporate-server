@@ -9,6 +9,7 @@ import glob
 import re
 import subprocess
 
+
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
 	print ' ** %r' % cmd
@@ -23,15 +24,18 @@ def run_command(cmd):
 		print 'Return code = %s,\nOut= %s' % (ret, out)
 		return 1
 
+
 def apt_update():
 	"""Performs apt-get update"""
 	cmd = ['apt-get', 'update']
 	return run_command(cmd)
 
+
 def test_install(pkg_name):
 	"""Simulate packages installation"""
 	cmd = ['apt-get', '-s', 'install', pkg_name]
 	return run_command(cmd)
+
 
 def main():
 	if not apt_update():

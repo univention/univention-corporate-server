@@ -15,13 +15,13 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	macAddresses = ['11:11:11:11:11:11', '22:22:22:22:22:22']
-	
+
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
-			for mac in macAddresses: #FIXME: workaround for remaining locks
+			for mac in macAddresses:  # FIXME: workaround for remaining locks
 				udm.addCleanupLock('mac', mac)
 
-			computer = udm.create_object(role, name = uts.random_name())
+			computer = udm.create_object(role, name=uts.random_name())
 
-			udm.modify_object(role, dn = computer, append = {'mac': macAddresses[:2]})
+			udm.modify_object(role, dn=computer, append={'mac': macAddresses[:2]})
 			utils.verify_ldap_object(computer, {'macAddress': macAddresses})

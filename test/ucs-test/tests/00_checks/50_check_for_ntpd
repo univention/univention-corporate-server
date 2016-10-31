@@ -13,6 +13,7 @@ proc = Popen(['pgrep', 'ntpd'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
 
+
 def dump_ps():
 	call(['ps', 'afwx'])
 

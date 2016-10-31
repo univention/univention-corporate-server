@@ -36,9 +36,9 @@ def main():
 						mail = '%s@%s' % (uts.random_name(), domain)
 						user_dn, username = udm.create_user(
 							set={
-								'password'           : password,
-								'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
-								'mailPrimaryAddress' : mail if i > 0 else '',
+								'password': password,
+								'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+								'mailPrimaryAddress': mail if i > 0 else '',
 							},
 							check_for_drs_replication=True
 						)
@@ -50,9 +50,9 @@ def main():
 					group_dn = udm.create_object(
 						'groups/group',
 						set={
-							'name'        : group_name,
-							'mailAddress' : group_mail,
-							'users'       : users_list[0],
+							'name': group_name,
+							'mailAddress': group_mail,
+							'users': users_list[0],
 						},
 						position='cn=groups,%s' % ucr.get('ldap/base'),
 						check_for_drs_replication=True
@@ -71,7 +71,7 @@ def main():
 						should_be_delivered = False
 						if i in [1, 2]:
 							should_be_delivered = True
-						print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+						print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
 						check_delivery(token, mail, should_be_delivered)
 
 					udm.modify_object(
@@ -94,7 +94,7 @@ def main():
 						'users/user',
 						dn=users_list[0],
 						set={
-							'mailPrimaryAddress' : mails_list[0]
+							'mailPrimaryAddress': mails_list[0]
 						},
 						check_for_drs_replication=True
 					)

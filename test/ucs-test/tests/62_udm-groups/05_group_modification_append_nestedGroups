@@ -21,5 +21,5 @@ if __name__ == '__main__':
 		group = udm.create_group()[0]
 		nested_groups = [udm.create_group()[0], udm.create_group()[0]]
 
-		udm.modify_object('groups/group', dn = group, append = {'nestedGroup': nested_groups})
+		udm.modify_object('groups/group', dn=group, append={'nestedGroup': nested_groups})
 		utils.verify_ldap_object(group, {'uniqueMember': nested_groups})

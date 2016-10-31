@@ -25,8 +25,8 @@ if __name__ == '__main__':
 			'tabName': uts.random_name()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
-		
-		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout = subprocess.PIPE).communicate()[0]
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+
+		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0]
 		if not properties['tabName'] in module_help_text:
 			utils.fail('Could not find tab name of created settings/extended_attribute in module help')

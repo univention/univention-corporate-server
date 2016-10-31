@@ -26,10 +26,10 @@ if __name__ == '__main__':
 			'multivalue': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		extended_attribute_values = [uts.random_string(), uts.random_string()]
-		group = udm.create_group(append = {properties['CLIName']: extended_attribute_values})[0]
+		group = udm.create_group(append={properties['CLIName']: extended_attribute_values})[0]
 
 		try:
 			udm.modify_object('groups/group', dn=group, remove={properties['CLIName']: extended_attribute_values})
