@@ -18,9 +18,9 @@ import univention.uldap as uldap
 
 def main(subnet):
 	with udm_test.UCSTestUDM() as udm:
-		reverse_zone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet=subnet)
+		reverse_zone = udm.create_object('dns/reverse_zone', nameserver=uts.random_string(), subnet=subnet)
 		try:
-			dns_host = udm.create_object('dns/host_record', name = uts.random_name(), superordinate = reverse_zone)
+			dns_host = udm.create_object('dns/host_record', name=uts.random_name(), superordinate=reverse_zone)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			return
 

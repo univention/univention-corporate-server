@@ -26,9 +26,9 @@ if __name__ == '__main__':
 			zoneName = ''
 			ptr_record = uts.random_name()
 
-			host = uts.random_name()+'.'+ucr.get('domainname')
+			host = uts.random_name() + '.' + ucr.get('domainname')
 
-			ip = uts.random_ip().split('.',2)
+			ip = uts.random_ip().split('.', 2)
 			ip[2] = ip[2].partition('.')[0]
 			ip = '.'.join(ip)
 
@@ -47,13 +47,13 @@ if __name__ == '__main__':
 			}
 
 			baseDn = ucr.get('domainname').split('.')
-			
+
 			pos = 'cn=dns'
-			
+
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
 
-			reverse_zone = udm.create_object('dns/reverse_zone',position=pos,**reverse_zone_properties)
+			reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
 
 			words = reverse_zone_properties['subnet'].split('.')
 
@@ -67,12 +67,12 @@ if __name__ == '__main__':
 
 			zoneName += '.in-addr.arpa'
 
-			ptr = udm.create_object('dns/ptr_record', address = ptr_address, superordinate = reverse_zone, ptr_record = ptr_record)
+			ptr = udm.create_object('dns/ptr_record', address=ptr_address, superordinate=reverse_zone, ptr_record=ptr_record)
 
 			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
@@ -88,13 +88,13 @@ if __name__ == '__main__':
 				'a': '2011:06f8:13dc:0002:19b7:d592:09dd:113a'
 			})
 
-			reverse_zone = udm.create_object('dns/reverse_zone',position=pos, **reverse_zone_properties)
+			reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
 
 			words = reverse_zone_properties['subnet'].split(':')
 
 			words.reverse()
 
-			zoneName = ptr_address +'.'
+			zoneName = ptr_address + '.'
 
 			for s in words:
 				t = s[::-1]
@@ -103,12 +103,12 @@ if __name__ == '__main__':
 
 			zoneName += 'ip6.arpa'
 
-			ptr = udm.create_object('dns/ptr_record', address = ptr_address, superordinate = reverse_zone, ptr_record = ptr_record)
+			ptr = udm.create_object('dns/ptr_record', address=ptr_address, superordinate=reverse_zone, ptr_record=ptr_record)
 
 			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')

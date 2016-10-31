@@ -16,7 +16,7 @@ import univention.testing.udm as udm_test
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		try:
-			group = udm.create_group(name = '%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
+			group = udm.create_group(name='%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

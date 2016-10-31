@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python2.7
-## desc: Test ACL registration for different UCS versions 
+## desc: Test ACL registration for different UCS versions
 ## tags:
 ##  - ldapextensions
 ##  - apptest
@@ -22,8 +22,8 @@ ucr = ConfigRegistry()
 ucr.load()
 
 currentversion = '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'))
-nextversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel'))+1)
-futureversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel'))+99)
+nextversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 1)
+futureversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 99)
 
 with UCSTestUDM() as udm:
 	package_name = get_package_name()
@@ -33,7 +33,7 @@ with UCSTestUDM() as udm:
 	container_name_new = get_container_name()
 	join_script_name = '66%s.inst' % package_name
 
-	user_dn,_username = udm.create_user( password='univention' )
+	user_dn, _username = udm.create_user(password='univention')
 	container_current = udm.create_object('container/cn', name=container_name_current)
 	container_new = udm.create_object('container/cn', name=container_name_new)
 	try:

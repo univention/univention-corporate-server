@@ -15,15 +15,14 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		template_name = uts.random_name()
 		try:
-			template = udm.create_object('settings/usertemplate', name = template_name)
+			template = udm.create_object('settings/usertemplate', name=template_name)
 			utils.verify_ldap_object(template, {'cn': [template_name]})
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			utils.fail('settings/usertemplate could not be created')
 		except utils.LDAPObjectNotFound:
 			utils.fail('settings/usertemplate object was not found')
 
-
-		udm.remove_object('settings/usertemplate', dn = template)
+		udm.remove_object('settings/usertemplate', dn=template)
 		try:
 			utils.verify_ldap_object(template, {'cn': [template_name]})
 		except utils.LDAPObjectNotFound:

@@ -9,6 +9,7 @@ from dockertest import Appcenter, App, get_app_name, get_app_version
 from univention.testing.utils import get_ldap_connection
 import socket
 
+
 def _open_port(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
@@ -27,9 +28,9 @@ if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()
-	
+
 		app = App(name=app_name, version=app_version)
-	
+
 		try:
 			app.set_ini_parameter(
 				DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
@@ -41,11 +42,11 @@ if __name__ == '__main__':
 			)
 			app.create_basic_modproxy_settings()
 			app.add_to_local_appcenter()
-	
+
 			appcenter.update()
-	
+
 			app.install()
-	
+
 			app.verify()
 
 			app.verify_basic_modproxy_settings()

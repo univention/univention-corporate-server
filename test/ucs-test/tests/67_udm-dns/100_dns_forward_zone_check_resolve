@@ -45,9 +45,9 @@ if __name__ == '__main__':
 			}
 
 			baseDn = ucr.get('domainname').split('.')
-			
+
 			pos = 'cn=dns'
-			
+
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
 
@@ -61,13 +61,12 @@ if __name__ == '__main__':
 				'txt': uts.random_string()
 			}
 
-			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
+			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
-			query = resolveDnsEntry(duration,forward_zone_properties['zone'],resourceRecord, resourceRecord_Number)
+			query = resolveDnsEntry(duration, forward_zone_properties['zone'], resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != forward_zone_properties['zone']:
 				raise Exception('the resolved name is not equal to the created ldap-object')
-

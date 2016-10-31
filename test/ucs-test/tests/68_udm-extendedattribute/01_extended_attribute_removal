@@ -25,5 +25,5 @@ if __name__ == '__main__':
 
 		extended_attribute = udm.create_object('settings/extended_attribute', **properties)
 
-		udm.remove_object('settings/extended_attribute', dn = extended_attribute)
-		utils.verify_ldap_object(extended_attribute, should_exist = False)
+		udm.remove_object('settings/extended_attribute', dn=extended_attribute)
+		utils.verify_ldap_object(extended_attribute, should_exist=False)

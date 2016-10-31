@@ -9,7 +9,7 @@ from dockertest import *
 from univention.testing.utils import get_ldap_connection
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()
@@ -31,4 +31,3 @@ if __name__ == '__main__':
 		finally:
 			app.uninstall()
 			app.remove()
-

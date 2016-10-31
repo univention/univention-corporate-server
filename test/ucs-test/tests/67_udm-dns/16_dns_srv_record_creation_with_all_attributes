@@ -13,15 +13,15 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string())
 
 		srv_record_proprties = {
 			'name': '%s tcp %s' % (uts.random_string(), uts.random_string()),
 			'location': '0 1 2 %s.%s' % (uts.random_name(), uts.random_name()),
-			'zonettl' : '128'
+			'zonettl': '128'
 		}
 
-		srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, **srv_record_proprties)
+		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_proprties)
 
 		utils.verify_ldap_object(srv_record, {
 			'sRVRecord': [srv_record_proprties['location']],

@@ -23,6 +23,7 @@ import univention.testing.utils as utils
 
 timeout = 10
 
+
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		cmd = ['/etc/init.d/dovecot', 'restart']
@@ -90,7 +91,7 @@ def main():
 				imap.select("INBOX")
 				imap.append("INBOX", "", imaplib.Time2Internaldate(time.time()), msg)
 				if not mail_delivered(token_body, mail_address=mail):
-					utils.fail("Fail: quota warn message delivery missing (quota was set to %d MB, warn message expected above %d percent, uploaded message of length %0.3f MB)." % (quota04, percent, len(msg)/1024.0/1024.0))
+					utils.fail("Fail: quota warn message delivery missing (quota was set to %d MB, warn message expected above %d percent, uploaded message of length %0.3f MB)." % (quota04, percent, len(msg) / 1024.0 / 1024.0))
 
 				#
 				# user over quota should not be able to IMAP4.append()

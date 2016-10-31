@@ -15,6 +15,7 @@ from univention.testing.utils import fail, wait_for_replication_and_postrun
 import ldap
 import time
 
+
 def main():
 	with UCSTestUDM() as udm:
 		package_name = get_package_name()
@@ -23,7 +24,7 @@ def main():
 		join_script_name = '66%s.inst' % package_name
 		unjoin_script_name = '66%s.uinst' % package_name
 
-		user_dn,_username = udm.create_user( password='univention' )
+		user_dn, _username = udm.create_user(password='univention')
 		container = udm.create_object('container/cn', name=container_name)
 		try:
 			set_container_description(user_dn, container)

@@ -10,11 +10,13 @@ from dockertest import *
 from subprocess import call
 from univention.testing.utils import fail
 
+
 class SyncedAppcenter(Appcenter):
+
 	def __init__(self):
 		Appcenter.__init__(self)
 		self.vv = self.ucr.get('version/version')
-		self.upstream_appcenter='https://appcenter.software-univention.de'
+		self.upstream_appcenter = 'https://appcenter.software-univention.de'
 		handler_set([
 			'appcenter/index/verify=true',
 		])
@@ -35,7 +37,7 @@ class SyncedAppcenter(Appcenter):
 		d = os.path.dirname('/var/www/%s' % f)
 		if not os.path.exists(d):
 			os.makedirs(d)
-		
+
 		call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
 
 	def download_index_json(self):
@@ -43,7 +45,7 @@ class SyncedAppcenter(Appcenter):
 
 	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
-		
+
 	def remove_from_cache(self, f):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
 			os.remove(os.path.join('/var/cache/univention-appcenter/', f))
@@ -70,7 +72,7 @@ class SyncedAppcenter(Appcenter):
 		self.download_index_json()
 		self.download_index_json_gpg()
 		f = '/var/www/meta-inf/%s/index.json' % self.vv
-		call('gunzip %(f)s.gz; echo "foo" >>%(f)s; gzip %(f)s' % {'f':f}, shell=True)
+		call('gunzip %(f)s.gz; echo "foo" >>%(f)s; gzip %(f)s' % {'f': f}, shell=True)
 		res = call('univention-app update', shell=True)
 		if res == 0:
 			fail('_test_modify_index failed')

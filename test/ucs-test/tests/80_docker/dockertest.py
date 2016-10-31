@@ -39,17 +39,48 @@ import subprocess
 import urllib2
 
 
-class UCSTest_Docker_Exception(Exception): pass
-class UCSTest_Docker_LoginFailed(Exception): pass
-class UCSTest_Docker_PullFailed(Exception): pass
-class AppcenterMetainfAlreadyExists(Exception): pass
-class AppcenterRepositoryAlreadyExists(Exception): pass
-class UCSTest_DockerApp_InstallationFailed(Exception): pass
-class UCSTest_DockerApp_UpdateFailed(Exception): pass
-class UCSTest_DockerApp_UpgradeFailed(Exception): pass
-class UCSTest_DockerApp_VerifyFailed(Exception): pass
-class UCSTest_DockerApp_RemoveFailed(Exception): pass
-class UCSTest_DockerApp_ModProxyFailed(Exception): pass
+class UCSTest_Docker_Exception(Exception):
+	pass
+
+
+class UCSTest_Docker_LoginFailed(Exception):
+	pass
+
+
+class UCSTest_Docker_PullFailed(Exception):
+	pass
+
+
+class AppcenterMetainfAlreadyExists(Exception):
+	pass
+
+
+class AppcenterRepositoryAlreadyExists(Exception):
+	pass
+
+
+class UCSTest_DockerApp_InstallationFailed(Exception):
+	pass
+
+
+class UCSTest_DockerApp_UpdateFailed(Exception):
+	pass
+
+
+class UCSTest_DockerApp_UpgradeFailed(Exception):
+	pass
+
+
+class UCSTest_DockerApp_VerifyFailed(Exception):
+	pass
+
+
+class UCSTest_DockerApp_RemoveFailed(Exception):
+	pass
+
+
+class UCSTest_DockerApp_ModProxyFailed(Exception):
+	pass
 
 
 def docker_login(server='docker.software-univention.de'):
@@ -63,6 +94,7 @@ def docker_pull(image, server='docker.software-univention.de'):
 	if ret != 0:
 		raise UCSTest_Docker_PullFailed()
 
+
 def docker_image_is_present(imgname):
 	cmd = ['docker', 'inspect', imgname]
 	with open('/dev/null', 'w') as devnull:
@@ -70,11 +102,13 @@ def docker_image_is_present(imgname):
 		p.wait()
 		return p.returncode == 0
 
+
 def remove_docker_image(imgname):
 	cmd = ['docker', 'rmi', imgname]
 	p = subprocess.Popen(cmd, close_fds=True)
 	p.wait()
 	return p.returncode == 0
+
 
 def pull_docker_image(imgname):
 	cmd = ['docker', 'pull', imgname]
@@ -82,11 +116,13 @@ def pull_docker_image(imgname):
 	p.wait()
 	return p.returncode == 0
 
+
 def restart_docker():
 	cmd = ['invoke-rc.d', 'docker', 'restart']
 	p = subprocess.Popen(cmd, close_fds=True)
 	p.wait()
 	return p.returncode == 0
+
 
 def get_app_name():
 	""" returns a valid app name """
@@ -111,7 +147,8 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
 		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
 	''' % {'version': ucs_version, 'app': app_directory}, shell=True)
-	
+
+
 class App(object):
 
 	def __init__(self, name, version, app_directory_suffix=None, package_name=None, build_package=True):
@@ -130,7 +167,7 @@ class App(object):
 		else:
 			self.package_name = get_app_name()
 
-		self.package_version = '%s.%s' % (version,get_app_version())
+		self.package_version = '%s.%s' % (version, get_app_version())
 
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
@@ -336,8 +373,6 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 			raise UCSTest_DockerApp_ModProxyFailed(Exception)
 
 
-
-
 class Appcenter(object):
 
 	def __init__(self, version=None):
@@ -421,6 +456,7 @@ Virtualization=Virtualisierung''')
 		if exc_type:
 			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
 		self.cleanup()
+
 
 def restore_data_script_4_1():
 	return '''#!/usr/bin/python2.7
@@ -519,6 +555,7 @@ if __name__ == '__main__':
 		raise
 '''
 
+
 def store_data_script_4_1():
 	return '''#!/usr/bin/python2.7
 from optparse import OptionParser
@@ -609,6 +646,7 @@ if __name__ == '__main__':
 			error_file.close()
 		raise
 '''
+
 
 def get_dummy_svg():
 	return '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>

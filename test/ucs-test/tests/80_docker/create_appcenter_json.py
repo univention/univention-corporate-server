@@ -50,7 +50,9 @@ DOCKER_READ_USER_CRED = {
 	'password': 'readonly',
 	}
 
+
 class FileInfo(object):
+
 	def __init__(self, app, name, url, filename):
 		self.name = name
 		self.url = url
@@ -59,13 +61,17 @@ class FileInfo(object):
 		self.sha256 = sha256sum(filename)
 		self.archive_filename = '%s.%s' % (app.name, name)
 
+
 class DockerImageInfo(object):
+
 	def __init__(self, name, url, content):
 		self.name = name
 		self.url = url
 		self.sha256 = sha256(content).hexdigest()
 
+
 class App(object):
+
 	def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
 		self.name = name
 		self.ucs_version = ucs_version
@@ -198,7 +204,7 @@ class App(object):
 		index = {}
 		for file_info in self.important_files():
 			index[file_info.name] = {
-				'url' : file_info.url,
+				'url': file_info.url,
 				}
 			for hash_type in ('md5', 'sha256'):
 				try:
@@ -208,21 +214,24 @@ class App(object):
 					pass
 		for docker_image_info in self.docker_images():
 			index['ini'][docker_image_info.name] = {
-				'url' : docker_image_info.url,
-				'sha256' : docker_image_info.sha256,
+				'url': docker_image_info.url,
+				'sha256': docker_image_info.sha256,
 				}
 		return index
+
 
 def check_ini_file(filename):
 	name, ext = os.path.splitext(os.path.basename(filename))
 	if ext == '.ini':
 		return name
 
+
 def md5sum(filename):
 	m = md5()
 	with open(filename, 'r') as f:
 		m.update(f.read())
 		return m.hexdigest()
+
 
 def sha256sum(filename):
 	m = sha256()
@@ -294,4 +303,3 @@ if __name__ == '__main__':
 			f.close()
 	else:
 		print out
-

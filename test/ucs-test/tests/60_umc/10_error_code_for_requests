@@ -45,11 +45,11 @@ def main():
 		i_connection = test_con.get_custom_connection('ucstest/norespond')
 		connections.append(i_connection)
 	time.sleep(2)
-	
+
 	print 'Killing module process...'
 	kill_ucstest()
 	time.sleep(2)
-	
+
 	print 'Verfying that requests are answered with an error code...'
 	success = True
 	for i_connection in connections:
@@ -60,7 +60,7 @@ def main():
 				success = False
 		except ssl.SSLError:
 			print 'ERROR: request timed out'
-	
+
 	restart_web_server()
 	if not success:
 		utils.fail('ERROR: Requests are not answered with an error code')

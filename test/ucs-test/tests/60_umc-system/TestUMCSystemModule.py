@@ -12,6 +12,7 @@ from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
 from univention.testing.umc import UMCConnection
 
+
 class TestUMCSystem(object):
     """
     A base class for testing UMC-system

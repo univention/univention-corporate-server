@@ -15,7 +15,8 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-TIMEOUT = 60 #sec
+TIMEOUT = 60  # sec
+
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
@@ -60,9 +61,9 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'ip'                  : ip,
-						'name'                : host,
-						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						'ip': ip,
+						'name': host,
+						'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
 					},
 					position='cn=computers,%s' % basedn
@@ -70,11 +71,11 @@ def main():
 			mails_list = []
 			for mailHomeServer, _ in hosts:
 				mail = '%s@%s' % (uts.random_name(), domain)
-				user_dn , username = udm.create_user(
+				user_dn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailPrimaryAddress' : mail,
-						'mailHomeServer'     : mailHomeServer
+						'password': password,
+						'mailPrimaryAddress': mail,
+						'mailHomeServer': mailHomeServer
 					}
 				)
 				mails_list.append(mail)
@@ -103,8 +104,8 @@ def main():
 						password=password
 					)
 					check_delivery(token, mail, False)
-					check_delivery_mailsink(token, sink_files[0].name, (i==0))
-					check_delivery_mailsink(token, sink_files[1].name, (i==1))
+					check_delivery_mailsink(token, sink_files[0].name, (i == 0))
+					check_delivery_mailsink(token, sink_files[1].name, (i == 1))
 			finally:
 				for ms in mail_sinks:
 					ms.stop()

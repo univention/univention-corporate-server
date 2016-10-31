@@ -19,7 +19,6 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 
 
-
 if __name__ == '__main__':
 	ucr = univention.testing.ucr.UCSTestConfigRegistry()
 	ucr.load()
@@ -33,13 +32,12 @@ if __name__ == '__main__':
 		}
 
 		printer_samba_name = uts.random_name()
-		printer = udm.create_object('shares/printer', position = 'cn=printers,%s' % ucr['ldap/base']
-, **printer_properties)
+		printer = udm.create_object('shares/printer', position='cn=printers,%s' % ucr['ldap/base'], **printer_properties)
 		utils.verify_ldap_object(printer, {
 			'univentionPrinterModel': [printer_properties['model']],
 			'univentionPrinterURI': [printer_properties['uri'].replace(' ', '')],
 			'univentionPrinterSpoolHost': [printer_properties['spoolHost']]
 		})
 
-		udm.modify_object('shares/printer', dn = printer, sambaName = printer_samba_name)
+		udm.modify_object('shares/printer', dn=printer, sambaName=printer_samba_name)
 		utils.verify_ldap_object(printer, {'univentionPrinterSambaName': [printer_samba_name]})

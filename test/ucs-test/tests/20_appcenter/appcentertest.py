@@ -72,12 +72,20 @@ def get_requested_apps():
 	return ret
 
 
-class AppCenterOperationError(Exception): pass
-class AppCenterCheckError(Exception): pass
-class AppCenterTestFailure(Exception): pass
+class AppCenterOperationError(Exception):
+	pass
+
+
+class AppCenterCheckError(Exception):
+	pass
+
+
+class AppCenterTestFailure(Exception):
+	pass
 
 
 class AppCenterOperations(object):
+
 	def __init__(self):
 		self.connection = umc.UMCTestConnection()
 
@@ -113,8 +121,10 @@ class AppCenterOperations(object):
 		`appcenter/progress` und call `callback(info, steps)` if a callback
 		function was given and `info` or `steps` changed"""
 		def _thread(event, options):
-			try: self.connection.request("appcenter/keep_alive")
-			finally: event.set()
+			try:
+				self.connection.request("appcenter/keep_alive")
+			finally:
+				event.set()
 
 		self._renew_connection()
 		result = self.connection.request("appcenter/invoke", options)
@@ -135,7 +145,8 @@ class AppCenterOperations(object):
 					callback(info, steps)
 
 				finished = progress.get("finished", False)
-				if finished: errors = progress.get("errors", [])
+				if finished:
+					errors = progress.get("errors", [])
 
 			return (result, errors)
 		return (result, [])
@@ -180,6 +191,7 @@ class AppCenterOperations(object):
 
 
 class DebianPackage(debian_package.DebianPackage):
+
 	def __init__(self, name="testdeb", version="1.0", depends=None,
 	             breaks=None, conflicts=None):
 		self._depends = depends or list()
@@ -317,6 +329,7 @@ class AppPackage(object):
 
 
 class CheckOperations(object):
+
 	def __init__(self, application, info):
 		self.application = application
 		self.info = info
@@ -491,6 +504,7 @@ class CheckOperations(object):
 
 
 class TestOperations(object):
+
 	def __init__(self, app_center, application):
 		self.app_center = app_center
 		self.application = application
@@ -642,7 +656,8 @@ def test_case(function):
 	def wrapper(*args, **kwargs):
 		print("Running {}{}".format(function.__name__, function.__doc__))
 		app_center = AppCenterOperations()
-		try: function(app_center, function.__name__.replace("_", "-"))
+		try:
+			function(app_center, function.__name__.replace("_", "-"))
 		except Exception:
 			print("Error in {}{}".format(function.__name__, function.__doc__))
 			raise

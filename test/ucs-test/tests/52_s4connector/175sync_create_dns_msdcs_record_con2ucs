@@ -31,7 +31,7 @@ if __name__ == '__main__':
 	test_fqdn = "%s.%s" % (test_relativeDomainName, domainname)
 	s4_zonename = "_msdcs.%s" % (domainname,)
 
-	nsupdate_add_request='''server %(hostname)s.%(domainname)s
+	nsupdate_add_request = '''server %(hostname)s.%(domainname)s
 zone %(zonename)s.
 ; debug yes
 ; update delete %(zonename)s. A
@@ -57,7 +57,7 @@ quit''' % {
 	sys.stdout.flush()
 
 	## TODO: remove again
-	nsupdate_del_request='''server %(hostname)s.%(domainname)s
+	nsupdate_del_request = '''server %(hostname)s.%(domainname)s
 zone %(zonename)s.
 ; debug yes
 update delete %(test_fqdn)s. SRV

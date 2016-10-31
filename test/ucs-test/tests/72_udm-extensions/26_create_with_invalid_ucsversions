@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		for extension_type in ('hook', 'syntax', 'module'):
 			print '========================= TESTING EXTENSION %s =============================' % extension_type
-			for (version_start, version_end) in ( (random_ucs_version(max_major=2), random_name()),
+			for (version_start, version_end) in ((random_ucs_version(max_major=2), random_name()),
 												  (random_name(), random_ucs_version(min_major=5)),
 												  (random_name(), random_name())):
 				extension_name = get_extension_name(extension_type)
@@ -30,15 +30,15 @@ if __name__ == '__main__':
 
 				try:
 					dn = udm.create_object('settings/udm_%s' % extension_type,
-										   name = extension_name,
-										   data = base64.b64encode(bz2.compress(extension_buffer)),
-										   filename = extension_filename,
-										   packageversion = package_version,
-										   appidentifier = app_id,
-										   package = package_name,
-										   ucsversionstart = version_start,
-										   ucsversionend = version_end,
-										   active = 'FALSE')
+										   name=extension_name,
+										   data=base64.b64encode(bz2.compress(extension_buffer)),
+										   filename=extension_filename,
+										   packageversion=package_version,
+										   appidentifier=app_id,
+										   package=package_name,
+										   ucsversionstart=version_start,
+										   ucsversionend=version_end,
+										   active='FALSE')
 					fail('Extension %s has been created with invalid UCS version (ucsversionstart=%r ucsversionend=%r)' % (extension_type, version_start, version_end))
 				except udm_test.UCSTestUDM_CreateUDMObjectFailed, ex:
 					pass

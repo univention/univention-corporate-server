@@ -32,12 +32,12 @@ if __name__ == '__main__':
 
 			try:
 				dn = udm.create_object('settings/udm_%s' % extension_type,
-									   name = extension_name,
-									   data = base64.b64encode(bz2.compress(extension_buffer)),
-									   filename = '../' * 20 + 'tmp/%s' % filename,
-									   packageversion = package_version,
-									   package = package_name,
-									   active = 'FALSE')
+									   name=extension_name,
+									   data=base64.b64encode(bz2.compress(extension_buffer)),
+									   filename='../' * 20 + 'tmp/%s' % filename,
+									   packageversion=package_version,
+									   package=package_name,
+									   active='FALSE')
 			except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 				print 'NOTICE: creating malicious UDM %s extension object failed' % extension_type
 				continue

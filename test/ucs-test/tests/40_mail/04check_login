@@ -12,7 +12,7 @@ import univention.testing.utils as utils
 
 def main():
 	env = os.environ.copy()
-	env.update({'COLUMNS':'80', 'LINES':'25', 'TERM':'xterm'})
+	env.update({'COLUMNS': '80', 'LINES': '25', 'TERM': 'xterm'})
 	account = utils.UCSTestDomainAdminCredentials()
 	cmd = [
 		'/usr/bin/cyradm',

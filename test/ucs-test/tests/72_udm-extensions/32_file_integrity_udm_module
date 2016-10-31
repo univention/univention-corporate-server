@@ -23,14 +23,13 @@ TEST_DATA = (
 	('messagecatalog', 'es.mo', '/usr/share/locale/es/LC_MESSAGES/univention-admin-handlers-%s.mo'),
 )
 
+
 def test_module():
 	extension_type = 'module'
 	package_name = get_package_name()
 	package_version = get_package_version()
 	extension_name = get_extension_name(extension_type)
 	extension_filename = get_extension_filename(extension_type, extension_name)
-
-
 
 	options = {}
 	buffers = {}
@@ -80,7 +79,7 @@ def test_module():
 			fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
 		for option_type, src_fn, filename in TEST_DATA:
-			filename = filename % extension_name.replace('/','-')
+			filename = filename % extension_name.replace('/', '-')
 			if not os.path.exists(filename):
 				fail('ERROR: file %r of type %r does not exist' % (filename, option_type))
 			hash_buffer = hashlib.sha1(buffers[src_fn]).hexdigest()

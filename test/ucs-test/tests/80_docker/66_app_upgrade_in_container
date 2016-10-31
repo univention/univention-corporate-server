@@ -6,7 +6,7 @@
 ##   - docker.io
 
 from dockertest import *
-from univention.testing.utils import get_ldap_connection,fail
+from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry
 
 
@@ -66,4 +66,3 @@ joinscript_save_current_version
 			app1.remove()
 			app2.uninstall()
 			app2.remove()
-

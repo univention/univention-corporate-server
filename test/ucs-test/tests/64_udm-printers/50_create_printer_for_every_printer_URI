@@ -13,11 +13,13 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def get_uirs():
 	cmd = ['udm-test', 'settings/printeruri', 'list']
 	out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	uris = re.findall(r'printeruri:\s(\w*):', out)
 	return uris
+
 
 def printer_enabled(printer_name):
 	cmd = ['lpstat', '-p']
@@ -26,6 +28,7 @@ def printer_enabled(printer_name):
 		print 'stdout from lpstat -p: %s' % out
 		print 'stderr from lpstat -p: %s' % err
 	return printer_name in out
+
 
 def main():
 	account = utils.UCSTestDomainAdminCredentials()

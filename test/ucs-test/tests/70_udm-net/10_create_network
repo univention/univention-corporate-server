@@ -8,7 +8,6 @@
 ##   - univention-directory-manager-tools
 
 
-
 import sys
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -18,15 +17,15 @@ import univention.uldap as uldap
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		networkName = uts.random_name()
-		network = udm.create_object('networks/network', name = networkName, network = '10.20.30.0', netmask = '24')
+		network = udm.create_object('networks/network', name=networkName, network='10.20.30.0', netmask='24')
 
 		ldap = uldap.getAdminConnection()
 		ldapFilter = '(&(cn=%s)(objectClass=univentionNetworkClass))' % networkName
-		if not network in ldap.searchDn(filter = ldapFilter):
+		if not network in ldap.searchDn(filter=ldapFilter):
 			print 'Test FAILED. Could not find created network "%s" in LDAP.' % network
 			sys.exit(1)
 
-		udm.remove_object('networks/network', dn = network)
-		if network in ldap.searchDn(filter = ldapFilter):
+		udm.remove_object('networks/network', dn=network)
+		if network in ldap.searchDn(filter=ldapFilter):
 			print 'Test FAILED. Could still find network "%s" in LDAP after removing it.' % network
 			sys.exit(1)

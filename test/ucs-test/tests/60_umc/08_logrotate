@@ -19,6 +19,7 @@ class LogrotateError(Exception):
 
 
 class LogrotateService(object):
+
 	def __init__(self, service, logfile_pattern):
 		self.service = service
 		self.logfile_pattern = logfile_pattern

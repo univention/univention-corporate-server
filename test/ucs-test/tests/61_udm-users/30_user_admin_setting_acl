@@ -93,12 +93,12 @@ def main():
 			for invalid_attrs in invalid:
 				modify(dn, entry, invalid_attrs, lo, True)
 			try:
-				valid[i+1]
+				valid[i + 1]
 			except IndexError:
 				pass
 			else:
 				print 'Test transition to valid entry'
-				modify(dn, entry, valid[i+1], lo)
+				modify(dn, entry, valid[i + 1], lo)
 
 			lo.delete_s(dn)
 

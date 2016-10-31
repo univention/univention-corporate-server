@@ -13,6 +13,7 @@ from univention.testing.utils import fail
 from dockertest import docker_login, pull_docker_image, docker_image_is_present
 from dockertest import remove_docker_image, restart_docker
 
+
 def deb_package_is_installed(pkgname):
 	cache = apt.Cache()
 	if cache[pkgname].is_installed:
@@ -20,10 +21,12 @@ def deb_package_is_installed(pkgname):
 	else:
 		return False
 
+
 def deb_install_package(pkgname):
 	cmd = ['univention-install', '-y', pkgname]
 	p = subprocess.Popen(cmd, close_fds=True)
 	p.wait()
+
 
 def deb_uninstall_package(pkgname):
 	cmd = ['apt-get', 'purge', '-y', pkgname]
@@ -34,7 +37,9 @@ def deb_uninstall_package(pkgname):
 	p = subprocess.Popen(cmd, close_fds=True)
 	p.wait()
 
+
 class TestCase:
+
 	def __init__(self):
 		self.ucr = UCSTestConfigRegistry()
 		self.ucr.load()
@@ -82,6 +87,6 @@ class TestCase:
 
 
 if __name__ == '__main__':
-	
+
 	with TestCase() as tc:
 		tc.run()

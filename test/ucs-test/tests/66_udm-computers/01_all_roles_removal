@@ -17,7 +17,7 @@ utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
-			computer = udm.create_object(role, name = uts.random_string())
-			udm.remove_object(role, dn = computer)
+			computer = udm.create_object(role, name=uts.random_string())
+			udm.remove_object(role, dn=computer)
 
-			utils.verify_ldap_object(computer, should_exist = False)
+			utils.verify_ldap_object(computer, should_exist=False)

@@ -15,7 +15,6 @@ import univention.testing.utils as utils
 import univention.config_registry as configRegistry
 
 
-
 if __name__ == '__main__':
 	ldap = utils.get_ldap_connection()
 	ucr = configRegistry.ConfigRegistry()
@@ -33,14 +32,13 @@ if __name__ == '__main__':
 		with udm_test.UCSTestUDM() as udm:
 
 			domainname = ucr.get('domainname')
-			dNSCn = 'cn=dns,dc='+(',dc=').join(domainname.split('.'))
+			dNSCn = 'cn=dns,dc=' + (',dc=').join(domainname.split('.'))
 
 			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
 
-			forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, position = dNSCn, nameserver = uts.random_string())
-			reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', position = dNSCn, nameserver = uts.random_string())
-			dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-
+			forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=uts.random_string())
+			reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=uts.random_string())
+			dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
 
 			networkProperties = {
 				'name': uts.random_name(),
@@ -54,7 +52,7 @@ if __name__ == '__main__':
 			network = udm.create_object('networks/network', **networkProperties)
 
 			computer = udm.create_object(role, **computerProperties)
-			udm.modify_object(role, dn = computer, network = network)
+			udm.modify_object(role, dn=computer, network=network)
 			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0]
 
 			#FIXME: workaround for possibly remaining locks

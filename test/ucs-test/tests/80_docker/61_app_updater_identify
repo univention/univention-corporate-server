@@ -7,10 +7,12 @@
 
 from dockertest import *
 
-class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception): pass
+
+class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception):
+	pass
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()
@@ -27,7 +29,7 @@ if __name__ == '__main__':
 
 			app.verify()
 
-			identify =  app.execute_command_in_container('ucr get updater/identify')
+			identify = app.execute_command_in_container('ucr get updater/identify')
 			print 'Identify: %s' % identify
 			if identify.strip() != 'Docker App':
 				raise UCSTest_DockerApp_Identify()
@@ -35,4 +37,3 @@ if __name__ == '__main__':
 		finally:
 			app.uninstall()
 			app.remove()
-

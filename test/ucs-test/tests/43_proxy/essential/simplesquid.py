@@ -21,6 +21,7 @@ class SimpleSquid(object):
 	:param path: path for the executable squid
 	:type path: str
 	"""
+
 	def __init__(self, path=None):
 		self.path = path if path else "/etc/init.d/squid3"
 		self.basename = os.path.basename(self.path)

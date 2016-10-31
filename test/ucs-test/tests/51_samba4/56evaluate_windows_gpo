@@ -108,6 +108,7 @@ def windows_link_gpo(gpo_name, container, server=""):
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
 
+
 def windows_force_gpo_update():
 	print "Forcing GPO update on Windows:"
 	try:
@@ -129,10 +130,10 @@ def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, tar
 	"""
 	if not permission_level in ("GpoRead", "GpoApply", "GpoEdit", "GpoEditDeleteModifySecurity", "None"):
 		utils.fail("Set-GPPermissions: unsupported permission_level: %s" % permission_level)
-		
+
 	if not target_type in ("Computer", "User", "Group"):
 		utils.fail("Set-GPPermissions: unsupported target_type: %s" % target_type)
-	
+
 	print("\nSet-GPPermissions on '%s' for '%s' '%s' to '%s'"
 		% (gpo_name, target_name, target_type, permission_level))
 	try:
@@ -238,7 +239,7 @@ def windows_check_gpo_report(gpo_name, identity_name, server=""):
 
 		# check name tag of the 'Trustee':
 		for name in trust_perm.iter("{%s}Name" % gpo_types):
-			trustee = name.text.split('\\',1)[-1]  ## cut off netbios domain prefix
+			trustee = name.text.split('\\', 1)[-1]  # cut off netbios domain prefix
 			if identity_name == trustee:
 				print "Found GPO test identity '%s'." % identity_name
 
@@ -461,7 +462,7 @@ if __name__ == '__main__':
 	domain_admin_dn = ucr.get('tests/domainadmin/account')
 	domain_admin_password = ucr.get('tests/domainadmin/pwd')
 	windows_admin = ucr.get('tests/windowsadmin/account', 'Administrator')
-	windows_admin_password =  ucr.get('tests/windowsadmin/pwd', 'univention')
+	windows_admin_password = ucr.get('tests/windowsadmin/pwd', 'univention')
 	domainname = ucr.get('domainname')
 	hostname = ucr.get('hostname')
 	ldap_base = ucr.get('ldap/base')

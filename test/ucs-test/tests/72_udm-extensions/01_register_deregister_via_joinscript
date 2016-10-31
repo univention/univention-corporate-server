@@ -16,6 +16,7 @@ import os
 import grp
 import hashlib
 
+
 def test_extension(extension_type):
 	package_name = get_package_name()
 	package_version = get_package_version()

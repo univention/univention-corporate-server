@@ -4,7 +4,7 @@ import requests
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
-ucr=configRegistry.ConfigRegistry()
+ucr = configRegistry.ConfigRegistry()
 ucr.load()
 
 # TODO: Verify ceritficate. SNI problem? Wait for python 2.7.9 or later.
@@ -18,6 +18,7 @@ HOSTNAME = '%s.%s' % (ucr['hostname'], ucr['domainname'])
 
 class SamlError(Exception):
 	"""Custom error for everything SAML related"""
+
 	def __init__(self, msg):
 		self.message = msg
 
@@ -60,13 +61,13 @@ def _request(method, url, status_code, position, data=None, cookies=None, IdP_IP
 		raise SamlError("Problem while %s\nSSL error: %s" % (position, E.message))
 	except requests.ConnectionError as E:
 		raise SamlError("Problem while %s\nNo connection to server: %s" % (position, E.message))
-	
-	if response.status_code in range(300,400) and 'Location' in response.headers:
+
+	if response.status_code in range(300, 400) and 'Location' in response.headers:
 		# manually execute HTTP redirect
 		print("Follow redirect to: %s" % response.headers['Location'])
 		response = _request('GET', response.headers['Location'], 200, position, data=data,
 					cookies=response.cookies, IdP_IP=IdP_IP)
-	
+
 	# check for an expected status_code as a different would indicate an error
 			# in the current login step.
 	if response.status_code != status_code:
@@ -83,7 +84,7 @@ def _login_at_idp_with_credentials(username, password, response):
 			200,
 			"posting login form",
 			data={'username': username, 'password': password},
-			cookies = response.cookies)
+			cookies=response.cookies)
 
 	return response
 
@@ -136,7 +137,7 @@ def test_logout_at_IdP(cookies, hostname=HOSTNAME, IdP_IP=None):
 		print("Logout success at IdP")
 		return cookies
 	else:
-		utils.fail("Session not closed at IdP after logout")	
+		utils.fail("Session not closed at IdP after logout")
 
 
 def _error_evaluation(idp_response_body):
@@ -155,7 +156,7 @@ def _evaluate_idp_response(idp_response_body):
 	if not evaluate the response body for common error cases"""
 	url = _extract_sp_url_from(idp_response_body)
 	saml_msg = _extract_saml_msg_from(idp_response_body)
-	
+
 	if url and saml_msg:
 		return url, saml_msg
 	else:
@@ -174,6 +175,7 @@ def login_with_existing_session_at_IdP(cookies, hostname=HOSTNAME, IdP_IP=None):
 	url, saml_msg = _evaluate_idp_response(response.text)
 
 	return _send_saml_response_to_sp(url, saml_msg, response.cookies).cookies
+
 
 def login_with_new_session_at_IdP(username, password, hostname=HOSTNAME, IdP_IP=None):
 	"""Use Identity Provider to log in to a Service Provider.

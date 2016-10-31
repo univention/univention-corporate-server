@@ -15,11 +15,12 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
 
+
 def main(subnet):
 	with udm_test.UCSTestUDM() as udm:
-		reverse_zone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet=subnet)
+		reverse_zone = udm.create_object('dns/reverse_zone', nameserver=uts.random_string(), subnet=subnet)
 		try:
-			srv_record = udm.create_object('dns/srv_record', name = '%s tcp' % uts.random_name(), location = '1 2 3 %s' % uts.random_name(), superordinate = reverse_zone)
+			srv_record = udm.create_object('dns/srv_record', name='%s tcp' % uts.random_name(), location='1 2 3 %s' % uts.random_name(), superordinate=reverse_zone)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			return
 

@@ -26,7 +26,7 @@ with UCSTestUDM() as udm:
 	container_name = get_container_name()
 	join_script_name = '66%s.inst' % package_name
 
-	user_dn,_username = udm.create_user( password='univention' )
+	user_dn, _username = udm.create_user(password='univention')
 	container = udm.create_object('container/cn', name=container_name)
 	try:
 		set_container_description(user_dn, container)

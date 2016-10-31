@@ -26,5 +26,5 @@ if stderr.strip():
 
 if re.search('ERR_', stdout):
 	utils.fail('samba-tool drsi showrepl returned a string with ERR_')
-	
+
 exit(0)

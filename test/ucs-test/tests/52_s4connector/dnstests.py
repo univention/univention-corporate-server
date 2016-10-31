@@ -90,6 +90,7 @@ def test_dns_service_record(dns_name, test_object, should_exist=True):
 	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+SRV\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'SRV', should_exist=should_exist)
 
+
 def test_dns_pointer_record(reverse_zone, ip, test_object, should_exist=True):
 	reverse_address = str(ip) + '.' + reverse_zone
 	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+PTR\s+\"*{1}\"*'.format(*map(re.escape, (reverse_address, test_object))))
@@ -126,6 +127,7 @@ def match(re_test_object, dns_name, typ, param=None, should_exist=True):
 		time.sleep(1)
 
 	utils.fail("FAIL: DNS still not synced, made %s dig attempts " % MATCH_ATTEMPTS)
+
 
 def get_hostname_of_ldap_master():
 	host = ucr.get("ldap/master")
@@ -175,7 +177,7 @@ def make_random_ip():
 def make_random_ipv6():
 	ipv6 = random_hex()
 	for i in range(7):
-		ipv6 += ':'+(random_hex())
+		ipv6 += ':' + (random_hex())
 	return ipv6
 
 
@@ -183,6 +185,7 @@ def random_hex():
 	result = []
 	result = ''.join([random.choice('0123456789abcdef') for i in range(4)])
 	return result
+
 
 def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
 		p = subprocess.Popen(["host", "%(hostname)s.%(domainname)s" % ucr])
@@ -198,6 +201,7 @@ def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
 			attempt += 1
 		print "Resolved own hostname after %s seconds" % attempt
 
+
 def udm_remove_dns_record_object(module, object_dn):
 	superordinate = ",".join(ldap.explode_dn(object_dn)[1:])
 	cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', object_dn, '--superordinate', superordinate]
@@ -205,6 +209,7 @@ def udm_remove_dns_record_object(module, object_dn):
 	rc = p.wait()
 
 	return rc
+
 
 def get_kerberos_ticket_for_machine():
 	sys.stdout.flush()
@@ -216,6 +221,7 @@ def get_kerberos_ticket_for_machine():
 	rc = p.wait()
 	if rc != 0:
 		utils.fail("kinit for %s failed" % principal_for_nsupdate)
+
 
 def nsupdate(nsupdate_request):
 	p = subprocess.Popen(["nsupdate", "-v", "-g"], stdin=subprocess.PIPE)

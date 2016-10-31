@@ -64,7 +64,7 @@ def try_to_authenticate(password):
 
 	cmd = ("smbclient", "//" + hostname + "/" + test_username,
 		   "-U", test_username + "%" + password, "--kerberos",
-		   "-t", "20",	# 20 seconds timeout per operation.
+		   "-t", "20",  # 20 seconds timeout per operation.
 		   "-c", "ls",
                    "--debuglevel=1")
 

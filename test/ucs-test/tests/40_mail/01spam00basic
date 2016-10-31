@@ -26,13 +26,14 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def main():
 	TIMEOUT = 60
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
-				mail =  'spam%stest@%s' % (uts.random_string(), domain)
+				mail = 'spam%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
 						set={
 							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
@@ -62,7 +63,7 @@ def main():
 				token3 = str(time.time())
 				send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter')
 				if not file_search_mail_with_waiting_loop(tokenlist=[token3], mail_address=mail):
-					utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3,  mail))
+					utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3, mail))
 		finally:
 			reload_amavis_postfix()
 

@@ -53,12 +53,12 @@ def main():
 
 		MAX_ATTEMPTS = 6
 		for attempt in xrange(MAX_ATTEMPTS):
-			print 'Attempt %d of %d:' % (attempt+1, MAX_ATTEMPTS)
-			time.sleep(2**attempt) # wait 1, 2, 4, 8, 16, 32 seconds
+			print 'Attempt %d of %d:' % (attempt + 1, MAX_ATTEMPTS)
+			time.sleep(2**attempt)  # wait 1, 2, 4, 8, 16, 32 seconds
 			ok = True
 			for process in psutil.process_iter():
 				if process.name in result:
-					if not process.get_children(): # helper processes do not have child processes
+					if not process.get_children():  # helper processes do not have child processes
 						result[process.name] += 1
 
 			for key, value in result.items():

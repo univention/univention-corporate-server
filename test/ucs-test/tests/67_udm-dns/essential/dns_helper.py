@@ -41,6 +41,7 @@ from dns.resolver import NXDOMAIN
 from dns.resolver import NoAnswer
 from dns.resolver import NoNameservers
 
+
 def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
 
 	start = time.time()
@@ -78,7 +79,7 @@ def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
 					+ ' ResourceRecord: '
 					+ resourceRecord
 					+ ' Time waited: '
-					+ str(diff) )
+					+ str(diff))
 		except NoAnswer:
 			query = message.make_query(zoneName, resourceRecord_Number)
 			try:
@@ -110,7 +111,7 @@ def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
 				+ 'NameToResolve: '
 				+ zoneName
 				+ ' ResourceRecord: '
-				+ resourceRecord )
+				+ resourceRecord)
 		except Exception as e:
 			if e is dns.resolver.YXDOMAIN:
 				raise dns.resolver.YXDOMAIN(
@@ -119,7 +120,7 @@ def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
 					' ResourceRecord: '
 					+ resourceRecord
 					+ ' Time waited: '
-					+ str(diff) )
+					+ str(diff))
 			else:
 				raise Exception(
 					'the query name does not exist '
@@ -128,9 +129,8 @@ def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
 					+ ' ResourceRecord: '
 					+ resourceRecord
 					+ ' Time waited: '
-					+ str(diff) )
+					+ str(diff))
 
 
 if __name__ == '__main__':
     pass
-

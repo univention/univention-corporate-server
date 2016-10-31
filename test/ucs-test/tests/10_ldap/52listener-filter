@@ -30,6 +30,7 @@ USERID = 'listener'
 
 
 class Environment(object):
+
 	def __init__(self):
 		self.tmpdir = None
 		self.mdir = None
@@ -69,6 +70,7 @@ class Environment(object):
 
 
 class Listener(object):
+
 	def __init__(self, ucr, env):
 		self.ucr = ucr
 		self.env = env

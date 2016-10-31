@@ -19,13 +19,16 @@ import pwd
 import stat
 import univention.testing.utils as utils
 
+
 def is_grouped_by(file_path, group):
 	st = os.stat(file_path)
 	return grp.getgrgid(st.st_gid)[0] == group
 
+
 def is_owned_by(file_path, owner):
 	st = os.stat(file_path)
 	return pwd.getpwuid(st.st_uid)[0] == owner
+
 
 def permissions_ok(file_path):
 	st = os.stat(file_path)
@@ -33,6 +36,7 @@ def permissions_ok(file_path):
 	group_none = oct(st.st_mode & stat.S_IRWXG) == '0'
 	others_none = oct(st.st_mode & stat.S_IRWXO) == '0'
 	return owner_rw and group_none and others_none
+
 
 def main():
 	path = '/etc/cyrus.secret'

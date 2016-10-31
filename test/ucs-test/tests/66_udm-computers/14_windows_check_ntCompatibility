@@ -17,4 +17,4 @@ import univention.testing.utils as utils
 if __name__ == '__main__':
 	windowsHostName = uts.random_string()
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(   udm.create_object('computers/windows', name = windowsHostName, ntCompatibility = '1'),   { 'sambaNTPassword': [smbpasswd.nthash(windowsHostName.lower())] }   )
+		utils.verify_ldap_object(udm.create_object('computers/windows', name=windowsHostName, ntCompatibility='1'), {'sambaNTPassword': [smbpasswd.nthash(windowsHostName.lower())]})

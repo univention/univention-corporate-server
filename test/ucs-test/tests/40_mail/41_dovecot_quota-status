@@ -26,6 +26,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from essential.mail import send_mail, mail_delivered
 
+
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -42,11 +43,11 @@ def main():
 			#
 			# send email with a size of 70% of quota, should be accepted
 			#
-			msg1 = "Lorem ipsum dolor sit amet, consetetur sadipscing " * quota01 * 21000 # go a tiny bit over quota
+			msg1 = "Lorem ipsum dolor sit amet, consetetur sadipscing " * quota01 * 21000  # go a tiny bit over quota
 			send_mail(recipients=[mail], subject="41_dovecot_quota-status 1", msg=msg1, server=socket.gethostname(),
 				debuglevel=0)
 			if not mail_delivered("Subject: 41_dovecot_quota-status 1", mail_address=mail):
-				utils.fail("Fail: under quota message not delivered missing (quota was set to %d MB, len(message body): %d KB). output of \"doveadm quota get -u %s\":" % (quota01, len(msg1)/1024, mail))
+				utils.fail("Fail: under quota message not delivered missing (quota was set to %d MB, len(message body): %d KB). output of \"doveadm quota get -u %s\":" % (quota01, len(msg1) / 1024, mail))
 				subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
 			#
@@ -60,7 +61,7 @@ def main():
 			except smtplib.SMTPRecipientsRefused:
 				rejected = True
 			if not rejected or mail_delivered("Subject: 41_dovecot_quota-status 2", mail_address=mail):
-				utils.fail("Fail: over quota message was delivered (quota was set to %d MB, len(message body 1): %d KB, len(message body 2): %d KB). output of \"doveadm quota get -u %s\":" % (quota01, len(msg1)/1024, len(msg2)/1024, mail))
+				utils.fail("Fail: over quota message was delivered (quota was set to %d MB, len(message body 1): %d KB, len(message body 2): %d KB). output of \"doveadm quota get -u %s\":" % (quota01, len(msg1) / 1024, len(msg2) / 1024, mail))
 				subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
 if __name__ == '__main__':

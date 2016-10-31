@@ -13,5 +13,5 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(options = ['kerberos', 'posix', 'person', 'samba'])[0]
+		user = udm.create_user(options=['kerberos', 'posix', 'person', 'samba'])[0]
 		utils.verify_ldap_object(user)

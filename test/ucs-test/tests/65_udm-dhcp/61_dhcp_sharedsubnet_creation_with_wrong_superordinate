@@ -18,9 +18,9 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
 		try:
-			udm.create_object('dhcp/sharedsubnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
+			udm.create_object('dhcp/sharedsubnet', subnet='10.20.30.0', subnetmask='24', superordinate=dhcpService)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

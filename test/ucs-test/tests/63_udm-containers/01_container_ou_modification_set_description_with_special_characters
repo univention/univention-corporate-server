@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		description = uts.random_string()
 
-		ou = udm.create_object('container/ou', name = uts.random_name_special_characters())
-		
-		udm.modify_object('container/ou', dn = ou, description = description)
+		ou = udm.create_object('container/ou', name=uts.random_name_special_characters())
+
+		udm.modify_object('container/ou', dn=ou, description=description)
 		utils.verify_ldap_object(ou, {'description': [description]})

@@ -20,7 +20,7 @@ from essential.dns_helper import resolveDnsEntry
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			
+
 			duration = 120
 			resourceRecord = 'A'
 			resourceRecord_Number = dns.rdatatype.A
@@ -43,9 +43,9 @@ if __name__ == '__main__':
 			}
 
 			baseDn = ucr.get('domainname').split('.')
-			
+
 			pos = 'cn=dns'
-			
+
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
 
@@ -60,40 +60,39 @@ if __name__ == '__main__':
 				'txt': uts.random_string()
 			}
 
-			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
+			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
 			zoneName = host_record_properties['name'] + '.' + forward_zone_properties['zone']
 
-			query = resolveDnsEntry(duration,zoneName,resourceRecord, resourceRecord_Number)
+			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
 
 			#IPv6
-			
+
 			host = uts.random_name()
 
 			host_record_properties.update({
 				'name': host,
-				'a': '2011:06f8:13dc:0002:19b7:d592:09dd:1041', #create random_ipv6()-method?
+				'a': '2011:06f8:13dc:0002:19b7:d592:09dd:1041',  # create random_ipv6()-method?
 				'mx': '50 %s' % uts.random_string(),
 				'txt': uts.random_string()
 			})
 
-			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
+			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
 			zoneName = host_record_properties['name'] + '.' + forward_zone_properties['zone']
 
 			resourceRecord = 'AAAA'
 
-			query = resolveDnsEntry(duration,zoneName, resourceRecord, resourceRecord_Number)
+			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
-

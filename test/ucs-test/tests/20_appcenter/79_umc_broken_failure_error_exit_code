@@ -76,10 +76,12 @@ def test_install_postinst_error(app_center, application):
 			app_test.fail("Install of broken app did not produce dpkg errors.")
 		test.test_uninstall()
 
-	try: test.test_install(test_installed=False)
+	try:
+		test.test_install(test_installed=False)
 	except app_test.AppCenterCheckError as e:
 		app_test.fail("Reinstall of broken app failed: " + str(e))
-	else: test.test_uninstall()
+	else:
+		test.test_uninstall()
 
 
 @app_test.test_case
@@ -104,7 +106,8 @@ def test_uninstall_prerm_error(app_center, application):
 		else:
 			app_test.fail("Uninstall of broken app did not produce dpkg errors.")
 
-	try: test.test_install(test_installed=False)
+	try:
+		test.test_install(test_installed=False)
 	except app_test.AppCenterCheckError as e:
 		#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
 		#  point, as the app-center should be able to reinstall broken apps.
@@ -141,7 +144,8 @@ def test_uninstall_postrm_error(app_center, application):
 		else:
 			app_test.fail("Install of broken app did not produce dpkg errors.")
 
-	try: test.test_install(test_installed=False)
+	try:
+		test.test_install(test_installed=False)
 	except app_test.AppCenterCheckError as e:
 		#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
 		#  point, as the app-center should be able to reinstall broken apps.

@@ -10,6 +10,7 @@ from univention.testing.utils import fail, get_ldap_connection
 import os
 import subprocess
 
+
 def fail_if_file_exists(f):
 	if os.path.exists(f):
 		fail('%s still exists' % f)
@@ -42,7 +43,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 
 			lo = get_ldap_connection()
 			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name, unique=True, required=True)
-			
+
 		finally:
 			app.uninstall()
 			app.remove()

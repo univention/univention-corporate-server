@@ -16,9 +16,9 @@ import univention.uldap as uldap
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		forward_zone = udm.create_object('dns/forward_zone', nameserver = uts.random_string(), zone = '%s.%s' % (uts.random_name(), uts.random_name()))
+		forward_zone = udm.create_object('dns/forward_zone', nameserver=uts.random_string(), zone='%s.%s' % (uts.random_name(), uts.random_name()))
 		try:
-			ptr = udm.create_object('dns/ptr_record', address = '40', superordinate = forward_zone)
+			ptr = udm.create_object('dns/ptr_record', address='40', superordinate=forward_zone)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

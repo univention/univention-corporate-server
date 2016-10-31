@@ -18,6 +18,7 @@ from univention.management.console.modules.appcenter.app_center import Applicati
 
 pm = PackageManager(lock=False)
 
+
 @contextmanager
 def init_app(**kwargs):
 	with NamedTemporaryFile() as f:
@@ -58,4 +59,3 @@ with init_app(ID='test1') as app, init_app(ID='test2', DefaultPackages='python',
 		utils.fail('There should be a conflict between test1 and test2. Something is wrong!')
 	if any(info['id'] == 'test3' for info in conflicts):
 		utils.fail('There should be no conflict between test1 and test3. Something is wrong!')
-

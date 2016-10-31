@@ -26,19 +26,19 @@ if __name__ == '__main__':
 		ou_name = uts.random_string()
 		ou_name_new = ou_name.upper()
 
-		ou = udm.create_object('container/ou', name = ou_name)
+		ou = udm.create_object('container/ou', name=ou_name)
 		user = udm.create_user(position=ou, username=user_name)
 		network = udm.create_object('networks/network', position=ou, name=network_name, network='1.1.1.1', netmask='24')
 
 		try:
-			udm.modify_object('container/ou', dn = ou, name = ou_name_new)
+			udm.modify_object('container/ou', dn=ou, name=ou_name_new)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 
-		new_ou = 'ou=%s,%s' % (ou_name_new,ucr.get('ldap/base'))
+		new_ou = 'ou=%s,%s' % (ou_name_new, ucr.get('ldap/base'))
 		new_user = 'uid=%s,ou=%s,%s' % (user_name, ou_name_new, ucr.get('ldap/base'))
-		utils.verify_ldap_object(new_ou, should_exist = True)
-		utils.verify_ldap_object(new_user, should_exist = True)
+		utils.verify_ldap_object(new_ou, should_exist=True)
+		utils.verify_ldap_object(new_user, should_exist=True)
 
 		lo = utils.get_ldap_connection()
 		for dn, entry in lo.search(filter='ou=%s' % ou_name):

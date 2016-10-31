@@ -17,10 +17,8 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		ou_name = uts.random_name()
 
-		ou = udm.create_object('container/ou', name = ou_name)
-		ou2 = udm.create_object('container/ou', name = uts.random_name())
-		
-		udm.move_object('container/ou', dn = ou, position = ou2)
+		ou = udm.create_object('container/ou', name=ou_name)
+		ou2 = udm.create_object('container/ou', name=uts.random_name())
+
+		udm.move_object('container/ou', dn=ou, position=ou2)
 		utils.verify_ldap_object('ou=%s,%s' % (ou_name, ou2))
-
-
