@@ -58,21 +58,21 @@ def main():
 # single test or single build?
 	group = parser.add_mutually_exclusive_group(required=True)
 	group.add_argument(
-			'--build', '-b', help='get all results for a specific build')
+		'--build', '-b', help='get all results for a specific build')
 	group.add_argument(
-			'--test', '-t', help='get all results for a specific test')
+		'--test', '-t', help='get all results for a specific test')
 # 4.03-update or 4.1?
 	version_group = parser.add_mutually_exclusive_group(required=True)
 	version_group.add_argument(
-			'--template03', '-3', help='updated 4.03 template',
-			action='store_false', dest='new')
+		'--template03', '-3', help='updated 4.03 template',
+		action='store_false', dest='new')
 	version_group.add_argument(
-			'--template10', '-1', help='4.10 template',
-			action='store_true', dest='new')
+		'--template10', '-1', help='4.10 template',
+		action='store_true', dest='new')
 
 	parser.add_argument(
-			'--no-empty', '-n', help='do not show empty lines in build mode',
-			action='store_true', default=False)
+		'--no-empty', '-n', help='do not show empty lines in build mode',
+		action='store_true', default=False)
 	args = vars(parser.parse_args())
 
 	j = jenkinsapi.jenkins.Jenkins(base_url)

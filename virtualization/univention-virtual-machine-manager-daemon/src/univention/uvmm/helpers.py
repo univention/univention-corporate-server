@@ -31,15 +31,15 @@
 # <http://www.gnu.org/licenses/>.
 
 __all__ = [
-		'_',
-		'N_',
-		'TranslatableException',
-		'ms',
-		'FQDN',
-		'uri_encode',
-		'uri_decode',
-		'TimeoutError',
-		'timeout',
+	'_',
+	'N_',
+	'TranslatableException',
+	'ms',
+	'FQDN',
+	'uri_encode',
+	'uri_decode',
+	'TimeoutError',
+	'timeout',
 ]
 
 import gettext

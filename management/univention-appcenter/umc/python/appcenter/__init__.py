@@ -355,14 +355,14 @@ class Instance(umcm.Base, ProgressMixin):
 	@require_apps_update
 	@require_password
 	@sanitize(
-			function=MappingSanitizer({
-				'install': 'install',
-				'update': 'upgrade',
-				'uninstall': 'remove',
-			}, required=True),
-			app=AppSanitizer(required=True),
-			force=BooleanSanitizer(),
-			values=DictSanitizer({})
+		function=MappingSanitizer({
+			'install': 'install',
+			'update': 'upgrade',
+			'uninstall': 'remove',
+		}, required=True),
+		app=AppSanitizer(required=True),
+		force=BooleanSanitizer(),
+		values=DictSanitizer({})
 	)
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
@@ -651,11 +651,12 @@ class Instance(umcm.Base, ProgressMixin):
 			# TODO: 404?
 			return {}
 
-	@sanitize(function=MappingSanitizer({
-				'install': 'install',
-				'upgrade': 'install',
-				'uninstall': 'remove',
-			}, required=True),
+	@sanitize(
+		function=MappingSanitizer({
+			'install': 'install',
+			'upgrade': 'install',
+			'uninstall': 'remove',
+		}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
 		update=BooleanSanitizer()
 	)
@@ -671,11 +672,12 @@ class Instance(umcm.Base, ProgressMixin):
 			kwargs['remove'] = packages
 		return dict(zip(['install', 'remove', 'broken'], self.package_manager.mark(**kwargs)))
 
-	@sanitize(function=MappingSanitizer({
-				'install': 'install',
-				'upgrade': 'install',
-				'uninstall': 'remove',
-			}, required=True),
+	@sanitize(
+		function=MappingSanitizer({
+			'install': 'install',
+			'upgrade': 'install',
+			'uninstall': 'remove',
+		}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
 	)
 	def packages_invoke(self, request):

@@ -57,52 +57,52 @@ logger = logging.getLogger('uvmmd.ec2connection')
 
 # Mapping of ldap attribute to libcloud parameter name
 EC2_CONNECTION_ATTRIBUTES = {
-		"access_id": "key",
-		"password": "secret",
-		"secure": "secure",
-		"host": "host",
-		"port": "port",
-		"region": "region",
+	"access_id": "key",
+	"password": "secret",
+	"secure": "secure",
+	"host": "host",
+	"port": "port",
+	"region": "region",
 }
 
 EC2_CREATE_ATTRIBUTES = {
-		"name": "name",
-		"size_id": "size",
-		"image_id": "image",
-		"location": "location",
-		"keyname": "ex_keyname",
-		"userdata": "ex_userdata",
-		"security_group_ids": {'group_name': "ex_security_groups", 'group_id': 'ex_security_group_ids'},
-		"metadata": "ex_metadata",
-		"min_instance_count": "ex_mincount",
-		"max_instance_count": "ex_maxcount",
-		"clienttoken": "ex_clienttoken",
-		"blockdevicemappings": "ex_blockdevicemappings",
-		"iamprofile": "ex_iamprofile",
-		"ebs_optimized": "ex_ebs_optimized",
-		"subnet_id": "ex_subnet"
-	}
+	"name": "name",
+	"size_id": "size",
+	"image_id": "image",
+	"location": "location",
+	"keyname": "ex_keyname",
+	"userdata": "ex_userdata",
+	"security_group_ids": {'group_name': "ex_security_groups", 'group_id': 'ex_security_group_ids'},
+	"metadata": "ex_metadata",
+	"min_instance_count": "ex_mincount",
+	"max_instance_count": "ex_maxcount",
+	"clienttoken": "ex_clienttoken",
+	"blockdevicemappings": "ex_blockdevicemappings",
+	"iamprofile": "ex_iamprofile",
+	"ebs_optimized": "ex_ebs_optimized",
+	"subnet_id": "ex_subnet"
+}
 
 
 LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
-		NodeState.RUNNING: "RUNNING",
-		NodeState.PENDING: "PENDING",
-		NodeState.TERMINATED: "TERMINATED",
-		NodeState.UNKNOWN: "NOSTATE",
-		NodeState.STOPPED: "SHUTOFF",
+	NodeState.RUNNING: "RUNNING",
+	NodeState.PENDING: "PENDING",
+	NodeState.TERMINATED: "TERMINATED",
+	NodeState.UNKNOWN: "NOSTATE",
+	NodeState.STOPPED: "SHUTOFF",
 }
 
 
 PROVIDER_MAPPING = {
-		"EC2_US_EAST": "us-east-1",
-		"EC2_EU_WEST": "eu-west-1",
-		"EC2_US_WEST": "us-west-1",
-		"EC2_US_WEST_OREGON": "us-west-2",
-		"EC2_AP_SOUTHEAST": "ap-southeast-1",
-		"EC2_AP_NORTHEAST": "ap-northeast-1",
-		"EC2_SA_EAST": "sa-east-1",
-		"EC2_AP_SOUTHEAST2": "ap-southeast-2",
-		"EC2_EU_CENTRAL": "eu-central-1",
+	"EC2_US_EAST": "us-east-1",
+	"EC2_EU_WEST": "eu-west-1",
+	"EC2_US_WEST": "us-west-1",
+	"EC2_US_WEST_OREGON": "us-west-2",
+	"EC2_AP_SOUTHEAST": "ap-southeast-1",
+	"EC2_AP_NORTHEAST": "ap-northeast-1",
+	"EC2_SA_EAST": "sa-east-1",
+	"EC2_AP_SOUTHEAST2": "ap-southeast-2",
+	"EC2_EU_CENTRAL": "eu-central-1",
 }
 
 
@@ -345,18 +345,18 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		instance = self._get_instance_by_id(instance_id)
 
 		OS_TRANSITION = {
-				# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
-				(NodeState.RUNNING, "RUN"): None,
-				(NodeState.PENDING, "RUN"): None,
-				(NodeState.UNKNOWN, "RUN"): self._boot_instance,
-				(NodeState.STOPPED, "RUN"): self._boot_instance,
-				(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
-				(NodeState.PENDING, "RESTART"): None,
-				(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
-				(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
+			# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
+			(NodeState.RUNNING, "RUN"): None,
+			(NodeState.PENDING, "RUN"): None,
+			(NodeState.UNKNOWN, "RUN"): self._boot_instance,
+			(NodeState.STOPPED, "RUN"): self._boot_instance,
+			(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
+			(NodeState.PENDING, "RESTART"): None,
+			(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
+			(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
 		}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:

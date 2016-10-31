@@ -29,15 +29,15 @@ if __name__ == '__main__':
 							packageversion=package_version,
 							appidentifier=appidentifier,
 							package=package[0],
-							active=active)
+				active=active)
 
 			utils.verify_ldap_object(schema, {
-							'cn': [schema_name],
-							'univentionLDAPSchemaData': [bz2.compress(data)],
-							'univentionLDAPSchemaFilename': [filename],
-							'univentionOwnedByPackage': package,
-							'univentionOwnedByPackageVersion': [package_version],
-							'univentionAppIdentifier': appidentifier,
-							'univentionLDAPSchemaActive': [active],
-							'univentionObjectType': ['settings/ldapschema'],
-						})
+				'cn': [schema_name],
+				'univentionLDAPSchemaData': [bz2.compress(data)],
+				'univentionLDAPSchemaFilename': [filename],
+				'univentionOwnedByPackage': package,
+				'univentionOwnedByPackageVersion': [package_version],
+				'univentionAppIdentifier': appidentifier,
+				'univentionLDAPSchemaActive': [active],
+				'univentionObjectType': ['settings/ldapschema'],
+			})

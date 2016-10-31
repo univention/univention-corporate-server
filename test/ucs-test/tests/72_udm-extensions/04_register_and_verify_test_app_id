@@ -43,14 +43,14 @@ def test_extension(extension_type):
 		if not dnlist:
 			fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name))
 		verify_ldap_object(dnlist[0], {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
-				'univentionAppIdentifier': [app_id],
-				})
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionAppIdentifier': [app_id],
+		})
 	finally:
 		print 'Removing UDM extension from LDAP'
 		remove_extension_by_name(extension_type, extension_name, fail_on_error=False)

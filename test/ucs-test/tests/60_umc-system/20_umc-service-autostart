@@ -58,7 +58,7 @@ class TestUMCServiceAutostart(TestUMCSystem):
 
         # saving initial service configuration
         self.initial_service_config = self.get_service_current_configuration(
-                                          autostart_var)
+            autostart_var)
 
         # make sure that 'service_name' autostart == 'yes' at first
         if self.get_service_current_configuration(autostart_var) != 'yes':

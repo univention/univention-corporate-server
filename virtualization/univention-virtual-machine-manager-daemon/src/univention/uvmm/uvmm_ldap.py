@@ -53,7 +53,7 @@ logger = logging.getLogger('uvmmd.ldap')
 
 # Mapping from service name to libvirt-uri
 SERVICES = {
-		"KVM Host": "qemu://%s/system",
+	"KVM Host": "qemu://%s/system",
 }
 
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"

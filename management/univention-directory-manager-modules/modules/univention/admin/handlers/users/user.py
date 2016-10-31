@@ -1573,36 +1573,36 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				return False
 			if self['disabled'] == 'all':
 				return 'D' not in acctFlags or \
-						'126' in krb5Flags or \
-						'1' not in shadowExpire
+					'126' in krb5Flags or \
+					'1' not in shadowExpire
 			elif self['disabled'] == 'windows':
 				return 'D' not in acctFlags or \
-						'254' in krb5Flags or \
-						'1' in shadowExpire
+					'254' in krb5Flags or \
+					'1' in shadowExpire
 			elif self['disabled'] == 'kerberos':
 				return 'D' in acctFlags or \
-						'126' in krb5Flags or \
-						'1' in shadowExpire
+					'126' in krb5Flags or \
+					'1' in shadowExpire
 			elif self['disabled'] == 'posix':
 				return 'D' in acctFlags or \
-						'254' in krb5Flags or \
-						'1' not in shadowExpire
+					'254' in krb5Flags or \
+					'1' not in shadowExpire
 			elif self['disabled'] == 'windows_kerberos':
 				return 'D' not in acctFlags or \
-						'126' in krb5Flags or \
-						'1' in shadowExpire
+					'126' in krb5Flags or \
+					'1' in shadowExpire
 			elif self['disabled'] == 'windows_posix':
 				return 'D' not in acctFlags or \
-						'254' in krb5Flags or \
-						'1' not in shadowExpire
+					'254' in krb5Flags or \
+					'1' not in shadowExpire
 			elif self['disabled'] == 'posix_kerberos':
 				return 'D' in acctFlags or \
-						'126' in krb5Flags or \
-						'1' not in shadowExpire
+					'126' in krb5Flags or \
+					'1' not in shadowExpire
 			else:  # enabled
 				return 'D' in acctFlags or \
-						'254' in krb5Flags or \
-						'1' in shadowExpire
+					'254' in krb5Flags or \
+					'1' in shadowExpire
 		elif key == 'locked':
 			password = self['password']
 			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()

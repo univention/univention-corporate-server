@@ -229,16 +229,16 @@ def main():
 		    help='the url of a jenkins matrix project. case sensitive.',
 		    required=True)
 	parser.add_argument(
-			'--output', '-o', help='output file.'
+		'--output', '-o', help='output file.'
 	)
 	group = parser.add_mutually_exclusive_group(required=True)
 	group.add_argument(
-			'--latest', '-l', help='get all results for the latest build',
-			action='store_true')
+		'--latest', '-l', help='get all results for the latest build',
+		action='store_true')
 	group.add_argument(
-			'--build', '-b', help='get all results for a specific build')
+		'--build', '-b', help='get all results for a specific build')
 	group.add_argument(
-			'--test', '-t', help='get all results for a specific test')
+		'--test', '-t', help='get all results for a specific test')
 	args = vars(parser.parse_args())
 	# split the url into server url and job name.
 	# remove trailing slashes (if any)

@@ -68,10 +68,10 @@ class ConfigRegistry(dict):
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, MAX = range(6)
 	PREFIX = '/etc/univention'
 	BASES = {
-			NORMAL: 'base.conf',
-			LDAP: 'base-ldap.conf',
-			SCHEDULE: 'base-schedule.conf',
-			FORCED: 'base-forced.conf',
+		NORMAL: 'base.conf',
+		LDAP: 'base-ldap.conf',
+		SCHEDULE: 'base-schedule.conf',
+		FORCED: 'base-forced.conf',
 	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
@@ -207,11 +207,11 @@ class ConfigRegistry(dict):
 		"""Merge sub registry."""
 		merge = {}
 		for reg in (
-				ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM,
+			ConfigRegistry.FORCED,
+			ConfigRegistry.SCHEDULE,
+			ConfigRegistry.LDAP,
+			ConfigRegistry.NORMAL,
+			ConfigRegistry.CUSTOM,
 		):
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):

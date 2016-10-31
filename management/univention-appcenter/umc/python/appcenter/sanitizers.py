@@ -95,29 +95,29 @@ class NoDoubleNameSanitizer(StringSanitizer):
 
 
 basic_components_sanitizer = DictSanitizer({
-		'server': StringSanitizer(required=True, minimum=1),
-		'prefix': StringSanitizer(required=True),
-		'unmaintained': BooleanSanitizer(required=True),
-	},
+	'server': StringSanitizer(required=True, minimum=1),
+	'prefix': StringSanitizer(required=True),
+	'unmaintained': BooleanSanitizer(required=True),
+},
 	allow_other_keys=False,
 )
 
 
 advanced_components_sanitizer = DictSanitizer({
-		'server': StringSanitizer(),
-		'prefix': StringSanitizer(),
-		'unmaintained': BooleanSanitizer(),
-		'enabled': BooleanSanitizer(required=True),
-		'name': StringSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
-		'description': StringSanitizer(),
-		'username': StringSanitizer(),
-		'password': StringSanitizer(),
-		'version': StringSanitizer(regex_pattern='^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$')
-	}
+	'server': StringSanitizer(),
+	'prefix': StringSanitizer(),
+	'unmaintained': BooleanSanitizer(),
+	'enabled': BooleanSanitizer(required=True),
+	'name': StringSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
+	'description': StringSanitizer(),
+	'username': StringSanitizer(),
+	'password': StringSanitizer(),
+	'version': StringSanitizer(regex_pattern='^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$')
+}
 )
 
 
 add_components_sanitizer = advanced_components_sanitizer + DictSanitizer({
-		'name': NoDoubleNameSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
-	}
+	'name': NoDoubleNameSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),
+}
 )

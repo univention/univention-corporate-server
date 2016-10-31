@@ -80,12 +80,12 @@ def connect():
 						mapping.s4_mapping,
 						configRegistry,
 						configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
-						configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
-						configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
-						configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
-						s4_ldap_bindpw,
-						configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
-						configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
+			configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
+			configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
+			configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
+			s4_ldap_bindpw,
+			configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
+			configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
 	except ldap.SERVER_DOWN:
 		print "ERROR: Can't initialize LDAP-Connections."
 		raise

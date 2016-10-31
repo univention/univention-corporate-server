@@ -35,11 +35,11 @@ def main():
 				domain = ucr.get('domainname')
 				mail = 'spam%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
-						set={
-							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-							'mailPrimaryAddress': mail,
-							}
-						)
+					set={
+					'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+					'mailPrimaryAddress': mail,
+				}
+				)
 
 				activate_spam_detection()
 				reload_amavis_postfix()

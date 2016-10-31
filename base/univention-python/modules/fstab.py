@@ -61,12 +61,12 @@ class mntent(object):
 		mntent('proc', '/proc', 'proc', opts='defaults', freq=0, passno=0)
 		"""
 		h = [
-				"%r" % self.fsname,
-				"%r" % self.dir,
-				"%r" % self.type,
-				"opts=%r" % ','.join(self.opts),
-				"freq=%d" % self.freq,
-				"passno=%d" % self.passno,
+			"%r" % self.fsname,
+			"%r" % self.dir,
+			"%r" % self.type,
+			"opts=%r" % ','.join(self.opts),
+			"freq=%d" % self.freq,
+			"passno=%d" % self.passno,
 		]
 		if self.comment:
 			h.append("comment=%r" % self.comment)
@@ -81,12 +81,12 @@ class mntent(object):
 		'/dev/sda\\t/\\text2,ext3\\tdefaults,rw\\t0\\t0\\t# comment'
 		"""
 		h = [
-				mntent.quote(self.fsname),
-				mntent.quote(self.dir),
-				mntent.quote(self.type),
-				mntent.quote(','.join(self.opts)),
-				str(self.freq),
-				str(self.passno),
+			mntent.quote(self.fsname),
+			mntent.quote(self.dir),
+			mntent.quote(self.type),
+			mntent.quote(','.join(self.opts)),
+			str(self.freq),
+			str(self.passno),
 		]
 		if self.comment:
 			h.append(self.comment)

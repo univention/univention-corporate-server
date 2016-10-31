@@ -618,8 +618,8 @@ class Node(PersistentCached):
 		except KeyError:
 			logger.info("creating default pool on %s" % self.pd.name)
 			create_storage_pool(
-					self.conn,
-					configRegistry.get('uvmm/pool/default/path', '/var/lib/libvirt/images')
+				self.conn,
+				configRegistry.get('uvmm/pool/default/path', '/var/lib/libvirt/images')
 			)
 
 	def update_once(self):
@@ -1379,31 +1379,31 @@ def domain_state(uri, domain, state):
 		stat_key = dom_stat.key()
 		try:
 			TRANSITION = {
-					(libvirt.VIR_DOMAIN_RUNNING, 'PAUSE'): dom.suspend,
-					(libvirt.VIR_DOMAIN_RUNNING, 'RESTART'): lambda: dom.reboot(0),
-					(libvirt.VIR_DOMAIN_RUNNING, 'RUN'): None,
-					(libvirt.VIR_DOMAIN_RUNNING, 'SHUTDOWN'): dom.shutdown,
-					(libvirt.VIR_DOMAIN_RUNNING, 'SHUTOFF'): dom.destroy,
-					(libvirt.VIR_DOMAIN_RUNNING, 'SUSPEND'): lambda: dom.managedSave(0),
-					(libvirt.VIR_DOMAIN_BLOCKED, 'PAUSE'): dom.suspend,
-					(libvirt.VIR_DOMAIN_BLOCKED, 'RESTART'): lambda: dom.reboot(0),
-					(libvirt.VIR_DOMAIN_BLOCKED, 'RUN'): None,
-					(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTDOWN'): dom.shutdown,
-					(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTOFF'): dom.destroy,
-					(libvirt.VIR_DOMAIN_BLOCKED, 'SUSPEND'): lambda: dom.managedSave(0),
-					(libvirt.VIR_DOMAIN_PAUSED, 'PAUSE'): None,
-					(libvirt.VIR_DOMAIN_PAUSED, 'RUN'): dom.resume,
-					(libvirt.VIR_DOMAIN_PAUSED, 'SHUTDOWN'): dom.destroy,
-					(libvirt.VIR_DOMAIN_PAUSED, 'SHUTOFF'): dom.destroy,
-					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'): dom.create,
-					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,
-					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTOFF'): None,
-					(libvirt.VIR_DOMAIN_SHUTOFF, 'RUN'): dom.create,
-					(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTDOWN'): None,
-					(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTOFF'): None,
-					(libvirt.VIR_DOMAIN_CRASHED, 'RUN'): dom.create,
-					(libvirt.VIR_DOMAIN_CRASHED, 'SHUTDOWN'): None,  # TODO destroy?
-					(libvirt.VIR_DOMAIN_CRASHED, 'SHUTOFF'): None,  # TODO destroy?
+				(libvirt.VIR_DOMAIN_RUNNING, 'PAUSE'): dom.suspend,
+				(libvirt.VIR_DOMAIN_RUNNING, 'RESTART'): lambda: dom.reboot(0),
+				(libvirt.VIR_DOMAIN_RUNNING, 'RUN'): None,
+				(libvirt.VIR_DOMAIN_RUNNING, 'SHUTDOWN'): dom.shutdown,
+				(libvirt.VIR_DOMAIN_RUNNING, 'SHUTOFF'): dom.destroy,
+				(libvirt.VIR_DOMAIN_RUNNING, 'SUSPEND'): lambda: dom.managedSave(0),
+				(libvirt.VIR_DOMAIN_BLOCKED, 'PAUSE'): dom.suspend,
+				(libvirt.VIR_DOMAIN_BLOCKED, 'RESTART'): lambda: dom.reboot(0),
+				(libvirt.VIR_DOMAIN_BLOCKED, 'RUN'): None,
+				(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTDOWN'): dom.shutdown,
+				(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTOFF'): dom.destroy,
+				(libvirt.VIR_DOMAIN_BLOCKED, 'SUSPEND'): lambda: dom.managedSave(0),
+				(libvirt.VIR_DOMAIN_PAUSED, 'PAUSE'): None,
+				(libvirt.VIR_DOMAIN_PAUSED, 'RUN'): dom.resume,
+				(libvirt.VIR_DOMAIN_PAUSED, 'SHUTDOWN'): dom.destroy,
+				(libvirt.VIR_DOMAIN_PAUSED, 'SHUTOFF'): dom.destroy,
+				(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'): dom.create,
+				(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,
+				(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTOFF'): None,
+				(libvirt.VIR_DOMAIN_SHUTOFF, 'RUN'): dom.create,
+				(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTDOWN'): None,
+				(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTOFF'): None,
+				(libvirt.VIR_DOMAIN_CRASHED, 'RUN'): dom.create,
+				(libvirt.VIR_DOMAIN_CRASHED, 'SHUTDOWN'): None,  # TODO destroy?
+				(libvirt.VIR_DOMAIN_CRASHED, 'SHUTOFF'): None,  # TODO destroy?
 			}
 			transition = TRANSITION[(dom_stat.pd.state, state)]
 		except KeyError:

@@ -46,35 +46,35 @@ _ = translation.translate
 
 nagios_properties = {
 	'nagiosContactEmail': univention.admin.property(
-			short_description=_('Email address of Nagios contacts'),
-			long_description=(''),
-			syntax=univention.admin.syntax.emailAddress,
-			multivalue=True,
-			required=False,
-			may_change=True,
-			options=['nagios'],
-			identifies=False
-		),
+		short_description=_('Email address of Nagios contacts'),
+		long_description=(''),
+		syntax=univention.admin.syntax.emailAddress,
+		multivalue=True,
+		required=False,
+		may_change=True,
+		options=['nagios'],
+		identifies=False
+	),
 	'nagiosParents': univention.admin.property(
-			short_description=_('Parent hosts'),
-			long_description=(''),
-			syntax=univention.admin.syntax.nagiosHostsEnabledDn,
-			multivalue=True,
-			required=False,
-			may_change=True,
-			options=['nagios'],
-			identifies=False
-		),
+		short_description=_('Parent hosts'),
+		long_description=(''),
+		syntax=univention.admin.syntax.nagiosHostsEnabledDn,
+		multivalue=True,
+		required=False,
+		may_change=True,
+		options=['nagios'],
+		identifies=False
+	),
 	'nagiosServices': univention.admin.property(
-			short_description=_('Assigned Nagios services'),
-			long_description=(''),
-			syntax=univention.admin.syntax.nagiosServiceDn,
-			multivalue=True,
-			required=False,
-			may_change=True,
-			options=['nagios'],
-			identifies=False
-		)
+		short_description=_('Assigned Nagios services'),
+		long_description=(''),
+		syntax=univention.admin.syntax.nagiosServiceDn,
+		multivalue=True,
+		required=False,
+		may_change=True,
+		options=['nagios'],
+		identifies=False
+	)
 }
 
 
@@ -95,11 +95,11 @@ nagios_mapping = [
 
 nagios_options = {
 	'nagios': univention.admin.option(
-			short_description=_('Nagios support'),
-			default=0,
-			editable=True,
-			objectClasses=['univentionNagiosHostClass'],
-		)
+		short_description=_('Nagios support'),
+		default=0,
+		editable=True,
+		objectClasses=['univentionNagiosHostClass'],
+	)
 }
 
 

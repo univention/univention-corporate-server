@@ -79,12 +79,12 @@ def _login_at_idp_with_credentials(username, password, response):
 	"""Send form with login data"""
 	print("POST form with username and password to: %s" % response.url)
 	response = _request(
-			'POST',
-			response.url,
-			200,
-			"posting login form",
-			data={'username': username, 'password': password},
-			cookies=response.cookies)
+		'POST',
+		response.url,
+		200,
+		"posting login form",
+		data={'username': username, 'password': password},
+		cookies=response.cookies)
 
 	return response
 
@@ -110,7 +110,7 @@ def _send_saml_response_to_sp(url, saml_msg, cookies):
 	print("POST SAML message to: %s" % url)
 	return _request('POST', url, 200, "posting SAML message",
 			data={'SAMLResponse': saml_msg},
-			cookies=cookies)
+		cookies=cookies)
 
 
 def test_login(cookies, hostname=HOSTNAME):

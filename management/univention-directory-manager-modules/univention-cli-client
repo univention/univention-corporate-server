@@ -85,8 +85,8 @@ def fork_server(sock, socket_path):
 		time.sleep(0.1)
 		if time.time() > stime:
 			print >> sys.stderr, \
-					'E: Can`t find running daemon after %s seconds. (No socketfile)' % \
-					socket_timeout
+				'E: Can`t find running daemon after %s seconds. (No socketfile)' % \
+				socket_timeout
 			sys.exit(1)
 
 	# this takes a long time if getfqdn(host) is used in cli-server
@@ -100,8 +100,8 @@ def fork_server(sock, socket_path):
 			time.sleep(0.1)
 			if time.time() > stime:
 				print >> sys.stderr, \
-						'W: Can`t connect daemon after %s seconds.' % \
-						connection_timeout
+					'W: Can`t connect daemon after %s seconds.' % \
+					connection_timeout
 				raise
 
 

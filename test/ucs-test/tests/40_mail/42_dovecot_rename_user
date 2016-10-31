@@ -64,7 +64,7 @@ def main():
 												(1, 'no', 'yes'),
 												(2, 'yes', 'no'),
 												(3, 'yes', 'yes'),
-											]:
+			]:
 				old_dir = get_dovecot_maildir(userbase[i][2])
 				if not os.path.exists(old_dir):
 					utils.fail('Test %d: old_dir = %r does not exist! %r' % (i, old_dir, userbase[i]))

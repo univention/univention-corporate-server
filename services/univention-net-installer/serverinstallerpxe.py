@@ -121,11 +121,11 @@ def gen_pxe(new):
 			LABEL local
 				LOCALBOOT 0
 			''') % {
-				'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
-				'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz'),
-				'append': append,
-				'ipappend': listener.configRegistry.get('pxe/installer/ipappend', '0'),
-			}
+		'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
+		'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz'),
+		'append': append,
+		'ipappend': listener.configRegistry.get('pxe/installer/ipappend', '0'),
+	}
 
 
 def remove_pxe(old):

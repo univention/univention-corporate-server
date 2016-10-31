@@ -494,7 +494,7 @@ if __name__ == '__main__':
 	test_user_dn = UDM.create_user(
 		username=test_username,
 		password='univention',
-		)[0]
+	)[0]
 
 	try:
 		# case 1: checks with user GPO

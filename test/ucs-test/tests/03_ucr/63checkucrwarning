@@ -36,7 +36,7 @@ WHITELIST = set([
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs'
-	])
+])
 
 message_line = "Warning: This\|but can be overridden via univention-config-registry."
 

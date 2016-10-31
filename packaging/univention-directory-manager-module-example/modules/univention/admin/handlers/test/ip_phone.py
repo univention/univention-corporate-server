@@ -377,7 +377,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	der gefunden Objekte."""
 
 	filter = univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'testPhone'),
+		univention.admin.filter.expression('objectClass', 'testPhone'),
 	])
 
 	if filter_s:

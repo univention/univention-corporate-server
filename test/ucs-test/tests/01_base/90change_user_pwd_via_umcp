@@ -65,13 +65,13 @@ if __name__ == '__main__':
 		try:
 			container = UDM.create_object('container/cn',
 										  position=UCR.get('ldap/base'),
-										  name='ucs_test_' + uts.random_string())
+				name='ucs_test_' + uts.random_string())
 		except UCSTestUDM_CreateUDMObjectFailed:
 			print 'UDM.create_object failed, wait for 30 seconds and try again ...'
 			sleep(30)
 			container = UDM.create_object('container/cn',
 										  position=UCR.get('ldap/base'),
-										  name='ucs_test_' + uts.random_string())
+				name='ucs_test_' + uts.random_string())
 
 		# create a test user inside container:
 		user_name = 'ucs_test_' + uts.random_string()

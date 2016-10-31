@@ -55,46 +55,46 @@ logger = logging.getLogger('uvmmd.openstackconnection')
 
 # Mapping of ldap attribute to libcloud parameter name
 OPENSTACK_CONNECTION_ATTRIBUTES = {
-		"username": "key",
-		"password": "secret",
-		"auth_url": "ex_force_auth_url",
-		"base_url": "ex_force_base_url",
-		"auth_version": "ex_force_auth_version",
-		"service_type": "ex_force_service_type",
-		"service_name": "ex_force_service_name",
-		"tenant": "ex_tenant_name",
-		"service_region": "ex_force_service_region",
-		"auth_token": "ex_force_auth_token",
-		"base_url": "ex_force_base_url",
+	"username": "key",
+	"password": "secret",
+	"auth_url": "ex_force_auth_url",
+	"base_url": "ex_force_base_url",
+	"auth_version": "ex_force_auth_version",
+	"service_type": "ex_force_service_type",
+	"service_name": "ex_force_service_name",
+	"tenant": "ex_tenant_name",
+	"service_region": "ex_force_service_region",
+	"auth_token": "ex_force_auth_token",
+	"base_url": "ex_force_base_url",
 }
 
 OPENSTACK_CREATE_ATTRIBUTES = {
-		"name": "name",
-		"keyname": "ex_keyname",
-		"size_id": "size",
-		"image_id": "image",
-		"location_id": "location",
-		"userdata": "ex_userdata",
-		"security_group_ids": "ex_security_groups",
-		"metadata": "ex_metadata",
-		"network_ids": "networks",
-		"disk_config": "ex_disk_config",
-		"admin_pass": "ex_admin_pass",
-		"availability_zone": "ex_availability_zone",
-	}
+	"name": "name",
+	"keyname": "ex_keyname",
+	"size_id": "size",
+	"image_id": "image",
+	"location_id": "location",
+	"userdata": "ex_userdata",
+	"security_group_ids": "ex_security_groups",
+	"metadata": "ex_metadata",
+	"network_ids": "networks",
+	"disk_config": "ex_disk_config",
+	"admin_pass": "ex_admin_pass",
+	"availability_zone": "ex_availability_zone",
+}
 
 
 LIBCLOUD_UVMM_STATE_MAPPING = {
-		NodeState.RUNNING: "RUNNING",
-		NodeState.REBOOTING: "PENDING",
-		NodeState.TERMINATED: "NOSTATE",
-		NodeState.PENDING: "PENDING",
-		NodeState.UNKNOWN: "NOSTATE",
-		NodeState.STOPPED: "SHUTOFF",
-		NodeState.SUSPENDED: "SUSPENDED",
-		NodeState.ERROR: "CRASHED",
-		NodeState.PAUSED: "PAUSED",
-		NodeState.UNKNOWN: "NOSTATE"
+	NodeState.RUNNING: "RUNNING",
+	NodeState.REBOOTING: "PENDING",
+	NodeState.TERMINATED: "NOSTATE",
+	NodeState.PENDING: "PENDING",
+	NodeState.UNKNOWN: "NOSTATE",
+	NodeState.STOPPED: "SHUTOFF",
+	NodeState.SUSPENDED: "SUSPENDED",
+	NodeState.ERROR: "CRASHED",
+	NodeState.PAUSED: "PAUSED",
+	NodeState.UNKNOWN: "NOSTATE"
 }
 
 
@@ -302,29 +302,29 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		instance = self._get_instance_by_id(instance_id)
 
 		OS_TRANSITION = {
-				# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
-				(NodeState.RUNNING, "RUN"): None,
-				(NodeState.REBOOTING, "RUN"): None,
-				(NodeState.PENDING, "RUN"): None,
-				(NodeState.UNKNOWN, "RUN"): self._boot_instance,
-				(NodeState.STOPPED, "RUN"): self._boot_instance,
-				(NodeState.SUSPENDED, "RUN"): self._resume_instance,
-				(NodeState.PAUSED, "RUN"): self._unpause_instance,
-				(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
-				(NodeState.RUNNING, "RESTART"): self._reboot_instance,
-				(NodeState.REBOOTING, "RESTART"): None,
-				(NodeState.PENDING, "RESTART"): None,
-				(NodeState.UNKNOWN, "RESTART"): self._reboot_instance,
-				(NodeState.PAUSED, "RESTART"): self._reboot_instance,
-				(NodeState.STOPPED, "RESTART"): self._reboot_instance,
-				(NodeState.RUNNING, "PAUSE"): self._pause_instance,
-				(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
-				(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PAUSED, "SHUTOFF"): self._shutoff_instance,
-				(NodeState.RUNNING, "SUSPEND"): self._suspend_instance,
+			# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
+			(NodeState.RUNNING, "RUN"): None,
+			(NodeState.REBOOTING, "RUN"): None,
+			(NodeState.PENDING, "RUN"): None,
+			(NodeState.UNKNOWN, "RUN"): self._boot_instance,
+			(NodeState.STOPPED, "RUN"): self._boot_instance,
+			(NodeState.SUSPENDED, "RUN"): self._resume_instance,
+			(NodeState.PAUSED, "RUN"): self._unpause_instance,
+			(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
+			(NodeState.RUNNING, "RESTART"): self._reboot_instance,
+			(NodeState.REBOOTING, "RESTART"): None,
+			(NodeState.PENDING, "RESTART"): None,
+			(NodeState.UNKNOWN, "RESTART"): self._reboot_instance,
+			(NodeState.PAUSED, "RESTART"): self._reboot_instance,
+			(NodeState.STOPPED, "RESTART"): self._reboot_instance,
+			(NodeState.RUNNING, "PAUSE"): self._pause_instance,
+			(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
+			(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.PAUSED, "SHUTOFF"): self._shutoff_instance,
+			(NodeState.RUNNING, "SUSPEND"): self._suspend_instance,
 		}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:

@@ -31,12 +31,12 @@ def main():
 		for i in xrange(3):
 			usermail = '%s@%s' % (uts.random_name(), domain)
 			udm.create_user(
-					set={
-						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-						'mailAlternativeAddress': group_mail,
-						'mailPrimaryAddress': usermail,
-						}
-					)
+				set={
+				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+				'mailAlternativeAddress': group_mail,
+				'mailPrimaryAddress': usermail,
+			}
+			)
 			mails.append(usermail)
 
 		token = str(time.time())

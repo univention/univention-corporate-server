@@ -68,8 +68,8 @@ def background(func):
 				status = MODULE_ERR_COMMAND_FAILED
 				tb_text = traceback.format_exc()
 				message = _("Execution of command '%(command)s' has failed:\n\n%(text)s") % {
-						'command': func.__name__,
-						'text': tb_text,
+					'command': func.__name__,
+					'text': tb_text,
 				}
 				MODULE.process(message)
 				self.progress.error(message)

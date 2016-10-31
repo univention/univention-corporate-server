@@ -119,7 +119,7 @@ class TestUMCGroupsCreation(TestUMCSystem):
             print("Checking test group '%s' policies for '%s'"
                   % (test_groupname, policyname))
             group_policies = self.get_group_by_name(test_groupname)[0].get(
-                                                                  '$policies$')
+                '$policies$')
             if not group_policies:
                 utils.fail("The group policies for '%s' are empty or not "
                            "present after '%s' policy was applied to group"

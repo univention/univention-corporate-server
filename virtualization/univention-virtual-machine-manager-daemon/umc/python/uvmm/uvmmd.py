@@ -131,10 +131,10 @@ class UVMM_ConnectionThread(Simple, UVMM_Request):
 
 	def __init__(self):
 		Simple.__init__(
-				self,
-				'UVMM_Connection-%d' % (UVMM_ConnectionThread.counter,),
-				None,
-				Callback(self._finished)
+			self,
+			'UVMM_Connection-%d' % (UVMM_ConnectionThread.counter,),
+			None,
+			Callback(self._finished)
 		)
 		UVMM_ConnectionThread.counter += 1
 		self.busy = False

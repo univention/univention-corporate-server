@@ -39,37 +39,37 @@ import re
 import time
 from pipes import quote as escape_value
 from univention.config_registry.backend import \
-		exception_occured, SCOPE, ConfigRegistry
+	exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import \
-		run_filter, ConfigHandlers
+	run_filter, ConfigHandlers
 from univention.config_registry.misc import \
-		validate_key
+	validate_key
 from univention.config_registry.filters import \
-		Output, filter_shell, filter_keys_only, filter_sort
+	Output, filter_shell, filter_keys_only, filter_sort
 
 __all__ = [
-		'REPLOG_FILE',
-		'UnknownKeyException',
-		'handler_set',
-		'handler_unset',
-		'handler_dump',
-		'handler_update',
-		'handler_commit',
-		'handler_register',
-		'handler_unregister',
-		'handler_filter',
-		'handler_search',
-		'handler_get',
-		'handler_info',
-		'handler_version',
-		'handler_help',
-		'main',
+	'REPLOG_FILE',
+	'UnknownKeyException',
+	'handler_set',
+	'handler_unset',
+	'handler_dump',
+	'handler_update',
+	'handler_commit',
+	'handler_register',
+	'handler_unregister',
+	'handler_filter',
+	'handler_search',
+	'handler_get',
+	'handler_info',
+	'handler_version',
+	'handler_help',
+	'main',
 ]
 
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
 _SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES = \
-		(1 << _ for _ in range(4))
+	(1 << _ for _ in range(4))
 
 
 class UnknownKeyException(Exception):
@@ -97,9 +97,9 @@ def replog(ucr, var, old_value, value=None):
 			varvalue = "'%s'" % var
 
 		scope_arg = {
-				ConfigRegistry.LDAP: '--ldap-policy ',
-				ConfigRegistry.FORCED: '--force ',
-				ConfigRegistry.SCHEDULE: '--schedule ',
+			ConfigRegistry.LDAP: '--ldap-policy ',
+			ConfigRegistry.FORCED: '--force ',
+			ConfigRegistry.SCHEDULE: '--schedule ',
 		}.get(ucr.scope, '')
 
 		if old_value is None:
@@ -284,7 +284,7 @@ def handler_search(args, opts=dict()):
 	count_search = int(search_keys) + int(search_values) + int(search_all)
 	if count_search > 1:
 		print >> sys.stderr, \
-				'E: at most one out of [--key|--value|--all] may be set'
+			'E: at most one out of [--key|--value|--all] may be set'
 		sys.exit(1)
 	elif count_search == 0:
 		search_keys = True
@@ -421,7 +421,7 @@ def handler_info(args, opts=dict()):
 		try:
 			print_variable_info_string(arg, ucr.get(arg, None),
 					info.get_variable(arg),
-					details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
+				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
 		except UnknownKeyException as ex:
 			print >> sys.stderr, ex
 
@@ -642,8 +642,8 @@ def main(args):
 			if state:
 				if action not in actions:
 					print >> sys.stderr, \
-							'E: invalid option --%s for command %s' % \
-							(name, action)
+						'E: invalid option --%s for command %s' % \
+						(name, action)
 					sys.exit(1)
 				else:
 					post_filter = True

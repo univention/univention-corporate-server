@@ -823,13 +823,13 @@ class Disk(object):
 
 	def __str__(self):
 		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s, pool=%s)' % (
-				self.device,
-				self.type,
-				self.driver,
-				self.source,
-				self.target_dev,
-				self.size,
-				self.pool,
+			self.device,
+			self.type,
+			self.driver,
+			self.source,
+			self.target_dev,
+			self.size,
+			self.pool,
 		)
 
 
