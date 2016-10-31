@@ -470,9 +470,10 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Samba has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
+						<package>Samba</package> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					<wordasword>samba-tool ntacl sysvolcheck</wordasword> has been fixed (<u:bug>39633</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
