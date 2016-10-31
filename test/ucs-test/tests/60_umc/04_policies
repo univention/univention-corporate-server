@@ -67,7 +67,8 @@ def main():
 
 		# create a new UMC policy
 		# containing the UMC operating set
-		umc_policy_dn = udm.create_object('policies/umc',
+		umc_policy_dn = udm.create_object(
+			'policies/umc',
 			position="cn=UMC,cn=policies,%s" % ldap_base,
 			name='test-umc-policy',
 			allow=operation_set_dn
@@ -88,24 +89,28 @@ def main():
 			'various': dict(append=dict(registry=['foo 0', 'bar 5'])),
 		}
 		for name, kwargs in policies.items():
-			policies[name] = udm.create_object('policies/registry',
+			policies[name] = udm.create_object(
+				'policies/registry',
 				position="cn=policies,%s" % ldap_base,
 				name='test-%s-ucr-policy' % name,
 				**kwargs
 			)
 
 		# create container hierarchy
-		root_dn = udm.create_object('container/cn',
+		root_dn = udm.create_object(
+			'container/cn',
 			name='root',
 			position=ldap_base
 		)
-		container_dn = udm.create_object('container/cn',
+		container_dn = udm.create_object(
+			'container/cn',
 			name='computers2',
 			position=root_dn
 		)
 
 		# create computer object
-		computer_dn = udm.create_object('computers/domaincontroller_slave',
+		computer_dn = udm.create_object(
+			'computers/domaincontroller_slave',
 			name=random_name(),
 			position=container_dn
 		)

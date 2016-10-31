@@ -865,8 +865,7 @@ class ConfigHandlers:
 					continue
 				handler = None
 				if _filelist:
-					files = section.get('File') or \
-						section.get('Multifile') or ()
+					files = section.get('File') or section.get('Multifile') or ()
 					for filename in files:
 						if not os.path.isabs(filename):
 							filename = '/%s' % filename

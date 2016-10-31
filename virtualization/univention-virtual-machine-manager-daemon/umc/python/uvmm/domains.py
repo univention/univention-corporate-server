@@ -598,13 +598,7 @@ class Bus(object):
 		Register each device in devices list at bus.
 		"""
 		for dev in devices:
-			if (
-				dev.target_dev and
-				(
-						dev.target_bus == self.name or
-						(not dev.target_bus and self.default)
-					)
-			):
+			if dev.target_dev and (dev.target_bus == self.name or (not dev.target_bus and self.default)):
 				letter = dev.target_dev[-1]
 				self._connected.add(letter)
 
