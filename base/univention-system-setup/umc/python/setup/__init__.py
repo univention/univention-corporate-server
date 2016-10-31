@@ -596,9 +596,9 @@ class Instance(Base, ProgressMixin):
 		'''Return a list of all countries with their two letter chcountry codes.'''
 		country_data = util.get_country_data()
 		countries = [{
-				'id': icountry,
-				'label': self._get_localized_label(idata.get('label', {})),
-			}
+			'id': icountry,
+			'label': self._get_localized_label(idata.get('label', {})),
+		}
 			for icountry, idata in country_data.iteritems()
 			if idata.get('label')]
 

@@ -49,7 +49,7 @@ def install_services(info, package):
 	failed = info.check_services()
 	if failed:
 		print >> sys.stderr, 'Incomplete entries in services definition %s' % \
-				(cfile,)
+			(cfile,)
 		for service, keys in failed.items():
 			print >> sys.stderr, '  [%s]' % (service,)
 			for key in keys:

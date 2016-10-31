@@ -45,13 +45,13 @@ if __name__ == '__main__':
 									   position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 				verify_ldap_object(dn, {
-						'cn': [extension_name],
-						'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-						'univentionOwnedByPackage': [package_name],
-						'univentionObjectType': ['settings/udm_%s' % extension_type],
-						'univentionOwnedByPackageVersion': [package_version],
-						'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
-						'univentionAppIdentifier': [app_id],
-						'univentionUCSVersionStart': [version_start],
-						'univentionUCSVersionEnd': [version_end],
-						})
+					'cn': [extension_name],
+					'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+					'univentionOwnedByPackage': [package_name],
+					'univentionObjectType': ['settings/udm_%s' % extension_type],
+					'univentionOwnedByPackageVersion': [package_version],
+					'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+					'univentionAppIdentifier': [app_id],
+					'univentionUCSVersionStart': [version_start],
+					'univentionUCSVersionEnd': [version_end],
+				})

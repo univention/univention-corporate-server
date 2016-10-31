@@ -90,9 +90,9 @@ class Storages(object):
 			return self.storage_pools[uri].values()
 
 		self.uvmm.send(
-				'STORAGE_POOLS',
-				self.process_uvmm_response(request, _finished),
-				uri=uri
+			'STORAGE_POOLS',
+			self.process_uvmm_response(request, _finished),
+			uri=uri
 		)
 
 	def storage_volume_query(self, request):
@@ -137,11 +137,11 @@ class Storages(object):
 		if drive_type == 'floppy':  # not yet supported
 			drive_type = 'disk'
 		self.uvmm.send(
-				'STORAGE_VOLUMES',
-				self.process_uvmm_response(request, _finished),
-				uri=request.options['nodeURI'],
-				pool=request.options['pool'],
-				type=drive_type
+			'STORAGE_VOLUMES',
+			self.process_uvmm_response(request, _finished),
+			uri=request.options['nodeURI'],
+			pool=request.options['pool'],
+			type=drive_type
 		)
 
 	def storage_volume_remove(self, request):
@@ -158,10 +158,10 @@ class Storages(object):
 		self.required_options(request, 'nodeURI', 'volumes')
 		volume_list = [vol['source'] for vol in request.options['volumes']]
 		self.uvmm.send(
-				'STORAGE_VOLUMES_DESTROY',
-				self.process_uvmm_response(request),
-				uri=request.options['nodeURI'],
-				volumes=volume_list
+			'STORAGE_VOLUMES_DESTROY',
+			self.process_uvmm_response(request),
+			uri=request.options['nodeURI'],
+			volumes=volume_list
 		)
 
 	def storage_volume_deletable(self, request):
@@ -208,13 +208,13 @@ class Storages(object):
 
 			# check if volume is used by any other domain
 			success, result = self.uvmm.send(
-					'STORAGE_VOLUME_USEDBY',
-					None,
-					volume=volume_path
+				'STORAGE_VOLUME_USEDBY',
+				None,
+				volume=volume_path
 			)
 			if not success:
 				raise UMC_Error(
-						_('Failed to check if the drive is used by any other virtual instance')
+					_('Failed to check if the drive is used by any other virtual instance')
 				)
 
 			if len(result) > 1:  # is used by at least one other domain
@@ -225,14 +225,14 @@ class Storages(object):
 				domain = _tmp_cache[volume['domainURI']]
 			except LookupError:
 				success, domain = self.uvmm.send(
-						'DOMAIN_INFO',
-						None,
-						uri=node_uri,
-						domain=domain_uuid
+					'DOMAIN_INFO',
+					None,
+					uri=node_uri,
+					domain=domain_uuid
 				)
 				if not success:
 					raise UMC_Error(
-							_('Could not retrieve details for domain %s') % domain_uuid
+						_('Could not retrieve details for domain %s') % domain_uuid
 					)
 				_tmp_cache[volume['domainURI']] = domain
 
@@ -258,9 +258,9 @@ class Storages(object):
 			pools = self.storage_pools[node_uri]
 		except LookupError:
 			_success, data = self.uvmm.send(
-					'STORAGE_POOLS',
-					None,
-					uri=node_uri
+				'STORAGE_POOLS',
+				None,
+				uri=node_uri
 			)
 			pools = dict([(pool.name, object2dict(pool)) for pool in data])
 			self.storage_pools[node_uri] = pools

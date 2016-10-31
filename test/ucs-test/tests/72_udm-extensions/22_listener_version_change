@@ -49,7 +49,7 @@ if __name__ == '__main__':
 				('1.0-0', current_version, True),  # upper limit of range is current version
 				(current_version, '9.9-9', True),  # lower limit of range is current version
 				('9.0-0', '9.1-0', False),   # range above current version
-				):
+			):
 
 				print '=== Testing range from %s to %s with expected result exists=%s ===' % (version_start, version_end, should_exist)
 				extension_name = get_extension_name(extension_type)

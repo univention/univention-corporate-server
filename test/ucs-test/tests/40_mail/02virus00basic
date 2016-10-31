@@ -34,15 +34,15 @@ def main():
 				handler_set([
 					'mail/alias/root=systemmail@%s.%s' % (
 						host, domain)
-					])
+				])
 				reload_amavis_postfix()
 				mail = 'virus%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
-						set={
-							'mailHomeServer': '%s.%s' % (host, domain),
-							'mailPrimaryAddress': mail,
-							}
-						)
+					set={
+					'mailHomeServer': '%s.%s' % (host, domain),
+					'mailPrimaryAddress': mail,
+				}
+				)
 
 				token1 = str(time.time())
 				send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on')

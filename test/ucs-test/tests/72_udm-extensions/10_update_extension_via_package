@@ -60,10 +60,10 @@ def test_extension(extension_type):
 			if not dnlist:
 				fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name))
 			verify_ldap_object(dnlist[0], {
-					'cn': [extension_name],
-					'univentionUCSVersionStart': [version_start],
-					'univentionUCSVersionEnd': [version_end],
-					})
+				'cn': [extension_name],
+				'univentionUCSVersionStart': [version_start],
+				'univentionUCSVersionEnd': [version_end],
+			})
 
 			content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
 			if extension_identifier not in content:

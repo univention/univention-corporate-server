@@ -38,17 +38,17 @@ def main():
 			for uri in get_uirs():
 				printer_name = uts.random_name()
 				udm.create_object(
-						modulename='shares/printer',
-						name=printer_name,
-						position='%s' % position,
-						binddn=account.binddn,
-						bindpwd=account.bindpw,
-						set={
-							'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
-							'model': 'None',
-							'uri': '%s:// /tmp/%s' % (uri, printer_name)
-							}
-						)
+					modulename='shares/printer',
+					name=printer_name,
+					position='%s' % position,
+					binddn=account.binddn,
+					bindpwd=account.bindpw,
+					set={
+					'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
+					'model': 'None',
+					'uri': '%s:// /tmp/%s' % (uri, printer_name)
+				}
+				)
 				if not printer_enabled(printer_name):
 					print 'Wait for 30 seconds and try again'
 					time.sleep(30)

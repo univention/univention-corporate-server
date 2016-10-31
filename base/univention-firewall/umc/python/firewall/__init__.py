@@ -254,8 +254,8 @@ class Instance(umc.modules.Base):
 				yield entry
 
 	@decorators.sanitize(sanitizers.DictSanitizer(
-			{u'object': sanitizers.DictSanitizer(
-					{u'identifier': sanitizers.StringSanitizer(required=True),
+		{u'object': sanitizers.DictSanitizer(
+		{u'identifier': sanitizers.StringSanitizer(required=True),
 					 u'protocol':
 						 sanitizers.ChoicesSanitizer((u'tcp', u'udp', ),
 						                             required=True),

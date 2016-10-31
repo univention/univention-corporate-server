@@ -179,7 +179,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 	def __init__(self, base_object):
 		self.__class__ = type(base_object.__class__.__name__,
 				(self.__class__, base_object.__class__),
-				{})
+			{})
 		self.__dict__ = base_object.__dict__
 
 	def __getitem__(self, key):

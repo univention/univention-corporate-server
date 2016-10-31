@@ -105,9 +105,9 @@ class Profiles(object):
 		archs = set([t.arch for t in node_pd.capabilities]) | set(('automatic',))
 
 		return [
-				(dn, item)
-				for dn, item in self.profiles
-				if item.arch in archs and item.virttech.startswith(tech)
+			(dn, item)
+			for dn, item in self.profiles
+			if item.arch in archs and item.virttech.startswith(tech)
 		]
 
 	def profile_query(self, request):
@@ -127,10 +127,10 @@ class Profiles(object):
 			]
 
 		self.uvmm.send(
-				'NODE_LIST',
-				self.process_uvmm_response(request, _finished),
-				group='default',
-				pattern=request.options['nodeURI']
+			'NODE_LIST',
+			self.process_uvmm_response(request, _finished),
+			group='default',
+			pattern=request.options['nodeURI']
 		)
 
 	def profile_get(self, request):
@@ -145,8 +145,8 @@ class Profiles(object):
 				return
 
 		self.finished(
-				request.id,
-				None,
-				_('Unknown profile'),
-				success=False
+			request.id,
+			None,
+			_('Unknown profile'),
+			success=False
 		)

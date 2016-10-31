@@ -63,12 +63,12 @@ class Domains(object):
 
 	RE_VNC = re.compile(r'^(IPv[46])(?: (.+))?$|^(?:NAME(?: (.+=.*))?)$')
 	SOCKET_FAMILIES = {
-			'IPv4': socket.AF_INET,
-			'IPv6': socket.AF_INET6,
+		'IPv4': socket.AF_INET,
+		'IPv6': socket.AF_INET6,
 	}
 	SOCKET_FORMATS = {
-			socket.AF_INET: '%s',
-			socket.AF_INET6: '[%s]',
+		socket.AF_INET: '%s',
+		socket.AF_INET6: '[%s]',
 	}
 
 	@sanitize(
@@ -125,10 +125,10 @@ class Domains(object):
 			return domain_list
 
 		self.uvmm.send(
-				'DOMAIN_LIST',
-				self.process_uvmm_response(request, _finished),
-				uri=request.options.get('nodePattern', ''),
-				pattern=request.options['domainPattern']
+			'DOMAIN_LIST',
+			self.process_uvmm_response(request, _finished),
+			uri=request.options.get('nodePattern', ''),
+			pattern=request.options['domainPattern']
 		)
 
 	def domain_get(self, request):
@@ -195,11 +195,11 @@ class Domains(object):
 							family = Domains.SOCKET_FAMILIES[family]
 							regex = re.compile(pattern or '.*')
 							addrs = socket.getaddrinfo(
-									host,
-									port,
-									family,
-									socket.SOCK_STREAM,
-									socket.SOL_TCP
+								host,
+								port,
+								family,
+								socket.SOCK_STREAM,
+								socket.SOL_TCP
 							)
 							for (family, _socktype, _proto, _canonname, sockaddr) in addrs:
 								host, port = sockaddr[:2]
@@ -240,10 +240,10 @@ class Domains(object):
 		self.required_options(request, 'domainURI')
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_INFO',
-				self.process_uvmm_response(request, _finished),
-				uri=node_uri,
-				domain=domain_uuid
+			'DOMAIN_INFO',
+			self.process_uvmm_response(request, _finished),
+			uri=node_uri,
+			domain=domain_uuid
 		)
 
 	def _create_disk(self, node_uri, disk, domain_info, profile=None):
@@ -374,10 +374,10 @@ class Domains(object):
 
 		if domain_info.arch == 'automatic':
 			success, node_list = self.uvmm.send(
-					'NODE_LIST',
-					None,
-					group='default',
-					pattern=request.options['nodeURI']
+				'NODE_LIST',
+				None,
+				group='default',
+				pattern=request.options['nodeURI']
 			)
 			if not success:
 				raise UMC_Error(_('Failed to retrieve details for the server %(nodeURI)s') % request.options, status=500)
@@ -435,8 +435,8 @@ class Domains(object):
 
 		# drives
 		domain_info.disks = [
-				self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
-				for disk in domain['disks']
+			self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
+			for disk in domain['disks']
 		]
 		verify_device_files(domain_info)
 
@@ -461,10 +461,10 @@ class Domains(object):
 			return object2dict(data)
 
 		self.uvmm.send(
-				'DOMAIN_DEFINE',
-				self.process_uvmm_response(request, _finished),
-				uri=request.options['nodeURI'],
-				domain=domain_info
+			'DOMAIN_DEFINE',
+			self.process_uvmm_response(request, _finished),
+			uri=request.options['nodeURI'],
+			domain=domain_info
 		)
 
 	domain_put = domain_add
@@ -487,11 +487,11 @@ class Domains(object):
 		if state not in self.TARGET_STATES:
 			raise UMC_Error(_('Invalid domain state: %s') % state)
 		self.uvmm.send(
-				'DOMAIN_STATE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				state=state,
+			'DOMAIN_STATE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			state=state,
 		)
 
 	def domain_migrate(self, request):
@@ -508,11 +508,11 @@ class Domains(object):
 		self.required_options(request, 'domainURI', 'targetNodeURI')
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_MIGRATE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				target_uri=request.options['targetNodeURI']
+			'DOMAIN_MIGRATE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			target_uri=request.options['targetNodeURI']
 		)
 
 	def domain_clone(self, request):
@@ -530,12 +530,12 @@ class Domains(object):
 		self.required_options(request, 'domainURI', 'cloneName')
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_CLONE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				name=request.options['cloneName'],
-				subst={'mac': request.options.get('macAddress', 'clone')}
+			'DOMAIN_CLONE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			name=request.options['cloneName'],
+			subst={'mac': request.options.get('macAddress', 'clone')}
 		)
 
 	def domain_remove(self, request):
@@ -553,11 +553,11 @@ class Domains(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		volume_list = request.options['volumes']
 		self.uvmm.send(
-				'DOMAIN_UNDEFINE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				volumes=volume_list
+			'DOMAIN_UNDEFINE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			volumes=volume_list
 		)
 
 
@@ -583,15 +583,15 @@ class Bus(object):
 		must be defined as default.
 		"""
 		return (
-				(dev.device not in self.unsupported) and
-				(
-					dev.target_bus == self.name or
-					(
-						not dev.target_bus and
-						self.default
-					)
-				)
+			(dev.device not in self.unsupported) and
+			(
+			dev.target_bus == self.name or
+			(
+			not dev.target_bus and
+			self.default
 			)
+		)
+		)
 
 	def attach(self, devices):
 		"""
@@ -599,8 +599,8 @@ class Bus(object):
 		"""
 		for dev in devices:
 			if (
-					dev.target_dev and
-					(
+				dev.target_dev and
+				(
 						dev.target_bus == self.name or
 						(not dev.target_bus and self.default)
 					)

@@ -119,7 +119,7 @@ def bind():
 	timeout = time.time() + 120  # 2 minutes from now
 	if time.time() > timeout:
 		err = '%s: LDAP server %s unreachable, aborting' % \
-				(sys.argv[0], ucr['ldap/master'])
+			(sys.argv[0], ucr['ldap/master'])
 		ud.debug(ud.ADMIN, ud.WARN, err)
 		print >> sys.stderr, err
 		sys.exit(1)
@@ -130,12 +130,12 @@ def bind():
 	try:
 		if options.binddn and options.bindpwd:
 			lo = uldap.access(
-					host=ucr['ldap/master'],
-					port=int(ucr.get('ldap/master/port', '7389')),
-					base=ucr['ldap/base'],
-					binddn=options.binddn,
-					bindpw=options.bindpwd,
-					start_tls=start_tls)
+				host=ucr['ldap/master'],
+				port=int(ucr.get('ldap/master/port', '7389')),
+				base=ucr['ldap/base'],
+				binddn=options.binddn,
+				bindpw=options.bindpwd,
+				start_tls=start_tls)
 			position = uldap.position(lo.base)
 		else:
 			lo, position = uldap.getAdminConnection(start_tls)
@@ -148,7 +148,7 @@ def bind():
 	except (univention.admin.uexceptions.ldapError,
 			uldap.ldap.LDAPError):
 		msg = '%s: timeout while trying to contact LDAP server %s' % \
-				(sys.argv[0], ucr['ldap/master'])
+			(sys.argv[0], ucr['ldap/master'])
 		ud.debug(ud.ADMIN, ud.WARN, msg)
 		print >> sys.stderr, msg
 		time.sleep(10)
@@ -363,7 +363,7 @@ def main():
 	try:
 		if command == 'add':
 			print 'Adding %s record "%s" to zone %s...' % \
-					(typ.upper(), ' '.join(args), zone_name)
+				(typ.upper(), ' '.join(args), zone_name)
 			if typ == 'srv':
 				add_srv_record(*args)
 			elif typ == 'txt':

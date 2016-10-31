@@ -17,15 +17,15 @@ import univention.testing.strings as uts
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone_properties = {
-				'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
-				'nameserver': uts.random_string(),
-				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
-				'serial': '1',
-				'zonettl': '128',
-				'refresh': '64',
-				'expire': '32',
-				'ttl': '16',
-				'retry': '8'
+			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
+			'nameserver': uts.random_string(),
+			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'serial': '1',
+			'zonettl': '128',
+			'refresh': '64',
+			'expire': '32',
+			'ttl': '16',
+			'retry': '8'
 		}
 
 		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
@@ -33,11 +33,11 @@ if __name__ == '__main__':
 		udm.modify_object('dns/forward_zone', dn=forward_zone, ttl=new_ttl)
 
 		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
-											   forward_zone_properties['nameserver'],
-											   forward_zone_properties['contact'].replace('@', '.'),
-											   '2',
-											   forward_zone_properties['refresh'],
-											   forward_zone_properties['retry'],
-											   forward_zone_properties['expire'],
-											   new_ttl)]
+			forward_zone_properties['nameserver'],
+			forward_zone_properties['contact'].replace('@', '.'),
+			'2',
+			forward_zone_properties['refresh'],
+			forward_zone_properties['retry'],
+			forward_zone_properties['expire'],
+			new_ttl)]
 		})

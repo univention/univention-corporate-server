@@ -49,10 +49,10 @@ def main():
 						# test creating shared folder with different delete flags
 						#
 						for i, with_mailaddress, flag_delete in [
-								(0, False, 'no'),
-								(1, False, 'yes'),
-								(2, True, 'no'),
-								(3, True, 'yes'), ]:
+							(0, False, 'no'),
+							(1, False, 'yes'),
+							(2, True, 'no'),
+							(3, True, 'yes'), ]:
 
 							#
 							# reconfigure system

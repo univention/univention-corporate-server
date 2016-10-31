@@ -114,73 +114,73 @@ class License(object):
 		)
 		self.sysAccountsFound = 0
 		self.licenses = {
-				'1': {
-					# Version 1 till UCS 3.1
-					License.ACCOUNT: None, License.CLIENT: None,
-					License.DESKTOP: None, License.GROUPWARE: None,
-				},
-				'2': {
-					# Version 2 since UCS 3.1
-					License.USERS: None, License.SERVERS: None,
-					License.MANAGEDCLIENTS: None, License.CORPORATECLIENTS: None,
-				},
-			}
+			'1': {
+				# Version 1 till UCS 3.1
+				License.ACCOUNT: None, License.CLIENT: None,
+				License.DESKTOP: None, License.GROUPWARE: None,
+			},
+			'2': {
+				# Version 2 since UCS 3.1
+				License.USERS: None, License.SERVERS: None,
+				License.MANAGEDCLIENTS: None, License.CORPORATECLIENTS: None,
+			},
+		}
 		self.real = {
-				'1': {
-					# Version 1 till UCS 3.1
-					License.ACCOUNT: 0, License.CLIENT: 0,
-					License.DESKTOP: 0, License.GROUPWARE: 0,
-				},
-				'2': {
-					# Version 2 since UCS 3.1
-					License.USERS: 0, License.SERVERS: 0,
-					License.MANAGEDCLIENTS: 0, License.CORPORATECLIENTS: 0,
-				},
-			}
+			'1': {
+				# Version 1 till UCS 3.1
+				License.ACCOUNT: 0, License.CLIENT: 0,
+				License.DESKTOP: 0, License.GROUPWARE: 0,
+			},
+			'2': {
+				# Version 2 since UCS 3.1
+				License.USERS: 0, License.SERVERS: 0,
+				License.MANAGEDCLIENTS: 0, License.CORPORATECLIENTS: 0,
+			},
+		}
 		self.names = {
-				'1': {
-					# Version 1 till UCS 3.1
-					License.ACCOUNT: 'Accounts', License.CLIENT: 'Clients',
-					License.DESKTOP: 'Desktops', License.GROUPWARE: 'Groupware Accounts',
-				},
-				'2': {
-					# Version 2 since UCS 3.1
-					License.USERS: 'Users', License.SERVERS: 'Servers',
-					License.MANAGEDCLIENTS: 'Managed Clients', License.CORPORATECLIENTS: 'Corporate Clients',
-				},
-			}
+			'1': {
+				# Version 1 till UCS 3.1
+				License.ACCOUNT: 'Accounts', License.CLIENT: 'Clients',
+				License.DESKTOP: 'Desktops', License.GROUPWARE: 'Groupware Accounts',
+			},
+			'2': {
+				# Version 2 since UCS 3.1
+				License.USERS: 'Users', License.SERVERS: 'Servers',
+				License.MANAGEDCLIENTS: 'Managed Clients', License.CORPORATECLIENTS: 'Corporate Clients',
+			},
+		}
 		self.keys = {
-				'1': {
-					# Version 1 till UCS 3.1
-					License.ACCOUNT: 'univentionLicenseAccounts',
-					License.CLIENT: 'univentionLicenseClients',
-					License.DESKTOP: 'univentionLicenseuniventionDesktops',
-					License.GROUPWARE: 'univentionLicenseGroupwareAccounts'
-				},
-				'2': {
-					# Version 1 till UCS 3.1
-					License.USERS: 'univentionLicenseUsers',
-					License.SERVERS: 'univentionLicenseServers',
-					License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
-					License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
-				},
-			}
+			'1': {
+				# Version 1 till UCS 3.1
+				License.ACCOUNT: 'univentionLicenseAccounts',
+				License.CLIENT: 'univentionLicenseClients',
+				License.DESKTOP: 'univentionLicenseuniventionDesktops',
+				License.GROUPWARE: 'univentionLicenseGroupwareAccounts'
+			},
+			'2': {
+				# Version 1 till UCS 3.1
+				License.USERS: 'univentionLicenseUsers',
+				License.SERVERS: 'univentionLicenseServers',
+				License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
+				License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
+			},
+		}
 		self.filters = {
-				'1': {
-					# Version 1 till UCS 3.1
-					License.ACCOUNT: '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
-					License.CLIENT: '(|(objectClass=univentionThinClient)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectClass=univentionMacOSClient))',
-					License.DESKTOP: '(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
-					License.GROUPWARE: '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*)(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
-				},
-				'2': {
-					# Version 2 since UCS 3.1
-					License.USERS: '(&%s)' % ''.join([LDAP_FILTER_normal_user_account, ldap_filter_not_objectflag(user_exclude_objectflags), LDAP_FILTER_account_not_disabled]),
-					License.SERVERS: '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))',
-					# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
-					License.MANAGEDCLIENTS: '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
-					License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
-				},
+			'1': {
+				# Version 1 till UCS 3.1
+				License.ACCOUNT: '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+				License.CLIENT: '(|(objectClass=univentionThinClient)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectClass=univentionMacOSClient))',
+				License.DESKTOP: '(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient))',
+				License.GROUPWARE: '(&(objectclass=kolabInetOrgPerson)(kolabHomeServer=*)(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+			},
+			'2': {
+				# Version 2 since UCS 3.1
+				License.USERS: '(&%s)' % ''.join([LDAP_FILTER_normal_user_account, ldap_filter_not_objectflag(user_exclude_objectflags), LDAP_FILTER_account_not_disabled]),
+				License.SERVERS: '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))',
+				# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
+				License.MANAGEDCLIENTS: '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
+				License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
+			},
 		}
 		self.__selected = False
 
@@ -380,8 +380,8 @@ class License(object):
 	def __countSysAccounts(self, lo):
 		userfilter = [univention.admin.filter.expression('uid', account) for account in self.sysAccountNames]
 		filter = univention.admin.filter.conjunction('&', [
-						univention.admin.filter.conjunction('|', userfilter),
-						self.filters[self.version][License.USERS]])
+			univention.admin.filter.conjunction('|', userfilter),
+			self.filters[self.version][License.USERS]])
 		try:
 			searchResult = lo.searchDn(filter=str(filter))
 			self.sysAccountsFound = len(searchResult)

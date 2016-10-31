@@ -161,15 +161,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		confdir = os.path.join(path, 'conffiles')
 		for fn in uub.FilteredDirWalkGenerator(confdir):
 			conffiles[fn] = {
-					'headerfound': False,
-					'variables': [],  # Python code
-					'placeholder': [],  # @%@
-					'bcwarning': False,
-					'ucrwarning': False,
-					'pythonic': False,
-					'preinst': False,
-					'postinst': False,
-					'handler': False,
+				'headerfound': False,
+				'variables': [],  # Python code
+				'placeholder': [],  # @%@
+				'bcwarning': False,
+				'ucrwarning': False,
+				'pythonic': False,
+				'preinst': False,
+				'postinst': False,
+				'handler': False,
 			}
 		self.debug('found conffiles: %s' % conffiles.keys())
 
@@ -659,8 +659,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg('0004-15', 'UCR template file "%s" is registered but not found in conffiles/ (1)' % (fn,), _)
 				else:
 					if not conffiles[conffn]['headerfound'] and \
-							not conffiles[conffn]['bcwarning'] and \
-							not conffiles[conffn]['ucrwarning']:
+						not conffiles[conffn]['bcwarning'] and \
+						not conffiles[conffn]['ucrwarning']:
 						self.addmsg('0004-16', 'UCR header is missing', conffn)
 				self.test_marker(os.path.join(path, 'conffiles', fn))
 

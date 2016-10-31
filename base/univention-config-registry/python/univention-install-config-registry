@@ -142,9 +142,9 @@ def do_package(package):
 		doIt('install', '-m644', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
 
 	data = {
-			'pkg': quote(package),
-			'info': quote("/etc/univention/templates/info/%s.info" % package),
-			'removed': quote("/etc/univention/templates/removed/%s.info" % package),
+		'pkg': quote(package),
+		'info': quote("/etc/univention/templates/info/%s.info" % package),
+		'removed': quote("/etc/univention/templates/removed/%s.info" % package),
 	}
 
 	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')

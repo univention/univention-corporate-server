@@ -51,38 +51,38 @@ def perform_test(test_case):
 			used_value = "http://download.univention.de"
 			used_value2 = "http://updates.software-univention.de/"
 		sub_case.extend([
-				(permission, expected_response, acl_type, value_type, used_value, value),
-				(permission, opposite_response, acl_type, value_type, used_value2, value)
-				])
+			(permission, expected_response, acl_type, value_type, used_value, value),
+			(permission, opposite_response, acl_type, value_type, used_value2, value)
+		])
 
 	if value_type == 'substring':
 		used_value = "%s%s%s" % (uts.random_string(2), value, uts.random_string(2))
 		if "dstdomain" in acl_type:
 			used_value = "http://download.univention.de"
 		sub_case.append(
-				(permission, expected_response, acl_type, value_type, used_value, value)
-				)
+			(permission, expected_response, acl_type, value_type, used_value, value)
+		)
 
 		used_value = "%s%s%s" % (value[0:2], uts.random_string(3), value[2:5])
 		if "dstdomain" in acl_type:
 			used_value = "http://updates.software-univention.de/"
 		sub_case.append(
-				(permission, opposite_response, acl_type, value_type, used_value, value)
-				)
+			(permission, opposite_response, acl_type, value_type, used_value, value)
+		)
 
 	if value_type == 'regex':
 		used_value = "%s%s" % (value[1:-3], uts.random_string(3))
 		if "dstdomain" in acl_type:
 			used_value = "http://download.univention.de"
 		sub_case.append(
-				(permission, expected_response, acl_type, value_type, used_value, value)
-				)
+			(permission, expected_response, acl_type, value_type, used_value, value)
+		)
 		used_value = "%s%s%s" % (uts.random_string(1), value[1:-3], uts.random_string(2))
 		if "dstdomain" in acl_type:
 			used_value = "http://updates.software-univention.de/"
 		sub_case.append(
-				(permission, opposite_response, acl_type, value_type, used_value, value)
-				)
+			(permission, opposite_response, acl_type, value_type, used_value, value)
+		)
 
 	# Add the case sesitivity checks for all cases
 	new_cases = list(sub_case)
@@ -91,14 +91,14 @@ def perform_test(test_case):
 
 		if acl_type[-1] != 'i' and 'dstdomain' not in acl_type:
 			new_cases.extend([
-					(permission, opposite_response, acl_type, value_type, used_value.upper(), value),
-					(permission, opposite_response, acl_type, value_type, used_value.lower(), value)
-					])
+				(permission, opposite_response, acl_type, value_type, used_value.upper(), value),
+				(permission, opposite_response, acl_type, value_type, used_value.lower(), value)
+			])
 		else:
 			new_cases.extend([
-					(permission, expected_response, acl_type, value_type, used_value.upper(), value),
-					(permission, expected_response, acl_type, value_type, used_value.lower(), value)
-					])
+				(permission, expected_response, acl_type, value_type, used_value.upper(), value),
+				(permission, expected_response, acl_type, value_type, used_value.lower(), value)
+			])
 
 	# The actual test
 	do_test(new_cases)
@@ -159,16 +159,16 @@ def main():
 		# Test user-agent variable with random data
 		acl_types = ['browser', 'browser-i']
 		values = [
-				"%s%s%s" % (uts.random_string(3),
+			"%s%s%s" % (uts.random_string(3),
 					uts.random_string(2, numeric=False).upper(),
 					uts.random_string(3)),
-				"%s%s%s" % (uts.random_string(3),
+			"%s%s%s" % (uts.random_string(3),
 					uts.random_string(2, numeric=False).upper(),
 					uts.random_string(3)),
-				"%s%s%s%s%s" % ('^', uts.random_string(3),
+			"%s%s%s%s%s" % ('^', uts.random_string(3),
 					uts.random_string(2, numeric=False).upper(),
 					uts.random_string(3), '.*$')
-				]
+		]
 		itertion_length = len(permissions) * len(acl_types) * len(value_types)
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
 		for i in xrange(itertion_length):
@@ -178,10 +178,10 @@ def main():
 		# Test dstdomain variable with univention related sites
 		acl_types = ['dstdomain', 'dstdomain-i']
 		values = [
-				'download.univention.de',
-				'download',
-				'^download.univention.de.*$'
-				]
+			'download.univention.de',
+			'download',
+			'^download.univention.de.*$'
+		]
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
 		for i in xrange(itertion_length):
 			with ucr_test.UCSTestConfigRegistry() as ucr:

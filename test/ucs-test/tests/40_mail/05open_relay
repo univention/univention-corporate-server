@@ -119,37 +119,37 @@ def main():
 			header9 = "NULL sender vulnerability:"
 
 			test_cases = [
-					('%s@%s' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
-					('%s@[%s]' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
-					('%s@%s' % ('spambag', reverse_dns_name(get_eth0_ip())), 'victim@mailinator.com', header0),
+				('%s@%s' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
+				('%s@[%s]' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
+				('%s@%s' % ('spambag', reverse_dns_name(get_eth0_ip())), 'victim@mailinator.com', header0),
 
-					("spambag@mailinator.com", "victim@mailinator.com", header1),
+				("spambag@mailinator.com", "victim@mailinator.com", header1),
 
-					("spambag@mailinator.com", "victim@mailinator.com", header2),
+				("spambag@mailinator.com", "victim@mailinator.com", header2),
 
-					("spambag", "victim@mailinator.com", header3),
+				("spambag", "victim@mailinator.com", header3),
 
-					("spambag@mailinator.com", "victim%mailinator.com@$SENDERIP", header4),
-					("spambag@mailinator.com", "victim%mailinator.com@[$SENDERIP]", header4),
-					("spambag@mailinator.com", "victim%mailinator.com@$REVERSENAME", header4),
+				("spambag@mailinator.com", "victim%mailinator.com@$SENDERIP", header4),
+				("spambag@mailinator.com", "victim%mailinator.com@[$SENDERIP]", header4),
+				("spambag@mailinator.com", "victim%mailinator.com@$REVERSENAME", header4),
 
-					("spambag@mailinator.com", "victim@mailinator.com@$SENDERIP", header5),
-					("spambag@mailinator.com", "victim@mailinator.com@[$SENDERIP]", header5),
-					("spambag@mailinator.com", "victim@mailinator.com@$REVERSENAME", header5),
+				("spambag@mailinator.com", "victim@mailinator.com@$SENDERIP", header5),
+				("spambag@mailinator.com", "victim@mailinator.com@[$SENDERIP]", header5),
+				("spambag@mailinator.com", "victim@mailinator.com@$REVERSENAME", header5),
 
-					("spambag@mailinator.com", "mailinator.com!victim@$SENDERIP", header6),
-					("spambag@mailinator.com", "mailinator.com!victim@[$SENDERIP]", header6),
-					("spambag@mailinator.com", "mailinator.com!victim@$REVERSENAME", header6),
+				("spambag@mailinator.com", "mailinator.com!victim@$SENDERIP", header6),
+				("spambag@mailinator.com", "mailinator.com!victim@[$SENDERIP]", header6),
+				("spambag@mailinator.com", "mailinator.com!victim@$REVERSENAME", header6),
 
-					("spambag@mailinator.com", "@$SENDERIP:victim@mailinator.com", header7),
-					("spambag@mailinator.com", "@[$SENDERIP]:victim@mailinator.com", header7),
-					("spambag@mailinator.com", "@$REVERSENAME:victim@mailinator.com", header7),
+				("spambag@mailinator.com", "@$SENDERIP:victim@mailinator.com", header7),
+				("spambag@mailinator.com", "@[$SENDERIP]:victim@mailinator.com", header7),
+				("spambag@mailinator.com", "@$REVERSENAME:victim@mailinator.com", header7),
 
-					("spambag@mailinator.com", "mailinator.com!victim", header8),
+				("spambag@mailinator.com", "mailinator.com!victim", header8),
 
-					("", "victim@mailinator.com", header9),
-					("<>", "victim@mailinator.com", header9),
-					]
+				("", "victim@mailinator.com", header9),
+				("<>", "victim@mailinator.com", header9),
+			]
 
 			for (mailfrom, rcpt, header) in test_cases:
 				print_header(header)

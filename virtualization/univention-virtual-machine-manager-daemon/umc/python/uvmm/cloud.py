@@ -69,22 +69,22 @@ class Cloud(object):
 			Process asynchronous UVMM L_CLOUD_LIST answer.
 			"""
 			return [{
-						'id': d.name,
-						'label': d.name,
-						'group': _('Cloud connection'),
-						'type': 'cloud',
-						'cloudtype': d.cloudtype,
-						'available': d.available,
-						'last_error_message': d.last_error_message,
-						'dn': d.dn,
-						'search_pattern': d.search_pattern,
-						'ucs_images': d.ucs_images,
+				'id': d.name,
+				'label': d.name,
+				'group': _('Cloud connection'),
+				'type': 'cloud',
+				'cloudtype': d.cloudtype,
+				'available': d.available,
+				'last_error_message': d.last_error_message,
+				'dn': d.dn,
+				'search_pattern': d.search_pattern,
+				'ucs_images': d.ucs_images,
 			} for d in data]
 
 		self.uvmm.send(
-				'L_CLOUD_LIST',
-				self.process_uvmm_response(request, _finished),
-				pattern=request.options['nodePattern']
+			'L_CLOUD_LIST',
+			self.process_uvmm_response(request, _finished),
+			pattern=request.options['nodePattern']
 		)
 
 	def cloud_add(self, request):
@@ -122,10 +122,10 @@ class Cloud(object):
 		args['ucs_images'] = ucs_images
 
 		self.uvmm.send(
-				'L_CLOUD_ADD',
-				self.process_uvmm_response(request, _finished),
-				args=args,
-				testconnection=testconnection
+			'L_CLOUD_ADD',
+			self.process_uvmm_response(request, _finished),
+			args=args,
+			testconnection=testconnection
 		)
 
 	def cloud_list_keypair(self, request):
@@ -146,9 +146,9 @@ class Cloud(object):
 			]
 
 		self.uvmm.send(
-				'L_CLOUD_KEYPAIR_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_KEYPAIR_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	def cloud_list_size(self, request):
@@ -176,9 +176,9 @@ class Cloud(object):
 			return size_list
 
 		self.uvmm.send(
-				'L_CLOUD_SIZE_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_SIZE_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	@sanitize(pattern=SearchSanitizer(default='*'))
@@ -200,9 +200,9 @@ class Cloud(object):
 			]
 
 		self.uvmm.send(
-				'L_CLOUD_IMAGE_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_IMAGE_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	def cloud_list_secgroup(self, request):
@@ -224,9 +224,9 @@ class Cloud(object):
 			]
 
 		self.uvmm.send(
-				'L_CLOUD_SECGROUP_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_SECGROUP_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	def cloud_list_network(self, request):
@@ -250,9 +250,9 @@ class Cloud(object):
 			]
 
 		self.uvmm.send(
-				'L_CLOUD_NETWORK_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_NETWORK_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	def cloud_list_subnet(self, request):
@@ -277,9 +277,9 @@ class Cloud(object):
 			]
 
 		self.uvmm.send(
-				'L_CLOUD_SUBNET_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=conn_name
+			'L_CLOUD_SUBNET_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=conn_name
 		)
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
@@ -338,10 +338,10 @@ class Cloud(object):
 			return instances
 
 		self.uvmm.send(
-				'L_CLOUD_INSTANCE_LIST',
-				self.process_uvmm_response(request, _finished),
-				conn_name=request.options.get('nodePattern', ''),
-				pattern=request.options['domainPattern']
+			'L_CLOUD_INSTANCE_LIST',
+			self.process_uvmm_response(request, _finished),
+			conn_name=request.options.get('nodePattern', ''),
+			pattern=request.options['domainPattern']
 		)
 
 	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART', 'SHUTOFF', 'SHUTDOWN', 'SUSPEND', 'PAUSE', 'RESUME', 'UNPAUSE')))
@@ -362,11 +362,11 @@ class Cloud(object):
 		state = request.options['state']
 
 		self.uvmm.send(
-				'L_CLOUD_INSTANCE_STATE',
-				self.process_uvmm_response(request),
-				conn_name=conn_name,
-				instance_id=instance_id,
-				state=state,
+			'L_CLOUD_INSTANCE_STATE',
+			self.process_uvmm_response(request),
+			conn_name=conn_name,
+			instance_id=instance_id,
+			state=state,
 		)
 
 	def instance_remove(self, request):
@@ -383,10 +383,10 @@ class Cloud(object):
 		conn_name, instance_id = urldefrag(request.options['domainURI'])
 
 		self.uvmm.send(
-				'L_CLOUD_INSTANCE_TERMINATE',
-				self.process_uvmm_response(request),
-				conn_name=conn_name,
-				instance_id=instance_id
+			'L_CLOUD_INSTANCE_TERMINATE',
+			self.process_uvmm_response(request),
+			conn_name=conn_name,
+			instance_id=instance_id
 		)
 
 	def instance_add(self, request):
@@ -410,10 +410,10 @@ class Cloud(object):
 		args['security_group_ids'] = [parameter['security_group_ids']]
 
 		self.uvmm.send(
-				'L_CLOUD_INSTANCE_CREATE',
-				self.process_uvmm_response(request),
-				conn_name=conn_name,
-				args=args
+			'L_CLOUD_INSTANCE_CREATE',
+			self.process_uvmm_response(request),
+			conn_name=conn_name,
+			args=args
 		)
 
 	def cloudtype_get(self, request):

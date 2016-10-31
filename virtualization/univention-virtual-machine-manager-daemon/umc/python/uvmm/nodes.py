@@ -93,8 +93,8 @@ class Nodes(object):
 			return nodes
 
 		self.uvmm.send(
-				'NODE_LIST',
-				self.process_uvmm_response(request, _finished),
-				group='default',
-				pattern=request.options['nodePattern']
+			'NODE_LIST',
+			self.process_uvmm_response(request, _finished),
+			group='default',
+			pattern=request.options['nodePattern']
 		)

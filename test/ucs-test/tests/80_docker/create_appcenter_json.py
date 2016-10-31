@@ -48,7 +48,7 @@ from ConfigParser import ConfigParser
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',
 	'password': 'readonly',
-	}
+}
 
 
 class FileInfo(object):
@@ -205,7 +205,7 @@ class App(object):
 		for file_info in self.important_files():
 			index[file_info.name] = {
 				'url': file_info.url,
-				}
+			}
 			for hash_type in ('md5', 'sha256'):
 				try:
 					hash_value = getattr(file_info, hash_type)
@@ -216,7 +216,7 @@ class App(object):
 			index['ini'][docker_image_info.name] = {
 				'url': docker_image_info.url,
 				'sha256': docker_image_info.sha256,
-				}
+			}
 		return index
 
 

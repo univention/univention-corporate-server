@@ -164,7 +164,7 @@ class UserBaseCase(GenericTestCase):
 			'employeeType': 'milkman',
 			'e-mail': {'append': ['mooh@%s'
 					      % self.bc('domainname')],
-				   'remove': ['foobar@%s'
+			'remove': ['foobar@%s'
 					      % self.bc('domainname')]},
 			'phone': {'append': ['05555555555', ],
 				  'remove': ['(+44)421-3424324322', ]},
@@ -215,8 +215,8 @@ class UserBaseCase(GenericTestCase):
 		self.uncheckedProperties.add('password')
 		self.__groups = [self.rdn('cn=Domain Guests,cn=groups'),
 				 self.rdn('cn=Domain Users,cn=groups'),
-				 self.rdn('cn=Domain Admins,cn=groups'),
-				 self.rdn('cn=Users,cn=groups')]
+			self.rdn('cn=Domain Admins,cn=groups'),
+			self.rdn('cn=Users,cn=groups')]
 		self.__setCreateProps()
 		self.__setModifyProps()
 		for o in self.__options:

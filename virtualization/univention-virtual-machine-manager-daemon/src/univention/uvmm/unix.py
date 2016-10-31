@@ -106,7 +106,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					res = protocol.Response_ERROR()
 					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {
-							'type': type(command),
+						'type': type(command),
 					}
 
 				logger.debug('[%d] Sending response.' % (self.client_id,))

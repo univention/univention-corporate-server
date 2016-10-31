@@ -77,10 +77,10 @@ class Snapshots(object):
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_INFO',
-				self.process_uvmm_response(request, _finished),
-				uri=node_uri,
-				domain=domain_uuid
+			'DOMAIN_INFO',
+			self.process_uvmm_response(request, _finished),
+			uri=node_uri,
+			domain=domain_uuid
 		)
 
 	def snapshot_create(self, request):
@@ -98,11 +98,11 @@ class Snapshots(object):
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_SNAPSHOT_CREATE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				snapshot=request.options['snapshotName']
+			'DOMAIN_SNAPSHOT_CREATE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			snapshot=request.options['snapshotName']
 		)
 
 	def snapshot_remove(self, request):
@@ -120,11 +120,11 @@ class Snapshots(object):
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_SNAPSHOT_DELETE',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				snapshot=request.options['snapshotName']
+			'DOMAIN_SNAPSHOT_DELETE',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			snapshot=request.options['snapshotName']
 		)
 
 	def snapshot_revert(self, request):
@@ -142,9 +142,9 @@ class Snapshots(object):
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
-				'DOMAIN_SNAPSHOT_REVERT',
-				self.process_uvmm_response(request),
-				uri=node_uri,
-				domain=domain_uuid,
-				snapshot=request.options['snapshotName']
+			'DOMAIN_SNAPSHOT_REVERT',
+			self.process_uvmm_response(request),
+			uri=node_uri,
+			domain=domain_uuid,
+			snapshot=request.options['snapshotName']
 		)

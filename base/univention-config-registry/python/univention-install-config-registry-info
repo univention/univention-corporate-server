@@ -49,7 +49,7 @@ def install_categories(info, package):
 	failed = info.check_categories()
 	if failed:
 		print >> sys.stderr, 'Incomplete entries in category definition %s' % \
-				(cfile,)
+			(cfile,)
 		for category, keys in failed.items():
 			print >> sys.stderr, '  [%s]' % (category,)
 			for key in keys:
@@ -76,7 +76,7 @@ def install_variables(info, package):
 	failed = info.check_variables()
 	if failed:
 		print >> sys.stderr, 'Incomplete entries in variable definition %s' % \
-				(cfile,)
+			(cfile,)
 		for variable, keys in failed.items():
 			print >> sys.stderr, '  %s:' % (variable,)
 			for key in keys:

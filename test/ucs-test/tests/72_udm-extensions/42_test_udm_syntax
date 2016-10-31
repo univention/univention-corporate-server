@@ -34,13 +34,13 @@ if __name__ == '__main__':
 		extension_dn = udm.create_object('settings/udm_%s' % extension_type,
 							   name=extension_name,
 							   data=base64.b64encode(bz2.compress(extension_buffer)),
-							   filename=extension_filename,
-							   packageversion=package_version,
-							   appidentifier=app_id,
-							   package=package_name,
-							   ucsversionstart=version_start,
-							   ucsversionend=version_end,
-							   active='FALSE',
+			filename=extension_filename,
+			packageversion=package_version,
+			appidentifier=app_id,
+			package=package_name,
+			ucsversionstart=version_start,
+			ucsversionend=version_end,
+			active='FALSE',
 							   position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 		extattr_dn = udm.create_object('settings/extended_attribute',
@@ -69,15 +69,15 @@ if __name__ == '__main__':
 		udm.stop_cli_server()
 
 		verify_ldap_object(extension_dn, {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
-				'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 
-				})
+		})
 
 		# create user and set extended attribute with valid value
 		value = 'ucstest-%s' % random_name()

@@ -123,74 +123,74 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.check_debhelper(path, parser)
 
 	EXCEPTION_FILES = set((
-			'changelog',  # dh_installchangelogs default
-			'clean',  # dh_clean
-			'compat',  # dh
-			'control',
-			'copyright',  # dh_installdocs default
-			'files',  # dh_builddeb
-			'NEWS',  # dh_installchangelogs default
-			'rules',
-			'source.lintian-overrides',  # dh_lintian
-			'ucslint.overrides',
+		'changelog',  # dh_installchangelogs default
+		'clean',  # dh_clean
+		'compat',  # dh
+		'control',
+		'copyright',  # dh_installdocs default
+		'files',  # dh_builddeb
+		'NEWS',  # dh_installchangelogs default
+		'rules',
+		'source.lintian-overrides',  # dh_lintian
+		'ucslint.overrides',
 	))
 
 	KNOWN_DH_FILES = set((
-			'bash-completion',  # dh_bash-completion
-			'bug-control',  # dh_bugfiles
-			'bug-presubj',  # dh_bugfiles
-			'bug-script',  # dh_bugfiles
-			'changelog',  # dh_installchangelogs
-			'compress',  # dh_compress
-			'conffiles',  # dh_installdeb
-			'config',  # dh_installdebconf
-			'copyright',  # dh_installdocs
-			'debhelper.log',  # dh
-			'dirs',  # dh_installdirs
-			'doc-base',  # dh_installdocs
-			'docs',  # dh_installdocs
-			'emacsen-install',  # dh_installemacsen
-			'emacsen-remove',  # dh_installemacsen
-			'emacsen-startup',  # dh_installemacsen
-			'examples',  # dh_installexamples
-			'files',  # dh_movefiles
-			'gconf-defaults',  # dh_gconf
-			'gconf-mandatory',  # dh_gconf
-			'info',  # dh_installinfo
-			'install',  # dh_install
-			'links',  # dh_link
-			'lintian-overrides',  # dh_lintian
-			'maintscript',  # dh_installdeb
-			'manpages',  # dh_installman
-			'menu',  # dh_installmenu
-			'menu-method',  # dh_installmenu
-			'mine',  # dh_installmime
-			'NEWS',  # dh_installchangelogs
-			'postinst',  # dh_installdeb
-			'postinst.debhelper',  # dh_installdeb
-			'postrm',  # dh_installdeb
-			'postrm.debhelper',  # dh_installdeb
-			'preinst',  # dh_installdeb
-			'preinst.debhelper',  # dh_installdeb
-			'prerm',  # dh_installdeb
-			'prerm.debhelper',  # dh_installdeb
-			'README.Debian',  # dh_installdocs
-			'sgmlcatalogs',  # dh_installcatalogs
-			'sharedmimeinfo',  # dh_installmime
-			'shlibs',  # dh_installdeb
-			'substvars',  # dh_gencontrol
-			'symbols',  # dh_makeshlibs
-			'symbols.i386',  # dh_makeshlibs
-			'templates',  # dh_installdebconf
-			'TODO',  # dh_installdocs
-			'triggers',  # dh_installdeb
-			'umc-modules',  # dh-umc-modules-install
-			'univention-config-registry-categories',  # univention-install-config-registry-info
-			'univention-config-registry-mapping',  # univention-install-config-registry-info
-			'univention-config-registry',  # univention-install-config-registry
-			'univention-config-registry-variables',  # univention-install-config-registry-info
-			'univention-service',  # univention-install-service-info
-			'wm',  # dh_installwm
+		'bash-completion',  # dh_bash-completion
+		'bug-control',  # dh_bugfiles
+		'bug-presubj',  # dh_bugfiles
+		'bug-script',  # dh_bugfiles
+		'changelog',  # dh_installchangelogs
+		'compress',  # dh_compress
+		'conffiles',  # dh_installdeb
+		'config',  # dh_installdebconf
+		'copyright',  # dh_installdocs
+		'debhelper.log',  # dh
+		'dirs',  # dh_installdirs
+		'doc-base',  # dh_installdocs
+		'docs',  # dh_installdocs
+		'emacsen-install',  # dh_installemacsen
+		'emacsen-remove',  # dh_installemacsen
+		'emacsen-startup',  # dh_installemacsen
+		'examples',  # dh_installexamples
+		'files',  # dh_movefiles
+		'gconf-defaults',  # dh_gconf
+		'gconf-mandatory',  # dh_gconf
+		'info',  # dh_installinfo
+		'install',  # dh_install
+		'links',  # dh_link
+		'lintian-overrides',  # dh_lintian
+		'maintscript',  # dh_installdeb
+		'manpages',  # dh_installman
+		'menu',  # dh_installmenu
+		'menu-method',  # dh_installmenu
+		'mine',  # dh_installmime
+		'NEWS',  # dh_installchangelogs
+		'postinst',  # dh_installdeb
+		'postinst.debhelper',  # dh_installdeb
+		'postrm',  # dh_installdeb
+		'postrm.debhelper',  # dh_installdeb
+		'preinst',  # dh_installdeb
+		'preinst.debhelper',  # dh_installdeb
+		'prerm',  # dh_installdeb
+		'prerm.debhelper',  # dh_installdeb
+		'README.Debian',  # dh_installdocs
+		'sgmlcatalogs',  # dh_installcatalogs
+		'sharedmimeinfo',  # dh_installmime
+		'shlibs',  # dh_installdeb
+		'substvars',  # dh_gencontrol
+		'symbols',  # dh_makeshlibs
+		'symbols.i386',  # dh_makeshlibs
+		'templates',  # dh_installdebconf
+		'TODO',  # dh_installdocs
+		'triggers',  # dh_installdeb
+		'umc-modules',  # dh-umc-modules-install
+		'univention-config-registry-categories',  # univention-install-config-registry-info
+		'univention-config-registry-mapping',  # univention-install-config-registry-info
+		'univention-config-registry',  # univention-install-config-registry
+		'univention-config-registry-variables',  # univention-install-config-registry-info
+		'univention-service',  # univention-install-service-info
+		'wm',  # dh_installwm
 	))
 
 	NAMED_DH_FILES = set((

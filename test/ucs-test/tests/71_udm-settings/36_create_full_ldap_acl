@@ -29,21 +29,21 @@ if __name__ == '__main__':
 							data=base64.encodestring(bz2.compress(data)),
 							filename=filename,
 							package=package[0],
-							packageversion=package_version,
-							appidentifier=appidentifier,
-							ucsversionstart=ucsversionstart,
-							ucsversionend=ucsversionend,
-							active=active)
+				packageversion=package_version,
+				appidentifier=appidentifier,
+				ucsversionstart=ucsversionstart,
+				ucsversionend=ucsversionend,
+				active=active)
 
 			utils.verify_ldap_object(acl, {
-							'cn': [acl_name],
-							'univentionLDAPACLData': [bz2.compress(data)],
-							'univentionLDAPACLFilename': [filename],
-							'univentionOwnedByPackage': package,
-							'univentionOwnedByPackageVersion': [package_version],
-							'univentionAppIdentifier': appidentifier,
-							'univentionUCSVersionStart': [ucsversionstart],
-							'univentionUCSVersionEnd': [ucsversionend],
-							'univentionLDAPACLActive': [active],
-							'univentionObjectType': ['settings/ldapacl'],
-						})
+				'cn': [acl_name],
+				'univentionLDAPACLData': [bz2.compress(data)],
+				'univentionLDAPACLFilename': [filename],
+				'univentionOwnedByPackage': package,
+				'univentionOwnedByPackageVersion': [package_version],
+				'univentionAppIdentifier': appidentifier,
+				'univentionUCSVersionStart': [ucsversionstart],
+				'univentionUCSVersionEnd': [ucsversionend],
+				'univentionLDAPACLActive': [active],
+				'univentionObjectType': ['settings/ldapacl'],
+			})

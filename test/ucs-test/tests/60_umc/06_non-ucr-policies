@@ -146,11 +146,11 @@ class TestUMCnonUCRpolicies(object):
 
         print "\nCreating a policy for the 'intermediate_test_container':\n"
         self.intermediate_policy_dn = self.UDM.create_object(
-                                          'policies/pwhistory',
-                                          position="cn=policies," +
-                                                     self.ldap_base,
-                                          name='umc_test_policy_intermediate',
-                                          **{"length": "4",
+            'policies/pwhistory',
+            position="cn=policies," +
+            self.ldap_base,
+            name='umc_test_policy_intermediate',
+            **{"length": "4",
                                              "pwQualityCheck": False,
                                              "pwLength": "4",
                                              "$policies$": {}})
@@ -175,7 +175,7 @@ class TestUMCnonUCRpolicies(object):
               "'intermediate_test_container' with the "
               "'umc_test_user_policy' applied:\n")
         self.test_user_dn = self.UDM.create_user(
-                                **{'position': self.intermediate_container_dn,
+            **{'position': self.intermediate_container_dn,
                                    'username': 'umc_test_user_' +
                                                 random_username(),
                                    'policy-reference': self.user_policy_dn,
@@ -187,9 +187,9 @@ class TestUMCnonUCRpolicies(object):
         print("\nCreating a second test user with samba and without user"
               "policy applied inside the 'intermediate_test_container':\n")
         self.test_user_2_dn = self.UDM.create_user(
-                                  position=self.intermediate_container_dn,
-                                  username='umc_test_user_' +
-                                            random_username())[0]
+            position=self.intermediate_container_dn,
+            username='umc_test_user_' +
+            random_username())[0]
 
     def check_single_and_multiple_policies(self):
         """
