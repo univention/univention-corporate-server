@@ -470,10 +470,16 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-						<package>Samba</package> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
+						<application>Samba</application> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<wordasword>samba-tool ntacl sysvolcheck</wordasword> has been fixed (<u:bug>39633</u:bug>).
+					<command>samba-tool ntacl sysvolcheck</command> has been fixed (<u:bug>39633</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The <filename>smb.conf</filename> parameters <property>security mask</property>, <property>directory security mask</property>,
+						<property>force security mode</property>, <property>force directory security mode</property> are not written
+						to <application>Samba</application> share definitions any longer, because <application>Samba</application> removed support for them
+						(<u:bug>42679</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
