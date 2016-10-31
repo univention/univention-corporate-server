@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-54) unstable; urgency=medium
+
+  * Bug #42624: run dbcheck --fix on update to Samba 4.5.1
+
+ -- Arvid Requate <requate@univention.de>  Mon, 31 Oct 2016 17:19:58 +0100
+
 univention-samba4 (5.0.1-53) unstable; urgency=medium
 
   * Bug #42679: samba*SecurityMode is not supported any longer in Samba,
