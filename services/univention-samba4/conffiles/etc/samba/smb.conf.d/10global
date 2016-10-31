@@ -115,5 +115,8 @@ if configRegistry.get('samba/register/exclude/interfaces') and not configRegistr
 		print '\t# ignore interfaces in samba/register/exclude/interfaces'
 		print '\tbind interfaces only = yes'
 		print '\tinterfaces = %s' % ' '.join(interfaces)
+
+if not configRegistry.is_true('samba4/kccsrv/samba_kcc', False):
+	print '\tkccsrv:samba_kcc = False'
 @!@
 ; ---------------------</10global>------------------------
