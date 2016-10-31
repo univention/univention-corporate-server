@@ -52,6 +52,7 @@ _initialized = set()
 
 
 class FakeApp(object):
+
 	def __init__(self, id, version):
 		self.id = id
 		self.version = version
@@ -129,6 +130,7 @@ def get_connection(userdn, password):
 
 
 class ApplicationLDAPObject(object):
+
 	def __init__(self, app, lo, pos, create_if_not_exists=False):
 		self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		self._udm_obj = None

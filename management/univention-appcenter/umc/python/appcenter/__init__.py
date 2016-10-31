@@ -37,7 +37,7 @@ import locale
 import time
 import sys
 from contextlib import contextmanager
-#import urllib2
+# import urllib2
 from httplib import HTTPException
 import logging
 from tempfile import NamedTemporaryFile
@@ -73,15 +73,18 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class NoneCandidate(object):
+
 	''' Mock object if package has no candidate
 	(may happen without network connection)
 	'''
+
 	def __init__(self):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0
 
 
 class UMCProgressHandler(logging.Handler):
+
 	def __init__(self, progress):
 		super(UMCProgressHandler, self).__init__()
 		self.progress = progress
@@ -95,6 +98,7 @@ class UMCProgressHandler(logging.Handler):
 
 
 class ProgressInfoHandler(logging.Handler):
+
 	def __init__(self, package_manager):
 		super(ProgressInfoHandler, self).__init__()
 		self.state = package_manager.progress_state
@@ -110,6 +114,7 @@ class ProgressInfoHandler(logging.Handler):
 
 
 class ProgressPercentageHandler(ProgressInfoHandler):
+
 	def emit(self, record):
 		percentage = float(record.msg)
 		self.state.percentage(percentage)
@@ -127,7 +132,7 @@ def require_apps_update(func):
 class Instance(umcm.Base, ProgressMixin):
 
 	def init(self):
-		os.umask(0022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
+		os.umask(0o022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
 		self.ucr = ucr_instance()
 
 		self.update_applications_done = False
@@ -313,8 +318,7 @@ class Instance(umcm.Base, ProgressMixin):
 			def _finished(thread, result):
 				if isinstance(result, BaseException):
 					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
-			thread = notifier.threads.Simple('invoke',
-				notifier.Callback(_thread, app, function), _finished)
+			thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, app, function), _finished)
 			thread.run()
 		return result
 
@@ -324,11 +328,11 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@require_password
 	@sanitize(
-			host=StringSanitizer(required=True),
-			function=ChoicesSanitizer(['install', 'update', 'uninstall'], required=True),
-			app=StringSanitizer(required=True),
-			force=BooleanSanitizer(),
-			values=DictSanitizer({})
+		host=StringSanitizer(required=True),
+		function=ChoicesSanitizer(['install', 'update', 'uninstall'], required=True),
+		app=StringSanitizer(required=True),
+		force=BooleanSanitizer(),
+		values=DictSanitizer({})
 	)
 	@simple_response(with_progress=True)
 	def invoke_remote_docker(self, host, function, app, force, values, progress):
@@ -465,8 +469,7 @@ class Instance(umcm.Base, ProgressMixin):
 					def _finished_remote(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-					thread = notifier.threads.Simple('invoke',
-						notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
+					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
 					thread.run()
 			self.finished(request.id, result)
 			return
@@ -553,8 +556,7 @@ class Instance(umcm.Base, ProgressMixin):
 						def _finished(thread, result):
 							if isinstance(result, BaseException):
 								MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-						thread = notifier.threads.Simple('invoke',
-							notifier.Callback(_thread, self, application, function), _finished)
+						thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self, application, function), _finished)
 						thread.run()
 					else:
 						self.package_manager.set_finished()  # nothing to do, ready to take new commands
@@ -579,8 +581,7 @@ class Instance(umcm.Base, ProgressMixin):
 			if not success:
 				MODULE.warn('Exception during keep_alive: %s' % result)
 			self.finished(request.id, success)
-		thread = notifier.threads.Simple('keep_alive',
-			notifier.Callback(_thread), _finished)
+		thread = notifier.threads.Simple('keep_alive', notifier.Callback(_thread), _finished)
 		thread.run()
 
 	@simple_response
@@ -657,7 +658,7 @@ class Instance(umcm.Base, ProgressMixin):
 			}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
 		update=BooleanSanitizer()
-		)
+	)
 	@simple_response
 	def packages_invoke_dry_run(self, packages, function, update):
 		if update:
@@ -676,7 +677,7 @@ class Instance(umcm.Base, ProgressMixin):
 				'uninstall': 'remove',
 			}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
-		)
+	)
 	def packages_invoke(self, request):
 		""" executes an installer action """
 		packages = request.options.get('packages')
@@ -702,8 +703,7 @@ class Instance(umcm.Base, ProgressMixin):
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))
-					thread = notifier.threads.Simple('invoke',
-						notifier.Callback(_thread, self.package_manager, function, packages), _finished)
+					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self.package_manager, function, packages), _finished)
 					thread.run()
 				else:
 					self.package_manager.set_finished()  # nothing to do, ready to take new commands
@@ -876,8 +876,10 @@ class Instance(umcm.Base, ProgressMixin):
 				'prefix': self.ucr.get('repository/online/prefix', ''),
 			}
 
-	@sanitize_list(DictSanitizer({'object': basic_components_sanitizer}),
-		min_elements=1, max_elements=1  # moduleStore with one element...
+	@sanitize_list(
+		DictSanitizer({'object': basic_components_sanitizer}),
+		min_elements=1,
+		max_elements=1  # moduleStore with one element...
 	)
 	@multi_response
 	def settings_put(self, iterator, object):

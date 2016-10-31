@@ -68,6 +68,7 @@ class UniventionMetaInfo(object):
 
 
 class UniventionMetaClass(type):
+
 	def __new__(mcs, name, bases, attrs):
 		meta_infos = []
 		for key, value in attrs.items():

@@ -40,6 +40,7 @@ from univention.appcenter.log import get_base_logger
 
 
 class _PackageManagerLogHandler(Handler):
+
 	def emit(self, record):
 		if record.name.startswith('packagemanager.dpkg'):
 			if isinstance(record.msg, basestring):

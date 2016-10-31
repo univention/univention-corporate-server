@@ -49,6 +49,7 @@ FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit
 
 
 class Update(Update):
+
 	def _update_local_files(self):
 		super(Update, self)._update_local_files()
 

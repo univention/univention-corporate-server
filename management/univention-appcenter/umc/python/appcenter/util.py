@@ -81,6 +81,7 @@ def rename_app(old_id, new_id, component_manager, package_manager):
 	app.register(component_manager, package_manager)
 	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
 
+
 def get_hosts(module, lo, ucr=None):
 	_hosts = module.lookup(None, lo, None)
 	hosts = []
@@ -101,13 +102,16 @@ def get_hosts(module, lo, ucr=None):
 	MODULE.process('Found hosts: %r' % [host.info.get('name') for host in hosts])
 	return hosts
 
+
 def get_master(lo):
 	MODULE.process('Searching DC Master')
 	return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
 
+
 def get_all_backups(lo, ucr=None):
 	MODULE.process('Searching DC Backup')
 	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
+
 
 def get_all_hosts(lo=None, ucr=None):
 	if lo is None:
@@ -116,9 +120,10 @@ def get_all_hosts(lo=None, ucr=None):
 			return []
 		lo = lo.lo
 	return get_hosts(domaincontroller_master, lo, ucr) + \
-			get_hosts(domaincontroller_backup, lo, ucr) + \
-			get_hosts(domaincontroller_slave, lo, ucr) + \
-			get_hosts(memberserver, lo, ucr)
+		get_hosts(domaincontroller_backup, lo, ucr) + \
+		get_hosts(domaincontroller_slave, lo, ucr) + \
+		get_hosts(memberserver, lo, ucr)
+
 
 def get_md5(filename):
 	m = md5()
@@ -127,13 +132,16 @@ def get_md5(filename):
 			m.update(f.read())
 			return m.hexdigest()
 
+
 class HTTPSConnection(httplib.HTTPSConnection):
+
 	def connect(self):
 		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
 		if self._tunnel_host:
 			self.sock = sock
 			self._tunnel()
 		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
+
 
 class HTTPSHandler(urllib2.HTTPSHandler):
 
@@ -144,6 +152,8 @@ class HTTPSHandler(urllib2.HTTPSHandler):
 # and hide urllib/urllib2 completely
 # i.e. it should be unnecessary to import them directly
 # in a module
+
+
 def install_opener(ucr):
 	handler = []
 	proxy_http = ucr.get('proxy/http')
@@ -152,6 +162,7 @@ def install_opener(ucr):
 	handler.append(HTTPSHandler())
 	opener = urllib2.build_opener(*handler)
 	urllib2.install_opener(opener)
+
 
 def verbose_http_error(exc):
 	strerror = ''
@@ -169,34 +180,37 @@ def verbose_http_error(exc):
 		version = ucr.get('version/version')
 		errno = exc.errno
 		strerror += getattr(exc, 'strerror', '') or ''
-		if errno == 1: # gaierror(1, something like 'SSL Unknown protocol')
+		if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
 			link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
 			strerror += '. ' + _('This may be a problem with the firewall or proxy of your system. You may find help at %s.') % link_to_doc
-		if errno == -2: # gaierror(-2, 'Name or service not known')
+		if errno == -2:  # gaierror(-2, 'Name or service not known')
 			link_to_doc = _('https://docs.software-univention.de/manual-%s.html#networks:dns') % version
 			strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
 	if not strerror.strip():
 		strerror = str(exc)
 	return strerror
 
+
 def urlopen(request):
 	# use this in __init__ and app_center
 	# to have the proxy handler installed globally
 	return urllib2.urlopen(request, timeout=60)
 
+
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
-	#return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
+	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
 		splitlines = map(lambda line: line.split(), f.readlines())
-		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines]) # bytes
-	avail_phymem = meminfo['MemFree:'] # at least MemFree is required
+		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines])  # bytes
+	avail_phymem = meminfo['MemFree:']  # at least MemFree is required
 
 	# see also http://code.google.com/p/psutil/issues/detail?id=313
-	phymem_buffers = meminfo.get('Buffers:', 0) # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
-	cached_phymem = meminfo.get('Cached:', 0) # OpenVZ might not even have Cached? Dont know if calculation is still correct but it is better than raising KeyError
+	phymem_buffers = meminfo.get('Buffers:', 0)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
+	cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Dont know if calculation is still correct but it is better than raising KeyError
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
+
 
 def component_registered(component_id, ucr):
 	''' Checks if a component is registered (enabled or disabled).
@@ -204,13 +218,16 @@ def component_registered(component_id, ucr):
 	UniventionUpdater when just using Application.all() '''
 	return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
 
+
 def component_current(component_id, ucr):
 	''' Checks if a component is enabled (not disabled!).
 	Moved outside of ComponentManager to avoid dependencies for
 	UniventionUpdater'''
 	return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
 
+
 class Changes(object):
+
 	def __init__(self, ucr):
 		self.ucr = ucr
 		self._changes = {}
@@ -232,11 +249,11 @@ class Changes(object):
 				and the ucr itself would know which string representation to write.
 		"""
 		yesno = ['no', 'yes']
-		#truefalse = ['False', 'True']
+		# truefalse = ['False', 'True']
 		enabled = ['disabled', 'enabled']
-		#enable = ['disable', 'enable']
+		# enable = ['disable', 'enable']
 		onoff = ['off', 'on']
-		#onezero = ['0', '1']		# strings here! UCR doesn't know about integers
+		# onezero = ['0', '1']		# strings here! UCR doesn't know about integers
 
 		# array of strings to match against the variable name, associated with the
 		# corresponding bool representation to use. The first match is used.
@@ -287,6 +304,7 @@ class Changes(object):
 	def commit(self):
 		ucr_update(self.ucr, self._changes)
 
+
 @contextmanager
 def set_save_commit_load(ucr):
 	ucr.load()
@@ -295,7 +313,9 @@ def set_save_commit_load(ucr):
 	if changes.changed():
 		changes.commit()
 
+
 class ComponentManager(object):
+
 	def __init__(self, ucr, updater):
 		self.ucr = ucr
 		self.uu = updater
@@ -339,15 +359,15 @@ class ComponentManager(object):
 			with set_save_commit_load(self.ucr) as super_ucr:
 				return self.put_app(app, super_ucr)
 		app_data = {
-			'server' : app.get_server(),
-			'prefix' : '',
-			'unmaintained' : False,
-			'enabled' : True,
-			'name' : app.component_id,
-			'description' : app.name,
-			'username' : '',
-			'password' : '',
-			'localmirror' : 'false',
+			'server': app.get_server(),
+			'prefix': '',
+			'unmaintained': False,
+			'enabled': True,
+			'name': app.component_id,
+			'description': app.name,
+			'username': '',
+			'password': '',
+			'localmirror': 'false',
 		}
 		if not self.is_registered(app_data['name']):
 			# do not overwrite version when registering apps
@@ -414,11 +434,11 @@ class ComponentManager(object):
 		return result
 
 	def currentify(self, component_id, super_ucr):
-		self.put({'name' : component_id, 'version' : 'current'}, super_ucr)
+		self.put({'name': component_id, 'version': 'current'}, super_ucr)
 		return super_ucr.changed()
 
 	def uncurrentify(self, component_id, super_ucr):
-		self.put({'name' : component_id, 'version' : ''}, super_ucr)
+		self.put({'name': component_id, 'version': ''}, super_ucr)
 		return super_ucr.changed()
 
 	def _remove(self, component_id, super_ucr):

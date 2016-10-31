@@ -94,6 +94,7 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class License(object):
+
 	def __init__(self):
 		self._uuid = None
 
@@ -126,16 +127,20 @@ class License(object):
 
 LICENSE = License()
 
+
 class AppcenterServerContactFailed(Exception):
 
 	def __init__(self, exc):
 		message = _('Error while contacting the App Center server. %s') % (verbose_http_error(exc),)
 		super(AppcenterServerContactFailed, self).__init__(message)
 
+
 class DoesNotExist(Exception):
 	pass
 
+
 class ApplicationLDAPObject(object):
+
 	def __init__(self, ldap_id, lo, co):
 		self._localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 		self._udm_obj = None
@@ -177,27 +182,27 @@ class ApplicationLDAPObject(object):
 		except IOError:
 			pass
 		attrs = {
-			'id' : app.ldap_id,
-			'name' : app.get_locale_list('name'),
-			'version' : app.version,
-			'shortDescription' : app.get_locale_list('description'),
-			'longDescription' : app.get_locale_list('longdescription'),
-			'contact' : app.get('contact'),
-			'maintainer' : app.get('maintainer'),
-			'website' : app.get_locale_list('website'),
-			'websiteVendor' : app.get_locale_list('websitevendor'),
-			'websiteMaintainer' : app.get_locale_list('websitemaintainer'),
-			'icon' : base64icon,
-			'category' : app.get('unlocalised_categories'),
-			'webInterface' : app.get('webinterface'),
-			'webInterfaceName' : app.get('webinterfacename'),
-			'conflictingApps' : app.get('conflictedapps'),
-			'conflictingSystemPackages' : app.get('conflictedsystempackages'),
-			'defaultPackages' : app.get('defaultpackages'),
-			'defaultPackagesMaster' : app.get('defaultpackagesmaster'),
-			'umcModuleName' : app.get('umcmodulename'),
-			'umcModuleFlavor' : app.get('umcmoduleflavor'),
-			'serverRole' : app.get('serverrole'),
+			'id': app.ldap_id,
+			'name': app.get_locale_list('name'),
+			'version': app.version,
+			'shortDescription': app.get_locale_list('description'),
+			'longDescription': app.get_locale_list('longdescription'),
+			'contact': app.get('contact'),
+			'maintainer': app.get('maintainer'),
+			'website': app.get_locale_list('website'),
+			'websiteVendor': app.get_locale_list('websitevendor'),
+			'websiteMaintainer': app.get_locale_list('websitemaintainer'),
+			'icon': base64icon,
+			'category': app.get('unlocalised_categories'),
+			'webInterface': app.get('webinterface'),
+			'webInterfaceName': app.get('webinterfacename'),
+			'conflictingApps': app.get('conflictedapps'),
+			'conflictingSystemPackages': app.get('conflictedsystempackages'),
+			'defaultPackages': app.get('defaultpackages'),
+			'defaultPackagesMaster': app.get('defaultpackagesmaster'),
+			'umcModuleName': app.get('umcmodulename'),
+			'umcModuleFlavor': app.get('umcmoduleflavor'),
+			'serverRole': app.get('serverrole'),
 		}
 		obj = appcenter_udm_module.object(co, lo, pos)
 		try:
@@ -207,10 +212,10 @@ class ApplicationLDAPObject(object):
 				if isinstance(value, (tuple, list)) and property_obj.multivalue:
 					if not value and not property_obj.required:
 						continue
-					obj[property_name] = [property_obj.syntax.parse( ival ) for ival in value]
+					obj[property_name] = [property_obj.syntax.parse(ival) for ival in value]
 				else:
 					# None and empty string represents removing of the attribute (handlers/__init__.py def diff)
-					if ( value is None or value == '' ) and not property_obj.required:
+					if (value is None or value == '') and not property_obj.required:
 						continue
 					obj[property_name] = property_obj.syntax.parse(value)
 			obj.create()
@@ -246,7 +251,9 @@ class ApplicationLDAPObject(object):
 		MODULE.process('%s: Remove because unused.' % self._udm_obj.dn)
 		self._udm_obj.remove()
 
+
 class InvokationRequirement(object):
+
 	def __init__(self, *actions):
 		self.name = ''
 		self.actions = actions
@@ -258,17 +265,23 @@ class InvokationRequirement(object):
 		self.name = func.__name__
 		return self
 
+
 class HardRequirement(InvokationRequirement):
+
 	def __init__(self, *actions):
 		super(HardRequirement, self).__init__(*actions)
 		self.hard = True
 
+
 class SoftRequirement(InvokationRequirement):
+
 	def __init__(self, *actions):
 		super(SoftRequirement, self).__init__(*actions)
 		self.hard = False
 
+
 class ApplicationMetaClass(type):
+
 	def __new__(mcs, name, bases, attrs):
 		requirements = {}
 		for key, value in attrs.items():
@@ -280,6 +293,7 @@ class ApplicationMetaClass(type):
 		new_cls = super(ApplicationMetaClass, mcs).__new__(mcs, name, bases, attrs)
 		new_cls._requirements = requirements
 		return new_cls
+
 
 class Application(object):
 	__metaclass__ = ApplicationMetaClass
@@ -300,6 +314,7 @@ class Application(object):
 		url = urljoin('%s/' % self.get_metainf_url(), os.path.basename(ini_file))
 
 		self._options['ucsoverviewcategory'] = 'service'
+
 		def _escape_value(key, value):
 			if key == 'ucsoverviewcategory':
 				if value == 'False':
@@ -354,7 +369,7 @@ class Application(object):
 		if localize:
 			# localize the category names
 			category_translations = self._get_category_translations()
-			self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
+			self._options['categories'] = [category_translations.get(icat.lower()) or icat for icat in self.get('categories')]
 
 		# return a proper URL for local files
 		for ikey in ('screenshot',):
@@ -461,7 +476,7 @@ class Application(object):
 				with open(filename, 'rb') as fp:
 					template = ''.join(fp.readlines()).strip()
 					while True:
-					    # stolen from config_registry.handler.run_filter()
+						# stolen from config_registry.handler.run_filter()
 						i = UCR_VARIABLE_TOKEN.finditer(template)
 						try:
 							start = i.next()
@@ -488,9 +503,9 @@ class Application(object):
 		to ask whether they are compatible.
 		The version number will rise whenever a change was made that may break compatibility.
 
-		  1: initial app center 12/12 (not assigned, appcenter/version was not supported)
-		  2: app center with remote installation 02/13 (not assigned, appcenter/version was not supported)
-		  3: app center with version and only_dry_run 03/13
+		1: initial app center 12/12 (not assigned, appcenter/version was not supported)
+		2: app center with remote installation 02/13 (not assigned, appcenter/version was not supported)
+		3: app center with version and only_dry_run 03/13
 		'''
 		return 3
 
@@ -713,7 +728,7 @@ class Application(object):
 			thread = Thread(target=cls._download_directly, args=(files_to_download_in_thread,))
 			thread.start()
 			threads.append(thread)
-			time.sleep(0.1) # wait 100 milliseconds so that not all threads start at the same time
+			time.sleep(0.1)  # wait 100 milliseconds so that not all threads start at the same time
 		for thread in threads:
 			thread.join()
 		if something_changed:
@@ -794,7 +809,7 @@ class Application(object):
 			os.chmod(png_50, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
 
 	#@classmethod
-	#def set_server(cls, host=None, scheme=None):
+	# def set_server(cls, host=None, scheme=None):
 	#	if host and scheme:
 	#		new_server = '%s://%s' % (scheme, host)
 	#	elif host:
@@ -803,7 +818,7 @@ class Application(object):
 	#		current_server = cls.get_server(with_scheme=False)
 	#		new_server = '%s://%s' % (scheme, current_server)
 	#	else:
-	#		# no-op
+	# no-op
 	#		return
 	#	ucr_update(ucr, {'repository/app_center/server' : new_server})
 
@@ -882,7 +897,7 @@ class Application(object):
 			# sort apps after their version (latest first)
 			iapps.sort(cmp=_version_cmp, reverse=True)
 
-			used_app = iapps[0] # take newest one
+			used_app = iapps[0]  # take newest one
 			for iiapp in iapps:
 				if iiapp.is_registered(ucr):
 					if iiapp is not used_app:
@@ -943,7 +958,7 @@ class Application(object):
 			ret = {}
 			try:
 				app_objs = appcenter_udm_module.lookup(None, lo, None, base=self.ldap_container)
-			except LDAPError: # NO_SUCH_OBJECT (self.ldap_container)
+			except LDAPError:  # NO_SUCH_OBJECT (self.ldap_container)
 				app_objs = []
 			for app_obj in app_objs:
 				# do not do it multiple times in the next loop
@@ -953,7 +968,7 @@ class Application(object):
 			for computer_obj in hosts:
 				role = computer_obj.info.get('serverRole')[0]
 				description = computer_obj.info.get('description')
-				ip = computer_obj.info.get('ip') # list
+				ip = computer_obj.info.get('ip')  # list
 				version = None
 				candidate_version = self.version
 				if self.candidate:
@@ -1058,7 +1073,7 @@ class Application(object):
 	def must_have_supported_architecture(self):
 		supported_architectures = self.get('supportedarchitectures')
 		platform_bits = platform.architecture()[0]
-		aliases = {'i386' : '32bit', 'amd64' : '64bit'}
+		aliases = {'i386': '32bit', 'amd64': '64bit'}
 		if supported_architectures:
 			for architecture in supported_architectures:
 				if aliases[architecture] == platform_bits:
@@ -1077,8 +1092,8 @@ class Application(object):
 				else:
 					needs = 64
 					has = 32
-				msg = _('The application needs a %(needs)s-bit operating system. This server is running a %(has)s-bit operating system.') % {'needs' : needs, 'has' : has}
-				return {'supported' : supported, 'msg' : msg}
+				msg = _('The application needs a %(needs)s-bit operating system. This server is running a %(has)s-bit operating system.') % {'needs': needs, 'has': has}
+				return {'supported': supported, 'msg': msg}
 		return True
 
 	@HardRequirement('install', 'update')
@@ -1088,15 +1103,15 @@ class Application(object):
 
 	@HardRequirement('install', 'update', 'uninstall')
 	def must_not_have_concurrent_operation(self, package_manager):
-		return package_manager.progress_state._finished # TODO: package_manager.is_finished()
+		return package_manager.progress_state._finished  # TODO: package_manager.is_finished()
 
 	@HardRequirement('install', 'update')
 	def must_have_correct_server_role(self):
 		server_role = ucr.get('server/role')
 		if not self.allowed_on_local_server():
 			return {
-				'current_role' : server_role,
-				'allowed_roles' : ', '.join(self.get('serverrole')),
+				'current_role': server_role,
+				'allowed_roles': ', '.join(self.get('serverrole')),
 			}
 		return True
 
@@ -1194,7 +1209,7 @@ class Application(object):
 			old_required_ram = installed_app.get('minphysicalram')
 			required_ram = required_ram - old_required_ram
 		if current_ram < required_ram:
-			return {'minimum' : required_ram, 'current' : current_ram}
+			return {'minimum': required_ram, 'current': current_ram}
 		return True
 
 	@SoftRequirement('install', 'update')
@@ -1206,8 +1221,8 @@ class Application(object):
 			ret = {}
 			for func_name in self._requirements.get((function, hard_requirements), []):
 				possible_variables = {
-					'package_manager' : package_manager,
-					'function' : function,
+					'package_manager': package_manager,
+					'function': function,
 				}
 				if function == 'update' and hard_requirements:
 					app = self.candidate
@@ -1219,7 +1234,7 @@ class Application(object):
 				else:
 					app = self
 				method = getattr(app, func_name)
-				arguments = inspect.getargspec(method).args[1:] # remove self
+				arguments = inspect.getargspec(method).args[1:]  # remove self
 				kwargs = dict((key, value) for key, value in possible_variables.iteritems() if key in arguments)
 				reason = method(**kwargs)
 				if reason is not True:
@@ -1314,9 +1329,9 @@ class Application(object):
 		unreachable = []
 		hosts_info = {}
 		remote_info = {
-			'master_unreachable' : False,
-			'problems_with_hosts' :False,
-			'serious_problems_with_hosts' : False,
+			'master_unreachable': False,
+			'problems_with_hosts': False,
+			'serious_problems_with_hosts': False,
 		}
 		dry_run_threads = []
 		if master_packages and not dont_remote_install:
@@ -1324,6 +1339,7 @@ class Application(object):
 			hosts = self.find_all_hosts(is_master=is_master)
 			# checking remote host is I/O heavy, so use threads
 			#   "global" variables: unreachable, hosts_info, remote_info
+
 			def _check_remote_host(application_id, host, host_is_master, username, password, force, remote_function):
 				MODULE.process('Starting dry_run for %s on %s' % (application_id, host))
 				try:
@@ -1344,14 +1360,14 @@ class Application(object):
 					host_info['compatible_version'] = Application.compatible_version(host_version)
 					try:
 						host_info['result'] = connection.request('appcenter/invoke_dry_run', {
-							'function' : remote_function,
-							'application' : application_id,
-							'force' : force,
-							'dont_remote_install' : True,
+							'function': remote_function,
+							'application': application_id,
+							'force': force,
+							'dont_remote_install': True,
 						})
 					except NotImplementedError:
 						# command is not yet known (older app center)
-						host_info['result'] = {'can_continue' : False, 'serious_problems' : False}
+						host_info['result'] = {'can_continue': False, 'serious_problems': False}
 					if not host_info['compatible_version'] or not host_info['result']['can_continue']:
 						remote_info['problems_with_hosts'] = True
 						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
@@ -1367,6 +1383,7 @@ class Application(object):
 		result = {}
 		# checking localhost is I/O heavy, so use threads
 		#   "global" variables: result
+
 		def _check_local_host(app, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list):
 			MODULE.process('Starting dry_run for %s on %s' % (app.id, 'localhost'))
 			# packages to install
@@ -1381,7 +1398,7 @@ class Application(object):
 
 			# add the new component
 			previously_registered = app.register(component_manager, package_manager)
-			previously_registered_list.append(previously_registered) # HACK it into a list so that it is accessible after the thread ends
+			previously_registered_list.append(previously_registered)  # HACK it into a list so that it is accessible after the thread ends
 
 			# get package objects
 			to_install_pkgs = package_manager.get_packages(to_install)
@@ -1408,7 +1425,7 @@ class Application(object):
 			MODULE.process('Finished dry_run for %s on %s' % (app.id, 'localhost'))
 
 		previously_registered = False
-		previously_registered_list = [] # HACKY: thread shall "return" previously_registered
+		previously_registered_list = []  # HACKY: thread shall "return" previously_registered
 		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list))
 		thread.start()
 		dry_run_threads.append(thread)
@@ -1428,7 +1445,7 @@ class Application(object):
 			ldap_id = self.ldap_id
 		if ldap_connection is None:
 			return
-		co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
+		co = None  # univention.admin.config.config(ucr.get('ldap/server/name'))
 		try:
 			return ApplicationLDAPObject(ldap_id, ldap_connection, co)
 		except DoesNotExist:
@@ -1439,19 +1456,19 @@ class Application(object):
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
 		ucsoverviewcategory = self.get('ucsoverviewcategory')
 		webinterface = self.get('webinterface')
-		port_http = self.get('webinterfaceporthttp') or '' # '' deletes
+		port_http = self.get('webinterfaceporthttp') or ''  # '' deletes
 		port_https = self.get('webinterfaceporthttps') or ''
 		if ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
-				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
-				'port_http' : str(port_http),
-				'port_https' : str(port_https),
-				'label' : self.get_localised('name'),
-				'label/de' : self.get_localised('name', 'de'),
-				'description' : self.get_localised('description'),
-				'description/de' : self.get_localised('description', 'de'),
-				'link' : webinterface,
+				'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
+				'port_http': str(port_http),
+				'port_https': str(port_https),
+				'label': self.get_localised('name'),
+				'label/de': self.get_localised('name', 'de'),
+				'description': self.get_localised('description'),
+				'description/de': self.get_localised('description', 'de'),
+				'link': webinterface,
 			}
 			for key, value in variables.iteritems():
 				if unset:
@@ -1497,7 +1514,7 @@ class Application(object):
 				#   walk in reversed order so that
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
-				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
+				if app is not to_be_registered:  # dont remove the one we want to register (may be already added)
 					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr):
 						# this app actually was registered!
@@ -1509,7 +1526,7 @@ class Application(object):
 					previously_registered = app
 			if to_be_registered:
 				to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
-				if not to_be_registered.is_current(component_manager.ucr): # does not hold for withoutrepository
+				if not to_be_registered.is_current(component_manager.ucr):  # does not hold for withoutrepository
 					# add the new repository component for the app
 					component_manager.put_app(to_be_registered, super_ucr)
 					should_update = True
@@ -1532,7 +1549,7 @@ class Application(object):
 				raise LDAPError()
 			installed_version = None
 			versions = self.find(self.id).versions
-			co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
+			co = None  # univention.admin.config.config(ucr.get('ldap/server/name'))
 			localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			for iapp in versions:
 				if iapp.is_registered(ucr) and iapp.is_installed(package_manager, strict=False) and iapp.allowed_on_local_server():
@@ -1594,7 +1611,7 @@ class Application(object):
 			if info:
 				package_manager.progress_state.info(info)
 			if steps:
-				steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
+				steps = float(steps)  # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
 				package_manager.progress_state.percentage(steps)
 			for error in errors:
 				if error not in all_errors:
@@ -1611,7 +1628,7 @@ class Application(object):
 		else:
 			function = 'install-schema'
 		connection = UMCConnection(host, username, password, error_handler=MODULE.warn)
-		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'dont_remote_install' : True})
+		result = connection.request('appcenter/invoke', {'function': function, 'application': self.id, 'force': True, 'dont_remote_install': True})
 		if result['can_continue']:
 			all_errors = self._query_remote_progress(connection, package_manager)
 			return len(all_errors) == 0
@@ -1634,7 +1651,7 @@ class Application(object):
 		if hosts is None:
 			hosts = self.find_all_hosts(is_master=is_master)
 		all_hosts_count = len(hosts)
-		package_manager.set_max_steps(all_hosts_count * 200) # up to 50% if all hosts are installed
+		package_manager.set_max_steps(all_hosts_count * 200)  # up to 50% if all hosts are installed
 		# maybe we already installed local packages (on master)
 		if is_master:
 			# TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
@@ -1654,7 +1671,7 @@ class Application(object):
 				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
 				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (self.component_id, role, host))
 				if host_is_master:
-					raise # only if host_is_master!
+					raise  # only if host_is_master!
 			finally:
 				package_manager.add_hundred_percent()
 
@@ -1709,7 +1726,7 @@ class Application(object):
 					# real installation is 50%
 					package_manager.set_max_steps(200)
 					# already have installed 50%
-					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
+					package_manager.progress_state._start_steps = 100  # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
 			previously_registered = self.register(component_manager, package_manager)
 			if previously_registered_by_dry_run is not False:
@@ -1825,7 +1842,7 @@ class Application(object):
 			if app.code:
 				installed_codes.append(app.code)
 		codes_variable = '-'.join(sorted(installed_codes))
-		ucr_update(ucr, {'repository/app_center/installed' : codes_variable})
+		ucr_update(ucr, {'repository/app_center/installed': codes_variable})
 
 	@classmethod
 	def update_conffiles(cls):

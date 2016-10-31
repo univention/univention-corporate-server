@@ -68,12 +68,14 @@ def error_handling(etype, exc, etraceback):
 
 
 class AppSanitizer(Sanitizer):
+
 	def _sanitize(self, value, name, further_args):
 		return AppManager.find(value)
 
 
 # TODO: remove this, unused!
 class AnySanitizer(Sanitizer):
+
 	def _sanitize(self, value, name, further_args):
 		any_given = any([value] + further_args.values())
 		if not any_given:
@@ -82,6 +84,7 @@ class AnySanitizer(Sanitizer):
 
 
 class NoDoubleNameSanitizer(StringSanitizer):
+
 	def _sanitize(self, value, name, further_arguments):
 		from constants import COMPONENT_BASE
 		ucr = univention.config_registry.ConfigRegistry()

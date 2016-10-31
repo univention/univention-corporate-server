@@ -44,6 +44,7 @@ from univention.appcenter.ucr import ucr_get, ucr_is_false
 
 
 class Domain(CredentialsAction):
+
 	'''Shows information about the domain and enabled management of app installations.'''
 	help = 'Domain management'
 

@@ -51,6 +51,7 @@ class NoDatabaseFound(Exception):
 
 
 class StoreConfigAction(Action):
+
 	def __call__(self, parser, namespace, value, option_string=None):
 		set_vars = {}
 		for val in value:
@@ -64,6 +65,7 @@ class StoreConfigAction(Action):
 
 
 class Configure(UniventionAppAction, DockerActionMixin):
+
 	'''Configures an application.'''
 	help = 'Configure an app'
 
