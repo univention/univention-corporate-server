@@ -13,28 +13,26 @@ import univention.testing.utils as utils
 
 
 def get_current_license_user_count():
-	for line in subprocess.Popen(['univention-license-check'], stdout = subprocess.PIPE).communicate()[0].split('\n'):
+	for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].split('\n'):
 		if line.startswith('Accounts:') or line.startswith('Users:'):
 			return int(line.split('of')[0].split()[-1])
-	
-	raise ValueError('Could not determine license user count')
 
+	raise ValueError('Could not determine license user count')
 
 
 if __name__ == '__main__':
 	license_user_count = get_current_license_user_count()
 
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(disabled = 'all')
+		udm.create_user(disabled='all')
 		new_license_user_count = get_current_license_user_count()
-		
+
 		if new_license_user_count != license_user_count:
 			utils.fail('After creating a fully disabled user, the license user counter raised from %s to %s' % (license_user_count, new_license_user_count))
 
-
 		for disabled_types in ('none', 'windows', 'kerberos', 'posix', 'windows_posix', 'windows_kerberos', 'posix_kerberos'):
-			udm.create_user(disabled = disabled_types)
+			udm.create_user(disabled=disabled_types)
 			new_license_user_count = get_current_license_user_count()
-			if new_license_user_count != license_user_count+1:
-				utils.fail('After creating a user with %r disabled, the license user counter did not raise from %s to %s' % (disabled_types, license_user_count, license_user_count+1))
+			if new_license_user_count != license_user_count + 1:
+				utils.fail('After creating a user with %r disabled, the license user counter did not raise from %s to %s' % (disabled_types, license_user_count, license_user_count + 1))
 			license_user_count = new_license_user_count

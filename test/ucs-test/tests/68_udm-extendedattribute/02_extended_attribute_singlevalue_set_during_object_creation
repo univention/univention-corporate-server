@@ -23,7 +23,7 @@ if __name__ == '__main__':
 			'ldapMapping': 'univentionFreeAttribute15'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		# create user object with extended attribute set
 		extended_attribute_value = uts.random_string()

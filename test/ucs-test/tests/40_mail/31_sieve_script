@@ -40,12 +40,12 @@ def main():
 			domain = ucr.get('domainname')
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
-			usermail = '%s@%s' % (uts.random_name(), domain )
+			usermail = '%s@%s' % (uts.random_name(), domain)
 			userdn, username = udm.create_user(
 				set={
-					'password'           : password,
-					'mailHomeServer'     : host,
-					'mailPrimaryAddress' : usermail
+					'password': password,
+					'mailHomeServer': host,
+					'mailPrimaryAddress': usermail
 				}
 			)
 
@@ -57,15 +57,15 @@ def main():
 			handler_set(['mail/cyrus/sieve/spam=false'])
 			handler_set(['mail/dovecot/sieve/spam=false'])
 			utils.restart_listener()
-			usermail = '%s@%s' % (uts.random_name(), domain )
+			usermail = '%s@%s' % (uts.random_name(), domain)
 			userdn, username = udm.create_user(
 				set={
-					'password'           : password,
-					'mailHomeServer'     : host,
-					'mailPrimaryAddress' : usermail
+					'password': password,
+					'mailHomeServer': host,
+					'mailPrimaryAddress': usermail
 				}
 			)
-			sieve_test(usermail,'')
+			sieve_test(usermail, '')
 			token = str(time.time())
 			send_mail(recipients=usermail, msg=token, gtube=True)
 			check_delivery(token, recipient_email=usermail, should_be_delivered=False, spam=True)

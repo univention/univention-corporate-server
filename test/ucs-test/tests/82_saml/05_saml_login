@@ -11,6 +11,7 @@
 import samltest as samllogin
 import univention.testing.utils as utils
 
+
 def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	try:

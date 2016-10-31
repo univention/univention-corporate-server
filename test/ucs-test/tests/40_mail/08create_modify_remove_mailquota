@@ -18,8 +18,10 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def enable_mailquota_set_interval(interval):
-	handler_set(['mail/cyrus/imap/quota=yes','mail/cyrus/imap/quotainterval=%s' % interval])
+	handler_set(['mail/cyrus/imap/quota=yes', 'mail/cyrus/imap/quotainterval=%s' % interval])
+
 
 def restart_cyrus_saslauthd():
 	for cmd in [['/etc/init.d/cyrus-imapd', 'restart'], ['/etc/init.d/saslauthd', 'restart']]:
@@ -39,7 +41,7 @@ def main():
 						MailQuota=17,
 						position='cn=mail,cn=policies,%s' % ucr.get('ldap/base')
 						)
-				policy='cn=%s,cn=mail,cn=policies,%s' % (UDM_policies_mailquota_name, ucr.get('ldap/base'))
+				policy = 'cn=%s,cn=mail,cn=policies,%s' % (UDM_policies_mailquota_name, ucr.get('ldap/base'))
 				mail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 						password='univention',

@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 			app.install()
 			app.verify()
-			
+
 			app.verify_basic_modproxy_settings()
 
 		finally:

@@ -21,9 +21,9 @@ urls = '(?: %s)' % '|'.join("http https telnet gopher file wais ftp".split())
 ltrs = r'\w'
 gunk = r'/#~:.?+=&%@!\-'
 punc = r'.:?\-'
-any = "%(ltrs)s%(gunk)s%(punc)s" % { 'ltrs' : ltrs,
-                                     'gunk' : gunk,
-                                     'punc' : punc }
+any = "%(ltrs)s%(gunk)s%(punc)s" % {'ltrs': ltrs,
+                                     'gunk': gunk,
+                                     'punc': punc}
 
 url = r"""
     \b                            # start at word boundary
@@ -39,9 +39,9 @@ url = r"""
                   $
             )
     )
-    """ % {'urls' : urls,
-           'any' : any,
-           'punc' : punc }
+    """ % {'urls': urls,
+           'any': any,
+           'punc': punc}
 
 url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
 
@@ -56,6 +56,7 @@ forbidden_links['http://download.siouxapp.com/redirect/ucs-appcenter/appvendor.h
 forbidden_links['http://www.cloudssky.com/en/support/opencms/index.html'] = True
 forbidden_links['http://cloudssky.com/en/solutions/index.html'] = True
 forbidden_links['http://www.cloudssky.com'] = True
+
 
 def fail_the_test(bad_link):
     """

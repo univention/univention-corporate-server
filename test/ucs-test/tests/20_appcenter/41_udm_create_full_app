@@ -42,29 +42,29 @@ if __name__ == '__main__':
 		server = ['server1.foo.bar', 'server2.foo.bar']
 
 		app = udm.create_object('appcenter/app',
-				id = id,
-				name = name,
-				version = version,
-				shortDescription = shortDescription,
-				longDescription = longDescription,
-				vendor = vendor,
-				contact = contact,
-				maintainer = maintainer,
-				website = website,
-				websiteVendor = websiteVendor,
-				websiteMaintainer = websiteMaintainer,
-				icon = icon,
-				category = category,
-				webInterface = webInterface,
-				webInterfaceName = webInterfaceName,
-				conflictingApps = conflictingApps,
-				conflictingSystemPackages = conflictingSystemPackages,
-				defaultPackages = defaultPackages,
-				defaultPackagesMaster = defaultPackagesMaster,
-				umcModuleName = umcModuleName,
-				umcModuleFlavor = umcModuleFlavor,
-				serverRole = serverRole,
-				server = server,
+				id=id,
+				name=name,
+				version=version,
+				shortDescription=shortDescription,
+				longDescription=longDescription,
+				vendor=vendor,
+				contact=contact,
+				maintainer=maintainer,
+				website=website,
+				websiteVendor=websiteVendor,
+				websiteMaintainer=websiteMaintainer,
+				icon=icon,
+				category=category,
+				webInterface=webInterface,
+				webInterfaceName=webInterfaceName,
+				conflictingApps=conflictingApps,
+				conflictingSystemPackages=conflictingSystemPackages,
+				defaultPackages=defaultPackages,
+				defaultPackagesMaster=defaultPackagesMaster,
+				umcModuleName=umcModuleName,
+				umcModuleFlavor=umcModuleFlavor,
+				serverRole=serverRole,
+				server=server,
 			)
 		utils.verify_ldap_object(app, {
 							'univentionAppName': [name],
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
 						})
 
-		udm.remove_object('appcenter/app', dn = app)
+		udm.remove_object('appcenter/app', dn=app)
 		try:
 			utils.verify_ldap_object(app, {
 								'univentionAppName': [name]

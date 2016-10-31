@@ -35,7 +35,7 @@ def main():
 				}
 			)
 			for mail_name in ('postmaster', 'webmaster'):
-				recipient_email = '%s@%s' % (mail_name, fqdn )
+				recipient_email = '%s@%s' % (mail_name, fqdn)
 				check_sending_mail(mailAddress, 'univention', recipient_email)
 
 

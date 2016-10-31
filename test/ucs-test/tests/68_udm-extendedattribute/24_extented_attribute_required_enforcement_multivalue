@@ -19,21 +19,20 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
-			name = uts.random_string(),
-			shortDescription = 'Test short description',
-			CLIName = 'univentionUCSTestAttribute',
-			module = 'groups/group',
-			objectClass = 'univentionFreeAttributes',
-			ldapMapping = 'univentionFreeAttribute15',
-			valueRequired = '1',
-			multivalue = '1'
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+			name=uts.random_string(),
+			shortDescription='Test short description',
+			CLIName='univentionUCSTestAttribute',
+			module='groups/group',
+			objectClass='univentionFreeAttributes',
+			ldapMapping='univentionFreeAttribute15',
+			valueRequired='1',
+			multivalue='1'
 		)
-
 
 		try:
 			udm.create_group()
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
-		
+
 		utils.fail('UDM did not report an error while trying to create an object eventhough a required multivalue extended attribute was not given')

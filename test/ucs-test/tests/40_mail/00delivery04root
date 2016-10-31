@@ -23,11 +23,13 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def reload_postfix():
 	print '** Reloading aliases and postfix'
 	for cmd in (['newaliases'], ['postfix', 'reload']):
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	time.sleep(5)
+
 
 def main():
 	TIMEOUT = 60

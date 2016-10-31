@@ -17,6 +17,7 @@ import univention.testing.utils as utils
 
 import samltest
 
+
 def main():
 	yesterday = date.today() - timedelta(days=1)
 	with udm_test.UCSTestUDM() as udm:

@@ -11,17 +11,22 @@ import time
 import univention.testing.strings as uts
 import univention.config_registry
 
+
 class WrongAcls(Exception):
 	pass
+
 
 class LookupFail(Exception):
 	pass
 
+
 class ReadFail(Exception):
 	pass
 
+
 class AppendFail(Exception):
 	pass
+
 
 class WriteFail(Exception):
 	pass
@@ -31,6 +36,7 @@ class BaseMailClient(object):
 	"""BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
 	Does not work alone, can be used only as a super class of other child class.
 	"""
+
 	def login_plain(self, user, password, authuser=None):
 		def plain_callback(response):
 			if authuser is None:
@@ -96,10 +102,10 @@ class BaseMailClient(object):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-		cyrus_user='cyrus'
-		password=open('/etc/cyrus.secret').read()
+		cyrus_user = 'cyrus'
+		password = open('/etc/cyrus.secret').read()
 		if password[-1] == '\n':
-			password=password[0:-1]
+			password = password[0:-1]
 
 		hostname = 'localhost'
 		shared_name = 'user/%s' % self.owner
@@ -108,17 +114,17 @@ class BaseMailClient(object):
 			hostname = ucr['mail/cyrus/murder/backend/hostname']
 
 		# if we want to give acls to a group, a different syntax is needed
-		if email.find("@")==-1:
+		if email.find("@") == -1:
 			# no email address, so we are dealing with
 			# a group, with 'anyone' or 'anonymous'
 			if not (email == "anyone" or email == "anonymous"):
-				email=email.replace(" ", "\ ")
-				email="group:%s"%email
+				email = email.replace(" ", "\ ")
+				email = "group:%s" % email
 
 		time.sleep(20)
 		child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
 		child.logfile = sys.stdout
-		i=0
+		i = 0
 		while not i == 3:
 			i = child.expect(['Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
 			if i == 0:
@@ -147,7 +153,7 @@ class BaseMailClient(object):
 			del(acl[1])
 		i = iter(acl[1:])
 		d = dict(izip(i, i))
-		return {acl[0]:d}
+		return {acl[0]: d}
 
 	def check_acls(self, expected_acls):
 		"""Check if the the correct acls are set
@@ -159,19 +165,19 @@ class BaseMailClient(object):
 		Raises an Exception if the set acls are not correct
 		"""
 		permissions_map = {
-			"a" : "a",
-			"l" : "l",
-			"r" : "r",
-			"s" : "s",
-			"w" : "w",
-			"i" : "i",
-			"p" : "p",
-			"k" : "kc",
-			"x" : "xc",
-			"t" : "td",
-			"e" : "ed",
-			"c" : "kxc",
-			"d" : "ted",
+			"a": "a",
+			"l": "l",
+			"r": "r",
+			"s": "s",
+			"w": "w",
+			"i": "i",
+			"p": "p",
+			"k": "kc",
+			"x": "xc",
+			"t": "td",
+			"e": "ed",
+			"c": "kxc",
+			"d": "ted",
 		}
 		for mailbox in expected_acls:
 			current = self.get_acl(mailbox)
@@ -233,7 +239,7 @@ class BaseMailClient(object):
 			elif not dovecot and mailbox != 'INBOX':
 				mailbox = 'INBOX/%s' % mailbox
 			self.select(mailbox)
-			typ, data =  self.append(
+			typ, data = self.append(
 				mailbox, '',
 				imaplib.Time2Internaldate(time.time()),
 				str(email.message_from_string('TEST %s' % mailbox))
@@ -286,13 +292,14 @@ class BaseMailClient(object):
 	def check_permissions(self, owner_user, mailbox, permission, dovecot):
 		"""Check Permissions all together"""
 		permissions = {
-			'lookup' : 'l',
-			'read'   : 'lrs',
-			'post'   : 'lrsp',
-			'append' : 'lrspi',
-			'write'  : 'lrspiwcd',
-			'all'    : 'lrspiwcda',
+			'lookup': 'l',
+			'read': 'lrs',
+			'post': 'lrsp',
+			'append': 'lrspi',
+			'write': 'lrspiwcd',
+			'all': 'lrspiwcda',
 		}
+
 		def lookup_OK(permission):
 			return set(permissions.get('lookup')).issubset(permission)
 
@@ -320,14 +327,17 @@ class BaseMailClient(object):
 class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
 
 	"""MailClient_SSL is a wrapper for imaplib.IMAP4_SSL"""
+
 	def __init__(self, host, port=993):
-		imaplib.IMAP4_SSL.__init__(self,host, port)
+		imaplib.IMAP4_SSL.__init__(self, host, port)
+
 
 class MailClient(imaplib.IMAP4, BaseMailClient):
 
 	"""MailClient is a wrapper for imaplib.IMAP4"""
+
 	def __init__(self, host, port=143):
-		imaplib.IMAP4.__init__(self,host, port)
+		imaplib.IMAP4.__init__(self, host, port)
 
 
 # vim: set ft=python ts=4 sw=4 noet ai :

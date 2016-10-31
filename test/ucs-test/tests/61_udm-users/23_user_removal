@@ -14,6 +14,6 @@ import univention.testing.udm as udm_test
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 			user = udm.create_user()[0]
-			udm.remove_object('users/user', dn = user)
+			udm.remove_object('users/user', dn=user)
 
-			utils.verify_ldap_object(user, should_exist = False)
+			utils.verify_ldap_object(user, should_exist=False)

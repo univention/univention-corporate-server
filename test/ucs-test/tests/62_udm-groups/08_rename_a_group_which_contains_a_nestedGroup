@@ -19,9 +19,9 @@ if utils.uppercase_in_ldap_base():
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		nested_group = udm.create_group()[0]
-		group = udm.create_group(nestedGroup = nested_group)[0]
+		group = udm.create_group(nestedGroup=nested_group)[0]
 
 		new_group_name = uts.random_groupname()
-		udm.modify_object('groups/group', dn = group, name = new_group_name)
+		udm.modify_object('groups/group', dn=group, name=new_group_name)
 		group = 'cn=%s,%s' % (new_group_name, ','.join(group.split(',')[1:]))
 		utils.verify_ldap_object(group, {'uniqueMember': [nested_group]})

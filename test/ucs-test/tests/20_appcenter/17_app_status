@@ -18,6 +18,7 @@ from univention.appcenter.ucr import ucr_get
 import requests
 import lxml.html
 
+
 def check_status(app):
 	if app.docker:
 		print '    Checking running Docker Container'
@@ -48,6 +49,7 @@ def check_status(app):
 					print output
 					utils.fail('ERROR: A package is not installed!')
 
+
 def check_ldap(app):
 	dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
 	try:
@@ -64,6 +66,7 @@ def check_ldap(app):
 	except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
 			utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
 			utils.fail('FAIL: An error occured while verifying %s: %s' % (dn, exc))
+
 
 def check_webinterface(app):
 	if not app.web_interface:
@@ -95,6 +98,7 @@ def check_webinterface(app):
 	else:
 		_check_url(app.web_interface)
 
+
 def _check_url(url):
 	print '       Checking', url
 	requests_timeout = 30
@@ -112,7 +116,7 @@ def _check_url(url):
 			# e.g., 0;URL=controller.pl?action=LoginScreen/user_login
 			index = refresh_url.lower().find('url=')
 			if index > 0:
-				refresh_url = refresh_url[index+4:]
+				refresh_url = refresh_url[index + 4:]
 				if not refresh_url.lower().startswith('http'):
 					refresh_url = '%s%s' % (url, refresh_url)
 				_check_url(refresh_url)

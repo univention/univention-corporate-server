@@ -10,17 +10,24 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
+
 def _sid_is_builtin(sid):
 	return sid.startswith('S-1-5-32-')
+
+
 def _sid_is_local(sid):
 	return sid.startswith('S-1-4-')
+
+
 def _sid_is_global(sid):
 	return sid.startswith('S-1-5-21-')
+
 
 def _get_samba_sid(dn):
 	lo = utils.get_ldap_connection()
 	res = lo.search(base=dn, filter='objectClass=*', attr=['sambaSID'])
 	return res[0][1].get('sambaSID')[0]
+
 
 def _test_group_type(group_type, use_create_group_parameter, builtin_sid_expected):
 	with udm_test.UCSTestUDM() as udm:
@@ -41,21 +48,26 @@ def _test_group_type(group_type, use_create_group_parameter, builtin_sid_expecte
 			if group_type == '-2147483643':
 				utils. fail('New generated builtin group has no builtin sid: %s' % sid)
 
+
 def _test_default_value():
 	print 'Test default value'
 	_test_group_type(group_type='-2147483646', use_create_group_parameter=False, builtin_sid_expected=False)
+
 
 def _test_global_group():
 	print 'Test global group'
 	_test_group_type(group_type='-2147483646', use_create_group_parameter=True, builtin_sid_expected=False)
 
+
 def _test_local_group():
 	print 'Test local group'
 	_test_group_type(group_type='-2147483643', use_create_group_parameter=True, builtin_sid_expected=True)
 
+
 def _test_domain_local_group():
 	print 'Test domain local group'
 	_test_group_type(group_type='-2147483644', use_create_group_parameter=True, builtin_sid_expected=False)
+
 
 def _test_universal_group():
 	print 'Test universal group'

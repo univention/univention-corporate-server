@@ -12,6 +12,7 @@ import re
 import subprocess
 import univention.testing.utils as utils
 
+
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
 	print ' ** %r' % cmd
@@ -24,15 +25,18 @@ def run_command(cmd):
 	else:
 		return out
 
+
 def apt_update():
 	"""Performs apt-get update"""
 	cmd = ['apt-get', 'update']
 	return run_command(cmd)
 
+
 def test_install(pkg_name):
 	"""Simulate packages installation"""
 	cmd = ['apt-get', '-s', 'install', pkg_name]
 	return run_command(cmd)
+
 
 def get_packets_list():
 	"""Returns Packet list"""
@@ -44,6 +48,7 @@ def get_packets_list():
 			]
 	search_result = run_command(cmd)
 	return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result)
+
 
 def main():
 	packets = get_packets_list()

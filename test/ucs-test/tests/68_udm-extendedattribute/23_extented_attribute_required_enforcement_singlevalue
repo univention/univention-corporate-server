@@ -14,16 +14,15 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
-			name = uts.random_string(),
-			shortDescription = 'Test short description',
-			CLIName = 'univentionUCSTestAttribute',
-			module = 'groups/group',
-			objectClass = 'univentionFreeAttributes',
-			ldapMapping = 'univentionFreeAttribute15',
-			valueRequired = '1'
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+			name=uts.random_string(),
+			shortDescription='Test short description',
+			CLIName='univentionUCSTestAttribute',
+			module='groups/group',
+			objectClass='univentionFreeAttributes',
+			ldapMapping='univentionFreeAttribute15',
+			valueRequired='1'
 		)
-
 
 		# try creating an udm object without the just created extended attribute given (expected to fail)
 		try:

@@ -33,10 +33,10 @@ if __name__ == '__main__':
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
-			computer = udm.create_object(role, name = uts.random_name(), **properties)
-			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer), should_exist = False)
-			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer), should_exist = False)
+			computer = udm.create_object(role, name=uts.random_name(), **properties)
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer), should_exist=False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer), should_exist=False)
 
-			udm.modify_object(role, dn = computer, **newProperties)
-			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist = False)
-			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist = False)
+			udm.modify_object(role, dn=computer, **newProperties)
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist=False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist=False)

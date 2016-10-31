@@ -10,7 +10,7 @@ from univention.testing.utils import fail
 from univention.testing.internal import package_installed
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_version = get_app_version()
@@ -29,8 +29,7 @@ if __name__ == '__main__':
 			# The package must be installed locally
 			if not package_installed(app.package_name):
 				fail('The package %s is not installed locally.' % app.package_name)
-			
+
 		finally:
 			app.uninstall()
 			app.remove()
-

@@ -17,7 +17,7 @@ if __name__ == '__main__':
 		group_name = udm.create_group()[1]
 
 		try:
-			udm.create_group(name = group_name)
+			udm.create_group(name=group_name)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

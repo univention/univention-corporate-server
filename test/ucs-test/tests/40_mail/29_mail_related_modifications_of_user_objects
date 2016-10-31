@@ -14,6 +14,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def check_login_lookup(host, mail, password, expected_result, dovecot):
 	"""This function checks if it is possible to login via a mail address
 	and a given password, also checks if it is possible to lookup
@@ -41,11 +42,12 @@ def check_login_lookup(host, mail, password, expected_result, dovecot):
 		else:
 			raise
 
+
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		ucr_tmp = univention.config_registry.ConfigRegistry()
 		ucr_tmp.load()
-		cmd =  ['/etc/init.d/cyrus-imapd', 'restart']
+		cmd = ['/etc/init.d/cyrus-imapd', 'restart']
 		if ucr_tmp.is_true('mail/dovecot'):
 			cmd = ['/etc/init.d/dovecot', 'restart']
 		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
@@ -81,9 +83,9 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailHomeServer': host,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				check_login_lookup(host, usermail, password, True, dovecot)
@@ -107,8 +109,8 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				expected_result = True if dovecot else False
@@ -131,8 +133,8 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				expected_result = True if dovecot else False
@@ -155,8 +157,8 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'       : password,
-						'mailHomeServer' : host
+						'password': password,
+						'mailHomeServer': host
 					}
 				)
 				check_login_lookup(host, '', password, False, dovecot)
@@ -180,9 +182,9 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'ip'                  : ip,
-						'name'                : new_host,
-						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						'ip': ip,
+						'name': new_host,
+						'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
 					},
 					position='cn=computers,%s' % basedn
@@ -190,9 +192,9 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailHomeServer': host,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				check_login_lookup(host, usermail, password, True, dovecot)
@@ -217,9 +219,9 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'ip'                  : ip,
-						'name'                : new_host,
-						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						'ip': ip,
+						'name': new_host,
+						'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
 					},
 					position='cn=computers,%s' % basedn
@@ -227,9 +229,9 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailHomeServer': host,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				check_login_lookup(host, usermail, password, True, dovecot)
@@ -253,9 +255,9 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'ip'                  : ip,
-						'name'                : new_host,
-						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						'ip': ip,
+						'name': new_host,
+						'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
 					},
 					position='cn=computers,%s' % basedn
@@ -263,9 +265,9 @@ def main():
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
+						'password': password,
+						'mailHomeServer': host,
+						'mailPrimaryAddress': usermail
 					}
 				)
 				check_login_lookup(host, usermail, password, True, dovecot)

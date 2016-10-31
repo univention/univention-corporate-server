@@ -111,4 +111,3 @@ with UCSTestConfigRegistry() as ucr:
 		sys.exit(1)
 
 sys.exit(0)
-

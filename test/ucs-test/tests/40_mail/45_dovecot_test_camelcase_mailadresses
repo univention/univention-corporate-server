@@ -21,13 +21,17 @@ import univention.uldap
 
 timeout = 10
 
+
 class Bunch(object):
+
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
+
 
 def get_mixed_case_maildir(addr):
 	localpart, domain = addr.rsplit('@', 1)
 	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart)
+
 
 def main():
 	cmd = ['invoke-rc.d', 'univention-directory-listener', 'restart']

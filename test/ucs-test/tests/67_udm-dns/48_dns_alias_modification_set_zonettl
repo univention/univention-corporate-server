@@ -13,10 +13,10 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
+		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string())
 
-		dns_alias = udm.create_object('dns/alias', superordinate = forward_zone, name = uts.random_name(), cname = uts.random_name())
+		dns_alias = udm.create_object('dns/alias', superordinate=forward_zone, name=uts.random_name(), cname=uts.random_name())
 
 		zonettl = '128'
-		udm.modify_object('dns/alias', dn = dns_alias, superordinate = forward_zone, zonettl = zonettl)
+		udm.modify_object('dns/alias', dn=dns_alias, superordinate=forward_zone, zonettl=zonettl)
 		utils.verify_ldap_object(dns_alias, {'dNSTTL': [zonettl]})

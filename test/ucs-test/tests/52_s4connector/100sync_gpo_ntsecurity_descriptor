@@ -30,6 +30,7 @@ import ldb
 import subprocess
 import re
 
+
 def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 	if not ucr:
 		ucr = ConfigRegistry()
@@ -71,6 +72,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 
 
 class Testclass_GPO_Security_Descriptor(object):
+
 	def __init__(self, udm, ucr=None):
 		self.SAM_LDAP_FILTER_GPO = "(&(objectclass=grouppolicycontainer)(cn=%s))"
 		self.gpo_ldap_filter = None
@@ -113,10 +115,10 @@ class Testclass_GPO_Security_Descriptor(object):
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 					utils.fail("Error restarting S4 Connector: %s"
-				"\nCommand was: %s"% (stdout, cmd))
+				"\nCommand was: %s" % (stdout, cmd))
 
 	def activate_ntsd_sync(self):
-		ucr_set = ["connector/s4/mapping/gpo/ntsd=true",]
+		ucr_set = ["connector/s4/mapping/gpo/ntsd=true", ]
 		self.previous_ucr_set, self.previous_ucr_unset = set_ucr(ucr_set, ucr=self.ucr)
 		if self.previous_ucr_unset or self.previous_ucr_set:
 			self.restart_s4_connector()
@@ -135,9 +137,9 @@ class Testclass_GPO_Security_Descriptor(object):
 
 	def get_ldb_object(self, dn=None, ldap_filter=None, attrs=None):
 		if not attrs:
-			attrs=["*"]
+			attrs = ["*"]
 		if not ldap_filter:
-			ldap_filter="(objectClass=*)"
+			ldap_filter = "(objectClass=*)"
 
 		if dn:
 			res = self.machine_samdb.search(base=dn, scope=ldb.SCOPE_BASE, expression=ldap_filter, attrs=attrs)
@@ -182,7 +184,7 @@ class Testclass_GPO_Security_Descriptor(object):
 
 		usn = int(ldb_msg["uSNChanged"][0])
 
-		configdbfile='/etc/univention/connector/s4internal.sqlite'
+		configdbfile = '/etc/univention/connector/s4internal.sqlite'
 		s4c_internaldb = configdb(configdbfile)
 
 		t0 = time.time()
@@ -219,7 +221,7 @@ class Testclass_GPO_Security_Descriptor(object):
 			if p1.returncode != 0:
 				if critical:
 							utils.fail("Error removing GPO using samba-tool: %s"
-					"\nCommand was: %s"% (stdout, cmd))
+					"\nCommand was: %s" % (stdout, cmd))
 			else:
 				self.gponame = None
 
@@ -236,7 +238,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 			utils.fail("ERROR: %s: creating GPO using samba-tool: %s"
-			"\nCommand was: %s"% (logtag, stdout, cmd))
+			"\nCommand was: %s" % (logtag, stdout, cmd))
 
 		stdout = stdout.rstrip()
 		try:
@@ -248,7 +250,7 @@ class Testclass_GPO_Security_Descriptor(object):
 
 	def modify_udm_object(self, modulename, **kwargs):
 		cmd = self.udm._build_udm_cmdline(modulename, 'modify', kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
@@ -257,12 +259,14 @@ class Testclass_GPO_Security_Descriptor(object):
 	def modify_sd_on_ucs_ldap_gpo(self, ucs_dn, ucs_ntsd):
 		self.modify_udm_object('container/msgpo', dn=ucs_dn, msNTSecurityDescriptor=ucs_ntsd.as_sddl())
 
+
 class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descriptor):
+
 	def run(self):
 		sync_from = "UDM"
 		sync_to = "SAM"
 		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
-		PHASE= "preparation"
+		PHASE = "preparation"
 
 		self.create_gpo(logtag=PHASE)
 		print 'GPO Name: %s' % self.gponame
@@ -277,7 +281,7 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		# we need the exact case of the DN otherwise udm cli will fail
 		temp_dn = str(ldb_msg.dn).lower()
 		temp_dn.replace(self.ucr["samba4/ldap/base"].lower(), self.ucr["ldap/base"])
-		ucs_dn = self.machine_ucs_ldap.searchDn(base=temp_dn,scope='base')[0]
+		ucs_dn = self.machine_ucs_ldap.searchDn(base=temp_dn, scope='base')[0]
 
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
 		try:
@@ -285,9 +289,9 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		except ValueError as ex:
 			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE,  sync_from, sync_to))
+					utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE, sync_from, sync_to))
 
-		PHASE= "test"
+		PHASE = "test"
 
 		ucs_ntsd.owner_sid = self.DU_SID
 		self.modify_sd_on_ucs_ldap_gpo(ucs_dn, ucs_ntsd)
@@ -305,9 +309,9 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		sam_ntsd = self.get_ntsd(ldb_msg)
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
+					utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE, sync_from, sync_to))
 
-		PHASE= "cleanup"
+		PHASE = "cleanup"
 
 		ucs_ntsd.owner_sid = self.DA_SID
 		self.modify_sd_on_ucs_ldap_gpo(ucs_dn, ucs_ntsd)
@@ -324,15 +328,16 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		sam_ntsd = self.get_ntsd(ldb_msg)
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor not re-synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
+					utils.fail("ERROR: %s: NT Security descriptor not re-synchronized from %s to %s" % (PHASE, sync_from, sync_to))
 
 
 class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descriptor):
+
 	def run(self):
 		sync_from = "SAM"
 		sync_to = "UDM"
 		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
-		PHASE= "preparation"
+		PHASE = "preparation"
 
 		self.create_gpo(logtag=PHASE)
 		print 'GPO Name: %s' % self.gponame
@@ -351,9 +356,9 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 		except ValueError as ex:
 			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE,  sync_from, sync_to))
+					utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE, sync_from, sync_to))
 
-		PHASE= "test"
+		PHASE = "test"
 
 		sam_ntsd.owner_sid = self.DU_SID
 		self.admin_samdb_sdutil.modify_sd_on_dn(str(ldb_msg.dn), sam_ntsd)
@@ -373,9 +378,9 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
 			print 'ucs_ntsd.as_sddl: %s' % ucs_ntsd.as_sddl()
 			print 'sam_ntsd.as_sddl: %s' % sam_ntsd.as_sddl()
-			utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
+			utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE, sync_from, sync_to))
 
-		PHASE= "cleanup"
+		PHASE = "cleanup"
 
 		sam_ntsd.owner_sid = self.DA_SID
 		self.admin_samdb_sdutil.modify_sd_on_dn(str(ldb_msg.dn), sam_ntsd)
@@ -392,7 +397,7 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor not re-synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
+					utils.fail("ERROR: %s: NT Security descriptor not re-synchronized from %s to %s" % (PHASE, sync_from, sync_to))
 
 
 if __name__ == "__main__":

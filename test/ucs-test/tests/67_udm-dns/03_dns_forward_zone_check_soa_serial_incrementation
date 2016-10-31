@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
 		new_ttl = '12'
-		udm.modify_object('dns/forward_zone', dn = forward_zone, ttl = new_ttl)
+		udm.modify_object('dns/forward_zone', dn=forward_zone, ttl=new_ttl)
 
 		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
 											   forward_zone_properties['nameserver'],
@@ -39,5 +39,5 @@ if __name__ == '__main__':
 											   forward_zone_properties['refresh'],
 											   forward_zone_properties['retry'],
 											   forward_zone_properties['expire'],
-											   new_ttl) ]
+											   new_ttl)]
 		})

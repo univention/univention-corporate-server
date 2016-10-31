@@ -56,13 +56,13 @@ class Hacking(object):
 	def __init__(self, creations=None, modifications=None):
 		self.creations = creations or _creations
 		self.modifications = modifications or _modifications
-		self.lo_admin = utils.get_ldap_connection() # TODO: use connection to DC master because this has only partly replicated objects
+		self.lo_admin = utils.get_ldap_connection()  # TODO: use connection to DC master because this has only partly replicated objects
 
 	def __call__(self, lo):
 		failures = set()
 		lo_admin = utils.get_ldap_connection()
 		print >> sys.stderr, 'Testing for %r' % (lo.binddn,)
-		
+
 		for dn, al in self.testcases(self.creations):
 			try:
 				lo.add(dn, al)

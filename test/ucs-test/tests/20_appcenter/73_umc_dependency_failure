@@ -13,6 +13,7 @@ import appcentertest as app_test
 
 
 class DebianMockPackage(object):
+
 	def __init__(self, name="testdeb", version="1.0"):
 		self.name = name
 		self.version = version
@@ -43,8 +44,10 @@ def test_install_missing_depends(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try: test.test_install(test_installed=False)
-	except app_test.AppCenterCheckError: pass
+	try:
+		test.test_install(test_installed=False)
+	except app_test.AppCenterCheckError:
+		pass
 	else:
 		error = "Install of app with missing dependency did not fail."
 
@@ -83,8 +86,10 @@ def test_upgrade_missing_depends(app_center, application):
 		new.build_and_publish()
 		new.remove_tempdir()
 
-		try: test.test_upgrade(test_installed=False)
-		except app_test.AppCenterCheckError: pass
+		try:
+			test.test_upgrade(test_installed=False)
+		except app_test.AppCenterCheckError:
+			pass
 		else:
 			error = "Upgrade of app with missing dependency did not fail."
 			app_test.fail(error.strip())

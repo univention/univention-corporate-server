@@ -26,5 +26,4 @@ if __name__ == '__main__':
 	print master_backup_ips
 
 	if master_backup_ips.difference(dns_entries):
-		fail('Not all master and backup IPs are registered: DNS: [%s], LDAP: [%s]' % (dns_entries, master_backup_ips)) 
-
+		fail('Not all master and backup IPs are registered: DNS: [%s], LDAP: [%s]' % (dns_entries, master_backup_ips))

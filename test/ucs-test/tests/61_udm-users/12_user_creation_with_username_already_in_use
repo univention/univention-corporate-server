@@ -15,13 +15,13 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		first_user_container = udm.create_object('container/cn', name = uts.random_name())
-		second_user_container = udm.create_object('container/cn', name = uts.random_name())
+		first_user_container = udm.create_object('container/cn', name=uts.random_name())
+		second_user_container = udm.create_object('container/cn', name=uts.random_name())
 
-		username = udm.create_user(position = first_user_container)[1]
-			
+		username = udm.create_user(position=first_user_container)[1]
+
 		try:
-			udm.create_user(username = username, position = second_user_container)
+			udm.create_user(username=username, position=second_user_container)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

@@ -16,10 +16,10 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		name = uts.random_name()
 
-		user = udm.create_user(username = name)[0]
-		
+		user = udm.create_user(username=name)[0]
+
 		try:
-			group = udm.create_group(name = name)
+			group = udm.create_group(name=name)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

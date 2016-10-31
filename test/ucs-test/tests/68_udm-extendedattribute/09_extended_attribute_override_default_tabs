@@ -27,17 +27,16 @@ if __name__ == '__main__':
 			'overwriteTab': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
-		
-		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout = subprocess.PIPE).communicate()[0].splitlines()
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+
+		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].splitlines()
 
 		for i in range(0, len(module_help_text)):
 			if module_help_text[i] == '  %s:' % properties['tabName']:
-				if not properties['CLIName'] in module_help_text[i+1]:
+				if not properties['CLIName'] in module_help_text[i + 1]:
 					utils.fail('Could not find attribute CLI name under tab')
-				if not module_help_text[i+2].endswith(':'):
+				if not module_help_text[i + 2].endswith(':'):
 					utils.fail('Tab not overridden')
 				sys.exit(0)
-						
 
 		utils.fail('Tab not found')

@@ -68,6 +68,7 @@ def enable_mail_quota():
 
 
 class Mail(object):
+
 	def __init__(self, timeout=10):
 		self.timeout = timeout
 
@@ -209,6 +210,7 @@ def get_dir_files(dir_path, recursive=True, exclude=None):
 			result.extend(get_dir_files(f))
 	return result
 
+
 def get_maildir_filenames(maildir):
 	"""
 	Returns all filenames for mails in specified dovecot maildir:
@@ -224,6 +226,7 @@ def get_maildir_filenames(maildir):
 			continue
 		result.extend([os.path.join(dirpath, x) for x in filenames if not x.startswith("dovecot") and x not in blacklist])
 	return result
+
 
 def get_file_contain(token, _dir):
 	for _file in get_dir_files(_dir, recursive=True):
@@ -264,6 +267,8 @@ def restart_postfix():
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	except EnvironmentError as ex:
 		print >> sys.stderr, ex
+
+
 def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
@@ -370,6 +375,7 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 					break
 	return delivered
 
+
 def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, timeout=0):
 	"""
 	Check if a mail with the specified token or message ID has been delivered to a mail spool.
@@ -388,7 +394,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 	result = 0
 	if timeout < 1:
 		timeout = 1
-	while result==0 and timeout > 0:
+	while result == 0 and timeout > 0:
 		timeout -= 1
 		if user:
 			_file = os.path.join('/var/mail', user)
@@ -651,9 +657,10 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 		raise UCSTest_Mail_MissingMailbox(mailboxes, missing_mailboxes)
 	print
 
+
 def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		domain = ucr.get('domainname').lower() # lower() can be removed, when #39721 is fixed
+		domain = ucr.get('domainname').lower()  # lower() can be removed, when #39721 is fixed
 		basedn = ucr.get('ldap/base')
 		dovecat = ucr.is_true('mail/dovecot')
 	name = uts.random_name()
@@ -665,16 +672,16 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 
 	folder_dn = udm.create_object(
 		'mail/folder',
-		position = 'cn=folder,cn=mail,%s' % basedn,
-		set = {
-			'name'                 : name,
-			'mailHomeServer'       : mailHomeServer,
-			'mailDomain'           : domain,
-			'mailPrimaryAddress'   : folder_mailaddress
+		position='cn=folder,cn=mail,%s' % basedn,
+		set={
+			'name': name,
+			'mailHomeServer': mailHomeServer,
+			'mailDomain': domain,
+			'mailPrimaryAddress': folder_mailaddress
 		},
-		append = {
-			'sharedFolderUserACL'  : user_permission or [],
-			'sharedFolderGroupACL' : group_permission or [],
+		append={
+			'sharedFolderUserACL': user_permission or [],
+			'sharedFolderGroupACL': group_permission or [],
 		}
 	)
 	if dovecat:
@@ -690,6 +697,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 def create_random_msgid():
 	""" returns a random and unique message ID """
 	return '%s.%s' % (uuid.uuid1(), random_email())
+
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
 	       gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
@@ -806,9 +814,9 @@ Regards,
 def check_delivery(token, recipient_email, should_be_delivered, spam=False):
 	print "%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered)
 	if spam:
-		delivered  = spam_delivered(token, mail_address=recipient_email)
+		delivered = spam_delivered(token, mail_address=recipient_email)
 	else:
-		delivered  = mail_delivered(token, mail_address=recipient_email)
+		delivered = mail_delivered(token, mail_address=recipient_email)
 	spam_str = 'Spam ' if spam else ''
 	if should_be_delivered != delivered:
 		if delivered:
@@ -818,23 +826,23 @@ def check_delivery(token, recipient_email, should_be_delivered, spam=False):
 
 
 def check_sending_mail(
-	username        = None,
-	password        = None,
-	recipient_email = None,
-	tls             = True,
-	allowed         = True,
-	local           = True
+	username=None,
+	password=None,
+	recipient_email=None,
+	tls=True,
+	allowed=True,
+	local=True
 	):
 	token = str(time.time())
 	try:
 		ret_code = send_mail(
-			recipients = recipient_email,
-			msg        = token,
-			port       = 587,
-			server     = '4.3.2.1',
-			tls        = tls,
-			username   = username,
-			password   = password
+			recipients=recipient_email,
+			msg=token,
+			port=587,
+			server='4.3.2.1',
+			tls=tls,
+			username=username,
+			password=password
 		)
 		if (bool(ret_code) == allowed):
 			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))

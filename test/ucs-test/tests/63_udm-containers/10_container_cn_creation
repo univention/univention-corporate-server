@@ -14,5 +14,5 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		cn = udm.create_object('container/cn', name = uts.random_name())
+		cn = udm.create_object('container/cn', name=uts.random_name())
 		utils.verify_ldap_object(cn)

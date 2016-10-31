@@ -13,12 +13,16 @@ import os
 
 PORT = 3128
 
+
 class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 	server_version = "UCSTestProxy/1.0"
+
 	def do_GET(self):
 		self.common(data=True)
+
 	def do_HEAD(self):
 		self.common(data=False)
+
 	def common(self, data=True):
 		if options.authorization:
 			try:
@@ -73,7 +77,7 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 		for k, v in fp.headers.items():
 			if k.lower() == 'via':
 				via = "%s, %s" % (via, v)
-			elif k.lower() in ('server', 'date'): # Std-Hrds by BaseHTTPReqHand
+			elif k.lower() in ('server', 'date'):  # Std-Hrds by BaseHTTPReqHand
 				continue
 			elif k.lower() == 'transfer-encoding':
 				continue

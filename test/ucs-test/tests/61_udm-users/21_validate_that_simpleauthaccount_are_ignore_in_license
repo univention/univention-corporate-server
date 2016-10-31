@@ -15,12 +15,11 @@ import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	license_before  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
-	
+	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(options = ['ldap_pwd'])
-		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		udm.create_user(options=['ldap_pwd'])
+		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	if license_before != license_after:
 		utils.fail('The license before creating a simple-auth user differs from the license after creating the user')
-	

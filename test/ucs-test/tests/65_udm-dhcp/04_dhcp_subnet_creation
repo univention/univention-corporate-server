@@ -8,16 +8,15 @@
 ##   - univention-directory-manager-tools
 
 
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		dhcp_service = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
 		subnet_mask = '24'
-		dhcp_subnet = udm.create_object('dhcp/subnet', superordinate = dhcp_service, subnet = '10.20.30.0', subnetmask = subnet_mask)
+		dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet='10.20.30.0', subnetmask=subnet_mask)
 
 		utils.verify_ldap_object(dhcp_subnet, {'dhcpNetMask': [subnet_mask]})

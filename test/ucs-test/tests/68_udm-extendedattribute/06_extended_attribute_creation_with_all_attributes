@@ -43,7 +43,7 @@ if __name__ == '__main__':
 			'deleteObjectClass': '1',
 			'version': uts.random_string(),
 			'doNotSearch': '1',
-			'set': {'options': uts.random_string()} # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
+			'set': {'options': uts.random_string()}  # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
 		}
 
 		extended_attribute = udm.create_object('settings/extended_attribute', **properties)

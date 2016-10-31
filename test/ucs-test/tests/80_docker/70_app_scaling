@@ -8,15 +8,15 @@
 
 from dockertest import *
 
-DOCKER_APP_COUNT=20
+DOCKER_APP_COUNT = 20
 
 if __name__ == '__main__':
-	
+
 	with Appcenter() as appcenter:
 		apps = []
 
 		try:
-			for i in range(0,DOCKER_APP_COUNT):
+			for i in range(0, DOCKER_APP_COUNT):
 				app = App(name=get_app_name(), version=get_app_version())
 				app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
 									WebInterface='/%s' % app.app_name,
@@ -30,18 +30,16 @@ if __name__ == '__main__':
 
 				apps.append(app)
 
-
 			appcenter.update()
 
-			for i in range(0,DOCKER_APP_COUNT):
+			for i in range(0, DOCKER_APP_COUNT):
 				apps[i].install()
 
-			for i in range(0,DOCKER_APP_COUNT):
+			for i in range(0, DOCKER_APP_COUNT):
 				apps[i].verify()
 				apps[i].verify_basic_modproxy_settings()
 
 		finally:
-			for i in range(0,len(apps)):
+			for i in range(0, len(apps)):
 				apps[i].uninstall()
 				apps[i].remove()
-

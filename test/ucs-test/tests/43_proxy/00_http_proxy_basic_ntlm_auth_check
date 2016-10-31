@@ -13,7 +13,8 @@ import pycurl
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-def checkAuths(host, passwd,  url, (basic, ntlm), expect_wrong_password):
+
+def checkAuths(host, passwd, url, (basic, ntlm), expect_wrong_password):
 	# in case all auth are disabled, all return 200
 	http_basic, http_ntlm, http_gneg = (200, 200, 200)
 	if basic or ntlm:
@@ -22,12 +23,14 @@ def checkAuths(host, passwd,  url, (basic, ntlm), expect_wrong_password):
 	checkBasic(host, passwd, url, http_basic)
 	checkNTLM(host, passwd, url, http_ntlm)
 
+
 def checkBasic(host, passwd, url, http_code):
 	print 'Performing Basic proxy auth check'
 	curl = SimpleCurl(proxy=host, password=passwd, auth=pycurl.HTTPAUTH_BASIC)
 	result = curl.response(url)
 	if http_code != result:
 		utils.fail('Basic proxy auth check failed, http_code = %r, expected = %r' % (result, http_code))
+
 
 def checkNTLM(host, passwd, url, http_code):
 	print 'Performing NTLM proxy auth check'
@@ -49,11 +52,13 @@ def setAuthVariables(squid, (basic, ntlm)):
 		handler_unset(['squid/ntlmauth'])
 	squid.restart()
 
+
 def printHeader(state, passwd, expect_wrong_password):
 	print '-' * 40
 	print '(Basic, NTLM) = %s' % (state,)
 	print 'Password used: %s, expect_wrong_password: %s' % (
 			passwd, expect_wrong_password)
+
 
 def main():
 	squid = SimpleSquid()
@@ -71,7 +76,7 @@ def main():
 
 		# Generate all the possibilities for the auth states
 		# [(0, 0), (0, 1), (1, 0), (1, 1)]
-		authStates = list(itertools.product([0,1], repeat=2))
+		authStates = list(itertools.product([0, 1], repeat=2))
 
 		for passwd, expect_wrong_password in passwords:
 			for state in authStates:

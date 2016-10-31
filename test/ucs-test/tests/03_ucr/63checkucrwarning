@@ -62,7 +62,7 @@ files -= set(WHITELIST)
 
 missing_header_files = False
 for fn in files:
-	p1 = subprocess.Popen(('/bin/grep', '-q', message_line , fn))
+	p1 = subprocess.Popen(('/bin/grep', '-q', message_line, fn))
 	if p1.wait() != 0:
 		print 'Error: Missing UCR header for %s' % fn
 		missing_header_files = True

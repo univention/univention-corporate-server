@@ -14,20 +14,20 @@ from performanceutils import *
 
 if __name__ == '__main__':
 
-	MAX_SECONDS_IMPORT = 22*3600
-	MAX_SECONDS_SAMBA_IMPORT = 128*3600+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_IMPORT = 22 * 3600
+	MAX_SECONDS_SAMBA_IMPORT = 128 * 3600 + CONNECTOR_WAIT_TIME
 	MAX_SECONDS_ADMIN_AUTH = 8
-	MAX_SECONDS_USER_CREATION = 135+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_USER_CREATION = 135 + CONNECTOR_WAIT_TIME
 	MAX_SECONDS_USER_AUTH = 20
-	MAX_SECONDS_PASSWORD_RESET = 335+CONNECTOR_WAIT_TIME
+	MAX_SECONDS_PASSWORD_RESET = 335 + CONNECTOR_WAIT_TIME
 
-	CSV_IMPORT_FILE='30000.csv'
+	CSV_IMPORT_FILE = '30000.csv'
 
 	returnCode = 100
 
 	if not execute_timing('user import', MAX_SECONDS_IMPORT, import_users, CSV_IMPORT_FILE):
 		returnCode = 1
-	
+
 	if not execute_timing('user import sync to s4', MAX_SECONDS_SAMBA_IMPORT, wait_for_s4connector):
 		returnCode = 1
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
 	if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
 		returnCode = 1
-	
+
 	if not count_users(needed=30000):
 		returnCode = 1
 

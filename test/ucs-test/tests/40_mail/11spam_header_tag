@@ -13,13 +13,14 @@ import essential.mail
 
 import time
 
+
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				password = uts.random_string()
 				mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
-				mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
+				mailHomeServer = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 				if ucr.is_true('mail/cyrus'):
 					spam_folder = 'INBOX/%s' % (essential.mail.get_spam_folder_name(),)
 				else:  # dovecot

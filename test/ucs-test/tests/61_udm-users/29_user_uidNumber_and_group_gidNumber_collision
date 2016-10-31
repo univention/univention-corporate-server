@@ -25,6 +25,7 @@ LO = utils.get_ldap_connection()
 
 
 class Failure():
+
 	def __init__(self, message):
 		self.message = message
 

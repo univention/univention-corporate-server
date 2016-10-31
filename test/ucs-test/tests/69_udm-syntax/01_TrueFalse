@@ -18,16 +18,15 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		syntax = 'TrueFalse'
 		cli_name = uts.random_string()
-		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
-			name = uts.random_name(),
-			shortDescription = uts.random_string(),
-			CLIName = cli_name,
-			module = 'users/user',
-			objectClass = 'univentionFreeAttributes',
-			ldapMapping = 'univentionFreeAttribute15',
-			syntax = syntax
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+			name=uts.random_name(),
+			shortDescription=uts.random_string(),
+			CLIName=cli_name,
+			module='users/user',
+			objectClass='univentionFreeAttributes',
+			ldapMapping='univentionFreeAttribute15',
+			syntax=syntax
 		)
-
 
 		# check valid values
 		for value in ('true', 'false', ''):
@@ -41,4 +40,3 @@ if __name__ == '__main__':
 				continue
 
 			utils.fail('Succsessfully applied invalid value %r for %s syntax' % (value, syntax))
-

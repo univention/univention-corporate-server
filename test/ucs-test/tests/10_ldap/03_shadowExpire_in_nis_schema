@@ -14,6 +14,7 @@ import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
+
 def nis_schema_conatains_ordering_for_shadowExpire():
 	NIS_FILE = '/etc/ldap/schema/nis.schema'
 	pattern = re.compile(r'(attributetype\s\(\s\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\sNAME\s\'shadowExpire\'[^\(]+ORDERING\sintegerOrderingMatch[^\)]+\))')
@@ -21,11 +22,13 @@ def nis_schema_conatains_ordering_for_shadowExpire():
 		search_obj = re.search(pattern, fi.read())
 		return search_obj.groups()
 
+
 def ldap_search(filter_):
 	lo = getMachineConnection()
 	found = lo.search(filter=filter_)
 	if found:
 		return [(x[1]['uid'][0], x[1]['shadowExpire'][0]) for x in found]
+
 
 def run():
 	with udm_test.UCSTestUDM() as udm:
@@ -36,14 +39,14 @@ def run():
 			epoch_date = (chosen_time - epoch).days
 
 			expiry_date = chosen_time.strftime("%Y-%m-%d")
-			passwd =  uts.random_string()
-			username =  uts.random_name()
+			passwd = uts.random_string()
+			username = uts.random_name()
 			userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
-			expiry_ldap = int(ldap_search('uid=%s' % username)[0][1]) # get the real set value from ldap
+			expiry_ldap = int(ldap_search('uid=%s' % username)[0][1])  # get the real set value from ldap
 			return username, passwd, expiry_ldap
 
 		test_list = []
-		for date_diff in [-2, 0, 2]: # Numbers represent days, - in the past, + in the future, 0 = today
+		for date_diff in [-2, 0, 2]:  # Numbers represent days, - in the past, + in the future, 0 = today
 			test_list.append(create_users(date_diff))
 
 		for username, passwd, date in test_list:
@@ -55,8 +58,9 @@ def run():
 				print 'Should be found: [(username, expirydate)] = [(\'%s\', \'%s\')]' % (username, date)
 				print 'Found in LDAP:   [(username, expirydate)] = %r' % ldap_found
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
-					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % 
+					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" %
 							(date - 1, date + 1))
+
 
 def main():
 	nis = nis_schema_conatains_ordering_for_shadowExpire()

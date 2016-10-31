@@ -23,10 +23,9 @@ if __name__ == '__main__':
 			'ldapMapping': 'univentionFreeAttribute15'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
-
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		user = udm.create_user()[0]
 		extended_attribute_value = uts.random_string()
-		udm.modify_object('users/user', dn = user, **{properties['CLIName']: extended_attribute_value})
+		udm.modify_object('users/user', dn=user, **{properties['CLIName']: extended_attribute_value})
 		utils.verify_ldap_object(user, {properties['ldapMapping']: [extended_attribute_value]})

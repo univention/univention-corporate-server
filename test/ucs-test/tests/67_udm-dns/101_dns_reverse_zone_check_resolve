@@ -21,18 +21,18 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			duration = 120
-			
+
 			resourceRecord = 'SOA'
-			
+
 			resourceRecord_Number = dns.rdatatype.SOA
-			
+
 			zoneName = ''
-			
-			ip = uts.random_ip().split('.',2)
+
+			ip = uts.random_ip().split('.', 2)
 			ip[2] = ip[2].partition('.')[0]
 			ip = '.'.join(ip)
 
-			host = uts.random_name()+'.'+ucr.get('domainname')
+			host = uts.random_name() + '.' + ucr.get('domainname')
 
 			#IPv4
 			reverse_zone_properties = {
@@ -49,17 +49,17 @@ if __name__ == '__main__':
 			}
 
 			baseDn = ucr.get('domainname').split('.')
-			
+
 			pos = 'cn=dns'
-			
+
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
-			
-			reverse_zone = udm.create_object('dns/reverse_zone',position=pos, **reverse_zone_properties)
-			
+
+			reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
+
 			words = reverse_zone_properties['subnet'].split('.')
 			words.reverse()
-			
+
 			ptr_address = uts.random_int()
 
 			zoneName = ptr_address + '.'
@@ -71,27 +71,27 @@ if __name__ == '__main__':
 			zoneName = '.'.join(words)
 			zoneName += '.in-addr.arpa'
 
-			ptr = udm.create_object('dns/ptr_record', address = ptr_address, superordinate = reverse_zone, ptr_record = ptr_record)
-			
+			ptr = udm.create_object('dns/ptr_record', address=ptr_address, superordinate=reverse_zone, ptr_record=ptr_record)
+
 			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
-			
+
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			s = s[0:s.find('. ')]
 
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
-			
+
 			#IPv6
 			zoneName = ''
 
 			reverse_zone_properties.update({
-				'subnet': '2011:06f8:13dc:0002:19b7:d592:09dd', #create uts.random_ipV6()?
+				'subnet': '2011:06f8:13dc:0002:19b7:d592:09dd',  # create uts.random_ipV6()?
 				'nameserver': host,
 				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			})
 
-			reverse_zone = udm.create_object('dns/reverse_zone',position=pos,**reverse_zone_properties)
-			
+			reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
+
 			words = reverse_zone_properties['subnet'].split(':')
 			words.reverse()
 
@@ -99,14 +99,13 @@ if __name__ == '__main__':
 				t = s[::-1]
 				for c in t:
 					zoneName += c + '.'
-				
+
 			zoneName += 'ip6.arpa'
-			
+
 			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
-			
+
 			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
-			
+			s = s[0:s.find('. ')]
+
 			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
-

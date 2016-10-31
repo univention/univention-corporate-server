@@ -41,9 +41,9 @@ def main():
 			unknown_email = '%s@%s' % (uts.random_name(), maildomain)
 			udm.create_user(
 				set={
-					'password'           : password,
-					'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), maildomain),
-					'mailPrimaryAddress' : recipient_email,
+					'password': password,
+					'mailHomeServer': '%s.%s' % (ucr.get('hostname'), maildomain),
+					'mailPrimaryAddress': recipient_email,
 				}
 			)
 
