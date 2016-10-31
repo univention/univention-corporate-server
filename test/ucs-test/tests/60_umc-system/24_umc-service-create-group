@@ -33,8 +33,8 @@ class TestUMCGroupsCreation(TestUMCSystem):
                                "$options$": {"samba": True,
                                              "posix": True},
                                "$policies$": policynames},
-                               "options": {"container": "cn=groups,"
-                                                        + self.ldap_base,
+                               "options": {"container": "cn=groups," +
+                                                         self.ldap_base,
                                            "objectType": "groups/group"}}]
 
         try:
@@ -55,11 +55,11 @@ class TestUMCGroupsCreation(TestUMCSystem):
         by making a UMC 'udm/put' request with respective options.
         """
         options = [{"object": {"$policies$":
-                                {"policies/umc": ["cn=" + policyname
-                                                 + ",cn=UMC,cn=policies,"
-                                                 + self.ldap_base]},
-                                 "$dn$": "cn=" + groupname + ",cn=groups,"
-                                         + self.ldap_base},
+                                {"policies/umc": ["cn=" + policyname +
+                                                  ",cn=UMC,cn=policies," +
+                                                  self.ldap_base]},
+                                 "$dn$": "cn=" + groupname + ",cn=groups," +
+                                          self.ldap_base},
                                  "options": {}}]
         try:
             request_result = self.Connection.request('udm/put',
@@ -130,8 +130,8 @@ class TestUMCGroupsCreation(TestUMCSystem):
                 utils.fail("The group 'policies/umc' field for '%s' is empty "
                            "or not present after '%s' policy was applied "
                            "to group" % (test_groupname, policyname))
-            if not ('cn=' + policyname + ',cn=UMC,cn=policies,'
-                    + self.ldap_base in group_policies):
+            if not ('cn=' + policyname + ',cn=UMC,cn=policies,' +
+                     self.ldap_base in group_policies):
                 utils.fail("The policy '%s' is not in a group '%s' policies "
                            "'%s'" % (policyname,
                                      test_groupname,

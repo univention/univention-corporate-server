@@ -79,7 +79,7 @@ if __name__ == '__main__':
 				expectedLdap['sambaNTPassword'] = [smbpasswd.nthash(properties['password'].lower())]
 				expectedLdap['krb5PrincipalName'] = ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
-			if not role in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',
+			if role not in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',
 							'computers/domaincontroller_slave', 'computers/memberserver',
 							'computers/ipmanagedclient'):
 				properties['operatingSystem'] = uts.random_string()

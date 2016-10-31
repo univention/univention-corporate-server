@@ -63,8 +63,8 @@ class TestUMCExtendedAttributes(TestUMCSystem):
         'attribute_key' = 'new_value' and checks if the modification
         of the custom attribute was done correctly.
         """
-        dn = ("cn=" + attribute_name + ",cn=custom attributes,cn=univention,"
-              + self.ldap_base)
+        dn = ("cn=" + attribute_name + ",cn=custom attributes,cn=univention," +
+               self.ldap_base)
         options = [{"object": {attribute_key: new_value,
                                "$dn$": dn},
                     "options": None}]
@@ -152,8 +152,8 @@ class TestUMCExtendedAttributes(TestUMCSystem):
         options = {"objectType": "None",
                    "objectProperty": "None",
                    "objectPropertyValue": "",
-                   "container": "cn=custom attributes,cn=univention,"
-                                + self.ldap_base,
+                   "container": "cn=custom attributes,cn=univention," +
+                                 self.ldap_base,
                    "hidden": True}
         return self.make_query_request('udm/nav/object',
                                        options,
@@ -190,8 +190,8 @@ class TestUMCExtendedAttributes(TestUMCSystem):
                                "disableUDMWeb": False,
                                "$policies$": {}},
                     "options": {"container":
-                                    "cn=custom attributes,cn=univention,"
-                                    + self.ldap_base,
+                                    "cn=custom attributes,cn=univention," +
+                                     self.ldap_base,
                                 "objectType": "settings/extended_attribute",
                                 "objectTemplate": "None"}}]
         try:

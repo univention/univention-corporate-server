@@ -297,7 +297,8 @@ if __name__ == '__main__':
 	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError, ldap_cloud_connections
 	try:
 		if not options.clean and options.cache != '':
-			get_ldap_uris = lambda: ldap_uris()
+			def get_ldap_uris():
+				return ldap_uris()
 			uris = cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
 		else:
 			uris = ldap_uris()

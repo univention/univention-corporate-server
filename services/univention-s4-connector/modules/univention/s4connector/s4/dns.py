@@ -1411,7 +1411,8 @@ def ucs_zone_create(s4connector, object, dns_type):
 					zone['a'] = a
 					modify = True
 			if mx:
-				mapMX = lambda m: '%s %s' % (m[0], m[1])
+				def mapMX(m):
+					return '%s %s' % (m[0], m[1])
 				if set(map(mapMX, mx)) != set(map(mapMX, zone['mx'])):
 					zone['mx'] = mx
 					modify = True
