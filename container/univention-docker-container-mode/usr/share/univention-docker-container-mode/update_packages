@@ -30,5 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)"
+univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)" --disable-app-updates
 

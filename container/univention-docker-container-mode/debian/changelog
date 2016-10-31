@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.11-2) unstable; urgency=medium
+
+  * Bug #42760: Disable app updates when updating container packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 31 Oct 2016 11:58:33 +0100
+
 univention-docker-container-mode (1.0.11-1) unstable; urgency=low
 
   * run all scripts from /etc/univention/docker/init.d after starting

@@ -36,7 +36,7 @@ available=$(ucr get update/available)
 if [ "$available" != "yes" ]; then
 	exit 0
 fi
-upgrade=$(univention-upgrade --check)
+upgrade=$(univention-upgrade --check --disable-app-updates)
 release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)
 if [ -n "$release" ]; then
 	echo "release: $release"
