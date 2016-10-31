@@ -60,13 +60,14 @@ ucs_registerLDAPExtension "$@" --ucsversionstart 1.0-0 --ucsversionend %(current
 ucs_registerLDAPExtension "$@" --ucsversionstart %(nextversion)s --ucsversionend %(futureversion)s --acl /usr/share/%(package_name)s/%(acl_name_new)s || die
 joinscript_save_current_version
 exit 0
-''' % {'package_name': package_name,
+''' % {
+		'package_name': package_name,
 		'acl_name_current': acl_name_current,
 		'acl_name_new': acl_name_new,
 		'currentversion': currentversion,
 		'nextversion': nextversion,
 		'futureversion': futureversion,
-		}
+	}
 
 	acl_buffer_current = '''
 access to dn.base="%(container)s"

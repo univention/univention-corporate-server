@@ -56,15 +56,17 @@ def main():
 				domain = ucr.get('domainname')
 				basedn = ucr.get('ldap/base')
 				if dovecot:
-					univention.config_registry.handler_set(['mail/dovecot/mailbox/rename=yes',
-								'mail/dovecot/mailbox/delete=no',
-								'mail/dovecot/auth/cache_size=0'
+					univention.config_registry.handler_set([
+						'mail/dovecot/mailbox/rename=yes',
+						'mail/dovecot/mailbox/delete=no',
+						'mail/dovecot/auth/cache_size=0'
 					])
 					subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
 				else:
-					univention.config_registry.handler_set(['mail/cyrus/mailbox/rename=yes',
-								'mail/cyrus/mailbox/delete=no',
-								'mail/saslauthd/cache/timeout=0'
+					univention.config_registry.handler_set([
+						'mail/cyrus/mailbox/rename=yes',
+						'mail/cyrus/mailbox/delete=no',
+						'mail/saslauthd/cache/timeout=0'
 					])
 					subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 				host = '%s.%s' % (ucr.get('hostname'), domain)
