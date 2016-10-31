@@ -94,8 +94,7 @@ class Parser(object):
 		end = self._data.find(Parser.END)
 		if end < 0:
 			max_len = len(self._data) - start
-			raise SyntaxError('No matching end tag (tag: %s)' %
-							   self._data[start: min(20, max_len)])
+			raise SyntaxError('No matching end tag (tag: %s)' % self._data[start: min(20, max_len)])
 		name, attrs, closing = self.parse_token(self._data[start: end + len(Parser.END)])
 		self._data = self._data[end + len(Parser.END):]
 		if name == 'attribute':

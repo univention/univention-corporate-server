@@ -29,8 +29,7 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 		else:
 			time.sleep(1)
 	if should_be_delivered != delivered:
-		utils.fail('Mail sent with token = %r,\
-			 Delivered to the mail sink = %r' % (token, delivered))
+		utils.fail('Mail sent with token = %r, Delivered to the mail sink = %r' % (token, delivered))
 
 
 def wait_for_dns(hosts):

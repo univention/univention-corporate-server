@@ -112,10 +112,10 @@ class UMCConnection(object):
 		'''Sends a request and returns the data from the response. url
 		as in the XML file of that UMC module.
 		command may be anything that UMCP understands, especially:
-		 * command (default)
-		 * get (and url could be 'ucr' then)
-		 * set (and url would be '' and data could be {'locale':'de_DE'})
-		 * upload (url could be 'udm/license/import')
+		* command (default)
+		* get (and url could be 'ucr' then)
+		* set (and url would be '' and data could be {'locale':'de_DE'})
+		* upload (url could be 'udm/license/import')
 		'''
 		if data is None:
 			data = {}

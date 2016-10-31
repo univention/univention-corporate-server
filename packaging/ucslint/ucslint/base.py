@@ -277,8 +277,8 @@ class UPCFileTester(object):
 		regex: regular expression
 		msgid: msgid for UPCMessage
 		msg: message for UPCMessage
-			 if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
-			 they will get replaced by their corresponding value.
+			if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
+			they will get replaced by their corresponding value.
 		cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
 		cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
 

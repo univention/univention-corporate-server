@@ -47,18 +47,10 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 parser = OptionParser(usage='%%prog (%s) [options]' % '|'.join(OPERATIONS))
-parser.add_option('-u', '--user', action='store',
-				   dest='user', default='root',
-				   help='define the user who should get access [default: %default]')
-parser.add_option('-c', '--command', type='string', action='append',
-				   dest='commands', default=[],
-				   help='defines a list of UMC commands (or patterns)')
-parser.add_option('-f', '--flavor', type='string', action='store',
-				   dest='flavor', default='*',
-				   help='defines the flavor')
-parser.add_option('-H', '--host', type='string', action='store',
-				   dest='host', default=configRegistry['hostname'],
-				   help='on which host the commands are allowed [default: %default]')
+parser.add_option('-u', '--user', action='store', dest='user', default='root', help='define the user who should get access [default: %default]')
+parser.add_option('-c', '--command', type='string', action='append', dest='commands', default=[], help='defines a list of UMC commands (or patterns)')
+parser.add_option('-f', '--flavor', type='string', action='store', dest='flavor', default='*', help='defines the flavor')
+parser.add_option('-H', '--host', type='string', action='store', dest='host', default=configRegistry['hostname'], help='on which host the commands are allowed [default: %default]')
 
 (options, args) = parser.parse_args()
 

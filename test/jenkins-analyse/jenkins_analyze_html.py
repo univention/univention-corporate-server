@@ -226,8 +226,8 @@ def main():
 	desc = "console tool for analyzing jenkins builds"
 	parser = argparse.ArgumentParser(description=desc)
 	parser.add_argument('--url', '-u',
-		    help='the url of a jenkins matrix project. case sensitive.',
-		    required=True)
+		help='the url of a jenkins matrix project. case sensitive.',
+		required=True)
 	parser.add_argument(
 		'--output', '-o', help='output file.'
 	)

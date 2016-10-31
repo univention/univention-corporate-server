@@ -30,14 +30,15 @@ if __name__ == '__main__':
 		}
 
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
-		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
-											   reverse_zone_properties['contact'].replace('@', '.'),
+		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
+			reverse_zone_properties['nameserver'],
+			reverse_zone_properties['contact'].replace('@', '.'),
 			reverse_zone_properties['serial'],
 			reverse_zone_properties['refresh'],
 			reverse_zone_properties['retry'],
 			reverse_zone_properties['expire'],
-			reverse_zone_properties['ttl'])]
-		})
+			reverse_zone_properties['ttl']
+		)]})
 
 		# IPv6 case:
 		reverse_zone_properties.update({
@@ -47,11 +48,12 @@ if __name__ == '__main__':
 		})
 
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
-		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
-											   reverse_zone_properties['contact'].replace('@', '.'),
+		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
+			reverse_zone_properties['nameserver'],
+			reverse_zone_properties['contact'].replace('@', '.'),
 			reverse_zone_properties['serial'],
 			reverse_zone_properties['refresh'],
 			reverse_zone_properties['retry'],
 			reverse_zone_properties['expire'],
-			reverse_zone_properties['ttl'])]
-		})
+			reverse_zone_properties['ttl']
+		)]})

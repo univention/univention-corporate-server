@@ -216,7 +216,7 @@ def handler(dn, new, old, command):
 				univention.debug.ERROR,
 				'%s: failed to open/read pickle file: %s' % (name, str(e)))
 		try:
-		    os.remove(FN_CACHE)
+			os.remove(FN_CACHE)
 		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,

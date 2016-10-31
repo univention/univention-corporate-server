@@ -359,8 +359,7 @@ def create_json_file(po_file):
 		plural_start = re.search("plural\s*=\s*", plural_rules)
 		plural_end = re.search('plural\s*=.*;', plural_rules)
 
-		if nplurals_start is None or nplurals_end is None or \
-		   plural_start is None or plural_end is None:
+		if nplurals_start is None or nplurals_end is None or plural_start is None or plural_end is None:
 			raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
 
 		data["$nplurals$"] = plural_rules[nplurals_start.end():nplurals_end.end()]

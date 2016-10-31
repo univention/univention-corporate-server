@@ -98,12 +98,14 @@ if __name__ == '__main__':
 	else:
 		output_dir = os.path.join(DOC_OUTPUT_DIR)
 		for doc in arguments[1:]:
-			ret = subprocess.call([SPHINX_BUILD,
-									 '-b', options.output,
-									 '-a',
-									 '-E',
-									 os.path.join(DOC_SOURCE_DIR, doc),
-									 os.path.join(DOC_OUTPUT_DIR, doc)])
+			ret = subprocess.call([
+				SPHINX_BUILD,
+				'-b', options.output,
+				'-a',
+				'-E',
+				os.path.join(DOC_SOURCE_DIR, doc),
+				os.path.join(DOC_OUTPUT_DIR, doc)
+			])
 			if ret:
 				print >>sys.stderr, 'error: failed to build documentation %s' % doc
 			else:

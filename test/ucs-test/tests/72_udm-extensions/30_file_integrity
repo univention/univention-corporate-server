@@ -36,15 +36,17 @@ if __name__ == '__main__':
 			extension_filename = get_extension_filename(extension_type, extension_name)
 			extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-			dn = udm.create_object('settings/udm_%s' % extension_type,
-								   name=extension_name,
-								   data=base64.b64encode(bz2.compress(extension_buffer)),
-								   filename=extension_filename,
-								   packageversion=package_version,
-								   appidentifier=app_id,
-								   package=package_name,
-								   active='FALSE',
-								   position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'))
+			dn = udm.create_object(
+				'settings/udm_%s' % extension_type,
+				name=extension_name,
+				data=base64.b64encode(bz2.compress(extension_buffer)),
+				filename=extension_filename,
+				packageversion=package_version,
+				appidentifier=app_id,
+				package=package_name,
+				active='FALSE',
+				position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
+			)
 
 			# wait for replication before local filesystem is checked
 			wait_for_replication()

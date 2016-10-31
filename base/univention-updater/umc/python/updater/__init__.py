@@ -453,7 +453,7 @@ class Instance(Base):
 		>0 ...... ignore this many lines, return the rest of the file
 
 		*** NOTE *** As soon as we have looked for a running job at least once,
-					 we know the job key and can associate it here.
+					we know the job key and can associate it here.
 
 		TODO: honor a given 'job' argument
 		"""

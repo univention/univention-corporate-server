@@ -43,11 +43,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.name = '0010-Copyright'
 
 	def getMsgIds(self):
-		return {'0010-1': [uub.RESULT_WARN, 'failed to open file'],
-				 '0010-2': [uub.RESULT_ERROR, 'file contains no copyright text block'],
-				 '0010-3': [uub.RESULT_WARN, 'copyright is outdated'],
-				 '0010-4': [uub.RESULT_ERROR, 'cannot find copyright line containing year'],
-				 '0010-5': [uub.RESULT_ERROR, 'file debian/copyright is missing'],
+		return {
+			'0010-1': [uub.RESULT_WARN, 'failed to open file'],
+			'0010-2': [uub.RESULT_ERROR, 'file contains no copyright text block'],
+			'0010-3': [uub.RESULT_WARN, 'copyright is outdated'],
+			'0010-4': [uub.RESULT_ERROR, 'cannot find copyright line containing year'],
+			'0010-5': [uub.RESULT_ERROR, 'file debian/copyright is missing'],
           }
 
 	def postinit(self, path):

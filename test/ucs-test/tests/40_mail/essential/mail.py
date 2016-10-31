@@ -217,7 +217,7 @@ def get_maildir_filenames(maildir):
 
 	Example: get_maildir_filenames('/var/spool/dovecot/private/example.com/user1/Maildir')
 	['/var/spool/dovecot/private/example.com/user1/Maildir/cur/1435755414.M432893P22169.slave22b,S=1744,W=1783',
-	 '/var/spool/dovecot/private/example.com/user1/Maildir/new/1435734534.M432834534215.slave22b,S=2342,W=6545']
+	'/var/spool/dovecot/private/example.com/user1/Maildir/new/1435734534.M432834534215.slave22b,S=2342,W=6545']
 	"""
 	blacklist = ["maildirfolder", "maildirsize"]
 	result = []
@@ -388,7 +388,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 					searches only in the INBOX, if folder is specified too, the given folder
 					is checked.
 	timeout: integer: if the number of found mails is 0, the search is retried every second
-					  up to <timeout> attempts.
+					up to <timeout> attempts.
 	:return: number of found mails
 	"""
 	result = 0
@@ -700,13 +700,13 @@ def create_random_msgid():
 
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
-	       gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
-	       debuglevel=1, messageid=None, ssl=False):
+	gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
+	debuglevel=1, messageid=None, ssl=False):
 	"""
 	Send a mail to mailserver.
 	Arguments:
 	recipients: single recipient as string or a list of recipients
-	            (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
+				(e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
 	sender:	    [optional] mail address of sender (default: tarpit@example.com)
 	subject:    [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
 	msg:	    [optional] mail message; if msg is defined, idstring will be ignored!

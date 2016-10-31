@@ -664,7 +664,7 @@ class Bond(Device):
 		super(Bond, self).prepare_consistency()
 
 		if self.bond_mode is None:
-		    self.bond_mode = 0
+			self.bond_mode = 0
 
 		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address

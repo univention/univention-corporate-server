@@ -70,8 +70,7 @@ class Attributes:
 
 
 def moreGroupware(license):
-	return False, (license.compare(license.licenses[license.ACCOUNT],
-				       license.licenses[license.GROUPWARE]) != 1)
+	return False, (license.compare(license.licenses[license.ACCOUNT], license.licenses[license.GROUPWARE]) != 1)
 
 # Examples:
 #	'computers/managedclient': Attributes( UCS ),

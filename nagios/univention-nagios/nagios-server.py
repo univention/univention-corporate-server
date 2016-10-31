@@ -198,7 +198,7 @@ def createDefaultTimeperiod():
 
 def hostDeleted(new, old):
 	"""Checks if a host was enabled for Nagios services and has now been disabled or deleted.
-	   Returns True if deleted/deactivated and False if not"""
+	Returns True if deleted/deactivated and False if not"""
 
 	if not new:
 		# host object has been deleted
@@ -438,8 +438,7 @@ def handleService(dn, new, old):
 						fp.write('    check_command           check_nrpe_1arg!%s\n' % new['cn'][0])
 					else:
 						if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
-							fp.write('    check_command           %s!%s\n' % (new['univentionNagiosCheckCommand'][0],
-																			  new['univentionNagiosCheckArgs'][0]))
+							fp.write('    check_command           %s!%s\n' % (new['univentionNagiosCheckCommand'][0], new['univentionNagiosCheckArgs'][0]))
 						else:
 							fp.write('    check_command           %s\n' % new['univentionNagiosCheckCommand'][0])
 
@@ -456,8 +455,7 @@ def handleService(dn, new, old):
 
 					cg_filename = os.path.join(__contactgrpsdir, 'cg-%s.cfg' % host)
 					if not os.path.exists(cg_filename):
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
-											   'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
 
 						createContactGroup('cg-%s' % host, [__fallbackContact])
 						listener.setuid(0)

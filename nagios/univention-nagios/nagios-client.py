@@ -70,8 +70,7 @@ def readPluginConfig():
 					mcmdline = re.search('^\s+command_line\s+(.*?)\s*$', cmddef, re.MULTILINE)
 					if mcmdname and mcmdline:
 						__pluginconfig[mcmdname.group(1)] = mcmdline.group(1)
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
-											   'NAGIOS-CLIENT: read configline for plugin %s ==> %s' % (mcmdname.group(1), mcmdline.group(1)))
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: read configline for plugin %s ==> %s' % (mcmdname.group(1), mcmdline.group(1)))
 		finally:
 			listener.unsetuid()
 

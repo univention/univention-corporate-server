@@ -163,10 +163,8 @@ class Commands(object):
 					MODULE.error('The following partition is mounted without quota support: %s' % partition_name)
 					message = _('The following partition is mounted without quota support: %s') % partition_name
 			else:
-				MODULE.error('The following partition is '
-				             'currently not mounted: %s' % partition_name)
-				message = _('The following partition is currently '
-				            'not mounted: %s') % partition_name
+				MODULE.error('The following partition is currently not mounted: %s' % partition_name)
+				message = _('The following partition is currently not mounted: %s') % partition_name
 		else:
 			MODULE.error('No partition found (%s)' % partition_name)
 			message = _('No partition found (%s)') % partition_name

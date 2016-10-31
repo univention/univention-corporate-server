@@ -80,7 +80,7 @@ def cyrus_usermailbox_delete(old):
 						os.unlink(i)
 					os.rmdir(oldpath)
 		finally:
-		    listener.unsetuid()
+			listener.unsetuid()
 
 
 def cyrus_usermailbox_rename(old, new):
@@ -199,7 +199,7 @@ def handler(dn, new, old, command):
 			with open(FN_CACHE, 'r') as f:
 				old = cPickle.load(f)
 		except Exception as e:
-		    univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus: failed to open/read pickle file: %s' % str(e))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus: failed to open/read pickle file: %s' % str(e))
 		try:
 			os.remove(FN_CACHE)
 		except Exception as e:

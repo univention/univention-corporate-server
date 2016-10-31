@@ -198,8 +198,7 @@ class ConfigRegistryInfo(object):
 
 	def write_customized(self):
 		"""Persist the customized variable descriptions."""
-		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-								 ConfigRegistryInfo.CUSTOMIZED)
+		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, ConfigRegistryInfo.CUSTOMIZED)
 		self.__write_variables(filename)
 
 	def __write_variables(self, filename=None, package=None):
@@ -207,8 +206,7 @@ class ConfigRegistryInfo(object):
 		if filename:
 			pass
 		elif package:
-			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-									 package + ConfigRegistryInfo.FILE_SUFFIX)
+			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, package + ConfigRegistryInfo.FILE_SUFFIX)
 		else:
 			raise AttributeError("neither 'filename' nor 'package' is specified")
 		try:
@@ -232,8 +230,7 @@ class ConfigRegistryInfo(object):
 
 	def read_customized(self):
 		"""Read customized variable descriptions."""
-		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-								 ConfigRegistryInfo.CUSTOMIZED)
+		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, ConfigRegistryInfo.CUSTOMIZED)
 		self.read_variables(filename, override=True)
 
 	def read_variables(self, filename=None, package=None, override=False):
@@ -241,8 +238,7 @@ class ConfigRegistryInfo(object):
 		if filename:
 			pass
 		elif package:
-			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-									 package + ConfigRegistryInfo.FILE_SUFFIX)
+			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, package + ConfigRegistryInfo.FILE_SUFFIX)
 		else:
 			raise AttributeError("neither 'filename' nor 'package' is specified")
 		cfg = uit.UnicodeConfig()

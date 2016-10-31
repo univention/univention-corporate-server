@@ -101,10 +101,12 @@ class Firewall(object):
 
 			rule_props = matched_rule.groupdict()
 			try:
-				rule = Rule(rule_props[u'protocol'],
-				            parse_port(rule_props[u'port']),
-				            rule_props[u'address'],
-				            rule_props[u'package'])
+				rule = Rule(
+					rule_props[u'protocol'],
+					parse_port(rule_props[u'port']),
+					rule_props[u'address'],
+					rule_props[u'package']
+				)
 				# rule already exists?
 				if rule.identifier in rules:
 					rule = rules[rule.identifier]
@@ -179,11 +181,12 @@ class Firewall(object):
 		config_registry.load()
 
 		# set global firewall settings
-		bool_to_string = {True: u'true',
-		                  False: u'false', }
-		global_options = {u'security/packetfilter/defaultpolicy': self.default_policy,
-		                  u'security/packetfilter/disabled': bool_to_string[self.disabled],
-		                  u'security/packetfilter/use_packages': bool_to_string[self.use_packages], }
+		bool_to_string = {True: u'true', False: u'false', }
+		global_options = {
+			u'security/packetfilter/defaultpolicy': self.default_policy,
+			u'security/packetfilter/disabled': bool_to_string[self.disabled],
+			u'security/packetfilter/use_packages': bool_to_string[self.use_packages],
+		}
 		ucr.handler_set(global_options)
 
 		org_dict = {}

@@ -129,5 +129,5 @@ if prefix == 'user':
 	if os.path.exists(dst_sieve_path):
 		r = glob.glob('%s/*' % dst_sieve_path)
 		for f in r:  # probably unnecessary, as cyrus deletes the scripts
-	 		os.unlink(f)
+			os.unlink(f)
 		os.rmdir(dst_sieve_path)
