@@ -90,7 +90,7 @@ if __name__ == '__main__':
 			udm.modify_object('users/user', dn=user_dn, **userargs)
 			fail('Syntax is not in use')
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed, ex:
-			if not 'Wrong value given for ucs-test-syntax' in str(ex):
+			if 'Wrong value given for ucs-test-syntax' not in str(ex):
 				raise
 
 	wait_for_replication_and_postrun()

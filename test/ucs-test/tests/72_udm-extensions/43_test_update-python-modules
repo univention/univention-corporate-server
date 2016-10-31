@@ -66,7 +66,7 @@ if __name__ == '__main__':
 		udm.stop_cli_server()
 
 		output, stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
-		if not extension_name in output:
+		if extension_name not in output:
 			fail('ERROR: udm cli server has not been reloaded yet or module registration failed')
 
 		extension_dn = udm.create_object(extension_name, position=ucr.get('ldap/base'), name=object_name)

@@ -2416,7 +2416,7 @@ class s4(univention.s4connector.ucs):
 						(ldap.MOD_REPLACE, 'distinguishedName', compatible_modstring(object['dn']))
 					]
 					self.lo_s4.lo.modify_ext_s(compatible_modstring(result[0][0]), reanimate_modlist,
-						serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1),])
+						serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), ])
 					# and try the sync again
 					return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
 				except:

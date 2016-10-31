@@ -54,7 +54,8 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_', UcsRepoUrl({'_/server': 'https://hostname:80/'}, '_')).private()
         'http://hostname/'
         '''
-        ucrv = lambda key, default=None: ucr.get('%s/%s' % (prefix, key), default)
+        def ucrv(key, default=None):
+            return ucr.get('%s/%s' % (prefix, key), default)
 
         server = ucrv('server', '')
         url = urlsplit(server)

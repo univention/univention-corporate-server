@@ -35,7 +35,7 @@ def main():
 
 			result = get_ip_address('1.2.3.4', username, password)
 			print 'Result: %r' % result
-			if not addr2 in result:
+			if addr2 not in result:
 				utils.fail('UMC webserver is unable to determine correct UMCP client address (expected=%r result=%r)' % (addr2, result))
 
 			nethelper.remove_loop('1.2.3.4', addr2)

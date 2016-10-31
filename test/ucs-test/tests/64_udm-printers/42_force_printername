@@ -105,7 +105,7 @@ def test_run(ucr, test_ucr_value):
 		rename_share_and_check(udm, printer, expected_value)
 
 		### And check again after inverting the UCR setting:
-		if expected_value == False:
+		if not expected_value:
 			## This simulates the update case
 			keyval = "%s=%s" % (ucr_var, "yes")
 			univention.config_registry.handler_set([keyval.encode()])

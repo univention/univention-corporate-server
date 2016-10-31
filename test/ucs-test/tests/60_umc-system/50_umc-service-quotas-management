@@ -97,8 +97,7 @@ class TestUMCQuotasManagement(TestUMCSystem):
         Makes a query for 'quota/partitions' request.
         """
         for quota in self.make_query_request('quota/partitions'):
-            if ((quota['partitionDevice'] == self.partition_dev) and
-                (quota['mountPoint'] == self.test_mount_point)):
+            if ((quota['partitionDevice'] == self.partition_dev) and (quota['mountPoint'] == self.test_mount_point)):
                 return quota['inUse']
 
     def is_user_quota_active(self, username):
@@ -127,8 +126,8 @@ class TestUMCQuotasManagement(TestUMCSystem):
         """
         options = {"partitionDevice": self.partition_dev}
         try:
-            request_result = self.Connection.request('quota/partitions/'
-                                                     + command,
+            request_result = self.Connection.request('quota/partitions/' +
+                                                      command,
                                                      options)
             if not request_result:
                 utils.fail("Request 'quota/partitions/%s' with options '%s' "

@@ -79,8 +79,7 @@ class CheckLogFiles(object):
         Looks through the given previous and pre_previous lines to check if
         a 'failed.' message can be ignored. Returns True if so.
         """
-        if (definition.ignore_extra(previous_line) and
-            definition.ignore_extra(pre_previous_line)):
+        if (definition.ignore_extra(previous_line) and definition.ignore_extra(pre_previous_line)):
             return True
 
     def check_line(self, line, previous_line, pre_previous_line,

@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
 		ldap = uldap.getAdminConnection()
 		ldapFilter = '(&(cn=%s)(objectClass=univentionNetworkClass))' % networkName
-		if not network in ldap.searchDn(filter=ldapFilter):
+		if network not in ldap.searchDn(filter=ldapFilter):
 			print 'Test FAILED. Could not find created network "%s" in LDAP.' % network
 			sys.exit(1)
 

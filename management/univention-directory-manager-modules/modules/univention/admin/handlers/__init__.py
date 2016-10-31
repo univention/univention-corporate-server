@@ -814,7 +814,9 @@ class simpleLdap(base):
 
 	def _ldap_object_classes(self, ml):
 		m = univention.admin.modules.get(self.module)
-		lowerset = lambda vals: set(x.lower() for x in vals)
+
+		def lowerset(vals):
+			return set(x.lower() for x in vals)
 
 		ocs = lowerset(_MergedAttributes(self, ml).get_attribute('objectClass'))
 		unneeded_ocs = set()

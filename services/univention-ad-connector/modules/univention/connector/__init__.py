@@ -397,7 +397,6 @@ class property:
 		self.position_mapping = position_mapping
 
 
-
 class ucs:
 
 	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):

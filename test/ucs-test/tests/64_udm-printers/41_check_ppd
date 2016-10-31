@@ -36,9 +36,9 @@ if __name__ == '__main__':
 				printerFiles.append(file)
 
 	for printer in ldapPrinters:
-		if not printer in printerFiles:
+		if printer not in printerFiles:
 			utils.fail('No PPD file found for LDAP printer "%s"' % printer)
 
 	for printerFile in printerFiles:
-		if not printerFile in ldapPrinters:
+		if printerFile not in ldapPrinters:
 			utils.fail('No LDAP printer found for PPD file "%s"' % printerFile)
