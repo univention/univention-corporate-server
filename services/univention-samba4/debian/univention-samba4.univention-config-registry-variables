@@ -535,3 +535,9 @@ Description[de]=Ist diese Variable auf 'yes' gesetzt, vergibt Winbind bei Gruppe
 Description[en]=If this variable is set to 'yes', Winbind will assign POSIX IDs to groups of trusted domains. If the variable is unset, the Samba default applies.
 Type=int
 Categories=service-samba
+
+[samba4/kccsrv/samba_kcc]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, dann verwendet Samba/AD die neue Implementierung des KCC, die "sparse network replication" unterstützt. Ist die Variable nicht gesetzt, wird die ältere Implementierung verwendet (full mesh replication).
+Description[en]=If this variable is set to 'yes', Samba/AD uses the new implementation of the KCC, which supports sparse network replication. If the variable is unset, the the older full mesh replication is used.
+Type=bool
+Categories=service-samba
