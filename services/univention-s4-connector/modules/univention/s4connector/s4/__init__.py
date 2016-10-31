@@ -2410,15 +2410,15 @@ class s4(univention.s4connector.ucs):
 					if not result or len(result) > 1:  # the latter would indicate corruption
 						ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: no conflicting deleted object found")
 						raise  # unknown situation, raise original traceback
-					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: deleting conflicting object: %s" % result[0][0])
-					self.lo_s4.lo.delete_ext_s(compatible_modstring(result[0][0]), serverctrls=[LDAPControl(LDB_CONTROL_RELAX_OID, criticality=0)])
-					# and try the add again
-					try:
-						self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls)  # FIXME encoding
-					except:
-						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
-						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
-						raise
+					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: reanimating conflicting object: %s" % result[0][0])
+					reanimate_modlist = [
+						(ldap.MOD_DELETE, 'isDeleted', None),
+						(ldap.MOD_REPLACE, 'distinguishedName', compatible_modstring(object['dn']))
+					]
+					self.lo_s4.lo.modify_ext_s(compatible_modstring(result[0][0]), reanimate_modlist,
+						serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1),])
+					# and try the sync again
+					return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
 				except:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)

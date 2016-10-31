@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.2-1) unstable; urgency=medium
+
+  * Bug #42120: Fix re-animation of deleted user objects (UCS@school)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 31 Oct 2016 20:02:13 +0100
+
 univention-s4-connector (10.0.1-20) unstable; urgency=medium
 
   * Add indexes to enable efficient lookup
