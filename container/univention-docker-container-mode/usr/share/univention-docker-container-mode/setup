@@ -47,7 +47,7 @@ if [ -e /var/univention-join/joined ]; then
 	fi
 else
 	echo "Joining"
-	univention-join -dcaccount "$username" -dcpwd "$password_file" -skipIpMac -skipAdMemberMode
+	univention-join -dcaccount "$username" -dcpwd "$password_file" -skipIpMac -skipAdMemberMode -disableVersionCheck
 	if [ "$?" -ne 0 ]; then
 		die "Something went wrong while joining the system"
 	fi
