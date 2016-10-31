@@ -82,7 +82,7 @@ class Commands(object):
 
 	def cups_printer_disable(self, object):
 		cmd = '/usr/bin/univention-cups-disable %s' % \
-			  ' '.join(object.options['printers'])
+			' '.join(object.options['printers'])
 		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd)
 		proc = notifier.popen.Shell(cmd, stdout=False)
 		cb = notifier.Callback(self._cups_printer_disable_return, object)
@@ -147,10 +147,10 @@ class Commands(object):
 		ud.debug(ud.ADMIN, ud.INFO, "cups_quota_user_set: userlist=%s" % str(userlist))
 		pykota._pykota_set_quota(notifier.Callback(self._cups_quota_user_set_return, object),
 								  printers=[object.options['printer']],
-								  userlist=userlist,
-								  softlimit=object.options['softlimit'],
-								  hardlimit=object.options['hardlimit'],
-								   add=True)
+			userlist=userlist,
+			softlimit=object.options['softlimit'],
+			hardlimit=object.options['hardlimit'],
+			add=True)
 
 	def _cups_quota_user_set_return(self, pid, status, result, object):
 		if not status:
@@ -164,8 +164,8 @@ class Commands(object):
 		ud.debug(ud.ADMIN, ud.INFO, "cups_quota_user_reset: %s" % str(object.options))
 		pykota._pykota_set_quota(notifier.Callback(self._cups_quota_user_reset_return, object),
 									printers=[object.options['printer']],
-									userlist=object.options['user'],
-									reset=True)
+			userlist=object.options['user'],
+			reset=True)
 
 	def _cups_quota_user_reset_return(self, pid, status, result, object):
 		if not status:

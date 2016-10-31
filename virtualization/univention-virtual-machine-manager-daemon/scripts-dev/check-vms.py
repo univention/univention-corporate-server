@@ -124,8 +124,8 @@ class Resource(object):
         """Print dot graph."""
         fmt = ['label="%(label)s"', 'color=%(color)s']
         data = {
-                'id': Dotter.key2dot(self.filename),
-                'label': label or self.__str__(),
+            'id': Dotter.key2dot(self.filename),
+            'label': label or self.__str__(),
         }
         if shape:
             fmt.append('shape=%(shape)s')
@@ -164,12 +164,12 @@ class Resource(object):
 
     def __repr__(self):
         return '%s(filename=%r valid=%r used=%r dependencies=%r exists=%r' % (
-                self.__class__.__name__,
-                self.filename,
-                self.valid,
-                self.used,
-                self.dependencies,
-                self.exists,
+            self.__class__.__name__,
+            self.filename,
+            self.valid,
+            self.used,
+            self.dependencies,
+            self.exists,
         )
 
 
@@ -242,12 +242,12 @@ class VirtualMachine(Resource):
 
     def __repr__(self):
         return '%s(name=%r, valid=%r, used=%r, dependencies=%r, uuid=%r' % (
-                self.__class__.__name__,
-                self.name,
-                self.valid,
-                self.used,
-                self.dependencies,
-                self.uuid,
+            self.__class__.__name__,
+            self.name,
+            self.valid,
+            self.used,
+            self.dependencies,
+            self.uuid,
         )
 
 
@@ -384,13 +384,13 @@ class SnapShot(Resource):
 
     def __repr__(self):
         return '%s(vm=%r name=%r valid=%r used=%r dependencies=%r state=%r' % (
-                self.__class__.__name__,
-                self.virtual_machine.name,
-                self.name,
-                self.valid,
-                self.used,
-                self.dependencies,
-                self.state,
+            self.__class__.__name__,
+            self.virtual_machine.name,
+            self.name,
+            self.valid,
+            self.used,
+            self.dependencies,
+            self.state,
         )
 
 
@@ -543,12 +543,12 @@ class StorageVolume(Resource):
 
     def __repr__(self):
         return '%s(filename=%r valid=%r used=%r dependencies=%r format=%r' % (
-                self.__class__.__name__,
-                self.filename,
-                self.valid,
-                self.used,
-                self.dependencies,
-                self.target_format_type,
+            self.__class__.__name__,
+            self.filename,
+            self.valid,
+            self.used,
+            self.dependencies,
+            self.target_format_type,
         )
 
 TEMP_POOL = """

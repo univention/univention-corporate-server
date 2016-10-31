@@ -172,15 +172,15 @@ class object(simpleLdap):
 	def _ldap_pre_create(self):
 		"""Create DN for new UVMM Cloud Connection."""
 		self.dn = '%s=%s,%s' % (
-				mapping.mapName('name'),
-				mapping.mapValue('name', self.info['name']),
-				self.position.getDn()
+			mapping.mapName('name'),
+			mapping.mapValue('name', self.info['name']),
+			self.position.getDn()
 		)
 
 	def _ldap_addlist(self):
 		"""Add LDAP objectClass for UVMM Cloud Connection."""
 		return [
-				('objectClass', ['univentionVirtualMachineCloudConnection'])
+			('objectClass', ['univentionVirtualMachineCloudConnection'])
 		]
 
 
@@ -189,7 +189,7 @@ def lookup_filter(filter_s=None, lo=None):
 	Return LDAP search filter for UVMM Cloud Connection entries.
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
-				udm_filter.expression('objectClass', 'univentionVirtualMachineCloudConnection'),
+		udm_filter.expression('objectClass', 'univentionVirtualMachineCloudConnection'),
 	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)

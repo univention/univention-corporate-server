@@ -174,12 +174,32 @@ def pattern_replace(pattern, object):
 class property:
 	UMLAUTS = {'ä': 'ae', 'Ä': 'Ae', 'ö': 'oe', 'Ö': 'Oe', 'ü': 'ue', 'Ü': 'Ue', 'ß': 'ss', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE', 'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I', 'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O', 'Õ': 'O', 'Ö': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U', 'à': 'a', 'â': 'a', 'á': 'a', 'ã': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ý': 'y', 'ÿ': 'y', 'Ĉ': 'C', 'ĉ': 'c'}
 
-	def __init__(self, short_description='', long_description='', syntax=None,
-			module_search=None, multivalue=False, one_only=False, parent=None, options=[],
-			license=[], required=False, may_change=True, identifies=False, unique=False, default=None,
-			dontsearch=False, show_in_lists=False, editable=True, configObjectPosition=None,
-			configAttributeName=None, include_in_default_search=False, nonempty_is_default=False,
-			readonly_when_synced=False, size=None):
+	def __init__(
+		self,
+		short_description='',
+		long_description='',
+		syntax=None,
+		module_search=None,
+		multivalue=False,
+		one_only=False,
+		parent=None,
+		options=[],
+		license=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		unique=False,
+		default=None,
+		dontsearch=False,
+		show_in_lists=False,
+		editable=True,
+		configObjectPosition=None,
+		configAttributeName=None,
+		include_in_default_search=False,
+		nonempty_is_default=False,
+		readonly_when_synced=False,
+		size=None):
+
 		self.short_description = short_description
 		self.long_description = long_description
 		if isinstance(syntax, types.ClassType):

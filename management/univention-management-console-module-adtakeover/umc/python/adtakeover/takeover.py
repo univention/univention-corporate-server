@@ -587,11 +587,13 @@ class UCS_License_detection():
 			bindpw = pwfile.readline().strip()
 
 		try:
-			lo = univention.admin.uldap.access(host=self.ucr['ldap/master'],
-							port=int(self.ucr.get('ldap/master/port', '7389')),
-							base=self.ucr['ldap/base'],
-							binddn=binddn,
-							bindpw=bindpw)
+			lo = univention.admin.uldap.access(
+				host=self.ucr['ldap/master'],
+				port=int(self.ucr.get('ldap/master/port', '7389')),
+				base=self.ucr['ldap/base'],
+				binddn=binddn,
+				bindpw=bindpw
+			)
 		except uexceptions.authFail:
 			raise LicenseInsufficient(_("Internal Error: License check failed."))
 
@@ -618,10 +620,10 @@ class UCS_License_detection():
 			if self._license.compare(sum_objs, max_objs) > 0:
 				license_sufficient = False
 				error_msg = _("Number of %(object_name)s after takeover would be %(sum)s. This would exceed the number of licensed objects (%(max)s).") % {
-							'object_name': object_displayname,
-							'sum': sum_objs,
-							'max': max_objs,
-						}
+					'object_name': object_displayname,
+					'sum': sum_objs,
+					'max': max_objs,
+				}
 				log.warn(error_msg)
 
 		if not license_sufficient:

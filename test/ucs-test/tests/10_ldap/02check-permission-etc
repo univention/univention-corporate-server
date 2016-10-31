@@ -29,7 +29,7 @@ def main():
 		("/etc/ldap.secret", "DC Backup Hosts"),
 		("/etc/ldap-backup.secret", "DC Backup Hosts"),
 		("/etc/slave-join.secret", "Slave Join"),
-		]  # filepaths and groupnames to check
+	]  # filepaths and groupnames to check
 	shouldowner = "root"
 
 	ucr = ConfigRegistry()

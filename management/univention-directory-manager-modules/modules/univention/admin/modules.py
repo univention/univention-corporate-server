@@ -209,11 +209,11 @@ def update_extended_options(lo, module, position):
 		if not hasattr(module, 'options'):
 			module.options = {}
 		module.options[oname] = univention.admin.option(
-				short_description=shortdesc,
-				long_description=longdesc,
-				default=default,
-				editable=editable,
-				objectClasses=classes)
+			short_description=shortdesc,
+			long_description=longdesc,
+			default=default,
+			editable=editable,
+			objectClasses=classes)
 
 
 class EA_Layout(dict):

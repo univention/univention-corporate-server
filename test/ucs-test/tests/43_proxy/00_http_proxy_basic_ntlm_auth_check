@@ -57,7 +57,7 @@ def printHeader(state, passwd, expect_wrong_password):
 	print '-' * 40
 	print '(Basic, NTLM) = %s' % (state,)
 	print 'Password used: %s, expect_wrong_password: %s' % (
-			passwd, expect_wrong_password)
+		passwd, expect_wrong_password)
 
 
 def main():

@@ -65,7 +65,7 @@ exit 0
 				'univentionObjectType': ['settings/udm_%s' % extension_type],
 				'univentionOwnedByPackageVersion': [package_version],
 				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer[extension_type])],
-				})
+			})
 
 	finally:
 		print 'Removing UDM extension from LDAP'

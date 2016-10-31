@@ -32,13 +32,13 @@ def renew_root_certificate():
 	caCert = os.path.join(SSLDIR, 'ucsCA', 'CAcert.pem')
 	newCACert = os.path.join(SSLDIR, 'ucsCA', 'NewCAcert.pem')
 	cmd = [
-			'openssl', 'x509',
-			'-in', caCert,
-			'-out', newCACert,
-			'-days', '1000',
-			'-passin', 'file:/%s' % os.path.join(SSLDIR, 'password'),
-			'-signkey', os.path.join(SSLDIR, 'ucsCA', 'private', 'CAkey.pem')
-			]
+		'openssl', 'x509',
+		'-in', caCert,
+		'-out', newCACert,
+		'-days', '1000',
+		'-passin', 'file:/%s' % os.path.join(SSLDIR, 'password'),
+		'-signkey', os.path.join(SSLDIR, 'ucsCA', 'private', 'CAkey.pem')
+	]
 	print ' > %r' % ' '.join(cmd)
 	subprocess.call(cmd)
 	os.rename(newCACert, caCert)

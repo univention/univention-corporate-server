@@ -37,19 +37,19 @@ class SimpleCurl(object):
 	"""
 
 	def __init__(
-			self,
-			proxy,
-			username=None,
-			password=None,
-			bFollowLocation=1,
-			maxReDirs=5,
-			connectTimout=10,
-			timeOut=10,
-			port=3128,
-			auth=pycurl.HTTPAUTH_BASIC,
-			cookie=None,
-			user_agent=None,
-			):
+		self,
+		proxy,
+		username=None,
+		password=None,
+		bFollowLocation=1,
+		maxReDirs=5,
+		connectTimout=10,
+		timeOut=10,
+		port=3128,
+		auth=pycurl.HTTPAUTH_BASIC,
+		cookie=None,
+		user_agent=None,
+	):
 			# Perform basic authentication by default
 		self.curl = pycurl.Curl()
 		self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation)
@@ -63,8 +63,8 @@ class SimpleCurl(object):
 			account = utils.UCSTestDomainAdminCredentials()
 			self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
 				username or account.username,
-				 password or account.bindpw,
-				 )
+				password or account.bindpw,
+			)
 			)
 		if user_agent:
 			self.curl.setopt(pycurl.USERAGENT, user_agent)

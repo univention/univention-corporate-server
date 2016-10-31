@@ -186,24 +186,24 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test merged items."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-				sorted(ucr.items()),
-				sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+			sorted(ucr.items()),
+			sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
 		)
 
 	def test_keys(self):
 		"""Test merged keys."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-				sorted(ucr.keys()),
-				sorted(['foo', 'bar', 'baz'])
+			sorted(ucr.keys()),
+			sorted(['foo', 'bar', 'baz'])
 		)
 
 	def test_values(self):
 		"""Test merged values."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-				sorted(ucr.values()),
-				sorted(['FORCED', 'FORCED', 'NORMAL'])
+			sorted(ucr.values()),
+			sorted(['FORCED', 'FORCED', 'NORMAL'])
 		)
 
 	def test_is_true_unset(self):

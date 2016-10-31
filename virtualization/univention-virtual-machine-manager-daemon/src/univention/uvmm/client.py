@@ -37,11 +37,11 @@ from helpers import TranslatableException, FQDN, N_ as _
 import univention.config_registry as ucr
 
 __all__ = [
-		'ClientError',
-		'UVMM_ClientSocket',
-		'UVMM_ClientUnixSocket',
-		'uvmm_connect',
-		'uvmm_cmd',
+	'ClientError',
+	'UVMM_ClientSocket',
+	'UVMM_ClientUnixSocket',
+	'uvmm_connect',
+	'uvmm_cmd',
 ]
 
 

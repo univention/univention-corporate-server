@@ -36,14 +36,14 @@ def main():
 			'%s.t.o.c@%s' % (uts.random_string(), domain),
 			'un_sc%s@%s' % (uts.random_string(), domain),
 			'1fo%so2bar3@%s' % (uts.random_string(), domain)
-			]
+		]
 		for mail in mails:
 			userdn, username = udm.create_user(
-					set={
-						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-						'mailPrimaryAddress': mail,
-						}
-					)
+				set={
+				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+				'mailPrimaryAddress': mail,
+			}
+			)
 			users.append(username)
 			mailsToTest.extend([mail, mail.upper(), mail.lower()])
 		print mailsToTest

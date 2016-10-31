@@ -148,9 +148,9 @@ class object(simpleLdap):
 		Populate object with default value before LDAP creation.
 		"""
 		self.dn = '%s=%s,%s' % (
-				mapping.mapName('uuid'),
-				mapping.mapValue('uuid', self.info['uuid']),
-				self.position.getDn()
+			mapping.mapName('uuid'),
+			mapping.mapValue('uuid', self.info['uuid']),
+			self.position.getDn()
 		)
 
 	def _ldap_addlist(self):
@@ -158,7 +158,7 @@ class object(simpleLdap):
 		Add additional attributes before LDAP creation.
 		"""
 		return [
-				('objectClass', ['univentionVirtualMachine'])
+			('objectClass', ['univentionVirtualMachine'])
 		]
 
 
@@ -167,7 +167,7 @@ def lookup_filter(filter_s=None, lo=None):
 	Return LDAP search filter for UVMM VM info entries.
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
-				udm_filter.expression('objectClass', 'univentionVirtualMachine'),
+		udm_filter.expression('objectClass', 'univentionVirtualMachine'),
 	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)

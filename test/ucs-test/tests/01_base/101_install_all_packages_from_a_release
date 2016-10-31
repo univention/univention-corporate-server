@@ -14,10 +14,10 @@ def run_command(cmd):
 	"""Runs cmd command in terminal"""
 	print ' ** %r' % cmd
 	popen_obj = subprocess.Popen(
-			cmd,
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE
-			)
+		cmd,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.PIPE
+	)
 	out, err = popen_obj.communicate()
 	ret = popen_obj.returncode
 	if ret != 0:
@@ -44,9 +44,9 @@ def main():
 		for filename in files:
 			with open(filename) as f:
 				pkgs_list = re.findall(
-						re.compile(r'Package: (.*)\n'),
-						f.read()
-						)
+					re.compile(r'Package: (.*)\n'),
+					f.read()
+				)
 				for pkg in pkgs_list:
 					if test_install(pkg):
 						broken_pkgs.append(pkg)

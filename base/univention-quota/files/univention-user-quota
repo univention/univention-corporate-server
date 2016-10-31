@@ -81,13 +81,13 @@ def get_shares():
 		dn, attrs, policy_result = cPickle.load(f)
 		f.close()
 		shares[attrs['univentionSharePath'][0]] = {
-				'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
-				'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
-				'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
-				'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
-				'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
-				'mountpoint': get_mountpoint_from_share_path(attrs['univentionSharePath'][0])
-			}
+			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
+			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
+			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
+			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
+			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
+			'mountpoint': get_mountpoint_from_share_path(attrs['univentionSharePath'][0])
+		}
 
 	return shares
 
@@ -126,12 +126,12 @@ def get_mountpoints_with_quota(user, shares):
 								initialValue = True
 							# Now the current quota values are known
 							_mountpoints[current_mountpoint] = {
-									'spaceSoftLimit': quota_values[2],
-									'spaceHardLimit': quota_values[3],
-									'inodeSoftLimit': quota_values[6],
-									'inodeHardLimit': quota_values[7],
-									'updatequota': initialValue
-											}
+								'spaceSoftLimit': quota_values[2],
+								'spaceHardLimit': quota_values[3],
+								'inodeSoftLimit': quota_values[6],
+								'inodeHardLimit': quota_values[7],
+								'updatequota': initialValue
+							}
 
 		# The mountpoint will not be in _mountpoints if no quota is activated for it
 		# Continue with next share definition

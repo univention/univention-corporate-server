@@ -33,15 +33,15 @@ def main():
 
 			# to local address
 			for port, tls, ssl, failure_expected in (
-					(25, False, False, True),
-					(25, True, False, True),
-					(25, False, True, True),
+				(25, False, False, True),
+				(25, True, False, True),
+				(25, False, True, True),
 #					(465, False, False, True),  # disabled because non-SSL connection will wait data from server and
 #					(465, True, False, True),   # postfix' SSL port will wait for data from client ==> deadlock
-					(465, False, True, False),
-					(587, False, False, True),
-					(587, True, False, False),
-					(587, False, True, True),
+				(465, False, True, False),
+				(587, False, False, True),
+				(587, True, False, False),
+				(587, False, True, True),
 			):
 				try:
 					result = send_mail(sender=recipient_email, recipients=['noreply@univention.de'], port=port, tls=tls, ssl=ssl, username=recipient_email, password='univention')

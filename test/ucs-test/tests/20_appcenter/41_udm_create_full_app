@@ -67,37 +67,37 @@ if __name__ == '__main__':
 				server=server,
 			)
 		utils.verify_ldap_object(app, {
-							'univentionAppName': [name],
-							'univentionAppID': [id],
-							'univentionAppVersion': [version],
-							'univentionAppDescription': shortDescription,
-							'univentionAppLongDescription': longDescription,
-							'univentionAppVendor': [vendor],
-							'univentionAppContact': [contact],
-							'univentionAppMaintainer': [maintainer],
-							'univentionAppWebsite': website,
-							'univentionAppWebsiteVendor': websiteVendor,
-							'univentionAppWebsiteMaintainer': websiteMaintainer,
-							'univentionAppIcon': [icon],
-							'univentionAppCategory': [category],
-							'univentionAppWebInterface': [webInterface],
-							'univentionAppWebInterfaceName': [webInterfaceName],
-							'univentionAppConflictingApps': conflictingApps,
-							'univentionAppConflictingSystemPackages': conflictingSystemPackages,
-							'univentionAppDefaultPackages': defaultPackages,
-							'univentionAppDefaultPackagesMaster': defaultPackagesMaster,
-							'univentionAppUMCModuleName': [umcModuleName],
-							'univentionAppUMCModuleFlavor': [umcModuleFlavor],
-							'univentionAppServerRole': serverRole,
-							'univentionAppInstalledOnServer': server,
+			'univentionAppName': [name],
+			'univentionAppID': [id],
+			'univentionAppVersion': [version],
+			'univentionAppDescription': shortDescription,
+			'univentionAppLongDescription': longDescription,
+			'univentionAppVendor': [vendor],
+			'univentionAppContact': [contact],
+			'univentionAppMaintainer': [maintainer],
+			'univentionAppWebsite': website,
+			'univentionAppWebsiteVendor': websiteVendor,
+			'univentionAppWebsiteMaintainer': websiteMaintainer,
+			'univentionAppIcon': [icon],
+			'univentionAppCategory': [category],
+			'univentionAppWebInterface': [webInterface],
+			'univentionAppWebInterfaceName': [webInterfaceName],
+			'univentionAppConflictingApps': conflictingApps,
+			'univentionAppConflictingSystemPackages': conflictingSystemPackages,
+			'univentionAppDefaultPackages': defaultPackages,
+			'univentionAppDefaultPackagesMaster': defaultPackagesMaster,
+			'univentionAppUMCModuleName': [umcModuleName],
+			'univentionAppUMCModuleFlavor': [umcModuleFlavor],
+			'univentionAppServerRole': serverRole,
+			'univentionAppInstalledOnServer': server,
 
-						})
+		})
 
 		udm.remove_object('appcenter/app', dn=app)
 		try:
 			utils.verify_ldap_object(app, {
-								'univentionAppName': [name]
-							})
+				'univentionAppName': [name]
+			})
 		except utils.LDAPObjectNotFound:
 			pass
 		else:

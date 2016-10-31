@@ -832,7 +832,7 @@ def check_sending_mail(
 	tls=True,
 	allowed=True,
 	local=True
-	):
+):
 	token = str(time.time())
 	try:
 		ret_code = send_mail(

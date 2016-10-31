@@ -118,9 +118,9 @@ class TestLocalizedDictionary(unittest.TestCase):
 	def test_normalize(self):
 		"""normalize()."""
 		reference = {
-				'foo[fr]': 'bar',
-				'foo[en]': 'baz',
-				'foo': 'bam',
+			'foo[fr]': 'bar',
+			'foo[en]': 'baz',
+			'foo': 'bam',
 		}
 		for key, value in reference.items():
 			self.obj[key] = value
@@ -130,8 +130,8 @@ class TestLocalizedDictionary(unittest.TestCase):
 	def test_get_dict(self):
 		"""get_dict()."""
 		reference = {
-				'foo[fr]': 'bar',
-				'foo[en]': 'baz',
+			'foo[fr]': 'bar',
+			'foo[en]': 'baz',
 		}
 		for key, value in reference.items():
 			self.obj[key] = value

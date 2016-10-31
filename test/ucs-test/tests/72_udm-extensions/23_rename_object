@@ -44,13 +44,13 @@ if __name__ == '__main__':
 
 			# check object
 			verify_ldap_object(dn, {
-					'cn': [extension_name],
-					'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
-					'univentionOwnedByPackage': [package_name],
-					'univentionObjectType': ['settings/udm_%s' % extension_type],
-					'univentionOwnedByPackageVersion': [package_version],
-					'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
-					})
+				'cn': [extension_name],
+				'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
+				'univentionOwnedByPackage': [package_name],
+				'univentionObjectType': ['settings/udm_%s' % extension_type],
+				'univentionOwnedByPackageVersion': [package_version],
+				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			})
 
 			# check if registered file has been replicated to local system
 			target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)

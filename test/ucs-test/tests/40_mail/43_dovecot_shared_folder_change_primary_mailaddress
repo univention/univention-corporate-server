@@ -59,7 +59,7 @@ def main():
 													(1, 'no', 'yes'),
 													(2, 'yes', 'no'),
 													(3, 'yes', 'yes'),
-												]:
+				]:
 					old_address = new_address
 					new_address = random_email()
 

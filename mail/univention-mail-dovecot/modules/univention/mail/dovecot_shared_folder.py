@@ -370,8 +370,8 @@ class DovecotSharedFolderListener(DovecotListener):
 					self.listener.unsetuid()
 			emails_quota = ["%s@%s:%s" % (pf["name"] or pf.dn.split("@")[0].split("=")[1],
 						pf["mailDomain"],
-						pf.get("univentionMailUserQuota", 0) or pf.get("cyrus-userquota", 0))
-						for pf in public_folders]
+				pf.get("univentionMailUserQuota", 0) or pf.get("cyrus-userquota", 0))
+				for pf in public_folders]
 		try:
 			self.listener.setuid(0)
 			handler_set(["mail/dovecot/internal/sharedfolders=%s" % " ".join(emails_quota)])

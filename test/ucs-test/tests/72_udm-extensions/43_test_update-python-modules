@@ -48,15 +48,15 @@ if __name__ == '__main__':
 		udm.stop_cli_server()
 
 		verify_ldap_object(dn, {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
-				'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 
-				})
+		})
 
 		p1 = subprocess.Popen(["update-python-modules", "-p"], stderr=subprocess.PIPE)
 		(so, se) = p1.communicate()

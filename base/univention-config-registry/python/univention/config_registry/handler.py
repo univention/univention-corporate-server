@@ -145,9 +145,9 @@ def run_module(modpath, arg, ucr, changes):
 	"""loads the python module that MUST be located in 'module_dir' or any
 	subdirectory."""
 	arg2meth = {
-			'generate': lambda obj: getattr(obj, 'handler'),
-			'preinst': lambda obj: getattr(obj, 'preinst'),
-			'postinst': lambda obj: getattr(obj, 'postinst'),
+		'generate': lambda obj: getattr(obj, 'handler'),
+		'preinst': lambda obj: getattr(obj, 'preinst'),
+		'postinst': lambda obj: getattr(obj, 'postinst'),
 	}
 	# temporarily prepend MODULE_DIR to load path
 	sys.path.insert(0, MODULE_DIR)
@@ -866,7 +866,7 @@ class ConfigHandlers:
 				handler = None
 				if _filelist:
 					files = section.get('File') or \
-							section.get('Multifile') or ()
+						section.get('Multifile') or ()
 					for filename in files:
 						if not os.path.isabs(filename):
 							filename = '/%s' % filename

@@ -39,13 +39,13 @@ update add %(test_fqdn)s. %(ttl)s IN SRV %(location)s
 ; show
 send
 quit''' % {
-			"hostname": hostname,
-			"domainname": domainname,
-			"zonename": s4_zonename,
-			"test_fqdn": test_fqdn,
-			"ttl": 1200,
-			"location": location,
-		}
+		"hostname": hostname,
+		"domainname": domainname,
+		"zonename": s4_zonename,
+		"test_fqdn": test_fqdn,
+		"ttl": 1200,
+		"location": location,
+	}
 
 	dnstests.nsupdate(nsupdate_add_request)
 
@@ -64,13 +64,13 @@ update delete %(test_fqdn)s. SRV
 ; show
 send
 quit''' % {
-			"hostname": hostname,
-			"domainname": domainname,
-			"zonename": s4_zonename,
-			"test_fqdn": test_fqdn,
-			"ttl": 1200,
-			"location": location,
-		}
+		"hostname": hostname,
+		"domainname": domainname,
+		"zonename": s4_zonename,
+		"test_fqdn": test_fqdn,
+		"ttl": 1200,
+		"location": location,
+	}
 
 	dnstests.nsupdate(nsupdate_del_request)
 	dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False)

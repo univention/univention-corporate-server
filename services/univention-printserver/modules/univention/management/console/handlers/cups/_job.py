@@ -49,7 +49,7 @@ class Commands(object):
 				  object.options)
 		if object.options.get('printer'):
 			cmd = '/usr/bin/cancel -U %s\$ %s %s' % \
-				  (umc.registry['hostname'], ' '.join(object.options['jobs']),
+				(umc.registry['hostname'], ' '.join(object.options['jobs']),
 					object.options['printer'])
 			ud.debug(ud.ADMIN, ud.INFO, 'CUPS.job_cancel: command: %s' % cmd)
 			proc = notifier.popen.Shell(cmd, stdout=False)

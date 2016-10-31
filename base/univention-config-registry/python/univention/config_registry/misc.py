@@ -55,13 +55,13 @@ def replace_umlaut(line):
 	return replace_dict(line,
 			replace_umlaut.UMLAUTS)  # pylint: disable-msg=E1101
 replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
-		u'Ä': 'Ae',
-		u'ä': 'ae',
-		u'Ö': 'Oe',
-		u'ö': 'oe',
-		u'Ü': 'Ue',
-		u'ü': 'ue',
-		u'ß': 'ss',
+	u'Ä': 'Ae',
+	u'ä': 'ae',
+	u'Ö': 'Oe',
+	u'ö': 'oe',
+	u'Ü': 'Ue',
+	u'ü': 'ue',
+	u'ß': 'ss',
 }
 
 
@@ -79,7 +79,7 @@ def key_shell_escape(line):
 			new_line.append('_')
 	return ''.join(new_line)
 key_shell_escape.VALID_CHARS = (  # pylint: disable-msg=W0612
-		string.ascii_letters + string.digits + '_')
+	string.ascii_letters + string.digits + '_')
 
 
 def validate_key(key, out=sys.stderr):

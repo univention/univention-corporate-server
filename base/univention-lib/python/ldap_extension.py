@@ -49,9 +49,9 @@ class UniventionLDAPExtension(object):
 	@classmethod
 	def create_base_container(cls, ucr, udm_passthrough_options):
 		cmd = ["univention-directory-manager", "container/cn", "create"] + udm_passthrough_options + [
-				"--ignore_exists",
-				"--set", "name=%s" % cls.target_container_name,
-				"--position", "cn=univention,%s" % ucr['ldap/base']
+			"--ignore_exists",
+			"--set", "name=%s" % cls.target_container_name,
+			"--position", "cn=univention,%s" % ucr['ldap/base']
 		]
 		p = subprocess.Popen(cmd)
 		p.wait()
@@ -87,7 +87,7 @@ class UniventionLDAPExtension(object):
 
 	def udm_find_object(self):
 		cmd = ["univention-directory-manager", self.udm_module_name, "list"] + self.udm_passthrough_options + [
-				"--filter", "name=%s" % self.objectname,
+			"--filter", "name=%s" % self.objectname,
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
@@ -179,9 +179,9 @@ class UniventionLDAPExtension(object):
 		if not self.object_dn:
 
 			cmd = ["univention-directory-manager", self.udm_module_name, "create"] + self.udm_passthrough_options + [
-					"--set", "name=%s" % self.objectname,
-					"--position", self.target_container_dn,
-				] + common_udm_options + active_change_udm_options
+				"--set", "name=%s" % self.objectname,
+				"--position", self.target_container_dn,
+			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			print stdout
@@ -196,9 +196,9 @@ class UniventionLDAPExtension(object):
 				appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
 				if appidentifier:
 					cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-							"--set", "appidentifier=%s" % (appidentifier,),
-							"--dn", new_object_dn,
-						]
+						"--set", "appidentifier=%s" % (appidentifier,),
+						"--dn", new_object_dn,
+					]
 					p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 					(stdout, stderr) = p.communicate()
 					print stdout
@@ -257,8 +257,8 @@ class UniventionLDAPExtension(object):
 				active_change_udm_options = []
 
 			cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-					"--dn", self.object_dn,
-				] + common_udm_options + active_change_udm_options
+				"--dn", self.object_dn,
+			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			print stdout
@@ -269,9 +269,9 @@ class UniventionLDAPExtension(object):
 			appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
 			if appidentifier:
 				cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-						"--append", "appidentifier=%s" % (appidentifier,),
-						"--dn", self.object_dn,
-					]
+					"--append", "appidentifier=%s" % (appidentifier,),
+					"--dn", self.object_dn,
+				]
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				(stdout, stderr) = p.communicate()
 				print stdout
@@ -309,8 +309,8 @@ class UniventionLDAPExtension(object):
 				sys.exit(2)
 
 		cmd = ["univention-directory-manager", self.udm_module_name, "delete"] + self.udm_passthrough_options + [
-				"--dn", object_dn,
-			]
+			"--dn", object_dn,
+		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
 		print stdout

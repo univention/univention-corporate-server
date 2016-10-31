@@ -738,9 +738,9 @@ class Bond(Device):
 	def get_options(self):
 		options = super(Bond, self).get_options()
 		options += [
-				'bond-slaves %s' % (' '.join(self.bond_slaves),),
-				'bond-mode %s' % (self.bond_mode,),
-				]
+			'bond-slaves %s' % (' '.join(self.bond_slaves),),
+			'bond-mode %s' % (self.bond_mode,),
+		]
 		if int(self.bond_mode) == 1 and self.bond_primary:
 			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
 		if self.bond_miimon is not None:
@@ -813,9 +813,9 @@ class Bridge(Device):
 	def get_options(self):
 		options = super(Bridge, self).get_options()
 		options += [
-				'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),
-				'bridge_fd %d' % (self.bridge_fd,),
-				]
+			'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),
+			'bridge_fd %d' % (self.bridge_fd,),
+		]
 
 		return options
 

@@ -75,7 +75,7 @@ class Commands(object):
 
 	def cups_printer_disable(self, object):
 		cmd = '/usr/bin/univention-cups-disable %s' % \
-			  ' '.join(object.options['printers'])
+			' '.join(object.options['printers'])
 		ud.debug(ud.ADMIN, ud.INFO, 'CUPS.enable: command: %s' % cmd)
 		proc = notifier.popen.Shell(cmd, stdout=False)
 		cb = notifier.Callback(self._cups_printer_disable_return, object)

@@ -407,15 +407,15 @@ class object(simpleLdap):
 	def _ldap_pre_create(self):
 		"""Create DN for new UVMM Profile."""
 		self.dn = '%s=%s,%s' % (
-				mapping.mapName('name'),
-				mapping.mapValue('name', self.info['name']),
-				self.position.getDn()
+			mapping.mapName('name'),
+			mapping.mapValue('name', self.info['name']),
+			self.position.getDn()
 		)
 
 	def _ldap_addlist(self):
 		"""Add LDAP objectClass for UVMM Profile."""
 		return [
-				('objectClass', ['univentionVirtualMachineProfile'])
+			('objectClass', ['univentionVirtualMachineProfile'])
 		]
 
 
@@ -424,7 +424,7 @@ def lookup_filter(filter_s=None, lo=None):
 	Return LDAP search filter for UVMM VM profile entries.
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
-				udm_filter.expression('objectClass', 'univentionVirtualMachineProfile'),
+		udm_filter.expression('objectClass', 'univentionVirtualMachineProfile'),
 	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)

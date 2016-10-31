@@ -41,11 +41,11 @@ def test_install(pkg_name):
 def get_packets_list():
 	"""Returns Packet list"""
 	cmd = [
-			'univention-ldapsearch',
-			'-x',
-			'univentionPackageDefinition=*',
-			'univentionPackageDefinition'
-			]
+		'univention-ldapsearch',
+		'-x',
+		'univentionPackageDefinition=*',
+		'univentionPackageDefinition'
+	]
 	search_result = run_command(cmd)
 	return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result)
 

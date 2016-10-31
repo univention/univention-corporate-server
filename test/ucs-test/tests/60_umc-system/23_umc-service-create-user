@@ -179,7 +179,7 @@ class TestUMCUserCreation(TestUMCSystem):
 
             print "Checking advanced user '%s' groups" % test_username_admin
             user_groups = self.get_user_by_uid(test_username_admin)[0].get(
-                                                                      'groups')
+                'groups')
             if not user_groups:
                 utils.fail("No groups or empty groups in response for user "
                            "'%s'" % test_username_admin)

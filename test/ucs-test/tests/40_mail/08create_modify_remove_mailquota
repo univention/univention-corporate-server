@@ -36,23 +36,23 @@ def main():
 				hostname = ucr.get('hostname')
 				UDM_policies_mailquota_name = uts.random_name()
 				mailquota_dn = udm.create_object(
-						modulename='policies/mailquota',
-						name=UDM_policies_mailquota_name,
-						MailQuota=17,
-						position='cn=mail,cn=policies,%s' % ucr.get('ldap/base')
-						)
+					modulename='policies/mailquota',
+					name=UDM_policies_mailquota_name,
+					MailQuota=17,
+					position='cn=mail,cn=policies,%s' % ucr.get('ldap/base')
+				)
 				policy = 'cn=%s,cn=mail,cn=policies,%s' % (UDM_policies_mailquota_name, ucr.get('ldap/base'))
 				mail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-						password='univention',
-						policy_reference=policy,
-						set={
+					password='univention',
+					policy_reference=policy,
+					set={
 
-							'mailHomeServer': '%s.%s' % (hostname, domain),
-							'mailPrimaryAddress': mail,
-							},
-						options=['mail', 'person', 'posix', 'samba', 'groupware']
-						)
+					'mailHomeServer': '%s.%s' % (hostname, domain),
+					'mailPrimaryAddress': mail,
+				},
+					options=['mail', 'person', 'posix', 'samba', 'groupware']
+				)
 
 				enable_mailquota_set_interval(1)
 				restart_cyrus_saslauthd()
@@ -74,10 +74,10 @@ def main():
 					utils.fail('Wrong quota set = %r' % quota)
 
 				udm.modify_object(
-						modulename='policies/mailquota',
-						dn=mailquota_dn,
-						MailQuota=42,
-						)
+					modulename='policies/mailquota',
+					dn=mailquota_dn,
+					MailQuota=42,
+				)
 
 				restart_cyrus_saslauthd()
 				time.sleep(60)
@@ -101,14 +101,14 @@ def main():
 					utils.fail('Wrong quota set = %r, correct = 42000' % quota)
 
 				udm.modify_object(
-						modulename='users/user',
-						dn=userdn,
-						policy_dereference=policy
-						)
+					modulename='users/user',
+					dn=userdn,
+					policy_dereference=policy
+				)
 				udm.remove_object(
-						modulename='policies/mailquota',
-						dn=mailquota_dn
-						)
+					modulename='policies/mailquota',
+					dn=mailquota_dn
+				)
 				restart_cyrus_saslauthd()
 				time.sleep(60)
 
