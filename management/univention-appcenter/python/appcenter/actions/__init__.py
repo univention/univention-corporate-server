@@ -69,6 +69,7 @@ def possible_network_error(func):
 
 
 class StoreAppAction(Action):
+
 	def __call__(self, parser, namespace, value, option_string=None):
 		apps = []
 		if self.nargs is None:
@@ -91,6 +92,7 @@ class StoreAppAction(Action):
 
 
 class UniventionAppActionMeta(type):
+
 	def __new__(mcs, name, bases, attrs):
 		new_cls = super(UniventionAppActionMeta, mcs).__new__(mcs, name, bases, attrs)
 		if hasattr(new_cls, 'main') and getattr(new_cls, 'main') is not None:
@@ -214,7 +216,7 @@ class UniventionAppAction(object):
 		fname = _app.get_cache_file(_ext)
 		# change to UCS umask + u+x:      -rwxr--r--
 		if os.path.exists(fname):
-			os.chmod(fname, 0744)
+			os.chmod(fname, 0o744)
 		return self._call_script(fname, *args, **kwargs)
 
 	def _call_script(self, _script, *args, **kwargs):

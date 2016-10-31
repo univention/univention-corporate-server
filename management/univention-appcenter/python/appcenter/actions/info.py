@@ -40,6 +40,7 @@ from univention.appcenter.ucr import ucr_get
 
 
 class Info(UniventionAppAction):
+
 	'''Shows information on the current state of the App Center itself.'''
 	help = 'Show general info'
 

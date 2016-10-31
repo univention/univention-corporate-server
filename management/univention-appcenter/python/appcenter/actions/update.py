@@ -54,6 +54,7 @@ from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
 
 
 class Update(UniventionAppAction):
+
 	'''Updates the list of all available applications by asking the App Center server'''
 	help = 'Updates the list of apps'
 
@@ -175,7 +176,7 @@ class Update(UniventionAppAction):
 						archive.extract(filename, path=self._get_cache_dir())
 						absolute_filename = os.path.join(self._get_cache_dir(), filename)
 						os.chown(absolute_filename, 0, 0)
-						os.chmod(absolute_filename, 0664)
+						os.chmod(absolute_filename, 0o664)
 						local_md5sum = get_md5_from_file(absolute_filename)
 						if local_md5sum != remote_md5sum:
 							self.warn('Checksum for %s should be %r but was %r! Download manually' % (filename, remote_md5sum, local_md5sum))
@@ -216,7 +217,7 @@ class Update(UniventionAppAction):
 					os.unlink(cached_filename)
 				self._files_downloaded[filename] = remote_md5sum
 
-	#def _process_new_file(self, filename):
+	# def _process_new_file(self, filename):
 	#	self.log('Installing %s' % os.path.basename(filename))
 	#	component, ext = os.path.splitext(os.path.basename(filename))
 	#	ret = None
@@ -232,14 +233,14 @@ class Update(UniventionAppAction):
 	#		shutil.copy2(filename, self._get_cache_dir())
 	#	return ret
 
-	#def _process_new_file_ini(self, filename, local_app):
+	# def _process_new_file_ini(self, filename, local_app):
 	#	if local_app.is_installed():
 	#		new_app = App.from_ini(filename)
 	#		if new_app:
 	#			if new_app.component_id == local_app.component_id:
 	#				pass
-	#				#register = get_action('register')()
-	#				#register._register_app(new_app)
+	# register = get_action('register')()
+	# register._register_app(new_app)
 	#		else:
 	#			return 'reject'
 	#	else:
@@ -252,11 +253,11 @@ class Update(UniventionAppAction):
 	#		else:
 	#			return 'reject'
 
-	#def _process_new_file_inst(self, filename, local_app):
+	# def _process_new_file_inst(self, filename, local_app):
 	#	if local_app.is_installed():
 	#		shutil.copy2(filename, JOINSCRIPT_DIR)
 
-	#def _process_new_file_uinst(self, filename, local_app):
+	# def _process_new_file_uinst(self, filename, local_app):
 	#	uinst_filename = self._get_joinscript_path(local_app, unjoin=True)
 	#	if os.path.exists(uinst_filename):
 	#		shutil.copy2(filename, uinst_filename)
@@ -281,7 +282,7 @@ class Update(UniventionAppAction):
 				else:
 					# update local files if downloaded
 					component_file = '%s.%s' % (app.component_id, file)
-					if not component_file in self._files_downloaded:
+					if component_file not in self._files_downloaded:
 						continue
 					src_md5 = self._files_downloaded[component_file]
 					dest_md5 = None
@@ -291,7 +292,7 @@ class Update(UniventionAppAction):
 						self.log('Copying %s to %s' % (src, dest))
 						shutil.copy2(src, dest)
 						if file == 'inst':
-							os.chmod(dest, 0755)
+							os.chmod(dest, 0o755)
 
 	def _extract_local_archive(self):
 		if any(not fname.startswith('.') for fname in os.listdir(self._get_cache_dir())):

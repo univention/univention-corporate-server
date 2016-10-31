@@ -34,3 +34,4 @@
 from univention.appcenter.app import App, AppManager
 from univention.appcenter.actions import get_action, all_actions
 
+__all__ = ('App', 'AppManager', 'get_action', 'all_actions')

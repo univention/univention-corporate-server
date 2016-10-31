@@ -45,6 +45,7 @@ from univention.appcenter.ucr import ucr_get
 
 
 class StoreKeysAction(Action):
+
 	def __call__(self, parser, namespace, value, option_string=None):
 		keys = []
 		for val in value:
@@ -62,6 +63,7 @@ def _match(value, pattern):
 
 
 class Get(UniventionAppAction):
+
 	'''Fetches meta information about the app.'''
 	help = 'Query an app'
 

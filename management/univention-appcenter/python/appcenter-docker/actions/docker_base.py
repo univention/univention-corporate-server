@@ -51,6 +51,7 @@ BACKUP_DIR = '/var/lib/univention-appcenter/backups'
 
 
 class DockerActionMixin(object):
+
 	@classmethod
 	def _get_docker(cls, app):
 		if not app.docker:
@@ -103,7 +104,7 @@ class DockerActionMixin(object):
 			self.log('Copying App Center\'s %s to container\'s %s' % (_interface, interface))
 			mkdir(os.path.dirname(container_interface_script))
 			shutil.copy2(remote_interface_script, container_interface_script)
-			os.chmod(container_interface_script, 0755)  # -rwxr-xr-x
+			os.chmod(container_interface_script, 0o755)  # -rwxr-xr-x
 		if not os.path.exists(container_interface_script):
 			self.warn('Interface script %s not found!' % interface)
 			return None
@@ -120,8 +121,8 @@ class DockerActionMixin(object):
 		kwargs['error_file'] = error_file
 		kwargs['app'] = _app.id
 		kwargs['app_version'] = _app.version
-		#locale = get_locale()
-		#if locale:
+		# locale = get_locale()
+		# if locale:
 		#	kwargs['locale'] = locale
 		try:
 			if _output:

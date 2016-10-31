@@ -40,6 +40,7 @@ from univention.appcenter.ucr import ucr_get
 
 
 class Get(Get):
+
 	@classmethod
 	def to_dict(cls, app):
 		ret = super(Get, cls).to_dict(app)
