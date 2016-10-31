@@ -513,6 +513,15 @@
 				<package>univention-docker-container-mode</package> now by default skips the ad member
 				mode configuration during the join of docker app containers (<u:bug>40611</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-docker-container-mode</package> now by default skips App updates
+				when upgrading packages (<u:bug>42760</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-docker-container-mode</package> now by default skips the version
+				check when joining the domain. This allows the installation of Docker Apps that have
+				a higher UCS version than the host (<u:bug>42735</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
