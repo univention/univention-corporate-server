@@ -99,8 +99,7 @@ class I2O_RAIDCheck:
 		except:
 			self.exit_with_status('UNKNOWN', 'error while reading %s' % self.INPUTFN)
 
-		(self.content['physical'], self.content['logical'],
-		 self.content['controller'], self.content['raid']) = self.content['all'].split('\n\n')[0:4]
+		(self.content['physical'], self.content['logical'], self.content['controller'], self.content['raid']) = self.content['all'].split('\n\n')[0:4]
 
 	def parse_data(self):
 		returnstate = 'UNKNOWN'

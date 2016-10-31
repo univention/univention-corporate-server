@@ -149,8 +149,8 @@ class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
 
 	Script lifecycle:
-	  __init__() -> up()
-	  run() -> (inner_run() -> commit()) -> down()
+		__init__() -> up()
+		run() -> (inner_run() -> commit()) -> down()
 
 	up(), (inner_run() -> commit), and down() and encapsulated by
 	try-blocks, so the script should under no cirucumstances break.

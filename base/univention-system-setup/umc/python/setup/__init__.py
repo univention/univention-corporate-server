@@ -334,11 +334,13 @@ class Instance(Base, ProgressMixin):
 		try can be started.'''
 		def _thread(request, obj):
 			def progress_info(state, **kwargs):
-				info = { 'component' : state.fractionName,
-					 'info' : state.message,
-					 'errors' : state.errors,
-					 'critical' : state.critical,
-					 'steps' : state.percentage }
+				info = {
+					'component': state.fractionName,
+					'info': state.message,
+					'errors': state.errors,
+					'critical': state.critical,
+					'steps': state.percentage
+				}
 				info.update(kwargs)
 				MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
 				return info

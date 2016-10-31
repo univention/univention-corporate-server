@@ -711,8 +711,7 @@ def short_description(module_name):
 
 
 def policy_short_description(module_name):
-	'''return short description for policy module
-	   primarily used for tab headers'''
+	'''return short description for policy module primarily used for tab headers'''
 	module = get(module_name)
 	return getattr(module, 'policy_short_description', short_description(module))
 

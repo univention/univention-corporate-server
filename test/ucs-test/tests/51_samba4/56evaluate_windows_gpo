@@ -388,8 +388,7 @@ def udm_get_windows_computer():
 	if stderr:
 		print "\nAn Error occured while looking for Windows Server hostname:", stderr
 
-	sed_stdout, stderr = run_cmd(("sed", "-n", "s/^DN: //p"),
-								 stdin=PIPE, std_in=stdout)
+	sed_stdout, stderr = run_cmd(("sed", "-n", "s/^DN: //p"), stdin=PIPE, std_in=stdout)
 	if not sed_stdout:
 		print("SKIP: failed to find any Windows Host DN via UDM. Perhaps host "
 			"not joined as a memberserver or does not exist in this setup.")

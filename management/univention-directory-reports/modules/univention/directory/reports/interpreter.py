@@ -148,8 +148,7 @@ class Interpreter(object):
 		return _objs
 
 	def policy(self, token, base):
-		if 'module' in token.attrs and ('inherited' in token.attrs or
-												 'direct' in token.attrs):
+		if 'module' in token.attrs and ('inherited' in token.attrs or 'direct' in token.attrs):
 			policy = ua_objects.getPolicyReference(base, token.attrs['module'])
 			# need to call str() directly in order to force a correct translation
 			token.value = str(_('No'))

@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
 		dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=udm.create_object('dhcp/service', service=uts.random_name()), **dhcp_subnet_properties)
 
-	 	utils.verify_ldap_object(dhcp_subnet, {
+		utils.verify_ldap_object(dhcp_subnet, {
 			'dhcpNetMask': [dhcp_subnet_properties['subnetmask']],
 			'univentionDhcpBroadcastAddress': [dhcp_subnet_properties['broadcastaddress']],
 			'dhcpRange': [dhcp_subnet_properties['range']]

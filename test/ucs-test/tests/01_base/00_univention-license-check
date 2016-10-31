@@ -28,66 +28,38 @@ if __name__ == '__main__':
 
 	license_mapping = {
 		'1': {
-			'Accounts':
-			[
-				{
-					'users/user':
-					{
-						'username': uts.random_username(),
-						'lastname': uts.random_name(),
-						'password': uts.random_string()
-					}
+			'Accounts': [{
+				'users/user': {
+					'username': uts.random_username(),
+					'lastname': uts.random_name(),
+					'password': uts.random_string()
 				}
-			],
-			'Clients':
-			[
-				{
-					module:
-					{
-						'name': uts.random_name()
-					}
-				} for module in ('computers/windows',
-								 'computers/windows_domaincontroller',
-								 'computers/macos')
-			],
+			}],
+			'Clients': [{
+				module: {
+					'name': uts.random_name()
+				}
+			} for module in ('computers/windows', 'computers/windows_domaincontroller', 'computers/macos')],
 		},
 		'2': {
-			'Users':
-			[
-				{
-					'users/user':
-					{
-						'username': uts.random_username(),
-						'lastname': uts.random_name(),
-						'password': uts.random_string()
-					}
+			'Users': [{
+				'users/user': {
+					'username': uts.random_username(),
+					'lastname': uts.random_name(),
+					'password': uts.random_string()
 				}
-			],
-			'Servers':
-			[
+			}],
+			'Servers': [{
+				module:
 				{
-					module:
-					{
-						'name': uts.random_name()
-					}
-				} for module in ('computers/domaincontroller_master',
-								 'computers/domaincontroller_backup',
-								 'computers/domaincontroller_slave',
-								 'computers/memberserver')
-			],
-			'Managed Clients':
-			[
-				{
-					module:
-					{
-
-						'name': uts.random_name()
-					}
-				} for module in ('computers/ubuntu',
-								 'computers/linux',
-								 'computers/windows',
-								 'computers/macos')
-			]
+					'name': uts.random_name()
+				}
+			} for module in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')],
+			'Managed Clients': [{
+				module: {
+					'name': uts.random_name()
+				}
+			} for module in ('computers/ubuntu', 'computers/linux', 'computers/windows', 'computers/macos')]
 		}
 	}
 

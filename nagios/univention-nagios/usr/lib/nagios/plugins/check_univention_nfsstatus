@@ -51,10 +51,12 @@ class FSMountCheck:
 		self.re_comment = re.compile('^[ \t]*#')
 		self.re_noauto = re.compile('(?:^|,)noauto(?:,|$)', re.IGNORECASE)
 
-		self.STATE = {'OK': 0,
-					   'WARNING': 1,
-					   'CRITICAL': 2,
-					   'UNKNOWN': 3}
+		self.STATE = {
+			'OK': 0,
+			'WARNING': 1,
+			'CRITICAL': 2,
+			'UNKNOWN': 3
+		}
 
 	def print_revision(self):
 		print '%s: version %s' % (self.PROGNAME, self.REVISION)

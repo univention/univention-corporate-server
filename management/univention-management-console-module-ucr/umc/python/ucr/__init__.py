@@ -207,8 +207,10 @@ class Instance(Base):
 		func = locals().get('_match_%s' % key)
 		for name, var in base_info.get_variables(category).iteritems():
 			if func(name, var):
-				variables.append({'key': name,
-				                  'value': var.value,
-				                  'description': var.get('description', None), })
+				variables.append({
+					'key': name,
+					'value': var.value,
+					'description': var.get('description', None),
+				})
 
 		return variables

@@ -21,9 +21,11 @@ def test_extension(extension_type):
 	extension_name = get_extension_name(extension_type)
 	extension_filename = get_extension_filename(extension_type, extension_name)
 	app_id = '%s-%s' % (random_name(), random_version())
-	joinscript_buffer = get_join_script_buffer(extension_type,
-											  '/usr/share/%s/%s' % (package_name, extension_filename),
-											  app_id=app_id)
+	joinscript_buffer = get_join_script_buffer(
+		extension_type,
+		'/usr/share/%s/%s' % (package_name, extension_filename),
+		app_id=app_id
+	)
 	extension_buffer = get_extension_buffer(extension_type, extension_name)
 
 	package = DebianPackage(name=package_name, version=package_version)

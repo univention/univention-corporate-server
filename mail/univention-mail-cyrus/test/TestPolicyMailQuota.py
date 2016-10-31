@@ -38,8 +38,7 @@ class PolicyMailQuotaTestCase(GenericTestCase):
 
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/mailquota'
-		super(PolicyMailQuotaTestCase,
-		      self).__init__(*args, **kwargs)
+		super(PolicyMailQuotaTestCase, self).__init__(*args, **kwargs)
 
 	def setUp(self):
 		super(PolicyMailQuotaTestCase, self).setUp()

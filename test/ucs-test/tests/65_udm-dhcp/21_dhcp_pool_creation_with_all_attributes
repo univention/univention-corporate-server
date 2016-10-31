@@ -29,6 +29,8 @@ if __name__ == '__main__':
 
 		dhcp_pool = udm.create_object('dhcp/pool', superordinate=dhcp_subnet, **dhcp_pool_properties)
 
-		utils.verify_ldap_object(dhcp_pool, {'dhcpRange': [dhcp_pool_properties['range']],
-											 'univentionDhcpFailoverPeer': [dhcp_pool_properties['failover_peer']],
-											 'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']})
+		utils.verify_ldap_object(dhcp_pool, {
+			'dhcpRange': [dhcp_pool_properties['range']],
+			'univentionDhcpFailoverPeer': [dhcp_pool_properties['failover_peer']],
+			'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
+		})

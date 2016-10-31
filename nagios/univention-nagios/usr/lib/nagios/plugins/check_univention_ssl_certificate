@@ -44,10 +44,12 @@ class SSLCertificateCheck:
 		self.days_warning = 45
 		self.days_critical = 15
 
-		self.STATE = {'OK': 0,
-					   'WARNING': 1,
-					   'CRITICAL': 2,
-					   'UNKNOWN': 3}
+		self.STATE = {
+			'OK': 0,
+			'WARNING': 1,
+			'CRITICAL': 2,
+			'UNKNOWN': 3
+		}
 
 	def print_revision(self):
 		print '%s: version %s' % (self.PROGNAME, self.REVISION)

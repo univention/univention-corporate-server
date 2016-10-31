@@ -60,12 +60,13 @@ def crypt(password, method_id=None, salt=None):
 		urandom.close()
 
 	if method_id is None:
-		method_id = {'MD5': '1',
-					 'SHA256': '5',
-					 'SHA-256': '5',
-					 'SHA512': '6',
-					 'SHA-512': '6',
-               }.get(hashing_method, '6')
+		method_id = {
+			'MD5': '1',
+			'SHA256': '5',
+			'SHA-256': '5',
+			'SHA512': '6',
+			'SHA-512': '6',
+		}.get(hashing_method, '6')
 
 	import crypt
 	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))

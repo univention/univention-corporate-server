@@ -42,8 +42,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.name = '0015-Names'
 
 	def getMsgIds(self):
-		return {'0015-1': [uub.RESULT_WARN, 'failed to open file'],
-				 '0015-2': [uub.RESULT_WARN, 'file contains "univention" incorrectly written'],
+		return {
+			'0015-1': [uub.RESULT_WARN, 'failed to open file'],
+			'0015-2': [uub.RESULT_WARN, 'file contains "univention" incorrectly written'],
           }
 
 	def postinit(self, path):

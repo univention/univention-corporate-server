@@ -55,19 +55,14 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	parser = OptionParser(usage="usage: %prog [options]")
-	parser.add_option('-s', '--socket', type='string', action='store', dest='socket',
-					   help='defines the socket to bind to')
-	parser.add_option('-l', '--language', type='string', action='store', dest='language', default='C',
-					   help='defines the language to use')
-	parser.add_option('-m', '--module', type='string', action='store', dest='module',
-					   help='set the UMC daemon module to load')
-	parser.add_option('-n', '--notifier', type='string', action='store', dest='notifier', default='generic',
-					   help='defines the notifier implementation to use')
+	parser.add_option('-s', '--socket', type='string', action='store', dest='socket', help='defines the socket to bind to')
+	parser.add_option('-l', '--language', type='string', action='store', dest='language', default='C', help='defines the language to use')
+	parser.add_option('-m', '--module', type='string', action='store', dest='module', help='set the UMC daemon module to load')
+	parser.add_option('-n', '--notifier', type='string', action='store', dest='notifier', default='generic', help='defines the notifier implementation to use')
 
 	default_debug = MODULE_DEBUG_LEVEL
-	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
-					   help='if given then debugging is activated and set to the specified level [default: %default]')
-	parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-module', help='specifies an alternative log file [default: %default-<module name>.log]')
+	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug, help='if given then debugging is activated and set to the specified level [default: %default]')
+	parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %default.log]')
 
 	(options, arguments) = parser.parse_args()
 

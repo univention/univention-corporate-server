@@ -61,8 +61,7 @@ class File(list):
 
 class Entry(object):
 
-	def __init__(self, spec, mount_point, type, options,
-	             dump=0, passno=0, comment=''):
+	def __init__(self, spec, mount_point, type, options, dump=0, passno=0, comment=''):
 		self.spec = spec.strip()
 		self.mount_point = mount_point.strip()
 		self.type = type.strip()

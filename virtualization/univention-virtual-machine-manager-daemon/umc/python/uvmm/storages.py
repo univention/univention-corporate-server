@@ -204,9 +204,9 @@ class Storages(object):
 			}, ...]
 
 		where 'deletebale' is
-		  True: disk can be deleted
-		  False: disk is shared and should not be deleted
-		  None: disk can not be deleted
+			True: disk can be deleted
+			False: disk is shared and should not be deleted
+			None: disk can not be deleted
 		"""
 		_tmp_cache = {}
 

@@ -71,10 +71,12 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		except:
 			return None
 		primaryGroupID = res[0][1]['primaryGroupID'][0]
-		res = self.lo.search_ext_s(self.adldapbase,
-								   ldap.SCOPE_SUBTREE,
-								   'objectClass=group'.encode('utf8'),
-								   timeout=10)
+		res = self.lo.search_ext_s(
+			self.adldapbase,
+			ldap.SCOPE_SUBTREE,
+			'objectClass=group'.encode('utf8'),
+			timeout=10
+		)
 
 		import re
 		regex = '^(.*?)-%s$' % primaryGroupID

@@ -51,10 +51,12 @@ class ReplicationCheck:
 		self.history_size = 0
 		self.verbose = 0
 
-		self.STATE = {'OK': 0,
-					   'WARNING': 1,
-					   'CRITICAL': 2,
-					   'UNKNOWN': 3}
+		self.STATE = {
+			'OK': 0,
+			'WARNING': 1,
+			'CRITICAL': 2,
+			'UNKNOWN': 3
+		}
 		self.history = []
 
 	def print_revision(self):
