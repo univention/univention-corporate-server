@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.11-3) unstable; urgency=medium
+
+  * Bug #42735: Disable version check when joining
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 31 Oct 2016 12:03:55 +0100
+
 univention-docker-container-mode (1.0.11-2) unstable; urgency=medium
 
   * Bug #42760: Disable app updates when updating container packages
