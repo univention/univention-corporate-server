@@ -1,3 +1,10 @@
+univention-samba (11.0.1-1) unstable; urgency=medium
+
+  * Bug #42679: samba*SecurityMode is not supported any longer in Samba,
+    so samba-shares.py shouldn't write the corresponding parameters.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 31 Oct 2016 16:17:29 +0100
+
 univention-samba (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
