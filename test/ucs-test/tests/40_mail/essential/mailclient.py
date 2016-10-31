@@ -222,10 +222,10 @@ class BaseMailClient(object):
 			if (typ == 'OK') != retcode:
 				raise ReadFail('Unexpected read result for the inbox %s' % mailbox)
 			if 'OK' in typ:
-			# typ, data = self.search(None, 'ALL')
-			# for num in data[0].split():
-			# 	typ, data = self.fetch(num, '(RFC822)')
-			# 	print 'Message %s\n%s\n' % (num, data[0][1])
+				# typ, data = self.search(None, 'ALL')
+				# for num in data[0].split():
+				# 	typ, data = self.fetch(num, '(RFC822)')
+				# 	print 'Message %s\n%s\n' % (num, data[0][1])
 				self.close()
 
 	def check_append(self, mailbox_owner, expected_result, dovecot=False):

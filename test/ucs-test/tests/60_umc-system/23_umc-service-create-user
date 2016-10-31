@@ -104,8 +104,8 @@ class TestUMCUserCreation(TestUMCSystem):
                                              "mail": True,
                                              "pki": False,
                                              "ldap_pwd": False}},
-                               "options": {"container": "cn=users,"
-                                                        + self.ldap_base,
+                               "options": {"container": "cn=users," +
+                                                         self.ldap_base,
                                            "objectType": "users/user"}}]
         try:
             request_result = self.Connection.request('udm/add', options,
@@ -154,10 +154,10 @@ class TestUMCUserCreation(TestUMCSystem):
                            "was just created" % test_username_admin)
 
             print "Modifing simple user '%s' groups" % test_username
-            test_groupnames = ["cn=" + domain_users + ",cn=groups,"
-                               + self.ldap_base,
-                               "cn=" + print_admins + ",cn=groups,"
-                               + self.ldap_base]
+            test_groupnames = ["cn=" + domain_users + ",cn=groups," +
+                                self.ldap_base,
+                               "cn=" + print_admins + ",cn=groups," +
+                                self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 
             print "Checking simple user '%s' groups" % test_username
@@ -171,10 +171,10 @@ class TestUMCUserCreation(TestUMCSystem):
                            % (test_username, user_groups, test_groupnames))
 
             print "Modifing advanced user '%s' groups" % test_username_admin
-            test_groupnames = ["cn=" + domain_admins + ",cn=groups,"
-                               + self.ldap_base,
-                               "cn=" + print_admins + ",cn=groups,"
-                               + self.ldap_base]
+            test_groupnames = ["cn=" + domain_admins + ",cn=groups," +
+                                self.ldap_base,
+                               "cn=" + print_admins + ",cn=groups," +
+                                self.ldap_base]
             self.modify_user_groups(test_username_admin, test_groupnames)
 
             print "Checking advanced user '%s' groups" % test_username_admin

@@ -140,21 +140,21 @@ class TestUMCDomainJoinModule(TestUMCSystem):
             self.copy_file(test_script + '.inst', test_script + '_copy1.inst')
             self.copy_file(test_script + '.inst', test_script + '_copy2.inst')
             self.link_join_script(test_script + '_copy1.inst',
-                                  script_link_path + test_script
-                                  + '_copy1.inst')
+                                  script_link_path + test_script +
+                                   '_copy1.inst')
             self.link_join_script(test_script + '_copy2.inst',
-                                  script_link_path + test_script
-                                  + '_copy2.inst')
+                                  script_link_path + test_script +
+                                   '_copy2.inst')
             self.execute_pending_scripts()
             self.wait_rejoin_to_complete(5)  # check running state and wait
-            test_script_state = self.get_join_script_state(test_script
-                                                           + '_copy1')
+            test_script_state = self.get_join_script_state(test_script +
+                                                            '_copy1')
             if not test_script_state:
                 utils.fail("The state of the join script '%s' 'configured' is"
                            " '%s' after all pending scripts were executed"
                            % (test_script + '_copy1', test_script_state))
-            test_script_state = self.get_join_script_state(test_script
-                                                           + '_copy2')
+            test_script_state = self.get_join_script_state(test_script +
+                                                            '_copy2')
             if not test_script_state:
                 utils.fail("The state of the join script '%s' 'configured' is"
                            " '%s' after all pending scripts were executed"
@@ -163,12 +163,12 @@ class TestUMCDomainJoinModule(TestUMCSystem):
             print("\nRemoving all links and test script copies, restoring "
                   "status file")
             # Unlinking all join scripts:
-            self.remove_join_script_link(script_link_path + test_script
-                                         + '.inst')
-            self.remove_join_script_link(script_link_path + test_script
-                                         + '_copy1.inst')
-            self.remove_join_script_link(script_link_path + test_script
-                                         + '_copy2.inst')
+            self.remove_join_script_link(script_link_path + test_script +
+                                          '.inst')
+            self.remove_join_script_link(script_link_path + test_script +
+                                          '_copy1.inst')
+            self.remove_join_script_link(script_link_path + test_script +
+                                          '_copy2.inst')
             # Deleting test join script copies:
             self.delete_file(test_script + '_copy1.inst')
             self.delete_file(test_script + '_copy2.inst')

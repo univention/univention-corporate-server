@@ -57,7 +57,7 @@ def test_extension(extension_type):
 			wait_for_replication()
 
 			content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-			if not extension_identifier in content:
+			if extension_identifier not in content:
 				fail('ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,))
 
 	finally:

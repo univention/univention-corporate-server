@@ -229,7 +229,8 @@ try:
 
 				try:
 					# setup timeout
-					handler = lambda signum, frame: None
+					def handler(signum, frame):
+						return None
 					sig_alrm = signal.signal(signal.SIGALRM, handler)  # alarm
 					signal.signal(signal.SIGHUP, handler)  # hang up
 					signal.signal(signal.SIGINT, handler)  # interrupt

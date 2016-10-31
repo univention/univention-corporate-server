@@ -402,7 +402,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 				with open(_file) as fd:
 					content = fd.read()
 					for token in tokenlist:
-						if not token in content:
+						if token not in content:
 							break
 					else:
 						result += 1
@@ -422,7 +422,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 				with open(_file) as fd:
 					content = fd.read()
 					for token in tokenlist:
-						if not token in content:
+						if token not in content:
 							break
 					else:
 						result += 1
@@ -454,7 +454,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	assert imap_user, "imap_search_mail: imap_user has not been specified"
 	imap_password = imap_password or "univention"
 	imap_folder = imap_folder or ""
-	assert type(imap_folder) == str, "imap_search_mail: imap_folder is no string"
+	assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
 
 	if use_ssl:
 		conn = imaplib.IMAP4_SSL(host=server)
@@ -570,7 +570,7 @@ def get_dovecot_shared_folder_maildir(foldername):
 	"""
 	if not foldername:
 		raise UCSTest_Mail_InvalidFolderName()
-	if '@' not in foldername or not '/' in foldername:
+	if '@' not in foldername or '/' not in foldername:
 		raise UCSTest_Mail_InvalidFolderName()
 	if foldername.count('/') > 1:
 		raise UCSTest_Mail_InvalidFolderName()
@@ -665,9 +665,9 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 		dovecat = ucr.is_true('mail/dovecot')
 	name = uts.random_name()
 	folder_mailaddress = ''
-	if type(mailAddress) == str:
+	if isinstance(mailAddress, str):
 		folder_mailaddress = mailAddress
-	elif mailAddress == True:
+	elif mailAddress:
 		folder_mailaddress = '%s@%s' % (name, domain)
 
 	folder_dn = udm.create_object(
@@ -742,9 +742,9 @@ Regards,
 	# use user values if defined
 	if sender:
 		m_sender = sender
-	if recipients and type(recipients) == str:
+	if recipients and isinstance(recipients, str):
 		m_recipients = [recipients]
-	elif recipients and type(recipients) == list:
+	elif recipients and isinstance(recipients, list):
 		m_recipients = recipients
 	else:
 		raise UCSTest_Mail_InvalidRecipientList()

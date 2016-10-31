@@ -71,8 +71,8 @@ class TestUMCUserModules(TestUMCSystem):
         test_password = 'univention'
         test_groupname = 'umc_test_group_' + random_username(6)
         test_policyname = 'umc_test_policy_' + random_username(6)
-        test_operation_set = ["cn=ucr-all,cn=operations,cn=UMC,cn=univention,"
-                              + ldap_base]
+        test_operation_set = ["cn=ucr-all,cn=operations,cn=UMC,cn=univention," +
+                               ldap_base]
 
         with udm_test.UCSTestUDM() as UDM:
             print "Creating a test group and a user in it for the test"

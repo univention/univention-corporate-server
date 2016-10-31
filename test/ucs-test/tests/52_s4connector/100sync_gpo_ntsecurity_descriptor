@@ -40,7 +40,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 	previous_ucr_unset = []
 
 	if ucr_set:
-		if type(ucr_set) == type(""):
+		if isinstance(ucr_set, type("")):
 			ucr_set = (ucr_set,)
 
 		for setting in ucr_set:
@@ -58,7 +58,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 		univention.config_registry.handler_set(ucr_set)
 
 	if ucr_unset:
-		if type(ucr_unset) == type(""):
+		if isinstance(ucr_unset, type("")):
 			ucr_unset = (ucr_unset,)
 
 		for var in ucr_unset:

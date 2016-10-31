@@ -45,7 +45,9 @@ __all__ = [
 import gettext
 from functools import reduce
 
-N_ = lambda msg: msg
+
+def N_(msg):
+	return msg
 _ = gettext.translation('univention-virtual-machine-manager', fallback=True).ugettext
 
 

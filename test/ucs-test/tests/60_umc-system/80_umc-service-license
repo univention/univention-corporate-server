@@ -64,8 +64,8 @@ class TestUMCLicenseManagement(TestUMCSystem):
         """
         try:
             test_network_ip = self.UCR['interfaces/eth0/network']
-            self.test_network_ip = test_network_ip[:test_network_ip.rfind('.')
-                                                   + 1]
+            self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') +
+                                                    1]
         except KeyError as exc:
             utils.fail("A KeyError exception while selecting an IP address "
                        "subnet for the test: %r" % exc)
@@ -152,8 +152,8 @@ class TestUMCLicenseManagement(TestUMCSystem):
                                              "mail": True,
                                              "pki": False,
                                              "ldap_pwd": False}},
-                               "options": {"container": "cn=users,"
-                                                        + self.ldap_base,
+                               "options": {"container": "cn=users," +
+                                                         self.ldap_base,
                                            "objectType": "users/user"}}]
         return self.make_udm_request("add", options, "users/user")
 
