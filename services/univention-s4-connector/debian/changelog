@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.1-1) unstable; urgency=low
+
+  * Bug #42120: Fix re-animation of deleted user objects (UCS@school)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 31 Oct 2016 20:03:23 +0100
+
 univention-s4-connector (11.0.0-4) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
