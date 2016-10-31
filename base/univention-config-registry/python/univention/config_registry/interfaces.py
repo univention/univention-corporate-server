@@ -50,8 +50,8 @@ RE_IFACE = re.compile(r'''^
 		interfaces/ # prefix
 		([^/]+)/    # iface name
 		(
-		 (?:ipv6/([0-9A-Za-z]+)/)? # IPv6 name
-		 .*)        # suffix
+			(?:ipv6/([0-9A-Za-z]+)/)? # IPv6 name
+			.*)        # suffix
 		$''' % ('|'.join(_SKIP)), re.VERBOSE)
 
 

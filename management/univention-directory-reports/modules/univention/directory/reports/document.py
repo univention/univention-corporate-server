@@ -67,8 +67,7 @@ class Document(object):
 			files = tuple()
 		for filename in files:
 			if not os.path.isfile(filename):
-				raise NameError("error: required file '%s' does not exist or is not readable" %
-								 filename)
+				raise NameError("error: required file '%s' does not exist or is not readable" % filename)
 
 	def __create_tempfile(self):
 		if self._type == Document.TYPE_LATEX:

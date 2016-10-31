@@ -43,21 +43,11 @@ def buildModuleIdentifyMapping():
 
 def parseOptions():
 	parser = optparse.OptionParser(usage='Usage: %prog (-n|-a) [options]\nSet the attribute univentionObjectType for each directory object')
-	parser.add_option('-n', '--no-action',
-	                  dest='action', action='store_false',
-	                  help='do not modify the directory, show what would have been done')
-	parser.add_option('-a', '--action',
-	                  dest='action', action='store_true',
-	                  help='do modify the directory')
-	parser.add_option('--verbose',
-	                  dest='verbose', action='store_true', default=False,
-	                  help='do not hide warnings for unmatched component objects')
-	parser.add_option('-v', '--verify',
-	                  dest='verify', action='store_true', default=False,
-	                  help='check objects with already set univentionObjectType')
-	parser.add_option('-b', '--base',
-	                  dest='base', default='',
-	                  help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
+	parser.add_option('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
+	parser.add_option('-a', '--action', dest='action', action='store_true', help='do modify the directory')
+	parser.add_option('--verbose', dest='verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
+	parser.add_option('-v', '--verify', dest='verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
+	parser.add_option('-b', '--base', dest='base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
 	(options, args, ) = parser.parse_args()
 	if options.action is None:
 		print 'Neither --no-action nor --action given!'

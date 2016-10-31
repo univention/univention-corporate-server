@@ -82,8 +82,8 @@ class Instance(Base):
 		"""Searches for entries in a dummy list
 
 		requests.options = {}
-		  'name' -- search pattern for name (default: '')
-		  'color' -- color to match, 'None' for all colors (default: 'None')
+		'name' -- search pattern for name (default: '')
+		'color' -- color to match, 'None' for all colors (default: 'None')
 
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""

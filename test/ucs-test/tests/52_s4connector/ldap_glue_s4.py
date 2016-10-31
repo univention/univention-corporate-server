@@ -110,30 +110,30 @@ class LDAPConnection:
 
 		if parent1 != parent2:
 			self.lo.rename_s(s4.compatible_modstring(unicode(dn)),
-							 s4.compatible_modstring(unicode(newrdn)),
-							 s4.compatible_modstring(unicode(parent2)))
+				s4.compatible_modstring(unicode(newrdn)),
+				s4.compatible_modstring(unicode(parent2)))
 		else:
 			self.lo.modrdn_s(s4.compatible_modstring(unicode(dn)),
-							 s4.compatible_modstring(unicode(newrdn)))
+				s4.compatible_modstring(unicode(newrdn)))
 
 	def set_attribute(self, dn, key, value):
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-						  [(ldap.MOD_REPLACE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
+			[(ldap.MOD_REPLACE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
 		LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
 		ctrls = [LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0)] + self.serverctrls_for_add_and_modify
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-						  [(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
+			[(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
 
 	def delete_attribute(self, dn, key):
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-						  [(ldap.MOD_DELETE, key, None)], serverctrls=self.serverctrls_for_add_and_modify)
+			[(ldap.MOD_DELETE, key, None)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def append_to_attribute(self, dn, key, value):
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-						  [(ldap.MOD_ADD, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
+			[(ldap.MOD_ADD, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def remove_from_attribute(self, dn, key, value):
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-						  [(ldap.MOD_DELETE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
+			[(ldap.MOD_DELETE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)

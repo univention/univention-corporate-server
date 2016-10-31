@@ -50,13 +50,13 @@ class Widget(object):
 		"""
 		Create Widget template.
 		:name: The name of the dojo widget. If name is a function, it is called
-		  to compute the name dynamically.
+		to compute the name dynamically.
 		:syntax_classes: A tuple of Python types or classes, which are matched
-		  against the concrete syntax. (tuple is optional for single items.)
+		against the concrete syntax. (tuple is optional for single items.)
 		:default: a default value.
 		:subclasses: if True, the Widget also is used when the concrete syntax
-		  is a subclass of syntax_classes. If False, the concrete syntax must
-		  exactly match a syntax_class.
+		is a subclass of syntax_classes. If False, the concrete syntax must
+		exactly match a syntax_class.
 		"""
 		self._name = name
 		self._syntax_classes = syntax_classes

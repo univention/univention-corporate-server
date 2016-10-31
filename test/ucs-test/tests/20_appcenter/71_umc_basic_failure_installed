@@ -16,16 +16,14 @@ def must_not_be_installed(result):
 	"""Checks if invokation_forbidden_details.must_not_be_installed is set to
 	false showing a violation of that check. Returns True if the check is not
 	violated"""
-	return result.get("invokation_forbidden_details", {}) \
-	             .get("must_not_be_installed", True)
+	return result.get("invokation_forbidden_details", {}).get("must_not_be_installed", True)
 
 
 def must_have_candidate(result):
 	"""Checks if invokation_forbidden_details.must_have_candidate is set to
 	false showing a violation of that check. Returns True if the check is not
 	violated"""
-	return result.get("invokation_forbidden_details", {}) \
-	             .get("must_have_candidate", True)
+	return result.get("invokation_forbidden_details", {}).get("must_have_candidate", True)
 
 
 @app_test.test_case

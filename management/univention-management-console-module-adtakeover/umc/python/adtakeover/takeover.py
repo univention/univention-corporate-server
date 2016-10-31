@@ -408,7 +408,7 @@ def check_sysvol(progress):
 
 def set_status_done():
 	'''Set status to "done", indicating the module has been run once successfully
-	   and may be started again.
+	and may be started again.
 	'''
 	state = AD_Takeover_State()
 	return state.set_done()
@@ -2381,9 +2381,7 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 
 
 def operatingSystem_attribute(ucr, samdb):
-	msg = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-	                   expression="(sAMAccountName=%s$)" % ucr["hostname"],
-	                   attrs=["operatingSystem", "operatingSystemVersion"])
+	msg = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE, expression="(sAMAccountName=%s$)" % ucr["hostname"], attrs=["operatingSystem", "operatingSystemVersion"])
 	if msg:
 		obj = msg[0]
 		if "operatingSystem" not in obj:
@@ -2400,9 +2398,11 @@ def operatingSystem_attribute(ucr, samdb):
 
 def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, sitename):
 	# DC Behaviour Version
-	msg = remote_samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, samdb.domain_dn()),
-	                          scope=samba.ldb.SCOPE_BASE,
-	                          attrs=["msDS-HasMasterNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"])
+	msg = remote_samdb.search(
+		base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, samdb.domain_dn()),
+		scope=samba.ldb.SCOPE_BASE,
+		attrs=["msDS-HasMasterNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"]
+	)
 	if msg:
 		obj = msg[0]
 		if "msDS-Behavior-Version" in obj:
@@ -2470,9 +2470,12 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 
 def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
 
-	msg = secretsdb.search(base="cn=Primary Domains", scope=samba.ldb.SCOPE_SUBTREE,
-	                       expression="(flatName=%s)" % ucr["windows/domain"],
-	                       attrs=["krb5Keytab"])
+	msg = secretsdb.search(
+		base="cn=Primary Domains",
+		scope=samba.ldb.SCOPE_SUBTREE,
+		expression="(flatName=%s)" % ucr["windows/domain"],
+		attrs=["krb5Keytab"]
+	)
 	if msg:
 		obj = msg[0]
 		if "krb5Keytab" not in obj or "/etc/krb5.keytab" not in obj["krb5Keytab"]:
@@ -2483,9 +2486,12 @@ def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
 
 
 def add_servicePrincipals(ucr, secretsdb, spn_list):
-	msg = secretsdb.search(base="cn=Primary Domains", scope=samba.ldb.SCOPE_SUBTREE,
-	                       expression="(flatName=%s)" % ucr["windows/domain"],
-	                       attrs=["servicePrincipalName"])
+	msg = secretsdb.search(
+		base="cn=Primary Domains",
+		scope=samba.ldb.SCOPE_SUBTREE,
+		expression="(flatName=%s)" % ucr["windows/domain"],
+		attrs=["servicePrincipalName"]
+	)
 	if msg:
 		obj = msg[0]
 		delta = ldb.Message()

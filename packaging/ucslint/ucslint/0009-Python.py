@@ -43,15 +43,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.name = '0009-Python'
 
 	def getMsgIds(self):
-		return {'0009-1': [uub.RESULT_WARN, 'failed to open file'],
-				 '0009-2': [uub.RESULT_ERROR, 'python file does not specify python version in hashbang'],
-				 '0009-3': [uub.RESULT_ERROR, 'python file specifies wrong python version in hashbang'],
-				 '0009-4': [uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command'],
-				 '0009-5': [uub.RESULT_WARN, 'dict.has_key is deprecated in python3 - please use "if key in dict:"'],
-				 '0009-6': [uub.RESULT_WARN, 'raise "text" is deprecated in python3'],
-				 '0009-7': [uub.RESULT_STYLE, 'fragile comparison with None'],
-				 '0009-8': [uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'],
-				 '0009-9': [uub.RESULT_ERROR, 'hashbang contains more than one option'],
+		return {
+			'0009-1': [uub.RESULT_WARN, 'failed to open file'],
+			'0009-2': [uub.RESULT_ERROR, 'python file does not specify python version in hashbang'],
+			'0009-3': [uub.RESULT_ERROR, 'python file specifies wrong python version in hashbang'],
+			'0009-4': [uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command'],
+			'0009-5': [uub.RESULT_WARN, 'dict.has_key is deprecated in python3 - please use "if key in dict:"'],
+			'0009-6': [uub.RESULT_WARN, 'raise "text" is deprecated in python3'],
+			'0009-7': [uub.RESULT_STYLE, 'fragile comparison with None'],
+			'0009-8': [uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'],
+			'0009-9': [uub.RESULT_ERROR, 'hashbang contains more than one option'],
           }
 
 	def postinit(self, path):

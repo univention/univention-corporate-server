@@ -31,9 +31,10 @@ if __name__ == '__main__':
 		version_start = random_ucs_version(max_major=2)
 		version_end = random_ucs_version(min_major=5)
 
-		extension_dn = udm.create_object('settings/udm_%s' % extension_type,
-							   name=extension_name,
-							   data=base64.b64encode(bz2.compress(extension_buffer)),
+		extension_dn = udm.create_object(
+			'settings/udm_%s' % extension_type,
+			name=extension_name,
+			data=base64.b64encode(bz2.compress(extension_buffer)),
 			filename=extension_filename,
 			packageversion=package_version,
 			appidentifier=app_id,
@@ -41,29 +42,32 @@ if __name__ == '__main__':
 			ucsversionstart=version_start,
 			ucsversionend=version_end,
 			active='FALSE',
-							   position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
+			position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+		)
 
-		extattr_dn = udm.create_object('settings/extended_attribute',
-									   position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
-									   objectClass='univentionFreeAttributes',
-									   groupPosition='1',
-									   module='users/user',
-									   overwriteTab='0',
-									   shortDescription='UCS Test Extended Attribute',
-									   groupName='UCS TEST: test_udm_syntax',
-									   valueRequired='0',
-									   CLIName='ucstest%s' % extension_name.upper(),
-									   longDescription='UCS Test Extended Attribute',
-									   doNotSearch='0',
-									   tabName='UCS TEST',
-									   syntax=extension_name,
-									   tabAdvanced='0',
-									   name='UCStest-syntax-extension-%s' % extension_name,
-									   mayChange='1',
-									   multivalue='0',
-									   ldapMapping='univentionFreeAttribute20',
-									   notEditable='0',
-									   tabPosition='1')
+		extattr_dn = udm.create_object(
+			'settings/extended_attribute',
+			position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+			objectClass='univentionFreeAttributes',
+			groupPosition='1',
+			module='users/user',
+			overwriteTab='0',
+			shortDescription='UCS Test Extended Attribute',
+			groupName='UCS TEST: test_udm_syntax',
+			valueRequired='0',
+			CLIName='ucstest%s' % extension_name.upper(),
+			longDescription='UCS Test Extended Attribute',
+			doNotSearch='0',
+			tabName='UCS TEST',
+			syntax=extension_name,
+			tabAdvanced='0',
+			name='UCStest-syntax-extension-%s' % extension_name,
+			mayChange='1',
+			multivalue='0',
+			ldapMapping='univentionFreeAttribute20',
+			notEditable='0',
+			tabPosition='1'
+		)
 
 		wait_for_replication_and_postrun()
 		udm.stop_cli_server()

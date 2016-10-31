@@ -66,8 +66,7 @@ class Instance(umcm.Base):
 
 	def _call(self, command):
 		try:
-			process = subprocess.Popen(command, stdout=subprocess.PIPE,
-									   stderr=subprocess.PIPE)
+			process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(stdoutdata, stderrdata, ) = process.communicate()
 			return (process.returncode, stdoutdata, stderrdata, )
 		except OSError:
@@ -109,8 +108,7 @@ class Instance(umcm.Base):
 
 		(exitcode, stdout, stderr, ) = self._call(SYSTEM_INFO_CMD)
 		if exitcode:
-			MODULE.error('Execution of univention-system-info failed: %s'
-			             % stdout)
+			MODULE.error('Execution of univention-system-info failed: %s' % stdout)
 			result = None
 			request.status = MODULE_ERR
 		else:

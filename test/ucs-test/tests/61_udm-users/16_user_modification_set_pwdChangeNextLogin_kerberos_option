@@ -20,4 +20,4 @@ if __name__ == '__main__':
 		user = udm.create_user(options=['kerberos', 'person'])[0]
 		udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
-	 	utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']})
+		utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']})

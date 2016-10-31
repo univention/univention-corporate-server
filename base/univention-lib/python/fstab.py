@@ -105,8 +105,7 @@ class File(list):
 
 class Entry(object):
 
-	def __init__(self, spec, mount_point, type, options,
-		         dump=0, passno=0, comment=''):
+	def __init__(self, spec, mount_point, type, options, dump=0, passno=0, comment=''):
 		self.spec = spec.strip()
 		if self.spec.startswith('UUID='):
 			self.uuid = self.spec[5:]
@@ -124,13 +123,9 @@ class Entry(object):
 
 	def __str__(self):
 		if self.uuid:
-			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
-			       (self.uuid, self.mount_point, self.type, ','.join(self.options),
-				self.dump, self.passno, self.comment)
+			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.uuid, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
 		else:
-			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
-			       (self.spec, self.mount_point, self.type, ','.join(self.options),
-				self.dump, self.passno, self.comment)
+			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.spec, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
 
 
 class InvalidEntry(Exception):

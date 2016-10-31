@@ -66,7 +66,7 @@ class Instance(umc.modules.Base):
 
 		requests.options = [
 			'category': 'protocol' | 'port' | 'address' | 'package' |
-			            'description',
+            'description',
 			'pattern': <str>,
 		]
 		"""
@@ -120,14 +120,16 @@ class Instance(umc.modules.Base):
 				# rule doesn't match the pattern
 				continue
 			entry = {}
-			entry = {u'identifier': rule.identifier,
-			         u'protocol': rule.protocol,
-			         u'portStart': rule.port[0],
-			         u'portEnd': (rule.port[1] - 1),
-			         u'address': get_address(rule.address),
-			         u'packageName': rule.package,
-			         u'action': rule.action.lower(),
-			         u'description': self._get_description(rule.description), }
+			entry = {
+				u'identifier': rule.identifier,
+				u'protocol': rule.protocol,
+				u'portStart': rule.port[0],
+				u'portEnd': (rule.port[1] - 1),
+				u'address': get_address(rule.address),
+				u'packageName': rule.package,
+				u'action': rule.action.lower(),
+				u'description': self._get_description(rule.description),
+			}
 			result.append(entry)
 		return result
 
@@ -152,23 +154,17 @@ class Instance(umc.modules.Base):
 					firewall.remove_rule(object[u'identifier'])
 
 				port = (object[u'portStart'], (object[u'portEnd'] + 1), )
-				address = get_address(object[u'addressType'],
-				                      object[u'addressValue'])
+				address = get_address(object[u'addressType'], object[u'addressValue'])
 
-				rule = backend.Rule(object[u'protocol'], port, address, None,
-				                    object[u'action'].lower())
+				rule = backend.Rule(object[u'protocol'], port, address, None, object[u'action'].lower())
 				firewall.add_rule(rule)
 			except backend.Error as e:
 				if edit:
-					yield {u'object': object[u'identifier'],
-					       u'success': False,
-					       u'details': str(e), }
+					yield {u'object': object[u'identifier'], u'success': False, u'details': str(e), }
 				else:
-					yield {u'success': False,
-					       u'details': str(e), }
+					yield {u'success': False, u'details': str(e), }
 			else:
-				yield {u'object': rule.identifier,
-				       u'success': True, }
+				yield {u'object': rule.identifier, u'success': True, }
 
 		# Try to save firewall configuration
 		try:
@@ -238,15 +234,17 @@ class Instance(umc.modules.Base):
 			try:
 				rule = firewall.rules[identifier]
 
-				entry = {u'identifier': rule.identifier,
-						 u'protocol': rule.protocol,
-						 u'portStart': rule.port[0],
-						 u'portEnd': (rule.port[1] - 1),
-						 u'addressType': get_address_type(rule.address),
-						 u'addressValue': get_address_value(rule.address),
-						 u'packageName': rule.package,
-						 u'action': rule.action.lower(),
-						 u'description': self._get_description(rule.description), }
+				entry = {
+					u'identifier': rule.identifier,
+					u'protocol': rule.protocol,
+					u'portStart': rule.port[0],
+					u'portEnd': (rule.port[1] - 1),
+					u'addressType': get_address_type(rule.address),
+					u'addressValue': get_address_value(rule.address),
+					u'packageName': rule.package,
+					u'action': rule.action.lower(),
+					u'description': self._get_description(rule.description),
+				}
 			except (backend.Error, KeyError) as e:
 				message = _(u"Could not get firewall rule")
 				MODULE.error(u"%s: %s" % (message, str(e), ))
@@ -257,12 +255,12 @@ class Instance(umc.modules.Base):
 	@decorators.sanitize(sanitizers.DictSanitizer({
 		u'object': sanitizers.DictSanitizer({
 			u'identifier': sanitizers.StringSanitizer(required=True),
-			 u'protocol': sanitizers.ChoicesSanitizer((u'tcp', u'udp', ), required=True),
-			 u'portStart': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
-			 u'portEnd': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
-			 u'addressType': sanitizers.ChoicesSanitizer((u'all', u'ipv4', u'ipv6', u'specific', ), required=True),
-			 u'addressValue': sanitizers.StringSanitizer(default=u''),
-			 u'action': sanitizers.ChoicesSanitizer((u'accept', u'reject', u'drop', ), required=True),
+			u'protocol': sanitizers.ChoicesSanitizer((u'tcp', u'udp', ), required=True),
+			u'portStart': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+			u'portEnd': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+			u'addressType': sanitizers.ChoicesSanitizer((u'all', u'ipv4', u'ipv6', u'specific', ), required=True),
+			u'addressValue': sanitizers.StringSanitizer(default=u''),
+			u'action': sanitizers.ChoicesSanitizer((u'accept', u'reject', u'drop', ), required=True),
 		}),
 	}, required=True))
 	@decorators.multi_response
@@ -306,13 +304,9 @@ class Instance(umc.modules.Base):
 			try:
 				firewall.remove_rule(object)
 			except backend.Error as e:
-				yield {u'object': object,
-				       u'success': False,
-				       u'details': str(e), }
+				yield {u'object': object, u'success': False, u'details': str(e), }
 			else:
-				yield {u'object': object,
-				       u'success': True, }
-
+				yield {u'object': object, u'success': True, } 
 		# Try to save firewall configuration
 		try:
 			firewall.save()

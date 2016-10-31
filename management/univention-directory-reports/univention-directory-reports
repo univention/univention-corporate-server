@@ -62,42 +62,54 @@ def main():
 	cfg = udr.Config()
 
 	parser = OptionParser(usage='usage: %prog -m <module> [options] dn1 dn2 ...')
-	parser.add_option('-u', '--user', action='store',
-					   dest='user', default=None, metavar='USERDN',
-					   help='User-DN for simple LDAP access')
-	parser.add_option('-p', '--password', action='store',
-					   dest='password', default=None,
-					   help='Password for simple LDAP access')
-	parser.add_option('-H', '--header', action='store',
-					   dest='header', default=None,
-					   help='File containing the header for the report')
-	parser.add_option('-F', '--footer', action='store',
-					   dest='footer', default=None,
-					   help='file containing the footer for the report')
-	parser.add_option('-s', '--server', action='store',
-					   dest='server', default=baseConfig.get('ldap/server/name', 'localhost'),
-					   help='LDAP server [%default]')
-	parser.add_option('-b', '--base', action='store',
-					   dest='base', default=baseConfig.get('ldap/base', ''),
-					   help='LDAP base [%default]')
-	parser.add_option('-m', '--module', action='store',
-					   dest='module', default=None,
-					   help='admin module defining the report to generate')
-	parser.add_option('-r', '--report', action='store',
-					   dest='report', default=cfg.default_report_name,
-					   help='Name of the report to use [%default]')
-	parser.add_option('-l', '--list', action='store_true',
-					   dest='list_reports', default=False,
-					   help='List names of available reports')
-	parser.add_option('-n', '--no-cleanup', action='store_true',
-					   dest='no_cleanup', default=False,
-					   help='do not remove the temporary LaTeX files (for debugging)')
-	parser.add_option('-c', '--config', action='store',
-					   dest='config', default='/etc/univention/directory/reports/config.ini',
-					   help='location of the configuration file [%default]')
-	parser.add_option('-d', '--debug', action='store', type='int',
-					   dest='debug', default=0,
-					   help='if given than debugging is activated and set to the specified level')
+	parser.add_option(
+		'-u', '--user', action='store',
+		dest='user', default=None, metavar='USERDN',
+		help='User-DN for simple LDAP access')
+	parser.add_option(
+		'-p', '--password', action='store',
+		dest='password', default=None,
+		help='Password for simple LDAP access')
+	parser.add_option(
+		'-H', '--header', action='store',
+		dest='header', default=None,
+		help='File containing the header for the report')
+	parser.add_option(
+		'-F', '--footer', action='store',
+		dest='footer', default=None,
+		help='file containing the footer for the report')
+	parser.add_option(
+		'-s', '--server', action='store',
+		dest='server', default=baseConfig.get('ldap/server/name', 'localhost'),
+		help='LDAP server [%default]')
+	parser.add_option(
+		'-b', '--base', action='store',
+		dest='base', default=baseConfig.get('ldap/base', ''),
+		help='LDAP base [%default]')
+	parser.add_option(
+		'-m', '--module', action='store',
+		dest='module', default=None,
+		help='admin module defining the report to generate')
+	parser.add_option(
+		'-r', '--report', action='store',
+		dest='report', default=cfg.default_report_name,
+		help='Name of the report to use [%default]')
+	parser.add_option(
+		'-l', '--list', action='store_true',
+		dest='list_reports', default=False,
+		help='List names of available reports')
+	parser.add_option(
+		'-n', '--no-cleanup', action='store_true',
+		dest='no_cleanup', default=False,
+		help='do not remove the temporary LaTeX files (for debugging)')
+	parser.add_option(
+		'-c', '--config', action='store',
+		dest='config', default='/etc/univention/directory/reports/config.ini',
+		help='location of the configuration file [%default]')
+	parser.add_option(
+		'-d', '--debug', action='store', type='int',
+		dest='debug', default=0,
+		help='if given than debugging is activated and set to the specified level')
 
 	(options, args) = parser.parse_args()
 
@@ -155,8 +167,7 @@ def main():
 		print >>sys.stderr, "error: no DNs specified on command line"
 		sys.exit(2)
 
-	udr.admin.connect(options.user, options.password, host=options.server,
-					   base=options.base, start_tls=0)
+	udr.admin.connect(options.user, options.password, host=options.server, base=options.base, start_tls=0)
 
 	try:
 		if options.header is None:

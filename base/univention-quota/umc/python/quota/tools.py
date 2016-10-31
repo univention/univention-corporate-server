@@ -50,9 +50,7 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 
 class UserQuota(dict):
 
-	def __init__(self, partition, user, bused, bsoft,
-	             bhard, btime, fused, fsoft,
-	             fhard, ftime):
+	def __init__(self, partition, user, bused, bsoft, bhard, btime, fused, fsoft, fhard, ftime):
 		self['id'] = '%s@%s' % (user, partition)
 		self['partitionDevice'] = partition
 		self['user'] = user
@@ -111,16 +109,13 @@ def repquota_parse(partition, output):
 		grp = matches.groupdict()
 		if not grp['user'] or grp['user'] == 'root':
 			continue
-		quota = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'],
-		                grp['bhard'], grp['btime'], grp['fused'],
-		                grp['fsoft'], grp['fhard'], grp['ftime'])
+		quota = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'], grp['bhard'], grp['btime'], grp['fused'], grp['fsoft'], grp['fhard'], grp['ftime'])
 		result.append(quota)
 	return result
 
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
-	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard),
-	       str(fsoft), str(fhard), partition)
+	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition)
 	return subprocess.call(cmd)
 
 
