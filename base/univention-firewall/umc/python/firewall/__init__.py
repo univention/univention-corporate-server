@@ -254,33 +254,17 @@ class Instance(umc.modules.Base):
 			else:
 				yield entry
 
-	@decorators.sanitize(sanitizers.DictSanitizer(
-		{u'object': sanitizers.DictSanitizer(
-		{u'identifier': sanitizers.StringSanitizer(required=True),
-					 u'protocol':
-						 sanitizers.ChoicesSanitizer((u'tcp', u'udp', ),
-						                             required=True),
-					 u'portStart':
-						 sanitizers.IntegerSanitizer(minimum=1,
-						                             maximum=2**16,
-						                             maximum_strict=True,
-						                             required=True),
-					 u'portEnd':
-						 sanitizers.IntegerSanitizer(minimum=1,
-						                             maximum=2**16,
-						                             maximum_strict=True,
-						                             required=True),
-					 u'addressType':
-						 sanitizers.ChoicesSanitizer((u'all', u'ipv4',
-						                              u'ipv6', u'specific', ),
-						                             required=True),
-					 u'addressValue':
-						 sanitizers.StringSanitizer(default=u''),
-					 u'action':
-						 sanitizers.ChoicesSanitizer((u'accept', u'reject',
-						                              u'drop', ),
-						                             required=True),
-					 }), }, required=True))
+	@decorators.sanitize(sanitizers.DictSanitizer({
+		u'object': sanitizers.DictSanitizer({
+			u'identifier': sanitizers.StringSanitizer(required=True),
+			 u'protocol': sanitizers.ChoicesSanitizer((u'tcp', u'udp', ), required=True),
+			 u'portStart': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+			 u'portEnd': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+			 u'addressType': sanitizers.ChoicesSanitizer((u'all', u'ipv4', u'ipv6', u'specific', ), required=True),
+			 u'addressValue': sanitizers.StringSanitizer(default=u''),
+			 u'action': sanitizers.ChoicesSanitizer((u'accept', u'reject', u'drop', ), required=True),
+		}),
+	}, required=True))
 	@decorators.multi_response
 	@decorators.log
 	def rules_put(self, iterator, object):

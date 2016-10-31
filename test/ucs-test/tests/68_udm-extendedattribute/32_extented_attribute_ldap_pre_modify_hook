@@ -47,7 +47,9 @@ class %s(univention.admin.hook.simpleHook):
 	with udm_test.UCSTestUDM() as udm:
 		udm.stop_cli_server()
 		cli_name = uts.random_string()
-		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+		udm.create_object(
+			'settings/extended_attribute',
+			position=udm.UNIVENTION_CONTAINER,
 			name=uts.random_name(),
 			shortDescription=uts.random_string(),
 			CLIName=cli_name,

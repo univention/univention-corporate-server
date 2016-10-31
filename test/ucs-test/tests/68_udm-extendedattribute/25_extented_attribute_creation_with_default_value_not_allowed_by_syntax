@@ -17,7 +17,9 @@ import univention.testing.strings as uts
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		try:
-			udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER,
+			udm.create_object(
+				'settings/extended_attribute',
+				position=udm.UNIVENTION_CONTAINER,
 				name=uts.random_name(),
 				shortDescription=uts.random_string(),
 				CLIName=uts.random_string(),
