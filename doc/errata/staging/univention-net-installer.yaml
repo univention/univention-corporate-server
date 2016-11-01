@@ -1,0 +1,9 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-net-installer
+fix: 9.0.1-3.33.201610282026
+desc: |
+ This update added French translations to the package.
+bug: [42326]
