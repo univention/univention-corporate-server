@@ -205,20 +205,21 @@
 					The &ucsUCRV; <envar>ldap/limits</envar> has been added to configure OpenLDAP server limits (<u:bug>34873</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The slapd backup cronjob can now be disabled by setting the &ucsUCRV; <envar>slapd/backup</envar> to
+					The slapd backup cron job can now be disabled by setting the &ucsUCRV; <envar>slapd/backup</envar> to
 					<envar>false</envar>.  The cron interval can be configured with the &ucsUCRV; <envar>slapd/backup/cron</envar>
 					(<u:bug>38679</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The ldap client paramaters <property>NETWORK_TIMEOUT</property>, <property>TIMEOUT</property> and
+					The ldap client parameters <property>NETWORK_TIMEOUT</property>, <property>TIMEOUT</property> and
 					<property>TIMELIMIT</property> can now be configured with the &ucsUCR; variables <envar>ldap/client/network_timeout</envar>,
 					<envar>ldap/client/timeout</envar> and <envar>ldap/client/timelimit</envar> (<u:bug>39307</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The index lines in the slapd.conf are now wrapped if the line is longer than 2048 characters (<u:bug>41648</u:bug>).
+					The index lines in the <filename>slapd.conf</filename> are now wrapped if the line is longer than 2048 characters
+					(<u:bug>41648</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The &ucsUCRV; <envar>ldap/index/quickmode</envar> has been added. If set to <envar>true</envar>, the LDAP reindex tool
+					The &ucsUCRV; <envar>ldap/index/quickmode</envar> has been added. If set to <envar>true</envar>, the LDAP re-index tool
 					(<command>ldap_setup_index</command>) is started in quick mode (fewer integrity checks, improved indexing time)
 					(<u:bug>41281</u:bug>).
 				</simpara></listitem>
@@ -279,7 +280,7 @@
 						For each changed LDAP entry the distinguished name is now logged with debug level PROCESS (<u:bug>41960</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						Several quoting problems in the init and runit scripts have been fixed (<u:bug>42328</u:bug>).
+						Several quoting problems in the init and <command>runit</command> scripts have been fixed (<u:bug>42328</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						Build-hardening and more warnings have been enabled for the compiler. Error handling and logging have been improved
@@ -318,8 +319,8 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The PAM unix configuration for password changes has been adjusted.  New passwords are stored with SHA512 instead of MD5.
-					Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
+				The PAM <property>unix</property> configuration for password changes has been adjusted. New passwords are stored with
+				SHA-512 instead of MD5.  Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -351,7 +352,7 @@
 					Apps may now specify packages that shall be installed depending on the server role of the system (<u:bug>42200</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The docker env file is now a &ucsUCR; template (<u:bug>42317</u:bug>).
+					The docker <filename>env</filename> file is now a &ucsUCR; template (<u:bug>42317</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					When upgrading from a Non-Docker App to a Docker App, Join scripts of the Docker version are run last
@@ -394,7 +395,7 @@
 					The ldap modlist hooks are now executed before sanitizing object classes (<u:bug>41899</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When deleting a computer object, the computer is now removed from the list of nameservers in its dns zone objects
+					When deleting a computer object, the computer is now removed from the list of name servers in its DNS zone objects
 					(<u:bug>37086</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -413,7 +414,7 @@
 					Fix a crash during validation in special DNS constellations (<u:bug>42179</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Use correct INI value for NotifyVendor information in <package>univention-app-appliance</package>
+					Use correct <wordasword>INI</wordasword> value for NotifyVendor information in <package>univention-app-appliance</package>
 					(<u:bug>42068</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -421,7 +422,7 @@
 					license file during an app appliance configuration  (<u:bug>42031</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					App appliances without a customized branding will show now the default UCS bootsplash instead of a black screen
+					App appliances without a customized branding will show now the default UCS boot splash instead of a black screen
 					(<u:bug>42165</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -429,7 +430,8 @@
 					installation and setup process has been improved (<u:bug>42095</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Software packages are no longer automatically cached when installing univention-system-setup-boot (<u:bug>42122</u:bug>).
+					Software packages are no longer automatically cached when installing <package>univention-system-setup-boot</package>
+					(<u:bug>42122</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Some typos have been corrected (<u:bug>42075</u:bug>).
@@ -670,7 +672,7 @@
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The pykota database is allowed to access localhost via IPv6 too (<u:bug>41915</u:bug>).
+					The PyKota database is allowed to access localhost via IPv6 too (<u:bug>41915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -719,8 +721,8 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Consecutive restarts of the Apache daemon could result in a race condition, as the pid file may be not available. A
-					short wait for the the Apache daemon pid file creation is introduced by this update (<u:bug>41781</u:bug>).
+					Consecutive restarts of the Apache daemon could result in a race condition, as the PID file may be not available. A
+					short wait for the the Apache daemon PID file creation is introduced by this update (<u:bug>41781</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -729,8 +731,8 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The PAM unix configuration for password changes has been adjusted. New passwords are stored with Sha512 instead of MD5.
-					Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
+					The PAM <property>unix</property> configuration for password changes has been adjusted. New passwords are stored with
+					SHA-512 instead of MD5. Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -751,9 +753,9 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The new &ucsUCRV; <envar>libvirt/group</envar> can be used to set the group membership of the UNIX domain socket of
-					libvirtd, which allows users of that group to access the management capabilities of libvirtd without becoming root
-					(<u:bug>42622</u:bug>).
+					The new &ucsUCRV; <envar>libvirt/group</envar> can be used to set the group membership of the UNIX domain socket of the
+					libvirt daemon, which allows users of that group to access the management capabilities of the libvirt daemon without
+					becoming root (<u:bug>42622</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -803,7 +805,7 @@
 					(<u:bug>42679</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Locking in the sysvol sync script has been improved (<u:bug>42475</u:bug>).
+					Locking in the SYSVOL sync script has been improved (<u:bug>42475</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					In case Samba 4 is installed only on a DC backup the re-join fails. The join script now checks if this system is
@@ -811,10 +813,11 @@
 					(<u:bug>39251</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The idmap database is now removed while re-joining the system. This reduces the re-join time (<u:bug>40511</u:bug>).
+					The <property>idmap</property> database is now removed while re-joining the system. This reduces the re-join time
+					(<u:bug>40511</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The following &ucsUCR; variables have been added to configure the winbind settings:
+					The following &ucsUCR; variables have been added to configure the Winbind settings:
 					<envar>samba/winbind/nested/groups</envar>, <envar>samba/winbind/rpc/only</envar>,
 					<envar>samba/winbind/max/clients</envar>, <envar>samba/winbind/enum/users</envar> and
 					<envar>samba/winbind/enum/groups</envar> (<u:bug>41767</u:bug>).
@@ -824,7 +827,7 @@
 					The join script now tries to join against the S4 Connector system first (<u:bug>30836</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The group DC Backup Hosts is now member of the group Enterprise Domain Controllers. This is needed for the sysvol
+					The group DC Backup Hosts is now member of the group Enterprise Domain Controllers. This is needed for the SYSVOL
 					replication in case Samba 4 is not installed on the DC master (<u:bug>41549</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -832,8 +835,8 @@
 					<package>univention-samba4</package> (<u:bug>29463</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The nagios check UNIVENTION_SAMBA_REPLICATION has been added to check the state of Samba DRS replication
-					(<u:bug>29463</u:bug>).
+					The Nagios check <command>UNIVENTION_SAMBA_REPLICATION</command> has been added to check the state of Samba DRS
+					replication (<u:bug>29463</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The slave PDC join script now updates some descriptions for the default users and groups. This avoids rejects if the
@@ -925,9 +928,9 @@
 				(<u:bug>42026</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The bind address of MySQL has been changed to 0.0.0.0 to accept connections from anywhere. However, univention-firewall
-				will reject most connections.  The Docker interface will be forwarded, giving container Apps from the App Center access
-				to MySQL (<u:bug>42307</u:bug>).
+				The bind address of MySQL has been changed to 0.0.0.0 to accept connections from anywhere. However,
+				<package>univention-firewall</package> will reject most connections.  The Docker interface will be forwarded, giving
+				container Apps from the App Center access to MySQL (<u:bug>42307</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				NFS home shares with names containing blanks are now also unmounted properly (<u:bug>32018</u:bug>).
@@ -946,7 +949,7 @@
 				the master connection to terminate (<u:bug>42476</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Handling of symlinks has been improved in <package>univention-skel</package> (<u:bug>42493</u:bug>).
+				Handling of symbolic links has been improved in <package>univention-skel</package> (<u:bug>42493</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The function <command>check_ldap_tls_connection</command> now uses <command>univention-ldapsearch</command> to better
