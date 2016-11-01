@@ -51,14 +51,20 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Das UCS-Managementsystem ist ab sofort auch in französischer Sprache verfügbar.
 			</para></listitem>
 			<listitem><para>
+				Samba wurde auf Version 4.5.1 aktualisiert. Dies umfasst diverse Verbesserungen, u.a. im Bereich der DRS-Replikation,
+				allgemein der Active Directory Kompatibilität, des File-Services und des Drucker-Handling.
 			</para></listitem>
 			<listitem><para>
+				Der Linux Kernel wurde auf den letzten stabilen 4.1er Longterm-Kernel aktualisiert. Dieser beinhaltet diverse
+				Sicherheitsaktualisierungen, Verbesserungen in der Stabilität, sowie neuere und aktualisierte Treiber für eine verbesserte
+				Hardware-Unterstützung.
 			</para></listitem>
 			<listitem><para>
-			</para></listitem>
-			<listitem><para>
+				Docker Apps können nun über eine einfache Konfigurationseinstellung die Datenbank auf dem Host-System verwenden,
+				wodurch u.a. eine Migration der Docker Apps vereinfacht wird.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
