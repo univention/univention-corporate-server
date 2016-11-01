@@ -85,6 +85,7 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 # The variables are removed in during cleanup
 /usr/share/univention-updater/disable-apache2-umc --exclude-apache
 # Do not change apache certificate when installing via debian installer
+eval "$(univention-config-registry shell)"
 if [ "$system_setup_boot_installer" != "true" ]; then
 	certificate="$(mktemp)"
 	key="$(mktemp)"
