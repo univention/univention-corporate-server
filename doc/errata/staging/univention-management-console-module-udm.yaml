@@ -3,11 +3,14 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-management-console-module-udm
-fix: 6.0.11-27.664.201610181835
+fix: 6.0.11-29.666.201611011325
 desc: |
  This update addresses the following issues:
  * The UMC modules don't crash anymore if the UCR variable
    'directory/manager/web/sizelimit' is empty.
  * DHCP Pools may now be created underneath of shared subnets.
  * DHCP Pools may now be created via the DHCP UMC module.
-bug: [39588, 40649, 42177]
+ * When adding objects the Container widget is not shown anymore if a
+   superoridnate is selected as these objects are created underneath of
+   the superordinate.
+bug: [39588, 40649, 42177, 26133]
