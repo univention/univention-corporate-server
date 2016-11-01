@@ -107,6 +107,22 @@ define([
 		}
 	});
 
+	var SuperordinateObjectTypeWidget = declare("umc.modules.udm.SuperordinateObjectTypeWidget", HiddenInput, {
+		udm: null,
+		_getValueAttr: function() {
+			if (!this.udm._tree) {
+				return;
+			}
+			var path = lang.clone(this.udm._tree.get('path'));
+			while (path.length) {
+				var item = path.pop();
+				if (item.$isSuperordinate$) {
+					return item.objectType;
+				}
+			}
+		}
+	});
+
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -716,7 +732,12 @@ define([
 				});
 				layout[0].push('superordinate');
 				//objTypeDependencies.push('superordinate');  // FIXME: HiddenInput doesn't support to be dependency
-				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
+				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
+				widgets.push({
+					type: SuperordinateObjectTypeWidget,
+					udm: this,
+					name: 'superordinateObjectType'
+				});
 			} else if (containers && containers.length) {
 				// containers...
 				containers.unshift({ id: 'all', label: _( 'All containers' ) });
@@ -1548,6 +1569,7 @@ define([
 			// when we are in navigation mode, make sure the user has selected a container
 			var selectedContainer = { id: '', label: '', path: '' };
 			var superordinate = this._searchForm.getWidget('superordinate');
+			var superordinateObjectType = this._searchForm.getWidget('superordinateObjectType').get('value');
 			superordinate = superordinate && superordinate.get('value') || null;
 
 			if ('navigation' == this.moduleFlavor) {
@@ -1570,6 +1592,7 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				moduleCache: cache.get(this.moduleFlavor),
 				selectedContainer: selectedContainer,
+				selectedSuperordinateObjectType: superordinateObjectType,
 				selectedSuperordinate: superordinate,
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
 				objectNamePlural: this.objectNamePlural,
