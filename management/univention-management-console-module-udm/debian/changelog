@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-30) unstable; urgency=medium
+
+  * Bug #42177: always use the selected object in the tree as superordinate
+
+ -- Florian Best <best@univention.de>  Tue, 01 Nov 2016 16:46:03 +0100
+
 univention-management-console-module-udm (6.0.11-29) unstable; urgency=medium
 
   * Bug #26133: don't display container widget if no container is selectable

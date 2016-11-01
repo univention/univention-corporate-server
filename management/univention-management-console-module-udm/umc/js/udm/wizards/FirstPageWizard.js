@@ -286,112 +286,28 @@ define([
 
 
 		_getOptionSelectionPage: function() {
-			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates = lang.clone(this.templates);
-			// depending on the list we get, create a form for adding
-			// a new LDAP object
 			var widgets = [];
 			var layout = [];
+			var templates = lang.clone(this.templates);
 
-			if ('navigation' != this.moduleFlavor) {
-				// we need the container in any case
+			if (this.selectedSuperordinate && this.selectedSuperordinate.id) {
+				// we have superordinates
 				widgets.push({
-					type: 'ComboBox',
-					name: 'container',
-					label: _('Container'),
-					description: _('The container in which the LDAP object shall be created.'),
-					autoHide: true,
-					depends: superordinates.length ? 'superordinate' : undefined,
-					dynamicValues: function(options) {
-						var deferred = new Deferred();
-						var values = [];
-						if (!options.superordinate || options.superordinate == 'None') {
-							values = containers;
-						}
-						deferred.resolve(values);
-						return deferred;
-					},
-					size: 'Two'
+					type: 'HiddenInput',
+					name: 'superordinate',
+					value: this.selectedSuperordinate.id
+				}, {
+					type: 'Text',
+					name: 'superordinate_help',
+					content: _('<p>The LDAP object will be created underneath of <i>%s</i></p>', this.selectedContainer.path || this.selectedSuperordinate.label)
 				});
-				layout.push('container');
+				layout.push('superordinate', 'superordinate_help');
+			}
 
-				if (superordinates.length) {
-					// we have superordinates
-					widgets.push({
-						type: 'ComboBox',
-						name: 'superordinate',
-						label: _('Superordinate'),
-						description: _('The corresponding superordinate for the LDAP object.'),
-						staticValues: array.map(superordinates, function(superordinate) {
-							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
-						}),
-						autoHide: true,
-						value: this.selectedSuperordinate,
-						size: 'Two'
-					}, {
-						type: 'ComboBox',
-						name: 'objectType',
-						label: _('Type'),
-						value: this.defaultObjectType,
-						description: _('The exact object type of the new LDAP object.'),
-						umcpCommand: this.umcpCommand,
-						dynamicValues: lang.hitch(this, function(options) {
-							return this.moduleCache.getChildModules(options.superordinate, null, true);
-						}),
-						depends: 'superordinate',
-						size: 'Two'
-					});
-					layout.unshift('superordinate');
-					layout.push('objectType');
-				} else {
-					// no superordinates
-					// object types
-					if (types.length) {
-						widgets.push({
-							type: 'ComboBox',
-							name: 'objectType',
-							value: this.defaultObjectType,
-							label: _('Type'),
-							description: _('The exact object type of the new LDAP object.'),
-							visible: types.length > 1,
-							staticValues: types,
-							size: 'Two'
-						});
-						layout.push('objectType');
-					}
-
-					// templates
-					if (templates.length) {
-						var initialValue = this.defaultObjectType;
-						var defaultValue = null;
-						if (initialValue) {
-							var match = array.filter(templates, function(ielement) {
-								return ielement.id == initialValue ||
-									ielement.label.toLowerCase() == initialValue.toLowerCase();
-							});
-							if (match.length) {
-								defaultValue = match[0].id;
-							}
-						}
-						if (!defaultValue) {
-							defaultValue = templates[0].id;
-						}
-						templates.unshift({ id: 'None', label: _('None') });
-						widgets.push({
-							type: 'ComboBox',
-							name: 'objectTemplate',
-							value: defaultValue,  // see Bug #13073, for users/user, there exists only one object type
-							label: _('%s template', tools.capitalize(this.objectNameSingular)),
-							description: _('A template defines rules for default object properties.'),
-							autoHide: true,
-							staticValues: templates,
-							size: 'Two'
-						});
-						layout.push('objectTemplate');
-					}
-				}
-			} else {
-				// for the navigation, we show all elements and let them query their content automatically
-				widgets = [{
+			var selectedContainer = this.selectedContainer && this.selectedContainer.id;
+			if (selectedContainer) {
+				// a container is already selected in a tree
+				widgets.push({
 					type: 'HiddenInput',
 					name: 'container',
 					value: this.selectedContainer.id
@@ -399,29 +315,84 @@ define([
 					type: 'Text',
 					name: 'container_help',
 					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path || this.selectedContainer.label)
-				}, {
+				});
+				layout.push('container');
+				if (!(~array.indexOf(layout, 'superordinate_help'))) {
+					layout.push('container_help');
+				}
+			} else {
+				// we need to select a container from default containers
+				widgets.push({
 					type: 'ComboBox',
-					name: 'objectType',
-					label: _('Type'),
-					description: _('The exact object type of the new LDAP object.'),
-					visible: types.length > 1,
-					staticValues: types,
-					size: 'Two'
-				}, {
-					type: 'ComboBox',
-					name: 'objectTemplate',
-					label: _('%s template', tools.capitalize(this.objectNameSingular)),
-					description: _('A template defines rules for default object properties.'),
-					depends: 'objectType',
-					umcpCommand: this.umcpCommand,
-					dynamicValues: lang.hitch(this, function(options) {
-						return this.moduleCache.getTemplates(options.objectType);
-					}),
-					staticValues: [ { id: 'None', label: _('None') } ],
+					name: 'container',
+					label: _('Container'),
+					description: _('The container in which the LDAP object shall be created.'),
 					autoHide: true,
+					dynamicValues: lang.hitch(this, function() {
+						return this.moduleCache.getContainers().then(function(result) {
+							result.sort(tools.cmpObjects('label'));
+							return array.filter(result, function(icontainer) {
+								return icontainer.id !== 'all';
+							});
+						});
+					}),
 					size: 'Two'
-				}];
-				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
+				});
+				layout.push('container');
+			}
+
+			// object types
+			widgets.push({
+				type: 'ComboBox',
+				name: 'objectType',
+				value: this.defaultObjectType,
+				label: _('Type'),
+				description: _('The exact object type of the new LDAP object.'),
+				autoHide: true,
+				depends: selectedContainer ? [] : ['container'/*, 'superordinate'*/],
+				dynamicValues: lang.hitch(this, function() {
+					var containerWidget = this.getWidget('firstPage', 'container');
+					var superordinateWidget = this.getWidget('firstPage', 'superordinate');
+					var container = containerWidget && containerWidget.get('value') || null;
+					var superordinate = superordinateWidget && superordinateWidget.get('value') || null;
+					if (!superordinate && (this.moduleFlavor == 'dhcp/dhcp' || this.moduleFlavor == 'dns/dns')) {
+						superordinate = 'None';
+					}
+					if (superordinate) {
+						container = null;
+					}
+					return this.moduleCache.getChildModules(superordinate, container, true).then(function(result) {
+						result.sort(tools.cmpObjects('label'));
+						return result;
+					});
+				}),
+				size: 'Two'
+			});
+			layout.push('objectType');
+
+			// templates
+			widgets.push({
+				type: 'ComboBox',
+				name: 'objectTemplate',
+				label: _('%s template', tools.capitalize(this.objectNameSingular)),
+				description: _('A template defines rules for default object properties.'),
+				value: this.defaultTemplate,
+				depends: 'objectType',
+				autoHide: true,
+				umcpCommand: this.umcpCommand,
+				dynamicValues: lang.hitch(this, function(options) {
+					return this.moduleCache.getTemplates(options.objectType).then(function(result) {
+						result.sort(tools.cmpObjects('label'));
+						return result;
+					});
+				}),
+				staticValues: [{id: 'None', label: _('None')}],
+				size: 'Two'
+			});
+			layout.push('objectTemplate');
+
+			if (this.moduleFlavor === 'navigation') {
+				layout = ['container', 'container_help', 'objectType', 'objectTemplate'];
 			}
 
 			return {

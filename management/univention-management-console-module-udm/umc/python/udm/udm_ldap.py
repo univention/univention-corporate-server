@@ -805,32 +805,6 @@ class UDM_Module(object):
 	def superordinate_names(self):
 		return udm_modules.superordinate_names(self.module)
 
-	def superordinates(self, container=None):
-		"""List of superordinates"""
-		modules = getattr(self.module, 'wizardsuperordinates', [])
-		superordinates = []
-		for mod in modules:
-			if mod == 'None':
-				superordinates.append({'id': mod, 'label': _('None')})
-			else:
-				module = UDM_Module(mod)
-				if not module:
-					continue
-				for obj in module.search(container, superordinate=None):
-					superordinates.append({
-						'id': obj.dn,
-						'label': obj[module.identifies],
-						'title': module.title,
-						'icon': 'udm-%s' % module.name.replace('/', '-'),
-						'objectType': module.name,
-						'$operations$': module.operations,
-						'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-						'$childs$': module.childs,
-						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
-					})
-
-		return superordinates
-
 	@property
 	def policies(self):
 		"""Searches in all policy objects for the given object type and
