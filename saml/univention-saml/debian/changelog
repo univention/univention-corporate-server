@@ -1,6 +1,12 @@
+univention-saml (4.0.0-7) unstable; urgency=medium
+
+  * Bug #41187: update .mo file
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2016 13:39:27 +0100
+
 univention-saml (4.0.0-6) unstable; urgency=medium
 
-  * Bug 41187: fix module description translation
+  * Bug #41187: fix module description translation
 
  -- Eduard Mai <mai@univention.de>  Wed, 19 Oct 2016 18:49:30 +0200
 
