@@ -340,7 +340,16 @@ define([
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
 					autoHide: true,
-					staticValues: containers,
+					depends: superordinates.length ? 'superordinate' : undefined,
+					dynamicValues: function(options) {
+						var deferred = new Deferred();
+						var values = [];
+						if (!options.superordinate || options.superordinate == 'None') {
+							values = containers;
+						}
+						deferred.resolve(values);
+						return deferred;
+					},
 					size: 'Two'
 				});
 				layout.push('container');
@@ -371,7 +380,8 @@ define([
 						depends: 'superordinate',
 						size: 'Two'
 					});
-					layout.push('superordinate', 'objectType');
+					layout.unshift('superordinate');
+					layout.push('objectType');
 				} else {
 					// no superordinates
 					// object types
