@@ -202,6 +202,38 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The &ucsUCRV; <envar>ldap/limits</envar> has been added to configure OpenLDAP server limits (<u:bug>34873</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The slapd backup cronjob can now be disabled by setting the &ucsUCRV; <envar>slapd/backup</envar> to
+					<envar>false</envar>.  The cron interval can be configured with the &ucsUCRV; <envar>slapd/backup/cron</envar>
+					(<u:bug>38679</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The ldap client paramaters <property>NETWORK_TIMEOUT</property>, <property>TIMEOUT</property> and
+					<property>TIMELIMIT</property> can now be configured with the &ucsUCR; variables <envar>ldap/client/network_timeout</envar>,
+					<envar>ldap/client/timeout</envar> and <envar>ldap/client/timelimit</envar> (<u:bug>39307</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The index lines in the slapd.conf are now wrapped if the line is longer than 2048 characters (<u:bug>41648</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>ldap/index/quickmode</envar> has been added. If set to <envar>true</envar>, the LDAP reindex tool
+					(<command>ldap_setup_index</command>) is started in quick mode (fewer integrity checks, improved indexing time)
+					(<u:bug>41281</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The directory logger now handles logging of entries with missing LDAP operational attributes (<u:bug>25404</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The robustness of logging deleted entries has been fixed in the directory logger (<u:bug>34916</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The logging of binary values using base64 has been improved in the directory logger (<u:bug>34420</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>ldap/logging/dellogdir</envar> now has a description and the value of the &ucsUCRV;
+					<envar>ldap/logging</envar> is interpreted as a boolean (<u:bug>42665</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -225,6 +257,37 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+						LDAP entries were not removed correctly, if they were moved to a location filtered by LDAP access control. In that case
+						the Univention Directory Listener modules registered for those entries were not called or called twice
+						(<u:bug>42029</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						When objects were moved to a subtree protected by LDAP access control lists, the listener modules using modrdn='1' were
+						only called once with the original command='r' to signal the first phase of the move operation. They were not called
+						again for the second phase with command='a' as the Listener cache entry was already deleted during the first phase and
+						the modules were no longer associated with that entry. The Listener now calls the modules with command='d' to signal a
+						deletion (<u:bug>32685</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The Listener now checks the file system for enough free space and aborts, if too few is available. The default of 10 MiB
+						can be changed through the new &ucsUCRV; <envar>listener/freespace</envar> (<u:bug>42573</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+ 						The Listener now writes the state of each handler just after initialization (<u:bug>41842</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						For each changed LDAP entry the distinguished name is now logged with debug level PROCESS (<u:bug>41960</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Several quoting problems in the init and runit scripts have been fixed (<u:bug>42328</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Build-hardening and more warnings have been enabled for the compiler. Error handling and logging have been improved
+						(<u:bug>42701</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						On 32 bit architectures calculating the remaining free space could result into an overflow error, which terminates the
+						Listener. This has been fixed (<u:bug>42725</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -246,6 +309,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Wildcard and automatic substring searches are now configurable via &ucsUCR; (<u:bug>42388</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -254,6 +318,8 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The PAM unix configuration for password changes has been adjusted.  New passwords are stored with SHA512 instead of MD5.
+					Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -262,6 +328,53 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The App Center can now create a database for an App if it wishes so. It is useful for Docker Apps as the database is
+					created outside the container (<u:bug>40857</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The web interface links for Docker Apps without automatic Apache integration have been fixed (<u:bug>41626</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If needed, Docker Apps may now get read-only access to the Host's certificate (<u:bug>42016</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some typos have been corrected in the App Center (<u:bug>42157</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The configuration for Docker Apps have been improved (<u:bug>42401</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Where appropriate, the App Center packages now depend on other App Center packages with explicit versions. This prevents
+					errors in case one package failed to install (<u:bug>42362</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Apps may now specify packages that shall be installed depending on the server role of the system (<u:bug>42200</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The docker env file is now a &ucsUCR; template (<u:bug>42317</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When upgrading from a Non-Docker App to a Docker App, Join scripts of the Docker version are run last
+					(<u:bug>42498</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fixed automatically deleting files that Non-Docker Apps do not have in their App repository, but instead are installed
+					as part of their packages (<u:bug>42485</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Database packages are marked as user installed when a Docker App has database integration (<u:bug>42488</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fixed handling of App Settings for Docker Apps that do not use a UCS based container (<u:bug>42527</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If a Docker version of an App is released, but a Non-Docker version is installed, this version is not shown (and not
+					installable) by default. If the App Center is used from a different system, an update is shown, though.  This display
+					issue has been fixed (<u:bug>42713</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The initialization of all Apps could result in a traceback for Apps with a certain version history. This issue has been
+					fixed (<u:bug>41992</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -270,6 +383,25 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Attribute names with <wordasword>;binary</wordasword> suffix are now considered when sanitizing object classes
+					(<u:bug>41824</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A regression has been fixed which caused that the value 0 was written to the LDAP entry for extended attributes with
+					boolean syntax (<u:bug>41829</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The ldap modlist hooks are now executed before sanitizing object classes (<u:bug>41899</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When deleting a computer object, the computer is now removed from the list of nameservers in its dns zone objects
+					(<u:bug>37086</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some typos have been corrected (<u:bug>42156</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Error messages regarding attribute locking have been improved (<u:bug>42386</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -279,6 +411,38 @@
 			<itemizedlist>
 				<listitem><simpara>
 					Fix a crash during validation in special DNS constellations (<u:bug>42179</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Use correct INI value for NotifyVendor information in <package>univention-app-appliance</package>
+					(<u:bug>42068</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The console login message is now deactivated during the fast demo mode. This corrects problems when uploading the
+					license file during an app appliance configuration  (<u:bug>42031</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					App appliances without a customized branding will show now the default UCS bootsplash instead of a black screen
+					(<u:bug>42165</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The interoperability of older UCS installation images or appliances with an update to the latest UCS version during the
+					installation and setup process has been improved (<u:bug>42095</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Software packages are no longer automatically cached when installing univention-system-setup-boot (<u:bug>42122</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some typos have been corrected (<u:bug>42075</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A missing package dependency has been added (<u:bug>41920</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					During DVD installation the packages are now installed directly from the DVD, instead of being copied to the disk
+					beforehand (<u:bug>42402</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Initialize updater/identify from ISO image metadata (<u:bug>42483</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -416,9 +580,18 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The Updater was adapted for UCS 4.1-4 (<u:bug>42655</u:bug>).
+				The Updater has been adapted for UCS 4.1-4 (<u:bug>42655</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				The tool <command>univention-upgrade</command> no longer fails if searching for new apps fails, e.g. because of network
+				errors (<u:bug>41869</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Some typos in links addresses have been corrected (<u:bug>42076</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A check for a valid APT sources list has been added before updating the Packages files or performing package maintenance
+				(<u:bug>42450</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 
@@ -443,6 +616,10 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The parsing of LDAP bind credentials for UDM in <filename>umc.sh</filename> has been fixed (<u:bug>24758</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Variables in <filename>umc.sh</filename> are now declared local to not clobber global variables (<u:bug>24758</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -470,6 +647,13 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A new &ucsUCRV; <envar>mail/postfix/myorigin</envar> has been introduced, that allows to set Postfix'
+					<property>myorigin</property> variable (see <ulink url="http://www.postfix.org/postconf.5.html#myorigin"/>). The default
+					value is the fully qualified domain name (FQDN) (<u:bug>32572</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					In some situations Dovecot was not properly configured after the initial installation. This has been fixed
+					(<u:bug>42032</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -486,6 +670,7 @@
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The pykota database is allowed to access localhost via IPv6 too (<u:bug>41915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -534,6 +719,8 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Consecutive restarts of the Apache daemon could result in a race condition, as the pid file may be not available. A
+					short wait for the the Apache daemon pid file creation is introduced by this update (<u:bug>41781</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -542,6 +729,8 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The PAM unix configuration for password changes has been adjusted. New passwords are stored with Sha512 instead of MD5.
+					Changing empty passwords is not allowed anymore (<u:bug>42103</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -562,6 +751,9 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The new &ucsUCRV; <envar>libvirt/group</envar> can be used to set the group membership of the UNIX domain socket of
+					libvirtd, which allows users of that group to access the management capabilities of libvirtd without becoming root
+					(<u:bug>42622</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -579,6 +771,16 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Quoting issues to support App installations with versions containing spaces have been fixed (<u:bug>42602</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When upgrading the underlying container, all available release updates are installed in one run (<u:bug>42603</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Abort installation if the App is not found instead of doing nothing (<u:bug>39803</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The MySQL port is no longer blocked for Docker containers (<u:bug>42117</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
@@ -589,16 +791,61 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-						<application>Samba</application> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
+					<application>Samba</application> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<command>samba-tool ntacl sysvolcheck</command> has been fixed (<u:bug>39633</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The <filename>smb.conf</filename> parameters <property>security mask</property>, <property>directory security mask</property>,
-						<property>force security mode</property>, <property>force directory security mode</property> are not written
-						to <application>Samba</application> share definitions any longer, because <application>Samba</application> removed support for them
-						(<u:bug>42679</u:bug>).
+					The <filename>smb.conf</filename> parameters <property>security mask</property>, <property>directory security mask</property>,
+					<property>force security mode</property>, <property>force directory security mode</property> are not written
+					to <application>Samba</application> share definitions any longer, because <application>Samba</application> removed support for them
+					(<u:bug>42679</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Locking in the sysvol sync script has been improved (<u:bug>42475</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					In case Samba 4 is installed only on a DC backup the re-join fails. The join script now checks if this system is
+					configured as S4 connector system and re-initialized the system. In this case all other Samba 4 DCs need to be re-joined
+					(<u:bug>39251</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The idmap database is now removed while re-joining the system. This reduces the re-join time (<u:bug>40511</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The following &ucsUCR; variables have been added to configure the winbind settings:
+					<envar>samba/winbind/nested/groups</envar>, <envar>samba/winbind/rpc/only</envar>,
+					<envar>samba/winbind/max/clients</envar>, <envar>samba/winbind/enum/users</envar> and
+					<envar>samba/winbind/enum/groups</envar> (<u:bug>41767</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It is possible that Samba 4 joins against another DC and not against the master. This could led to different problems.
+					The join script now tries to join against the S4 Connector system first (<u:bug>30836</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The group DC Backup Hosts is now member of the group Enterprise Domain Controllers. This is needed for the sysvol
+					replication in case Samba 4 is not installed on the DC master (<u:bug>41549</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-nagios-samba</package> has been added to the list of recommended packages for
+					<package>univention-samba4</package> (<u:bug>29463</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The nagios check UNIVENTION_SAMBA_REPLICATION has been added to check the state of Samba DRS replication
+					(<u:bug>29463</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The slave PDC join script now updates some descriptions for the default users and groups. This avoids rejects if the
+					Univention S4 Connector is not installed on the DC master in a distributed UCS@school environment
+					(<u:bug>36831</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The slave PDC host account is now demoted from the central Samba in a distributed UCS@school environment
+					(<u:bug>41168</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The school OU was not defined while joining a new Windows client. This issue has been fixed (<u:bug>41765</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -618,6 +865,10 @@
 					The S4-Connector has been adjusted to use the tombstone reanimation feature of Samba 4.5.1 (<u:bug>42120</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The S4-Connector didn't synchronize TXT records. This issue has been fixed (<u:bug>41006</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The performance of the S4 connector when handling many objects has been improved (<u:bug>41999</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -626,6 +877,24 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Active Directory connector didn't support synchronization of groups with more than 1500 members. This issue has been
+					fixed (<u:bug>41248</u:bug>, (<u:bug>41744</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package dependency to the master and backup server role packages has been removed (<u:bug>41682</u:bug>,
+					(<u:bug>42489</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The sync mode can now be configured through Univention Configuration Registry variables for users, groups and containers
+					separately (<u:bug>41685</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The ignored subtrees can now be configured through the &ucsUCRV; <envar>connector/ad/mapping/ignoresubtree/*</envar>
+					(<u:bug>41680</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Moving an object to a non-readable LDAP position resulted to a wrong move. This issue has been fixed
+					(<u:bug>41938</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -635,7 +904,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The command line parameter <wordasword>-skipAdMemberMode</wordasword> has been added to 
+				The command line parameter <wordasword>-skipAdMemberMode</wordasword> has been added to
 				<package>univention-join</package> to skip the ad member mode configuration (<u:bug>40611</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -650,6 +919,38 @@
 				<package>univention-docker-container-mode</package> now by default skips the version
 				check when joining the domain. This allows the installation of Docker Apps that have
 				a higher UCS version than the host (<u:bug>42735</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-mysql</package> has been added to the list of maintained packages
+				(<u:bug>42026</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The bind address of MySQL has been changed to 0.0.0.0 to accept connections from anywhere. However, univention-firewall
+				will reject most connections.  The Docker interface will be forwarded, giving container Apps from the App Center access
+				to MySQL (<u:bug>42307</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				NFS home shares with names containing blanks are now also unmounted properly (<u:bug>32018</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Several bugs have been fixed in <package>univention-home-mounter</package> which could lead to the root file system
+				being filled with temporary files (<u:bug>42491</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Typos have been corrected in various packages (<u:bug>42162</u:bug>, <u:bug>42077</u:bug>, <u:bug>42069</u:bug>,
+				<u:bug>42070</u:bug>, <u:bug>42164</u:bug>, <u:bug>42161</u:bug>, <u:bug>42073</u:bug>, <u:bug>42071</u:bug>,
+				<u:bug>42159</u:bug>, <u:bug>42163</u:bug>, <u:bug>42078</u:bug>, <u:bug>42160</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				SSH connection multiplexing is now disabled in <package>univention-ssh</package>, as processes can get stuck waiting for
+				the master connection to terminate (<u:bug>42476</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Handling of symlinks has been improved in <package>univention-skel</package> (<u:bug>42493</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The function <command>check_ldap_tls_connection</command> now uses <command>univention-ldapsearch</command> to better
+				handle LDAP server restarts while joining (<u:bug>42420</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
