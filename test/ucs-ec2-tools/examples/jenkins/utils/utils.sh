@@ -336,6 +336,7 @@ install_ucsschool ()
 			univention-install --yes ucs-school-umc-installer
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
+			echo "ucsschool" >> /var/cache/appcenter-installed.txt
 			;;
 	esac
 
