@@ -299,7 +299,7 @@ define([
 				}, {
 					type: 'Text',
 					name: 'superordinate_help',
-					content: _('<p>The LDAP object will be created underneath of <i>%s</i></p>', this.selectedContainer.path || this.selectedSuperordinate.label)
+					content: _('<p>The LDAP object will be created underneath of <i>%s</i>.</p>', this.selectedContainer.path || this.selectedSuperordinate.label)
 				});
 				layout.push('superordinate', 'superordinate_help');
 			}
