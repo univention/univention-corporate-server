@@ -55,7 +55,7 @@
 			</para></listitem>
 			<listitem><para>
 				Samba has been updated to version 4.5.1. This includes various improvements,
-				amoung other things the DRS replication, the Active Directory compatibility,
+				among other things the DRS replication, the Active Directory compatibility,
 				the file services and the printer handling.
 			</para></listitem>
 			<listitem><para>
@@ -64,7 +64,7 @@
 				stability, as well as newer and updated drivers for a better hardware support.
 			</para></listitem>
 			<listitem><para>
-				Docker Apps can now use the database on the host system using a simple configuration
+				Docker Apps can now use the database on the UCS system using a simple configuration
 				setting, which simplifies the migration of Docker Apps.
 			</para></listitem>
 		</itemizedlist>
