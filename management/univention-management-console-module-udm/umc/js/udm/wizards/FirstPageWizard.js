@@ -339,7 +339,7 @@ define([
 					name: 'container',
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
-					visible: containers.length > 1,
+					autoHide: true,
 					staticValues: containers,
 					size: 'Two'
 				});
@@ -355,7 +355,7 @@ define([
 						staticValues: array.map(superordinates, function(superordinate) {
 							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
 						}),
-						visible: superordinates.length > 1,
+						autoHide: true,
 						value: this.selectedSuperordinate,
 						size: 'Two'
 					}, {

@@ -38,10 +38,11 @@ define([
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
 	"umc/tools",
+	"umc/modules/udm/cache",
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/modules/udm/NotificationText",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, NotificationText, _) {
+], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, NotificationText, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -115,6 +116,7 @@ define([
 			if ('navigation' !== this.moduleFlavor) {
 				// query the necessary elements to display the add-dialog correctly
 				var superordinate = this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null;
+				var superordinates = (this.selectedSuperordinateObjectType ? cache.get(this.selectedSuperordinateObjectType) : this.moduleCache).getSuperordinates(superordinate);
 				all({
 					types: this.moduleCache.getChildModules(superordinate, null, true),
 					containers: this.moduleCache.getContainers().then(function(result) {
@@ -122,7 +124,7 @@ define([
 							return icontainer.id !== 'all';
 						});
 					}),
-					superordinates: this.moduleCache.getSuperordinates(superordinate),
+					superordinates: superordinates,
 					templates: this.moduleCache.getTemplates()
 				}).then(lang.hitch(this, function(results) {
 					var types = lang.getObject('types', false, results) || [];
@@ -161,7 +163,8 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				umcpCommand: this.umcpCommand,
 				selectedContainer: this.selectedContainer,
-				selectedSuperordinate: this.selectedSuperordinate
+				selectedSuperordinate: this.selectedSuperordinate,
+				selectedSuperordinateObjectType: this.selectedSuperordinateObjectType
 			});
 
 			this._preWizard.canContinue().then(lang.hitch(this, function() {
