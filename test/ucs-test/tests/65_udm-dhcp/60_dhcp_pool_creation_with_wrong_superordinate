@@ -4,14 +4,10 @@
 ## roles: [domaincontroller_master]
 ## bugs: [13817, 31518]
 ## exposure: careful
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
 ## versions:
 ##  3.1-1: skip
+##  4.1-4: fixed
 
-
-import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -23,6 +19,6 @@ if __name__ == '__main__':
 		try:
 			udm.create_object('dhcp/pool', name=uts.random_string(), range='10.20.30.1 10.20.30.154', superordinate=dhcpService)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
-
-		utils.fail('UDM did not report an error while trying to create a dhcp/pool with DHCP service as superordinate')
+			pass
+		else:
+			utils.fail('UDM did not report an error while trying to create a dhcp/pool with DHCP service as superordinate')
