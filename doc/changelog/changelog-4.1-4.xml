@@ -445,6 +445,9 @@
 				<listitem><simpara>
 					Initialize updater/identify from ISO image metadata (<u:bug>42483</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Added french translations to the package di-univention-system-setup (<u:bug>42325</u:bug>)._
+				<listitem><simpara>
 			</itemizedlist>
 		</section>
 
