@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-01 14:33+0200\n"
+"POT-Creation-Date: 2016-11-01 13:38+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <damrose@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -16,16 +16,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:41
+#: modules/univention/admin/handlers/saml/serviceprovider.py:40
 msgid "SAML service provider"
 msgstr "SAML service provider"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:42
+#: modules/univention/admin/handlers/saml/serviceprovider.py:41
 msgid ""
 "Management of service provider configurations for the SAML identity provider."
 msgstr ""
 "Verwalten Service Provider Konfigurationseinträgen des SAML Identity "
 "Providers."
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:44
+#, python-format
+msgid ""
+"You can download the public certificate for this identity provider at %s."
+msgstr ""
+"Das öffentliche Zertifikat dieses Identity Provider kann unter %s "
+"heruntergeladen werden."
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:50
 msgid "Service provider activation status"
@@ -57,7 +65,10 @@ msgid "Respond to this service provider URL after login"
 msgstr "Antwort an diese Service Provider URL nach dem Login"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:72
-msgid "The URL(s) of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon successful authentication. Example: https://sp.example.com/login"
+msgid ""
+"The URL(s) of the AssertionConsumerService endpoints for this SP. Users will "
+"be redirected to the URL upon successful authentication. Example: https://sp."
+"example.com/login"
 msgstr ""
 "Die URL(s) der AssertionConsumerService Endpunkte dieses Service Providers. "
 "Benutzer werden nach erfolgreicher Authentifizierung an diese URL "
@@ -163,26 +174,34 @@ msgstr "Single logout URL des Service Providers"
 msgid "The URL of the SingleLogoutService endpoint for this service provider"
 msgstr "Die URL des SingleLogoutService Endpunktes dieses Service Providers"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:175
+#: modules/univention/admin/handlers/saml/serviceprovider.py:173
+msgid "XML metadata"
+msgstr ""
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:174
+msgid ""
+"Raw XML metadata of the service provider to extend the simplesamlphp "
+"configuration."
+msgstr ""
+"XML Meta-Daten des Service Providers in Rohform zur Erweiterung der Konfiguration von simplesamlphp."
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:185
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:175
+#: modules/univention/admin/handlers/saml/serviceprovider.py:185
 msgid "Basic Settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:177
+#: modules/univention/admin/handlers/saml/serviceprovider.py:187
 msgid "SAML service provider basic settings"
 msgstr "SAML Service Provider Grundeinstellungen"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:185
-#: modules/univention/admin/handlers/saml/serviceprovider.py:187
+#: modules/univention/admin/handlers/saml/serviceprovider.py:198
+#: modules/univention/admin/handlers/saml/serviceprovider.py:200
 msgid "Extended Settings"
 msgstr "Weitere Einstellungen"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:185
+#: modules/univention/admin/handlers/saml/serviceprovider.py:198
 msgid "Additional configuration options"
 msgstr "Zusätzliche Konfigurationsoptionen"
-
-msgid "You can download the public certificate for this identity provider at %s."
-msgstr "Das öffentliche Zertifikat dieses Identity Provider kann unter %s heruntergeladen werden."
