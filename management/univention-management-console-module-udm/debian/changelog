@@ -1,5 +1,6 @@
 univention-management-console-module-udm (7.0.1-13) unstable; urgency=medium
 
+  * Bug #42177: always use the selected object in the tree as superordinate
   * Bug #42177: get the possible superordinates of the current object type not
   	of the ones for the current module flavor
   * Bug #26133: don't display container widget if no container is selectable
