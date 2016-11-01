@@ -18,8 +18,6 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-					</simpara></listitem>
-					<listitem><simpara>
 						<package>libidn</package> (<u:cve>CVE-2015-2059</u:cve> <u:cve>CVE-2015-8948</u:cve> <u:cve>CVE-2016-6261</u:cve>
 						<u:cve>CVE-2016-6263</u:cve>) (<u:bug>39440</u:bug>).
 					</simpara></listitem>
@@ -156,6 +154,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Linux kernel has been updated to 4.1.34 (<u:bug>41058</u:bug>, <u:bug>42727</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
