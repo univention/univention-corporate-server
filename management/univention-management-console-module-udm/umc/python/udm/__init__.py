@@ -704,14 +704,6 @@ class Instance(Base, ProgressMixin):
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 		return containers
 
-	@sanitize(container=StringSanitizer(allow_none=True))
-	@module_from_request
-	@simple_response
-	def superordinates(self, module, container=None):
-		"""Returns the list of superordinate containers for the given
-		object type."""
-		return module.superordinates(container)
-
 	@module_from_request
 	@simple_response
 	def templates(self, module):

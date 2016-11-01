@@ -107,22 +107,6 @@ define([
 		}
 	});
 
-	var SuperordinateObjectTypeWidget = declare("umc.modules.udm.SuperordinateObjectTypeWidget", HiddenInput, {
-		udm: null,
-		_getValueAttr: function() {
-			if (!this.udm._tree) {
-				return;
-			}
-			var path = lang.clone(this.udm._tree.get('path'));
-			while (path.length) {
-				var item = path.pop();
-				if (item.$isSuperordinate$) {
-					return item.objectType;
-				}
-			}
-		}
-	});
-
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -337,14 +321,13 @@ define([
 				all({
 					columns: this.getDefaultColumns(),
 					containers: moduleCache.getContainers(),
-					superordinates: moduleCache.getSuperordinates(null),
 					reports: moduleCache.getReports(),
 					metaInfo: moduleCache.getMetaInfo(),
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
 					this._reports = results.reports;
 					this._default_columns = results.columns;
-					this.renderSearchPage(results.containers, results.superordinates, results.metaInfo);
+					this.renderSearchPage(results.containers, results.metaInfo);
 					this._pageRenderedDeferred.resolve();
 				}), lang.hitch(this, function() {
 					this.standby(false);
@@ -457,7 +440,7 @@ define([
 			}
 		},
 
-		renderSearchPage: function(containers, superordinates, metaInfo) {
+		renderSearchPage: function(containers, metaInfo) {
 			// summary:
 			//		Render all GUI elements for the search formular, the grid, and the side-bar
 			//		for the LDAP-directory and objects with superordinates.
@@ -495,10 +478,11 @@ define([
 				});
 			}
 
+			var hasSuperordinates = this.moduleFlavor == 'dhcp/dhcp' || this.moduleFlavor == 'dns/dns';
 			this.renderGrid();
-			this.renderSearchForm(containers, superordinates);
+			this.renderSearchForm(containers, hasSuperordinates);
 
-			if ('navigation' == this.moduleFlavor || (superordinates && superordinates.length)) {
+			if ('navigation' == this.moduleFlavor || hasSuperordinates) {
 				this.renderTree();
 			}
 
@@ -694,7 +678,7 @@ define([
 			});
 		},
 
-		renderSearchForm: function(containers, superordinates) {
+		renderSearchForm: function(containers, hasSuperordinates) {
 
 			// get configured search values
 			var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] ||
@@ -719,25 +703,18 @@ define([
 				// add the types 'None'  and '$containers$' to objTypes
 				objTypes.push( { id: 'None', label: _( 'All types' ) } );
 				objTypes.push( { id: '$containers$', label: _( 'All containers' ) } );
-			} else if (superordinates && superordinates.length) {
+			} else if (hasSuperordinates) {
 				// superordinates...
 				widgets.push({
 					type: SuperordinateWidget,
 					udm: this,
 					name: 'superordinate',
 					label: _('Superordinate'),
-					value: superordinates[0].id || superordinates[0],
-					staticValues: superordinates,
 					umcpCommand: umcpCmd
 				});
 				layout[0].push('superordinate');
 				//objTypeDependencies.push('superordinate');  // FIXME: HiddenInput doesn't support to be dependency
 				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
-				widgets.push({
-					type: SuperordinateObjectTypeWidget,
-					udm: this,
-					name: 'superordinateObjectType'
-				});
 			} else if (containers && containers.length) {
 				// containers...
 				containers.unshift({ id: 'all', label: _( 'All containers' ) });
@@ -859,7 +836,7 @@ define([
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
 			layout[0].push('objectType');
-			if (superordinates && superordinates.length) {
+			if (hasSuperordinates) {
 				layout[0].push('hidden');
 				layout[1].push('objectProperty', 'objectPropertyValue');
 			} else {
@@ -1568,18 +1545,23 @@ define([
 
 			// when we are in navigation mode, make sure the user has selected a container
 			var selectedContainer = { id: '', label: '', path: '' };
-			var superordinate = this._searchForm.getWidget('superordinate');
-			var superordinateObjectType = this._searchForm.getWidget('superordinateObjectType').get('value');
-			superordinate = superordinate && superordinate.get('value') || null;
+			var superordinate = { id: '', label: '', path: '' };
 
-			if ('navigation' == this.moduleFlavor) {
+			if (this._tree) {
 				var items = this._tree.get('selectedItems');
-				if (items.length) {
-					selectedContainer = items[0];
-				} else {
+				if (!items.length) {
 					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
-					return;
+					return;  // cannot happen!?
 				}
+				if (this.moduleFlavor == 'navigation' || this._tree.get('path').length >= 2) {
+					// the tree root is not a default container of DHCP / DNS !
+					selectedContainer = items[0];
+				}
+			}
+
+			var superordinateWidget = this._searchForm.getWidget('superordinate');
+			if (superordinateWidget && superordinateWidget.get('value')) {  // validate that the selected item in the tree is a superordinate
+				superordinate = selectedContainer;
 			}
 
 			// open the dialog
@@ -1592,7 +1574,6 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				moduleCache: cache.get(this.moduleFlavor),
 				selectedContainer: selectedContainer,
-				selectedSuperordinateObjectType: superordinateObjectType,
 				selectedSuperordinate: superordinate,
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
 				objectNamePlural: this.objectNamePlural,

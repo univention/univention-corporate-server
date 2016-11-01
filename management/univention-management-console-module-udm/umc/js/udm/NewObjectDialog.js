@@ -66,8 +66,8 @@ define([
 		//		can be specified via this property.
 		selectedContainer: { id: '', label: '', path: '' },
 
-		// selectedSuperordinate: String
-		//		DN of the preselected superordinate.
+		// selectedSuperordinate: Object
+		// Superordinate object (with id [=ldap-dn], label, and path [=LDAP path], objectType)
 		selectedSuperordinate: null,
 
 		// defaultObjectType: String
@@ -97,60 +97,44 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			if ('navigation' !== this.moduleFlavor) {
-				// query the necessary elements to display the add-dialog correctly
-				var superordinate = this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null;
-				var superordinates = (this.selectedSuperordinateObjectType ? cache.get(this.selectedSuperordinateObjectType) : this.moduleCache).getSuperordinates(superordinate);
-				all({
-					types: this.moduleCache.getChildModules(superordinate, null, true),
-					containers: this.moduleCache.getContainers().then(function(result) {
-						return array.filter(result, function(icontainer) {
-							return icontainer.id !== 'all';
-						});
-					}),
-					superordinates: superordinates,
-					templates: this.moduleCache.getTemplates()
-				}).then(lang.hitch(this, function(results) {
-					var types = lang.getObject('types', false, results) || [];
-					var containers = lang.getObject('containers', false, results) || [];
-					var superordinates = lang.getObject('superordinates', false, results) || [];
-					var templates = lang.getObject('templates', false, results) || [];
-					this._renderForm(types, containers, superordinates, templates);
-				}));
+			var deferred;
+			if ('navigation' === this.moduleFlavor) {
+				deferred = new Deferred();
+				deferred.resolve([]);
 			} else {
-				// for the UDM navigation, only query object types
-				this.moduleCache.getChildModules(null, this.selectedContainer.id, true).then(lang.hitch(this, function(result) {
-					this._renderForm(result);
-				}));
+				deferred = this.moduleCache.getTemplates();
 			}
+			deferred.then(lang.hitch(this, function(templates) {
+				var defaultTemplate = null;
+				if ('navigation' != this.moduleFlavor && templates.length) {
+					var initialValue = this.defaultObjectType;
+					if (initialValue) {
+						var match = array.filter(templates, function(ielement) {
+							return ielement.id == initialValue ||
+								ielement.label.toLowerCase() == initialValue.toLowerCase();
+						});
+						if (match.length) {
+							defaultTemplate = match[0].id;
+						}
+					}
+				}
+				this._renderForm(defaultTemplate);
+			}));
 		},
 
-		_renderForm: function(types, containers, superordinates, templates) {
-			// default values and sort items
-			types = types || [];
-			containers = containers || [];
-			superordinates = superordinates || [];
-			templates = templates || [];
-			array.forEach([types, containers, templates], function(iarray) {
-				iarray.sort(tools.cmpObjects('label'));
-			});
-
+		_renderForm: function(defaultTemplate) {
 			this._wizardContainer = new StackContainer({});
 			this._preWizard = new FirstPageWizard({
-				types: types,
-				containers: containers,
-				superordinates: superordinates,
-				templates: templates,
 				title: this.get('title'),
 				defaultObjectType: this.defaultObjectType,
+				defaultTemplate: defaultTemplate,
 				moduleCache: this.moduleCache,
 				moduleFlavor: this.moduleFlavor,
 				umcpCommand: this.umcpCommand,
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular,
 				selectedContainer: this.selectedContainer,
-				selectedSuperordinate: this.selectedSuperordinate,
-				selectedSuperordinateObjectType: this.selectedSuperordinateObjectType
+				selectedSuperordinate: this.selectedSuperordinate
 			});
 
 			this._preWizard.canContinue().then(lang.hitch(this, function() {
