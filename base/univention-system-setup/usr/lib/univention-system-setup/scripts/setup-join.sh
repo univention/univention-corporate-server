@@ -84,16 +84,19 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 # make sure the webserver uses the same certificates during setup.
 # The variables are removed in during cleanup
 /usr/share/univention-updater/disable-apache2-umc --exclude-apache
-certificate="$(mktemp)"
-key="$(mktemp)"
-ca="$(mktemp)"
-cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/cert.pem" "$certificate"
-cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/private.key" "$key"
-cp "/etc/univention/ssl/ucsCA/CAcert.pem" "$ca"
-ucr set \
-	apache2/ssl/certificate="$certificate" \
-	apache2/ssl/key="$key" \
-	apache2/ssl/ca="$ca"
+# Do not change apache certificate when installing via debian installer
+if [ "$system_setup_boot_installer" != "true" ]; then
+	certificate="$(mktemp)"
+	key="$(mktemp)"
+	ca="$(mktemp)"
+	cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/cert.pem" "$certificate"
+	cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/private.key" "$key"
+	cp "/etc/univention/ssl/ucsCA/CAcert.pem" "$ca"
+	ucr set \
+		apache2/ssl/certificate="$certificate" \
+		apache2/ssl/key="$key" \
+		apache2/ssl/ca="$ca"
+fi
 
 # Re-create the system uuid
 /usr/lib/univention-system-setup/scripts/10_basis/50uuid --force-recreate

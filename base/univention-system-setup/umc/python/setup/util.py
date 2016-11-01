@@ -207,7 +207,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 	# make sure that AD connector package is installed if AD member mode is chosen
 	selectedComponents = set(newValues.get('components', []))
-	if isAdMember:
+	if isAdMember and newValues['server/role'] == 'domaincontroller_master':
 		selectedComponents.add('univention-ad-connector')
 
 	# add lists with all packages that should be removed/installed on the system

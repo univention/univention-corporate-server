@@ -1,3 +1,16 @@
+univention-system-setup (9.0.5-2) unstable; urgency=medium
+
+  * Bug #42500: Do not cache certificates when installing via
+    debian installer, as none have been created yet
+  * Bug #42538: Only install ad-connector on DC master
+    when joining an AD domain
+  * Bug #42808: Use apt-mark and dpkg instead of aptitude to configure
+    correct package status in 90_remove_univention_system_setup_boot
+  * Bug #42553: Stop firefox browser manually when installing basesystem
+  * Bug #40601: Updated textmessage for completed installation
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 01 Nov 2016 16:47:28 +0100
+
 univention-system-setup (9.0.5-1) unstable; urgency=medium
 
   * Bug #42179: Catch NoNameservers exception
