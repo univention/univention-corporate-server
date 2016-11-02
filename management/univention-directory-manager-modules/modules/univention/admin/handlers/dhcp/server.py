@@ -37,7 +37,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-from .__common import DHCPBase
+from .__common import DHCPBase, add_dhcp_options
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -76,9 +76,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)
 
-from .__common import add_dhcp_options
-
-add_dhcp_options(property_descriptions, mapping, layout)
+add_dhcp_options(__name__)
 
 
 class object(DHCPBase):

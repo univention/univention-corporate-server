@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
 import copy
 
 import univention.admin.localization
@@ -50,6 +51,7 @@ _properties = {
 		identifies=0
 	),
 }
+_options = {}
 
 
 def rangeMap(value):
@@ -64,14 +66,21 @@ _mappings = (
 )
 
 
-def add_dhcp_options(properties, mapping, layout):
-	for name, prop in _properties.items():
-		properties[name] = prop
+def add_dhcp_options(module_name):
+	module = sys.modules[module_name]
 
+	options = getattr(module, "options")
+	options.update(_options)
+
+	properties = getattr(module, "property_descriptions")
+	properties.update(_properties)
+
+	mapping = getattr(module, "mapping")
 	for item in _mappings:
 		mapping.register(*item)
 
 	# currently not visible
+	# layout = getattr(module, "layout")
 	# layout.append( Tab( _( 'Advanced' ), _( 'Advanced DHCP options' ), layout = [ 'option' ] ) )
 
 

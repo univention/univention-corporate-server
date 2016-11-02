@@ -36,7 +36,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.debug
 
-from .__common import DHCPBase
+from .__common import DHCPBase, add_dhcp_options
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -116,6 +116,8 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)
 mapping.register('fixedaddress', 'univentionDhcpFixedAddress')
+
+add_dhcp_options(__name__)
 
 
 class object(DHCPBase):

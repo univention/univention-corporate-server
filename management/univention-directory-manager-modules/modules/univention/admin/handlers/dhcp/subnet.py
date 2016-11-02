@@ -110,7 +110,7 @@ mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
 
-add_dhcp_options(property_descriptions, mapping, layout)
+add_dhcp_options(__name__)
 
 
 class object(DHCPBase):

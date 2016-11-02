@@ -38,7 +38,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 
-from .__common import DHCPBase, rangeUnmap, rangeMap
+from .__common import DHCPBase, rangeUnmap, rangeMap, add_dhcp_options
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -144,6 +144,8 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString)
+
+add_dhcp_options(__name__)
 
 
 class object(DHCPBase):
