@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-31) unstable; urgency=medium
+
+  * Bug #42177: use module's childmodule everywhere to get possible creation
+  	types
+
+ -- Florian Best <best@univention.de>  Wed, 02 Nov 2016 01:15:02 +0100
+
 univention-management-console-module-udm (6.0.11-30) unstable; urgency=medium
 
   * Bug #42177: always use the selected object in the tree as superordinate
