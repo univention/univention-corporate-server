@@ -1,3 +1,10 @@
+ucs-test (7.0.6-19) unstable; urgency=medium
+
+  * 00_checks/42_admember_roles: Check installation status of univention-
+    ad-connector package in AD member mode (Bug #42538)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2016 16:56:54 +0100
+
 ucs-test (7.0.6-18) unstable; urgency=medium
 
   * 00_checks/46_ntacl_sysvolcheck: Check samba-tool ntacl sysvolreset
