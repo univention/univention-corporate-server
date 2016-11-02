@@ -394,9 +394,6 @@ define([
 					var superordinateWidget = this.getWidget('firstPage', 'superordinate');
 					var container = containerWidget && containerWidget.get('value') || null;
 					var superordinate = superordinateWidget && superordinateWidget.get('value') || null;
-					if (!superordinate && (this.moduleFlavor == 'dhcp/dhcp' || this.moduleFlavor == 'dns/dns')) {
-						superordinate = 'None';
-					}
 					if (superordinate) {
 						container = null;
 					}
