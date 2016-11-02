@@ -33,6 +33,7 @@
 import copy
 
 import univention.admin.localization
+from univention.admin.handlers import simpleLdap
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -82,3 +83,14 @@ def add_dhcp_objectclass(self, ml):
 		ml.append(('objectClass', oldOCs, newOCs))
 
 	return ml
+
+
+class DHCPBase(simpleLdap):
+
+	@classmethod
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+		filter_str = unicode(cls.lookup_filter(filter_s))
+		return [
+			cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)
+			for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit)
+		]

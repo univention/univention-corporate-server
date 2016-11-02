@@ -35,6 +35,8 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+from .__common import DHCPBase
+
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
@@ -76,7 +78,7 @@ from .__common import add_dhcp_options, add_dhcp_objectclass
 add_dhcp_options(property_descriptions, mapping, layout)
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DHCPBase):
 	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
@@ -94,27 +96,21 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return add_dhcp_objectclass(self, ml)
 
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.conjunction('|', [
-			univention.admin.filter.expression('objectClass', 'dhcpService'),
-			univention.admin.filter.expression('objectClass', 'univentionDhcpService')
+	@staticmethod
+	def lookup_filter(filter_s=None, lo=None):
+		filter_obj = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.conjunction('|', [
+				univention.admin.filter.expression('objectClass', 'dhcpService'),
+				univention.admin.filter.expression('objectClass', 'univentionDhcpService')
+			])
 		])
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
-	return res
+		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+		return filter_obj
 
 
 def identify(dn, attr):
 	return 'dhcpService' in attr.get('objectClass', []) \
 		or 'univentionDhcpService' in attr.get('objectClass', [])
+
+lookup_filter = object.lookup_filter
+lookup = object.lookup

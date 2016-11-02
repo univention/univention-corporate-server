@@ -37,6 +37,8 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+from .__common import DHCPBase
+
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
@@ -79,7 +81,7 @@ from .__common import add_dhcp_options
 add_dhcp_options(property_descriptions, mapping, layout)
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DHCPBase):
 	module = module
 
 	def _ldap_addlist(self):
@@ -100,25 +102,26 @@ class object(univention.admin.handlers.simpleLdap):
 		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, object, self.position)
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
 
+	@staticmethod
+	def lookup_filter(filter_s=None, lo=None):
+		filter_obj = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'dhcpServer')
+		])
+		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+		return filter_obj
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+	@classmethod
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+		filter_obj = cls.lookup_filter(filter_s)
+		if superordinate:
+			filter_obj.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn))
+		filter_str = unicode(filter_obj)
 
-	filter = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'dhcpServer')])
-
-	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn))
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
-	return res
+		return super(object, cls).lookup(co, lo, filter_str, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr):
-
 	return 'dhcpServer' in attr.get('objectClass', [])
+
+#lookup_filter = object.lookup_filter  # if we specify lookup_filter here the superordinate is not evaluated
+lookup = object.lookup

@@ -38,7 +38,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 
-from .__common import rangeUnmap, rangeMap
+from .__common import DHCPBase, rangeUnmap, rangeMap
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -146,7 +146,7 @@ mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString)
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DHCPBase):
 	module = module
 
 	permits_udm2dhcp = {
@@ -195,6 +195,14 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.bootpXORFailover
 		return ml
 
+	@staticmethod
+	def lookup_filter(filter_s=None, lo=None):
+		filter_obj = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionDhcpPool')
+		])
+		filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
+		return filter_obj
+
 
 def rewrite(filter, mapping):
 	values = {
@@ -210,20 +218,8 @@ def rewrite(filter, mapping):
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionDhcpPool')])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
-	return res
-
-
 def identify(dn, attr):
 	return 'univentionDhcpPool' in attr.get('objectClass', [])
+
+lookup_filter = object.lookup_filter
+lookup = object.lookup
