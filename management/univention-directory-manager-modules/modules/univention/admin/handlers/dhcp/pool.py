@@ -38,6 +38,8 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 
+from .__common import rangeUnmap, rangeMap
+
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
@@ -137,13 +139,6 @@ layout = [
 	])
 ]
 
-
-def rangeMap(value):
-	return map(lambda x: ' '.join(x), value)
-
-
-def rangeUnmap(value):
-	return map(lambda x: x.split(' '), value)
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

@@ -36,6 +36,8 @@ import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
+from .__common import add_dhcp_options, add_dhcp_objectclass, rangeUnmap
+
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
@@ -103,19 +105,10 @@ layout = [
 ]
 
 
-def rangeMap(value):
-	return map(lambda x: ' '.join(x), value)
-
-
-def rangeUnmap(value):
-	return map(lambda x: x.split(), value)
-
 mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
-
-from .__common import add_dhcp_options, add_dhcp_objectclass
 
 add_dhcp_options(property_descriptions, mapping, layout)
 

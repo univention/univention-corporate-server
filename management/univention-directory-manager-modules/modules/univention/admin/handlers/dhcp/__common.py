@@ -50,6 +50,14 @@ _properties = {
 	),
 }
 
+
+def rangeMap(value):
+	return [' '.join(x) for x in value]
+
+
+def rangeUnmap(value):
+	return [x.split() for x in value]
+
 _mappings = (
 	('option', 'dhcpOption', None, None),
 )
