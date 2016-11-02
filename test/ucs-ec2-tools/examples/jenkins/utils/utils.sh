@@ -629,6 +629,7 @@ set_administrator_password_for_ucs_test ()
 	local password="$1"
 
 	ucr set tests/domainadmin/pwd="$password"
+	mkdir -p /var/lib/ucs-test/
 	echo -n "$password" >/var/lib/ucs-test/pwdfile
 }
 
