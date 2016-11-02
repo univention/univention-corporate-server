@@ -1,3 +1,10 @@
+ucs-test (6.0.37-4) unstable; urgency=medium
+
+  * 00_checks/46_ntacl_sysvolcheck: Check samba-tool ntacl sysvolreset
+    (Bug #39633)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2016 07:28:14 +0100
+
 ucs-test (6.0.37-3) unstable; urgency=medium
 
   * Bug #42260: update options in 01_merge_new_module
