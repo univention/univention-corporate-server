@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-directory-manager-modules
-fix: 11.0.3-42.1436.201610241611
+fix: 11.0.3-43.1437.201611020126
 desc: |
  This update addresses the following issues:
  * The DHCP options mapping was fixed so that multiple values can be provided.
