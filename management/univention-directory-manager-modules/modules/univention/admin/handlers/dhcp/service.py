@@ -35,7 +35,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-from .__common import DHCPBase, add_dhcp_options, add_dhcp_objectclass
+from .__common import DHCPBase, add_dhcp_options
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -86,13 +86,8 @@ class object(DHCPBase):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'univentionDhcpService', 'dhcpOptions']),
+			('objectClass', ['top', 'univentionDhcpService']),
 		]
-
-	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-		return add_dhcp_objectclass(self, ml)
 
 	@staticmethod
 	def lookup_filter(filter_s=None, lo=None):

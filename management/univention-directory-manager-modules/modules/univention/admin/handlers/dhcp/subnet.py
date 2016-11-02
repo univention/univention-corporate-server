@@ -36,7 +36,7 @@ import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
-from .__common import DHCPBase, add_dhcp_options, add_dhcp_objectclass, rangeUnmap
+from .__common import DHCPBase, add_dhcp_options, rangeUnmap
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -127,8 +127,7 @@ class object(DHCPBase):
 		]
 
 	def _ldap_modlist(self):
-
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = super(object, self)._ldap_modlist()
 
 		if self.hasChanged('range'):
 			dhcpRange = []
@@ -156,7 +155,7 @@ class object(DHCPBase):
 			if '' in dhcpRange:
 				dhcpRange.remove('')
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))
-		return add_dhcp_objectclass(self, ml)
+		return ml
 
 	@staticmethod
 	def lookup_filter(filter_s=None, lo=None):

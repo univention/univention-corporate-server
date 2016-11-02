@@ -31,9 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-import copy
 
 import univention.admin.localization
+from univention.admin.layout import Tab
 from univention.admin.handlers import simpleLdap
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
@@ -42,16 +42,38 @@ _ = translation.translate
 _properties = {
 	'option': univention.admin.property(
 		short_description=_('DHCP options'),
-		long_description=_('Defines DHCP options for the subnet.'),
+		long_description=_('Additional options for DHCP'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=0,
+		options=['options'],
+		required=False,
 		may_change=True,
-		identifies=0
+		identifies=False,
+	),
+	'statements': univention.admin.property(
+		short_description=_('DHCP Statements'),
+		long_description=_('Additional statements for DHCP'),
+		syntax=univention.admin.syntax.TextArea,
+		multivalue=True,
+		options=['options'],
+		required=False,
+		may_change=True,
+		identifies=False,
+	)
+}
+_options = {
+	'options': univention.admin.option(
+		short_description=_('Allow custom DHCP options'),
+		long_description=_("Allow adding custom DHCP options. Experts only!"),
+		default=False,
+		editable=True,
+		objectClasses=['dhcpOptions'],
 	),
 }
-_options = {}
+_mappings = (
+	('option', 'dhcpOption', None, None),
+	('statements', 'dhcpStatements', None, None),
+)
 
 
 def rangeMap(value):
@@ -60,10 +82,6 @@ def rangeMap(value):
 
 def rangeUnmap(value):
 	return [x.split() for x in value]
-
-_mappings = (
-	('option', 'dhcpOption', None, None),
-)
 
 
 def add_dhcp_options(module_name):
@@ -79,19 +97,13 @@ def add_dhcp_options(module_name):
 	for item in _mappings:
 		mapping.register(*item)
 
-	# currently not visible
-	# layout = getattr(module, "layout")
-	# layout.append( Tab( _( 'Advanced' ), _( 'Advanced DHCP options' ), layout = [ 'option' ] ) )
-
-
-def add_dhcp_objectclass(self, ml):
-	oldOCs = self.oldattr.get('objectClass', [])
-	newOCs = copy.copy(oldOCs)
-	if self.info.get('option', []) and 'dhcpOptions' not in oldOCs:
-		newOCs.append('dhcpOptions')
-		ml.append(('objectClass', oldOCs, newOCs))
-
-	return ml
+	layout = getattr(module, "layout")
+	layout.append(Tab(
+		_('Low-level DHCP configuration'),
+		_('Custom DHCP options'),
+		advanced=True,
+		layout=['option', 'statements']
+	))
 
 
 class DHCPBase(simpleLdap):
