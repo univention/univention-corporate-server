@@ -62,7 +62,6 @@ policy_oc = "univentionPolicyDhcpLeaseTime"
 policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
 policy_position_dn_prefix = "cn=leasetime,cn=dhcp"
 policies_group = "dhcp"
-usewizard = 1
 childs = 0
 short_description = _('Policy: DHCP lease time')
 policy_short_description = _('Lease time')

@@ -47,7 +47,6 @@ module = 'dns/alias'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['cname']
 superordinate = 'dns/forward_zone'
-usewizard = 1
 childs = 0
 short_description = _('DNS: Alias record')
 long_description = ''

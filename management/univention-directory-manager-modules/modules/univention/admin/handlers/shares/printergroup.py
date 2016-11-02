@@ -43,8 +43,6 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'shares/printergroup'
-usewizard = 1
-
 childs = 0
 short_description = _('Printer share: Printer group')
 long_description = ''

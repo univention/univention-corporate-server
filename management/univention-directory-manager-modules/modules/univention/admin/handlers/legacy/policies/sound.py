@@ -60,7 +60,6 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicySoundConfiguration'
 policy_apply_to = ["computers/thinclient"]
 policy_position_dn_prefix = "cn=sound"
-usewizard = 1
 childs = 0
 short_description = _('Policy: Sound')
 policy_short_description = _('Sound settings')

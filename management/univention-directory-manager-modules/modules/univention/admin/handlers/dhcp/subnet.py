@@ -44,7 +44,6 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 1
 childmodules = ['dhcp/pool']
-usewizard = 1
 short_description = _('DHCP: Subnet')
 long_description = ''
 options = {

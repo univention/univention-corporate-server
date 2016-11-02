@@ -43,6 +43,7 @@ module = 'dhcp/shared'
 operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 1
+childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
 long_description = ''
 options = {

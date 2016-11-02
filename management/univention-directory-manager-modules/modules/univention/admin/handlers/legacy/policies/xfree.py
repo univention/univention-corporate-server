@@ -80,7 +80,6 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicyXConfiguration'
 policy_apply_to = ["computers/thinclient", "computers/managedclient", "computers/mobileclient"]
 policy_position_dn_prefix = "cn=xfree"
-usewizard = 1
 childs = 0
 short_description = _('Policy: Display')
 policy_short_description = _('Display settings')

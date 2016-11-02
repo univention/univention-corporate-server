@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-43) unstable; urgency=medium
+
+  * Bug #42177: fix definition of childmodules, remove unused wizard
+  	properties
+
+ -- Florian Best <best@univention.de>  Wed, 02 Nov 2016 01:16:57 +0100
+
 univention-directory-manager-modules (11.0.3-42) unstable; urgency=medium
 
   * Bug #34764: add workaround for UCS@school < 4.2

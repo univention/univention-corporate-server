@@ -74,10 +74,6 @@ class vacationResendDays(univention.admin.syntax.select):
 module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 template = 'settings/usertemplate'
-usewizard = 1
-wizardmenustring = _("Users")
-wizarddescription = _("Add, edit and delete users")
-wizardoperations = {"add": [_("Add"), _("Add User")], "find": [_("Search"), _("Search for user(s)")]}
 uid_umlauts_mixedcase = 0
 
 childs = 0

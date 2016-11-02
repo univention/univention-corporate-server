@@ -64,7 +64,6 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicyThinClient'
 policy_apply_to = ["computers/thinclient"]
 policy_position_dn_prefix = "cn=thinclient"
-usewizard = 1
 childs = 0
 short_description = _('Policy: Thin client')
 policy_short_description = _('Thin client configuration')

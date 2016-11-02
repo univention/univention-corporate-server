@@ -48,11 +48,6 @@ _ = translation.translate
 
 module = 'networks/network'
 operations = ['add', 'edit', 'remove', 'search']
-usewizard = 1
-wizardmenustring = _("Networks")
-wizarddescription = _("Add, edit and delete networks")
-wizardoperations = {"add": [_("Add"), _("Add network object")], "find": [_("Search"), _("Search network object(s)")]}
-
 childs = 0
 short_description = _('Networks: Network')
 long_description = ''
