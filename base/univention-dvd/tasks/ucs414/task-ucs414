@@ -65,6 +65,9 @@ univention-saml
 univention-sudo
 screen
 
+/* Translation Packages */
+univention-ucs-translation-fr
+
 univention-management-console-module-quota
 
 
