@@ -39,7 +39,6 @@ if __name__ == '__main__':
 						type=str,
 						help="two char language code, e.g. 'fr'")
 	args = parser.parse_args()
-	#gettext.translation('ucr-l10n', languages=[args.language_code]).install()
 	gettext.translation('ucr-variables', languages=[args.language_code]).install()
 	ucr = ConfigRegistry()
 	ucr.load()

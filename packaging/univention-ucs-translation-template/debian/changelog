@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.1.0-3) unstable; urgency=medium
+
+  * Bug #41777: use different translation domain in ucr-l10
+
+ -- Eduard Mai <mai@univention.de>  Wed, 02 Nov 2016 18:37:59 +0100
+
 univention-ucs-translation-template (3.1.0-2) unstable; urgency=medium
 
   * Bug #42260: fix special case processing
