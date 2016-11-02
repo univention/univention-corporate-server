@@ -1,0 +1,15 @@
+#!/usr/share/ucs-test/runner bash
+## desc: check samba-tool ntacl sysvolcheck
+## exposure: safe
+## tags:
+##  - apptest
+## packages:
+## - univention-samba4
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+samba-tool ntacl sysvolcheck || fail_test 110 "samba-tool ntacl sysvolcheck failed"
+
+exit $RETVAL
