@@ -51,7 +51,6 @@ _ = translation.translate
 
 module = 'computers/windows_domaincontroller'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
 docleanup = 1
 childs = 0
 short_description = _('Computer: Windows Domaincontroller')

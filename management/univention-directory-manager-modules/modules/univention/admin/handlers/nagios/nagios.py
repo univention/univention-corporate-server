@@ -42,15 +42,7 @@ import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
 
 module = 'nagios/nagios'
-usewizard = 1
 help_link = _('http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring')
-wizardmenustring = _('Nagios')
-wizarddescription = _('Add, edit, delete and search Nagios objects')
-wizardoperations = {
-	'add': [_('Add'), _('Add new Nagios object')],
-	'find': [_('Search'), _('Search Nagios objects')]
-}
-
 default_containers = ['cn=nagios']
 
 childmodules = ['nagios/service', 'nagios/timeperiod']

@@ -49,12 +49,6 @@ long_description = ''
 help_link = _('http://docs.univention.de/manual.html#central:policies')
 help_text = _('<p>Policies are objects that can be connected with other objects in the directory tree. Connected policies allow to define object properties in a unified manner. Policies that are connected with containers or organizational units are inherited by all objects located below.</p><p>More information can be found in the <a href="http://docs.univention.de/manual.html#central:policies" target="_blank">online documentation for UCS</a>.</p>')
 operations = ['search']
-usewizard = 1
-wizardmenustring = _("Policies")
-wizarddescription = _("Add, edit and delete Policies")
-wizardoperations = {"add": [_("Add"), _("Add Policy Object")], "find": [_("Find"), _("Find Policy Object(s)")]}
-wizardpath = "univentionPolicyObject"
-
 childmodules = []
 for pol in univention.admin.handlers.policies.policies:
 	if hasattr(pol, 'module'):

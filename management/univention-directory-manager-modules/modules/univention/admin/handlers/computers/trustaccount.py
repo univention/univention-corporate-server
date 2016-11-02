@@ -45,7 +45,6 @@ _ = translation.translate
 
 module = 'computers/trustaccount'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
 docleanup = 1
 childs = 0
 short_description = _('Computer: Domain trust account')

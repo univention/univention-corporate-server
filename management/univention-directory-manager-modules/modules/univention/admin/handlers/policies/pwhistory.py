@@ -63,7 +63,6 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicyPWHistory'
 policy_apply_to = ["users/user"]
 policy_position_dn_prefix = "cn=pwhistory,cn=users"
-usewizard = 1
 childs = 0
 short_description = _('Policy: Passwords')
 policy_short_description = _('Passwords')

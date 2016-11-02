@@ -41,8 +41,6 @@ _ = translation.translate
 
 module = 'mail/lists'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
-
 childs = 0
 short_description = _('Mailing list')
 long_description = ''

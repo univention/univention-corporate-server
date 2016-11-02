@@ -43,7 +43,6 @@ module = 'dns/txt_record'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['txt']
 superordinate = 'dns/forward_zone'
-usewizard = 1
 childs = 0
 short_description = 'DNS: TXT Record'
 long_description = ''

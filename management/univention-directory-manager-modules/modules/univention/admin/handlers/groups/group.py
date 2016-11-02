@@ -50,11 +50,6 @@ _ = translation.translate
 
 module = 'groups/group'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
-wizardmenustring = _("Groups")
-wizarddescription = _("Add, edit and delete groups")
-wizardoperations = {"add": [_("Add"), _("Add group object")], "find": [_("Search"), _("Search group object(s)")]}
-
 childs = 0
 short_description = _('Group')
 long_description = ''

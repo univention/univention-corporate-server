@@ -43,7 +43,6 @@ module = 'dhcp/host'
 operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
-usewizard = 1
 short_description = _('DHCP: Host')
 long_description = ''
 options = {

@@ -50,7 +50,6 @@ _ = translation.translate
 
 module = 'computers/mobileclient'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
 docleanup = 1
 childs = 0
 short_description = _('Computer: Mobile Client')

@@ -40,12 +40,6 @@ _ = translation.translate
 import univention.admin.handlers.computers
 
 module = 'computers/computer'
-usewizard = 1
-wizardmenustring = _("Computer")
-wizarddescription = _("Add, edit and delete computers")
-wizardoperations = {"add": [_("Add"), _("Add Computer")], "find": [_("Search"), _("Search computer(s)")]}
-
-
 childmodules = []
 for computer in univention.admin.handlers.computers.computers:
 	childmodules.append(computer.module)

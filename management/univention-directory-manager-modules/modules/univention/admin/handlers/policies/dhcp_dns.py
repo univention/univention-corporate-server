@@ -61,7 +61,6 @@ policy_oc = "univentionPolicyDhcpDns"
 policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
 policy_position_dn_prefix = "cn=dns,cn=dhcp"
 policies_group = "dhcp"
-usewizard = 1
 childs = 0
 short_description = _('Policy: DHCP DNS')
 policy_short_description = _('DNS')

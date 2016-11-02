@@ -41,13 +41,7 @@ import univention.admin.handlers.shares.printer
 import univention.admin.handlers.shares.printergroup
 
 module = 'shares/print'
-usewizard = 1
-wizardmenustring = _("Printers")
-wizarddescription = _("Add, edit and delete print shares")
-wizardoperations = {"add": [_("Add"), _("Add printer object")], "find": [_("Search"), _("Search printer object(s)")]}
-wizardpath = 'univentionPrintersObject'
 childmodules = ['shares/printer', 'shares/printergroup']
-
 childs = 0
 short_description = _('Printer share')
 long_description = ''

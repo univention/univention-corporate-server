@@ -50,13 +50,7 @@ childs = 0
 short_description = _('Mail')
 long_description = ''
 operations = ['search']
-usewizard = 1
-wizardmenustring = _("Mail")
-wizarddescription = _("Add, edit and delete mail objects")
-wizardoperations = {"add": [_("Add"), _("Add mail object")], "find": [_("Search"), _("Search mail object(s)")]}
-
 childmodules = ["mail/folder", "mail/domain", "mail/lists"]
-wizardpath = 'univentionMailObject'
 virtual = 1
 options = {
 }
