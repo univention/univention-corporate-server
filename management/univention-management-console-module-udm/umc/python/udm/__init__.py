@@ -740,9 +740,8 @@ class Instance(Base, ProgressMixin):
 		if request.flavor != 'navigation':
 			module = UDM_Module(request.flavor)
 			if superordinate:
-				self.finished(request.id, module.types4superordinate(request.flavor, superordinate))
-			else:
-				self.finished(request.id, module.child_modules)
+				module = get_module(request.flavor, superordinate) or module
+			self.finished(request.id, module.child_modules)
 			return
 
 		container = request.options.get('container') or superordinate

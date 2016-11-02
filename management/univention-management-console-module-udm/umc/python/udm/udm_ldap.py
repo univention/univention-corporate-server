@@ -828,32 +828,15 @@ class UDM_Module(object):
 			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True))
 		return []
 
-	def types4superordinate(self, flavor, superordinate):
-		"""List of object types for the given superordinate"""
-		types = getattr(self.module, 'wizardtypesforsuper')
-		typelist = []
-
-		if superordinate == 'None':
-			module_name = superordinate
-		else:
-			module = get_module(flavor, superordinate)
-			if not module:
-				return typelist
-			module_name = module.name
-
-		if isinstance(types, dict) and module_name in types:
-			for mod in types[module_name]:
-				module = UDM_Module(mod)
-				if module:
-					typelist.append({'id': mod, 'label': module.title})
-
-		return typelist
-
 	@property
 	def flavor(self):
 		"""Tries to guess the flavor for a given module"""
 		if self.name.startswith('container/'):
 			return 'navigation'
+		if self.name.startswith('dhcp/'):
+			return 'dhcp/dhcp'
+		if self.name.startswith('dns/'):
+			return 'dns/dns'
 		base, name = split_module_name(self.name)
 		for module in filter(lambda x: x.startswith(base), udm_modules.modules.keys()):
 			mod = UDM_Module(module)
