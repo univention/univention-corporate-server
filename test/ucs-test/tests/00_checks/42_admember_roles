@@ -1,0 +1,27 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check univention-ad-connector installation in AD member mode
+## exposure: safe
+## roles-not: [basesystem]
+## bugs: [42538]
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. /usr/share/univention-lib/ucr.sh
+
+eval "$(ucr shell)"
+
+is_ucr_true ad/member || exit 137
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	if ! checkpkg univention-ad-connector; then
+		fail_test 1 "DC Master in AD Member Mode without univention-ad-connector."
+	fi
+else
+	if checkpkg univention-ad-connector; then
+		fail_test 1 "Non-DC Master in AD Member Mode and univention-ad-connector is installed."
+	fi
+fi
+
+exit $RETVAL
+
