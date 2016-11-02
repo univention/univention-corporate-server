@@ -410,6 +410,18 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Adapted the way <package>univention-system-setup-boot</package> gets uninstalled at the end of system setup (<u:bug>42808</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-ad-connector</package> is now only installed on the first system joining an Active Directory (<u:bug>42538</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fixed an issue that the <wordasword>joinscript</wordasword> <filename>92univention-management-console-web-server</filename> was not properly configured when installing from the <wordasword>ISO</wordasword> (<u:bug>42500</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Clarified sentences at the last system setup page (<u:bug>40601</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Fix a crash during validation in special DNS constellations (<u:bug>42179</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
