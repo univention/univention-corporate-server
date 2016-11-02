@@ -65,14 +65,14 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
-	local version_version version_patchlevel version_erratalevel target
+	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 
 	case "${release_update:-}" in
-	public) upgrade_to_latest --updateto "$target" ;;
-	testing) upgrade_to_testing --updateto "$target" ;;
+	public) upgrade_to_latest --updateto "$target" || rc=$? ;;
+	testing) upgrade_to_testing --updateto "$target" || rc=$? ;;
 	none|"") ;;
 	*) echo "Unknown release_update='$release_update'" >&1 ; exit 1 ;;
 	esac
@@ -81,14 +81,15 @@ jenkins_updates () {
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 
 	case "${errata_update:-}" in
-	testing) upgrade_to_latest_test_errata ;;
-	public) upgrade_to_latest_errata ;;
+	testing) upgrade_to_latest_test_errata || rc=$? ;;
+	public) upgrade_to_latest_errata || rc=$? ;;
 	none|"") ;;
 	*) echo "Unknown errata_update='$errata_update'" >&1 ; exit 1 ;;
 	esac
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
+	return $rc
 }
 
 upgrade_to_latest_patchlevel ()
@@ -118,6 +119,7 @@ upgrade_to_latest_test_errata () {
 }
 
 upgrade_to_testing () {
+
 	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest "$@"
 }
