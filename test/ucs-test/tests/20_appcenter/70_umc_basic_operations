@@ -91,7 +91,8 @@ def test_install_upgrade_remove_dependencies(app_center, application):
 
 	old = app_test.AppPackage.with_package(name=application, app_version="1.0", depends=[dependency_old])
 
-	dependency_new = app_test.DebianPackage(name="my-dependency-upgrade", version="1.0") dependency_new.build()
+	dependency_new = app_test.DebianPackage(name="my-dependency-upgrade", version="1.0")
+	dependency_new.build()
 
 	new = app_test.AppPackage.with_package(name=application, app_version="2.0", app_code=old.app_code, depends=[dependency_new])
 	old.build_and_publish()
