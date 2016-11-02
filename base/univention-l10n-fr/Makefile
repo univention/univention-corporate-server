@@ -36,7 +36,8 @@
 build:
 
 include all_targets.mk
-install: $(ALL_TARGETS)
+$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/ucr-variables.mo: fr/ucr-variables.po
+install: $(ALL_TARGETS) $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/ucr-variables.mo
 
 %.mo:
 	mkdir -p $(@D)

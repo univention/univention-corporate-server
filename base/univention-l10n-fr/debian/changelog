@@ -1,3 +1,9 @@
+univention-l10n-fr (1.1.0-4) unstable; urgency=medium
+
+  * Bug #41776: add UCR variable translation
+
+ -- Eduard Mai <mai@univention.de>  Wed, 02 Nov 2016 18:38:37 +0100
+
 univention-l10n-fr (1.1.0-3) unstable; urgency=medium
 
   * Bug #41776: correct typo

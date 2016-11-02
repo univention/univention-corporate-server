@@ -9,5 +9,6 @@ case "${locale}" in
 esac
 
 ucr set ucs/server/languages/fr_FR?"Français"
+/usr/share/univention-l10n/tools/ucr-l10n fr
 
 exit 0
