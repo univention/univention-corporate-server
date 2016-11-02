@@ -62,26 +62,28 @@ msgstr "Prefixlänge (oder Netzmaske)"
 #: modules/univention/admin/handlers/dhcp/pool.py:107
 msgid ""
 "Addresses from this pool are given to clients using the old BOOTP protocol, "
-"which has no machanism to free addresses again."
+"which has no mechanism to free addresses again."
 msgstr ""
 "Adressen von diesem Pool werden an Clients vergeben, die das alte BOOTP-"
-"Protokoll (welches kein Mechanismus besitzt um Adressen wieder freizugeben) "
-"verwenden."
+"Protokoll verwenden (welches keinen Mechanismus besitzt, um Adressen wieder "
+"freizugeben)."
 
 #: modules/univention/admin/handlers/dhcp/pool.py:87
 msgid ""
-"Addresses from this pool are given to clients which have a DHCP host entry without assigned IP address "
-"matching their MAC address."
+"Addresses from this pool are given to clients which have a DHCP host entry "
+"matching their MAC address, but with no IP address assigned."
 msgstr ""
-"Adressen von diesem Pool werden an Clients "
-"vergeben, die durch die MAC-Addresse eines DHCP Rechner Eintrags, ohne zugewiesene IP-Adresse, bekannt sind."
+"Adressen von diesem Pool werden an Clients vergeben, die über einen anhand "
+"der MAC-Adresse passenden DHCP Rechner Eintrag besitzen, dem aber keine IP-"
+"Adressen zugewiesen sind."
 
 #: modules/univention/admin/handlers/dhcp/pool.py:97
 msgid ""
-"Addresses from this pool are given to clients, which do not have a "
-"DHCP host entry matching their MAC address."
+"Addresses from this pool are given to clients, which do not have a DHCP host "
+"entry matching their MAC address."
 msgstr ""
-"Adressen von diesem Pool werden an Clients vergeben, die keinen DHCP Rechnereintrag mit entsprechender MAC-Adresse besitzen."
+"Adressen von diesem Pool werden an Clients vergeben, die keinen DHCP "
+"Rechnereintrag mit entsprechender MAC-Adresse besitzen."
 
 #: modules/univention/admin/handlers/dhcp/pool.py:134
 msgid "Advanced"
@@ -248,7 +250,7 @@ msgid "General settings"
 msgstr "Grundeinstellungen"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:117
-msgid "Globally enable or disable this pool"
+msgid "Globally enable or disable this pool."
 msgstr "Aktiviere oder Deaktiviere diesen Pool global."
 
 #: modules/univention/admin/handlers/dhcp/host.py:64
