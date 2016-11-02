@@ -45,7 +45,6 @@ module = 'dns/srv_record'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['location']
 superordinate = 'dns/forward_zone'
-usewizard = 1
 childs = 0
 short_description = _('DNS: Service record')
 long_description = ''

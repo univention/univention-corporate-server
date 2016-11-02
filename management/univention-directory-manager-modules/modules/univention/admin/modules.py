@@ -901,36 +901,6 @@ def defaultContainers(module):
 	return dns
 
 
-def wantsWizard(module_name):
-	'''use module in wizard?'''
-	module = get(module_name)
-	return getattr(module, 'usewizard', False)
-
-
-def wizardMenuString(module_name):
-	module = get(module_name)
-	menustring = getattr(module, 'wizardmenustring')
-	if menustring:
-		return menustring
-	return short_description(module)
-
-
-def wizardDescription(module_name):
-	module = get(module_name)
-	return getattr(module, 'wizarddescription', '')
-
-
-def wizardPath(module_name):
-	module = get(module_name)
-	return getattr(module, 'wizardpath', '')
-
-
-def wizardOperations(module_name):
-	'''return wizard operations supported by module'''
-	module = get(module_name)
-	return getattr(module, 'wizardoperations', {"find": [_("Search"), _("Search object(s)")], "add": [_("Add"), _("Add object(s)")]})
-
-
 def childModules(module_name):
 	'''return child modules if module is a super module'''
 	module = get(module_name)

@@ -52,10 +52,6 @@ class cscPolicy(univention.admin.syntax.select):
 module = 'shares/share'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-usewizard = 1
-wizardmenustring = _("Shares")
-wizarddescription = _("Add, edit and delete shares")
-wizardoperations = {"add": [_("Add"), _("Add share object")], "find": [_("Search"), _("Search share Object(s)")]}
 syntax_filter = univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionShare'),
 	univention.admin.filter.expression('cn', '*'),

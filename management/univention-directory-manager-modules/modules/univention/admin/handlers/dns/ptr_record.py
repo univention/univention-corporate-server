@@ -42,7 +42,6 @@ module = 'dns/ptr_record'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['ptr_record']
 superordinate = 'dns/reverse_zone'
-usewizard = 1
 childs = 0
 short_description = _('DNS: Pointer record')
 long_description = ''

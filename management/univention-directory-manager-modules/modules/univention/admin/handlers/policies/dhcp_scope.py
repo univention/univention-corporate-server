@@ -64,7 +64,6 @@ policy_oc = "univentionPolicyDhcpScope"
 policy_apply_to = ["dhcp/service", "dhcp/subnet", "dhcp/host", "dhcp/sharedsubnet", "dhcp/shared"]
 policy_position_dn_prefix = "cn=scope,cn=dhcp"
 policies_group = "dhcp"
-usewizard = 1
 childs = 0
 short_description = _('Policy: DHCP Allow/Deny')
 policy_short_description = _('Allow/Deny')

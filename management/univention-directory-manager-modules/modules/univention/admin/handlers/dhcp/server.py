@@ -44,7 +44,6 @@ module = 'dhcp/server'
 operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
-usewizard = 1
 short_description = _('DHCP: Server')
 long_description = ''
 options = {

@@ -43,8 +43,6 @@ _ = translation.translate
 
 module = 'mail/domain'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
-
 childs = 0
 short_description = _('Mail domain')
 long_description = ''

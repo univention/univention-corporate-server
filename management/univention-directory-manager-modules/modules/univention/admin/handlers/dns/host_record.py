@@ -46,7 +46,6 @@ module = 'dns/host_record'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['a']
 superordinate = 'dns/forward_zone'
-usewizard = 1
 childs = 0
 short_description = 'DNS: Host Record'
 long_description = ''
