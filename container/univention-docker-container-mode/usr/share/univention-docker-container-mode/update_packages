@@ -37,7 +37,7 @@ password_file="$(getarg --password-file)"
 
 ret_join=0
 
-univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)"
+univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)" --disable-app-updates
 ret_pack="$?"
 
 if [ -n "$username" -a -n "$password_file" ]; then
