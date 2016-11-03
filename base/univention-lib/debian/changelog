@@ -1,3 +1,9 @@
+univention-lib (5.0.0-17) unstable; urgency=low
+
+  * Bug #40611: added special container mode for ad member
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2016 14:03:27 +0100
+
 univention-lib (5.0.0-16) unstable; urgency=low
 
   * Bug #24758: Fix quoting in umc.sh

@@ -1398,6 +1398,8 @@ def configure_member_as_ad_member():
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
+def configure_container_as_ad_member():
+	prepare_ucr_settings()
 
 def revert_backup_ad_member():
 	# TODO something else?
@@ -1414,4 +1416,7 @@ def revert_slave_ad_member():
 def revert_member_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
+	revert_ucr_settings()
+
+def revert_container_ad_member():
 	revert_ucr_settings()
