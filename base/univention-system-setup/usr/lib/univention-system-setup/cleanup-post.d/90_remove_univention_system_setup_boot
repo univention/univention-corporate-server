@@ -35,4 +35,6 @@ if [ "${role}" = "basesystem" ]
 then
 	apt-mark manual python-psutil
 fi
-aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null
+
+apt-mark auto univention-management-console-web-server univention-management-console-module-setup
+dpkg -r univention-system-setup-boot

@@ -1971,7 +1971,7 @@ define([
 				msg += '<p>' + _('UCS has been successfully set up.') + ' ';
 			}
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
-				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
+				msg += _('<p>Click on <i>Finish</i> to conclude the installation. The system will be prepared for the first boot procedure and will be rebooted afterwards.</p>');
 			} else if (isUniventionApp) {
 				msg += _('<p>Click on <i>Finish</i> for putting this system into operation.</p>');
 				if (isMaster) {

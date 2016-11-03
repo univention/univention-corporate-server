@@ -1,3 +1,13 @@
+univention-system-setup (10.0.0-13) unstable; urgency=medium
+
+  * Bug #42538: Only install ad-connector on DC master
+    when joining an AD domain
+  * Bug #42808: Use apt-mark and dpkg instead of aptitude to configure
+    correct package status in 90_remove_univention_system_setup_boot
+  * Bug #40601: Updated textmessage for completed installation
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Nov 2016 09:55:11 +0100
+
 univention-system-setup (10.0.0-12) unstable; urgency=medium
 
   * Bug #42179: Catch NoNameservers exception

@@ -100,11 +100,12 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:1998
 msgid ""
-"<p>After clicking on the button <i>Finish</i> the system will be prepared "
-"for the first boot procedure and will be rebooted.</p>"
+"<p>Click on <i>Finish</i> to conclude the installation. The system will be "
+"prepared for the first boot procedure and will be rebooted afterwards.</p>"
 msgstr ""
-"<p>Nach dem Klicken auf die Schaltfläche <i>Fertigstellen</i> wird das "
-"System auf den ersten Bootvorgang vorbereitet und neu gestartet.</p>"
+"<p>Klicken Sie auf <i>Fertigstellen</i> um die Installation abzuschließen. "
+"Anschließend wird das System auf den ersten Bootvorgang vorbereitet und neu "
+"gestartet.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:2009
 msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
