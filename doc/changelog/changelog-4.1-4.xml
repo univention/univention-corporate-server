@@ -438,7 +438,10 @@
 					Clarified sentences at the last system setup page (<u:bug>40601</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fix a crash during validation in special DNS constellations (<u:bug>42179</u:bug>).
+					Fixed basesystem setup errors (<u:bug>42553</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fix a crash during validation in special DNS configurations (<u:bug>42179</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Use correct <wordasword>INI</wordasword> value for NotifyVendor information in <package>univention-app-appliance</package>
