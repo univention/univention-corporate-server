@@ -1,3 +1,9 @@
+univention-join (8.0.4-5) unstable; urgency=low
+
+  * Bug #40611: added -containerAdMemberMode
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2016 14:09:15 +0100
+
 univention-join (8.0.4-4) unstable; urgency=low
 
   * Bug #40611: added -skipAdMemberMode
