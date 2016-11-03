@@ -54,7 +54,7 @@ def finish_system_setup_boot():
 	# a UCRv is used as a flag to indicate this. Firefox then has to be
 	# stopped manually
 
-	if ucr.is_true('system/setup/boot/legacyfrontend', False) or ucr.get('server/role') == 'basesystem':
+	if ucr.is_true('system/setup/boot/legacyfrontend', False):
 		print 'Appliance mode: try to shut down the browser'
 		try:
 			fpid = open(PATH_BROWSER_PID)

@@ -1,3 +1,10 @@
+univention-system-setup (9.0.5-4) unstable; urgency=medium
+
+  * Bug #42553: revert previous change. Adapt JS code to fix basesystem
+    installation issues
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Nov 2016 16:19:26 +0100
+
 univention-system-setup (9.0.5-3) unstable; urgency=medium
 
   * Bug #42500: Fix test for debian installer
