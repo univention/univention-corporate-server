@@ -7,8 +7,9 @@ univention-system-setup (10.0.0-13) unstable; urgency=medium
   * Bug #40601: Updated textmessage for completed installation
   * Bug #42500: Do not cache certificates when installing via
     debian installer, as none have been created yet
+  * Bug #42553: Adapt JS code to fix basesystem installation issues
 
- -- Erik Damrose <damrose@univention.de>  Thu, 03 Nov 2016 09:55:11 +0100
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Nov 2016 16:27:19 +0100
 
 univention-system-setup (10.0.0-12) unstable; urgency=medium
 

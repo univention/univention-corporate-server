@@ -1379,7 +1379,9 @@ define([
 				}
 				tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
 					var ucr = data.result;
-					var isReady = ucr['license/base'] && ucr['uuid/system'] !== fakeUuid;
+					var hasLicenseBase = ucr['license/base'] || this._isRoleBaseSystem();
+					var hasUUID = ucr['uuid/system'] !== fakeUuid;
+					var isReady = hasLicenseBase && hasUUID;
 					if (!isReady) {
 						return;
 					}
