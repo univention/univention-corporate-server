@@ -1,3 +1,9 @@
+univention-docker-container-mode (2.0.0-6) unstable; urgency=low
+
+  * Bug #40611: use -containerAdMemberMode for joining
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2016 14:16:37 +0100
+
 univention-docker-container-mode (2.0.0-5) unstable; urgency=medium
 
   * Bug #42735: Disable version check when joining
