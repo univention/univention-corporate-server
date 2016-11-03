@@ -1,3 +1,9 @@
+ucs-test (6.0.37-6) unstable; urgency=medium
+
+  * Bug #42846: Disable test 54_smbtorture/05_samba_selftest
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Nov 2016 17:25:38 +0100
+
 ucs-test (6.0.37-5) unstable; urgency=medium
 
   * 00_checks/42_admember_roles: Check installation status of univention-
