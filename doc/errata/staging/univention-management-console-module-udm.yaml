@@ -11,6 +11,6 @@ desc: |
  * DHCP Pools may now be created underneath of shared subnets.
  * DHCP Pools may now be created via the DHCP UMC module.
  * When adding objects the Container widget is not shown anymore if a
-   superoridnate is selected as these objects are created underneath of
+   superordinate is selected as these objects are created underneath of
    the superordinate.
 bug: [39588, 40649, 42177, 26133]
