@@ -94,6 +94,13 @@ univention.lib.admember.revert_backup_ad_member()
 "
 }
 
+configure_container_as_ad_member () {
+python -c "
+import univention.lib.admember
+univention.lib.admember.configure_container_as_ad_member()
+"
+}
+
 revert_slave_ad_member() {
 python -c "
 import univention.lib.admember
@@ -108,6 +115,13 @@ univention.lib.admember.revert_member_ad_member()
 "
 }
 
+revert_container_ad_member() {
+python -c "
+import univention.lib.admember
+univention.lib.admember.revert_container_ad_member()
+"
+}
+
 configure_nonmaster_as_ad_member () {
 	local role="$1"
 	if [ -n "$role" ]; then
@@ -117,6 +131,8 @@ configure_nonmaster_as_ad_member () {
 			configure_slave_as_ad_member
 		elif [ "$role" = "memberserver" ]; then
 			configure_member_as_ad_member
+		elif [ "$role" = "container" ]; then
+			configure_container_as_ad_member
 		fi
 	fi
 }
@@ -130,6 +146,8 @@ revert_nonmaster_ad_member () {
 			revert_slave_ad_member
 		elif [ "$role" = "memberserver" ]; then
 			revert_member_ad_member
+		elif [ "$role" = "container" ]; then
+			revert_container_ad_member
 		fi
 	fi
 }
