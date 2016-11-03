@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * A race condition could lead to data loss in the Univention Config Registry.
 bug: [42619]
+announced: 2016-11-03
