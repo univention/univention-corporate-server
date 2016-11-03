@@ -631,7 +631,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-					When adding objects the Container widget is not shown anymore if a superoridnate is selected as these objects are
+					When adding objects the Container widget is not shown anymore if a superordinate is selected as these objects are
 					created underneath of the superordinate (<u:bug>26133</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
