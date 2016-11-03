@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Apply docker firewall settings during start of docker.
 bug: [42698]
+announced: 2016-11-03
