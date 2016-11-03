@@ -1,0 +1,31 @@
+This patch requires
+svn/patches/samba/4.1-0-0-ucs/2:4.5.1-1-ucs4.1-4/99_revert_making_libcli-smb-raw_private.*
+
+diff -Nuarp -x '*.o' -x build -x .lock-waf_linux2_build -x '.waf-*' winexe-winexe-waf.orig/source/wscript winexe-winexe-waf/source/wscript
+--- winexe-winexe-waf.orig/source/wscript	2014-01-07 23:08:34.000000000 +0100
++++ winexe-winexe-waf/source/wscript	2015-11-25 08:10:39.660000000 +0100
+@@ -65,20 +65,21 @@ def configure(ctx):
+         ctx.msg('SAMBA_LIBS set to', ctx.env.SAMBA_LIBS)
+ 
+         try:
+-            for h in 'samba_util.h core/error.h credentials.h dcerpc.h gen_ndr/ndr_svcctl_c.h popt.h smb_cli.h smb_cliraw.h smb_composite.h tevent.h util/debug.h'.split():
++            for h in 'core/error.h credentials.h dcerpc.h gen_ndr/ndr_svcctl_c.h popt.h smb_cli.h smb_cliraw.h smb_composite.h tevent.h util/debug.h'.split():
+                 ctx.check(includes=ctx.env.SAMBA_INCS, msg='Checking for ' + h, fragment='''
+                 #include <stdint.h>
+                 #include <stdbool.h>
+                 #if %d
+-                #include <samba_util.h>
++                #include <util/data_blob.h>
++                #include <util/time.h>
+                 #include <core/error.h>
+                 #endif
+                 #include <%s>
+                 int main() {return 0;}
+                 ''' % (h in 'smb_cli.h smb_cliraw.h smb_composite.h util/debug.h'.split(), h))
+ 
+             libs = []
+-            for l in 'cli-ldap dcerpc dcerpc-samba errors popt talloc ndr-standard samba-hostconfig samba-credentials smbclient-raw'.split():
++            for l in 'cli-ldap dcerpc dcerpc-samba4 dcerpc-samba smbclient-raw samba-errors popt talloc ndr-standard samba-hostconfig samba-credentials smbclient-raw samba-debug'.split():
+                 if ctx.check(lib=l, libpath=ctx.env.SAMBA_LIBS, mandatory=False):
+                     libs.append(l)
+                 else:

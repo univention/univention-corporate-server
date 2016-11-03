@@ -1,3 +1,9 @@
+winexe (2.0.2-1) unstable; urgency=medium
+
+  * Bug #42624: Adjust to Samba 4.5
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Nov 2016 12:38:59 +0100
+
 winexe (2.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
