@@ -550,7 +550,14 @@ uninstall_packages ()
 	fi
 
 	# Old kernels
-	for kernel in linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed linux-image-4.1.0-ucs174-amd64 linux-image-4.1.0-ucs174-amd64-signed linux-image-3.16-ucs109-amd64 linux-image-3.16-ucs109-amd64-signed linux-image-3.16.0-ucs135-amd64 linux-image-3.16.0-ucs135-amd64-signed linux-image-3.16.0-ucs165-amd64 linux-image-3.16.0-ucs165-amd64-signed linux-image-3.16.0-ucs195-amd64 linux-image-3.16.0-ucs195-amd64-signed; do
+	for kernel in linux-image-4.1.0-ucs205-amd64 linux-image-4.1.0-ucs205-amd64-signed \
+		linux-image-4.1.0-ucs190-amd64 linux-image-4.1.0-ucs190-amd64-signed \
+		linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed \
+		linux-image-4.1.0-ucs174-amd64 linux-image-4.1.0-ucs174-amd64-signed \
+		linux-image-3.16-ucs109-amd64 linux-image-3.16-ucs109-amd64-signed \
+		linux-image-3.16.0-ucs135-amd64 linux-image-3.16.0-ucs135-amd64-signed \
+		linux-image-3.16.0-ucs165-amd64 linux-image-3.16.0-ucs165-amd64-signed \
+		linux-image-3.16.0-ucs195-amd64 linux-image-3.16.0-ucs195-amd64-signed; do
 		apt-get purge -y --force-yes ${kernel}
 	done
 }
@@ -625,6 +632,7 @@ setup_appliance ()
 
 	uninstall_packages
 
+	univention-install -y univention-l10n-fr
 	univention-install -y --force-yes --reinstall univention-system-setup-boot
 	univention-install -y --no-install-recommends univention-x-core
 
@@ -642,6 +650,8 @@ setup_appliance ()
 
 	# set initial system uuid (set to new value in setup-join.sh)
 	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
+
+	ucr unset system/setup/boot/legacyfrontend
 }
 
 appliance_cleanup ()
