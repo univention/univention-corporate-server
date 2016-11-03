@@ -1000,8 +1000,12 @@
 				<package>univention-join</package> to skip the ad member mode configuration (<u:bug>40611</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				<package>univention-docker-container-mode</package> now by default skips the ad member
-				mode configuration during the join of docker app containers (<u:bug>40611</u:bug>).
+				The command line parameter <wordasword>-containerAdMemberMode</wordasword> has been added to
+				<package>univention-join</package> for special handling of ad member mode in containers (<u:bug>40611</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-docker-container-mode</package> now by default calls <wordasword>univention-join</wordasword>
+				with the parameter <wordasword>-containerAdMemberMode</wordasword> (<u:bug>40611</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				<package>univention-docker-container-mode</package> now by default skips App updates
