@@ -1,12 +1,18 @@
+univention-ucs-translation-template (3.1.0-5) unstable; urgency=medium
+
+  * Bug #42260: corrected path in debian/univention-l10n-tools.install
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2016 13:11:57 +0100
+
 univention-ucs-translation-template (3.1.0-4) unstable; urgency=medium
 
-  * Bug #41777: added missing debian/univention-l10n-tools.install file
+  * Bug #42260: added missing debian/univention-l10n-tools.install file
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2016 13:05:56 +0100
 
 univention-ucs-translation-template (3.1.0-3) unstable; urgency=medium
 
-  * Bug #41777: use different translation domain in ucr-l10
+  * Bug #42260: use different translation domain in ucr-l10
 
  -- Eduard Mai <mai@univention.de>  Wed, 02 Nov 2016 18:37:59 +0100
 
