@@ -14,3 +14,4 @@ desc: |
    superordinate is selected as these objects are created underneath of
    the superordinate.
 bug: [39588, 40649, 42177, 26133]
+announced: 2016-11-03
