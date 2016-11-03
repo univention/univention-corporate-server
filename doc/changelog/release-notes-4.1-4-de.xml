@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Das UCS-Managementsystem ist ab sofort auch in französischer Sprache verfügbar.
+				Der Installationsassistent und das UCS-Managementsystem sind ab sofort auch in Französisch verfügbar.
 			</para></listitem>
 			<listitem><para>
 				Samba wurde auf Version 4.5.1 aktualisiert. Dies umfasst diverse Verbesserungen, u.a. im Bereich der DRS-Replikation,

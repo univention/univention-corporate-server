@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The UCS management system is now also available in French.
+				The installation wizard and the UCS management system are now also available in French.
 			</para></listitem>
 			<listitem><para>
 				Samba has been updated to version 4.5.1. This includes various improvements,
