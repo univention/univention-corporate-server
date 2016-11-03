@@ -1,3 +1,10 @@
+univention-dvd (1.0.1-7) unstable; urgency=medium
+
+  * Bug #42327: removed univention-ucs-translation-fr
+    added univention-l10n-fr
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 03 Nov 2016 15:36:13 +0100
+
 univention-dvd (1.0.1-6) unstable; urgency=medium
 
   * Bug #42327: added univention-ucs-translation-fr
