@@ -9,3 +9,4 @@ desc: |
  * The module description of the SAML identity provider module is now
    translated correctly
 bug: [41187]
+announced: 2016-11-03
