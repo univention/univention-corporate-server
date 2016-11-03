@@ -321,7 +321,7 @@
 					Wildcard and automatic substring searches are now configurable via &ucsUCR; (<u:bug>42388</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A French translation is now available. (<u:bug>41776</u:bug>, <u:bug>41773</u:bug>).
+					A French translation is now available. (<u:bug>41776</u:bug>, <u:bug>41773</u:bug>, <u:bug>42260</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
