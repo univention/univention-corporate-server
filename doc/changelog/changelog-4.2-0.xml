@@ -17,7 +17,6 @@
 		</itemizedlist>
 	</section>
 
-				<!--
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
 		<itemizedlist>
@@ -25,13 +24,11 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-				-->
 
 
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
-				<!--
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
@@ -39,7 +36,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
@@ -62,7 +58,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 
-				<!--
 			<section id="changelog:basis:ucr:template">
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
@@ -70,10 +65,8 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-				-->
 		</section>
 
-				<!--
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
 			<itemizedlist>
@@ -81,9 +74,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
-				<!--
 		<section id="changelog:basis:other">
 			<title>Other system services</title>
 			<itemizedlist>
@@ -91,7 +82,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 	<section id="changelog:domain">
@@ -120,7 +110,6 @@
 				</itemizedlist>
 			</section>
 
-				<!--
 			<section id="changelog:domain:openldap:schema">
 				<title>LDAP schema changes</title>
 				<itemizedlist>
@@ -128,7 +117,6 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-				-->
 
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
@@ -139,7 +127,6 @@
 				</itemizedlist>
 			</section>
 
-				<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
@@ -147,7 +134,6 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-				-->
 		</section>
 	</section>
 
@@ -181,7 +167,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -189,7 +175,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -214,11 +200,11 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The "execute pending join scripts" button is now greyed out if no unconfigured join scripts exists (<u:bug>35326</u:bug>).
+					The "execute pending join scripts" button is now grayed out if no unconfigured join scripts exists (<u:bug>35326</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				<!--
+
 		<section id="changelog:umc:user">
 			<title>Users module</title>
 			<itemizedlist>
@@ -245,6 +231,14 @@
 
 		<section id="changelog:umc:dns">
 			<title>DNS module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:dhcp">
+			<title>DHCP module</title>
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -290,9 +284,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
-				<!--
 		<section id="changelog:umc:mail">
 			<title>Mail</title>
 			<itemizedlist>
@@ -340,7 +332,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 
@@ -351,7 +342,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 
-				<!--
 		<section id="changelog:deployment:pkgdb">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -367,7 +357,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 
@@ -391,7 +380,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:service:selfservice">
 			<title>Univention self service</title>
 			<itemizedlist>
@@ -439,13 +427,12 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -457,7 +444,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -465,7 +451,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -485,7 +470,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:service:other">
 			<title>Other services</title>
 			<itemizedlist>
@@ -493,7 +477,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 
@@ -509,7 +492,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
@@ -517,7 +499,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 
@@ -536,7 +517,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 				<listitem><simpara>
 					Samba has been updated to version 4.5.0
 					(<u:bug>40661</u:bug>).
@@ -549,7 +530,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
@@ -557,13 +537,12 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -571,7 +550,7 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
- 				</simpara></listitem>
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
