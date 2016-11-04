@@ -58,15 +58,15 @@ msgstr "Eine Pfadangabe muss mit \"/\" beginnen."
 
 #: modules/univention/admin/syntax.py:1240
 msgid ""
-"A subnet for reverse lookup consists of the first one to three parts of an "
+"A subnet for reverse lookup consists of the first 1-3 octets of an "
 "IPv4 address (example: \"192.168.0\") or of the first 1 to 31 nibbles of an "
-"IPv6 address with leading zeroes and without :: substitution (example: "
-"\"2001:0db8:010\")"
+"expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "
+"\"2001:0db8:010\" for \"2001:db8:100::/44\")"
 msgstr ""
-"Ein Subnetz für den Reverse Lookup besteht aus den ersten 1 bis 3 Teilen "
+"Ein Subnetz für den Reverse Lookup besteht aus den ersten 1 bis 3 Oktetten "
 "einer IPv4-Adresse (z.B. \"192.168.0\") oder den ersten 1 bis 31 Nibbles "
-"einer IPv6-Adresse mit führenden Nullen und ohne die :: Ersetzung (z.B. "
-"\"2001:0db8:010\")"
+"einer vollständigen (mit führenden Nullen und ohne die ::-Ersetzung) IPv6-Adresse (z.B. "
+"\"2001:0db8:010\" für \"2001:db8:100::/44\")"
 
 #: modules/univention/admin/syntax.py:1584
 msgid "Above primary display"

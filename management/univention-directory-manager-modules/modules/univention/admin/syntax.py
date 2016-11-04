@@ -1342,7 +1342,7 @@ class reverseLookupSubnet(simple):
 	# normal IPv6 address without "::" substitution, leading zeroes must be preserved, at most 31 nibbles
 	regex_IPv6 = r'(([0-9a-f]{4}:){0,7}[0-9a-f]{1,3})|(([0-9a-f]{4}:){0,6}[0-9a-f]{1,4})'
 	regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6, ))
-	error_message = _('A subnet for reverse lookup consists of the first one to three parts of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an IPv6 address with leading zeroes and without :: substitution (example: "2001:0db8:010")')
+	error_message = _('A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")')
 
 
 class reverseLookupZoneName(simple):
