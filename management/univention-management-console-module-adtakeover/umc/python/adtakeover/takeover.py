@@ -1991,6 +1991,7 @@ def ping(hostname_or_ip):
 		p1 = subprocess.Popen(cmd, close_fds=True, stdout=DEVNULL, stderr=DEVNULL)
 		rc = p1.wait()
 	except OSError as ex:
+		# i18n: The program "fping" failed.
 		raise TakeoverError(" ".join(cmd) + _(" failed"), ex.args[1])
 
 	if rc != 0:
