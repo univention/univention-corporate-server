@@ -438,7 +438,7 @@
 					Clarified sentences at the last system setup page (<u:bug>40601</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fixed basesystem setup errors (<u:bug>42553</u:bug>).
+					Fixed base system setup errors (<u:bug>42553</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Fix a crash during validation in special DNS configurations (<u:bug>42179</u:bug>).
