@@ -248,7 +248,7 @@
 			<title>DHCP module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DHCP modules not validate the input fields better and require a valid IP address or host name to be entered (<u:bug>33211</u:bug>).
+					The DHCP modules now validate the input fields better and require a valid IP address or host name to be entered (<u:bug>33211</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Long descriptions have been added to all DHCP module properties (<u:bug>42820</u:bug>).
