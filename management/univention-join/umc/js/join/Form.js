@@ -86,6 +86,7 @@ define([
 					var networkLink = tools.linkToModule({module: 'setup', flavor: 'network'});
 					var _warningMessage = lang.replace('<b>{0}</b>{1} {2}', [
 						_('Warning: '), data.result.error_message,
+						// i18n: %s is the "Network settings module".
 						networkLink ? _('The DNS settings can be adjusted in the %s.', networkLink) : ''
 					]);
 					this._widgets.warning.set('content', _warningMessage);

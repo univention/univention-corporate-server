@@ -81,8 +81,10 @@ define([
 						// Bug #33389: do not prompt any hint if the system is not joined
 						// otherwise we might display this hint if a user runs the appliance
 						// setup from an external client.
+						// i18n: %s is the "Domain join module".
 						//dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
 					} else if (!allScriptsConfigured) {
+						// i18n: %s is the "Domain join module".
 						dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
 					}
 
@@ -295,6 +297,7 @@ define([
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
+						// i18n: %s is the "XXX module".
 						dialog.alert(_('A DC master should be joined by the %s.', tools.linkToModule({module: 'setup', flavor: 'wizard'}) || _('Basic settings module')));
 						return;
 					}
