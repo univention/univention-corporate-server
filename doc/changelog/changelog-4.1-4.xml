@@ -143,7 +143,7 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
-				A French translation is now available. (<u:bug>42326</u:bug>).
+				A French translation is now available. (<u:bug>42326</u:bug>, <u:bug>42327</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
