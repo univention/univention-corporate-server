@@ -1802,7 +1802,7 @@ class ucs:
 				for attribute, values in object['attributes'].items():
 					if self.property[key].attributes:
 						for attr_key in self.property[key].attributes.keys():
-							if attribute == self.property[key].attributes[attr_key].ldap_attribute:
+							if attribute.lower() == self.property[key].attributes[attr_key].ldap_attribute.lower():
 								# mapping function
 								if hasattr(self.property[key].attributes[attr_key], 'mapping'):
 									if self.property[key].attributes[attr_key].mapping[0]:
@@ -1830,7 +1830,7 @@ class ucs:
 
 					if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
 						for attr_key in self.property[key].post_attributes.keys():
-							if attribute == self.property[key].post_attributes[attr_key].ldap_attribute:
+							if attribute.lower() == self.property[key].post_attributes[attr_key].ldap_attribute.lower():
 								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 									if self.property[key].post_attributes[attr_key].mapping[0]:
 										object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
@@ -1848,7 +1848,7 @@ class ucs:
 					for attribute, values in object['attributes'].items():
 						if self.property[key].attributes:
 							for attr_key in self.property[key].attributes.keys():
-								if attribute == self.property[key].attributes[attr_key].con_attribute:
+								if attribute.lower() == self.property[key].attributes[attr_key].con_attribute.lower():
 									# mapping function
 									if hasattr(self.property[key].attributes[attr_key], 'mapping'):
 										# direct mapping
@@ -1876,7 +1876,7 @@ class ucs:
 
 						if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes is not None:
 							for attr_key in self.property[key].post_attributes.keys():
-								if attribute == self.property[key].post_attributes[attr_key].con_attribute:
+								if attribute.lower() == self.property[key].post_attributes[attr_key].con_attribute.lower():
 									if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
 										if self.property[key].post_attributes[attr_key].mapping[1]:
 											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = self.property[key].post_attributes[attr_key].mapping[1](self, key, object)

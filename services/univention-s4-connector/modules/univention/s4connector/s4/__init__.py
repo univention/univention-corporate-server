@@ -244,8 +244,12 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 		if 'sAMAccountName' in object['attributes']:
 			samaccountname = object['attributes']['sAMAccountName'][0]
 		if dn_attr:
-			if dn_attr in object['attributes']:
-				dn_attr_val = object['attributes'][dn_attr][0]
+			try:
+				dn_attr_vals = [value for key, value in object['attributes'].iteritems() if dn_attr.lower() == key.lower()][0]
+			except IndexError:
+				pass
+			else:
+				dn_attr_val = dn_attr_vals[0]
 
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (dn_key not in dn_mapping_stored) or (not object[dn_key]):
@@ -2517,10 +2521,16 @@ class s4(univention.s4connector.ucs):
 
 								if s4_other_attribute:
 									# in this case we need lists because sets are unorded and the order is important
-									current_s4_values = set(s4_object.get(s4_attribute, []))
+									try:
+										current_s4_values = set([v for k, v in s4_object.iteritems() if s4_attribute.lower() == k.lower()][0])
+									except IndexError:
+										current_s4_values = set([])
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
-									current_s4_other_values = set(s4_object.get(s4_other_attribute, []))
+									try:
+										current_s4_other_values = set([v for k, v in s4_object.iteritems() if s4_other_attribute.lower() == k.lower()][0])
+									except IndexError:
+										current_s4_other_values = set([])
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
 
 									new_s4_values = current_s4_values - to_remove
@@ -2541,7 +2551,10 @@ class s4(univention.s4connector.ucs):
 									if current_s4_other_values != new_s4_other_values:
 										modlist.append((ldap.MOD_REPLACE, s4_other_attribute, new_s4_other_values))
 								else:
-									current_s4_values = set(s4_object.get(s4_attribute, []))
+									try:
+										current_s4_values = set([v for k, v in s4_object.iteritems() if s4_attribute.lower() == k.lower()][0])
+									except IndexError:
+										current_s4_values = set([])
 
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
