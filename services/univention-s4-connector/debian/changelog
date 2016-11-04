@@ -1,3 +1,13 @@
+univention-s4-connector (11.0.2-1) unstable; urgency=medium
+
+  * While joining a Windows 8.1 client against Samba 4.5, we discovered
+    that the CN attribute in S4 is defined uppercase. The mapping for
+    the LDAP attributes is currently case sensitive. These are the first
+    steps for a case insensitive LDAP attribute handling. Thanks to
+    Florian, he wrote most of the patch (Bug #42855)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2016 22:22:22 +0100
+
 univention-s4-connector (11.0.1-1) unstable; urgency=low
 
   * Bug #42120: Fix re-animation of deleted user objects (UCS@school)
