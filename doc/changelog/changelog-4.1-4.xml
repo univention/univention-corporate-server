@@ -895,6 +895,10 @@
 					(<u:bug>42679</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					<application>Samba</application> 4.5.1 has disabled <property>ntlm auth</property> by default. In UCS, this setting can
+					be configured via the &ucsUCRV; <envar>samba/ntlm/auth</envar> and it is activated by default (<u:bug>42847</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Locking in the SYSVOL sync script has been improved (<u:bug>42475</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
