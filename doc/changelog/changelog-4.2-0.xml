@@ -235,6 +235,9 @@
 				<listitem><simpara>
 					The help and example for the DNS reverse zone subnet property has been improved  (<u:bug>34131</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The description for the negative time-to-live property has been corrected (<u:bug>33165</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

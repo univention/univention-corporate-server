@@ -129,7 +129,7 @@ property_descriptions = {
 		default=(('7', 'days'), [])
 	),
 	'ttl': univention.admin.property(
-		short_description=_('Minimum time to live'),
+		short_description=_('Negative time to live'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,

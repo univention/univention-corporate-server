@@ -2,6 +2,7 @@ univention-directory-manager-modules (12.0.5-2) unstable; urgency=low
 
   * Bug #33211: validate IP addresses in DHCP
   * Bug #34131: Improve help for reverseLookupSubnet
+  * Bug #33165: Change nxdomain description
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 02 Nov 2016 15:05:43 +0100
 
