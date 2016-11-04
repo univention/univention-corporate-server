@@ -1,3 +1,9 @@
+univention-samba4 (5.0.2-1) unstable; urgency=medium
+
+  * Set 'ntlm auth' by default to yes (Bug #42847)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2016 06:43:18 +0100
+
 univention-samba4 (5.0.1-55) unstable; urgency=medium
 
   * Bug #42624: New UCR variable samba4/kccsrv/samba_kcc

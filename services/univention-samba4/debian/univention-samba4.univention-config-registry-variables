@@ -495,8 +495,8 @@ Type=str
 Categories=service-samba
 
 [samba/ntlm/auth]
-Description[de]=Über diese Variable lässt sich die Samba Option "ntlm auth" anpassen (siehe man smb.conf).
-Description[en]=This variable can be used to adjust the Samba option "ntlm auth" (see man smb.conf).
+Description[de]=Über diese Variable lässt sich die Samba Option "ntlm auth" anpassen (siehe man smb.conf). UCS default ist "yes".
+Description[en]=This variable can be used to adjust the Samba option "ntlm auth" (see man smb.conf). UCS default is "yes".
 Type=str
 Categories=service-samba
 
