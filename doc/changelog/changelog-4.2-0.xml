@@ -253,6 +253,9 @@
 				<listitem><simpara>
 					Long descriptions have been added to all DHCP module properties (<u:bug>42820</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Listing policies for DHCP host entries now works with multiple DHCP services and for entries with none or multiple IP addresses (<u:bug>42849</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

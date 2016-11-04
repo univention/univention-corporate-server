@@ -1059,10 +1059,12 @@ def _doit(arglist):
 					out.append('')
 
 					if module_name == 'dhcp/host':
-							subnet_module = univention.admin.modules.get('dhcp/subnet')
-							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
-
-								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
+						subnet_module = univention.admin.modules.get('dhcp/subnet')
+						# TODO: sharedsubnet_module = univention.admin.modules.get('dhcp/sharedsubnet')
+						ips = object['fixedaddress']
+						for ip in ips:
+							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
+								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], ip):
 									utf8_subnet_dn = _2utf8(subnet.dn)
 									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
 									policyResults = p1.communicate()[0].split('\n')

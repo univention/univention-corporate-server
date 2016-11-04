@@ -4,6 +4,7 @@ univention-directory-manager-modules (12.0.5-2) unstable; urgency=low
   * Bug #34131: Improve help for reverseLookupSubnet
   * Bug #33165: Change nxdomain description
   * Bug #42820: Add long description for DHCP and DNS
+  * Bug #42849: Fix policy listing for dhcp/host entries
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 02 Nov 2016 15:05:43 +0100
 
