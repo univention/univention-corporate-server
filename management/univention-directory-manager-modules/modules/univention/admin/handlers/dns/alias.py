@@ -49,13 +49,13 @@ columns = ['cname']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = _('DNS: Alias record')
-long_description = ''
+long_description = _('Assign additional names to a host.')
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Alias'),
-		long_description='',
+		long_description=_('The name of the entry relative to the domain.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
@@ -65,8 +65,8 @@ property_descriptions = {
 		identifies=True
 	),
 	'zonettl': univention.admin.property(
-		short_description=_('Zone time to live'),
-		long_description='',
+		short_description=_('Time to live'),
+		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -77,7 +77,7 @@ property_descriptions = {
 	),
 	'cname': univention.admin.property(
 		short_description=_('Canonical name'),
-		long_description=_("Alias for this host. FQDNs must end with '.'"),
+		long_description=_("The name this alias points to. A FQDNs must end with '.'."),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,

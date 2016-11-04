@@ -45,12 +45,12 @@ columns = ['txt']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: TXT Record'
-long_description = ''
+long_description = _('Resolve the symbolic name to some textual data.')
 
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('The name of the host relative to the domain.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
@@ -60,8 +60,8 @@ property_descriptions = {
 		identifies=True,
 	),
 	'zonettl': univention.admin.property(
-		short_description=_('Zone time to live'),
-		long_description='',
+		short_description=_('Time to live'),
+		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -72,7 +72,7 @@ property_descriptions = {
 	),
 	'txt': univention.admin.property(
 		short_description=_('Text Record'),
-		long_description='',
+		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=[],

@@ -48,7 +48,7 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = ['dhcp/subnet', 'dhcp/sharedsubnet']
 childs = 0
 short_description = _('DHCP: Pool')
-long_description = ''
+long_description = _('A pool of dynamic addresses assignable to hosts.')
 options = {
 }
 property_descriptions = {

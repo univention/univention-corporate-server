@@ -47,14 +47,14 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
 short_description = _('DHCP: Server')
-long_description = ''
+long_description = _('Associate a service with a server.')
 options = {
 }
 
 property_descriptions = {
 	'server': univention.admin.property(
 		short_description=_('Server name'),
-		long_description='',
+		long_description=_('The name of the server, which should handle this DHCP service.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,

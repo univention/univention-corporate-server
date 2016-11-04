@@ -47,13 +47,13 @@ columns = ['nameserver']
 childs = 1
 childmodules = ['dns/ptr_record']
 short_description = _('DNS: Reverse lookup zone')
-long_description = ''
+long_description = _('Map IP addresses back to hostnames.')
 options = {
 }
 property_descriptions = {
 	'subnet': univention.admin.property(
 		short_description=_('Subnet'),
-		long_description='',
+		long_description=_('The networks address in forward notation.'),
 		syntax=univention.admin.syntax.reverseLookupSubnet,
 		multivalue=False,
 		include_in_default_search=True,
@@ -64,7 +64,7 @@ property_descriptions = {
 	),
 	'zonettl': univention.admin.property(
 		short_description=_('Zone time to live'),
-		long_description='',
+		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -75,7 +75,7 @@ property_descriptions = {
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact person'),
-		long_description='',
+		long_description=_('The email address of the person responsible for this zone.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=[],
@@ -86,7 +86,7 @@ property_descriptions = {
 	),
 	'serial': univention.admin.property(
 		short_description=_('Serial number'),
-		long_description='',
+		long_description=_('The sequence number for this zone. Updates automatically.'),
 		syntax=univention.admin.syntax.integer,
 		multivalue=False,
 		options=[],
@@ -97,7 +97,7 @@ property_descriptions = {
 	),
 	'refresh': univention.admin.property(
 		short_description=_('Refresh interval'),
-		long_description='',
+		long_description=_('The time interval secondary DNS servers use to check the zone for updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -108,7 +108,7 @@ property_descriptions = {
 	),
 	'retry': univention.admin.property(
 		short_description=_('Retry interval'),
-		long_description='',
+		long_description=_('The time interval secondary DNS servers use to retry failed refresh updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -119,7 +119,7 @@ property_descriptions = {
 	),
 	'expire': univention.admin.property(
 		short_description=_('Expiry interval'),
-		long_description='',
+		long_description=_('The time interval after which secondary DNS servers will expire failed zones.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -130,7 +130,7 @@ property_descriptions = {
 	),
 	'ttl': univention.admin.property(
 		short_description=_('Negative time to live'),
-		long_description='',
+		long_description=_('The time interval "not found" answers are cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -141,7 +141,7 @@ property_descriptions = {
 	),
 	'nameserver': univention.admin.property(
 		short_description=_('Name server'),
-		long_description='',
+		long_description=_('The FQDNs of the servers serving this zone.'),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=True,
 		options=[],

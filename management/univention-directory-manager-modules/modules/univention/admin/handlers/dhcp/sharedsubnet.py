@@ -47,13 +47,13 @@ superordinate = 'dhcp/shared'
 childs = True
 childmodules = ['dhcp/pool']
 short_description = _('DHCP: Shared subnet')
-long_description = ''
+long_description = _('An IP address range used in a shared network.')
 options = {
 }
 property_descriptions = {
 	'subnet': univention.admin.property(
 		short_description=_('Subnet address'),
-		long_description='',
+		long_description=_('The network address.'),
 		syntax=univention.admin.syntax.ipv4Address,
 		multivalue=False,
 		include_in_default_search=True,
@@ -64,7 +64,7 @@ property_descriptions = {
 	),
 	'subnetmask': univention.admin.property(
 		short_description=_('Address prefix length (or Netmask)'),
-		long_description='',
+		long_description=_('The number of leading bits of the IP address used to identify the network.'),
 		syntax=univention.admin.syntax.v4netmask,
 		multivalue=False,
 		options=[],
@@ -74,7 +74,7 @@ property_descriptions = {
 	),
 	'broadcastaddress': univention.admin.property(
 		short_description=_('Broadcast address'),
-		long_description='',
+		long_description=_('The IP addresses used to send data to all hosts inside the network.'),
 		syntax=univention.admin.syntax.ipv4Address,
 		multivalue=False,
 		options=[],

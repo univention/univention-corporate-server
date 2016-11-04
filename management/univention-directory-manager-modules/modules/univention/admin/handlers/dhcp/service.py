@@ -45,13 +45,13 @@ operations = ['add', 'edit', 'remove', 'search']
 childs = 1
 childmodules = ('dhcp/host', 'dhcp/server', 'dhcp/shared', 'dhcp/subnet')
 short_description = _('DHCP: Service')
-long_description = ''
+long_description = _('The top-level container for a DHCP configuration.')
 options = {
 }
 property_descriptions = {
 	'service': univention.admin.property(
 		short_description=_('Service name'),
-		long_description='',
+		long_description=_('A unique name for this DHCP service.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,

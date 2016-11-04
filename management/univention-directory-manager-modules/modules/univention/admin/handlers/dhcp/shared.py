@@ -47,13 +47,13 @@ superordinate = 'dhcp/service'
 childs = 1
 childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
-long_description = ''
+long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Shared network name'),
-		long_description='',
+		long_description=_('A unique name for this shared network.'),
 		syntax=univention.admin.syntax.uid,
 		multivalue=False,
 		include_in_default_search=True,

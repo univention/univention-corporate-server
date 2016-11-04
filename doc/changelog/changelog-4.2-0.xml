@@ -238,6 +238,9 @@
 				<listitem><simpara>
 					The description for the negative time-to-live property has been corrected (<u:bug>33165</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Long descriptions have been added to all DNS module properties (<u:bug>42820</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -246,6 +249,9 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The DHCP modules not validate the input fields better and require a valid IP address or host name to be entered (<u:bug>33211</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Long descriptions have been added to all DHCP module properties (<u:bug>42820</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

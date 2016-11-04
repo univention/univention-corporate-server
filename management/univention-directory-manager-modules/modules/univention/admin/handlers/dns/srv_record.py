@@ -47,13 +47,13 @@ columns = ['location']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = _('DNS: Service record')
-long_description = ''
+long_description = _('Resolve well-known services to servers providing those services.')
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('The name and protocol of the service.'),
 		syntax=univention.admin.syntax.dnsSRVName,
 		multivalue=False,
 		include_in_default_search=True,
@@ -64,7 +64,7 @@ property_descriptions = {
 	),
 	'location': univention.admin.property(
 		short_description=_('Location'),
-		long_description='',
+		long_description=_('The host providing the service.'),
 		syntax=univention.admin.syntax.dnsSRVLocation,
 		multivalue=True,
 		options=[],
@@ -72,8 +72,8 @@ property_descriptions = {
 		may_change=True
 	),
 	'zonettl': univention.admin.property(
-		short_description=_('Zone time to live'),
-		long_description='',
+		short_description=_('Time to live'),
+		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],

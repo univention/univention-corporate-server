@@ -46,13 +46,13 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
 short_description = _('DHCP: Host')
-long_description = ''
+long_description = _('Configure a host identified by its hardware MAC address.')
 options = {
 }
 property_descriptions = {
 	'host': univention.admin.property(
 		short_description=_('Hostname'),
-		long_description='',
+		long_description=_('A unique name for this DHCP host entry. Using the hostname is recommended.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,

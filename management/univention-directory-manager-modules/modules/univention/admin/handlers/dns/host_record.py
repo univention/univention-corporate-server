@@ -48,12 +48,12 @@ columns = ['a']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: Host Record'
-long_description = ''
+long_description = _('Resolve the symbolic name to IP addresses.')
 
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Hostname'),
-		long_description='',
+		long_description=_('The name of the host relative to the domain.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
@@ -63,8 +63,8 @@ property_descriptions = {
 		identifies=True
 	),
 	'zonettl': univention.admin.property(
-		short_description=_('Zone time to live'),
-		long_description='',
+		short_description=_('Time to live'),
+		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		multivalue=False,
 		options=[],
@@ -75,7 +75,7 @@ property_descriptions = {
 	),
 	'a': univention.admin.property(
 		short_description=_('IP addresses'),
-		long_description='',
+		long_description=_('One or more IP addresses, to which the name is resolved to.'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		options=[],
@@ -83,8 +83,8 @@ property_descriptions = {
 		may_change=True
 	),
 	'mx': univention.admin.property(
-		short_description=_('Mail Exchanger'),
-		long_description='',
+		short_description=_('Mail exchanger host'),
+		long_description=_('The FQDNs of the hosts responsible for receiving mail for this DNS name.'),
 		syntax=univention.admin.syntax.dnsMX,
 		multivalue=True,
 		options=[],
@@ -93,7 +93,7 @@ property_descriptions = {
 	),
 	'txt': univention.admin.property(
 		short_description=_('Text Record'),
-		long_description='',
+		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=[],

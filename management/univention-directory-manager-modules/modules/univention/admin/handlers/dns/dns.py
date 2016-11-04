@@ -52,7 +52,7 @@ module = 'dns/dns'
 
 childs = 0
 short_description = _('All DNS zones')
-long_description = ''
+long_description = _('Manage the Domain Name System.')
 operations = ['search']
 childmodules = ['dns/forward_zone', 'dns/reverse_zone']
 virtual = 1
