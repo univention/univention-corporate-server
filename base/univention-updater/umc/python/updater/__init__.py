@@ -306,6 +306,7 @@ class Instance(Base):
 			elif line.startswith('Remv '):
 				l = line.split(' ')
 				pkg = l[1]
+				# i18n: The package version is unknown.
 				ver = _('unknown')
 				if len(l) > 2:
 					ver = l[2].replace('[', '').replace(']', '')

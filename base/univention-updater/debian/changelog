@@ -1,3 +1,9 @@
+univention-updater (12.0.1-2) unstable; urgency=medium
+
+  * Bug #41221: Added comments for translators.
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 04 Nov 2016 13:56:47 +0100
+
 univention-updater (12.0.1-1) unstable; urgency=medium
 
   * Bug #41539: non-UTF-8 characters don't cause a crash when viewing
