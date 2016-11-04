@@ -750,6 +750,7 @@ class PackageManager(object):
 		if hold_package:
 			message.append(_('Some package conflicts could not be resolved. This was probably caused by packages with "hold" state.'))
 		if renaming_failed or missing_files:
+			# i18n: "using it" refers to the "package manager"
 			message.append(_('Probably another process is currently using it or the package sources are corrupt. Please try again later.'))
 			apt_update = True
 		elif apt_update:
