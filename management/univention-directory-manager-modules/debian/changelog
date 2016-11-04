@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.5-2) unstable; urgency=low
+
+  * Bug #33211: validate IP addresses in DHCP
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 02 Nov 2016 15:05:43 +0100
+
 univention-directory-manager-modules (12.0.5-1) unstable; urgency=medium
 
   * Bug #32557: Add DHCP options and DHCP statements to DHCP objects

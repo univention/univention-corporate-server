@@ -1160,7 +1160,7 @@ class ipnetwork(simple):
 class IPv4_AddressRange(complex):
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
-		(_('Last address'), string),
+		(_('Last address'), ipv4Address),
 	)
 
 
