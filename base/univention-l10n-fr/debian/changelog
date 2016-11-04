@@ -1,3 +1,9 @@
+univention-l10n-fr (1.1.0-5) unstable; urgency=medium
+
+  * Bug #41776: removed dependency to univention-management-console
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2016 10:35:41 +0100
+
 univention-l10n-fr (1.1.0-4) unstable; urgency=medium
 
   * Bug #41776: add UCR variable translation
