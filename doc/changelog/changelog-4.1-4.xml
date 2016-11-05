@@ -961,13 +961,16 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The S4-Connector has been adjusted to use the tombstone reanimation feature of Samba 4.5.1 (<u:bug>42120</u:bug>).
+					The S4 Connector has been adjusted to use the tombstone reanimation feature of Samba 4.5.1 (<u:bug>42120</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The S4-Connector didn't synchronize TXT records. This issue has been fixed (<u:bug>41006</u:bug>).
+					The S4 Connector didn't synchronize TXT records. This issue has been fixed (<u:bug>41006</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The performance of the S4 connector when handling many objects has been improved (<u:bug>41999</u:bug>).
+					The performance of the S4 Connector when handling many objects has been improved (<u:bug>41999</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The S4 Connector mapping for LDAP attributes is now case insensitive (<u:bug>42855</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
