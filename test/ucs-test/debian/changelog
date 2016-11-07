@@ -1,3 +1,10 @@
+ucs-test (7.0.6-22) unstable; urgency=medium
+
+  * 67_udm-dns/10*: Skip in AD member mode since we use the AD DNS
+    server (Bug #39269)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Nov 2016 19:46:44 +0100
+
 ucs-test (7.0.6-21) unstable; urgency=medium
 
   * 52_s4connector/201read_initial_membership_ad_to_ucs: Increase the
