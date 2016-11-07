@@ -1,3 +1,10 @@
+ucs-test (6.0.37-7) unstable; urgency=medium
+
+  * 52_s4connector/201read_initial_membership_ad_to_ucs: Increase the
+    waiting time for the S4 connector (Bug #42860)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Nov 2016 08:05:17 +0100
+
 ucs-test (6.0.37-6) unstable; urgency=medium
 
   * Bug #42846: Disable test 54_smbtorture/05_samba_selftest

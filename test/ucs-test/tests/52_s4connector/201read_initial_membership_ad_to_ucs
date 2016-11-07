@@ -46,7 +46,8 @@ ad_append_to_attribute "$AD_G2_DN" "member" "$AD_B2_DN" || fail_test 110
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "read"
-invoke-rc.d univention-s4-connector start
+invoke-rc.d univention-s4-connector restart
+ad_wait_for_synchronization; fail_bool 0 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_G1_DN"; fail_bool 0 110
