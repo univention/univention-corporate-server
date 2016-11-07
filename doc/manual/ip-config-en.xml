@@ -548,13 +548,13 @@
 				</row>
 				<row>
 				  <entry>
-					Minimum time to live
+					Negative time to live
 				  </entry>
 				  <entry>
 					<para>
-					  The minimum time to live specifies in seconds how long other servers can cache
-					  no-such-domain (NXDOMAIN) answers. This value cannot be set at more
-					  than 3 hours, the preset value is 3 hours.
+					  The negative time to live specifies in seconds how long other servers can cache
+					  no-such-domain (NXDOMAIN) answers. This value cannot be set to more
+					  than 3 hours, the default value is 3 hours.
 					</para>
 				  </entry>
 				</row>

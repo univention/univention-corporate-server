@@ -505,11 +505,11 @@
 				  </entry>
 				</row>
 				<row>
-				  <entry>Minimum Time-to-Live</entry>
+				  <entry>Negative Time-to-Live</entry>
 				  <entry>
-					Die Minimum Time-to-Live gibt in Sekunden an, wie lange andere Server
+					Die Negative Time-to-Live gibt in Sekunden an, wie lange andere Server
 					<foreignphrase>No-such-Domain</foreignphrase>-Antworten (<acronym>NXDOMAIN</acronym>) im Cache behalten dürfen. Der Wert
-					darf nicht mehr als 3 Stunden betragen.
+					darf nicht mehr als 3 Stunden betragen, der Standard sind 3 Stunden.
 				  </entry>
 				</row>
 			  </tbody>
