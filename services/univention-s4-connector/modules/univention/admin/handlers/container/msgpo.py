@@ -53,121 +53,121 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=1,
-		may_change=1,
-		identifies=1
+		required=True,
+		may_change=True,
+		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOFlags': univention.admin.property(
 		short_description=_('MS Group Policy Flags'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOVersionNumber': univention.admin.property(
 		short_description=_('MS Group Policy Version Number'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOSystemFlags': univention.admin.property(
 		short_description=_('MS Group Policy System Flags'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOFunctionalityVersion': univention.admin.property(
 		short_description=_('MS Group Policy Functionality Version'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOFileSysPath': univention.admin.property(
 		short_description=_('MS Group Policy File Sys Path'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOUserExtensionNames': univention.admin.property(
 		short_description=_('MS Group Policy User Extension Names'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOMachineExtensionNames': univention.admin.property(
 		short_description=_('MS Group Policy Machine Extension Names'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msGPOWQLFilter': univention.admin.property(
 		short_description=_('MS Group Policy WQL Filter'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msNTSecurityDescriptor': univention.admin.property(
 		short_description=_('MS NT Security Descriptor'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 }
 
@@ -236,7 +236,7 @@ class object(univention.admin.handlers.simpleLdap):
 		]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'msGPOContainer'),

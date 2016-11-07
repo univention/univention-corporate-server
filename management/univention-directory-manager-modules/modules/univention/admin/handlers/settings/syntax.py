@@ -52,75 +52,75 @@ property_descriptions = {
 		short_description=_('Syntax Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=1,
-		may_change=1,
-		identifies=1
+		required=True,
+		may_change=True,
+		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Syntax Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'filter': univention.admin.property(
 		short_description=_('LDAP Search Filter'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=1,
-		may_change=1,
-		identifies=0
+		required=True,
+		may_change=True,
+		identifies=False
 	),
 	'base': univention.admin.property(
 		short_description=_('LDAP Base'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'attribute': univention.admin.property(
 		short_description=_('Displayed Attributes'),
 		long_description='',
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
-		multivalue=1,
+		multivalue=True,
 		include_in_default_search=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'ldapattribute': univention.admin.property(
 		short_description=_('Displayed LDAP Attributes'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=1,
+		multivalue=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'viewonly': univention.admin.property(
 		short_description=_('Show Only'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=0,
+		multivalue=False,
 		options=[],
 		required=False,
-		may_change=1,
-		identifies=0
+		may_change=True,
+		identifies=False
 	),
 	'addEmptyValue': univention.admin.property(
 		short_description=_('Add an empty value to choice list'),
@@ -137,22 +137,22 @@ property_descriptions = {
 		long_description='',
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
-		multivalue=0,
+		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'ldapvalue': univention.admin.property(
 		short_description=_('Stored LDAP Attribute'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 }
 
@@ -241,7 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter = univention.admin.filter.expression('objectClass', 'univentionSyntax')
 
 	if filter_s:

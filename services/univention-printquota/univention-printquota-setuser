@@ -88,7 +88,7 @@ except IndexError:
 
 lo = univention.uldap.getMachineConnection(secret_file="/etc/pykota.secret", ldap_master=False)
 try:
-	user_dn, attrs = lo.search('(&(objectClass=person)(uid=%s))' % usr_filter, required=1, unique=1, attr=['uid'])[0]
+	user_dn, attrs = lo.search('(&(objectClass=person)(uid=%s))' % usr_filter, required=True, unique=True, attr=['uid'])[0]
 except:
 	log(1, "WARNING: Exception while searching for user-dn")
 
@@ -147,7 +147,7 @@ try:
 		)),
 		'(cn=%s)' % (escape_filter_chars(prt_filter),),
 	))
-	dn, attrs = lo.search(ldap_filter, required=1, unique=1)[0]
+	dn, attrs = lo.search(ldap_filter, required=True, unique=True)[0]
 	prt_policies = lo.getPolicies(dn).get('univentionPolicySharePrintQuota', {})
 except ldap.INAPPROPRIATE_MATCHING:
 	log(1, "WARNING: poilicy-result failed, maybe more than one printer found")

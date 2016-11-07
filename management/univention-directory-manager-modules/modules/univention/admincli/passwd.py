@@ -85,7 +85,7 @@ def doit(arglist):
 		return out
 
 	try:
-		dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=1)
+		dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=True)
 		position = univention.admin.uldap.position(baseDN)
 
 		module = univention.admin.modules.get('users/user')
@@ -133,7 +133,7 @@ def doit(arglist):
 					bindpw = open('/etc/ldap/rootpw.conf').read()
 					bindpw = bindpw.split(' ')[1].strip('\n\r"')
 					lo = univention.admin.uldap.access(host='%s.%s' % (configRegistry['hostname'], configRegistry['domainname']), base=baseDN, binddn='cn=update,%s' % (baseDN), bindpw=bindpw, start_tls=2)
-					dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=1)
+					dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=True)
 					position = univention.admin.uldap.position(baseDN)
 					module = univention.admin.modules.get('users/user')
 					univention.admin.modules.init(lo, position, module)

@@ -53,161 +53,161 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=1,
-		may_change=1,
-		identifies=1
+		required=True,
+		may_change=True,
+		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'id': univention.admin.property(
 		short_description=_('MS WMI ID'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=1
+		required=False,
+		may_change=True,
+		identifies=True
 	),
 	'author': univention.admin.property(
 		short_description=_('MS WMI Author'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'creationDate': univention.admin.property(
 		short_description=_('MS WMI Creation Date'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'changeDate': univention.admin.property(
 		short_description=_('MS WMI Change Date'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'parm1': univention.admin.property(
 		short_description=_('MS WMI Parameter1'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'parm2': univention.admin.property(
 		short_description=_('MS WMI Parameter2'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'parm3': univention.admin.property(
 		short_description=_('MS WMI Parameter3'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'parm4': univention.admin.property(
 		short_description=_('MS WMI Parameter4'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'flags1': univention.admin.property(
 		short_description=_('MS WMI Flags1'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'flags2': univention.admin.property(
 		short_description=_('MS WMI Flags2'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'flags3': univention.admin.property(
 		short_description=_('MS WMI Flags3'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'flags4': univention.admin.property(
 		short_description=_('MS WMI Flags4'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'sourceOrganization': univention.admin.property(
 		short_description=_('MS WMI Source Organization'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 }
 
@@ -285,7 +285,7 @@ class object(univention.admin.handlers.simpleLdap):
 		]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'msWMISom'),

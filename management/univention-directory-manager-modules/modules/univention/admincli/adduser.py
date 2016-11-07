@@ -78,13 +78,13 @@ def get_user_object(user, position, lo, co):
 	usertype = 'user'
 	try:
 		# user Account
-		userobject = univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDn(), filter='(username=%s)' % user, required=1, unique=1)[0]
+		userobject = univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDn(), filter='(username=%s)' % user, required=True, unique=True)[0]
 	except:
 		# machine Account
 		for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.managedclient, univention.admin.handlers.computers.memberserver]:
 			if not usertype == 'machine':  # Account not found in proceeded handlers
 				try:
-					userobject = univention.admin.modules.lookup(handler, co, lo, scope='domain', base=position.getDn(), filter='(uid=%s)' % user, required=1, unique=1)[0]
+					userobject = univention.admin.modules.lookup(handler, co, lo, scope='domain', base=position.getDn(), filter='(uid=%s)' % user, required=True, unique=True)[0]
 					usertype = 'machine'
 				except:
 					usertype = 'unknown'
@@ -205,7 +205,7 @@ def doit(arglist):
 
 	elif action == 'deluser':
 		out.append(status('Removing user %s' % codecs.utf_8_encode(user)[0]))
-		object = univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDomain(), filter='(username=%s)' % user, required=1, unique=1)[0]
+		object = univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDomain(), filter='(username=%s)' % user, required=True, unique=True)[0]
 		object.remove()
 		nscd_invalidate('passwd')
 
@@ -219,7 +219,7 @@ def doit(arglist):
 
 	elif action == 'delgroup':
 		out.append(status('Removing group %s' % codecs.utf_8_encode(group)[0]))
-		object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % group, required=1, unique=1)[0]
+		object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % group, required=True, unique=True)[0]
 		object.remove()
 		nscd_invalidate('group')
 
@@ -230,7 +230,7 @@ def doit(arglist):
 				out.append(status('addusertogroup: filter protects group "%s"' % (codecs.utf_8_encode(group)[0])))
 				return out
 		out.append(status('Adding user %s to group %s' % (codecs.utf_8_encode(user)[0], codecs.utf_8_encode(group)[0])))
-		groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=1, unique=1)[0]
+		groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=True, unique=True)[0]
 		userobject = get_user_object(user, position, lo, co)
 		if isinstance(userobject, types.StringType):
 			out.append(userobject)
@@ -246,7 +246,7 @@ def doit(arglist):
 
 	elif action == 'deluserfromgroup':
 		out.append(status('Removing user %s from group %s' % (codecs.utf_8_encode(user)[0], codecs.utf_8_encode(group)[0])))
-		groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=1, unique=1)[0]
+		groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=True, unique=True)[0]
 
 		userobject = get_user_object(user, position, lo, co)
 		if isinstance(userobject, types.StringType):
@@ -272,14 +272,14 @@ def doit(arglist):
 
 	elif action == 'delmachine':
 		out.append(status('Removing machine %s' % codecs.utf_8_encode(machine)[0]))
-		object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % machine, required=1, unique=1)[0]
+		object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, co, lo, scope='domain', base=position.getDomain(), filter='(name=%s)' % machine, required=True, unique=True)[0]
 		object.remove()
 		nscd_invalidate('hosts')
 
 	elif action == 'setprimarygroup':
 		out.append(status('Set primary group %s for user %s' % (codecs.utf_8_encode(group)[0], codecs.utf_8_encode(user)[0])))
 		try:
-			groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=1, unique=1)[0]
+			groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=True, unique=True)[0]
 		except:
 			out.append('ERROR: group not found, nothing modified')
 			return out
