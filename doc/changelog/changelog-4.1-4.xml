@@ -18,121 +18,119 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-						<package>libidn</package> (<u:cve>CVE-2015-2059</u:cve> <u:cve>CVE-2015-8948</u:cve> <u:cve>CVE-2016-6261</u:cve>
-						<u:cve>CVE-2016-6263</u:cve>) (<u:bug>39440</u:bug>).
+						<package>apache2</package> (<u:cve>2016-5387</u:cve>) (<u:bug>41826</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libxslt</package> (<u:cve>CVE-2015-7995</u:cve> <u:cve>CVE-2016-1683</u:cve> <u:cve>CVE-2016-1684</u:cve>)
-						(<u:bug>41560</u:bug>).
+						<package>bind9</package> (<u:cve>2015-5722</u:cve> <u:cve>2015-8000</u:cve> <u:cve>2015-8704</u:cve>
+						<u:cve>2016-1285</u:cve> <u:cve>2016-1286</u:cve> <u:cve>2016-2776</u:cve>) (<u:bug>40319</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>nss</package> (<u:cve>CVE-2015-4000</u:cve> <u:cve>CVE-2015-7181</u:cve> <u:cve>CVE-2015-7182</u:cve>
-						<u:cve>CVE-2016-1938</u:cve> <u:cve>CVE-2016-1950</u:cve> <u:cve>CVE-2016-1978</u:cve> <u:cve>CVE-2016-1979</u:cve>
-						<u:cve>CVE-2016-2834</u:cve>) (<u:bug>41329</u:bug>).
+						<package>clamav</package> (<u:cve>2016-1371</u:cve> <u:cve>2016-1372</u:cve>) (<u:bug>41623</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>python2.7</package> (<u:cve>CVE-2016-0772</u:cve> <u:cve>CVE-2016-5636</u:cve> <u:cve>CVE-2016-5699</u:cve>)
-						(<u:bug>36977</u:bug>).
+						<package>gnupg</package> (<u:cve>2016-6313</u:cve>) (<u:bug>42102</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>xerces-c</package> (<u:cve>CVE-2015-0252</u:cve> <u:cve>CVE-2016-0729</u:cve> <u:cve>CVE-2016-2099</u:cve>
-						<u:cve>CVE-2016-4463</u:cve>) (<u:bug>38207</u:bug>).
+						<package>libarchive</package> (<u:cve>2015-2304</u:cve> <u:cve>2015-8917</u:cve> <u:cve>2015-8919</u:cve>
+						<u:cve>2015-8920</u:cve> <u:cve>2015-8921</u:cve> <u:cve>2015-8922</u:cve> <u:cve>2015-8923</u:cve>
+						<u:cve>2015-8924</u:cve> <u:cve>2015-8925</u:cve> <u:cve>2015-8926</u:cve> <u:cve>2015-8930</u:cve>
+						<u:cve>2015-8931</u:cve> <u:cve>2015-8932</u:cve> <u:cve>2015-8933</u:cve> <u:cve>2015-8934</u:cve>
+						<u:cve>2016-4300</u:cve> <u:cve>2016-4302</u:cve> <u:cve>2016-4809</u:cve> <u:cve>2016-5844</u:cve>
+						<u:cve>2015-8915</u:cve> <u:cve>2016-7166</u:cve> <u:cve>2016-5418</u:cve> <u:cve>2016-8687</u:cve>
+						<u:cve>2016-8688</u:cve> <u:cve>2016-8689</u:cve>) (<u:bug>38171</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>apache2</package> (<u:cve>CVE-2016-5387</u:cve>) (<u:bug>41826</u:bug>).
+						<package>libgcrypt11</package> (<u:cve>2015-7511</u:cve> <u:cve>2016-6313</u:cve>) (<u:bug>40678</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libxml2</package> (<u:cve>CVE-2015-8806</u:cve> <u:cve>CVE-2016-1762</u:cve> <u:cve>CVE-2016-1833</u:cve>
-						<u:cve>CVE-2016-1834</u:cve> <u:cve>CVE-2016-1835</u:cve> <u:cve>CVE-2016-1837</u:cve> <u:cve>CVE-2016-1838</u:cve>
-						<u:cve>CVE-2016-1839</u:cve> <u:cve>CVE-2016-1840</u:cve> <u:cve>CVE-2016-2073</u:cve> <u:cve>CVE-2016-3627</u:cve>
-						<u:cve>CVE-2016-3705</u:cve> <u:cve>CVE-2016-4447</u:cve> <u:cve>CVE-2016-4449</u:cve> <u:cve>CVE-2016-4483</u:cve>)
+						<package>libidn</package> (<u:cve>2015-2059</u:cve> <u:cve>2015-8948</u:cve> <u:cve>2016-6261</u:cve>
+						<u:cve>2016-6263</u:cve>) (<u:bug>39440</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libupnp</package> (<u:cve>2016-6255</u:cve>) (<u:bug>42030</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libxml2</package> (<u:cve>2015-8806</u:cve> <u:cve>2016-1762</u:cve> <u:cve>2016-1833</u:cve>
+						<u:cve>2016-1834</u:cve> <u:cve>2016-1835</u:cve> <u:cve>2016-1837</u:cve> <u:cve>2016-1838</u:cve>
+						<u:cve>2016-1839</u:cve> <u:cve>2016-1840</u:cve> <u:cve>2016-2073</u:cve> <u:cve>2016-3627</u:cve>
+						<u:cve>2016-3705</u:cve> <u:cve>2016-4447</u:cve> <u:cve>2016-4449</u:cve> <u:cve>2016-4483</u:cve>)
 						(<u:bug>41673</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>linux</package> (<u:cve>CVE-2013-4312</u:cve> <u:cve>CVE-2015-7513</u:cve> <u:cve>CVE-2015-7566</u:cve>
-						<u:cve>CVE-2015-7799</u:cve> <u:cve>CVE-2015-7833</u:cve> <u:cve>CVE-2015-7884</u:cve> <u:cve>CVE-2015-8104</u:cve>
-						<u:cve>CVE-2015-8539</u:cve> <u:cve>CVE-2015-8550</u:cve> <u:cve>CVE-2015-8551</u:cve> <u:cve>CVE-2015-8660</u:cve>
-						<u:cve>CVE-2015-8767</u:cve> <u:cve>CVE-2015-8785</u:cve> <u:cve>CVE-2015-8787</u:cve> <u:cve>CVE-2015-8812</u:cve>
-						<u:cve>CVE-2015-8816</u:cve> <u:cve>CVE-2015-8844</u:cve> <u:cve>CVE-2015-8845</u:cve> <u:cve>CVE-2016-0723</u:cve>
-						<u:cve>CVE-2016-0821</u:cve> <u:cve>CVE-2016-1237</u:cve> <u:cve>CVE-2016-1583</u:cve> <u:cve>CVE-2016-2069</u:cve>
-						<u:cve>CVE-2016-2085</u:cve> <u:cve>CVE-2016-2117</u:cve> <u:cve>CVE-2016-2143</u:cve> <u:cve>CVE-2016-2184</u:cve>
-						<u:cve>CVE-2016-2185</u:cve> <u:cve>CVE-2016-2186</u:cve> <u:cve>CVE-2016-2187</u:cve> <u:cve>CVE-2016-2188</u:cve>
-						<u:cve>CVE-2016-2383</u:cve> <u:cve>CVE-2016-2384</u:cve> <u:cve>CVE-2016-2543</u:cve> <u:cve>CVE-2016-2544</u:cve>
-						<u:cve>CVE-2016-2545</u:cve> <u:cve>CVE-2016-2546</u:cve> <u:cve>CVE-2016-2547</u:cve> <u:cve>CVE-2016-2549</u:cve>
-						<u:cve>CVE-2016-2550</u:cve> <u:cve>CVE-2016-2782</u:cve> <u:cve>CVE-2016-3134</u:cve> <u:cve>CVE-2016-3136</u:cve>
-						<u:cve>CVE-2016-3137</u:cve> <u:cve>CVE-2016-3138</u:cve> <u:cve>CVE-2016-3140</u:cve> <u:cve>CVE-2016-3156</u:cve>
-						<u:cve>CVE-2016-3157</u:cve> <u:cve>CVE-2016-3689</u:cve> <u:cve>CVE-2016-3951</u:cve> <u:cve>CVE-2016-3955</u:cve>
-						<u:cve>CVE-2016-3961</u:cve> <u:cve>CVE-2016-4470</u:cve> <u:cve>CVE-2016-4485</u:cve> <u:cve>CVE-2016-4486</u:cve>
-						<u:cve>CVE-2016-4557</u:cve> <u:cve>CVE-2016-4565</u:cve> <u:cve>CVE-2016-4569</u:cve> <u:cve>CVE-2016-4578</u:cve>
-						<u:cve>CVE-2016-4580</u:cve> <u:cve>CVE-2016-4581</u:cve> <u:cve>CVE-2016-4794</u:cve> <u:cve>CVE-2016-4805</u:cve>
-						<u:cve>CVE-2016-4913</u:cve> <u:cve>CVE-2016-4951</u:cve> <u:cve>CVE-2016-4997</u:cve> <u:cve>CVE-2016-4998</u:cve>
-						<u:cve>CVE-2016-5400</u:cve> <u:cve>CVE-2016-5412</u:cve> <u:cve>CVE-2016-5696</u:cve> <u:cve>CVE-2016-5828</u:cve>
-						<u:cve>CVE-2016-5829</u:cve> <u:cve>CVE-2016-6136</u:cve> <u:cve>CVE-2016-6197</u:cve> <u:cve>CVE-2016-6327</u:cve>
-						<u:cve>CVE-2016-6480</u:cve> <u:cve>CVE-2016-6828</u:cve> <u:cve>CVE-2016-7117</u:cve>) (<u:bug>41058</u:bug>).
+						<package>libxslt</package> (<u:cve>2015-7995</u:cve> <u:cve>2016-1683</u:cve> <u:cve>2016-1684</u:cve>)
+						(<u:bug>41560</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>mysql-5.5</package> (<u:cve>CVE-2016-0505</u:cve> <u:cve>CVE-2016-0546</u:cve> <u:cve>CVE-2016-0596</u:cve>
-						<u:cve>CVE-2016-0597</u:cve> <u:cve>CVE-2016-0598</u:cve> <u:cve>CVE-2016-0600</u:cve> <u:cve>CVE-2016-0606</u:cve>
-						<u:cve>CVE-2016-0608</u:cve> <u:cve>CVE-2016-0609</u:cve> <u:cve>CVE-2016-0616</u:cve> <u:cve>CVE-2016-0640</u:cve>
-						<u:cve>CVE-2016-0641</u:cve> <u:cve>CVE-2016-0642</u:cve> <u:cve>CVE-2016-0643</u:cve> <u:cve>CVE-2016-0644</u:cve>
-						<u:cve>CVE-2016-0646</u:cve> <u:cve>CVE-2016-0647</u:cve> <u:cve>CVE-2016-0648</u:cve> <u:cve>CVE-2016-0649</u:cve>
-						<u:cve>CVE-2016-0650</u:cve> <u:cve>CVE-2016-0666</u:cve> <u:cve>CVE-2016-2047</u:cve> <u:cve>CVE-2016-3477</u:cve>
-						<u:cve>CVE-2016-3521</u:cve> <u:cve>CVE-2016-3615</u:cve> <u:cve>CVE-2016-5440</u:cve> <u:cve>CVE-2016-6662</u:cve>)
+						<package>linux</package> (<u:cve>2013-4312</u:cve> <u:cve>2015-7513</u:cve> <u:cve>2015-7566</u:cve>
+						<u:cve>2015-7799</u:cve> <u:cve>2015-7833</u:cve> <u:cve>2015-7884</u:cve> <u:cve>2015-8104</u:cve>
+						<u:cve>2015-8539</u:cve> <u:cve>2015-8550</u:cve> <u:cve>2015-8551</u:cve> <u:cve>2015-8660</u:cve>
+						<u:cve>2015-8767</u:cve> <u:cve>2015-8785</u:cve> <u:cve>2015-8787</u:cve> <u:cve>2015-8812</u:cve>
+						<u:cve>2015-8816</u:cve> <u:cve>2015-8844</u:cve> <u:cve>2015-8845</u:cve> <u:cve>2016-0723</u:cve>
+						<u:cve>2016-0821</u:cve> <u:cve>2016-1237</u:cve> <u:cve>2016-1583</u:cve> <u:cve>2016-2069</u:cve>
+						<u:cve>2016-2085</u:cve> <u:cve>2016-2117</u:cve> <u:cve>2016-2143</u:cve> <u:cve>2016-2184</u:cve>
+						<u:cve>2016-2185</u:cve> <u:cve>2016-2186</u:cve> <u:cve>2016-2187</u:cve> <u:cve>2016-2188</u:cve>
+						<u:cve>2016-2383</u:cve> <u:cve>2016-2384</u:cve> <u:cve>2016-2543</u:cve> <u:cve>2016-2544</u:cve>
+						<u:cve>2016-2545</u:cve> <u:cve>2016-2546</u:cve> <u:cve>2016-2547</u:cve> <u:cve>2016-2549</u:cve>
+						<u:cve>2016-2550</u:cve> <u:cve>2016-2782</u:cve> <u:cve>2016-3134</u:cve> <u:cve>2016-3136</u:cve>
+						<u:cve>2016-3137</u:cve> <u:cve>2016-3138</u:cve> <u:cve>2016-3140</u:cve> <u:cve>2016-3156</u:cve>
+						<u:cve>2016-3157</u:cve> <u:cve>2016-3689</u:cve> <u:cve>2016-3951</u:cve> <u:cve>2016-3955</u:cve>
+						<u:cve>2016-3961</u:cve> <u:cve>2016-4470</u:cve> <u:cve>2016-4485</u:cve> <u:cve>2016-4486</u:cve>
+						<u:cve>2016-4557</u:cve> <u:cve>2016-4565</u:cve> <u:cve>2016-4569</u:cve> <u:cve>2016-4578</u:cve>
+						<u:cve>2016-4580</u:cve> <u:cve>2016-4581</u:cve> <u:cve>2016-4794</u:cve> <u:cve>2016-4805</u:cve>
+						<u:cve>2016-4913</u:cve> <u:cve>2016-4951</u:cve> <u:cve>2016-4997</u:cve> <u:cve>2016-4998</u:cve>
+						<u:cve>2016-5195</u:cve>
+						<u:cve>2016-5400</u:cve> <u:cve>2016-5412</u:cve> <u:cve>2016-5696</u:cve> <u:cve>2016-5828</u:cve>
+						<u:cve>2016-5829</u:cve> <u:cve>2016-6136</u:cve> <u:cve>2016-6197</u:cve> <u:cve>2016-6327</u:cve>
+						<u:cve>2016-6480</u:cve> <u:cve>2016-6828</u:cve> <u:cve>2016-7117</u:cve>) (<u:bug>41058</u:bug>, <u:bug>42727</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mysql-5.5</package> (<u:cve>2016-0505</u:cve> <u:cve>2016-0546</u:cve> <u:cve>2016-0596</u:cve>
+						<u:cve>2016-0597</u:cve> <u:cve>2016-0598</u:cve> <u:cve>2016-0600</u:cve> <u:cve>2016-0606</u:cve>
+						<u:cve>2016-0608</u:cve> <u:cve>2016-0609</u:cve> <u:cve>2016-0616</u:cve> <u:cve>2016-0640</u:cve>
+						<u:cve>2016-0641</u:cve> <u:cve>2016-0642</u:cve> <u:cve>2016-0643</u:cve> <u:cve>2016-0644</u:cve>
+						<u:cve>2016-0646</u:cve> <u:cve>2016-0647</u:cve> <u:cve>2016-0648</u:cve> <u:cve>2016-0649</u:cve>
+						<u:cve>2016-0650</u:cve> <u:cve>2016-0666</u:cve> <u:cve>2016-2047</u:cve> <u:cve>2016-3477</u:cve>
+						<u:cve>2016-3521</u:cve> <u:cve>2016-3615</u:cve> <u:cve>2016-5440</u:cve> <u:cve>2016-6662</u:cve>)
 						(<u:bug>40530</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>tiff</package> (<u:cve>CVE-2015-8665</u:cve> <u:cve>CVE-2015-8683</u:cve> <u:cve>CVE-2015-8781</u:cve>
-						<u:cve>CVE-2015-8782</u:cve> <u:cve>CVE-2015-8783</u:cve> <u:cve>CVE-2015-8784</u:cve> <u:cve>CVE-2016-3991</u:cve>
-						<u:cve>CVE-2016-5314</u:cve> <u:cve>CVE-2016-5315</u:cve> <u:cve>CVE-2016-5316</u:cve> <u:cve>CVE-2016-5317</u:cve>
-						<u:cve>CVE-2016-5320</u:cve> <u:cve>CVE-2016-5321</u:cve> <u:cve>CVE-2016-5322</u:cve> <u:cve>CVE-2016-5323</u:cve>
-						<u:cve>CVE-2016-5875</u:cve> <u:cve>CVE-2016-6223</u:cve>) (<u:bug>40406</u:bug>).
+						<package>nss</package> (<u:cve>2015-4000</u:cve> <u:cve>2015-7181</u:cve> <u:cve>2015-7182</u:cve>
+						<u:cve>2016-1938</u:cve> <u:cve>2016-1950</u:cve> <u:cve>2016-1978</u:cve> <u:cve>2016-1979</u:cve>
+						<u:cve>2016-2834</u:cve>) (<u:bug>41329</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>bind9</package> (<u:cve>CVE-2015-5722</u:cve> <u:cve>CVE-2015-8000</u:cve> <u:cve>CVE-2015-8704</u:cve>
-						<u:cve>CVE-2016-1285</u:cve> <u:cve>CVE-2016-1286</u:cve> <u:cve>CVE-2016-2776</u:cve>) (<u:bug>40319</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>clamav</package> (<u:cve>CVE-2016-1371</u:cve> <u:cve>CVE-2016-1372</u:cve>) (<u:bug>41623</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>gnupg</package> (<u:cve>CVE-2016-6313</u:cve>) (<u:bug>42102</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libarchive</package> (<u:cve>CVE-2015-2304</u:cve> <u:cve>CVE-2015-8917</u:cve> <u:cve>CVE-2015-8919</u:cve>
-						<u:cve>CVE-2015-8920</u:cve> <u:cve>CVE-2015-8921</u:cve> <u:cve>CVE-2015-8922</u:cve> <u:cve>CVE-2015-8923</u:cve>
-						<u:cve>CVE-2015-8924</u:cve> <u:cve>CVE-2015-8925</u:cve> <u:cve>CVE-2015-8926</u:cve> <u:cve>CVE-2015-8930</u:cve>
-						<u:cve>CVE-2015-8931</u:cve> <u:cve>CVE-2015-8932</u:cve> <u:cve>CVE-2015-8933</u:cve> <u:cve>CVE-2015-8934</u:cve>
-						<u:cve>CVE-2016-4300</u:cve> <u:cve>CVE-2016-4302</u:cve> <u:cve>CVE-2016-4809</u:cve> <u:cve>CVE-2016-5844</u:cve>
-						<u:cve>CVE-2015-8915</u:cve> <u:cve>CVE-2016-7166</u:cve> <u:cve>CVE-2016-5418</u:cve> <u:cve>CVE-2016-8687</u:cve>
-						<u:cve>CVE-2016-8688</u:cve> <u:cve>CVE-2016-8689</u:cve>) (<u:bug>38171</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libgcrypt11</package> (<u:cve>CVE-2015-7511</u:cve> <u:cve>CVE-2016-6313</u:cve>) (<u:bug>40678</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libupnp</package> (<u:cve>CVE-2016-6255</u:cve>) (<u:bug>42030</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>openssl</package> (<u:cve>CVE-2016-2177</u:cve> <u:cve>CVE-2016-2178</u:cve> <u:cve>CVE-2016-2179</u:cve>
-						<u:cve>CVE-2016-2180</u:cve> <u:cve>CVE-2016-2181</u:cve> <u:cve>CVE-2016-2182</u:cve> <u:cve>CVE-2016-6302</u:cve>
-						<u:cve>CVE-2016-6303</u:cve> <u:cve>CVE-2016-6304</u:cve> <u:cve>CVE-2016-6306</u:cve> <u:cve>CVE-2016-7052</u:cve>)
+						<package>openssl</package> (<u:cve>2016-2177</u:cve> <u:cve>2016-2178</u:cve> <u:cve>2016-2179</u:cve>
+						<u:cve>2016-2180</u:cve> <u:cve>2016-2181</u:cve> <u:cve>2016-2182</u:cve> <u:cve>2016-6302</u:cve>
+						<u:cve>2016-6303</u:cve> <u:cve>2016-6304</u:cve> <u:cve>2016-6306</u:cve> <u:cve>2016-7052</u:cve>)
 						(<u:bug>42486</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>perl</package> (<u:cve>CVE-2016-2381</u:cve> <u:cve>CVE-2016-1238</u:cve> <u:cve>CVE-2016-6185</u:cve>)
+						<package>perl</package> (<u:cve>2016-2381</u:cve> <u:cve>2016-1238</u:cve> <u:cve>2016-6185</u:cve>)
 						(<u:bug>37706</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>tiff3</package> (<u:cve>CVE-2010-2596</u:cve> <u:cve>CVE-2013-1961</u:cve> <u:cve>CVE-2014-8128</u:cve>
-						<u:cve>CVE-2014-8129</u:cve> <u:cve>CVE-2014-9655</u:cve> <u:cve>CVE-2015-1547</u:cve> <u:cve>CVE-2015-8665</u:cve>
-						<u:cve>CVE-2015-8683</u:cve> <u:cve>CVE-2016-3186</u:cve> <u:cve>CVE-2016-3623</u:cve> <u:cve>CVE-2016-3945</u:cve>
-						<u:cve>CVE-2016-3990</u:cve> <u:cve>CVE-2016-3991</u:cve> <u:cve>CVE-2016-5314</u:cve> <u:cve>CVE-2016-5315</u:cve>
-						<u:cve>CVE-2016-5316</u:cve> <u:cve>CVE-2016-5317</u:cve> <u:cve>CVE-2016-5320</u:cve> <u:cve>CVE-2016-5321</u:cve>
-						<u:cve>CVE-2016-5322</u:cve> <u:cve>CVE-2016-5323</u:cve> <u:cve>CVE-2016-5875</u:cve> <u:cve>CVE-2016-6223</u:cve>)
+						<package>python2.7</package> (<u:cve>2016-0772</u:cve> <u:cve>2016-5636</u:cve> <u:cve>2016-5699</u:cve>)
+						(<u:bug>36977</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tiff</package> (<u:cve>2015-8665</u:cve> <u:cve>2015-8683</u:cve> <u:cve>2015-8781</u:cve>
+						<u:cve>2015-8782</u:cve> <u:cve>2015-8783</u:cve> <u:cve>2015-8784</u:cve> <u:cve>2016-3991</u:cve>
+						<u:cve>2016-5314</u:cve> <u:cve>2016-5315</u:cve> <u:cve>2016-5316</u:cve> <u:cve>2016-5317</u:cve>
+						<u:cve>2016-5320</u:cve> <u:cve>2016-5321</u:cve> <u:cve>2016-5322</u:cve> <u:cve>2016-5323</u:cve>
+						<u:cve>2016-5875</u:cve> <u:cve>2016-6223</u:cve>) (<u:bug>40406</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tiff3</package> (<u:cve>2010-2596</u:cve> <u:cve>2013-1961</u:cve> <u:cve>2014-8128</u:cve>
+						<u:cve>2014-8129</u:cve> <u:cve>2014-9655</u:cve> <u:cve>2015-1547</u:cve> <u:cve>2015-8665</u:cve>
+						<u:cve>2015-8683</u:cve> <u:cve>2016-3186</u:cve> <u:cve>2016-3623</u:cve> <u:cve>2016-3945</u:cve>
+						<u:cve>2016-3990</u:cve> <u:cve>2016-3991</u:cve> <u:cve>2016-5314</u:cve> <u:cve>2016-5315</u:cve>
+						<u:cve>2016-5316</u:cve> <u:cve>2016-5317</u:cve> <u:cve>2016-5320</u:cve> <u:cve>2016-5321</u:cve>
+						<u:cve>2016-5322</u:cve> <u:cve>2016-5323</u:cve> <u:cve>2016-5875</u:cve> <u:cve>2016-6223</u:cve>)
 						(<u:bug>42312</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>linux</package> (<u:cve>CVE-2016-5195</u:cve>) (<u:bug>42727</u:bug>).
+						<package>xerces-c</package> (<u:cve>2015-0252</u:cve> <u:cve>2016-0729</u:cve> <u:cve>2016-2099</u:cve>
+						<u:cve>2016-4463</u:cve>) (<u:bug>38207</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -980,11 +978,10 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The Active Directory connector didn't support synchronization of groups with more than 1500 members. This issue has been
-					fixed (<u:bug>41248</u:bug>, (<u:bug>41744</u:bug>).
+					fixed (<u:bug>41248</u:bug>, <u:bug>41744</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The package dependency to the master and backup server role packages has been removed (<u:bug>41682</u:bug>,
-					(<u:bug>42489</u:bug>).
+					The package dependency to the master and backup server role packages has been removed (<u:bug>41682</u:bug>, <u:bug>42489</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The sync mode can now be configured through Univention Configuration Registry variables for users, groups and containers
