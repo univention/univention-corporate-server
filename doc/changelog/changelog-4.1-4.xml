@@ -883,7 +883,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<application>Samba</application> has been updated to version 4.5.1 (<u:bug>42624</u:bug>).
+					<application>Samba</application> has been updated to version 4.5.1 (<u:bug>42624</u:bug>, <u:bug>42859</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<command>samba-tool ntacl sysvolcheck</command> has been fixed (<u:bug>39633</u:bug>).
