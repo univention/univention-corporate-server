@@ -265,7 +265,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return al
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	searchfilter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionSAMLServiceProvider'),
 	])

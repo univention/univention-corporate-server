@@ -159,10 +159,10 @@ def lookup_zone(zone_name):
 	"""Lookup zone and return UDM object."""
 	if not options.reverse:
 		zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,),
-				scope='domain', base=position.getDomain(), unique=1)
+				scope='domain', base=position.getDomain(), unique=True)
 	else:
 		zones = reverse_zone.lookup(co, lo, '(subnet=%s)' % (zone_name,),
-				scope='domain', base=position.getDomain(), unique=1)
+				scope='domain', base=position.getDomain(), unique=True)
 	if not zones:
 		if options.ignore_missing_zone:
 			sys.exit(0)
@@ -179,7 +179,7 @@ def add_srv_record(service, protocol, priority, weight, port, host):
 	filt = univention.admin.filter.expression('name', name)
 
 	records = srv_record.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:
@@ -205,7 +205,7 @@ def remove_srv_record(service, protocol, priority, weight, port, host):
 	filt = univention.admin.filter.expression('name', name)
 
 	records = srv_record.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:
@@ -226,7 +226,7 @@ def add_txt_record(name, text):
 	"""Add DNS text record."""
 	filt = univention.admin.filter.expression('name', name)
 	records = txt_record.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:
@@ -250,7 +250,7 @@ def add_a_record(name, *adresses):
 	"""Add DNS IPv4 address records."""
 	filt = univention.admin.filter.expression('name', name)
 	records = host_record.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:
@@ -274,7 +274,7 @@ def add_cname_record(name, cname):
 	"""Add DNS canonical name record."""
 	filt = univention.admin.filter.expression('name', name)
 	records = alias.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:
@@ -300,7 +300,7 @@ def add_ptr_record(address, ptr):
 	"""Add DNS pointer record."""
 	filt = univention.admin.filter.expression('address', address)
 	records = ptr_record.lookup(co, lo, filt, scope='domain',
-			base=position.getDomain(), superordinate=zone, unique=1)
+			base=position.getDomain(), superordinate=zone, unique=True)
 	if records:
 		record = records[0]
 	else:

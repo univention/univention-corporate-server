@@ -966,7 +966,7 @@ def ucs_host_record_create(s4connector, object):
 
 	# Does a host record for this zone already exist?
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1000,7 +1000,7 @@ def ucs_host_record_delete(s4connector, object):
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1036,7 +1036,7 @@ def ucs_ptr_record_create(s4connector, object):
 
 	# Does a host record for this zone already exist?
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1069,7 +1069,7 @@ def ucs_ptr_record_delete(s4connector, object):
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1093,7 +1093,7 @@ def ucs_cname_create(s4connector, object):
 
 	# Does a host record for this zone already exist?
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1126,7 +1126,7 @@ def ucs_cname_delete(s4connector, object):
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1167,7 +1167,7 @@ def ucs_srv_record_create(s4connector, object):
 
 	# Does a host record for this zone already exist?
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1217,7 +1217,7 @@ def ucs_srv_record_delete(s4connector, object):
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1287,7 +1287,7 @@ def ucs_txt_record_create(s4connector, object):
 
 	# Does a host record for this zone already exist?
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
 		foundRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1327,7 +1327,7 @@ def ucs_txt_record_delete(s4connector, object):
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
 		newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
@@ -1378,7 +1378,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 	# Does a zone already exist?
 	modify = False
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
 			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
@@ -1456,7 +1456,7 @@ def ucs_zone_delete(s4connector, object, dns_type):
 		return
 
 	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
-	searchResult = s4connector.lo.search(filter=ol_filter, unique=1)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
 			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)

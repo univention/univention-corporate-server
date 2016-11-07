@@ -97,7 +97,7 @@ class ipphonetool(object):
 
 		filter = univention.admin.filter.expression('name', name)
 
-		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
+		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:
 			obj = objs[0]
 		else:
@@ -138,7 +138,7 @@ class ipphonetool(object):
 
 		filter = univention.admin.filter.expression('name', name)
 
-		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
+		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:
 			obj = objs[0]
 			try:
@@ -156,7 +156,7 @@ class ipphonetool(object):
 		"""
 		try:
 			filter = unicode('(&(cn=%s)(objectClass=testPhoneCallRedirect))' % name, 'utf8')
-			dn = self.lo.searchDn(filter=filter, base=self.ldap_base, unique=1)
+			dn = self.lo.searchDn(filter=filter, base=self.ldap_base, unique=True)
 			if not dn:
 				print "No object found matching filter %s" % filter
 				sys.exit(1)

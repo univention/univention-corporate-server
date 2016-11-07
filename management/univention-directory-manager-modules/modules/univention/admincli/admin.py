@@ -948,11 +948,11 @@ def _doit(arglist):
 
 		try:
 			if dn and filter:
-				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=dn, filter=filter, required=1, unique=1)[0]
+				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
 			elif dn:
-				object = univention.admin.modules.lookup(module, co, lo, scope='base', superordinate=superordinate, base=dn, filter=filter, required=1, unique=1)[0]
+				object = univention.admin.modules.lookup(module, co, lo, scope='base', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
 			elif filter:
-				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter, required=1, unique=1)[0]
+				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter, required=True, unique=True)[0]
 			else:
 				out.append('E: dn or filter needed')
 				return out + ["OPERATION FAILED"]

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check that required=1 is enforced for singlevalue extended attributes
+## desc: Check that required=True is enforced for singlevalue extended attributes
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

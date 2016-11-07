@@ -371,7 +371,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	u"""Diese Function sucht nach Objekten, die dem in diesem Modul verwalteten Typ (objectClass)
 	die den angegebenen Suchkriterien entsprechen. Der Rückgabewert dieser Funktion ist ein Liste
 	der gefunden Objekte."""

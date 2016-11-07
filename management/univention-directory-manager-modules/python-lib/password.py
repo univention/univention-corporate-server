@@ -63,7 +63,7 @@ def change(username, password):
 		filter = 'krb5PrincipalName=%s' % username
 	else:
 		filter = 'uid=%s' % username
-	objects = module.lookup(co, lo, filter, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
+	objects = module.lookup(co, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
 
 	# search was unique and required
 	object = objects[0]

@@ -125,8 +125,8 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=False,
-		identifies=0,
-		dontsearch=1
+		identifies=False,
+		dontsearch=True
 	)
 }
 

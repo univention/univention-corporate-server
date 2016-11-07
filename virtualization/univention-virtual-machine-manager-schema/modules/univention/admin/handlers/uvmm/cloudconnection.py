@@ -195,7 +195,7 @@ def lookup_filter(filter_s=None, lo=None):
 	return unicode(ldap_filter)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	"""Search for UVMM Cloud Connection objects."""
 	ldap_filter = lookup_filter(filter_s)
 	return [object(co, lo, None, dn)

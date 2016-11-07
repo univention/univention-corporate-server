@@ -83,23 +83,23 @@ property_descriptions = {
 		short_description=_('Location'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'spoolHost': univention.admin.property(
 		short_description=_('Spool host'),
