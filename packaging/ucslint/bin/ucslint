@@ -228,7 +228,7 @@ def parse_args():
 	)
 	parser.add_option(
 		'-x', '--exclude-modules', action='store', type='string',
-		dest='disabled_modules', default='',
+		dest='disabled_modules', default='0020',
 		help='list of modules to be disabled (e.g. -x 9,027)'
 	)
 	parser.add_option(
