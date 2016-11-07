@@ -53,71 +53,71 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=1,
-		may_change=1,
-		identifies=1
+		required=True,
+		may_change=True,
+		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msPrintAttributes': univention.admin.property(
 		short_description=_('Print attributes'),
 		long_description=_('A bitmask of printer attributes.'),
 		syntax=univention.admin.syntax.integer,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msPrinterName': univention.admin.property(
 		short_description=_('Printer name'),
 		long_description=_('The display name of an attached printer.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msPrintServerName': univention.admin.property(
 		short_description=_('Server name'),
 		long_description=_('The name of a server.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 	'msPrintUNCName': univention.admin.property(
 		short_description=_('UNC name'),
 		long_description=_('The universal naming convention name for shared volumes and printers.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	),
 }
 
@@ -174,7 +174,7 @@ class object(univention.admin.handlers.simpleLdap):
 		]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'msPrintConnectionPolicy'),

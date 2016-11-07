@@ -328,7 +328,7 @@ class property:
 
 class option:
 
-	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=0, objectClasses=None):
+	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None):
 		self.short_description = short_description
 		self.long_description = long_description
 		self.default = default

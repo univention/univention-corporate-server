@@ -68,7 +68,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 	univention.admin.modules.init(uldap_access, dns_position, module)
 	filter = univention.admin.filter.expression("zone", ucr["domainname"])
 
-	objs = module.lookup(uldap_config, uldap_access, filter, scope="domain", base=dns_position.getDn(), unique=1)
+	objs = module.lookup(uldap_config, uldap_access, filter, scope="domain", base=dns_position.getDn(), unique=True)
 	if not objs:
 		print >>sys.stderr, "Lookup of dns/forward_zone %s via UDM failed." % (ucr["domainname"],)
 		sys.exit(1)
@@ -82,7 +82,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 		module = univention.admin.modules.get("dns/alias")
 		univention.admin.modules.init(uldap_access, zone_position, module)
 		filter = univention.admin.filter.expression("name", dns_record)
-		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=1)
+		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 		if objs:
 			print "Removing dns/alias '%s' from Univention Directory Manager" % (dns_record,)
 			obj = objs[0]
@@ -117,7 +117,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 
 	for srv_record_name in srv_record_name_list:
 		filter = univention.admin.filter.expression("name", srv_record_name)
-		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=1)
+		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 		if objs:
 			obj = objs[0]
 			target_location = None
@@ -149,7 +149,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 	# univention.admin.modules.init(uldap_access, zone_position, module)
 	# dns_record = "gc._msdcs"
 	# filter = univention.admin.filter.expression("name", dns_record)
-	# objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=1)
+	# objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 	# if objs:
 	# 	print "Removing dns/host_record '%s' from Univention Directory Manager" % (dns_record,)
 	# 	obj = objs[0]
@@ -168,7 +168,7 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
 		print 'authentication error: %s' % str(e)
 		sys.exit(1)
 	computer_filter = "(&(objectClass=univentionHost)(uid=%s$))" % computername
-	result = uldap_access.search(filter=computer_filter, base=ucr["ldap/base"], scope='sub', attr=['univentionObjectType'], unique=1)
+	result = uldap_access.search(filter=computer_filter, base=ucr["ldap/base"], scope='sub', attr=['univentionObjectType'], unique=True)
 	if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:
 		univentionObjectType = result[0][1]['univentionObjectType'][0]
 		module = univention.admin.modules.get(univentionObjectType)
@@ -176,7 +176,7 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
 		univention.admin.modules.init(uldap_access, position, module)
 		uldap_config = univention.admin.config.config()
 		filter = univention.admin.filter.expression('name', computername)
-		objs = module.lookup(uldap_config, uldap_access, filter, scope='domain', base=position.getDn(), unique=1)
+		objs = module.lookup(uldap_config, uldap_access, filter, scope='domain', base=position.getDn(), unique=True)
 		if objs:
 			print "Removing Samba 4 computer account '%s' from Univention Directory Manager" % computername
 			obj = objs[0]
@@ -304,7 +304,7 @@ if __name__ == '__main__':
 			sys.exit(1)
 
 		user_searchfilter = "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(uid=%s))" % opts.bind_account
-		result = lo.searchDn(filter=user_searchfilter, base=ucr["ldap/base"], scope='sub', unique=1)
+		result = lo.searchDn(filter=user_searchfilter, base=ucr["ldap/base"], scope='sub', unique=True)
 		if result:
 			binddn = result[0]
 		else:

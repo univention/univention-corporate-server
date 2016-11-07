@@ -46,7 +46,7 @@ lo, position = univention.admin.uldap.getAdminConnection()
 domain_sid = sys.argv[1]
 domain_users_sid = domain_sid + '-513'
 
-default = univention.admin.handlers.settings.default.lookup(None, lo, 'cn=default', required=1, unique=1)[0]
+default = univention.admin.handlers.settings.default.lookup(None, lo, 'cn=default', required=True, unique=True)[0]
 
 res = lo.search(filter='(&(objectClass=sambaGroupMapping)(sambaSID=%s))' % domain_users_sid, scope='domain')
 if len(res) != 1:

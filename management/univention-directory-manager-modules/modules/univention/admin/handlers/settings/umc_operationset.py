@@ -138,7 +138,7 @@ class object(simpleLdap):
 		return [('objectClass', ['top', 'umcOperationSet'])]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = udm_filter.conjunction('&', [
 		udm_filter.expression('objectClass', 'umcOperationSet')

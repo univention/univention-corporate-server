@@ -169,11 +169,11 @@ property_descriptions={
             short_description=_('Name'),
             long_description='',
             syntax=univention.admin.syntax.string,
-            multivalue=0,
-            include_in_default_search=1,
-            required=1,
-            may_change=0,
-            identifies=1
+            multivalue=False,
+            include_in_default_search=True,
+            required=True,
+            may_change=False,
+            identifies=True
         ),
 }
 layout = [
@@ -198,7 +198,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_addlist(self):
         return [('objectClass', ['top', 'automountMap'])]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     filter=univention.admin.filter.conjunction('&', [
         univention.admin.filter.expression('ou', '*'),
         univention.admin.filter.expression('objectClass', 'automountMap')

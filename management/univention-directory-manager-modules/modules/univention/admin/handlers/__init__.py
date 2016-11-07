@@ -1121,7 +1121,7 @@ class simpleComputer(simpleLdap):
 			options=[],
 			required=False,
 			may_change=False,
-			identifies=0
+			identifies=False
 		)
 		self['dnsAlias'] = []  # defined here to avoid pseudo non-None value of [''] in modwizard search
 		self.oldinfo['ip'] = []
@@ -1208,7 +1208,7 @@ class simpleComputer(simpleLdap):
 
 			searchFilter = filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(!(cNAMERecord=*)))', [self['name']])
 			try:
-				result = self.lo.search(base=tmppos.getBase(), scope='domain', filter=searchFilter, attr=['zoneName', 'aRecord', 'aAAARecord'], unique=0)
+				result = self.lo.search(base=tmppos.getBase(), scope='domain', filter=searchFilter, attr=['zoneName', 'aRecord', 'aAAARecord'], unique=False)
 
 				zoneNames = []
 
@@ -1226,7 +1226,7 @@ class simpleComputer(simpleLdap):
 						searchFilter = filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', [zoneName[0]])
 
 						try:
-							results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=0)
+							results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=False)
 						except univention.admin.uexceptions.insufficientInformation, msg:
 							raise univention.admin.uexceptions.insufficientInformation, msg
 
@@ -1245,7 +1245,7 @@ class simpleComputer(simpleLdap):
 				for zoneName in zoneNames:
 					searchFilter = filter_format('(&(objectClass=dNSZone)(|(PTRRecord=%s)(PTRRecord=%s.%s.)))', (self['name'], self['name'], zoneName[0]))
 					try:
-						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'zoneName'], filter=searchFilter, unique=0)
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'zoneName'], filter=searchFilter, unique=False)
 						for dn, attr in results:
 							ip = self.__ip_from_ptr(attr['zoneName'][0], attr['relativeDomainName'][0])
 							if not self.__is_ip(ip):
@@ -1263,7 +1263,7 @@ class simpleComputer(simpleLdap):
 				for zoneName in zoneNames:
 					searchFilter = filter_format('(&(objectClass=dNSZone)(|(cNAMERecord=%s)(cNAMERecord=%s.%s.)))', (self['name'], self['name'], zoneName[0]))
 					try:
-						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'cNAMERecord', 'zoneName'], filter=searchFilter, unique=0)
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'cNAMERecord', 'zoneName'], filter=searchFilter, unique=False)
 						for dn, attr in results:
 							dnsAlias = attr['relativeDomainName'][0]
 							self['dnsAlias'].append(dnsAlias)
@@ -1292,7 +1292,7 @@ class simpleComputer(simpleLdap):
 					searchFilter = filter_format('(&(dhcpHWAddress=%s)(objectClass=univentionDhcpHost))', (ethernet,))
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; we search for "%s"' % searchFilter)
 					try:
-						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=searchFilter, unique=0)
+						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=searchFilter, unique=False)
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; the result: "%s"' % results)
 						for dn, attr in results:
 							service = ','.join(univention.admin.uldap.explodeDn(dn, 0)[1:])
@@ -1338,7 +1338,7 @@ class simpleComputer(simpleLdap):
 		if not position:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
 			position = tmppos.getBase()
-		results = self.lo.search(base=position, scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
+		results = self.lo.search(base=position, scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False)
 
 		if not results:
 			# if the dhcp object doesn't exists, then we create it
@@ -1346,7 +1346,7 @@ class simpleComputer(simpleLdap):
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" does not exists, we create one' % ethernet)
 
-			results = self.lo.searchDn(base=position, scope='domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique=0)
+			results = self.lo.searchDn(base=position, scope='domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique=False)
 			if not results:
 				self.lo.add('cn = %s,%s' % (name, position), [
 					('objectClass', ['top', 'univentionObject', 'univentionDhcpHost']),
@@ -1397,9 +1397,9 @@ class simpleComputer(simpleLdap):
 				continue
 			dn, ip = self.__split_dns_line(dns_line)
 			if ':' in ip:  # IPv6
-				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (old_name, ip)), unique=0)
+				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (old_name, ip)), unique=False)
 			else:
-				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (old_name, ip)), unique=0)
+				results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (old_name, ip)), unique=False)
 			for result in results:
 				object = univention.admin.objects.get(univention.admin.modules.get('dns/host_record'), self.co, self.lo, position=self.position, dn=result)
 				object.open()
@@ -1410,7 +1410,7 @@ class simpleComputer(simpleLdap):
 			if not dns_line:
 				continue
 			dn, ip = self.__split_dns_line(dns_line)
-			results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(|(pTRRecord=%s)(pTRRecord=%s.*))', (old_name, old_name)), unique=0)
+			results = self.lo.searchDn(base=dn, scope='domain', filter=filter_format('(|(pTRRecord=%s)(pTRRecord=%s.*))', (old_name, old_name)), unique=False)
 			for result in results:
 				object = univention.admin.objects.get(univention.admin.modules.get('dns/ptr_record'), self.co, self.lo, position=self.position, dn=result)
 				object.open()
@@ -1421,7 +1421,7 @@ class simpleComputer(simpleLdap):
 			if not entry:
 				continue
 			dnsforwardzone, dnsaliaszonecontainer, alias = entry
-			results = self.lo.searchDn(base=dnsaliaszonecontainer, scope='domain', filter=filter_format('relativedomainname=%s', [alias]), unique=0)
+			results = self.lo.searchDn(base=dnsaliaszonecontainer, scope='domain', filter=filter_format('relativedomainname=%s', [alias]), unique=False)
 			for result in results:
 				object = univention.admin.objects.get(univention.admin.modules.get('dns/alias'), self.co, self.lo, position=self.position, dn=result)
 				object.open()
@@ -1437,7 +1437,7 @@ class simpleComputer(simpleLdap):
 				continue
 			ethernet = 'ethernet %s' % mac
 
-			results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
+			results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False)
 			if not results:
 				continue
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: filter [ dhcpHWAddress = %s ]; results: %s' % (ethernet, results))
@@ -1460,7 +1460,7 @@ class simpleComputer(simpleLdap):
 		if ip and mac:
 			ethernet = 'ethernet %s' % mac
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we only remove the ip "%s" from the dhcp object' % ip)
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique=0)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique=False)
 			for dn, attr in results:
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
 				object.open()
@@ -1476,7 +1476,7 @@ class simpleComputer(simpleLdap):
 		elif mac:
 			ethernet = 'ethernet %s' % mac
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Remove the following mac: ethernet: "%s"' % ethernet)
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=0)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False)
 			for dn, attr in results:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '... done')
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
@@ -1485,7 +1485,7 @@ class simpleComputer(simpleLdap):
 
 		elif ip:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Remove the following ip: "%s"' % ip)
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=0)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False)
 			for dn, attr in results:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '... done')
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
@@ -1545,7 +1545,7 @@ class simpleComputer(simpleLdap):
 
 		elif ip:
 			tmppos = univention.admin.uldap.position(self.position.getDomain())
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneDn'], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique=0)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneDn'], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique=False)
 			for dn, attr in results:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: dn: "%s"' % dn)
 				zone = ','.join(ldap.explode_dn(dn)[1:])
@@ -1584,7 +1584,7 @@ class simpleComputer(simpleLdap):
 				ipPart = '.'.join(pointer)
 				tmppos = univention.admin.uldap.position(self.position.getDomain())
 				# check in which forward zone the ip is set
-				results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, ip)), unique=0)
+				results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, ip)), unique=False)
 			else:
 				subnet = '%s.' % ('.'.join(reversed(ldap.explode_dn(zoneDn, 1)[0].replace('.in-addr.arpa', '').split('.'))))
 				ipPart = re.sub('^%s' % (re.escape(subnet),), '', ip)
@@ -1606,7 +1606,7 @@ class simpleComputer(simpleLdap):
 				return
 
 			# check if the object exists
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), ldap.explode_dn(zoneDn)[0]), unique=0)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), ldap.explode_dn(zoneDn)[0]), unique=False)
 			if not results:
 				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(ipPart), zoneDn), [
 					('objectClass', ['top', 'dNSZone', 'univentionObject']),
@@ -1713,9 +1713,9 @@ class simpleComputer(simpleLdap):
 				base = zoneDn
 			if ':' in old_ip:  # IPv6
 				old_ip = ipaddr.IPv6Address(old_ip).exploded
-				results = self.lo.search(base=base, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, old_ip)), unique=0)
+				results = self.lo.search(base=base, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(aAAARecord=%s))', (name, old_ip)), unique=False)
 			else:
-				results = self.lo.search(base=base, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, old_ip)), unique=0)
+				results = self.lo.search(base=base, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, old_ip)), unique=False)
 			for dn, attr in results:
 				old_aRecord = attr.get('aRecord', [])
 				new_aRecord = copy.deepcopy(attr.get('aRecord', []))
@@ -1763,7 +1763,7 @@ class simpleComputer(simpleLdap):
 	def __add_dns_forward_object_ipv6(self, name, zoneDn, ip):
 		if name and ip and zoneDn:
 			ip = ipaddr.IPv6Address(ip).exploded
-			results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=0)
+			results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
 			if not results:
 				try:
 					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [
@@ -1791,7 +1791,7 @@ class simpleComputer(simpleLdap):
 
 	def __add_dns_forward_object_ipv4(self, name, zoneDn, ip):
 		if name and ip and zoneDn:
-			results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=0)
+			results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
 			if not results:
 				try:
 					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [
@@ -1820,7 +1820,7 @@ class simpleComputer(simpleLdap):
 	def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
 		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
-			results = self.lo.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=0)
+			results = self.lo.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False)
 			if not results:
 				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer), [
 					('objectClass', ['top', 'dNSZone', 'univentionObject']),
@@ -1851,12 +1851,12 @@ class simpleComputer(simpleLdap):
 					tmppos = univention.admin.uldap.position(self.position.getDomain())
 					base = tmppos.getBase()
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base)
-					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)), unique=0, required=0)
+					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)), unique=False, required=False)
 					for dn, attr in results:
 						# remove the object
 						self.lo.delete(dn)
 						# and update the SOA version number for the zone
-						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=0)
+						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=False)
 						for zoneDn in results:
 							zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 							zone.open()
@@ -1869,12 +1869,12 @@ class simpleComputer(simpleLdap):
 					tmppos = univention.admin.uldap.position(self.position.getDomain())
 					base = tmppos.getBase()
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base)
-					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)), unique=0, required=0)
+					results = self.lo.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)), unique=False, required=False)
 					for dn, attr in results:
 						# remove the object
 						self.lo.delete(dn)
 						# and update the SOA version number for the zone
-						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=0)
+						results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0],)), unique=False)
 						for zoneDn in results:
 							zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 							zone.open()
