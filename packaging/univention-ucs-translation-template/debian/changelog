@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.1.0-6) unstable; urgency=medium
+
+  * Bug #42260: remove obsolete debian/ucslint.overrides
+
+ -- Eduard Mai <mai@univention.de>  Mon, 07 Nov 2016 13:14:20 +0100
+
 univention-ucs-translation-template (4.1.0-5) unstable; urgency=medium
 
   * Bug #42260: corrected path in debian/univention-l10n-tools.install
