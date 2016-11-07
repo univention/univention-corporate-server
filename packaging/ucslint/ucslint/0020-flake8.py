@@ -47,21 +47,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	PYTHON_HASH_BANG = re.compile('^#!.*[ /]python[0-9.]*')
 
 	IGNORED_FILES = [
-		re.compile('/conffiles/'),  # UCR templates with markers contain syntax errors
-		re.compile('/python-notifier/'),  # external code
-		re.compile('/univention-novnc/'),  # external code
-		re.compile('/univention-ldb-modules/buildtools/'),  # external code
-		re.compile('/ucslint/testframework/'),  # don't care about tests for ucslint
+		re.compile('conffiles/[^/]+/'),  # UCR templates with markers contain syntax errors
+		re.compile('python-notifier/'),  # external code
+		re.compile('univention-novnc/'),  # external code
+		re.compile('univention-ldb-modules/'),  # external code
 		re.compile('univention/pyDes.py'),  # external code
+		re.compile('ucslint/testframework/'),  # don't care about tests for ucslint
 		re.compile('services/univention-printserver/modules/univention/management/console/handlers/cups'),  # UCS 2.4 code
 		re.compile('univention-directory-manager-modules/test/'),  # unrelevant, should be removed imho
 	]
 
 	IGNORE = {
-		re.compile('/__init__.py'): 'F403',  # some package provide all members of subpackages
-		re.compile('/test/ucs-test/tests\/.*'): 'E266',  # UCS-Test headers begin with "## foo: bar"
-		re.compile('/syntax.d/.*'): 'E821',  # some variables are undefined, as these files are mixins
-		re.compile('management/univention-directory-manager-modules'): 'W601',  # UDM allows has_key() Bug #W601
+		re.compile('(^|/)__init__.py$'): 'F403',  # some package provide all members of subpackages
+		re.compile('test/ucs-test/tests\/.*'): 'E266',  # UCS-Test headers begin with "## foo: bar"
+		re.compile('ucs-test-ucsschool'): 'E266',
+		re.compile('(^|/)syntax.d/.*'): 'E821',  # some variables are undefined, as these files are mixins
+		re.compile('univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
 	DEFAULT_IGNORE = 'N,E501,W191,E265'
@@ -143,6 +144,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0020-E302': [uub.RESULT_ERROR, 'expected 2 blank lines, found 0'],
 			'0020-E303': [uub.RESULT_ERROR, 'too many blank lines (3)'],
 			'0020-E304': [uub.RESULT_ERROR, 'blank lines found after function decorator'],
+			'0020-E305': [uub.RESULT_ERROR, 'expected 2 blank lines after end of function or class'],
+			'0020-E306': [uub.RESULT_ERROR, 'expected 1 blank line before a nested definition, found 0'],
 
 			'0020-E4': [uub.RESULT_ERROR, 'Import'],
 			'0020-E401': [uub.RESULT_ERROR, 'multiple imports on one line'],
@@ -281,9 +284,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		parser = ArgumentParser()
 		parser.add_argument('--fix', default=False, action='store_true')
 		parser.add_argument('--path', default='.')
-		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default=%(default)s')
-		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default=%(default)s')
-		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='default=%(default)s')
+		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default: %(default)s')
+		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default: %(default)s')
+		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='default: %(default)s')
 		args, args.arguments = parser.parse_known_args()
 		cls.DEFAULT_IGNORE = args.ignore
 		cls.DEFAULT_SELECT = args.select
@@ -293,8 +296,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if args.fix:
 			self.fix(args.path, *args.arguments)
 		self.check(args.path)
+		msgids = self.getMsgIds()
 		for msg in self.result():
-			print str(msg)
+			print uub.RESULT_INT2STR.get(msgids.get(msg.getId(), [None])[0]) or 'FIXME', str(msg)
 
 
 if __name__ == '__main__':
