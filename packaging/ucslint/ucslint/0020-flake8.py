@@ -282,6 +282,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	@classmethod
 	def main(cls):
 		parser = ArgumentParser()
+		parser.add_argument('-d', '--debug', default=0, type=int, help='debuglevel (to show also source lines)')
 		parser.add_argument('--fix', default=False, action='store_true')
 		parser.add_argument('--path', default='.')
 		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default: %(default)s')
@@ -292,6 +293,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		cls.DEFAULT_SELECT = args.select
 		cls.MAX_LINE_LENGTH = args.max_line_length
 		self = cls()
+		self.setdebug(args.debug)
 		self.postinit(args.path)
 		if args.fix:
 			self.fix(args.path, *args.arguments)
