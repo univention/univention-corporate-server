@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" icon="udm/module" version="1.0" translationId="MODULE">
+		<name/>
+		<description/>
+		<flavor id="MODULE/SUBMODULE" deactivated="yes" />
+	</module>
+</umc>

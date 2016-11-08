@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
+		<flavor priority="25" icon="udm-MODULE-SUBMODULE" id="MODULE/SUBMODULE">
+			<name>MODULE name</name>
+			<description>MODULE description</description>
+		</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
+	</module>
+</umc>

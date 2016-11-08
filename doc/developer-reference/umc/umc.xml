@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<chapter id="chap:umc">
+<chapter id="chap:umc" status="draft">
 	<title>Univention Management Console (<acronym>UMC</acronym>)
 		<indexterm><primary>Management Console</primary></indexterm>
 		<indexterm><primary>Univention Management Console</primary><see>Management Console</see></indexterm>
@@ -16,11 +16,345 @@
 	</title>
 	<remark>PMH: Bug #31269</remark>
 	<para>
-		The Univention Management Console (<acronym>UMC</acronym>) is the web-based management application provided by <acronym>UCS</acronym>.
+		The Univention Management Console (<acronym>UMC</acronym>) is a service that runs an all UCS systems by default.
+		This service provides access to several system information and implements modules for management tasks.
+		What modules are available on a UCS system depends on the system role and the installed components.
+		Each domain user can log an to the service via a web interface.
+		Depending on the access policies for the user the visible modules for management tasks will differ.
 	</para>
 	<para>
-		<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_Architecture_and_Protocol"/>
+		In the following the technical details of the architecture and the Python and JavaScript API for modules are described.
 	</para>
+	<section id="umc:architecture">
+		<title>Architecture</title>
+		<para>
+			The Univention Management Console service consists of four components.
+			The communication between these components is encrypted using SSL.
+			The architecture and the communication channels is shown in <xref linkend="umc:api"/>.
+		</para>
+		<figure id="umc:api"><title>UMC architecture and communication channels</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations41/umc-api.svg"/>
+		</figure>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					The <emphasis>UMC server</emphasis> is the core component.
+					It provides access to the modules and manages the connection and verifies that only authorized users gets access.
+					The protocol used to communicate is the <emphasis>Univention Management Console Protocol</emphasis> (UMCP) in version 2.0.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					The <emphasis>UMC HTTP server</emphasis> is a small web server that provides HTTP access to the UMC server.
+					It is used by the web frontend.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					The <emphasis>UMC module</emphasis> processes are forked by the UMC server to provide a specific area of management tasks within a session.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+	<section id="umc:framework">
+		<title>Asynchronous Framework</title>
+		<para>
+			All server-side components of the UMC service are based on the asynchronous framework Python Notifier, that provides techniques for handling quasi parallel tasks based on events.
+			The framework follows three basic concepts:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Non-blocking sockets</term>
+				<listitem>
+					<simpara>
+						For servers that should handling several communication channels at a time have to use so called non-blocking sockets.
+						This is an option that needs to be set for each socket, that should be management by the server.
+						This is necessary to avoid blocking on read or write operations on he sockets.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Timer</term>
+				<listitem>
+					<simpara>
+						To perform tasks after a defined amount of time the framework provides an API to manage timer (one shot or periodically).
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Signals</term>
+				<listitem>
+					<simpara>
+						To inform components within a process of a specific a events the framework provide the possibility to define signals.
+						Components being interested in events may place a registration.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			Further details, examples and a complete API documentation for Python Notifier can be found at the <ulink url="https://github.com/crunchy-github/python-notifier">website of Python Notifier</ulink>.
+		</para>
+	</section>
+	<section id="umc:umcp2">
+		<title>Protocol UMCP 2.0</title>
+		<para>
+			This new generation of UMCP is based on the version 1.0 but is not compatible.
+		</para>
+		<para>
+			This protocol is used by the UMC server for external clients and between the UMC server and its UMC module processes.
+		</para>
+		<section id="umc:umcp2:flow">
+			<title>Data flow</title>
+			<para>
+				The protocol is based on a server/client model.
+				The client sends requests to the server that will be answered with a response message by the server.
+			</para>
+			<para>
+				With a status code in the response message the client can determine the type of result of its request:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>
+						An error occurred during the processing of the request.
+						The status code contains details of the error.
+				</simpara></listitem>
+				<listitem><simpara>
+						The command was processed successfully.
+						A status message may contain details about the performed task.
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		<section id="umc:umcp2:auth">
+			<title>Authentication</title>
+			<para>
+				Before a client may send request messages to the server that contain commands to execute, the client has to authenticate.
+				After a successful authentication the UMC server determines the permissions for the user defined by policies in the LDAP directory.
+				If the LDAP server is not reachable a local cache is checked for previously discovered permissions.
+				If none of these sources is available the user is prohibited to use any command.
+			</para>
+			<para>
+				The authentication process within the UMC server uses the PAM service <systemitem class="service">univention-management-console</systemitem>.
+				By default, this service uses a cache for credentials if the LDAP server is not available to provide the possibility to access the UMC server also in case of problems with the LDAP server.
+			</para>
+		</section>
+		<section id="umc:umcp2:message">
+			<title>Message format</title>
+			<para>
+				The messages, request and response, have the same format that consists of a single header line, one empty line and the body.
+			</para>
+			<para>
+				The header line contains control information that allows the UMC server to verify the correctness of the message without reading the rest of the message.
+			</para>
+			<section id="umc:umcp2:message:header">
+				<title>Message header</title>
+				<para>
+					The header defines the message type, a unique identifier, the length of the message body in bytes, the command and the mime type of the body.
+				</para>
+				<synopsis><![CDATA[
+					(REQUEST|RESPONSE)/<id>/<length of body>[/<mime-type>]: <command>[ <arguments>]
+				]]></synopsis>
+				<para>
+					By the first keyword the message type is defined.
+					Supported message types are <literal>REQUEST</literal> and <literal>RESPONSE</literal>.
+					Any other type will be ignored.
+				</para>
+				<para>
+					Separated by a <literal>/</literal> the message id follows, that must be unique within a communication channel.
+					By default it consists of a timestamp and a counter.
+				</para>
+				<para>
+					The next field is a number, defining the length of the body in bytes, starting to count after the empty line.
+				</para>
+				<para>
+					Since UMCP 2.0 there is as another field specifying the mime type of the body.
+					If not given then the guessed value for the mime type is <literal>application/json</literal>.
+					If the body can not be decoded using a JSON parser the message is invalid.
+				</para>
+				<para>
+					The last two fields define the UMCP command that should be executed by the server.
+					The following commands are supported:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><literal>AUTH</literal></term>
+						<listitem>
+							<simpara>
+								This commands sends an authentication request.
+								It must be the first command send by the client.
+								All commands send before a successful authentication are rejected.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>GET</literal></term>
+						<listitem>
+							<simpara>
+								This command is used to retrieve information from the UMC server, e.g. a list of all UMC modules available in this session.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>SET</literal></term>
+						<listitem>
+							<simpara>
+								This command is used to define settings for the session, e.g. the language.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>COMMAND</literal></term>
+						<listitem>
+							<simpara>
+								This command is used to pass requests to UMC modules.
+								Each module defines a set of commands, that it implements.
+								The UMC module command is defined by the first argument in the UMCP header, e.g. a request like <literal>REQUEST/123423423-01/42/application/json: COMMAND ucr/query</literal> passes on the module command ucr/query to a UMC module.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</section>
+			<section id="umc:umcp2:message:body">
+				<title>Message body</title>
+				<para>
+					The message body may contain one object of any type, e.g. an image, an OpenOffice document or a JSON object.
+					The JSON object is the default type and is the only supported mime type for request messages.
+					It contains a dictionary that has a few predefined keys (for both message types):
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><literal>options</literal></term>
+						<listitem>
+							<simpara>
+								Contains the arguments for the command.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>status</literal></term>
+						<listitem>
+							<simpara>
+								Defines the status code in response messages.
+								The codes are similar to the HTTP status codes , e.g. 200 defines a successful execution of the command.
+								<!-- FIXME The appendix contains a detailed list [[#Status-Codes]]. -->
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>message</literal></term>
+						<listitem>
+							<simpara>
+								May contain a human readable description of the status code.
+								This may contain details to explain the user the situation.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>flavor</literal></term>
+						<listitem>
+							<simpara>
+								An optional field.
+								If given in a request message the module may act differently than without the flavor.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</section>
+		</section>
+		<section id="umc:umcp2:example">
+			<title>Examples</title>
+			<para>
+				This section contains a few example messages of UMCP 2.0.
+			</para>
+			<example id="umc:umcp2:example:auth">
+				<title>Authentication request</title>
+				<programlisting><![CDATA[
+REQUEST/130928961341733-1/147/application/json: AUTH
+
+{"username": "root", "password": "univention"}
+				]]></programlisting>
+			</example>
+			<example id="umc:umcp2:example:users">
+				<title>Search for users</title>
+				<simpara>Request:</simpara>
+				<programlisting><![CDATA[
+REQUEST/130928961341726-0/125/application/json: COMMAND udm/query
+
+{"flavor": "users/user",
+ "options": {"objectProperty": "name",
+             "objectPropertyValue": "test1*1",
+             "objectType": "users/user"}}
+				]]></programlisting>
+				<simpara>Response:</simpara>
+				<programlisting><![CDATA[
+RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
+
+{"status": 200,
+ "message": null,
+ "options": {"objectProperty": "name",
+             "objectPropertyValue": "test1*1",
+             "objectType": "users/user"},
+ "result": [{"ldap-dn": "uid=test11,cn=users,dc=univention,dc=qa",
+             "path": "univention.qa:/users",
+             "name": "test11",
+             "objectType": "users/user"},
+...
+            {"ldap-dn": "uid=test191,cn=users,dc=univention,dc=qa",
+             "path": "univention.qa:/users",
+             "name": "test191",
+             "objectType": "users/user"}]}
+				]]></programlisting>
+			</example>
+		</section>
+	</section>
+	<section id="umc:http">
+		<title>Protocol HTTP for UMC</title>
+		<para>
+			With the new generation of UMC there is also an HTTP server available that can be used to access the UMC server.
+			The web server is implemented as a frontend to the UMC server and translates HTTP POST requests to UMCP commands.
+		</para>
+		<section id="umc:http:example">
+			<title>Examples</title>
+			<example id="umc:http:example:auth">
+				<title>Authentication request</title>
+				<programlisting><![CDATA[
+POST URL:http://10.200.15.31/umcp/auth HTTP/1.1
+
+{"options": {"username": "root",
+					 "password": "univention"}}
+				]]></programlisting>
+			</example>
+			<example id="umc:http:example:user">
+				<title>search for users</title>
+				<simpara>Request</simpara>
+				<programlisting><![CDATA[
+POST URL:http://10.200.15.31/umcp/command/udm/query HTTP/1.1
+
+{"options": {"container": "all",
+            "objectType":"users/user",
+            "objectProperty":"username",
+            "objectPropertyValue":"test1*1"},
+ "flavor":"users/user"}
+				]]></programlisting>
+				<simpara>Response</simpara>
+				<programlisting language="javascript"><![CDATA[
+{"status": 200,
+ "message": null,
+ "options": {"objectProperty": "username",
+             "container": "all",
+             "objectPropertyValue": "test1*1",
+             "objectType": "users/user"},
+ "result": [{"ldap-dn": "uid=test11,cn=users,dc=univention,dc=qa",
+             "path": "univention.qa:/users",
+             "name": "test11",
+             "objectType": "users/user"},
+...
+            {"ldap-dn": "uid=test191,cn=users,dc=univention,dc=qa",
+             "path": "univention.qa:/users",
+             "name": "test191",
+             "objectType": "users/user"}]}
+				]]></programlisting>
+			</example>
+		</section>
+	</section>
 
 	<section id="umc:files">
 		<title>UMC files
@@ -40,13 +374,7 @@
 				<command>dh-umc-module-install</command> installs files.
 				Configured through <filename>debian/<replaceable>package</replaceable>.umc-modules</filename>.
 			</para>
-			<programlisting><![CDATA[
-Module: module-name
-Python: umc
-Definition: umc/module-name.xml
-Javascript: umc
-Icons: umc/icons
-			]]></programlisting>
+			<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module.umc-modules" parse="text"/></programlisting>
 			<variablelist>
 				<varlistentry>
 					<term><literal>Module</literal></term>
@@ -103,32 +431,11 @@ Icons: umc/icons
 				<filename>umc/<replaceable>module</replaceable>.xml</filename>
 				<remark>PMH: Bug #26275</remark>
 			</para>
-			<programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<!--DOCTYPE umc SYSTEM "branches/ucs-4.2/ucs-4.2-0/management/univention-management-console/doc/module.dtd"-->
-<umc version="2.0">
-	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
-		<name>...</name>
-		<description>...</description>
-		<flavor>...</flavor>
-		<categories>
-			<category name="domain"/>
-		</categories>
-		<command>...</command>
-	</module>
-</umc>
-			]]></programlisting>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module.xml" parse="text"/></programlisting>
 			<para>
 				<filename>umc/categories/<replaceable>category</replaceable>.xml</filename>
 			</para>
-			<programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<umc version="2.0">
-	<categories>
-		<category id="category" priority="..." icon="....svg" color="#xxxxxx"/>
-	</categories>
-</umc>
-			]]></programlisting>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-categories.xml" parse="text"/></programlisting>
 		</section>
 
 	</section>
@@ -138,9 +445,604 @@ Icons: umc/icons
 			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>System</tertiary></indexterm>
 		</title>
 		<para>
-			Use <command>umc-create-module</command> to template for custom module.
-			<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_API_for_Modules"/>
+			The UMC server provides management services that are provided by so called UMC modules.
+			These modules are implemented in Python (backend) and in JavaScript (web frontend).
+			The following page provides information about developing and packaging of UMC modules.
+			It is important to know the details of <xref linkend="umc:architecture"/>.
 		</para>
+		<para>
+			The package <package>univention-management-console-dev</package> provides the command <command>umc-create-module</command>, which can be used to create a template for a custom UMC module.
+		</para>
+		<section id="umc:module:python">
+			<title>Python API</title>
+			<para>
+				The Python API for the UMCP is defined in the python module <classname>univention.management.console.protocol</classname>.
+				<!-- TODO -->
+			</para>
+		</section>
+		<section id="umc:module:api">
+			<title>UMC module API (Python and JavaScript)</title>
+			<para>
+				A UMC module consists of three components
+			</para>
+			<itemizedlist>
+				<listitem><simpara>
+						A XML document containing the definition.
+				</simpara></listitem>
+				<listitem><simpara>
+						The Python module defining the command functions.
+				</simpara></listitem>
+				<listitem><simpara>
+						The JavaScript frontend providing the web frontend.
+				</simpara></listitem>
+			</itemizedlist>
+			<section id="umc:module:api:xml">
+				<title>XML definition</title>
+				<para>
+					The UMC server knows three types of resources that define the functionality it can provide:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term>UMC modules</term>
+						<listitem>
+							<para>
+								provide commands that can be executed if the required permission is given.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>Syntax types</term>
+						<listitem>
+							<para>
+								can be used to verify the correctness of command attributes defined by the UMCP client in the request message or return values provided by the UMC modules.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>Categories</term>
+						<listitem>
+							<para>
+								help to define a structure and to sort the UMC modules by its type of functionality.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					All these resources are defined in XML files.
+					The details are described in the following sections
+				</para>
+				<section id="umc:module:api:xml:definition">
+					<title>Module definition</title>
+					<para>
+						The UMC server does not load the Python modules to get the details about the modules name, description and functionality.
+						Therefor each UMC module must provide an XML file containing this kind of information.
+						The following example defines a module with the id <literal>udm</literal>:
+					</para>
+					<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="udm.xml" parse="text"/></programlisting>
+					<para>
+						The element <literal>module</literal> defines the basic details of a UMC module.
+					</para>
+					<variablelist>
+						<varlistentry>
+							<term>id</term>
+							<listitem>
+								<para>
+									This identifier must be unique among the modules of an UMC server.
+									Other files may extend the definition of a module by adding more flavors or categories.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term>icon</term>
+							<listitem>
+								<para>
+									The value of this attribute defines an identifier for the icon that should be used for the module.
+									Details for installing icons can be found in the <xref linkend="umc:module:packaging"/>.
+								</para>
+							</listitem>
+						</varlistentry>
+					</variablelist>
+					<para>
+						The child elements <literal>name</literal> and <literal>description</literal> define the English human readable name and description of the module.
+						For other translations the build tools will create translation files.
+						Details can be found in the <xref linkend="umc:module:packaging"/>.
+					</para>
+					<para>
+						This example defines a so called <firstterm>flavor</firstterm>.
+						A flavor defines a new name, description and icon for the same UMC module.
+						This can be used to show several virtual modules in the overview of the web frontend.
+						Additionally the flavor is passed to the UMC server with each request i.e. the UMC module has the possibility to act differently for a specific flavor.
+					</para>
+					<para>
+						As the next element <literal>categories</literal> is defined in the example.
+						The child elements <literal>category</literal> set the categories within the overview where the module should be shown.
+						Each module can be part of multiple categories.
+						The attribute <literal>name</literal> is the internal identify of a category.
+						The UMC server has a set of predefined categories:
+					</para>
+					<variablelist>
+						<varlistentry>
+							<term>favorites</term>
+							<listitem>
+								<para>
+									This category is intended to be filled by the users themselves.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term>system</term>
+							<listitem>
+								<para>
+									Tools manipulating the system itself (e.g. software installation) should go in here.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term>wizards</term>
+							<listitem>
+								<para>
+									UMC modules providing a step-by-step assistant to create some kind of configuration should be added to this category
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term>monitor</term>
+							<listitem>
+								<para>
+									Everything that provides monitor functionality (e.g. simple system statistics) should be placed in this category
+								</para>
+							</listitem>
+						</varlistentry>
+					</variablelist>
+					<para>
+						At the end of the definition file a list of commands is specified.
+						The UMC server only passes commands to a UMC module that are defined.
+						A command definition has two attributes:
+					</para>
+					<variablelist>
+						<varlistentry>
+							<term>name</term>
+							<listitem>
+								<para>
+									is the name of the command that is passed to the UMC module.
+									Within the UMCP message it is the first argument after the UMCP <literal>COMMAND</literal>.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term>function</term>
+							<listitem>
+								<para>
+									defines the method to be invoked within the python module when the command is called.
+								</para>
+							</listitem>
+						</varlistentry>
+					</variablelist>
+					<para>
+						Each command can have arguments and a return value, which can be specified as child elements of the command.
+						For example
+					</para>
+					<programlisting language="xml"><![CDATA[
+<attribute name="superordinate" syntax="String" required="False"/>
+					]]></programlisting>
+					<para>
+						defines an attribute superordinate of type String that is optional.
+						What syntax types are support is defined in the next section.
+					</para>
+				</section>
+				<section id="umc:module:api:xml:syntax">
+					<title>Syntax definitions (deprecated since UCS-3.1)</title>
+					<para>
+						Syntax definitions can help to ensure the correctness of commands passed to the UMC server.
+						Therefor it helps to keeps the server save by dismissing incorrect commands that may crash the UMC module.
+					</para>
+					<para>
+						Be default the UMC server brings a set of basic and most common syntax definitions:
+					</para>
+					<itemizedlist spacing="compact">
+						<listitem><simpara>String</simpara></listitem>
+						<listitem><simpara>Boolean</simpara></listitem>
+						<listitem><simpara>Integer</simpara></listitem>
+						<listitem><simpara>Float</simpara></listitem>
+						<listitem><simpara>Selection (only predefined strings are allowed)</simpara></listitem>
+					</itemizedlist>
+					<para>
+						Additionally it provides some data structure types:
+					</para>
+					<itemizedlist spacing="compact">
+						<listitem><simpara>Dictionary</simpara></listitem>
+						<listitem><simpara>List</simpara></listitem>
+					</itemizedlist>
+					<para>
+						These syntax types can be used to create own syntax definitions based on these types.
+						There the UMC module must provide an XML file with the definition.
+					</para>
+					<example id="umc:module:api:syntax:example">
+						<title>Example for UMC syntax</title>
+						<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="syntax.xml" parse="text"/></programlisting>
+					</example>
+					<para>
+						A syntax definition must provide the <literal>base</literal> type and a new <literal>name</literal>.
+						Depending on the base type the available child elements differ:
+					</para>
+					<variablelist>
+						<varlistentry>
+							<term><literal>String</literal></term>
+							<listitem>
+								<simpara>
+									<literal>regex-invalid</literal> defines a regular expression.
+									If it matches, the value is invalid.
+								</simpara>
+								<simpara>
+									<literal>regex</literal> defines a regular expression.
+									Only if it matches the value is valid.
+								</simpara>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><literal>Dictionary</literal></term>
+							<listitem>
+								<simpara>
+									<literal>item</literal> defines the syntax types of the list elements.
+									The attribute <literal>key</literal> defines the syntax type of the key and the attribute <literal>value</literal> for its value.
+								</simpara>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><literal>Selection</literal></term>
+							<listitem>
+								<simpara>
+									<literal>choice</literal> defines a valid string for the selection.
+									The value must be set in the attribute <literal>name</literal>.
+								</simpara>
+							</listitem>
+						</varlistentry>
+					</variablelist>
+				</section>
+				<section id="umc:module:api:xml:category">
+					<title>Category definition</title>
+					<para>
+						The predefined set of categories can be extended by each module.
+					</para>
+					<example id="umc:module:api:category:example">
+						<title>UMC module category examples</title>
+						<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="categories.xml" parse="text"/></programlisting>
+					</example>
+				</section>
+			</section>
+			<section id="umc:module:api:python">
+				<title>Python module</title>
+				<para>
+					The Python API for UMC modules primary consists of one base class that must be implemented.
+					As an addition to python API provides some helper:
+				</para>
+				<itemizedlist>
+					<listitem><simpara>
+						exception classes
+					</simpara></listitem>
+					<listitem><simpara>
+						translation support
+					</simpara></listitem>
+					<listitem><simpara>
+						logging functions
+					</simpara></listitem>
+					<listitem><simpara>
+						UCR access
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					In the definition file for the UMC module specifies functions for the commands provided by the module.
+					These functions must be implemented as methods of the class <classname>Instance</classname> that inherits from <classname>univention.management.console.modules.Base</classname>.
+				</para>
+				<para>
+					The following Python code example matches the definition in the previous section:
+				</para>
+				<programlisting language="python"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/umc/python/ucr/__init__.py" parse="text"/></programlisting>
+				<para>
+					Each command methods has one parameter that contains the UMCP request.
+					Such an object has the following properties:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><literal>id</literal></term>
+						<listitem><simpara>
+							the unique identifier of the request.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>options</literal></term>
+						<listitem><simpara>
+							contains the arguments for the command.
+							For most commands it is a dictionary.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>flavor</literal></term>
+						<listitem><simpara>
+							the name of the flavor that was used to invoke the command.
+							This might be <literal>None</literal>.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					The method <methodname>containers</methodname> in the example above shows how to retrieve the command parameters and what to do to send the result back to the client.
+					Important is that returning a value in a command function does not send anything back to the client.
+					Therefor the function <function>finished</function> must be invoked.
+					The first parameter is the identifier of the request that will be answered and the second parameter the data structure containing the result.
+					As the result is converted to JSON it must just contain data types that can be converted.
+					The function <function>finished</function> has two further optional parameters.
+					<varname>message</varname> may contain a human readable text explaining the result and <varname>success</varname> is a boolean parameter defining the success of the operation.
+					By default <varname>success</varname> is true.
+					By setting <varname>success</varname> to <literal>False</literal> the UMC module sends an error status back to the client.
+					Another way to send an error message back to the client is by raising one of the following exceptions:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><literal>UMC_OptionTypeError</literal></term>
+						<listitem><simpara>
+								The type of a given option does not match.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>UMC_OptionMissing</literal></term>
+						<listitem><simpara>
+								One required option is missing.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>UMC_CommandError</literal></term>
+						<listitem><simpara>
+								A general error occurred
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					The base class for modules provides some properties and methods that could be useful when writing UMC modules:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><varname>username</varname></term>
+						<listitem><simpara>
+								The username of the owner of this session.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>password</varname></term>
+						<listitem><simpara>
+								The password of the user.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><methodname>init()</methodname></term>
+						<listitem><simpara>
+								Is invoked after the module process has been initialized.
+								At that moment, the settings, like locale and username and password are available.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><methodname>permitted()</methodname></term>
+						<listitem><simpara>
+								Can be used to determine if a specific UMCP command can be invoked by the current user.
+								This method has two parameters:
+								The <varname>command</varname> name and the <varname>options</varname>.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+			</section>
+			<section id="umc:module:api:storepython">
+				<title>UMC store API</title>
+				<para>
+					In order to encapsulate and ease the access to module data from the JavaScript side, a <firstterm>store</firstterm> object offers a unified way to query and modify module data.
+					The UMC JavaScript API comes with an object store implementation of the <ulink url="http://dojotoolkit.org/reference-guide/dojo/store.html">Dojo store API</ulink>.
+					This allows the JavaScript code to easily access/modify module data and to observe changes on the data in order to react immediately.
+					The following methods are supported:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><function>get(id)</function></term>
+						<listitem><simpara>
+								Returns a dictionary of all properties for the object with the specified identifier.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function>put(dictionary, options)</function></term>
+						<listitem><simpara>
+								modifies an object with the corresponding properties and an optional dictionary of options.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function>add(dictionary, options)</function></term>
+						<listitem><simpara>
+								Adds a new object with the corresponding properties and an optional dictionary of options.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function>remove(id)</function></term>
+						<listitem><simpara>
+								Removes the object with the specified identifier.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function>query(dictionary)</function></term>
+						<listitem><simpara>
+								Queries a list of objects (returned as list of dictionaries) corresponding to the given query which is represented as dictionary.
+								Note that not all object properties need to be returned in order to save bandwidth.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					The UMC object store class in JavaScript will be able to communicate directly with the Python module if the following methods are implemented:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><function><replaceable>module</replaceable>/get</function></term>
+						<listitem><simpara>
+								Expects as input a list if unique IDs (as strings) and returns a list of dictionaries as result.
+								Each dictionary entry holds all object properties.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function><replaceable>module</replaceable>/put</function></term>
+						<listitem><simpara>
+								Expects as input a list of dictionaries where each entry has the properties <property>object</property> and <property>options</property>.
+								The property <property>object</property> holds all object properties to be set (i.e., this may also be a subset of all possible properties) as a dictionary.
+								The second property <property>options</property> is an optional dictionary that holds additional options as a dictionary.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function><replaceable>module</replaceable>/add</function></term>
+						<listitem><simpara>
+								Expects similar input values as <function><replaceable>module</replaceable>/put</function>.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function><replaceable>module</replaceable>/remove</function></term>
+						<listitem><simpara>
+								Expects as input a list of dictionaries where each entry has the properties <property>object</property> (containing the object's unique ID (as string)) and <property>options</property>.
+								The options property can be necessary as a removal might be executed in different ways (recursively, shallow removal etc.).
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><function><replaceable>module</replaceable>/query</function></term>
+						<listitem><simpara>
+								Expects as input a dictionary with entries that specify the query parameters and returns a list of dictionaries.
+								Each entry may hold only a subset of all possible object properties.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					Further references:
+				</para>
+				<itemizedlist>
+					<listitem><simpara>
+						<ulink url="http://dojotoolkit.org/reference-guide/dojo/store.html">Dojo object store reference guide</ulink>
+					</simpara></listitem>
+					<listitem><simpara>
+						<ulink url="http://www.sitepen.com/blog/2011/02/15/dojo-object-stores/">Object store tutorial</ulink>
+					</simpara></listitem>
+					<listitem><simpara>
+						<ulink url="http://dojotoolkit.org/features/1.6/object-store">Object stores as new feature in Dojo 1.6</ulink>
+					</simpara></listitem>
+					<listitem><simpara>
+						<ulink url="http://www.w3.org/TR/IndexedDB/#object-store-sync" lang="">HTML5 IndexedDB object store API</ulink>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+		</section>
+		<section id="umc:module:packaging">
+			<title>Packaging</title>
+			<para>
+				A UMC module consists of several files that must be installed at a specific location.
+				As this mechanism is always the same there are <application>debhelper</application> tools making package creation for UMC modules very easy.
+			</para>
+			<para>
+				The following example is based on the package for the UMC module UCR.
+			</para>
+			<para>
+				A UMC module may be part of a source package with multiple binary packages.
+				The examples uses a own source package for the module.
+			</para>
+			<para>
+				As a first step create a source package with the following directories and files:
+			</para>
+			<itemizedlist spacing="compact">
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/debian/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/univention-management-console-module-ucr.umc-modules</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/rules</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/changelog</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/control</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/copyright</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/debian/compat</filename></simpara></listitem>
+			</itemizedlist>
+			<para>
+				All these files are standard Debian packaging files except <filename>univention-management-console-module-ucr.umc-modules</filename>.
+				This file contains information about the locations of the UMC module source files:
+			</para>
+			<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/debian/univention-management-console-module-ucr.umc-modules" parse="text"/></programlisting>
+			<para>
+				The keys in this file of the following meaning:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><literal>Module</literal></term>
+					<listitem><simpara>The internal name of the module</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Python</literal></term>
+					<listitem><simpara>A directory that contains the python package for the UMC module</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Definition</literal></term>
+					<listitem><simpara>The filename of the XML file with the module definition</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Javascript</literal></term>
+					<listitem><simpara>A directory containing the JavaScript source code</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Icons</literal></term>
+					<listitem><simpara>A directory containing the icons required by the modules web frontend</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Syntax</literal> (optional)</term>
+					<listitem><simpara>The filename of the XML file with the syntax definitions</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Category</literal> (optional)</term>
+					<listitem><simpara>The filename of the XML file with the category definitions</simpara></listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				The directory structure for such a UMC module file would look like this:
+			</para>
+			<itemizedlist spacing="compact">
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/syntax/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/syntax/ucr.xml</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/js/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/js/ucr.js</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/js/de.po</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/de.po</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/icons/</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/icons/16x16/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/icons/16x16/ucr.png</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/icons/24x24/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/icons/24x24/ucr.png</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/icons/64x64/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/icons/64x64/ucr.png</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/icons/32x32/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/icons/32x32/ucr.png</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/ucr.xml</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/python/</filename></simpara></listitem>
+				<listitem><simpara><filename class="directory">univention-management-console-module-ucr/umc/python/ucr/</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/python/ucr/de.po</filename></simpara></listitem>
+				<listitem><simpara><filename>univention-management-console-module-ucr/umc/python/ucr/__init__.py</filename></simpara></listitem>
+			</itemizedlist>
+			<para>
+				If such a package has been created a few things need to be adjusted
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><filename>debian/compat</filename></term>
+					<listitem>
+						<programlisting>7</programlisting>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>debian/rules</filename></term>
+					<listitem>
+						<programlisting language="make"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/debian/rules" parse="text"/></programlisting>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>debian/control</filename></term>
+					<listitem>
+						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/debian/control" parse="text"/></programlisting>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
 	</section>
 
 	<section id="umc:udm">
@@ -150,20 +1052,7 @@ Icons: umc/icons
 		<para>
 			Done through <firstterm>flavor</firstterm>.
 		</para>
-		<programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<umc version="2.0">
-	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
-		<flavor priority="25" icon="udm-MODULE-SUBMODULE" id="MODULE/SUBMODULE">
-			<name>MODULE name</name>
-			<description>MODULE description</description>
-		</flavor>
-		<categories>
-			<category name="domain"/>
-		</categories>
-	</module>
-</umc>
-		]]></programlisting>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-udm.xml" parse="text"/></programlisting>
 		<para>
 			Must use <uri>/umc/module/category/@name="domain"</uri>!
 			Must use <uri>/umc/module/@translationId</uri> to specify alternative translation file, which must be installed as <filename>/usr/share/univention-management-console/i18n/<replaceable>language</replaceable>/<replaceable>module</replaceable>.mo</filename>.
@@ -177,16 +1066,7 @@ Icons: umc/icons
 		<para>
 			To disabling a module use the following <acronym>XML</acronym> file as a template:
 		</para>
-		<programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<umc version="2.0">
-	<module id="udm" icon="udm/module" version="1.0" translationId="MODULE">
-		<name/>
-		<description/>
-		<flavor id="MODULE/SUBMODULE" deactivated="yes" />
-	</module>
-</umc>
-		]]></programlisting>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-disable.xml" parse="text"/></programlisting>
 	</section>
 
 </chapter>
