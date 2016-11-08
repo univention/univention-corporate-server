@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import ipaddr
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -168,6 +169,14 @@ class object(DHCPBase):
 			self[prop] = permit
 
 		self.save()
+
+	def ready(self):
+		super(object, self).ready()
+		subnet = ipaddr.IPNetwork('%(subnet)s/%(subnetmask)s' % self.superordinate.info)
+		for addresses in self.info['range']:
+			for addr in addresses:
+				if ipaddr.IPAddress(addr) not in subnet:
+					raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
 	def _ldap_addlist(self):
 		return [
