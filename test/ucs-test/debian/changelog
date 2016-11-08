@@ -1,3 +1,10 @@
+ucs-test (6.0.37-9) unstable; urgency=medium
+
+  * 52_s4connector/159sync_ad_create_non_domain_user: The test case
+    fails from time to time. I've dobled the wainting time (Bug #38313)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Nov 2016 08:42:02 +0100
+
 ucs-test (6.0.37-8) unstable; urgency=medium
 
   * 67_udm-dns/10*: Skip in AD member mode since we use the AD DNS
