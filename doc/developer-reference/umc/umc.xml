@@ -778,10 +778,7 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 						<ulink url="http://www.sitepen.com/blog/2011/02/15/dojo-object-stores/">Object store tutorial</ulink>
 					</simpara></listitem>
 					<listitem><simpara>
-						<ulink url="http://dojotoolkit.org/features/1.6/object-store">Object stores as new feature in Dojo 1.6</ulink>
-					</simpara></listitem>
-					<listitem><simpara>
-						<ulink url="http://www.w3.org/TR/IndexedDB/#object-store-sync" lang="">HTML5 IndexedDB object store API</ulink>
+						<ulink url="http://www.w3.org/TR/IndexedDB/#object-store" lang="">HTML5 IndexedDB object store API</ulink>
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
