@@ -106,10 +106,19 @@ class TestUMCUserAuthentication(TestUMCSystem):
 			self.Connection = UMCConnection(self.UCR['hostname'])
 			self.authenticate_to_umc(self.username, self.password)
 
+			prior_testval = utils.get_ldap_connection().get(self.test_user_dn)
 			self.set_userexpiry_testval()
 			response = self.get_object([self.test_user_dn], 'users/user')
-			if response[0]["userexpiry"] != "2015-02-02":
-				utils.fail("userexpiry not initialized properly")
+			try:
+				if response[0]["userexpiry"] != "2015-02-02":
+					utils.fail("userexpiry not initialized properly")
+			except KeyError:  # Bug #37924
+				print 'FAIL! https://forge.univention.org/bugzilla/show_bug.cgi?id=37924'
+				print 'PRIOR=%r' % (prior_testval,)
+				after_testval = utils.get_ldap_connection().get(self.test_user_dn)
+				print 'AFTER=%r' % (after_testval,)
+				print 'Equal=%s' % (prior_testval == after_testval,)
+				raise
 
 			self.set_userexpiry_empty()
 			response = self.get_object([self.test_user_dn], 'users/user')
