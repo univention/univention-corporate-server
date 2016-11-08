@@ -1158,6 +1158,8 @@ class ipnetwork(simple):
 
 
 class IPv4_AddressRange(complex):
+	min_elements = 1
+	all_required = False
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
 		(_('Last address'), ipv4Address),
