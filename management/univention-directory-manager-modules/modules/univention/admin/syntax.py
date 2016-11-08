@@ -2088,6 +2088,15 @@ class IP_AddressList(ipv4Address, select):
 	depends = 'ip'
 
 
+class IP_AddressListEmpty(IP_AddressList):
+	choices = [('', _('From known-hosts pool'))]
+	empty_value = True
+
+	@classmethod
+	def parse(cls, text):
+		return super(IP_AddressListEmpty, cls).parse(text) if text else ''
+
+
 class MAC_AddressList(MAC_Address, select):
 	choices = ()
 	depends = 'mac'
@@ -2140,6 +2149,8 @@ class dhcpService(UDM_Objects):
 
 
 class dhcpEntry(complex):
+	min_elements = 1
+	all_required = False
 	subsyntaxes = ((_('DHCP service'), dhcpService), (_('IP address'), IP_AddressList), (_('MAC address'), MAC_AddressList))
 	description = _('DHCP Entry')
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')

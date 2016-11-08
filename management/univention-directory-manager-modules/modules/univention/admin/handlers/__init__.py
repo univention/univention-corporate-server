@@ -2178,7 +2178,7 @@ class simpleComputer(simpleLdap):
 				for entry in self.info['dhcpEntryZone']:
 					# check if line is valid
 					dn, ip, mac = self.__split_dhcp_line(entry)
-					if dn and ip and mac:
+					if dn and mac:
 						if entry not in self.oldinfo.get('dhcpEntryZone', []):
 							self.__changes['dhcpEntryZone']['add'].append(entry)
 					else:
