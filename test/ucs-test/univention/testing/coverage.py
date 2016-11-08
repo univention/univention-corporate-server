@@ -52,7 +52,7 @@ class Coverage(object):
 			except EnvironmentError:
 				pass
 		try:
-			subprocess.call(['pkill', '-f', 'cli-server'])
+			subprocess.call(['pkill', '-f', 'python.*univention-cli-server'])
 		except EnvironmentError:
 			pass
 
