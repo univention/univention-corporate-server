@@ -1,3 +1,10 @@
+univention-management-console (8.0.28-20) unstable; urgency=medium
+
+  * Bug #42310: don't connect to DC Master ldap on every UMC login
+    attempt
+
+ -- Florian Best <best@univention.de>  Tue, 08 Nov 2016 18:42:53 +0100
+
 univention-management-console (8.0.28-19) unstable; urgency=medium
 
   * Bug #42103: enhance pam_unix password change configuration

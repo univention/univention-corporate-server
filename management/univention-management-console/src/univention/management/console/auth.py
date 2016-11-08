@@ -36,14 +36,14 @@ from __future__ import absolute_import
 import traceback
 
 import ldap
-from ldap.filter import escape_filter_chars
+from ldap.filter import filter_format
 
 import notifier
 import notifier.signals as signals
 import notifier.threads as threads
 
-from univention.uldap import getMachineConnection
 from univention.management.console.log import AUTH
+from univention.management.console.ldap import get_machine_connection
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 
@@ -127,14 +127,13 @@ class AuthHandler(signals.Provider):
 
 	def __canonicalize_username(self, username):
 		try:
-			lo = getMachineConnection()
+			lo, po = get_machine_connection(write=False)
 			attr = 'mailPrimaryAddress' if '@' in username else 'uid'
-			result = lo.search('%s=%s' % (attr, escape_filter_chars(username)), attr=['uid'], unique=True)
+			result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
 			if result and result[0][1].get('uid'):
 				username = result[0][1]['uid'][0]
-				AUTH.info('Canonicalized username; %r' % (username,))
-			lo.lo.unbind()
-		except (ldap.LDAPError, IOError) as exc:
+				AUTH.info('Canonicalized username: %r' % (username,))
+		except (ldap.LDAPError, IOError, AttributeError) as exc:
 			# /etc/machine.secret missing or LDAP server not reachable
 			AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
 		except:
