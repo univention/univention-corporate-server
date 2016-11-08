@@ -1157,19 +1157,35 @@ class ipnetwork(simple):
 			raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
 
-class IPv4_AddressRange(complex):
+class IP_AddressRange(complex):
+	subsyntaxes = (
+		(_('First address'), ipAddress),
+		(_('Last address'), ipAddress),
+	)
+
+	@classmethod
+	def parse(self, texts):
+		p = super(IP_AddressRange, self).parse(texts)
+		try:
+			first, last = p
+		except ValueError:
+			return p
+		try:
+			if ipaddr.IPAddress(first) > ipaddr.IPAddress(last):
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
+		except TypeError:
+			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+		except ValueError:
+			raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
+		return p
+
+
+class IPv4_AddressRange(IP_AddressRange):
 	min_elements = 1
 	all_required = False
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
 		(_('Last address'), ipv4Address),
-	)
-
-
-class IP_AddressRange(complex):
-	subsyntaxes = (
-		(_('First address'), ipAddress),
-		(_('Last address'), ipAddress),
 	)
 
 
