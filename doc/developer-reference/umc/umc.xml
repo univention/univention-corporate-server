@@ -69,7 +69,7 @@
 					<simpara>
 						For servers that should handling several communication channels at a time have to use so called non-blocking sockets.
 						This is an option that needs to be set for each socket, that should be management by the server.
-						This is necessary to avoid blocking on read or write operations on he sockets.
+						This is necessary to avoid blocking on read or write operations on the sockets.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -316,7 +316,7 @@ RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
 			<example id="umc:http:example:auth">
 				<title>Authentication request</title>
 				<programlisting><![CDATA[
-POST URL:http://10.200.15.31/umcp/auth HTTP/1.1
+POST http://10.200.15.31/umcp/auth HTTP/1.1
 
 {"options": {"username": "root",
 					 "password": "univention"}}
@@ -326,7 +326,7 @@ POST URL:http://10.200.15.31/umcp/auth HTTP/1.1
 				<title>search for users</title>
 				<simpara>Request</simpara>
 				<programlisting><![CDATA[
-POST URL:http://10.200.15.31/umcp/command/udm/query HTTP/1.1
+POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 
 {"options": {"container": "all",
             "objectType":"users/user",
