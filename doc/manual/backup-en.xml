@@ -370,11 +370,13 @@ up) is also defined here.
 status messages. Messages can be saved in log files, displayed on the
 console or sent by e-mail, for example.
 		</para>
+		<!--
 		<para>
 <biblioref linkend="bacula-config-example"/> includes an example
 configuration which can be used as a template for backups and described
 the resources outline above in more detail.
 		</para>
+		-->
 	</section>
 
 	<section id="backup:Administration_via_the_Bacula_console"><title>Administration via the Bacula console</title>
@@ -503,7 +505,7 @@ Further information on the setup of Bacula is available on the following
 websites:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><ulink url="http://www.bacula.org/"/></simpara></listitem>
+			<listitem><simpara><ulink url="http://blog.bacula.org/"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://wiki.bacula.org/doku.php"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://www.bacula.org/5.2.x-manuals/en/main/main.pdf"/></simpara></listitem>
 			<listitem><simpara><ulink url="https://en.wikipedia.org/wiki/Bacula"/></simpara></listitem>

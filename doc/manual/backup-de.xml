@@ -386,11 +386,13 @@ Bacula-Statusnachrichten umgegangen werden soll. Meldungen können u.a.
 in Log-Dateien geschrieben, auf der Konsole angezeigt oder per Email
 verschickt werden.
 		</para>
+		<!--
 		<para>
 In <biblioref linkend="bacula-config-example"/> findet sich eine
 Beispiel-Konfiguration, die als Vorlage für Backups verwendet werden
 kann und die oben genannten Ressourcen weitergehend beschreibt.
 		</para>
+		-->
 	</section>
 
 	<section id="backup:Administration_ueber_die_Bacula_Console"><title>Administration über die Bacula Console</title>
@@ -528,7 +530,7 @@ Weitere Informationen zur Bacula-Einrichtung sind unter anderem auf den
 folgenden Webseiten zu finden:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><ulink url="http://www.bacula.org/"/></simpara></listitem>
+			<listitem><simpara><ulink url="http://blog.bacula.org/"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://wiki.bacula.org/doku.php"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://www.bacula.org/5.2.x-manuals/en/main/main.pdf"/></simpara></listitem>
 			<listitem><simpara><ulink url="https://de.wikipedia.org/wiki/Bacula"/></simpara></listitem>
