@@ -220,64 +220,38 @@ class complex(ISyntax):
 	all_required = True
 
 	@classmethod
-	def parse(self, texts):
-		parsed = []
-
-		if self.min_elements is not None:
-			count = self.min_elements
-		else:
-			count = len(self.subsyntaxes)
-
-		if len(texts) < count:
+	def parse(self, texts, minn=None):
+		if minn is None:
+			minn = self.min_elements
+		if minn is None:
+			minn = len(self.subsyntaxes)
+		if len(texts) < minn:
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
-
-		if len(texts) > len(self.subsyntaxes):
+		elif len(texts) > len(self.subsyntaxes):
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
-		for i in range(len(texts)):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
-			if not inspect.isclass(self.subsyntaxes[i][1]):
-				s = self.subsyntaxes[i][1]
-			else:
-				s = self.subsyntaxes[i][1]()
-			if texts[i] is None:
-				if self.min_elements is None or (i + 1) < self.min_elements:
-					raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax"))
-			p = s.parse(texts[i])
-			if not p:
-				break
+		parsed = []
+		for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
+			univention.debug.debug(
+				univention.debug.ADMIN, univention.debug.INFO,
+				'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
+			if text is None and i + 1 < minn:
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument"))
+			s = syn() if inspect.isclass(syn) else syn
+			p = s.parse(text)
 			parsed.append(p)
 		return parsed
 
 	@classmethod
 	def tostring(self, texts):
-		newTexts = []
-		if len(self.subsyntaxes) != len(texts):
-			return ''
-		else:
-			for i in range(0, len(texts)):
-				if texts[i]:
-					if not inspect.isclass(self.subsyntaxes[i][1]):
-						res = self.subsyntaxes[i][1].parse(texts[i])
-					else:
-						res = self.subsyntaxes[i][1]().parse(texts[i])
-					if res:
-						newTexts.append(res)
-				elif self.all_required:
-					return ''
+		if self.all_required:
+			if len(self.subsyntaxes) != len(texts) or not all(texts):
+				return ''
 
-		if not newTexts:
-			return ''
+		if isinstance(self.delimiter, basestring):
+			return self.delimiter.join(texts)
 
-		txt = ''
-		if isinstance(self.delimiter, type([])):
-			for i in range(0, len(newTexts)):
-				txt += self.delimiter[i] + newTexts[i]
-			txt += self.delimiter[-1]
-		elif isinstance(self.delimiter, type('')):
-			txt = self.delimiter.join(newTexts)
-
-		return txt
+		return ''.join([s for sub in zip(self.delimiters, texts) for s in sub] + [self.delimiter[-1]])
 
 	@classmethod
 	def new(self):
