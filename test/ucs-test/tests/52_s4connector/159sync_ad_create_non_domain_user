@@ -40,6 +40,7 @@ section "Reenable connector"
 
 ad_set_sync_mode "sync"
 ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_GROUP_DN"; fail_bool 0 110
 udm_exists "groups/group"; fail_bool 0 110
