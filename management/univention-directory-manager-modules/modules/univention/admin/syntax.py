@@ -2083,22 +2083,14 @@ class network(UDM_Objects):
 	empty_value = True
 
 
-class IP_AddressList(select):
+class IP_AddressList(ipv4Address, select):
 	choices = ()
 	depends = 'ip'
 
-	@classmethod
-	def parse(cls, text):
-		return text
 
-
-class MAC_AddressList(select):
+class MAC_AddressList(MAC_Address, select):
 	choices = ()
 	depends = 'mac'
-
-	@classmethod
-	def parse(cls, text):
-		return text
 
 
 class DNS_ForwardZone(UDM_Objects):
@@ -2153,8 +2145,14 @@ class dhcpEntry(complex):
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
 	@classmethod
-	def parse(self, value):
-		return value
+	def parse(cls, text):
+		service, ip, mac = text[0], None, None
+		try:
+			mac = text[1:][-1]
+			ip, mac = text[1:]
+		except ValueError:
+			pass
+		return super(dhcpEntry, cls).parse([service, ip, mac])
 
 
 class DHCP_Option(complex):
