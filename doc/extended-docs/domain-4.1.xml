@@ -694,33 +694,31 @@ univention-certificate new -name fullyqualifiedhostname
 	  <section id="extdom:ssl:sign">
 		<title>Signing of certificate signing requests by the UCS certificate authority</title>
         <para>
-		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
+		  A certificate signing request (<acronym>CSR</acronym>) is a request submitted to a certificate authority (<acronym>CA</acronym>)
 		  to create a digital signature. A CSR typically occurs in the form of a file. This section
 		  describes how a CSR is signed by the UCS CA.
 		</para>
 
         <para>
-		  CERTIFICATE is the file name of the certificate to be created.
-		</para>
-
-        <para>
-			REQUEST is the file with the CSR in either PEM or DER format.
-			A file in PEM format is a text file containing a base64 encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
-			A request in binary DER format must be first converted to the PEM format with the following command:
+			<filename>REQUEST</filename> is the file with the CSR in either <acronym>PEM</acronym> or <acronym>DER</acronym> format.
+			A file in <acronym>PEM</acronym> format is a text file containing a base64 encoded block enclosed between <literal>BEGIN CERTIFICATE REQUEST</literal> and <literal>END CERTIFICATE REQUEST</literal>.
+			A request in binary <acronym>DER</acronym> format must be first converted to the <acronym>PEM</acronym> format with the following command:
 		</para>
 <programlisting language="sh">
 openssl req \
-  -inform  der -in  request.der \
-  -outform pem -out req.pem
+  -inform  der -in  REQUEST.der \
+  -outform pem -out REQUEST.pem
 </programlisting>
 
         <para>
-		  The following command then processes the CSR and creates the certificate:
+		  <filename>CERTIFICATE</filename> is the file name of the certificate to be created.
+		  The following command then processes the <acronym>CSR</acronym> and creates the certificate:
 		</para>
 <programlisting language="sh">
-openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
-  -in REQUEST -out CERTIFICATE \
-  -passin file:/etc/univention/ssl/password
+. /usr/share/univention-ssl/make-certificates.sh
+openssl ca -batch -config "$SSLBASE/openssl.cnf" \
+  -in REQUEST.pem -out CERTIFICATE.pem \
+  -passin file:"$SSLBASE/password"
 </programlisting>
 	  </section>
 
