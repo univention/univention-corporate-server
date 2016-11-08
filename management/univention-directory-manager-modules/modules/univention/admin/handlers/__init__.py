@@ -1096,7 +1096,6 @@ class simpleLdap(base):
 
 
 class simpleComputer(simpleLdap):
-	MAC_REGEX = re.compile('^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$')
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes)
@@ -1166,9 +1165,6 @@ class simpleComputer(simpleLdap):
 		fullName = [''.join(reversed(fullName[i:i + 4])) for i in xrange(0, len(fullName), 4)]
 		fullName.reverse()
 		return ':'.join(fullName)
-
-	def __is_mac(self, mac):
-		return mac is not None and simpleComputer.MAC_REGEX.match(mac) is not None
 
 	def __is_ip(self, ip):
 		# return True if valid IPv4 (0.0.0.0 is allowed) or IPv6 address
@@ -1295,12 +1291,12 @@ class simpleComputer(simpleLdap):
 							service = ','.join(univention.admin.uldap.explodeDn(dn, 0)[1:])
 							if 'univentionDhcpFixedAddress' in attr:
 								for ip in attr['univentionDhcpFixedAddress']:
-									entry = [service, ip, macAddress]
+									entry = (service, ip, macAddress)
 									if entry not in self['dhcpEntryZone']:
 										self['dhcpEntryZone'].append(entry)
 
 							else:
-								entry = [service, macAddress]
+								entry = (service, '', macAddress)
 								if entry not in self['dhcpEntryZone']:
 									self['dhcpEntryZone'].append(entry)
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self['dhcpEntryZone'])
@@ -1492,23 +1488,18 @@ class simpleComputer(simpleLdap):
 		return dn
 
 	def __split_dhcp_line(self, entry):
+		service = entry[0]
+		ip = ''
 		try:
 			# sanitize mac address
 			#   0011.2233.4455 -> 00:11:22:33:44:55 -> is guaranteed to work together with our DHCP server
 			#   __split_dhcp_line may be used outside of UDM which means that MAC_Address.parse may not be called.
-			#   if __is_mac would return True for 0011.2233.4455 and MAC_Address.parse is not called afterwards DHCP may not work.
-			# See Bug #30140
-			entry[-1] = univention.admin.syntax.MAC_Address.parse(entry[-1])
-		except univention.admin.uexceptions.valueError:
-			# the mac address is invalid, __is_mac will check again if it has the right format
-			pass
-		if self.__is_mac(entry[-1]):
+			mac = univention.admin.syntax.MAC_Address.parse(entry[-1])
 			if self.__is_ip(entry[-2]):
-				return entry
-			else:
-				return (entry[0], None, entry[-1])
-
-		return (entry[0], None, None)
+				ip = entry[-2]
+		except univention.admin.uexceptions.valueError:
+			mac = ''
+		return (service, ip, mac)
 
 	def __split_dns_line(self, entry):
 		zone = entry[0]
@@ -2142,7 +2133,7 @@ class simpleComputer(simpleLdap):
 				dn, ip, mac = self.__split_dhcp_line(self.info['dhcpEntryZone'][0])
 
 				if dn and ip and mac:
-					self.info['dhcpEntryZone'] = [[dn, self.info['ip'][0], self.info['mac'][0]]]
+					self.info['dhcpEntryZone'] = [(dn, self.info['ip'][0], self.info['mac'][0])]
 				else:
 					self.info['dhcpEntryZone'] = []
 			else:
@@ -2619,7 +2610,7 @@ class simpleComputer(simpleLdap):
 							self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], self['ip'][0]], ]
 					if network_object['dhcpEntryZone']:
 						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) == 1:
-							self['dhcpEntryZone'] = [[network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0]], ]
+							self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
 						else:
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
@@ -2640,7 +2631,7 @@ class simpleComputer(simpleLdap):
 							self['dnsEntryZoneReverse'] = [[self.network_object['dnsEntryZoneReverse'], self['ip'][0]]]
 					if self.network_object['dhcpEntryZone']:
 						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) > 0:
-							self['dhcpEntryZone'] = [[self.network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0]], ]
+							self['dhcpEntryZone'] = [(self.network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
 			if not self.ip or self.ip is None:
@@ -2649,9 +2640,9 @@ class simpleComputer(simpleLdap):
 		elif key == 'mac' and self.__saved_dhcp_entry:
 			if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self['mac'] and len(self['mac']) > 0:
 				if isinstance(value, list):
-					self['dhcpEntryZone'] = [[self.__saved_dhcp_entry, self['ip'][0], value[0]], ]
+					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, self['ip'][0], value[0])]
 				else:
-					self['dhcpEntryZone'] = [[self.__saved_dhcp_entry, self['ip'][0], value], ]
+					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, self['ip'][0], value)]
 
 		super(simpleComputer, self).__setitem__(key, value)
 		if raise_after:
