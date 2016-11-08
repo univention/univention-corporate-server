@@ -98,9 +98,6 @@
 	<section id="umc:umcp2">
 		<title>Protocol UMCP 2.0</title>
 		<para>
-			This new generation of UMCP is based on the version 1.0 but is not compatible.
-		</para>
-		<para>
 			This protocol is used by the UMC server for external clients and between the UMC server and its UMC module processes.
 		</para>
 		<section id="umc:umcp2:flow">
@@ -318,8 +315,7 @@ RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
 				<programlisting><![CDATA[
 POST http://10.200.15.31/umcp/auth HTTP/1.1
 
-{"options": {"username": "root",
-					 "password": "univention"}}
+{"options": {"username": "root", "password": "univention"}}
 				]]></programlisting>
 			</example>
 			<example id="umc:http:example:user">
@@ -615,86 +611,6 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 								<para>
 									defines the method to be invoked within the python module when the command is called.
 								</para>
-							</listitem>
-						</varlistentry>
-					</variablelist>
-					<para>
-						Each command can have arguments and a return value, which can be specified as child elements of the command.
-						For example
-					</para>
-					<programlisting language="xml"><![CDATA[
-<attribute name="superordinate" syntax="String" required="False"/>
-					]]></programlisting>
-					<para>
-						defines an attribute superordinate of type String that is optional.
-						What syntax types are support is defined in the next section.
-					</para>
-				</section>
-				<section id="umc:module:api:xml:syntax">
-					<title>Syntax definitions (deprecated since UCS-3.1)</title>
-					<para>
-						Syntax definitions can help to ensure the correctness of commands passed to the UMC server.
-						Therefor it helps to keeps the server save by dismissing incorrect commands that may crash the UMC module.
-					</para>
-					<para>
-						Be default the UMC server brings a set of basic and most common syntax definitions:
-					</para>
-					<itemizedlist spacing="compact">
-						<listitem><simpara>String</simpara></listitem>
-						<listitem><simpara>Boolean</simpara></listitem>
-						<listitem><simpara>Integer</simpara></listitem>
-						<listitem><simpara>Float</simpara></listitem>
-						<listitem><simpara>Selection (only predefined strings are allowed)</simpara></listitem>
-					</itemizedlist>
-					<para>
-						Additionally it provides some data structure types:
-					</para>
-					<itemizedlist spacing="compact">
-						<listitem><simpara>Dictionary</simpara></listitem>
-						<listitem><simpara>List</simpara></listitem>
-					</itemizedlist>
-					<para>
-						These syntax types can be used to create own syntax definitions based on these types.
-						There the UMC module must provide an XML file with the definition.
-					</para>
-					<example id="umc:module:api:syntax:example">
-						<title>Example for UMC syntax</title>
-						<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="syntax.xml" parse="text"/></programlisting>
-					</example>
-					<para>
-						A syntax definition must provide the <literal>base</literal> type and a new <literal>name</literal>.
-						Depending on the base type the available child elements differ:
-					</para>
-					<variablelist>
-						<varlistentry>
-							<term><literal>String</literal></term>
-							<listitem>
-								<simpara>
-									<literal>regex-invalid</literal> defines a regular expression.
-									If it matches, the value is invalid.
-								</simpara>
-								<simpara>
-									<literal>regex</literal> defines a regular expression.
-									Only if it matches the value is valid.
-								</simpara>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><literal>Dictionary</literal></term>
-							<listitem>
-								<simpara>
-									<literal>item</literal> defines the syntax types of the list elements.
-									The attribute <literal>key</literal> defines the syntax type of the key and the attribute <literal>value</literal> for its value.
-								</simpara>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term><literal>Selection</literal></term>
-							<listitem>
-								<simpara>
-									<literal>choice</literal> defines a valid string for the selection.
-									The value must be set in the attribute <literal>name</literal>.
-								</simpara>
 							</listitem>
 						</varlistentry>
 					</variablelist>
