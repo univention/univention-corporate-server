@@ -644,4 +644,12 @@ set_windows_localadmin_password_for_ucs_test () {
 		tests/windows/localadmin/pwd="$password"
 }
 
+monkeypatch () {
+	# this function can be used to monkeypatch all UCS@school systems before running the test
+
+	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
+	sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/share/pyshared/univention/management/console/protocol/session.py
+	univention-management-console-server restart
+}
+
 # vim:set filetype=sh ts=4:
