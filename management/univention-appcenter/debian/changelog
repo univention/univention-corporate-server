@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-4) unstable; urgency=medium
+
+  * Bug #42834: Add license attribute
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Nov 2016 12:01:46 +0100
+
 univention-appcenter (5.0.23-3) unstable; urgency=medium
 
   * Bug #42801: Add univention-app dev-set
