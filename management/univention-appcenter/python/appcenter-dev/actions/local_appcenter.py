@@ -656,14 +656,20 @@ class DevSet(UniventionAppAction):
 					self.warn('Using %s instead of %s as attribute' % (name, attr))
 					attr = name
 				self.log('%s: Overwriting %r' % (attr, old_value))
-		try:
-			parser.add_section(section)
-		except DuplicateSectionError:
-			pass
-		except ValueError:
-			section = 'DEFAULT'
 		self.debug('Setting [%s]%s=%r' % (section, attr, value))
-		parser.set(section, attr, value)
+		if value is None:
+			try:
+				parser.remove_option(section, attr)
+			except NoSectionError:
+				pass
+		else:
+			try:
+				parser.add_section(section)
+			except DuplicateSectionError:
+				pass
+			except ValueError:
+				section = 'DEFAULT'
+			parser.set(section, attr, value)
 
 	def set_file_content(self, app, attr, value):
 		self.log('Writing %s' % attr)
