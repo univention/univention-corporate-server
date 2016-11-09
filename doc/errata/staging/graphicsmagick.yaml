@@ -1,0 +1,38 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: graphicsmagick
+fix: 1.3.16-1.1~ucs3.3.30.201611091325
+desc: |
+ This update addresses the following issue(s):
+ * SVG converting issue resulting in DoS (CVE-2016-5240)
+ * SVG converting issues (CVE-2016-5241)
+ * heap buffer overflow issue in MVG/SVG rendering. (CVE-2016-7446)
+ * heap overflow of the EscapeParenthesis() function (CVE-2016-7447)
+ * TIFF related problems due to use of strlcpy use. (CVE-2016-7449)
+ * Fix unsigned underflow leading to heap overflow when
+   (CVE-2016-7800)
+ * Utah RLE: Reject truncated/absurd files which caused huge memory
+   allocations and/or consumed huge CPU (CVE-2016-7448)
+ * missing check that the provided colormap is not larger than 256
+   entries resulting in potential heap overflow (CVE-2016-7996)
+ * Denial of service due to WPG Reader Issues (CVE-2016-7997)
+ * stack-based buffer overflow in ReadSCTImage (sct.c) (CVE-2016-8682)
+ * memory allocation failure in ReadPCXImage (pcx.c) (CVE-2016-8683)
+ * memory allocation failure in MagickMalloc (memory.c)
+   (CVE-2016-8684)
+bug: [41945]
+cve:
+ - CVE-2016-5240
+ - CVE-2016-5241
+ - CVE-2016-7446
+ - CVE-2016-7447
+ - CVE-2016-7449
+ - CVE-2016-7800
+ - CVE-2016-7448
+ - CVE-2016-7996
+ - CVE-2016-7997
+ - CVE-2016-8682
+ - CVE-2016-8683
+ - CVE-2016-8684
