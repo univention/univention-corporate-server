@@ -390,14 +390,15 @@ class App(object):
 			App have the same ID, though.
 		code: An internal ID like 2-char value that has no meaning
 			other than some internal reporting processing.
-			Univention handles this, not the App Vendor.
+			Univention handles this, not the App Provider.
 		component_id: The internal name of the repository on the App
 			Center server. Not necessarily (but often) named after
-			the ID. Not part of the ini file.
+			the *id*. Not part of the ini file.
 		ucs_version: Not part of the ini file.
 		name: The displayed name of the App.
 		version: Version of the App. Needs to be unique together with
-			with the ID.
+			with the *id*. Versions are compared against each other
+			using the Python's LooseVersion (distutils).
 		logo: The file name of the logo of the App. It is used in the
 			App Center overview when all Apps are shown in a
 			gallery. As the gallery items are squared, the logo
@@ -405,13 +406,14 @@ class App(object):
 		logo_detail_page: The file name of a "bigger" logo. It is shown
 			in the detail page of the App Center. Useful when there
 			is a stretched version with the logo, the name, maybe a
-			claim. If not given, the "logo" is used on the detail
+			claim. If not given, the *logo* is used on the detail
 			page, too. Not part of the App class.
 		description: A short description of the App. Should not exceed
 			90 chars, otherwise it gets unreadable in the App
 			Center.
 		long_description: A more complete description of the App. HTML
-			allowed and required! Shown before installation.
+			allowed and required! Shown before installation, so it
+			should contain product highlights, use cases, etc.
 		thumbnails: A list of screenshots and / or YouTube video URLs.
 		categories: Categories this App shall be filed under.
 		website: Website for more information about the product (e.g.
@@ -420,18 +422,18 @@ class App(object):
 			how to buy a license)
 		contact: Contact email address for the customer
 		vendor: Display name of the vendor. The actual creator of the
-			Software. See also maintainer.
+			Software. See also *maintainer*.
 		website_vendor: Website of the vendor itself for more
 			information.
 		maintainer: Display name of the maintainer, who actually put
 			the App into the App Center. Often, but not necessarily
-			the vendor. If vendor and maintainer are the same,
-			maintainer does not needs to be specified again.
+			the *vendor*. If vendor and maintainer are the same,
+			maintainer does not need to be specified again.
 		website_maintainer: Website of the maintainer itself for more
 			information.
 		license: An abbreviation of a license category. See also
-			license_agreement. Not part of the App class.
-		license_description: A human readable version of the License
+			*license_agreement*.
+		license_description: A human readable version of the *license*
 			attribute of the ini file. Not part of the the ini
 			file.
 		license_agreement: A file containing the license text the end
@@ -474,12 +476,12 @@ class App(object):
 			email.
 		notification_email: Email address that should be used to send
 			notifications. If none is provided the address from
-			contact	will be used. Note: An empty email
+			*contact* will be used. Note: An empty email
 			(NotificationEmail=) is not valid! Remove the line (or
 			put in comments) in this case.
 		web_interface: The path of the App's web interface.
 		web_interface_name: A name for the App's web interface. If not
-			given, "name" is used.
+			given, *name* is used.
 		web_interface_port_http: The port to the web interface (HTTP).
 		web_interface_port_https: The port to the web interface (HTTPS).
 		web_interface_proxy_scheme: Docker Apps only. Whether the web
@@ -490,24 +492,28 @@ class App(object):
 			If yes, the web interface ports of the container are
 			used for a proxy configuration, so that the web
 			interface is again available on 80/443. In this case
-			the "web_interface" itself needs to have a distinct
+			the *web_interface* itself needs to have a distinct
 			path even inside the container (like "/myapp" instead
 			of "/" inside).
-			If "web_interface_proxy_scheme" is set to http, both
+			If *web_interface_proxy_scheme* is set to http, both
+			http and https are proxied to http in the container. If
+			set to https, proxy points always to https. If set to
+			both, http will go to http, https to https.
 		ucs_overview_category: Whether and if where on the start site
-			the web_interface should be registered.
+			the *web_interface* should be registered automatically.
 		database: Which (if any) database an App wants to use. The App
 			Center will setup the database for the App. Useful for
 			Docker Apps running against the Host's database.
+			Supported: "mysql", "postgres".
 		database_name: Name of the database to be created. Defaults to
-			"id".
+			*id*.
 		database_user: Name of the database user to be created.
-			Defaults to "id". May not be "root" or "postgres".
+			Defaults to *id*. May not be "root" or "postgres".
 		database_password_file: Path to the file in which the password
 			will be stored. If not set, a default file will be
 			created.
 		docker_env_database_host: Environment variable name for the DB
-			host.
+			host inside the Docker Container.
 		docker_env_database_port: Environment variable name for the DB
 			port.
 		docker_env_database_name: Environment variable name for the DB
@@ -519,13 +525,13 @@ class App(object):
 		docker_env_database_password_file: Environment variable name
 			for a file that holds the password for the DB. If set,
 			this file is created in the Docker Container;
-			"docker_env_database_password" will not be used.
+			*docker_env_database_password* will not be used.
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
 		required_apps: List of App IDs that need to be installed along
 			with this App.
-		required_apps_in_domain: Like required_apps, but the Apps may
+		required_apps_in_domain: Like *required_apps*, but the Apps may
 			be installed anywhere in the domain, not necessarily
 			on this very server.
 		conflicted_system_packages: List of debian package names that
@@ -541,11 +547,10 @@ class App(object):
 			the App Center when not installed. For old
 			installations, a warning is shown that the user needs
 			to find an alternative for the App. Should be
-			supported by an exhaustive "readme" file how to
+			supported by an exhaustive *readme* file how to
 			migrate the App data.
 		without_repository: Whether this App can be installed without
-			adding a dedicated repository on the App Center
-			server.
+			adding a dedicated repository on the App Center server.
 		default_packages: List of debian package names that shall be
 			installed (probably living in the App Center server's
 			repository).
@@ -554,16 +559,16 @@ class App(object):
 			systems while this App is installed. Deprecated. Not
 			supported for Docker Apps.
 		additional_packages_master: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Master. Not supported for Docker Apps.
 		additional_packages_backup: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Backup. Not supported for Docker Apps.
 		additional_packages_slave: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Slave. Not supported for Docker Apps.
 		additional_packages_member: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a Memberserver. Not supported for Docker Apps.
 		rating: Positive rating on specific categories regarding the
 			App. Controlled by Univention. Not part of the ini
@@ -579,9 +584,9 @@ class App(object):
 			Center may generate a link to point the the Users
 			module of UMC.
 		ports_exclusive: A list of ports the App requires to acquire
-			exclusively. Implicitly builds "conflicted_apps".
-			Docker Apps will have these exact ports forwarded. The
-			App Center will also change the firewall rules.
+			exclusively. Implicitly adds *conflicted_apps*. Docker
+			Apps will have these exact ports forwarded. The App
+			Center will also change the firewall rules.
 		ports_redirection: Docker Apps only. A list of ports the App
 			wants to get forwarded from the host to the container.
 			Example: 2222:22 will enable an SSH connection to the
@@ -599,43 +604,43 @@ class App(object):
 		shop_url: If given, a button is added to the App Center which
 			users can click to buy a license.
 		ad_member_issue_hide: When UCS is not managing the domain but
-			instead is only part of a Windows
-			controlled Active Directory domain, the environment in
-			which the App runs is different and certain services
-			that this App relies on may not not be running. Thus,
-			the App should not be shown at all in the App Center.
-		ad_member_issue_password: Like "ad_member_issue_hide" but only
+			instead is only part of a Windows controlled Active
+			Directory domain, the environment in which the App runs
+			is different and certain services that this App relies
+			on may not not be running. Thus, the App should not be
+			shown at all in the App Center.
+		ad_member_issue_password: Like *ad_member_issue_hide* but only
 			shows a warning: The App needs a password service
 			running on the Windows domain controller, e.g. because
 			it needs the samba hashes to authenticate users. This
-			can be set up, but nor automatically. A link to the
+			can be set up, but not automatically. A link to the
 			documentation how to set up that service in such
 			environments is shown.
 		app_report_object_type: In some environments, App reports are
 			automatically generated by a metering tool. This tool
 			counts a specific amount of LDAP objects.
-			"app_report_object_type" is the object type of these
+			*app_report_object_type* is the object type of these
 			objects. Example: users/user
 		app_report_object_filter: Part of the App reporting. The
-			filter for "app_report_object_type". Example:
+			filter for *app_report_object_type*. Example:
 			(myAppActivated=1).
 		app_report_object_attribute: Part of the App reporting. If
 			specified, not 1 is counted per object, but the number
-			of values in this "app_report_object_attribute".
-			Useful for "app_report_attribute_type" = groups/group
-			and "app_report_object_attribute" = uniqueMember.
-		app_report_attribute_type: Same as "app_report_object_type"
+			of values in this *app_report_object_attribute*.
+			Useful for *app_report_attribute_type* = groups/group
+			and *app_report_object_attribute* = uniqueMember.
+		app_report_attribute_type: Same as *app_report_object_type*
 			but regarding the list of DNs in
-			"app_report_object_attribute".
+			*app_report_object_attribute*.
 		app_report_attribute_filter: Same as
-			"app_report_object_filter" but regarding
-			"app_report_object_type".
+			*app_report_object_filter* but regarding
+			*app_report_object_type*.
 		docker_image: Docker Image for the container. If specified the
 			App implicitly becomes a Docker App.
 		docker_migration_works: Whether it is safe to install this
 			version while a non Docker version is or was installed.
 		docker_allowed_images: List of other Docker Images. Used for
-			updates. If the new version has a new "docker_image"
+			updates. If the new version has a new *docker_image*
 			but the old App runs on an older image specified in
 			this list, the image is not exchanged.
 		docker_shell_command: Default command when running
@@ -655,31 +660,32 @@ class App(object):
 			with a setup script living on the App Center server,
 			this script is copied to this very path before being
 			executed.
-		docker_script_store_data: Like docker_script_setup, but for a
+		docker_script_store_data: Like *docker_script_setup*, but for a
 			script that is run to backup the data just before
 			destroying the old container.
 		docker_script_restore_data_before_setup: Like
-			docker_script_setup, but for a script that is run to
+			*docker_script_setup*, but for a script that is run to
 			restore backuped data just before running the setup
 			script.
 		docker_script_restore_data_after_setup: Like
-			docker_script_setup, but for a script that is run to
+			*docker_script_setup*, but for a script that is run to
 			restore backuped data just after running the setup
 			script.
-		docker_script_update_available: Like docker_script_setup, but
+		docker_script_update_available: Like *docker_script_setup*, but
 			for a script that is run to check whether an update is
 			available (packag or distribution upgrade).
-		docker_script_update_packages: Like docker_script_setup, but
+		docker_script_update_packages: Like *docker_script_setup*, but
 			for a script that is run to install package updates
 			(like security updates) in the container without
 			destroying it.
-		docker_script_update_release: Like docker_script_setup, but for
-			a script that is run to install distribution updates
-			(like new major releases of the OS) in the container
-			without destroying it.
-		docker_script_update_app_version: Like docker_script_setup, but
-			for a script that is run to specifically install App
-			package updates in the container without destroying it.
+		docker_script_update_release: Like *docker_script_setup*, but
+			for a script that is run to install distribution
+			updates (like new major releases of the OS) in
+			the container without destroying it.
+		docker_script_update_app_version: Like *docker_script_setup*,
+			but for a script that is run to specifically install
+			App package updates in the container without destroying
+			it.
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 	"""

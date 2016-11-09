@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-2) unstable; urgency=medium
+
+  * Bug #42761: ini documentation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Nov 2016 11:52:23 +0100
+
 univention-appcenter (5.0.23-1) unstable; urgency=medium
 
   * Bug #42619: Also improve UCR funtions for Non-UCS containers
