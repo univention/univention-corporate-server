@@ -27,6 +27,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+ucsschool-compress-logs () {
+	# ucsschool-compress-logs
+	# Compress ucs-test.log, autotest-….log and all non-xml files under log-*/
+	find log-* \( -name \*.xml -a -prune \) -o \( -type f -a -print0 \) | xargs -0 -r -n1 xz
+	find . \( -name autotest-\*.log -o -name ucs-test.log \) -print0 | xargs -0 -r -n1 xz
+}
+
 ucsschool-fetch-results () {
 	# ucsschool-fetch-results <IP-ADDRESS>
 	local ADDR="$1"
