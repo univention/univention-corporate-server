@@ -33,10 +33,11 @@
 #
 
 import os
-from ConfigParser import ConfigParser, NoOptionError
+from ConfigParser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 import subprocess
 import urllib2
 import shutil
+from argparse import Action
 from glob import glob
 from json import dumps
 from datetime import date
@@ -46,9 +47,9 @@ from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
 
-from univention.appcenter.app import App, AppManager, AppAttribute, _get_from_parser, _read_ini_file
-from univention.appcenter.actions import UniventionAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir
+from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, AppDockerScriptAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
+from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -56,6 +57,27 @@ from univention.appcenter.ucr import ucr_save, ucr_get
 _screenshot_attribute = AppAttribute(localisable=True)
 _screenshot_attribute.set_name('screenshot')
 App._attrs.append(_screenshot_attribute)
+
+
+class StoreAttrActions(Action):
+	def __call__(self, parser, namespace, value, option_string=None):
+		attrs = []
+		if self.nargs is None:
+			value = [value]
+		for val in value:
+			try:
+				attr, attr_value = val.split('=', 1)
+			except ValueError:
+				parser.error('Use [SECTION:]ATTR=VALUE to specify an attribute to be set')
+			else:
+				try:
+					section, attr = attr.rsplit(':', 1)
+				except ValueError:
+					section = 'Application'
+			attrs.append((section, attr, attr_value))
+		if self.nargs is None:
+			attrs = attrs[0]
+		setattr(namespace, self.dest, attrs)
 
 
 class DevUseTestAppcenter(UniventionAppAction):
@@ -250,9 +272,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 		super(DevRegenerateMetaInf, self).setup_parser(parser)
 		parser.add_argument('--appcenter-host', default=ucr_get('repository/app_center/server'), help='The hostname of the new App Center. Default: %(default)s')
 
-	def main(self, args):
-		meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
-		repo_dir = os.path.join(args.path, 'univention-repository', args.ucs_version, 'maintained', 'component')
+	@classmethod
+	def generate_index_json(cls, meta_inf_dir, repo_dir, ucs_version, appcenter_host):
 		with tarfile.open(os.path.join(meta_inf_dir, 'all.tar.gz'), 'w:gz') as archive:
 			with gzip.open(os.path.join(meta_inf_dir, 'index.json.gz'), 'wb') as index_json:
 				apps = {}
@@ -266,11 +287,16 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						appid = _get_from_parser(parser, 'Application', 'ID')
 						if not appid:
 							continue
-						app = AppcenterApp(appname, appid, args.ucs_version, meta_inf_dir, repo_dir, args.appcenter_host)
+						app = AppcenterApp(appname, appid, ucs_version, meta_inf_dir, repo_dir, appcenter_host)
 						apps[app.name] = app.to_index()
 						for filename_in_directory, filename_in_archive in app.tar_files():
 							archive.add(filename_in_directory, filename_in_archive)
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
+
+	def main(self, args):
+		meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
+		repo_dir = os.path.join(args.path, 'univention-repository', args.ucs_version, 'maintained', 'component')
+		self.generate_index_json(meta_inf_dir, repo_dir, args.ucs_version, args.appcenter_host)
 		if args.ucs_version == ucr_get('version/version'):
 			update = get_action('update')
 			update.call_safe()
@@ -547,7 +573,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				self.warn('Could not determine architecture from filename. Assuming _all.deb')
 				_copy_package(package, 'all', add_arch_ending=True)
 
-	def _generate_repo_index_files(self, repo_dir, compress=True):
+	@classmethod
+	def _generate_repo_index_files(cls, repo_dir, compress=True):
 		mode = 'packages'
 		for arch in ['i386', 'amd64', 'all']:
 			filename = os.path.join(repo_dir, arch, 'Packages')
@@ -608,3 +635,61 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 			self.log('Local App Center server is set up at %s.' % server)
 			self.log('If this server should serve as an App Center server for other computers in the UCS domain, the following command has to be executed on each computer:')
 			self.log('  univention-app dev-use-test-appcenter --appcenter-host="%s"' % server)
+
+
+class DevSet(UniventionAppAction):
+	'''Sets attributes for an App'''
+	help = 'Sets attributes for an App and clears cache. Also works for files like README, store_data'
+
+	def setup_parser(self, parser):
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be altered')
+		parser.add_argument('attrs', action=StoreAttrActions, metavar='ATTR=VALUE', nargs='+', help='The attribute that shall be altered')
+
+	def set_ini_value(self, section, attr, value, parser):
+		try:
+			items = parser.items(section)
+		except NoSectionError:
+			items = []
+		for name, old_value in items:
+			if attr.lower() == name.lower():
+				if attr != name:
+					self.warn('Using %s instead of %s as attribute' % (name, attr))
+					attr = name
+				self.log('%s: Overwriting %r' % (attr, old_value))
+		try:
+			parser.add_section(section)
+		except DuplicateSectionError:
+			pass
+		except ValueError:
+			section = 'DEFAULT'
+		self.debug('Setting [%s]%s=%r' % (section, attr, value))
+		parser.set(section, attr, value)
+
+	def set_file_content(self, app, attr, value):
+		self.log('Writing %s' % attr)
+		with open(app.get_cache_file(attr), 'wb') as fd:
+			fd.write(value)
+
+	def process(self, app, attribute, section, attr, value, parser):
+		if isinstance(attribute, AppFileAttribute):
+			if section == 'Application':
+				section = 'EN'
+			attr = '%s_%s' % (attr, section)
+			self.set_file_content(app, attr.upper(), value)
+		elif isinstance(attribute, AppDockerScriptAttribute):
+			if attr.startswith('docker_script_'):
+				attr = attr[14:]
+			self.set_file_content(app, attr, value)
+		else:
+			self.set_ini_value(section, attr, value, parser)
+
+	def main(self, args):
+		ini_file = args.app.get_ini_file()
+		parser = _read_ini_file(ini_file, CaseSensitiveConfigParser)
+		for section, attr, value in args.attrs:
+			attribute = args.app.get_attr(underscore(attr))
+			self.process(args.app, attribute, section, attr, value, parser)
+		self.log('Rewriting %s' % ini_file)
+		with open(ini_file, 'wb') as f:
+			parser.write(f)
+		AppManager.clear_cache()

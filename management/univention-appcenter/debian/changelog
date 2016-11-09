@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-3) unstable; urgency=medium
+
+  * Bug #42801: Add univention-app dev-set
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Nov 2016 11:54:44 +0100
+
 univention-appcenter (5.0.23-2) unstable; urgency=medium
 
   * Bug #42761: ini documentation
