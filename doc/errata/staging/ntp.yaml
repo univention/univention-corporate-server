@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: ntp
-fix: 
+fix: 1:4.2.6.p5+dfsg-2.63.201611102010
 desc: |
  This update addresses the following issue(s):
  * incorrect handling of crypto NAK packets my result in denial of service
