@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: bind9
-fix: 
+fix: 1:9.8.4.dfsg.P1-6+nmu2.125.201611101921
 desc: |
  This update addresses the following issue(s):
  * remote attackers could cause a denial of service (assertion failure and daemon exit) via malformed options data in an OPT resource record. (CVE-2016-2848)
