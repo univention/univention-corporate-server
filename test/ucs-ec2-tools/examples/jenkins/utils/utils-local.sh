@@ -106,6 +106,9 @@ ACTION="$1"
 shift || exit 1
 
 case "$ACTION" in
+	ucsschool-compress-logs)
+		ucsschool-compress-logs "$@"
+		;;
 	ucsschool-fetch-results)
 		ucsschool-fetch-results "$@"
 		;;
