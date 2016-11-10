@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: bash
-fix: 
+fix: 4.2+dfsg-0.1.51.201611101755
 desc: |
  This update addresses the following issue(s):
  * Specially crafted SHELLOPTS+PS4 environment variables in combination
