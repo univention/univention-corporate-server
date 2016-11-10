@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: qemu
-fix: 
+fix: 1.1.2+dfsg-6.54.201611101925
 desc: |
  This update addresses the following issue(s):
  * The VGA module in QEMU improperly performs bounds checking on banked
