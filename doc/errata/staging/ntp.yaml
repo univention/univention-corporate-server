@@ -6,6 +6,8 @@ src: ntp
 fix: 
 desc: |
  This update addresses the following issue(s):
+ * incorrect handling of crypto NAK packets my result in denial of service
+   (CVE-2016-1547)
  * Change the time of an ntpd client or deny service to an ntpd client by
    forcing it to change from basic client/server mode to interleaved
    symmetric mode (CVE-2016-1548)
@@ -16,6 +18,7 @@ desc: |
    (CVE-2016-2518)
 bug: [40770]
 cve:
+ - CVE-2016-1547
  - CVE-2016-1548
  - CVE-2016-1550
  - CVE-2016-2516
