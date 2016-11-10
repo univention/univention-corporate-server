@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: libxml2
-fix: 
+fix: 2.8.0+dfsg1-7.57.201611102030
 desc: |
  This update addresses the following issue(s):
  * libxml2 in Apple iOS before 10, OS X before 10.12, tvOS before 10, and
