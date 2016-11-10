@@ -1,0 +1,10 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: libdatetime-timezone-perl
+fix: 1:1.20-1+2010k~ucs3.3.22.201611102215
+desc: |
+ This update includes new timezone data. The most notable change is:
+ * New leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52
+bug: [42878]
