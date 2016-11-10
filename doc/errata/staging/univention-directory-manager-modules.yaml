@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3,4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-directory-manager-modules
+fix: 11.0.3-44.1438.201611101635
+desc: |
+ This update addresses the following issue(s):
+ * Searching with an empty value for properties which weren't registered in any
+   mapping lead to broken search filters.
+bug: [42404]
