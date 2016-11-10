@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: squid3
-fix: 
+fix: 3.1.20-2.2.23.201611102049
 desc: |
  This update addresses the following issue(s):
  * http.cc in Squid 3.x before 3.5.15 and 4.x before 4.0.7 proceeds with
