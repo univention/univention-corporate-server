@@ -406,7 +406,11 @@ run_windows_native_client_tests ()
 
 run_tests ()
 {
-	[ ! -e /DONT_START_UCS_TEST ] && LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
+	if [ ! -e /DONT_START_UCS_TEST ] ; then
+		LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
+	else
+		echo "ERROR: file DONT_START_UCS_TEST found - skipping ucs-test as requested!"
+	fi
 }
 
 run_tests_with_parameters() {
@@ -450,6 +454,7 @@ assert_version () {
 	echo "Requested version $requested_version"
 	echo "Current version $version"
 	if [ "$requested_version" != "$version" ]; then
+		echo "ERROR: requested version does not match current version"
 		echo "Creating /DONT_START_UCS_TEST"
 		touch /DONT_START_UCS_TEST
 		exit 1
@@ -458,6 +463,7 @@ assert_version () {
 
 assert_join () {
 	if ! univention-check-join-status; then
+		echo "ERROR: univention-check-join-status failed"
 		echo "Creating /DONT_START_UCS_TEST"
 		touch /DONT_START_UCS_TEST
 		exit 1
