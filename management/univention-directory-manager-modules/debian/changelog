@@ -1,3 +1,11 @@
+univention-directory-manager-modules (12.0.5-3) unstable; urgency=low
+
+  * Bug #42404: fix mapping.mapValue to raise KeyError if the mapping is not
+  	registered. This especially fixes mapRewrite to not create invalid search
+  	filters like "(=)" anymore.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Nov 2016 16:10:14 +0100
+
 univention-directory-manager-modules (12.0.5-2) unstable; urgency=low
 
   * Bug #33211: validate IP addresses in DHCP

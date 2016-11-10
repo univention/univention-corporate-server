@@ -179,7 +179,7 @@ def BooleanUnMap(value):
 	return value
 
 
-class mapping:
+class mapping(object):
 
 	def __init__(self):
 		self._map = {}
@@ -190,53 +190,30 @@ class mapping:
 		self._unmap[unmap_name] = (map_name, unmap_value)
 
 	def unregister(self, map_name):
-		if self._map.has_key(map_name):
-			del(self._map[map_name])
-		else:
-			# univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Trying to remove nonexistent key %s'%map_name)
-			pass
+		self._map.pop(map_name, None)
+		# TODO: has it a reason that we don't remove the value from self._unmap?
 
 	def mapName(self, map_name):
-		if self._map.has_key(map_name):
-			res = self._map[map_name][0]
-		else:
-			res = ''
-		# univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'mapping name %s->%s' % (map_name, res))
-		return res
+		return self._map.get(map_name, [''])[0]
 
 	def unmapName(self, unmap_name):
-		if self._unmap.has_key(unmap_name):
-			res = self._unmap[unmap_name][0]
-		else:
-			res = ''
-		return res
+		return self._unmap.get(unmap_name, [''])[0]
 
 	def mapValue(self, map_name, value):
+		map_value = self._map[map_name][1]
+
 		if not value:
 			return ''
-		else:
-			empty = 1
-			if map_name == 'sambaLogonHours' and len(value) > 0:
-				# can be [0], see Bug #33703
-				empty = 0
-			for v in value:
-				if v:
-					empty = 0
-			if empty:
-				return ''
 
-		if self._map[map_name][1]:
-			res = self._map[map_name][1](value)
-		else:
-			res = value
-		return res
+		if not any(value) and map_name != 'sambaLogonHours':
+			# sambaLogonHours might be [0], see Bug #33703
+			return ''
+
+		return map_value(value) if map_value else value
 
 	def unmapValue(self, unmap_name, value):
-		if self._unmap[unmap_name][1]:
-			res = self._unmap[unmap_name][1](value)
-		else:
-			res = value
-		return res
+		unmap_value = self._unmap[unmap_name][1]
+		return unmap_value(value) if unmap_value else value
 
 
 def mapCmp(mapping, key, old, new):
@@ -308,5 +285,6 @@ def mapRewrite(filter, mapping):
 		v = mapping.mapValue(filter.variable, filter.value)
 	except KeyError:
 		return
-	filter.variable = k
-	filter.value = v
+	if k:
+		filter.variable = k
+		filter.value = v
