@@ -1,3 +1,11 @@
+univention-directory-manager-modules (11.0.3-44) unstable; urgency=medium
+
+  * Bug #42404: fix mapping.mapValue to raise KeyError if the mapping is not
+  	registered. This especially fixes mapRewrite to not create invalid search
+  	filters like "(=)" anymore.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Nov 2016 16:10:14 +0100
+
 univention-directory-manager-modules (11.0.3-43) unstable; urgency=medium
 
   * Bug #42177: fix definition of childmodules, remove unused wizard
