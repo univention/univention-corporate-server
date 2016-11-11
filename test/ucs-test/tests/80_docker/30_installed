@@ -17,11 +17,11 @@ if __name__ == '__main__':
 
 		try:
 			app_docker1 = App(name=get_app_name(), version=get_app_version())
-			app_docker1.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0', Code='D1')
+			app_docker1.set_ini_parameter(DockerImage=get_docker_appbox_image(), Code='D1')
 			app_docker1.add_to_local_appcenter()
 
 			app_docker2 = App(name=get_app_name(), version=get_app_version(), build_package=False)
-			app_docker2.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0', Code='D2')
+			app_docker2.set_ini_parameter(DockerImage=get_docker_appbox_image(), Code='D2')
 			app_docker2.add_to_local_appcenter()
 
 			app_nondocker = App(name=get_app_name(), version=get_app_version(), build_package=False)

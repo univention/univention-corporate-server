@@ -83,6 +83,12 @@ class UCSTest_DockerApp_ModProxyFailed(Exception):
 	pass
 
 
+def get_docker_appbox_image():
+	image_name = 'docker.software-univention.de/ucs-appbox-amd64:4.1-4'
+	print 'Using %s' % image_name
+	return image_name
+
+
 def docker_login(server='docker.software-univention.de'):
 	ret = subprocess.call(['docker', 'login', '-e', 'foo@bar', '-u', 'ucs', '-p', 'readonly', server])
 	if ret != 0:

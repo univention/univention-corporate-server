@@ -1,3 +1,9 @@
+ucs-test (6.0.37-10) unstable; urgency=medium
+
+  * Bug #42817: Switch to 4.1-4 docker appbox image
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Nov 2016 15:25:46 +0100
+
 ucs-test (6.0.37-9) unstable; urgency=medium
 
   * 52_s4connector/159sync_ad_create_non_domain_user: The test case
