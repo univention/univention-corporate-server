@@ -114,6 +114,7 @@
 		<command name="udm/syntax/choices/info" function="syntax_choices_info" />
 		<command name="udm/syntax/choices" function="syntax_choices" />
 		<command name="udm/nav/container/query" function="nav_container_query" />
+		<command name="udm/move/container/query" function="move_container_query" />
 		<command name="udm/nav/object/query" function="nav_object_query" />
 		<command name="udm/object/policies" function="object_policies" />
 		<command name="udm/object/options" function="object_options" />

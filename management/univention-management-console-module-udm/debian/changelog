@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.2-1) unstable; urgency=medium
+
+  * Bug #42924: fix the move to dialog
+
+ -- Florian Best <best@univention.de>  Fri, 11 Nov 2016 14:38:10 +0100
+
 univention-management-console-module-udm (7.0.1-13) unstable; urgency=medium
 
   * Bug #42177: use module's childmodule everywhere to get possible creation

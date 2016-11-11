@@ -931,11 +931,23 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
+	def move_container_query(self, request):
+		return self._nav_container_query(request, self.modules_with_childs, 'one')
+
 	def nav_container_query(self, request):
 		"""Returns a list of LDAP containers located under the given
 		LDAP base (option 'container'). If no base container is
 		specified the LDAP base object is returned."""
 
+		ldap_base = ucr['ldap/base']
+		container = request.options.get('container')
+
+		root_subelements = ldap_base.lower() == container.lower() and request.flavor != 'navigation'
+		scope = 'sub' if root_subelements else 'one'
+		modules = [request.flavor] if root_subelements else self.modules_with_childs
+		return self._nav_container_query(request, modules, scope)
+
+	def _nav_container_query(self, request, modules, scope):
 		ldap_base = ucr['ldap/base']
 		container = request.options.get('container')
 		if not container:
@@ -959,10 +971,6 @@ class Instance(Base, ProgressMixin):
 				'$isSuperordinate$': False,
 			}])
 			return
-
-		root_subelements = ldap_base.lower() == container.lower() and request.flavor != 'navigation'
-		scope = 'sub' if root_subelements else 'one'
-		modules = [request.flavor] if root_subelements else self.modules_with_childs
 
 		def _thread():
 			result = []
