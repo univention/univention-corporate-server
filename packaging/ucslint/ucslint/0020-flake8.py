@@ -65,9 +65,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		re.compile('univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
-	DEFAULT_IGNORE = 'N,E501,W191,E265'
+	DEFAULT_IGNORE = 'N,B,E501,W191,E265,E266'
 	DEFAULT_SELECT = None
 	MAX_LINE_LENGTH = 220
+
+	def __init__(self, *args, **kwargs):
+		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
+		self.show_statistics = kwargs.pop('show_statistics', False)
 
 	def getMsgIds(self):
 		return {
@@ -201,6 +205,81 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0020-N812': [uub.RESULT_STYLE, "lowercase imported as non lowercase"],
 			'0020-N813': [uub.RESULT_STYLE, "camelcase imported as lowercase"],
 			'0020-N814': [uub.RESULT_STYLE, "camelcase imported as constant"],
+
+			'B001': [
+				uub.RESULT_WARN,
+				"Do not use bare `except:`, it also catches unexpected "
+				"events like memory errors, interrupts, system exit, and so on.  "
+				"Prefer `except Exception:`.  If you're sure what you're doing, "
+				"be explicit and write `except BaseException:`.",
+			],
+			'B002': [
+				uub.RESULT_ERROR,
+				" Python does not support the unary prefix increment. Writing "
+				"++n is equivalent to +(+(n)), which equals n. You meant n += 1."
+			],
+			'B003': [
+				uub.RESULT_ERROR,
+				" Assigning to `os.environ` doesn't clear the environment. "
+				"Subprocesses are going to see outdated variables, in disagreement "
+				"with the current process. Use `os.environ.clear()` or the `env=` "
+				"argument to Popen."
+			],
+			'B004': [
+				uub.RESULT_ERROR,
+				" Using `hasattr(x, '__call__')` to test if `x` is callable "
+				"is unreliable. If `x` implements custom `__getattr__` or its "
+				"`__call__` is itself not callable, you might get misleading "
+				"results. Use `callable(x)` for consistent results."
+			],
+			'B005': [
+				uub.RESULT_WARN,
+				"Using .strip() with multi-character strings is misleading "
+				"the reader. It looks like stripping a substring. Move your "
+				"character set to a constant if this is deliberate. Use "
+				".replace() or regular expressions to remove string fragments."
+			],
+			'B301': [
+				uub.RESULT_WARN,
+				"Python 3 does not include `.iter*` methods on dictionaries. "
+				"Remove the `iter` prefix from the method name. For Python 2 "
+				"compatibility, prefer the Python 3 equivalent unless you expect "
+				"the size of the container to be large or unbounded. Then use "
+				"`six.iter*` or `future.utils.iter*`."
+			],
+			'B302': [
+				uub.RESULT_WARN,
+				"Python 3 does not include `.view*` methods on dictionaries. "
+				"Remove the `view` prefix from the method name. For Python 2 "
+				"compatibility, prefer the Python 3 equivalent unless you expect "
+				"the size of the container to be large or unbounded. Then use "
+				"`six.view*` or `future.utils.view*`."
+			],
+			'B303': [
+				uub.RESULT_WARN,
+				"`__metaclass__` does nothing on Python 3. Use "
+				"`class MyClass(BaseClass, metaclass=...)`. For Python 2 "
+				"compatibility, use `six.add_metaclass`."
+			],
+			'B304': [uub.RESULT_WARN, "`sys.maxint` is not a thing on Python 3. Use `sys.maxsize`."],
+			'B305': [
+				uub.RESULT_WARN,
+				"`.next()` is not a thing on Python 3. Use the `next()` "
+				"builtin. For Python 2 compatibility, use `six.next()`."
+			],
+			'B306': [
+				uub.RESULT_WARN,
+				"`BaseException.message` has been deprecated as of Python "
+				"2.6 and is removed in Python 3. Use `str(e)` to access the "
+				"user-readable message. Use `e.args` to access arguments passed "
+				"to the exception."
+			],
+			'B901': [
+				uub.RESULT_WARN,
+				"Using `yield` together with `return x`. Use native "
+				"`async def` coroutines or put a `# noqa` comment on this "
+				"line if this was intentional."
+			],
 		}
 
 	def postinit(self, path):
@@ -218,6 +297,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				cmd.extend(['--select', self.DEFAULT_SELECT])
 			cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
 			cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
+			if self.show_statistics:
+				cmd.append('--statistics')
 			if self.debuglevel > 0:
 				cmd.append('--show-source')
 			cmd.append('--')
@@ -243,6 +324,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def _iter_pathes(self, path):
 		files = list(self.find_python_files(path))
+		if self.DEFAULT_SELECT or self.show_statistics:
+			return {
+				self.DEFAULT_IGNORE: files,
+			}.iteritems()
 
 		ignored = {}
 		for path in files:
@@ -283,7 +368,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def main(cls):
 		parser = ArgumentParser()
 		parser.add_argument('-d', '--debug', default=0, type=int, help='debuglevel (to show also source lines)')
+		parser.add_argument('--statistics', default=False, action='store_true', help='Show a summary at the end.')
 		parser.add_argument('--fix', default=False, action='store_true')
+		parser.add_argument('--check', default=False, action='store_true')
 		parser.add_argument('--path', default='.')
 		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default: %(default)s')
 		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default: %(default)s')
@@ -292,12 +379,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		cls.DEFAULT_IGNORE = args.ignore
 		cls.DEFAULT_SELECT = args.select
 		cls.MAX_LINE_LENGTH = args.max_line_length
-		self = cls()
+		self = cls(show_statistics=args.statistics)
 		self.setdebug(args.debug)
 		self.postinit(args.path)
 		if args.fix:
 			self.fix(args.path, *args.arguments)
-		self.check(args.path)
+		if args.check or not args.fix:
+			self.check(args.path)
 		msgids = self.getMsgIds()
 		for msg in self.result():
 			print uub.RESULT_INT2STR.get(msgids.get(msg.getId(), [None])[0]) or 'FIXME', str(msg)
