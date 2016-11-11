@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-50) unstable; urgency=medium
+
+  * Bug #42357: The maximum request size can now be configured via the UCR variable
+    umc/http/max_request_body_size.
+
+ -- Florian Best <best@univention.de>  Fri, 11 Nov 2016 14:08:43 +0100
+
 univention-management-console-frontend (5.0.63-49) unstable; urgency=medium
 
   * Bug #42163: A typo has been corrected.

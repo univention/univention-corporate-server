@@ -1403,6 +1403,7 @@ def run_cherrypy(options):
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
 		'server.request_queue_size': int(ucr.get('umc/http/requestqueuesize', 100)),
 		'server.thread_pool': int(ucr.get('umc/http/maxthreads', 35)),
+		'server.max_request_body_size': int(ucr.get('umc/http/max_request_body_size', 104857600)),
 		'response.timeout': _session_timeout,
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
