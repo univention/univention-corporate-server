@@ -8,6 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Since UCS 4.0-2 errata 245 an LDAP connection to the DC Master is done on every
    successfull login attempt. This connection is now done to to local LDAP server.
- * The maximum request size can now be configured via the UCR variable
-   umc/http/max_request_body_size.
-bug: [42310, 42357]
+bug: [42310]

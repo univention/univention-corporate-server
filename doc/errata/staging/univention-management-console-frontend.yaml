@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3,4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-management-console-frontend
+fix: 5.0.63-50.1243.201611111410
+desc: |
+ This update addresses the following issue(s):
+ * The maximum request size can now be configured via the UCR variable
+   umc/http/max_request_body_size.
+bug: [42357]
