@@ -1,3 +1,10 @@
+univention-management-console (9.0.13-1) unstable; urgency=medium
+
+  * Bug #42357: The maximum request size can now be configured via the
+    UCR variable umc/http/max_request_body_size.
+
+ -- Florian Best <best@univention.de>  Fri, 11 Nov 2016 14:12:38 +0100
+
 univention-management-console (9.0.12-25) unstable; urgency=medium
 
   * Bug #42310: don't connect to DC Master ldap on every UMC login
