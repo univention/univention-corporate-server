@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-17) unstable; urgency=low
+
+  * Bug #41055: allow email addresses as sasl_username, escape LDAP filter
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 Nov 2016 14:56:11 +0100
+
 univention-mail-postfix (10.0.0-16) unstable; urgency=low
 
   * add UCVR mail/postfix/myorigin to configure myorigin option (Bug #32572)
