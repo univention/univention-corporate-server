@@ -48,6 +48,8 @@ define([
 		umcpCommand: null,
 		moduleFlavor: null,
 
+		command: 'udm/nav/container/query',
+
 		root: null,
 
 		constructor: function(args) {
@@ -55,7 +57,7 @@ define([
 		},
 
 		getRoot: function(onItem) {
-			this.umcpCommand('udm/nav/container/query').then(lang.hitch(this, function(data) {
+			this.umcpCommand(this.command).then(lang.hitch(this, function(data) {
 				var results = data.result instanceof Array ? data.result : [];
 				if (results.length) {
 					this.root = results[0];
@@ -80,7 +82,7 @@ define([
 		},
 
 		getChildren: function(parentItem, onComplete) {
-			this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(lang.hitch(this, function(data) {
+			this.umcpCommand(this.command, { container: parentItem.id }).then(lang.hitch(this, function(data) {
 				// sort items alphabetically
 				var results = data.result instanceof Array ? data.result : [];
 				results = array.map(results, lang.hitch(this, function(obj) {
