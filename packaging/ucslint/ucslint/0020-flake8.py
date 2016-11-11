@@ -206,40 +206,40 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0020-N813': [uub.RESULT_STYLE, "camelcase imported as lowercase"],
 			'0020-N814': [uub.RESULT_STYLE, "camelcase imported as constant"],
 
-			'B001': [
+			'0020-B001': [
 				uub.RESULT_WARN,
 				"Do not use bare `except:`, it also catches unexpected "
 				"events like memory errors, interrupts, system exit, and so on.  "
 				"Prefer `except Exception:`.  If you're sure what you're doing, "
 				"be explicit and write `except BaseException:`.",
 			],
-			'B002': [
+			'0020-B002': [
 				uub.RESULT_ERROR,
 				" Python does not support the unary prefix increment. Writing "
 				"++n is equivalent to +(+(n)), which equals n. You meant n += 1."
 			],
-			'B003': [
+			'0020-B003': [
 				uub.RESULT_ERROR,
 				" Assigning to `os.environ` doesn't clear the environment. "
 				"Subprocesses are going to see outdated variables, in disagreement "
 				"with the current process. Use `os.environ.clear()` or the `env=` "
 				"argument to Popen."
 			],
-			'B004': [
+			'0020-B004': [
 				uub.RESULT_ERROR,
 				" Using `hasattr(x, '__call__')` to test if `x` is callable "
 				"is unreliable. If `x` implements custom `__getattr__` or its "
 				"`__call__` is itself not callable, you might get misleading "
 				"results. Use `callable(x)` for consistent results."
 			],
-			'B005': [
+			'0020-B005': [
 				uub.RESULT_WARN,
 				"Using .strip() with multi-character strings is misleading "
 				"the reader. It looks like stripping a substring. Move your "
 				"character set to a constant if this is deliberate. Use "
 				".replace() or regular expressions to remove string fragments."
 			],
-			'B301': [
+			'0020-B301': [
 				uub.RESULT_WARN,
 				"Python 3 does not include `.iter*` methods on dictionaries. "
 				"Remove the `iter` prefix from the method name. For Python 2 "
@@ -247,7 +247,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				"the size of the container to be large or unbounded. Then use "
 				"`six.iter*` or `future.utils.iter*`."
 			],
-			'B302': [
+			'0020-B302': [
 				uub.RESULT_WARN,
 				"Python 3 does not include `.view*` methods on dictionaries. "
 				"Remove the `view` prefix from the method name. For Python 2 "
@@ -255,26 +255,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				"the size of the container to be large or unbounded. Then use "
 				"`six.view*` or `future.utils.view*`."
 			],
-			'B303': [
+			'0020-B303': [
 				uub.RESULT_WARN,
 				"`__metaclass__` does nothing on Python 3. Use "
 				"`class MyClass(BaseClass, metaclass=...)`. For Python 2 "
 				"compatibility, use `six.add_metaclass`."
 			],
-			'B304': [uub.RESULT_WARN, "`sys.maxint` is not a thing on Python 3. Use `sys.maxsize`."],
-			'B305': [
+			'0020-B304': [uub.RESULT_WARN, "`sys.maxint` is not a thing on Python 3. Use `sys.maxsize`."],
+			'0020-B305': [
 				uub.RESULT_WARN,
 				"`.next()` is not a thing on Python 3. Use the `next()` "
 				"builtin. For Python 2 compatibility, use `six.next()`."
 			],
-			'B306': [
+			'0020-B306': [
 				uub.RESULT_WARN,
 				"`BaseException.message` has been deprecated as of Python "
 				"2.6 and is removed in Python 3. Use `str(e)` to access the "
 				"user-readable message. Use `e.args` to access arguments passed "
 				"to the exception."
 			],
-			'B901': [
+			'0020-B901': [
 				uub.RESULT_WARN,
 				"Using `yield` together with `return x`. Use native "
 				"`async def` coroutines or put a `# noqa` comment on this "
