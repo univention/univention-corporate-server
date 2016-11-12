@@ -398,7 +398,7 @@ class App(object):
 		name: The displayed name of the App.
 		version: Version of the App. Needs to be unique together with
 			with the *id*. Versions are compared against each other
-			using the Python's LooseVersion (distutils).
+			using Python's LooseVersion (distutils).
 		logo: The file name of the logo of the App. It is used in the
 			App Center overview when all Apps are shown in a
 			gallery. As the gallery items are squared, the logo
@@ -624,8 +624,8 @@ class App(object):
 		app_report_object_attribute: Part of the App reporting. If
 			specified, not 1 is counted per object, but the number
 			of values in this *app_report_object_attribute*.
-			Useful for *app_report_attribute_type* = groups/group
-			and *app_report_object_attribute* = uniqueMember.
+			Useful for *app_report_attribute_type = groups/group*
+			and *app_report_object_attribute = uniqueMember*.
 		app_report_attribute_type: Same as *app_report_object_type*
 			but regarding the list of DNs in
 			*app_report_object_attribute*.
@@ -651,7 +651,7 @@ class App(object):
 			created in LDAP as the docker container.
 		docker_script_init: The entrypoint for the Docker App. An
 			empty value will use the container's entrypoint, but
-			this needs an exlicit "DockerScriptInit=".
+			this needs an explicit *docker_script_init = *.
 		docker_script_setup: Path to the setup script in the container
 			run after the start of the container. If the App comes
 			with a setup script living on the App Center server,
