@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-5.232.201611092305
+fix: 5.0.23-6.233.201611130055
 desc: |
  This update addresses the following issue(s):
  * Added the command "univention-app dev-set" to support development tools.
