@@ -38,6 +38,7 @@ import subprocess
 import urllib2
 import shutil
 from argparse import Action
+from tempfile import NamedTemporaryFile
 from glob import glob
 from json import dumps
 from datetime import date
@@ -672,9 +673,16 @@ class DevSet(UniventionAppAction):
 			parser.set(section, attr, value)
 
 	def set_file_content(self, app, attr, value):
-		self.log('Writing %s' % attr)
-		with open(app.get_cache_file(attr), 'wb') as fd:
-			fd.write(value)
+		if value:
+			self.log('Writing %s' % attr)
+			with open(app.get_cache_file(attr), 'wb') as fd:
+				fd.write(value)
+		else:
+			self.log('Removing %s' % attr)
+			try:
+				os.unlink(app.get_cache_file(attr))
+			except EnvironmentError:
+				pass
 
 	def process(self, app, attribute, section, attr, value, parser):
 		if isinstance(attribute, AppFileAttribute):
@@ -696,6 +704,12 @@ class DevSet(UniventionAppAction):
 			attribute = args.app.get_attr(underscore(attr))
 			self.process(args.app, attribute, section, attr, value, parser)
 		self.log('Rewriting %s' % ini_file)
-		with open(ini_file, 'wb') as f:
-			parser.write(f)
-		AppManager.clear_cache()
+		with NamedTemporaryFile('w+b') as tmp_ini_file:
+			parser.write(tmp_ini_file)
+			tmp_ini_file.flush()
+			for locale in ['en', 'de']:
+				new_app = App.from_ini(tmp_ini_file.name, locale=locale)
+				if new_app is None:
+					raise Abort('ini file would be malformed. Not saving attributes!')
+			shutil.copy2(tmp_ini_file.name, ini_file)
+			AppManager.clear_cache()

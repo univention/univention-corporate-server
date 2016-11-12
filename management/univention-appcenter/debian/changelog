@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-6) unstable; urgency=medium
+
+  * Bug #42801: Support removing README files. Not saving malformed ini
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 12 Nov 2016 23:55:40 +0100
+
 univention-appcenter (5.0.23-5) unstable; urgency=medium
 
   * Bug #42801: Support removing options
