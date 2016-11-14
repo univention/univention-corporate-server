@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-squid
+fix: 8.0.28-21.926.201611091130
+desc: |
+ This update addresses the following issue(s):
+ * UCR variables to configure the cache settings have been added
+   (squid/cache/format, squid/cache/directory, squid/cache/size,
+   squid/cache/l1_size, squid/cache/l2_size).
+bug: [37381]
