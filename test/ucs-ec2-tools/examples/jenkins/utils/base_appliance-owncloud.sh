@@ -296,10 +296,17 @@ VERSION="1"
 
 APP="$app"
 
+docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
+univention-app register \${APP} --undo-it
+
 joinscript_init
 joinscript_save_current_version
 python -c "from univention.appcenter.app import AppManager
 from univention.appcenter.actions import get_action
+from univention.appcenter.log import log_to_logfile, log_to_stream
+
+log_to_stream()
+
 app=AppManager.find('\$APP')
 app.docker_image='${app}-app'
 
@@ -951,6 +958,20 @@ udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcPro
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
 
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings <<__EOF__
+#!/bin/bash
+eval "\$(ucr shell)"
+
+APP=$app
+
+# update host certificate in container
+cp /etc/univention/ssl/ucsCA/CAcert.pem /var/lib/docker/overlay/\$(ucr get appcenter/apps/\$APP/container)/merged/etc/univention/ssl/ucsCA
+
+# Fix container nameserver entries
+univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
+
 	if [ "$app" = "zarafa" ]; then
 		sed -i 's|ucr set zarafa/webapp/config/DEFAULT_SERVER?|ucr set zarafa/webapp/config/DEFAULT_SERVER=|' /usr/lib/univention-install/71zarafa4ucs-webapp.inst
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server <<__EOF__
@@ -987,6 +1008,29 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
 	fi
 
+	if [ "$app" = "owncloud91" ]; then
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
+#!/bin/bash
+
+APP=owncloud91
+
+# Fix trusted domains value
+ips="\$(python  -c "
+from univention.config_registry.interfaces import Interfaces
+for name, iface in Interfaces().all_interfaces: print iface.get('address')")"
+
+HOSTS="\$(ucr get hostname).\$(ucr get domainname)"
+
+for ip in \$ips; do
+	HOSTS="\${HOSTS}\n\${ip}"
+done
+
+univention-app shell "\$APP" sh -c "printf '\${HOSTS}' > /tmp/trusted_domain_hosts"
+univention-app shell "\$APP" /usr/sbin/fix_owncloud_trusted_domains
+
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
+	fi
 }
 
 install_appreport ()
