@@ -51,7 +51,12 @@ fi
 ucr set squid/transparentproxy?false \
 	squid/cache?yes \
 	squid/debug/level?ALL,1 \
-	squid/forwardedfor?off
+	squid/forwardedfor?off \
+	squid/cache/format?ufs \
+	squid/cache/directory?/var/spool/squid3 \
+	squid/cache/size?512 \
+	squid/cache/l1_size?16 \
+	squid/cache/l2_size?256
 
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start

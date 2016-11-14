@@ -37,6 +37,7 @@ Variables: squid/append_domain
 Variables: squid/auth/allowed_groups
 Variables: squid/forwardedfor
 Variables: squid/acl/.*
+Variables: squid/cache.*
 
 Type: file
 File: etc/squid3/allowed_ldap_groups.conf
