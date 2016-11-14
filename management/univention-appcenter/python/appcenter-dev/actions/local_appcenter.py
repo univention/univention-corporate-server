@@ -48,7 +48,7 @@ from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
 
-from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, AppDockerScriptAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
+from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase
 from univention.appcenter.ucr import ucr_save, ucr_get
@@ -691,10 +691,6 @@ class DevSet(UniventionAppAction):
 				section = 'EN'
 			attr = '%s_%s' % (attr, section)
 			self.set_file_content(app, attr.upper(), value)
-		elif isinstance(attribute, AppDockerScriptAttribute):
-			if attr.startswith('DockerScript'):
-				attr = attr[12:]
-			self.set_file_content(app, underscore(attr), value)
 		else:
 			self.set_ini_value(section, attr, value, parser)
 

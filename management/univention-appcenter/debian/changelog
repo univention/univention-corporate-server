@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-8) unstable; urgency=medium
+
+  * Bug #42801: Fix setting docker script path
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Nov 2016 00:52:32 +0100
+
 univention-appcenter (5.0.23-7) unstable; urgency=medium
 
   * Bug #42801: Allow meta file modifications
