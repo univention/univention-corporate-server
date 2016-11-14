@@ -931,9 +931,22 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
+	@sanitize(
+		container=StringSanitizer(default='', allow_none=True)
+	)
 	def move_container_query(self, request):
-		return self._nav_container_query(request, self.modules_with_childs, 'one')
+		scope = 'one'
+		modules = self.modules_with_childs
+		container = request.options.get('container')
+		if not container:
+			scope = 'base'
 
+		thread = notifier.threads.Simple('MoveContainerQuery', notifier.Callback(self._container_query, request, container, modules, scope), notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
+
+	@sanitize(
+		container=StringSanitizer(allow_none=True)
+	)
 	def nav_container_query(self, request):
 		"""Returns a list of LDAP containers located under the given
 		LDAP base (option 'container'). If no base container is
@@ -942,70 +955,73 @@ class Instance(Base, ProgressMixin):
 		ldap_base = ucr['ldap/base']
 		container = request.options.get('container')
 
-		root_subelements = ldap_base.lower() == container.lower() and request.flavor != 'navigation'
-		scope = 'sub' if root_subelements else 'one'
-		modules = [request.flavor] if root_subelements else self.modules_with_childs
-		return self._nav_container_query(request, modules, scope)
-
-	def _nav_container_query(self, request, modules, scope):
-		ldap_base = ucr['ldap/base']
-		container = request.options.get('container')
+		modules = self.modules_with_childs
+		scope = 'one'
 		if not container:
-			root_defaults = {
-				'navigation': {
-					'objectType': 'container/dc',
-					'label': ldap_dn2path(ldap_base),
-					'icon': 'udm-container-dc',
-					'$operations$': ['edit'],
+			# get the tree root == the ldap base
+			scope = 'base'
+		elif request.flavor != 'navigation' and container and ldap_base.lower() == container.lower():
+			# this is the tree root of DNS / DHCP, show all zones / services
+			scope = 'sub'
+			modules = [request.flavor]
+
+		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(self._container_query, request, container, modules, scope), notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
+
+	def _container_query(self, request, container, modules, scope):
+		"""Get a list of containers or child objects of the specified container."""
+
+		if not container:
+			container = ucr['ldap/base']
+			defaults = {}
+			if request.flavor in ('dns/dns', 'dhcp/dhcp'):
+				defaults = {
+					'label': UDM_Module(request.flavor).title,
+					'icon': 'udm-%s' % (request.flavor.replace('/', '-'),),
+					'$operations$': ['search', ],  # disallow edit
 				}
-			}.get(request.flavor, {})
-			self.finished(request.id, [{
-				'id': ldap_base,
-				'label': root_defaults.get('label') or UDM_Module(request.flavor).title,
-				'icon': root_defaults.get('icon', 'udm-%s' % (request.flavor.replace('/', '-'),)),
-				'path': ldap_dn2path(ldap_base),
+			return [dict({
+				'id': container,
+				'label': ldap_dn2path(container),
+				'icon': 'udm-container-dc',
+				'path': ldap_dn2path(container),
 				'objectType': 'container/dc',
-				'$operations$': root_defaults.get('$operations$', []),
+				'$operations$': UDM_Module('container/dc').operations,
 				'$flags$': [],
 				'$childs$': True,
 				'$isSuperordinate$': False,
-			}])
-			return
+			}, **defaults)]
 
-		def _thread():
-			result = []
-			for xmodule in modules:
-				xmodule = UDM_Module(xmodule)
-				superordinate = None
-				if xmodule.superordinate_names:
-					for module_superordinate in xmodule.superordinate_names:
-						try:
-							superordinate = UDM_Module(module_superordinate).get(container)
-						except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
-							continue
-					if superordinate is None:
-						continue  # superordinate object could not be load -> ignore module
-				try:
-					for item in xmodule.search(container, scope=scope, superordinate=superordinate):
-						module = UDM_Module(item.module)
-						result.append({
-							'id': item.dn,
-							'label': item[module.identifies],
-							'icon': 'udm-%s' % (module.name.replace('/', '-')),
-							'path': ldap_dn2path(item.dn),
-							'objectType': module.name,
-							'$operations$': module.operations,
-							'$flags$': item.oldattr.get('univentionObjectFlag', []),
-							'$childs$': module.childs,
-							'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
-						})
-				except UDM_Error as exc:
-					raise UMC_Error(str(exc))
+		result = []
+		for xmodule in modules:
+			xmodule = UDM_Module(xmodule)
+			superordinate = None
+			if xmodule.superordinate_names:
+				for module_superordinate in xmodule.superordinate_names:
+					try:
+						superordinate = UDM_Module(module_superordinate).get(container)
+					except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
+						continue
+				if superordinate is None:
+					continue  # superordinate object could not be load -> ignore module
+			try:
+				for item in xmodule.search(container, scope=scope, superordinate=superordinate):
+					module = UDM_Module(item.module)
+					result.append({
+						'id': item.dn,
+						'label': item[module.identifies],
+						'icon': 'udm-%s' % (module.name.replace('/', '-')),
+						'path': ldap_dn2path(item.dn),
+						'objectType': module.name,
+						'$operations$': module.operations,
+						'$flags$': item.oldattr.get('univentionObjectFlag', []),
+						'$childs$': module.childs,
+						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
+					})
+			except UDM_Error as exc:
+				raise UMC_Error(str(exc))
 
-			return result
-
-		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread), notifier.Callback(self.thread_finished_callback, request))
-		thread.run()
+		return result
 
 	@sanitize(
 		container=StringSanitizer(required=True)

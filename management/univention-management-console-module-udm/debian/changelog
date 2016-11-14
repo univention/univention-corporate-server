@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-33) unstable; urgency=medium
+
+  * Bug #42924: make logic for move container selection more obvious
+
+ -- Florian Best <best@univention.de>  Mon, 14 Nov 2016 13:40:52 +0100
+
 univention-management-console-module-udm (6.0.11-32) unstable; urgency=medium
 
   * Bug #42924: fix the move to dialog

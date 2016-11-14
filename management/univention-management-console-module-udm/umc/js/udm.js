@@ -1155,7 +1155,6 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			var tree = new Tree({
-				showRoot: false,
 				model: model,
 				persist: false,
 				style: 'width: 300px; height: 350px',
