@@ -165,3 +165,33 @@ Description[de]=Diese Variable definiert eine benutzerdefinierte Regel für den 
 Description[en]=This variable defines a user-defined rule for proxy access, e.g. via user-agent, port, or destination domain. This is evaluated with precedence over the normal rules.
 Type=str
 Categories=service-webproxy
+
+[squid/cache/format]
+Description[de]=Storage Backend für den Squid Proxy.
+Description[en]=The storage system to use. Only "ufs" is currently supported. 
+Type=str
+Categories=service-webproxy
+
+[squid/cache/directory]
+Description[de]=Cache-Verzeichnis für Swap Dateien.
+Description[en]=Directory where cache swap files will be stored.  
+Type=str
+Categories=service-webproxy
+
+[squid/cache/size]
+Description[de]=Maximal Größe der Daten im Cache.
+Description[en]=The amount of disk space (MB) to use in the cache directory.  
+Type=int
+Categories=service-webproxy
+
+[squid/cache/l1_size]
+Description[de]=Anzahl der first-level Unterverzeichnisse.
+Description[en]=The number of first-level subdirectories which will be created under the cache directory. 
+Type=int
+Categories=service-webproxy
+
+[squid/cache/l2_size]
+Description[de]=Anzahl der second-level Unterverzeichnisse.
+Description[en]=The number of second-level subdirectories which will be created under each first-level directory. 
+Type=int
+Categories=service-webproxy

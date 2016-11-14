@@ -1,3 +1,9 @@
+univention-squid (9.0.2-3) unstable; urgency=low
+
+  * Added cache UCR vars (Bug #37381)
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Nov 2016 11:11:43 +0100
+
 univention-squid (9.0.2-2) unstable; urgency=low
 
   * Disallow access with basic auth if user account is disabled for posix or
