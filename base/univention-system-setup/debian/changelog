@@ -1,3 +1,10 @@
+univention-system-setup (9.0.5-5) unstable; urgency=medium
+
+  * Bug #42944: Adjust net_apply to update DNS settings correctly
+    when using app appliances
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 14 Nov 2016 12:11:10 +0100
+
 univention-system-setup (9.0.5-4) unstable; urgency=medium
 
   * Bug #42553: revert previous change. Adapt JS code to fix basesystem
