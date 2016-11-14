@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-7) unstable; urgency=medium
+
+  * Bug #42801: Allow meta file modifications
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Nov 2016 01:08:57 +0100
+
 univention-appcenter (5.0.23-6) unstable; urgency=medium
 
   * Bug #42801: Support removing README files. Not saving malformed ini

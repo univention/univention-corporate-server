@@ -50,7 +50,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, AppDockerScriptAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -644,6 +644,7 @@ class DevSet(UniventionAppAction):
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be altered')
+		parser.add_argument('--meta', action='store_true', help='Whether to change the .meta file instead of the .ini file')
 		parser.add_argument('attrs', action=StoreAttrActions, metavar='ATTR=VALUE', nargs='+', help='The attribute that shall be altered')
 
 	def set_ini_value(self, section, attr, value, parser):
@@ -691,25 +692,29 @@ class DevSet(UniventionAppAction):
 			attr = '%s_%s' % (attr, section)
 			self.set_file_content(app, attr.upper(), value)
 		elif isinstance(attribute, AppDockerScriptAttribute):
-			if attr.startswith('docker_script_'):
-				attr = attr[14:]
-			self.set_file_content(app, attr, value)
+			if attr.startswith('DockerScript'):
+				attr = attr[12:]
+			self.set_file_content(app, underscore(attr), value)
 		else:
 			self.set_ini_value(section, attr, value, parser)
 
 	def main(self, args):
-		ini_file = args.app.get_ini_file()
+		if args.meta:
+			ini_file = args.app.get_cache_file('meta')
+		else:
+			ini_file = args.app.get_ini_file()
 		parser = _read_ini_file(ini_file, CaseSensitiveConfigParser)
 		for section, attr, value in args.attrs:
 			attribute = args.app.get_attr(underscore(attr))
-			self.process(args.app, attribute, section, attr, value, parser)
+			self.process(args.app, attribute, section, camelcase(attr), value, parser)
 		self.log('Rewriting %s' % ini_file)
 		with NamedTemporaryFile('w+b') as tmp_ini_file:
 			parser.write(tmp_ini_file)
 			tmp_ini_file.flush()
-			for locale in ['en', 'de']:
-				new_app = App.from_ini(tmp_ini_file.name, locale=locale)
-				if new_app is None:
-					raise Abort('ini file would be malformed. Not saving attributes!')
+			if not args.meta:
+				for locale in ['en', 'de']:
+					new_app = App.from_ini(tmp_ini_file.name, locale=locale)
+					if new_app is None:
+						raise Abort('ini file would be malformed. Not saving attributes!')
 			shutil.copy2(tmp_ini_file.name, ini_file)
 			AppManager.clear_cache()
