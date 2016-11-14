@@ -1131,6 +1131,7 @@ class simpleComputer(simpleLdap):
 				self.info['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def getMachineSid(self, lo, position, uidNum, rid=None):
+		# if rid is given, use it regardless of s4 connector 
 		if rid:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			domainsid = searchResult[0][1]['sambaSID'][0]
@@ -1138,14 +1139,18 @@ class simpleComputer(simpleLdap):
 			univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			return sid
 		else:
-			num = uidNum
-			machineSid = ""
-			while not machineSid or machineSid == 'None':
-				try:
-					machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
-				except univention.admin.uexceptions.noLock:
-					num = str(int(num) + 1)
-			return machineSid
+			# if no rid is given, create a domain sid or local sid if connector is present
+			if self.s4connector_present:
+				return 'S-1-4-%s' % uidNum
+			else:
+				num = uidNum
+				machineSid = ""
+				while not machineSid or machineSid == 'None':
+					try:
+						machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
+					except univention.admin.uexceptions.noLock:
+						num = str(int(num) + 1)
+				return machineSid
 
 	# HELPER
 	def __ip_from_ptr(self, zoneName, relativeDomainName):

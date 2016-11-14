@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.5-4) unstable; urgency=low
+
+  * Bug #36570: allow RID in create/modify for computer objects even
+    if connector is present
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Nov 2016 13:52:44 +0100
+
 univention-directory-manager-modules (12.0.5-3) unstable; urgency=low
 
   * Bug #42404: fix mapping.mapValue to raise KeyError if the mapping is not
