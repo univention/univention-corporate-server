@@ -288,6 +288,18 @@ __EOF__
 		patch -p0 < /root/provide_joinpwdfile.patch
 		rm /root/provide_joinpwdfile.patch
 
+		# clear old app joinscript
+		cat >/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app_joinscript <<__EOF__
+#!/bin/bash
+APP=${app}
+
+[ -e /usr/lib/univention-install/50\${APP}.inst ] && rm /usr/lib/univention-install/50\${APP}.inst
+
+exit 0
+__EOF__
+		chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app_joinscript
+
+		# reinstall the app
 		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
 #!/bin/bash
 . /usr/share/univention-join/joinscripthelper.lib
