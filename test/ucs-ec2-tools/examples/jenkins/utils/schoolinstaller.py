@@ -46,31 +46,42 @@ ucr = ConfigRegistry()
 ucr.load()
 
 parser = OptionParser()
-parser.add_option('-H', '--host', dest='host', default='localhost',
+parser.add_option(
+	'-H', '--host', dest='host', default='localhost',
 	help='host to connect to', metavar='HOST')
-parser.add_option('-u', '--user', dest='username',
+parser.add_option(
+	'-u', '--user', dest='username',
 	help='username', metavar='UID', default='Administrator')
-parser.add_option('-p', '--password', dest='password',
+parser.add_option(
+	'-p', '--password', dest='password',
 	help='password', metavar='PASSWORD')
-parser.add_option('-o', '--ou', dest='ou',
+parser.add_option(
+	'-o', '--ou', dest='ou',
 	help='ou name of the school', metavar='OU')
-parser.add_option('-S', '--single-server', dest='setup',
+parser.add_option(
+	'-S', '--single-server', dest='setup',
 	action='store_const', const='singlemaster',
 	help='install a single server setup on a master')
-parser.add_option('-M', '--multi-server', dest='setup',
+parser.add_option(
+	'-M', '--multi-server', dest='setup',
 	action='store_const', const='multiserver',
 	help='install a multi server setup')
-parser.add_option('-E', '--educational-server-name', dest='name_edu_server',
+parser.add_option(
+	'-E', '--educational-server-name', dest='name_edu_server',
 	help='name of the educational server', metavar='NAME_EDU_SLAVE')
-parser.add_option('-e', '--educational-server', dest='server_type',
+parser.add_option(
+	'-e', '--educational-server', dest='server_type',
 	action='store_const', const='educational',
 	help='install a dc slave in educational network (DEFAULT)')
-parser.add_option('-a', '--administrative-server', dest='server_type',
+parser.add_option(
+	'-a', '--administrative-server', dest='server_type',
 	action='store_const', const='administrative',
 	help='install a dc slave in administrative network')
-parser.add_option('-m', '--master-host', dest='master', default=ucr['ldap/master'],
+parser.add_option(
+	'-m', '--master-host', dest='master', default=ucr['ldap/master'],
 	help='on a slave the master host needs to be specified', metavar='HOST')
-parser.add_option('-s', '--samba-version', dest='samba', default='4',
+parser.add_option(
+	'-s', '--samba-version', dest='samba', default='4',
 	help='the version of samba, either 3 or 4', metavar='HOST')
 
 (options, args) = parser.parse_args()
@@ -124,6 +135,7 @@ if not result['success']:
 print '=== INSTALLATION STARTED ==='
 status = {'finished': False}
 failcount = 0
+last_message = None
 while not status['finished']:
 	if failcount >= 1200:
 		print 'ERROR: %d failed attempts - comitting suicide' % (failcount, )
@@ -135,7 +147,12 @@ while not status['finished']:
 		failcount += 1
 		print 'TRACEBACK %d in connection.request("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),)
 		time.sleep(1)
-	print '%(component)s - %(info)s' % status
+	message = '%(component)s - %(info)s' % status
+	if last_message != message:
+		last_message = message
+		print message
+	else:
+		print '.',
 
 if len(status['errors']) > 0:
 	print 'ERROR: installation failed!'
