@@ -3,8 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-system-setup
-fix: 9.0.5-5.998.201611141215
+fix: 9.0.5-6.999.201611151624
 desc: |
  This update addresses the following issue(s):
  * DNS settings are updated correctly when using app appliances
+ * The screensaver is now deactivated while configuring the system
 bug: [42944]
