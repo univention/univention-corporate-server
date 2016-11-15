@@ -127,7 +127,7 @@ if options.name_edu_server:
 	params['nameEduServer'] = options.name_edu_server
 
 result = connection.request('schoolinstaller/install', params)
-if not result['success']:
+if result and not result.get('success', True):  # backwards compatibility
 	print 'ERROR: Failed to run installer!'
 	print 'output: %s' % result
 	sys.exit(1)
