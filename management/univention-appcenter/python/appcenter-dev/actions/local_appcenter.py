@@ -713,4 +713,5 @@ class DevSet(UniventionAppAction):
 					if new_app is None:
 						raise Abort('ini file would be malformed. Not saving attributes!')
 			shutil.copy2(tmp_ini_file.name, ini_file)
+			os.chmod(ini_file, 0o644)
 			AppManager.clear_cache()

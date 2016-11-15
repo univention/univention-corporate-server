@@ -41,7 +41,7 @@ import urllib2
 import urllib
 from functools import wraps
 
-from univention.appcenter import AppManager
+from univention.appcenter.app import AppManager
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error
 from univention.appcenter.ucr import ucr_get

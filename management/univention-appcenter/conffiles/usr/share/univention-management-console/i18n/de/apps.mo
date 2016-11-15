@@ -20,7 +20,7 @@ entry = POEntry(
 )
 po.append(entry)
 try:
-	from univention.appcenter import get_action
+	from univention.appcenter.actions import get_action
 	from univention.appcenter.app import AppManager
 	apps = AppManager.get_all_locally_installed_apps()
 except ImportError:

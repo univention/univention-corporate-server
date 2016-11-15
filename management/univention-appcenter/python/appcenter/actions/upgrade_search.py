@@ -47,7 +47,7 @@ class UpgradeSearch(UniventionAppAction):
 		parser.add_argument('--do-not-update', action='store_false', dest='update', help='Do not download new ini files from the App Center server')
 
 	def main(self, args):
-		from univention.appcenter import get_action
+		from univention.appcenter.actions import get_action
 		if args.update:
 			get_action('update').call()
 		apps = args.app

@@ -370,6 +370,33 @@ class AppDockerScriptAttribute(AppAttribute):
 		super(AppDockerScriptAttribute, self).set_name(name)
 
 
+class AppMetaClass(UniventionMetaClass):
+
+	def __new__(mcs, name, bases, attrs):
+		new_cls = super(AppMetaClass, mcs).__new__(mcs, name, bases, attrs)
+		# cleanup attrs
+		offset = 0
+		for i, attr in enumerate(new_cls._attrs[:]):
+			try:
+				explicit_attr = attrs[attr.name]
+			except KeyError:
+				pass
+			else:
+				if not isinstance(explicit_attr, AppAttribute):
+					app_logger.debug('Removing %s for %r' % (attr.name, explicit_attr))
+					new_cls._attrs.pop(i + offset)
+					offset -= 1
+			while True:
+				old_attr = new_cls.get_attr(attr.name)
+				if old_attr is attr:
+					break
+				if old_attr is None:
+					break
+				app_logger.debug('Removing old %s for new %r' % (old_attr.name, attr))
+				new_cls._attrs.remove(old_attr)
+		return new_cls
+
+
 class App(object):
 
 	"""
@@ -686,7 +713,7 @@ class App(object):
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 	"""
-	__metaclass__ = UniventionMetaClass
+	__metaclass__ = AppMetaClass
 
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	"""The required ID"""
@@ -1031,14 +1058,14 @@ class App(object):
 		return thumbnails
 
 	def get_localised(self, key, loc=None):
-		from univention.appcenter import get_action
+		from univention.appcenter.actions import get_action
 		get = get_action('get')()
 		keys = [(loc, key)]
 		for section, name, value in get.get_values(self, keys, warn=False):
 			return value
 
 	def get_localised_list(self, key, loc=None):
-		from univention.appcenter import get_action
+		from univention.appcenter.actions import get_action
 		get = get_action('get')()
 		ret = []
 		key = key.replace('_', '').lower()

@@ -1,5 +1,5 @@
 @!@
-from univention.appcenter import AppManager
+from univention.appcenter.app import AppManager
 from univention.appcenter.utils import app_ports
 
 for app_id, container_port, host_port in app_ports():
