@@ -317,7 +317,7 @@ if is_ucr_true system/setup/boot/start; then
 	# uninstall old app
 	docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
 	univention-app register \${APP} --undo-it
-	mysql -uroot -p$(</etc/mysql.secret) -e "drop database owncloud;"
+	mysql -uroot -p\$(</etc/mysql.secret) -e "drop database owncloud;"
 
 	# install app
 	python -c "from univention.appcenter.app import AppManager
