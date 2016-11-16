@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-ldb-modules
+fix: 4.0.7-10.101.201611162012
+desc: |
+ This update addresses the following issue(s):
+ * DNs of Windows clients joined from the client itself where not in sync
+   with the corresponding OpenLDAP DNs.
+bug: [40435]
