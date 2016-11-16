@@ -303,17 +303,24 @@ __EOF__
 		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
 #!/bin/bash
 . /usr/share/univention-join/joinscripthelper.lib
-#. /usr/share/univention-appcenter/joinscripthelper.sh
+. /usr/share/univention-lib/ucr.sh
 VERSION="1"
 
 APP="$app"
 
-docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
-univention-app register \${APP} --undo-it
 
 joinscript_init
 joinscript_save_current_version
-python -c "from univention.appcenter.app import AppManager
+
+# Only install the app if joinscript is run during system-setup
+if is_ucr_true system/setup/boot/start; then
+	# uninstall old app
+	docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
+	univention-app register \${APP} --undo-it
+	mysql -uroot -p$(</etc/mysql.secret) -e "drop database owncloud;"
+
+	# install app
+	python -c "from univention.appcenter.app import AppManager
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
 
@@ -325,7 +332,8 @@ app.docker_image='${app}-app'
 install = get_action('install')
 install.call(app=app, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
 "
-rm /tmp/joinpwd
+fi
+[ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 __EOF__
 		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
 	fi
