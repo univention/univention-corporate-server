@@ -9,3 +9,4 @@ desc: |
  * The dialog to move objects showed the wrong possible destination objects
    since the last erratum. This has been corrected.
 bug: [42924]
+announced: 2016-11-16
