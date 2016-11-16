@@ -1,3 +1,9 @@
+univention-archive-key (7.0.0-2) unstable; urgency=low
+
+  * Bug #41305: Fix copyright
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Nov 2016 15:31:53 +0100
+
 univention-archive-key (7.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
