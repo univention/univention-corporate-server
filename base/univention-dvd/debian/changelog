@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-4) unstable; urgency=low
+
+  * Bug #41305: Put USS onto DVD, not into InitRamFS
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Nov 2016 15:13:11 +0100
+
 univention-dvd (2.0.0-3) unstable; urgency=low
 
   * Bug #29463: added univention-nagios-samba
