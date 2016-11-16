@@ -1,3 +1,11 @@
+univention-ldb-modules (4.0.7-10) unstable; urgency=medium
+
+  * Bug #40435: make univention_samaccountname_ldap_check rewrite
+    the machine DN of the ldb add request to the Samba/AD DN proposed
+    by ucs-school-create_windows_computer.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Nov 2016 20:07:46 +0100
+
 univention-ldb-modules (4.0.7-9) unstable; urgency=medium
 
   * ucs-school-create_windows_computer: Add the school ou to the
