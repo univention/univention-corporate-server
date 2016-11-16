@@ -1,3 +1,9 @@
+univention-archive-key (7.0.0-3) unstable; urgency=low
+
+  * Bug #41305: Fool ucslint
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Nov 2016 15:34:44 +0100
+
 univention-archive-key (7.0.0-2) unstable; urgency=low
 
   * Bug #41305: Fix copyright

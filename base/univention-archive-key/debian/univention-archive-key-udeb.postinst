@@ -27,6 +27,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
 GPG=/usr/share/keyrings/archive.gpg
-[ -e "$GPG" ] || ln -s univention-archive-key-ucs-4x.gpg "$GPG"
+[ -e "$GPG" ] || ln -s univention-archive-key-ucs-4x.gpg "$GPG" || exit $?
+exit 0
