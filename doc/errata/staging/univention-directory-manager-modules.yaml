@@ -6,7 +6,8 @@ src: univention-directory-manager-modules
 fix: 11.0.3-45.1439.201611141345
 desc: |
  This update addresses the following issue(s):
- * Searching with an empty value for properties which weren't registered in any
-   mapping lead to broken search filters.
- * Allow setting of RID to make the S4 connector able to sync the SID correctly.
+ * Searching with an empty value for properties which weren't registered in
+   any mapping lead to broken search filters.
+ * Allow setting of RID to make the S4 connector able to sync the SID
+   correctly.
 bug: [42404,36570]
