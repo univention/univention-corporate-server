@@ -6,6 +6,7 @@ src: univention-management-console
 fix: 8.0.28-21.926.201611091130
 desc: |
  This update addresses the following issue(s):
- * Since UCS 4.0-2 errata 245 an LDAP connection to the DC Master is done on every
-   successfull login attempt. This connection is now done to to local LDAP server.
+ * Since UCS 4.0-2 errata 245 an LDAP connection to the DC Master is done on
+   every successful login attempt. This connection is now done to to local LDAP
+   server.
 bug: [42310]
