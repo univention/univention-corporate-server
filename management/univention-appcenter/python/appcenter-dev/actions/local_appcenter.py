@@ -689,7 +689,7 @@ class DevSet(UniventionAppAction):
 		if isinstance(attribute, AppFileAttribute):
 			if section == 'Application':
 				section = 'EN'
-			attr = '%s_%s' % (attr, section)
+			attr = '%s_%s' % (underscore(attr), section)
 			self.set_file_content(app, attr.upper(), value)
 		else:
 			self.set_ini_value(section, attr, value, parser)

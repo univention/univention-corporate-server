@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-10) unstable; urgency=medium
+
+  * Bug #42801: Fix README file name
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Nov 2016 13:23:23 +0100
+
 univention-appcenter (5.0.23-9) unstable; urgency=medium
 
   * Bug #42801: Fix file permissions
