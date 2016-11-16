@@ -16,14 +16,14 @@ desc: |
  * Fix client programs' handling of special characters in database and
    role names (CVE-2016-5424)
  For other changes, see:
- * https://www.postgresql.org/docs/9.1/static/release-9-1-17.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-18.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-19.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-20.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-21.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-22.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-23.html
- * https://www.postgresql.org/docs/9.1/static/release-9-1-24.html
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-17.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-18.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-19.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-20.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-21.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-22.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-23.html>
+ * <https://www.postgresql.org/docs/9.1/static/release-9-1-24.html>
 
 bug: [40717]
 cve:
