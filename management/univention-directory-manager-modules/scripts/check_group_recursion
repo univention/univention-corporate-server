@@ -160,5 +160,6 @@ def main():
 		print
 		print 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt
 
+
 if __name__ == '__main__':
 	main()

@@ -134,6 +134,7 @@ def mapMX(old):
 		new.append(string.join(i, ' '))
 	return new
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)

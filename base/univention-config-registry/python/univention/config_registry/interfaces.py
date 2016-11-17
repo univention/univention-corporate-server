@@ -95,6 +95,8 @@ def cmp_alnum(value):
 		key.append(int(num or maxsize))
 		key.append(text)
 	return tuple(key)
+
+
 cmp_alnum.RE = re.compile(r'([0-9]+)|([^0-9]+)')  # pylint: disable-msg=W0612
 
 
@@ -321,6 +323,7 @@ class Interfaces(object):
 				addr = iface.ipv6_address(name)
 				if addr:
 					return addr
+
 
 if __name__ == '__main__':
 	import unittest

@@ -56,6 +56,7 @@ class slavePackagesFixedAttributes(univention.admin.syntax.select):
 		('univentionSlavePackagesRemove', _('Package removal list')),
 	]
 
+
 module = 'policies/slavepackages'
 operations = ['add', 'edit', 'remove', 'search']
 

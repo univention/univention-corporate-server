@@ -668,4 +668,5 @@ class MappingSanitizer(ChoicesSanitizer):
 		value = super(MappingSanitizer, self)._sanitize(value, name, further_args)
 		return self.mapping[value]
 
+
 __all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']

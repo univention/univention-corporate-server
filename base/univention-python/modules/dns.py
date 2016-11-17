@@ -47,6 +47,8 @@ def lookup(query, type='a'):
 	return result
 
 # for backward compatibility
+
+
 from ipv4 import *
 
 if __name__ == '__main__':

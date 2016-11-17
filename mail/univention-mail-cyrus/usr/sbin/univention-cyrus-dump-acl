@@ -48,6 +48,7 @@ def usage():
 	print 'usage: univention-cyrus-dump-acl <FOLDER>'
 	sys.exit(1)
 
+
 baseConfig = ConfigRegistry()
 baseConfig.load()
 

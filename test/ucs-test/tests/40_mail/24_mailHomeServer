@@ -111,6 +111,7 @@ def main():
 				for f in sink_files:
 					f.close()
 
+
 if __name__ == '__main__':
 	main()
 # vim: set ft=python ts=4 sw=4 noet :

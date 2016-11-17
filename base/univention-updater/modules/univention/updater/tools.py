@@ -117,6 +117,8 @@ def verify_script(script, signature):
     stdout, _stderr = proc.communicate(script)
     ret = proc.wait()
     return stdout if ret != 0 else None
+
+
 verify_script.APT = "/etc/apt"
 
 

@@ -15,6 +15,7 @@ import univention.testing.udm as udm_test
 class GroupChangePossible(BaseException):
 	pass
 
+
 GROUP_TYPE_LOCAL = "-2147483643"
 GROUP_TYPE_DOMAIN_LOCAL = "-2147483644"
 GROUP_TYPE_GLOBAL = "-2147483646"
@@ -212,6 +213,7 @@ def _test_universal_group_change():
 
 		udm.modify_object('groups/group', dn=group9, adGroupType=GROUP_TYPE_GLOBAL)
 		udm.modify_object('groups/group', dn=group11, adGroupType=GROUP_TYPE_GLOBAL)
+
 
 if __name__ == '__main__':
 

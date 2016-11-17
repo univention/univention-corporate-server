@@ -59,6 +59,7 @@ class NoSocketError(Exception):
 class ConnectionError(Exception):
 	pass
 
+
 '''
 General client class for connecting to a UMC server.
 Provides basic functionality for session-handling, authentication and

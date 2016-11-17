@@ -57,6 +57,7 @@ class pwhistoryFixedAttributes(univention.admin.syntax.select):
 		('univentionPWLength', _('Password length'))
 	]
 
+
 module = 'policies/pwhistory'
 operations = ['add', 'edit', 'remove', 'search']
 

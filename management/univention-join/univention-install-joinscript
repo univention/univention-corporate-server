@@ -44,6 +44,7 @@ def debhelper_file(package, ext):
 	"""Name of a package configuration file."""
 	return os.path.join('debian', '%s.%s.debhelper' % (package, ext))
 
+
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
 UNJOINSCRIPT_DIR = '/usr/lib/univention-uninstall'
 
@@ -138,6 +139,7 @@ The unjoinscript *.uinst goes to /usr/lib/univention-uninstall/
 	except IOError as ex:
 		print >> sys.stderr, ex
 		sys.exit(1)
+
 
 if __name__ == '__main__':
 	main()

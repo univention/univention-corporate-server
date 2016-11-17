@@ -196,6 +196,7 @@ uninstall/* usr/lib/univention-uninstall/
 '''
         self.create_debian_file_from_buffer('install', install)
 
+
 if __name__ == '__main__':
     deb = DebianPackage('testdeb')
     share_file = '''# testdeb

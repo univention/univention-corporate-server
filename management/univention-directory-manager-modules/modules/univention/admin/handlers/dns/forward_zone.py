@@ -231,6 +231,7 @@ def unmapMX(old):
 		lst.append(entry.split(' ', 1))
 	return lst
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('zone', 'zoneName', None, univention.admin.mapping.ListToString)
 mapping.register('nameserver', 'nSRecord')

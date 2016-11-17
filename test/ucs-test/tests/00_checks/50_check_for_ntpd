@@ -17,6 +17,7 @@ stdout, stderr = proc.communicate()
 def dump_ps():
 	call(['ps', 'afwx'])
 
+
 if stderr.strip():
 	dump_ps()
 	utils.fail('An error ocurred when running the pgrep command'

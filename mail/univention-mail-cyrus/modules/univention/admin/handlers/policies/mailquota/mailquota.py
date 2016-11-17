@@ -60,6 +60,7 @@ class mailquotaFixedAttributes(univention.admin.syntax.select):
 		('univentionMailQuotaMB', _('Quota limit (MB)')),
 	]
 
+
 module = 'policies/mailquota'
 operations = ['add', 'edit', 'remove', 'search']
 

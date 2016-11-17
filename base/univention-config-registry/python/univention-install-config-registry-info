@@ -123,5 +123,6 @@ The category descriptions debian/*.univention-config-registry-categories got to
 		print >> sys.stderr, ex
 		sys.exit(1)
 
+
 if __name__ == '__main__':
 	main()

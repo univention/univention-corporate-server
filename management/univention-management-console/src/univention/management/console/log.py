@@ -59,6 +59,8 @@ def _reset_debug_loglevel():
 	global _debug_loglevel
 	_ucr.load()
 	_debug_loglevel = max(int(_ucr.get('umc/server/debug/level', 2)), int(_ucr.get('umc/module/debug/level', 2)))
+
+
 _reset_debug_loglevel()
 
 
@@ -148,6 +150,7 @@ class ILogger(object):
 				ud.debug(self._id, ud.ERROR, 'Could not log message %r' % (message,))
 		elif _debug_loglevel >= level:
 			logger(message, extra=self._extras[level])
+
 
 CORE = ILogger('MAIN')
 NETWORK = ILogger('NETWORK')

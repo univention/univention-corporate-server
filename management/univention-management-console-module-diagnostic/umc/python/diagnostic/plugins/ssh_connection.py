@@ -102,6 +102,7 @@ def run():
 		msg += '\n'
 		raise Critical(msg % data)
 
+
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
 	main()

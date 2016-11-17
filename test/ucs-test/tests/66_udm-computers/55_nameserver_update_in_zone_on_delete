@@ -49,5 +49,6 @@ def main():
 	for i in univention.testing.udm.UCSTestUDM.COMPUTER_MODULES:
 		do_test(i)
 
+
 if __name__ == '__main__':
 	main()

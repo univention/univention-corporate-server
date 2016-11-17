@@ -90,6 +90,7 @@ def nagios_exit(state, msg):
 		print('Samba DRS UNKNOWN: %s' % msg)
 		sys.exit(NAGIOS_STATE_UNKNOWN)
 
+
 if __name__ == '__main__':
 
 	# return OK, is samba autostart is false

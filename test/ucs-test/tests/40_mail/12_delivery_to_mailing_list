@@ -58,6 +58,7 @@ def main():
 			for mail in mails:
 				check_delivery(token, mail, True)
 
+
 if __name__ == '__main__':
 	main()
 

@@ -59,6 +59,7 @@ class function:
 	def __del__(self):
 		_debug.end(self.text)
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

@@ -69,6 +69,7 @@ def __check_dir(commands, dirname, files):
 			commands.setdefault(manu, []).append((rel_path, nick))
 	return files
 
+
 if __name__ == '__main__':
 	printers = {}
 	cmds = []

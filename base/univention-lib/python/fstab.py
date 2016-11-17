@@ -131,6 +131,7 @@ class Entry(object):
 class InvalidEntry(Exception):
 	pass
 
+
 if __name__ == '__main__':
 	fstab = File('fstab')
 	print fstab.get(['xfs', 'ext3'])

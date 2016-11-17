@@ -84,6 +84,7 @@ def usage():
 	print 'usage: %s [-v] [--partition=, --prefix=, --user, --shared] <mailbox> <new mailboxname>' % sys.argv[0].split('/')[-1]
 	sys.exit(1)
 
+
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "v", ["partition=", "prefix=", "user", "shared"])
 except getopt.GetoptError as err:

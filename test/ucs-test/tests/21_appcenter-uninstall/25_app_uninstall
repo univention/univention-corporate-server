@@ -92,6 +92,7 @@ def _check_url(url):
 					refresh_url = '%s%s' % (url, refresh_url)
 				_check_url(refresh_url)
 
+
 for app in get_requested_apps():
 	print 'Checking', app
 	if not app._allowed_on_local_server():

@@ -56,6 +56,7 @@ class maintenanceFixedAttributes(univention.admin.syntax.select):
 		('univentionCron', _('Maintenance')),
 	]
 
+
 module = 'policies/maintenance'
 operations = ['add', 'edit', 'remove', 'search']
 

@@ -105,5 +105,6 @@ def identify(dn, attr):
 	return 'dhcpService' in attr.get('objectClass', []) \
 		or 'univentionDhcpService' in attr.get('objectClass', [])
 
+
 lookup_filter = object.lookup_filter
 lookup = object.lookup

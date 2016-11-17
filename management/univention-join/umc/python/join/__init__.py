@@ -264,6 +264,7 @@ def run(cmd, stepsPerScript, info_handler=_dummyFunc, error_handler=_dummyFunc, 
 		MODULE.info('enabling UMC and apache server restart')
 		subprocess.call(CMD_ENABLE_EXEC)
 
+
 INSTDIR = '/usr/lib/univention-install'
 LOGFILE = '/var/log/univention/join.log'
 LOCKFILE = '/var/lock/univention_umc_join.lock'

@@ -56,6 +56,7 @@ def get_rootpw():
 	f.close()
 	return pwd
 
+
 rootpw = get_rootpw()
 lo_local = ldap.open('127.0.0.1', 7389)
 lo_local.simple_bind_s('cn=update,' + ucr.get('ldap/base'), rootpw)

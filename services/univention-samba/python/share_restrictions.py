@@ -419,6 +419,7 @@ class ShareConfiguration(object):
 	def printers(self):
 		return self._printers
 
+
 if __name__ == '__main__':
 	cfg = ShareConfiguration()
 	cfg.read()

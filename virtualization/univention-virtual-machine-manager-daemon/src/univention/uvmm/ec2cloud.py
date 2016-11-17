@@ -544,6 +544,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				self.logerror(logger, "Unknown exception %s: %s, %s" % (self.publicdata.name, self.publicdata.url, dir(e)))
 			raise
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

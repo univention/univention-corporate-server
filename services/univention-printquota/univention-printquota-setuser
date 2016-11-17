@@ -72,6 +72,7 @@ def set_quota(printer, who, soft, hard, group=0):
 	else:
 		callEdpykota("--add %s --printer %s --softlimit %s --hardlimit %s %s" % (arg, printer, soft, hard, who))
 
+
 if bc.get('pykota/policy/debug'):
 	try:
 		debuglevel = int(bc['pykota/policy/debug'])

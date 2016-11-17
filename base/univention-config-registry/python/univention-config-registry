@@ -60,6 +60,7 @@ def convertToUtf8(arguments):
 		new_arguments.append(argument)
 	return new_arguments
 
+
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
 		print >>sys.stderr, 'WARNING: univention-baseconfig is deprecated by univention-config-registry.'

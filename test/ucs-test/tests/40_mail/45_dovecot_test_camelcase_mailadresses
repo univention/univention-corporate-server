@@ -149,5 +149,6 @@ def main():
 						else:
 							print 'OK: does not exist: %r' % (mixed_case_maildir,)
 
+
 if __name__ == '__main__':
 	main()

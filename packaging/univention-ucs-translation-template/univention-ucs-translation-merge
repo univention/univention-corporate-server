@@ -85,6 +85,7 @@ def merge_po_file_trees(source_tree, target_tree):
 		_msgmerge(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
 	return pos_delete_upstream, new_pos
 
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
 	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")

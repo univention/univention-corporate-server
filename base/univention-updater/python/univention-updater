@@ -578,6 +578,7 @@ def main():
     update_status(status='DONE')
     os.execv(sys.argv[0], sys.argv)
 
+
 if __name__ == '__main__':
     if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
         usage()

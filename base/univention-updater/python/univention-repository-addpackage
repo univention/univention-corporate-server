@@ -66,6 +66,8 @@ def rewrite_url(url):
     return tmp
 
 # parse options
+
+
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:

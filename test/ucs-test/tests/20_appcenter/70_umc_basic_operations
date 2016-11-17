@@ -117,5 +117,6 @@ def main():
 		test_install_upgrade_remove()
 		test_install_upgrade_remove_dependencies()
 
+
 if __name__ == '__main__':
 	main()

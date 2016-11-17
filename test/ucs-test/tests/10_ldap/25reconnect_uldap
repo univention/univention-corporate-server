@@ -65,6 +65,7 @@ def _print_test_header(header):
 	print header
 	print '************************************************************************'
 
+
 old_retry_count = ucr.get('ldap/client/retry/count')
 
 _set_retry_count(10)

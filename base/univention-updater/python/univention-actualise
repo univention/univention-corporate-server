@@ -412,6 +412,7 @@ def update_ucr_updatestatus():
     except:
         print('Warning: calling univention-updater-check failed.')
 
+
 if __name__ == '__main__':
     res = 0
     try:

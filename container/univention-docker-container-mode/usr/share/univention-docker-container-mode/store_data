@@ -87,6 +87,7 @@ def copy_recursive(src, dest):
 			fullpath = os.path.join(root, f)
 			copy_to_persistent_storage(fullpath, dest)
 
+
 if __name__ == '__main__':
 	parser = OptionParser('%prog [options]')
 	parser.add_option('--app', dest='app', help='App ID')

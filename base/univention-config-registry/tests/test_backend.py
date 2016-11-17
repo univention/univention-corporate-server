@@ -337,5 +337,6 @@ class TestConfigRegistry(unittest.TestCase):
 		else:
 			self.fail('Timeout')
 
+
 if __name__ == '__main__':
 	unittest.main()

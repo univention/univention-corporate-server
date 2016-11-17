@@ -11,6 +11,7 @@ from dockertest import *
 class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception):
 	pass
 
+
 if __name__ == '__main__':
 
 	with Appcenter() as appcenter:

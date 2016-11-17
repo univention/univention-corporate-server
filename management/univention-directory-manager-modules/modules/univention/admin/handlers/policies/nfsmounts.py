@@ -55,6 +55,7 @@ class ldapServerFixedAttributes(univention.admin.syntax.select):
 		('univentionNFSMounts', _('Mount NFS shares')),
 	]
 
+
 module = 'policies/nfsmounts'
 operations = ['add', 'edit', 'remove', 'search']
 
@@ -117,6 +118,7 @@ def unmapMounts(old):
 
 def mapMounts(old):
 	return map(lambda x: ' '.join(x), old)
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

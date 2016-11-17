@@ -73,6 +73,7 @@ class Entry(object):
 class InvalidEntry(Exception):
 	pass
 
+
 if __name__ == '__main__':
 	mtab = File('mtab')
 	print mtab.get('/dev/sda4')

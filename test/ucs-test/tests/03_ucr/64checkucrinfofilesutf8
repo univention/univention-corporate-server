@@ -31,6 +31,7 @@ def visit(arg, dirname, names):
 			finally:
 				f.close()
 
+
 os.path.walk('/etc/univention/registry.info', visit, None)
 
 sys.exit(exit_code)

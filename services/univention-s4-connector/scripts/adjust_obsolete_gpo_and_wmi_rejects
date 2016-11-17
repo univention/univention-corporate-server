@@ -236,6 +236,7 @@ def connect():
 
 	return s4c
 
+
 if __name__ == '__main__':
 
 	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')

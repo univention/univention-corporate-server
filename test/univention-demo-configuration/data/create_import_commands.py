@@ -137,6 +137,8 @@ def importRow(row):
 	print 'udm %s create  --ignore_exists --position "ou=%s,ou=Departments,%s" --set name="workstation%s" --set network="cn=default,cn=networks,%s"' % (computerType, office, LDAPBASE, roomNumber, LDAPBASE)
 
 # print default commands
+
+
 print 'eval $(ucr shell)'
 print 'udm container/ou create --ignore_exists --set name=People --set description="Employees of this company" --set groupPath="1"'
 print 'udm container/ou create --ignore_exists --set name=Departments --set description="Ressources of this company organized by department"'

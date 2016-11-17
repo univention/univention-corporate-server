@@ -27,6 +27,7 @@ def get_serial_number(zone_dn):
 	udm_object.open()
 	return udm_object['serial']
 
+
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:

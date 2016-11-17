@@ -232,5 +232,6 @@ def rewrite(filter, mapping):
 def identify(dn, attr):
 	return 'univentionDhcpPool' in attr.get('objectClass', [])
 
+
 lookup_filter = object.lookup_filter
 lookup = object.lookup

@@ -29,6 +29,7 @@ def main():
 		for elem in newListFile:
 			f.write(elem)
 
+
 """
 Check if item which represents a line from the imported kvm-file represents
 the line with the additional packages that have to be installed.

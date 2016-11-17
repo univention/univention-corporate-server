@@ -85,5 +85,6 @@ def finish_system_setup_boot():
 		if not ucr.is_true('system/setup/boot/installer'):
 			subprocess.call(["service", "plymouth", "stop"])
 
+
 if __name__ == "__main__":
 	finish_system_setup_boot()

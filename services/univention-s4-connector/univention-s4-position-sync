@@ -88,6 +88,7 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	'''
 	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', None)
 
+
 overload_dn_mapping_function = {
 	univention.s4connector.s4.user_dn_mapping: user_dn_mapping,
 	univention.s4connector.s4.group_dn_mapping: group_dn_mapping,

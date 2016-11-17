@@ -53,5 +53,6 @@ def main():
 		for address in failed_addresses:
 			utils.fail('mail sent to group address %r was not delivered to %r' % (group_mail, address,))
 
+
 if __name__ == '__main__':
 	main()

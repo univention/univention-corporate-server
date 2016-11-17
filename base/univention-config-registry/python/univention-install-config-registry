@@ -213,5 +213,6 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
 	doIt("univention-install-config-registry-info")
 	doIt("univention-install-service-info")
 
+
 if __name__ == '__main__':
 	main()

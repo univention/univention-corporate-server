@@ -60,6 +60,7 @@ def logonToChangePWUnmap(val):
 	else:
 		return "2"
 
+
 module = 'settings/sambaconfig'
 childs = 0
 # since samba 3.0.30 and UCS 2.1 the domain configuration for samba will be stored in the samba domain object

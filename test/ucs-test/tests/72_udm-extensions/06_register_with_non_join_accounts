@@ -52,6 +52,7 @@ def test_extension(extension_type, dn, password):
 		print 'Removing source package'
 		package.remove()
 
+
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
 	ucr.load()

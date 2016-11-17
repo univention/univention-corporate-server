@@ -122,4 +122,6 @@ def identify(dn, attr):
 	return 'dhcpServer' in attr.get('objectClass', [])
 
 #lookup_filter = object.lookup_filter  # if we specify lookup_filter here the superordinate is not evaluated
+
+
 lookup = object.lookup

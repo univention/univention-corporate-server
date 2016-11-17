@@ -111,6 +111,8 @@ def cleanup_repository(directory):
         fp_debug.close()
 
 # parse options
+
+
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:

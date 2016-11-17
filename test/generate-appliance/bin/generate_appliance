@@ -434,6 +434,8 @@ class VMware(Target):
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+
+
 VMware = VMware()
 
 
@@ -781,6 +783,8 @@ ddb.comment=""
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+
+
 Virtualbox = Virtualbox()
 
 
@@ -1153,6 +1157,8 @@ ddb.virtualHWVersion = "7"
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+
+
 ESXi = ESXi()
 
 
@@ -1352,6 +1358,8 @@ class EC2(Target):
 				log('Generated "%s" appliance as\n  %s' % (self, ami.id, ))
 			else:
 				log('Could not generate image (%r, %r)' % (self, ami.id, ami.state, ))
+
+
 EC2 = EC2()
 
 
@@ -1388,6 +1396,8 @@ class Docker(Target):
 		]
 		subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+
+
 Docker = Docker()
 
 
@@ -1489,6 +1499,7 @@ def main():
 		log('Cleanup')
 		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete', )
 		subprocess.call(cmd, stdout=sys.stderr)
+
 
 if __name__ == "__main__":
 	sys.exit(main())

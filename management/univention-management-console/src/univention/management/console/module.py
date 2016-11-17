@@ -366,6 +366,7 @@ class XML_Definition(ET.ElementTree):
 		module = self.find('module')
 		return module is not None and len(module) != 0
 
+
 _manager = None
 
 
@@ -498,6 +499,7 @@ class Manager(dict):
 
 		RESOURCES.info('No module provides %s' % command)
 		return None
+
 
 if __name__ == '__main__':
 	mgr = Manager()

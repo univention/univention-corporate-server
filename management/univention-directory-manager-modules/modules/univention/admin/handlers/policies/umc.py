@@ -55,6 +55,7 @@ class umcFixedAttributes(udm_syntax.select):
 		('umcPolicyGrantedOperationSet', _('Allowed UMC operation sets')),
 	)
 
+
 module = 'policies/umc'
 operations = ('add', 'edit', 'remove', 'search')
 

@@ -100,6 +100,7 @@ def parseRfc822(f):
 		res.append(ent)
 	return res
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

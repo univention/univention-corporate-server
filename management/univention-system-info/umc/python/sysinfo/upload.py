@@ -189,6 +189,7 @@ class newHTTPHandler(urllib2.BaseHandler):
         else:
             return self.parent.error('http', req, fp, code, msg, hdrs)
 
+
 urllib2._old_HTTPHandler = urllib2.HTTPHandler
 urllib2.HTTPHandler = newHTTPHandler
 
@@ -197,5 +198,6 @@ class newHTTPSHandler(newHTTPHandler):
 
     def https_open(self, req):
         return self.do_open(httplib.HTTPS, req)
+
 
 urllib2.HTTPSHandler = newHTTPSHandler

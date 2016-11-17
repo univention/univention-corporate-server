@@ -637,6 +637,7 @@ def test_case(function):
 def fail(message):
 	raise AppCenterTestFailure(message)
 
+
 if __name__ == "__main__":
 	app_logger.log_to_stream()
 	app_logger.get_base_logger().setLevel(logging.WARNING)

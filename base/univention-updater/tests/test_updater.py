@@ -979,6 +979,7 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
         self.assertRaises(StopIteration, gen.next)
 
+
 if __name__ == '__main__':
     if False:
         import univention.debug as ud

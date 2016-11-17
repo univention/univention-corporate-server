@@ -182,6 +182,7 @@ class LockingDB:
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
+
 if __name__ == '__main__':
 
 	import random

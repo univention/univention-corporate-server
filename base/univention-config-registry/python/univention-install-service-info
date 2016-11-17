@@ -91,5 +91,6 @@ The service descriptions debian/*.univention-service go to
 		print >> sys.stderr, ex
 		sys.exit(1)
 
+
 if __name__ == '__main__':
 	main()

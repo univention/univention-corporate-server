@@ -91,6 +91,7 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 			shutil.copyfileobj(fp, self.wfile)
 		fp.close()
 
+
 if __name__ == '__main__':
 	parser = OptionParser()
 	parser.add_option('-p', '--port', action='store', dest='port', type='int',

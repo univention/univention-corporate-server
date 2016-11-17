@@ -146,6 +146,8 @@ def unmapKeyAndValue(old):
 	return lst
 
 # Maping between UDM properties and LDAP attributes
+
+
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('type', 'univentionVirtualMachineCloudConnectionTypeRef', None, udm_mapping.ListToString)

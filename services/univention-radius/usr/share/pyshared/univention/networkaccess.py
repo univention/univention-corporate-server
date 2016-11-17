@@ -253,6 +253,7 @@ def traceStationWhitelist(ldapConnection, stationId):
 		message += '\nThus access for station is DENIED.\n'
 	return bool(result), message
 
+
 SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED, ))
@@ -286,5 +287,6 @@ def getNTPasswordHash(ldapConnection, username, stationId):
 	if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
 		return None
 	return result[0][1]['sambaNTPassword'][0].decode('hex')
+
 
 loadInfo()

@@ -59,6 +59,8 @@ def adjust():
 		'samba/max_open_files=%d' % (suggested_max_open_files,)
 	])
 	raise ProblemFixed(_('The limits have been adjusted to the suggested value.'), buttons=[])
+
+
 actions['adjust'] = adjust
 
 

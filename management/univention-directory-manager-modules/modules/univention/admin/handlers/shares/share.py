@@ -49,6 +49,7 @@ class cscPolicy(univention.admin.syntax.select):
 	name = 'cscPolicy'
 	choices = [('manual', _('manual')), ('documents', _('documents')), ('programs', _('programs')), ('disable', _('disable'))]
 
+
 module = 'shares/share'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
@@ -753,6 +754,7 @@ def insertQuotes(value):
 		return new_entries[:-2]
 	else:
 		return new_entries
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

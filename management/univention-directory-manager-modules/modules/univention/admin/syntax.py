@@ -116,6 +116,8 @@ class ClassProperty(object):
 		return self.getter(owner)
 
 # widget sizes
+
+
 SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'FiveThirds')
 
 
@@ -2846,6 +2848,7 @@ def univentionAdminModules_update():
 
 	univentionAdminModules.choices = sorted(temp, key=operator.itemgetter(1))
 
+
 __register_choice_update_function(univentionAdminModules_update)
 
 
@@ -3433,6 +3436,8 @@ class Country(select):
 			('EH', _iso_3166(u'Western Sahara')), ('YE', _iso_3166(u'Yemen')), ('ZM', _iso_3166(u'Zambia')),
 			('ZW', _iso_3166(u'Zimbabwe'))]
 		cls.choices.sort(cmp=locale.strcoll, key=itemgetter(1))
+
+
 __register_choice_update_function(Country.update_choices)
 Country.update_choices()
 

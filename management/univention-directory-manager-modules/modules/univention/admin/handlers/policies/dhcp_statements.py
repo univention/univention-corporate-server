@@ -58,6 +58,7 @@ class dhcp_statementsFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpServerName', _('Server name')),
 	]
 
+
 module = 'policies/dhcp_statements'
 operations = ['add', 'edit', 'remove', 'search']
 

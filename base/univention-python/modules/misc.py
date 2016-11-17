@@ -103,6 +103,7 @@ def close_fd_spawn(file, args):
 	else:
 		raise OSError('Faild to fork child process.')
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

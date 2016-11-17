@@ -170,5 +170,6 @@ class object(DHCPBase):
 def identify(dn, attr):
 	return 'univentionDhcpSubnet' in attr.get('objectClass', []) and 'univentionDhcpSharedSubnet' not in attr.get('objectClass', [])
 
+
 lookup_filter = object.lookup_filter
 lookup = object.lookup

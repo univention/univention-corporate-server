@@ -54,6 +54,7 @@ class soundFixedAttributes(univention.admin.syntax.select):
 		('univentionSoundModule', _('Sound module'))
 	]
 
+
 module = 'policies/sound'
 operations = ['add', 'edit', 'remove', 'search']
 

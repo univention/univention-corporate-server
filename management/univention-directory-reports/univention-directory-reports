@@ -204,5 +204,6 @@ def main():
 		print >>sys.stderr, "error: report could not be created"
 		sys.exit(1)
 
+
 if __name__ == "__main__":
 	main()

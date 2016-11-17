@@ -18,6 +18,8 @@ c = libvirt.open(sys.argv[1])
 
 def cb(*a):
 	print '|'.join(map(str, a))
+
+
 c.domainEventRegister(cb, 42)
 
 d = c.lookupByName(sys.argv[2])

@@ -123,6 +123,7 @@ def mapLocation(old):
 		new.append(string.join(i, ' '))
 	return new
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', mapName, unmapName)
 mapping.register('location', 'sRVRecord', mapLocation, unmapLocation)

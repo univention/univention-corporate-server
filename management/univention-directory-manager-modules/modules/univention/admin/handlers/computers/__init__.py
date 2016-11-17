@@ -41,5 +41,6 @@ def __walk(root, dir, files):
 		if file.endswith('.py') and not file.startswith('__') and not file == 'computer.py':
 			computers.append(__import__(file[: -3], globals(), locals(), ['']))
 
+
 path = os.path.abspath(os.path.dirname(__file__))
 os.path.walk(path, __walk, path)

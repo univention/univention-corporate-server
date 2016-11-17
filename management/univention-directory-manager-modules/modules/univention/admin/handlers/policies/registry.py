@@ -54,6 +54,7 @@ class registryFixedAttributes(univention.admin.syntax.select):
 		('registry', _('UCR Variables'))
 	]
 
+
 module = 'policies/registry'
 operations = ['add', 'edit', 'remove', 'search']
 

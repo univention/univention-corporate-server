@@ -509,6 +509,7 @@ class policiesGroup:
 		self.long_description = long_description
 		self.members = members
 
+
 univention.admin = sys.modules[__name__]
 from univention.admin import modules, objects, syntax, hook, mapping
 syntax.import_syntax_files()

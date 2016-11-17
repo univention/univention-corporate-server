@@ -47,6 +47,7 @@ def host_architecture():
 	else:
 		return "x32"
 
+
 expected_spoolss_architecture = {
 	"x32": "Windows NT x86",
 	"x64": "Windows x64",
@@ -70,6 +71,7 @@ def test_run(ucr, arch):
 			univention.config_registry.handler_set([keyval.encode()])
 
 	check_spoolss_architecture(expected_value)
+
 
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr:

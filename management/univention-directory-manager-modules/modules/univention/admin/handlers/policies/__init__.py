@@ -43,5 +43,6 @@ def __walk(root, dir, files):
 			continue
 		policies.append(__import__(file[: -3], globals(), locals(), ['']))
 
+
 path = os.path.abspath(os.path.dirname(__file__))
 os.path.walk(path, __walk, path)

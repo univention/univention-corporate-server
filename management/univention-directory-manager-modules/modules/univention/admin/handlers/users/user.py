@@ -71,6 +71,7 @@ class vacationResendDays(univention.admin.syntax.select):
 	for i in range(2, 60):
 		choices.append(("%s" % i, "%s %s" % (i, _('days'))))
 
+
 module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 template = 'settings/usertemplate'
@@ -1178,6 +1179,8 @@ def load_certificate(user_certificate):
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s' % values)
 	return values
+
+
 load_certificate.ATTR = {
 	"C": "Country",
 	"ST": "State",
@@ -1205,6 +1208,7 @@ def unmapHomePostalAddress(old):
 			new.append([i, " ", " "])
 
 	return new
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
@@ -1259,6 +1263,7 @@ def unmapKeyAndValue(old):
 	for entry in old:
 		lst.append(entry.split('=', 1))
 	return lst
+
 
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)

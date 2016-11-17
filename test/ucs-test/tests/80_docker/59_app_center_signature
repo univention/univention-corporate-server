@@ -122,6 +122,7 @@ class SyncedAppcenter(Appcenter):
 	def __exit__(self, exc_type, exc_value, traceback):
 		Appcenter.__exit__(self, exc_type, exc_value, traceback)
 
+
 if __name__ == '__main__':
 	with SyncedAppcenter() as appcenter:
 		appcenter.test()

@@ -417,6 +417,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 	return obj
 
+
 ''' HELPER functions '''
 
 
@@ -490,6 +491,7 @@ def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords
 	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: dn: %s' % dnsNodeDn)
 	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: al: %s' % al)
 	s4connector.lo_s4.lo.add_s(dnsNodeDn, al)
+
 
 ''' Pack and unpack DNS records by using the
 	Samba NDR functions
@@ -1669,6 +1671,7 @@ def con2ucs(s4connector, key, object):
 
 	return True
 
+
 '''
 	Override the identify function for dns/dns.py otherwise we
 	don't get one mapping for all dns childmodules.
@@ -1687,6 +1690,7 @@ def identify(dn, attr, canonical=0):
 		univention.admin.handlers.dns.srv_record.identify(dn, attr) or\
 		univention.admin.handlers.dns.ptr_record.identify(dn, attr) or\
 		univention.admin.handlers.dns.txt_record.identify(dn, attr)
+
 
 '''
 	Because the dns/dns.py identify function has been overwritten

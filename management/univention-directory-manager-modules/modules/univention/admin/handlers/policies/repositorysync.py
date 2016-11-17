@@ -56,6 +56,7 @@ class repositorySyncFixedAttributes(univention.admin.syntax.select):
 		('univentionRepositoryCron', _('Repository synchronisation')),
 	]
 
+
 module = 'policies/repositorysync'
 operations = ['add', 'edit', 'remove', 'search']
 

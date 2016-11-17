@@ -74,6 +74,7 @@ def make_lower(mlValue):
 		return [make_lower(x) for x in mlValue]
 	return mlValue
 
+
 password_charsets = [
 	'abcdefghijklmnopqrstuvwxyz',
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',

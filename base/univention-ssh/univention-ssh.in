@@ -129,6 +129,7 @@ def display_version(out=sys.stdout):
 	'''Display program name and version string.'''
 	print >>out, '%s @@package_version@@' % (cmd,)
 
+
 UNIVENTION_SSH_ASKPASS_HELPER = '/usr/lib/univention-ssh/univention-ssh-askpass'
 UNIVENTION_SSH_ASKPASS_ENV = 'UNIVENTION_SSH_ASKPASS'
 

@@ -125,6 +125,7 @@ class License(object):
 	def allows_using(self, email_required):
 		return self.email_known() or not email_required
 
+
 LICENSE = License()
 
 
