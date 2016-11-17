@@ -65,6 +65,8 @@ def _read_ini_file(filename, parser_class=RawConfigParser):
 	try:
 		with open(filename, 'rb') as f:
 			parser.readfp(f)
+	except TypeError:
+		pass
 	except EnvironmentError:
 		pass
 	except ParsingError as exc:
@@ -83,11 +85,10 @@ def _get_from_parser(parser, section, attr):
 		return None
 
 
-def _get_rating_items():
+def _get_rating_items(locale):
 	if _get_rating_items._cache is None:
 		_get_rating_items._cache = []
 		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
-		locale = get_locale()
 		for section in rating_parser.sections():
 			label = _get_from_parser(rating_parser, section, 'Label')
 			if locale:
@@ -101,11 +102,10 @@ def _get_rating_items():
 _get_rating_items._cache = None
 
 
-def _get_license_descriptions():
+def _get_license_descriptions(locale):
 	if _get_license_descriptions._cache is None:
 		_get_license_descriptions._cache = {}
 		license_parser = _read_ini_file(os.path.join(CACHE_DIR, '.license_types.ini'))
-		locale = get_locale()
 		for section in license_parser.sections():
 			description = _get_from_parser(license_parser, section, 'Description')
 			if locale:
@@ -187,9 +187,6 @@ class AppAttribute(UniventionMetaInfo):
 			if not isinstance(value, instance_type):
 				raise ValueError('Wrong type')
 
-	def parse_with_ini_file(self, value, ini_file):
-		return self.parse(value)
-
 	def test(self, value):
 		try:
 			if self.required:
@@ -208,6 +205,32 @@ class AppAttribute(UniventionMetaInfo):
 	def parse(self, value):
 		return value
 
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		ini_attr_name = self.name.replace('_', '')
+		priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
+		if self.localisable and locale:
+			priority_sections.insert(0, (meta_parser, locale))
+			priority_sections.insert(2, (ini_parser, locale))
+		value = self.default
+		for parser, section in priority_sections:
+			try:
+				value = parser.get(section, ini_attr_name)
+			except (NoSectionError, NoOptionError):
+				pass
+			else:
+				break
+		value = self.parse(value)
+		self.test(value)
+		return value
+
+	def post_creation(self, app):
+		pass
+
+	# TODO: remove. deprecated
+	def parse_with_ini_file(self, value, ini_file):
+		return self.parse(value)
+
+	# TODO: remove. deprecated
 	def get(self, value, ini_file):
 		if value is None:
 			value = copy(self.default)
@@ -218,6 +241,16 @@ class AppAttribute(UniventionMetaInfo):
 		else:
 			self.test(value)
 			return value
+
+
+class AppComponentIDAttribute(AppAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return component_id
+
+
+class AppUCSVersionAttribute(AppAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return '4.1'
 
 
 class AppBooleanAttribute(AppAttribute):
@@ -276,6 +309,22 @@ class AppListAttribute(AppAttribute):
 			super(AppListAttribute, self).test_regex(regex, val)
 
 
+class AppRatingAttribute(AppListAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		value = []
+		rating_items = _get_rating_items(locale)
+		for item in rating_items:
+			val = _get_from_parser(meta_parser, 'Application', item['name'])
+			try:
+				val = int(val)
+			except (ValueError, TypeError):
+				pass
+			else:
+				item['value'] = val
+				value.append(item)
+		return value
+
+
 class AppLocalisedListAttribute(AppListAttribute):
 	_cache = {}
 
@@ -299,20 +348,12 @@ class AppLocalisedListAttribute(AppListAttribute):
 					value = translations[value]
 		return value
 
-	def parse(self, value):
-		value = super(AppLocalisedListAttribute, self).parse(value)
-		locale = get_locale()
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		value = super(AppLocalisedListAttribute, self).get_value(component_id, ini_parser, meta_parser, locale)
 		if self.localisable_by_file and locale:
 			for i, val in enumerate(value):
 				value[i] = self._translate(self.localisable_by_file, locale, val)
 		return value
-
-	def test_choices(self, value):
-		value = value[:]
-		locale = get_locale()
-		for i, val in enumerate(value):
-			value[i] = self._translate(self.localisable_by_file, locale, val, reverse=True)
-		super(AppLocalisedListAttribute, self).test_choices(value)
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
@@ -341,13 +382,28 @@ class AppFileAttribute(AppAttribute):
 		# localisable=True !
 		super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
 
-	def parse_with_ini_file(self, value, ini_file):
-		filename = self.get_filename(ini_file)
-		if filename:
-			with open(filename, 'rb') as fhandle:
-				value = ''.join(fhandle.readlines()).strip()
-		return super(AppFileAttribute, self).parse_with_ini_file(value, ini_file)
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return None
 
+	def post_creation(self, app):
+		value = None
+		fname = self.name.upper()
+		filenames = [fname, '%s_EN' % fname]
+		if self.localisable:
+			locale = app.get_locale()
+			if locale:
+				filenames.insert(0, '%s_%s' % (fname, locale.upper()))
+		for filename in filenames:
+			try:
+				with open(app.get_cache_file(filename), 'rb') as fd:
+					value = ''.join(fd.readlines()).strip()
+			except EnvironmentError:
+				pass
+			else:
+				break
+		setattr(app, self.name, value)
+
+	# TODO: remove. deprecated - attention: install_base.py uses it
 	def get_filename(self, ini_file):
 		directory = os.path.dirname(ini_file)
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
@@ -719,8 +775,8 @@ class App(object):
 	"""The required ID"""
 
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
-	component_id = AppAttribute(required=True)
-	ucs_version = AppAttribute(required=True)
+	component_id = AppComponentIDAttribute(required=True)
+	ucs_version = AppUCSVersionAttribute(required=True)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
@@ -785,7 +841,7 @@ class App(object):
 	additional_packages_slave = AppListAttribute()
 	additional_packages_member = AppListAttribute()
 
-	rating = AppListAttribute()
+	rating = AppRatingAttribute()
 
 	umc_module_name = AppAttribute()
 	umc_module_flavor = AppAttribute()
@@ -832,6 +888,8 @@ class App(object):
 		self._is_ucs_component = None
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
+		for attr in self._attrs:
+			attr.post_creation(self)
 		if self.docker:
 			self.supported_architectures = ['amd64']
 		else:
@@ -859,7 +917,7 @@ class App(object):
 
 	@property
 	def license_description(self):
-		return _get_license_descriptions().get(self.license)
+		return _get_license_descriptions(self.get_locale()).get(self.license)
 
 	def __str__(self):
 		return '%s=%s' % (self.id, self.version)
@@ -868,52 +926,30 @@ class App(object):
 		return 'App(id="%s", version="%s")' % (self.id, self.version)
 
 	@classmethod
-	def from_ini(cls, ini_file, locale=True):
+	def _get_meta_parser(cls, ini_file, ini_parser):
+		component_id = os.path.splitext(os.path.basename(ini_file))[0]
+		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
+		return _read_ini_file(meta_file)
+
+	@classmethod
+	def from_ini(cls, ini_file, locale=True, cache=None):
 		# app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
-		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
-		meta_parser = _read_ini_file(meta_file)
+		meta_parser = cls._get_meta_parser(ini_file, ini_parser)
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None
-			if attr.name == 'component_id':
-				value = component_id
-			if attr.name == 'ucs_version':
-				value = '4.1'
-			elif attr.name == 'rating':
-				value = []
-				rating_items = _get_rating_items()
-				for item in rating_items:
-					val = _get_from_parser(meta_parser, 'Application', item['name'])
-					try:
-						val = int(val)
-					except (ValueError, TypeError):
-						pass
-					else:
-						item['value'] = val
-						value.append(item)
-			else:
-				ini_attr_name = attr.name.replace('_', '')
-				priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
-				if attr.localisable and locale:
-					priority_sections.insert(0, (meta_parser, locale))
-					priority_sections.insert(2, (ini_parser, locale))
-				for parser, section in priority_sections:
-					try:
-						value = parser.get(section, ini_attr_name)
-					except (NoSectionError, NoOptionError):
-						pass
-					else:
-						break
 			try:
-				value = attr.get(value, ini_file)
+				value = attr.get_value(component_id, ini_parser, meta_parser, locale)
 			except ValueError as e:
 				app_logger.error('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
 				return
 			attr_values[attr.name] = value
+		if cache:
+			attr_values['_cache'] = cache
 		return cls(**attr_values)
 
 	@property
@@ -1017,6 +1053,9 @@ class App(object):
 
 	def get_ucs_version(self):
 		return self.ucs_version
+
+	def get_locale(self):
+		return get_locale()
 
 	def get_server(self):
 		return AppManager.get_server()
