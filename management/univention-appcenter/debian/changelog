@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-12) unstable; urgency=medium
+
+  * Bug #42801: Validate attribute names when writing ini files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 17 Nov 2016 23:39:15 +0100
+
 univention-appcenter (5.0.23-11) unstable; urgency=medium
 
   * Bug #42801: Support App init with cache; get rid of global get_locale()
