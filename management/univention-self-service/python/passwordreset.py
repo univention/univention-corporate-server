@@ -136,4 +136,5 @@ class PasswordReset(Ressource):
 			"password": password
 		})
 
+
 application = cherrypy.Application(PasswordReset(), "/univention-self-service/passwordreset")

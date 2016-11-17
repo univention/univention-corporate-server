@@ -57,6 +57,7 @@ class printerACLTypes(univention.admin.syntax.select):
 		('deny', _('Deny chosen users/groups.')),
 	]
 
+
 help_link = _('http://docs.univention.de/manual.html#print::shares')
 
 module = 'shares/printer'
@@ -252,6 +253,7 @@ def stringToBool(value):
 	else:
 		return '0'
 
+
 _AVAILABLE_PRINTER_SCHEMAS = []
 
 
@@ -271,6 +273,7 @@ def unmapPrinterURI(value):
 
 def mapPrinterURI(value):
 	return ''.join(value)
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

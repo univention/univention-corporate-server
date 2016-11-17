@@ -54,6 +54,7 @@ class dhcp_dnsFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpDomainNameServers', _('Domain name servers'))
 	]
 
+
 module = 'policies/dhcp_dns'
 operations = ['add', 'edit', 'remove', 'search']
 

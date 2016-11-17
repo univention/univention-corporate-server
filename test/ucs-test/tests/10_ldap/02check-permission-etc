@@ -87,5 +87,6 @@ def check_permissions(filename):
 		return_code = False
 	return return_code
 
+
 if __name__ == '__main__':
 	main()

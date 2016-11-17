@@ -73,5 +73,6 @@ def main():
 		else:
 			utils.fail("Token '{0}' not found in /var/mail/root at {1}, UCRs: {2}.".format(token, datetime.datetime.now(), ucrs))
 
+
 if __name__ == '__main__':
 	main()

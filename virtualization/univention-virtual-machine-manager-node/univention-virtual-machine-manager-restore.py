@@ -121,6 +121,7 @@ def restore_instance(instances, name, force):
 			break
 	return True
 
+
 if __name__ == '__main__':
 	parser = OptionParser()
 	parser.add_option('-l', '--list', action='store_true', dest='list', default=False, help='List all available backups.')

@@ -124,6 +124,7 @@ def unmapUMC_CommandPattern(value):
 			unmapped.append((item, ''))
 	return unmapped
 
+
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('description', 'description', None, udm_mapping.ListToString)

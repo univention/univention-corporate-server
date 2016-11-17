@@ -60,6 +60,7 @@ class sharePrintQuotaFixedAttributes(univention.admin.syntax.select):
 		('univentionPrintQuotaGroupsPerUsers', _('Print quota for groups per user'))
 	]
 
+
 module = 'policies/print_quota'
 operations = ['add', 'edit', 'remove', 'search']
 
@@ -150,6 +151,7 @@ def mapQuotaEntries(old):
 	for i in old:
 		new.append(string.join(i, ' '))
 	return new
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

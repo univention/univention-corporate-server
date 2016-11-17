@@ -69,6 +69,7 @@ def ldap_filter_not_objectflag(flag_string_list):
 	else:
 		return '(!(|%s))' % ''.join(ldap_filter_parts)
 
+
 user_exclude_objectflags = ['temporary', 'functional', 'hidden']
 managedclient_exclude_objectflags = []
 if configRegistry.is_true('ad/member'):
@@ -475,6 +476,7 @@ class License(object):
 			self.oemProductTypes = [self.oemProductTypes]
 		self.types.extend(self.oemProductTypes)
 		self.endDate = self.__getValue('univentionLicenseEndDate', None, 'License end date', 'univentionLicenseEndDate attribute not found')
+
 
 _license = License()
 

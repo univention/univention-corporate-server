@@ -88,6 +88,8 @@ def sessionidhash():
 	return hashlib.sha256('%s%s%s' % (cherrypy.request.headers['Authorization'], cherrypy.request.headers.get('Accept-Language', ''), sessionidhash.salt)).hexdigest()[:36]
 # python 2.7.7 required:
 	# return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', cherrypy.request.headers['Authorization']), sessionidhash.salt, 100000)[:36]
+
+
 sessionidhash.salt = rndstr()
 
 
@@ -119,6 +121,8 @@ def _proxy_uri():
 		cherrypy.request.query = cherrypy.request.params
 	finally:
 		cherrypy.request.params = foo
+
+
 cherrypy.tools.fix_uri = cherrypy.Tool('before_request_body', _proxy_uri, priority=30)
 
 
@@ -386,6 +390,7 @@ class UploadManager(dict):
 			return True
 
 		return False
+
 
 _upload_manager = UploadManager()
 
@@ -1421,6 +1426,8 @@ def run_cherrypy(options):
 def reload_webserver():
 	for func in reload_webserver.callbacks:
 		func()
+
+
 reload_webserver.callbacks = [log_reopen]
 
 

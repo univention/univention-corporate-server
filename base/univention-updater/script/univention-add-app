@@ -54,6 +54,7 @@ def simple_handler(f):
 		f.write(msg)
 	return _simple_handler
 
+
 if __name__ == '__main__':
 	usage = '%prog --list # OR:\n%prog <component> [-a] [-m] [-l] [<package> ...]'
 	description = '%prog prepares the corresponding repository settings for the specified component and installs the given packages.'

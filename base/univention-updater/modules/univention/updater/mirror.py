@@ -341,6 +341,7 @@ class UniventionMirror(UniventionUpdater):
         self.mirror_update_scripts()
         self.update_dists_files()
 
+
 if __name__ == '__main__':
     import doctest
     from sys import exit

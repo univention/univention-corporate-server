@@ -86,6 +86,7 @@ def create_ssh_session(username, password):
 	assert status == 2, 'shell prompt'
 	return shell
 
+
 if __name__ == "__main__":
 	username = get_unique_username()
 	print 'Using username "%s"' % username

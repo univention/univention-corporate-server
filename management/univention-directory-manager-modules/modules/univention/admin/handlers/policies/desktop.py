@@ -56,6 +56,7 @@ class desktopFixedAttributes(univention.admin.syntax.select):
 		(('univentionDesktopProfile'), _('Desktop profile'))
 	]
 
+
 module = 'policies/desktop'
 operations = ['add', 'edit', 'remove', 'search']
 

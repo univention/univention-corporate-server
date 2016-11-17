@@ -47,5 +47,6 @@ def appliance_hooks():
 	shutil.rmtree(temp_dir)
 	sys.exit(0)
 
+
 if __name__ == "__main__":
 	appliance_hooks()

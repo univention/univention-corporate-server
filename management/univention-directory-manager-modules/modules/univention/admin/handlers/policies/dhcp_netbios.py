@@ -55,6 +55,7 @@ class dhcp_netbiosFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpNetbiosNodeType', _('NetBIOS node type'))
 	]
 
+
 module = 'policies/dhcp_netbios'
 operations = ['add', 'edit', 'remove', 'search']
 

@@ -40,6 +40,7 @@ def init_app(**kwargs):
 			if Application._all_applications == []:
 				Application._all_applications = None
 
+
 with init_app(ID='test1', ConflictedApps='test2, test3') as app, init_app(ID='test2', DefaultPackages='python'), init_app(ID='test3', DefaultPackages='python, someappspecificpackage'):
 	conflicts = app.must_have_no_conflicts_apps(pm)
 	print conflicts

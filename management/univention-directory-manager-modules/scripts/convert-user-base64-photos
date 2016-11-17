@@ -96,6 +96,7 @@ def run(action, verbose=False):
 			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=b64), dict(jpegPhoto=bin))
 			lo.modify_s(idn, ldiff)
 
+
 if __name__ == '__main__':
 	# parse arguments and options
 	parser = optparse.OptionParser(usage='Usage: %%prog [options] (%s)\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.' % '|'.join(ACTIONS))

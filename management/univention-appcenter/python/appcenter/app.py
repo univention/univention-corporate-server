@@ -99,6 +99,8 @@ def _get_rating_items(locale):
 			item = {'name': section, 'description': description, 'label': label}
 			_get_rating_items._cache.append(item)
 	return [itm.copy() for itm in _get_rating_items._cache]
+
+
 _get_rating_items._cache = None
 
 
@@ -112,6 +114,8 @@ def _get_license_descriptions(locale):
 				description = _get_from_parser(license_parser, section, 'Description[%s]' % locale) or description
 			_get_license_descriptions._cache[section] = description
 	return _get_license_descriptions._cache
+
+
 _get_license_descriptions._cache = None
 
 

@@ -46,6 +46,7 @@ def main():
 	format.format(test_result)
 	return 0 if test_result.eofs in 'OS' else 1
 
+
 if __name__ == '__main__':
 	try:
 		sys.exit(main())

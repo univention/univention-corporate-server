@@ -471,6 +471,8 @@ def scan_and_store_packages(cursor, sysname, fake_null=False):
 	if insert_values:
 		insert_statement += ','.join(insert_values)
 		cursor.execute(insert_statement)
+
+
 scan_and_store_packages.cache = None
 
 
@@ -522,6 +524,7 @@ def action_scan(connection, cursor, config_registry):
 	connection.commit()
 	log('end of scan for system %r' % (sysname, ))
 	return 0
+
 
 PRIVILEGED_OPERATIONS = frozenset(('add-system', 'del-system', 'fill-testdb', 'test-superuser',))
 

@@ -52,6 +52,7 @@ def get_int(variable, default):
 	except (ValueError, TypeError):
 		return default
 
+
 SERVER_DEBUG_LEVEL = get_int('umc/server/debug/level', 2)
 SERVER_MAX_CONNECTIONS = 100
 

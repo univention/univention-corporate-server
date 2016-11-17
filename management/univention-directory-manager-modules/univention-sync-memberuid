@@ -140,5 +140,6 @@ def process_groups(lo, base_dn, test=False, cont=False):
 					if not cont:
 						raise ConsistencyError()
 
+
 if __name__ == '__main__':
 	main()

@@ -56,6 +56,7 @@ class masterPackagesFixedAttributes(univention.admin.syntax.select):
 		('univentionMasterPackagesRemove', _('Package removal list')),
 	]
 
+
 module = 'policies/masterpackages'
 operations = ['add', 'edit', 'remove', 'search']
 

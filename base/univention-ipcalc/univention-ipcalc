@@ -214,5 +214,6 @@ def __test(_option, _opt_str, _value, _parser):
 	res = doctest.testmod()
 	sys.exit(int(bool(res[0])))
 
+
 if __name__ == '__main__':
 	main()

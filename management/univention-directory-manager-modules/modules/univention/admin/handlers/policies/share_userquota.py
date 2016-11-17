@@ -59,6 +59,7 @@ class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
 		('univentionQuotaReapplyEveryLogin', _('Reapply settings on every login'))
 	]
 
+
 module = 'policies/share_userquota'
 operations = ['add', 'edit', 'remove', 'search']
 

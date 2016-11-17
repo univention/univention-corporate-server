@@ -42,5 +42,6 @@ def main():
 	else:
 		print("Success: The appcenter answered in %s sec." % (end_time - start_time, ))
 
+
 if __name__ == '__main__':
 	main()

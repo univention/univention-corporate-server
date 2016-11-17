@@ -879,6 +879,7 @@ class Nodes(dict):
 					nodes.append(self[node_uri].pd)
 		return nodes
 
+
 nodes = Nodes()
 node_add = nodes.add
 node_remove = nodes.remove

@@ -188,5 +188,6 @@ class TestSetLanguage(unittest.TestCase):
 		self.assertEqual('baz', self.lval.get())
 		self.assertEqual('baz', self.ldict['val'])
 
+
 if __name__ == '__main__':
 	unittest.main()

@@ -91,5 +91,6 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 			if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
 				print 'Remounting partition failed: %s' % fstab_partition.spec
 
+
 if __name__ == '__main__':
 	_modify_extfs_option(['user_xattr'])

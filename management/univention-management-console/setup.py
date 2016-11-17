@@ -86,6 +86,7 @@ class Build(build):
 def all_xml_files_in(dir):
 	return filter(lambda x: os.path.isfile(x) and x.endswith('.xml'), map(lambda x: os.path.join(dir, x), os.listdir(dir)))
 
+
 setup(name='univention-management-console',
 	description='Univention Management Console',
 	author='Univention GmbH',

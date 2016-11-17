@@ -57,6 +57,7 @@ class dhcp_scopeFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpDeclines', _('Declines'))
 	]
 
+
 module = 'policies/dhcp_scope'
 operations = ['add', 'edit', 'remove', 'search']
 

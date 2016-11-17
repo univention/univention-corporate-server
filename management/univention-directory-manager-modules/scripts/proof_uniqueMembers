@@ -47,6 +47,8 @@ def warn(msg, *args, **kwargs):
 	"""Print warning."""
 	print >> sys.stderr, 'Warning: ' + (msg % (args or kwargs))
 	warn.warnings += 1
+
+
 warn.warnings = 0
 
 

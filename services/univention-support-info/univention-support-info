@@ -892,6 +892,7 @@ def main(encrypt=False):
 	print '    ' + archiveFileName
 	cleanup()
 
+
 if __name__ == "__main__":
 	parser = optparse.OptionParser()
 	parser.add_option('--encrypt', action='store_true', dest='encrypt', default=False, help='encrypt data (can only be decrypted by Univention support)')

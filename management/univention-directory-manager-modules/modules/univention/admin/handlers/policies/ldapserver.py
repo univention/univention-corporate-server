@@ -55,6 +55,7 @@ class ldapServerFixedAttributes(univention.admin.syntax.select):
 		('univentionLDAPServer', _('LDAP Server')),
 	]
 
+
 module = 'policies/ldapserver'
 operations = ['add', 'edit', 'remove', 'search']
 

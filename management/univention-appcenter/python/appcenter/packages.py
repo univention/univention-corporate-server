@@ -59,6 +59,8 @@ def get_package_manager():
 		package_manager.logger.addHandler(log_filter)
 		get_package_manager._package_manager = package_manager
 	return get_package_manager._package_manager
+
+
 get_package_manager._package_manager = None
 
 

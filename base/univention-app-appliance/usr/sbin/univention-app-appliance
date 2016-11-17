@@ -214,6 +214,7 @@ def main(app_id):
 	print_status("Applying branded boot splash and grub theme.")
 	set_grub_theme()
 
+
 if __name__ == '__main__':
 	if '-h' in sys.argv[1:] or '--help' in sys.argv[1:]:
 		print("Apply initial settings for Univention App Appliances.")

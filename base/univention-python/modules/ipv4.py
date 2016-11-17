@@ -85,6 +85,7 @@ def broadcastNumber(dottedNetwork, dottedNetmask):
 
 	return joinDotted(broadcast)
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

@@ -84,5 +84,6 @@ def main():
 					print 'EXCEPTION in imap_search_mail: %r' % (ex,)
 					utils.fail('Test %d: login to IMAP mailbox %r is not possible' % (i, userbase[i][2]))
 
+
 if __name__ == '__main__':
 	main()

@@ -478,6 +478,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				self.logerror(logger, "Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url))
 			raise
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

@@ -187,6 +187,7 @@ class PopMail(Mail):
 			con.quit()
 		return True
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

@@ -54,6 +54,7 @@ class clientPackagesFixedAttributes(univention.admin.syntax.select):
 		('univentionClientPackagesRemove', _('Package removal list')),
 	]
 
+
 module = 'policies/managedclientpackages'
 operations = ['add', 'edit', 'remove', 'search']
 

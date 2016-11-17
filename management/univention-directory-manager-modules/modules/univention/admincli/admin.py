@@ -1129,6 +1129,7 @@ def _doit(arglist):
 
 	return out  # nearly the only successfull return
 
+
 if __name__ == '__main__':
 	import sys
 	print '\n'.join(doit(sys.argv))

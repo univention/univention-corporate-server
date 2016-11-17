@@ -64,6 +64,8 @@ class CommandDefinition(object):
 		return self._options
 
 #: List of valid commands
+
+
 COMMANDS = (
 	CommandDefinition('AUTH', False, 'username', 'password', 'new_password'),
 	CommandDefinition('COMMAND', True),
@@ -97,6 +99,8 @@ class Status(object):
 		return _('Unknown status code')
 
 #: list of valid status names, codes, and human readable descriptions
+
+
 STATUS = (
 	# UMCP request success messages
 	Status('SUCCESS', 200, _('OK, operation successful')),

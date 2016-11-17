@@ -148,6 +148,7 @@ def stringToBool(value):
 	else:
 		return '0'
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('spoolHost', 'univentionPrinterSpoolHost')

@@ -17,6 +17,8 @@ class TokenMeta(type):
         return cls._token_classes[name]
 
 # need to proceed that way for Python 2/3 compatility:
+
+
 TokenBase = TokenMeta('TokenBase', (object,), {})
 
 
@@ -51,6 +53,7 @@ class CData(Token):
 
 class Doctype(Token):
     regex = r'''<!DOCTYPE(\s+([^<>"']+|"[^"]*"|'[^']*'))*>'''
+
 
 _open_tag_start = r'''
     <\s*
@@ -109,6 +112,8 @@ class NamedTagTokenMeta(TokenMeta):
         return kls
 
 # need to proceed that way for Python 2/3 compatility
+
+
 NamedTagTokenBase = NamedTagTokenMeta(
     'NamedTagTokenBase',
     (Token,),
@@ -171,6 +176,7 @@ class Tokenizer(object):
                 raise XMLTokenError("Unrecognized XML token near %s" % repr(string[:100]))
 
         return result
+
 
 tokenize = Tokenizer(
     (Text, Comment, CData, Doctype, XMLDeclaration, Script, Style, OpenTag, SelfTag, CloseTag)
@@ -323,6 +329,7 @@ def indent(string, indentation='  ', newline='\n', indent_text=False, blank_is_t
             was_just_opened = False
             tag_appeared = True
     return ''.join(result)
+
 
 if __name__ == '__main__':
     import sys

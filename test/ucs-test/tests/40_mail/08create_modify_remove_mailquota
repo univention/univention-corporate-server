@@ -132,6 +132,7 @@ def main():
 		finally:
 			restart_cyrus_saslauthd()
 
+
 if __name__ == '__main__':
 	main()
 

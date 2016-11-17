@@ -53,6 +53,7 @@ class clientDevicesFixedAttributes(univention.admin.syntax.select):
 		('univentionClientDevice', _('Client devices')),
 	]
 
+
 module = 'policies/clientdevices'
 operations = ['add', 'edit', 'remove', 'search']
 

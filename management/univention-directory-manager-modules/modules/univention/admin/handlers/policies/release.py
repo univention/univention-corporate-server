@@ -55,6 +55,7 @@ class releaseFixedAttributes(univention.admin.syntax.select):
 		('univentionUpdateVersion', _('Release Version')),
 	]
 
+
 module = 'policies/release'
 operations = ['add', 'edit', 'remove', 'search']
 

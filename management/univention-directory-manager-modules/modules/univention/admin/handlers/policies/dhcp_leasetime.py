@@ -55,6 +55,7 @@ class dhcp_leasetimeFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpLeaseTimeMin', _('Minimum lease time'))
 	]
 
+
 module = 'policies/dhcp_leasetime'
 operations = ['add', 'edit', 'remove', 'search']
 

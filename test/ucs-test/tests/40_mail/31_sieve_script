@@ -71,6 +71,7 @@ def main():
 			send_mail(recipients=usermail, msg=token, gtube=True)
 			check_delivery(token, recipient_email=usermail, should_be_delivered=False, spam=True)
 
+
 if __name__ == '__main__':
 	main()
 

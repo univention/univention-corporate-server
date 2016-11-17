@@ -43,6 +43,7 @@ def fixup(s):
 		s = s + "=" * (4 - n)
 	return s
 
+
 configfile = '/etc/univention/connector/internal.cfg'
 if not os.path.exists(configfile):
 	print "ERROR: Config-File not found, maybe connector was never started"

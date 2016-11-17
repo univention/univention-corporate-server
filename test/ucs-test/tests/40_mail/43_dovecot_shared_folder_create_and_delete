@@ -87,6 +87,7 @@ def main():
 								utils.fail('Test %d: maildir %r for shared folder has been removed! %r' % (i, path,
 									folder))
 
+
 if __name__ == '__main__':
 	global timeout
 	timeout = 1

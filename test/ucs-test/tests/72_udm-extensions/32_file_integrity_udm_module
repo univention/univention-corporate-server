@@ -112,5 +112,6 @@ def test_module():
 		print 'Removing source package'
 		package.remove()
 
+
 if __name__ == '__main__':
 	test_module()

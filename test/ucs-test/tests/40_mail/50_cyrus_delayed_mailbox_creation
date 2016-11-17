@@ -61,5 +61,6 @@ def main():
 			if os.path.exists(triggerfn):
 				os.unlink(triggerfn)
 
+
 if __name__ == '__main__':
 	main()

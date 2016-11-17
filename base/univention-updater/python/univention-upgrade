@@ -74,6 +74,7 @@ def dprint(silent, msg, newline=True, debug=False):
             print '%-55s' % msg,
         sys.stdout.flush()
 
+
 updater_status = {}
 
 

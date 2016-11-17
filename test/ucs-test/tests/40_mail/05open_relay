@@ -156,5 +156,6 @@ def main():
 				if create_bad_mailheader(mailfrom, rcpt) != 1:
 					utils.fail('*** Open relay found ***')
 
+
 if __name__ == '__main__':
 	main()

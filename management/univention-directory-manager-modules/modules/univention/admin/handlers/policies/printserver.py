@@ -54,6 +54,7 @@ class printServerFixedAttributes(univention.admin.syntax.select):
 		('univentionPrintServer', _('Print server')),
 	]
 
+
 module = 'policies/printserver'
 operations = ['add', 'edit', 'remove', 'search']
 

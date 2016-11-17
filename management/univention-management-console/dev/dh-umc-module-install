@@ -176,6 +176,7 @@ umc_frontend_new_hash
 		with open(os.path.join('debian', package + '.prerm.debhelper'), 'a') as f_prerm:
 			f_prerm.write('invoke-rc.d univention-management-console-server reload || true\n')
 
+
 if __name__ == '__main__':
 	# parse all options
 	parser = OptionParser(usage='usage: %prog [--core]')

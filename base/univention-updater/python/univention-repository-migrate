@@ -177,6 +177,7 @@ def migrate_repository(options):
 
     _remove_repository(options, REPO_BASE_OLD, complete=True)
 
+
 if __name__ == '__main__':
     parser = OptionParser(usage="usage: %prog [options] ")
     parser.add_option(

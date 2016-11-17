@@ -48,6 +48,8 @@ from functools import reduce
 
 def N_(msg):
 	return msg
+
+
 _ = gettext.translation('univention-virtual-machine-manager', fallback=True).ugettext
 
 
@@ -95,6 +97,7 @@ def tuple2version(version):
 	"""
 	return reduce(lambda a, b: a * 1000 + b, version, 0)
 
+
 import socket
 
 FQDN = socket.getfqdn()
@@ -120,6 +123,7 @@ def uri_decode(uri):
 		return uri[:i] + chr(int(uri[i + 1:i + 3], 16)) + uri_decode(uri[i + 3:])
 	else:
 		return uri
+
 
 import sys
 import threading

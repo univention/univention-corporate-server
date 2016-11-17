@@ -48,6 +48,7 @@ exit %(exit_code)d
 			app.uninstall()
 			app.remove()
 
+
 if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		create_app(fail_in_preinst=False)

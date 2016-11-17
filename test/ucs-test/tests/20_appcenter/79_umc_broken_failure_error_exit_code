@@ -170,5 +170,6 @@ def main():
 		test_uninstall_prerm_error()
 		test_uninstall_postrm_error()
 
+
 if __name__ == '__main__':
 	main()

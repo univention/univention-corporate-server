@@ -90,5 +90,6 @@ def main():
 
 	squid.restart()
 
+
 if __name__ == '__main__':
 	main()

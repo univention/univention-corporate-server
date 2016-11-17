@@ -60,6 +60,7 @@ def _boolean_filter(prop, key, value):
 		# need to call str() here directly order to force a correct translation
 		return (key, str(_('No')))
 
+
 filter_add((ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse, ua_syntax.TrueFalseUpper, ua_syntax.OkOrNot), _boolean_filter)
 
 
@@ -69,6 +70,7 @@ def _email_address(prop, key, value):
 	else:
 		value = '\mbox{%s}' % value
 	return (key, value)
+
 
 filter_add((ua_syntax.emailAddress, ), _email_address)
 
@@ -81,5 +83,6 @@ def _samba_group_type(prop, key, value):
 	if value in types.keys():
 		value = types[value]
 	return (key, value)
+
 
 filter_add((ua_syntax.sambaGroupType, ), _samba_group_type)

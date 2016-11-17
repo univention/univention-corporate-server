@@ -29,6 +29,7 @@ def main():
 					send_mail(recipients=recipient, msg=token, **kwargs)
 					check_delivery(token, recipient, True)
 
+
 if __name__ == '__main__':
 	main()
 

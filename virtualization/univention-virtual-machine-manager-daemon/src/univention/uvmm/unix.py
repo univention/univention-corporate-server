@@ -212,6 +212,7 @@ def unix(options):
 	except OSError as (err, errmsg):
 		logger.warning("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

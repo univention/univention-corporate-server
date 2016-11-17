@@ -78,5 +78,6 @@ exit 0
 		print 'Removing source package'
 		package.remove()
 
+
 if __name__ == '__main__':
 	test_all()

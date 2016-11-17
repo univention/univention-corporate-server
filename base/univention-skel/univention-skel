@@ -202,6 +202,7 @@ def _unlock():
 
 	return True
 
+
 if not _lock():
 	print >>sys.stderr, 'Unable to lock skel operations'
 	sys.exit(1)

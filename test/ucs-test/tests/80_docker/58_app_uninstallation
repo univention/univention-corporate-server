@@ -15,6 +15,7 @@ def fail_if_file_exists(f):
 	if os.path.exists(f):
 		fail('%s still exists' % f)
 
+
 if __name__ == '__main__':
 
 	with Appcenter() as appcenter:

@@ -47,6 +47,7 @@ def main():
 			send_mail(recipients=usermail1, msg=token, tls=True, username=usermail, password=password)
 			check_delivery(token, usermail1, True)
 
+
 if __name__ == '__main__':
 	main()
 

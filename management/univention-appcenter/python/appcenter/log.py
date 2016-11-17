@@ -214,6 +214,8 @@ def log_to_stream():
 			handler.setFormatter(formatter)
 		handler.addFilter(RangeFilter(min_level=logging.WARN))
 		logger.addHandler(handler)
+
+
 log_to_stream._already_set_up = False
 
 
@@ -244,6 +246,8 @@ def log_to_logfile():
 		handler = logging.FileHandler(LOG_FILE)
 		handler.setFormatter(formatter)
 		get_base_logger().addHandler(handler)
+
+
 log_to_logfile._already_set_up = False
 
 get_base_logger().setLevel(logging.DEBUG)

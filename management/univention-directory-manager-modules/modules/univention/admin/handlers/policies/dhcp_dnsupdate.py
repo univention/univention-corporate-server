@@ -60,6 +60,7 @@ class dhcp_dnsupdateFixedAttributes(univention.admin.syntax.select):
 		('univentionDhcpDdnsClientUpdates', _('Client updates'))
 	]
 
+
 module = 'policies/dhcp_dnsupdate'
 operations = ['add', 'edit', 'remove', 'search']
 
