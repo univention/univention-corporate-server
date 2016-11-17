@@ -98,6 +98,16 @@ app_get_database_packages_for_docker_host ()
 		print ' '.join(d._get_software_packages())"
 }
 
+app_get_database_name_for_docker_app ()
+{
+	local app=$1
+	python -c "from univention.appcenter.app import AppManager; \
+		from univention.appcenter.database import DatabaseConnector; \
+		app=AppManager.find('$app'); \
+		d = DatabaseConnector.get_connector(app); \
+		print d.get_db_name()"
+}
+
 app_get_component ()
 {
 	local app=$1
@@ -317,7 +327,6 @@ if is_ucr_true system/setup/boot/start; then
 	# uninstall old app
 	docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
 	univention-app register \${APP} --undo-it
-	mysql -uroot -p\$(</etc/mysql.secret) -e "drop database owncloud;"
 
 	# install app
 	python -c "from univention.appcenter.app import AppManager
