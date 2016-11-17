@@ -1,3 +1,9 @@
+univention-archive-key (6.0.1-2) unstable; urgency=low
+
+  * Bug #41305: Register key for (PXE) installation
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 17 Nov 2016 09:08:16 +0100
+
 univention-archive-key (6.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
