@@ -153,7 +153,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Return ID %r' % startID)
 			if other:
-					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
+				univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
 			return str(startID)
 
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (atype,))

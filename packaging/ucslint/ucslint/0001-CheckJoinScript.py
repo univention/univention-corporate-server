@@ -79,13 +79,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		lines = content.splitlines()
 		cnt = {'version': 0,
-				'vversion': 0,
-				'credential_arg_missing': 0,
-				'unquoted_credential_arg': 0,
-				'old_cmd_name': 0,
-				'joinscripthelper.lib': 0,
-				'joinscript_init': 0,
-				'joinscript_save_current_version': 0,
+			'vversion': 0,
+			'credential_arg_missing': 0,
+			'unquoted_credential_arg': 0,
+			'old_cmd_name': 0,
+			'joinscripthelper.lib': 0,
+			'joinscript_init': 0,
+			'joinscript_save_current_version': 0,
          }
 		for line in lines:
 			line = line.strip()

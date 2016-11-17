@@ -209,7 +209,7 @@ class License(object):
 		if licenses.modules.has_key(module):
 			mlics = licenses.modules[module]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-					'LICENSE: module license: %s' % str(mlics))
+				'LICENSE: module license: %s' % str(mlics))
 			# empty list -> valid
 			return mlics.valid(self.types)
 		# unknown modules are always valid (e.g. customer modules)
@@ -239,12 +239,12 @@ class License(object):
 			# remove module if valid license is missing
 			if self.isValidFor(mod):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-						'update: License is valid for module %s!!' % mod)
+					'update: License is valid for module %s!!' % mod)
 				# check module options according to given license type
 				self.modifyOptions(mod)
 			else:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-						'update: License is NOT valid for module %s!!' % mod)
+					'update: License is NOT valid for module %s!!' % mod)
 				del univention.admin.modules.modules[mod]
 				deleted_mods.append(mod)
 
@@ -428,7 +428,7 @@ class License(object):
 				self.new_license = True
 			else:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-						'LICENSE: %s' % errormsg)
+					'LICENSE: %s' % errormsg)
 				value = default
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: %s = %s' % (name, value))
@@ -438,13 +438,13 @@ class License(object):
 		self.version = self.__getValue('univentionLicenseVersion', '1', 'Version', None)
 		if self.version == '1':
 			self.licenses[self.version][License.ACCOUNT] = self.__getValue(self.keys[self.version][License.ACCOUNT], None,
-					'Accounts', 'Univention Accounts not found')
+				'Accounts', 'Univention Accounts not found')
 			self.licenses[self.version][License.CLIENT] = self.__getValue(self.keys[self.version][License.CLIENT], None,
-					'Clients', 'Univention Clients not found')
+				'Clients', 'Univention Clients not found')
 			self.licenses[self.version][License.DESKTOP] = self.__getValue(self.keys[self.version][License.DESKTOP], 2,
-					'Desktops', 'Univention Desktops not found')
+				'Desktops', 'Univention Desktops not found')
 			self.licenses[self.version][License.GROUPWARE] = self.__getValue(self.keys[self.version][License.GROUPWARE], 2,
-					'Groupware Accounts', 'Groupware not found')
+				'Groupware Accounts', 'Groupware not found')
 			# if no type field is found it must be an old UCS license (<=1.3-0)
 			self.types = self.__getValue('univentionLicenseType', ['UCS'],
 					'License Type', 'Type attribute not found')
@@ -456,13 +456,13 @@ class License(object):
 				self.types.append('UCS')
 		elif self.version == '2':
 			self.licenses[self.version][License.USERS] = self.__getValue(self.keys[self.version][License.USERS], None,
-					'Users', 'Users not found')
+				'Users', 'Users not found')
 			self.licenses[self.version][License.SERVERS] = self.__getValue(self.keys[self.version][License.SERVERS], None,
-					'Servers', 'Servers not found')
+				'Servers', 'Servers not found')
 			self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[self.version][License.MANAGEDCLIENTS], None,
-					'Managed Clients', 'Managed Clients not found')
+				'Managed Clients', 'Managed Clients not found')
 			self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None,
-					'Corporate Clients', 'Corporate Clients not found')
+				'Corporate Clients', 'Corporate Clients not found')
 			self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'],
 					'License Product', 'Product attribute not found')
 			if not isinstance(self.types, (list, tuple)):

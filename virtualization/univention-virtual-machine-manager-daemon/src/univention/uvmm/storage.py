@@ -205,7 +205,7 @@ def create_storage_volume(conn, domain, disk):
 			values['type'] = 'raw'
 		# permissions
 		permissions = [(access, configRegistry.get('uvmm/volume/permissions/%s' % access, None))
-				for access in ('owner', 'group', 'mode')]
+			for access in ('owner', 'group', 'mode')]
 		permissions = ['\t\t\t<%(tag)s>%(value)s</%(tag)s>' % {
 			'tag': xml_escape(key),
 			'value': xml_escape(value),

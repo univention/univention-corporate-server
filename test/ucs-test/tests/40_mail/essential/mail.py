@@ -166,7 +166,7 @@ class ImapMail(Mail):
 		try:
 			quota = int(m.group(1))
 		except:
-				quota = -1
+			quota = -1
 		self.send_and_receive_quota(s, 'a003', 'logout\r\n')
 		s.close()
 		return quota, retval[0]

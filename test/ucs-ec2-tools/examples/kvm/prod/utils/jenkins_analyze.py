@@ -136,7 +136,7 @@ def single_test(job, args):
 			if run.has_resultset()}
 		results[build_id] = build_results
 		machines |= set(strip_build_number(run.name)
-				for run in build.get_matrix_runs())
+			for run in build.get_matrix_runs())
 
 	print_table_header(machines)
 

@@ -129,7 +129,7 @@ class S4Cache:
 		# to the tuple ? syntax
 		sql_commands = [
 			("SELECT ATTRIBUTES.attribute,data.value from data \
-					inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
+				inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
