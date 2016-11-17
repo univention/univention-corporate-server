@@ -499,7 +499,7 @@ class Instance(Base, ProgressMixin):
 					})
 					break
 			else:
-			 	if not values.get('domainname'):
+				if not values.get('domainname'):
 					_append('domainname', _('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
 				if values.get('nameserver1'):
