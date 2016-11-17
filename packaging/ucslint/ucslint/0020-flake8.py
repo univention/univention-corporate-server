@@ -29,6 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import os.path
 import subprocess
 from argparse import ArgumentParser
 
@@ -70,8 +71,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	MAX_LINE_LENGTH = 220
 
 	def __init__(self, *args, **kwargs):
-		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 		self.show_statistics = kwargs.pop('show_statistics', False)
+		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 
 	def getMsgIds(self):
 		return {
@@ -331,7 +332,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		ignored = {}
 		for path in files:
-			ignore = ','.join(v for k, v in self.IGNORE.iteritems() if k.search(path))
+			ignore = ','.join(v for k, v in self.IGNORE.iteritems() if k.search(os.path.abspath(path)))
 			ignore = '%s,%s' % (self.DEFAULT_IGNORE, ignore)
 			ignored.setdefault(ignore.rstrip(','), []).append(path)
 
@@ -351,7 +352,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg(code, msg, path, row, col)
 
 	def ignore_line(self, code, path, row, col, text, source):
-		if code == '0020-F841' and "local variable '_d' is assigned to but never used" in text:  # _d = univention.debug.function()
+		allowed_names = ['_d', '_']
+		if code == '0020-F841' and any("local variable '%s' is assigned to but never used" % (x,) in text for x in allowed_names):  # _d = univention.debug.function()
 			return True
 		return False
 
@@ -362,7 +364,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				yield path
 
 	def ignore_path(self, path):
-		return any(pattern.search(path) for pattern in self.IGNORED_FILES)
+		return any(pattern.search(os.path.abspath(path)) for pattern in self.IGNORED_FILES)
 
 	@classmethod
 	def main(cls):
