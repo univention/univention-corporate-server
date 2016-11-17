@@ -2571,7 +2571,7 @@ define([
 
 					// apply network settings
 					var values = this.getValues();
-					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values}).then(function() {
+					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values, demo_mode:  this._isUsingPreconfiguredSetup()}).then(function() {
 						return page;
 					}));
 				});

@@ -616,10 +616,10 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, countries)
 
 	@simple_response
-	def net_apply(self, values):
+	def net_apply(self, values, demo_mode=False):
 		MODULE.process('Applying network settings')
 		with util.written_profile(values):
-			util.run_networkscrips()
+			util.run_networkscrips(demo_mode)
 		return True
 
 	@simple_response

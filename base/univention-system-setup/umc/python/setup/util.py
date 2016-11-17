@@ -285,7 +285,7 @@ def write_profile(values):
 		os.umask(old_umask)
 
 
-def run_networkscrips():
+def run_networkscrips(demo_mode=False):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING NETWORK APPLY SCRIPTS (%s) ===\n\n' % timestamp())
@@ -293,6 +293,12 @@ def run_networkscrips():
 
 	# make sure that UMC servers and apache will not be restartet
 	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
+
+	# If fast demo mode is used, no additional parameters must be provided,
+	# as they will prevent ldap modification. The host object has to be updated
+	script_parameters = []
+	if not demo_mode:
+		script_parameters = ['--network-only', '--appliance-mode']
 
 	try:
 		netpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net')
@@ -302,7 +308,7 @@ def run_networkscrips():
 			MODULE.info('Running script %s\n' % scriptpath)
 			# appliance-mode for temporary saving the old ip address
 			# network-only for not restarting all those services (time consuming!)
-			p = subprocess.Popen([scriptpath, '--network-only', '--appliance-mode'], stdout=f, stderr=subprocess.STDOUT)
+			p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
 			p.wait()
 
 	finally:
@@ -675,7 +681,7 @@ def detect_interfaces():
 		if open(os.path.join(pathname, 'type'), 'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
 			continue
 		# filter out bridge, bond devices
-		if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding')):
+		if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding', 'brport')):
 			continue
 		# filter out vlan devices
 		if '.' in dirname:
