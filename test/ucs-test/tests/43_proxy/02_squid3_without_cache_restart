@@ -17,7 +17,7 @@ def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(['squid/cache=false'])
 		squid.restart()
-		fail = not squid.is_running()
+		fail = not squid.is_running(30)
 
 	utils.wait_for_replication_and_postrun()
 	squid.restart()
