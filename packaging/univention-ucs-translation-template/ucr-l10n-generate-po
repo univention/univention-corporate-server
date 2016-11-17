@@ -43,7 +43,7 @@ def write_po_file(ucrv_assingments, file_name):
 	pof = polib.POFile(check_for_duplicates=True)
 	for ucrv, value in ucrv_assingments:
 		po_ent = polib.POEntry(occurrences=[(ucrv, None)],
-				msgid=value)
+			msgid=value)
 		try:
 			pof.append(po_ent)
 		except ValueError:

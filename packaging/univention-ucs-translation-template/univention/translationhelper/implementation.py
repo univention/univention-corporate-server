@@ -121,10 +121,10 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 	def _get_module_from_source_package(module, target_language):
 		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
 		for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
-				if required not in attrs:
-					raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
-				if required not in attrs:
-					raise AttributeError('UMC module defintion incomplete. key {} is missing a value.'.format(required))
+			if required not in attrs:
+				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
+			if required not in attrs:
+				raise AttributeError('UMC module defintion incomplete. key {} is missing a value.'.format(required))
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')

@@ -257,7 +257,7 @@ class App(object):
 		print 'App.upgrade()'
 		self._update()
 		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s=%s' %
-					(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
+			(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
 		self.ucr.load()
@@ -289,7 +289,7 @@ class App(object):
 		print 'App.uninstall()'
 		if self.installed:
 			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s=%s' %
-						(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
+				(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
 			if ret != 0:
 				raise UCSTest_DockerApp_RemoveFailed()
 

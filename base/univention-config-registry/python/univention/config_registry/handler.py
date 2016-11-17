@@ -85,7 +85,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 					mode, prefix = match.groups()
 					if mode == "UCRWARNING_ASCII":
 						value = warning_string(prefix, srcfiles=srcfiles,
-								enforce_ascii=True)
+							enforce_ascii=True)
 					else:
 						value = warning_string(prefix, srcfiles=srcfiles)
 				else:
@@ -239,7 +239,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 			env = dict(os.environ)
 			env['DPKG_MAINTSCRIPT_PACKAGE'] = 'univention-config'
 			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null,
-					env=env)
+				env=env)
 		finally:
 			null.close()
 
@@ -580,7 +580,7 @@ class ConfigHandlers:
 				handler.user = getpwnam(user).pw_uid
 			except LookupError:
 				print >> sys.stderr, ('W: failed to convert the username ' +
-						'%s to the uid' % (user,))
+					'%s to the uid' % (user,))
 
 		try:
 			group = entry['Group'][0]
@@ -591,7 +591,7 @@ class ConfigHandlers:
 				handler.group = getgrnam(group).gr_gid
 			except LookupError:
 				print >> sys.stderr, ('W: failed to convert the groupname ' +
-						'%s to the gid' % (group,))
+					'%s to the gid' % (group,))
 
 		try:
 			mode = entry['Mode'][0]

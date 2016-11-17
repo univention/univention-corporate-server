@@ -59,7 +59,7 @@ def run():
 				print 'Found in LDAP:   [(username, expirydate)] = %r' % ldap_found
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
 					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" %
-							(date - 1, date + 1))
+						(date - 1, date + 1))
 
 
 def main():

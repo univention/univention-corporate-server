@@ -191,9 +191,9 @@ def main(app_id):
 		# welcome-screen (plymouth) needs it as png
 		params = 'no-repeat; background-size: auto 28px; background-position: left center;'
 		_svg_to_png(umc_header,
-				'/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen.svg.png' % theme,
-				params,
-				'400x30')
+			'/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen.svg.png' % theme,
+			params,
+			'400x30')
 
 	if app.appliance_welcome_screen_logo:
 		img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg' % theme

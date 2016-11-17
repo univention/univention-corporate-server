@@ -214,10 +214,10 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 					pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
 					pids[pid] = cmd
 		elif dns_backend == 'samba4':
-				cmd = [RNDC_BIN, '-p', '953', 'reload']
-				p = subprocess.Popen(cmd)
-				if p.wait() != 0:
-					restart = True
+			cmd = [RNDC_BIN, '-p', '953', 'reload']
+			p = subprocess.Popen(cmd)
+			if p.wait() != 0:
+				restart = True
 	else:
 		restart = True
 	# Fall back to restart, which will temporarily interrupt the service
@@ -328,7 +328,7 @@ def postrun():
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':
-				do_reload = False
+			do_reload = False
 
 		if do_reload:
 			ud.debug(ud.LISTENER, ud.INFO, 'DNS: Doing reload')

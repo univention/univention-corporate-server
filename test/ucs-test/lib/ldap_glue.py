@@ -106,11 +106,11 @@ class LDAPConnection(object):
 
 		if parent1 != parent2:
 			self.lo.rename_s(compatible_modstring(unicode(dn)),
-					compatible_modstring(unicode(newrdn)),
-					compatible_modstring(unicode(parent2)))
+				compatible_modstring(unicode(newrdn)),
+				compatible_modstring(unicode(parent2)))
 		else:
 			self.lo.modrdn_s(compatible_modstring(unicode(dn)),
-					compatible_modstring(unicode(newrdn)))
+				compatible_modstring(unicode(newrdn)))
 
 	def set_attribute(self, dn, key, value):
 		"""Set attribute 'key' of LDAP object at 'dn' to 'value'."""

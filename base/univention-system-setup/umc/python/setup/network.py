@@ -279,7 +279,7 @@ class Device(object):
 	def _remove_old_fallback_variables(self):
 		# removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
 		self._leftover = [(leftover[0], None) if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,))
-				else leftover for leftover in self._leftover]
+			else leftover for leftover in self._leftover]
 
 	def validate(self):
 		self.validate_name()

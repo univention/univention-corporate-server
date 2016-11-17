@@ -318,23 +318,23 @@ class UniventionLDAPExtension(object):
 	def mark_active(self):
 		if self._todo_list:
 			try:
-					lo, ldap_position = udm_uldap.getAdminConnection()
-					udm_modules.update()
-					udm_module = udm_modules.get(self.udm_module_name)
-					udm_modules.init(lo, ldap_position, udm_module)
+				lo, ldap_position = udm_uldap.getAdminConnection()
+				udm_modules.update()
+				udm_module = udm_modules.get(self.udm_module_name)
+				udm_modules.init(lo, ldap_position, udm_module)
 
-					for object_dn in self._todo_list:
-						try:
-							udm_object = udm_module.object(None, lo, ldap_position, object_dn)
-							udm_object.open()
-							udm_object['active'] = True
-							udm_object.modify()
-						except udm_errors.noObject as e:
-							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
-						except udm_errors.ldapError as e:
-							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
-							raise
-					self._todo_list = []
+				for object_dn in self._todo_list:
+					try:
+						udm_object = udm_module.object(None, lo, ldap_position, object_dn)
+						udm_object.open()
+						udm_object['active'] = True
+						udm_object.modify()
+					except udm_errors.noObject as e:
+						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
+					except udm_errors.ldapError as e:
+						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
+						raise
+				self._todo_list = []
 
 			except udm_errors.ldapError as e:
 				ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))

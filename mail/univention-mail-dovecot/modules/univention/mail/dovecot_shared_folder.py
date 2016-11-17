@@ -369,7 +369,7 @@ class DovecotSharedFolderListener(DovecotListener):
 				finally:
 					self.listener.unsetuid()
 			emails_quota = ["%s@%s:%s" % (pf["name"] or pf.dn.split("@")[0].split("=")[1],
-						pf["mailDomain"],
+				pf["mailDomain"],
 				pf.get("univentionMailUserQuota", 0) or pf.get("cyrus-userquota", 0))
 				for pf in public_folders]
 		try:

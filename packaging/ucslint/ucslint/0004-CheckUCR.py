@@ -258,7 +258,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					fname = fn[fn.find('/conffiles/') + 10:]
 					if match.group(2) != fname:
 						self.addmsg('0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' %
-											(fname, match.group(1)), fn)
+							(fname, match.group(1)), fn)
 
 		return conffiles
 
@@ -572,71 +572,71 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			except LookupError:
 				self.debug('"%s" not found in %r' % (conffn, objlist.keys()))
 			else:  # TODO reindent
-					conffnfound = True
-					notregistered = []
-					invalidUCRVarNames = set()
+				conffnfound = True
+				notregistered = []
+				invalidUCRVarNames = set()
 
-					mfn = obj.get('Multifile', [None])[0]
+				mfn = obj.get('Multifile', [None])[0]
+				if mfn and mfn in all_multifiles:
+					# "Multifile" entry exists ==> obj is a subfile
+					knownvars = set()
+					# add known variables from multifile entry
+					knownvars.update(all_multifiles[mfn][0].get('Variables', []))  # ...otherwise it contains empty list or UCR variable names
+					# iterate over all subfile entries for this multifile
+					for sf in all_subfiles[mfn]:
+						# if subfile matches current subtemplate...
+						if shortconffn == sf.get('Subfile', [''])[0]:
+							# ...then add variables to list of known variables
+							knownvars.update(sf.get('Variables', []))
+				else:
+					# no subfile ==> File, Module, Script
+					knownvars = set(obj.get('Variables', []))
+
+				# check only variables against knownvars, @%@-placeholder are auto-detected
+				for var in conffiles[conffn]['variables']:
+					if var not in knownvars:
+						# if not found check if regex matches
+						for rvar in knownvars:
+							if '.*' in rvar:
+								if re.match(rvar, var):
+									all_variables.add(rvar)
+									break
+						else:
+							notregistered.append(var)
+							all_variables.add(var)
+					else:
+						all_variables.add(var)
+					# check for invalid UCR variable names
+					if self.check_invalid_variable_name(var):
+						invalidUCRVarNames.add(var)
+
+				if len(notregistered):
 					if mfn and mfn in all_multifiles:
 						# "Multifile" entry exists ==> obj is a subfile
-						knownvars = set()
-						# add known variables from multifile entry
-						knownvars.update(all_multifiles[mfn][0].get('Variables', []))  # ...otherwise it contains empty list or UCR variable names
-						# iterate over all subfile entries for this multifile
-						for sf in all_subfiles[mfn]:
-							# if subfile matches current subtemplate...
-							if shortconffn == sf.get('Subfile', [''])[0]:
-								# ...then add variables to list of known variables
-								knownvars.update(sf.get('Variables', []))
+						self.debug('cfn = %r' % shortconffn)
+						self.debug('knownvars(mf+sf) = %r' % knownvars)
+						self.addmsg('0004-29', 'template file contains variables that are not registered in multifile or subfile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 					else:
 						# no subfile ==> File, Module, Script
-						knownvars = set(obj.get('Variables', []))
+						self.addmsg('0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
-					# check only variables against knownvars, @%@-placeholder are auto-detected
-					for var in conffiles[conffn]['variables']:
-						if var not in knownvars:
-							# if not found check if regex matches
-							for rvar in knownvars:
-								if '.*' in rvar:
-									if re.match(rvar, var):
-										all_variables.add(rvar)
-										break
-							else:
-								notregistered.append(var)
-								all_variables.add(var)
-						else:
-							all_variables.add(var)
-						# check for invalid UCR variable names
-						if self.check_invalid_variable_name(var):
-							invalidUCRVarNames.add(var)
+				for var in conffiles[conffn]['placeholder']:
+					# check for invalid UCR placeholder variable names
+					if self.check_invalid_variable_name(var):
+						invalidUCRVarNames.add(var)
+					knownvars.add(var)
+					all_variables.add(var)
 
-					if len(notregistered):
-						if mfn and mfn in all_multifiles:
-							# "Multifile" entry exists ==> obj is a subfile
-							self.debug('cfn = %r' % shortconffn)
-							self.debug('knownvars(mf+sf) = %r' % knownvars)
-							self.addmsg('0004-29', 'template file contains variables that are not registered in multifile or subfile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
-						else:
-							# no subfile ==> File, Module, Script
-							self.addmsg('0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
+				if invalidUCRVarNames:
+					invalidUCRVarNames = sorted(invalidUCRVarNames)
+					self.addmsg('0004-13', 'template contains invalid UCR variable names:\n      - %s' % ('\n      - '.join(invalidUCRVarNames)), conffn)
 
-					for var in conffiles[conffn]['placeholder']:
-						# check for invalid UCR placeholder variable names
-						if self.check_invalid_variable_name(var):
-							invalidUCRVarNames.add(var)
-						knownvars.add(var)
-						all_variables.add(var)
-
-					if invalidUCRVarNames:
-						invalidUCRVarNames = sorted(invalidUCRVarNames)
-						self.addmsg('0004-13', 'template contains invalid UCR variable names:\n      - %s' % ('\n      - '.join(invalidUCRVarNames)), conffn)
-
-					# Last test: add all Subfile variables
-					if mfn and mfn in all_multifiles:
-						for sf in all_subfiles[mfn]:
-							knownvars.update(sf.get('Variables', []))
-					if not knownvars:
-						self.addmsg('0004-56', 'No UCR variables used', conffn)
+				# Last test: add all Subfile variables
+				if mfn and mfn in all_multifiles:
+					for sf in all_subfiles[mfn]:
+						knownvars.update(sf.get('Variables', []))
+				if not knownvars:
+					self.addmsg('0004-56', 'No UCR variables used', conffn)
 
 			conffnfound |= conffn.rsplit('/')[-1] in (all_preinst | all_postinst | all_module | all_script)
 
