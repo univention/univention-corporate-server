@@ -87,7 +87,7 @@ class HookManager:
 		"""
 		module_dir:				path to directory that contains python modules with hook functions
 		raise_exceptions:		if False, all exceptions while loading python modules will be dropped.
-								if False, all exceptions while calling hooks will be catched and returned in result list
+			if False, all exceptions while calling hooks will be catched and returned in result list
 		"""
 		self.__loaded_modules = {}
 		self.__registered_hooks = {}

@@ -205,7 +205,7 @@ class License(object):
 
 	def isValidFor(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-				'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
+			'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
 		if licenses.modules.has_key(module):
 			mlics = licenses.modules[module]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
@@ -222,7 +222,7 @@ class License(object):
 				module = univention.admin.modules.modules[mod]
 				if module and hasattr(module, 'options'):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-							'modifyOptions: %s' % str(opts))
+						'modifyOptions: %s' % str(opts))
 					for opt, val in opts:
 						if callable(val):
 							val = val(self)
@@ -231,7 +231,7 @@ class License(object):
 						else:
 							default = val
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-								'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
+							'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
 
 	def checkModules(self):
 		deleted_mods = []
@@ -388,7 +388,7 @@ class License(object):
 		except univention.admin.uexceptions.noObject:
 			pass
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-				'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound)
+			'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound)
 
 	def __countObject(self, obj, lo):
 		if self.licenses[self.version][obj] and not self.licenses[self.version][obj] == 'unlimited':
@@ -398,7 +398,7 @@ class License(object):
 			else:
 				self.real[self.version][obj] = len(result)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-					'LICENSE: Univention %s real %d' % (self.names[self.version][obj], self.real[self.version][obj]))
+				'LICENSE: Univention %s real %d' % (self.names[self.version][obj], self.real[self.version][obj]))
 		else:
 			self.real[self.version][obj] = 0
 
@@ -418,7 +418,7 @@ class License(object):
 			value = univention.license.getValue(key)
 			self.new_license = True
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-					'LICENSE: Univention %s allowed %s' % (name, str(value)))
+				'LICENSE: Univention %s allowed %s' % (name, str(value)))
 		except:
 			if self.searchResult:
 				if isinstance(default, type([])):
@@ -447,7 +447,7 @@ class License(object):
 				'Groupware Accounts', 'Groupware not found')
 			# if no type field is found it must be an old UCS license (<=1.3-0)
 			self.types = self.__getValue('univentionLicenseType', ['UCS'],
-					'License Type', 'Type attribute not found')
+				'License Type', 'Type attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
@@ -464,13 +464,13 @@ class License(object):
 			self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None,
 				'Corporate Clients', 'Corporate Clients not found')
 			self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'],
-					'License Product', 'Product attribute not found')
+				'License Product', 'Product attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
 
 		self.oemProductTypes = self.__getValue('univentionLicenseOEMProduct', [],
-				'License Type', 'univentionLicenseOEMProduct attribute not found')
+			'License Type', 'univentionLicenseOEMProduct attribute not found')
 		if not isinstance(self.oemProductTypes, (list, tuple)):
 			self.oemProductTypes = [self.oemProductTypes]
 		self.types.extend(self.oemProductTypes)

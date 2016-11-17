@@ -372,31 +372,31 @@ class object(univention.admin.handlers.simpleLdap):
 			self['hosts'] = []
 			self['nestedGroup'] = []
 			for i in self.oldattr.get('uniqueMember', []):
-					if cache_uniqueMember.is_valid(i):
-						membertype = cache_uniqueMember.get(i).get('type')
-						if membertype == 'user':
-							self['users'].append(i)
-						elif membertype == 'group':
-							self['nestedGroup'].append(i)
-						elif membertype == 'host':
-							self['hosts'].append(i)
-					elif i.startswith('uid='):
+				if cache_uniqueMember.is_valid(i):
+					membertype = cache_uniqueMember.get(i).get('type')
+					if membertype == 'user':
 						self['users'].append(i)
-						cache_uniqueMember.set(i, {'type': 'user'})
-					else:
-						result = self.lo.getAttr(i, 'objectClass')
-						if result:
-							if 'univentionGroup' in result:
-								self['nestedGroup'].append(i)
-								cache_uniqueMember.set(i, {'type': 'group'})
-							elif 'univentionHost' in result:
-								self['hosts'].append(i)
-								cache_uniqueMember.set(i, {'type': 'host'})
-							else:
-								self['users'].append(i)
+					elif membertype == 'group':
+						self['nestedGroup'].append(i)
+					elif membertype == 'host':
+						self['hosts'].append(i)
+				elif i.startswith('uid='):
+					self['users'].append(i)
+					cache_uniqueMember.set(i, {'type': 'user'})
+				else:
+					result = self.lo.getAttr(i, 'objectClass')
+					if result:
+						if 'univentionGroup' in result:
+							self['nestedGroup'].append(i)
+							cache_uniqueMember.set(i, {'type': 'group'})
+						elif 'univentionHost' in result:
+							self['hosts'].append(i)
+							cache_uniqueMember.set(i, {'type': 'host'})
 						else:
-							# removing following line breaks deletion of computers from groups
 							self['users'].append(i)
+					else:
+						# removing following line breaks deletion of computers from groups
+						self['users'].append(i)
 
 			time_end = time.time()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))

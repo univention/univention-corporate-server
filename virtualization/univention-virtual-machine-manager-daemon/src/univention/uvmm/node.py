@@ -290,19 +290,19 @@ class Domain(PersistentCached):
 		# List of snapshots
 		snapshots = None
 		if self.node.pd.supports_snapshot:
-					snapshots = {}
-					for name in domain.snapshotListNames(0):
-						snap = domain.snapshotLookupByName(name, 0)
-						xml = snap.getXMLDesc(0)
-						try:
-							domainsnap_tree = ET.fromstring(xml)
-						except ET.XMLSyntaxError:
-							continue
-						ctime = domainsnap_tree.findtext('creationTime')
-						snap_stat = Data_Snapshot()
-						snap_stat.name = name
-						snap_stat.ctime = int(ctime)
-						snapshots[name] = snap_stat
+			snapshots = {}
+			for name in domain.snapshotListNames(0):
+				snap = domain.snapshotLookupByName(name, 0)
+				xml = snap.getXMLDesc(0)
+				try:
+					domainsnap_tree = ET.fromstring(xml)
+				except ET.XMLSyntaxError:
+					continue
+				ctime = domainsnap_tree.findtext('creationTime')
+				snap_stat = Data_Snapshot()
+				snap_stat.name = name
+				snap_stat.ctime = int(ctime)
+				snapshots[name] = snap_stat
 		self.pd.snapshots = snapshots
 
 		# Suspend image

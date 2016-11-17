@@ -252,7 +252,7 @@ class Interfaces(object):
 	def _cmp_order(self, iface):
 		"""Compare interfaces by order."""
 		return (cmp_alnum(iface.order),
-				cmp_alnum(iface.name))
+			cmp_alnum(iface.name))
 
 	def _cmp_primary(self, iface):
 		"""Compare interfaces by primary."""
@@ -403,7 +403,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
 				i.ipv6_address('default'))
 			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/80'),
-					i.ipv6_address('other'))
+				i.ipv6_address('other'))
 
 	class TestInterfaces(unittest.TestCase):
 
@@ -427,7 +427,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv4_only(self):
 			"""Test IPv4 only interface."""
@@ -444,7 +444,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_incomplete_addr(self):
 			"""Test incomplete interface with address."""
@@ -461,7 +461,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_incomplete_net(self):
 			"""Test incomplete interface with netmask/prefix."""
@@ -478,7 +478,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv4_multi(self):
 			"""Test multiple IPv4 interfaces."""
@@ -497,7 +497,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv6_multi(self):
 			"""Test multiple IPv6 interfaces."""
@@ -516,7 +516,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_dual(self):
 			"""Test dual stack interface."""
@@ -535,7 +535,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
 				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv6_disjunct(self):
 			"""Test disjunct IPv4 IPv6 interfaces."""
@@ -554,7 +554,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
 				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv4_order(self):
 			"""Test IPv4 ordering."""
@@ -576,7 +576,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
 				t.get_default_ipv4_address())
 			self.assertEqual(None,
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv6_order(self):
 			"""Test IPv6 ordering."""
@@ -598,7 +598,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_ipv6_order_multi(self):
 			"""Test multiple IPv6 ordering."""
@@ -631,7 +631,7 @@ if __name__ == '__main__':
 			self.assertEqual(None,
 				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'),
-					t.get_default_ipv6_address())
+				t.get_default_ipv6_address())
 
 		def test_order_mixed(self):
 			"""Test multiple IPv6 ordering."""

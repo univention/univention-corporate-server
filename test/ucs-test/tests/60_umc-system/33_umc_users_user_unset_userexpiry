@@ -88,8 +88,8 @@ class TestUMCUserAuthentication(TestUMCSystem):
 			return False
 		except Exception as exc:
 			utils.fail("An exception while trying to authenticate to UMC "
-					   "with a 'username'=%s and 'password'=%s: %r"
-					   % (self.test_username, password, exc))
+				"with a 'username'=%s and 'password'=%s: %r"
+				% (self.test_username, password, exc))
 
 	def main(self):
 		"""

@@ -453,7 +453,7 @@ class Instance(Base):
 		>0 ...... ignore this many lines, return the rest of the file
 
 		*** NOTE *** As soon as we have looked for a running job at least once,
-					we know the job key and can associate it here.
+			we know the job key and can associate it here.
 
 		TODO: honor a given 'job' argument
 		"""
@@ -523,9 +523,9 @@ class Instance(Base):
 		"""
 		This is the function that invokes any kind of installer. Arguments accepted:
 		job ..... the main thing to do. can be one of:
-				'release' ...... perform a release update
-				'distupgrade' .. update all currently installed packages (distupgrade)
-				'check' ........ check what would be done for 'update' ... do we need this?
+			'release' ...... perform a release update
+			'distupgrade' .. update all currently installed packages (distupgrade)
+			'check' ........ check what would be done for 'update' ... do we need this?
 		detail ....... an argument that specifies the subject of the installer:
 			for 'release' .... the target release number,
 			for all other subjects: detail has no meaning.

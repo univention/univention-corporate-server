@@ -77,9 +77,9 @@ def connect():
 
 	try:
 		s4c = S4ConnectorWrapper(CONFIGBASENAME,
-						mapping.s4_mapping,
-						configRegistry,
-						configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
+			mapping.s4_mapping,
+			configRegistry,
+			configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
 			configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
 			configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
 			configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),

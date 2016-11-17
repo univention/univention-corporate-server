@@ -56,9 +56,9 @@ def main():
 				#
 				new_address = folder.mail_address
 				for i, flag_rename, flag_delete in [(0, 'no', 'no'),
-													(1, 'no', 'yes'),
-													(2, 'yes', 'no'),
-													(3, 'yes', 'yes'),
+					(1, 'no', 'yes'),
+					(2, 'yes', 'no'),
+					(3, 'yes', 'yes'),
 				]:
 					old_address = new_address
 					new_address = random_email()

@@ -106,7 +106,7 @@ def replog(ucr, var, old_value, value=None):
 			old_value = "[Previously undefined]"
 
 		log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),
-				method, scope_arg, varvalue, old_value)
+			method, scope_arg, varvalue, old_value)
 		try:
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))

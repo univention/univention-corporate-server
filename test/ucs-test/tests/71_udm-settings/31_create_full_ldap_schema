@@ -23,12 +23,12 @@ if __name__ == '__main__':
 			appidentifier = '%s' % uts.random_name(),
 
 			schema = udm.create_object('settings/ldapschema',
-							name=schema_name,
-							data=base64.encodestring(bz2.compress(data)),
-							filename=filename,
-							packageversion=package_version,
-							appidentifier=appidentifier,
-							package=package[0],
+				name=schema_name,
+				data=base64.encodestring(bz2.compress(data)),
+				filename=filename,
+				packageversion=package_version,
+				appidentifier=appidentifier,
+				package=package[0],
 				active=active)
 
 			utils.verify_ldap_object(schema, {

@@ -133,7 +133,7 @@ class TestSet(object):
 							continue
 						if self.prefix:
 							self.format.begin_test(test_case,
-									self.prefix % (count, self.max_count))
+								self.prefix % (count, self.max_count))
 						else:
 							self.format.begin_test(test_case)
 						try:
