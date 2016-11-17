@@ -1,0 +1,60 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: openssl
+fix: 1.0.1e-2~ucs3.3.132.201611171655
+desc: |
+ This update addresses the following issues by updating openssl
+ to the code of version 1.0.1t-1:
+ * Denial of service in DTLS (2014-3571, CVE-2015-0206)
+ * ECDHE can be downgraded to ECDH, resulting in a loss of
+   forward secrecy (CVE-2014-3572)
+ * Weaker RSA keys can be negotiated by the SSL/TLS server
+   (CVE-2015-0204)
+ * An OpenSSL server will accept a DH certificate for client
+   authentication without the certificate verify message
+  (CVE-2015-0205)
+ * Certificate fingerprints can be modified (CVE-2014-8275)
+ * Bignum squaring may produce incorrect results (CVE-2014-3570)
+ * Remote denial of service (integer overflow and application crash)
+   or unspecified other impact (CVE-2016-2177)
+ * Potential timing side-channel attack by local users on DSA private key
+   via dsa_sign_setup function in crypto/dsa/dsa_ossl.c (CVE-2016-2178)
+ * Remote denial of service (memory consumption) by maintaining
+   many crafted DTLS sessions simultaneously (CVE-2016-2179)
+ * Remote denial of service (out-of-bounds read and application crash)
+   via a crafted timestamp file that is mishandled by the "openssl ts"
+   command (CVE-2016-2180)
+ * Remote denial of service (false-positive packet drops)
+   via spoofed DTLS records (CVE-2016-2181)
+ * Remote denial of service (out-of-bounds write and application crash)
+   or unspecified other impact via BN_bn2dec function (CVE-2016-2182)
+ * Remote denial of service via a ticket that is too short (CVE-2016-6302)
+ * Remote denial of service (out-of-bounds write and application crash)
+   or unspecified other impact via MDC2_Update function (CVE-2016-6303)
+ * Remote denial of service (memory consumption)
+   via large OCSP Status Request extensions (CVE-2016-6304)
+ * Remote denial of service (out-of-bounds read) via crafted certificate
+   operations (CVE-2016-6306)
+ The version number of the package is kept at 1.0.1e-2 to keep a defined
+ update path to UCS 4.x.
+bug: [42487]
+cve:
+ - CVE-2014-3570
+ - CVE-2014-3571
+ - CVE-2014-3572
+ - CVE-2014-8275
+ - CVE-2015-0204
+ - CVE-2015-0205
+ - CVE-2015-0206
+ - CVE-2016-2177
+ - CVE-2016-2178
+ - CVE-2016-2179
+ - CVE-2016-2180
+ - CVE-2016-2181
+ - CVE-2016-2182
+ - CVE-2016-6302
+ - CVE-2016-6303
+ - CVE-2016-6304
+ - CVE-2016-6306
