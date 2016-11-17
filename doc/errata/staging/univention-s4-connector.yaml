@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-s4-modules
+fix: 10.0.3-2.623.201611171438
+desc: |
+ This update addresses the following issue(s):
+ * Sync client initiated renaming of Windows machine accounts
+   from Samba/AD to OpenLDAP.
+bug: [37388]
