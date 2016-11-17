@@ -178,7 +178,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 
 	def __init__(self, base_object):
 		self.__class__ = type(base_object.__class__.__name__,
-				(self.__class__, base_object.__class__),
+			(self.__class__, base_object.__class__),
 			{})
 		self.__dict__ = base_object.__dict__
 
@@ -261,8 +261,8 @@ class Interfaces(object):
 		except ValueError:
 			primary = maxsize
 		return (primary,
-				cmp_alnum(iface.order),
-				cmp_alnum(iface.name),
+			cmp_alnum(iface.order),
+			cmp_alnum(iface.name),
           )
 
 	def _cmp_name(self, iname):
@@ -399,9 +399,9 @@ if __name__ == '__main__':
 			self.assertEqual('NAME', i.name)
 			self.assertEqual(None, i.ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					i.ipv6_address())
+				i.ipv6_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					i.ipv6_address('default'))
+				i.ipv6_address('default'))
 			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/80'),
 					i.ipv6_address('other'))
 
@@ -419,13 +419,13 @@ if __name__ == '__main__':
 			self.assertEqual(None, t.ipv6_gateway)
 			self.assertEqual(None, t.ipv6_gateway_zone_index)
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(None,
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -436,13 +436,13 @@ if __name__ == '__main__':
 				'interfaces/eth0/netmask': '255.255.255.0',
 			})
 			self.assertEqual(['eth0'],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -453,13 +453,13 @@ if __name__ == '__main__':
 				'interfaces/eth0/ipv6/default/address': '1:2:3:4:5:6:7:8',
 			})
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(None,
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -470,13 +470,13 @@ if __name__ == '__main__':
 				'interfaces/eth0/ipv6/default/prefix': '64',
 			})
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(None,
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -489,13 +489,13 @@ if __name__ == '__main__':
 				'interfaces/eth1/netmask': '255.255.255.0',
 			})
 			self.assertEqual(['eth0', 'eth1'],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -508,13 +508,13 @@ if __name__ == '__main__':
 				'interfaces/eth1/ipv6/default/prefix': '64',
 			})
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth0', 'eth1'],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
 					t.get_default_ipv6_address())
 
@@ -527,13 +527,13 @@ if __name__ == '__main__':
 				'interfaces/eth0/netmask': '255.255.255.0',
 			})
 			self.assertEqual(['eth0'],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth0'],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
 					t.get_default_ipv6_address())
 
@@ -546,13 +546,13 @@ if __name__ == '__main__':
 				'interfaces/eth1/ipv6/default/prefix': '64',
 			})
 			self.assertEqual(['eth0'],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth1'],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(IPv4Network('2.3.4.5/24'),
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
 					t.get_default_ipv6_address())
 
@@ -568,13 +568,13 @@ if __name__ == '__main__':
 				'interfaces/eth2/netmask': '255.0.0.0',
 			})
 			self.assertEqual(['eth2', 'eth0', 'eth1'],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(IPv4Network('1.2.3.4/24'),
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(None,
 					t.get_default_ipv6_address())
 
@@ -590,13 +590,13 @@ if __name__ == '__main__':
 				'interfaces/eth2/ipv6/default/prefix': '80',
 			})
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth2', 'eth0', 'eth1'],
-					[s.name for s, _n in t.ipv6_interfaces])
+				[s.name for s, _n in t.ipv6_interfaces])
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
 					t.get_default_ipv6_address())
 
@@ -618,7 +618,7 @@ if __name__ == '__main__':
 				'interfaces/primary': 'eth2,eth1',
 			})
 			self.assertEqual([],
-					[s.name for _n, s in t.ipv4_interfaces])
+				[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([
 				('eth2', 'default'),
 				('eth2', 'z'),
@@ -627,9 +627,9 @@ if __name__ == '__main__':
 				('eth0', 'foo')],
 				[(s.name, n) for s, n in t.ipv6_interfaces])
 			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'),
-					t.get_default_ip_address())
+				t.get_default_ip_address())
 			self.assertEqual(None,
-					t.get_default_ipv4_address())
+				t.get_default_ipv4_address())
 			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'),
 					t.get_default_ipv6_address())
 

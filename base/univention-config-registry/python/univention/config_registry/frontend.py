@@ -420,7 +420,7 @@ def handler_info(args, opts=dict()):
 	for arg in args:
 		try:
 			print_variable_info_string(arg, ucr.get(arg, None),
-					info.get_variable(arg),
+				info.get_variable(arg),
 				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
 		except UnknownKeyException as ex:
 			print >> sys.stderr, ex

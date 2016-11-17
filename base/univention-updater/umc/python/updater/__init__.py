@@ -528,8 +528,8 @@ class Instance(Base):
 				'distupgrade' .. update all currently installed packages (distupgrade)
 				'check' ........ check what would be done for 'update' ... do we need this?
 		detail ....... an argument that specifies the subject of the installer:
-				for 'release' .... the target release number,
-				for all other subjects: detail has no meaning.
+			for 'release' .... the target release number,
+			for all other subjects: detail has no meaning.
 		"""
 
 		MODULE.info("Starting function %r" % (job,))

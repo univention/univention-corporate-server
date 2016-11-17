@@ -768,7 +768,7 @@ class UniventionUDMExtension(UniventionLDAPExtension):
 
 	def wait_for_activation(self, timeout=180):
 		if not UniventionLDAPExtension.wait_for_activation(self, timeout):
-				return False
+			return False
 
 		timeout = 60
 		print "Waiting for file %s:" % (self.filename,),

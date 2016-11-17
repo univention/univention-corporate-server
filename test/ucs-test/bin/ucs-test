@@ -127,7 +127,7 @@ class TestSet(object):
 							continue
 
 						test_result = TestResult(test_case,
-								self.test_environment)
+							self.test_environment)
 						check = test_result.check()
 						if filter_condition and not check:
 							continue
@@ -178,7 +178,7 @@ def main():
 		test_environment = TestEnvironment(interactive=options.interactive)
 	else:
 		test_environment = TestEnvironment(interactive=options.interactive,
-				logfile=options.logfile)
+			logfile=options.logfile)
 	test_environment.tag(require=options.tags_required,
 			ignore=options.tags_ignored,
 			prohibit=options.tags_prohibited)

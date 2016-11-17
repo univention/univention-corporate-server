@@ -96,7 +96,7 @@ class ConfigRegistry(dict):
 			filename = self.file
 		else:
 			filename = os.path.join(ConfigRegistry.PREFIX,
-					ConfigRegistry.BASES[reg])
+				ConfigRegistry.BASES[reg])
 		return _ConfigRegistry(filename=filename)
 
 	def load(self):
