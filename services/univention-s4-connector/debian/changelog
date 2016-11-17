@@ -1,3 +1,10 @@
+univention-s4-connector (10.0.3-2) unstable; urgency=medium
+
+  * Bug #37388: Sync client initiated renaming of Windows machine accounts
+    from Samba/AD to OpenLDAP
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Nov 2016 14:37:36 +0100
+
 univention-s4-connector (10.0.3-1) unstable; urgency=medium
 
   * While joining a Windows 8.1 client against Samba 4.5, we discovered
