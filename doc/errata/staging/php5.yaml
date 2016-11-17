@@ -86,7 +86,7 @@ desc: |
  * Session WDDX Packet Deserialization Type Confusion Vulnerability
    (Debian bug 70741)
  * php_url_parse_ex() buffer overflow read
-   (Debian bug 70480)
+   (Debian bug 70480 / CVE-2016-6288)
  * An invalid free may occur under certain conditions when processing
    phar-compatible archives (CVE-2016-4473)
  * Remote denial of service or unspecified other impact via crafted call
@@ -194,6 +194,7 @@ cve:
  - CVE-2016-5771
  - CVE-2016-5772
  - CVE-2016-5773
+ - CVE-2016-6288
  - CVE-2016-6289
  - CVE-2016-6290
  - CVE-2016-6291
