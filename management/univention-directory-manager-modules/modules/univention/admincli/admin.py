@@ -891,8 +891,8 @@ def _doit(arglist):
 				try:
 					out.extend(object_input(module, object, input, append, remove))
 				except univention.admin.uexceptions.valueMayNotChange, e:
-						out.append(unicode(e[0]))
-						return out + ["OPERATION FAILED"]
+					out.append(unicode(e[0]))
+					return out + ["OPERATION FAILED"]
 				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_options:
 					try:
 						dn = object.modify()
@@ -965,7 +965,7 @@ def _doit(arglist):
 			out.append('WARNING:%s' % object.open_warning)
 
 		if remove_referring and univention.admin.objects.wantsCleanup(object):
-				univention.admin.objects.performCleanup(object)
+			univention.admin.objects.performCleanup(object)
 
 		if recursive:
 			try:
@@ -1059,26 +1059,26 @@ def _doit(arglist):
 					out.append('')
 
 					if module_name == 'dhcp/host':
-							subnet_module = univention.admin.modules.get('dhcp/subnet')
-							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
+						subnet_module = univention.admin.modules.get('dhcp/subnet')
+						for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
 
-								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
-									utf8_subnet_dn = _2utf8(subnet.dn)
-									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
-									policyResults = p1.communicate()[0].split('\n')
-									out.append("  Subnet-based Settings:")
-									ddict = {}
-									policy = ''
-									value = []
-									for line in policyResults:
-										if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
-											out.append("    %s" % line.strip())
-											if policies_with_DN:
-												subsplit = string.split(line.strip(), ': ')
-												if subsplit[0] == 'Policy':
-													if policy:
-														ddict[attribute] = [policy, value]
-														value = []
+							if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
+								utf8_subnet_dn = _2utf8(subnet.dn)
+								p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
+								policyResults = p1.communicate()[0].split('\n')
+								out.append("  Subnet-based Settings:")
+								ddict = {}
+								policy = ''
+								value = []
+								for line in policyResults:
+									if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
+										out.append("    %s" % line.strip())
+										if policies_with_DN:
+											subsplit = string.split(line.strip(), ': ')
+											if subsplit[0] == 'Policy':
+												if policy:
+													ddict[attribute] = [policy, value]
+													value = []
 													policy = subsplit[1]
 												elif subsplit[0] == 'Attribute':
 													attribute = subsplit[1]
