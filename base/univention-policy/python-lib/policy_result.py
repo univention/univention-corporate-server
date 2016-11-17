@@ -79,6 +79,7 @@ def policy_result(dn, binddn="", bindpw=""):
 			pass  # empty line
 	return (results, policies)
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

@@ -46,6 +46,7 @@ def _get_name_with_umlauts():
 def _get_ou_name():
 	return random_name()
 
+
 UDM_MODULE = 'computers/linux'
 
 names = []
@@ -82,6 +83,7 @@ def dump_status(consider_listener, wait_after_each_step, name):
 	print 'Consider listener: %s' % consider_listener
 	print 'Wait for replication after each step: %s' % wait_after_each_step
 	print 'Computer name: %s\n' % name
+
 
 for consider_listener in [False, True]:
 	for wait_after_each_step in [False, True]:

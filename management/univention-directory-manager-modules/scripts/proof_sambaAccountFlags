@@ -57,6 +57,8 @@ def print_usage():
 	print "the behavior !\n"
 
 # update all if command update is given
+
+
 update_all = 0
 query = 0
 if len(sys.argv) > 1:

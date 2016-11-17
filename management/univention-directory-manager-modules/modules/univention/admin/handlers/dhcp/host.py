@@ -110,6 +110,7 @@ def mapHWAddress(old):
 		else:
 			return old
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)

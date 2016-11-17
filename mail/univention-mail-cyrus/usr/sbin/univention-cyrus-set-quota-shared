@@ -48,6 +48,7 @@ def usage():
 	print 'usage: univention-cyrus-set-quota-acl <shared folder> <quota in MB>'
 	sys.exit(1)
 
+
 baseConfig = ConfigRegistry()
 baseConfig.load()
 

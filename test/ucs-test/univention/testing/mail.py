@@ -106,6 +106,7 @@ class MailSink(object):
         sink.close()
         print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
 
+
 if __name__ == '__main__':
     import time
     # ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')

@@ -104,6 +104,7 @@ def create_app(addapp=False):
 			app.uninstall()
 			app.remove()
 
+
 if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		## Install via univention-app install

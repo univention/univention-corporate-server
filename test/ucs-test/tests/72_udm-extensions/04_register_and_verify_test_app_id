@@ -63,6 +63,7 @@ def test_extension(extension_type):
 		print 'Removing source package'
 		package.remove()
 
+
 if __name__ == '__main__':
 	for extension_type in VALID_EXTENSION_TYPES:
 		print '========================= TESTING EXTENSION %s =============================' % extension_type

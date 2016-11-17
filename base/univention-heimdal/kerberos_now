@@ -54,6 +54,7 @@ def nt_password_to_arcfour_hmac_md5(nt_password):
 		key += chr(int(o, 16))
 	return key
 
+
 for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=*)(!(objectClass=univentionWindows)))', attr=['uid', 'sambaNTPassword', 'objectClass']):
 	if not attrs['sambaNTPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
 

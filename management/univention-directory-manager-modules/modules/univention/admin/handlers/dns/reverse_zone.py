@@ -212,6 +212,7 @@ def unmapSubnet(zone):
 	else:
 		raise ValueError('Neither an IPv4 nor an IPv6 reverse address')
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet)
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
@@ -314,6 +315,7 @@ def identify(dn, attr):
 def quickDescription(rdn):
 
 	return unmapSubnet(rdn)
+
 
 if __name__ == '__main__':
 	import doctest

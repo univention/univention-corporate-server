@@ -137,5 +137,6 @@ def main():
 		test_uninstall_without_dry_run()
 		test_uninstall_without()
 
+
 if __name__ == '__main__':
 	main()

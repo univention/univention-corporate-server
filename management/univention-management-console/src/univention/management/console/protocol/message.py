@@ -80,6 +80,8 @@ class InvalidOptionsError(Exception):
 	pass
 
 # Constants
+
+
 MIMETYPE_JSON = 'application/json'
 MIMETYPE_JPEG = 'image/jpeg'
 MIMETYPE_PNG = 'image/png'
@@ -337,6 +339,7 @@ class Response(Message):
 		if isinstance(body, dict) and 'options' in body:
 			del body['options']
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, body, self.arguments)
+
 
 if __name__ == '__main__':
 	# encode

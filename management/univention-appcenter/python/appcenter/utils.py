@@ -249,6 +249,8 @@ def urlopen(request):
 		urllib2.install_opener(opener)
 		urlopen._opener_installed = True
 	return urllib2.urlopen(request, timeout=60)
+
+
 urlopen._opener_installed = False
 
 

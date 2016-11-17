@@ -67,6 +67,8 @@ def remove_listener_module_for_computer(computer_name):
 	restart_listener()
 
 # create computer
+
+
 udm = udm_test.UCSTestUDM()
 
 container_name = random_name()

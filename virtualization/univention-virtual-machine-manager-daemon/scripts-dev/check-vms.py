@@ -551,6 +551,7 @@ class StorageVolume(Resource):
             self.target_format_type,
         )
 
+
 TEMP_POOL = """
 virsh # pool-create-as --type dir --name temp --target /etc/libvirt/qemu
 virsh # vol-list temp

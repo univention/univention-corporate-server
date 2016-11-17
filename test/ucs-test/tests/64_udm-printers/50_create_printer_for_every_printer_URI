@@ -55,5 +55,6 @@ def main():
 					if not printer_enabled(printer_name):
 						utils.fail('Printer (%s) is created but not enabled' % printer_name)
 
+
 if __name__ == '__main__':
 	main()

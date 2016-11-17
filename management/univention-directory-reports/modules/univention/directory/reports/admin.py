@@ -292,6 +292,7 @@ def connected():
 	global _admin
 	return _admin is not None
 
+
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

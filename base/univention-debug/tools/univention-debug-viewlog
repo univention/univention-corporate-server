@@ -99,6 +99,7 @@ def split(line, l):
 		res.append(n)
 	return res
 
+
 while True:
 	line = sys.stdin.readline()
 	if line == '':

@@ -230,6 +230,7 @@ class UMC_Daemon(DaemonRunner):
 		signal.signal(signal.SIGSEGV, signal.SIG_DFL)
 		os.kill(os.getpid(), signal.SIGSEGV)
 
+
 if __name__ == "__main__":
 	try:
 		umc_daemon = UMC_Daemon()

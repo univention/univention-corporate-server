@@ -45,5 +45,6 @@ def main():
 		if result:
 			utils.fails('Response is expected to be empty')
 
+
 if __name__ == '__main__':
 	main()

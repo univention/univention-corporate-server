@@ -633,4 +633,5 @@ class _Commands:
 		except AttributeError:
 			raise CommandError(cmd, _('Unknown command "%(command)s"'))
 
+
 commands = _Commands()

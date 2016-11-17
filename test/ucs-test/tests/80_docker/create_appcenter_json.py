@@ -239,6 +239,7 @@ def sha256sum(filename):
 		m.update(f.read())
 		return m.hexdigest()
 
+
 if __name__ == '__main__':
 	parser = OptionParser()
 	parser.add_option("-u", "--ucs-version", dest="version", default="3.1",

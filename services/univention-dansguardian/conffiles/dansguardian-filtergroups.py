@@ -80,6 +80,8 @@ def handler(configRegistry, changes):
 	ucr.handler_unset(['dansguardian/current/groupno', 'dansguardian/current/group'])
 
 # test
+
+
 if __name__ == '__main__':
 	configRegistry = ucr.ConfigRegistry()
 	configRegistry.load()

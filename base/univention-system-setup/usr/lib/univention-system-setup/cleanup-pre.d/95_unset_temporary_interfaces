@@ -52,6 +52,7 @@ def unset_temporary_interfaces():
 			# Shut down temporary interface
 			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
 
+
 if __name__ == "__main__":
 	unset_temporary_interfaces()
 

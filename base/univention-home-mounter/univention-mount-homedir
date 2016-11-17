@@ -158,5 +158,6 @@ def main():
 			syslog.syslog("Failed to mount home directory: %r" % (user.pw_dir, ))
 			sys.exit(1)
 
+
 if __name__ == "__main__":
 	main()

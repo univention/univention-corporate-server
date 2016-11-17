@@ -25,5 +25,6 @@ def main():
 	if 'localhost>' not in out or err:
 		utils.fail(err)
 
+
 if __name__ == '__main__':
 	main()

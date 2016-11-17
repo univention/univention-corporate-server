@@ -104,5 +104,6 @@ def main():
 	test_uninstall_non_existent_dry_run()
 	test_uninstall_non_existent()
 
+
 if __name__ == '__main__':
 	main()

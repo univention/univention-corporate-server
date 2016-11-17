@@ -53,6 +53,7 @@ class autoStartFixedAttributes(univention.admin.syntax.select):
 		('univentionAutoStartScript', _('Autostart session')),
 	]
 
+
 module = 'policies/autostart'
 operations = ['add', 'edit', 'remove', 'search']
 

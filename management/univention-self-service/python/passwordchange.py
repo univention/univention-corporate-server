@@ -73,4 +73,5 @@ class SetPassword(Ressource):
 		})
 		return response
 
+
 application = cherrypy.Application(SetPassword(), "/univention-self-service/passwordchange")

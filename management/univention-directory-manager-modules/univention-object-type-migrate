@@ -106,6 +106,8 @@ def warningHidden(dn, attributes):
 	if 'univentionThinClientAutostart' in set(attributes['objectClass']):
 		return True
 	return False
+
+
 warningHidden.verbose = False
 
 
@@ -147,6 +149,7 @@ def main(options):
 			if not warningSupressed(dn, attributes):
 				print >>sys.stderr, 'Warning: No match for %r' % (dn, )
 	return not errorsOccurred
+
 
 if __name__ == "__main__":
 	options = parseOptions()

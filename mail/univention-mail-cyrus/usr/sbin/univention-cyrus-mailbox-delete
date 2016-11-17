@@ -51,6 +51,7 @@ def usage():
 	print 'usage: %s [-v] [--user, --shared] <mailbox>' % sys.argv[0].split('/')[-1]
 	sys.exit(1)
 
+
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "v", ["user", "shared"])
 except getopt.GetoptError as err:

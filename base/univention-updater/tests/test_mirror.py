@@ -232,6 +232,7 @@ class TestUniventionMirrorList(unittest.TestCase):
         self.assertDeepEqual([_[1] for _ in result], [_[1] for _ in self.repos])
         self.assertDeepEqual(sorted(result), sorted(self.repos))
 
+
 if __name__ == '__main__':
     if False:
         import univention.debug as ud

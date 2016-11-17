@@ -92,6 +92,7 @@ def connect():
 
 	return s4c
 
+
 if __name__ == '__main__':
 
 	print "INFO: Checking if all Samba4 attributes in the S4-Connector mapping are properly declared as Single-Value"

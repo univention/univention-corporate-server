@@ -44,6 +44,7 @@ def simple_handler(f):
 		f.write(msg)
 	return _simple_handler
 
+
 parser = optparse.OptionParser()
 parser.add_option('-a', '--app-id', help='app id to deinstall', metavar='APP_ID')
 (options, args) = parser.parse_args()

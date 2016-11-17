@@ -42,6 +42,7 @@ _ = translation.translate
 def plusBase(object, arg):
 	return [arg + ',' + object.position.getDomain()]
 
+
 module = 'settings/default'
 superordinate = 'settings/cn'
 childs = 0

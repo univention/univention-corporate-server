@@ -181,6 +181,7 @@ class decode_drsblob():
 			if line:
 				print "# %s" % line
 
+
 objecttypes = {
 	'dnsRecord': decode_drsblob(dnsp.DnssrvRpcRecord),
 	'dNSProperty': decode_drsblob(dnsp.DnsProperty),
@@ -208,6 +209,7 @@ def decode_line(line):
 			objecttypes[attributeName](res.group(2))
 	else:
 		print line,
+
 
 try:
 	line = sys.stdin.readline()

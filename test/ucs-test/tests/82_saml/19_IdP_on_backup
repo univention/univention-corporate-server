@@ -38,5 +38,6 @@ def main():
 	except samltest.SamlError as exc:
 		utils.fail(exc.message)
 
+
 if __name__ == '__main__':
 	main()

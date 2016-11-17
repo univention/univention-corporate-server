@@ -56,6 +56,7 @@ class Jenkins(TestFormatInterface):
         self.end_section()
         self.end_run()
 
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

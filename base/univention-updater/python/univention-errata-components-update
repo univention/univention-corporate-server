@@ -107,6 +107,7 @@ def checkForUpdate(command, component):
     """ Check for availability of errata updates """
     return False
 
+
 if __name__ == '__main__':
     # PATH does not contain */sbin when called from cron
     os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')

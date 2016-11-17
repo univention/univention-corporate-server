@@ -47,6 +47,8 @@ def setup_i18n():
 	translation = Translation('univention-system-setup-scripts')
 	translation.set_language(language)
 	return translation.translate
+
+
 _ = setup_i18n()
 
 

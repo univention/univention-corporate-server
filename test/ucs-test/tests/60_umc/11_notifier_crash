@@ -23,6 +23,7 @@ def on_timer():
 	notifier.socket_remove(fd)
 	return True
 
+
 notifier.init()
 p = subprocess.Popen('python -c "import sys; sys.stdin.read()"', shell=True, stdin=subprocess.PIPE)
 fd = p.stdin.fileno()

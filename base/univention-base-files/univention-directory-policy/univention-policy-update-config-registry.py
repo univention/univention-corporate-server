@@ -65,6 +65,8 @@ def get_policy(host_dn, verbose=False):
 		# print 'WARN: univention_policy_result failed - LDAP server may be down'
 		sys.exit(1)
 	return set_list
+
+
 get_policy.ATTR = 'Attribute: univentionRegistry;entry-hex-'
 get_policy.VALUE = 'Value: '
 
@@ -138,6 +140,7 @@ def main():
 				print >> sys.stderr, 'Unsetting %s' % item
 		if not options.simulate:
 			confreg.handler_unset(unset_list, {'ldap-policy': True})
+
 
 if __name__ == '__main__':
 	main()

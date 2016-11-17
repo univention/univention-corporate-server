@@ -53,6 +53,7 @@ def escapeSOAemail(email):
     local = tmp
     return local + '.' + domain
 
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

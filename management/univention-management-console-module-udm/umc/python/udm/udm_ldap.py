@@ -229,6 +229,7 @@ class UDM_ModuleCache(dict):
 		finally:
 			UDM_ModuleCache.lock.release()
 
+
 _module_cache = UDM_ModuleCache()
 
 
@@ -1085,6 +1086,7 @@ def _create_ldap_filter(syn, options, module=None):
 			property_filter_s = '(%s)' % property_filter_s
 		filter_s = '(&%s%s)' % (property_filter_s, filter_s)
 	return filter_s
+
 
 LDAP_ATTR_RE = re.compile(r'^%\(([^)]*)\)s$')  # '%(username)s' -> 'username'
 

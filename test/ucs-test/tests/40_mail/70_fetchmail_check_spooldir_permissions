@@ -34,5 +34,6 @@ def main():
 	if EXPECTED_MODE != mode:
 		utils.fail('%r has wrong permissions: expected=%r  currently=%r' % (DIR_SPOOL_DOVECOT, EXPECTED_MODE, mode))
 
+
 if __name__ == '__main__':
 	main()

@@ -161,6 +161,7 @@ def uvmm_connect():
 		raise ClientError('Can not open connection to UVMM daemon: %s' % e)
 	return uvmm
 
+
 __uvmm = None
 
 
@@ -178,6 +179,7 @@ def uvmm_cmd(request):
 	if isinstance(response, protocol.Response_ERROR):
 		raise ClientError(response.msg)
 	return response
+
 
 import os.path
 
@@ -201,6 +203,7 @@ def uvmm_local_uri(local=False):
 		return local and 'qemu:///system' or 'qemu://%s/system' % FQDN
 	else:
 		raise ClientError('Host does not support required virtualization technology.')
+
 
 if __name__ == '__main__':
 	import doctest

@@ -74,6 +74,7 @@ def test_extension(extension_type):
 		for package in packages:
 			package.remove()
 
+
 if __name__ == '__main__':
 	for extension_type in ('hook', 'syntax', 'module'):
 		print '========================= TESTING EXTENSION %s =============================' % extension_type

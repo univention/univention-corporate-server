@@ -74,6 +74,7 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 		('univentionXDisplayVirtualSize', _('Virtual size of dual monitor desktop')),
 	]
 
+
 module = 'policies/xfree'
 operations = ['add', 'edit', 'remove', 'search']
 

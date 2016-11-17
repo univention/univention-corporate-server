@@ -52,6 +52,7 @@ _ = translation.translate
 def makeSambaDomainName(object, arg):
 	return [(object['name'].upper() + '.' + object.position.getPrintable()).upper()]
 
+
 module = 'container/dc'
 childs = 1
 operations = ['search', 'edit']

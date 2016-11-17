@@ -145,6 +145,7 @@ def rangeMap(value):
 def rangeUnmap(value):
 	return map(lambda x: x.split(' '), value)
 
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)

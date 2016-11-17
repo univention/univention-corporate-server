@@ -81,6 +81,8 @@ def failed(mailBox, remote, e):
 	sys.exit(1)
 
 # options
+
+
 password = ""
 if os.path.isfile("/etc/cyrus.secret"):
 	password = open('/etc/cyrus.secret').read()

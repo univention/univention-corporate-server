@@ -97,6 +97,7 @@ def restore_ucr_layer(ucr_file, options):
 		print vv
 		univention.config_registry.handler_set(vv, opts=options)
 
+
 if __name__ == '__main__':
 	parser = OptionParser('%prog [options]')
 	parser.add_option('--app', dest='app', help='App ID')

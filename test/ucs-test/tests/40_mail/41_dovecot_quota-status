@@ -64,5 +64,6 @@ def main():
 				utils.fail("Fail: over quota message was delivered (quota was set to %d MB, len(message body 1): %d KB, len(message body 2): %d KB). output of \"doveadm quota get -u %s\":" % (quota01, len(msg1) / 1024, len(msg2) / 1024, mail))
 				subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
+
 if __name__ == '__main__':
 	main()

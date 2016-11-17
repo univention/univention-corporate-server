@@ -21,6 +21,7 @@ def main():
 	subprocess.call(['/etc/init.d/slapd', 'restart'])
 	samltest.test_login(cookies)
 
+
 if __name__ == '__main__':
 	main()
 	print("Success: SSO session is still working after slapd restart")

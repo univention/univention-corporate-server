@@ -108,6 +108,7 @@ def encode(ob):
 	else:
 		return ob
 
+
 if __name__ == '__main__':
 	# http://stackoverflow.com/questions/1733414/how-do-i-include-unicode-strings-in-python-doctests
 	import sys

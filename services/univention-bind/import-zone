@@ -114,6 +114,7 @@ def print_record(name, record):
 			print '%s: %s' % (ldap_type, r_record)
 	print
 
+
 print 'dn: zoneName=%s,%s' % (zone, ldapbase)
 print_record('@', all['@'])
 for name, record in all.items():

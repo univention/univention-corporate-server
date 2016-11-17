@@ -192,6 +192,7 @@ def run_prechange():
 			return 1
 	return 0
 
+
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
 	ucr.load()

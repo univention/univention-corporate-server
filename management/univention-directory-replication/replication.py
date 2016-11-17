@@ -527,6 +527,7 @@ class LDIFObject:
 		self.__print_attribute('deleteoldrdn', '1' if delold else '0')
 		self.__end_entry()
 
+
 reconnect = 0
 connection = None
 
@@ -1003,6 +1004,8 @@ def randpw(length=8):
 	finally:
 		rand.close()
 	return ''.join(password)
+
+
 randpw.VALID = (
 	'0123456789'  # pylint: disable-msg=W0612
 	'abcdefghijklmnopqrstuvwxyz'
@@ -1036,6 +1039,8 @@ def get_password():
 				return ''
 	finally:
 		listener.unsetuid()
+
+
 get_password.RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
 
 

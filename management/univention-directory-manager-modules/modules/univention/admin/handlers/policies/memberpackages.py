@@ -56,6 +56,7 @@ class memberPackagesFixedAttributes(univention.admin.syntax.select):
 		('univentionMemberPackagesRemove', _('Package removal list')),
 	]
 
+
 module = 'policies/memberpackages'
 operations = ['add', 'edit', 'remove', 'search']
 

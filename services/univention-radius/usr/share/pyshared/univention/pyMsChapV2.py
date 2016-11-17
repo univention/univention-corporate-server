@@ -178,5 +178,6 @@ def executeTestVectors():
 	res = ChallengeResponse('5355f4fc60c8888a'.decode('hex'), '00563126f04f3875c417f789b00e72d2'.decode('hex'))
 	assert res.encode('hex') == '9681672b365655d0592c3e4009547b9e11bc751b6e97943b'
 
+
 if __name__ == "__main__":
 	executeTestVectors()

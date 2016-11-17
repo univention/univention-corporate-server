@@ -55,6 +55,7 @@ class ldapServerFixedAttributes(univention.admin.syntax.select):
 		('univentionRepositoryServer', _('Repository server')),
 	]
 
+
 module = 'policies/repositoryserver'
 operations = ['add', 'edit', 'remove', 'search']
 

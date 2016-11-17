@@ -258,6 +258,7 @@ class tkLicenseGen:
         def quit(self, event=None):
                 self.master.quit()
 
+
 if __name__ == '__main__':
         root = Tk()
         licensegen = tkLicenseGen(root)

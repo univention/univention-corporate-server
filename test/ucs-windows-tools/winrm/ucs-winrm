@@ -228,5 +228,6 @@ class UcsWin(object):
             time.sleep(1)
         raise UcsWinFail('wait_for_client for %s failed (timeout=%s)' % (self.args.client, timeout))
 
+
 if __name__ == '__main__':
     UcsWin()
