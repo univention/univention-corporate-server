@@ -104,8 +104,8 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			end = i.next()
 
 			proc = subprocess.Popen((sys.executable,),
-					stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-					close_fds=True)
+				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+				close_fds=True)
 			value = proc.communicate('''\
 # -*- coding: utf-8 -*-
 import univention.config_registry
@@ -251,8 +251,8 @@ class ConfigHandlerDiverting(ConfigHandler):
 		"""Prepare file for diversion."""
 		deb = '%s.debian' % self.to_file
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
-				'--divert', deb,
-				'--add', self.to_file)
+			'--divert', deb,
+			'--add', self.to_file)
 		# Make sure a valid file still exists
 		if os.path.exists(deb) and not os.path.exists(self.to_file):
 			# Don't use shutil.copy2() which looses file ownership (Bug #22596)
@@ -267,8 +267,8 @@ class ConfigHandlerDiverting(ConfigHandler):
 			pass
 		deb = '%s.debian' % self.to_file
 		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
-				'--divert', deb,
-				'--remove', self.to_file)
+			'--divert', deb,
+			'--remove', self.to_file)
 		return True
 
 	def _temp_file_name(self):
@@ -719,7 +719,7 @@ class ConfigHandlers:
 	def update_divert(self, handlers):
 		"""Synchronize diversions with handlers."""
 		wanted = dict([(h.to_file, h) for h in handlers if
-				isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
+			isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()
 		# Scan for diversions done by UCR
 		div_file = open('/var/lib/dpkg/diversions', 'r')
@@ -818,7 +818,7 @@ class ConfigHandlers:
 				continue
 			if not handler:  # Bug #17913
 				print >> sys.stderr, ("Skipping internal error: no handler " +
-						"for %r in %s" % (section, package))
+					"for %r in %s" % (section, package))
 				continue
 			if handler.uninstall_divert():
 				obsolete_handlers.add(handler)

@@ -20,6 +20,6 @@ if __name__ == '__main__':
 		try:
 			udm.modify_object('groups/group', dn=group, memberOf=group)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-				sys.exit(0)
+			sys.exit(0)
 
 		utils.fail('UDM did not report an error while trying to set a groups/group memberOf to itself during modification')

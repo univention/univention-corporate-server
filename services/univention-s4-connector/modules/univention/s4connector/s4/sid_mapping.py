@@ -58,13 +58,13 @@ def print_sid_mapping(configRegistry):
 			sync_mode = 'write'
 		print '''
 					'sid': univention.s4connector.attribute (
-							sync_mode='%s',
-							mapping=(%s),
-							ldap_attribute='sambaSID',
-							ucs_attribute='sambaRID',
-							con_attribute='objectSid',
-							single_value=True,
-							compare_function=univention.s4connector.s4.compare_sid_lists,
+						sync_mode='%s',
+						mapping=(%s),
+						ldap_attribute='sambaSID',
+						ucs_attribute='sambaRID',
+						con_attribute='objectSid',
+						single_value=True,
+						compare_function=univention.s4connector.s4.compare_sid_lists,
 					), ''' % (sync_mode, mapping_str)
 
 

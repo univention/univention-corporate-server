@@ -25,6 +25,6 @@ if __name__ == '__main__':
 		try:
 			udm.modify_object('groups/group', dn=group, nestedGroup=group2)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-				sys.exit(0)
+			sys.exit(0)
 
 		utils.fail('UDM did not report an error while trying to set a groups/group nestedGroup to itself during modification')

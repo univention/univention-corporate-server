@@ -162,7 +162,7 @@ class UMC_Daemon(DaemonRunner):
 
 	def _terminate_daemon_process(self):
 		""" Terminate the daemon process specified in the current PID file.
-				"""
+			"""
 		pid = self.pidfile.read_pid()
 		try:
 			os.kill(pid, signal.SIGTERM)

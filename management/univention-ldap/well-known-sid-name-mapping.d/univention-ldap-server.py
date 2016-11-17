@@ -47,7 +47,7 @@ def postrun(modified_default_names=None):
 
 	if slapd_restart:
 		p1 = subprocess.Popen(['invoke-rc.d', 'slapd', 'graceful-restart'],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p1.communicate()
 		if stdout:
 			univention.debug.debug(

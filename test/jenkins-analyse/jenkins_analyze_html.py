@@ -392,7 +392,7 @@ def single_test(job, args):
 			if run.has_resultset()}
 		results[build_id] = build_results
 		machines |= set(strip_build_number(run.name)
-				for run in build.get_matrix_runs())
+			for run in build.get_matrix_runs())
 	machines = sorted(list(machines))
 	pretty_names = map(pretty_machine_name, machines)
 	with tag('table', klass='table table-header-rotated'):
