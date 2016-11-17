@@ -182,6 +182,9 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		}
 			
 		char *opt_name = malloc(5 + attribute->values[0].length + 1);
+		if (opt_name == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_name, "name=%s", attribute->values[0].data);
 		opt_name[5 + attribute->values[0].length] = 0;
 
@@ -191,8 +194,14 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			char *unicodePwd_base64;
 			size_t unicodePwd_base64_strlen = BASE64_ENCODE_LEN(attribute->values[0].length);
 			unicodePwd_base64 = malloc(unicodePwd_base64_strlen + 1);
+			if (unicodePwd_base64 == NULL) {
+				return ldb_module_oom(module);
+			}
 			base64_encode(attribute->values[0].data, attribute->values[0].length, unicodePwd_base64, unicodePwd_base64_strlen + 1);
 			opt_unicodePwd = malloc(9 + unicodePwd_base64_strlen + 1);
+			if (opt_unicodePwd == NULL) {
+				return ldb_module_oom(module);
+			}
 			sprintf(opt_unicodePwd, "password=%s", unicodePwd_base64);
 			opt_unicodePwd[9 + unicodePwd_base64_strlen] = 0;
 			free(unicodePwd_base64);
@@ -202,12 +211,22 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 
 		char *ldap_master = univention_config_get_string("ldap/master");
 		char *machine_pass = read_pwd_from_file("/etc/machine.secret");
+		if (machine_pass == NULL) {
+			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: Error reading /etc/machine.secret\n"), ldb_module_get_name(module));
+			return LDB_ERR_OPERATIONS_ERROR;
+		}
 
 		char *my_hostname = univention_config_get_string("hostname");
 		char *opt_my_samaccoutname = malloc(strlen(my_hostname) + 2);
+		if (opt_my_samaccoutname == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_my_samaccoutname, "%s$", my_hostname);
 		opt_my_samaccoutname[strlen(my_hostname)+1] = 0;
 		char *opt_usersid = malloc(strlen(usersid) + strlen("usersid=") + 1);
+		if (opt_usersid == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_usersid, "usersid=%s", usersid);
 		free(my_hostname);
 
@@ -283,7 +302,9 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: ucs-school-create_windows_computer returned: '%s' (%d bytes)\n"), ldb_module_get_name(module), target_dn_str, nbytes);
 
 		if (nbytes == 0) {
-			return LDB_ERR_OPERATIONS_ERROR;
+			// The call succeeded but we didn't obtain a recommended location,
+			// in this case we must continue without rewriting the DN.
+			return ldb_next_request(module, req);
 		}
 
 		// Trim trailing space
@@ -292,7 +313,7 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
   		// Write new null terminator
   		*(end_ptr+1) = 0;
 
-		// Now modify target DN in reqest
+		// Now modify request DN
 		msg = ldb_msg_copy_shallow(req, req->op.add.message);
 		if (msg == NULL) {
 			return ldb_module_oom(module);

@@ -1,3 +1,9 @@
+univention-ldb-modules (4.0.7-11) unstable; urgency=medium
+
+  * Bug #40435: Improve error handling
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Nov 2016 10:48:22 +0100
+
 univention-ldb-modules (4.0.7-10) unstable; urgency=medium
 
   * Bug #40435: make univention_samaccountname_ldap_check rewrite
