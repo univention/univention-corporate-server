@@ -891,8 +891,8 @@ def _doit(arglist):
 				try:
 					out.extend(object_input(module, object, input, append, remove))
 				except univention.admin.uexceptions.valueMayNotChange, e:
-						out.append(unicode(e[0]))
-						return out + ["OPERATION FAILED"]
+					out.append(unicode(e[0]))
+					return out + ["OPERATION FAILED"]
 				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_options:
 					try:
 						dn = object.modify()
@@ -965,7 +965,7 @@ def _doit(arglist):
 			out.append('WARNING:%s' % object.open_warning)
 
 		if remove_referring and univention.admin.objects.wantsCleanup(object):
-				univention.admin.objects.performCleanup(object)
+			univention.admin.objects.performCleanup(object)
 
 		if recursive:
 			try:

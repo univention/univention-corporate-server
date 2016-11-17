@@ -177,8 +177,8 @@ class ReplicationCheck:
 					change = 1
 			if change == 0 and beenequal == 0 and len(self.history) == self.history_size:
 				self.exit_with_status('CRITICAL',
-									  'no change of listener transaction id for last %s checks' % len(self.history),
-									  notifier_id, listener_id)
+					'no change of listener transaction id for last %s checks' % len(self.history),
+					notifier_id, listener_id)
 
 			# check if difference of nid and lid has been larger than given values
 			mindiff = None
@@ -195,12 +195,12 @@ class ReplicationCheck:
 
 			if self.diff_critical and self.diff_critical <= mindiff:
 				self.exit_with_status('CRITICAL',
-									  'difference was >= %s over last %s checks' % (self.diff_critical, len(self.history)),
-									  notifier_id, listener_id)
+					'difference was >= %s over last %s checks' % (self.diff_critical, len(self.history)),
+					notifier_id, listener_id)
 			if self.diff_warning and self.diff_warning <= mindiff:
 				self.exit_with_status('WARNING',
-									  'difference was >= %s over last %s checks' % (self.diff_warning, len(self.history)),
-									  notifier_id, listener_id)
+					'difference was >= %s over last %s checks' % (self.diff_warning, len(self.history)),
+					notifier_id, listener_id)
 
 		self.exit_with_status('OK', 'replication is in process', notifier_id, listener_id)
 

@@ -97,10 +97,10 @@ def handler(dn, new, old, command=''):
 				remove_certificate(old['cn'][0], old_domain)
 				create_certificate(new['cn'][0], new_domain)
 		if new:
-				# Reset permissions
-				fqdn = "%s.%s" % (new['cn'][0], domain(new))
-				certpath = os.path.join(SSLDIR, fqdn)
-				os.path.walk(certpath, set_permissions, (dn, new))
+			# Reset permissions
+			fqdn = "%s.%s" % (new['cn'][0], domain(new))
+			certpath = os.path.join(SSLDIR, fqdn)
+			os.path.walk(certpath, set_permissions, (dn, new))
 	finally:
 		unsetuid()
 

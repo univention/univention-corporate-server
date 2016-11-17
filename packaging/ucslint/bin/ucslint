@@ -113,8 +113,8 @@ class DebianPackageCheck(object):
 	def modifyMsgIdList(self, newmap):
 		"""Set severity level of messages.
 		newmap == { RESULT_WARN: [ '0004-1', '0019-17', ... ],
-					RESULT_ERROR: [ '0004-2' ],
-					}
+			RESULT_ERROR: [ '0004-2' ],
+			}
 		"""
 		for level, idlist in newmap.items():
 			for curid in idlist:

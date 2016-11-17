@@ -159,10 +159,10 @@ def lookup_zone(zone_name):
 	"""Lookup zone and return UDM object."""
 	if not options.reverse:
 		zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,),
-				scope='domain', base=position.getDomain(), unique=True)
+			scope='domain', base=position.getDomain(), unique=True)
 	else:
 		zones = reverse_zone.lookup(co, lo, '(subnet=%s)' % (zone_name,),
-				scope='domain', base=position.getDomain(), unique=True)
+			scope='domain', base=position.getDomain(), unique=True)
 	if not zones:
 		if options.ignore_missing_zone:
 			sys.exit(0)

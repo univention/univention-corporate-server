@@ -82,21 +82,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['~', '.gz', '.zip', '.bak', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
-				fd = open(fn, 'r')
-				try:
-					for lnr, line in enumerate(fd, start=1):
-						origline = line
-						if UniventionPackageCheck.RE_WHITELINE.match(line):
-							continue
-						pos = 0
-						while True:
-							m = pt.search(line[pos:], fz)
-							if m:
-								if not UniventionPackageCheck.RE_WHITEWORD.match(m[0]):
-									self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, m[0], origline))
-									self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=fn, line=lnr)
-								pos += m.groups()[0][1]
-							else:
-								break
-				finally:
-					fd.close()
+			fd = open(fn, 'r')
+			try:
+				for lnr, line in enumerate(fd, start=1):
+					origline = line
+					if UniventionPackageCheck.RE_WHITELINE.match(line):
+						continue
+					pos = 0
+					while True:
+						m = pt.search(line[pos:], fz)
+						if m:
+							if not UniventionPackageCheck.RE_WHITEWORD.match(m[0]):
+								self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, m[0], origline))
+								self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=fn, line=lnr)
+							pos += m.groups()[0][1]
+						else:
+							break
+			finally:
+				fd.close()

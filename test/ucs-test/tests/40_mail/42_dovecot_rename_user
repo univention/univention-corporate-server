@@ -61,9 +61,9 @@ def main():
 			# test renaming user object with all flag combinations
 			#
 			for i, flag_rename, flag_delete in [(0, 'no', 'no'),
-												(1, 'no', 'yes'),
-												(2, 'yes', 'no'),
-												(3, 'yes', 'yes'),
+				(1, 'no', 'yes'),
+				(2, 'yes', 'no'),
+				(3, 'yes', 'yes'),
 			]:
 				old_dir = get_dovecot_maildir(userbase[i][2])
 				if not os.path.exists(old_dir):

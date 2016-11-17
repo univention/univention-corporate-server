@@ -66,7 +66,7 @@ def _request(method, url, status_code, position, data=None, cookies=None, IdP_IP
 		# manually execute HTTP redirect
 		print("Follow redirect to: %s" % response.headers['Location'])
 		response = _request('GET', response.headers['Location'], 200, position, data=data,
-					cookies=response.cookies, IdP_IP=IdP_IP)
+			cookies=response.cookies, IdP_IP=IdP_IP)
 
 	# check for an expected status_code as a different would indicate an error
 	# in the current login step.

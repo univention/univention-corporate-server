@@ -1987,10 +1987,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhlen)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 			if pwhistoryPolicy is not None and pwhistoryPolicy['pwLength'] is not None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
-					if len(self['password']) < int(pwhistoryPolicy['pwLength']):
-						for i, j in self.alloc:
-							univention.admin.allocators.release(self.lo, self.position, i, j)
-						raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % int(pwhistoryPolicy['pwLength']))
+				if len(self['password']) < int(pwhistoryPolicy['pwLength']):
+					for i, j in self.alloc:
+						univention.admin.allocators.release(self.lo, self.position, i, j)
+					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % int(pwhistoryPolicy['pwLength']))
 			else:
 				if self['overridePWLength'] != '1':
 					if len(self['password']) < self.password_length:

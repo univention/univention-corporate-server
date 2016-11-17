@@ -94,11 +94,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			copyright_strings = ('under the terms of the GNU Affero General Public License version 3',
-								  'Binary versions of this',
-								  'provided by Univention to you as',
-								  'cryptographic keys etc. are subject to a license agreement between',
-								  'the terms of the GNU AGPL V3',
-								  'You should have received a copy of the GNU Affero General Public',
+				  'Binary versions of this',
+				  'provided by Univention to you as',
+				  'cryptographic keys etc. are subject to a license agreement between',
+				  'the terms of the GNU AGPL V3',
+				  'You should have received a copy of the GNU Affero General Public',
                         )
 
 			for teststr in copyright_strings:

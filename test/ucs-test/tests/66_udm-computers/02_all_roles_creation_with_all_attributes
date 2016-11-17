@@ -80,8 +80,8 @@ if __name__ == '__main__':
 				expectedLdap['krb5PrincipalName'] = ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
 			if role not in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',
-							'computers/domaincontroller_slave', 'computers/memberserver',
-							'computers/ipmanagedclient'):
+					'computers/domaincontroller_slave', 'computers/memberserver',
+					'computers/ipmanagedclient'):
 				properties['operatingSystem'] = uts.random_string()
 				properties['operatingSystemVersion'] = uts.random_string()
 				expectedLdap['univentionOperatingSystem'] = [properties['operatingSystem']]

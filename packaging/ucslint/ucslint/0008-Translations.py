@@ -51,7 +51,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0008-4': [uub.RESULT_WARN, 'po-file contains empty msg string'],
 			'0008-5': [uub.RESULT_ERROR, 'po-file contains no character set definition'],
 			'0008-6': [uub.RESULT_ERROR, 'po-file contains invalid character set definition'],
-          }
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -90,7 +90,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		separator = r"[([{\s,:]"
 		translation = r"(_\(\s*" + matched_string + r"\s*%\s*(?:[^\n]+\))?)"
 		regEx1 = re.compile(context + separator + translation,
-				re.DOTALL | re.MULTILINE | re.VERBOSE)
+			re.DOTALL | re.MULTILINE | re.VERBOSE)
 
 		for fn in py_files:
 			try:
@@ -131,7 +131,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			self.debug('testing %s' % fn)
 			for regex, errid, errtxt in [(regEx1, '0008-3', 'contains "fuzzy"'),
-										  (regEx2, '0008-4', 'contains empty msgstr')]:
+					(regEx2, '0008-4', 'contains empty msgstr')]:
 				pos = 0
 				while True:
 					match = regex.search(content, pos)

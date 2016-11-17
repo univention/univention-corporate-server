@@ -83,7 +83,7 @@ class SourceFilesHTML(SourceFileSet):
 				for element in tree.iter():
 					if 'data-i18n' in element.keys():
 						new_entry = polib.POEntry(msgid=element.get('data-i18n'),
-													occurrences=[(os.path.basename(html_path), element.sourceline)])
+							occurrences=[(os.path.basename(html_path), element.sourceline)])
 						new_po.append(new_entry)
 				# Inline JavaScript may use underscorce funtion, e.g. univention-management-console/index.html
 				if tree.xpath('//script'):

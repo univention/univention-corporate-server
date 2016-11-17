@@ -100,11 +100,11 @@ class Instance(umcm.Base):
 		MODEL = request.options['model'].encode('utf-8')
 		COMMENT = request.options['comment'].encode('utf-8')
 		SYSTEM_INFO_CMD = ('/usr/bin/univention-system-info',
-							'-m', MANUFACTURER,
-							'-t', MODEL,
-							'-c', COMMENT,
-							'-s', request.options.get('ticket', ''),
-							'-u', )
+			'-m', MANUFACTURER,
+			'-t', MODEL,
+			'-c', COMMENT,
+			'-s', request.options.get('ticket', ''),
+			'-u', )
 
 		(exitcode, stdout, stderr, ) = self._call(SYSTEM_INFO_CMD)
 		if exitcode:

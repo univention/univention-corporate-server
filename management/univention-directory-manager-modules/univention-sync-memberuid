@@ -95,7 +95,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
 		for uniqueMember in member_dns:
 			try:
 				result = lo.search_s(uniqueMember, ldap.SCOPE_BASE,
-						'(objectclass=*)')
+					'(objectclass=*)')
 			except ldap.NO_SUCH_OBJECT as ex:
 				ud.debug(ud.ADMIN, ud.WARN,
 					'searching %s failed: %s' % (uniqueMember, ex))
@@ -126,17 +126,17 @@ def process_groups(lo, base_dn, test=False, cont=False):
 					lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
 				except ldap.LDAPError as ex:
 					ud.debug(ud.ADMIN, ud.ERROR,
-							'adding memberUid entries failed: %s' % ex)
+						'adding memberUid entries failed: %s' % ex)
 					if not cont:
 						raise ConsistencyError()
 			remove = list(old - new)
 			if remove:
 				try:
 					lo.modify_s(grp_dn,
-							[(ldap.MOD_DELETE, 'memberUid', remove)])
+						[(ldap.MOD_DELETE, 'memberUid', remove)])
 				except ldap.LDAPError as ex:
 					ud.debug(ud.ADMIN, ud.ERROR,
-							'removing memberUid entries failed: %s' % ex)
+						'removing memberUid entries failed: %s' % ex)
 					if not cont:
 						raise ConsistencyError()
 

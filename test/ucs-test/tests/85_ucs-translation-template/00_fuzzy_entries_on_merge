@@ -44,13 +44,13 @@ def _change_entry_in_source_file(source_pkg_path, po_entry):
 		original_source_file = '{}.orig'.format(source_file_path)
 		os.rename(source_file_path, original_source_file)
 		with open(source_file_path, 'w') as changed_source, open(original_source_file, 'r') as fd:
-				for i, line in enumerate(fd):
-					if i == int(line_number) - 1:
-						logging.info('Attempting to change %s in line %s', source_file, line_number)
-						lhs, msgid_from_source = line.split('_(', 1)
-						msgid_from_source = msgid_from_source.replace(po_entry.msgid[0:1], 'C!', 1)
-						line = lhs + '_(' + msgid_from_source
-					changed_source.write(line)
+			for i, line in enumerate(fd):
+				if i == int(line_number) - 1:
+					logging.info('Attempting to change %s in line %s', source_file, line_number)
+					lhs, msgid_from_source = line.split('_(', 1)
+					msgid_from_source = msgid_from_source.replace(po_entry.msgid[0:1], 'C!', 1)
+					line = lhs + '_(' + msgid_from_source
+				changed_source.write(line)
 		os.unlink(original_source_file)
 
 

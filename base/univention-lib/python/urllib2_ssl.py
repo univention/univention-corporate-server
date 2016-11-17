@@ -104,9 +104,9 @@ class VerifiedHTTPSConnection(httplib.HTTPSConnection):
 		if self._ca_certs_file is not None:
 			kwargs.update(cert_reqs=ssl.CERT_REQUIRED, ca_certs=self._ca_certs_file)
 		self.sock = ssl.wrap_socket(sock,
-									keyfile=self.key_file,
-									certfile=self.cert_file,
-									**kwargs)
+			keyfile=self.key_file,
+			certfile=self.cert_file,
+			**kwargs)
 		try:
 			if self._check_hostname:
 				match_hostname(self.sock.getpeercert(), self.host)

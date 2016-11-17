@@ -549,7 +549,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		result = []
 		if self['ip'] and len(self['ip']) > 0 and self['ip'][0]:
 			result = [{'url': 'https://%s/univention-management-console/' % self['ip'][0],
-						'ipaddr': self['ip'][0],
+				'ipaddr': self['ip'][0],
               }]
 		if self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len(self['dnsEntryZoneForward']) > 0:
 			zone = univention.admin.uldap.explodeDn(self['dnsEntryZoneForward'][0], 1)[0]

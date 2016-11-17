@@ -244,7 +244,7 @@ class Changes(object):
 			*** NOTE *** I would like to see such function in the UCR base class
 				so we could call
 
-								ucr.set_bool(variable, boolvalue)
+					ucr.set_bool(variable, boolvalue)
 
 				and the ucr itself would know which string representation to write.
 		"""
