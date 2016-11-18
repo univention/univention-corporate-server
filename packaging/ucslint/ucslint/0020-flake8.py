@@ -171,6 +171,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0020-E714': [uub.RESULT_ERROR, 'test for object identity should be ‘is not’'],
 			'0020-E721': [uub.RESULT_ERROR, 'do not compare types, use ‘isinstance()’'],
 			'0020-E731': [uub.RESULT_ERROR, 'do not assign a lambda expression, use a def'],
+			'0020-E741': [uub.RESULT_WARN, 'do not use variables named ‘l’, ‘O’, or ‘I’'],
+			'0020-E742': [uub.RESULT_ERROR, 'do not define classes named ‘l’, ‘O’, or ‘I’'],
+			'0020-E743': [uub.RESULT_ERROR, 'do not define functions named ‘l’, ‘O’, or ‘I’'],
+
 
 			'0020-E9': [uub.RESULT_ERROR, 'Runtime'],
 			'0020-E901': [uub.RESULT_ERROR, 'SyntaxError or IndentationError'],
