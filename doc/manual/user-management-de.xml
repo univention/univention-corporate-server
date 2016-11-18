@@ -1148,7 +1148,7 @@
         </para>
         <para>
             Werden Konten nur lokal gesperrt, kann der Administrator ein Benutzerkonto durch
-            Eingabe des Befehls <command>faillog -r USERNAME</command> entsperren. Erfolgt die
+            Eingabe des Befehls <command>faillog -r -u USERNAME</command> entsperren. Erfolgt die
             Sperrung global im LDAP, kann der Benutzer im Univention Directory Manager im
             Reiter <guimenu>Benutzerkonto</guimenu> in den Benutzer-Optionen zurückgesetzt
             werden.
