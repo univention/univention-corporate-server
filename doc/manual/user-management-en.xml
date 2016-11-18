@@ -1118,7 +1118,7 @@
         </para>
         <para>
             If accounts are locked locally, the administrator can unlock a user by
-            entering the command <command>faillog -r USERNAME</command>. If the lock occurs
+            entering the command <command>faillog -r -u USERNAME</command>. If the lock occurs
             globally in the LDAP, the user can be reset in
             the <guimenu>User account</guimenu> tab of a user in &ucsUDM;.
         </para>
