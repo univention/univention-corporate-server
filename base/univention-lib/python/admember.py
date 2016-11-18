@@ -967,7 +967,7 @@ def prepare_dns_reverse_settings(ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse DNS lookups
 	# Otherwise one ends up with:
 	# SASL(-1): generic failure: GSSAPI Error: Miscellaneous failure (see text)
-        # (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
+	# (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
 	try:
 		socket.gethostbyaddr(ad_domain_info['DC IP'])
 	except socket.herror:
@@ -1398,8 +1398,10 @@ def configure_member_as_ad_member():
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
+
 def configure_container_as_ad_member():
 	prepare_ucr_settings()
+
 
 def revert_backup_ad_member():
 	# TODO something else?
@@ -1417,6 +1419,7 @@ def revert_member_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
+
 
 def revert_container_ad_member():
 	revert_ucr_settings()
