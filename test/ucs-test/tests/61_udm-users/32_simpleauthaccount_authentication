@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check whether a simple-auth-account can authenticate against LDAP and UMC
-## tags: [udm]
-## roles: [domaincontroller_master]
+## tags: [udm, apptest]
+## roles: [domaincontroller_master, domaincontroller_slave]
 ## exposure: careful
 ## packages:
 ##   - univention-config
