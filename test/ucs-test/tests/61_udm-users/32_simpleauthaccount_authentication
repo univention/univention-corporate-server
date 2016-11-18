@@ -1,0 +1,35 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether a simple-auth-account can authenticate against LDAP and UMC
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import subprocess
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+import univention.admin.uldap
+from univention.lib.umc_connection import UMCConnection
+
+if __name__ == '__main__':
+
+	with udm_test.UCSTestUDM() as udm:
+		password = 'univention'
+		dn, username = udm.create_user(options=['ldap_pwd'], password=password)
+		utils.verify_ldap_object(dn)
+
+		print 'created user %r with dn=%r' % (username, dn)
+		lo = univention.admin.uldap.access(binddn=dn, bindpw=password)
+		assert dn in lo.lo.lo.whoami_s()
+		assert username == lo.get(dn)['uid'][0]
+		print 'successfully did LDAP bind.'
+
+		connection = UMCConnection('localhost', username, password)
+		ldap_base = connection.request('ucr', ['ldap/base'], command='get')
+		print ldap_base
+		assert ldap_base, 'Could not do any random UMC request'
+		print 'successfully did UMC authentication'

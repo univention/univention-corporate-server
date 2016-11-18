@@ -1,3 +1,9 @@
+ucs-test (6.0.37-12) unstable; urgency=medium
+
+  * Bug #42994: add 61_udm-users/32_simpleauthaccount_authentication
+
+ -- Florian Best <best@univention.de>  Fri, 18 Nov 2016 13:27:06 +0100
+
 ucs-test (6.0.37-11) unstable; urgency=low
 
   * Bug #33332: raise time to wait for squid restart to finish
