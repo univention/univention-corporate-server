@@ -8,15 +8,14 @@
 ##   - univention-directory-manager-tools
 
 
-import subprocess
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 import univention.admin.uldap
 from univention.lib.umc_connection import UMCConnection
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		password = 'univention'
 		dn, username = udm.create_user(options=['ldap_pwd'], password=password)
