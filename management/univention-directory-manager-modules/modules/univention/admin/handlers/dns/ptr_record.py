@@ -34,6 +34,7 @@ from univention.admin.layout import Tab, Group
 import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.filter import (expression, conjunction)
 import univention.debug as ud
 import ipaddr
 
@@ -228,12 +229,62 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		if superordinate:
+			filter_p = rewrite_rev(filter_p, superordinate.info['subnet'])
 		filter.expressions.append(filter_p)
 
 	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
+
+def rewrite_rev(filter, subnet):
+	"""Rewrite LDAP filter expression and convert (ip) -> (zone,reversed)
+
+	>>> rewrite_rev(expression('ip', '1.2.3.4'), subnet='1.2')
+	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '4.3', '=')])
+	>>> rewrite_rev(expression('ip', '1.2.3.*'), subnet='1.2')
+	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*.3', '=')])
+	>>> rewrite_rev(expression('ip', '1.2.*.*'), subnet='1.2')
+	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*.*', '=')])
+	>>> rewrite_rev(expression('ip', '1.2.*.4'), subnet='1.2')
+	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '4.*', '=')])
+	>>> rewrite_rev(expression('ip', '1.2.*'), subnet='1.2')
+	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*', '=')])
+	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:7:8'), subnet='0001:0002')
+	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
+	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:7:*'), subnet='0001:0002')
+	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '*.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
+	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:*:8'), subnet='0001:0002')
+	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '8.0.0.0.*.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
+	>>> rewrite_rev(expression('ip', '1:2:3:*'), subnet='0001:0002')
+	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '*.3.0.0.0', '=')])
+	"""
+	if isinstance(filter, conjunction):
+		filter.expressions = [rewrite_rev(expr, subnet) for expr in filter.expressions]
+	if isinstance(filter, expression) and filter.variable == 'ip':
+		if ':' in subnet:
+			string = ''.join(subnet.split(':'))
+			prefix = len(string)
+			assert 1 <= prefix < 32
+			addr = ''.join(
+				part if '*' in part else part.rjust(4, '0')[-4:]
+				for part in filter.value.split(':')
+			)
+			suffix = '.ip6.arpa'
+		else:
+			octets = subnet.split('.')
+			prefix = len(octets)
+			assert 1 <= prefix < 4
+			addr = filter.value.split('.')
+			suffix = '.in-addr.arpa'
+		addr_net, addr_host = ['.'.join(reversed(_)) for _ in addr[:prefix], addr[prefix:]]
+		filter = conjunction('&', [
+			expression('zoneName', addr_net + suffix),
+			expression('relativeDomainName', addr_host or '*'),
+		])
+	return filter
 
 
 def identify(dn, attr):
