@@ -19,6 +19,9 @@
 0009-2:tests/test_backend.py
 0009-5:tests/test_backend.py
 0010-2:tests/test_backend.py
+0009-2:tests/test_backend_threading.py
+0009-5:tests/test_backend_threading.py
+0010-2:tests/test_backend_threading.py
 0010-2:tests/multifile.sh
 0010-2:tests/test_cli.sh
 0010-2:tests/unwrap/unwrap.sh

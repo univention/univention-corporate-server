@@ -305,15 +305,13 @@ class _ConfigRegistry(dict):
 
 	def load(self):
 		"""Load sub registry from file."""
-		self.clear()
 		import_failed = False
 		try:
 			reg_file = open(self.file, 'r')
 		except EnvironmentError:
 			import_failed = True
 		else:
-			if len(reg_file.readlines()) < 2:  # comment or nothing
-				import_failed = True
+			import_failed = reg_file.readline() == '' and reg_file.readline() == ''
 
 		if import_failed:
 			try:
@@ -322,7 +320,8 @@ class _ConfigRegistry(dict):
 				return
 
 		reg_file.seek(0)
-		for line in reg_file.readlines():
+		new = {}
+		for line in reg_file:
 			line = re.sub(r'^[^:]*#.*$', "", line)
 			if line == '':
 				continue
@@ -330,23 +329,23 @@ class _ConfigRegistry(dict):
 				continue
 
 			key, value = line.split(': ', 1)
-			value = value.strip()
-			if len(value) == 0:  # if variable was set without an value
-				value = ''
-
-			self[key] = value
+			new[key] = value.strip()
 		reg_file.close()
+
+		self.update(new)
+		for key in set(self.keys()) - set(new.keys()):
+			self.pop(key, None)
 
 		if import_failed:
 			self.__save_file(self.file)
 
 	def __create_base_conf(self):
 		"""Create sub registry file."""
-		if not os.path.exists(self.file):
-			try:
-				reg_file = os.open(self.file, os.O_CREAT | os.O_RDONLY, 0o644)
-				os.close(reg_file)
-			except EnvironmentError:
+		try:
+			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0644)
+			os.close(reg_file)
+		except EnvironmentError as ex:
+			if ex.errno != errno.EEXIST:
 				msg = "E: file '%s' does not exist and could not be created"
 				print >> sys.stderr, msg % (self.file,)
 				exception_occured()
