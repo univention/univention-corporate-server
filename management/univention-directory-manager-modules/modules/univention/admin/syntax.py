@@ -2188,19 +2188,23 @@ class dhcpService(UDM_Objects):
 class dhcpEntry(complex):
 	min_elements = 1
 	all_required = False
-	subsyntaxes = ((_('DHCP service'), dhcpService), (_('IP address'), IP_AddressList), (_('MAC address'), MAC_AddressList))
+	subsyntaxes = (
+		(_('DHCP service'), dhcpService),
+		(_('IP address'), IP_AddressListEmpty),
+		(_('MAC address'), MAC_AddressList),
+	)
 	description = _('DHCP Entry')
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
 	@classmethod
 	def parse(cls, text):
-		service, ip, mac = text[0], None, None
+		service, ip, mac = text[0], '', ''
 		try:
 			mac = text[1:][-1]
 			ip, mac = text[1:]
-		except ValueError:
+		except (IndexError, ValueError):
 			pass
-		return super(dhcpEntry, cls).parse([service, ip, mac])
+		return super(dhcpEntry, cls).parse(filter(None, [service, ip, mac]))
 
 
 class DHCP_Option(complex):
