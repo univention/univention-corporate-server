@@ -1345,36 +1345,22 @@ class simpleComputer(simpleLdap):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" does not exists, we create one' % ethernet)
 
 			results = self.lo.searchDn(base=position, scope='domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique=False)
-			if not results:
-				self.lo.add('cn = %s,%s' % (name, position), [
-					('objectClass', ['top', 'univentionObject', 'univentionDhcpHost']),
-					('univentionObjectType', ['dhcp/host']),
-					('cn', name),
-					('univentionDhcpFixedAddress', [ip]),
-					('dhcpHWAddress', [ethernet])
-				])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s,%s"' % (name, position))
-			else:
+			if results:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % (name))
-				n = 0
-				for result in results:
-					val = result.split(',')[0].split("_uv")
-					if len(val) > 1:
-						try:
-							n = int(val[1])
-							n += 1
-						except ValueError:
-							if n == 0:
-								n = 1
+				RE = re.compile(r'cn=[^,]+_uv(\d+),')
+				taken = set(int(m.group(1)) for m in (RE.match(dn) for dn in results) if m)
+				n = min(set(range(max(taken) + 1)) - taken) if taken else 0
+				name = '%s_uv%d' % (name, n)
 
-				self.lo.add('cn = %s_uv%d,%s' % (name, n, position), [
+			dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
+			self.lo.add(dn, [
 					('objectClass', ['top', 'univentionObject', 'univentionDhcpHost']),
 					('univentionObjectType', ['dhcp/host']),
-					('cn', '%s_uv%d' % (name, n)),
+					('cn', [name]),
 					('univentionDhcpFixedAddress', [ip]),
-					('dhcpHWAddress', [ethernet])
-				])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s_uv%d,%s"' % (name, n, position))
+					('dhcpHWAddress', [ethernet]),
+			])
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "%s"' % (dn,))
 		else:
 			# if the object already exists, we append or remove the ip address
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" exists, we change the ip' % ethernet)
