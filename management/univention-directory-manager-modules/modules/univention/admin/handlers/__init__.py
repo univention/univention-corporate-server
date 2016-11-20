@@ -1655,6 +1655,8 @@ class simpleComputer(simpleLdap):
 						zone.modify()
 
 	def __add_related_ptrrecords(self, zoneDN, ip):
+		if not all((zoneDN, ip)):
+			return
 		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
 		ip_split = ip.split('.')
 		ip_split.reverse()
@@ -1737,13 +1739,14 @@ class simpleComputer(simpleLdap):
 
 	def __add_dns_forward_object(self, name, zoneDn, ip):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
+		if not all((name, ip, zoneDn)):
+			return
 		if ip.find(':') != -1:  # IPv6
 			self.__add_dns_forward_object_ipv6(name, zoneDn, ipaddr.IPv6Address(ip).exploded)
 		else:
 			self.__add_dns_forward_object_ipv4(name, zoneDn, ip)
 
 	def __add_dns_forward_object_ipv6(self, name, zoneDn, ip):
-		if name and ip and zoneDn:
 			ip = ipaddr.IPv6Address(ip).exploded
 			results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
 			if not results:
@@ -1772,7 +1775,6 @@ class simpleComputer(simpleLdap):
 						self.lo.modify(dn, [('aAAARecord', '', ip)])
 
 	def __add_dns_forward_object_ipv4(self, name, zoneDn, ip):
-		if name and ip and zoneDn:
 			results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
 			if not results:
 				try:
@@ -1964,7 +1966,7 @@ class simpleComputer(simpleLdap):
 				if len(self.__changes['ip']['add']) > 0:
 					# we change
 					single_ip = self.__changes['ip']['add'][0]
-					self.__modify_dns_forward_object(self['name'], None, single_ip, self.__changes['ip']['remove'][0])
+					self.__modify_dns_forward_object(self['name'], None, single_ip, entry)
 					changed_ip = True
 					for mac in self['mac']:
 						dn = self.__remove_from_dhcp_object(ip=entry, mac=mac)
