@@ -1325,10 +1325,13 @@ class simpleComputer(simpleLdap):
 		if 'name' in self.info and 'domain' in self.info:
 			self.info['fqdn'] = '%s.%s' % (self['name'], self['domain'])
 
-	def __modify_dhcp_object(self, position, name, ip, mac):
+	def __modify_dhcp_object(self, position, mac, ip=None):
 		# identify the dhcp object with the mac address
 
+		name = self['name']
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__modify_dhcp_object: position: "%s"; name: "%s"; mac: "%s"; ip: "%s"' % (position, name, mac, ip))
+		if not all((name, mac)):
+			return
 
 		ethernet = 'ethernet %s' % mac
 
@@ -1885,9 +1888,7 @@ class simpleComputer(simpleLdap):
 					ip = self['ip'][0]
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__modify_dhcp_object(dn, self['name'], ip, mac)
-			else:
-				self.__modify_dhcp_object(dn, self['name'], ip, mac)
+			self.__modify_dhcp_object(dn, mac, ip=ip)
 
 		for entry in self.__changes['dnsEntryZoneForward']['remove']:
 			dn, ip = self.__split_dns_line(entry)
@@ -1962,13 +1963,14 @@ class simpleComputer(simpleLdap):
 			if not self.__multiip:
 				if len(self.__changes['ip']['add']) > 0:
 					# we change
-					self.__modify_dns_forward_object(self['name'], None, self.__changes['ip']['add'][0], self.__changes['ip']['remove'][0])
+					single_ip = self.__changes['ip']['add'][0]
+					self.__modify_dns_forward_object(self['name'], None, single_ip, self.__changes['ip']['remove'][0])
 					changed_ip = True
-					if len(self['mac']) > 0:
-						dn = self.__remove_from_dhcp_object(ip=entry, mac=self['mac'][0])
+					for mac in self['mac']:
+						dn = self.__remove_from_dhcp_object(ip=entry, mac=mac)
 						try:
-							dn = ','.join(dn.split(',')[1:])
-							self.__modify_dhcp_object(dn, self['name'], self.__changes['ip']['add'][0], self['mac'][0])
+							dn = self.lo.parentDn(dn)
+							self.__modify_dhcp_object(dn, mac, ip=single_ip)
 						except:
 							pass
 				else:
@@ -2253,9 +2255,9 @@ class simpleComputer(simpleLdap):
 			dn, ip, mac = self.__split_dhcp_line(entry)
 			if not ip and not mac and not self.__multiip:
 				if len(self['ip']) > 0 and len(self['mac']) > 0:
-					self.__modify_dhcp_object(dn, self['name'], self['ip'][0], self['mac'][0])
+					self.__modify_dhcp_object(dn, self['mac'][0], ip=self['ip'][0])
 			else:
-				self.__modify_dhcp_object(dn, self['name'], ip, mac)
+				self.__modify_dhcp_object(dn, mac, ip=ip)
 
 		for entry in self.__changes['dnsEntryZoneForward']['remove']:
 			dn, ip = self.__split_dns_line(entry)
@@ -2305,12 +2307,12 @@ class simpleComputer(simpleLdap):
 				dn, ip, mac = self['dhcpEntryZone'][0]
 				for entry in self.__changes['mac']['add']:
 					if len(self['ip']) > 0:
-						self.__modify_dhcp_object(dn, self['name'], mac=entry, ip=self['ip'][0])
+						self.__modify_dhcp_object(dn, entry, ip=self['ip'][0])
 					else:
-						self.__modify_dhcp_object(dn, self['name'], mac=entry)
+						self.__modify_dhcp_object(dn, entry)
 				for entry in self.__changes['ip']['add']:
 					if len(self['mac']) > 0:
-						self.__modify_dhcp_object(dn, self['name'], mac=self['mac'][0], ip=entry)
+						self.__modify_dhcp_object(dn, self['mac'][0], ip=entry)
 
 		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
