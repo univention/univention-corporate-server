@@ -2113,39 +2113,28 @@ class simpleComputer(simpleLdap):
 			self.__changes['name'] = (self.oldattr.get('sn', [None])[0], self['name'])
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
-
-			if len(self.info.get('ip', [])) == 1 and len(self.info.get('mac', [])) == 1 and len(self.info.get('dhcpEntryZone', [])):
+			dhcp = [self.__split_dhcp_line(entry) for entry in self.info.get('dhcpEntryZone', [])]
+			if len(newAddresses) <= 1 and len(self.info.get('mac', [])) == 1 and dhcp:
 				# In this special case, we assume the mapping between ip/mac address to be
 				# unique. The dhcp entry needs to contain the mac address (as specified by
 				# the ldap search for dhcp entries), the ip address may not correspond to
 				# the ip address associated with the computer ldap object, but this would
 				# be erroneous anyway. We therefore update the dhcp entry to correspond to
 				# the current ip and mac address. (Bug #20315)
-				dn, ip, mac = self.__split_dhcp_line(self.info['dhcpEntryZone'][0])
-
-				if dn and ip and mac:
-					self.info['dhcpEntryZone'] = [(dn, self.info['ip'][0], self.info['mac'][0])]
-				else:
-					self.info['dhcpEntryZone'] = []
+				self.info['dhcpEntryZone'] = [
+					(dn, newAddresses[0] if newAddresses else '', self.info['mac'][0])
+					for (dn, ip, mac) in dhcp
+				]
 			else:
 				# in all other cases, we remove old dhcp entries that do not match ip or
 				# mac addresses (Bug #18966)
-
-				# get all IP addresses that have been removed
-				removedIPs = [ip for ip in self.oldinfo.get('ip', []) if ip and ip not in self['ip']]
-
-				# get all MAC addresses that have been removed
-				removedMACs = [mac for mac in self.oldinfo.get('mac', []) if mac and mac not in self['mac']]
-
-				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
-				newDhcpEntries = []
-				for entry in self.get('dhcpEntryZone', []):
-					dn, ip, mac = self.__split_dhcp_line(entry)
-					if ip not in removedIPs and mac not in removedMACs:
-						newDhcpEntries.append(entry)
-
-				# update the value
-				self.info['dhcpEntryZone'] = newDhcpEntries
+				removedIPs = set(self.oldinfo.get('ip', [])) - set(self['ip'])
+				removedMACs = set(self.oldinfo.get('mac', [])) - set(self['mac'])
+				self.info['dhcpEntryZone'] = [
+					(dn, ip, mac)
+					for (dn, ip, mac) in dhcp
+					if not (ip in removedIPs or mac in removedMACs)
+				]
 
 		if self.hasChanged('dhcpEntryZone'):
 			if 'dhcpEntryZone' in self.oldinfo:
