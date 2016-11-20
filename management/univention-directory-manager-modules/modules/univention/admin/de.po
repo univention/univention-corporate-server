@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-09-14 13:02+0200\n"
-"PO-Revision-Date: 2015-07-19 22:29+0200\n"
+"POT-Creation-Date: 2016-11-08 14:58+0100\n"
+"PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
 "Language: de\n"
@@ -481,6 +481,10 @@ msgstr "Fr"
 msgid "Friday"
 msgstr "Freitag"
 
+#: modules/univention/admin/syntax.py:1426
+msgid "Full domain name must be between 1 and 255 characters long!"
+msgstr "Der vollständige Domänenname muß zwischen 1 udn 255 zeichen lang sein!"
+
 #: modules/univention/admin/syntax.py:527
 msgid "GNU message catalog"
 msgstr "GNU Message Catalog"
@@ -625,6 +629,14 @@ msgstr "LDAP-Fehler"
 #: modules/univention/admin/policy.py:118
 msgid "LDAP filter"
 msgstr "LDAP-Filter"
+
+#: modules/univention/admin/syntax.py:1429
+msgid "Labels must be between 1 and 63 characters long!"
+msgstr "Domänennamen müssen zwischen 1 und 63 Zeichen lang sein!"
+
+#: modules/univention/admin/syntax.py:1431
+msgid "Labels must not be all numeric!"
+msgstr "Domänennamen dürfen keine Zahl sein!"
 
 #: modules/univention/admin/syntax.py:2842
 #: modules/univention/admin/syntax.py:2846

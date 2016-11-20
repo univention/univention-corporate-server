@@ -54,7 +54,7 @@ property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Hostname'),
 		long_description=_('The name of the host relative to the domain.'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,
 		options=[],

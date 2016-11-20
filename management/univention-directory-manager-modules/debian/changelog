@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.5-5) unstable; urgency=low
+
+  * Bug #25354: Validate DNS domain name syntax
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Nov 2016 14:50:57 +0100
+
 univention-directory-manager-modules (12.0.5-4) unstable; urgency=low
 
   * Bug #36570: allow RID in create/modify for computer objects even

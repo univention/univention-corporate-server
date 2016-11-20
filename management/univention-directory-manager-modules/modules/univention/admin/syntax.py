@@ -1363,24 +1363,73 @@ class dnsZone(simple):
 
 
 class dnsName(simple):
-	_re = re.compile('^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9.]$')
+	"""
+	RFC 952/1123/2181:
+
+	# A host name (label) can start or end with a letter or a number
+	>>> dnsName.parse('a')
+	'a'
+	>>> dnsName.parse('A.')
+	'A.'
+	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+	'0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
+	>>> dnsName.parse('')
+	Traceback (most recent call last):
+	...
+	valueError: Missing value!
+
+	# A host name (label) MUST NOT consist of all numeric values
+	>>> dnsName.parse('0')
+	Traceback (most recent call last):
+	...
+	valueError: Labels must not be all numeric!
+
+	# A host name (label) MUST NOT start or end with a '-' (dash)
+	>>> dnsName.parse('-')
+	Traceback (most recent call last):
+	...
+	valueError: Value may not contain other than numbers, letters and dots!
+
+	# A host name (label) can be up to 63 characters
+	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz')
+	Traceback (most recent call last):
+	...
+	valueError: Labels must be between 1 and 63 characters long!
+	>>> dnsName.parse('a..')
+	Traceback (most recent call last):
+	...
+	valueError: Labels must be between 1 and 63 characters long!
+
+	# A full domain name is limited to 255 octets (including the separators).
+	>>> dnsName.parse('a.' * 128)
+	Traceback (most recent call last):
+	...
+	valueError: Full domain name must be between 1 and 255 characters long!
+	"""
+
+	LABEL = re.compile(r'^[a-zA-Z0-9](?:[a-zA-Z0-9_-]{0,61}[a-zA-Z0-9])?$')
+	NUMERIC = re.compile(r'^[0-9]+$')
 
 	@classmethod
 	def parse(self, text):
-		if text is None:
+		if not text:
 			raise univention.admin.uexceptions.valueError(_("Missing value!"))
-		if self._re.match(text) is not None:
-			return text
-		raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters and dots!"))
+		assert isinstance(text, basestring)
+		if not 1 <= len(text) <= 255:
+			raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 255 characters long!"))
+		labels = (text[:-1] if text.endswith('.') else text).split('.')
+		if not all(1 <= len(label) <= 63 for label in labels):
+			raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
+		if any(self.NUMERIC.match(label) for label in labels):
+			raise univention.admin.uexceptions.valueError(_("Labels must not be all numeric!"))
+		if not all(self.LABEL.match(label) for label in labels):
+			raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters and dots!"))
+		return text
 
 
 class dnsName_umlauts(simple):
 	regex = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
-	error_message = _("Value may not contain other than numbers, letters and dots!")
-
-
-class dnsNameDot(simple):
-	regex = re.compile('^[0-9a-zA-Z.-]+$')
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 
@@ -1391,7 +1440,7 @@ class keyAndValue(complex):
 
 
 class dnsMX(complex):
-	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsNameDot)]
+	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsName)]
 	all_required = True
 
 
