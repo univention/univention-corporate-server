@@ -1412,7 +1412,7 @@ class simpleComputer(simpleLdap):
 				object['cname'] = '%s.%s.' % (new_name, dnsforwardzone)
 				object.modify()
 
-	def __rename_dhcp_object(self, position=None, old_name=None, new_name=None):
+	def __rename_dhcp_object(self, old_name, new_name):
 		module = univention.admin.modules.get('dhcp/host')
 		tmppos = univention.admin.uldap.position(self.position.getDomain())
 		for mac in self['mac']:
@@ -1432,11 +1432,11 @@ class simpleComputer(simpleLdap):
 				object['host'] = object['host'].replace(old_name, new_name)
 				object.modify()
 
-	def __remove_from_dhcp_object(self, position=None, name=None, oldname=None, mac=None, ip=None):
+	def __remove_from_dhcp_object(self, mac=None, ip=None):
 		# if we got the mac address, then we remove the object
 		# if we only got the ip address, we remove the ip address
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % (position, name, oldname, mac, ip))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: mac="%s", ip="%s"' % (mac, ip))
 
 		dn = None
 
@@ -1872,9 +1872,9 @@ class simpleComputer(simpleLdap):
 				mac = ''
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__remove_from_dhcp_object(dn, mac=mac)
+				self.__remove_from_dhcp_object(mac=mac)
 			else:
-				self.__remove_from_dhcp_object(dn, ip=ip, mac=mac)
+				self.__remove_from_dhcp_object(ip=ip, mac=mac)
 
 		for entry in self.__changes['dhcpEntryZone']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
@@ -1958,14 +1958,14 @@ class simpleComputer(simpleLdap):
 
 		changed_ip = False
 		for entry in self.__changes['ip']['remove']:
-			# self.__remove_from_dhcp_object(  ip = entry )
+			# self.__remove_from_dhcp_object(ip=entry)
 			if not self.__multiip:
 				if len(self.__changes['ip']['add']) > 0:
 					# we change
 					self.__modify_dns_forward_object(self['name'], None, self.__changes['ip']['add'][0], self.__changes['ip']['remove'][0])
 					changed_ip = True
 					if len(self['mac']) > 0:
-						dn = self.__remove_from_dhcp_object(None, self['name'], entry, self['mac'][0])
+						dn = self.__remove_from_dhcp_object(ip=entry, mac=self['mac'][0])
 						try:
 							dn = ','.join(dn.split(',')[1:])
 							self.__modify_dhcp_object(dn, self['name'], self.__changes['ip']['add'][0], self['mac'][0])
@@ -1994,7 +1994,7 @@ class simpleComputer(simpleLdap):
 		if self.__changes['name']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed')
 			self.__update_groups_after_namechange()
-			self.__rename_dhcp_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
+			self.__rename_dhcp_object(old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 			self.__rename_dns_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 
 		if self.ipRequest == 1 and self['ip']:
@@ -2244,9 +2244,9 @@ class simpleComputer(simpleLdap):
 				mac = ''
 				if self['mac']:
 					mac = self['mac'][0]
-				self.__remove_from_dhcp_object(dn, mac=mac)
+				self.__remove_from_dhcp_object(mac=mac)
 			else:
-				self.__remove_from_dhcp_object(dn, ip=ip, mac=mac)
+				self.__remove_from_dhcp_object(ip=ip, mac=mac)
 
 		for entry in self.__changes['dhcpEntryZone']['add']:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
@@ -2479,7 +2479,7 @@ class simpleComputer(simpleLdap):
 			for dhcpEntryZone in self['dhcpEntryZone']:
 				dn, ip, mac = self.__split_dhcp_line(dhcpEntryZone)
 				try:
-					self.__remove_from_dhcp_object(dn, self['name'], None, mac)
+					self.__remove_from_dhcp_object(mac=mac)
 				except Exception, e:
 					self.exceptions.append([_('DHCP'), _('delete'), e])
 
