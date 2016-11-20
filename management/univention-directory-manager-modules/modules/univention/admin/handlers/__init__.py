@@ -2219,19 +2219,35 @@ class simpleComputer(simpleLdap):
 
 		return ml
 
-	# for ip='10.200.2.5' and subnet='2.200.10.in-addr.arpa' -> rmIP='5' ('5.2' for 200.10.in-addr.arpa)
-	def calc_dns_reverse_entry_name(self, sip, reverseDN):
+	@classmethod
+	def calc_dns_reverse_entry_name(cls, sip, reverseDN):
+		"""
+		>>> simpleComputer.calc_dns_reverse_entry_name('10.200.2.5', 'subnet=2.200.10.in-addr.arpa')
+		'5'
+		>>> simpleComputer.calc_dns_reverse_entry_name('10.200.2.5', 'subnet=200.10.in-addr.arpa')
+		'5.2'
+		>>> simpleComputer.calc_dns_reverse_entry_name('2001:db8::3', 'subnet=0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa')
+		'3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'
+		"""
 		if ':' in sip:
 			subnet = ldap.explode_dn(reverseDN, 1)[0].replace('.ip6.arpa', '').split('.')
-			# '2001::db8::3' → '2001:0db8:0000:…:003' → '20010db800…003' → ['2', '0', '0', '1', …]
 			ip = list(ipaddr.IPv6Address(sip).exploded.replace(':', ''))
-			return self.calc_dns_reverse_entry_name_do(32, subnet, ip)
+			return cls.calc_dns_reverse_entry_name_do(32, subnet, ip)
 		else:
 			subnet = ldap.explode_dn(reverseDN, 1)[0].replace('.in-addr.arpa', '').split('.')
 			ip = sip.split('.')
-			return self.calc_dns_reverse_entry_name_do(4, subnet, ip)
+			return cls.calc_dns_reverse_entry_name_do(4, subnet, ip)
 
-	def calc_dns_reverse_entry_name_do(self, maxLength, zoneNet, ip):
+	@staticmethod
+	def calc_dns_reverse_entry_name_do(maxLength, zoneNet, ip):
+		"""
+		>>> simpleComputer.calc_dns_reverse_entry_name_do(3, ['2','1'], ['1','2','3'])
+		'3'
+		>>> simpleComputer.calc_dns_reverse_entry_name_do(3, ['1'], ['1','2','3'])
+		'3.2'
+		>>> simpleComputer.calc_dns_reverse_entry_name_do(4, ['0'], ['1','2','3'])
+		0
+		"""
 		zoneNet.reverse()
 		if not ip[:len(zoneNet)] == zoneNet:
 			return 0
@@ -2911,3 +2927,8 @@ class _MergedAttributes(object):
 			elif old and new:  # MOD_REPLACE
 				values = set(new)
 		return list(values)
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

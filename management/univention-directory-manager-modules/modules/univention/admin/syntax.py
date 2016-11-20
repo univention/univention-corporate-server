@@ -1457,6 +1457,18 @@ class dnsSRVName(complex):
 	size = ('Half', 'Half', 'One')
 
 
+class dnsPTR(simple):
+	regexp = re.compile(
+		r'''
+		 ^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+		 (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
+		|^    [0-9a-f]
+		 (?:\.[0-9a-f]){0,30}$
+		''', re.VERBOSE
+	)
+	error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")")
+
+
 class postalAddress(complex):
 	delimiter = ', '
 	subsyntaxes = [(_('Street'), string), (_('Postal code'), OneThirdString), (_('City'), TwoThirdsString)]

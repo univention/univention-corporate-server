@@ -34,9 +34,12 @@ from univention.admin.layout import Tab, Group
 import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
+import univention.debug as ud
+import ipaddr
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
+
 
 module = 'dns/ptr_record'
 operations = ['add', 'edit', 'remove', 'search']
@@ -51,11 +54,21 @@ property_descriptions = {
 	'address': univention.admin.property(
 		short_description=_('Reverse address'),
 		long_description=_('The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" -> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\").'),
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.dnsPTR,
+		multivalue=False,
+		include_in_default_search=False,
+		options=[],
+		required=True,
+		may_change=True,
+	),
+	'ip': univention.admin.property(
+		short_description=_('IP Address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipAddress,
 		multivalue=False,
 		include_in_default_search=True,
 		options=[],
-		required=True,
+		required=False,
 		may_change=True,
 		identifies=True
 	),
@@ -66,7 +79,7 @@ property_descriptions = {
 		multivalue=True,
 		include_in_default_search=True,
 		options=[],
-		required=False,
+		required=True,
 		may_change=True
 	),
 }
@@ -74,7 +87,7 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Basic settings'), layout=[
 		Group(_('General pointer record settings'), layout=[
-			['address', 'ptr_record'],
+			['ip', 'ptr_record'],
 		]),
 	]),
 ]
@@ -84,8 +97,93 @@ mapping.register('address', 'relativeDomainName', None, univention.admin.mapping
 mapping.register('ptr_record', 'pTRRecord')
 
 
+def ipv6(string):
+	"""
+	>>> ipv6('0123456789abcdef0123456789abcdef')
+	'0123:4567:89ab:cdef:0123:4567:89ab:cdef'
+	"""
+	assert len(string) == 32, string
+	return ':'.join(string[i:i+4] for i in range(0, 32, 4))
+
+
+def calc_ip(rev, subnet):
+	"""
+	>>> calc_ip(rev='8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0', subnet='0001:0002:0003:0').exploded
+	'0001:0002:0003:0004:0005:0006:0007:0008'
+	>>> calc_ip(rev='4.3', subnet='1.2').exploded
+	'1.2.3.4'
+	"""
+	parts = rev.split('.')
+	parts.reverse()
+	if ':' in subnet:
+		string = ''.join(subnet.split(':') + parts)
+		ip = ipaddr.IPv6Address(ipv6(string))
+	else:
+		octets = subnet.split('.') + parts
+		assert len(octets) == 4, octets
+		addr = '.'.join(octets)
+		ip = ipaddr.IPv4Address(addr)
+	return ip
+
+
+def calc_rev(ip, subnet):
+	"""
+	>>> calc_rev(ip='1.2.3.4', subnet='1.2')
+	'4.3'
+	>>> calc_rev(ip='0001:0002:0003:0004:0005:0006:0007:0008', subnet='0001:0002:0003:0')
+	'8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0'
+	>>> calc_rev(ip='1:2:3:4:5:6:7:8', subnet='0001:0002:0003:0')
+	'8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0'
+	"""
+	if ':' in subnet:
+		string = ''.join(subnet.split(':'))
+		prefix = len(string)
+		assert 1 <= prefix < 32
+		string += '0' * (32 - prefix)
+		net = ipaddr.IPv6Network('%s/%d' % (ipv6(string), 4 * prefix))
+		addr = ipaddr.IPv6Address(ip)
+		host = ''.join(addr.exploded.split(':'))
+	else:
+		octets = subnet.split('.')
+		prefix = len(octets)
+		assert 1 <= prefix < 4
+		octets += ['0'] * (4 - prefix)
+		net = ipaddr.IPv4Network('%s/%d' % ('.'.join(octets), 8 * prefix))
+		addr = ipaddr.IPv4Address(ip)
+		host = addr.exploded.split('.')
+	if addr not in net:
+		raise ValueError()
+	return '.'.join(reversed(host[prefix:]))
+
+
 class object(univention.admin.handlers.simpleLdap):
 	module = module
+
+	def description(self):
+		try:
+			return calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
+		except (LookupError, ValueError, AssertionError) as ex:
+			ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
+			return super(object, self).description()
+
+	def open(self):
+		super(object, self).open()
+		try:
+			self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
+			self.save()
+		except (LookupError, ValueError, AssertionError) as ex:
+			ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
+
+	def ready(self):
+		old_ip = self.oldinfo.get('ip')
+		new_ip = self.info.get('ip')
+		if old_ip != new_ip:
+			try:
+				self.info['address'] = calc_rev(new_ip, self.superordinate.info['subnet'])
+			except (LookupError, ValueError, AssertionError) as ex:
+				ud.debug(ud.ADMIN, ud.WARN, 'Failed to handle address: dn=%s addr=%r (%s)' % (self.dn, new_ip, ex))
+				raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
+		super(object, self).ready()
 
 	def _updateZone(self):
 		if self.update_zone:
@@ -143,3 +241,8 @@ def identify(dn, attr):
 	return 'dNSZone' in attr.get('objectClass', []) and\
 		'@' not in attr.get('relativeDomainName', []) and\
 		(attr['zoneName'][0].endswith('.in-addr.arpa') or attr['zoneName'][0].endswith('.ip6.arpa'))
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
