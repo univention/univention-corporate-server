@@ -241,6 +241,10 @@
 				<listitem><simpara>
 					Long descriptions have been added to all DNS module properties (<u:bug>42820</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					DNS names are now checked for validity according to <u:rfc>2181</u:rfc>.
+					PTR entries are now shown in forward notation as IP addresses and can be searched for (<u:bug>25354</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -255,6 +259,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Listing policies for DHCP host entries now works with multiple DHCP services and for entries with none or multiple IP addresses (<u:bug>42849</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Support for dynamic address assignment using pools for known hosts has been improved <u:bug>16923</u:bug>.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
