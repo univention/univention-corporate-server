@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.3-3) unstable; urgency=medium
+
+  * Bug #37388: Fix issues reported by QA
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Nov 2016 12:32:36 +0100
+
 univention-s4-connector (10.0.3-2) unstable; urgency=medium
 
   * Bug #37388: Sync client initiated renaming of Windows machine accounts
