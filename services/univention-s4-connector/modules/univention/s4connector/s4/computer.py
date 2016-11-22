@@ -91,3 +91,31 @@ def checkAndConvertToMacOSX(s4connector, key, sync_object):
 		return
 
 	_convertWinToMac(s4connector, sync_object)
+
+def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
+	ud.debug(ud.LDAP, ud.INFO, "con_check_rename: ucs_object: %s" % sync_object)
+
+	attrs = sync_object.get('attributes')
+	if not attrs:
+		return
+
+	uid = attrs.get('uid', [None])[0]
+	if not uid:
+		raise ValueError("%s has no uid" % (sync_object['dn'],))
+
+	try:
+		cn_vals = [_v for _k, _v in attrs.iteritems() if 'cn' == _k.lower()][0]
+	except IndexError:
+		raise ValueError("%s has neither cn nor CN" % (sync_object['dn'],))
+	else:
+		cn = cn_vals[0]
+
+	expected_cn = uid.rstrip('$')
+	if cn == expected_cn:
+		return
+
+	ud.debug(ud.LDAP, ud.PROCESS, "con_check_rename: Renaming client from %s to %s" % (cn, expected_cn))
+	ucs_admin_object = univention.admin.objects.get(s4connector.modules['windowscomputer'], co='', lo=s4connector.lo, position='', dn=sync_object['dn'])
+	ucs_admin_object.open()
+	ucs_admin_object['name'] = expected_cn
+	ucs_admin_object.modify()

@@ -561,6 +561,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 							univention.s4connector.s4.computer.checkAndConvertToMacOSX,
+							univention.s4connector.s4.computer.windowscomputer_sync_s4_to_ucs_check_rename,
 							],
 
 			attributes= {
