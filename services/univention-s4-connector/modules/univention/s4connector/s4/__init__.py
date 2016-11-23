@@ -33,7 +33,6 @@
 
 
 from __future__ import print_function
-import base64
 import copy
 import ldap
 import string
@@ -41,7 +40,6 @@ import re
 import sys
 import time
 import types
-import array
 import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
@@ -475,71 +473,6 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 
-def old_user_dn_mapping(s4connector, given_object):
-	object = copy.deepcopy(given_object)
-
-	ctrls = [LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)]
-	samaccountname = ''
-
-	if 'sAMAccountName' in object:
-		samaccountname = object['sAMAccountName']
-
-	for dn_key in ['dn', 'olddn']:
-		ud.debug(ud.LDAP, ud.INFO, "check newdn for key %s:" % dn_key)
-		if dn_key in object:
-
-			dn = object[dn_key]
-
-			pos = string.find(dn, '=')
-			pos2 = len(univention.s4connector.s4.explode_unicode_dn(dn)[0]) - 1
-			attrib = dn[:pos]
-			value = dn[pos + 1:pos2]
-
-			if attrib == 'uid':
-				# lookup the uid as sAMAccountName in S4 to get corresponding DN, if not found create new User
-				ud.debug(ud.LDAP, ud.INFO, "search in s4 samaccountname=%s" % value)
-				result = s4connector.s4_search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value))
-				ud.debug(ud.LDAP, ud.INFO, "search in result %s" % result)
-				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
-					s4dn = encode_attrib(result[0][0])
-					ud.debug(ud.LDAP, ud.INFO, "search in s4 gave dn %s" % s4dn)
-					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0]) - 1
-					# newdn = s4dn[:s4pos2] + dn[pos2:]
-					newdn = s4dn
-				else:
-					newdn = 'cn' + dn[pos:]
-
-			else:
-				# get the object to read the sAMAccountName in S4 and use it as uid
-				# we have no fallback here, the given dn must be found in S4 or we've got an error
-				i = 0
-				while (not samaccountname):  # in case of olddn this is already set
-					i = i + 1
-					search_dn = dn
-					if 'deleted_dn' in object:
-						search_dn = object['deleted_dn']
-					try:
-						samaccountname = encode_attrib(s4connector.s4_search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, '(objectClass=user)', ['sAMAccountName'], serverctrls=ctrls)[0][1]['sAMAccountName'][0])
-					except ldap.NO_SUCH_OBJECT:  # S4 may need time
-						if i > 5:
-							raise
-						time.sleep(1)  # S4 may need some time...
-
-				pos = string.find(dn, '=')
-				pos2 = len(univention.s4connector.s4.explode_unicode_dn(dn)[0]) - 1
-
-				newdn = 'uid=' + samaccountname + dn[pos2:]
-			try:
-				ud.debug(ud.LDAP, ud.INFO, "newdn for key %s:" % dn_key)
-				ud.debug(ud.LDAP, ud.INFO, "olddn: %s" % dn)
-				ud.debug(ud.LDAP, ud.INFO, "newdn: %s" % newdn)
-			except:  # FIXME: which exception is to be caught?
-				pass
-
-			object[dn_key] = newdn
-	return object
-
-
 def decode_sid(value):
 	# SID in S4
 	#
@@ -566,66 +499,6 @@ def decode_sid(value):
 	return sid
 
 
-def encode_sid(value):
-	a = array.array('c')
-
-	vlist = value.replace('S-', '').split('-')
-	a.append(chr(int(vlist[0])))
-	a.append(chr(len(vlist) - 2))
-	a.append(chr(0))
-	a.append(chr(0))
-	a.append(chr(0))
-	a.append(chr(0))
-	a.append(chr(0))
-	a.append(chr(int(vlist[1])))
-	for i in range(2, len(vlist)):
-		a.append(chr((int(vlist[i]) & 0xff)))
-		a.append(chr((int(vlist[i]) & 0xff00) >> 8))
-		a.append(chr((int(vlist[i]) & 0xff0000) >> 16))
-		a.append(chr((int(vlist[i]) & 0xff000000) >> 24))
-
-	return a
-
-
-def encode_object_sid(sid_string, encode_in_base64=True):
-	binary_encoding = ""
-
-	for i in sid_string.split("-")[1:]:
-		j = int(i)
-
-		oc1 = (j >> 24)
-		oc2 = (j - (oc1 * (2 << 23))) >> 16
-		oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
-		oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
-
-		binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
-		binary_encoding += binary_encoding_chunk
-
-	if encode_in_base64:
-		return base64.encodestring(binary_encoding)
-
-	return binary_encoding
-
-
-def encode_object_sid_to_binary_ldapfilter(sid_string):
-	binary_encoding = ""
-
-	# The first two bytes do not seem to follow the expected binary LDAP filter
-	# conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
-	# statically
-
-	ud.debug(ud.LDAP, ud.INFO, "encode_object_sid_to_binary %s:" % str(sid_string))
-
-	for i in sid_string.split("-")[3:]:
-		j = hex(int(i))
-		hex_repr = (((8 - len(j[2:])) * "0") + j[2:])
-
-		binary_encoding_chunk = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
-		binary_encoding += binary_encoding_chunk
-
-	return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
-
-
 def encode_list(list, encoding):
 	newlist = []
 	if not list:
@@ -647,17 +520,6 @@ def decode_list(list, encoding):
 			newlist.append(val.decode(encoding))
 		else:
 			newlist.append(val)
-	return newlist
-
-
-def unicode_list(list, encoding):
-	newlist = []
-	if encoding:
-		for val in list:
-			newlist.append(unicode(val, encoding))
-	else:
-		for val in list:
-			newlist.append(unicode(val))
 	return newlist
 
 
@@ -805,23 +667,6 @@ def compare_sid_lists(sid_list1, sid_list2):
 	return True
 
 
-def explode_unicode_dn(dn, notypes=0):
-	ret = []
-	last = -1
-	last_found = 0
-	while dn.find(',', last + 1) > 0:
-		last = dn.find(',', last + 1)
-		if dn[last - 1] != '\\':
-			if notypes == 1:
-				last_found = dn.find('=', last_found) + 1
-			if dn[last_found] == ',':
-				last_found += 1
-			ret.append(dn[last_found:last])
-			last_found = last
-
-	return ret
-
-
 class LDAPEscapeFormatter(string.Formatter):
 	"""
 	A custom string formatter that supports a special `e` conversion, to employ
@@ -907,7 +752,7 @@ class s4(univention.s4connector.ucs):
 			self.config.add_section('S4 GUID')
 		try:
 			self.ctrl_show_deleted = LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)
-			res = self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', [], serverctrls=[self.ctrl_show_deleted])
+			self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', [], serverctrls=[self.ctrl_show_deleted])
 		except ldap.UNAVAILABLE_CRITICAL_EXTENSION:
 			# e.g. Samba4:
 			#   ldapsearch -x -H ldap://localhost -b '' -s base '(objectClass=*)' supportedControl
@@ -1056,13 +901,6 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap._set_lastUSN')
 		ud.debug(ud.LDAP, ud.INFO, "_set_lastUSN: new lastUSN is: %s" % lastUSN)
 		self.__lastUSN = lastUSN
-
-	# save ID's
-	def __check_base64(self, string):
-		# check if base64 encoded string string has correct length
-		if not len(string) & 3 == 0:
-			string = string + "=" * (4 - len(string) & 3)
-		return string
 
 	def __encode_GUID(self, GUID):
 		# GUID may be unicode
@@ -1863,8 +1701,6 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to ucs ignored, group sync_mode is write")
 				return
 
-		object_s4 = self._object_mapping(key, object)
-
 		if 'memberOf' in object['attributes']:
 			for groupDN in object['attributes']['memberOf']:
 				s4_object = {'dn': groupDN, 'attributes': self.get_object(groupDN), 'modtype': 'modify'}
@@ -2177,7 +2013,6 @@ class s4(univention.s4connector.ucs):
 
 		s4_object = self._object_mapping(object_key, object, 'ucs')
 
-		ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
 		ldap_object_s4 = self.get_object(s4_object['dn'])
 
 		modified = 0
