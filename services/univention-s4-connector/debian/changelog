@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.2-4) unstable; urgency=medium
+
+  * Bug #37388: make ucslint happy
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Nov 2016 13:36:40 +0100
+
 univention-s4-connector (11.0.2-3) unstable; urgency=medium
 
   * Bug #37388: Fix issues reported by QA

@@ -92,6 +92,7 @@ def checkAndConvertToMacOSX(s4connector, key, sync_object):
 
 	_convertWinToMac(s4connector, sync_object)
 
+
 def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
 	ud.debug(ud.LDAP, ud.INFO, "con_check_rename: ucs_object: %s" % sync_object)
 
