@@ -10,3 +10,4 @@ desc: |
    into an overflow error, which terminates the Listener. This has been fixed.
 bug: [42725]
 announced: 2016-10-21
+erratum: 313

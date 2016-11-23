@@ -13,3 +13,4 @@ desc: |
    value of UCR variable 'ldap/logging' is interpreted as a boolean.
 bug: [25404,34916,34420,42665]
 announced: 2016-10-26
+erratum: 317

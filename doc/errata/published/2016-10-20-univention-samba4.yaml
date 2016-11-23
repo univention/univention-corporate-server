@@ -25,3 +25,4 @@ desc: |
    case Samba 4 is not installed on the DC master.
 bug: [42475,39251,40511,41767,30836,41549]
 announced: 2016-10-20
+erratum: 309

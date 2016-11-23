@@ -16,3 +16,4 @@ desc: |
    move. This issue has been fixed.
 bug: [41682,41685,41680,41938]
 announced: 2016-09-14
+erratum: 267

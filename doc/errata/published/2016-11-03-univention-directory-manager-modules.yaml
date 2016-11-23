@@ -20,3 +20,4 @@ desc: |
    directory/manager/web/sizelimit is empty.
 bug: [33614, 39876, 38073, 27123, 40649, 42177, 34764, 39588]
 announced: 2016-11-03
+erratum: 319

@@ -14,3 +14,4 @@ desc: |
    Center access to MySQL.
 bug: [42026, 42307]
 announced: 2016-09-07
+erratum: 262

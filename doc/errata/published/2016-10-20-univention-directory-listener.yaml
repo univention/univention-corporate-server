@@ -18,3 +18,4 @@ desc: |
    handling and logging have been improved.
 bug: [42573,41842,41960,42328,42701]
 announced: 2016-10-20
+erratum: 311

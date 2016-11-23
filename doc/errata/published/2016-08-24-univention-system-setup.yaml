@@ -11,3 +11,4 @@ desc: |
    file during an app appliance configuration.
 bug: [42031]
 announced: 2016-08-24
+erratum: 238

@@ -13,3 +13,4 @@ desc: |
  * The ldap modlist hooks are now executed before sanitizing object classes.
 bug: [41824,41829,41899]
 announced: 2016-08-18
+erratum: 235

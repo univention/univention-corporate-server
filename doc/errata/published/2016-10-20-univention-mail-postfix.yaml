@@ -12,3 +12,4 @@ desc: |
    is the fully qualified domain name (FQDN).
 bug: [32572]
 announced: 2016-10-20
+erratum: 299

@@ -12,3 +12,4 @@ desc: |
    failed to install.
 bug: [42401, 42362]
 announced: 2016-09-21
+erratum: 272

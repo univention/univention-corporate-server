@@ -9,3 +9,4 @@ desc: |
  * Use correct INI value for NotifyVendor information
 bug: [42068]
 announced: 2016-08-24
+erratum: 239

@@ -9,3 +9,4 @@ desc: |
  * allow pykota database access via IPv6 localhost too (Bug #41915)
 bug: [41915]
 announced: 2016-09-07
+erratum: 248

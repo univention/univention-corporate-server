@@ -21,3 +21,4 @@ desc: |
    (fewer integrity checks, improved indexing time)
 bug: [34873, 38679, 39307, 41648, 41281]
 announced: 2016-09-07
+erratum: 249

@@ -9,3 +9,4 @@ desc: |
  * Initialize updater/identify from ISO image metadata
 bug: [42483]
 announced: 2016-10-13
+erratum: 292

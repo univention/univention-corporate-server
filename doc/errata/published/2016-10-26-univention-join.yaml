@@ -10,3 +10,4 @@ desc: |
    to better handle LDAP server restarts while joining.
 bug: [42420]
 announced: 2016-10-26
+erratum: 318

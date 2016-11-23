@@ -10,3 +10,4 @@ desc: |
    from the DVD, instead of being copied to the disk beforehand.
 bug: [42402]
 announced: 2016-09-23
+erratum: 278

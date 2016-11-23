@@ -10,3 +10,4 @@ desc: |
  * Wildcard and automatic substring searches are now configurable via UCR.
 bug: [42159, 42388]
 announced: 2016-09-21
+erratum: 271

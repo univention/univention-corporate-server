@@ -9,3 +9,4 @@ desc: |
   * The S4-Connector didn't synchronize TXT records
 bug: [41006]
 announced: 2016-08-18
+erratum: 236

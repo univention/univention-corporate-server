@@ -11,3 +11,4 @@ desc: |
    passwords is not allowed anymore.
 bug: [42103]
 announced: 2016-10-20
+erratum: 303

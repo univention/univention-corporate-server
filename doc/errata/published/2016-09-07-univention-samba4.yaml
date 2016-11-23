@@ -10,3 +10,4 @@ desc: |
    recommended packages for univention-samba4.
 bug: [29463]
 announced: 2016-09-07
+erratum: 257

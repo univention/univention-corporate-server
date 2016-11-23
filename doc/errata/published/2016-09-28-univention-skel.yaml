@@ -9,3 +9,4 @@ desc: |
  * Handling of symlinks has been improved in univention-skel.
 bug: [42493]
 announced: 2016-09-28
+erratum: 281

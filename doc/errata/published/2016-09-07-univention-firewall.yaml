@@ -9,3 +9,4 @@ desc: |
  * The MySQL port is no longer blocked for Docker containers.
 bug: [42117]
 announced: 2016-09-07
+erratum: 246

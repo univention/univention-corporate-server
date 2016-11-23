@@ -9,3 +9,4 @@ desc: |
  * Apply docker firewall settings during start of docker.
 bug: [42698]
 announced: 2016-11-03
+erratum: 324

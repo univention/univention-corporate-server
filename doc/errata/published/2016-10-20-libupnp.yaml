@@ -11,3 +11,4 @@ bug: [42030]
 cve:
  - CVE-2016-6255
 announced: 2016-10-20
+erratum: 300
