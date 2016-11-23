@@ -10,3 +10,5 @@ desc: |
    (squid/cache/format, squid/cache/directory, squid/cache/size,
    squid/cache/l1_size, squid/cache/l2_size).
 bug: [37381]
+erratum: 332
+announced: 2016-11-23
