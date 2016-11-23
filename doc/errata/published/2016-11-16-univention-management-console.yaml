@@ -11,3 +11,4 @@ desc: |
    LDAP server.
 bug: [42310]
 announced: 2016-11-16
+erratum: 326

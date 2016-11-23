@@ -10,3 +10,4 @@ desc: |
    since the last erratum. This has been corrected.
 bug: [42924]
 announced: 2016-11-16
+erratum: 325
