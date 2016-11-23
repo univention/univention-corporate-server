@@ -10,4 +10,4 @@ desc: |
  * The ini attribute "License" is now passed to the frontend.
  * Adjust code so that other projects may extend the App Center lib.
  * The documentation has been extended.
-bug: [42801, 42798, 42834, 42761]
+bug: [43040, 42798, 42834, 42761]
