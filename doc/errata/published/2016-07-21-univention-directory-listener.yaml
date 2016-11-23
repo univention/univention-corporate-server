@@ -11,3 +11,4 @@ desc: |
    This led to all transactions being skipped which happened in between.
 bug: [41657]
 announced: 2016-07-21
+erratum: 12

@@ -14,3 +14,4 @@ desc: |
    server can be stopped after installing this update.
 bug: [41632]
 announced: 2016-07-21
+erratum: 11

@@ -9,3 +9,4 @@ desc: |
  * Error messages regarding attribute locking have been improved.
 bug: [42385]
 announced: 2016-09-22
+erratum: 14

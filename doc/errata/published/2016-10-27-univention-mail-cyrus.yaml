@@ -12,3 +12,4 @@ desc: |
    disabled in the program code.
 bug: [41378]
 announced: 2016-10-27
+erratum: 20
