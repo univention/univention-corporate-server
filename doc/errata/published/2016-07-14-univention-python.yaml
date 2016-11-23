@@ -11,3 +11,4 @@ desc: |
    This was a regression caused by UCS 4.1-2 errata 207.
 bug: [41785]
 announced: 2016-07-14
+erratum: 211

@@ -11,3 +11,4 @@ desc: |
    DHCP service and other services using univention_policy_result.
 bug: [41641]
 announced: 2016-06-29
+erratum: 205

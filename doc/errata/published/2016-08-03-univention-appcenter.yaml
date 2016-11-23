@@ -10,3 +10,4 @@ desc: |
  * Executing missing join scripts in a Docker Container is now supported.
 bug: [41841, 39551]
 announced: 2016-08-03
+erratum: 228

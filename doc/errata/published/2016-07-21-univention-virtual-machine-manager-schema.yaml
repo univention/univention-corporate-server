@@ -9,3 +9,4 @@ desc: |
  * Access to the UVMM object classes is now more restrictive.
 bug: [41723]
 announced: 2016-07-21
+erratum: 214

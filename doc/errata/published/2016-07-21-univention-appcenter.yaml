@@ -22,3 +22,4 @@ desc: |
    version is prohibited unless the App says it is safe to upgrade.
 bug: [41724, 40515, 41702, 33537, 41690, 41691, 41770, 41804]
 announced: 2016-07-21
+erratum: 218

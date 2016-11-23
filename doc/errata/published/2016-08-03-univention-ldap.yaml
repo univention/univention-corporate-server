@@ -16,3 +16,4 @@ desc: |
    to the LDAP ACL's.
 bug: [41179, 41180, 33993, 41715]
 announced: 2016-08-03
+erratum: 222

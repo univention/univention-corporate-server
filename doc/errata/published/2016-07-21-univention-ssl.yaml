@@ -27,3 +27,4 @@ desc: |
    object classes for which SSL certificates are automatically created.
 bug: [31369,39257,24094,40498,25285,35748,39045,35027,41230,37621,38903]
 announced: 2016-07-21
+erratum: 213

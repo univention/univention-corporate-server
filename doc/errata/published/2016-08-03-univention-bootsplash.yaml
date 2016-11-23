@@ -8,3 +8,4 @@ desc: |
  The bootsplash has been extended to allow adjustments of its design.
 bug: [40826,39465,40046]
 announced: 2016-08-03
+erratum: 233

@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
-src: phantomjs 
+src: phantomjs
 fix: 2.1.1-1.3.201606211053
 desc: |
  This update addresses the following issue(s):
@@ -10,3 +10,4 @@ desc: |
    for the new univention app appliances.
 bug: [40934]
 announced: 2016-08-03
+erratum: 231

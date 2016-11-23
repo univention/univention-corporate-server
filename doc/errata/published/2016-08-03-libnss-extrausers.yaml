@@ -12,3 +12,4 @@ desc: |
    Proper locking has been added.
 bug: [39775]
 announced: 2016-08-03
+erratum: 221

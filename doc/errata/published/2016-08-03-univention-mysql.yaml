@@ -9,3 +9,4 @@ desc: |
  variables named 'mysql/config/$group/$option'.
 bug: [39471,40216]
 announced: 2016-08-03
+erratum: 223

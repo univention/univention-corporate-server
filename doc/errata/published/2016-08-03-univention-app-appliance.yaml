@@ -13,3 +13,4 @@ desc: |
    pre-configured UCS domain.
 bug: [40826,38957,40934,41622]
 announced: 2016-08-03
+erratum: 229

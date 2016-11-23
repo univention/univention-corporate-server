@@ -10,3 +10,4 @@ desc: |
    iptables rules.
 bug: [40515]
 announced: 2016-07-21
+erratum: 217
