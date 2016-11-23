@@ -10,3 +10,4 @@ desc: |
    "Position Independent Executables" (PIE).
 bug: [27785]
 announced: 2016-07-07
+erratum: 441

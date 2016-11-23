@@ -10,3 +10,4 @@ desc: |
      use the FQDN of the LDAP server.
 bug: [42474]
 announced: 2016-10-05
+erratum: 448
