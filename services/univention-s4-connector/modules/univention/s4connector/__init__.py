@@ -710,29 +710,6 @@ class ucs:
 			self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
-	def _list_dn_mappings(self, config_space):
-		ret = []
-		for d1, d2 in self._get_config_items(config_space):
-			return_update = False
-			count = 0
-			while not return_update and count < 3:
-				try:
-					ret.append((self._decode_dn_from_config_option(d1), self._decode_dn_from_config_option(self._get_config_option(config_space, d1))))
-					return_update = True
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except:  # FIXME: which exception is to be caught?
-					count = count + 1
-					d1 = d1 + " ="
-			ret.append(("failed", self._decode_dn_from_config_option(d1)))
-		return ret
-
-	def list_dn_mappings_by_con(self):
-		return self._list_dn_mappings('DN Mapping CON')
-
-	def list_dn_mappings_by_ucs(self):
-		return self._list_dn_mappings('DN Mapping UCS')
-
 	def _debug_traceback(self, level, text):
 		'''
 		print traceback with ud.debug, level is i.e. ud.INFO
