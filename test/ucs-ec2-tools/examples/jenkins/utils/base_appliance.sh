@@ -274,11 +274,6 @@ prepare_docker_app_container ()
 		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
 		docker exec "$container_id" apt-get update
 
-		docker exec "$container_id" ucr set repository/online/server="https://updates.software-univention.de/" \
-			repository/app_center/server="appcenter.software-univention.de" \
-			appcenter/index/verify=yes \
-			update/secure_apt=yes
-
 		# shutdown container and use it as app base
 		docker stop "$container_id"
 		prepared_app_container_id=$(docker commit "$container_id" "${app}-app")
