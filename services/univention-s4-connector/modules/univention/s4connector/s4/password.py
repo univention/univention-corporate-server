@@ -443,26 +443,6 @@ def _append_length(a, str):
 	a.append(chr((l & 0xff000000) >> 24))
 
 
-def _append_string(a, strstr):
-	for i in range(0, len(strstr)):
-		a.append(strstr[i])
-
-
-def _append(a, strstr):
-	_append_length(a, str(strstr))
-	_append_string(a, str(strstr))
-
-
-def _append_array(a, strstr):
-	_append_length(a, strstr)
-	_append_string(a, strstr)
-
-
-def _get_integer(str):
-	res = ord(str[0]) + (ord(str[1]) << 8) + (ord(str[2]) << 16) + (ord(str[3]) << 24)
-	return res
-
-
 def password_sync_ucs_to_s4(s4connector, key, object):
 	_d = ud.function('ldap.s4.password_sync_ucs_to_s4')
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4 called")
