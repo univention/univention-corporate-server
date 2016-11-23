@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.s4connector.s4
-import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
 import univention.s4connector.s4.ntsecurity_descriptor
