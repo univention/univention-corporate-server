@@ -39,7 +39,8 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
-	"umc/i18n!umc/modules/updater"
+	"umc/i18n!umc/modules/updater",
+	"xstyle/css!./updater.css"
 ], function(declare, lang, array, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 	return declare("umc.modules.updater", Module, {
 

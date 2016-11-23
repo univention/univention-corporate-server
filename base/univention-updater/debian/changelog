@@ -1,3 +1,9 @@
+univention-updater (9.0.49-3) unstable; urgency=medium
+
+  * Add out-of-maintenance warning in the UMC updater module (Bug #42951)
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 23 Nov 2016 13:16:31 +0100
+
 univention-updater (9.0.49-2) unstable; urgency=low
 
   * Merged "update33/skip/ucs3.3" changes from 3.3 (Bug #40909)
