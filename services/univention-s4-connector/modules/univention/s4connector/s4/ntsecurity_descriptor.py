@@ -49,28 +49,6 @@ def decode_sd_in_ndr_to_sddl(domain_sid, value):
 	ntsd = ndr_unpack(security.descriptor, value)
 	return ntsd.as_sddl(domain_sid)
 
-# Mappings for normal direct attribute mapping
-# only useful if the default S4 search attrlist would be changed to ['*', 'nTSecurityDescriptor']
-
-
-def ntsd_to_s4_mapping(s4connector, key, object):
-	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_s4_mapping")
-
-	ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
-
-	domain_sid = security.dom_sid(s4connector.s4_sid)
-	new_ntsd_ndr = encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl)
-	return [new_ntsd_ndr]
-
-
-def ntsd_to_ucs_mapping(s4connector, key, s4_object):
-	ud.debug(ud.LDAP, ud.INFO, "ntsd_to_ucs_mapping")
-
-	ntsd_ndr_unicode = s4_object['attributes']['nTSecurityDescriptor'][0]
-	ntsd_ndr = ntsd_ndr_unicode.encode('Latin-1')  # revert conversion done in __object_from_element
-
-	domain_sid = security.dom_sid(s4connector.s4_sid)
-	return decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr)
 
 # Post-create/modify functions
 
