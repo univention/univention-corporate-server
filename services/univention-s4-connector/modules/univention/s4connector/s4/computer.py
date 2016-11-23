@@ -33,7 +33,6 @@
 
 import univention.debug2 as ud
 import univention.s4connector.s4
-import ldap
 
 
 def _shouldBeMacClient(attributes):
