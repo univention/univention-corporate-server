@@ -40,8 +40,6 @@ import univention.admin.handlers
 import univention.admin.handlers.settings.sambadomain
 import univention.admin.handlers.container.dc
 
-# [u'10', 'days']
-
 
 def _unixTimeInverval2seconds(unixTime):
 	if not isinstance(unixTime, type([])):
