@@ -62,7 +62,8 @@ def main():
 	result = connection.request(args.command, options)
 	dn_ol = result.get('dn')
 	if not dn_ol:
-		sys.exit(1)
+		# sys.exit(1)
+		sys.exit(0)   # for compatibility with univention-management-console-module-selective-udm before 5.0.0-2
 
 	if samba4_addmachine == 'dummy':
 		sys.exit(3)

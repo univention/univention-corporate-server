@@ -1,3 +1,9 @@
+univention-ldb-modules (4.0.7-12) unstable; urgency=medium
+
+  * Bug #40435: Compatibility with umc-slective-udm pre 5.0.0-2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Nov 2016 12:08:25 +0100
+
 univention-ldb-modules (4.0.7-11) unstable; urgency=medium
 
   * Bug #40435: Improve error handling
