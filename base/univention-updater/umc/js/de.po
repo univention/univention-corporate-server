@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-11-23 11:03+0100\n"
+"POT-Creation-Date: 2016-11-24 15:23+0100\n"
 "PO-Revision-Date: 2012-02-27 16:03+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,8 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/updater/UpdatesPage.js:679
-#, python-format
+#: umc/js/updater/UpdatesPage.js:674
 msgid "%(name)s: Version %(old)s can be updated to %(new)s"
 msgstr "%(name)s: Version %(old)s kann auf %(new)s aktualisiert werden"
 
@@ -45,16 +44,20 @@ msgstr ""
 "<b>Lassen Sie das System eingeschaltet</b> während des gesamten "
 "Aktualisierungsvorganges!"
 
-#: umc/js/updater/UpdatesPage.js:563
-#, python-format
+#: umc/js/updater/UpdatesPage.js:108
 msgid ""
-"<b>Warning:</b> You are using UCS %(ucs_version)s. This version is outdated "
-"and no more security updates will be released for it. Please upgrade this "
-"system to a newer UCS version!"
+"<b>Warning:</b> You are using UCS 3.2. This version is outdated and no more "
+"security updates will be released for it. Please upgrade this system to a "
+"newer UCS version! An <a target='_blank' href='http://wiki.univention.de/"
+"index.php?title=Maintenance_Cycle_for_UCS'>overview about the maintenance "
+"cycle for different UCS versions</a> can be found in the Univention Wiki."
 msgstr ""
-"<b>Achtung:</b> Sie verwenden UCS %(ucs_version)s. Diese Version ist "
-"veraltet und es werden keine Sicherheitsupdates mehr dafür veröffentlicht. "
-"Bitte aktualisieren Sie dieses System auf eine neuere UCS Version!"
+"<b>Achtung:</b> Sie verwenden UCS 3.2. Diese Version ist veraltet und es "
+"werden keine Sicherheitsupdates mehr dafür veröffentlicht. Bitte "
+"aktualisieren Sie dieses System auf eine neuere UCS Version! "
+"Eine <a target='_blank' href='http://wiki.univention.de/"
+"index.php?title=Maintenance_Cycle_for_UCS'>Übersicht über die "
+"Maintenance-Zyklen der verschiedenen UCS-Versionen</a> finden Sie im Univention Wiki."
 
 #: umc/js/updater/UpdatesPage.js:232
 msgid "An update for the app is available which may solve this issue."
@@ -75,7 +78,6 @@ msgid "Back"
 msgstr "Zurück"
 
 #: umc/js/updater/UpdatesPage.js:236
-#, python-format
 msgid ""
 "But it is possible to skip UCS 3.3 and update to UCS 4.0 directly by setting "
 "the UCR variable update33/skip/ucs3.3 to true using the %(ucr)s. Afterwards, "
@@ -86,17 +88,16 @@ msgstr ""
 "update33/skip/ucs3.3 auf true gesetzt werden, z.B. über das %(ucr)s. "
 "Anschließend kann die Software-Aktualisierung nochmals gestartet werden."
 
-#: umc/js/updater/UpdatesPage.js:781 umc/js/updater.js:244
+#: umc/js/updater/UpdatesPage.js:776 umc/js/updater.js:244
 #: umc/js/updater.js:310
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/updater/UpdatesPage.js:399 umc/js/updater/UpdatesPage.js:661
+#: umc/js/updater/UpdatesPage.js:399 umc/js/updater/UpdatesPage.js:656
 msgid "Check for package updates"
 msgstr "Paket-Aktualisierungen prüfen"
 
 #: umc/js/updater/UpdatesPage.js:259
-#, python-format
 msgid ""
 "Component '%(component)s' is not yet available for newer release versions."
 msgstr ""
@@ -116,7 +117,7 @@ msgstr ""
 "\">Univention Forum</a>."
 
 #: umc/js/updater.js:299
-#, python-format
+#, javascript-format
 msgid ""
 "Consider <a href=\"http://docs.univention.de/release-notes-%s-en.html\" "
 "target=\"_blank\">release notes and changelogs</a> as well as references "
@@ -144,7 +145,7 @@ msgstr ""
 "Möchten Sie wirklich die genannten Pakete aktualisieren, installieren bzw. "
 "entfernen?"
 
-#: umc/js/updater/UpdatesPage.js:778
+#: umc/js/updater/UpdatesPage.js:773
 msgid "Do you really want to reboot the machine?"
 msgstr "Möchten Sie die Maschine jetzt neu starten?"
 
@@ -153,7 +154,6 @@ msgid "During reboot, the connection to the system will be lost. "
 msgstr "Während des Neustarts wird die Verbindung zum System unterbrochen. "
 
 #: umc/js/updater/UpdatesPage.js:230
-#, python-format
 msgid ""
 "For UCS %(theoretical_release_update)s the application %(name)s is not "
 "available in the currently installed version."
@@ -170,7 +170,6 @@ msgstr ""
 "Server-Komponenten durchzuführen."
 
 #: umc/js/updater/UpdatesPage.js:552
-#, python-brace-format
 msgid ""
 "Further release updates are available but cannot be installed because the "
 "component '{0}' is not available for newer release versions."
@@ -187,7 +186,7 @@ msgstr ""
 "Um die kürzlich ausgeführte Aktion abzuschließen, ist es erforderlich, das "
 "System neu zu starten."
 
-#: umc/js/updater/UpdatesPage.js:646
+#: umc/js/updater/UpdatesPage.js:641
 msgid "Information about the updates"
 msgstr "Informationen zu den Aktualisierungen"
 
@@ -195,7 +194,7 @@ msgstr "Informationen zu den Aktualisierungen"
 msgid "Install"
 msgstr "Installieren"
 
-#: umc/js/updater/UpdatesPage.js:660
+#: umc/js/updater/UpdatesPage.js:655
 msgid "Install package updates"
 msgstr "Paket-Aktualisierungen installieren"
 
@@ -235,7 +234,7 @@ msgstr "Der Paket-Aktualisierungsstatus wurde noch nicht geprüft"
 msgid "Package updates"
 msgstr "Paket-Aktualisierungen"
 
-#: umc/js/updater/UpdatesPage.js:708
+#: umc/js/updater/UpdatesPage.js:703
 msgid "Package updates are available."
 msgstr "Es sind Paket-Aktualisierungen verfügbar."
 
@@ -243,17 +242,13 @@ msgstr "Es sind Paket-Aktualisierungen verfügbar."
 msgid "Please respect the following guidelines for UCS updates:"
 msgstr "Bitte beachten Sie die folgenden Leitlinien für UCS-Aktualisierungen:"
 
-#: umc/js/updater/UpdatesPage.js:418 umc/js/updater/UpdatesPage.js:785
+#: umc/js/updater/UpdatesPage.js:418 umc/js/updater/UpdatesPage.js:780
 msgid "Reboot"
 msgstr "Neu starten"
 
 #: umc/js/updater/UpdatesPage.js:439
 msgid "Reboot required"
 msgstr "Neustart erforderlich"
-
-#: umc/js/updater/UpdatesPage.js:411
-msgid "Refresh"
-msgstr "Aktualisieren"
 
 #: umc/js/updater/UpdatesPage.js:447
 msgid "Release information"
@@ -271,12 +266,11 @@ msgstr "Aktualisierung starten"
 msgid "Start Upgrade?"
 msgstr "Aktualisierung starten?"
 
-#: umc/js/updater/UpdatesPage.js:689
+#: umc/js/updater/UpdatesPage.js:684
 msgid "The App Center is not available or currently unreachable"
 msgstr "Das App Center ist nicht verfügbar oder momentan nicht erreichbar"
 
 #: umc/js/updater.js:338
-#, python-brace-format
 msgid ""
 "The Univention Updater action could not be started [Error {status}]: "
 "{message}"
@@ -285,7 +279,6 @@ msgstr ""
 "{message}"
 
 #: umc/js/updater/UpdatesPage.js:261
-#, python-format
 msgid ""
 "The components '%(components)s' are not yet available for newer release "
 "versions."
@@ -298,19 +291,16 @@ msgid "The computer is now rebooting. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
 #: umc/js/updater/UpdatesPage.js:535
-#, python-brace-format
 msgid ""
 "The currently installed release version is {ucs_version} errata{erratalevel}."
 msgstr ""
 "Die momentan installierte Version ist {ucs_version} errata{erratalevel}."
 
 #: umc/js/updater/UpdatesPage.js:537
-#, python-brace-format
 msgid "The currently installed release version is {ucs_version}."
 msgstr "Die momentan installierte Version ist {ucs_version}."
 
 #: umc/js/updater/_LogViewer.js:151
-#, python-brace-format
 msgid ""
 "The log file exceeded {max} lines by {exceeded}. Please see the full logfile."
 msgstr ""
@@ -346,15 +336,15 @@ msgstr ""
 "Die Aktualisierung sollte innerhalb eines Wartungsfensters erfolgen, da "
 "einige Domänendienste während der Aktualisierung nicht verfügbar sein werden."
 
-#: umc/js/updater/UpdatesPage.js:676
+#: umc/js/updater/UpdatesPage.js:671
 msgid "There are App Center updates available."
 msgstr "Es sind App Center-Aktualisierungen verfügbar."
 
-#: umc/js/updater/UpdatesPage.js:684
+#: umc/js/updater/UpdatesPage.js:679
 msgid "There are no App Center updates available."
 msgstr "Es sind keine App Center-Aktualisierungen verfügbar."
 
-#: umc/js/updater/UpdatesPage.js:709
+#: umc/js/updater/UpdatesPage.js:704
 msgid "There are no package updates available."
 msgstr "Es sind keine Paket-Aktualisierungen verfügbar."
 
@@ -390,7 +380,7 @@ msgstr "UCS Aktualisierung fehlgeschlagen"
 msgid "UCS update successful"
 msgstr "UCS Aktualisierung erfolgreich"
 
-#: umc/js/updater/UpdatesPage.js:712
+#: umc/js/updater/UpdatesPage.js:707
 msgid "Update availability could not be checked."
 msgstr "Verfügbarkeit von Aktualisierungen konnte nicht geprüft werden."
 
@@ -407,7 +397,6 @@ msgid "Update system up to release"
 msgstr "System bis zu dieser Version aktualisieren"
 
 #: umc/js/updater.js:126
-#, python-brace-format
 msgid "Update to {release}"
 msgstr "Aktualisierung nach {release}"
 
@@ -424,7 +413,6 @@ msgid "Upgrade system"
 msgstr "System aktualisieren"
 
 #: umc/js/updater/UpdatesPage.js:239
-#, python-format
 msgid ""
 "Using the %(app_center)s, you may also search for alternative apps or "
 "uninstall the application."
@@ -433,7 +421,6 @@ msgstr ""
 "Applikation deinstallieren."
 
 #: umc/js/updater/UpdatesPage.js:205
-#, python-format
 msgid "Version %(version)s is available but cannot be installed."
 msgstr "Version %(version)s ist verfügbar, kann aber nicht installiert werden."
 
@@ -459,17 +446,14 @@ msgid "update available"
 msgstr "Aktualisierung verfügbar"
 
 #: umc/js/updater.js:187
-#, python-brace-format
 msgid "{count} packages to be REMOVED"
 msgstr "{count} Pakete werden ENTFERNT"
 
 #: umc/js/updater.js:225
-#, python-brace-format
 msgid "{count} packages to be installed"
 msgstr "{count} Pakete werden NEU installiert"
 
 #: umc/js/updater.js:206
-#, python-brace-format
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
 
@@ -591,6 +575,9 @@ msgstr "{count} Pakete werden aktualisiert"
 #~ msgstr ""
 #~ "Bitte öffnen Sie das <a %s>App Center Modul</a>, um diese "
 #~ "Aktualisierungen zu installieren."
+
+#~ msgid "Refresh"
+#~ msgstr "Aktualisieren"
 
 #~ msgid ""
 #~ "The application %(name)s is not available in the version %(version) for "

@@ -103,9 +103,9 @@ define([
 				{
 					type:			'Text',
 					name:			'version_out_of_maintenance_text',
-					'class':		'umcUpdaterWarningText dijitHidden',
+					'class':		'umcUpdaterWarningText',
 					label:			'',
-					content:		'', // will be set below as soon as the UCS version is known
+					content:		_("<b>Warning:</b> You are using UCS 3.2. This version is outdated and no more security updates will be released for it. Please upgrade this system to a newer UCS version! An <a target='_blank' href='http://wiki.univention.de/index.php?title=Maintenance_Cycle_for_UCS'>overview about the maintenance cycle for different UCS versions</a> can be found in the Univention Wiki.")
 				},
 				{
 					type:			'Text',
@@ -557,11 +557,6 @@ define([
 					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
 
 					this._show_reboot_pane(values.reboot_required);
-
-					// show warning for out of maintenance
-					var outOfMaintenanceWidget = this._form.getWidget('version_out_of_maintenance_text');
-					outOfMaintenanceWidget.set('content', _("<b>Warning:</b> You are using UCS %(ucs_version)s. This version is outdated and no more security updates will be released for it. Please upgrade this system to a newer UCS version!", values));
-					domClass.remove(outOfMaintenanceWidget.domNode, 'dijitHidden');
 				}
 				catch(error)
 				{
