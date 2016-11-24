@@ -67,9 +67,12 @@
 
 #include <util/time.h>
 #include <samba/session.h>
+#include <ctype.h>
 
 // From dom_sid.h in S4
 #define DOM_SID_STR_BUFLEN (15*11+25)
+// From openldap/servers/slapd/slap.h
+#define SLAP_LDAPDN_MAXLEN 8192
 
 char *sid_to_string(const struct dom_sid *sid)
 {
@@ -115,15 +118,29 @@ static char* read_pwd_from_file(char *filename)
 	return strdup(line);
 }
 
+static int univention_samaccountname_ldap_check_add_callback(struct ldb_request *down_req,
+			       struct ldb_reply *ares)
+{
+	struct ldb_request *req =
+		talloc_get_type_abort(down_req->context,
+		struct ldb_request);
+
+	return ldb_module_done(req, ares->controls,
+			       ares->response, ares->error);
+}
+
 static int univention_samaccountname_ldap_check_add(struct ldb_module *module, struct ldb_request *req)
 {
 	struct ldb_context *ldb;
+	struct ldb_message *msg;
 	struct ldb_message_element *attribute;
+	struct ldb_request *down_req = NULL;
 	bool is_computer = false;
 	bool is_group = false;
 	bool is_user = false;
 	char *usersid;
-	int i;
+	int i, fd[2], nbytes, ret;
+	char target_dn_str[SLAP_LDAPDN_MAXLEN+1] = "";	// initialize with NULs
 
 	/* check if there's a bypass_samaccountname_ldap_check control */
 	struct ldb_control *control;
@@ -146,13 +163,13 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	
 	attribute = ldb_msg_find_element(req->op.add.message, "objectClass");
 	for (i=0; i<attribute->num_values; i++) {
-		if ( !(strcasecmp(attribute->values[i].data, "computer")) ) {
+		if ( !(strcasecmp((const char *)attribute->values[i].data, "computer")) ) {
 			is_computer = true;
 		}
-		if ( !(strcasecmp(attribute->values[i].data, "group")) ) {
+		if ( !(strcasecmp((const char *)attribute->values[i].data, "group")) ) {
 			is_group = true;
 		}
-		if ( !(strcasecmp(attribute->values[i].data, "user")) ) {
+		if ( !(strcasecmp((const char *)attribute->values[i].data, "user")) ) {
 			is_user = true;
 		}
 	}
@@ -165,6 +182,9 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		}
 			
 		char *opt_name = malloc(5 + attribute->values[0].length + 1);
+		if (opt_name == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_name, "name=%s", attribute->values[0].data);
 		opt_name[5 + attribute->values[0].length] = 0;
 
@@ -174,8 +194,14 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			char *unicodePwd_base64;
 			size_t unicodePwd_base64_strlen = BASE64_ENCODE_LEN(attribute->values[0].length);
 			unicodePwd_base64 = malloc(unicodePwd_base64_strlen + 1);
+			if (unicodePwd_base64 == NULL) {
+				return ldb_module_oom(module);
+			}
 			base64_encode(attribute->values[0].data, attribute->values[0].length, unicodePwd_base64, unicodePwd_base64_strlen + 1);
 			opt_unicodePwd = malloc(9 + unicodePwd_base64_strlen + 1);
+			if (opt_unicodePwd == NULL) {
+				return ldb_module_oom(module);
+			}
 			sprintf(opt_unicodePwd, "password=%s", unicodePwd_base64);
 			opt_unicodePwd[9 + unicodePwd_base64_strlen] = 0;
 			free(unicodePwd_base64);
@@ -185,18 +211,30 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 
 		char *ldap_master = univention_config_get_string("ldap/master");
 		char *machine_pass = read_pwd_from_file("/etc/machine.secret");
+		if (machine_pass == NULL) {
+			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: Error reading /etc/machine.secret\n"), ldb_module_get_name(module));
+			return LDB_ERR_OPERATIONS_ERROR;
+		}
 
 		char *my_hostname = univention_config_get_string("hostname");
 		char *opt_my_samaccoutname = malloc(strlen(my_hostname) + 2);
+		if (opt_my_samaccoutname == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_my_samaccoutname, "%s$", my_hostname);
 		opt_my_samaccoutname[strlen(my_hostname)+1] = 0;
 		char *opt_usersid = malloc(strlen(usersid) + strlen("usersid=") + 1);
+		if (opt_usersid == NULL) {
+			return ldb_module_oom(module);
+		}
 		sprintf(opt_usersid, "usersid=%s", usersid);
 		free(my_hostname);
 
-		int errno_wait;
+		int errno_wait = 0;
 		sighandler_t sh;
 		sh = signal(SIGCHLD, SIG_DFL);
+
+		pipe(fd);
 
 		int status;
 		int pid=fork();
@@ -206,19 +244,28 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 
 		} else if ( pid == 0 ) {
+			close(fd[0]);   // close reading end
+			dup2(fd[1], STDOUT_FILENO);
 
+			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: calling ucs-school-create_windows_computer\n"), ldb_module_get_name(module));
 			if (opt_unicodePwd != NULL) {
-				execlp("/usr/sbin/ucs-school-create_windows_computer", "/usr/sbin/ucs-school-create_windows_computer", "-s", ldap_master, "-P", machine_pass, "-U", opt_my_samaccoutname, "selectiveudm/create_windows_computer", "-o", opt_name, "-o", opt_unicodePwd, "-o", "decode_password=yes", "-o", opt_usersid, NULL);
+				status = execl("/usr/sbin/ucs-school-create_windows_computer", "/usr/sbin/ucs-school-create_windows_computer", "-s", ldap_master, "-P", machine_pass, "-U", opt_my_samaccoutname, "selectiveudm/create_windows_computer", "-o", opt_name, "-o", opt_unicodePwd, "-o", "decode_password=yes", "-o", opt_usersid, NULL);
 			} else {
-				execlp("/usr/sbin/ucs-school-create_windows_computer", "/usr/sbin/ucs-school-create_windows_computer", "-s", ldap_master, "-P", machine_pass, "-U", opt_my_samaccoutname, "selectiveudm/create_windows_computer", "-o", opt_name, "-o", opt_usersid, NULL);
+				status = execl("/usr/sbin/ucs-school-create_windows_computer", "/usr/sbin/ucs-school-create_windows_computer", "-s", ldap_master, "-P", machine_pass, "-U", opt_my_samaccoutname, "selectiveudm/create_windows_computer", "-o", opt_name, "-o", opt_usersid, NULL);
+			}
+ 
+			if (status == -1) {     // otherwise es wouldn't be here
+				ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: exec of /usr/sbin/ucs-school-create_windows_computer failed: %s\n"), ldb_module_get_name(module), strerror(errno));
 			}
 
-			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: exec of /usr/sbin/ucs-school-create_windows_computer failed\n"), ldb_module_get_name(module));
-			_exit(1);
+			_exit(status);
 		} else {
+			close(fd[1]);   // close writing end
+
 			if ( waitpid(pid, &status, 0) == -1 ) {
 				errno_wait = errno;
 			}
+
 			signal(SIGCHLD, sh);
 		}
 
@@ -233,7 +280,6 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		}
 
 		if( ! WIFEXITED(status) ) {
-			
 			ldb_debug(ldb, LDB_DEBUG_ERROR, "%s: Cannot determine return status of ucs-school-create_windows_computer: %s (%d)\n", ldb_module_get_name(module), strerror(errno_wait), errno_wait);
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		} else if( WEXITSTATUS(status) == 1 ) {
@@ -249,6 +295,49 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: unknown error code from ucs-school-create_windows_computer: %d\n"), ldb_module_get_name(module), WEXITSTATUS(status));
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		}
+
+		nbytes = read(fd[0], target_dn_str, sizeof(target_dn_str)-1);
+		close(fd[0]);   // close reading end
+
+		ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: ucs-school-create_windows_computer returned: '%s' (%d bytes)\n"), ldb_module_get_name(module), target_dn_str, nbytes);
+
+		if (nbytes == 0) {
+			// The call succeeded but we didn't obtain a recommended location,
+			// in this case we must continue without rewriting the DN.
+			return ldb_next_request(module, req);
+		}
+
+		// Trim trailing space
+  		char *end_ptr = target_dn_str + nbytes - 1;
+  		while(end_ptr > target_dn_str && isspace((unsigned char)*end_ptr)) end_ptr--;
+  		// Write new null terminator
+  		*(end_ptr+1) = 0;
+
+		// Now modify request DN
+		msg = ldb_msg_copy_shallow(req, req->op.add.message);
+		if (msg == NULL) {
+			return ldb_module_oom(module);
+		}
+
+		msg->dn = ldb_dn_new(msg, ldb, target_dn_str);
+		if (msg->dn == NULL) {
+			return ldb_module_oom(module);
+		}
+
+		if (!ldb_dn_validate(msg->dn)) {
+			return LDB_ERR_OPERATIONS_ERROR;
+		}
+
+		ret = ldb_build_add_req(&down_req, ldb, req,
+				msg,
+				req->controls,
+				req, univention_samaccountname_ldap_check_add_callback,
+				req);
+		if (ret != LDB_SUCCESS) {
+			return ret;
+		}
+	 
+		return ldb_next_request(module, down_req);
 
 	} else if ( is_user || is_group ) {
 		ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: ldb_add of user and group object is disabled\n"), ldb_module_get_name(module));

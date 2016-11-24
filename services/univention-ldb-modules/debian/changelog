@@ -1,3 +1,23 @@
+univention-ldb-modules (5.0.8-4) unstable; urgency=medium
+
+  * Bug #40435: Compatibility with umc-slective-udm pre 5.0.0-2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Nov 2016 12:12:40 +0100
+
+univention-ldb-modules (5.0.8-3) unstable; urgency=medium
+
+  * Bug #40435: Improve error handling
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Nov 2016 10:48:22 +0100
+
+univention-ldb-modules (5.0.8-2) unstable; urgency=medium
+
+  * Bug #40435: make univention_samaccountname_ldap_check rewrite
+    the machine DN of the ldb add request to the Samba/AD DN proposed
+    by ucs-school-create_windows_computer.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Nov 2016 20:07:46 +0100
+
 univention-ldb-modules (5.0.8-1) unstable; urgency=medium
 
   * ucs-school-create_windows_computer: Add the school ou to the
