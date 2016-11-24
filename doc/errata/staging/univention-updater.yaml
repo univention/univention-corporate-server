@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-updater
-fix: 9.0.49-3.1493.201611231335
+fix: 9.0.49-4.1494.201611241803
 desc: |
  This update shows a warning message in the UMC updater module that the
  current UCS version is out of maintenance.
