@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.153-12) unstable; urgency=medium
+
+  * Bug #42951: Added out-of-maintenance warning
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 24 Nov 2016 17:25:38 +0100
+
 univention-management-console-frontend (3.0.153-11) unstable; urgency=medium
 
   * Bug #41391: version bump for rebuild
