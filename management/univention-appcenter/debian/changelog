@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-13) unstable; urgency=medium
+
+  * Bug #42761: Database type is postgresql, not postgres
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Nov 2016 01:16:32 +0100
+
 univention-appcenter (5.0.23-12) unstable; urgency=medium
 
   * Bug #42801: Validate attribute names when writing ini files

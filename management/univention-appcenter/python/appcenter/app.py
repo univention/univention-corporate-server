@@ -588,7 +588,7 @@ class App(object):
 		database: Which (if any) database an App wants to use. The App
 			Center will setup the database for the App. Useful for
 			Docker Apps running against the Host's database.
-			Supported: "mysql", "postgres".
+			Supported: "mysql", "postgresql".
 		database_name: Name of the database to be created. Defaults to
 			*id*.
 		database_user: Name of the database user to be created.
