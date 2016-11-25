@@ -1,3 +1,9 @@
+ucs-test (6.0.37-13) unstable; urgency=medium
+
+  * Bug #42580: Activate tests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Nov 2016 01:07:02 +0100
+
 ucs-test (6.0.37-12) unstable; urgency=medium
 
   * Bug #42994: add 61_udm-users/32_simpleauthaccount_authentication
