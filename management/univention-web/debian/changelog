@@ -1,3 +1,9 @@
+univention-web (1.0.2-13) unstable; urgency=medium
+
+  * Bug #39910: Fix display error of UMC help dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Nov 2016 17:58:49 +0100
+
 univention-web (1.0.2-12) unstable; urgency=medium
 
   * Bug #32027: Ignore scroll signal on non active tabs
