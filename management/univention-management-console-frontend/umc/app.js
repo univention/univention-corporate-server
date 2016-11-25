@@ -2093,6 +2093,57 @@ define([
 			}
 		},
 
+		_createSummit2017Ad: function() {
+			var isDE = (dojo.locale.toLowerCase().indexOf('de') === 0);
+			var linkTarget = (isDE) ? 'https://www.univention-summit.de/' : 'https://www.univention-summit.com/';
+			// TODO: add english banner
+			var banner = require.toUrl((isDE) ? 'umc/app/univention_summit_banner.png' : 'umc/app/univention_summit_banner.png');
+
+			// build banner
+			var _outerContainer = domConstruct.create('div', {
+				style: {
+					'text-align': 'center',
+					'clear': 'both'
+				}
+			});
+			var _innerContainer = domConstruct.create('div', {
+				style: {
+					'display': 'inline-block',
+					'position': 'relative'
+				}
+			}, _outerContainer);
+			var _link = domConstruct.create('a', {
+				target: '_blank',
+				href: linkTarget
+			}, _innerContainer);
+			domConstruct.create('img', {
+				src: banner
+			}, _link);
+			var _closeButton = domConstruct.create('div', {
+				'class': 'umcCloseIcon',
+				style: {
+					'position': 'absolute',
+					'top': '5px',
+					'right': '5px',
+					'cursor': 'pointer'
+				}
+			}, _innerContainer);
+
+			// event registration
+			on(_closeButton, mouse.enter, function() {
+				style.set(this, 'background-position-x', '-20px');
+			});
+			on(_closeButton, mouse.leave , function() {
+				style.set(this, 'background-position-x', '');
+			});
+			on(_closeButton, 'click', lang.hitch(this, function() {
+				_outerContainer.remove();
+			}));
+
+			// place banner
+			domConstruct.place(_outerContainer, this._overviewPage.domNode, 'last');
+		},
+
 		_setupOverviewPage: function() {
 			if (!tools.status('overview')) {
 				// no overview page is being displayed
@@ -2138,6 +2189,9 @@ define([
 			this.renderCategories();
 			this._overviewPage.addChild(this._searchText);
 			this._overviewPage.addChild(this._grid);
+			if (new Date("January 27, 2017 00:00:00") > new Date() && win.getBox().w >= 550) {
+				this._createSummit2017Ad();
+			}
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-51) unstable; urgency=medium
+
+  * Bug #42979: Show a banner for the Univention Summit 2017 on the UMC
+    overviewpage
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Nov 2016 16:43:54 +0100
+
 univention-management-console-frontend (5.0.63-50) unstable; urgency=medium
 
   * Bug #42357: The maximum request size can now be configured via the UCR variable
