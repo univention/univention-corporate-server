@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.4-7) unstable; urgency=medium
+
+  * Bug #39910: Version bump because of UCS 4.1-1
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Nov 2016 16:27:32 +0100
+
 univention-management-console-frontend-theme (1.0.4-6) unstable; urgency=medium
 
   * Bug #39910: Fix display error of UMC help dialogs
