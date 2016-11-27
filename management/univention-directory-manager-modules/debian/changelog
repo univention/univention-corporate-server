@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-48) unstable; urgency=low
+
+  * Bug #25354: Validate DNS domain name syntax
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 27 Nov 2016 19:44:27 +0100
+
 univention-directory-manager-modules (11.0.3-47) unstable; urgency=low
 
   * Bug #25354: Fix Germn translation for DNS name validation

@@ -142,7 +142,7 @@ property_descriptions = {
 	'nameserver': univention.admin.property(
 		short_description=_('Name server'),
 		long_description='',
-		syntax=univention.admin.syntax.dnsName,
+		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
 		options=[],
 		required=True,
