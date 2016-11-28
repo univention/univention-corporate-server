@@ -5,6 +5,7 @@ scope: ucs_3.2-0-errata3.2-8
 src: tzdata
 fix: 2016i-0.39.201611102129
 desc: |
- This update includes new timezone data. The most notable change is:
+ This update includes new timezone data. There are several DST adjustments
+ for a couple of time zones. The most notable change is this:
  * New leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52
 bug: [42879]
