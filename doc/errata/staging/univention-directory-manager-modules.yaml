@@ -3,12 +3,12 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-directory-manager-modules
-fix: 11.0.3-47.1441.201611211501
+fix: 11.0.3-48.1442.201611271952
 desc: |
  This update addresses the following issues:
  * Searching with an empty value for properties which weren't registered in
    any mapping lead to broken search filters.
  * Allow setting of RID to make the S4 connector able to sync the SID
    correctly.
- * DNS names are now checked for validity according to RFC 2181.
+ * The syntax check for DNS SOA/NS/PTR records has been reworked.
 bug: [42404,36570,28363]
