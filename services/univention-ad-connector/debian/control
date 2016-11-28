@@ -94,6 +94,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-management-console-server,
  python-univention-lib (>= 3.0.26-62),
  python-samba,
+ samba-dsdb-modules
 Description: UMC module for Univention AD Connector
  This package contains the Univention AD Connector UMC module.
  .

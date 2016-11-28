@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.5-4) unstable; urgency=low
+
+  * Bug #36354: added get_ad_binddn_from_name
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Nov 2016 17:43:28 +0100
+
 univention-ad-connector (11.0.5-3) unstable; urgency=medium
 
   * Re-added univention-server-member conflict (Bug #42489)

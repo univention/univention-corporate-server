@@ -52,6 +52,14 @@ import subprocess
 import time
 import pipes
 import traceback
+import ldb
+import ldap.dn
+import ldap.filter
+
+from samba.param import LoadParm
+from samba.samdb import SamDB
+from samba.auth import system_session
+from samba.credentials import Credentials
 
 _ = Translation('univention-management-console-module-adconnector').translate
 
@@ -106,6 +114,25 @@ def guess_ad_domain_language():
 		if line.decode('latin1') == 'samaccountname: domänen-admins':
 			return 'de'
 	return 'en'
+
+def get_ad_binddn_from_name(base, server, username, password):
+	lp = LoadParm()
+	creds = Credentials()
+	creds.guess(lp)
+	creds.set_username(username)
+	creds.set_password(password)
+	binddn = 'cn=%s,cn=users,%s' % (ldap.dn.escape_dn_chars(username), base)
+	try:
+		samdb = SamDB(url='ldap://%s' % server, session_info=system_session(), credentials=creds, lp=lp)
+		res = samdb.search(base,
+			scope=ldb.SCOPE_SUBTREE,
+			expression=ldap.filter.filter_format('(samAccountName=%s)', [username,]),
+			attrs=['samaccountname'])
+		if res.count == 1:
+			binddn = res.msgs[0].get('dn', idx=0).extended_str()
+	except ldb.LdbError as ex:
+		MODULE.warn('get_dn_from_name() could not get binddn for user %s: %s' % (username, ex))
+	return binddn
 
 
 class Instance(Base, ProgressMixin):
@@ -383,6 +410,8 @@ class Instance(Base, ProgressMixin):
 		MODULE.info('Preparing info dict...')
 		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.iteritems()])
 		info['ssl_supported'] = admember.server_supports_ssl(ad_server_ip)
+		# try to get binddn
+		info['LDAP_BindDN'] = get_ad_binddn_from_name(info['LDAP_Base'], ad_server_ip, username, password)
 		MODULE.info(str(info))
 		return info
 
