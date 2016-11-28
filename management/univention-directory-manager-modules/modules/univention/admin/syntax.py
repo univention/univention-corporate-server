@@ -990,25 +990,66 @@ class userPasswd(simple):
 
 
 class hostName(simple):
+	"""
+	hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+	allow '_'
+
+	>>> hostName.parse('a')
+	'a'
+	>>> hostName.parse('')
+	Traceback (most recent call last):
+	...
+	valueError: This is not a valid hostname.
+	>>> hostName.parse('a' * 64)
+	Traceback (most recent call last):
+	...
+	valueError: This is not a valid hostname.
+	>>> hostName.parse('0')
+	Traceback (most recent call last):
+	...
+	valueError: This is not a valid hostname.
+	>>> hostName.parse('!')
+	Traceback (most recent call last):
+	...
+	valueError: This is not a valid hostname.
+	>>> hostName.parse('-')
+	Traceback (most recent call last):
+	...
+	valueError: This is not a valid hostname.
+	"""
+
 	min_length = 0
-	max_length = 0
-	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+	max_length = 63
+	regex = re.compile(r"^(?![0-9_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
 	error_message = _("This is not a valid hostname.")
 
 
 class DNS_Name(simple):
-	# Regular expression for DNS entries (based on RFC 1123)
+	"""
+	RFC 1123: '.' separated domainname (for hostname)
+	This whould have been named better 'email domain name'.
+	"""
 	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
 	error_message = _("This is not a valid DNS entry name. A valid name can only consist of numbers, letters, dots and hyphens.")
 
 
+# UNUSED:
 class windowsHostName(simple):
+	"""
+	hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+	windows hostnames are allowed to begin with digits and contain '_'
+
+	>>> windowsHostName.parse('0a')
+	'0a'
+	>>> windowsHostName.parse('0')
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid windows hostname!
+	"""
+
 	min_length = 0
-	max_length = 0
-	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	# windows hostnames are allowed to begin with digits
-	regex = re.compile('^([0-9]*)([a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$')
+	max_length = 63
+	regex = re.compile(r"^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
 	error_message = _("Not a valid windows hostname!")
 
 
@@ -1364,32 +1405,12 @@ class dnsZone(simple):
 
 class dnsName(simple):
 	"""
-	RFC 952/1123/2181:
-
-	# A host name (label) can start or end with a letter or a number
-	>>> dnsName.parse('a')
-	'a'
-	>>> dnsName.parse('A.')
-	'A.'
-	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
-	'0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+	RFC 2181: a '.' separated DNS name
 
 	>>> dnsName.parse('')
 	Traceback (most recent call last):
 	...
 	valueError: Missing value!
-
-	# A host name (label) MUST NOT consist of all numeric values
-	>>> dnsName.parse('0')
-	Traceback (most recent call last):
-	...
-	valueError: Labels must not be all numeric!
-
-	# A host name (label) MUST NOT start or end with a '-' (dash)
-	>>> dnsName.parse('-')
-	Traceback (most recent call last):
-	...
-	valueError: Value may not contain other than numbers, letters and dots!
 
 	# A host name (label) can be up to 63 characters
 	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz')
@@ -1401,26 +1422,60 @@ class dnsName(simple):
 	...
 	valueError: Labels must be between 1 and 63 characters long!
 
-	# A full domain name is limited to 255 octets (including the separators).
+	# A full domain name is limited to 253 octets (including the separators).
 	>>> dnsName.parse('a.' * 128)
 	Traceback (most recent call last):
 	...
-	valueError: Full domain name must be between 1 and 255 characters long!
+	valueError: Full domain name must be between 1 and 253 characters long!
 	"""
-
-	LABEL = re.compile(r'^[a-zA-Z0-9](?:[a-zA-Z0-9_-]{0,61}[a-zA-Z0-9])?$')
-	NUMERIC = re.compile(r'^[0-9]+$')
+	min_length = 1
+	max_length = 253
 
 	@classmethod
 	def parse(self, text):
 		if not text:
 			raise univention.admin.uexceptions.valueError(_("Missing value!"))
 		assert isinstance(text, basestring)
-		if not 1 <= len(text) <= 255:
-			raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 255 characters long!"))
+		if not 1 <= len(text) <= 253:
+			raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
 		labels = (text[:-1] if text.endswith('.') else text).split('.')
 		if not all(1 <= len(label) <= 63 for label in labels):
 			raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
+		return text
+
+
+class dnsHostname(dnsName):
+	"""
+	RFC 1123: a '.' separated host name
+
+	# A host name (label) can start or end with a letter or a number
+	>>> dnsHostname.parse('a')
+	'a'
+	>>> dnsHostname.parse('A.')
+	'A.'
+	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+	'0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
+	# A host name (label) MUST NOT consist of all numeric values
+	>>> dnsHostname.parse('0')
+	Traceback (most recent call last):
+	...
+	valueError: Labels must not be all numeric!
+
+	# A host name (label) MUST NOT start or end with a '-' (dash)
+	>>> dnsHostname.parse('-')
+	Traceback (most recent call last):
+	...
+	valueError: Value may not contain other than numbers, letters and dots!
+	"""
+
+	LABEL = re.compile(r'^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$')
+	NUMERIC = re.compile(r'^[0-9]+$')
+
+	@classmethod
+	def parse(self, text):
+		text = super(dnsHostname, self).parse(text)
+		labels = (text[:-1] if text.endswith('.') else text).split('.')
 		if any(self.NUMERIC.match(label) for label in labels):
 			raise univention.admin.uexceptions.valueError(_("Labels must not be all numeric!"))
 		if not all(self.LABEL.match(label) for label in labels):
@@ -1429,7 +1484,28 @@ class dnsName(simple):
 
 
 class dnsName_umlauts(simple):
-	regex = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
+	ur"""
+	>>> dnsName_umlauts.parse(u'ä')
+	u'\xe4'
+	>>> dnsName_umlauts.parse('a_0-A')
+	'a_0-A'
+	>>> dnsName_umlauts.parse('0')
+	Traceback (most recent call last):
+	...
+	valueError: Value may not contain other than numbers, letters and dots!
+	>>> dnsName_umlauts.parse('-')
+	Traceback (most recent call last):
+	...
+	valueError: Value may not contain other than numbers, letters and dots!
+	>>> dnsName_umlauts.parse('_')
+	Traceback (most recent call last):
+	...
+	valueError: Value may not contain other than numbers, letters and dots!
+	"""
+
+	min_length = 1
+	max_length = 63
+	regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE)
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 
@@ -1440,7 +1516,7 @@ class keyAndValue(complex):
 
 
 class dnsMX(complex):
-	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsName)]
+	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
 	all_required = True
 
 
@@ -1476,7 +1552,7 @@ class postalAddress(complex):
 
 
 class dnsSRVLocation(complex):
-	subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
+	subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsHostname)]
 	size = ('OneThird', 'OneThird', 'OneThird', 'One')
 	all_required = True
 

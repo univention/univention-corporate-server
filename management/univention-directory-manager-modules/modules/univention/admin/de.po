@@ -482,8 +482,8 @@ msgid "Friday"
 msgstr "Freitag"
 
 #: modules/univention/admin/syntax.py:1426
-msgid "Full domain name must be between 1 and 255 characters long!"
-msgstr "Der vollständige Domänenname muss zwischen 1 und 255 Zeichen lang sein!"
+msgid "Full domain name must be between 1 and 253 characters long!"
+msgstr "Der vollständige Domänenname muss zwischen 1 und 253 Zeichen lang sein!"
 
 #: modules/univention/admin/syntax.py:527
 msgid "GNU message catalog"
