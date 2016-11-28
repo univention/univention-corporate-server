@@ -577,7 +577,7 @@ define([
 				Host_IP: vals.DC_IP,
 				LDAP_Host: vals.DC_DNS_Name,
 				LDAP_Base: vals.LDAP_Base,
-				LDAP_BindDN: lang.replace('cn={username},cn=users,{LDAP_Base}', vals),
+				LDAP_BindDN: vals.LDAP_BindDN,
 				LDAP_Password: vals.password,
 				KerberosDomain: vals.Domain,
 				MappingSyncMode: vals.connectormode
