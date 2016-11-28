@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.3-1) unstable; urgency=medium
+
+  * Bug #43069: property.nonempty_is_default is already boolean
+
+ -- Florian Best <best@univention.de>  Mon, 28 Nov 2016 18:37:39 +0100
+
 univention-management-console-module-udm (7.0.2-2) unstable; urgency=medium
 
   * Bug #42924: make logic for move container selection more obvious

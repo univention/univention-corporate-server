@@ -723,8 +723,8 @@ class UDM_Module(object):
 				'multivalue': bool(prop.multivalue),
 				'identifies': bool(prop.identifies),
 				'threshold': prop.threshold,
-				'nonempty_is_default': ucr.is_true(value=str(prop.nonempty_is_default)),
-				'readonly_when_synced': prop.readonly_when_synced,
+				'nonempty_is_default': bool(prop.nonempty_is_default),
+				'readonly_when_synced': bool(prop.readonly_when_synced),
 			}
 
 			# default value
