@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-52) unstable; urgency=medium
+
+  * Bug #42979: Added english banner for the Univention Summit message
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 28 Nov 2016 11:53:16 +0100
+
 univention-management-console-frontend (5.0.63-51) unstable; urgency=medium
 
   * Bug #42979: Show a banner for the Univention Summit 2017 on the UMC

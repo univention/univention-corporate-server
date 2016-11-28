@@ -2096,8 +2096,7 @@ define([
 		_createSummit2017Ad: function() {
 			var isDE = (dojo.locale.toLowerCase().indexOf('de') === 0);
 			var linkTarget = (isDE) ? 'https://www.univention-summit.de/' : 'https://www.univention-summit.com/';
-			// TODO: add english banner
-			var banner = require.toUrl((isDE) ? 'umc/app/univention_summit_banner.png' : 'umc/app/univention_summit_banner.png');
+			var banner = require.toUrl((isDE) ? 'umc/app/univention_summit2017_banner_DE.png' : 'umc/app/univention_summit2017_banner_EN.png');
 
 			// build banner
 			var _outerContainer = domConstruct.create('div', {
