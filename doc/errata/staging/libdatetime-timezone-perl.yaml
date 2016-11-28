@@ -7,5 +7,5 @@ fix: 1:1.20-1+2010k.23.201611102219
 desc: |
  This update includes new timezone data. There are several DST adjustments
  for a couple of time zones and accumulated leap seconds since 2010.
- Please note that will also be a new leap second 2016-12-31 23:59:60 UTC.
+ Please note there will also be a new leap second 2016-12-31 23:59:60 UTC.
 bug: [42879]
