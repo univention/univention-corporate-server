@@ -614,11 +614,11 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 		repo_dir = os.path.join(args.path, 'univention-repository', args.ucs_version)
 		if args.revert:
 			try:
-				shutil.rmtree(meta_inf_dir)
+				shutil.rmtree(os.path.dirname(meta_inf_dir))
 			except OSError as exc:
 				self.warn(exc)
 			try:
-				shutil.rmtree(repo_dir)
+				shutil.rmtree(os.path.dirname(repo_dir))
 			except OSError as exc:
 				self.warn(exc)
 			use_test_appcenter = get_action('dev-use-test-appcenter')

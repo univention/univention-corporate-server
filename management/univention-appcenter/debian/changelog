@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-14) unstable; urgency=medium
+
+  * Bug #43074: Remove directories meta-inf and univention-repository
+    completely when reverting local App Center
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Nov 2016 17:11:04 +0100
+
 univention-appcenter (5.0.23-13) unstable; urgency=medium
 
   * Bug #42761: Database type is postgresql, not postgres
