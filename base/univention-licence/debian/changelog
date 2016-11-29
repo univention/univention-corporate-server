@@ -1,3 +1,10 @@
+univention-licence (8.0.0-2) unstable; urgency=low
+
+  * Bug #35157: added fallback to machine account in
+    univention_license_ldap_init
+ 
+ -- Felix Botner <botner@univention.de>  Tue, 29 Nov 2016 17:06:38 +0100
+
 univention-licence (8.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

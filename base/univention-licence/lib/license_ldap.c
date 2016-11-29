@@ -8,6 +8,57 @@
 
 univention_ldap_parameters_t* lp = NULL;
 
+#define _UNIVENTION_LDAP_MACHINE_SECRET_LEN_MAX 60
+int univention_ldap_set_machine_connection( univention_ldap_parameters_t *lp )
+{
+	FILE *secret;
+	size_t len;
+
+	asprintf(&lp->binddn, univention_config_get_string("ldap/hostdn"));
+	if (!lp->binddn) {
+		goto err;
+	}
+
+	secret = fopen("/etc/machine.secret", "r" );
+	if (!secret)
+		goto err1;
+
+	lp->bindpw = calloc(_UNIVENTION_LDAP_MACHINE_SECRET_LEN_MAX, sizeof(char));
+	if (!lp->bindpw) {
+		fclose(secret);
+		goto err1;
+	}
+
+	len = fread(lp->bindpw, _UNIVENTION_LDAP_MACHINE_SECRET_LEN_MAX, sizeof(char), secret);
+	if (ferror(secret))
+		len = -1;
+	fclose(secret);
+
+	for (; len >= 0; len--) {
+		switch (lp->bindpw[len]) {
+			case '\r':
+			case '\n':
+				lp->bindpw[len] = '\0';
+			case '\0':
+				continue;
+			default:
+				return 0;
+		}
+	}
+
+	/* password already cleared memory. */
+	if (lp->bindpw != NULL) {
+		free(lp->bindpw);
+		lp->bindpw = NULL;
+	}
+err1:
+	if (lp->binddn != NULL) {
+		free(lp->binddn);
+		lp->binddn = NULL;
+	}
+err:
+	return 1;
+}	
 
 /******************************************************************************/
 /*!
@@ -20,7 +71,10 @@ univention_ldap_parameters_t* lp = NULL;
 int univention_license_ldap_init(void)
 {
 	lp = univention_ldap_new();
-	univention_ldap_set_admin_connection(lp);
+	if (univention_ldap_set_admin_connection(lp)) {
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "univention_ldap_set_admin_connection() failed, trying univention_ldap_set_machine_connection().");
+		univention_ldap_set_machine_connection(lp);
+	}
 	univention_ldap_open(lp);
 
 	return 1;
@@ -91,10 +145,10 @@ lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, con
 	int scope    = LDAP_SCOPE_ONELEVEL;
 	
 	//build searchfilter
-	filter_len = strlen("univentionLicenseModule=") + strlen(licensetyp);
+	filter_len = strlen("(&(objectClass=univentionLicense)(univentionLicenseModule=") + strlen(licensetyp) + strlen("))");
 	filter = malloc(sizeof(char) * filter_len + 1);
 	filter[filter_len] = 0;
-	sprintf(filter,"univentionLicenseModule=%s", licensetyp);
+	sprintf(filter,"(&(objectClass=univentionLicense)(univentionLicenseModule=%s))", licensetyp);
 	
 	ret = univention_license_ldap_get(searchBaseDN, scope, filter, attr, "univentionLicense", num);
 	
