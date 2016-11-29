@@ -5,7 +5,7 @@ scope: ucs_4.1-0-errata4.1-4
 src: qemu-kvm
 fix: 1.1.2+dfsg-6.52.201611102006
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The VGA module in QEMU improperly performs bounds checking on banked
    access to video memory, which allows local guest OS administrators
    to execute arbitrary code on the host by changing access modes after
@@ -47,7 +47,7 @@ desc: |
    length of 0 and crafted values in bd.flags (CVE-2016-7908)
  * usb: xHCI: infinite loop vulnerability in xhci_ring_fetch (CVE-2016-8576)
  * 9pfs: host memory leakage in v9fs_read (CVE-2016-8577)
- * 9pfs: potential NULL dereferencein 9pfs routines (CVE-2016-8578)
+ * 9pfs: potential NULL dereference in 9pfs routines (CVE-2016-8578)
  * char: divide by zero error in serial_update_parameters (CVE-2016-8669)
  * net: pcnet: check rx/tx descriptor ring length (CVE-2016-7909)
  * audio: intel-hda: check stream entry count during transfer (CVE-2016-8909)
