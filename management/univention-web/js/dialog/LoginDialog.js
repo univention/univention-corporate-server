@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window setTimeout require*/
+/*global define, console, window, setTimeout, require*/
 
 define([
 	"dojo/_base/declare",
@@ -70,6 +70,8 @@ define([
 		_text: null,
 
 		_currentResult: null,
+
+		_safariScrollPosY: 0,
 
 		id: 'umcLoginWrapper',
 
@@ -222,7 +224,7 @@ define([
 						}));
 						return;
 					}
-					if (name == 'umcLoginForm') {
+					if (name === 'umcLoginForm') {
 						this._submitFakeForm();
 					}
 					// FIXME: if custom prompts and(!) new password is required we should just switch the view
@@ -252,7 +254,7 @@ define([
 			});
 
 			// validate new password form
-			if (name == 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
+			if (name === 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
 				this.set('LoginMessage', '<h1>' + _('Changing password failed') + '</h1><p>' +  _('The passwords do not match, please retype again.') + '</p>');
 				return;
 			}
@@ -466,6 +468,11 @@ define([
 		_show: function() {
 			var deferred;
 			query('#umcLoginWrapper').style('display', 'block');
+			query('body').style('overflow', 'hidden');
+			if (has('safari')) {
+				this._safariScrollPosY = window.scrollY;
+				query('body').style('position', 'fixed');
+			}
 			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
 			this._setFocus();
 			if (has('ie') < 10) {
@@ -518,6 +525,11 @@ define([
 			// hide the dialog
 			var hide = lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
+				query('body').style('overflow', '');
+				if (has('safari')) {
+					query('body').style('position', '');
+					window.scrollTo(0, this._safariScrollPosY);
+				}
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
 				try {

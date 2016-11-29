@@ -1,3 +1,9 @@
+univention-web (1.0.2-14) unstable; urgency=medium
+
+  * Bug #40492: Show session timeout dialog centered on the viewport 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Nov 2016 16:52:51 +0100
+
 univention-web (1.0.2-13) unstable; urgency=medium
 
   * Bug #39910: Fix display error of UMC help dialogs
