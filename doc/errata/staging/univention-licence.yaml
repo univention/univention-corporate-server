@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-licence
-fix: 10.0.3-4.625.201611231337
+fix: 7.0.1-2.115.201611291621
 desc: |
  This update addresses the following issue(s):
  * A fallback to the machine account has been added
