@@ -5,10 +5,14 @@ scope: ucs_4.1-0-errata4.1-4
 src: bind9
 fix: 1:9.8.4.dfsg.P1-6+nmu2.125.201611101921
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * remote attackers could cause a denial of service (assertion failure and
    daemon exit) via malformed options data in an OPT resource record.
    (CVE-2016-2848)
+ * remote attackers could cause a denial of service (assertion failure and
+   daemon exit) via a DNAME record in the answer section of a response to a
+   recursive query, related to db.c and resolver.c. (CVE-2016-8864)
 bug: [42747]
 cve:
  - CVE-2016-2848
+ - CVE-2016-8864
