@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.4-8) unstable; urgency=medium
+
+  * Bug #40492: Show session timeout dialog centered on the viewport 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Nov 2016 16:07:18 +0100
+
 univention-management-console-frontend-theme (1.0.4-7) unstable; urgency=medium
 
   * Bug #39910: Version bump because of UCS 4.1-1
