@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-53) unstable; urgency=medium
+
+  * Bug #40492: Hide overflow on session timeout 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Nov 2016 12:53:00 +0100
+
 univention-management-console-frontend (5.0.63-52) unstable; urgency=medium
 
   * Bug #42979: Added english banner for the Univention Summit message
