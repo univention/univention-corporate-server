@@ -3,9 +3,12 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-management-console-frontend-theme
-fix: 1.0.4-7.117.201611251629
+fix: 1.0.4-8.118.201611291639
 desc: |
  This update addresses the following issue(s):
  * Some help dialogs in the UMC where not displayed correctly.
    This has been fixed.
-bug: [39910]
+ * The login dialog after a session timeout is now centered on the viewport
+   and not at the top of the page. Making the login immediately possible
+   without the need to scroll to the top.
+bug: [39910, 40492]

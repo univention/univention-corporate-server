@@ -3,11 +3,14 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-management-console-frontend
-fix: 5.0.63-52.1246.201611281217
+fix: 5.0.63-53.1247.201611291635
 desc: |
  This update addresses the following issue(s):
  * The maximum request size can now be configured via the UCR variable
    umc/http/max_request_body_size.
  * The UMC overview page shows a banner that links to the Univention
    Summit website
-bug: [42357, 42979]
+ * The login dialog after a session timeout is now centered on the viewport
+   and not at the top of the page. Making the login immediately possible
+   without the need to scroll to the top.
+bug: [42357, 42979, 40492]
