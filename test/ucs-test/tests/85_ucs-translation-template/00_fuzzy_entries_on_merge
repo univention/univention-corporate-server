@@ -26,9 +26,23 @@ import random
 import tools
 import univention.testing.utils as utils
 
-SVN_PATH = 'svn'
-TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
+from ipdb import set_trace as dbg
 
+TRANSLATION_PKG_NAME = 'univention-l10n-XX'
+
+def fixture():
+	try:
+		tools.call('svn',
+					'checkout',
+					'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-4/management')
+		tools.call('univention-ucs-translation-build-package',
+					'--source={}'.format('.'),
+					'--languagecode=XX',
+					'--locale=fr_FR.UTF-8:UTF-8',
+					'--language-name=TEST0')
+		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
+	except tools.InvalidCommandError:
+		utils.fail("Error during test execution.")
 
 def _entry_is_fuzzy(changed_entry, po_file_path):
 	po_file = polib.pofile(po_file_path)
@@ -67,7 +81,6 @@ def _count_chars_in_msgid_and_msgstr(po_file_path):
 	for entry in polib.pofile(po_file_path):
 		total_chars += len(entry.msgid)
 		total_chars += len(entry.msgstr)
-
 	return total_chars
 
 
@@ -75,17 +88,12 @@ if __name__ == '__main__':
 	tmp_dir = mkdtemp(prefix='translation-template-test-00-')
 	os.chdir(tmp_dir)
 	logging.basicConfig(level='DEBUG')
+	# TODO: Static seed not enough to make it reproducable. File and directory
+	# lists have to be sorted
 	static_seed = int(time())
 	logging.debug('Seed for this test: %s', str(static_seed))
 	rand = random.Random(static_seed)
-
-	try:
-		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management', os.path.join(tmp_dir, SVN_PATH, 'management'))
-		tools.call('univention-ucs-translation-build-package', '--source={}'.format(SVN_PATH), '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
-		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
-	except tools.InvalidCommandError:
-		utils.fail("Error during test execution.")
-
+	fixture()
 	changes = list()
 	po_paths = tools.get_matching_file_paths(TRANSLATION_PKG_NAME, "*.po")
 	po_paths_total_chars = {path: _count_chars_in_msgid_and_msgstr(path) for path in po_paths}
@@ -104,11 +112,11 @@ if __name__ == '__main__':
 			logging.info('Choose a xml PO file')
 			continue
 		i += 1
-		source_pkg_path = os.path.join(SVN_PATH, '/'.join(random_po_path.split('/')[2:4]))
+		source_pkg_path = '/'.join(random_po_path.split('/')[2:4])
 		_change_entry_in_source_file(source_pkg_path, random_entry)
 		changes.append((random_po_path, random_entry))
 
-	tools.call('univention-ucs-translation-merge', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', '.', TRANSLATION_PKG_NAME)
 
 	# Total char count must be equal or increased(for files in list 'changes')
 	# for every file.
