@@ -54,6 +54,23 @@ def escapeSOAemail(email):
     return local + '.' + domain
 
 
+def stripDot(old):
+    """
+    >>> stripDot(['example.com.', 'example.com'])
+    ['example.com', 'example.com']
+    >>> stripDot('example.com.')
+    'example.com'
+    >>> stripDot([])
+    []
+    >>> stripDot('')
+    ''
+    >>> stripDot(None)
+    """
+    if isinstance(old, list):
+        return [stripDot(_) for _ in old]
+    return old[:-1] if isinstance(old, basestring) and old.endswith('.') else old
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

@@ -991,20 +991,18 @@ class userPasswd(simple):
 
 class hostName(simple):
 	"""
-	hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	allow '_'
+	hostname based upon RFC 1123: <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+	also allow '_' for Microsoft.
 
 	>>> hostName.parse('a')
 	'a'
+	>>> hostName.parse('0')
+	'0'
 	>>> hostName.parse('')
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
 	>>> hostName.parse('a' * 64)
-	Traceback (most recent call last):
-	...
-	valueError: This is not a valid hostname.
-	>>> hostName.parse('0')
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
@@ -1018,39 +1016,14 @@ class hostName(simple):
 	valueError: This is not a valid hostname.
 	"""
 
-	min_length = 0
+	min_length = 1
 	max_length = 63
-	regex = re.compile(r"^(?![0-9_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
+	regex = re.compile(r"^(?![_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
 	error_message = _("This is not a valid hostname.")
 
 
-class DNS_Name(simple):
-	"""
-	RFC 1123: '.' separated domainname (for hostname)
-	This whould have been named better 'email domain name'.
-	"""
-	regex = re.compile("(^[a-zA-Z0-9])(([a-zA-Z0-9-_.]*)([a-zA-Z0-9]$))?$")
-	error_message = _("This is not a valid DNS entry name. A valid name can only consist of numbers, letters, dots and hyphens.")
-
-
 # UNUSED:
-class windowsHostName(simple):
-	"""
-	hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	windows hostnames are allowed to begin with digits and contain '_'
-
-	>>> windowsHostName.parse('0a')
-	'0a'
-	>>> windowsHostName.parse('0')
-	Traceback (most recent call last):
-	...
-	valueError: Not a valid windows hostname!
-	"""
-
-	min_length = 0
-	max_length = 63
-	regex = re.compile(r"^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
-	error_message = _("Not a valid windows hostname!")
+windowsHostName = hostName
 
 
 class ipv4Address(simple):
@@ -1077,6 +1050,17 @@ class ipAddress(simple):
 
 
 class hostOrIP(simple):
+	"""
+	>>> hostOrIP.parse('1.2.3.4')
+	'1.2.3.4'
+	>>> hostOrIP.parse('1:2:3:4:5:6:7:8')
+	'1:2:3:4:5:6:7:8'
+	>>> hostOrIP.parse('0x7f000001')
+	'0x7f000001'
+	>>> hostOrIP.parse('example')
+	'example'
+	"""
+
 	min_length = 0
 	max_length = 0
 
@@ -1091,8 +1075,7 @@ class hostOrIP(simple):
 
 	@classmethod
 	def hostName(self, text):
-		_re = re.compile("(^[a-zA-Z])(([a-zA-Z0-9-]*)([a-zA-Z0-9]$))?$")
-		if text and _re.match(text) is not None:
+		if text and hostName.regex.match(text) is not None:
 			return True
 		else:
 			return False
@@ -1387,25 +1370,9 @@ class reverseLookupZoneName(simple):
 	error_message = _("The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in nibble format followed by .ip6.arpa (example: \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")")
 
 
-class dnsZone(simple):
-	_re_label = r'[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?'
-	regex = re.compile(r'^(%s)(\.(%s))*$' % (_re_label, _re_label, ))
-	error_message = _('Invalid DNS zone name! (Must not end with a ".", only "0"-"9", "A"-"Z", "a"-"z", and "-" allowed)')
-
-	@classmethod
-	def parse(self, text):
-		if text is None:
-			raise univention.admin.uexceptions.valueError(_('Missing value!'))
-		if len(text) > 255:
-			raise univention.admin.uexceptions.valueError(_('A DNS zone may not be longer than 255 characters!'))
-		if self.regex.match(text) is None:
-			raise univention.admin.uexceptions.valueError(self.error_message)
-		return text
-
-
 class dnsName(simple):
 	"""
-	RFC 2181: a '.' separated DNS name
+	RFC 1123: a '.' separated FQDN
 
 	>>> dnsName.parse('')
 	Traceback (most recent call last):
@@ -1444,9 +1411,14 @@ class dnsName(simple):
 		return text
 
 
+# UNUSED:
+DNS_Name = dnsName
+dnsZone = dnsName
+
+
 class dnsHostname(dnsName):
 	"""
-	RFC 1123: a '.' separated host name
+	RFC 1123: a '.' separated FQHN
 
 	# A host name (label) can start or end with a letter or a number
 	>>> dnsHostname.parse('a')
@@ -1455,12 +1427,14 @@ class dnsHostname(dnsName):
 	'A.'
 	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
 	'0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+	>>> dnsName.parse('0.example.com')
+	'0.example.com'
 
 	# A host name (label) MUST NOT consist of all numeric values
 	>>> dnsHostname.parse('0')
 	Traceback (most recent call last):
 	...
-	valueError: Labels must not be all numeric!
+	valueError: Full name must not be all numeric!
 
 	# A host name (label) MUST NOT start or end with a '-' (dash)
 	>>> dnsHostname.parse('-')
@@ -1470,14 +1444,14 @@ class dnsHostname(dnsName):
 	"""
 
 	LABEL = re.compile(r'^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$')
-	NUMERIC = re.compile(r'^[0-9]+$')
+	NUMERIC = re.compile(r'^[0-9.]+$')
 
 	@classmethod
 	def parse(self, text):
 		text = super(dnsHostname, self).parse(text)
+		if self.NUMERIC.match(text):
+			raise univention.admin.uexceptions.valueError(_("Full name must not be all numeric!"))
 		labels = (text[:-1] if text.endswith('.') else text).split('.')
-		if any(self.NUMERIC.match(label) for label in labels):
-			raise univention.admin.uexceptions.valueError(_("Labels must not be all numeric!"))
 		if not all(self.LABEL.match(label) for label in labels):
 			raise univention.admin.uexceptions.valueError(_("Value may not contain other than numbers, letters and dots!"))
 		return text

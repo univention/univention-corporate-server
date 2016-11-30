@@ -1803,6 +1803,7 @@ class simpleComputer(simpleLdap):
 
 	def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
+		alias = alias.rstrip('.')
 		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
 			results = self.lo.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False)
 			if not results:

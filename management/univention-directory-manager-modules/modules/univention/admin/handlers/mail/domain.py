@@ -37,6 +37,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
+from univention.admin.handlers.dns import stripDot
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
 _ = translation.translate
@@ -55,7 +56,7 @@ property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Mail domain name'),
 		long_description='',
-		syntax=univention.admin.syntax.DNS_Name,
+		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,
 		required=True,
@@ -73,7 +74,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', stripDot, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

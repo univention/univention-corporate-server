@@ -39,6 +39,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
+from univention.admin.handlers.dns import stripDot
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -99,7 +100,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'relativeDomainName', stripDot, univention.admin.mapping.ListToString)
 mapping.register('cname', 'cNAMERecord', None, univention.admin.mapping.ListToString)
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
