@@ -1,3 +1,10 @@
+ucs-test (7.0.6-24) unstable; urgency=medium
+
+  * Bug #42586: Cleanup package errors
+  * Bug #42619: Fix 20_apps_can_be_installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Nov 2016 15:39:02 +0100
+
 ucs-test (7.0.6-23) unstable; urgency=medium
 
   * 52_s4connector/159sync_ad_create_non_domain_user: The test case
