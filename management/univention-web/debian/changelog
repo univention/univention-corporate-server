@@ -1,6 +1,6 @@
 univention-web (1.0.2-15) unstable; urgency=medium
 
-  * Bug #43054: Use local resource for mobile menu background image 
+  * Bug #43054: Use relative url for mobile menu background image 
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 30 Nov 2016 15:59:11 +0100
 
