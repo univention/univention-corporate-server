@@ -1135,7 +1135,7 @@ class simpleComputer(simpleLdap):
 				self.info['ip'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def getMachineSid(self, lo, position, uidNum, rid=None):
-		# if rid is given, use it regardless of s4 connector 
+		# if rid is given, use it regardless of s4 connector
 		if rid:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			domainsid = searchResult[0][1]['sambaSID'][0]
@@ -1824,6 +1824,7 @@ class simpleComputer(simpleLdap):
 
 	def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
+		alias = alias.rstrip('.')
 		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
 			results = self.lo.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False)
 			if not results:

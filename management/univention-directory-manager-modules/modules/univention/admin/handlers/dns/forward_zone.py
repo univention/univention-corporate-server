@@ -38,7 +38,7 @@ from univention.admin import configRegistry
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, escapeSOAemail, unescapeSOAemail
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, escapeSOAemail, unescapeSOAemail, stripDot
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -56,7 +56,7 @@ property_descriptions = {
 	'zone': univention.admin.property(
 		short_description=_('Zone name'),
 		long_description='',
-		syntax=univention.admin.syntax.dnsZone,
+		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,
 		options=[],
@@ -233,7 +233,7 @@ def unmapMX(old):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('zone', 'zoneName', None, univention.admin.mapping.ListToString)
+mapping.register('zone', 'zoneName', stripDot, univention.admin.mapping.ListToString)
 mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)

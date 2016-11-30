@@ -635,8 +635,8 @@ msgid "Labels must be between 1 and 63 characters long!"
 msgstr "Domänennamen müssen zwischen 1 und 63 Zeichen lang sein!"
 
 #: modules/univention/admin/syntax.py:1431
-msgid "Labels must not be all numeric!"
-msgstr "Domänennamen dürfen keine Zahl sein!"
+msgid "Full name must not be all numeric!"
+msgstr "Vollständiger Domänenname darf nicht rein numerisch sein!"
 
 #: modules/univention/admin/syntax.py:2842
 #: modules/univention/admin/syntax.py:2846
