@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create dns/zone all numeric
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			forward_zone = udm.create_object('dns/forward_zone', zone='654.321', nameserver='987.654.321')
+			utils.fail('All-numeric-FQHNs should not be allowed!')
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			pass
