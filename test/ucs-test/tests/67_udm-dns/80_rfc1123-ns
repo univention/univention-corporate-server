@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create dns/zone with ns=IP
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			forward_zone = udm.create_object('dns/forward_zone', zone='365.ucs', nameserver='127.0.0.1')
+			utils.fail('Name server must be a FQHN!')
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			pass

@@ -1,0 +1,15 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create mail/domain
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		mail_domain = udm.create_object('mail/domain', name='123.456.')
+		utils.verify_ldap_object(mail_domain, {'cn': ['123.456']})
