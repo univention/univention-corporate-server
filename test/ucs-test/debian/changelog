@@ -1,3 +1,9 @@
+ucs-test (6.0.37-15) unstable; urgency=medium
+
+  * Bug #42586: Cleanup package errors
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Nov 2016 15:35:50 +0100
+
 ucs-test (6.0.37-14) unstable; urgency=low
 
   * Bug #25354 dns: Add RFC1123 tests
