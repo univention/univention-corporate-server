@@ -929,6 +929,7 @@ class App(object):
 	def __repr__(self):
 		return 'App(id="%s", version="%s")' % (self.id, self.version)
 
+	@classmethod
 	def _get_meta_parser(cls, ini_file, ini_parser):
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
 		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
