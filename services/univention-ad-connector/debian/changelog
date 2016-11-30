@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.5-5) unstable; urgency=low
+
+  * Don't remove group members if the group exists during the first sync
+    on both sides (Bug #43070)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Nov 2016 15:18:32 +0100
+
 univention-ad-connector (11.0.5-4) unstable; urgency=low
 
   * Bug #36354: added get_ad_binddn_from_name
