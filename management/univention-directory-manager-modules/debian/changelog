@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-50) unstable; urgency=medium
+
+  * Bug #42840: groups/group case insensitive replace of 'member' DN
+    during group rename
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2016 19:20:11 +0100
+
 univention-directory-manager-modules (11.0.3-49) unstable; urgency=low
 
   * Bug #25354: Allow RFC1123 DNS names
