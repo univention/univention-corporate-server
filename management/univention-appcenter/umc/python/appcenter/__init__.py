@@ -58,7 +58,8 @@ from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.appcenter import get_action, AppManager
+from univention.appcenter.actions import get_action
+from univention.appcenter.app import AppManager
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save

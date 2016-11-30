@@ -1,3 +1,22 @@
+univention-appcenter (6.0.0-15) unstable; urgency=medium
+
+  * Bug #43074: Remove directories meta-inf and univention-repository
+    completely when reverting local App Center
+  * Bug #42761: Database type is postgresql, not postgres
+  * Bug #42801: Validate attribute names when writing ini files
+  * Bug #42801: Support App init with cache; get rid of global get_locale()
+  * Bug #42801: Fix README file name
+  * Bug #42801: Fix file permissions
+  * Bug #42801: Fix setting docker script path
+  * Bug #42801: Allow meta file modifications
+  * Bug #42801: Support removing README files. Not saving malformed ini
+  * Bug #42801: Support removing options
+  * Bug #42834: Add license attribute
+  * Bug #42801: Add univention-app dev-set
+  * Bug #42761: ini documentation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Nov 2016 15:49:37 +0100
+
 univention-appcenter (6.0.0-14) unstable; urgency=medium
 
   * Bug #42619: Also improve UCR funtions for Non-UCS containers

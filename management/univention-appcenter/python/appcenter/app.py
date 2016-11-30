@@ -65,6 +65,8 @@ def _read_ini_file(filename, parser_class=RawConfigParser):
 	try:
 		with open(filename, 'rb') as f:
 			parser.readfp(f)
+	except TypeError:
+		pass
 	except EnvironmentError:
 		pass
 	except ParsingError as exc:
@@ -83,11 +85,10 @@ def _get_from_parser(parser, section, attr):
 		return None
 
 
-def _get_rating_items():
+def _get_rating_items(locale):
 	if _get_rating_items._cache is None:
 		_get_rating_items._cache = []
 		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
-		locale = get_locale()
 		for section in rating_parser.sections():
 			label = _get_from_parser(rating_parser, section, 'Label')
 			if locale:
@@ -103,11 +104,10 @@ def _get_rating_items():
 _get_rating_items._cache = None
 
 
-def _get_license_descriptions():
+def _get_license_descriptions(locale):
 	if _get_license_descriptions._cache is None:
 		_get_license_descriptions._cache = {}
 		license_parser = _read_ini_file(os.path.join(CACHE_DIR, '.license_types.ini'))
-		locale = get_locale()
 		for section in license_parser.sections():
 			description = _get_from_parser(license_parser, section, 'Description')
 			if locale:
@@ -191,9 +191,6 @@ class AppAttribute(UniventionMetaInfo):
 			if not isinstance(value, instance_type):
 				raise ValueError('Wrong type')
 
-	def parse_with_ini_file(self, value, ini_file):
-		return self.parse(value)
-
 	def test(self, value):
 		try:
 			if self.required:
@@ -212,6 +209,32 @@ class AppAttribute(UniventionMetaInfo):
 	def parse(self, value):
 		return value
 
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		ini_attr_name = self.name.replace('_', '')
+		priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
+		if self.localisable and locale:
+			priority_sections.insert(0, (meta_parser, locale))
+			priority_sections.insert(2, (ini_parser, locale))
+		value = self.default
+		for parser, section in priority_sections:
+			try:
+				value = parser.get(section, ini_attr_name)
+			except (NoSectionError, NoOptionError):
+				pass
+			else:
+				break
+		value = self.parse(value)
+		self.test(value)
+		return value
+
+	def post_creation(self, app):
+		pass
+
+	# TODO: remove. deprecated
+	def parse_with_ini_file(self, value, ini_file):
+		return self.parse(value)
+
+	# TODO: remove. deprecated
 	def get(self, value, ini_file):
 		if value is None:
 			value = copy(self.default)
@@ -222,6 +245,16 @@ class AppAttribute(UniventionMetaInfo):
 		else:
 			self.test(value)
 			return value
+
+
+class AppComponentIDAttribute(AppAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return component_id
+
+
+class AppUCSVersionAttribute(AppAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return '4.1'
 
 
 class AppBooleanAttribute(AppAttribute):
@@ -280,6 +313,22 @@ class AppListAttribute(AppAttribute):
 			super(AppListAttribute, self).test_regex(regex, val)
 
 
+class AppRatingAttribute(AppListAttribute):
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		value = []
+		rating_items = _get_rating_items(locale)
+		for item in rating_items:
+			val = _get_from_parser(meta_parser, 'Application', item['name'])
+			try:
+				val = int(val)
+			except (ValueError, TypeError):
+				pass
+			else:
+				item['value'] = val
+				value.append(item)
+		return value
+
+
 class AppLocalisedListAttribute(AppListAttribute):
 	_cache = {}
 
@@ -303,20 +352,12 @@ class AppLocalisedListAttribute(AppListAttribute):
 					value = translations[value]
 		return value
 
-	def parse(self, value):
-		value = super(AppLocalisedListAttribute, self).parse(value)
-		locale = get_locale()
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		value = super(AppLocalisedListAttribute, self).get_value(component_id, ini_parser, meta_parser, locale)
 		if self.localisable_by_file and locale:
 			for i, val in enumerate(value):
 				value[i] = self._translate(self.localisable_by_file, locale, val)
 		return value
-
-	def test_choices(self, value):
-		value = value[:]
-		locale = get_locale()
-		for i, val in enumerate(value):
-			value[i] = self._translate(self.localisable_by_file, locale, val, reverse=True)
-		super(AppLocalisedListAttribute, self).test_choices(value)
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
@@ -345,13 +386,28 @@ class AppFileAttribute(AppAttribute):
 		# localisable=True !
 		super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
 
-	def parse_with_ini_file(self, value, ini_file):
-		filename = self.get_filename(ini_file)
-		if filename:
-			with open(filename, 'rb') as fhandle:
-				value = ''.join(fhandle.readlines()).strip()
-		return super(AppFileAttribute, self).parse_with_ini_file(value, ini_file)
+	def get_value(self, component_id, ini_parser, meta_parser, locale):
+		return None
 
+	def post_creation(self, app):
+		value = None
+		fname = self.name.upper()
+		filenames = [fname, '%s_EN' % fname]
+		if self.localisable:
+			locale = app.get_locale()
+			if locale:
+				filenames.insert(0, '%s_%s' % (fname, locale.upper()))
+		for filename in filenames:
+			try:
+				with open(app.get_cache_file(filename), 'rb') as fd:
+					value = ''.join(fd.readlines()).strip()
+			except EnvironmentError:
+				pass
+			else:
+				break
+		setattr(app, self.name, value)
+
+	# TODO: remove. deprecated - attention: install_base.py uses it
 	def get_filename(self, ini_file):
 		directory = os.path.dirname(ini_file)
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
@@ -374,6 +430,33 @@ class AppDockerScriptAttribute(AppAttribute):
 		super(AppDockerScriptAttribute, self).set_name(name)
 
 
+class AppMetaClass(UniventionMetaClass):
+
+	def __new__(mcs, name, bases, attrs):
+		new_cls = super(AppMetaClass, mcs).__new__(mcs, name, bases, attrs)
+		# cleanup attrs
+		offset = 0
+		for i, attr in enumerate(new_cls._attrs[:]):
+			try:
+				explicit_attr = attrs[attr.name]
+			except KeyError:
+				pass
+			else:
+				if not isinstance(explicit_attr, AppAttribute):
+					app_logger.debug('Removing %s for %r' % (attr.name, explicit_attr))
+					new_cls._attrs.pop(i + offset)
+					offset -= 1
+			while True:
+				old_attr = new_cls.get_attr(attr.name)
+				if old_attr is attr:
+					break
+				if old_attr is None:
+					break
+				app_logger.debug('Removing old %s for new %r' % (old_attr.name, attr))
+				new_cls._attrs.remove(old_attr)
+		return new_cls
+
+
 class App(object):
 
 	"""
@@ -394,14 +477,15 @@ class App(object):
 			App have the same ID, though.
 		code: An internal ID like 2-char value that has no meaning
 			other than some internal reporting processing.
-			Univention handles this, not the App Vendor.
+			Univention handles this, not the App Provider.
 		component_id: The internal name of the repository on the App
 			Center server. Not necessarily (but often) named after
-			the ID. Not part of the ini file.
+			the *id*. Not part of the ini file.
 		ucs_version: Not part of the ini file.
 		name: The displayed name of the App.
 		version: Version of the App. Needs to be unique together with
-			with the ID.
+			with the *id*. Versions are compared against each other
+			using Python's LooseVersion (distutils).
 		logo: The file name of the logo of the App. It is used in the
 			App Center overview when all Apps are shown in a
 			gallery. As the gallery items are squared, the logo
@@ -409,35 +493,33 @@ class App(object):
 		logo_detail_page: The file name of a "bigger" logo. It is shown
 			in the detail page of the App Center. Useful when there
 			is a stretched version with the logo, the name, maybe a
-			claim. If not given, the "logo" is used on the detail
+			claim. If not given, the *logo* is used on the detail
 			page, too. Not part of the App class.
 		description: A short description of the App. Should not exceed
 			90 chars, otherwise it gets unreadable in the App
 			Center.
 		long_description: A more complete description of the App. HTML
-			allowed and required! Shown before installation.
+			allowed and required! Shown before installation, so it
+			should contain product highlights, use cases, etc.
 		thumbnails: A list of screenshots and / or YouTube video URLs.
 		categories: Categories this App shall be filed under.
 		website: Website for more information about the product (e.g.
-			landing page)
+			landing page).
 		support_url: Website for getting support (or information about
-			how to buy a license)
-		contact: Contact email address for the customer
+			how to buy a license).
+		contact: Contact email address for the customer.
 		vendor: Display name of the vendor. The actual creator of the
-			Software. See also maintainer.
+			Software. See also *maintainer*.
 		website_vendor: Website of the vendor itself for more
 			information.
 		maintainer: Display name of the maintainer, who actually put
 			the App into the App Center. Often, but not necessarily
-			the vendor. If vendor and maintainer are the same,
-			maintainer does not needs to be specified again.
+			the *vendor*. If vendor and maintainer are the same,
+			maintainer does not need to be specified again.
 		website_maintainer: Website of the maintainer itself for more
 			information.
 		license: An abbreviation of a license category. See also
-			license_agreement. Not part of the App class.
-		license_description: A human readable version of the License
-			attribute of the ini file. Not part of the the ini
-			file.
+			*license_agreement*.
 		license_agreement: A file containing the license text the end
 			user has to agree to. The file is shipped along with
 			the ini file. Not part of the ini file.
@@ -478,12 +560,12 @@ class App(object):
 			email.
 		notification_email: Email address that should be used to send
 			notifications. If none is provided the address from
-			contact	will be used. Note: An empty email
+			*contact* will be used. Note: An empty email
 			(NotificationEmail=) is not valid! Remove the line (or
 			put in comments) in this case.
 		web_interface: The path of the App's web interface.
 		web_interface_name: A name for the App's web interface. If not
-			given, "name" is used.
+			given, *name* is used.
 		web_interface_port_http: The port to the web interface (HTTP).
 		web_interface_port_https: The port to the web interface (HTTPS).
 		web_interface_proxy_scheme: Docker Apps only. Whether the web
@@ -494,24 +576,28 @@ class App(object):
 			If yes, the web interface ports of the container are
 			used for a proxy configuration, so that the web
 			interface is again available on 80/443. In this case
-			the "web_interface" itself needs to have a distinct
+			the *web_interface* itself needs to have a distinct
 			path even inside the container (like "/myapp" instead
 			of "/" inside).
-			If "web_interface_proxy_scheme" is set to http, both
+			If *web_interface_proxy_scheme* is set to http, both
+			http and https are proxied to http in the container. If
+			set to https, proxy points always to https. If set to
+			both, http will go to http, https to https.
 		ucs_overview_category: Whether and if where on the start site
-			the web_interface should be registered.
+			the *web_interface* should be registered automatically.
 		database: Which (if any) database an App wants to use. The App
 			Center will setup the database for the App. Useful for
 			Docker Apps running against the Host's database.
+			Supported: "mysql", "postgresql".
 		database_name: Name of the database to be created. Defaults to
-			"id".
+			*id*.
 		database_user: Name of the database user to be created.
-			Defaults to "id". May not be "root" or "postgres".
+			Defaults to *id*. May not be "root" or "postgres".
 		database_password_file: Path to the file in which the password
 			will be stored. If not set, a default file will be
 			created.
 		docker_env_database_host: Environment variable name for the DB
-			host.
+			host inside the Docker Container.
 		docker_env_database_port: Environment variable name for the DB
 			port.
 		docker_env_database_name: Environment variable name for the DB
@@ -523,13 +609,13 @@ class App(object):
 		docker_env_database_password_file: Environment variable name
 			for a file that holds the password for the DB. If set,
 			this file is created in the Docker Container;
-			"docker_env_database_password" will not be used.
+			*docker_env_database_password* will not be used.
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
 		required_apps: List of App IDs that need to be installed along
 			with this App.
-		required_apps_in_domain: Like required_apps, but the Apps may
+		required_apps_in_domain: Like *required_apps*, but the Apps may
 			be installed anywhere in the domain, not necessarily
 			on this very server.
 		conflicted_system_packages: List of debian package names that
@@ -545,11 +631,10 @@ class App(object):
 			the App Center when not installed. For old
 			installations, a warning is shown that the user needs
 			to find an alternative for the App. Should be
-			supported by an exhaustive "readme" file how to
+			supported by an exhaustive *readme* file how to
 			migrate the App data.
 		without_repository: Whether this App can be installed without
-			adding a dedicated repository on the App Center
-			server.
+			adding a dedicated repository on the App Center server.
 		default_packages: List of debian package names that shall be
 			installed (probably living in the App Center server's
 			repository).
@@ -558,16 +643,16 @@ class App(object):
 			systems while this App is installed. Deprecated. Not
 			supported for Docker Apps.
 		additional_packages_master: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Master. Not supported for Docker Apps.
 		additional_packages_backup: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Backup. Not supported for Docker Apps.
 		additional_packages_slave: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a DC Slave. Not supported for Docker Apps.
 		additional_packages_member: List of package names that shall be
-			installed along with "default_packages" when installed
+			installed along with *default_packages* when installed
 			on a Memberserver. Not supported for Docker Apps.
 		rating: Positive rating on specific categories regarding the
 			App. Controlled by Univention. Not part of the ini
@@ -583,9 +668,9 @@ class App(object):
 			Center may generate a link to point the the Users
 			module of UMC.
 		ports_exclusive: A list of ports the App requires to acquire
-			exclusively. Implicitly builds "conflicted_apps".
-			Docker Apps will have these exact ports forwarded. The
-			App Center will also change the firewall rules.
+			exclusively. Implicitly adds *conflicted_apps*. Docker
+			Apps will have these exact ports forwarded. The App
+			Center will also change the firewall rules.
 		ports_redirection: Docker Apps only. A list of ports the App
 			wants to get forwarded from the host to the container.
 			Example: 2222:22 will enable an SSH connection to the
@@ -603,43 +688,43 @@ class App(object):
 		shop_url: If given, a button is added to the App Center which
 			users can click to buy a license.
 		ad_member_issue_hide: When UCS is not managing the domain but
-			instead is only part of a Windows
-			controlled Active Directory domain, the environment in
-			which the App runs is different and certain services
-			that this App relies on may not not be running. Thus,
-			the App should not be shown at all in the App Center.
-		ad_member_issue_password: Like "ad_member_issue_hide" but only
+			instead is only part of a Windows controlled Active
+			Directory domain, the environment in which the App runs
+			is different and certain services that this App relies
+			on may not not be running. Thus, the App should not be
+			shown at all in the App Center.
+		ad_member_issue_password: Like *ad_member_issue_hide* but only
 			shows a warning: The App needs a password service
 			running on the Windows domain controller, e.g. because
 			it needs the samba hashes to authenticate users. This
-			can be set up, but nor automatically. A link to the
+			can be set up, but not automatically. A link to the
 			documentation how to set up that service in such
 			environments is shown.
 		app_report_object_type: In some environments, App reports are
 			automatically generated by a metering tool. This tool
 			counts a specific amount of LDAP objects.
-			"app_report_object_type" is the object type of these
-			objects. Example: users/user
+			*app_report_object_type* is the object type of these
+			objects. Example: users/user.
 		app_report_object_filter: Part of the App reporting. The
-			filter for "app_report_object_type". Example:
+			filter for *app_report_object_type*. Example:
 			(myAppActivated=1).
 		app_report_object_attribute: Part of the App reporting. If
 			specified, not 1 is counted per object, but the number
-			of values in this "app_report_object_attribute".
-			Useful for "app_report_attribute_type" = groups/group
-			and "app_report_object_attribute" = uniqueMember.
-		app_report_attribute_type: Same as "app_report_object_type"
+			of values in this *app_report_object_attribute*.
+			Useful for *app_report_attribute_type = groups/group*
+			and *app_report_object_attribute = uniqueMember*.
+		app_report_attribute_type: Same as *app_report_object_type*
 			but regarding the list of DNs in
-			"app_report_object_attribute".
+			*app_report_object_attribute*.
 		app_report_attribute_filter: Same as
-			"app_report_object_filter" but regarding
-			"app_report_object_type".
+			*app_report_object_filter* but regarding
+			*app_report_object_type*.
 		docker_image: Docker Image for the container. If specified the
 			App implicitly becomes a Docker App.
 		docker_migration_works: Whether it is safe to install this
 			version while a non Docker version is or was installed.
 		docker_allowed_images: List of other Docker Images. Used for
-			updates. If the new version has a new "docker_image"
+			updates. If the new version has a new *docker_image*
 			but the old App runs on an older image specified in
 			this list, the image is not exchanged.
 		docker_shell_command: Default command when running
@@ -653,48 +738,49 @@ class App(object):
 			created in LDAP as the docker container.
 		docker_script_init: The entrypoint for the Docker App. An
 			empty value will use the container's entrypoint, but
-			this needs an exlicit "DockerScriptInit=".
+			this needs an explicit *docker_script_init = *.
 		docker_script_setup: Path to the setup script in the container
 			run after the start of the container. If the App comes
 			with a setup script living on the App Center server,
 			this script is copied to this very path before being
 			executed.
-		docker_script_store_data: Like docker_script_setup, but for a
+		docker_script_store_data: Like *docker_script_setup*, but for a
 			script that is run to backup the data just before
 			destroying the old container.
 		docker_script_restore_data_before_setup: Like
-			docker_script_setup, but for a script that is run to
+			*docker_script_setup*, but for a script that is run to
 			restore backuped data just before running the setup
 			script.
 		docker_script_restore_data_after_setup: Like
-			docker_script_setup, but for a script that is run to
+			*docker_script_setup*, but for a script that is run to
 			restore backuped data just after running the setup
 			script.
-		docker_script_update_available: Like docker_script_setup, but
+		docker_script_update_available: Like *docker_script_setup*, but
 			for a script that is run to check whether an update is
 			available (packag or distribution upgrade).
-		docker_script_update_packages: Like docker_script_setup, but
+		docker_script_update_packages: Like *docker_script_setup*, but
 			for a script that is run to install package updates
 			(like security updates) in the container without
 			destroying it.
-		docker_script_update_release: Like docker_script_setup, but for
-			a script that is run to install distribution updates
-			(like new major releases of the OS) in the container
-			without destroying it.
-		docker_script_update_app_version: Like docker_script_setup, but
-			for a script that is run to specifically install App
-			package updates in the container without destroying it.
+		docker_script_update_release: Like *docker_script_setup*, but
+			for a script that is run to install distribution
+			updates (like new major releases of the OS) in
+			the container without destroying it.
+		docker_script_update_app_version: Like *docker_script_setup*,
+			but for a script that is run to specifically install
+			App package updates in the container without destroying
+			it.
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 	"""
-	__metaclass__ = UniventionMetaClass
+	__metaclass__ = AppMetaClass
 
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	"""The required ID"""
 
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
-	component_id = AppAttribute(required=True)
-	ucs_version = AppAttribute(required=True)
+	component_id = AppComponentIDAttribute(required=True)
+	ucs_version = AppUCSVersionAttribute(required=True)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
@@ -710,7 +796,7 @@ class App(object):
 	website_vendor = AppAttribute(localisable=True)
 	maintainer = AppAttribute()
 	website_maintainer = AppAttribute(localisable=True)
-	license_description = AppAttribute()
+	license = AppAttribute(default='default')
 
 	license_agreement = AppFileAttribute()
 	readme = AppFileAttribute()
@@ -759,7 +845,7 @@ class App(object):
 	additional_packages_slave = AppListAttribute()
 	additional_packages_member = AppListAttribute()
 
-	rating = AppListAttribute()
+	rating = AppRatingAttribute()
 
 	umc_module_name = AppAttribute()
 	umc_module_flavor = AppAttribute()
@@ -806,6 +892,8 @@ class App(object):
 		self._is_ucs_component = None
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
+		for attr in self._attrs:
+			attr.post_creation(self)
 		if self.docker:
 			self.supported_architectures = ['amd64']
 		else:
@@ -831,62 +919,40 @@ class App(object):
 		if self.web_interface:
 			return self.web_interface.startswith('/')
 
+	@property
+	def license_description(self):
+		return _get_license_descriptions(self.get_locale()).get(self.license)
+
 	def __str__(self):
 		return '%s=%s' % (self.id, self.version)
 
 	def __repr__(self):
 		return 'App(id="%s", version="%s")' % (self.id, self.version)
 
+	def _get_meta_parser(cls, ini_file, ini_parser):
+		component_id = os.path.splitext(os.path.basename(ini_file))[0]
+		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
+		return _read_ini_file(meta_file)
+
 	@classmethod
-	def from_ini(cls, ini_file, locale=True):
+	def from_ini(cls, ini_file, locale=True, cache=None):
 		# app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
-		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
-		meta_parser = _read_ini_file(meta_file)
+		meta_parser = cls._get_meta_parser(ini_file, ini_parser)
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None
-			if attr.name == 'component_id':
-				value = component_id
-			if attr.name == 'ucs_version':
-				value = '4.1'
-			elif attr.name == 'rating':
-				value = []
-				rating_items = _get_rating_items()
-				for item in rating_items:
-					val = _get_from_parser(meta_parser, 'Application', item['name'])
-					try:
-						val = int(val)
-					except (ValueError, TypeError):
-						pass
-					else:
-						item['value'] = val
-						value.append(item)
-			elif attr.name == 'license_description':
-				license_description_section = _get_from_parser(ini_parser, 'Application', 'License')
-				value = _get_license_descriptions().get(license_description_section)
-			else:
-				ini_attr_name = attr.name.replace('_', '')
-				priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
-				if attr.localisable and locale:
-					priority_sections.insert(0, (meta_parser, locale))
-					priority_sections.insert(2, (ini_parser, locale))
-				for parser, section in priority_sections:
-					try:
-						value = parser.get(section, ini_attr_name)
-					except (NoSectionError, NoOptionError):
-						pass
-					else:
-						break
 			try:
-				value = attr.get(value, ini_file)
+				value = attr.get_value(component_id, ini_parser, meta_parser, locale)
 			except ValueError as e:
 				app_logger.error('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
 				return
 			attr_values[attr.name] = value
+		if cache:
+			attr_values['_cache'] = cache
 		return cls(**attr_values)
 
 	@property
@@ -991,6 +1057,9 @@ class App(object):
 	def get_ucs_version(self):
 		return self.ucs_version
 
+	def get_locale(self):
+		return get_locale()
+
 	def get_server(self):
 		return AppManager.get_server()
 
@@ -1031,14 +1100,14 @@ class App(object):
 		return thumbnails
 
 	def get_localised(self, key, loc=None):
-		from univention.appcenter import get_action
+		from univention.appcenter.actions import get_action
 		get = get_action('get')()
 		keys = [(loc, key)]
 		for section, name, value in get.get_values(self, keys, warn=False):
 			return value
 
 	def get_localised_list(self, key, loc=None):
-		from univention.appcenter import get_action
+		from univention.appcenter.actions import get_action
 		get = get_action('get')()
 		ret = []
 		key = key.replace('_', '').lower()
