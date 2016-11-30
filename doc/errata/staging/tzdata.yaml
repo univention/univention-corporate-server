@@ -3,7 +3,7 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: tzdata
-fix: 2016i-0~ucs3.3.38.201611102126
+fix: 2016i-0.36.201611301425
 desc: |
  This update includes new timezone data. The most notable change is:
  * New leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52
