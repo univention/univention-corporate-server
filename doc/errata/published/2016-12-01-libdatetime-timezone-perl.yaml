@@ -8,3 +8,5 @@ desc: |
  This update includes new timezone data. The most notable change is:
  * New leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52
 bug: [42878]
+erratum: 25
+announced: 2016-12-01
