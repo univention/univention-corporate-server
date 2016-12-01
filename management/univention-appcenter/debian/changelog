@@ -1,3 +1,10 @@
+univention-appcenter (6.0.0-16) unstable; urgency=medium
+
+  * Bug #43075: Update cache files before setting UCRVs preventing Docker App
+    upgrades
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Dec 2016 22:50:46 +0100
+
 univention-appcenter (6.0.0-15) unstable; urgency=medium
 
   * Bug #43074: Remove directories meta-inf and univention-repository
