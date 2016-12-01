@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
 		userA = udm.create_user(**{properties['CLIName']: '0'})[0]
 		userB = udm.create_user(**{properties['CLIName']: '1'})[0]
+		utils.wait_for_connector_replication()
 		utils.verify_ldap_object(userA, {properties['ldapMapping']: []})
 		utils.verify_ldap_object(userB, {properties['ldapMapping']: ['1']})
 		udm.modify_object('users/user', dn=userA, **{properties['CLIName']: '1'})
