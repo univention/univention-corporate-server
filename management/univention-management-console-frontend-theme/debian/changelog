@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.4-11) unstable; urgency=medium
+
+  * Bug #40492: revert display fixed because IOs doesn't like it 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 01 Dec 2016 14:46:10 +0100
+
 univention-management-console-frontend-theme (1.0.4-10) unstable; urgency=medium
 
   * Bug #43084: Moved style rules for the UMC menu help dialog from here to
