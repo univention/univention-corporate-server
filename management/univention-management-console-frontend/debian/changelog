@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-55) unstable; urgency=medium
+
+  * Bug #43084: Moved style rules for the UMC menu help dialog here from
+    univention-management-console-frontend-theme
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 12:09:36 +0100
+
 univention-management-console-frontend (5.0.63-54) unstable; urgency=medium
 
   * Bug #42979: Updated Univention Summit 2017 banner

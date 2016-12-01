@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (1.0.4-10) unstable; urgency=medium
+
+  * Bug #43084: Moved style rules for the UMC menu help dialog from here to
+    univention-management-console-frontend
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 12:14:32 +0100
+
 univention-management-console-frontend-theme (1.0.4-9) unstable; urgency=medium
 
   * Bug #43054: Use local resource for mobile menu background image 
