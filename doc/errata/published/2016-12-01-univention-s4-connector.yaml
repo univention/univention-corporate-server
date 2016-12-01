@@ -9,3 +9,5 @@ desc: |
  * Sync client initiated renaming of Windows machine accounts
    from Samba/AD to OpenLDAP.
 bug: [37388]
+erratum: 345
+announced: 2016-12-01
