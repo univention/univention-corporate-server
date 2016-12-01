@@ -59,6 +59,7 @@ define([
 	"dojo/dom-construct",
 	"put-selector/put",
 	"dojo/hash",
+	"dojo/query",
 	"dojox/html/styles",
 	"dojox/html/entities",
 	"dojox/gfx",
@@ -90,7 +91,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
+		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, query, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
 		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton,
 		i18nTools, _
@@ -2095,14 +2096,17 @@ define([
 
 		_createSummit2017Ad: function() {
 			var isDE = (dojo.locale.toLowerCase().indexOf('de') === 0);
-			var linkTarget = (isDE) ? 'https://www.univention-summit.de/' : 'https://www.univention-summit.com/';
-			var banner = require.toUrl((isDE) ? 'umc/app/univention_summit2017_banner_DE.png' : 'umc/app/univention_summit2017_banner_EN.png');
+			var linkTarget = isDE ? 'https://www.univention-summit.de/?pk_campaign=UMC%20Summit%20DE' : 'https://www.univention-summit.com/?pk_campaign=UMC%20Summit%20EN';
+			var banner  = isDE ? require.toUrl('umc/app/summit2017-banner-de.png') : require.toUrl('umc/app/summit2017-banner-en.png');
 
 			// build banner
 			var _outerContainer = domConstruct.create('div', {
+				// banner is invisible on xs devices (bootstrap; width <768px)
+				'class': 'visible-sm visible-md visible-lg',
 				style: {
 					'text-align': 'center',
-					'clear': 'both'
+					'clear': 'bot',
+					'padding-bottom': '10px'
 				}
 			});
 			var _innerContainer = domConstruct.create('div', {
@@ -2137,10 +2141,11 @@ define([
 			});
 			on(_closeButton, 'click', lang.hitch(this, function() {
 				_outerContainer.remove();
+				cookie('hideSummit2017Banner', 'true', {expires: 'Sat, 28 Jan 2017 00:00:00 GMT'});
 			}));
 
 			// place banner
-			domConstruct.place(_outerContainer, this._overviewPage.domNode, 'last');
+			domConstruct.place(_outerContainer, this._overviewPage.domNode, 'first');
 		},
 
 		_setupOverviewPage: function() {
@@ -2188,7 +2193,10 @@ define([
 			this.renderCategories();
 			this._overviewPage.addChild(this._searchText);
 			this._overviewPage.addChild(this._grid);
-			if (new Date("January 27, 2017 00:00:00") > new Date() && win.getBox().w >= 550) {
+			if (new Date("January 27, 2017 00:00:00") > new Date() &&
+			    (app.getModule('updater') || app.getModule('schoolrooms')) &&
+			    !cookie('hideSummit2017Banner')
+			   ) {
 				this._createSummit2017Ad();
 			}
 			this._tabContainer.addChild(this._overviewPage, 0);

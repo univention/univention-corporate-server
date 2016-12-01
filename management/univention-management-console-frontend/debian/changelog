@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-54) unstable; urgency=medium
+
+  * Bug #42979: Updated Univention Summit 2017 banner
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 10:32:08 +0100
+
 univention-management-console-frontend (5.0.63-53) unstable; urgency=medium
 
   * Bug #40492: Hide overflow on session timeout 
