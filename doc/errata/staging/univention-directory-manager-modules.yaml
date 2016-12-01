@@ -12,10 +12,11 @@ desc: |
    correctly.
  * The syntax check for DNS SOA/NS/PTR records has been improved. Host and
    domain names according to RFC1123 are now accepted.
- * When a group which is member of another group is renamed,
-   the old group dn could me left over in the containing group
-   if the spelling case found in the 'uniqueMember' attribute differed from the
-   spelling case of the acutal group name. This can happen in combination
-   with both AD-Connector and S4-Connector. Now the update of the
-   'uniqueMember' attribute is performed in a case insensitive way.
+ * When a group which is member of another group is renamed, the old
+   group dn could me left over in the containing group if the spelling
+   case found in the 'uniqueMember' attribute differed from the
+   spelling case of the acutal group name. This can happen in
+   combination with both AD-Connector and S4-Connector. Now the update
+   of the 'uniqueMember' attribute is performed in a case insensitive
+   way.
 bug: [42404,36570,28363,42840]
