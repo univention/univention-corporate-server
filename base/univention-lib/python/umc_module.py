@@ -61,7 +61,7 @@ def imagedimensions_of_buffer(data):
 
 
 def imagecategory_of_buffer(data):
- 	(compression_mime_type, uncompressed_data) = uncompress_buffer(data)
+	(compression_mime_type, uncompressed_data) = uncompress_buffer(data)
 	mime_type = image_mime_type_of_buffer(uncompressed_data)
 	if mime_type in ('image/jpeg', 'image/png'):
 		return (mime_type, compression_mime_type, "%sx%s" % imagedimensions_of_buffer(uncompressed_data))

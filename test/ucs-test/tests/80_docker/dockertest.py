@@ -207,8 +207,8 @@ class App(object):
 
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
- 			print 'set_ini_parameter(%s=%s)' % (key, value)
- 			self.ini[key] = value
+			print 'set_ini_parameter(%s=%s)' % (key, value)
+			self.ini[key] = value
 
 	def add_to_local_appcenter(self):
 		self._dump_ini()
