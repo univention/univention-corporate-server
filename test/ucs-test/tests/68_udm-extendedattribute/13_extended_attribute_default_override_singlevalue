@@ -25,6 +25,7 @@ if __name__ == '__main__':
 		}
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.stop_cli_server()
 
 		extended_attribute_value = uts.random_string()
 		user = udm.create_user(**{properties['CLIName']: extended_attribute_value})[0]

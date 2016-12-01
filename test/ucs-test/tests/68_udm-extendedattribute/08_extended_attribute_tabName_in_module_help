@@ -26,6 +26,7 @@ if __name__ == '__main__':
 		}
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.stop_cli_server()
 
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0]
 		if not properties['tabName'] in module_help_text:
