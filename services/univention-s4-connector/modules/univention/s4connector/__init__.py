@@ -546,6 +546,7 @@ class ucs:
 		else:
 			debug_level = 2
 		ud.set_level(ud.LDAP, int(debug_level))
+		ud.set_level(ud.ADMIN, int(debug_level))
 
 	def close_debug(self):
 		_d = ud.function('ldap.close_debug')
@@ -877,8 +878,6 @@ class ucs:
 				return self.lo.lo.lo.search_s(searchdn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
 			except ldap.NO_SUCH_OBJECT:
 				return None
-			except ldap.INVALID_DN_SYNTAX:
-				return None
 			except ldap.INVALID_SYNTAX:
 				return None
 			except (ldap.SERVER_DOWN, SystemExit):
@@ -896,8 +895,6 @@ class ucs:
 			try:
 				return self.lo.get(searchdn, required=1)
 			except ldap.NO_SUCH_OBJECT:
-				return None
-			except ldap.INVALID_DN_SYNTAX:
 				return None
 			except ldap.INVALID_SYNTAX:
 				return None
