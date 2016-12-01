@@ -8,5 +8,5 @@ def postinst(baseConfig, changes):
 	except (TypeError, ValueError):
 		pass
 	else:
- 		if new:
+		if new:
 			call(("plymouth-set-default-theme", "--rebuild-initrd", new))

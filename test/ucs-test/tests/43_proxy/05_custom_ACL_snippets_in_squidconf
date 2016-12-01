@@ -152,40 +152,40 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
 
 def main():
 	try:
- 		permissions = ['allow', 'deny']
- 		responses = [200, 403]
- 		value_types = ['string', 'substring', 'regex']
+		permissions = ['allow', 'deny']
+		responses = [200, 403]
+		value_types = ['string', 'substring', 'regex']
 
- 		# Test user-agent variable with random data
- 		acl_types = ['browser', 'browser-i']
- 		values = [
- 				"%s%s%s" % (uts.random_string(3),
- 					uts.random_string(2, numeric=False).upper(),
- 					uts.random_string(3)),
- 				"%s%s%s" % (uts.random_string(3),
- 					uts.random_string(2, numeric=False).upper(),
- 					uts.random_string(3)),
- 				"%s%s%s%s%s" % ('^', uts.random_string(3),
- 					uts.random_string(2, numeric=False).upper(),
- 					uts.random_string(3), '.*$')
- 				]
- 		itertion_length = len(permissions) * len(acl_types) * len(value_types)
- 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
- 		for i in xrange(itertion_length):
- 			with ucr_test.UCSTestConfigRegistry() as ucr:
- 				perform_test(next(tests))
+		# Test user-agent variable with random data
+		acl_types = ['browser', 'browser-i']
+		values = [
+				"%s%s%s" % (uts.random_string(3),
+					uts.random_string(2, numeric=False).upper(),
+					uts.random_string(3)),
+				"%s%s%s" % (uts.random_string(3),
+					uts.random_string(2, numeric=False).upper(),
+					uts.random_string(3)),
+				"%s%s%s%s%s" % ('^', uts.random_string(3),
+					uts.random_string(2, numeric=False).upper(),
+					uts.random_string(3), '.*$')
+				]
+		itertion_length = len(permissions) * len(acl_types) * len(value_types)
+		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
+		for i in xrange(itertion_length):
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				perform_test(next(tests))
 
- 		# Test dstdomain variable with univention related sites
- 		acl_types = ['dstdomain', 'dstdomain-i']
- 		values = [
- 				'download.univention.de',
- 				'download',
- 				'^download.univention.de.*$'
- 				]
- 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
- 		for i in xrange(itertion_length):
- 			with ucr_test.UCSTestConfigRegistry() as ucr:
- 				perform_test(next(tests))
+		# Test dstdomain variable with univention related sites
+		acl_types = ['dstdomain', 'dstdomain-i']
+		values = [
+				'download.univention.de',
+				'download',
+				'^download.univention.de.*$'
+				]
+		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
+		for i in xrange(itertion_length):
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				perform_test(next(tests))
 
 		# Adding network redirection (82.198.197.8:21 <--> 127.0.0.1:60025)
 		with NetworkRedirector() as nethelper:

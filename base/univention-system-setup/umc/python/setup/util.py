@@ -612,7 +612,7 @@ def cleanup(with_appliance_hooks=False):
 	cmd = 'sleep 1; '
 	if with_appliance_hooks:
 		cmd += CMD_APPLIANCE_HOOKS + '; '
- 	cmd += CMD_CLEANUP_SCRIPT
+	cmd += CMD_CLEANUP_SCRIPT
 
 	# start an at job in the background
 	atjobs.add(cmd)

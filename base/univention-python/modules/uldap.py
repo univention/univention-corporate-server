@@ -568,7 +568,7 @@ class access:
 		exc = exception.args[0]
 		info = exc.get('info')
 		ldap_url = info[info.find('ldap'):]
- 		if isLDAPUrl(ldap_url):
+		if isLDAPUrl(ldap_url):
 			conn_str = LDAPUrl(ldap_url).initializeUrl()
 
 			lo_ref = ldap.ldapobject.ReconnectLDAPObject(conn_str, trace_stack_limit=None)
