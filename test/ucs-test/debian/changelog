@@ -1,3 +1,11 @@
+ucs-test (6.0.37-16) unstable; urgency=medium
+
+  * 68_udm-extendedattribute/38_extended_attribute_boolean_syntax: Wait
+    for the first replication of the user back from Samba 4 to UCS. My
+    guess is that the initial diff mode does not cover this (Bug #42933)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Dec 2016 08:29:39 +0100
+
 ucs-test (6.0.37-15) unstable; urgency=medium
 
   * Bug #42586: Cleanup package errors
