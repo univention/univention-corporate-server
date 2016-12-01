@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-57) unstable; urgency=medium
+
+  * Bug #42979: Code cleanup and updated summit banner
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 14:52:18 +0100
+
 univention-management-console-frontend (5.0.63-56) unstable; urgency=medium
 
   * Bug #40492: Scroll to the top of the page on a session timeout 
