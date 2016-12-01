@@ -9,3 +9,5 @@ desc: |
  * DNs of Windows clients joined from the client itself where not in sync
    with the corresponding OpenLDAP DNs.
 bug: [40435]
+erratum: 347
+announced: 2016-12-01
