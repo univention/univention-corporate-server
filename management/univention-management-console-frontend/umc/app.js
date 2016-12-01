@@ -2095,7 +2095,7 @@ define([
 		},
 
 		_createSummit2017Ad: function() {
-			var isDE = (dojo.locale.toLowerCase().indexOf('de') === 0);
+			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
 			var linkTarget = isDE ? 'https://www.univention-summit.de/?pk_campaign=UMC%20Summit%20DE' : 'https://www.univention-summit.com/?pk_campaign=UMC%20Summit%20EN';
 			var banner  = isDE ? require.toUrl('umc/app/summit2017-banner-de.png') : require.toUrl('umc/app/summit2017-banner-en.png');
 
@@ -2193,10 +2193,9 @@ define([
 			this.renderCategories();
 			this._overviewPage.addChild(this._searchText);
 			this._overviewPage.addChild(this._grid);
-			if (new Date("January 27, 2017 00:00:00") > new Date() &&
-			    (app.getModule('updater') || app.getModule('schoolrooms')) &&
-			    !cookie('hideSummit2017Banner')
-			   ) {
+			var summitHasPassed = new Date("January 27, 2017 00:00:00") < new Date();
+			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
+			if (!summitHasPassed && isUserAdmin	&& !cookie('hideSummit2017Banner')) {
 				this._createSummit2017Ad();
 			}
 			this._tabContainer.addChild(this._overviewPage, 0);
