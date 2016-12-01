@@ -31,7 +31,6 @@ if __name__ == '__main__':
 			valueRequired='1',
 			multivalue='1'
 		)
-		udm.stop_cli_server()
 
 		try:
 			udm.create_group()

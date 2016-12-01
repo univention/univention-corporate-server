@@ -25,7 +25,6 @@ if __name__ == '__main__':
 			ldapMapping='univentionFreeAttribute15',
 			valueRequired='1'
 		)
-		udm.stop_cli_server()
 
 		# try creating an udm object without the just created extended attribute given (expected to fail)
 		try:

@@ -27,7 +27,6 @@ if __name__ == '__main__':
 		}
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
-		udm.stop_cli_server()
 
 		extended_attribute_values = [uts.random_string(), uts.random_string()]
 		group = udm.create_group(append={properties['CLIName']: extended_attribute_values})[0]

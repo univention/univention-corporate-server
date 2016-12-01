@@ -25,7 +25,6 @@ if __name__ == '__main__':
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 		udm.remove_object('settings/extended_attribute', dn=extended_attribute)
-		udm.stop_cli_server()
 
 		# create user object and set extended attribute
 		extended_attribute_value = uts.random_string()
