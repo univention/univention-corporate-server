@@ -1,3 +1,9 @@
+univention-web (1.0.2-16) unstable; urgency=medium
+
+  * Bug #43084: Moved style rules fo the UMC menu help
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 12:41:31 +0100
+
 univention-web (1.0.2-15) unstable; urgency=medium
 
   * Bug #43054: Use relative url for mobile menu background image 

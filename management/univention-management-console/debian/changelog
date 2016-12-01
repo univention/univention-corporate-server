@@ -1,3 +1,9 @@
+univention-management-console (9.0.13-2) unstable; urgency=medium
+
+  * Bug #43084: Moved style rules for the UMC menu help
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Dec 2016 12:42:26 +0100
+
 univention-management-console (9.0.13-1) unstable; urgency=medium
 
   * Bug #42357: The maximum request size can now be configured via the
