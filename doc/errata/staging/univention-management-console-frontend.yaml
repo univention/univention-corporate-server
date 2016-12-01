@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-management-console-frontend
-fix: 5.0.63-56.1250.201612011249
+fix: 5.0.63-57.1251.201612011453
 desc: |
  This update addresses the following issue(s):
  * Some help dialogs in the UMC where not displayed correctly.
