@@ -16,3 +16,5 @@ desc: |
    and not at the top of the page. Making the login immediately possible
    without the need to scroll to the top.
 bug: [43084, 42357, 42979, 40492]
+erratum: 349
+announced: 2016-12-01
