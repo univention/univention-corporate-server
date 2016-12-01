@@ -8,3 +8,5 @@ desc: |
  This update shows a warning message in the UMC overview that the
  current UCS version is out of maintenance.
 bug: [42951]
+erratum: 454
+announced: 2016-12-01
