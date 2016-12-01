@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-56) unstable; urgency=medium
+
+  * Bug #40492: Scroll to the top of the page on a session timeout 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 01 Dec 2016 12:48:33 +0100
+
 univention-management-console-frontend (5.0.63-55) unstable; urgency=medium
 
   * Bug #43084: Moved style rules for the UMC menu help dialog here from
