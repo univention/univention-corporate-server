@@ -249,6 +249,11 @@ Type: file
 File: etc/rsyslog.conf
 Variables: syslog/.*
 
+Type: file
+File: etc/security/packetfilter.d/20_rsyslog.sh
+Variables: syslog/input/.*
+Mode: 0755
+
 Type: multifile
 Multifile: etc/python2.6/sitecustomize.py
 

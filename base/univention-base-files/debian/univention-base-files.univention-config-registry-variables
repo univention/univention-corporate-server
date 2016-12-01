@@ -491,14 +491,14 @@ Type=bool
 Categories=system-base
 
 [ucr/replog/enabled]
-Description[de]=Ist diese Option aktiviert, werden alle Änderungen an Univention Configuration Registry-Variablen in der Transaktions-Logdatei /var/log/univention/config-registry.replog prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
-Description[en]=If this option is activated all changes to Univention Configuration Registry variables are logged to the transaction logfile /var/log/univention/config-registry.replog. If the option is unset, no changes are logged.
+Description[de]=Ist diese Option aktiviert, werden alle Änderungen an Univention Configuration Registry-Variablen in der Transaktions-Logdatei '/var/log/univention/config-registry.replog' prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
+Description[en]=If this option is activated all changes to Univention Configuration Registry variables are logged to the transaction logfile '/var/log/univention/config-registry.replog'. If the option is unset, no changes are logged.
 Type=bool
 Categories=system-base
 
 [ucr/backup/enabled]
-Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
-Description[en]=If this option is activated, a daily cron job performs a backup of all Univention Configuration Registry data tor /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup is performed.
+Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach '/var/univention-backup/ucr-backup_*.tgz' durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
+Description[en]=If this option is activated, a daily cron job performs a backup of all Univention Configuration Registry data tor '/var/univention-backup/ucr-backup_*.tgz'. If the variable is unset, no backup is performed.
 Type=bool
 Categories=system-base
 
@@ -609,123 +609,153 @@ Type=str
 Categories=system-password
 
 [syslog/auth]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facilities auth und authpriv in die Datei /var/log/auth.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facilities auth and authpriv are written to the file /var/log/auth.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facilities auth und authpriv in die Datei '/var/log/auth.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facilities auth and authpriv are written to the file '/var/log/auth.log'.
 Type=bool
 Categories=system-base
 
 [syslog/cron]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility cron in die Datei /var/log/cron.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility cron are written to the file /var/log/cron.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility cron in die Datei '/var/log/cron.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility cron are written to the file '/var/log/cron.log'.
 Type=bool
 Categories=system-base
 
 [syslog/kern]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility kern in die Datei /var/log/kern.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility kern are written to the file /var/log/kern.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility kern in die Datei '/var/log/kern.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility kern are written to the file '/var/log/kern.log'.
 Type=bool
 Categories=system-base
 
 [syslog/daemon]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility daemon in die Datei /var/log/daemon.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility daemon are written to the file /var/log/daemon.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility daemon in die Datei '/var/log/daemon.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility daemon are written to the file '/var/log/daemon.log'.
 Type=bool
 Categories=system-base
 
 [syslog/user]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility user in die Datei /var/log/user.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility user are written to the file /var/log/user.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility user in die Datei '/var/log/user.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility user are written to the file '/var/log/user.log'.
 Type=bool
 Categories=system-base
 
 [syslog/lpr]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility lpr in die Datei /var/log/lpr.log geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility lpr are written to the file /var/log/lpr.log.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility lpr in die Datei '/var/log/lpr.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility lpr are written to the file '/var/log/lpr.log'.
 Type=bool
 Categories=system-base
 
 [syslog/mail]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility mail in die Dateien /var/log/mail.{log|info|warn|err} geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility mail are written to the files /var/log/mail.{log|info|warn|err}.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility mail in die Dateien '/var/log/mail.{log|info|warn|err}' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility mail are written to the files '/var/log/mail.{log|info|warn|err}'.
 Type=bool
 Categories=system-base
 
 [syslog/news]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility news in die Dateien /var/log/news.{crit|err|notice} geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility news are written to the files /var/log/news.{crit|err|notice}.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility news in die Dateien '/var/log/news.{crit|err|notice}' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility news are written to the files '/var/log/news.{crit|err|notice}'.
 Type=bool
 Categories=system-base
 
 [syslog/syslog]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei /var/log/syslog geschrieben.
-Description[en]=If this option is activated, log messages are written to the file /var/log/syslog.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/syslog' geschrieben.
+Description[en]=If this option is activated, log messages are written to the file '/var/log/syslog'.
 Type=bool
 Categories=system-base
 
 [syslog/syslog/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei /var/log/syslog zu konfigurieren. Diese Option hat Vorrang vor syslog/syslog/avoid_duplicate_messages.
-Description[en]=This option can be used to manually configure a selector for log messages to be written to /var/log/syslog. This option takes precedence over syslog/syslog/avoid_duplicate_message.
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei '/var/log/syslog' zu konfigurieren. Diese Option hat Vorrang vor 'syslog/syslog/avoid_duplicate_messages'.
+Description[en]=This option can be used to manually configure a selector for log messages to be written to '/var/log/syslog'. This option takes precedence over 'syslog/syslog/avoid_duplicate_message'.
 Type=str
 Categories=system-base
 
 [syslog/syslog/avoid_duplicate_messages]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen, die bereits in andere Dateien geschrieben wurden, nicht in /var/log/syslog geschrieben. Dies betrifft nicht /var/log/debug und /var/log/messages.
-Description[en]=If this option is activated, log messages that have been already written to other files, will not be written to /var/log/syslog. This does not apply for /var/log/debug and /var/log/messages.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen, die bereits in andere Dateien geschrieben wurden, nicht in '/var/log/syslog' geschrieben. Dies betrifft nicht '/var/log/debug' und '/var/log/messages'.
+Description[en]=If this option is activated, log messages that have been already written to other files, will not be written to '/var/log/syslog'. This does not apply for '/var/log/debug' and '/var/log/messages'.
 Type=bool
 Categories=system-base
 
 [syslog/debug]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei /var/log/debug geschrieben.
-Description[en]=If this option is activated, log messages are written to the file /var/log/debug.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/debug' geschrieben.
+Description[en]=If this option is activated, log messages are written to the file '/var/log/debug'.
 Type=bool
 Categories=system-base
 
 [syslog/debug/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei /var/log/debug zu konfigurieren.
-Description[en]=This option can be used to manually configure a selector for log messages to be written to /var/log/debug.
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei '/var/log/debug' zu konfigurieren.
+Description[en]=This option can be used to manually configure a selector for log messages to be written to '/var/log/debug'.
 Type=str
 Categories=system-base
 
 [syslog/messages]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei /var/log/messages geschrieben.
-Description[en]=If this option is activated, log messages are written to the file /var/log/messages.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/messages' geschrieben.
+Description[en]=If this option is activated, log messages are written to the file '/var/log/messages'.
 Type=bool
 Categories=system-base
 
 [syslog/messages/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei /var/log/messages zu konfigurieren.
-Description[en]=This option can be used to manually configure a selector for log messages to be written to /var/log/messages.
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei '/var/log/messages' zu konfigurieren.
+Description[en]=This option can be used to manually configure a selector for log messages to be written to '/var/log/messages'.
 Type=str
 Categories=system-base
 
 [syslog/xconsole]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in das Device /dev/xconsole geschrieben.
-Description[en]=If this option is activated, log xconsole are written to the device /dev/xconsole.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen in das Device '/dev/xconsole' geschrieben.
+Description[en]=If this option is activated, log xconsole are written to the device '/dev/xconsole'.
 Type=bool
 Categories=system-base
 
 [syslog/xconsole/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für das Device /dev/xconsole zu konfigurieren.
-Description[en]=This option can be used to manually configure a selector for log xconsole to be written to /dev/xconsole.
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für das Device '/dev/xconsole' zu konfigurieren.
+Description[en]=This option can be used to manually configure a selector for log xconsole to be written to '/dev/xconsole'.
 Type=str
 Categories=system-base
 
 [syslog/syslog]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei /var/log/syslog geschrieben.
-Description[en]=If this option is activated, log messages are written to the file /var/log/syslog.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/syslog' geschrieben.
+Description[en]=If this option is activated, log messages are written to the file '/var/log/syslog'.
 Type=bool
 Categories=system-base
 
 [syslog/syslog/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei /var/log/syslog zu konfigurieren. Diese Option hat Vorrang vor syslog/syslog/avoid_duplicate_messages.
-Description[en]=This option can be used to manually configure a selector for log messages to be written to /var/log/syslog. This option takes precedence over syslog/syslog/avoid_duplicate_message.
-Type=bool
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei '/var/log/syslog' zu konfigurieren. Diese Option hat Vorrang vor 'syslog/syslog/avoid_duplicate_messages'.
+Description[en]=This option can be used to manually configure a selector for log messages to be written to '/var/log/syslog'. This option takes precedence over 'syslog/syslog/avoid_duplicate_message'.
+Type=str
 Categories=system-base
 
 [syslog/mail/mirrorto/syslog]
-Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien /var/log/mail*, sondern auch in /var/log/syslog gespeichert.
-Description[en]=If this option is activated, log files of the mail service or not only logged in /var/log/mail*, but additionally in /var/log/syslog as well.
+Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien '/var/log/mail.*', sondern auch in '/var/log/syslog' gespeichert.
+Description[en]=If this option is activated, log files of the mail service or not only logged in '/var/log/mail.*', but additionally in '/var/log/syslog' as well.
 Type=bool
+Categories=system-base
+
+[syslog/remote]
+Description[de]=Adresse eines Logserver, an die Logmeldung per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
+Description[en]=Address of a logging servers, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
+Type=str
+Categories=system-base
+
+[syslog/remote/fallback]
+Description[de]=Liste von Leerzeichen separierten Logservern, die der Reihe nach verwendet werden, wenn die unter 'syslog/remote' angegebenen Server nicht erreichbar sind. Funktioniert nur, wenn TCP oder RELP verwendet wird!
+Description[en]=Space separated list of logging servers, which are used in that order, ich the servers given in 'syslog/remote' are not reachable. Only work when TCP or RELP are used!
+Type=str
+Categories=system-base
+
+[syslog/remote/selector]
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Weiterleitung per Netzwerk zu konfigurieren. Standard ist '*.*' für alle Meldungen.
+Description[en]=This option can be used to manually configure a selector for log messages to be forwarded over the network. Default is '*.*' for all messages.
+Type=str
+Categories=system-base
+
+[syslog/limit/interval]
+Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 5 [Sekunden]
+Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 5 [seconds]
+Type=int
+Categories=system-base
+
+[syslog/limit/burst]
+Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 200 [Meldungen]
+Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 200 [messages]
+Type=int
 Categories=system-base
 
 [syslog/maxmessagesize]
@@ -734,9 +764,9 @@ Description[en]=Maximum length of a syslog message. Default: 4k
 Type=str
 Categories=system-base
 
-[syslog/defaulttemplate]
-Description[de]=Standard Logdateiformat. Standard: RSYSLOG_TraditionalFileFormat
-Description[en]=Default file format. Default: RSYSLOG_TraditionalFileFormat
+[syslog/template/default]
+Description[de]=Standard Logdateiformat. Standard: RSYSLOG_TraditionalFileFormat. Siehe <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> für Alternativen.
+Description[en]=Default file format. Default: RSYSLOG_TraditionalFileFormat. See <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> for alternatives.
 Type=str
 Categories=system-base
 
@@ -747,8 +777,8 @@ Type=int
 Categories=system-base
 
 [syslog/input/tcp]
-Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 514 wird oft verwendet.
-Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 514 is commonly used.
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 10514 wird oft verwendet.
+Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 10514 is commonly used.
 Type=int
 Categories=system-base
 
@@ -759,8 +789,8 @@ Type=int
 Categories=system-base
 
 [xorg/keyboard/options/XkbLayout]
-Description[de]=Das verwendete Tastaturlayout. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst. Beispiel: 'de' für ein deutsches Layout.
-Description[en]=The keyboard layout to be used. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst. Example: 'de' for a German layout.
+Description[de]=Das verwendete Tastaturlayout. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'. Beispiel: 'de' für ein deutsches Layout.
+Description[en]=The keyboard layout to be used. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'. Example: 'de' for a German layout.
 Type=str
 Categories=system-base
 
@@ -771,14 +801,14 @@ Type=str
 Categories=system-base
 
 [xorg/keyboard/options/XkbModel]
-Description[de]=Das verwendete Tastaturmodell, z.B. 'pc105'. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
-Description[en]=The keyboard model in use, e.g. 'pc105'. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Description[de]=Das verwendete Tastaturmodell, z.B. 'pc105'. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'.
+Description[en]=The keyboard model in use, e.g. 'pc105'. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'.
 Type=str
 Categories=system-base
 
 [xorg/keyboard/options/XkbOptions]
-Description[de]=Hier können weitere Tastatur-Optionen konfiguriert werden. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
-Description[en]=Additonal keyboard options can be configured here. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Description[de]=Hier können weitere Tastatur-Optionen konfiguriert werden. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'.
+Description[en]=Additonal keyboard options can be configured here. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'.
 Type=str
 Categories=system-base
 
