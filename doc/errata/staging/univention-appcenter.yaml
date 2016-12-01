@@ -1,9 +1,9 @@
 product: ucs
 release: "4.1"
-version: [4]
+version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-14.241.201611291717
+fix: 5.0.23-15.242.201612012253
 desc: |
  This update addresses the following issue(s):
  * Added the command "univention-app dev-set" to support development tools.
@@ -12,4 +12,6 @@ desc: |
  * The documentation has been extended.
  * For developers, reverting a local App Center does remove the App Center
    directories completely.
-bug: [43040, 42798, 42834, 42761, 43074]
+ * Hiding dockerized versions of installed Apps did not work when upgrading
+   from UCS 4.0.
+bug: [43040, 42798, 42834, 42761, 43074, 43075]
