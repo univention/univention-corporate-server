@@ -28,7 +28,6 @@ if __name__ == '__main__':
 			'ldapMapping': 'univentionFreeAttribute15'
 		}
 		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
-		udm.stop_cli_server()
 
 		userA = udm.create_user(**{properties['CLIName']: '0'})[0]
 		userB = udm.create_user(**{properties['CLIName']: '1'})[0]

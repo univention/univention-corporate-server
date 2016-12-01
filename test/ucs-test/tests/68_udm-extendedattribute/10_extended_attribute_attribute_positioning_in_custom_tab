@@ -32,8 +32,6 @@ if __name__ == '__main__':
 			udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 			extended_attributes[properties['CLIName']] = i
 
-		udm.stop_cli_server()
-
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].splitlines()
 		tab_position = 1
 		for line in module_help_text:

@@ -24,7 +24,6 @@ if __name__ == '__main__':
             'editable': '1',
         }
         eo = udm.create_object('settings/extended_options', position=udm.UNIVENTION_CONTAINER, **eo_properties)
-        udm.stop_cli_server()
 
         group_dn, group_name = udm.create_group(options=['posix', eo_name])
         utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
