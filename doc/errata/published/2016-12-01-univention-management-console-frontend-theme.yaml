@@ -9,3 +9,5 @@ desc: |
  * Use local resource for mobile menu background image
    instead of demo.univention.de
 bug: [43054]
+erratum: 350
+announced: 2016-12-01
