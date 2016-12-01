@@ -1,23 +1,17 @@
 @%@UCRWARNING=# @%@
 
+@!@
+from univention.lib.ucrLogrotate import getLogrotateConfig
+from re import findall
+LOGS = """
 /var/log/syslog
-{
-@!@
-import univention.lib.ucrLogrotate
-settings = univention.lib.ucrLogrotate.getLogrotateConfig('syslog', configRegistry)
-for setting in settings.values():
-	print '\t%s' % (setting, )
-@!@
-	delaycompress
-	postrotate
-		invoke-rc.d rsyslog rotate > /dev/null
-	endscript
-}
-
 /var/log/mail.info
 /var/log/mail.warn
 /var/log/mail.err
 /var/log/mail.log
+/var/log/news.crit
+/var/log/news.err
+/var/log/news.notice
 /var/log/daemon.log
 /var/log/kern.log
 /var/log/auth.log
@@ -26,16 +20,33 @@ for setting in settings.values():
 /var/log/cron.log
 /var/log/debug
 /var/log/messages
-{
-@!@
-import univention.lib.ucrLogrotate
-settings = univention.lib.ucrLogrotate.getLogrotateConfig('syslog-other', configRegistry)
-for setting in settings.values():
-	print '\t%s' % (setting, )
-@!@
+"""
+FILES = {}
+for (path, cat) in findall('(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
+	FILES.setdefault(cat, (set(), {}))[0].add(path)
+
+other_logfiles = set()
+other_settings = getLogrotateConfig('syslog-other', configRegistry)
+for (cat, (paths, settings)) in FILES.items():
+	settings = getLogrotateConfig(cat, configRegistry)
+	if settings == other_settings:
+		other_logfiles |= paths
+		del FILES[cat]
+	else:
+		settings.update(settings)
+FILES[None] = (other_logfiles, other_settings)
+
+for (cat, (paths, settings)) in FILES.iteritems():
+	for path in sorted(paths):
+		print path
+	print '{'
+	for setting in settings.values():
+		print '\t%s' % (setting, )
+	print """\
 	delaycompress
 	sharedscripts
 	postrotate
 		invoke-rc.d rsyslog rotate > /dev/null
 	endscript
-}
+}"""
+@!@
