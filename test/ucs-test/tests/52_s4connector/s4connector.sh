@@ -79,13 +79,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 
 . /usr/share/univention-lib/all.sh
 
-function ad_is_connector_running () {
-	if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py"
-	then
-		return 0
-	else
-		return 1		
-	fi
+ad_is_connector_running () {
+	/etc/init.d/univention-s4-connector status >/dev/null 2>&1
 }
 
 function ad_wait_for_synchronization () {

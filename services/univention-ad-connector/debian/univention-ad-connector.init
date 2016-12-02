@@ -75,10 +75,7 @@ case "$1" in
 		status_of_proc -p "$ADCONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
-		ADCONNECTOR=`cat $ADCONNECTORPID 2>/dev/null`
-		if [ -n "$ADCONNECTOR" ]; then
-		    ps xaw | grep -q "$ADCONNECTOR" && "$0" restart
-		fi
+		pidofproc -p "$ADCONNECTORPID" "$DAEMON" && "$0" restart
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"

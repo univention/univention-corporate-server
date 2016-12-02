@@ -77,10 +77,7 @@ case "$1" in
 		status_of_proc -p "$S4CONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
-		S4CONNECTOR=`cat $S4CONNECTORPID 2>/dev/null`
-		if [ -n "$S4CONNECTOR" ]; then
-		    ps xaw | grep -q "$S4CONNECTOR" && "$0" restart
-		fi
+		pidofproc -p "$S4CONNECTORPID" "$DAEMON" && "$0" restart
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"

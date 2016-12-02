@@ -77,14 +77,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 # with the normal checks in your testcase.
 #
 
-function ad_is_connector_running () {
-	# if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.7/univention/connector/ad/main.py"
-	if ps ax | grep -v "grep" | grep -qs "/usr/share/pyshared/univention/connector/ad/main.py"
-	then
-		return 0
-	else
-		return 1		
-	fi
+ad_is_connector_running () {
+	/etc/init.d/univention-ad-connector status >/dev/null 2>&1
 }
 
 function ad_wait_for_synchronization () {
