@@ -1,3 +1,9 @@
+univention-base-files (5.0.1-4) unstable; urgency=low
+
+  * Bug #41815: Remove duplicate description
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 01 Dec 2016 22:10:02 +0100
+
 univention-base-files (5.0.1-3) unstable; urgency=low
 
   * Bug #15728: Enable remote syslog logging

@@ -710,18 +710,6 @@ Description[en]=This option can be used to manually configure a selector for log
 Type=str
 Categories=system-base
 
-[syslog/syslog]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/syslog' geschrieben.
-Description[en]=If this option is activated, log messages are written to the file '/var/log/syslog'.
-Type=bool
-Categories=system-base
-
-[syslog/syslog/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Datei '/var/log/syslog' zu konfigurieren. Diese Option hat Vorrang vor 'syslog/syslog/avoid_duplicate_messages'.
-Description[en]=This option can be used to manually configure a selector for log messages to be written to '/var/log/syslog'. This option takes precedence over 'syslog/syslog/avoid_duplicate_message'.
-Type=str
-Categories=system-base
-
 [syslog/mail/mirrorto/syslog]
 Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien '/var/log/mail.*', sondern auch in '/var/log/syslog' gespeichert.
 Description[en]=If this option is activated, log files of the mail service or not only logged in '/var/log/mail.*', but additionally in '/var/log/syslog' as well.
