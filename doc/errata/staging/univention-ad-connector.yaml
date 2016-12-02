@@ -3,11 +3,14 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ad-connector
-fix: 10.0.2-13.513.201611301512
+fix: 10.0.2-14.514.201612021516
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The setup wizard's function to determine the LDAP bind DN for
    the given connector user has been improved.
  * Don't remove group members if the group exists on both sides 
    during the first sync
-bug: [36354,43070]
+ * The init-script has been fixed to check for an already running instance of
+   the AD connector. The PID file is removed on shutdown. The 'status' action
+   has been added, too.
+bug: [36354,43070,40659]

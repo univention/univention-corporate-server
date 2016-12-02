@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [3,4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-s4-connector
+fix: 10.0.3-5.626.201612021517
+desc: |
+ This update addresses the following issue(s):
+ * The init-script has been fixed to check for an already running instance of
+   the S4 connector. The PID file is removed on shutdown. The 'status' action
+   has been added, too.
+bug: [40659]
