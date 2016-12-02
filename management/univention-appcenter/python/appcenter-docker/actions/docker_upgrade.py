@@ -162,14 +162,14 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _upgrade_docker(self, app, args):
 		install = get_action('install')()
 		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
-		install.call_with_namespace(action_args)
-		remove = get_action('remove')()
-		action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
-		remove._remove_app(self.old_app, action_args)
-		if remove._unregister_component(self.old_app):
-			remove._apt_get_update()
-		self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
-		self.old_app = app
+		if install.call_with_namespace(action_args):
+			remove = get_action('remove')()
+			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
+			remove._remove_app(self.old_app, action_args)
+			if remove._unregister_component(self.old_app):
+				remove._apt_get_update()
+			self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
+			self.old_app = app
 
 	def _revert(self, app, args):
 		if self._had_image_upgrade:

@@ -1,3 +1,10 @@
+univention-appcenter (6.0.0-17) unstable; urgency=medium
+
+  * Bug #42969: When upgrading to a Docker version, remove the Non-Docker
+    version only if the Container was started successfully
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 02 Dec 2016 14:41:58 +0100
+
 univention-appcenter (6.0.0-16) unstable; urgency=medium
 
   * Bug #43075: Update cache files before setting UCRVs preventing Docker App
