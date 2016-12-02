@@ -54,11 +54,12 @@ case "$1" in
 		;;
 	stop)
 		log_action_msg "Stopping univention-s4-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID" --remove-pidfile; then
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID"; then
 			log_action_end_msg 0
 		else
 			log_action_end_msg 1
 		fi
+		rm -f "$S4CONNECTORPID"
 		;;
 	restart|force-reload)
 		"$0" stop

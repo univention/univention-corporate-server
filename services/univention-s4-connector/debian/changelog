@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.3-6) unstable; urgency=low
+
+  * Bug #40659: Work around missing start-stop-daemon --remove-pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2016 15:31:20 +0100
+
 univention-s4-connector (10.0.3-5) unstable; urgency=low
 
   * Bug #40659: Fix check for running proceeses with Docker

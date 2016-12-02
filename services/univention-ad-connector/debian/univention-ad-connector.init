@@ -54,11 +54,12 @@ case "$1" in
 		;;
 	stop)
 		log_action_msg "Stopping univention-ad-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID" --remove-pidfile; then
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID"; then
 			log_action_end_msg 0
 		else
 			log_action_end_msg 1
 		fi
+		rm -f "$ADCONNECTORPID"
 		;;
 	restart|force-reload)
 		"$0" stop

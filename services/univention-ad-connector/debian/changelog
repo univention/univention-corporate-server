@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-15) unstable; urgency=low
+
+  * Bug #40659: Work around missing start-stop-daemon --remove-pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2016 15:31:20 +0100
+
 univention-ad-connector (10.0.2-14) unstable; urgency=low
 
   * Bug #40659: Fix check for running proceeses with Docker
