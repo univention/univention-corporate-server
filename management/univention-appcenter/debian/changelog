@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-17) unstable; urgency=medium
+
+  * Bug #42969: Do not get trapped in an upgrade loop
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 03 Dec 2016 00:19:54 +0100
+
 univention-appcenter (5.0.23-16) unstable; urgency=medium
 
   * Bug #42969: When upgrading to a Docker version, remove the Non-Docker

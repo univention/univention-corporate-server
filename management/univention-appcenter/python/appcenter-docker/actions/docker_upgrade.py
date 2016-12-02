@@ -67,34 +67,37 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		return Install._do_it(self, app, args)
 
 	def _docker_upgrade_mode(self, app):
+		mode = None
+		detail = None
 		if not self.old_app.docker:
-			return 'docker'
+			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise Abort('Could not start the app container. It needs to be running to be upgraded!')
 		mode = self._execute_container_script(self.old_app, 'update_available', _credentials=False, _output=True) or ''
 		mode = mode.strip()
-		if mode != 'packages' and not mode.startswith('release:'):
+		if mode.startswith('release:'):
+			mode, detail = 'release', mode[8:].strip()
+		if mode not in ['packages', 'release']:
 			# packages and release first!
 			if app > self.old_app:
-				mode = 'app'
+				mode, detail = 'app', app.version
 			if self.old_app.get_docker_image_name() not in app.get_docker_images():
-				mode = 'image'
-		return mode
+				mode, detail = 'image', app.get_docker_image_name()
+		return mode, detail
 
 	def _do_it(self, app, args):
 		if not app.docker:
 			return super(Upgrade, self)._do_it(app, args)
-		mode = self._docker_upgrade_mode(app)
+		mode, detail = self._docker_upgrade_mode(app)
 		if mode:
-			self.log('Upgrading %s' % mode)
+			self.log('Upgrading %s (%r)' % (mode, detail))
+			if self._last_mode == (mode, detail):
+				self.warn('Not again!')
+				return
 			if mode == 'packages':
-				if self._last_mode == mode:
-					self.warn('Not again!')
-					return
 				self._upgrade_packages(app, args)
-			elif mode.startswith('release:'):
-				release = mode[8:].strip()
-				self._upgrade_release(app, release)
+			elif mode == 'release':
+				self._upgrade_release(app, detail)
 			elif mode == 'app':
 				self._upgrade_app(app, args)
 			elif mode == 'image':
@@ -104,7 +107,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			else:
 				self.warn('Unable to process %r' % (mode,))
 				return
-			self._last_mode = mode
+			self._last_mode = mode, detail
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 			self._do_it(app, args)
 		else:
