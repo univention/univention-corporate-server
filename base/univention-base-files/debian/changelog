@@ -1,6 +1,7 @@
 univention-base-files (6.0.0-4) unstable; urgency=low
 
   * Bug #41815: More fine-grained logging configuration
+  * Bug #41816: More fine-grained logrotate configuration for syslog
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 30 Nov 2016 16:40:19 +0100
 
