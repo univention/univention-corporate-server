@@ -33,6 +33,7 @@
 
 import os
 import shlex
+from logging import getLogger
 
 import univention.info_tools as uit
 
@@ -66,13 +67,23 @@ class Service(uit.LocalizedDictionary):
 			self.running = True
 
 
-def pidof(name):
+def pidof(name, docker='/var/run/docker.pid'):
 	"""
 	Return list of process IDs matching name.
 	>>> import os,sys;os.getpid() in list(pidof(os.path.realpath(sys.executable))) + list(pidof(sys.executable)) + list(pidof(sys.argv[0]))
 	True
 	"""
-	result = []
+	result = set()
+	log = getLogger(__name__)
+
+	children = {}
+	if isinstance(docker, basestring):
+		try:
+			with open(docker, 'r') as fd:
+				docker = int(fd.read(), 10)
+			log.info('Found docker.pid=%d', docker)
+		except (EnvironmentError, ValueError) as ex:
+			log.info('No docker found: %s', ex)
 
 	cmd = shlex.split(name)
 	for proc in os.listdir('/proc'):
@@ -89,15 +100,37 @@ def pidof(name):
 		# kernel thread
 		if not commandline:
 			continue
+
+		if docker:
+			stat = os.path.join('/proc', proc, 'stat')
+			try:
+				with open(stat, 'r') as fd:
+					status = fd.read()
+				ppid = int(status.split()[3], 10)
+				children.setdefault(ppid, []).append(pid)
+			except (EnvironmentError, ValueError) as ex:
+				log.error('Failed getting parent: %s', ex)
+
 		args = commandline.split('\0')
 		if cmd[0] not in args:
+			log.debug('skip %d: %s', pid, commandline)
 			continue
 		if len(args) >= len(cmd) > 1:
 			if any(a != c for a, c in zip(args, cmd)):
+				log.debug('mismatch %d: %r != %r', pid, args, cmd)
 				continue
-		result.append(pid)
+		log.info('found %d: %r', pid, commandline)
+		result.add(pid)
 
-	return result
+	if docker:
+		remove = children.pop(docker, [])
+		while remove:
+			pid = remove.pop()
+			log.debug('Removing docker child %s', pid)
+			result.discard(pid)
+			remove += children.pop(pid, [])
+
+	return list(result)
 
 
 class ServiceInfo(object):
