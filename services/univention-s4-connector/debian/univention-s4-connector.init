@@ -31,6 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 S4CONNECTORPID=/var/run/univention-s4-connector
+DAEMON="/usr/sbin/univention-s4-connector"
+DESC="Univention S4 Connector"
 
 test -x /usr/sbin/univention-s4-connector || exit 0
 
@@ -42,7 +44,7 @@ case "$1" in
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart s4-connector connector/s4/autostart
-		fi	
+		fi
 		log_action_msg "Starting univention-s4-connector daemon"
 		if start-stop-daemon --start --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
 			log_action_end_msg 0
@@ -52,27 +54,25 @@ case "$1" in
 		;;
 	stop)
 		log_action_msg "Stopping univention-s4-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID" --remove-pidfile; then
 			log_action_end_msg 0
 		else
 			log_action_end_msg 1
 		fi
 		;;
 	restart|force-reload)
-		$0 stop
+		"$0" stop
 		sleep 2 # give it some time to die
-		$0 start
+		"$0" start
+		;;
+	status)
+		status_of_proc -p "$S4CONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
-		S4CONNECTOR=`cat $S4CONNECTORPID 2>/dev/null`
-		if [ -n "$S4CONNECTOR" ]; then
-		    ps xaw | grep connector | grep -q "$S4CONNECTOR" && $0 restart
-		fi
+		pidofproc -p "$S4CONNECTORPID" "$DAEMON" && "$0" restart
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-s4-connector {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
-
-

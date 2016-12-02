@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-14) unstable; urgency=low
+
+  * Bug #40659: Fix check for running proceeses with Docker
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2016 12:25:59 +0100
+
 univention-ad-connector (10.0.2-13) unstable; urgency=low
 
   * Don't remove group members if the group exists during the first sync

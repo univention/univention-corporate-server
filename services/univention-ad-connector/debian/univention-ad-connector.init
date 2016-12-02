@@ -31,6 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 ADCONNECTORPID=/var/run/univention-ad-connector
+DAEMON="/usr/sbin/univention-ad-connector"
+DESC="Univention AD Connector"
 
 test -x /usr/sbin/univention-ad-connector || exit 0
 
@@ -42,7 +44,7 @@ case "$1" in
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart ad-connector connector/ad/autostart
-		fi	
+		fi
 		log_action_msg "Starting univention-ad-connector daemon"
 		if start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
 			log_action_end_msg 0
@@ -52,27 +54,25 @@ case "$1" in
 		;;
 	stop)
 		log_action_msg "Stopping univention-ad-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID" --remove-pidfile; then
 			log_action_end_msg 0
 		else
 			log_action_end_msg 1
 		fi
 		;;
 	restart|force-reload)
-		$0 stop
+		"$0" stop
 		sleep 2 # give it some time to die
-		$0 start
+		"$0" start
+		;;
+	status)
+		status_of_proc -p "$ADCONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
-		ADCONNECTOR=`cat $ADCONNECTORPID 2>/dev/null`
-		if [ -n "$ADCONNECTOR" ]; then
-		    ps xaw | grep connector | grep -q "$ADCONNECTOR" && $0 restart
-		fi
+		pidofproc -p "$ADCONNECTORPID" "$DAEMON" && "$0" restart
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-ad-connector {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
-
-

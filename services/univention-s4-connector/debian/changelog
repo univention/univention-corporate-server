@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.3-5) unstable; urgency=low
+
+  * Bug #40659: Fix check for running proceeses with Docker
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2016 12:25:59 +0100
+
 univention-s4-connector (10.0.3-4) unstable; urgency=medium
 
   * Bug #37388: make ucslint happy
