@@ -609,56 +609,56 @@ Type=str
 Categories=system-password
 
 [syslog/auth]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facilities auth und authpriv in die Datei '/var/log/auth.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facilities auth and authpriv are written to the file '/var/log/auth.log'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facilities 'auth' und 'authpriv' nicht in die Datei '/var/log/auth.log' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facilities 'auth' and 'authpriv' are not written to the file '/var/log/auth.log'.
 Type=bool
 Categories=system-base
 
 [syslog/cron]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility cron in die Datei '/var/log/cron.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility cron are written to the file '/var/log/cron.log'.
+Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility 'cron' in die Datei '/var/log/cron.log' geschrieben.
+Description[en]=If this option is activated, log messages belonging to the syslog facility 'cron' are written to the file '/var/log/cron.log'.
 Type=bool
 Categories=system-base
 
 [syslog/kern]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility kern in die Datei '/var/log/kern.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility kern are written to the file '/var/log/kern.log'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'kern' nicht in die Datei '/var/log/kern.log' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'kern' are not written to the file '/var/log/kern.log'.
 Type=bool
 Categories=system-base
 
 [syslog/daemon]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility daemon in die Datei '/var/log/daemon.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility daemon are written to the file '/var/log/daemon.log'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'daemon' nicht in die Datei '/var/log/daemon.log' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'daemon' are not written to the file '/var/log/daemon.log'.
 Type=bool
 Categories=system-base
 
 [syslog/user]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility user in die Datei '/var/log/user.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility user are written to the file '/var/log/user.log'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'user' nicht in die Datei '/var/log/user.log' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'user' are not written to the file '/var/log/user.log'.
 Type=bool
 Categories=system-base
 
 [syslog/lpr]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility lpr in die Datei '/var/log/lpr.log' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility lpr are written to the file '/var/log/lpr.log'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'lpr' nicht in die Datei '/var/log/lpr.log' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'lpr' are not written to the file '/var/log/lpr.log'.
 Type=bool
 Categories=system-base
 
 [syslog/mail]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility mail in die Dateien '/var/log/mail.{log|info|warn|err}' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility mail are written to the files '/var/log/mail.{log|info|warn|err}'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'mail' nicht in die Dateien '/var/log/mail.{log|info|warn|err}' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'mail' are not written to the files '/var/log/mail.{log|info|warn|err}'.
 Type=bool
 Categories=system-base
 
 [syslog/news]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen der Syslog Facility news in die Dateien '/var/log/news.{crit|err|notice}' geschrieben.
-Description[en]=If this option is activated, log messages belonging to the syslog facility news are written to the files '/var/log/news.{crit|err|notice}'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen der Syslog Facility 'news' nicht in die Dateien '/var/log/news.{crit|err|notice}' geschrieben.
+Description[en]=If this option is deactivated, log messages belonging to the syslog facility 'news' are not written to the files '/var/log/news.{crit|err|notice}'.
 Type=bool
 Categories=system-base
 
 [syslog/syslog]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/syslog' geschrieben.
-Description[en]=If this option is activated, log messages are written to the file '/var/log/syslog'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen nicht in die Datei '/var/log/syslog' geschrieben.
+Description[en]=If this option is deactivated, log messages are not written to the file '/var/log/syslog'.
 Type=bool
 Categories=system-base
 
@@ -675,8 +675,8 @@ Type=bool
 Categories=system-base
 
 [syslog/debug]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/debug' geschrieben.
-Description[en]=If this option is activated, log messages are written to the file '/var/log/debug'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen nicht in die Datei '/var/log/debug' geschrieben.
+Description[en]=If this option is deactivated, log messages are not written to the file '/var/log/debug'.
 Type=bool
 Categories=system-base
 
@@ -687,8 +687,8 @@ Type=str
 Categories=system-base
 
 [syslog/messages]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in die Datei '/var/log/messages' geschrieben.
-Description[en]=If this option is activated, log messages are written to the file '/var/log/messages'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen nicht in die Datei '/var/log/messages' geschrieben.
+Description[en]=If this option is deactivated, log messages are not written to the file '/var/log/messages'.
 Type=bool
 Categories=system-base
 
@@ -699,8 +699,8 @@ Type=str
 Categories=system-base
 
 [syslog/xconsole]
-Description[de]=Ist diese Option aktiviert, werden Logmeldungen in das Device '/dev/xconsole' geschrieben.
-Description[en]=If this option is activated, log xconsole are written to the device '/dev/xconsole'.
+Description[de]=Ist diese Option deaktiviert, werden Logmeldungen nicht in das Device '/dev/xconsole' geschrieben.
+Description[en]=If this option is deactivated, log messages are not written to the device '/dev/xconsole'.
 Type=bool
 Categories=system-base
 
@@ -717,14 +717,14 @@ Type=bool
 Categories=system-base
 
 [syslog/remote]
-Description[de]=Adresse eines Logserver, an die Logmeldung per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
-Description[en]=Address of a logging servers, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
+Description[de]=Adresse eines Logservers, an die Logmeldung per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
+Description[en]=Address of a logging server, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
 Type=str
 Categories=system-base
 
 [syslog/remote/fallback]
 Description[de]=Liste von Leerzeichen separierten Logservern, die der Reihe nach verwendet werden, wenn die unter 'syslog/remote' angegebenen Server nicht erreichbar sind. Funktioniert nur, wenn TCP oder RELP verwendet wird!
-Description[en]=Space separated list of logging servers, which are used in that order, ich the servers given in 'syslog/remote' are not reachable. Only work when TCP or RELP are used!
+Description[en]=Space separated list of logging servers, which are used in that order, if the servers given in 'syslog/remote' are not reachable. Only works when TCP or RELP are used!
 Type=str
 Categories=system-base
 

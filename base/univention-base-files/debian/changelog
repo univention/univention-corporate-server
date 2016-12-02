@@ -1,3 +1,9 @@
+univention-base-files (5.0.1-5) unstable; urgency=low
+
+  * Bug #41815: Fix QA issues
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Dec 2016 16:45:33 +0100
+
 univention-base-files (5.0.1-4) unstable; urgency=low
 
   * Bug #41815: Remove duplicate description
