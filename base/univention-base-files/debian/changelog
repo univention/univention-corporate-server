@@ -1,5 +1,6 @@
 univention-base-files (6.0.0-4) unstable; urgency=low
 
+  * Bug #15728: Enable remote syslog logging
   * Bug #41815: More fine-grained logging configuration
   * Bug #41816: More fine-grained logrotate configuration for syslog
 

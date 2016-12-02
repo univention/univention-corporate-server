@@ -722,10 +722,64 @@ Description[en]=If this option is activated, log files of the mail service or no
 Type=bool
 Categories=system-base
 
+[syslog/remote]
+Description[de]=Adresse eines Logserver, an die Logmeldung per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
+Description[en]=Address of a logging servers, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
+Type=str
+Categories=system-base
+
+[syslog/remote/fallback]
+Description[de]=Liste von Leerzeichen separierten Logservern, die der Reihe nach verwendet werden, wenn die unter 'syslog/remote' angegebenen Server nicht erreichbar sind. Funktioniert nur, wenn TCP oder RELP verwendet wird!
+Description[en]=Space separated list of logging servers, which are used in that order, ich the servers given in 'syslog/remote' are not reachable. Only work when TCP or RELP are used!
+Type=str
+Categories=system-base
+
+[syslog/remote/selector]
+Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für die Weiterleitung per Netzwerk zu konfigurieren. Standard ist '*.*' für alle Meldungen.
+Description[en]=This option can be used to manually configure a selector for log messages to be forwarded over the network. Default is '*.*' for all messages.
+Type=str
+Categories=system-base
+
+[syslog/limit/interval]
+Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 5 [Sekunden]
+Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 5 [seconds]
+Type=int
+Categories=system-base
+
+[syslog/limit/burst]
+Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 200 [Meldungen]
+Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 200 [messages]
+Type=int
+Categories=system-base
+
+[syslog/maxmessagesize]
+Description[de]=Maximale Länge der Syslogmeldung. Standard: 4k
+Description[en]=Maximum length of a syslog message. Default: 4k
+Type=str
+Categories=system-base
+
 [syslog/template/default]
 Description[de]=Standard Logdateiformat. Standard: RSYSLOG_TraditionalFileFormat. Siehe <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> für Alternativen.
 Description[en]=Default file format. Default: RSYSLOG_TraditionalFileFormat. See <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> for alternatives.
 Type=str
+Categories=system-base
+
+[syslog/input/udp]
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen UDP Port. UDP ist das standardisierte Verfahren, aber Meldungen können verloren gehen. Standardisiert ist Port ist 514.
+Description[en]=This option enabled receiving syslog messages from remote computers through the given UDP port. UDP is the standardized method, but messages can get lost. Standardized is port 514.
+Type=int
+Categories=system-base
+
+[syslog/input/tcp]
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 10514 wird oft verwendet.
+Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 10514 is commonly used.
+Type=int
+Categories=system-base
+
+[syslog/input/relp]
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern per 'Reliable Event Logging Protocol' (RELP) auf dem angegebenen TCP Port. Das Protokoll ist rsyslog spezifisch. Port 2514 oder 20514 werden oft verwendet.
+Description[en]=This option enabled receiving syslog messages from remote computers using the 'Reliable Event Logging Protocol' (RELP) through the given TCP port. The protocol is rsyslog specific. Port 2514 or 20514 are commonly used.
+Type=int
 Categories=system-base
 
 [xorg/keyboard/options/XkbLayout]
