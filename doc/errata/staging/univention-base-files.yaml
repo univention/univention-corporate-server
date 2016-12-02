@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-base-files
-fix: 5.0.1-4.218.201612020906
+fix: 5.0.1-5.221.201612021651
 desc: |
  This update addresses the following issues:
  * The syslog configuration has been extended to allow logging to remote
@@ -18,11 +18,11 @@ desc: |
    'syslog/input/udp', 'syslog/input/tdp' and 'syslog/input/relp' have been
    added.
    Please note, that log messages are sent unencrypted and in clear text! It
-   is recommended to use this only in protected network, as passwords and
+   is recommended to use this only in protected networks, as passwords and
    other sensitive data might leak otherwise.
 
  * Several new UCR variables 'syslog/...' have been added to enable/disable
-   logging of events from certain facilities to the corresponding targets:
+   logging of events of certain facilities to the corresponding targets:
     'syslog/auth' -> /var/log/auth.log
     'syslog/cron' -> /var/log/cron.log
     'syslog/kern' -> /var/log/kern.log
