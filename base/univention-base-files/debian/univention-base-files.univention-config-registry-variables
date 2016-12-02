@@ -497,14 +497,14 @@ Type=bool
 Categories=system-base
 
 [ucr/replog/enabled]
-Description[de]=Ist diese Option aktiviert, werden alle Änderungen an Univention Configuration Registry-Variablen in der Transaktions-Logdatei /var/log/univention/config-registry.replog prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
-Description[en]=If this option is activated all changes to Univention Configuration Registry variables are logged to the transaction logfile /var/log/univention/config-registry.replog. If the option is unset, no changes are logged.
+Description[de]=Ist diese Option aktiviert, werden alle Änderungen an Univention Configuration Registry-Variablen in der Transaktions-Logdatei '/var/log/univention/config-registry.replog' prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
+Description[en]=If this option is activated all changes to Univention Configuration Registry variables are logged to the transaction logfile '/var/log/univention/config-registry.replog'. If the option is unset, no changes are logged.
 Type=bool
 Categories=system-base
 
 [ucr/backup/enabled]
-Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
-Description[en]=If this option is activated, a daily cron job performs a backup of all Univention Configuration Registry data tor /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup is performed.
+Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach '/var/univention-backup/ucr-backup_*.tgz' durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
+Description[en]=If this option is activated, a daily cron job performs a backup of all Univention Configuration Registry data tor '/var/univention-backup/ucr-backup_*.tgz'. If the variable is unset, no backup is performed.
 Type=bool
 Categories=system-base
 
@@ -783,8 +783,8 @@ Type=int
 Categories=system-base
 
 [xorg/keyboard/options/XkbLayout]
-Description[de]=Das verwendete Tastaturlayout. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst. Beispiel: 'de' für ein deutsches Layout.
-Description[en]=The keyboard layout to be used. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst. Example: 'de' for a German layout.
+Description[de]=Das verwendete Tastaturlayout. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'. Beispiel: 'de' für ein deutsches Layout.
+Description[en]=The keyboard layout to be used. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'. Example: 'de' for a German layout.
 Type=str
 Categories=system-base
 
@@ -795,14 +795,14 @@ Type=str
 Categories=system-base
 
 [xorg/keyboard/options/XkbModel]
-Description[de]=Das verwendete Tastaturmodell, z.B. 'pc105'. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
-Description[en]=The keyboard model in use, e.g. 'pc105'. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Description[de]=Das verwendete Tastaturmodell, z.B. 'pc105'. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'.
+Description[en]=The keyboard model in use, e.g. 'pc105'. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'.
 Type=str
 Categories=system-base
 
 [xorg/keyboard/options/XkbOptions]
-Description[de]=Hier können weitere Tastatur-Optionen konfiguriert werden. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
-Description[en]=Additonal keyboard options can be configured here. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Description[de]=Hier können weitere Tastatur-Optionen konfiguriert werden. Eine Übersicht der möglichen Werte findet sich unter '/usr/share/X11/xkb/rules/base.lst'.
+Description[en]=Additonal keyboard options can be configured here. An overview of possible values can be found at '/usr/share/X11/xkb/rules/base.lst'.
 Type=str
 Categories=system-base
 

@@ -84,8 +84,8 @@ if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; 
 	newestinitrd=$(readlink /initrd.img)
 	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-$(uname -r); fi
 	if [ -n "$newestkernel" -a -n "$newestinitrd" ]; then
-		ln -s "$newestkernel" /vmlinuz.install
-		ln -s "$newestinitrd" /initrd.img.install
+		ln -snf "$newestkernel" /vmlinuz.install
+		ln -snf "$newestinitrd" /initrd.img.install
 	fi
 fi
 
@@ -150,7 +150,7 @@ dpkg-statoverride --update --add root root 0640 /var/log/lastlog || true
 dpkg-statoverride --update --add root root 0640 /var/log/faillog || true
 
 if test -x /etc/init.d/ssh; then
-    /etc/init.d/ssh reload
+    invoke-rc.d ssh reload
 fi
 
 exit 0
