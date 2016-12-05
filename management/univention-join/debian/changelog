@@ -1,6 +1,7 @@
 univention-join (8.0.4-6) unstable; urgency=low
 
   * Bug #39179: Register ucsCA as trusted CA
+  * Bug #39068: Use hostname from LDAP
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 05 Dec 2016 13:19:31 +0100
 
