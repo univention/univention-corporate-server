@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-16) unstable; urgency=low
+
+  * Bug #40659: Fix check for running AD connector
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Dec 2016 11:57:11 +0100
+
 univention-ad-connector (10.0.2-15) unstable; urgency=low
 
   * Bug #40659: Work around missing start-stop-daemon --remove-pidfile
