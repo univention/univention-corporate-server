@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-s4-connector
-fix: 10.0.3-6.627.201612021542
+fix: 10.0.3-7.628.201612052146
 desc: |
  This update addresses the following issue(s):
  * The init-script has been fixed to check for an already running instance of
