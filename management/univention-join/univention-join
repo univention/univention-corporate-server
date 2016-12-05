@@ -608,17 +608,25 @@ if [ -z "$res_message" ]; then
 	echo -e "\033[60Gdone"
 fi
 
-if [ -s "$USERTMP/secret" ]
-then
-	#try to get password
-	kpwd="$(sed -ne 's|^KerberosPasswd="\(.*\)" *|\1|p' <"$USERTMP/secret")"
+[ -s "$USERTMP/secret" ] ||
+	failed_message "Nothing returned from join process"
 
-	if [ -n "$kpwd" ]; then
+eval "$(grep -e '^ldap_dn=' -e '^KerberosPasswd=' "$USERTMP/secret")"
+[ -n "$ldap_dn" ] ||
+	failed_message "No LDAP Host DN returned"
+rdn=${ldap_dn%%,*}
+hostname=${rdn#cn=}
+[ -n "$hostname" ] ||
+	failed_message "Could not get canonical writing of hostname from DN $ldap_dn"
+hostname "$hostname"
+univention-config-registry set hostname="$hostname" ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
+
+if [ -n "$KerberosPasswd" ]; then
 		if [ -e /etc/machine.secret ]; then
 			cat /etc/machine.secret >>/etc/machine.secret.SAVE
 		fi
 
-		echo -n "$kpwd" >/etc/machine.secret
+		echo -n "$KerberosPasswd" >/etc/machine.secret
 		fromdos /etc/machine.secret
 		chmod 600 /etc/machine.secret
 		if [ -e /etc/machine.secret.SAVE ]; then
@@ -631,16 +639,6 @@ then
 			failed_message "$(<"$USERTMP/scrubbed")"
 		fi
 	fi
-
-	ldap_dn="$(sed -ne 's|^ldap_dn="\(.*\)" *|\1|p' <"$USERTMP/scrubbed")"
-	if [ -n "$ldap_dn" ]; then
-		univention-config-registry set ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
-	else
-		failed_message "No LDAP Host DN returned"
-	fi
-else
-	failed_message "Nothing returned from join process"
-fi
 
 if [ -e "/usr/lib/univention-install/.index.txt" ]; then
 	mkdir -p /var/univention-join/
@@ -658,7 +656,7 @@ fi
 
 if [ -e "/etc/univention/ssl" ]; then
 	mv /etc/univention/ssl "/etc/univention/ssl_$(date +"%y%m%d%H%M")"
-	mkdir /etc/univention/ssl
+	install -m 755 -d /etc/univention/ssl
 fi
 
 for service in univention-directory-notifier univention-directory-listener
