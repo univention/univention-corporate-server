@@ -1,3 +1,9 @@
+univention-join (8.0.4-6) unstable; urgency=low
+
+  * Bug #39179: Register ucsCA as trusted CA
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Dec 2016 13:19:31 +0100
+
 univention-join (8.0.4-5) unstable; urgency=low
 
   * Bug #40611: added -containerAdMemberMode
