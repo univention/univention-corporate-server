@@ -28,12 +28,12 @@ for (path, cat) in findall('(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
 other_logfiles = set()
 other_settings = getLogrotateConfig('syslog-other', configRegistry)
 for (cat, (paths, settings)) in FILES.items():
-	settings = getLogrotateConfig(cat, configRegistry)
-	if settings == other_settings:
+	custom = getLogrotateConfig(cat, configRegistry)
+	if custom == other_settings:
 		other_logfiles |= paths
 		del FILES[cat]
 	else:
-		settings.update(settings)
+		settings.update(custom)
 FILES[None] = (other_logfiles, other_settings)
 
 for (cat, (paths, settings)) in FILES.iteritems():
