@@ -94,6 +94,8 @@ log() {
 	fi
 }
 
+DN1 () { sed -ne 's/^DN: //p;T;q'; }
+
 MAC=""
 BINDDN=""
 BINDPWFILE=""
@@ -209,7 +211,7 @@ create_entry () {
 	local group="$5"
 	log 0 "Join $desc"
 
-	old_dn="$(univention-directory-manager "$module" list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}" | sed -ne "s|^DN: ||p")"
+	old_dn="$(univention-directory-manager "$module" list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}" | DN1)"
 	if [ $? -gt 0 ]; then
 		log 1 "E: failed search $desc [$old_dn]"
 		exit 1
@@ -322,13 +324,13 @@ if [ -n "$IP" ]; then
 
 	forwardZone="$(univention-directory-manager dns/forward_zone list \
 		--filter zone="$DOMAINNAME" \
-		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
+		"${ADMINOPTIONS[@]}" | DN1)"
 	reverseZone="$(univention-directory-manager dns/reverse_zone list \
 		--filter subnet="$subnet" \
-		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
+		"${ADMINOPTIONS[@]}" | DN1)"
 	dhcpEntry="$(univention-directory-manager dhcp/service list \
 		--filter name="$DOMAINNAME" \
-		"${ADMINOPTIONS[@]}" | sed -ne 's/^DN: //p')"
+		"${ADMINOPTIONS[@]}" | DN1)"
 
 	log 0 "	forwardZone $forwardZone"
 	log 0 "	reverseZone $reverseZone"
