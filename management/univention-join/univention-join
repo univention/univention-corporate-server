@@ -412,7 +412,7 @@ if [ -z "$DCNAME" ]; then
 		done
 	fi
 fi
-
+DCNAME="${DCNAME%.}"
 if [ -z "$DCNAME" ]; then
 	failed_message "missing dns service record for _domaincontroller_master._tcp.$domainname"
 fi
