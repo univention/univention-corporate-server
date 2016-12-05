@@ -1,3 +1,9 @@
+ucs-test (6.0.37-19) unstable; urgency=medium
+
+  * Bug #42834: added more tests for app rating
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 05 Dec 2016 18:04:42 +0100
+
 ucs-test (6.0.37-18) unstable; urgency=medium
 
   * Bug #42834: added 20_appcenter/75_umc_query_app_data

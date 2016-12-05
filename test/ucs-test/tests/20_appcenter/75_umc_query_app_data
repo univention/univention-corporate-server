@@ -57,7 +57,7 @@ Description=Test App [DE]
 
 
 def test_ini_data(umc_data, lang):
-	sys.stdout.write('Testing INI file entries for correctnes... ')
+	sys.stdout.write('Testing INI file entries for correctness... ')
 	sys.stdout.flush()
 	expected_data = {
 		'id': 'test_app',
@@ -98,7 +98,7 @@ def write_readme_files(app_prefix):
 
 
 def test_readme_files(umc_data, lang):
-	sys.stdout.write('Testing README file entries for correctnes... ')
+	sys.stdout.write('Testing README file entries for correctness... ')
 	sys.stdout.flush()
 	for readme in README_TYPES:
 		expected_val = '--%s_%s--' % (readme, lang)
@@ -106,24 +106,75 @@ def test_readme_files(umc_data, lang):
 		assert val == expected_val, 'Entry %s=%s does not match expected value %s!' % (readme, val, expected_val)
 	print 'SUCCESS'
 
-def test_umc_query():
+
+RATINGS = (
+	'VendorSupported',
+	'EditorsAward',
+	'PopularityAward',
+)
+
+def write_ratings(app_prefix, *keys):
+	print 'Writing new META file'
+	with open_file(app_prefix, 'meta') as meta_file:
+		meta_file.write('[Application]\n')
+		for ikey in keys:
+			meta_file.write('%s=1\n' % ikey)
+
+
+def get_ratings(umc_data):
+	ratings = set()
+	for irating in umc_data.get('rating', []):
+		if irating['value'] == 1:
+			ratings.add(irating['name'])
+	return ratings
+
+
+def test_ratings(umc_data, *keys):
+	sys.stdout.write('Testing rating %s in meta file for correctness... ' % (keys, ))
+	sys.stdout.flush()
+	assert set(keys) == get_ratings(umc_data), 'Ratings %s do not match expected value %s!' % (get_ratings(umc_data), set(keys))
+	print 'SUCCESS'
+
+
+def get_app_from_umc(lang='en_US'):
+	# UMC query
+	connection = umc.UMCTestConnection()
+	connection.request('set', {'locale': lang}, command='set')
+	apps = connection.request('appcenter/query', print_response=False, print_request_data=False)
+
+	# pick our test app from the list of all apps
+	matches = [iapp for iapp in apps if iapp['id'] == 'test_app']
+	assert len(matches) > 0, 'The test app does not occur in the list of queried apps!'
+	return matches[0]
+
+
+def test_all():
+	AppManager.clear_cache()
+	app_prefix = get_temp_app_prefix()
+	write_ini_file(app_prefix)
+	write_readme_files(app_prefix)
+
 	# test English and German localization
 	for lang in ('en_US', 'de_DE'):
 		lang_suffix = lang.split('_')[0].upper()
 		print ''
 		print 'Testing language: %s' % lang_suffix
 
-		# UMC query
-		connection = umc.UMCTestConnection()
-		connection.request('set', {'locale': lang}, command='set')
-		apps = connection.request('appcenter/query', print_response=False, print_request_data=False)
-
-		# pick our test app from the list of all apps
-		matches = [iapp for iapp in apps if iapp['id'] == 'test_app']
-		assert len(matches) > 0, 'The test app does not occur in the list of queried apps!'
 		# test INI and README file data
-		test_ini_data(matches[0], lang_suffix)
-		test_readme_files(matches[0], lang_suffix)
+		app = get_app_from_umc(lang)
+		test_ini_data(app, lang_suffix)
+		test_readme_files(app, lang_suffix)
+
+	# test ratings for a few combinations
+	for rating in (
+		(RATINGS[0], RATINGS[2]),
+		(RATINGS[1],),
+		(RATINGS[0], RATINGS[1], RATINGS[2]),
+	):
+		AppManager.clear_cache()
+		write_ratings(app_prefix, *rating)
+		app = get_app_from_umc()
+		test_ratings(app, *rating)
 
 
 if __name__ == '__main__':
@@ -132,11 +183,7 @@ if __name__ == '__main__':
 		# ... this allows us to add our test app data directly to the cache dir
 		config_registry.handler_set(['appcenter/umc/update/always=false'])
 		try:
-			AppManager.clear_cache()
-			app_prefix = get_temp_app_prefix()
-			write_ini_file(app_prefix)
-			write_readme_files(app_prefix)
-			test_umc_query()
+			test_all()
 		finally:
 			cleanup()
 
