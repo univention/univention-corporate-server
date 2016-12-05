@@ -9,4 +9,9 @@ desc: |
  * The init-script has been fixed to check for an already running instance of
    the S4 connector. The PID file is removed on shutdown. The 'status' action
    has been added, too.
-bug: [40659]
+ * When adjusting a GPO security filter via Group Policy Management Console
+   repeatedly in a short time, the S4-Connector could revert changes,
+   depending on timing. Now the S4-Connector checks if a change has happened
+   in Samba/AD since the last sync and avoids overwriting the attribute
+   nTSecurityDescriptor in that case.
+bug: [40659, 41571]
