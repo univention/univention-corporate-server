@@ -41,6 +41,7 @@ DAEMON="/usr/sbin/univention-ad-connector"
 test -x "$DAEMON" || exit 0
 
 . /lib/lsb/init-functions
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
