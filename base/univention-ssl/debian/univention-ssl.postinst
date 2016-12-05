@@ -99,7 +99,12 @@ then
 			/usr/sbin/univention-certificate-check-validity
 		fi
 	fi
-
+	SSL='/usr/local/share/ca-certificates/ucsCA.crt'
+	if [ ! -e "$SSL" ]
+	then
+		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
+		update-ca-certificates || return $?
+	fi
 	if test -f /etc/init.d/univention-directory-listener
 	then
 		/etc/init.d/univention-directory-listener crestart || true

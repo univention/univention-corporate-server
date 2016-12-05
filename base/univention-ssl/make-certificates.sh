@@ -273,6 +273,9 @@ init () {
 	openssl genrsa -${cipher:-aes256} -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
 	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
+	ln -snf "${SSLBASE}/${CA}/CAcert.pem" "/usr/local/share/ca-certificates/${CA}.crt" || return $?
+	update-ca-certificates || return $?
+
 	# copy the public key to a place, from where browsers can access it
 	if [ -w /var/www ]; then
 	openssl x509 -in "${SSLBASE}/${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
