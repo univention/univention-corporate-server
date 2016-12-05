@@ -99,12 +99,6 @@ then
 			/usr/sbin/univention-certificate-check-validity
 		fi
 	fi
-	if [ -z "$2" ]; then
-		# generate root ca request
-		(cd /etc/univention/ssl
-		openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
-		)
-	fi
 
 	if test -f /etc/init.d/univention-directory-listener
 	then
