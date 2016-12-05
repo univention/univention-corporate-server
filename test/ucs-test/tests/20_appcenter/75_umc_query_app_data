@@ -10,11 +10,10 @@
 
 import os
 import sys
-import random
-import string
 from univention.appcenter import AppManager
 from univention.testing import umc
 import univention.testing.ucr as ucr_test
+import univention.testing.strings as str_test
 from univention import config_registry
 
 
@@ -35,8 +34,7 @@ def cleanup():
 
 
 def get_temp_app_prefix():
-	random_str = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-	return '/var/cache/univention-appcenter/testapp_%s' % random_str
+	return '/var/cache/univention-appcenter/testapp_%s' % str_test.random_name()
 
 
 def write_ini_file(app_prefix):
@@ -139,7 +137,7 @@ def test_ratings(umc_data, *keys):
 def get_app_from_umc(lang='en_US'):
 	# UMC query
 	connection = umc.UMCTestConnection()
-	connection.request('set', {'locale': lang}, command='set')
+	connection.request('', {'locale': lang}, command='set')
 	apps = connection.request('appcenter/query', print_response=False, print_request_data=False)
 
 	# pick our test app from the list of all apps
