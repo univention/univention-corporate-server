@@ -40,16 +40,21 @@ from univention.config_registry import ConfigRegistry
 
 class UMCConnection(_UMCConnection):
 
-	def request(self, url, data=None, flavor=None, command='command'):
+	def request(self, url, data=None, flavor=None, command='command', print_response=True, print_request_data=True):
 		print ''
-		print '*** UMC request: "%s/%s" %s \ndata = %s' % (command, url, '(%s)' % (flavor,) if flavor else '', pprint.pformat(data))
+		print '*** UMC request: "%s/%s" %s' % (command, url, '(%s)' % (flavor,) if flavor else '')
+		if print_request_data:
+			print '  data = %s' % (pprint.pformat(data), )
 		try:
 			response = super(UMCConnection, self).request(url, data, flavor, command)
 		except:
 			print 'UMC request failed: %s' % (sys.exc_info()[1],)
 			print ''
 			raise
-		print '*** UMC response: %s' % (pprint.pformat(response),)
+		if print_response:
+			print '*** UMC response: %s' % (pprint.pformat(response),)
+		else:
+			print '*** UMC reponse received'
 		print ''
 		return response
 
