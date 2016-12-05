@@ -1,6 +1,7 @@
 univention-ssl (10.0.0-18) unstable; urgency=low
 
   * Bug #42837: Allow usage on basesystem or unjoined systems
+  * Bug #39179: Register ucsCA as trusted CA
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 05 Dec 2016 12:19:19 +0100
 
