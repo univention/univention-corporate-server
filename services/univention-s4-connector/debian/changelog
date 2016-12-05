@@ -1,3 +1,11 @@
+univention-s4-connector (10.0.3-7) unstable; urgency=medium
+
+  * Bug #41571: avoid overwriting the nTSecurityDescriptor in ntsd_to_s4
+    post_con_*_functions if the uSNChanged was modified with respect to
+    the s4cache.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Dec 2016 21:37:58 +0100
+
 univention-s4-connector (10.0.3-6) unstable; urgency=low
 
   * Bug #40659: Work around missing start-stop-daemon --remove-pidfile
