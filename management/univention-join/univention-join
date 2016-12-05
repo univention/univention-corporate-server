@@ -124,6 +124,37 @@ bashquote () { # quote arguments for eval
 	echo -n "${escaped[@]}"
 }
 
+setup_ssl () {
+	local ca dst='/etc/univention/ssl/ucsCA'
+
+	if [ "$1" = "force" ]
+	then
+		rm -rf "$dst"
+		install -m 0755 -d "$dst"
+		for ca in ucsCA udsCA
+		do
+			[ -e "$dst/CAcert.pem" ] && break
+			univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/${ca}/CAcert.pem" "$dst/CAcert.pem"
+		done
+	fi >>/var/log/univention/join.log 2>&1
+
+	# prevent join from failing if umask is modified (Bug #21587)
+	chmod 755 /etc/univention/ssl
+	chmod 755 /etc/univention/ssl/ucsCA
+	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
+
+	ln -snf /etc/univention/ssl/ucsCA/CAcert.pem /usr/local/share/ca-certificates/ucsCA.crt
+	update-ca-certificates >>/var/log/univention/join.log 2>&1
+
+	check_ldap_tls_connection
+
+	download_host_certificate
+	if [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
+		echo "failed to get host certificate"
+		failed_message "failed to get host certificate"
+	fi
+}
+
 download_host_certificate () {
 	echo -n "Download host certificate: "
 	local HOSTPWD="/etc/machine.secret"
@@ -725,19 +756,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-ssh-rsync "$DCPWD" -az "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/*" /etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
-	# prevent join from failing if umask is modified (Bug #21587)
-	chmod 755 /etc/univention/ssl
-	chmod 755 /etc/univention/ssl/ucsCA
-	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
-
-	check_ldap_tls_connection
-
-	download_host_certificate
-
-	if [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
-		echo "failed to get host certificate"
-		failed_message "failed to get host certificate"
-	fi
+	setup_ssl
 
 	echo -n "Sync SSL settings: "
 	eval "$(univention-ssh --no-split "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/univention-config-registry shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/common ssl/email)"
@@ -809,24 +828,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 		ldap/server/type=slave \
 		>>/var/log/univention/join.log 2>&1
 
-	mkdir -p /etc/univention/ssl/ucsCA
-	univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/ucsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
-		univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/udsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	fi
-
-	# prevent join from failing if umask is modified (Bug #21587)
-	chmod 755 /etc/univention/ssl
-	chmod 755 /etc/univention/ssl/ucsCA
-	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
-
-	check_ldap_tls_connection
-
-	download_host_certificate
-
-	if [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
-		failed_message "failed to get host certificate"
-	fi
+	setup_ssl force
 
 	echo -n "Restart LDAP Server: "
 	/etc/init.d/slapd restart >>/var/log/univention/join.log 2>&1
@@ -865,20 +867,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	run_join_scripts
 
 elif [ "$server_role" = "memberserver" ]; then
-	mkdir -p /etc/univention/ssl/ucsCA
-	univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/ucsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
-		univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/udsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	fi
-
-	# prevent join from failing if umask is modified (Bug #21587)
-	chmod 755 /etc/univention/ssl
-	chmod 755 /etc/univention/ssl/ucsCA
-	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
-
-	check_ldap_tls_connection
-
-	download_host_certificate
+	setup_ssl force
 
 	univention-config-registry set \
 		ldap/master="$DCNAME" \
@@ -910,23 +899,7 @@ elif [ "$server_role" = "memberserver" ]; then
 
 else
 # Client and Mobile Client
-
-
-	mkdir -p /etc/univention/ssl/ucsCA
-
-	univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/ucsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
-		univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/udsCA/CAcert.pem" /etc/univention/ssl/ucsCA/ >>/var/log/univention/join.log 2>&1
-	fi
-
-	# prevent join from failing if umask is modified (Bug #21587)
-	chmod 755 /etc/univention/ssl
-	chmod 755 /etc/univention/ssl/ucsCA
-	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
-
-	check_ldap_tls_connection
-
-	download_host_certificate
+	setup_ssl force
 
 	# invalidate the nscd hosts cache
 	test -x /usr/sbin/nscd && nscd -i hosts
