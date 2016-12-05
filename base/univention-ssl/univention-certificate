@@ -63,6 +63,10 @@ run_only () {
 	master/domaincontroller_master) ;;
 	backup/domaincontroller_master) ;;
 	backup/domaincontroller_backup) ;;
+	master/basesystem) ;;
+	backup/basesystem) ;;
+	master/) ;;
+	backup/) ;;
 	*) die "Works only on the DC $1" ;;
 	esac
 	[ 0 -eq "$(id -u)" ] ||

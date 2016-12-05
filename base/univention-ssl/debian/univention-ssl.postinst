@@ -58,7 +58,8 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/base.sh
 create_logfile_if_missing /var/log/univention/ssl-sync.log "root:adm" 640
-if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ "$server_role" = "basesystem" ]; then
+case "$server_role" in
+domaincontroller_master|basesystem|'')
 	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
 
 		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
@@ -75,7 +76,8 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 	else
 		echo "skipped. SSL Certificate found in $CERTPATH"
 	fi
-fi
+	;;
+esac
 
 if [ "$1" = "configure" ]
 then

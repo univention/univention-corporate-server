@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-18) unstable; urgency=low
+
+  * Bug #42837: Allow usage on basesystem or unjoined systems
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Dec 2016 12:19:19 +0100
+
 univention-ssl (10.0.0-17) unstable; urgency=low
 
   * Bug #41917: Fix dash local variable quoting
