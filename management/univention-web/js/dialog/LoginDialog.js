@@ -71,7 +71,7 @@ define([
 
 		_currentResult: null,
 
-		_safariScrollPosY: 0,
+		_scrollPosY: 0,
 
 		id: 'umcLoginWrapper',
 
@@ -468,11 +468,8 @@ define([
 		_show: function() {
 			var deferred;
 			query('#umcLoginWrapper').style('display', 'block');
-			query('body').style('overflow', 'hidden');
-			if (has('safari')) {
-				this._safariScrollPosY = window.scrollY;
-				query('body').style('position', 'fixed');
-			}
+			this._scrollPosY = window.scrollY;
+			window.scrollTo(0, 0);
 			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
 			this._setFocus();
 			if (has('ie') < 10) {
@@ -525,11 +522,7 @@ define([
 			// hide the dialog
 			var hide = lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
-				query('body').style('overflow', '');
-				if (has('safari')) {
-					query('body').style('position', '');
-					window.scrollTo(0, this._safariScrollPosY);
-				}
+				window.scrollTo(0, this._scrollPosY);
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
 				try {

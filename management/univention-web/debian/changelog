@@ -1,3 +1,9 @@
+univention-web (1.0.2-17) unstable; urgency=medium
+
+  * Bug #43091: Jump to login dialog after session time out
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Dec 2016 16:46:42 +0100
+
 univention-web (1.0.2-16) unstable; urgency=medium
 
   * Bug #43084: Moved style rules fo the UMC menu help
