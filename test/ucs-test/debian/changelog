@@ -1,3 +1,10 @@
+ucs-test (6.0.37-21) unstable; urgency=medium
+
+  * ucs_samba.py: Skip wait_for_s4connector() in case the S4 connector
+    is disabled (Bug #36214)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Dec 2016 06:56:31 +0100
+
 ucs-test (6.0.37-20) unstable; urgency=medium
 
   * Bug #42834: minor code adjustments
