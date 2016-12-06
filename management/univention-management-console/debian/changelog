@@ -1,3 +1,10 @@
+univention-management-console (9.0.13-3) unstable; urgency=medium
+
+  * Bug #42980: removed wrongly shown error pop-ups when clicking on a link
+    tile on the UMC overview page
+
+ -- Eduard Mai <mai@univention.de>  Tue, 06 Dec 2016 14:58:37 +0100
+
 univention-management-console (9.0.13-2) unstable; urgency=medium
 
   * Bug #43084: Moved style rules for the UMC menu help

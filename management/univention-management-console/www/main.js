@@ -2108,7 +2108,9 @@ define([
 					label: _('Open module'),
 					isDefaultAction: true,
 					callback: lang.hitch(this, function(id, item) {
-						this.openModule(item);
+						if (!item.is_link) {
+							this.openModule(item);
+						}
 						//this._tabContainer.transition(id, item);
 					})
 				}, {
