@@ -658,6 +658,9 @@ monkeypatch () {
 	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
 	sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/share/pyshared/univention/management/console/protocol/session.py
 	univention-management-console-server restart
+
+	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
+	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local"
 }
 
 # vim:set filetype=sh ts=4:
