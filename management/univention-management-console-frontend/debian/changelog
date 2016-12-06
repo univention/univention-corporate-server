@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-58) unstable; urgency=medium
+
+  * Bug #42980: fix wrong error pop-up when clicking a link on the overview
+    page
+
+ -- Eduard Mai <mai@univention.de>  Tue, 06 Dec 2016 13:46:24 +0100
+
 univention-management-console-frontend (5.0.63-57) unstable; urgency=medium
 
   * Bug #42979: Code cleanup and updated summit banner
