@@ -3,6 +3,7 @@
 ## exposure: safe
 ## tags:
 ##  - apptest
+##  - SKIP-UCSSCHOOL
 ## packages:
 ## - univention-samba4
 
