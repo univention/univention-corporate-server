@@ -9,6 +9,7 @@ import re
 import sqlite3
 
 from univention.testing.utils import package_installed
+import univention.config_registry as config_registry
 
 CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
@@ -120,8 +121,14 @@ def _ldap_replication_complete():
 
 
 def wait_for_s4connector():
+    ucr = config_registry.ConfigRegistry()
+    ucr.load()
+
     if not package_installed('univention-s4-connector'):
         print 'wait_for_s4connector(): skip, univention-s4-connector not installed.'
+        return
+    if ucr.is_false('connector/s4/autostart'):
+        print 'wait_for_s4connector(): skip, connector/s4/autostart is set to false.'
         return
     conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
     c = conn.cursor()
