@@ -267,10 +267,13 @@ class mapping(object):
 		>>> map.register('udm', 'ldap', lambda udm: udm.lower(), None)
 		>>> map.mapValue('udm', None)
 		''
-		>>> map.mapValue('udm', [''])
+		>>> map.mapValue('udm', [0])
 		''
 		>>> map.mapValue('udm', 'UDM')
 		'udm'
+		>>> map.register('sambaLogonHours', 'ldap')
+		>>> map.mapValue('sambaLogonHours', [0])
+		[0]
 		"""
 		map_value = self._map[map_name][1]
 
