@@ -267,11 +267,11 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			#	272read_ad_change_username
 			t_dn = object.get('dn')
 			if t_dn:
-				t_dn = ldap.explode_rdn(t_dn)[0].split('=', 1)[-1]
+				(_rdn_attribute, rdn_value, _flags) = ldap.dn.str2dn(t_dn)[0][0]
 				t_samaccount = ''
 				if object.get('attributes'):
 					t_samaccount = object['attributes'].get('sAMAccountName', [''])[0]
-				if t_dn.lower() == t_samaccount.lower():
+				if rdn_value.lower() == t_samaccount.lower():
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
 					return True
 
@@ -300,13 +300,13 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			if dn is None:
 				break
 
-			pos = string.find(dn, '=')
-			pos2 = len(univention.s4connector.s4.explode_unicode_dn(dn)[0])
-			attrib = dn[:pos]
+			exploded_dn = ldap.dn.str2dn(dn)
+			(_fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
+
 			if ucsobject and object.get('attributes') and object['attributes'].get(ucsattrib):
 				value = object['attributes'][ucsattrib][0]
 			else:
-				value = dn[pos + 1:pos2]
+				value = fst_rdn_value
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in S4 to get corresponding DN, if not found create new
@@ -331,17 +331,17 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
-					s4dn = encode_attrib(result[0][0])
-					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0])
+					s4dn = unicode(encode_attrib(result[0][0]))
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
 						newdn = s4dn
 					else:
-						s4dn = s4dn[:s4pos2] + dn[pos2:]
-						newdn = s4dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
+						s4_rdn = ldap.dn.str2dn(s4dn)[0]
+						new_s4_dn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]))
+						newdn = new_s4_dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
 
 				else:
-					newdn = 'cn' + dn[pos:]  # new object, don't need to change
-
+					newdn_rdn = [('cn', fst_rdn_value, ldap.AVA_STRING)]
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # new object, don't need to change
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in S4 and use it as name
@@ -365,9 +365,6 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 							raise
 						time.sleep(1)  # S4 may need some time...
 
-				pos = string.find(dn, '=')
-				pos2 = len(univention.s4connector.s4.explode_unicode_dn(dn)[0])
-
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
 						if samaccountname.lower() == conval.lower():
@@ -383,16 +380,18 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
 				ucsdn_result = s4connector.search_ucs(filter=ucsdn_filter, base=s4connector.lo.base, scope='sub', attr=['objectClass'])
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
-					ucsdn = ucsdn_result[0][0]
+					ucsdn = unicode(ucsdn_result[0][0])
 
 				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
 					if dn_attr:
-						newdn = dn_attr + '=' + dn_attr_val + dn[pos2:]  # guess the old dn
+						newdn_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]
 					else:
-						newdn = ucsattrib + '=' + samaccountname + dn[pos2:]  # guess the old dn
+						newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
+
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # guess the old dn
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -1277,7 +1276,10 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)" % (object['attributes']['lastKnownParent'][0], rdn))
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent")
-			return rdn + "," + object['attributes']['lastKnownParent'][0]
+
+			rdn_exploded = ldap.dn.str2dn(rdn)
+			parent_exploded = ldap.dn.str2dn(object['attributes']['lastKnownParent'][0])
+			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded))
 		else:
 			ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
 			return None
@@ -2009,7 +2011,7 @@ class s4(univention.s4connector.ucs):
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
-				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(member)[0][0]
 				memberUid_add.append(uid)
 			for member in add_members['unknown']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
@@ -2017,7 +2019,7 @@ class s4(univention.s4connector.ucs):
 				if uid:
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
-				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(member)[0][0]
 				memberUid_del.append(uid)
 			if uniqueMember_del or memberUid_del:
 				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
