@@ -34,7 +34,6 @@
 from __future__ import absolute_import
 import ldap
 import string
-from ldap.filter import filter_format
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
@@ -705,7 +704,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 
 	msdcs_obj = {}
 	msdcs_zonename = compatible_modstring('_msdcs.%s' % zoneName)
-	s4_filter = filter_format('(&(objectClass=dnsZone)(DC=%s))', (msdcs_zonename,))
+	s4_filter = format_escaped('(&(objectClass=dnsZone)(DC={0!e}))', msdcs_zonename)
 	ud.debug(ud.LDAP, ud.INFO, "%s: search _msdcs in S4" % func_name)
 	msdcs_obj = {}
 	for base in s4connector.s4_ldap_partitions:
@@ -976,7 +975,7 @@ def ucs_host_record_create(s4connector, object):
 	a = __unpack_aRecord(object)
 
 	# Does a host record for this zone already exist?
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
@@ -1010,7 +1009,7 @@ def ucs_host_record_delete(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
@@ -1046,7 +1045,7 @@ def ucs_ptr_record_create(s4connector, object):
 	ptr = __unpack_ptrRecord(object)
 
 	# Does a host record for this zone already exist?
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
@@ -1079,7 +1078,7 @@ def ucs_ptr_record_delete(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
@@ -1103,7 +1102,7 @@ def ucs_cname_create(s4connector, object):
 	c = __unpack_cName(object)
 
 	# Does a host record for this zone already exist?
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
@@ -1136,7 +1135,7 @@ def ucs_cname_delete(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
@@ -1177,7 +1176,7 @@ def ucs_srv_record_create(s4connector, object):
 		return
 
 	# Does a host record for this zone already exist?
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
@@ -1227,7 +1226,7 @@ def ucs_srv_record_delete(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
@@ -1297,7 +1296,7 @@ def ucs_txt_record_create(s4connector, object):
 	c = __unpack_txtRecord(object)
 
 	# Does a host record for this zone already exist?
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
@@ -1337,7 +1336,7 @@ def ucs_txt_record_delete(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
@@ -1388,7 +1387,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 
 	# Does a zone already exist?
 	modify = False
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
@@ -1466,7 +1465,7 @@ def ucs_zone_delete(s4connector, object, dns_type):
 		ud.debug(ud.LDAP, ud.INFO, "ucs_zone_delete: ignoring DC=%s object" % (relativeDomainName,))
 		return
 
-	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
