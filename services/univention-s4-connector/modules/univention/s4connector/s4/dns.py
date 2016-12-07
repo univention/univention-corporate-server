@@ -38,7 +38,6 @@ from ldap.filter import escape_filter_chars, filter_format
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
-from univention.uldap import explodeDn
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 from univention.s4connector.s4 import compatible_modstring
 from univention.admin.mapping import unmapUNIX_TimeInterval
@@ -166,9 +165,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 			if dn is None:
 				break
 
-			pos = string.find(dn, '=')
-			rdn = explodeDn(dn)
-			pos2 = len(rdn[0])
+			exploded_dn = ldap.dn.str2dn(dn)
+			(fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
 
 			if isUCSobject:
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got an UCS-Object")
@@ -178,8 +176,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					relativeDomainName = obj['attributes'][ol_RR_attr][0]
 				except (KeyError, IndexError):
 					# Safety fallback for the unexpected case, where relativeDomainName would not be set
-					rdn0_attrib = dn[:pos]
-					if 'zoneName' == rdn0_attrib:
+					if 'zoneName' == fst_rdn_attribute:
 						relativeDomainName = '@'
 					else:
 						raise  # can't determine relativeDomainName
@@ -198,13 +195,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					ol_zone_name = obj['attributes']['zoneName'][0]
 				except (KeyError, IndexError):
 					# Safety fallback for the unexpected case, where zoneName would not be set
-					rdn0_attrib = dn[:pos]
-					if ol_RR_attr == rdn0_attrib:
-						# get parent following the recipe from __split_s4_dns_dn:
-						rdn1_tmp = rdn[1].split('=')
-						rdn1_key, rdn1_val = (rdn1_tmp[0], string.join(rdn1_tmp[1:], '='))
-						if 'zoneName' == rdn1_key:
-							ol_zone_name = rdn1_val
+					if ol_RR_attr == fst_rdn_attribute:
+						(snd_rdn_attribute, snd_rdn_value, _flags) = exploded_dn[1][0]
+						if 'zoneName' == snd_rdn_attribute:
+							ol_zone_name = snd_rdn_value
 						else:
 							raise  # can't determine zoneName for this relativeDomainName
 
@@ -225,7 +219,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 						if result:
 							# We only need the SOA dn here
-							s4dn_utf16_le = 'DC=@,' + result[0][0]
+							s4dn_utf16_le_rdn = [('DC', '@', ldap.AVA_STRING)]
+							s4dn_utf16_le = unicode(ldap.dn.dn2str([s4dn_utf16_le_rdn] + ldap.dn.str2dn(result[0][0])))
 							break
 				else:
 					# identify position by parent zone name
@@ -234,8 +229,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						if relativeDomainName.endswith('._msdcs'):
 							target_zone_name = '_msdcs.' + ol_zone_name
 							target_RR_val = relativeDomainName[:-7]
-							_rdn = [s4_RR_attr.upper() + '=' + target_zone_dn] + rdn[2:]
-							target_zone_dn = ','.join(_rdn)
+							target_zone_rdn = [(s4_RR_attr.upper(), target_zone_name, ldap.AVA_STRING)]
+							target_zone_dn = unicode(ldap.dn.dn2str([target_zone_rdn] + exploded_dn[2:]))
 
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for target zone %s" % target_zone_dn)
 					fake_ol_zone_object = {
@@ -273,16 +268,16 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				if s4dn_utf16_le:  # no referral, so we've got a valid result
 					s4dn = univention.s4connector.s4.encode_attrib(s4dn_utf16_le)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got s4dn %s" % (s4dn,))
-					s4pos2 = len(explodeDn(s4dn)[0])
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj):
 						# Cases: ("delete") or ("add" but exists already)
 						newdn = s4dn
 					else:
 						# Case: "moved" (?)
-						s4dn = s4dn[:s4pos2] + dn[pos2:]
+						exploded_s4_dn = ldap.dn.str2dn(s4dn)
+						raw_new_dn = unicode(ldap.dn.dn2str([exploded_s4_dn[0]] + exploded_dn[1:]))
 						# The next line looks wrong to me: the source DN is a UCS dn here..
 						# But this is just like samaccountname_dn_mapping does it:
-						newdn = s4dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
+						newdn = raw_new_dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: target object not found")
@@ -292,8 +287,12 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						relativeDomainName = target_RR_val
 					else:
 						# Ok, it's a new object without existing parent zone in S4 (probably this object itself is a soa/zone), so propose an S4 DN for it:
-						zone_dn = 'DC=%s,%s' % (ol_zone_name, s4connector.property['dns'].con_default_dn)
-					newdn = 'DC=%s,%s' % (relativeDomainName, zone_dn)
+						default_dn = s4connector.property['dns'].con_default_dn
+						zone_rdn = [('DC', ol_zone_name, ldap.AVA_STRING)]
+						zone_dn = unicode(ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(default_dn)))
+
+					new_rdn = [('DC', relativeDomainName, ldap.AVA_STRING)]
+					newdn = unicode(ldap.dn.dn2str([new_rdn] + ldap.dn.str2dn(zone_dn)))
 
 			else:
 				# get the object to read the s4_RR_attr in S4 and use it as name
@@ -344,16 +343,17 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					# ol_oc_filter = '(&(objectClass=dNSZone)(|(univentionObjectType=dns/forward_zone)(univentionObjectType=dns/reverse_zone)))'
 				elif 'dnsNode' in s4_ocs:
 					# identify position of the parent zone
-					s4pos = string.find(rdn[1], '=')
-					target_zone_name = rdn[1][s4pos + 1:]
+					(snd_rdn_attribute, snd_rdn_value, _flags) = exploded_dn[1][0]
+
+					target_zone_name = snd_rdn_value
 					target_zone_dn = s4connector.lo_s4.parentDn(dn)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for %s" % target_zone_dn)
 					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
 						if target_zone_name.startswith('_msdcs.'):
 							target_zone_name = target_zone_name[7:]
 							target_RR_val += '._msdcs'
-							_rdn = [rdn[1][:s4pos + 1] + target_zone_name] + rdn[2:]
-							target_zone_dn = ','.join(_rdn)
+							target_zone_rdn = [(snd_rdn_attribute, target_zone_name, ldap.AVA_STRING)]
+							target_zone_dn = unicode(ldap.dn.dn2str([target_zone_rdn] + exploded_dn[2:]))
 
 					fake_s4_zone_object = {
 						'dn': target_zone_dn,
@@ -404,7 +404,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						# Hmm, is it ok to map it to the same as '@'?
 						newdn = zone_dn
 					else:
-						newdn = 'relativeDomainName=%s,%s' % (s4_RR_val, zone_dn)
+						new_rdn = [('relativeDomainName', s4_RR_val, ldap.AVA_STRING)]
+						newdn = unicode(ldap.dn.dn2str([new_rdn] + ldap.dn.str2dn(zone_dn)))
 
 					if not (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
 						# Case: "moved" (?)
@@ -428,7 +429,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 def __get_zone_dn(s4connector, zone_name):
 	default_dn = s4connector.property['dns'].ucs_default_dn
 	zone_rdn = [('zoneName', zone_name, ldap.AVA_STRING)]
-	return ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(default_dn))
+	return unicode(ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(default_dn)))
 
 
 def __append_dot(str):
@@ -720,7 +721,8 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 		return
 
 	# We need the SOA here
-	msdcs_soa_dn = 'DC=@,' + resultlist[0][0]
+	msdcs_soa_rdn = [('DC', '@', ldap.AVA_STRING)]
+	msdcs_soa_dn = unicode(ldap.dn.dn2str([msdcs_soa_rdn] + ldap.dn.str2dn(resultlist[0][0])))
 	ud.debug(ud.LDAP, ud.INFO, "%s: search DC=@ for _msdcs in S4" % (func_name,))
 	resultlist = s4connector._s4__search_s4(
 		msdcs_soa_dn,
@@ -1514,9 +1516,10 @@ def _identify_dns_con_object(s4connector, object):
 		if oc and 'dnsNode' in oc:
 			if dc and dc[0] == '@':
 				zone_type = 'forward_zone'
-				for rdn in object['dn'].split(','):
-					rdn = rdn.lower()
-					if rdn.startswith('zonename=') and rdn.endswith('in-addr.arpa'):
+				exploded_dn = ldap.dn.str2dn(object['dn'])
+				for multi_rdn in exploded_dn:
+					(attribute, value, _flags) = multi_rdn[0]
+					if attribute.lower() == 'zonename' and value.lower().endswith('in-addr.arpa'):
 						zone_type = 'reverse_zone'
 						break
 				return zone_type
