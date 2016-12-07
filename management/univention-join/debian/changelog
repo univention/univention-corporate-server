@@ -1,3 +1,9 @@
+univention-join (8.0.4-7) unstable; urgency=low
+
+  * Bug #39068: Only update hostane and hosdn after /etc/machine.secret
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Dec 2016 17:24:43 +0100
+
 univention-join (8.0.4-6) unstable; urgency=low
 
   * Bug #39179: Register ucsCA as trusted CA
