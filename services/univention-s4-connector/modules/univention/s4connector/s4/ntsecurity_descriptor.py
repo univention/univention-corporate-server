@@ -146,7 +146,6 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
 		return
 
-	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 	domain_sid = security.dom_sid(s4connector.s4_sid)
 	s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0])
 	ucs_ntsd_sddl = ucs_attributes.get('msNTSecurityDescriptor', [None])[0]
