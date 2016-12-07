@@ -37,6 +37,7 @@ import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 from univention.s4connector.s4 import compatible_modstring
+from univention.s4connector.s4 import format_escaped
 import binascii
 
 from samba.ndr import ndr_unpack, ndr_pack
@@ -543,7 +544,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	pwd_set = False
-	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
@@ -683,8 +685,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	# if s4_object_attributes.has_key('objectSid'):
 	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
-	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring(
-		'(objectSid=%s)' % objectSid), ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
