@@ -43,7 +43,7 @@ from univention.s4connector.s4 import compatible_modstring
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
-from samba.ndr import ndr_pack, ndr_unpack, ndr_print
+from samba.ndr import ndr_pack, ndr_unpack
 import copy
 import time
 import sys
