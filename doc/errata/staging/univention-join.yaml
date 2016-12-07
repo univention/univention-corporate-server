@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-join
-fix: 8.0.4-6.520.201612051533
+fix: 8.0.4-7.521.201612071726
 desc: |
  This update addresses the following issues:
  * The root SSL certificate used for the UCS domain is now registered as a
