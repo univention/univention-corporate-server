@@ -88,8 +88,9 @@ def ntsd_to_s4(s4connector, key, object):
 		return
 
 	ucs_ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
-	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor', 'uSNChanged' , 'objectGUID'])[0]
+	s4_attributes = s4connector.lo_s4.get(s4_dn, attr=['nTSecurityDescriptor', 'uSNChanged', 'objectGUID'])
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
+
 	if ntsd_ndr:
 		domain_sid = security.dom_sid(s4connector.s4_sid)
 		s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0])
@@ -126,21 +127,22 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 	if not s4_dn:
 		return  # ignore
 
-	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['nTSecurityDescriptor'])[0]
+	try:
+		s4_attributes = s4connector.lo_s4.get(s4_dn, attr=['nTSecurityDescriptor'], required=True)
+	except ldap.NO_SUCH_OBJECT:
+		ud.debug(ud.LDAP, ud.WARN, 'ntsd_to_ucs: S4 object (%s) not found' % s4_dn)
+		return
+
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 	if not ntsd_ndr:
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_ucs: nTSecurityDescriptor not found in attributes!')
 		return
 
-	if not s4_dn:
-		ud.debug(ud.LDAP, ud.WARN, 'ntsd_to_ucs: S4 object (%s) not found' % s4_dn)
-		return
-
 	# search in UCS/OpenLDAP DS to determine modify/add
 	ucs_dn = s4_dn
-	(ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=['msNTSecurityDescriptor'])[0]
-
-	if not ucs_dn:
+	try:
+		ucs_attributes = s4connector.lo.get(ucs_dn, attr=['msNTSecurityDescriptor'])
+	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
 		return
 
