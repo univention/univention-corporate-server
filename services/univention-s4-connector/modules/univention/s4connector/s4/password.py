@@ -496,12 +496,10 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	try:
-		res = s4connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet', 'sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
+		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet', 'sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'], required=True)
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs_to_s4: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
 		return
-	else:
-		ucs_object_attributes = res[0][1]
 
 	services = ucs_object_attributes.get('univentionService', [])
 	if 'Samba 4' in services:
@@ -532,8 +530,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
-	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
-	s4_object_attributes = res[0][1]
+	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
 		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
@@ -667,8 +664,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			return
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
-	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet'])
-	s4_object_attributes = res[0][1]
+	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['objectSid', 'pwdLastSet'])
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
@@ -678,7 +674,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
 		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, res))
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, s4_object_attributes))
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 
 	# rid = None
@@ -706,8 +702,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		krb5Principal = ''
 		userPassword = ''
 		modlist = []
-		res = s4connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
-		ucs_object_attributes = res[0][1]
+		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
 
 		services = ucs_object_attributes.get('univentionService', [])
 		if 'S4 SlavePDC' in services:
