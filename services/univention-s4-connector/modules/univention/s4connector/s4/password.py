@@ -36,6 +36,7 @@ import time
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
+from univention.s4connector.s4 import compatible_modstring
 import binascii
 
 from samba.ndr import ndr_unpack, ndr_pack
@@ -481,7 +482,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'password_sync_ucs_to_s4: the password for %s has not been changed. Skipping password sync.' % (object['dn']))
 		return
 
-	compatible_modstring = univention.s4connector.s4.compatible_modstring
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
 	except:  # FIXME: which exception is to be caught?
@@ -529,7 +529,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
-	res = s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
+	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
@@ -660,7 +660,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			return
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
-	res = s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet'])
+	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet'])
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
@@ -677,7 +677,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	# if res[0][1].has_key('objectSid'):
 	# 	rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, univention.s4connector.s4.compatible_modstring(
+	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring(
 		'(objectSid=%s)' % objectSid), ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
 	if unicodePwd_attr:
