@@ -40,6 +40,7 @@ import univention.s4connector.s4
 import univention.admin.uldap
 from univention.uldap import explodeDn
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
+from univention.s4connector.s4 import compatible_modstring
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
@@ -212,7 +213,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				s4dn_utf16_le = None
 				s4_zone_dn = None
 				if '@' == relativeDomainName:  # or dn starts with 'zoneName='
-					s4_filter = '(&(objectClass=dnsZone)(%s=%s))' % (s4_RR_attr, escape_filter_chars(univention.s4connector.s4.compatible_modstring(ol_zone_name)))
+					s4_filter = '(&(objectClass=dnsZone)(%s=%s))' % (s4_RR_attr, escape_filter_chars(compatible_modstring(ol_zone_name)))
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4")
 					for base in s4connector.s4_ldap_partitions:
 						result = s4connector._s4__search_s4(
@@ -259,7 +260,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						s4_zone_dn = s4_soa_object['dn']
 
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4 base %s" % (s4_zone_dn,))
-					s4_filter = '(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, escape_filter_chars(univention.s4connector.s4.compatible_modstring(target_RR_val)))
+					s4_filter = '(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, escape_filter_chars(compatible_modstring(target_RR_val)))
 					result = s4connector._s4__search_s4(
 						s4_zone_dn,
 						ldap.SCOPE_SUBTREE,
@@ -305,7 +306,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					search_dn = obj.get('deleted_dn', dn)
 					try:
 						s4_RR_val = univention.s4connector.s4.encode_attrib(
-							s4connector.lo_s4.lo.search_ext_s(univention.s4connector.s4.compatible_modstring(search_dn), ldap.SCOPE_BASE, s4_RR_filter, [s4_RR_attr])[0][1][s4_RR_attr][0])
+							s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, s4_RR_filter, [s4_RR_attr])[0][1][s4_RR_attr][0])
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 					except ldap.NO_SUCH_OBJECT:  # S4 may need time
 						if i > 5:
@@ -503,13 +504,13 @@ def __pack_aRecord(object, dnsRecords):
 
 	# IPv4
 	for a in object['attributes'].get('aRecord', []):
-		a = univention.s4connector.s4.compatible_modstring(a)
+		a = compatible_modstring(a)
 		a_record = ARecord(a)
 		dnsRecords.append(ndr_pack(a_record))
 
 	# IPv6
 	for a in object['attributes'].get('aAAARecord', []):
-		a = univention.s4connector.s4.compatible_modstring(a)
+		a = compatible_modstring(a)
 		a_record = AAAARecord(a)
 		dnsRecords.append(ndr_pack(a_record))
 
@@ -528,7 +529,7 @@ def __unpack_aRecord(object):
 def __pack_soaRecord(object, dnsRecords):
 	soaRecord = object['attributes'].get('sOARecord', [None])[0]
 	if soaRecord:
-		soaRecord = univention.s4connector.s4.compatible_modstring(soaRecord)
+		soaRecord = compatible_modstring(soaRecord)
 		soa = soaRecord.split(' ')
 		mname = soa[0]
 		rname = soa[1]
@@ -562,7 +563,7 @@ def __unpack_soaRecord(object):
 
 def __pack_nsRecord(object, dnsRecords):
 	for nSRecord in object['attributes'].get('nSRecord', []):
-		nSRecord = univention.s4connector.s4.compatible_modstring(nSRecord)
+		nSRecord = compatible_modstring(nSRecord)
 		a_record = NSRecord(nSRecord)
 		dnsRecords.append(ndr_pack(a_record))
 
@@ -582,7 +583,7 @@ def __pack_mxRecord(object, dnsRecords):
 	for mXRecord in object['attributes'].get('mXRecord', []):
 		if mXRecord:
 			ud.debug(ud.LDAP, ud.INFO, '__pack_mxRecord: %s' % mXRecord)
-			mXRecord = univention.s4connector.s4.compatible_modstring(mXRecord)
+			mXRecord = compatible_modstring(mXRecord)
 			mx = mXRecord.split(' ')
 			priority = mx[0]
 			name = mx[1]
@@ -607,7 +608,7 @@ def __pack_txtRecord(object, dnsRecords):
 	for txtRecord in object['attributes'].get('tXTRecord', []):
 		if txtRecord:
 			ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % txtRecord)
-			txtRecord = univention.s4connector.s4.compatible_modstring(txtRecord)
+			txtRecord = compatible_modstring(txtRecord)
 			token_list = TXT.from_text(rdataclass.IN, rdatatype.TXT, Tokenizer(txtRecord)).strings
 			ndr_txt_record = ndr_pack(TXTRecord(token_list))
 			dnsRecords.append(ndr_txt_record)
@@ -628,7 +629,7 @@ def __unpack_txtRecord(object):
 
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
-		c = univention.s4connector.s4.compatible_modstring(__remove_dot(c))
+		c = compatible_modstring(__remove_dot(c))
 		c_record = CNameRecord(c)
 		dnsRecords.append(ndr_pack(c_record))
 
@@ -646,7 +647,7 @@ def __unpack_cName(object):
 
 def __pack_sRVrecord(object, dnsRecords):
 	for srvRecord in object['attributes'].get('sRVRecord', []):
-		srvRecord = univention.s4connector.s4.compatible_modstring(srvRecord)
+		srvRecord = compatible_modstring(srvRecord)
 		srv = srvRecord.split(' ')
 		priority = int(srv[0])
 		weight = int(srv[1])
@@ -669,7 +670,7 @@ def __unpack_sRVrecord(object):
 
 def __pack_ptrRecord(object, dnsRecords):
 	for ptr in object['attributes'].get('pTRRecord', []):
-		ptr = univention.s4connector.s4.compatible_modstring(__remove_dot(ptr))
+		ptr = compatible_modstring(__remove_dot(ptr))
 		ptr_record = PTRRecord(ptr)
 		dnsRecords.append(ndr_pack(ptr_record))
 
@@ -692,7 +693,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 	_d = ud.function(func_name)
 
 	msdcs_obj = {}
-	msdcs_zonename = univention.s4connector.s4.compatible_modstring('_msdcs.%s' % zoneName)
+	msdcs_zonename = compatible_modstring('_msdcs.%s' % zoneName)
 	s4_filter = filter_format('(&(objectClass=dnsZone)(DC=%s))', (msdcs_zonename,))
 	ud.debug(ud.LDAP, ud.INFO, "%s: search _msdcs in S4" % func_name)
 	msdcs_obj = {}
@@ -765,14 +766,14 @@ def s4_zone_create(s4connector, object):
 		# IPv4
 		if aRecords:
 			for a in aRecords.split(' '):
-				a = univention.s4connector.s4.compatible_modstring(a)
+				a = compatible_modstring(a)
 				a_record = ARecord(a)
 				dnsRecords.append(ndr_pack(a_record))
 
 		# IPv6
 		if aAAARecords:
 			for a in aAAARecords.split(' '):
-				a = univention.s4connector.s4.compatible_modstring(a)
+				a = compatible_modstring(a)
 				a_record = AAAARecord(a)
 				dnsRecords.append(ndr_pack(a_record))
 	else:
@@ -797,7 +798,7 @@ def s4_zone_msdcs_sync(s4connector, object):
 		ud.debug(ud.LDAP, ud.WARN, 's4_zone_msdcs_sync: OL zone %s has no SOA info' % domainZoneName)
 		return
 
-	soaRecord = univention.s4connector.s4.compatible_modstring(soaRecord)
+	soaRecord = compatible_modstring(soaRecord)
 	soa = soaRecord.split(' ')
 	serial = int(soa[2])
 
@@ -926,14 +927,14 @@ def s4_host_record_create(s4connector, object):
 		# IPv4
 		if aRecords:
 			for a in aRecords.split(' '):
-				a = univention.s4connector.s4.compatible_modstring(a)
+				a = compatible_modstring(a)
 				a_record = ARecord(a)
 				dnsRecords.append(ndr_pack(a_record))
 
 		# IPv6
 		if aAAARecords:
 			for a in aAAARecords.split(' '):
-				a = univention.s4connector.s4.compatible_modstring(a)
+				a = compatible_modstring(a)
 				a_record = AAAARecord(a)
 				dnsRecords.append(ndr_pack(a_record))
 	else:
