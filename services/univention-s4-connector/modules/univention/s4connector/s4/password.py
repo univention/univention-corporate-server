@@ -499,26 +499,28 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs_to_s4: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
 		return
+	else:
+		ucs_object_attributes = res[0][1]
 
-	services = res[0][1].get('univentionService', [])
+	services = ucs_object_attributes.get('univentionService', [])
 	if 'Samba 4' in services:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: %s is a S4 server, skip password sync" % ucs_object['dn'])
 		return
 
 	sambaPwdLastSet = None
-	if 'sambaPwdLastSet' in res[0][1]:
-		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
+	if 'sambaPwdLastSet' in ucs_object_attributes:
+		sambaPwdLastSet = long(ucs_object_attributes['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
 	sambaPwdMustChange = -1
-	if 'sambaPwdMustChange' in res[0][1]:
-		sambaPwdMustChange = long(res[0][1]['sambaPwdMustChange'][0])
+	if 'sambaPwdMustChange' in ucs_object_attributes:
+		sambaPwdMustChange = long(ucs_object_attributes['sambaPwdMustChange'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdMustChange: %s" % sambaPwdMustChange)
 
-	ucsLMhash = res[0][1].get('sambaLMPassword', [None])[0]
-	ucsNThash = res[0][1].get('sambaNTPassword', [None])[0]
-	krb5Principal = res[0][1].get('krb5PrincipalName', [None])[0]
-	krb5Key = res[0][1].get('krb5Key', [])
+	ucsLMhash = ucs_object_attributes.get('sambaLMPassword', [None])[0]
+	ucsNThash = ucs_object_attributes.get('sambaNTPassword', [None])[0]
+	krb5Principal = ucs_object_attributes.get('krb5PrincipalName', [None])[0]
+	krb5Key = ucs_object_attributes.get('krb5Key', [])
 
 	if not ucsNThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaNTPassword missing in UCS LDAP, trying krb5Key")
@@ -530,22 +532,25 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
 	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
+	s4_object_attributes = res[0][1]
 	pwdLastSet = None
-	if 'pwdLastSet' in res[0][1]:
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	objectSid = univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0])
+	if 'pwdLastSet' in s4_object_attributes:
+		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
+	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
 	# rid = None
-	# if res[0][1].has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+	# if s4_object_attributes.has_key('objectSid'):
+	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	pwd_set = False
 	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring('(objectSid=%s)' % objectSid), ['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
-	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
-	dBCSPwd_attr = res[0][1].get('dBCSPwd', [None])[0]
-	userPrincipalName_attr = res[0][1].get('userPrincipalName', [None])[0]
-	supplementalCredentials = res[0][1].get('supplementalCredentials', [None])[0]
-	msDS_KeyVersionNumber = res[0][1].get('msDS-KeyVersionNumber', [0])[0]
+	s4_search_attributes = res[0][1]
+
+	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
+	dBCSPwd_attr = s4_search_attributes.get('dBCSPwd', [None])[0]
+	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
+	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
+	msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
 
 	s4NThash = None
@@ -661,6 +666,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
 	res = s4connector.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet'])
+	s4_object_attributes = res[0][1]
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
@@ -668,28 +674,30 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		return
 
 	pwdLastSet = None
-	if 'pwdLastSet' in res[0][1]:
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
+	if 'pwdLastSet' in s4_object_attributes:
+		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, res))
-	objectSid = univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0])
+	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 
 	# rid = None
-	# if res[0][1].has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+	# if s4_object_attributes.has_key('objectSid'):
+	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	res = s4connector.lo_s4.lo.search_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, compatible_modstring(
 		'(objectSid=%s)' % objectSid), ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
-	unicodePwd_attr = res[0][1].get('unicodePwd', [None])[0]
+	s4_search_attributes = res[0][1]
+
+	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
 	if unicodePwd_attr:
 		ntPwd = binascii.b2a_hex(unicodePwd_attr).upper()
 
 		lmPwd = ''
-		dBCSPwd = res[0][1].get('dBCSPwd', [None])[0]
+		dBCSPwd = s4_search_attributes.get('dBCSPwd', [None])[0]
 		if dBCSPwd:
 			lmPwd = binascii.b2a_hex(dBCSPwd).upper()
 
-		supplementalCredentials = res[0][1].get('supplementalCredentials', [None])[0]
-		msDS_KeyVersionNumber = res[0][1].get('msDS-KeyVersionNumber', [0])[0]
+		supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
+		msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 
 		ntPwd_ucs = ''
 		lmPwd_ucs = ''
@@ -697,31 +705,32 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		userPassword = ''
 		modlist = []
 		res = s4connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
+		ucs_object_attributes = res[0][1]
 
-		services = res[0][1].get('univentionService', [])
+		services = ucs_object_attributes.get('univentionService', [])
 		if 'S4 SlavePDC' in services:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: %s is a S4 SlavePDC server, skip password sync" % ucs_object['dn'])
 			return
 
-		if 'sambaNTPassword' in res[0][1]:
-			ntPwd_ucs = res[0][1]['sambaNTPassword'][0]
-		if 'sambaLMPassword' in res[0][1]:
-			lmPwd_ucs = res[0][1]['sambaLMPassword'][0]
-		if 'krb5PrincipalName' in res[0][1]:
-			krb5Principal = res[0][1]['krb5PrincipalName'][0]
-		if 'userPassword' in res[0][1]:
-			userPassword = res[0][1]['userPassword'][0]
+		if 'sambaNTPassword' in ucs_object_attributes:
+			ntPwd_ucs = ucs_object_attributes['sambaNTPassword'][0]
+		if 'sambaLMPassword' in ucs_object_attributes:
+			lmPwd_ucs = ucs_object_attributes['sambaLMPassword'][0]
+		if 'krb5PrincipalName' in ucs_object_attributes:
+			krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
+		if 'userPassword' in ucs_object_attributes:
+			userPassword = ucs_object_attributes['userPassword'][0]
 		sambaPwdLastSet = None
-		if 'sambaPwdLastSet' in res[0][1]:
-			sambaPwdLastSet = res[0][1]['sambaPwdLastSet'][0]
+		if 'sambaPwdLastSet' in ucs_object_attributes:
+			sambaPwdLastSet = ucs_object_attributes['sambaPwdLastSet'][0]
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 		sambaPwdMustChange = ''
-		if 'sambaPwdMustChange' in res[0][1]:
-			sambaPwdMustChange = res[0][1]['sambaPwdMustChange'][0]
+		if 'sambaPwdMustChange' in ucs_object_attributes:
+			sambaPwdMustChange = ucs_object_attributes['sambaPwdMustChange'][0]
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
-		krb5Key_ucs = res[0][1].get('krb5Key', [])
-		userPassword_ucs = res[0][1].get('userPassword', [None])[0]
-		krb5KeyVersionNumber = res[0][1].get('krb5KeyVersionNumber', [None])[0]
+		krb5Key_ucs = ucs_object_attributes.get('krb5Key', [])
+		userPassword_ucs = ucs_object_attributes.get('userPassword', [None])[0]
+		krb5KeyVersionNumber = ucs_object_attributes.get('krb5KeyVersionNumber', [None])[0]
 
 		pwd_changed = False
 		if ntPwd != ntPwd_ucs:
@@ -748,16 +757,16 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			# Update password expiry interval
 			#
 			# update shadowLastChange to now
-			old_shadowLastChange = res[0][1].get('shadowLastChange', [None])[0]
+			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
 			new_shadowLastChange = str(long(time.time()) / 3600 / 24)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
 			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
 			policies = s4connector.lo.getPolicies(ucs_object['dn'])
-			old_shadowMax = res[0][1].get('shadowMax', [None])[0]
+			old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
 			new_shadowMax = None
-			old_krb5end = res[0][1].get('krb5PasswordEnd', [None])[0]
+			old_krb5end = ucs_object_attributes.get('krb5PasswordEnd', [None])[0]
 			new_krb5end = None
 			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
 			if pwexp:
