@@ -221,7 +221,7 @@ prepare_docker_app_container ()
 	# TODO: build functionality for non appbox docker apps
 	if app_appliance_IsDockerApp "$app"; then
 		php7_required=false
-		if [ "$app" == "owncloud91" ]; then
+		if [ "$app" == "owncloud82" ]; then
 			php7_required=true
 		fi
 
@@ -1037,11 +1037,11 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
 	fi
 
-	if [ "$app" = "owncloud91" ]; then
+	if [ "$app" = "owncloud82" ]; then
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
 #!/bin/bash
 
-APP=owncloud91
+APP=owncloud82
 
 # Fix trusted domains value
 ips="\$(python  -c "
