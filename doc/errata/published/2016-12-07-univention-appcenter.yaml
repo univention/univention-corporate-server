@@ -18,3 +18,5 @@ desc: |
    version was removed even the installation process of the new version was
    not successful.
 bug: [43040, 42798, 42834, 42761, 43074, 43075, 42969]
+erratum: 351
+announced: 2016-12-07
