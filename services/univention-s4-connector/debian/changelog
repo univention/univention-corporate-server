@@ -1,3 +1,19 @@
+univention-ad-connector (11.0.2-7) unstable; urgency=medium
+
+  * Bug #32086: Fix LDAP DN escaping. All DN (de-)constructions are now done via
+    `ldap.dn.{dn2str,str2dn}`, enabeling proper escaping.
+  * Bug #32086: Fix LDAP filter escaping. All LDAP filter strings are now
+    constructed via a new method `format_escaped()`, if there were not already
+    constructed using the old `filter_format()`.
+  * Bug #32086: Unify LDAP operations. Instead of raw searches on the underlying
+    LDAP connection, `uldap.access.{search, get, getAttr}()` was introduced to
+    profit from the existing wrapper.
+  * Bug #32086: General cleanup. Some unused variables were removed. Some
+    internal variables were renamed to something meaningful. Some unused imports
+    were removed.
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 07 Dec 2016 18:41:01 +0100
+
 univention-ad-connector (11.0.2-6) unstable; urgency=low
 
   * Bug #41571: avoid overwriting the nTSecurityDescriptor in ntsd_to_s4
