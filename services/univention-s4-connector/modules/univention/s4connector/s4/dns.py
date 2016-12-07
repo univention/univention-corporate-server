@@ -397,7 +397,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						s4_RR_val = target_RR_val
 					else:
 						# Fallback, e.g. for new zones
-						zone_dn = 'zoneName=%s,%s' % (target_zone_name, s4connector.property['dns'].ucs_default_dn)
+						zone_dn = __get_zone_dn(s4connector, target_zone_name)
 					if '@' == s4_RR_val:
 						newdn = zone_dn
 					elif 'dnsZone' in s4_ocs:
@@ -423,6 +423,12 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 
 ''' HELPER functions '''
+
+
+def __get_zone_dn(s4connector, zone_name):
+	default_dn = s4connector.property['dns'].ucs_default_dn
+	zone_rdn = [('zoneName', zone_name, ldap.AVA_STRING)]
+	return ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(default_dn))
 
 
 def __append_dot(str):
@@ -979,7 +985,7 @@ def ucs_host_record_create(s4connector, object):
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: do not modify host record')
 	else:
-		zoneDN = 'zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: zoneDN: %s' % zoneDN)
 		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, zoneDN)
@@ -1049,7 +1055,7 @@ def ucs_ptr_record_create(s4connector, object):
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: do not modify ptr record')
 	else:
-		zoneDN = 'zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: superordinate: %s' % superordinate)
@@ -1106,7 +1112,7 @@ def ucs_cname_create(s4connector, object):
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: do not modify cname record')
 	else:
-		zoneDN = 'zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: superordinate: %s' % superordinate)
@@ -1187,7 +1193,7 @@ def ucs_srv_record_create(s4connector, object):
 			else:
 				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify srv record')
 	else:
-		zoneDN = 'zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: superordinate: %s' % superordinate)
@@ -1307,7 +1313,7 @@ def ucs_txt_record_create(s4connector, object):
 		else:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: do not modify txt record')
 	else:
-		zoneDN = 'zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, zoneDN)
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: superordinate: %s' % superordinate)
