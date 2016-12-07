@@ -9,3 +9,5 @@ desc: |
  * A fallback to the machine account has been added
    to univention_license_ldap_init().
 bug: [35157]
+erratum: 352
+announced: 2016-12-07
