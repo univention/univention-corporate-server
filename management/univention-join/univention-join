@@ -618,8 +618,6 @@ rdn=${ldap_dn%%,*}
 hostname=${rdn#cn=}
 [ -n "$hostname" ] ||
 	failed_message "Could not get canonical writing of hostname from DN $ldap_dn"
-hostname "$hostname"
-univention-config-registry set hostname="$hostname" ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 
 if [ -n "$KerberosPasswd" ]; then
 		if [ -e /etc/machine.secret ]; then
@@ -639,6 +637,9 @@ if [ -n "$KerberosPasswd" ]; then
 			failed_message "$(<"$USERTMP/scrubbed")"
 		fi
 	fi
+
+hostname "$hostname"
+univention-config-registry set hostname="$hostname" ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 
 if [ -e "/usr/lib/univention-install/.index.txt" ]; then
 	mkdir -p /var/univention-join/
