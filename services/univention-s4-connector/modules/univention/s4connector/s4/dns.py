@@ -34,12 +34,13 @@
 from __future__ import absolute_import
 import ldap
 import string
-from ldap.filter import escape_filter_chars, filter_format
+from ldap.filter import filter_format
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 from univention.s4connector.s4 import compatible_modstring
+from univention.s4connector.s4 import format_escaped
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
@@ -207,7 +208,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				s4dn_utf16_le = None
 				s4_zone_dn = None
 				if '@' == relativeDomainName:  # or dn starts with 'zoneName='
-					s4_filter = '(&(objectClass=dnsZone)(%s=%s))' % (s4_RR_attr, escape_filter_chars(compatible_modstring(ol_zone_name)))
+					s4_filter = format_escaped('(&(objectClass=dnsZone)({0}={1!e}))', s4_RR_attr, compatible_modstring(ol_zone_name))
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4")
 					for base in s4connector.s4_ldap_partitions:
 						result = s4connector._s4__search_s4(
@@ -255,7 +256,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						s4_zone_dn = s4_soa_object['dn']
 
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4 base %s" % (s4_zone_dn,))
-					s4_filter = '(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, escape_filter_chars(compatible_modstring(target_RR_val)))
+					s4_filter = format_escaped('(&{0}({1}={2!e}))', s4_RR_filter, s4_RR_attr, compatible_modstring(target_RR_val))
 					result = s4connector._s4__search_s4(
 						s4_zone_dn,
 						ldap.SCOPE_SUBTREE,
@@ -370,7 +371,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					# could use a specific LDAP filter here, but not necessary:
 					# ol_oc_filter = '(&(objectClass=dNSZone)(!(|(univentionObjectType=dns/forward_zone)(univentionObjectType=dns/reverse_zone))))'
 
-				s4_filter = '(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, escape_filter_chars(target_RR_val))
+				s4_filter = format_escaped('(&{0}({1}={2!e}))', ol_oc_filter, ol_search_attr, target_RR_val)
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS filter: %s" % s4_filter)
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS base: %s" % (base,))
 				try:
