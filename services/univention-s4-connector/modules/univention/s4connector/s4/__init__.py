@@ -44,7 +44,7 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
-from ldap.controls import SimplePagedResultsControl, LDAPControl
+from ldap.controls import SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
