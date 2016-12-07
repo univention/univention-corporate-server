@@ -303,15 +303,18 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 				while (not s4_RR_val):  # in case of olddn this is already set
 					i = i + 1
-					search_dn = obj.get('deleted_dn', dn)
+					search_base_dn = compatible_modstring(obj.get('deleted_dn', dn))
 					try:
-						s4_RR_val = univention.s4connector.s4.encode_attrib(
-							s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, s4_RR_filter, [s4_RR_attr])[0][1][s4_RR_attr][0])
-						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
+						search_result = s4connector.lo_s4.search(filter=s4_RR_filter, base=search_base_dn, scope='base', attr=[s4_RR_attr], required=True)
 					except ldap.NO_SUCH_OBJECT:  # S4 may need time
 						if i > 5:
 							raise
 						time.sleep(1)  # S4 may need some time...
+					else:
+						(_search_result_dn, search_result_attributes) = search_result[0]
+						raw_s4_rr_val = search_result_attributes.get(s4_RR_attr)[0]
+						s4_RR_val = univention.s4connector.s4.encode_attrib(raw_s4_rr_val)
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
@@ -737,7 +740,7 @@ def s4_zone_create(s4connector, object):
 
 	# Create the forward zone in S4 if it does not exist
 	try:
-		searchResult = s4connector.lo_s4.lo.search_s(zone_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['dn'])
+		_ = s4connector.lo_s4.getAttr(zone_dn, 'dn', required=True)
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone(s4connector, zone_dn)
 
@@ -745,9 +748,7 @@ def s4_zone_create(s4connector, object):
 	old_dnsRecords = []
 
 	try:
-		searchResult = s4connector.lo_s4.lo.search_s(soa_dn, ldap.SCOPE_BASE, '(objectClass=*)')
-		if searchResult and searchResult[0][1]:
-			old_dnsRecords = searchResult[0][1].get('dnsRecord')
+		old_dnsRecords = s4connector.lo_s4.getAttr(soa_dn, 'dnsRecord', required=True)
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone_soa(s4connector, soa_dn)
 
@@ -884,13 +885,11 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
 	# Create dnsNode object
 	dnsNodeDn = object['dn']
 	try:
-		searchResult = s4connector.lo_s4.lo.search_s(dnsNodeDn, ldap.SCOPE_BASE, '(objectClass=*)')
-		if searchResult and searchResult[0][1]:
-			old_dnsRecords = searchResult[0][1].get('dnsRecord')
+		old_dnsRecords = s4connector.lo_s4.getAttr(dnsNodeDn, 'dnsRecord', required=True)
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords)
 	else:
-		res = s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
+		_res = s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
 	return dnsNodeDn
 
