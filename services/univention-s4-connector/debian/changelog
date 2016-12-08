@@ -1,4 +1,4 @@
-univention-ad-connector (11.0.2-7) unstable; urgency=medium
+univention-s4-connector (11.0.2-7) unstable; urgency=medium
 
   * Bug #32086: Fix LDAP DN escaping. All DN (de-)constructions are now done via
     `ldap.dn.{dn2str,str2dn}`, enabeling proper escaping.
@@ -14,7 +14,7 @@ univention-ad-connector (11.0.2-7) unstable; urgency=medium
 
  -- Lukas Oyen <oyen@univention.de>  Wed, 07 Dec 2016 18:41:01 +0100
 
-univention-ad-connector (11.0.2-6) unstable; urgency=low
+univention-s4-connector (11.0.2-6) unstable; urgency=low
 
   * Bug #41571: avoid overwriting the nTSecurityDescriptor in ntsd_to_s4
     post_con_*_functions if the uSNChanged was modified with respect to
@@ -22,7 +22,7 @@ univention-ad-connector (11.0.2-6) unstable; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Mon, 05 Dec 2016 21:38:57 +0100
 
-univention-ad-connector (11.0.2-5) unstable; urgency=low
+univention-s4-connector (11.0.2-5) unstable; urgency=low
 
   * Bug #40659: Fix check for running proceeses with Docker
 
