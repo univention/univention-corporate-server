@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-19) unstable; urgency=medium
+
+  * Bug #42928: Fix create_object_if_not_exists: Special objectFlag handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Dec 2016 00:58:52 +0100
+
 univention-appcenter (5.0.23-18) unstable; urgency=medium
 
   * Bug #42928: Fix create_object_if_not_exists not catching important
