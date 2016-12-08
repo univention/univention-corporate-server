@@ -88,12 +88,14 @@ def create_object_if_not_exists(module, lo, pos, **kwargs):
 	if 'policies' in kwargs:
 		obj.policies = kwargs.pop('policies')
 	for key, value in kwargs.iteritems():
-		obj.info[key] = value
+		obj[key] = value
+	dn = obj._ldap_dn()
 	try:
+		existing_obj = init_object(module, lo, pos, dn)
+		if not existing_obj.exists():  # workaround for Bug #38110, will be fixed in UCS 4.2
+			raise udm_errors.noObject(dn)
+	except udm_errors.noObject:
 		obj.create()
-	except udm_errors.objectExists:
-		pass
-	else:
 		return obj
 
 
