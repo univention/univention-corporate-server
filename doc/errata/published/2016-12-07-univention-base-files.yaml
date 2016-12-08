@@ -49,7 +49,7 @@ desc: |
 
  * The configuration for 'logrotate' has been extended to allow a file-by-file
    configuration through the UCR variables 'logrotate/$facility/...'. All
-   remaining files are handles by 'logroate/syslog-other/...'.
+   remaining files are handled by 'logroate/syslog-other/...'.
 bug: [15728,41815,41816]
 erratum: 353
 announced: 2016-12-07
