@@ -88,7 +88,10 @@ def create_object_if_not_exists(module, lo, pos, **kwargs):
 	if 'policies' in kwargs:
 		obj.policies = kwargs.pop('policies')
 	for key, value in kwargs.iteritems():
-		obj[key] = value
+		if key == 'objectFlag':
+			obj.info[key] = value
+		else:
+			obj[key] = value
 	dn = obj._ldap_dn()
 	try:
 		existing_obj = init_object(module, lo, pos, dn)
