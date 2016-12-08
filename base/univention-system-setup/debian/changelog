@@ -1,3 +1,9 @@
+univention-system-setup (9.0.5-7) unstable; urgency=medium
+
+  * Bug #42944: Revert log level output from error to info
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Dec 2016 14:47:23 +0100
+
 univention-system-setup (9.0.5-6) unstable; urgency=medium
 
   * Bug #42944: Adjust net_apply to update DNS settings correctly

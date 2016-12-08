@@ -305,7 +305,7 @@ def run_networkscrips(demo_mode=False):
 		for scriptpath in sorted(os.listdir(netpath)):
 			scriptpath = os.path.join(netpath, scriptpath)
 			# launch script
-			MODULE.error('Running script %s\n' % scriptpath)
+			MODULE.info('Running script %s\n' % scriptpath)
 			# appliance-mode for temporary saving the old ip address
 			# network-only for not restarting all those services (time consuming!)
 			p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
