@@ -7,9 +7,9 @@ fix: 10.0.2-16.516.201612051207
 desc: |
  This update addresses the following issues:
  * The setup wizard's function to determine the LDAP bind DN for
-   the given connector user has been improved.
+   the given connector user now searches for the LDAP bind DN.
  * Don't remove group members if the group exists on both sides 
-   during the first sync
+   during the first sync.
  * The init-script has been fixed to check for an already running instance of
    the AD connector. The PID file is removed on shutdown. The 'status' action
    has been added, too.
