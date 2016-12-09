@@ -1,3 +1,10 @@
+ucs-test (6.0.37-23) unstable; urgency=medium
+
+  * 55_adconnector/101sync_initial_membership_ad_to_ucs: create one
+    group on both sides (Bug #43070)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Dec 2016 06:58:54 +0100
+
 ucs-test (6.0.37-22) unstable; urgency=medium
 
   * 00_checks/46_ntacl_sysvolcheck: Disable test case in UCS@school
