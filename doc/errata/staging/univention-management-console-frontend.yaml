@@ -6,5 +6,6 @@ src: univention-management-console-frontend
 fix: 5.0.63-58.1252.201612061426
 desc: |
  This update addresses the following issue(s):
- * erroneous pop-ups when clicking a non UMC module link on the overview page
+ * Erroneous pop-ups when clicking a non UMC module link on
+   the overview page are no longer generated
 bug: [42980]
