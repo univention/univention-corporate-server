@@ -1,3 +1,10 @@
+ucs-test (7.0.6-30) unstable; urgency=medium
+
+  * 55_adconnector/101sync_initial_membership_ad_to_ucs: create one
+    group on both sides (Bug #43070)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Dec 2016 06:59:49 +0100
+
 ucs-test (7.0.6-29) unstable; urgency=medium
 
   * Bug #42834: minor code adjustments
