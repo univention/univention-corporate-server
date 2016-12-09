@@ -32,25 +32,26 @@ basic_setup ()
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
 		echo "KVM detected"
 		ucr set --force updater/identify="UCS (EC2 Test)"
-		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
-		# wait until Univention System Setup is running and profile file has been moved
-	else
+	elif ip -4 addr show | grep -Fq 'inet 10.210.'
+	then
 		echo "Assuming Amazon Cloud"
-		echo "supersede routers 10.210.216.13;" >> /etc/dhcp/dhclient.conf.local
-		ip route replace default via 10.210.216.13  # VPN gateway
-		ip route replace 169.254.169.254 dev eth0  # EC2 meta-data service
-		ucr set gateway='10.210.216.13'
+		GW='10.210.216.13' MDS='169.254.169.254'
+		echo "supersede rfc3442-classless-static-routes 32,${MDS//./,},0,0,0,0,0,${GW//./,};" >> /etc/dhcp/dhclient.conf.local
+		ip route replace default via "$GW"  # VPN gateway
+		ip route replace "$MDS" dev eth0  # EC2 meta-data service
+		ucr set gateway="$GW"
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		# set dns/forwarder*, this should prevent a later bind restart (Bug #39807)
 		i=1; cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do ucr set dns/forwarder$i=$ns; i="$((i+1))"; done
 		ucr set --force updater/identify="UCS (EC2 Test)"
-		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
 			/usr/sbin/grub-mkdevicemap
 			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
 		fi
 	fi
+	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+	# wait until Univention System Setup is running and profile file has been moved
 	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f /opt/firefox/firefox ; do
 		sleep 1s
 	done
