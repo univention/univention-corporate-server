@@ -1,3 +1,10 @@
+ucs-test (7.0.6-31) unstable; urgency=medium
+
+  * 55_adconnector/273read_ad_rename_nested_group: Added test case
+    (Bug #42840)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Dec 2016 21:33:00 +0100
+
 ucs-test (7.0.6-30) unstable; urgency=medium
 
   * 55_adconnector/101sync_initial_membership_ad_to_ucs: create one

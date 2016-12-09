@@ -1,0 +1,87 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Create an AD-Group and change its name in read-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## bugs:
+##  - 42840
+## tags:
+##  - groupsync
+##  - skip_admember
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+gp1="T$(random_chars)"
+gp2="T$(random_chars)"
+gp3="T$(random_chars)"
+AD_GROUP_DN1="CN=$gp1,CN=groups,$(ad_get_base)"
+AD_GROUP_DN2="CN=$gp2,CN=groups,$(ad_get_base)"
+AD_GROUP_DN3="CN=$gp3,CN=groups,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "read"
+
+ad_group_create "$gp1" || fail_test 110
+ad_group_create "$gp2" || fail_test 110
+ad_group_create "$gp3" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN1" "member" "$AD_GROUP_DN3" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN1"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN2"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN3"; fail_bool 0 110
+
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN3"; fail_bool 0 110
+
+UDM_groups_group_name="$gp1"
+udm_exists "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$gp2"
+udm_exists "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$gp3"
+udm_exists "groups/group"; fail_bool 0 110
+
+UDM_groups_group_name="$gp1"
+udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
+	"cn=$gp2,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
+	"cn=$gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+
+univention-ldapsearch cn=$gp1
+
+section "Rename group"
+
+n_gp3="U$(random_chars)"
+AD_GROUP_DN_N3="CN=$n_gp3,CN=groups,$(ad_get_base)"
+ad_set_attribute "$AD_GROUP_DN3" "sAMAccountName" "$n_gp3" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch cn=$gp1
+
+UDM_groups_group_name="$gp1"
+udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
+	"cn=$gp2,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
+	"cn=$n_gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+member_result=$(univention-ldapsearch "cn=$gp1" | ldapsearch-wrapper | sed -ne 's|^uniqueMember: ||p' | grep -i "cn=$gp3,cn=groups,$ldap_base")
+test -n "$member_result" &&  fail_test 110
+
+section "Clean up"
+
+ad_delete "$AD_GROUP_DN1" || fail_test 110
+ad_delete "$AD_GROUP_DN2" || fail_test 110
+ad_delete "$AD_GROUP_DN3" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
