@@ -761,8 +761,14 @@ class object(univention.admin.handlers.simpleLdap):
 		# rewrite membership attributes in "supergroup" if we have a new name (rename)
 		if old_name and old_name != new_name:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: rewrite memberuid after rename')
-			newdn = self.dn
-			newdn = newdn.replace(old_name, new_name, 1)
+			ldapdn = ldap.dn.str2dn(self.dn)
+			newldaprdn = []
+			for attr, val, ava_type in ldapdn[0]:
+				if attr.lower() == 'cn' and val.lower() == new_name.lower():
+					val = new_name
+				newldaprdn.append((attr, new_name, ava_type))
+			ldapdn[0] = newldaprdn
+			newdn = ldap.dn.dn2str(ldapdn)
 			for group in self.info.get('memberOf', []):
 				if isinstance(group, type([])):
 					group = group[0]
