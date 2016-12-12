@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-extsec3.1
 src: openssl
-fix: 0.9.8o-4.121.201605261444
+fix: 0.9.8o-4.119.201606131207
 desc: |
  This update fixes the following issues:
  * PKCS#7 and CMS routines: malformed X509_ATTRIBUTE structure OpenSSL
