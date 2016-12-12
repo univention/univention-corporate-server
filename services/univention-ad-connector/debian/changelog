@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.5-7) unstable; urgency=low
+
+  * Bug #42998: support windowscomputer in group_members_sync_to_ucs
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2016 15:14:32 +0100
+
 univention-ad-connector (11.0.5-6) unstable; urgency=low
 
   * Bug #40659: Fix check for running proceeses with Docker
