@@ -6,6 +6,8 @@ src: python-imaging
 fix: 1.1.7-4~ucs3.3.16.201611171204
 desc: |
  This update addresses the following issue(s):
+ * PIL/IcnsImagePlugin.py allows remote attackers to cause a denial
+   of service via a crafted block size (CVE-2014-3589)
  * Execution of arbitrary code due to buffer overflow in FliDecode.c
    (CVE-2016-0775)
  * Remote denial of service (crash) via a crafted PhotoCD file due
@@ -21,6 +23,7 @@ desc: |
    Storage.c component. (CVE-2016-9190)
 bug: [42900]
 cve:
+ - CVE-2014-3589
  - CVE-2016-0775
  - CVE-2016-2533
  - CVE-2016-9189
