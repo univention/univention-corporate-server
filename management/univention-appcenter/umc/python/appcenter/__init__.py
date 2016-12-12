@@ -367,6 +367,8 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
+		if function == 'upgrade':
+			app = AppManager.find_candidate(app)
 		serious_problems = False
 		progress.title = _('%s: Running tests') % (app.name,)
 		errors, warnings = app.check(function)

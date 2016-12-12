@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-20) unstable; urgency=medium
+
+  * Bug #43038: Show migration link for Docker versions if available
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Dec 2016 18:48:32 +0100
+
 univention-appcenter (5.0.23-19) unstable; urgency=medium
 
   * Bug #42928: Fix create_object_if_not_exists: Special objectFlag handling

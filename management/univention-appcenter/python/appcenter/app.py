@@ -723,6 +723,10 @@ class App(object):
 			App implicitly becomes a Docker App.
 		docker_migration_works: Whether it is safe to install this
 			version while a non Docker version is or was installed.
+		docker_migration_link: A link to document where the necessary
+			steps to migrate the App from a Non-Docker version to a
+			Docker version are described. Only useful when
+			*docker_migration_works = False*.
 		docker_allowed_images: List of other Docker Images. Used for
 			updates. If the new version has a new *docker_image*
 			but the old App runs on an older image specified in
@@ -872,6 +876,7 @@ class App(object):
 
 	docker_image = AppAttribute()
 	docker_migration_works = AppBooleanAttribute()
+	docker_migration_link = AppAttribute()
 	docker_allowed_images = AppListAttribute()
 	docker_shell_command = AppAttribute(default='/bin/bash')
 	docker_volumes = AppListAttribute()
@@ -1368,12 +1373,14 @@ class App(object):
 		on the Active Directory domain controller server.'''
 		return not self._has_active_ad_member_issue('password')
 
-	@soft_requirement('install', 'upgrade')
+	@hard_requirement('install', 'upgrade')
 	def shall_not_be_docker_if_discouraged(self):
 		'''The application has not been approved to migrate all
-		existing data.'''
+		existing data. Maybe there is a migration guide: %(migration_guide)s'''
 		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
-		return not problem
+		if problem:
+			return {'migration_link': self.docker_migration_link}
+		return True
 
 	def check(self, function):
 		package_manager = get_package_manager()
@@ -1594,7 +1601,7 @@ class AppManager(object):
 		app_version = LooseVersion(app.version)
 		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
 		for _app in apps:
-			if prevent_docker and _app.docker and not _app.docker_migration_works:
+			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
 				continue
 			if _app <= app:
 				break

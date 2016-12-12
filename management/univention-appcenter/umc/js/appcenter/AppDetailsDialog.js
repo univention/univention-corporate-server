@@ -199,17 +199,20 @@ define([
 						content: foundRequirement.toHTML(this.app, details)
 					}));
 					if (foundRequirement.solution) {
-						container.addChild(new Button({
-							name: 'solution' + i,
-							label: foundRequirement.buttonLabel(this.app, details),
-							callback: lang.hitch(this, function() {
-								opts.action = this.actionLabel;
-								var deferred = foundRequirement.solution(opts, details);
-								if (!foundRequirement.stayAfterSolution) {
-									when(deferred).always(lang.hitch(this, 'onBack', false));
-								}
-							})
-						}));
+						var label = foundRequirement.buttonLabel(this.app, details);
+						if (label) {
+							container.addChild(new Button({
+								name: 'solution' + i,
+								label: label,
+								callback: lang.hitch(this, function() {
+									opts.action = this.actionLabel;
+									var deferred = foundRequirement.solution(opts, details);
+									if (!foundRequirement.stayAfterSolution) {
+										when(deferred).always(lang.hitch(this, 'onBack', false));
+									}
+								})
+							}));
+						}
 					}
 				}));
 				this._container.addChild(container);
