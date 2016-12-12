@@ -1814,7 +1814,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
-		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': []}
+		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': [], 'windowscomputer': [],}
 
 		self.group_members_cache_con[ad_object['dn'].lower()] = []
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Reset con cache")
@@ -1863,7 +1863,7 @@ class ad(univention.connector.ucs):
 
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
-			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group'] or member_dn.lower() in ucs_members_from_ad['unknown']):
+			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group'] or member_dn.lower() in ucs_members_from_ad['unknown'] or member_dn.lower() in ucs_members_from_ad['windowscomputer']):
 				try:
 					cache[member_dn] = self.lo.get(member_dn)
 					ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': cache[member_dn]}
@@ -1893,7 +1893,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s" % (dn_mapping_ucs_member_to_ad))
 		add_members = copy.deepcopy(ucs_members_from_ad)
-		del_members = {'user': [], 'group': []}
+		del_members = {'user': [], 'group': [], 'windowscomputer': [],}
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members_from_ad: %s" % ucs_members_from_ad)
@@ -1905,6 +1905,8 @@ class ad(univention.connector.ucs):
 				add_members['group'].remove(member_dn.lower())
 			elif member_dn.lower() in ucs_members_from_ad['unknown']:
 				add_members['unknown'].remove(member_dn.lower())
+			elif member_dn.lower() in ucs_members_from_ad['windowscomputer']:
+				add_members['windowscomputer'].remove(member_dn.lower())
 			else:
 				# remove member only if he was in the cache
 				# otherwise it is possible that the user was just created on UCS
@@ -1917,7 +1919,7 @@ class ad(univention.connector.ucs):
 						cache[member_dn] = ucs_object_attr
 					ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': ucs_object_attr}
 
-					if not self._ignore_object('user', ucs_object) and not self._ignore_object('group', ucs_object):
+					if not self._ignore_object('user', ucs_object) and not self._ignore_object('group', ucs_object) and not self._ignore_object('windowscomputer', ucs_object):
 						for k in self.property.keys():
 							# identify if DN is a user or a group (will be ignored it is a host)
 							if self.modules[k].identify(member_dn, ucs_object['attributes']):
@@ -1929,18 +1931,18 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
 
-		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown']:
+		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown'] or add_members['windowscomputer'] or del_members['windowscomputer']:
 			ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()
 
-			uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown']
-			uniqueMember_del = del_members['user'] + del_members['group']
+			uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown'] + add_members['windowscomputer']
+			uniqueMember_del = del_members['user'] + del_members['group'] + del_members['windowscomputer']
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
 				uid = ldap.explode_dn(member)[0].split('=')[-1]
 				memberUid_add.append(uid)
-			for member in add_members['unknown']:  # user or group?
+			for member in add_members['unknown'] + add_members['windowscomputer']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
 				uid = ucs_object_attr.get('uid')
 				if uid:
@@ -1948,6 +1950,11 @@ class ad(univention.connector.ucs):
 			for member in del_members['user']:
 				uid = ldap.explode_dn(member)[0].split('=')[-1]
 				memberUid_del.append(uid)
+			for member in del_members['windowscomputer']:
+				ucs_object_attr = self.lo.get(member)
+				uid = ucs_object_attr.get('uid')
+				if uid:
+					memberUid_del.append(uid[0])
 			if uniqueMember_del or memberUid_del:
 				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
 			if uniqueMember_add or memberUid_del:
