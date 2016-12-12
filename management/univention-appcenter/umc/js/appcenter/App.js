@@ -100,6 +100,7 @@ define([
 			this.isUCSComponent = props.is_ucs_component;
 			this.isDocker = !!props.docker_image;
 			this.candidateIsDocker = !!props.candidate_docker;
+			this.dockerMigrationLink = props.docker_migration_link;
 			this.autoStart = props.autostart;
 			this.autoModProxy = props.auto_mod_proxy;
 			this.config = props.config;

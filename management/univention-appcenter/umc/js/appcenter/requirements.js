@@ -63,7 +63,7 @@ define([
 
 		_renderSolution: function(app, details) {
 			if (this.solutionDescription) {
-				return this.solutionDescription(this._makeDetails(app, details));
+				return this.solutionDescription(this._makeDetails(app, details)) || '';
 			} else {
 				return '';
 			}
@@ -283,7 +283,20 @@ define([
 		}),
 		shall_not_be_docker_if_discouraged: new Requirement({
 			reasonDescription: function(details) {
-				return _('%(name)s uses a container technology for enhanced security and compatibility.', details) + ' ' + _('A version without a container technology is or was installed.') + ' ' + _('The application has not been approved to migrate all existing data.');
+				return _('%(name)s uses a container technology for enhanced security and compatibility.', details) + ' ' + _('A version without a container technology is or was installed.');
+			},
+			solutionDescription: function(details) {
+				if (details.migration_link) {
+					return _('Automatically migrating the Application and data (where required) is not supported; however, a document exists, which guides through the manual steps to do so.');
+				}
+			},
+			solutionLabel: function(details) {
+				if (details.migration_link) {
+					return _('Open the migration guide');
+				}
+			},
+			solution: function(opts, details) {
+				window.open(details.migration_link);
 			}
 		}),
 		shall_have_enough_ram: new Requirement({
