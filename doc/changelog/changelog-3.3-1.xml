@@ -42,12 +42,6 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Linux kernel has been updated to <wordasword>3.16</wordasword>. It provides better hardware
-					support and many bugfixes (<u:bug>40687</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <package>open-vm-tools</package> package has been updated to <wordasword>9.4.6</wordasword>
-					in order to be compatible with the updated Linux kernel (<u:bug>40687</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -55,46 +49,6 @@
 			<title>Important package upgrades</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The GNU C Library package <package>eglibc</package> has been updated from <wordasword>2.11</wordasword> to
-					<wordasword>2.13</wordasword> (<u:bug>40695</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Linux Standard Base support package <package>lsb</package> has been updated to <wordasword>3.2-28.1</wordasword>
-					(<u:bug>40695</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>OpenSSH</package> has been updated to <wordasword>6.0</wordasword>
-					(<u:bug>40689</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Apache Tomcat package <package>tomcat6</package> has been upgraded to version 6.0.45 (<u:bug>40947</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The SQL server <package>MySQL</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The PHP package <package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
-					it with OpenJDK 7. The migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to
-					<literal>true</literal> (<u:bug>40692</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <package>libxml2</package> library has been upgraded to version 2.8.0 (<u:bug>40696</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>imagemagick</package> has been upgraded to version 8:6.7.7.10-5+deb7u5 (<u:bug>41330</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>graphicsmagick</package> has been upgraded to version 1.3.16-1.1+deb7u1 (<u:bug>41330</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-					The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The SQL server <package>PostgreSQL 9.1</package> has been added. The migration from PostgreSQL 8.4 should be done
-					after the upgrade to UCS 3.3 (<u:bug>40690</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -103,12 +57,10 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The errata level has been reset to <wordasword>0</wordasword> (<u:bug>40764</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:basic:nfs">
 			<title>NFS</title>
 			<itemizedlist>
@@ -140,9 +92,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:basic:quota">
 			<title>Quota</title>
 			<itemizedlist>
@@ -150,9 +100,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:basis:ucr:template">
 			<title>Changes to templates and modules</title>
 			<itemizedlist>
@@ -160,10 +108,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
-		<!--
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
@@ -195,7 +141,6 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-							Some replicated objects were not deleted, when the LDAP server closed its side of the LDAP connection (<u:bug>39439</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -209,14 +154,10 @@
 			</itemizedlist>
 		</section>
 	</section>
-		-->
 
-		<!--
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
-		-->
 
-		<!--
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
@@ -232,9 +173,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
 			<itemizedlist>
@@ -282,9 +221,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:umc:update">
 			<title>Online update module</title>
 			<itemizedlist>
@@ -292,9 +229,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:umc:share">
 			<title>Shares module</title>
 			<itemizedlist>
@@ -358,20 +293,15 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
-		<!--
 	</section>
-		-->
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 3.3 (<u:bug>40704</u:bug>, <u:bug>41068</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
-		<!--
+
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
@@ -387,10 +317,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
-	<!--
 	<section id="changelog:lib">
 		<title>Univention Library</title>
 		<itemizedlist>
@@ -398,12 +326,10 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-	-->
 
 	<section id="changelog:service">
 		<title>System services</title>
 
-		<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -451,13 +377,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:service:dhcp">
 			<title>DHCP</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The DHCP package <package>isc-dhcp</package> has been upgraded to version 4.2.2 (<u:bug>40694</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -466,13 +390,10 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The <package>openssl</package> package has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>).
-						Dependent packages have been rebuilt to use the new version.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:service:proxy">
 			<title>Proxy services</title>
 			<itemizedlist>
@@ -496,13 +417,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
 	<section id="changelog:virt">
 		<title>Virtualisation</title>
 
-	<!--
 		<section id="changelog:virt:uvmm">
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
@@ -510,13 +429,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-	-->
 
 		<section id="changelog:virt:xen">
 			<title>Xen</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The Xen hypervisor and related support packages have been updated to version 4.1.6.1 (<u:bug>40697</u:bug>, <u:bug>39689</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -525,42 +442,22 @@
 			<title>Libvirt</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The <package>libvirt</package> management tool for virtualization environments has been updated to version 1.2.9 (<u:bug>32744</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
 
-		<!--
 	<section id="changelog:win">
 		<title>Services for Windows</title>
-		-->
 
 		<section id="changelog:win:ad">
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>Samba</package> has been upgraded to version 2:4.3.7 (<u:bug>40698</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>ldb</package> has been upgraded to version 2:1.1.25-1 (<u:bug>40698</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>tdb</package> has been upgraded to version 1.3.8-1 (<u:bug>40698</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>tevent</package> has been upgraded to version 0.9.26-1 (<u:bug>40698</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>talloc</package> has been upgraded to version 2.1.5-1 (<u:bug>40698</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>univention-ldb-modules</package> has been recompiled for the new ldb library version (<u:bug>40698</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
@@ -577,13 +474,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Univention AD-Connector has been rebuilt with SSLv3 support (<u:bug>41079</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -595,7 +490,6 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The package <package>OpenOffice.org</package> has been rebuilt without Java support (<u:bug>40692</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

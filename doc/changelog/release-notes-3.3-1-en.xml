@@ -7,7 +7,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-3.3-0-en">
+<book lang="en" id="releasenotes-3.3-1-en">
 	<bookinfo>
 		<title>UCS 3.3 Release Notes</title>
 		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.3</subtitle>
@@ -45,25 +45,11 @@
 		<title>&ucsUCS; (UCS) 3.3</title>
 
 		<para>
-			The third minor release for &ucsUCS; (UCS) 3 is now available in the form of &ucsUCS; 3.3. An overview of the most important changes:
+			The first patch level release for &ucsUCS; (UCS) 3.3 is now available in the form of &ucsUCS; 3.3-1. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 		  <listitem><para>
-				The Linux kernel has been updated to version 3.16. This includes several security updates
-				as well as new and updated drivers for better hardware support. 
-		  </para></listitem>
-		  <listitem><para>
-				Samba has been updated to version 4.3.7. Besides many detail improvements, Samba 4.3 provides
-				support for SMB 3.1.1, which was introduced by Microsoft with Windows 10 and provides security
-				improvements and more features. 
-		  </para></listitem>
-		  <listitem><para>
-				Many system services have been updated such as the DHCP server, the Xen hypervisor or the SQL servers 
-				MySQL and PostgreSQL.
-		  </para></listitem>
-		  <listitem><para>
-				Several system libraries have been upgraded among others the GNU C library, OpenSSL or PHP5.
 		  </para></listitem>
 		</itemizedlist>
 
@@ -226,10 +212,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 3.2-8:
+			Listed are the changes since UCS 3.3-0:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

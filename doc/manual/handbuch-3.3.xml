@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="de" id="ucs-3.3-0">
+<book lang="de" id="ucs-3.3-1">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -18,8 +18,8 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 3.3-0
-Stand: 1. Juni 2016
+Version 3.3-1
+Stand: 21. Dezember 2016
       </literallayout>
 
       <literallayout lang="">

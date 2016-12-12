@@ -7,10 +7,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-3.3-0-de">
+<book lang="de" id="releasenotes-3.3-1-de">
 	<bookinfo>
-		<title>UCS 3.3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.3</subtitle>
+		<title>UCS 3.3-1 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.3-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -45,25 +45,11 @@
 		<title>&ucsUCS; (UCS) 3.3</title>
 
 		<para>
-			Mit &ucsUCS; 3.3 steht das dritte Minor-Release für &ucsUCS; (UCS) 3 zur Verfügung. Die wichtigsten Änderungen im Überblick:
+			Mit &ucsUCS; 3.3-1 steht das erste Patch-Level-Release für &ucsUCS; (UCS) 3.3 zur Verfügung. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 		  <listitem><para>
-				Der Linux Kernel wurde Version 3.16 aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen
-				sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung. 
-		  </para></listitem>
-		  <listitem><para>
-				Samba wurde auf Version 4.3.7 aktualisiert. Neben sehr vielen Detailverbesserungen bietet Samba 4.3
-				Unterstützung für SMB 3.1.1, welches Microsoft mit Windows 10 eingeführt hat und das eine höhere Sicherheit
-				und mehr Funktionen bietet. 
-		  </para></listitem>
-		  <listitem><para>
-				Viele Systemdienste wurden aktualisiert, wie beispielsweise der DHCP Server, der Xen Hypervisor oder die SQL-Server
-				MySQL oder PostgreSQL.
-		  </para></listitem>
-		  <listitem><para>
-				Diverse Systembibliotheken wurden aktualisiert, u.a. die GNU C-Bibliothek, OpenSSL oder PHP5.
 		  </para></listitem>
 		</itemizedlist>
 
@@ -222,10 +208,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 3.2-8:
+			Aufgeführt sind die Änderungen seit UCS 3.3-0:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

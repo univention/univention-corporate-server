@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
-MAIN := release-notes-3.3-0-en release-notes-3.3-0-de
+MAIN := release-notes-3.3-1-en release-notes-3.3-1-de
 STYLESHEET := univention_extdocs
 OPTIONS += --stringparam ulink.show 0
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../../../doc-common/docbook
 include $(COMMON_DIR)/Makefile
 
 $(addsuffix .epub,$(MAIN)): %.epub: $(SOURCES)
