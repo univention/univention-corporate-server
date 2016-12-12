@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3,4]
+scope: ucs_4.1-0-errata4.1-4
+src: samba
+fix: 2:4.5.1-1.849.201612121623
+desc: |
+ This update addresses the following issues:
+ * 
+bug: [43126,43130,43132,43144]
