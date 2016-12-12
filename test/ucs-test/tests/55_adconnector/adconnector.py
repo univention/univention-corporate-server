@@ -24,6 +24,19 @@ class ADConnection(ldap_glue.LDAPConnection):
 		no_starttls = baseConfig.is_false('%s/ad/ldap/ssl' % configbase)
 		self.connect(no_starttls)
 
+
+	def add_to_group(self, group_dn, member_dn):
+		self.append_to_attribute(group_dn, 'member', member_dn)
+
+	def remove_from_group(self, group_dn, member_dn):
+		self.remove_from_attribute(group_dn, 'member', member_dn)
+
+	def getdn(self, filter):
+		res = []
+		for dn, attr in self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, filter, timeout=10):
+			if dn:
+				print dn
+
 	def createuser(self, username, position=None, cn=None, sn=None, description=None):
 		if not position:
 			position = 'cn=users,%s' % self.adldapbase
