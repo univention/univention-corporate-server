@@ -36,6 +36,7 @@ basic_setup ()
 	then
 		echo "Assuming Amazon Cloud"
 		GW='10.210.216.13' MDS='169.254.169.254'
+		echo "supersede routers ${GW};" >> /etc/dhcp/dhclient.conf.local
 		echo "supersede rfc3442-classless-static-routes 32,${MDS//./,},0,0,0,0,0,${GW//./,};" >> /etc/dhcp/dhclient.conf.local
 		ip route replace default via "$GW"  # VPN gateway
 		ip route replace "$MDS" dev eth0  # EC2 meta-data service
