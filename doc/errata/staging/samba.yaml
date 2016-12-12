@@ -1,0 +1,10 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: samba
+fix: 4.3.7-1.828.201612121417
+desc: |
+ This update addresses the following issues:
+ * 
+bug: [43145]
