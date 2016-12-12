@@ -3,9 +3,11 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-19.247.201612090106
+fix: 5.0.23-20.248.201612121851
 desc: |
  This update addresses the following issue(s):
  * Fixed the utility function for creating LDAP objects not honoring existing
    objects.
-bug: [42928]
+ * When trying to upgrade to a Docker version of a formerly Non-Docker App, a
+   link to a migration guide is shown if avaiable.
+bug: [42928, 43038]
