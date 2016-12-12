@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test sync of group memberships for windows computer from AD to UCS in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - groupsync
+##  - skip_admember
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+# create a group, two windows computer and put them into the new group
+UDM_computers_windows_name="wcomp1"
+udm_create "computers/windows" || fail_test 110
+UDM_computers_windows_name="wcomp2"
+udm_create "computers/windows" || fail_test 110
+UDM_groups_group_name="wcomp-group"
+udm_create "groups/group" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+# get ad dn's
+wcomp1_dn="$(ad_get_dn '(&(cn=wcomp1)(objectClass=computer))')"
+wcomp2_dn="$(ad_get_dn '(&(cn=wcomp2)(objectClass=computer))')"
+wcomp_group_dn="$(ad_get_dn '(&(cn=wcomp-group)(objectClass=group))')"
+test -n "$wcomp1_dn" || fail_test 110
+test -n "$wcomp2_dn" || fail_test 110
+test -n "$wcomp_group_dn" || fail_test 110
+
+# added hosts to group in ad
+ad_add_to_group "$wcomp_group_dn" "$wcomp1_dn" || fail_test 110 "failed to add computer to group in ad"
+ad_add_to_group "$wcomp_group_dn" "$wcomp2_dn" || fail_test 110 "failed to add computer to group in ad"
+ad_wait_for_synchronization; fail_bool 0 110
+udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp1,*' || fail_test 110 "computer not member of group in ucs"
+udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp2,*' || fail_test 110 "computer not member of group in ucs"
+
+# remove from group in ad
+ad_remove_from_group "$wcomp_group_dn" "$wcomp1_dn" || fail_test 110 "failed to remove computer from group in ad"
+ad_wait_for_synchronization; fail_bool 0 110
+udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp1,*' && fail_test 110 "computer is still member of group"
+ad_remove_from_group "$wcomp_group_dn" "$wcomp2_dn" || fail_test 110 "failed to remove computer from group in ad"
+ad_wait_for_synchronization; fail_bool 0 110
+udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp2,*' && fail_test 110 "computer is still member of group"
+
+# cleanup
+UDM_computers_windows_name="wcomp1"
+udm_remove "computers/windows" || fail_test 110
+UDM_computers_windows_name="wcomp2"
+udm_remove "computers/windows" || fail_test 110
+UDM_groups_group_name="wcomp-group"
+udm_remove "groups/group" || fail_test 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

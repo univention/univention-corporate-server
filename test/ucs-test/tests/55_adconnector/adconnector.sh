@@ -557,6 +557,65 @@ sys.exit (42)
 	fi
 }
 
+function ad_get_dn () {
+	local filter="$1"
+python2.7 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import adconnector
+adconnection = adconnector.ADConnection()
+adconnection.getdn('$filter')
+sys.exit(42)
+"
+	if [ $? == 42 ]; then
+		info "Search AD for $filter"
+		return 0
+	else
+		scriptlet_error "ad_get_dn"
+		return 2
+	fi
+}
+
+function ad_add_to_group () {
+	local dn="$1"
+	local member="$2"
+python2.7 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import adconnector
+adconnection = adconnector.ADConnection()
+adconnection.add_to_group('$dn', '$member')
+sys.exit(42)
+"
+	if [ $? == 42 ]; then
+		info "Added $member as member to $dn in ad"
+		return 0
+	else
+		scriptlet_error "ad_add_to_group"
+		return 2
+	fi
+}
+
+function ad_remove_from_group () {
+	local dn="$1"
+	local member="$2"
+python2.7 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import adconnector
+adconnection = adconnector.ADConnection()
+adconnection.remove_from_group('$dn', '$member')
+sys.exit(42)
+"
+	if [ $? == 42 ]; then
+		info "Remove member $member from $dn in ad"
+		return 0
+	else
+		scriptlet_error "ad_remove_from_group"
+		return 2
+	fi
+}
+
 function ad_verify_user_primary_group_attribute () {
 	local primarygroup_dn="$1"
 	local user_dn="$2"

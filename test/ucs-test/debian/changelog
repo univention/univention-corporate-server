@@ -1,3 +1,10 @@
+ucs-test (7.0.6-32) unstable; urgency=low
+
+  * 55_adconnector/108sync_windowscomputer_groupmembership_ad_to_ucs:
+    Added test case (Bug #42998)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Dec 2016 15:36:52 +0100
+
 ucs-test (7.0.6-31) unstable; urgency=medium
 
   * 55_adconnector/273read_ad_rename_nested_group: Added test case
