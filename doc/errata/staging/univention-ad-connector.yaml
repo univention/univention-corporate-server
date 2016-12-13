@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ad-connector
-fix: 10.0.2-17.517.201612121513
+fix: 10.0.2-18.518.201612130944
 desc: |
  This update addresses the following issues:
  * The setup wizard's function to determine the LDAP bind DN for
