@@ -1,3 +1,31 @@
+univention-s4-connector (11.0.3-4) unstable; urgency=medium
+
+  * Bug #42393: Use the case insensitive s4connector._subtree_replace
+    instead of other basic string operations
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 19:27:27 +0100
+
+univention-s4-connector (11.0.3-3) unstable; urgency=medium
+
+  * Bug #42393: Fix case of con_default_dn to match the actual lo_s4.base
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:40:44 +0100
+
+univention-s4-connector (11.0.3-2) unstable; urgency=medium
+
+  * Bug #42393: More cleanup:
+    - _subtree_replace already replaces the ldap bases case insensitively
+    - don't perform the default _subtree_replace again if position_mapping
+      already modified the dn
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:37:19 +0100
+
+univention-s4-connector (11.0.3-1) unstable; urgency=medium
+
+  * Bug #42393: Cleanup: improve readability in the area of this bug
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:25:59 +0100
+
 univention-s4-connector (11.0.2-7) unstable; urgency=medium
 
   * Bug #32086: Fix LDAP DN escaping. All DN (de-)constructions are now done via

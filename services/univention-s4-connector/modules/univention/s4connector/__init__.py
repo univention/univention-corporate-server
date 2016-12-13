@@ -492,6 +492,7 @@ class ucs:
 		self.close_debug()
 
 	def dn_mapped_to_base(self, dn, base):
+		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
 		elif dn.lower().endswith(base.lower()):
@@ -1542,7 +1543,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_match')
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():
 			return True
 		return False
 
@@ -1550,8 +1551,8 @@ class ucs:
 		_d = ud.function('ldap._subtree_replace')
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
-			return dn[:len(dn) - len(subtree)] + subtreereplace
+		if subtree.lower() == dn[-len(subtree):].lower():
+			return dn[:-len(subtree)] + subtreereplace
 		return dn
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
@@ -1767,33 +1768,31 @@ class ucs:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
-							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
+							dn_mapped = object[dntype]
+							## note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[0].lower(), mapping[1])
-
-							if self.lo_s4.base == object[dntype][len(object[dntype]) - len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % object[dntype])
-							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_s4.base)  # FIXME: lo_s4 may change with other connectors
-							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+								dn_mapped = self._subtree_replace(dn_mapped, mapping[0], mapping[1])
+							if dn_mapped == object[dntype]:
+								if self.lo_s4.base.lower() == dn_mapped[-len(self.lo_s4.base):].lower() and len(self.lo_s4.base) > len(self.lo.base):
+									ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % dn_mapped)
+								else:
+									dn_mapped = self._subtree_replace(object[dntype], self.lo.base, self.lo_s4.base)  # FIXME: lo_s4 may change with other connectors
+							object[dntype] = dn_mapped
 		else:
 			if key in self.property:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
-							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
+							dn_mapped = object[dntype]
+							## note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[1].lower(), mapping[0])
-
-							if self.lo.base == object[dntype][len(object[dntype]) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
-							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo_s4.base.lower(), self.lo.base)  # FIXME: lo_s4 may change with other connectors
-							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+								dn_mapped = self._subtree_replace(dn_mapped, mapping[1], mapping[0])
+							if dn_mapped == object[dntype]:
+								if self.lo.base.lower() == dn_mapped[-len(self.lo.base):].lower() and len(self.lo.base) > len(self.lo_s4.base):
+									ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % dn_mapped)
+								else:
+									dn_mapped = self._subtree_replace(dn_mapped, self.lo_s4.base, self.lo.base)  # FIXME: lo_s4 may change with other connectors
+							object[dntype] = dn_mapped
 
 		object_out = object
 

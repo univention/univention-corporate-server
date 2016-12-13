@@ -841,6 +841,14 @@ class s4(univention.s4connector.ucs):
 
 		self.open_s4()
 
+		for key in self.property.keys():
+			if hasattr(self.property[key], 'con_default_dn'):
+				con_default_dn = self.property[key].con_default_dn
+				if con_default_dn.lower().endswith(self.lo_s4.base.lower()):
+					if con_default_dn[-len(self.lo_s4.base):] != self.lo_s4.base:
+						self.property[key].con_default_dn = con_default_dn[:-len(self.lo_s4.base)] + self.lo_s4.base
+						ud.debug(ud.LDAP, ud.INFO, "__init__: Fixing con ldap base case in %s con_default_dn %s" % (key, self.property[key].con_default_dn,))
+
 		if not self.config.has_section('S4'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'S4'")
 			self.config.add_section('S4')
