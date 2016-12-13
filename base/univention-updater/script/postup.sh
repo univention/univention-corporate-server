@@ -72,12 +72,6 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-# reinstall apps
-for app in $update_ucs33_installedapps; do
-	install "$app"
-done
-ucr unset update/ucs33/installedapps  >>"$UPDATER_LOG" 2>&1
-
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then
