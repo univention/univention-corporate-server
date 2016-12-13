@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-18) unstable; urgency=low
+
+  * Bug #42998: fixed group_members_sync_to_ucs
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Dec 2016 09:42:55 +0100
+
 univention-ad-connector (10.0.2-17) unstable; urgency=low
 
   * Bug #42998: support windowscomputer in group_members_sync_to_ucs
