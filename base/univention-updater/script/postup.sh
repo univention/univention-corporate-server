@@ -72,51 +72,6 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-switch_to_openjdk7 ()
-{
-	for p in openjdk-6-dbg \
-            openjdk-6-demo \
-            openjdk-6-doc \
-            openjdk-6-jdk \
-            openjdk-6-jre-headless \
-            openjdk-6-jre-lib \
-            openjdk-6-jre-zero \
-            openjdk-6-jre \
-            openjdk-6-source \
-            icedtea6-plugin \
-			icedtea-6-jre-jamvm \
-			icedtea-6-jre-cacao \
-			icedtea-6-plugin; do
-		state="$(dpkg --get-selections "$p" 2>/dev/null | awk '{print $2}')"
-		if [ "$state" = "install" ]; then
-			if [ "$p" = icedtea6-plugin ]; then	
-				 install --no-install-recommends icedtea-7-plugin
-			else
-				install --no-install-recommends "$(echo $p | sed -e 's|6|7|')"
-			fi
-		fi
-	done
-
-	dpkg -r openjdk-6-dbg \
-            openjdk-6-demo \
-            openjdk-6-doc \
-            openjdk-6-jdk \
-            openjdk-6-jre-headless \
-            openjdk-6-jre-lib \
-            openjdk-6-jre-zero \
-            openjdk-6-jre \
-            openjdk-6-source \
-            icedtea6-plugin \
-			icedtea-6-jre-jamvm \
-			icedtea-6-jre-cacao \
-			icedtea-6-plugin >>"$UPDATER_LOG" 2>&1
-}
-
-if ! is_ucr_true update33/skip/openjdk7
-then
-	switch_to_openjdk7
-fi
-
 # reinstall apps
 for app in $update_ucs33_installedapps; do
 	install "$app"
@@ -138,10 +93,6 @@ elif [ "$server_role" = "mobileclient" ]; then
 elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; then
 	install univention-managed-client
 fi
-
-# Update to UCS 3.3-0 remove php5-suhosin
-dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
-# End Update to UCS 3.3-0 remove php5-suhosin, can be removed after 3.3.0
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
@@ -178,11 +129,11 @@ fi
 ###	repository/online/component/3.2-6-errata=false \
 ###	repository/online/component/3.2-6-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 3.3.0
+# Set errata component for UCS 3.3.1
 ucr set \
-	repository/online/component/3.3-0-errata=enabled \
-	repository/online/component/3.3-0-errata/description="Errata updates for UCS 3.3-0" \
-	repository/online/component/3.3-0-errata/version="3.3" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.3-1-errata=enabled \
+	repository/online/component/3.3-1-errata/description="Errata updates for UCS 3.3-1" \
+	repository/online/component/3.3-1-errata/version="3.3" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
 echo "

@@ -1,3 +1,9 @@
+univention-updater (9.100.5-4) unstable; urgency=low
+
+  * Bug #43166: preup/postup
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Dec 2016 17:01:59 +0100
+
 univention-updater (9.100.5-3) unstable; urgency=low
 
   * Bug #41203: Re-enable apache restart in preup.sh

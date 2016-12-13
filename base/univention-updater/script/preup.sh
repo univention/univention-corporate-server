@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://docs.univention.de/release-notes-3.3-0-en.html"
-echo " German version:  http://docs.univention.de/release-notes-3.3-0-de.html"
+echo " English version: http://docs.univention.de/release-notes-3.3-1-en.html"
+echo " German version:  http://docs.univention.de/release-notes-3.3-1-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -163,21 +163,6 @@ if [ -n "$hold_packages" ]; then
 	fi
 fi
 
-##
-
-## Check for PostgreSQL-8.3 (Bug #40690)
-check_for_postgresql83 () {
-	case "$(dpkg-query -W -f '${Status}' postgresql-8.3 2>/dev/null)" in
-	install*) ;;
-	*) return 0 ;;
-	esac
-	echo "WARNING: PostgreSQL-8.3 is no longer supported by UCS-4 and must be migrated to"
-	echo "         a newer version of PostgreSQL. See http://sdb.univention.de/1249 for"
-	echo "         more details."
-	exit 1
-}
-check_for_postgresql83
-
 ## Check for PostgreSQL-8.4 (Bug #40690)
 check_for_postgresql84 () {
 	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in
@@ -190,23 +175,11 @@ check_for_postgresql84 () {
 	echo
 	echo "         The update can continue, but to get security updates it is important"
 	echo "         that you migrate to PostgreSQL 9.1 after the update to UCS 3.3."
-	readcontinue || exit 1
-}
-check_for_postgresql84
-
-## Check errata version (Bug #40704)
-check_for_minimum_errata () {
-	local minimum_errata=$1
-	if ! is_ucr_true update33/ignore_errata_check; then
-		if [ $minimum_errata -gt $version_erratalevel ]; then
-			echo "WARNING: The erratalevel version of this system is ${version_erratalevel}."
-			echo "         In order to install the UCS 3.3 release update please"
-			echo "         upgrade the system to at least errata level ${minimum_errata}!"
-			exit 1
-		fi
+	if [ ! "$UCS_FRONTEND" = "noninteractive" ]; then
+		readcontinue || exit 1
 	fi
 }
-check_for_minimum_errata "422" # http://errata.software-univention.de/ucs/3.2/422.html
+check_for_postgresql84
 
 #################### Bug #22093
 
@@ -362,46 +335,6 @@ fi
 # Bug #41203: Fix broken "disable-apche2-umc" preventing Apache2 from being restarted
 dpkg-statoverride --quiet --remove "/usr/sbin/apache2"
 chmod a+x "/usr/sbin/apache2"
-
-# Mark all installed apps and components as installed and reinstall them
-# in postup.sh if necessary
-
-mark_app_as_installed ()
-{
-    previous_apps="$(ucr get update/ucs33/installedapps)"
-    if [ -z "$previous_apps" ]; then
-        /usr/sbin/ucr set update/ucs33/installedapps="$1" >&3 2>&3
-    else
-        /usr/sbin/ucr set update/ucs33/installedapps="$previous_apps $1"  >&3 2>&3
-    fi
-}
-
-for app in 7i4ucs-123 7i4ucs-dokuwiki 7i4ucs-svn 7i4ucs-trac 7i4ucs-wordpress \
-	agorumcore-pro agorumcore-ucs agorumcore-ucs-schema \
-	asterisk4ucs-testasterisk asterisk4ucs-udm asterisk4ucs-udm-schema asterisk4ucs-umc-deploy \
-	asterisk4ucs-umc-music asterisk4ucs-umc-user \
-	audriga-groupware-migration digitec-sugarcrm-web digitec-sugarcrm-zip-ce \
-	drbd-meta-pkg edyou kivitendo kix4otrs-meta-6 kolab-admin kolabsys-kolab2 \
-	linotp-ucs noctua owncloud owncloud-meta-5.0 owncloud-meta-6.0 owncloud-schema \
-	plucs plucs-schema python-univention-directory-manager-ucc sesam-srv tine20-ucs \
-	ucc-management-integration ucc-server ucs-school-umc-installer univention-ad-connector \
-	univention-bacula-enterprise univention-bareos univention-bareos-schema \
-	univention-corporate-client-schema univention-demoapp univention-fetchmail \
-	univention-fetchmail-schema univention-icinga univention-kde univention-klms \
-	univention-mail-horde univention-mail-server univention-management-console-module-adtakeover \
-	univention-nagios-server univention-openvpn-master univention-openvpn-schema \
-	univention-openvpn-server univention-ox-dependencies-master univention-ox-meta-singleserver \
-	univention-ox-text univention-pkgdb univention-printserver univention-printquota \
-	univention-printserver-pdf ucs-school-ucc-integration ucs-school-umc-printermoderation univention-pulse \
-	univention-radius univention-s4-connector univention-samba univention-samba4 \
-	univention-saml univention-saml-schema univention-squid univention-virtual-machine-manager-daemon \
-	univention-virtual-machine-manager-node-kvm univention-xrdp zarafa4ucs zarafa4ucs-udm z-push
-do
-	case "$(dpkg-query -W -f '${Status}' $app 2>/dev/null)" in
-	install*) mark_app_as_installed "$app";;
-	esac
-done
-
 
 # Pre-upgrade
 preups=""
