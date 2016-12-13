@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.4-3) unstable; urgency=medium
+
+  * Bug #42393: Fix case of con_default_dn to match the actual lo_s4.base
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:40:44 +0100
+
 univention-s4-connector (10.0.4-2) unstable; urgency=medium
 
   * Bug #42393: More cleanup:
