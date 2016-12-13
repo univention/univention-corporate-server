@@ -1,3 +1,10 @@
+univention-s4-connector (10.0.4-4) unstable; urgency=medium
+
+  * Bug #42393: Use the case insensitive s4connector._subtree_replace
+    instead of other basic string operations
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:43:02 +0100
+
 univention-s4-connector (10.0.4-3) unstable; urgency=medium
 
   * Bug #42393: Fix case of con_default_dn to match the actual lo_s4.base
