@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.4-1) unstable; urgency=medium
+
+  * Bug #42393: Cleanup: improve readability in the area of this bug
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Dec 2016 17:25:59 +0100
+
 univention-s4-connector (10.0.3-7) unstable; urgency=medium
 
   * Bug #41571: avoid overwriting the nTSecurityDescriptor in ntsd_to_s4

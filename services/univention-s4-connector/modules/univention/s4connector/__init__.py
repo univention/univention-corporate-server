@@ -492,6 +492,7 @@ class ucs:
 		self.close_debug()
 
 	def dn_mapped_to_base(self, dn, base):
+		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
 		elif dn.lower().endswith(base.lower()):
@@ -1542,7 +1543,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_match')
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():
 			return True
 		return False
 
@@ -1550,8 +1551,8 @@ class ucs:
 		_d = ud.function('ldap._subtree_replace')
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[len(dn) - len(subtree):].lower():
-			return dn[:len(dn) - len(subtree)] + subtreereplace
+		if subtree.lower() == dn[-len(subtree):].lower():
+			return dn[:-len(subtree)] + subtreereplace
 		return dn
 
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
@@ -1767,33 +1768,37 @@ class ucs:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
+							dn_mapped = object[dntype]
 							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
+							rdn_store = self._get_rdn(dn_mapped)
+							## note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[0].lower(), mapping[1])
+								dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
 
-							if self.lo_s4.base == object[dntype][len(object[dntype]) - len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % object[dntype])
+							if self.lo_s4.base == dn_mapped[-len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
+								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % dn_mapped)
 							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_s4.base)  # FIXME: lo_s4 may change with other connectors
+								dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo.base.lower(), self.lo_s4.base)  # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+							object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
 		else:
 			if key in self.property:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
+							dn_mapped = object[dntype]
 							# save the old rdn with the correct upper and lower case
-							rdn_store = self._get_rdn(object[dntype])
+							rdn_store = self._get_rdn(dn_mapped)
+							## note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), mapping[1].lower(), mapping[0])
+								dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
 
-							if self.lo.base == object[dntype][len(object[dntype]) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
-								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
+							if self.lo.base == dn_mapped[-len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
+								ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % dn_mapped)
 							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(), self.lo_s4.base.lower(), self.lo.base)  # FIXME: lo_s4 may change with other connectors
+								dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_s4.base.lower(), self.lo.base)  # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
-							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
+							object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
 
 		object_out = object
 
