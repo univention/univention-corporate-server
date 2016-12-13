@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-21) unstable; urgency=medium
+
+  * Bug #43038: Fix error message for migration link
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Dec 2016 00:52:46 +0100
+
 univention-appcenter (5.0.23-20) unstable; urgency=medium
 
   * Bug #43038: Show migration link for Docker versions if available
