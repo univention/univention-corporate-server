@@ -3,8 +3,10 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: samba
-fix: 2:4.3.7-1.828.201612132051
+fix: 2:4.3.7-1.828.201612132122
 desc: |
  This update addresses the following issues:
- * 
+ * Client side SMB2/3 required signing can be downgraded (CVE-2016-2119)
 bug: [43145]
+cve:
+ - CVE-2016-2119
