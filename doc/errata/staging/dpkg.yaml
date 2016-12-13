@@ -10,6 +10,6 @@ desc: |
    .deb control member size has been fixed (CVE-2015-0860)
  * dpkg did not correctly handle the upgrade case, were a diverted conffile
    was moved between two packages. This has been fixed.
-bug: [43147,41965]
+bug: [43147,43173]
 cve:
  - CVE-2015-0860
