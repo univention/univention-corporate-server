@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-20.248.201612121851
+fix: 5.0.23-21.249.201612140053
 desc: |
  This update addresses the following issue(s):
  * Fixed the utility function for creating LDAP objects not honoring existing
