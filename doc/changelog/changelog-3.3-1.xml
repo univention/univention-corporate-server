@@ -25,7 +25,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-
+	
 	<section id="changelog:updater">
 		<title>Univention Updater</title>
 		<itemizedlist>
@@ -49,6 +49,7 @@
 			<title>Important package upgrades</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The updater scripts have been adapted to UCS 3.3-1 (<u:bug>43166</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
