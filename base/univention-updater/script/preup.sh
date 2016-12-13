@@ -190,7 +190,9 @@ check_for_postgresql84 () {
 	echo
 	echo "         The update can continue, but to get security updates it is important"
 	echo "         that you migrate to PostgreSQL 9.1 after the update to UCS 3.3."
-	readcontinue || exit 1
+	if [ ! "$UCS_FRONTEND" = "noninteractive" ]; then
+		readcontinue || exit 1
+	fi
 }
 check_for_postgresql84
 
