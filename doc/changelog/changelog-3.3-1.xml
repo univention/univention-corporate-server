@@ -482,14 +482,15 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		<!--
 	</section>
-		-->
 
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The following packages have been added to the maintained section of
+				the software repository (<u:bug>42666</u:bug>):
+				php5-imagick, php5-geoip, php5-memcache, libssh2-php
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
