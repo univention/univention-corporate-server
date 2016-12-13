@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-s4-connector
-fix: 10.0.3-7.628.201612052146
+fix: 10.0.4-4.629.201612131743
 desc: |
  This update addresses the following issue(s):
  * The init-script has been fixed to check for an already running instance of
@@ -14,4 +14,6 @@ desc: |
    depending on timing. Now the S4-Connector checks if a change has happened
    in Samba/AD since the last sync and avoids overwriting the attribute
    nTSecurityDescriptor in that case.
-bug: [40659, 41571]
+ * The synchronization of DNS zones now also works in special setups, where
+   samba4/ldap/base differs from ldap/base.
+bug: [40659, 41571,42393]
