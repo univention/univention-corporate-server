@@ -11,3 +11,5 @@ desc: |
  * When trying to upgrade to a Docker version of a formerly Non-Docker App, a
    link to a migration guide is shown if avaiable.
 bug: [42928, 43038]
+erratum: 357
+announced: 2016-12-14
