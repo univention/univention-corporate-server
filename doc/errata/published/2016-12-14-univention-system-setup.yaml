@@ -9,3 +9,5 @@ desc: |
  * DNS settings are updated correctly when using app appliances
  * The screensaver is now deactivated while configuring the system
 bug: [42944]
+erratum: 355
+announced: 2016-12-14
