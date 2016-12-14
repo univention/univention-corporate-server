@@ -16,3 +16,5 @@ desc: |
  * A bug regarding computer objects during synchronisation of group
    memberships has been fixed.
 bug: [36354,43070,40659,42998]
+erratum: 359
+announced: 2016-12-14
