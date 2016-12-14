@@ -33,4 +33,12 @@
 . /usr/share/univention-docker-container-mode/lib.sh
 
 RELEASE=$(getarg "--release")
+
+# ignore warning if master has older version
+MAJOR=${RELEASE%%-*}
+MAJOR_WITHOUT_DOT=${MAJOR//./}
+if [ -n "$MAJOR_WITHOUT_DOT" ]; then
+	ucr set "update${MAJOR_WITHOUT_DOT}/ignore_version"=true
+fi
+
 univention-upgrade --noninteractive --updateto "$RELEASE" --disable-app-updates && /usr/share/univention-updater/univention-updater-check

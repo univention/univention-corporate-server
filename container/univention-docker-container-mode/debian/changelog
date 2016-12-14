@@ -1,3 +1,9 @@
+univention-docker-container-mode (2.0.0-7) unstable; urgency=low
+
+  * Bug #42923: always update in docker (ignore master version) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Dec 2016 15:17:48 +0100
+
 univention-docker-container-mode (2.0.0-6) unstable; urgency=low
 
   * Bug #40611: use -containerAdMemberMode for joining
