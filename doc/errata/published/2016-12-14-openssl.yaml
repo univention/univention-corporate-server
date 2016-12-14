@@ -57,3 +57,5 @@ cve:
  - CVE-2016-6303
  - CVE-2016-6304
  - CVE-2016-6306
+erratum: 26
+announced: 2016-12-14
