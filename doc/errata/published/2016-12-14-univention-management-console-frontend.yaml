@@ -9,3 +9,5 @@ desc: |
  * Erroneous pop-ups when clicking a non UMC module link on
    the overview page are no longer generated
 bug: [42980]
+erratum: 358
+announced: 2016-12-14
