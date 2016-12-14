@@ -13,3 +13,5 @@ desc: |
 bug: [43147,43173]
 cve:
  - CVE-2015-0860
+erratum: 356
+announced: 2016-12-14
