@@ -1,8 +1,14 @@
-univention-kernel-image (9.0.0-12) unstable; urgency=low
+univention-kernel-image (9.0.0-13) unstable; urgency=low
 
   * Bug #42754: Update to linux-4.1.36-ucs217
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 14 Dec 2016 17:30:19 +0100
+
+univention-kernel-image (9.0.0-12) unstable; urgency=medium
+
+  * Bug #42727: Update to linux-4.1.34 plus patch for CVE-2016-5195
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Oct 2016 17:58:15 +0200
 
 univention-kernel-image (9.0.0-11) unstable; urgency=low
 
