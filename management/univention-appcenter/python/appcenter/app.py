@@ -1376,7 +1376,7 @@ class App(object):
 	@hard_requirement('install', 'upgrade')
 	def shall_not_be_docker_if_discouraged(self):
 		'''The application has not been approved to migrate all
-		existing data. Maybe there is a migration guide: %(migration_guide)s'''
+		existing data. Maybe there is a migration guide: %(migration_link)s'''
 		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
 		if problem:
 			return {'migration_link': self.docker_migration_link}
