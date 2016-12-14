@@ -1,9 +1,9 @@
 product: ucs
 release: "4.1"
-version: [3,4]
+version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-docker-container-mode
-fix:
+fix: 1.0.14-4.65.201612141514
 desc: |
  This update addresses the following issues:
  * Allow release update in container mode even if the UCS master's
