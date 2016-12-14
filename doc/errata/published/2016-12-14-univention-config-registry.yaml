@@ -9,3 +9,5 @@ desc: |
  * The functionality to manage services has been changed to ignore processes
    running in a Docker container.
 bug: [40659]
+erratum: 354
+announced: 2016-12-14
