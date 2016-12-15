@@ -1,3 +1,9 @@
+ucslint (6.0.1-2) unstable; urgency=low
+
+  * Bug #37203: Fix check for transition packages
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Dec 2016 12:52:00 +0100
+
 ucslint (6.0.1-1) unstable; urgency=medium
 
   * Bug #31771: Add a plugin for Flake8/PEP8 which is currently disabled by default
