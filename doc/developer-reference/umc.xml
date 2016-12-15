@@ -18,9 +18,6 @@
 	<para>
 		The Univention Management Console (<acronym>UMC</acronym>) is the web-based management application provided by <acronym>UCS</acronym>.
 	</para>
-	<para>
-		<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_Architecture_and_Protocol"/>
-	</para>
 
 	<section id="umc:files">
 		<title>UMC files
@@ -128,7 +125,6 @@ Icons: umc/icons
 		</title>
 		<para>
 			Use <command>umc-create-module</command> to template for custom module.
-			<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_API_for_Modules"/>
 		</para>
 	</section>
 
