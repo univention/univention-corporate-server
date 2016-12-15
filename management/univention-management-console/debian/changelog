@@ -1,3 +1,9 @@
+univention-management-console (9.0.13-5) unstable; urgency=low
+
+  * Bug #38824: Fix conflict for /var/www/univention-management-console
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Dec 2016 12:48:58 +0100
+
 univention-management-console (9.0.13-4) unstable; urgency=low
 
   * Bug #38824: Fix conflict for /var/www/univention-management-console
