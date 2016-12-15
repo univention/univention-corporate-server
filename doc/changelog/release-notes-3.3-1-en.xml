@@ -48,6 +48,8 @@
 			The first point release for &ucsUCS; (UCS) 3.3 is now available in the form of &ucsUCS; 3.3-1. The online repository
 			provided by Univention can be used to update existing UCS systems or, alternatively, updates can be installed from an
 			update DVD. UCS 3.3-1 includes all the errata updates published for UCS 3.3-0.
+			The maintenance cycle for the UCS 3 major version ends on 31 December 2016. Further information can be found in
+			<ulink url="http://forum.univention.de/viewtopic.php?f=54">this announcement</ulink>.
 		</para>
 
 		<itemizedlist>
