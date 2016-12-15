@@ -17,45 +17,45 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-						<package>openssl</package> (<u:cve>CVE-2016-2105</u:cve> <u:cve>CVE-2016-2106</u:cve> <u:cve>CVE-2016-2107</u:cve>
-						<u:cve>CVE-2016-2108</u:cve> <u:cve>CVE-2016-2109</u:cve>) (<u:bug>41197</u:bug>).
+						<package>openssl</package> (<u:cve>2016-2105</u:cve> <u:cve>2016-2106</u:cve> <u:cve>2016-2107</u:cve>
+						<u:cve>2016-2108</u:cve> <u:cve>2016-2109</u:cve>) (<u:bug>41197</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libvirt</package> (<u:cve>CVE-2015-5313</u:cve>) (<u:bug>40317</u:bug>).
+						<package>libvirt</package> (<u:cve>2015-5313</u:cve>) (<u:bug>40317</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>qemu-kvm</package> (<u:cve>CVE-2015-7295</u:cve> <u:cve>CVE-2015-7504</u:cve> <u:cve>CVE-2015-7504</u:cve>
-						<u:cve>CVE-2015-7512</u:cve> <u:cve>CVE-2015-8345</u:cve> <u:cve>CVE-2015-8504</u:cve> <u:cve>CVE-2015-8558</u:cve>
-						<u:cve>CVE-2015-8743</u:cve> <u:cve>CVE-2016-1568</u:cve> <u:cve>CVE-2016-1714</u:cve> <u:cve>CVE-2016-1922</u:cve>
-						<u:cve>CVE-2016-3710</u:cve> <u:cve>CVE-2016-3712</u:cve>) (<u:bug>40634</u:bug>).
+						<package>qemu-kvm</package> (<u:cve>2015-7295</u:cve> <u:cve>2015-7504</u:cve> <u:cve>2015-7504</u:cve>
+						<u:cve>2015-7512</u:cve> <u:cve>2015-8345</u:cve> <u:cve>2015-8504</u:cve> <u:cve>2015-8558</u:cve>
+						<u:cve>2015-8743</u:cve> <u:cve>2016-1568</u:cve> <u:cve>2016-1714</u:cve> <u:cve>2016-1922</u:cve>
+						<u:cve>2016-3710</u:cve> <u:cve>2016-3712</u:cve>) (<u:bug>40634</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>qemu</package> (<u:cve>CVE-2015-7295</u:cve> <u:cve>CVE-2015-7504</u:cve> <u:cve>CVE-2015-7504</u:cve>
-						<u:cve>CVE-2015-7512</u:cve> <u:cve>CVE-2015-8345</u:cve> <u:cve>CVE-2015-8504</u:cve> <u:cve>CVE-2015-8558</u:cve>
-						<u:cve>CVE-2015-8743</u:cve> <u:cve>CVE-2016-1568</u:cve> <u:cve>CVE-2016-1714</u:cve> <u:cve>CVE-2016-1922</u:cve>
-						<u:cve>CVE-2016-3710</u:cve> <u:cve>CVE-2016-3712</u:cve>) (<u:bug>40634</u:bug>).
+						<package>qemu</package> (<u:cve>2015-7295</u:cve> <u:cve>2015-7504</u:cve> <u:cve>2015-7504</u:cve>
+						<u:cve>2015-7512</u:cve> <u:cve>2015-8345</u:cve> <u:cve>2015-8504</u:cve> <u:cve>2015-8558</u:cve>
+						<u:cve>2015-8743</u:cve> <u:cve>2016-1568</u:cve> <u:cve>2016-1714</u:cve> <u:cve>2016-1922</u:cve>
+						<u:cve>2016-3710</u:cve> <u:cve>2016-3712</u:cve>) (<u:bug>40634</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>imagemagick</package> (<u:cve>CVE-2016-3714</u:cve> <u:cve>CVE-2016-3715</u:cve> <u:cve>CVE-2016-3716</u:cve>
-						<u:cve>CVE-2016-3717</u:cve> <u:cve>CVE-2016-3718</u:cve>) (<u:bug>41331</u:bug>).
+						<package>imagemagick</package> (<u:cve>2016-3714</u:cve> <u:cve>2016-3715</u:cve> <u:cve>2016-3716</u:cve>
+						<u:cve>2016-3717</u:cve> <u:cve>2016-3718</u:cve>) (<u:bug>41331</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libgd2</package> (<u:cve>CVE-2015-8874</u:cve> <u:cve>CVE-2016-3074</u:cve>) (<u:bug>41209</u:bug>).
+						<package>libgd2</package> (<u:cve>2015-8874</u:cve> <u:cve>2016-3074</u:cve>) (<u:bug>41209</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>openjdk-7</package> (<u:cve>CVE-2015-7575</u:cve> <u:cve>CVE-2015-8126</u:cve> <u:cve>CVE-2015-8472</u:cve>
-						<u:cve>CVE-2016-0402</u:cve> <u:cve>CVE-2016-0448</u:cve> <u:cve>CVE-2016-0466</u:cve> <u:cve>CVE-2016-0483</u:cve>
-						<u:cve>CVE-2016-0494</u:cve> <u:cve>CVE-2016-0636</u:cve> <u:cve>CVE-2016-0686</u:cve> <u:cve>CVE-2016-0687</u:cve>
-						<u:cve>CVE-2016-0695</u:cve> <u:cve>CVE-2016-3425</u:cve> <u:cve>CVE-2016-3427</u:cve>) (<u:bug>40483</u:bug>).
+						<package>openjdk-7</package> (<u:cve>2015-7575</u:cve> <u:cve>2015-8126</u:cve> <u:cve>2015-8472</u:cve>
+						<u:cve>2016-0402</u:cve> <u:cve>2016-0448</u:cve> <u:cve>2016-0466</u:cve> <u:cve>2016-0483</u:cve>
+						<u:cve>2016-0494</u:cve> <u:cve>2016-0636</u:cve> <u:cve>2016-0686</u:cve> <u:cve>2016-0687</u:cve>
+						<u:cve>2016-0695</u:cve> <u:cve>2016-3425</u:cve> <u:cve>2016-3427</u:cve>) (<u:bug>40483</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>graphicsmagick</package> (<u:cve>CVE-2016-5118</u:cve>) (<u:bug>41441</u:bug>).
+						<package>graphicsmagick</package> (<u:cve>2016-5118</u:cve>) (<u:bug>41441</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>imagemagick</package> (<u:cve>CVE-2016-5118</u:cve>) (<u:bug>41439</u:bug>).
+						<package>imagemagick</package> (<u:cve>2016-5118</u:cve>) (<u:bug>41439</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>samba</package> (<u:cve>CVE-2016-2119</u:cve>) (<u:bug>41729</u:bug>).
+						<package>samba</package> (<u:cve>2016-2119</u:cve>) (<u:bug>41729</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
