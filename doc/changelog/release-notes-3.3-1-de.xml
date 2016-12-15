@@ -48,8 +48,8 @@
 			Mit &ucsUCS; 3.3-1 steht das erste Point-Release für &ucsUCS; (UCS) 3.3 zur Verfügung. Vorhandene UCS-Systeme
 			können über das von Univention bereitgestellte Online-Repository aktualisiert werden. Alternativ können Updates über
 			eine Update-DVD eingespielt werden. UCS 3.3-1 beinhaltet alle für UCS 3.3-0 veröffentlichten Errata-Updates.
-			Der Maintenance-Zyklus für UCS 3 endet am 31. Dezember 2016. Weitere Informationen sind in
-			<ulink url="http://forum.univention.de/viewtopic.php?f=26">dieser Ankündigung</ulink> zu finden.
+			Der Maintenance-Zyklus für UCS 3 endet am 31. Dezember 2016. Weitere Informationen sind 
+			<ulink url="http://forum.univention.de/viewtopic.php?f=26">im Univention Forum</ulink> zu finden.
 		</para>
 
 		<itemizedlist>
