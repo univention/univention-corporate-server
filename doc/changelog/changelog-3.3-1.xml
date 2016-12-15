@@ -11,9 +11,78 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
-			<listitem><simpara>
-				The codename for UCS 3.3 is Osterholz (<u:bug>40833</u:bug>).
-			</simpara></listitem>
+			<listitem>
+				<para>
+					All security updates issued for UCS 3.3-0 are included:
+				</para>
+				<itemizedlist>
+					<listitem><simpara>
+						<package>graphicsmagick</package> (<u:cve>CVE-2016-5118</u:cve>) (<u:bug>41442</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>imagemagick</package> (<u:cve>CVE-2016-5118</u:cve>) (<u:bug>41440</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libssh</package> (<u:cve>CVE-2014-0017</u:cve>, <u:cve>CVE-2016-0739</u:cve>), (<u:bug>41498</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>grub2</package> (<u:cve>CVE-2015-8370</u:cve>) (<u:bug>41364</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mysql-5.5</package> ( <u:cve>CVE-2016-0505</u:cve>, <u:cve>CVE-2016-0546</u:cve>, <u:cve>CVE-2016-0596</u:cve>,
+						<u:cve>CVE-2016-0597</u:cve>, <u:cve>CVE-2016-0598</u:cve>, <u:cve>CVE-2016-0600</u:cve>, <u:cve>CVE-2016-0606</u:cve>,
+						<u:cve>CVE-2016-0608</u:cve>, <u:cve>CVE-2016-0609</u:cve>, <u:cve>CVE-2016-0616</u:cve>, <u:cve>CVE-2016-0640</u:cve>,
+						<u:cve>CVE-2016-0641</u:cve>, <u:cve>CVE-2016-0642</u:cve>, <u:cve>CVE-2016-0643</u:cve>, <u:cve>CVE-2016-0644</u:cve>,
+						<u:cve>CVE-2016-0646</u:cve>, <u:cve>CVE-2016-0647</u:cve>, <u:cve>CVE-2016-0648</u:cve>, <u:cve>CVE-2016-0649</u:cve>,
+						<u:cve>CVE-2016-0650</u:cve>, <u:cve>CVE-2016-0666</u:cve>, <u:cve>CVE-2016-2047</u:cve>, <u:cve>CVE-2016-3477</u:cve>,
+						<u:cve>CVE-2016-3521</u:cve>, <u:cve>CVE-2016-3615</u:cve>, <u:cve>CVE-2016-5440</u:cve>, <u:cve>CVE-2016-6662</u:cve>)
+						(<u:bug>41851</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bind9</package> (<u:cve>CVE-2015-5722</u:cve>, <u:cve>CVE-2015-8000</u:cve>, <u:cve>CVE-2015-8704</u:cve>,
+						<u:cve>CVE-2016-1285</u:cve>, <u:cve>CVE-2016-1286</u:cve>, <u:cve>CVE-2016-2776</u:cve>) (<u:bug>41498</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>CVE-2015-7515</u:cve>, <u:cve>CVE-2016-0821</u:cve>, <u:cve>CVE-2016-1237</u:cve>,
+						<u:cve>CVE-2016-1583</u:cve>, <u:cve>CVE-2016-2117</u:cve>, <u:cve>CVE-2016-2143</u:cve>, <u:cve>CVE-2016-2184</u:cve>,
+						<u:cve>CVE-2016-2185</u:cve>, <u:cve>CVE-2016-2186</u:cve>, <u:cve>CVE-2016-2187</u:cve>, <u:cve>CVE-2016-3070</u:cve>,
+						<u:cve>CVE-2016-3134</u:cve>, <u:cve>CVE-2016-3136</u:cve>, <u:cve>CVE-2016-3137</u:cve>, <u:cve>CVE-2016-3138</u:cve>,
+						<u:cve>CVE-2016-3140</u:cve>, <u:cve>CVE-2016-3156</u:cve>, <u:cve>CVE-2016-3157</u:cve>, <u:cve>CVE-2016-3672</u:cve>,
+						<u:cve>CVE-2016-3951</u:cve>, <u:cve>CVE-2016-3955</u:cve>, <u:cve>CVE-2016-3961</u:cve>, <u:cve>CVE-2016-4470</u:cve>,
+						<u:cve>CVE-2016-4482</u:cve>, <u:cve>CVE-2016-4485</u:cve>, <u:cve>CVE-2016-4486</u:cve>, <u:cve>CVE-2016-4565</u:cve>,
+						<u:cve>CVE-2016-4569</u:cve>, <u:cve>CVE-2016-4578</u:cve>, <u:cve>CVE-2016-4580</u:cve>, <u:cve>CVE-2016-4581</u:cve>,
+						<u:cve>CVE-2016-4805</u:cve>, <u:cve>CVE-2016-4913</u:cve>, <u:cve>CVE-2016-4997</u:cve>, <u:cve>CVE-2016-4998</u:cve>,
+						<u:cve>CVE-2016-5243</u:cve>, <u:cve>CVE-2016-5244</u:cve>, <u:cve>CVE-2014-9904</u:cve>, <u:cve>CVE-2016-5728</u:cve>,
+						<u:cve>CVE-2016-5828</u:cve>, <u:cve>CVE-2016-5829</u:cve>, <u:cve>CVE-2016-6130</u:cve>, <u:cve>CVE-2016-6136</u:cve>,
+						<u:cve>CVE-2016-6480</u:cve>, <u:cve>CVE-2016-6828</u:cve>, <u:cve>CVE-2016-5696</u:cve>, <u:cve>CVE-2015-8956</u:cve>,
+						<u:cve>CVE-2016-5195</u:cve>, <u:cve>CVE-2016-7042</u:cve>, <u:cve>CVE-2016-7425</u:cve>)
+						(<u:bug>41693</u:bug>,<u:bug>42099</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php5</package> (<u:cve>CVE-2015-7803</u:cve>, <u:cve>CVE-2015-7804</u:cve>, <u:cve>CVE-2015-8865</u:cve>,
+						<u:cve>CVE-2015-8866</u:cve>, <u:cve>CVE-2015-8878</u:cve>, <u:cve>CVE-2015-8879</u:cve>, <u:cve>CVE-2016-4070</u:cve>,
+						<u:cve>CVE-2016-4071</u:cve>, <u:cve>CVE-2016-4072</u:cve>, <u:cve>CVE-2016-4073</u:cve>, <u:cve>CVE-2016-4343</u:cve>,
+						<u:cve>CVE-2016-4537</u:cve>, <u:cve>CVE-2016-4539</u:cve>, <u:cve>CVE-2016-4541</u:cve>, <u:cve>CVE-2016-4544</u:cve>,
+						<u:cve>CVE-2016-5093</u:cve>, <u:cve>CVE-2016-5095</u:cve>, <u:cve>CVE-2016-5096</u:cve>, <u:cve>CVE-2016-4473</u:cve>,
+						<u:cve>CVE-2016-4538</u:cve>, <u:cve>CVE-2016-5114</u:cve>, <u:cve>CVE-2016-5399</u:cve>, <u:cve>CVE-2016-5768</u:cve>,
+						<u:cve>CVE-2016-5769</u:cve>, <u:cve>CVE-2016-5770</u:cve>, <u:cve>CVE-2016-5771</u:cve>, <u:cve>CVE-2016-5772</u:cve>,
+						<u:cve>CVE-2016-5773</u:cve>, <u:cve>CVE-2016-6288</u:cve>, <u:cve>CVE-2016-6289</u:cve>, <u:cve>CVE-2016-6290</u:cve>,
+						<u:cve>CVE-2016-6291</u:cve>, <u:cve>CVE-2016-6292</u:cve>, <u:cve>CVE-2016-6294</u:cve>, <u:cve>CVE-2016-6295</u:cve>,
+						<u:cve>CVE-2016-6296</u:cve>, <u:cve>CVE-2016-6297</u:cve>) (<u:bug>41479</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>CVE-2014-3570</u:cve>, <u:cve>CVE-2014-3571</u:cve>, <u:cve>CVE-2014-3572</u:cve>,
+						<u:cve>CVE-2014-8275</u:cve>, <u:cve>CVE-2015-0204</u:cve>, <u:cve>CVE-2015-0205</u:cve>, <u:cve>CVE-2015-0206</u:cve>,
+						<u:cve>CVE-2016-2177</u:cve>, <u:cve>CVE-2016-2178</u:cve>, <u:cve>CVE-2016-2179</u:cve>, <u:cve>CVE-2016-2180</u:cve>,
+						<u:cve>CVE-2016-2181</u:cve>, <u:cve>CVE-2016-2182</u:cve>, <u:cve>CVE-2016-6302</u:cve>, <u:cve>CVE-2016-6303</u:cve>,
+						<u:cve>CVE-2016-6304</u:cve>, <u:cve>CVE-2016-6306</u:cve>) (<u:bug>42487</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-imaging</package> (<u:cve>CVE-2014-3589</u:cve>, <u:cve>CVE-2016-0775</u:cve>,
+						<u:cve>CVE-2016-2533</u:cve>, <u:cve>CVE-2016-9189</u:cve>, <u:cve>CVE-2016-9190</u:cve>) (<u:bug>42900</u:bug>).
+					</simpara></listitem>
+				</itemizedlist>
+			</listitem>
 		</itemizedlist>
 	</section>
 
@@ -42,6 +111,17 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Linux kernel has been updated to 3.16.38 (<u:bug>41693</u:bug>,<u:bug>42099</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The mount-point option <property>no_mbcache</property> has been added for ext4 file systems to make it possible to
+					disable the Filesystem Meta Information Block Cache (<property>mbcache</property>). The <property>mbcache</property> is
+					used to manage shared Extended Attributes (EAs), which are also used to store Access Control Lists (ACLs) for files and
+					directories. For some work-loads which use EAs with many different values the cache has performance issues and can
+					dead-lock the system in certain cases. Samba is one example which uses EAs to store the DOS attributes and NT-ACLs.  The
+					<property>cache</property> can now be disabled by adding the option <property>no_mbcache</property> in
+					<filename>/etc/fstab</filename> and rebooting the system (<u:bug>42984</u:bug>).
+
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -109,6 +189,24 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+
+		<section id="changelog:basis:boot">
+			<title>Boot Loader</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 On UCS systems booting via BIOS, GRUB would not be correctly updated, if debconf
+					<property>grub-pc/install_devices</property> is empty. Additionally an error would happen if
+					<property>grub-pc/install_devices</property> contains a wrong device. If it contains a wrong device the GRUB
+					installation happens but fails, leading to an inconsistent installation between <filename>/boot/grub</filename> and the
+					GRUB directly on the disk. This makes the system unbootable.
+					This update checks all devices in <property>grub-pc/install_devices</property>, removing invalid devices. A guess is
+					made for the correct boot device which will be added to <property>grub-pc/install_devices</property> if
+					<property>grub-pc/install_devices</property> is currently empty or there were invalid devices. If any changes were made,
+					grub-install is run on all devices in <property>grub-pc/install_devices</property>. See also <u:sdb>1356</u:sdb>
+					(<u:bug>41497</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 	</section>
 
 	<section id="changelog:domain">
@@ -142,6 +240,9 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+						A bug in handling the Notifier ID has been fixed: If the Listener was restarted multiple times, the last processed
+						transaction ID could be lost. This led to all transactions being skipped which happened in between
+						(<u:bug>41657</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -163,6 +264,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					UMC is now also usable in Chrome 51 (<u:bug>41395</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -171,6 +273,13 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Some ldap search requests have been optimized in the handler modules (<u:bug>41518</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Error messages regarding attribute locking have been improved (<u:bug>42385</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Wildcard and automatic substring searches are now configurable via &ucsUCR; (<u:bug>42387</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -203,6 +312,8 @@
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The attribute <property>sambaPwdLastSet</property> is now set for computer objects while changing the password
+					(<u:bug>41516</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -335,6 +446,9 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><para>
+					<property>SSLv2</property> has been disabled by default in Cyrus IMAP. The new &ucsUCRV;
+					<envar>mail/cyrus/ssl/cipher_list</envar> allows to change the supported cypher list. It will however ignore
+					<property>SSLv2</property>, as it has been disabled in the program code (<u:bug>41378</u:bug>).
 				</para></listitem>
 			</itemizedlist>
 		</section>
@@ -480,6 +594,10 @@
 			<title>Univention Active Directory Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The synchronization of the password hashes was implemented by using a service which was installed on the Microsoft
+					Active Directory server. The Univention AD Connector now uses different interfaces of the Active Directory for reading
+					and writing the password hashes. That means, the UCS AD Connector service which is installed on the Microsoft Active
+					Directory server can be stopped after installing this update (<u:bug>41632</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -491,7 +609,19 @@
 			<listitem><simpara>
 				The following packages have been added to the maintained section of
 				the software repository (<u:bug>42666</u:bug>):
-				php5-imagick, php5-geoip, php5-memcache, libssh2-php
+				<package>php5-imagick</package>, <package>php5-geoip</package>, <package>php5-memcache</package>, <package>libssh2-php</package>
+			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>device-tree-compiler</package> has been moved to maintained due to QEMU being rebuilt due to the
+				update to Xen 4.1 (<u:bug>41492</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>qemu</package> has been rebuilt due to the update to Xen 4.1 (<u:bug>41492</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The packages <package>libdatetime-timezone-perl</package> and <package>tzdata</package> have been updated to include new
+				timezone data. The most notable change is a new leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52
+				(<u:bug>42878</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
