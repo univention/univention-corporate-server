@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-24) unstable; urgency=low
+
+  * Bug #42816: Limit Docker hostname to 14 characters 
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Dec 2016 13:05:17 +0100
+
 univention-appcenter (5.0.23-23) unstable; urgency=low
 
   * Bug #42816: Limit Docker hostname to 14 characters
