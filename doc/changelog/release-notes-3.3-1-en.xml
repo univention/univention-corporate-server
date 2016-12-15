@@ -45,7 +45,9 @@
 		<title>&ucsUCS; (UCS) 3.3</title>
 
 		<para>
-			The first patch level release for &ucsUCS; (UCS) 3.3 is now available in the form of &ucsUCS; 3.3-1. An overview of the most important changes:
+			The first point release for &ucsUCS; (UCS) 3.3 is now available in the form of &ucsUCS; 3.3-1. The online repository
+			provided by Univention can be used to update existing UCS systems or, alternatively, updates can be installed from an
+			update DVD. UCS 3.3-1 includes all the errata updates published for UCS 3.3-0.
 		</para>
 
 		<itemizedlist>
@@ -93,20 +95,10 @@
 			This can be done, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all system roles by default.
 		</para>
 
-		<para>
-			It is possible to skip the upgrade to UCS 3.3. If the system should be upgraded directly from UCS 3.2 to UCS 4, the &ucsUCRV; <envar>update33/skip/ucs3.3</envar> has to be
-			set to <literal>true</literal>.
-		</para>
 	</chapter>
 
 	<chapter id="relnotes:post">
 		<title>Postprocessing of the update</title>
-
-		<para>
-			The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
-			it with OpenJDK 7. If the automatic replacement fails, it has do be done manually.
-			The automatic migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to <literal>true</literal> before the update.
-		</para>
 
 		<para>
 			PostgreSQL 9.1 is delivered with UCS 3.3. Security Updates for PostgreSQL 8.4 won't be provided with UCS 3.3.
@@ -130,39 +122,21 @@
 	<chapter id="relnotes:packages">
 		<title>Further notes on selected packages</title>
 
-		<section id="relnotes:kernel">
-			<title>Physical Address Extension</title>
-			<para>
-				  The Linux kernel was updated to version 3.16.7-ckt25.
-				  32 bit systems without <abbrev>PAE</abbrev> support (physical address extension) are no longer supported.
-			</para>
-		</section>
 		<section id="relnotes:usage">
-			<title>Collection of usage statistics when using the <phrase>free-for-personal-use</phrase> version</title>
+			<title>Collection of usage statistics</title>
 			<para>
-				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <phrase>free for personal use</phrase> version of UCS (which is generally used for evaluating UCS).
+				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> (which is generally used for evaluating UCS).
 				The modules opened are logged in an instance of the web traffic analysis tool Piwik.
 				This makes it possible for Univention to tailor the development of &ucsUMC; better to customer needs and carry out usability improvements.
 			</para>
 			<para>
-				This logging is only performed when the <phrase>free-for-personal-use</phrase> license is used.
-				The license status can be verified by clicking on the cog symbol in the top right corner of the &ucsUMC; and selecting <guimenu>License information</guimenu>.
-				If <phrase>Free for personal use edition</phrase> is listed under <guimenu>License type</guimenu>, this version is in use.
+				This logging is only performed when the <emphasis>UCS Core Edition</emphasis> license is used.
+				The license status can be verified via the menu entry <guimenu>License &ar; License information</guimenu> of the user menu in the upper right corner of &ucsUMC;.
+				If <guimenu>UCS Core Edition</guimenu> is listed under <guimenu>License type</guimenu>, this version is in use.
 				When a regular UCS license is used, no usage statistics are collected.
 			</para>
 			<para>
-				Independent of the license used, the statistics generation can be deactivated by setting the &ucsUCRV; <envar>umc/web/piwik</envar> to <literal>false</literal>.
-			</para>
-		</section>
-
-		<section id="relnotes:uefi">
-			<title>UEFI installation DVD</title>
-			<para>
-				In addition to the standard installation DVD there is also a medium with support for the Unified Extensible Firmware Interface standard (<acronym>UEFI</acronym>) available for the amd64 architecture.
-			</para>
-
-			<para>
-				It must be used instead of the standard DVD on systems which only support a UEFI boot.
+				Independent of the license used, the statistics generation can be deactivated by setting the &ucsUCRV; <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
 			</para>
 		</section>
 

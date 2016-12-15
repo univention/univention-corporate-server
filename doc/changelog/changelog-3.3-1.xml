@@ -134,6 +134,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
@@ -189,6 +190,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
@@ -215,6 +217,7 @@
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
 
+	<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -235,6 +238,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+	-->
 
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
@@ -248,6 +252,7 @@
 			</section>
 		</section>
 
+	<!--
 		<section id="changelog:domain:join">
 			<title>Domain join</title>
 			<itemizedlist>
@@ -255,6 +260,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
 	<section id="changelog:umc">
@@ -284,6 +290,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
 			<itemizedlist>
@@ -307,6 +314,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:umc:computers">
 			<title>Computers module</title>
@@ -318,6 +326,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:umc:license">
 			<title>License module</title>
 			<itemizedlist>
@@ -405,8 +414,10 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
+	<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 		<itemizedlist>
@@ -438,6 +449,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+	-->
 
 	<section id="changelog:service">
 		<title>System services</title>
@@ -453,6 +465,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -532,8 +545,10 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
+	<!--
 	<section id="changelog:virt">
 		<title>Virtualisation</title>
 
@@ -561,10 +576,12 @@
 			</itemizedlist>
 		</section>
 	</section>
+	-->
 
 	<section id="changelog:win">
 		<title>Services for Windows</title>
 
+	<!--
 		<section id="changelog:win:ad">
 			<title>Samba</title>
 			<itemizedlist>
@@ -589,6 +606,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connector</title>

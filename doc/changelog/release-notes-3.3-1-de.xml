@@ -45,7 +45,9 @@
 		<title>&ucsUCS; (UCS) 3.3</title>
 
 		<para>
-			Mit &ucsUCS; 3.3-1 steht das erste Patch-Level-Release für &ucsUCS; (UCS) 3.3 zur Verfügung. Die wichtigsten Änderungen im Überblick:
+			Mit &ucsUCS; 3.3-1 steht das erste Point-Release für &ucsUCS; (UCS) 3.3 zur Verfügung. Vorhandene UCS-Systeme
+			können über das von Univention bereitgestellte Online-Repository aktualisiert werden. Alternativ können Updates über
+			eine Update-DVD eingespielt werden. UCS 3.3-1 beinhaltet alle für UCS 3.3-0 veröffentlichten Errata-Updates.
 		</para>
 
 		<itemizedlist>
@@ -89,20 +91,10 @@
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
 		</para>
 
-		<para>
-			Es ist möglich das Update auf UCS 3.3 zu überspringen. Sofern das System direkt von UCS 3.2 auf UCS 4 aktualisiert werden soll, so kann die &ucsUCRV; <envar>update33/skip/ucs3.3</envar> auf
-			<literal>true</literal> gesetzt werden.
-		</para>
 	</chapter>
 
 	<chapter id="relnotes:post">
 		<title>Nachbereitung des Updates</title>
-
-		<para>
-			Die unterstützte Java Version in UCS 3.3 ist OpenJDK 7. Der Update-Prozess versucht OpenJDK 6 durch OpenJDK 7 zu 
-			ersetzten. Falls die automatische Ersetzung fehlschlägt, muss die Ersetzung manuell erfolgen.
-			Die automatische Migration kann übersprungen werden indem vor dem Update die &ucsUCRV; <envar>update33/skip/openjdk7</envar> auf den Wert <literal>true</literal> gesetzt wird.
-		</para>
 
 		<para>
 			Mit UCS 3.3 werden PostgreSQL 9.1 Pakete ausgeliefert. Für PostgreSQL 8.4 wird es UCS 3.3 keine Security
@@ -125,39 +117,21 @@
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-		<section id="relnotes:kernel">
-			<title>Physical Address Extension</title>
-			<para>
-				  Der Linux Kernel wurde auf Version 3.16.7-ckt25 aktualisiert.
-				  32-Bit-Systeme ohne <abbrev>PAE</abbrev>-Unterstützung (Physical Address Extension) werden nicht länger unterstützt.
-			</para>
-		</section>
 		<section id="relnotes:usage">
-			<title>Erfassung von Nutzungsstatistiken bei Verwendung der <phrase>Free-For-Personal-Use</phrase>-Version</title>
+			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
-				Bei Verwendung der <phrase>Free for personal use</phrase>-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung der &ucsUMC; erzeugt.
+				Bei Verwendung der <phrase>UCS Core Edition</phrase> (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung von &ucsUMC; erzeugt.
 				Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert.
 				Dies ermöglicht es Univention die Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
 			</para>
 			<para>
-				Diese Protokollierung erfolgt nur bei Verwendung der <phrase>Free-for-Personal-Use-Lizenz</phrase>.
-				Der Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der &ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden.
-				Steht hier unter <guimenu>Lizenztyp</guimenu> <guimenu>Free for personal use edition</guimenu> wird eine solche Version verwendet.
+				Diese Protokollierung erfolgt nur bei Verwendung der <phrase>UCS Core Edition</phrase>.
+				Der Lizenzstatus kann überprüft werden durch den Eintrag <guimenu>Lizenz &ar; Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke von &ucsUMC;.
+				Steht hier unter <guimenu>Lizenztyp</guimenu> der Eintrag <guimenu>UCS Core Edition</guimenu> wird eine solche Edition verwendet.
 				Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der Nutzungsstatistik.
 			</para>
 			<para>
 				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV; <envar>umc/web/piwik</envar> auf <literal>false</literal> deaktiviert werden.
-			</para>
-		</section>
-
-		<section id="relnotes:uefi">
-			<title>UEFI-Installations-DVD</title>
-			<para>
-				Für die Architektur <emphasis>amd64</emphasis> steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den Unified Extensible Firmware Interface-Standard (<acronym>UEFI</acronym>) bereit.
-			</para>
-
-			<para>
-				Auf Systemen, die nur einen UEFI-Start unterstützen, muss die UEFI-Installations-DVD anstelle der Standard-DVD verwendet werden.
 			</para>
 		</section>
 
