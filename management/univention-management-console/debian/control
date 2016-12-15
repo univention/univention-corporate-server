@@ -133,6 +133,7 @@ Depends: ${misc:Depends},
  univention-apache,
  univention-web-js,
  univention-web-style,
+Breaks: univention-system-info (<< 7),
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
