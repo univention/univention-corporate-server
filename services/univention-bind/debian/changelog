@@ -1,3 +1,9 @@
+univention-bind (11.0.0-3) unstable; urgency=low
+
+  * Bug #43200: Switch to dlz_bind9_9.so for BIND-9.9
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2016 13:51:33 +0100
+
 univention-bind (11.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix message printing in init-script
