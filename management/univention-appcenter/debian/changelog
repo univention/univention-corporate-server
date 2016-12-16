@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-25) unstable; urgency=medium
+
+  * Bug #42803: Track clicks on the "Buy" button
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 16 Dec 2016 14:31:12 +0100
+
 univention-appcenter (5.0.23-24) unstable; urgency=low
 
   * Bug #42816: Limit Docker hostname to 14 characters 

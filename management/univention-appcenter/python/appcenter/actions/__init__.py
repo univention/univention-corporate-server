@@ -43,7 +43,7 @@ from functools import wraps
 
 from univention.appcenter.app import AppManager
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error
+from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error, send_information
 from univention.appcenter.ucr import ucr_get
 
 _ACTIONS = {}
@@ -247,26 +247,7 @@ class UniventionAppAction(object):
 	@possible_network_error
 	def _send_information(self, app, status):
 		action = self.get_action_name()
-		self.debug('%s %s: %s' % (action, app.id, status))
-		server = AppManager.get_server()
-		url = '%s/postinst' % server
-		uuid = '00000000-0000-0000-0000-000000000000'
-		if app.notify_vendor:
-			uuid = ucr_get('uuid/license', uuid)
-		try:
-			values = {
-				'uuid': uuid,
-				'app': app.id,
-				'version': app.version,
-				'action': action,
-				'status': status,
-				'role': ucr_get('server/role'),
-			}
-			request_data = urllib.urlencode(values)
-			request = urllib2.Request(url, request_data)
-			urlopen(request)
-		except Exception as exc:
-			self.log('Error sending app infos to the App Center server: %s' % exc)
+		send_information(action, app, status)
 
 
 def get_action(action_name):

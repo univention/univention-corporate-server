@@ -116,8 +116,7 @@ define([
 			this.own(this._grid);
 		},
 
-		_setAppAttr: function(app, track) {
-			track = track !== false;
+		_setAppAttr: function(app) {
 			this._set('app', app);
 			if (this.appLoadingDeferred.isFulfilled()) {
 				this.appLoadingDeferred = new Deferred();
@@ -137,8 +136,8 @@ define([
 					this.appLoadingDeferred.reject();
 					return;
 				}
-				if (track && !loadedApp.is_installed_anywhere) {
-					tools.umcpCommand('appcenter/track', {app: loadedApp.id});
+				if (!loadedApp.is_installed_anywhere) {
+					tools.umcpCommand('appcenter/track', {app: loadedApp.id}, 'get');
 				} else {
 					tools.umcpCommand('appcenter/ping');
 				}
@@ -698,6 +697,7 @@ define([
 		openShop: function() {
 			var shopUrl = this.app.shopURL || 'https://shop.univention.com';
 			var w = window.open(shopUrl, '_blank');
+			tools.umcpCommand('appcenter/track', {app: this.app.id}, 'buy');
 			tools.umcpCommand('appcenter/buy', {application: this.app.id}).then(
 				function(data) {
 					var params = data.result;

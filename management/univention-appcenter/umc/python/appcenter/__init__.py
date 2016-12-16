@@ -60,7 +60,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
 from univention.appcenter.app import AppManager
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
@@ -270,11 +270,10 @@ class Instance(umcm.Base, ProgressMixin):
 		service = get_action(mode)
 		service.call(app=app)
 
-	@sanitize(app=AppSanitizer(required=True))
+	@sanitize(app=AppSanitizer(required=True), action=ChoicesSanitizer(['get', 'buy']))
 	@simple_response
-	def track(self, app):
-		get = get_action('get')()
-		get._send_information(app, 200)
+	def track(self, app, action):
+		send_information(action, app, 200)
 
 	@require_password
 	def _invoke_docker(self, function, application, force, values):
