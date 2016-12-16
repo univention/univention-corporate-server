@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.0-3) unstable; urgency=low
+
+  * Bug #39903: Ignore not existing referenced packages
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Dec 2016 16:51:43 +0100
+
 univention-pkgdb (10.0.0-2) unstable; urgency=low
 
   * Bug #42077: Corrected some Typos.

@@ -453,6 +453,8 @@ def scan_and_store_packages(cursor, sysname, fake_null=False):
 	cursor.execute(delete_packages, {'sysname': sysname, })
 	insert_values = []
 	for package in scan_and_store_packages.cache.packages:
+		if not package.has_versions:
+			continue
 		parameters = {
 			'sysname': sysname,
 			'currentstate': package.current_state,
