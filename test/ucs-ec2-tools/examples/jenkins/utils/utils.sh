@@ -212,11 +212,12 @@ run_join_scripts () {
 }
 
 assert_version () {
-	local requested_version="$1"
-	local version
+	local target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
+	local requested_version="${1:-$target}"
+	local version version_version version_patchlevel
 
 	eval "$(ucr shell '^version/(version|patchlevel)$')"
-	version="$version_version-$version_patchlevel"
+	version="${version_version}-${version_patchlevel}"
 	echo "Requested version $requested_version"
 	echo "Current version $version"
 	if [ "$requested_version" != "$version" ]; then
