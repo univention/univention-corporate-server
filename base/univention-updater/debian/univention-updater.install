@@ -22,6 +22,7 @@ script/reboot.at var/lib/univention-updater/
 script/univention-updater-check usr/share/univention-updater/
 script/disable-apache2-umc usr/share/univention-updater/
 script/enable-apache2-umc usr/share/univention-updater/
+script/updater-statistics usr/share/univention-updater/
 script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
 script/univention-updater-umc-univention-install usr/share/univention-updater/
 script/univention-removed usr/share/univention-updater/

@@ -1,0 +1,113 @@
+#!/usr/bin/python2.7
+#
+# Univention Updater
+#  collect statistics
+#
+# Copyright 2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import univention.admin.license
+import univention.admin.uldap
+import univention.config_registry
+import univention.config_registry.frontend
+
+
+def encode_number(number, significant_digits=3):
+	number = int(number)
+	if number < 0:
+		raise ValueError('number must be positive, not %r' % (number, ))
+	if number > int('9' * 26):
+		raise ValueError('number must be smaller than 1e26, not %r' % (number, ))
+	significant_digits = int(significant_digits)
+	if significant_digits < 1:
+		raise ValueError('significant_digits must be greater than 0, not %r' % (significant_digits, ))
+	string = ('%d' % (number, ))
+	return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
+
+
+def encode_users(users):
+	return encode_number(users)
+
+
+def encode_role(role):
+	if role == 'domaincontroller_master':
+		return 'M'
+	if role == 'domaincontroller_backup':
+		return 'B'
+	if role == 'domaincontroller_slave':
+		return 'S'
+	if role == 'memberserver':
+		return 'm'
+	if role == 'basesystem':
+		return 'b'
+	if role == 'fatclient':
+		return 'C'
+	if role == 'mobileclient':
+		return 'c'
+	raise ValueError('Invalid role %r' % (role, ))
+
+
+def encode_additional_info(users=None, role=None):
+	parts = []
+	for key, encoder, datum in (
+			('U', encode_users, users, ),
+			('R', encode_role , role , ),
+	):
+		if datum is not None:
+			parts.append(key + ':' + encoder(datum))
+	return ','.join(parts)
+
+
+def getReadonlyAdminConnection():
+	def do_nothing(*a, **kw):
+		raise AssertionError('readonly connection')
+	lo, position = univention.admin.uldap.getAdminConnection()
+	lo.add = lo.modify = lo.rename = lo.delete = do_nothing
+	return lo, position
+
+
+def main():
+	def get_role():
+		return configRegistry.get('server/role', None)
+
+	def get_users():
+		if get_role() != 'domaincontroller_master':
+			return None
+		lo, _ = getReadonlyAdminConnection()
+		filter = univention.admin.license._license.filters['2'][univention.admin.license._license.USERS]
+		return len(lo.searchDn(filter=filter))
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+	univention.config_registry.frontend.ucr_update(
+		configRegistry,
+		{
+			'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
+		}
+	)
+
+if __name__ == "__main__":
+	main()
