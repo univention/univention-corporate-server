@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-25.253.201612161438
+fix: 5.0.23-26.254.201612161539
 desc: |
  This update addresses the following issues:
  * Limit the hostname for Docker containers to 14 characters.
