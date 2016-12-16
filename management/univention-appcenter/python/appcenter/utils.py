@@ -368,11 +368,14 @@ def send_information(action, app, status):
 	server = get_server()
 	url = '%s/postinst' % server
 	uuid = '00000000-0000-0000-0000-000000000000'
+	system_uuid = '00000000-0000-0000-0000-000000000000'
 	if app.notify_vendor:
 		uuid = ucr_get('uuid/license', uuid)
+		system_uuid = ucr_get('uuid/system', system_uuid)
 	try:
 		values = {
 			'uuid': uuid,
+			'system-uuid': system_uuid,
 			'app': app.id,
 			'version': app.version,
 			'action': action,
