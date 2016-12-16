@@ -42,6 +42,7 @@ from threading import Thread
 from uuid import uuid4
 import time
 import urllib2
+import urllib
 import httplib
 import ipaddr
 import ssl

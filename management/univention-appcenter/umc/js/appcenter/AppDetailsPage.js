@@ -137,7 +137,7 @@ define([
 					return;
 				}
 				if (!loadedApp.is_installed_anywhere) {
-					tools.umcpCommand('appcenter/track', {app: loadedApp.id}, 'get');
+					tools.umcpCommand('appcenter/track', {app: loadedApp.id, action: 'get'});
 				} else {
 					tools.umcpCommand('appcenter/ping');
 				}
@@ -697,7 +697,7 @@ define([
 		openShop: function() {
 			var shopUrl = this.app.shopURL || 'https://shop.univention.com';
 			var w = window.open(shopUrl, '_blank');
-			tools.umcpCommand('appcenter/track', {app: this.app.id}, 'buy');
+			tools.umcpCommand('appcenter/track', {app: this.app.id, action: 'buy'});
 			tools.umcpCommand('appcenter/buy', {application: this.app.id}).then(
 				function(data) {
 					var params = data.result;
