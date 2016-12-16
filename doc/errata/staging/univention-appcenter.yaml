@@ -3,9 +3,10 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-26.254.201612161539
+fix: 5.0.23-27.255.201612161621
 desc: |
  This update addresses the following issues:
  * Limit the hostname for Docker containers to 14 characters.
  * Univention gets informed about clicks on the "Buy" button.
-bug: [42816, 42803]
+ * Univention also recieves the systems uuid with the tracking information.
+bug: [42816, 42803, 42872]
