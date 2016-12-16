@@ -192,7 +192,7 @@ class UcsWin(object):
 				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
 				[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
 			''' % w_file
-            if winrm_warnings:
+            if not winrm_warnings:
                 with RedirectStdOut(stdout=open(os.devnull, 'w')):
                     r = s.run_ps(_cmd)
             else:
