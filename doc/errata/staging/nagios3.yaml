@@ -1,0 +1,20 @@
+product: ucs
+release: "3.3"
+version: [0,1]
+scope: ucs_3.3-0-errata3.3-1
+src: nagios3
+fix: 3.2.1-2~ucs3.3.55.201612191615
+desc: |
+ This update addresses the following issues:
+ * A stack-based buffer overflow in the cmd_submitf function in cgi/cmd.c
+   in Nagios allows remote attackers to cause a denial of service
+   (segmentation fault) via a long message to cmd.cgi(CVE-2014-1878)
+ * The update check has been removed (related to CVE-2016-9565)
+ * base/logging.c in Nagios Core before 4.2.4 allows local users with access
+   to an account in the nagios group to gain root privileges via a symlink
+   attack on the log file.  NOTE: this can be leveraged by remote attackers
+   using CVE-2016-9565 (CVE-2016-9566)
+bug: [33822]
+cve:
+ - CVE-2014-1878
+ - CVE-2016-9566
