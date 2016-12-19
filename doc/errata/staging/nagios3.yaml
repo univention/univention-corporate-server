@@ -3,7 +3,7 @@ release: "3.3"
 version: [0,1]
 scope: ucs_3.3-0-errata3.3-1
 src: nagios3
-fix: 3.2.1-2~ucs3.3.55.201612191615
+fix: 3.2.1-2.57.201612191626
 desc: |
  This update addresses the following issues:
  * A stack-based buffer overflow in the cmd_submitf function in cgi/cmd.c
