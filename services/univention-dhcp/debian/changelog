@@ -1,3 +1,9 @@
+univention-dhcp (11.0.0-3) unstable; urgency=low
+
+  * Bug #38438: Fix dhcpd init script
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Dec 2016 11:24:06 +0100
+
 univention-dhcp (11.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
