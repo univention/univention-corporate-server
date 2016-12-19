@@ -5,8 +5,17 @@ scope: ucs_3.3-0-errata3.3-0
 src: samba
 fix: 2:4.3.7-1.828.201612132122
 desc: |
- This update addresses the following issues:
+ This update fixes the following security issues:
  * Client side SMB2/3 required signing can be downgraded (CVE-2016-2119)
+ * Overflow in Samba NDR parsing function ndr_pull_dnsp_name causes
+   vulnerability to remote code execution (CVE-2016-2123).
+ * Unconditional privilege delegation to Kerberos servers in trusted realms
+   (CVE-2016-2125).
+ * Flaws in Kerberos PAC validation can trigger privilege elevation
+   (CVE-2016-2126).
 bug: [43145]
 cve:
  - CVE-2016-2119
+ - CVE-2016-2123
+ - CVE-2016-2125
+ - CVE-2016-2126
