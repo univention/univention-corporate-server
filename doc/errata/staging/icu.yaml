@@ -3,7 +3,7 @@ release: "4.1"
 version: [3,4]
 scope: ucs_4.1-0-errata4.1-4
 src: icu
-fix: 
+fix: 4.8.1.1-12.26.201612191333
 desc: |
  This update addresses the following issues:
  * Unspecified vulnerability in Oracle Java SE allows remote attackers to
