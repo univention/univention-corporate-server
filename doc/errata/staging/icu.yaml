@@ -1,9 +1,9 @@
 product: ucs
 release: "3.3"
-version: [0]
-scope: ucs_3.3-0-errata3.3-0
+version: [0,1]
+scope: ucs_3.3-0-errata3.3-1
 src: icu
-fix: 4.4.1-8~ucs3.3.27.201612191418
+fix: 4.4.1-8~ucs3.3.30.201612191549
 desc: |
  This update addresses the following issues:
  * Unspecified vulnerability in Oracle Java SE allows remote attackers to
