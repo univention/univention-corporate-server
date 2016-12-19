@@ -9,8 +9,8 @@
 ]>
 <book lang="en" id="releasenotes-3.3-1-en">
 	<bookinfo>
-		<title>UCS 3.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.3</subtitle>
+		<title>UCS 3.3-1 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.3-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -42,7 +42,7 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>&ucsUCS; (UCS) 3.3</title>
+		<title>&ucsUCS; (UCS) 3.3-1</title>
 
 		<para>
 			The first point release for &ucsUCS; (UCS) 3.3 is now available in the form of &ucsUCS; 3.3-1. The online repository
