@@ -81,6 +81,10 @@
 						<package>python-imaging</package> (<u:cve>2014-3589</u:cve>, <u:cve>2016-0775</u:cve>,
 						<u:cve>2016-2533</u:cve>, <u:cve>2016-9189</u:cve>, <u:cve>2016-9190</u:cve>) (<u:bug>42900</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2016-2119</u:cve>, <u:cve>2016-2123</u:cve>, <u:cve>2016-2125</u:cve>,
+						<u:cve>2016-2126</u:cve>) (<u:bug>43145</u:bug>).
+					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 		</itemizedlist>
