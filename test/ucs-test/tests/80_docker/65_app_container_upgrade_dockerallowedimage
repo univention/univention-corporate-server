@@ -50,7 +50,7 @@ if __name__ == '__main__':
 			app.verify_basic_modproxy_settings()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name, unique=True, required=True)
+			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
 			ucr = ConfigRegistry()
 			ucr.load()
 			container_uuid = ucr.get('appcenter/apps/%s/container' % app_name)
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 			app.verify_basic_modproxy_settings()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name, unique=True, required=True)
+			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
 
 			ucr.load()
 			container_uuid_new = ucr.get('appcenter/apps/%s/container' % app_name)

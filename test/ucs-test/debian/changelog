@@ -1,3 +1,9 @@
+ucs-test (6.0.37-26) unstable; urgency=medium
+
+  * Bug #42816: Adjust tests to new hostname limit
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Dec 2016 23:48:18 +0100
+
 ucs-test (6.0.37-25) unstable; urgency=low
 
   * 55_adconnector/108sync_windowscomputer_groupmembership_ad_to_ucs:
