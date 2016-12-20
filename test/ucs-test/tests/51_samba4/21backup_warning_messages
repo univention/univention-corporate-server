@@ -53,3 +53,4 @@ start_modification /var/lib/samba/sysvol/ &
 test_backup
 
 wait
+exit $RETVAL
