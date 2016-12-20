@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-28) unstable; urgency=medium
+
+  * Bug #39632: Performance improvements when opening the App Center
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Dec 2016 10:45:02 +0100
+
 univention-appcenter (5.0.23-27) unstable; urgency=medium
 
   * Bug #42872: Also transfer the system-uuid when tracking.

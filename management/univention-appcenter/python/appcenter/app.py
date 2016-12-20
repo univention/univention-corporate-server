@@ -897,8 +897,6 @@ class App(object):
 		self._is_ucs_component = None
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
-		for attr in self._attrs:
-			attr.post_creation(self)
 		if self.docker:
 			self.supported_architectures = ['amd64']
 		else:
@@ -1510,7 +1508,11 @@ class AppManager(object):
 
 	@classmethod
 	def _build_app_from_ini(cls, ini):
-		return cls._AppClass.from_ini(ini, locale=cls._locale)
+		app = cls._AppClass.from_ini(ini, locale=cls._locale)
+		if app:
+			for attr in app._attrs:
+				attr.post_creation(app)
+		return app
 
 	@classmethod
 	def clear_cache(cls):
