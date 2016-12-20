@@ -33,5 +33,23 @@ function test_backup {
     fi
 }
 
+# The bug described an error with `tar` while files were modified. This
+# simulates the case.
+function start_modification {
+    local base_dir=$1
+    local test_file=$(tempfile -d "$base_dir")
+    #`dd` is made as slow as possible to maximize the change of triggering the
+    # bug. This creates a 10mb file.
+    dd if=/dev/zero of="$test_file" bs=1 count=10485760 2> /dev/null
+    rm -f "$test_file"
+}
+
 # A basic test as a baseline. This should not fail.
 test_backup
+
+# The actual test with concurrent modification of the working directories.
+start_modification /var/lib/samba/private/ &
+start_modification /var/lib/samba/sysvol/ &
+test_backup
+
+wait
