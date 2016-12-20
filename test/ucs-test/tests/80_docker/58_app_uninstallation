@@ -44,7 +44,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 			app.verify()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name, unique=True, required=True)
+			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True)
 
 		finally:
 			app.uninstall()
@@ -77,7 +77,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 			fail('Data backup file not found')
 
 		lo = get_ldap_connection()
-		res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name)
+		res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name[:5])
 		if res:
 			fail('The LDAP object has not been removed: %s' % res)
 

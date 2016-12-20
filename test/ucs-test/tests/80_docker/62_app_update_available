@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			app.verify()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name, unique=True, required=True)
+			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
 			app.execute_command_in_container('univention-upgrade --noninteractive --updateto=%s-99 --disable-app-updates' % ucr['version/version'])
 
 			app.execute_command_in_container('univention-install %s' % package_name)
