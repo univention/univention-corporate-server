@@ -117,7 +117,7 @@ if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns
 fi
 
-old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
+old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | sed -ne 's|.*domain_name_servers: ||p'`
 if [ -z "$old" -o "$old" = "None" ]; then
 	IP="$(get_default_ip_address)"
 	if ! echo "$IP" | grep -q ":" # Don't register IPv6?
