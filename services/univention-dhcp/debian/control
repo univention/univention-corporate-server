@@ -22,7 +22,8 @@ Depends: ${misc:Depends},
  python-univention-lib (>= 1.0.25-1)
 Conflicts: univention-dns
 Replaces: univention-dns
-Breaks: dhcp3-server (<< 4)
+Breaks: dhcp3-server (<< 4),
+ univention-bind (<< 11.0.0-4),
 Description: UCS - DHCP server
  This package installs a DHCP server that uses LDAP for
  its configuration.
