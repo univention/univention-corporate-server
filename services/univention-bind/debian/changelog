@@ -1,3 +1,9 @@
+univention-bind (11.0.0-5) unstable; urgency=low
+
+  * Bug #43217: Fix wrong path name
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Dec 2016 16:33:36 +0100
+
 univention-bind (11.0.0-4) unstable; urgency=low
 
   * Bug #43217: Fix registration of UCS-domain and forward servers
