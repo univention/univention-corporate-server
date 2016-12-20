@@ -1,3 +1,15 @@
+ucs-test (7.0.6-35) unstable; urgency=medium
+
+  * Bug #35907: cleanup 21backup_warning_messages
+    - The exit code of `univention-samba4-backup` is regarded
+    - Simplified error matching and testing
+  * Bug #35907: improve 21backup_warning_messages.
+    Adapt `21backup_warning_messages` to actually create
+    files in `/var/lib/samba/{private,sysvol}` while the
+    backup-tool is running.
+
+ -- Lukas Oyen <oyen@univention.de>  Tue, 20 Dec 2016 14:44:55 +0100
+
 ucs-test (7.0.6-34) unstable; urgency=low
 
   * 20_appcenter/20_can_apps_be_installed
