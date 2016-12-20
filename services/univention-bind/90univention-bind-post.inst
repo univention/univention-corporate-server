@@ -91,7 +91,6 @@ wait_for_dns () {
 }
 
 univention-config-registry set dns/backend?ldap
-IP="$(get_default_ip_address)"
 
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	/usr/share/univention-bin/fix-ucr-dns
@@ -120,9 +119,14 @@ fi
 
 old=`univention-directory-manager policies/dhcp_dns list "$@" --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
+	IP="$(get_default_ip_address)"
 	if ! echo "$IP" | grep -q ":" # Don't register IPv6?
 	then
-		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$IP
+		univention-directory-manager policies/dhcp_dns modify "$@" --ignore_exists \
+			--dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" \
+			--set name=default-settings \
+			--set domain_name="$domainname" \
+			--set domain_name_servers="$IP"
 	fi
 fi
 
