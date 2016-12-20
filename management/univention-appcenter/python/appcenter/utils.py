@@ -42,7 +42,6 @@ from threading import Thread
 from uuid import uuid4
 import time
 import urllib2
-import urllib
 import httplib
 import ipaddr
 import ssl
@@ -54,7 +53,6 @@ from locale import getlocale
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
 from univention.config_registry import interfaces
-from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
 
 # "global" translation for univention-appcenter
@@ -356,26 +354,17 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 def get_local_fqdn():
 	return '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 
-def get_server():
-	server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
-	if not server.startswith('http'):
-		server = 'https://%s' % server
-	return server
 
 def send_information(action, app, status):
-	logger = get_base_logger().getChild('utils')
-	logger.debug('%s %s: %s', action, app.id, status)
-	server = get_server()
+	logger.debug('%s %s: %s' % (action, app.id, status))
+	server = AppManager.get_server()
 	url = '%s/postinst' % server
 	uuid = '00000000-0000-0000-0000-000000000000'
-	system_uuid = '00000000-0000-0000-0000-000000000000'
 	if app.notify_vendor:
 		uuid = ucr_get('uuid/license', uuid)
-		system_uuid = ucr_get('uuid/system', system_uuid)
 	try:
 		values = {
 			'uuid': uuid,
-			'system-uuid': system_uuid,
 			'app': app.id,
 			'version': app.version,
 			'action': action,
@@ -386,5 +375,4 @@ def send_information(action, app, status):
 		request = urllib2.Request(url, request_data)
 		urlopen(request)
 	except Exception as exc:
-		logger.info('Error sending app infos to the App Center server: %s', exc)
-
+		logger.error('Error sending app infos to the App Center server: %s' % exc)
