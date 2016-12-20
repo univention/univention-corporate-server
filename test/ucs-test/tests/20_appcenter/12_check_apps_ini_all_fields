@@ -167,7 +167,8 @@ class Value(object):
                        'domaincontroller_slave',
                        'memberserver'))
 
-        if set(self.value.split(',')) - ALLOWED:
+        values = map(str.strip, self.value.split(','))
+        if set(values) - ALLOWED:
             raise Error('Invalid server role: "%s"' % self.value)
 
     def is_arch(self):
@@ -182,7 +183,7 @@ class Value(object):
 
     def deprecated_master_packages(self):
         if self.value:
-                if self.appid not in 'agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm ucc zarafa'.split():
+                if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm ucc zarafa'.split():
                         raise Error('Should not have DefaultPackagesMaster!!')
 
     def is_category(self):

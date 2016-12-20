@@ -1,3 +1,12 @@
+ucs-test (7.0.6-34) unstable; urgency=low
+
+  * 20_appcenter/20_can_apps_be_installed
+    20_appcenter/12_check_apps_ini_all_fields
+    20_appcenter/30_ini_checks
+    Ticket #2016121521000283
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Dec 2016 12:21:29 +0100
+
 ucs-test (7.0.6-33) unstable; urgency=medium
 
   * Bug #42816: Adjust tests to new hostname limit
