@@ -1,0 +1,267 @@
+#!/usr/bin/python2.7
+"""
+Configure UCS-domain and forward DNS servers.
+"""
+# Copyright 2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from os import environ
+from sys import modules, stderr
+from collections import OrderedDict
+from subprocess import check_output
+from optparse import OptionParser, SUPPRESS_HELP
+from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
+
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.frontend import ucr_update
+from DNS import DnsRequest
+from ipaddr import IPAddress, Bytes
+
+
+FWD = ['dns/forwarder%d' % (i,) for i in range(1, 4)]
+DNS = ['nameserver%d' % (i,) for i in range(1, 4)]
+LOCAL = '127.0.0.1'  # or ::1 for IPv6
+
+
+def main():
+	options = parse_args()
+	setup_logging(options)
+
+	if options.run_tests:
+		run_tests()
+
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	forwarders = get_forwarders(ucr)
+	nameservers = get_nameservers(ucr, forwarders)
+	add_nameservers(nameservers, ucr['domainname'], options)
+	add_master(nameservers, ucr['ldap/master'], options)
+
+	update_ucr(ucr, nameservers, forwarders, options)
+
+
+def parse_args():
+	usage = '%prog [options]'
+	description = modules[__name__].__doc__
+	parser = OptionParser(usage=usage, description=description)
+	parser.add_option(
+		'--verbose', '-v',
+		action='count', default=0,
+		help='Increase verbosity')
+	parser.add_option(
+		'--no-act', '-n',
+		action='store_true',
+		help='Enable dry-run mode')
+	parser.add_option(
+		'--ipv6', '-6',
+		action='store_const', const=('A', 'AAAA'), default=('A',), dest='rrtyp',
+		help='Also add IPv6 addresses')
+	parser.add_option(
+		'--no-master', '-M',
+		action='store_true',
+		help='Do not add domaincontroller_master as name-server')
+	parser.add_option(
+		'--no-nameservers', '-N',
+		action='store_true',
+		help='Do not add other name-servers')
+	parser.add_option(
+		'--run-tests',
+		action='store_true',
+		help=SUPPRESS_HELP)
+
+	options, args = parser.parse_args()
+	if args:
+		parser.error('No argument expected')
+
+	return options
+
+
+def setup_logging(options):
+	FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-15s %(message)s'
+	LEVELS = [ERROR, WARNING, INFO, DEBUG]
+	try:
+		level = LEVELS[options.verbose]
+	except IndexError:
+		level = LEVELS[-1]
+	basicConfig(format=FORMAT, level=level, stream=stderr)
+
+
+def get_forwarders(ucr):
+	log = getLogger(__name__).getChild('fwd')
+	forwarders = OrderedDict()
+
+	for var in FWD:
+		fwd = ucr.get(var, '').strip()
+		if not fwd:
+			continue
+		fwd = IPAddress(fwd)
+		if is_self(fwd):
+			log.info('Dropping self forwarder %s', fwd)
+			continue
+		log.info('Keeping forwarder %s', fwd)
+		forwarders[fwd] = None
+
+	return forwarders
+
+
+def get_nameservers(ucr, forwarders):
+	log = getLogger(__name__).getChild('fwd')
+	nameservers = OrderedDict({IPAddress(LOCAL): None})
+
+	for var in DNS:
+		dns = ucr.get(var, '').strip()
+		if not dns:
+			continue
+		dns = IPAddress(dns)
+		if dns in forwarders:
+			log.info('Dropping forwarder %s', dns)
+			continue
+		if is_self(dns):
+			log.info('Dropping self %s', dns)
+			continue
+		log.info('Keeping server %s', dns)
+		nameservers[dns] = None
+
+	return nameservers
+
+
+def add_nameservers(nameservers, domain, options):
+	log = getLogger(__name__).getChild('ns')
+	if options.no_nameservers:
+		log.info('Skip adding NS')
+		return
+
+	log.debug('Querying NS %s', domain)
+	r = DnsRequest(domain, qtype='NS', server=[LOCAL], aa=1, rd=0).req()
+	log.debug('header=%r', r.header)
+
+	if r.header['status'] == 'NOERROR' and r.header['aa']:
+		names = set(rr['data'] for rr in r.answers)
+		log.debug('servers=%r', names)
+		for rr in r.additional:
+			log.debug('rr=%r', rr)
+			name = rr['name']
+			if rr['typename'] in options.rrtyp and name in names:
+				ip = get_ip(rr)
+				if is_self(ip):
+					log.info('Skipping self %s=%s', name, ip)
+					continue
+				log.info('Adding server %s=%s', name, ip)
+				nameservers[ip] = None
+				names.remove(name)
+
+
+def add_master(nameservers, master, options):
+	log = getLogger(__name__).getChild('ldap')
+	if options.no_master:
+		log.info('Skip adding master')
+		return
+
+	log.debug('Querying master %s', master)
+	r = DnsRequest(master, qtype='ANY', server=[LOCAL], aa=1, rd=0).req()
+	log.debug('header=%r', r.header)
+
+	if r.header['status'] == 'NOERROR' and r.header['aa']:
+		for rr in r.answers:
+			log.debug('rr=%r', rr)
+			if rr['typename'] in options.rrtyp:
+				ip = get_ip(rr)
+				if is_self(ip):
+					log.info('Skipping self %s', ip)
+					continue
+				log.info('Adding master %s', ip)
+				nameservers[ip] = None
+				break
+
+
+def update_ucr(ucr, nameservers, forwarders, options):
+	log = getLogger(__name__).getChild('ucr')
+	changes = {}
+
+	def update(names, values, typ):
+		log.debug('%s=%r', typ, values)
+		diff = len(names) - len(values)
+		if diff > 0:
+			values += [None] * diff
+		elif diff < 0:
+			log.warn('Skipping extra %s: %r', typ, values[len(names):])
+		changes.update(dict(zip(names, values)))
+
+	update(FWD, forwarders.keys(), 'forwarders')
+	update(DNS, nameservers.keys(), 'nameservers')
+	log.info('Updating %r', changes)
+
+	if not options.no_act:
+		ucr_update(ucr, changes)
+
+
+def get_ip(rr):
+	r"""
+	>>> get_ip({'typename': 'A', 'data': '127.0.0.1'})
+	IPv4Address('127.0.0.1')
+	>>> get_ip({'typename': 'AAAA', 'data': '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01'})
+	IPv6Address('::1')
+	"""
+	typ, data = rr['typename'], rr['data']
+	if typ == 'A':
+		return IPAddress(data)
+	elif typ == 'AAAA':
+		# Work-around bug in python-pydns, which does not unpack IPv6 addresses
+		assert len(data) == 16
+		_cb = Bytes if issubclass(Bytes, str) else lambda bytestr: bytes(bytestr, 'charmap')
+		return IPAddress(_cb(data))
+	else:
+		raise TypeError(typ)
+
+
+def is_self(addr):
+	"""
+	>>> is_self('127.0.0.1')
+	True
+	>>> is_self('::1')
+	True
+	>>> is_self('8.8.8.8')
+	False
+	"""
+	log = getLogger(__name__).getChild('ip')
+
+	env = dict(environ)
+	env['LC_ALL'] = 'C'
+	cmd = ['ip', 'route', 'get', '%s' % addr]
+	log.debug('calling %r', cmd)
+	out = check_output(cmd, env=env)
+	return out.startswith('local ')
+
+
+def run_tests():
+	import doctest
+	doctest.testmod()
+
+
+if __name__ == '__main__':
+	main()

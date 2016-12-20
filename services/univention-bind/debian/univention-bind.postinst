@@ -75,6 +75,8 @@ if [ ! -e /etc/bind/local-predlz.conf.samba4 ]; then
 fi
 
 if [ "$1" = "configure" ]; then
+	dpkg --compare-versions "$2" lt 11.0.0-4 &&
+		/usr/share/univention-bin/fix-ucr-dns
 	if [ -n "$2" ]; then
 		invoke-rc.d bind9 crestart
 	else

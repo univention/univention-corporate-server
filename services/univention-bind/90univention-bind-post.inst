@@ -94,40 +94,7 @@ univention-config-registry set dns/backend?ldap
 IP="$(get_default_ip_address)"
 
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
-	if [ "$nameserver1" = "$dns_forwarder1" ]; then
-		univention-config-registry unset nameserver1
-		unset nameserver1
-	fi
-	if [ "$nameserver2" = "$dns_forwarder2" ]; then
-		univention-config-registry unset nameserver2
-		unset nameserver2
-	fi
-	if [ "$nameserver3" = "$dns_forwarder3" ]; then
-		univention-config-registry unset nameserver3
-		unset nameserver3
-	fi
-
-	if [ "$IP" != "$nameserver1" ]; then
-		if [ -z "$dns_forwarder1" -a -n "$nameserver1" ]; then
-			univention-config-registry set dns/forwarder1="$nameserver1"
-		fi
-		if [ -z "$dns_forwarder2" -a -n "$nameserver2" ]; then
-			univention-config-registry set dns/forwarder2="$nameserver2"
-		fi
-		if [ -z "$dns_forwarder3" -a -n "$nameserver3" ]; then
-			univention-config-registry set dns/forwarder3="$nameserver3"
-		fi
-
-		if [ -z "$nameserver1" ]; then
-			univention-config-registry set nameserver1="$IP"
-		elif [ -z "$nameserver2" ]; then
-			univention-config-registry set nameserver2="$nameserver1" nameserver1="$IP"
-		elif [ -z "$nameserver3" ]; then
-			univention-config-registry set nameserver3="$nameserver2" nameserver2="$nameserver1" nameserver1="$IP"
-		else
-			univention-config-registry set nameserver4="$nameserver3" nameserver3="$nameserver2" nameserver2="$nameserver1" nameserver1="$IP"
-		fi
-	fi
+	/usr/share/univention-bin/fix-ucr-dns
 fi
 
 if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then

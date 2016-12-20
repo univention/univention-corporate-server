@@ -1,3 +1,9 @@
+univention-bind (11.0.0-4) unstable; urgency=low
+
+  * Bug #43217: Fix registration of UCS-domain and forward servers
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Dec 2016 15:29:22 +0100
+
 univention-bind (11.0.0-3) unstable; urgency=low
 
   * Bug #43200: Switch to dlz_bind9_9.so for BIND-9.9
