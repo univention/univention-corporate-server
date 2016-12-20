@@ -10,20 +10,28 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
-RETVAL=0
+LANG=C
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
+function test_backup {
+    local output=$(univention-samba4-backup $@ 2>&1)
+    local retval=$?
 
-# univention-samba4-backup STDERR:
-BACKUP_STDERR="$((LANG=C univention-samba4-backup) 2>&1)"
+    if [ $retval -ne 0 ]; then
+        echo -e "$output"
+        fail_test $retval "univention-samba4-backup exited with code $retval"
+    fi
 
-# grep STDERR for messages apeared in Bug #35392:
-OUTPUT="$(echo $BACKUP_STDERR | grep -i -E "(Socket ignoriert|socket ignored|Datei hat sich beim Lesen geändert|file changed as we read it)")"
+    # grep output for messages apeared in Bug #35392:
+    local errors=$(echo "$output" | grep -i -e "socket ignored" \
+                                         -e "file changed as we read it")
 
-if [ "$OUTPUT" != '' ]; then
-        echo $OUTPUT
+    if [ -n "$errors" ]; then
+        echo -e "$errors"
         fail_test 1 "univention-samba4-backup produced one of the messages that should be supressed."
-fi
+    fi
+}
 
-exit $RETVAL
+# A basic test as a baseline. This should not fail.
+test_backup
