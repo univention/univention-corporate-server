@@ -27,8 +27,6 @@ if requested_apps and all(app.docker for app in requested_apps):
 with UCSTestConfigRegistry():
 
 	log_to_stream()
-	# reset by UCSTestConfigRegistry()
-	ucr_save({'repository/app_center/server': 'appcenter.software-univention.de'})
 
 	update = get_action('update')
 	update.call()

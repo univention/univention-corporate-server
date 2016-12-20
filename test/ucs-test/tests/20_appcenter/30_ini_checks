@@ -25,7 +25,11 @@ meta_inf = Application.get_metainf_url()
 codes = {}
 for app in Application.all():
 	for ver in app.versions:
-		print 'Checking %r' % ver
+		if ver.id.endswith('-test'):
+			print 'Ignoring test App %s' % ver.id
+			continue
+		else:
+			print 'Checking %r' % ver
 		# codes
 		code = ver.code
 		if code:
