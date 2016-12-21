@@ -11,3 +11,5 @@ desc: |
  * Joining a UCS system into a domain now works for hostnames, where the
    corresponding host LDAP entry was created using a different casing.
 bug: [39179,39068]
+erratum: 362
+announced: 2016-12-21
