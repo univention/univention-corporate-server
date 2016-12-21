@@ -116,6 +116,8 @@ define([
 			this.own(this._grid);
 		},
 
+		// The parameter "track" can be specified by adding an additional parameter
+		// to the call of set(). e.g. "appDetailsPage.set('app', app, false);"
 		_setAppAttr: function(app, track) {
 			track = track !== false;
 			this._set('app', app);
