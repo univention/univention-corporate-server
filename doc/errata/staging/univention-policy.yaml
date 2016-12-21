@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-policy
+fix: 7.0.2-2.140.201612211455
+desc: |
+ This update addresses the following issue:
+ * LDAP connections are now always TLS encrypted.
+bug: [43031]
