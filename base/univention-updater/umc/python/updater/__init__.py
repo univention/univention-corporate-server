@@ -38,15 +38,20 @@ from hashlib import md5
 import subprocess
 import psutil
 import pipes
+import urllib2
+import contextlib
+import yaml
 
 import univention.hooks
 import notifier.threads
 
+import univention.admin.modules as udm_modules
+import univention.admin.uldap as udm_uldap
 from univention.lib.i18n import Translation
 from univention.lib import atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer
 
@@ -205,6 +210,33 @@ class Instance(Base):
 			self.uu = UniventionUpdater(False)
 		except Exception as exc:  # FIXME: let it raise
 			MODULE.error("init() ERROR: %s" % (exc,))
+
+	@simple_response
+	def query_maintenance_information(self):
+		ucr.load()
+		version = self.uu.get_ucs_version()
+		try:
+			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
+			with contextlib.closing(urllib2.urlopen(url)) as f:
+				status = yaml.load(f)
+				maintained = str(status.get('maintained')).lower()
+		except urllib2.HTTPError as e:
+			raise UMC_Error(e)
+		else:
+			udm_modules.update()
+			lo, po = udm_uldap.getMachineConnection()
+			result = udm_modules.lookup('settings/license', None, lo, base=ucr['ldap/base'], scope='sub')
+			if result:
+				result = result[0]
+				result.open()
+				return {
+						'ucsVersion': version,
+						'maintained': maintained,
+						'hasExtendedMaintenance': ucr.is_true('license/extended_maintenance/%s' % version),
+						'baseDN': result.get('base'),
+						'support': result.get('support'),
+						'premiumSupport': result.get('premiumsupport')
+				}
 
 	@simple_response
 	def poll(self):

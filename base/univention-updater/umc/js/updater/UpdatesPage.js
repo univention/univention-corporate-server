@@ -36,9 +36,11 @@ define([
 	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/Deferred",
+	"dijit/registry",
 	"dojox/string/sprintf",
 	"umc/app",
 	"umc/tools",
+	"umc/dialog",
 	"umc/store",
 	"umc/modules/lib/server",
 	"umc/widgets/TitlePane",
@@ -48,7 +50,16 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, UMCApplication, tools, store, server, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, dijitRegistry, sprintf, UMCApplication, tools, dialog, store, server, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
+	var _getParentWidget = function(widget) {
+		try {
+			return dijitRegistry.getEnclosingWidget(widget.domNode.parentNode);
+		} catch(e) {
+			// could not access _widget.domNode.parentNode
+			return null;
+		}
+	};
+
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_update_prohibited: false,
@@ -66,6 +77,21 @@ define([
 			});
 		},
 
+		_getEnclosingTitlePane: function(widgetName) {
+			var _widget = this._form.getWidget(widgetName) || this._form.getButton(widgetName);
+			while (_widget !== null) {
+				if (_widget.isInstanceOf(TitlePane)) {
+					// we successfully found the enclosing TitlePane of the given widget
+					return _widget;
+				}
+				if (_widget.isInstanceOf(Form)) {
+					// do not search beyond the form widget
+					return null;
+				}
+				_widget = _getParentWidget(_widget);
+			}
+		},
+
 		buildRendering: function() {
 
 			this.inherited(arguments);
@@ -73,6 +99,13 @@ define([
 			var widgets = [{ // --------------------- Reboot pane -----------------------------
 					type: HiddenInput,
 					name: 'reboot_required'
+				}, {
+					type:			'Text',
+					name:			'version_out_of_maintenance_text',
+					'class':		'umcUpdaterWarningText',
+					visible:		false,
+					label:			'',
+					content:		'', // will be set below as soon as the UCS version is known
 				}, {
 					type: Text,
 					name: 'reboot_text',
@@ -335,7 +368,9 @@ define([
 				size: 'One'
 			}];
 
-			var layout = [{
+			var layout = [
+				'version_out_of_maintenance_text',
+			{
 				label: _("Reboot required"),
 				layout: [
 					['reboot_text', 'reboot']
@@ -376,10 +411,10 @@ define([
 			// fetch all known/initial titlepanes and save them with their name
 			// so they can be used later on
 			this._titlepanes = {
-				reboot: this._form._container.getChildren()[0],
-				easymode: this._form._container.getChildren()[1],
-				release: this._form._container.getChildren()[2],
-				packages: this._form._container.getChildren()[3]
+				reboot: this._getEnclosingTitlePane('reboot'),
+				easymode: this._getEnclosingTitlePane('easy_upgrade'),
+				release: this._getEnclosingTitlePane('run_release_update'),
+				packages: this._getEnclosingTitlePane('run_packages_update')
 			};
 
 			// Before we attach the form to our page, just switch off all title panes.
@@ -433,6 +468,8 @@ define([
 
 					this._show_reboot_pane(tools.isTrue(values.reboot_required));
 
+
+
 				} catch(error) {
 					console.error("onLoaded: " + error.message);
 				}
@@ -473,7 +510,6 @@ define([
 					}
 				}, this);
 			}));
-
 		},
 
 		_get_errata_link: function(version) {
@@ -588,6 +624,43 @@ define([
 				domClass.toggle(but.domNode, 'dijitHidden', false);
 			}
 
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this._checkOutOfMaintenance();
+		},
+
+		_checkOutOfMaintenance: function() {
+			// load maintenance information and show message if current UCS version is out of maintenance
+			tools.umcpCommand('updater/maintenance_information').then(lang.hitch(this, function(data) {
+				var info = data.result;
+				var msg = '';
+				var msgBase = lang.replace(_("<b>Warning</b>: You are currently using UCS {0} {1}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br>"), [info.ucsVersion, '{0}']);
+				var msgExtended = _("{0} offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
+				var msgContact = _("We offer extended maintenance for some UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>");
+
+				if (info.maintained === 'extended' && !info.hasExtendedMaintenance) {
+					msg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br> We offer extended maintenance for this UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>"), [info.ucsVersion]);
+				} else if (info.maintained === 'false') {
+					if (info.baseDN === 'Free for personal use edition' || info.baseDN === 'UCS Core Edition') {
+						msg = lang.replace(msgBase, [_('Core Edition')]) + lang.replace(msgExtended, [_('Enterprise Subscriptions')]);
+					} else if (!info.support && !info.premiumSupport) {
+						msg = lang.replace(msgBase, [_('Base Subscription')], lang.replace(msgExtended, [_('Premium Subscriptions')]));
+					} else if (info.support && !info.premiumSupport) {
+						msg = lang.replace(msgBase, [_('Standard Subscription')]) + lang.replace(msgExtended, [_('Premium Subscriptions')]);
+					} else if (info.premiumSupport) {
+						msg = lang.replace(msgBase, [_('Premium Subscription')]) + msgContact;
+					}
+				}
+
+				if (msg) {
+					// display out of maintenance message
+					var outOfMaintenanceWidget = this._form.getWidget('version_out_of_maintenance_text');
+					outOfMaintenanceWidget.set('content', msg);
+					outOfMaintenanceWidget.set('visible', true);
+				}
+			}));
 		},
 
 		// First page refresh doesn't work properly when invoked in 'buildRendering()' so
