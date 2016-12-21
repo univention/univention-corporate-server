@@ -50,15 +50,8 @@ if [ -n "$app_packages" ]; then
 		univention-install -y $app_packages
 	fi
 	if [ "$?" -ne 0 ]; then
-		die "Could not update the app packages"
+		die "Could not install the app packages"
 	fi
+	# errata updates
+	/usr/share/univention-docker-container-mode/update_packages "$@"
 fi
-
-echo "Installing package updates for $APP_ARG"
-univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)" --disable-app-updates
-if [ "$?" -ne 0 ]; then
-	die "Could not update the packages"
-fi
-
-echo "Calling app join scripts..."
-univention-run-join-scripts -dcaccount "$username" -dcpwd "$password_file"
