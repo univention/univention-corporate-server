@@ -1,3 +1,9 @@
+univention-appcenter (6.0.0-25) unstable; urgency=medium
+
+  * Bug #42872: Also transfer the system-uuid when tracking.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 21 Dec 2016 14:52:12 +0100
+
 univention-appcenter (6.0.0-24) unstable; urgency=medium
 
   * Bug #42803: Track clicks on the "Buy" button
