@@ -17,3 +17,5 @@ desc: |
  * The synchronization of DNS zones now also works in special setups, where
    samba4/ldap/base differs from ldap/base.
 bug: [40659, 41571,42393]
+erratum: 365
+announced: 2016-12-21
