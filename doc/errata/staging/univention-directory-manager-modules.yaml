@@ -1,0 +1,11 @@
+product: ucs
+release: "3.3"
+version: [1]
+scope: ucs_3.3-0-errata3.3-1
+src: univention-directory-manager-modules
+fix: 9.0.76-145~ucs3.3.1446.201612211235
+desc: |
+ This update addresses the following issue(s):
+ * Removing objects which don't have subelements is now possible even if the
+   ldap admin size limit is reached.
+bug: [43195]
