@@ -116,7 +116,8 @@ define([
 			this.own(this._grid);
 		},
 
-		_setAppAttr: function(app) {
+		_setAppAttr: function(app, track) {
+			track = track !== false;
 			this._set('app', app);
 			if (this.appLoadingDeferred.isFulfilled()) {
 				this.appLoadingDeferred = new Deferred();
@@ -136,7 +137,7 @@ define([
 					this.appLoadingDeferred.reject();
 					return;
 				}
-				if (!loadedApp.is_installed_anywhere) {
+				if (track && !loadedApp.is_installed_anywhere) {
 					tools.umcpCommand('appcenter/track', {app: loadedApp.id, action: 'get'});
 				} else {
 					tools.umcpCommand('appcenter/ping');

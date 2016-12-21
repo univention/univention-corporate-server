@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-29) unstable; urgency=medium
+
+  * Bug #42803: Reverted some illegitimate change in the tracking feature
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 21 Dec 2016 13:57:52 +0100
+
 univention-appcenter (5.0.23-28) unstable; urgency=medium
 
   * Bug #39632: Performance improvements when opening the App Center
