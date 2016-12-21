@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The user-agent string has been extended with statistics.
 bug: [43107]
+erratum: 366
+announced: 2016-12-21
