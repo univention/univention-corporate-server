@@ -1,6 +1,6 @@
 product: ucs
 release: "4.1"
-version: [3,4]
+version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: openjdk-7
 fix: 7u111-2.6.7-2.33.201611101802
