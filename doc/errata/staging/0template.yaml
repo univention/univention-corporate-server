@@ -1,6 +1,6 @@
 product: ucs
 release: "3.3"
-version: [0,1]
+version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: 
 fix: 
