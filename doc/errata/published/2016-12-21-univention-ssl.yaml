@@ -10,3 +10,5 @@ desc: |
    trusted root certificate for all applications using /etc/ssl/certs/.
  * univention-certificate again works on base-systems and unjoined systems.
 bug: [39179,42837]
+erratum: 361
+announced: 2016-12-21
