@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-19) unstable; urgency=medium
+
+  * Bug #42507: Fix race condition between writing and reading pickle files
+
+ -- Florian Best <best@univention.de>  Wed, 21 Dec 2016 10:05:56 +0100
+
 univention-ad-connector (10.0.2-18) unstable; urgency=low
 
   * Bug #42998: fixed group_members_sync_to_ucs
