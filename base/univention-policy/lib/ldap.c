@@ -51,6 +51,10 @@ univention_ldap_parameters_t* univention_ldap_new(void)
 	univention_ldap_parameters_t* lp;
 	if ((lp = calloc(1, sizeof(univention_ldap_parameters_t))) == NULL)
 		return NULL;
+	/* connection defaults */
+	lp->version = LDAP_VERSION3;
+	lp->authmethod = LDAP_AUTH_SIMPLE;
+	lp->start_tls = 2;
 	return lp;
 }
 
@@ -168,10 +172,6 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		lp->ld = NULL;
 	}
 
-	/* connection defaults */
-	if (lp->version == 0) {
-		lp->version = LDAP_VERSION3;
-	}
 	if (lp->host == NULL && lp->uri == NULL) {
 		lp->host = univention_config_get_string("ldap/server/name");
 		if (lp->host == NULL)
@@ -184,9 +184,6 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		lp->base = univention_config_get_string("ldap/base");
 		if (lp->base == NULL)
 			return 1;
-	}
-	if (lp->authmethod == 0) {
-		lp->authmethod = LDAP_AUTH_SIMPLE;
 	}
 	if (lp->authmethod == LDAP_AUTH_SASL) {
 		if (lp->sasl_authzid == NULL) {
