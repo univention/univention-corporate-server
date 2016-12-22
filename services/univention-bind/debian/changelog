@@ -1,3 +1,10 @@
+univention-bind (11.0.0-6) unstable; urgency=low
+
+  * Bug #43200: Force commit
+  * Bug #43217: Delay fix until after restart
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Dec 2016 10:05:54 +0100
+
 univention-bind (11.0.0-5) unstable; urgency=low
 
   * Bug #43217: Fix wrong path name

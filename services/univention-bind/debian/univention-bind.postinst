@@ -37,12 +37,12 @@
 # configure firewall
 ucr set security/packetfilter/package/univention-bind/udp/53/all=ACCEPT \
         security/packetfilter/package/univention-bind/tcp/53/all=ACCEPT \
-		security/packetfilter/package/univention-bind/udp/7777/all=ACCEPT \
-		security/packetfilter/package/univention-bind/tcp/7777/all=ACCEPT \
-		security/packetfilter/package/univention-bind/udp/53/all/en="DNS proxy" \
+        security/packetfilter/package/univention-bind/udp/7777/all=ACCEPT \
+        security/packetfilter/package/univention-bind/tcp/7777/all=ACCEPT \
+        security/packetfilter/package/univention-bind/udp/53/all/en="DNS proxy" \
         security/packetfilter/package/univention-bind/tcp/53/all/en="DNS proxy" \
-		security/packetfilter/package/univention-bind/udp/7777/all/en="DNS server" \
-		security/packetfilter/package/univention-bind/tcp/7777/all/en="DNS server"
+        security/packetfilter/package/univention-bind/udp/7777/all/en="DNS server" \
+        security/packetfilter/package/univention-bind/tcp/7777/all/en="DNS server"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 chmod g+w /etc/bind
@@ -75,13 +75,15 @@ if [ ! -e /etc/bind/local-predlz.conf.samba4 ]; then
 fi
 
 if [ "$1" = "configure" ]; then
-	dpkg --compare-versions "$2" lt 11.0.0-4 &&
-		/usr/share/univention-bind/fix-ucr-dns
+	dpkg --compare-versions "$2" lt 11.0.0-6 &&
+		ucr commit /etc/bind/named.conf.samba4
 	if [ -n "$2" ]; then
 		invoke-rc.d bind9 crestart
 	else
 		invoke-rc.d bind9 start
 	fi
+	dpkg --compare-versions "$2" lt 11.0.0-6 &&
+		/usr/share/univention-bind/fix-ucr-dns
 	invoke-rc.d univention-directory-listener crestart
 fi
 
