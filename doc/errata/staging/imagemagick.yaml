@@ -24,16 +24,16 @@ desc: |
  * Do not continue on corrupted wpg file (CVE-2014-9815)
  * Avoid a out of bound access in viff image (CVE-2014-9816)
  * Avoid a heap buffer overflow in pdb file handling (CVE-2014-9817)
- * Avoid an out of bound acess on malformed sun file (CVE-2014-9818)
+ * Avoid an out of bound access on malformed sun file (CVE-2014-9818)
  * Avoid heap overflow in palm and xpm files (CVE-2014-9819, CVE-2014-9821)
  * Fix heap overflow in quantum.c, palm image handling and psd image handling
-  (CVE-2014-9822, CVE-2014-9823, CVE-2014-9824)
+   (CVE-2014-9822, CVE-2014-9823, CVE-2014-9824)
  * Do not try to read corrupted sun image (CVE-2014-9826)
  * Fix corrupted (too many colors) psd file (CVE-2014-9828)
  * Fix out of bound access in sun image handling (CVE-2014-9829)
  * Fix handling of corrupted sun and wpg file (CVE-2014-9830, CVE-2014-9831)
  * Fix heap overflow in pcx file, psd, pict and wpf files and DOS in xpm file
-  (CVE-2014-9832, CVE-2014-9833, CVE-2014-9834, CVE-2014-9835, CVE-2014-9836)
+   (CVE-2014-9832, CVE-2014-9833, CVE-2014-9834, CVE-2014-9835, CVE-2014-9836)
  * Additional PNM sanity checks (CVE-2014-9837)
  * Robustify xmp and pnm reader
  * Detect allocation error earlier (CVE-2014-9838)
@@ -57,7 +57,7 @@ desc: |
  * Prevent memory use after free (Closes: Debian Bug #834183)
  * RLE check for pixel offset less than 0 (Closes: Debian Bug #833744)
  * In psd file handling fixed parsing resource block and
-  avoid a crash (CVE-2014-9851)
+   avoid a crash (CVE-2014-9851)
  * Avoid a memory leak in rle file handling (CVE-2014-9853)
  * During identification of image do not fill memory (CVE-2014-9854)
  * Fix DOS due to corrupted DDS files (CVE-2014-9907)
@@ -69,22 +69,22 @@ desc: |
  * Fix out of bounds memory read for DDS files (CVE-2016-5687)
  * Fix out of bound access for corrupted WPG file (CVE-2016-5688)
  * Add additional checks to DCM reader to prevent data-driven faults
-  (CVE-2016-5689, CVE-2016-5690, CVE-2016-5691)
+   (CVE-2016-5689, CVE-2016-5690, CVE-2016-5691)
  * Improve checking of EXIF profile to prevent integer overflow
-  (CVE-2016-5841, CVE-2016-5842)
+   (CVE-2016-5841, CVE-2016-5842)
  * Prevent buffer overflow in properties reading (CVE-2016-6491)
  * Avoid a buffer overflow in bmp file reader (CVE-2016-6823)
  * Fix SGI file buffer overflow (CVE-2016-7101)
  * Fix an out-of-bounds read in coders/psd.c (CVE-2016-7514)
  * Fix rle file handling for corrupted file (CVE-2016-7515)
  * Fix multiple out of bounds problems in rle, pict, viff and sun
-  files (CVE-2016-7516, CVE-2016-7517, CVE-2016-7518, CVE-2016-7519)
+   files (CVE-2016-7516, CVE-2016-7517, CVE-2016-7518, CVE-2016-7519)
  * Fix a heap overflow in hdr file handling (CVE-2016-7520)
  * Fix a heap buffer overflow in psd file handling (CVE-2016-7521)
  * Fix an out of bound access for malformed psd file (CVE-2016-7522)
  * Fix a meta file out of bounds access (CVE-2016-7523, CVE-2016-7524)
  * Fix an out of bound access in wpg file coder
-  (CVE-2016-7526, CVE-2016-7527)
+   (CVE-2016-7526, CVE-2016-7527)
  * Fix out of bound access for viff file coder (CVE-2016-7528)
  * Fix an out of bound access in xcf file coder (CVE-2016-7529)
  * Fix out of bound in quantum handling (CVE-2016-7530)
@@ -105,6 +105,7 @@ desc: |
    fix for CVE-2016-8862) (CVE-2016-8866)
  * Heap buffer overflow in heap-buffer-overflow in IsPixelGray
    (CVE-2016-9556)
+ * mogrify global buffer overflow (CVE-2016-7799)
 bug: [41663]
 cve:
  - CVE-2016-4563
@@ -197,3 +198,4 @@ cve:
  - CVE-2016-8862
  - CVE-2016-8866
  - CVE-2016-9556
+ - CVE-2016-7799
