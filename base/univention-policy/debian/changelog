@@ -1,3 +1,9 @@
+univention-policy (7.0.2-3) unstable; urgency=low
+
+  * Bug #43031: Fix grouping error in parenthesis
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Dec 2016 13:37:11 +0100
+
 univention-policy (7.0.2-2) unstable; urgency=low
 
   * Bug #43031: Enable TLS by default
