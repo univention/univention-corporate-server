@@ -1,3 +1,9 @@
+univention-runit (8.0.0-3) unstable; urgency=low
+
+  * Bug #42380: clamp Max-delay to 5s
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Dec 2016 13:59:51 +0100
+
 univention-runit (8.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val

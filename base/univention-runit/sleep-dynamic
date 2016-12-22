@@ -34,7 +34,7 @@
 
 TIMEFILE=timefile
 MIN_DELAY=5
-MAX_DELAY=60
+MAX_DELAY=5
 
 DELAY=${TIMEFILE}.delay
 
@@ -65,4 +65,4 @@ else
 	time_delay=${MIN_DELAY}
 fi
 
-sleep ${time_delay}
+exec sleep ${time_delay}
