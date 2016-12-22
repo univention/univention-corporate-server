@@ -36,6 +36,7 @@ import cPickle
 import listener
 import os
 import time
+import shutil
 import univention.debug
 
 name = 's4-connector'
@@ -93,29 +94,32 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
 	ob = (dn, new, old, old_dn)
 
-	filename = os.path.join(directory, "%f" % time.time())
+	tmpdir = os.path.join(directory, 'tmp')
+	filename = '%f' % (time.time(),)
+	filepath = os.path.join(tmpdir, filename)
 
-	_dump_object_to_file(filename, ob)
+	_dump_object_to_file(filepath, ob)
 
 	tmp_array = []
-	f = open(filename, 'r')
+	f = open(filepath, 'r')
 	tmp_array = cPickle.load(f)
 	f.close()
 
 	tmp_array_len = len(tmp_array)
 	if tmp_array_len != 4:
-		ud.debug(ud.LDAP, ud.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filename, tmp_array_len))
-		_dump_object_to_file(filename, ob)
+		ud.debug(ud.LDAP, ud.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filepath, tmp_array_len))
+		_dump_object_to_file(filepath, ob)
 
 		tmp_array = []
-		f = open(filename, 'r')
+		f = open(filepath, 'r')
 		tmp_array = cPickle.load(f)
 		f.close()
 
 		tmp_array_len = len(tmp_array)
 		if tmp_array_len != 4:
-			ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
+			ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filepath, tmp_array_len))
 
+	shutil.move(filepath, os.path.join(directory, filename))
 
 def _is_module_disabled():
 	disabled = False

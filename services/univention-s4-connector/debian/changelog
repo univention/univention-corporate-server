@@ -1,3 +1,10 @@
+univention-s4-connector (10.0.5-1) unstable; urgency=medium
+
+  * Bug #43235: Fix race condition between writing and reading pickle
+    files
+
+ -- Florian Best <best@univention.de>  Thu, 22 Dec 2016 12:04:30 +0100
+
 univention-s4-connector (10.0.4-4) unstable; urgency=medium
 
   * Bug #42393: Use the case insensitive s4connector._subtree_replace
