@@ -240,7 +240,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 	} else {
 		char uri[1024];
 		snprintf(uri, sizeof(uri), "ldap://%s:%d", lp->host, lp->port);
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to ldap://%s:%d/", lp->host, lp->port);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", uri);
 		if ((rv = ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
 			goto error;
@@ -278,7 +278,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 			cred.bv_len = strlen(lp->bindpw);
 		}
 
-		if ((rv = ldap_sasl_bind_s(lp->ld, lp->binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) == LDAP_SUCCESS))
+		if ((rv = ldap_sasl_bind_s(lp->ld, lp->binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL)) == LDAP_SUCCESS)
 			goto success;
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_simple_bind: %s", ldap_err2string(rv));
 		break;
