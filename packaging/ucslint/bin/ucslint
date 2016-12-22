@@ -89,8 +89,8 @@ class DebianPackageCheck(object):
 								self.pluginlist[modname] = module
 								if self.debuglevel:
 									print >> sys.stderr, 'Loaded module %s' % modname
-							except Exception:
-								print >> sys.stderr, 'ERROR: Loading module %s failed' % f
+							except Exception as exc:
+								print >> sys.stderr, 'ERROR: Loading module %s failed: %s' % (f, exc)
 								if self.debuglevel:
 									raise
 						else:

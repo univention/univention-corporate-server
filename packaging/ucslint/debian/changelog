@@ -1,6 +1,7 @@
 ucslint (6.0.1-2) unstable; urgency=low
 
   * Bug #37203: Fix check for transition packages
+  * Bug #42316: Show exception for failed module load
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 15 Dec 2016 12:52:00 +0100
 
