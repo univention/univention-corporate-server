@@ -205,6 +205,7 @@ def update_ucr(ucr, nameservers, forwarders, options):
 
 	def update(names, values, typ):
 		log.debug('%s=%r', typ, values)
+		values = ['%s' % (val,) for val in values]
 		diff = len(names) - len(values)
 		if diff > 0:
 			values += [None] * diff
@@ -212,8 +213,8 @@ def update_ucr(ucr, nameservers, forwarders, options):
 			log.warn('Skipping extra %s: %r', typ, values[len(names):])
 		changes.update(dict(zip(names, values)))
 
-	update(FWD, forwarders.keys(), 'forwarders')
-	update(DNS, nameservers.keys(), 'nameservers')
+	update(FWD, forwarders, 'forwarders')
+	update(DNS, nameservers, 'nameservers')
 	log.info('Updating %r', changes)
 
 	if not options.no_act:

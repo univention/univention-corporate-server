@@ -1,3 +1,9 @@
+univention-bind (11.0.0-7) unstable; urgency=low
+
+  * Bug #43217: Convert addresses to string for UCR
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Dec 2016 11:41:04 +0100
+
 univention-bind (11.0.0-6) unstable; urgency=low
 
   * Bug #43200: Force commit
