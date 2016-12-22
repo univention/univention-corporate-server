@@ -99,8 +99,8 @@ msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:64
-msgid "FQDNs must end with '.'"
-msgstr "Der FQDN muss mit einem '.' enden"
+msgid "FQDNs must end with a dot."
+msgstr "FQDNs müssen mit einem Punkt enden."
 
 #: modules/univention/admin/handlers/dns/alias.py:91
 #: modules/univention/admin/handlers/dns/dns.py:74
@@ -197,7 +197,7 @@ msgstr "Übersetzt IP-Adressen zurück zu Rechnernamen."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:52
 msgid "Map names to IP addresses (and other data)."
-msgstr "Übersetzt Names zu IP-Adressen (und anderen Daten)."
+msgstr "Übersetzt Namen zu IP-Adressen (und anderen Daten)."
 
 #: modules/univention/admin/handlers/dns/dns.py:63
 #: modules/univention/admin/handlers/dns/srv_record.py:55
@@ -330,7 +330,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dns/srv_record.py:67
 msgid "The host providing the service."
-msgstr "Der Rechner, der diese Dienst anbietet."
+msgstr "Der Rechner, der diesen Dienst anbietet."
 
 #: modules/univention/admin/handlers/dns/srv_record.py:56
 msgid "The name and protocol of the service."
@@ -350,9 +350,9 @@ msgid "The name of the host relative to the domain."
 msgstr "Der Name des Rechners relativ zur Domäne."
 
 #: modules/univention/admin/handlers/dns/alias.py:80
-msgid "The name this alias points to. A FQDNs must end with '.'."
+msgid "The name this alias points to. A FQDN must end with a dot."
 msgstr ""
-"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem '.' enden"
+"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem Punkt enden."
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:56
 msgid "The networks address in forward notation."
@@ -415,57 +415,3 @@ msgstr "Name der Zone"
 #: modules/univention/admin/handlers/dns/reverse_zone.py:66
 msgid "Zone time to live"
 msgstr "Zone Time-to-Live"
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Add DNS object"
-#~ msgstr "DNS-Objekt hinzufügen"
-
-#~ msgid "Add, edit and delete DNS objects"
-#~ msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
-
-#~ msgid "Additional name servers"
-#~ msgstr "Zusätzliche Nameserver"
-
-#~ msgid "Address"
-#~ msgstr "Adresse"
-
-#~ msgid "Alias for this host"
-#~ msgstr "Alias des Rechners"
-
-#~ msgid "DNS: Host Record"
-#~ msgstr "DNS: Host Record"
-
-#~ msgid "DNS: TXT Record"
-#~ msgstr "DNS: TXT Record"
-
-#~ msgid "DNS: Zone Mail Exchanger"
-#~ msgstr "DNS: Zone Mail Exchanger"
-
-#~ msgid "DNS: Zone Text"
-#~ msgstr "DNS: Zone Text"
-
-#~ msgid "Mail Exchanger"
-#~ msgstr "Mail Exchanger"
-
-#~ msgid "Minimum time to live"
-#~ msgstr "Minimum Time-to-Live"
-
-#~ msgid "Primary IP-Address"
-#~ msgstr "Primäre IP-Adresse"
-
-#~ msgid "Primary Name Server"
-#~ msgstr "Primärer Nameserver"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"
-
-#~ msgid "Search DNS object(s)"
-#~ msgstr "DNS-Objekt(e) suchen"
-
-#~ msgid "TXT record"
-#~ msgstr "TXT Record"
-
-#~ msgid "Update/Create Reverse Record"
-#~ msgstr "Reverse Record erstellen/erneuern"

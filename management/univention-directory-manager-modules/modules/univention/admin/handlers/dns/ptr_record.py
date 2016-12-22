@@ -75,7 +75,7 @@ property_descriptions = {
 	),
 	'ptr_record': univention.admin.property(
 		short_description=_('Pointer record'),
-		long_description=_("FQDNs must end with '.'"),
+		long_description=_("FQDNs must end with a dot."),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=True,
 		include_in_default_search=True,

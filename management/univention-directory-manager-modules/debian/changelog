@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.8-1) unstable; urgency=medium
+
+  * Bug #42820: adjust typos in translation
+
+ -- Florian Best <best@univention.de>  Thu, 22 Dec 2016 18:31:16 +0100
+
 univention-directory-manager-modules (12.0.7-1) unstable; urgency=medium
 
   * Bug #42840: groups/group case insensitive replace of 'member' DN

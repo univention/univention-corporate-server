@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-18 14:19+0200\n"
+"POT-Creation-Date: 2016-12-22 18:08+0100\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,168 +38,228 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: managedclient.py:54
-msgid "Computer: Managed Client"
-msgstr "Rechner: Managed Client"
-
-#: managedclient.py:58 mobileclient.py:58
-msgid "Posix account"
-msgstr "Posix-Konto"
-
-#: managedclient.py:62 mobileclient.py:62
-msgid "Kerberos principal"
-msgstr "Kerberos Prinzipal"
-
-#: managedclient.py:68 mobileclient.py:68
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: managedclient.py:79 mobileclient.py:79 thinclient.py:69
-msgid "Description"
-msgstr "Beschreibung"
-
-#: managedclient.py:89 mobileclient.py:89 thinclient.py:187
-msgid "Domain"
-msgstr "Domäne"
-
-#: managedclient.py:99 mobileclient.py:99 thinclient.py:79
-msgid "MAC address"
-msgstr "MAC-Adresse"
-
-#: managedclient.py:110 mobileclient.py:110 thinclient.py:90
-msgid "Network"
-msgstr "Netzwerk"
-
-#: managedclient.py:120 mobileclient.py:120 thinclient.py:100
-msgid "IP address"
-msgstr "IP-Adresse"
-
-#: managedclient.py:131 mobileclient.py:131 thinclient.py:111
-msgid "Forward zone for DNS entry"
-msgstr "Forward Zone für DNS-Eintrag"
-
-#: managedclient.py:142 mobileclient.py:142 thinclient.py:122
-msgid "Reverse zone for DNS entry"
-msgstr "Reverse Zone für DNS-Eintrag"
-
-#: managedclient.py:153 mobileclient.py:153 thinclient.py:133
-msgid "Zone for DNS alias"
-msgstr "Zone für DNS-Alias"
-
-#: managedclient.py:164 managedclient.py:326 mobileclient.py:164
-#: mobileclient.py:326 thinclient.py:144 thinclient.py:219
-msgid "DNS alias"
-msgstr "DNS-Alias"
-
-#: managedclient.py:174 mobileclient.py:174 thinclient.py:154
-msgid "DHCP service"
-msgstr "Service für DHCP-Eintrag"
-
-#: managedclient.py:185 mobileclient.py:185
-msgid "Password"
-msgstr "Passwort"
-
-#: managedclient.py:196 mobileclient.py:196
-msgid "Unix home directory"
-msgstr "Unix Heimatverzeichnis"
-
-#: managedclient.py:207 mobileclient.py:207
-msgid "Login shell"
-msgstr "Anmelde-Shell"
-
-#: managedclient.py:218 mobileclient.py:218
-msgid "Primary group"
-msgstr "Primäre Gruppe"
-
-#: managedclient.py:230 mobileclient.py:230
-msgid "(Re-)install on next boot"
-msgstr "(Neu-)Installieren bei nächstem Systemstart"
-
-#: managedclient.py:240 mobileclient.py:240
-msgid "Interactive installation"
-msgstr "Interaktive Installation"
-
-#: managedclient.py:250 mobileclient.py:250
-msgid "additional start options"
-msgstr "Erweiterte Startoptionen"
-
-#: managedclient.py:261 mobileclient.py:261
-msgid "Name of installation profile"
-msgstr "Eindeutiger Installationsprofilname"
-
-#: managedclient.py:271 mobileclient.py:271 thinclient.py:165
-msgid "Inventory number"
-msgstr "Inventarnummer"
-
-#: managedclient.py:282 managedclient.py:323 mobileclient.py:282
-#: mobileclient.py:323 thinclient.py:176 thinclient.py:216
-msgid "Groups"
-msgstr "Gruppen"
-
-#: managedclient.py:295 mobileclient.py:295 thinclient.py:199
-msgid "General"
-msgstr "Allgemein"
-
-#: managedclient.py:295 mobileclient.py:295 thinclient.py:199
-msgid "Basic settings"
-msgstr "Rechnerkonto-Einstellungen"
-
-#: managedclient.py:296 mobileclient.py:296 thinclient.py:200
-msgid "Computer account"
-msgstr "Rechnerkonto"
-
-#: managedclient.py:300 mobileclient.py:300 thinclient.py:204
-msgid "Network settings "
-msgstr "Netzwerk-Einstellungen"
-
-#: managedclient.py:304 mobileclient.py:304 thinclient.py:208
-msgid "DNS Forward and Reverse Lookup Zone"
-msgstr "DNS Forward und Reverse Lookup Zone"
-
-#: managedclient.py:308 mobileclient.py:308 thinclient.py:212
-msgid "DHCP"
-msgstr "DHCP"
-
-#: managedclient.py:312 mobileclient.py:312
-msgid "Account"
-msgstr "Konto"
-
-#: managedclient.py:316 mobileclient.py:316
-msgid "Unix account"
-msgstr "Unix-Konto"
-
-#: managedclient.py:316 mobileclient.py:316
-msgid "Unix account settings"
-msgstr "Unix-Konto-Einstellungen"
-
-#: managedclient.py:319 mobileclient.py:319
-msgid "Deployment"
-msgstr "(Re)installation"
-
-#: managedclient.py:323 mobileclient.py:323 thinclient.py:216
-msgid "Group memberships"
-msgstr "Gruppenmitgliedschaften"
-
-#: managedclient.py:326 mobileclient.py:326 thinclient.py:219
-msgid "Alias DNS entry"
-msgstr "Alias DNS Eintrag"
-
-#: managedclient.py:435
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:405
 msgid " At least posix or kerberos is required."
 msgstr " Zumindest Posix oder Kerberos wird benötigt."
 
-#: managedclient.py:602 mobileclient.py:593
-msgid "Open Univention Management Console on this computer"
-msgstr "Univention Management Console auf diesem Rechner öffnen"
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:231
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:231
+msgid "(Re-)install on next boot"
+msgstr "(Neu-)Installieren bei nächstem Systemstart"
 
-#: mobileclient.py:54
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:313
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:313
+msgid "Account"
+msgstr "Konto"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:327
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:327
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:218
+msgid "Alias DNS entry"
+msgstr "Alias DNS Eintrag"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:296
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:296
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:198
+msgid "Basic settings"
+msgstr "Rechnerkonto-Einstellungen"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:297
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:297
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:199
+msgid "Computer account"
+msgstr "Rechnerkonto"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:55
+msgid "Computer: Managed Client"
+msgstr "Rechner: Managed Client"
+
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:55
 msgid "Computer: Mobile Client"
 msgstr "Rechner: Mobile Client"
 
-#: thinclient.py:52
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:51
 msgid "Computer: Thin Client"
 msgstr "Rechner: Thin Client"
 
-#: thinclient.py:58
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:309
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:309
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:211
+msgid "DHCP"
+msgstr "DHCP"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:175
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:175
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:153
+msgid "DHCP service"
+msgstr "Service für DHCP-Eintrag"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:305
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:305
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:207
+msgid "DNS Forward and Reverse Lookup Zone"
+msgstr "DNS Forward und Reverse Lookup Zone"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:165
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:327
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:165
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:327
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:143
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:218
+msgid "DNS alias"
+msgstr "DNS-Alias"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:320
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:320
+msgid "Deployment"
+msgstr "(Re)installation"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:80
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:80
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:68
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:90
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:90
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:186
+msgid "Domain"
+msgstr "Domäne"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:132
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:132
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:110
+msgid "Forward zone for DNS entry"
+msgstr "Forward Zone für DNS-Eintrag"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:296
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:296
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:198
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:324
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:324
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:215
+msgid "Group memberships"
+msgstr "Gruppenmitgliedschaften"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:283
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:324
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:283
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:324
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:175
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:215
+msgid "Groups"
+msgstr "Gruppen"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:69
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:69
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:121
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:121
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:99
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:241
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:241
+msgid "Interactive installation"
+msgstr "Interaktive Installation"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:272
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:272
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:164
+msgid "Inventory number"
+msgstr "Inventarnummer"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:63
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:63
+msgid "Kerberos principal"
+msgstr "Kerberos Prinzipal"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:208
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:208
+msgid "Login shell"
+msgstr "Anmelde-Shell"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:100
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:100
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:78
+msgid "MAC address"
+msgstr "MAC-Adresse"
+
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:57
 msgid "Name"
 msgstr "Name"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:262
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:262
+msgid "Name of installation profile"
+msgstr "Eindeutiger Installationsprofilname"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:111
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:111
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:89
+msgid "Network"
+msgstr "Netzwerk"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:301
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:301
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:203
+msgid "Network settings "
+msgstr "Netzwerk-Einstellungen"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:567
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:560
+msgid "Open Univention Management Console on this computer"
+msgstr "Univention Management Console auf diesem Rechner öffnen"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:186
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:186
+msgid "Password"
+msgstr "Passwort"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:59
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:59
+msgid "Posix account"
+msgstr "Posix-Konto"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:219
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:219
+msgid "Primary group"
+msgstr "Primäre Gruppe"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:143
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:143
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:121
+msgid "Reverse zone for DNS entry"
+msgstr "Reverse Zone für DNS-Eintrag"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:317
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:317
+msgid "Unix account"
+msgstr "Unix-Konto"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:317
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:317
+msgid "Unix account settings"
+msgstr "Unix-Konto-Einstellungen"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:197
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:197
+msgid "Unix home directory"
+msgstr "Unix Heimatverzeichnis"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:154
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:154
+#: modules/univention/admin/handlers/legacy/computers/thinclient.py:132
+msgid "Zone for DNS alias"
+msgstr "Zone für DNS-Alias"
+
+#: modules/univention/admin/handlers/legacy/computers/managedclient.py:251
+#: modules/univention/admin/handlers/legacy/computers/mobileclient.py:251
+msgid "additional start options"
+msgstr "Erweiterte Startoptionen"

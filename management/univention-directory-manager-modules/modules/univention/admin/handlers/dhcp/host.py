@@ -75,7 +75,7 @@ The hardware-address should be a set of hexadecimal octets (numbers from 0 throu
 	'fixedaddress': univention.admin.property(
 		short_description=_('Fixed IP addresses'),
 		long_description=_('Assign one or more fixed IP addresses. \
-Each address should be either an IP address or a domain name that resolves to one or more IP addresses'),
+Each address should be either an IP address or a domain name that resolves to one or more IP addresses.'),
 		syntax=univention.admin.syntax.hostOrIP,
 		multivalue=True,
 		options=[],

@@ -78,7 +78,7 @@ property_descriptions = {
 	),
 	'cname': univention.admin.property(
 		short_description=_('Canonical name'),
-		long_description=_("The name this alias points to. A FQDNs must end with '.'."),
+		long_description=_("The name this alias points to. A FQDN must end with a dot."),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,

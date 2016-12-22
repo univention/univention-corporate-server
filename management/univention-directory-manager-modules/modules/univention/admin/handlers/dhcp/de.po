@@ -133,7 +133,7 @@ msgstr "Ein IP-Adressbereich innerhalb eines Shared Netzwerkes."
 #: modules/univention/admin/handlers/dhcp/host.py:75
 msgid ""
 "Assign one or more fixed IP addresses. Each address should be either an IP "
-"address or a domain name that resolves to one or more IP addresses"
+"address or a domain name that resolves to one or more IP addresses."
 msgstr ""
 "Zuweisen einer oder mehrerer fester IP-Adressen. Jeder Eintrag sollte eine "
 "IP-Adresse oder ein vollständiger Rechnername, der sich in eine IP-Adresse "
@@ -333,7 +333,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/pool.py:76
 msgid "The name of the \"failover peer\" configuration to use."
-msgstr "Der Name der zu benutzenden \"Failover Peer\" Konfiguration"
+msgstr "Der Name der zu benutzenden \"Failover Peer\" Konfiguration."
 
 #: modules/univention/admin/handlers/dhcp/server.py:55
 msgid "The name of the server, which should handle this DHCP service."
@@ -355,21 +355,3 @@ msgstr ""
 #: modules/univention/admin/handlers/dhcp/service.py:46
 msgid "The top-level container for a DHCP configuration."
 msgstr "Der übergeordnete Container für eine DHCP Konfiguration."
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Add DHCP object"
-#~ msgstr "DHCP-Objekt hinzufügen"
-
-#~ msgid "Add, edit and delete DHCP objects"
-#~ msgstr "Hinzufügen, bearbeiten und löschen von DHCP-Objekten"
-
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"
-
-#~ msgid "Search DHCP object(s)"
-#~ msgstr "DHCP-Objekt(e) suchen"
