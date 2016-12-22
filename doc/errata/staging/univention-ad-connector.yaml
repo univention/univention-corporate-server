@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ad-connector
-fix: 10.0.2-19.519.201612211011
+fix: 10.0.2-20.520.201612221314
 desc: |
  This update addresses the following issue(s):
  * A race condition between writing and reading cached data has been fixed.
