@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import cPickle
 import time
@@ -68,7 +68,7 @@ def _save_old_object(directory, dn, old):
 	f = open(filename, 'w+')
 	os.chmod(filename, 0600)
 	p = cPickle.Pickler(f)
-	old_dn = p.dump((dn, old))
+	p.dump((dn, old))
 	p.clear_memo()
 	f.close()
 
@@ -82,44 +82,21 @@ def _load_old_object(directory):
 	return (old_dn, old_object)
 
 
-def _dump_object_to_file(filename, ob):
-	f = open(filename, 'w+')
-	os.chmod(filename, 0600)
-	p = cPickle.Pickler(f)
-	p.dump(ob)
-	p.clear_memo()
-	f.close()
-
-
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
-
 	ob = (dn, new, old, old_dn)
 
 	tmpdir = os.path.join(directory, 'tmp')
 	filename = '%f' % (time.time(),)
 	filepath = os.path.join(tmpdir, filename)
 
-	_dump_object_to_file(filepath, ob)
+	with open(filepath, 'w+') as fd:
+		os.chmod(filepath, 0600)
+		p = cPickle.Pickler(fd)
+		p.dump(ob)
+		p.clear_memo()
 
-	tmp_array = []
-	f = open(filepath, 'r')
-	tmp_array = cPickle.load(f)
-	f.close()
-
-	tmp_array_len = len(tmp_array)
-	if tmp_array_len != 4:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filepath, tmp_array_len))
-		_dump_object_to_file(filepath, ob)
-
-		tmp_array = []
-		f = open(filepath, 'r')
-		tmp_array = cPickle.load(f)
-		f.close()
-
-		tmp_array_len = len(tmp_array)
-		if tmp_array_len != 4:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filepath, tmp_array_len))
-
+	# prevent a race condition between the pickle file is only partly written to disk and then read
+	# by moving it to the final location after it is completely written to disk
 	shutil.move(filepath, os.path.join(directory, filename))
 
 

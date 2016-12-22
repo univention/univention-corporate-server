@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-20) unstable; urgency=medium
+
+  * Bug #42507: Code cleanup
+
+ -- Florian Best <best@univention.de>  Thu, 22 Dec 2016 13:12:10 +0100
+
 univention-ad-connector (10.0.2-19) unstable; urgency=medium
 
   * Bug #42507: Fix race condition between writing and reading pickle files
