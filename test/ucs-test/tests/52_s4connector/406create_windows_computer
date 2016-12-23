@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check creating a windows hosts with CN"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 43247
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+# create computer object
+windows_name="$(random_chars)"
+UDM_computers_windows_name="$windows_name"
+windows_description="$(random_chars)"
+
+echo -e "dn: CN=$windows_name,CN=Computers,$samba4_ldap_base
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+objectClass: computer
+CN: $windows_name
+name: $windows_name
+userAccountControl: 4096
+sAMAccountName: ${windows_name}$
+operatingSystem: Windows 8.1 Pro
+operatingSystemVersion: 6.3 (9600)" | ldbadd --verbose --relax -H /var/lib/samba/private/sam.ldb
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_verify_ldap_attribute "cn" "$windows_name" "computers/windows" || fail_test 110
+
+udm-test 'computers/windows' modify \
+	--dn "cn=$windows_name,cn=computers,$(ucr get ldap/base)" \
+	--set description="$windows_description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
+ad_verify_attribute "$AD_DN" "description" "$windows_description"; fail_bool 0 12
+
+# cleanup
+udm_remove 'computers/windows' || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists 'computers/windows'; fail_bool 1 110
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
