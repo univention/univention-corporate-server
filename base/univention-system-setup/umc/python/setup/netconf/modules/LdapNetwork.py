@@ -3,7 +3,7 @@ from univention.management.console.modules.setup.netconf.common import LdapChang
 import univention.admin.objects
 import univention.admin.uldap as uldap
 import univention.admin.modules as modules
-from univention.admin.uexceptions import base as UniventionBaseException
+from univention.admin.uexceptions import base as UniventionBaseException, noObject
 from ldap import LDAPError
 
 
@@ -67,8 +67,9 @@ class PhaseLdapNetwork(LdapChange):
 		network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
 		network_module = modules.get("networks/network")
 		modules.init(self.ldap, self.position, network_module)
-		network = univention.admin.objects.get(network_module, None, self.ldap, self.position, network_dn)
-		if not network.exists():
+		try:
+			network = univention.admin.objects.get(network_module, None, self.ldap, self.position, network_dn)
+		except noObject:
 			return
 		self.logger.info("Removing '%s'...", network_dn)
 		if not self.changeset.no_act:

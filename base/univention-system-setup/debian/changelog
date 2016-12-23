@@ -1,3 +1,9 @@
+univention-system-setup (10.0.0-15) unstable; urgency=medium
+
+  * Bug #38110: fix UDM usage
+
+ -- Florian Best <best@univention.de>  Fri, 23 Dec 2016 16:30:55 +0100
+
 univention-system-setup (10.0.0-14) unstable; urgency=medium
 
   * Bug #42944: Adjust net_apply to update DNS settings correctly
