@@ -53,19 +53,87 @@ configRegistry.load()
 explodeDn = univention.uldap.explodeDn
 
 
+class DN(object):
+	"""A LDAP Distinguished Name"""
+
+	def __init__(self, dn):
+		self.dn = dn
+		try:
+			self._dn = ldap.dn.str2dn(self.dn)
+		except ldap.DECODING_ERROR:
+			raise ValueError('Malformed DN syntax: %r' % (self.dn,))
+
+	def __str__(self):
+		return ldap.dn.dn2str(self._dn)
+
+	def __unicode__(self):
+		return unicode(str(self))
+
+	def __repr__(self):
+		return '<%s %r>' % (type(self).__name__, str(self),)
+
+	def __eq__(self, other):
+		"""
+		>>> DN('foo=1') == DN('foo=1')
+		True
+		>>> DN('foo=1') == DN('foo=2')
+		False
+		>>> DN('Foo=1') == DN('foo=1')
+		True
+		>>> DN('Foo=1') == DN('foo=2')
+		False
+		>>> DN('foo=1,bar=2') == DN('foo=1,bar=2')
+		True
+		>>> DN('bar=2,foo=1') == DN('foo=1,bar=2')
+		False
+		>>> DN('foo=1+bar=2') == DN('foo=1+bar=2')
+		True
+		>>> DN('bar=2+foo=1') == DN('foo=1+bar=2')
+		True
+		>>> DN('bar=2+Foo=1') == DN('foo=1+Bar=2')
+		True
+		>>> DN(r'foo=%s31' % chr(92)) == DN(r'foo=1')
+		True
+		"""
+		return hash(self) == hash(other)
+
+	def __ne__(self, other):
+		return not self == other
+
+	def __hash__(self):
+		# TODO: attributes which's values are case insensitive should be respected
+		return hash(tuple([tuple(sorted((x.lower(), y, z) for x, y, z in rdn)) for rdn in self._dn]))
+
+	@classmethod
+	def set(cls, values):
+		"""
+			>>> len(DN.set(['CN=computers,dc=foo', 'cn=computers,dc=foo', 'cn = computers,dc=foo']))
+			1
+		"""
+		return set(map(cls, values))
+
+	@classmethod
+	def values(cls, values):
+		"""
+			>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo']))
+			set(['cn=bar'])
+		"""
+		return set(map(str, values))
+
+
 def getBaseDN(host='localhost', port=None, uri=None):
 	if not uri:
 		if not port:
 			port = int(configRegistry.get('ldap/server/port', 7389))
 		uri = "ldap://%s:%s" % (host, port)
 	try:
-		l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
-		result = l.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
+		lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
+		result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
 		return result[0][1]['namingContexts'][0]
 	except ldap.SERVER_DOWN:
 		time.sleep(60)
-	l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
-	result = l.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
+	lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
+	result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
 	return result[0][1]['namingContexts'][0]
 
 

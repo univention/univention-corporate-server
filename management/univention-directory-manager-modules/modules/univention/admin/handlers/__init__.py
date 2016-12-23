@@ -48,6 +48,7 @@ import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.syntax
 from univention.admin import configRegistry
+from univention.admin.uldap import DN
 try:
 	import univention.lib.admember
 	_prevent_to_change_ad_properties = univention.lib.admember.is_localhost_in_admember_mode()
@@ -2424,47 +2425,36 @@ class simpleComputer(simpleLdap):
 			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
 
 	def update_groups(self):
-		if not self.hasChanged('groups') and \
-			not ('oldPrimaryGroupDn' in self.__dict__ and self.oldPrimaryGroupDn) and \
-			not ('newPrimaryGroupDn' in self.__dict__ and self.newPrimaryGroupDn):
-				return
+		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:
+			return
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating groups')
 
-		add_to_group = []
-		remove_from_group = []
-		for group in self.oldinfo.get('groups', []):
-			if group not in self.info.get('groups', []):
-				remove_from_group.append(group)
-		for group in self.info.get('groups', []):
-			if group not in self.oldinfo.get('groups', []):
-				add_to_group.append(group)
+		old_groups = DN.set(self.oldinfo.get('groups', []))
+		new_groups = DN.set(self.info.get('groups', []))
 
-		if 'oldPrimaryGroupDn' in self.__dict__:
-			if self.oldPrimaryGroupDn:
-				remove_from_group.append(self.oldPrimaryGroupDn)
-		if 'newPrimaryGroupDn' in self.__dict__:
-			if self.newPrimaryGroupDn:
-				add_to_group.append(self.newPrimaryGroupDn)
+		if self.oldPrimaryGroupDn:
+			old_groups += DN.set([self.oldPrimaryGroupDn])
+
+		if self.newPrimaryGroupDn:
+			new_groups.add(DN(self.newPrimaryGroupDn))
 
 		# prevent machineAccountGroup from being removed
 		if self.has_key('machineAccountGroup'):
-			add_to_group.append(self['machineAccountGroup'])
-			if self['machineAccountGroup'] in remove_from_group:
-				remove_from_group.remove(self['machineAccountGroup'])
+			machine_account_group = DN.set([self['machineAccountGroup']])
+			new_groups += machine_account_group
+			old_groups -= machine_account_group
 
-		for group in add_to_group:
-			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+		for group in old_groups ^ new_groups:
+			groupdn = str(group)
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, groupdn)
 			groupObject.open()
-			if self.dn not in groupObject['hosts']:
-				groupObject['hosts'].append(self.dn)
-				groupObject.modify(ignore_license=1)
-
-		for group in remove_from_group:
-			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.open()
-			if self.dn in groupObject['hosts']:
-				groupObject['hosts'].remove(self.dn)
-				groupObject.modify(ignore_license=1)
+			# add this computer to the group
+			hosts = DN.set(groupObject['hosts'] + [self.dn])
+			if group not in new_groups:
+				# remove this computer from the group
+				hosts -= DN.set([self.dn])
+			groupObject['hosts'] = list(DN.values(hosts))
+			groupObject.modify(ignore_license=1)
 
 	def primary_group(self):
 		if not self.hasChanged('primaryGroup'):

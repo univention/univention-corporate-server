@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3.52) unstable; urgency=medium
+
+  * Bug #43247: compare LDAP DN's correctly when adding/removing group members
+
+ -- Florian Best <best@univention.de>  Fri, 23 Dec 2016 14:23:59 +0100
+
 univention-directory-manager-modules (11.0.3-51) unstable; urgency=medium
 
   * Bug #42404: add docstrings
