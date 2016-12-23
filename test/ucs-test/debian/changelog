@@ -1,3 +1,10 @@
+ucs-test (6.0.37-30) unstable; urgency=medium
+
+  * 52_s4connector/406create_windows_computer*: Added test cases which
+    creates windows clients (Bug #43247)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Dec 2016 08:59:41 +0100
+
 ucs-test (6.0.37-29) unstable; urgency=medium
 
   * Adjust AD / S4 connector tests to upper / lower case handling of
