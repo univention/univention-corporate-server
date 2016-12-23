@@ -1516,7 +1516,7 @@ class dnsPTR(simple):
 		 (?:\.[0-9a-f]){0,30}$
 		''', re.VERBOSE
 	)
-	error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")")
+	error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
 
 
 class postalAddress(complex):

@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-12-22 18:08+0100\n"
+"POT-Creation-Date: 2016-12-23 15:01+0100\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -141,9 +141,9 @@ msgstr "August"
 msgid "Authentication Failed."
 msgstr "Authentisierung fehlgeschlagen"
 
-#: modules/univention/admin/uldap.py:264 modules/univention/admin/uldap.py:266
-#: modules/univention/admin/uldap.py:275 modules/univention/admin/uldap.py:277
-#: modules/univention/admin/uldap.py:284
+#: modules/univention/admin/uldap.py:332 modules/univention/admin/uldap.py:334
+#: modules/univention/admin/uldap.py:343 modules/univention/admin/uldap.py:345
+#: modules/univention/admin/uldap.py:352
 msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
@@ -753,7 +753,7 @@ msgstr "Mo"
 msgid "Monday"
 msgstr "Montag"
 
-#: modules/univention/admin/uldap.py:437
+#: modules/univention/admin/uldap.py:505
 msgid "Moving children is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
@@ -1367,6 +1367,16 @@ msgstr "Die relative ID (SAMBA) wird bereits verwendet."
 msgid "The requested group not be found."
 msgstr "Die angeforderte Gruppe wurde nicht gefunden."
 
+#: modules/univention/admin/syntax.py:1519
+msgid ""
+"The reversed host name for IPv4 consists of the reversed host address "
+"(example: \"4.3\") or for IPv6 in nibble format (example: "
+"\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
+msgstr ""
+"Der Name eines IPv4 Reverse Hostname besteht aus der inversen Host Addresse (z.B.: \"4.3\") "
+" oder für IPv6 "
+"im Nibble Format (z.B.: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
+
 #: modules/univention/admin/uexceptions.py:69
 msgid "The specified size limit for the LDAP search has been exceeded."
 msgstr ""
@@ -1394,7 +1404,7 @@ msgstr ""
 msgid "The value must not be longer than %d characters."
 msgstr "Der Wert darf nicht länger als %d Zeichen sein."
 
-#: modules/univention/admin/uldap.py:113
+#: modules/univention/admin/uldap.py:181
 msgid "There was no LDAP base specified."
 msgstr "Es wurde keine LDAP Basis angegeben."
 
