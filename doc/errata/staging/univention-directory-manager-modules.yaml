@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-directory-manager-modules
-fix: 11.0.3-51.1445.201612061711
+fix: 11.0.3.52.1447.201612231437
 desc: |
  This update addresses the following issues:
  * Searching with an empty value for properties which weren't registered in
@@ -20,4 +20,6 @@ desc: |
    combination with both AD-Connector and S4-Connector. Now the update
    of the 'uniqueMember' attribute is performed in a case insensitive
    way.
-bug: [42404,36570,28363,25354,42840]
+ * When adding or removing group memberships the values are now compared with
+   respect to the syntax of DN's.
+bug: [42404,36570,28363,25354,42840,43247]
