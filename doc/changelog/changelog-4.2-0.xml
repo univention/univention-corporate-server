@@ -175,6 +175,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The existence of objects is now checked before initializing it (<u:bug>38110</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
