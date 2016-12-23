@@ -1,3 +1,10 @@
+ucs-test (7.0.6-36) unstable; urgency=medium
+
+  * Adjust AD / S4 connector tests to upper / lower case handling of
+    group mappings (Bug #42840)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Dec 2016 08:16:10 +0100
+
 ucs-test (7.0.6-35) unstable; urgency=medium
 
   * Bug #35907: cleanup 21backup_warning_messages
