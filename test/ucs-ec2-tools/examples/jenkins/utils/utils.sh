@@ -207,15 +207,17 @@ wait_for_replication ()
 
 switch_to_test_app_center ()
 {
-	univention-install --yes univention-appcenter-dev
-	univention-app dev-use-test-appcenter
-
-	for app in $(< /var/cache/appcenter-installed.txt); do 
-		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			univention-app shell "$app" univention-install -y univention-appcenter-dev
-			univention-app shell "$app" univention-app dev-use-test-appcenter
-		fi
-	done
+	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
+	if [ -x "$(which univention-app)" ]; then
+		univention-install --yes univention-appcenter-dev
+		univention-app dev-use-test-appcenter
+		for app in $(< /var/cache/appcenter-installed.txt); do 
+			if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+				univention-app shell "$app" univention-install -y univention-appcenter-dev
+				univention-app shell "$app" univention-app dev-use-test-appcenter
+			fi
+		done
+	fi
 }
 
 switch_components_to_test_app_center ()
@@ -363,7 +365,7 @@ run_apptests ()
 {
 
 	# some tests create domaincontroller_master objects, the listener ldap_server.py
-	# sets this objects as ldap/server/name ldap/master in the docker container
+	# sets these objects as ldap/server/name ldap/master in the docker container
 	# until this is fixed, force the variables in the docker container
 	for app in $(< /var/cache/appcenter-installed.txt); do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
