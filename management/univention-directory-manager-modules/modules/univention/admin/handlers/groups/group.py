@@ -44,6 +44,7 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.debug
 from univention.admin import configRegistry
+from univention.admin.uldap import DN
 
 translation = univention.admin.localization.translation('univention.admin.handlers.groups')
 _ = translation.translate
@@ -604,55 +605,52 @@ class object(univention.admin.handlers.simpleLdap):
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		old = set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
-		new = set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
+		old = DN.set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
+		new = DN.set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
 		if old != new:
 			# create lists for uniqueMember entries to be added or removed
-			uniqueMemberAdd = list(new - old)  # (new - old) ==> new set with elements in "new" but not in "old"
-			uniqueMemberRemove = list(old - new)  # (old - new) ==> new set with elements in "old" but not in "new"
+			uniqueMemberAdd = list(DN.values(new - old))
+			uniqueMemberRemove = list(DN.values(old - new))
 
 			def getUidList(uniqueMembers):
 				result = []
 				for uniqueMember in uniqueMembers:
-					if uniqueMember.startswith('uid='):  # UID is stored in DN --> use UID directly
-						result.append(univention.admin.uldap.explodeDn(uniqueMember, 1)[0])
-					else:
+					dn = ldap.dn.str2dn(uniqueMember)[0]
+					try:
+						result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])
+					except IndexError:
 						# UID is not stored in DN --> fetch UID by DN
 						uid_list = self.lo.getAttr(uniqueMember, 'uid')
 						# a group have no uid attribute, see Bug #12644
-						if len(uid_list) > 0:
+						if uid_list:
 							result.append(uid_list[0])
 							if len(uid_list) > 1:
-								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (uniqueMember, str(uid_list)))
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %r)' % (uniqueMember, uid_list))
 				return result
 
-			def adaptCase(members, oldMembers):
-				newMembers = []
-				oldMembers = tuple(oldMembers)
-				oldMembersLowerCase = map(lambda x: x.lower(), oldMembers)
-				for member in map(lambda x: x.lower(), members):
-					found = -1
-					for oldMember in oldMembersLowerCase:
-						found += 1
-						if member == oldMember:
-							newMembers.append(oldMembers[found])
-							break
-
-				return newMembers
+			# calling keepCase is not necessary as the LDAP server already handles the case when removing elements
+			# TODO: removable?
+			def keepCase(members, oldMembers):
+				mapping = dict((x.lower(), x) for x in oldMembers)
+				return [mapping.get(member.lower(), member) for member in members]
 
 			# create lists for memberUid entries to be added or removed
 			memberUidAdd = getUidList(uniqueMemberAdd)
 			memberUidRemove = getUidList(uniqueMemberRemove)
 
 			if uniqueMemberRemove:
-				uniqueMemberRemove = adaptCase(uniqueMemberRemove, old)
+				uniqueMemberRemove = keepCase(uniqueMemberRemove, old)
 				ml.append(('uniqueMember', uniqueMemberRemove, ''))
+
 			if uniqueMemberAdd:
 				ml.append(('uniqueMember', '', uniqueMemberAdd))
+
+			oldMemberUids = self.oldattr.get('memberUid', ())
 			if memberUidRemove:
-				oldMemberUids = self.oldattr.get('memberUid', ())
-				memberUidRemove = adaptCase(memberUidRemove, oldMemberUids)
+				memberUidRemove = keepCase(memberUidRemove, oldMemberUids)
 				ml.append(('memberUid', memberUidRemove, ''))
+
+			memberUidAdd = list(set(memberUidAdd) - set(oldMemberUids))
 			if memberUidAdd:
 				ml.append(('memberUid', '', memberUidAdd))
 
@@ -669,7 +667,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 	def _ldap_post_create(self):
-		name = univention.admin.allocators.release(self.lo, self.position, 'groupName', value=self['name'])
+		univention.admin.allocators.release(self.lo, self.position, 'groupName', value=self['name'])
 		if 'posix' in self.options:
 			univention.admin.allocators.confirm(self.lo, self.position, 'gidNumber', self.gidNum)
 		if 'samba' in self.options:
@@ -790,7 +788,7 @@ class object(univention.admin.handlers.simpleLdap):
 				add_to_group.append(group)
 
 		for group in add_to_group:
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if self.__case_insensitive_in_list(self.dn, members):
@@ -801,7 +799,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes(group, members, newmembers)
 
 		for group in remove_from_group:
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
 			if not self.__case_insensitive_in_list(self.dn, members):
@@ -812,10 +810,10 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes(group, members, newmembers)
 
 	def __set_membership_attributes(self, group, members, newmembers):
-		newuids = map(lambda x: x[x.find('=') + 1: x.find(',')], newmembers)
 		self.lo.modify(group, [('uniqueMember', members, newmembers)])
 		# don't set the memberUid attribute for nested groups, see Bug #11868
 		# uids = self.lo.getAttr( group, 'memberUid' )
+		# newuids = map(lambda x: x[x.find('=') + 1: x.find(',')], newmembers)
 		# self.lo.modify( group, [ ( 'memberUid', uids, newuids ) ] )
 
 	def __case_insensitive_in_list(self, dn, list):
