@@ -578,8 +578,7 @@ class simpleLdap(base):
 			try:
 				self.oldattr = self.lo.get(self.dn, required=True)
 			except ldap.NO_SUCH_OBJECT:
-				pass
-				# raise univention.admin.uexceptions.noObject(self.dn)
+				raise univention.admin.uexceptions.noObject(self.dn)
 
 		if self.oldattr:
 			self._exists = True
