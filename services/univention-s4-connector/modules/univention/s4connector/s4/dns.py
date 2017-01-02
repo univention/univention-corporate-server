@@ -126,7 +126,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 	if obj['dn'] is not None:
 		try:
-			s4_RR_val = obj['attributes'][s4_RR_attr][0]
+			s4_RR_val = [_value for _key, _value in object['attributes'].iteritems() if s4_RR_attr.lower() == _key.lower()][0]
 		except (KeyError, IndexError):
 			s4_RR_val = ''
 
@@ -311,7 +311,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						time.sleep(1)  # S4 may need some time...
 					else:
 						(_search_result_dn, search_result_attributes) = search_result[0]
-						raw_s4_rr_val = search_result_attributes.get(s4_RR_attr)[0]
+						search_result_attributes = dict((k.lower(), v) for k, v in search_result_attributes)
+						raw_s4_rr_val = search_result_attributes[s4_RR_attr.lower()][0]
 						s4_RR_val = univention.s4connector.s4.encode_attrib(raw_s4_rr_val)
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 
