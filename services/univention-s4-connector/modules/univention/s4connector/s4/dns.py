@@ -126,7 +126,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 	if obj['dn'] is not None:
 		try:
-			s4_RR_val = [_value for _key, _value in object['attributes'].iteritems() if s4_RR_attr.lower() == _key.lower()][0]
+			s4_RR_val = [_value for _key, _value in obj['attributes'].iteritems() if s4_RR_attr.lower() == _key.lower()][0][0]
 		except (KeyError, IndexError):
 			s4_RR_val = ''
 
