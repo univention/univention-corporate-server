@@ -3,8 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-s4-connector
-fix: 10.0.4-5.630.201612221244
+fix: 10.0.4-6.631.201701021603
 desc: |
  This update addresses the following issue(s):
  * A race condition between writing and reading cached data has been fixed.
-bug: [43235]
+ * The mapping for LDAP attributes of DNS objects is now case insensitive.
+bug: [43235, 43259]
