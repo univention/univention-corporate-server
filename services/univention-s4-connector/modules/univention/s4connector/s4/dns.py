@@ -126,7 +126,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 	if obj['dn'] is not None:
 		try:
-			s4_RR_val = obj['attributes'][s4_RR_attr][0]
+			s4_RR_val = [_value for _key, _value in object['attributes'].iteritems() if s4_RR_attr.lower() == _key.lower()][0]
 		except (KeyError, IndexError):
 			s4_RR_val = ''
 
@@ -304,8 +304,9 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					i = i + 1
 					search_dn = obj.get('deleted_dn', dn)
 					try:
-						s4_RR_val = univention.s4connector.s4.encode_attrib(
-							s4connector.lo_s4.lo.search_ext_s(univention.s4connector.s4.compatible_modstring(search_dn), ldap.SCOPE_BASE, s4_RR_filter, [s4_RR_attr])[0][1][s4_RR_attr][0])
+						vals = s4connector.lo_s4.lo.search_ext_s(univention.s4connector.s4.compatible_modstring(search_dn), ldap.SCOPE_BASE, s4_RR_filter, [s4_RR_attr])[0][1]
+						vals = dict((k.lower(), v) for k, v in vals)
+						s4_RR_val = univention.s4connector.s4.encode_attrib(vals[s4_RR_attr.lower()][0])
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 					except ldap.NO_SUCH_OBJECT:  # S4 may need time
 						if i > 5:

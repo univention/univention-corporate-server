@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.4-6) unstable; urgency=medium
+
+  * Bug #43259: fix attribute case insensitivity in DNS DN mapping functions
+
+ -- Florian Best <best@univention.de>  Mon, 02 Jan 2017 15:54:50 +0100
+
 univention-s4-connector (10.0.4-5) unstable; urgency=medium
 
   * Bug #43235: Fix race condition between writing and reading pickle
