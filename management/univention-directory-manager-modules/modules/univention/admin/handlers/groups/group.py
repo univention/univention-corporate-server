@@ -611,6 +611,8 @@ class object(univention.admin.handlers.simpleLdap):
 			# create lists for uniqueMember entries to be added or removed
 			uniqueMemberAdd = list(DN.values(new - old))
 			uniqueMemberRemove = list(DN.values(old - new))
+			old = list(DN.values(old))
+			new = list(DN.values(new))
 
 			def getUidList(uniqueMembers):
 				result = []

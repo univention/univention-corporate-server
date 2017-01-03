@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.11-1) unstable; urgency=medium
+
+  * Bug #43247: fixup
+
+ -- Florian Best <best@univention.de>  Tue, 03 Jan 2017 11:41:48 +0100
+
 univention-directory-manager-modules (12.0.10-1) unstable; urgency=medium
 
   * Bug #38110: raise noObject when initialiting UDM object with not existing
