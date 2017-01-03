@@ -1,4 +1,10 @@
-univention-directory-manager-modules (11.0.3.52) unstable; urgency=medium
+univention-directory-manager-modules (11.0.3-53) unstable; urgency=medium
+
+  * Bug #43247: fixup
+
+ -- Florian Best <best@univention.de>  Tue, 03 Jan 2017 11:39:03 +0100
+
+univention-directory-manager-modules (11.0.3-52) unstable; urgency=medium
 
   * Bug #43247: compare LDAP DN's correctly when adding/removing group members
 
