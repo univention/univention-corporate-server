@@ -598,6 +598,9 @@
 				<command>ucslint</command> checks were added to the build process of some packages (<u:bug>23837</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				<command>ucslint</command> skips checking some generated files (<u:bug>43284</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The service <systemitem class="service">portmap</systemitem> was renamed to <systemitem class="service">rpcbind</systemitem> (<u:bug>36571</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
