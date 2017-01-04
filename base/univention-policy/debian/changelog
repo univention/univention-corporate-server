@@ -1,3 +1,9 @@
+univention-policy (8.0.0-2) unstable; urgency=medium
+
+  * Bug #43031: Improve error logging
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Jan 2017 11:58:46 +0100
+
 univention-policy (8.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
