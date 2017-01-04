@@ -1,3 +1,9 @@
+ucs-test (6.0.37-31) unstable; urgency=medium
+
+  * Bug #37632: Bug #38088: reactivate test cases
+
+ -- Florian Best <best@univention.de>  Wed, 04 Jan 2017 13:01:24 +0100
+
 ucs-test (6.0.37-30) unstable; urgency=medium
 
   * 52_s4connector/406create_windows_computer*: Added test cases which

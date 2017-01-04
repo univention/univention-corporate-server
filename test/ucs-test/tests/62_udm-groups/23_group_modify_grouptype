@@ -7,7 +7,6 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
@@ -20,10 +19,6 @@ GROUP_TYPE_LOCAL = "-2147483643"
 GROUP_TYPE_DOMAIN_LOCAL = "-2147483644"
 GROUP_TYPE_GLOBAL = "-2147483646"
 GROUP_TYPE_UNIVERSAL = "-2147483640"
-
-if utils.uppercase_in_ldap_base():
-	# https://forge.univention.org/bugzilla/show_bug.cgi?id=38088
-	sys.exit(137)
 
 
 def _test_local_group_change():
@@ -43,21 +38,21 @@ def _test_local_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		try:
 			udm.modify_object('groups/group', dn=group2, adGroupType=GROUP_TYPE_GLOBAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		try:
 			udm.modify_object('groups/group', dn=group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 
 def _test_domain_local_group_change():
@@ -89,14 +84,14 @@ def _test_domain_local_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		try:
 			udm.modify_object('groups/group', dn=group2, adGroupType=GROUP_TYPE_GLOBAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 
@@ -106,7 +101,7 @@ def _test_domain_local_group_change():
 			pass
 		else:
 			print 'E: Domain local group has another domain local group as member. Change to universal group was possible which should not be.'
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group6, adGroupType=GROUP_TYPE_UNIVERSAL)
 
@@ -143,14 +138,14 @@ def _test_global_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		try:
 			udm.modify_object('groups/group', dn=group2, adGroupType=GROUP_TYPE_DOMAIN_LOCAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 
@@ -162,7 +157,7 @@ def _test_global_group_change():
 			pass
 		else:
 			print 'E: Gloabl group is member of another global group. Change to universal group was possible which should not be.'
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group9, adGroupType=GROUP_TYPE_UNIVERSAL)
 		udm.modify_object('groups/group', dn=group11, adGroupType=GROUP_TYPE_UNIVERSAL)
@@ -195,7 +190,7 @@ def _test_universal_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group2, adGroupType=GROUP_TYPE_DOMAIN_LOCAL)
 
@@ -207,7 +202,7 @@ def _test_universal_group_change():
 			pass
 		else:
 			print 'E: Universal group has another universal group as member. Change to global group was possible which should not be.'
-			raise GroupChangePossible
+			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group6, adGroupType=GROUP_TYPE_GLOBAL)
 
@@ -216,7 +211,6 @@ def _test_universal_group_change():
 
 
 if __name__ == '__main__':
-
 	_test_local_group_change()
 	_test_domain_local_group_change()
 	_test_global_group_change()
