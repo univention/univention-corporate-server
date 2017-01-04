@@ -13,7 +13,7 @@ Categories=service-nagios
 [nagios/server/authenticate]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, muss sich der Benutzer für den Zugriff auf die Nagios-Weboberfläche authentifizieren. Steht sie auf 'no', kann auch ohne Angabe eines gültigen Benutzerkontos auf die Weboberfläche zugegriffen werden.
 Description[en]=If this variable is set to 'yes' a user accessing the Nagios web interface needs to authenticate. If set to 'no' the web interface can be accessed without a valid user account.
-Type=str
+Type=bool
 Categories=service-nagios
 
 [nagios/server/user/systeminfo]
