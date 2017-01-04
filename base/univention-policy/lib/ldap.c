@@ -123,20 +123,20 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 	len = asprintf(&lp->binddn, "cn=admin,%s", base);
 	free(base);
 	if (len < 0 || !lp->binddn) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf() failed");
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(binddn) failed");
 		goto err;
 	}
 
 	FREE(lp->bindpw);
 	lp->bindpw = calloc(_UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char));
 	if (!lp->bindpw) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "calloc() failed");
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "calloc(bindpw) failed");
 		goto err;
 	}
 
 	secret = fopen("/etc/ldap.secret", "r" );
 	if (!secret) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "open() failed");
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "open(/etc/ldap.secret) failed");
 		goto err;
 	}
 	len = fread(lp->bindpw, _UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char), secret);
@@ -204,7 +204,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 				bufsize = 16384;
 			buf = malloc(bufsize);
 			if (buf == NULL) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "malloc() failed");
+				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "malloc(getpwuid) failed");
 				goto error;
 			}
 			s = getpwuid_r(getuid(), &pwd, buf, bufsize, &result);
@@ -215,7 +215,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 			}
 			s = asprintf(&lp->sasl_authzid, "u:%s", pwd.pw_name);
 			if (s < 0) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf() failed");
+				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(sasl_authzid) failed");
 				free(buf);
 				goto error;
 			}

@@ -1,3 +1,9 @@
+univention-policy (7.0.2-4) unstable; urgency=low
+
+  * Bug #43031: Improve error logging
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Jan 2017 11:58:46 +0100
+
 univention-policy (7.0.2-3) unstable; urgency=low
 
   * Bug #43031: Fix grouping error in parenthesis
