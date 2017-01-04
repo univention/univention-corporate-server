@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  header information for handlers.c
  *
- * Copyright 2004-2016 Univention GmbH
+ * Copyright 2004-2017 Univention GmbH
  *
  * http://www.univention.de/
  *

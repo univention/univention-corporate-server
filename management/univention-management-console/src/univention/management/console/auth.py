@@ -4,7 +4,7 @@
 # Univention Management Console
 #  authentication mechanisms
 #
-# Copyright 2014-2016 Univention GmbH
+# Copyright 2014-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

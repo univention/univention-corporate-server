@@ -4,7 +4,7 @@
 # Univention RADIUS 802.1X
 #  helper functions for RFC 2759
 #
-# Copyright (C) 2012-2016 Univention GmbH
+# Copyright (C) 2012-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

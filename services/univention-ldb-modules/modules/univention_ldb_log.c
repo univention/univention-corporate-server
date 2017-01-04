@@ -2,7 +2,7 @@
  * Samba LDB module univention_ldb_log
  *	LDB Module for monitoring LDB operations
  *
- * Copyright 2011-2016 Univention GmbH
+ * Copyright 2011-2017 Univention GmbH
  *
  * http://www.univention.de/
  *

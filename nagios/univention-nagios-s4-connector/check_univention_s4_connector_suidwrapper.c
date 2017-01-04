@@ -3,7 +3,7 @@
 //  check_univention_s4_connector_suidwrapper: 
 //  wrapper to call script for checking s4 connector status
 //
-// Copyright 2015-2016 Univention GmbH
+// Copyright 2015-2017 Univention GmbH
 //
 // http://www.univention.de/
 //

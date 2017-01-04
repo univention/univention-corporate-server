@@ -2,7 +2,7 @@
 #
 # UCS Virtual Machine Manager schema
 #
-# Copyright 2012-2016 Univention GmbH
+# Copyright 2012-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention Updater
 """Python tools for updater and repository maintenance."""
 #
-# Copyright 2009-2016 Univention GmbH
+# Copyright 2009-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

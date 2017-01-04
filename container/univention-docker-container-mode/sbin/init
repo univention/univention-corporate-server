@@ -8,7 +8,7 @@ fi
 # Univention Docker Container Mode
 #  wrapper script for PID 1 (i.e. /sbin/init)
 #
-# Copyright 2015-2016 Univention GmbH
+# Copyright 2015-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

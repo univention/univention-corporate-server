@@ -3,7 +3,7 @@
 # Univention Log Collector Client
 #   send log files to central loghost
 #
-# Copyright 2007-2016 Univention GmbH
+# Copyright 2007-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

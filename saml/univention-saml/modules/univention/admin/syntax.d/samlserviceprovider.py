@@ -3,7 +3,7 @@
 # Univention Management Console
 #  samlserviceprovider: syntax file
 #
-# Copyright 2013-2016 Univention GmbH
+# Copyright 2013-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
