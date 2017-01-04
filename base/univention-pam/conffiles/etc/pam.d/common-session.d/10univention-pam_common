@@ -22,6 +22,6 @@ if configRegistry.is_true('homedir/create', True):
 
 	if configRegistry.is_true('auth/kdeprofile', False):
 		print 'session    required   pam_runasroot.so program=/usr/share/univention-kde/univention-set-kdedirs'
-		print 'session    required   pam_env.so envfile=$HOME/.univention-environment'
+		print 'session    required   pam_env.so readenv=0 user_readenv=1 user_envfile=.univention-environment'
 @!@
 
