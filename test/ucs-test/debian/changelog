@@ -1,5 +1,6 @@
 ucs-test (6.0.37-31) unstable; urgency=medium
 
+  * Bug #43247: add test case 62_udm-groups/24_group_different_case
   * Bug #37632: Bug #38088: reactivate test cases
 
  -- Florian Best <best@univention.de>  Wed, 04 Jan 2017 13:01:24 +0100
