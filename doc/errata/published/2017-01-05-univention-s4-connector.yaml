@@ -9,3 +9,5 @@ desc: |
  * A race condition between writing and reading cached data has been fixed.
  * The mapping for LDAP attributes of DNS objects is now case insensitive.
 bug: [43235, 43259]
+erratum: 369
+announced: 2017-01-05
