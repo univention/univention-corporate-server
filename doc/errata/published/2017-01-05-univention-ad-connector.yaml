@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A race condition between writing and reading cached data has been fixed.
 bug: [42507]
+erratum: 370
+announced: 2017-01-05
