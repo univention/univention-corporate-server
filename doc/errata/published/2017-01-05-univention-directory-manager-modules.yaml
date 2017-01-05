@@ -23,3 +23,5 @@ desc: |
  * When adding or removing group memberships the values are now compared with
    respect to the syntax of DN's.
 bug: [42404,36570,28363,25354,42840,43247]
+erratum: 367
+announced: 2017-01-05
