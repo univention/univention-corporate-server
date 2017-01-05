@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * LDAP connections are now always TLS encrypted.
 bug: [43031]
+erratum: 368
+announced: 2017-01-05
