@@ -1,3 +1,10 @@
+univention-quota (11.0.0-3) unstable; urgency=low
+
+  * Bug #42368: unify search for users with all other UMC modules
+  * Bug #42013: make it possible to remove single quota settings
+
+ -- Florian Best <best@univention.de>  Thu, 05 Jan 2017 17:08:53 +0100
+
 univention-quota (11.0.0-2) unstable; urgency=low
 
   * Bug #42073: Corrected a typo.

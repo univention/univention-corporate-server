@@ -90,7 +90,7 @@ define([
 			var widgets = [{
 				type: TextBox,
 				name: 'filter',
-				value: '*'
+				value: ''
 			}];
 
 			this._searchForm = new SearchForm({
