@@ -1,3 +1,10 @@
+univention-system-setup (10.0.0-16) unstable; urgency=medium
+
+  * Bug #32027: (Bug #42291): make the app store observable to prevent
+  	exception
+
+ -- Florian Best <best@univention.de>  Thu, 05 Jan 2017 15:37:45 +0100
+
 univention-system-setup (10.0.0-15) unstable; urgency=medium
 
   * Bug #38110: fix UDM usage

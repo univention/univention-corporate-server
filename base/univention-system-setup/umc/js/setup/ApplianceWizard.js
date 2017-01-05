@@ -41,6 +41,7 @@ define([
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/store/Memory",
+	"dojo/store/Observable",
 	"dojo/request",
 	"dijit/form/Select",
 	"dijit/Tooltip",
@@ -69,7 +70,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, systemInfoLib, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, systemInfoLib, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -1232,7 +1233,7 @@ define([
 		},
 
 		_setupAppGallery: function() {
-			this._apps = new Memory({});
+			this._apps = new Observable(new Memory({}));
 			this._gallery = new _Grid({
 				moduleStore: this._apps,
 				columns: [{
