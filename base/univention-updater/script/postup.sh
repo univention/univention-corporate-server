@@ -132,6 +132,7 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
+	version/erratalevel=0 \
 	repository/online/component/4.1-3-errata=false \
 	repository/online/component/4.1-3-errata/localmirror=true \
 	repository/online/component/4.2-0-errata=enabled \
