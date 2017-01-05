@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages quota support for locale hard drives
 #
-# Copyright 2006-2014 Univention GmbH
+# Copyright 2006-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
