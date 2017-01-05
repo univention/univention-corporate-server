@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:44+0100\n"
+"POT-Creation-Date: 2017-01-05 17:12+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -33,7 +33,7 @@ msgid "Add quota"
 msgstr "Quota-Einstellungen hinzufügen"
 
 #: umc/js/quota/DetailPage.js:159
-#, python-format
+#, javascript-format
 msgid "Add quota settings for a new user on partition <i>%s</i>."
 msgstr ""
 "Hinzufügen von Quota-Einstellungen für einen neuen Benutzer auf Partition <i>"
@@ -47,16 +47,16 @@ msgstr "Zurück zur Übersicht"
 msgid "Back to partition"
 msgstr "Zurück zur Partition"
 
-#: umc/js/quota.js:201 umc/js/quota/PartitionPage.js:234
+#: umc/js/quota/PartitionPage.js:234 umc/js/quota.js:201
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/quota.js:89 umc/js/quota/PartitionPage.js:118
+#: umc/js/quota/PartitionPage.js:118 umc/js/quota.js:89
 msgid "Configure"
 msgstr "Konfigurieren"
 
 #: umc/js/quota/PartitionPage.js:226
-#, python-format
+#, javascript-format
 msgid "Could not remove the following user: %s"
 msgstr "Konnte folgenden Benutzer nicht entfernen: %s"
 
@@ -117,13 +117,12 @@ msgid "Modify quota"
 msgstr "Quota-Einstellungen anpassen"
 
 #: umc/js/quota/DetailPage.js:165
-#, python-format
 msgid ""
 "Modify the quota settings for user <i>%(user)s</i> on partition <i>"
 "%(partition)s</i>."
 msgstr ""
-"Anpassung der Quota-Einstellungen für Benutzer <i>%(user)s</i> auf Partition <i>"
-"%(partition)s</i>."
+"Anpassung der Quota-Einstellungen für Benutzer <i>%(user)s</i> auf Partition "
+"<i>%(partition)s</i>."
 
 #: umc/js/quota.js:114
 msgid "Mount point"
@@ -137,8 +136,8 @@ msgstr "Mount-Point: "
 msgid "Not all limits can be set to zero."
 msgstr "Es können nicht alle Limits auf Null gesetzt sein."
 
-#: umc/js/quota.js:188 umc/js/quota.js:223 umc/js/quota/PartitionPage.js:211
-#: umc/js/quota/PartitionPage.js:228
+#: umc/js/quota/PartitionPage.js:211 umc/js/quota/PartitionPage.js:228
+#: umc/js/quota.js:188 umc/js/quota.js:223
 msgid "OK"
 msgstr "OK"
 
@@ -146,12 +145,12 @@ msgstr "OK"
 msgid "Options: "
 msgstr "Optionen: "
 
-#: umc/js/quota.js:110 umc/js/quota/DetailPage.js:92
+#: umc/js/quota/DetailPage.js:92 umc/js/quota.js:110
 msgid "Partition"
 msgstr "Partition"
 
 #: umc/js/quota.js:239
-#, python-format
+#, javascript-format
 msgid "Partition: %s"
 msgstr "Partition: %s"
 
@@ -160,28 +159,27 @@ msgid "Partitions"
 msgstr "Partitionen"
 
 #: umc/js/quota.js:183
-#, python-format
+#, javascript-format
 msgid "Please confirm quota support activation on device: %s"
 msgstr ""
 "Bitte bestätigen Sie die Aktivierung der Quota-Unterstützung auf folgender "
 "Partition: %s"
 
 #: umc/js/quota.js:185
-#, python-format
+#, javascript-format
 msgid "Please confirm quota support deactivation on device: %s"
 msgstr ""
 "Bitte bestätigen Sie die Deaktivierung der Quota-Unterstützung auf folgender "
 "Partition: %s"
 
 #: umc/js/quota/PartitionPage.js:208
-#, python-format
 msgid "Please confirm to remove the following %(length)s users: %(usernames)s"
 msgstr ""
 "Bitte bestätigen Sie die folgenden %(length)s Benutzer zu löschen: "
 "%(usernames)s"
 
 #: umc/js/quota/PartitionPage.js:206
-#, python-format
+#, javascript-format
 msgid "Please confirm to remove the following user: %s"
 msgstr "Bitte bestätigen Sie den folgenden Benutzer zu löschen: %s"
 
@@ -221,7 +219,7 @@ msgstr "Das Soft-Limit muss äquivalent oder kleiner als das Hard-Limit sein"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/quota/PartitionPage.js:139 umc/js/quota/DetailPage.js:87
+#: umc/js/quota/DetailPage.js:87 umc/js/quota/PartitionPage.js:139
 msgid "User"
 msgstr "Benutzer"
 

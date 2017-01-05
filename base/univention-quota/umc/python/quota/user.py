@@ -33,33 +33,37 @@
 
 import notifier
 import notifier.threads
-from fnmatch import fnmatch
 
-import univention.management.console as umc
 from univention.lib import fstab
+from univention.management.console import Translation
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
+from univention.management.console.base import UMC_Error
 from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, PatternSanitizer
 
 import mtab
 import tools
 
-_ = umc.Translation('univention-management-console-module-quota').translate
+_ = Translation('univention-management-console-module-quota').translate
+
+
+class LimitSanitizer(IntegerSanitizer):
+
+	def _sanitize(self, value, name, further_arguments):
+		if not value:
+			return self.default
+		return super(LimitSanitizer, self)._sanitize(value, name, further_arguments)
 
 
 class Commands(object):
 
 	@sanitize(
-		partitionDevice=StringSanitizer(required=True)
+		partitionDevice=StringSanitizer(required=True),
+		filter=PatternSanitizer(default='.*'),
 	)
 	def users_query(self, request):
 		partitionDevice = request.options['partitionDevice']
-		try:
-			self._check_error(request, partitionDevice)
-		except ValueError as exc:
-			self.finished(request.id, None, str(exc), status=MODULE_ERR)
-			return
+		self._check_error(request, partitionDevice)
 
 		callback = notifier.Callback(self._users_query, request.id, partitionDevice, request)
 		tools.repquota(request.options['partitionDevice'], callback)
@@ -69,30 +73,26 @@ class Commands(object):
 		there is output to parse that is restructured as UMC Dialog'''
 		# general information
 		devs = fstab.File()
-		part = devs.find(spec=partition)
+		devs.find(spec=partition)
 
 		# skip header
+		header = 0
 		try:
-			header = 0
 			while not callbackResult[header].startswith('----'):
 				header += 1
-		except:
+		except IndexError:
 			pass
 		quotas = tools.repquota_parse(partition, callbackResult[header + 1:])
-		result = []
-		for list_entry in quotas:
-			if fnmatch(list_entry['user'], request.options['filter']):
-				result.append(list_entry)
-		request.status = SUCCESS
+		result = [q for q in quotas if request.options['filter'].match(q['user'])]
 		self.finished(request.id, result)
 
 	@sanitize(
 		partitionDevice=StringSanitizer(required=True),
 		user=StringSanitizer(required=True),
-		sizeLimitSoft=IntegerSanitizer(required=True),
-		sizeLimitHard=IntegerSanitizer(required=True),
-		fileLimitSoft=IntegerSanitizer(required=True),
-		fileLimitHard=IntegerSanitizer(required=True),
+		sizeLimitSoft=LimitSanitizer(default=0, required=True),
+		sizeLimitHard=LimitSanitizer(default=0, required=True),
+		fileLimitSoft=LimitSanitizer(default=0, required=True),
+		fileLimitHard=LimitSanitizer(default=0, required=True),
 	)
 	def users_set(self, request):
 		def _thread(request):
@@ -105,19 +105,14 @@ class Commands(object):
 			size_hard = request.options['sizeLimitHard']
 			file_soft = request.options['fileLimitSoft']
 			file_hard = request.options['fileLimitHard']
-			try:
-				self._check_error(request, partition)
-			except ValueError as exc:
-				return dict(status=MODULE_ERR, message=str(exc))
+			self._check_error(request, partition)
 
-			failed = tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard)
-			if failed:
-				MODULE.error('Failed to modify quota settings for user %s on partition %s' % (user, partition))
-				message = _('Failed to modify quota settings for user %(user)s on partition %(partition)s') % {'user': user, 'partition': partition}
-				return dict(status=MODULE_ERR, message=message)
-			return dict(result={'objects': [], 'success': True})
+			if tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard):
+				raise UMC_Error(_('Failed to modify quota settings for user %(user)s on partition %(partition)s.') % {'user': user, 'partition': partition})
 
-		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+			return {'objects': [], 'success': True}
+
+		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def users_remove(self, request):
@@ -134,16 +129,17 @@ class Commands(object):
 
 			# Remove user quota
 			for obj in request.options:
-				(unicode_user, partition) = obj['object'].split('@')
+				(unicode_user, partition) = obj['object'].split('@', 1)
 				user = unicode_user.encode('utf-8')
-				failed = tools.setquota(partition, user, '0', '0', '0', '0')
-				if failed:
+				if tools.setquota(partition, user, 0, 0, 0, 0):
 					objects.append({'id': obj['object'], 'success': False})
 					success = False
 				else:
 					objects.append({'id': obj['object'], 'success': True})
-			return dict(result={'objects': objects, 'success': success})
-		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+
+			return {'objects': objects, 'success': success}
+
+		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def _check_error(self, request, partition_name):  # TODO
@@ -154,28 +150,13 @@ class Commands(object):
 			MODULE.error('Could not open %s' % error.filename)
 			raise ValueError(_('Could not open %s') % error.filename)
 
-		message = None
 		partition = fs.find(spec=partition_name)
 		if partition:
 			mounted_partition = mt.get(partition.spec)
 			if mounted_partition:
 				if 'usrquota' not in mounted_partition.options:
-					MODULE.error('The following partition is mounted without quota support: %s' % partition_name)
-					message = _('The following partition is mounted without quota support: %s') % partition_name
+					raise UMC_Error(_('The following partition is mounted without quota support: %s') % partition_name)
 			else:
-				MODULE.error('The following partition is currently not mounted: %s' % partition_name)
-				message = _('The following partition is currently not mounted: %s') % partition_name
+				raise UMC_Error(_('The following partition is currently not mounted: %s') % partition_name)
 		else:
-			MODULE.error('No partition found (%s)' % partition_name)
-			message = _('No partition found (%s)') % partition_name
-		if message:
-			raise ValueError(message)
-
-	def _thread_finished(self, thread, thread_result, request):
-		if isinstance(thread_result, BaseException):
-			message = '%s\n%s' % (thread_result, '\n'.join(thread.trace))
-			MODULE.error('An internal error occurred: %s' % message)
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
-			return
-		self.finished(request.id, thread_result.get('result'), thread_result.get('message'), status=thread_result.get('status', SUCCESS))
+			raise UMC_Error(_('No partition found (%s)') % partition_name)
