@@ -200,15 +200,19 @@ define([
 			return visibleApps;
 		},
 
-		getApplications: function() {
+		getApplications: function(quick) {
 			if (!this._applications) {
-				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(this, function(data) {
-					tools.umcpCommand('appcenter/sync_ldap', {}, false).then(
-						undefined,
-						lang.hitch(this, function() {
-							this.addWarning(_('Registration of the applications in the domain failed. It will be retried when opening this module again. This may also cause problems when installing applications.'));
-						})
-					);
+				return tools.umcpCommand('appcenter/query', {'quick': quick}).then(lang.hitch(this, function(data) {
+					if (quick) {
+						tools.umcpCommand('appcenter/sync_ldap', {}, false).then(
+							lang.hitch(this, function() {
+								this.updateApplications(false);
+							}),
+							lang.hitch(this, function() {
+								this.addWarning(_('Registration of the applications in the domain failed. It will be retried when opening this module again. This may also cause problems when installing applications.'));
+							})
+						);
+					}
 					// sort by name
 					this._applications = data.result;
 					this._applications.sort(tools.cmpObjects({
@@ -221,12 +225,16 @@ define([
 			return this._applications;
 		},
 
-		updateApplications: function() {
+		updateApplications: function(quick) {
 			// query all applications
+			quick = quick !== false;
 			this._applications = null;
-			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
+			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
+					if (!quick) {
+						metaObj._alreadyHadStore = false;
+					}
 					metaObj.set('store', applications);
 					metaLabels.push(metaObj.label);
 				});

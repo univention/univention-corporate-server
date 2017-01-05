@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console */
+/*global define require */
 
 define([
 	"dojo/_base/declare",
@@ -116,7 +116,6 @@ define([
 							} else {
 								domClass.add(appNode, 'hover secondTouch');
 							}
-						
 						} else {
 							this.onShowApp(app);
 						}
@@ -152,11 +151,28 @@ define([
 
 		_setStoreAttr: function(applications) {
 			var filteredApps = array.filter(applications, this.query);
-			this.grid.set('store', new Observable(new Memory({
-				data: filteredApps
-			})));
-			this._set('store', applications);
-			tools.defer(lang.hitch(this, '_centerApps'), 100);
+			if (this._alreadyHadStore) {
+				var store = this.grid.get('store');
+				array.forEach(filteredApps, lang.hitch(this, function(app) {
+					if (store.query(function(storedApp) { return storedApp.id == app.id; }).length) {
+						store.put(app);
+					} else {
+						store.add(app);
+					}
+				}));
+				store.query().forEach(function(app) {
+					if (array.some(filteredApps, function(filteredApp) { return filteredApp.id == app.id; })) {
+						store.remove(app);
+					}
+				});
+			} else {
+				this.grid.set('store', new Observable(new Memory({
+					data: filteredApps
+				})));
+				this._set('store', filteredApps);
+				tools.defer(lang.hitch(this, '_centerApps'), 100);
+				this._alreadyHadStore = true;
+			}
 		},
 
 		_setFilterQueryAttr: function(query) {

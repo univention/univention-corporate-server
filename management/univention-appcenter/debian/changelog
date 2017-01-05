@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-30) unstable; urgency=medium
+
+  * Bug #39632: Performance improvements when opening the App Center (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Jan 2017 13:54:09 +0100
+
 univention-appcenter (5.0.23-29) unstable; urgency=medium
 
   * Bug #42803: Reverted some illegitimate change in the tracking feature
