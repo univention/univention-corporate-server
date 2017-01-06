@@ -213,12 +213,7 @@ define([
 							})
 						);
 					}
-					// sort by name
 					this._applications = data.result;
-					this._applications.sort(tools.cmpObjects({
-						attribute: 'name',
-						ignoreCase: true
-					}));
 					return this._applications;
 				}));
 			}
@@ -232,15 +227,12 @@ define([
 			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
-					if (!quick) {
-						metaObj._alreadyHadStore = false;
-					}
 					metaObj.set('store', applications);
 					metaLabels.push(metaObj.label);
 				});
 				metaLabels.push(''); // seperates meta and normal categories
 
-				if (this.liveSearch) {
+				if (quick && this.liveSearch) {
 					var categories = [];
 					array.forEach(applications, function(application) {
 						array.forEach(application.categories, function(category) {
