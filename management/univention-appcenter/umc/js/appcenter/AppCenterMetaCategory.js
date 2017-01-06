@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console */
+/*global define require */
 
 define([
 	"dojo/_base/declare",
@@ -116,12 +116,16 @@ define([
 							} else {
 								domClass.add(appNode, 'hover secondTouch');
 							}
-						
 						} else {
 							this.onShowApp(app);
 						}
 					})
-				}]
+				}],
+				queryOptions: {sort: tools.cmpObjects({
+						attribute: 'name',
+						ignoreCase: true
+					})},
+				store: new Observable(new Memory())
 			});
 
 			this.addChild(this._label);
@@ -152,11 +156,21 @@ define([
 
 		_setStoreAttr: function(applications) {
 			var filteredApps = array.filter(applications, this.query);
-			this.grid.set('store', new Observable(new Memory({
-				data: filteredApps
-			})));
-			this._set('store', applications);
+			var store = this.grid.get('store');
+			array.forEach(filteredApps, function(app) {
+				if (store.get(app.id)) {
+					store.put(app);
+				} else {
+					store.add(app);
+				}
+			});
+			store.query().forEach(function(app) {
+				if (! array.some(filteredApps, function(filteredApp) { return filteredApp.id == app.id; })) {
+					store.remove(app.id);
+				}
+			});
 			tools.defer(lang.hitch(this, '_centerApps'), 100);
+			this._set('store', filteredApps);
 		},
 
 		_setFilterQueryAttr: function(query) {
@@ -191,6 +205,7 @@ define([
 		},
 
 		_centerApps: function() {
+			this.grid._resizeItemNames();
 			//make sure the domNode is not hidden
 			domClass.remove(this.domNode, 'dijitHidden');
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);

@@ -897,8 +897,6 @@ class App(object):
 		self._is_ucs_component = None
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
-		for attr in self._attrs:
-			attr.post_creation(self)
 		if self.docker:
 			self.supported_architectures = ['amd64']
 		else:
@@ -1376,7 +1374,8 @@ class App(object):
 	@hard_requirement('install', 'upgrade')
 	def shall_not_be_docker_if_discouraged(self):
 		'''The application has not been approved to migrate all
-		existing data. Maybe there is a migration guide: %(migration_link)s'''
+		existing data. Maybe there is a migration guide:
+		%(migration_link)s'''
 		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
 		if problem:
 			return {'migration_link': self.docker_migration_link}
@@ -1509,7 +1508,11 @@ class AppManager(object):
 
 	@classmethod
 	def _build_app_from_ini(cls, ini):
-		return cls._AppClass.from_ini(ini, locale=cls._locale)
+		app = cls._AppClass.from_ini(ini, locale=cls._locale)
+		if app:
+			for attr in app._attrs:
+				attr.post_creation(app)
+		return app
 
 	@classmethod
 	def clear_cache(cls):

@@ -88,7 +88,7 @@ def create_object_if_not_exists(module, lo, pos, **kwargs):
 	if 'policies' in kwargs:
 		obj.policies = kwargs.pop('policies')
 	for key, value in kwargs.iteritems():
-		if key == 'objectFlag':
+		if key == 'objectFlag':  # Bug #43148; ignore syntax for the time being
 			obj.info[key] = value
 		else:
 			obj[key] = value

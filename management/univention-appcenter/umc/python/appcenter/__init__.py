@@ -184,8 +184,9 @@ class Instance(umcm.Base, ProgressMixin):
 		return info.get_compatibility()
 
 	@simple_response
-	def query(self):
-		self.update_applications()
+	def query(self, quick=False):
+		if not quick:
+			self.update_applications()
 		self.ucr.load()
 		AppManager.reload_package_manager()
 		list_apps = get_action('list')
@@ -194,7 +195,20 @@ class Instance(umcm.Base, ProgressMixin):
 		if self.ucr.is_true('appcenter/docker', True):
 			if not self._test_for_docker_service():
 				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
-		return domain.to_dict(apps)
+		info = domain.to_dict(apps)
+		if quick:
+			ret = []
+			for app in info:
+				if app is None:
+					ret.append(None)
+				else:
+					short_info = {}
+					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations']:
+						short_info[attr] = app[attr]
+					ret.append(short_info)
+			return ret
+		else:
+			return info
 
 	def update_applications(self):
 		if self.ucr.is_true('appcenter/umc/update/always', True):

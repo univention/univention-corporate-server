@@ -245,7 +245,6 @@ define([
 				}
 				this.selectChild(this._appCenterPage);
 				tools.forIn(this._appCenterPage.metaCategories, function(metaKey, metaObj) {
-					metaObj.grid._resizeItemNames();
 					metaObj._centerApps();
 				});
 				this.removeChild(appDetailsDialog);
