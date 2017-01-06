@@ -1,3 +1,9 @@
+univention-updater (11.0.11-13) unstable; urgency=medium
+
+  * Bug #43257: Explicity add required dependencies
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 05 Jan 2017 14:36:20 +0100
+
 univention-updater (11.0.11-12) unstable; urgency=medium
 
   * Bug #43026: Show a warning when current UCS version is out of maintenance

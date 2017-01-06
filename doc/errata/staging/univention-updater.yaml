@@ -3,9 +3,10 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-updater
-fix: 11.0.11-12.1498.201612211917
+fix: 
 desc: |
  This update addresses the following issue(s):
  * A warning message is shown when the currently used UCS version
    is out of maintenance.
-bug: [43026]
+ * Added required dependencies explicitly to the package.
+bug: [43026, 43257]
