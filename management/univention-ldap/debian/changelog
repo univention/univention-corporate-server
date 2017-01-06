@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-12) unstable; urgency=medium
+
+  * Bug #32557: allow attribute dhcpStatements at dhcpPool (dhcp/pool)
+
+ -- Florian Best <best@univention.de>  Fri, 06 Jan 2017 12:12:31 +0100
+
 univention-ldap (13.0.0-11) unstable; urgency=medium
 
   * Bug #42103: enhance pam_unix password change configuration

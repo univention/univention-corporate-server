@@ -377,7 +377,7 @@ objectclass ( 2.16.840.1.113719.1.203.6.4
 	DESC 'This stores configuration information about a pool.' 
 	SUP top 
 	MUST ( cn $ dhcpRange ) 
-	MAY ( dhcpClassesDN $ dhcpPermitList $ dhcpLeasesDN $ dhcpOptionsDN $ dhcpZoneDN $dhcpKeyDN $ dhcpStatements $ dhcpComments $ dhcpOption ) 
+	MAY ( dhcpClassesDN $ dhcpPermitList $ dhcpLeasesDN $ dhcpOptionsDN $ dhcpZoneDN $dhcpKeyDN $ dhcpStatements $ dhcpComments $ dhcpOption $ dhcpStatements )
 	X-NDS_CONTAINMENT ('dhcpSubnet' 'dhcpSharedNetwork') )
 
 objectclass ( 2.16.840.1.113719.1.203.6.5 
