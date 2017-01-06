@@ -4,7 +4,7 @@
 	version (2.0) #FIXED "2.0"
 >
 
-<!ELEMENT module ((name,description,keywords?)?,flavor*,categories?,command*)>
+<!ELEMENT module ((name,description,keywords?)?,flavor*,categories?,requiredCommands?,command*)>
 <!-- priority: order of module
 	id:       unique module ID
 	icon:     base directory
@@ -31,7 +31,7 @@
 <!ELEMENT url (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT keywords (#PCDATA)>
-<!ELEMENT flavor (name,description,keywords?,categories?)>
+<!ELEMENT flavor (name,description,keywords?,categories?,requiredCommands?)>
 <!-- priority:   order of flavours
 	icon:       file name without suffix relative to umc/module/@icon
 	id:         unique module ID
@@ -68,3 +68,8 @@
 	function CDATA #REQUIRED
 	allow_anonymous CDATA #IMPLIED
 >
+<!ELEMENT requiredCommand EMPTY>
+<!ATTLIST requiredCommand
+	name CDATA #REQUIRED
+>
+<!ELEMENT requiredCommands (requiredCommand?)>

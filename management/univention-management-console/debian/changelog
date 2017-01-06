@@ -1,3 +1,10 @@
+univention-management-console (9.0.14-1) unstable; urgency=medium
+
+  * Bug #42114: make it possible to define required commands for a
+  	flavor/module to have access to for viewing the module
+
+ -- Florian Best <best@univention.de>  Fri, 06 Jan 2017 18:09:36 +0100
+
 univention-management-console (9.0.13-5) unstable; urgency=low
 
   * Bug #38824: Fix conflict for /var/www/univention-management-console

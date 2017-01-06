@@ -42,23 +42,25 @@ module must provide an XML file containing this kind of information.
 
 The following example defines a module with the id *udm* ::
 
- <?xml version="1.0" encoding="UTF-8"?>
- <umc version="2.0">
-   <module id="udm" icon="udm-module" version="1.0">
-     <name>Univention Directory Manager</name>
-     <description>Manages all UDM modules</description>
-     <flavor icon="udm-users" id="users/user">
-       <name>Users</name>
-       <description>Managing users</description>
-     </flavor>
-     <categories>
-       <category name="domain"/>
-     </categories>
-     <command name="udm/query" function="query">
-     </command>
-     <command name="udm/containers" function="containers" />
-   </module>
- </umc>
+	<?xml version="1.0" encoding="UTF-8"?>
+	<umc version="2.0">
+		<module id="udm" icon="udm-module" version="1.0">
+			<name>Univention Directory Manager</name>
+			<description>Manages all UDM modules</description>
+			<flavor icon="udm-users" id="users/user">
+				<name>Users</name>
+				<description>Managing users</description>
+			</flavor>
+			<categories>
+				<category name="domain" />
+			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/query" />
+			</requiredCommands>
+			<command name="udm/query" function="query" />
+			<command name="udm/containers" function="containers" />
+		</module>
+	</umc>
 
 The *module* tag defines the basic details of a UMC module
 
@@ -151,7 +153,7 @@ class Flavor(JSON_Object):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
 
-	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None):
+	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -162,6 +164,7 @@ class Flavor(JSON_Object):
 		self.priority = priority
 		self.translationId = translationId
 		self.categories = categories or []
+		self.required_commands = required_commands or []
 
 	def merge(self, other):
 		self.id = self.id or other.id
@@ -174,13 +177,14 @@ class Flavor(JSON_Object):
 		self.priority = self.priority or other.priority
 		self.translationId = self.translationId or other.translationId
 		self.categories = list(set(self.categories + other.categories))
+		self.required_commands = list(set(self.required_commands + other.required_commands))
 
 
 class Module(JSON_Object):
 
 	'''Represents a command attribute'''
 
-	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None):
+	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None):
 		self.id = id
 		self.name = name
 		self.url = url
@@ -190,6 +194,7 @@ class Module(JSON_Object):
 		self.priority = priority
 		self.flavors = JSON_List()
 		self.translationId = translationId
+		self.required_commands = required_commands or []
 		if flavors is not None:
 			self.append_flavors(flavors)
 
@@ -243,16 +248,10 @@ class Module(JSON_Object):
 			self.description = other.description
 
 		self.keywords = list(set(self.keywords + other.keywords))
-
 		self.merge_flavors(other.flavors)
-
-		for category in other.categories:
-			if category not in self.categories:
-				self.categories.append(category)
-
-		for command in other.commands:
-			if command not in self.commands:
-				self.commands.append(command)
+		self.categories = JSON_List(set(self.categories + other.categories))
+		self.commands = JSON_List(set(self.commands + other.commands))
+		self.required_commands = JSON_List(set(self.required_commands + other.required_commands))
 
 
 class Link(Module):
@@ -331,7 +330,8 @@ class XML_Definition(ET.ElementTree):
 				description=elem.findtext('description'),
 				keywords=re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [name],
 				priority=priority,
-				categories=[cat.get('name') for cat in elem.findall('categories/category')]
+				categories=[cat.get('name') for cat in elem.findall('categories/category')],
+				required_commands=[cat.get('name') for cat in elem.findall('requiredCommands/requiredCommand')],
 			)
 
 	@property
@@ -348,7 +348,13 @@ class XML_Definition(ET.ElementTree):
 			'link': Link,
 			'module': Module
 		}.get(self.root.tag, Module)
-		return cls(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords, translationId=self.translationId)
+		return cls(
+			self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors,
+			priority=self.priority,
+			keywords=self.keywords,
+			translationId=self.translationId,
+			required_commands=[cat.get('name') for cat in self.findall('requiredCommands/requiredCommand')],
+		)
 
 	def get_flavor(self, name):
 		'''Retrieves details of a flavor'''
@@ -443,7 +449,7 @@ class Manager(dict):
 				continue
 
 			if not mod.flavors:
-				flavors = [Flavor(id=None)]
+				flavors = [Flavor(id=None, required_commands=mod.required_commands)]
 			else:
 				flavors = copy.copy(mod.flavors)
 
@@ -459,30 +465,29 @@ class Manager(dict):
 					deactivated_flavors.add(flavor.id)
 					continue
 
-				at_least_one_command = False
-				# iterate over all commands in all XML descriptions
-				for module_xml in self[module_id]:
-					for command in module_xml.commands():
-						cmd = module_xml.get_command(command)
-						if cmd.allow_anonymous or acls.is_command_allowed(command, hostname, flavor=flavor.id):
-							if module_id not in modules:
-								modules[module_id] = mod
-							if cmd not in modules[module_id].commands:
-								modules[module_id].commands.append(cmd)
-							at_least_one_command = True
+				required_commands = [module_xml.get_command(command) for module_xml in self[module_id] for command in module_xml.commands() if command in flavor.required_commands]
+				apply_function = all
+				if not required_commands:
+					# backwards compatibility. if any of the commands defined in the module is allowed this module is visible
+					apply_function = any
+					required_commands = [module_xml.get_command(command) for module_xml in self[module_id] for command in module_xml.commands()]
 
-				# if there is not one command allowed with this flavor
-				# it should not be shown in the overview
-				if not at_least_one_command and mod.flavors:
+				if apply_function(cmd.allow_anonymous or acls.is_command_allowed(cmd.name, hostname, flavor=flavor.id) for cmd in required_commands):
+					modules.setdefault(module_id, mod)
+					all_commands = set(module_xml.get_command(command) for module_xml in self[module_id] for command in module_xml.commands())
+					modules[module_id].commands = JSON_List(set(modules[module_id].commands) | all_commands)
+				elif mod.flavors:
+					# if there is not one command allowed with this flavor
+					# it should not be shown in the overview
 					mod.flavors.remove(flavor)
 
-			mod.flavors = JSON_List(filter(lambda f: f.id not in deactivated_flavors, mod.flavors))
+			mod.flavors = JSON_List(f for f in mod.flavors if f.id not in deactivated_flavors)
 
 			overwrites = set()
 			for flavor in mod.flavors:
 				overwrites.update(flavor.overwrites)
 
-			mod.flavors = JSON_List(filter(lambda f: f.id not in overwrites, mod.flavors))
+			mod.flavors = JSON_List(f for f in mod.flavors if f.id not in overwrites)
 
 		return modules
 
