@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.11-4) unstable; urgency=medium
+
+  * Bug #32557: remove options+statements from dhcp/server
+
+ -- Florian Best <best@univention.de>  Fri, 06 Jan 2017 12:10:09 +0100
+
 univention-directory-manager-modules (12.0.11-3) unstable; urgency=low
 
   * Bug #43304: Fix creating PTR records

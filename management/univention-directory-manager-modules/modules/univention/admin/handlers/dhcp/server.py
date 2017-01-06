@@ -37,7 +37,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-from .__common import DHCPBase, add_dhcp_options
+from .__common import DHCPBase
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -76,8 +76,6 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)
 
-add_dhcp_options(__name__)
-
 
 class object(DHCPBase):
 	module = module
@@ -94,10 +92,11 @@ class object(DHCPBase):
 
 	def _ldap_post_move(self, olddn):
 		'''edit dhcpServiceDN'''
+		super(object, self)._ldap_post_move(olddn)
 		oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
 		module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
-		object = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
-		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, object, self.position)
+		obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
+		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
 
 	@staticmethod
