@@ -62,6 +62,7 @@ class Coverage(object):
 		self.restart_python_services()
 		subprocess.call(['coverage', 'combine'])
 		subprocess.call(['coverage', 'html'])
+		subprocess.call(['coverage', 'report'])
 		if os.path.exists(self.COVERAGE_PTH):
 			os.remove(self.COVERAGE_PTH)
 		if os.path.exists(self.coverage_config):
@@ -78,10 +79,15 @@ class Coverage(object):
 
 	@classmethod
 	def startup(cls):
-		import coverage
+		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg for arg in sys.argv[2:]):
+			return  # don't change non UCS-python scripts
+		if any('listener' in arg or 'notifier' in arg for arg in sys.argv[2:]):
+			return  # we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
+
 		if not os.environ.get('COVERAGE_PROCESS_START'):
 			print >> sys.stderr, 'COVERAGE NOT MEASURED. ENVIRON WAS CLEARED BY PARENT PROCESS.'
 
+		import coverage
 		# FIXME: univention-cli-server calls os.fork() which destroys all information
 		cov = coverage.process_startup()
 		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe']:  # , 'fork', '_exit']:
@@ -90,7 +96,9 @@ class Coverage(object):
 		def sigterm(sig, frame):
 			cov.stop()
 			cov.save()
-		signal.signal(signal.SIGTERM, sigterm)
+			signal.signal(signal.SIGTERM, previous)
+			os.kill(os.getpid(), sig)
+		previous = signal.signal(signal.SIGTERM, sigterm)
 
 
 class StopCoverageDecorator:  # https://bitbucket.org/ned/coveragepy/issues/43/coverage-measurement-fails-on-code
