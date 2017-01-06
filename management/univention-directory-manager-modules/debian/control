@@ -23,6 +23,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  python-imaging,
  python-univention-lib (>= 3.0.26-50),
+ python-univention-license,
  python-univention-directory-manager-cli (= ${binary:Version}),
  iso-codes
 Provides: ${python:Provides}

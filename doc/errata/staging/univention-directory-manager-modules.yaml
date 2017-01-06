@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Add missing dependency python-univention-license to fix error when
+   using the univention.admin.license Python module
+bug: [43298]
