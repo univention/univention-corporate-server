@@ -58,16 +58,16 @@ case "$1" in
         log_daemon_msg "Stopping $DESC"
 
         rc=0
-        iptables -P INPUT ACCEPT || rc=$?
-        iptables -P OUTPUT ACCEPT || rc=$?
-        iptables -F || rc=$?
-        iptables -F -t nat || rc=$?
-        iptables -F -t mangle || rc=$?
+        iptables --wait -P INPUT ACCEPT || rc=$?
+        iptables --wait -P OUTPUT ACCEPT || rc=$?
+        iptables --wait -F || rc=$?
+        iptables --wait -F -t nat || rc=$?
+        iptables --wait -F -t mangle || rc=$?
 
-        ip6tables -P INPUT ACCEPT || rc=$?
-        ip6tables -P OUTPUT ACCEPT || rc=$?
-        ip6tables -F || rc=$?
-        ip6tables -F -t mangle || rc=$?
+        ip6tables --wait -P INPUT ACCEPT || rc=$?
+        ip6tables --wait -P OUTPUT ACCEPT || rc=$?
+        ip6tables --wait -F || rc=$?
+        ip6tables --wait -F -t mangle || rc=$?
 
         log_action_end_msg $rc
         ;;

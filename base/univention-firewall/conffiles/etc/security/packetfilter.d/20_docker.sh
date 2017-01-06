@@ -29,20 +29,20 @@
 # <http://www.gnu.org/licenses/>.
 
 nat_core_rules() {
-	iptables -L DOCKER > /dev/null 2> /dev/null || iptables -N DOCKER  # create docker queue if missing
-	iptables -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
-	iptables -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+	iptables --wait -L DOCKER > /dev/null 2> /dev/null || iptables -N DOCKER  # create docker queue if missing
+	iptables --wait -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+	iptables --wait -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
 @!@
 import ipaddr
 docker0_net = ipaddr.IPv4Network(configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
 mysql_port = configRegistry.get('mysql/config/mysqld/port', '3306')
-print '\tiptables -t nat -A POSTROUTING -s %s/%s ! -o docker0 -j MASQUERADE' % (str(docker0_net.network), str(docker0_net.prefixlen))
-print '\tiptables -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)
+print '\tiptables --wait -t nat -A POSTROUTING -s %s/%s ! -o docker0 -j MASQUERADE' % (str(docker0_net.network), str(docker0_net.prefixlen))
+print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)
 @!@
-	iptables -A FORWARD -o docker0 -j DOCKER
-	iptables -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-	iptables -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
-	iptables -A FORWARD -i docker0 -o docker0 -j ACCEPT
+	iptables --wait -A FORWARD -o docker0 -j DOCKER
+	iptables --wait -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	iptables --wait -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+	iptables --wait -A FORWARD -i docker0 -o docker0 -j ACCEPT
 }
 
 nat_container_rule() {
@@ -51,9 +51,9 @@ nat_container_rule() {
 	# convert "443/tcp -> 0.0.0.0:40001" to "443 tcp 0.0.0.0 40001"
 	docker port "$1" | sed -re 's#[/>: -]+# #g' | \
 		while read localport proto addr containerport ; do
-			iptables -t nat -A DOCKER ! -i docker0 -p "$proto" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
-			iptables -t filter -A DOCKER -d "$IP/32" ! -i docker0 -o docker0 -p "$proto" --dport "$localport" -j ACCEPT
-			iptables -t nat -A POSTROUTING -s "$IP/32" -d "$IP/32" -p "$proto" --dport "$localport" -j MASQUERADE
+			iptables --wait -t nat -A DOCKER ! -i docker0 -p "$proto" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
+			iptables --wait -t filter -A DOCKER -d "$IP/32" ! -i docker0 -o docker0 -p "$proto" --dport "$localport" -j ACCEPT
+			iptables --wait -t nat -A POSTROUTING -s "$IP/32" -d "$IP/32" -p "$proto" --dport "$localport" -j MASQUERADE
 		done
 }
 

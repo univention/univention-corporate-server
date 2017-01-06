@@ -29,33 +29,33 @@
 # <http://www.gnu.org/licenses/>.
 
 # initialise IPv4
-/sbin/iptables -F
-/sbin/iptables -F -t nat
-/sbin/iptables -F -t mangle
+iptables --wait -F
+iptables --wait -F -t nat
+iptables --wait -F -t mangle
 
 # accept IPv4 connections from localhost
-/sbin/iptables -A INPUT -i lo -j ACCEPT
-/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+iptables --wait -A INPUT -i lo -j ACCEPT
+iptables --wait -A OUTPUT -o lo -j ACCEPT
 
 # accept established IPv4 connections
-/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables --wait -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # accept all ICMP messages
-/sbin/iptables -A INPUT -p icmp -j ACCEPT
+iptables --wait -A INPUT -p icmp -j ACCEPT
 
 # initialise IPv6
-/sbin/ip6tables -F
-/sbin/ip6tables -F -t mangle
+ip6tables --wait -F
+ip6tables --wait -F -t mangle
 
 # accept IPv6 connections from localhost
-/sbin/ip6tables -A INPUT -i lo -j ACCEPT
-/sbin/ip6tables -A OUTPUT -o lo -j ACCEPT
+ip6tables --wait -A INPUT -i lo -j ACCEPT
+ip6tables --wait -A OUTPUT -o lo -j ACCEPT
 
 # accept established IPv6 connections
-/sbin/ip6tables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+ip6tables --wait -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # accept all ICMPv6 messages
-/sbin/ip6tables -A INPUT -p icmpv6 -j ACCEPT
+ip6tables --wait -A INPUT -p icmpv6 -j ACCEPT
 
 
 @!@
@@ -81,7 +81,7 @@ def print_packetfilter(key, value):
 	if addrv4 is not None:
 		if addrv4:
 			addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
-		print '/sbin/iptables -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print 'iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv4,
 			'port': items[-2],
@@ -91,7 +91,7 @@ def print_packetfilter(key, value):
 	if addrv6 is not None:
 		if addrv6:
 			addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
-		print '/sbin/ip6tables -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print 'ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv6,
 			'port': items[-2],
