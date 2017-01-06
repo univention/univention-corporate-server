@@ -37,7 +37,6 @@ import univention.admin.localization
 from univention.admin.filter import (expression, conjunction)
 import univention.debug as ud
 import ipaddr
-from ldap.dn import escape_dn_chars
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -62,6 +61,7 @@ property_descriptions = {
 		options=[],
 		required=True,
 		may_change=True,
+		identifies=True,
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP Address'),
@@ -72,7 +72,6 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True
 	),
 	'ptr_record': univention.admin.property(
 		short_description=_('Pointer record'),
@@ -195,9 +194,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-	def _ldap_dn(self):
-		return 'relativeDomainName=%s,%s' % (escape_dn_chars(self['address']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [
