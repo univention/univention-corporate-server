@@ -25,11 +25,11 @@ RESPONSE_STATUS_CODE = 510
 def kill_ucstest():
 	search_mask = set(['/usr/sbin/univention-management-console-module', '-m', 'ucstest'])
 	for process in psutil.process_iter():
-		if not (search_mask - set(process.cmdline)):
+		if not (search_mask - set(process.cmdline())):
 			print 'Found module process and killing it ...'
 			process.kill()
 	for process in psutil.process_iter():
-		if not (search_mask - set(process.cmdline)):
+		if not (search_mask - set(process.cmdline())):
 			assert False, 'ERROR: ... module process ist still there, this should not happen!'
 
 

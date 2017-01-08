@@ -419,7 +419,8 @@ class UCSTestUDM(object):
         procs = []
         for proc in psutil.process_iter():
             try:
-                if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
+                cmdline = proc.cmdline()
+                if len(cmdline) >= 2 and cmdline[0].startswith('/usr/bin/python') and cmdline[1] == self.PATH_UDM_CLI_SERVER:
                     procs.append(proc)
             except psutil.NoSuchProcess:
                 pass
