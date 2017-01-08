@@ -1,3 +1,9 @@
+ucs-test (7.0.6-41) unstable; urgency=medium
+
+  * Bug #37102: enhance coverage measurement
+
+ -- Florian Best <best@univention.de>  Sun, 08 Jan 2017 01:25:39 +0100
+
 ucs-test (7.0.6-40) unstable; urgency=medium
 
   * Bug #43314: make ucs-test psutil 2.1 compatible
