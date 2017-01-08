@@ -1,3 +1,9 @@
+ucs-test (6.0.37-33) unstable; urgency=medium
+
+  * Bug #37102: enhance coverage measurement
+
+ -- Florian Best <best@univention.de>  Sun, 08 Jan 2017 01:26:53 +0100
+
 ucs-test (6.0.37-32) unstable; urgency=medium
 
   * Bug #37102: enhance coverage measurement

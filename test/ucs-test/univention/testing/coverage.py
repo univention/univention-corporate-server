@@ -79,9 +79,10 @@ class Coverage(object):
 
 	@classmethod
 	def startup(cls):
-		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg for arg in sys.argv[2:]):
+		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
+		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg for arg in argv[2:]):
 			return  # don't change non UCS-python scripts
-		if any('listener' in arg or 'notifier' in arg for arg in sys.argv[2:]):
+		if any('listener' in arg or 'notifier' in arg for arg in argv[2:]):
 			return  # we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
 
 		if not os.environ.get('COVERAGE_PROCESS_START'):
