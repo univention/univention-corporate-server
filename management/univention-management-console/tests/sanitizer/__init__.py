@@ -4,7 +4,7 @@
 # Univention Management Console module:
 #   Testscript for umc sanitizer
 #
-# Copyright 2012-2016 Univention GmbH
+# Copyright 2012-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

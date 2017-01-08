@@ -3,7 +3,7 @@
 # Univention Print Quota
 #  test script
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

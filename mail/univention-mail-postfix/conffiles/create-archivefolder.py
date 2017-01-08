@@ -3,7 +3,7 @@
 # Univention Mail Postfix
 #  listener module: creates mailboxes
 #
-# Copyright 2005-2016 Univention GmbH
+# Copyright 2005-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

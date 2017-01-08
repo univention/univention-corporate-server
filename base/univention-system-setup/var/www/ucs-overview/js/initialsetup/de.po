@@ -1,5 +1,5 @@
 # Univention System Setup
-# Copyright (C) 2015 Univention GmbH
+# Copyright (C) 2015-2017 Univention GmbH
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""

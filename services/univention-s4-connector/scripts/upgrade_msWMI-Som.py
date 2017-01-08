@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Trigger Synchronization of msWMI-Som objects
 #
-# Copyright 2013-2016 Univention GmbH
+# Copyright 2013-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

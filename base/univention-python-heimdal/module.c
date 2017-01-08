@@ -2,7 +2,7 @@
  * Python Heimdal
  *	module definitions for the heimdal python bindungs
  *
- * Copyright 2003-2014 Univention GmbH
+ * Copyright 2003-2017 Univention GmbH
  *
  * http://www.univention.de/
  *

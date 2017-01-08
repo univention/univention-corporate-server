@@ -3,7 +3,7 @@
 # Univention NFS
 #  listener module: create users home share path on share
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

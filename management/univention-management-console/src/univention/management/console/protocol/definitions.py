@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMCP definitions like commands, error codes etc.
 #
-# Copyright 2006-2016 Univention GmbH
+# Copyright 2006-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

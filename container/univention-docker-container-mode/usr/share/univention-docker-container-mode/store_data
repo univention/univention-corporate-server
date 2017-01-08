@@ -3,7 +3,7 @@
 # Univention Appliance Docker Container
 #  save data before the image gets removed
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

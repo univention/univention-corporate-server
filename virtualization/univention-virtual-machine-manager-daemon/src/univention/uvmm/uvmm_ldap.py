@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  ldap integration
 #
-# Copyright 2010-2016 Univention GmbH
+# Copyright 2010-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

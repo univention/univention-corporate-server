@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for kerberos KDC entries
 #
-# Copyright 2012-2016 Univention GmbH
+# Copyright 2012-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

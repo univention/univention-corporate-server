@@ -1,6 +1,6 @@
 # Univention Common Shell Library
 #
-# Copyright 2015-2016 Univention GmbH
+# Copyright 2015-2017 Univention GmbH
 #
 # http://www.univention.de/
 #

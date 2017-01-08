@@ -4,7 +4,7 @@
 # Univention System Setup
 # cleanup script called after the appliance wizard setup
 #
-# Copyright 2011-2016 Univention GmbH
+# Copyright 2011-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
