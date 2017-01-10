@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-55) unstable; urgency=medium
+
+  * Bug #43236: don't search for children of objects which doesn't have
+  	subordinates to prevent administrative limits
+
+ -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 11:16:58 +0100
+
 univention-directory-manager-modules (11.0.3-54) unstable; urgency=medium
 
   * Bug #43298: Add missing dependency python-univention-license
