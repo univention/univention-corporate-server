@@ -1,0 +1,56 @@
+{'p': 3, 'd': '/usr/share/univention-directory-manager-tools/'}
+diff --git a/management/univention-directory-manager-modules/univention-cli-client b/management/univention-directory-manager-modules/univention-cli-client
+index 6478e9f..9875b9e 100755
+--- a/management/univention-directory-manager-modules/univention-cli-client
++++ b/management/univention-directory-manager-modules/univention-cli-client
+@@ -89,8 +89,7 @@ def fork_server(sock, socket_path):
+ 				socket_timeout
+ 			sys.exit(1)
+ 
+-	# this takes a long time if getfqdn(host) is used in cli-server
+-	connection_timeout = 30
++	connection_timeout = 5
+ 	stime = time.time() + connection_timeout
+ 	while True:
+ 		try:
+diff --git a/management/univention-directory-manager-modules/univention-cli-server b/management/univention-directory-manager-modules/univention-cli-server
+index fe73abc..3ffe769 100755
+--- a/management/univention-directory-manager-modules/univention-cli-server
++++ b/management/univention-directory-manager-modules/univention-cli-server
+@@ -76,18 +76,10 @@ class MyRequestHandler(SocketServer.BaseRequestHandler):
+ 		pass
+ 
+ 
+-class ForkingTCPServer(SocketServer.ForkingTCPServer):
++class ForkingServer(SocketServer.UnixStreamServer, SocketServer.ForkingMixIn):
+ 
+ 	"""UDM server listening on UNIX socket."""
+ 	address_family = socket.AF_UNIX
+-	allow_reuse_address = 1
+-
+-	def server_bind(self):
+-		SocketServer.TCPServer.server_bind(self)
+-		_host, port = self.socket.getsockname()[:2]
+-		self.server_name = 'localhost'  # socket.getfqdn(host)
+-		self.server_port = port
+-
+ 
+ def server_main(args):
+ 	"""UDM command line server."""
+@@ -138,7 +130,7 @@ def server_main(args):
+ 		ud.debug(ud.ADMIN, ud.WARN, 'daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
+ 
+ 	try:
+-		sock = ForkingTCPServer(socket_path, MyRequestHandler)
++		sock = ForkingServer(socket_path, MyRequestHandler)
+ 		os.chmod(socket_path, 0o600)
+ 	except:
+ 		print >> sys.stderr, 'E: Failed creating socket (%s). Daemon stopped.' % socket_path
+@@ -153,6 +145,7 @@ def server_main(args):
+ 	except IOError:
+ 		print >> sys.stderr, 'E: Can`t write runfile'
+ 
++	signal.signal(signal.SIGTERM, lambda s, f: sys.exit(1))
+ 	try:
+ 		while True:
+ 			rlist, _wlist, _xlist = select([sock], [], [], float(timeout))

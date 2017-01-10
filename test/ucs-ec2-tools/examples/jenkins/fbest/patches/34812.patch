@@ -1,0 +1,44 @@
+{'p': 3, 'd': '/usr/share/univention-directory-manager-tools/'}
+diff --git a/management/univention-directory-manager-modules/univention-cli-client b/management/univention-directory-manager-modules/univention-cli-client
+index 9a56908..48c380b 100755
+--- a/management/univention-directory-manager-modules/univention-cli-client
++++ b/management/univention-directory-manager-modules/univention-cli-client
+@@ -37,6 +37,8 @@ import time
+ import ast
+ import os
+ import sys
++import subprocess
++import pipes
+ from univention.config_registry import ConfigRegistry
+ 
+ 
+@@ -61,21 +63,14 @@ def get_logfile():
+ def fork_server(sock, socket_path):
+ 	"""Fork UDM command line server."""
+ 	# start new server
+-	pid = os.fork()
+-	if pid == 0:  # child
+-		null = os.open(os.path.devnull, os.O_RDWR)
+-		os.dup2(null, sys.stdin.fileno())
+-		os.dup2(null, sys.stdout.fileno())
+-		os.dup2(null, sys.stderr.fileno())
+-		argv = ['univention-cli-server']
+-		logfile = get_logfile()
+-		if logfile:
+-			argv.extend(['-L', logfile])
+-		if socket_path != default_socket_path:
+-			argv.extend(['-s', socket_path])
+-		os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)
+-	else:  # parent
+-		os.waitpid(pid, os.P_NOWAIT)
++	argv = ['univention-cli-server', '-n']
++	logfile = get_logfile()
++	if logfile:
++		argv.extend(['-L', logfile])
++	if socket_path != default_socket_path:
++		argv.extend(['-s', socket_path])
++	with open(os.path.devnull, "rb+") as null:
++		subprocess.Popen('exec %s & wait %%-' % ' '.join(pipes.quote(x) for x in ['/usr/share/univention-directory-manager-tools/univention-cli-server'] + argv[1:]), close_fds=True, stdin=null, stdout=null, stderr=null, shell=True)
+ 
+ 	ucr = ConfigRegistry()
+ 	ucr.load()
