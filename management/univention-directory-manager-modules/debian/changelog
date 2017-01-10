@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.11-5) unstable; urgency=medium
+
+  * Bug #43236: dont search for children of objects which doesnt have
+    subordinates to prevent administrative limits
+
+ -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 11:18:23 +0100
+
 univention-directory-manager-modules (12.0.11-4) unstable; urgency=medium
 
   * Bug #32557: remove options+statements from dhcp/server
