@@ -947,7 +947,6 @@ class simpleLdap(base):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() children of base dn %s' % self.dn)
 			subelements = []
 			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
