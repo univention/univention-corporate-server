@@ -1,3 +1,9 @@
+ucs-test (7.0.6-43) unstable; urgency=low
+
+  * Bug #43321: 403rename_computer_object_uid_sAMAccountName
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Jan 2017 17:24:35 +0100
+
 ucs-test (7.0.6-42) unstable; urgency=low
 
   * Bug #42054: fixed releasename in 00_checks/08_releasename
