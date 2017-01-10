@@ -172,6 +172,8 @@ class Instance(umcm.Base):
 	def upload_traceback(self, traceback, remark, email):
 		ucr.load()
 		ucs_version = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
+		if ucr.get('appcenter/apps/ucsschool/version'):
+			ucs_version = '%s - UCS@school %s' % (ucs_version, ucr['appcenter/apps/ucsschool/version'])
 		# anonymised id of localhost
 		uuid_system = ucr.get('uuid/system', '')
 		url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')

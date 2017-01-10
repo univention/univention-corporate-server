@@ -1,5 +1,6 @@
 univention-system-info (7.0.2-1) unstable; urgency=medium
 
+  * Bug #42990: add UCS@school version to traceback information
   * Bug #42169: allow sysinfo/traceback for unauthenticated users
 
  -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 13:02:05 +0100
