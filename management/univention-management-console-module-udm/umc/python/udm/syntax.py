@@ -175,31 +175,32 @@ def choices(syntax, udm_property):
 	"""
 	MODULE.info('Find choices for syntax %s' % (syntax,))
 	opts = None
-	if inspect.isclass(syntax) and issubclass(syntax, (udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute)):
-		if issubclass(syntax, udm_syntax.UDM_Objects) and udm_property['multivalue'] and len(syntax.udm_modules) == 1 and not syntax.simple:
+	syntax_class = syntax if inspect.isclass(syntax) else type(syntax)
+	if issubclass(syntax_class, (udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute)):
+		if issubclass(syntax_class, udm_syntax.UDM_Objects) and udm_property['multivalue'] and len(syntax.udm_modules) == 1 and not syntax.simple:
 			opts = {'objectType': syntax.udm_modules[0]}
 		else:
 			opts = {
 				'dynamicValues': 'udm/syntax/choices',
 				'dynamicOptions': {
-					'syntax': syntax.__name__,
+					'syntax': syntax.name,
 				},
 				'dynamicValuesInfo': 'udm/syntax/choices/info',
 			}
-		if issubclass(syntax, udm_syntax.network):
+		if issubclass(syntax_class, udm_syntax.network):
 			opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
-	elif isinstance(syntax, (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn)) or inspect.isclass(syntax) and issubclass(syntax, (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn)):
+	elif issubclass(syntax_class, (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn)):
 		opts = {
 			'dynamicValues': 'udm/syntax/choices',
 			'dynamicOptions': {
-				'syntax': inspect.isclass(syntax) and syntax.__name__ or syntax.__class__.__name__,
+				'syntax': syntax.name,
 			},
 		}
-	elif isinstance(syntax, udm_syntax.LDAP_Search):
+	elif issubclass(syntax_class, udm_syntax.LDAP_Search):
 		opts = {
 			'dynamicValues': 'udm/syntax/choices',
 			'dynamicOptions': {
-				'syntax': syntax.__class__.__name__,
+				'syntax': syntax.name,
 				'options': {
 					'syntax': syntax.name,
 					'filter': syntax.filter,
@@ -214,7 +215,7 @@ def choices(syntax, udm_property):
 			'sortDynamicValues': not syntax.appendEmptyValue,
 		}
 
-	elif inspect.isclass(syntax) and issubclass(syntax, udm_syntax.select):
+	elif issubclass(syntax_class, udm_syntax.select):
 		if getattr(syntax, 'depends', None) is not None:
 			opts = {
 				'dynamicValues': 'javascript:umc/modules/udm/callbacks:setDynamicValues',
