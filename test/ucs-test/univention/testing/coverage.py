@@ -60,6 +60,7 @@ class Coverage(object):
 		if not self.coverage:
 			return
 		self.restart_python_services()
+		subprocess.call(['coverage', '--version'])
 		subprocess.call(['coverage', 'combine'])
 		subprocess.call(['coverage', 'html'])
 		subprocess.call(['coverage', 'report'])
@@ -112,8 +113,9 @@ class StopCoverageDecorator:  # https://bitbucket.org/ned/coveragepy/issues/43/c
 	def __call__(self, *args, **kw):
 		if not StopCoverageDecorator.inDecorator:
 			StopCoverageDecorator.inDecorator = True
-			self.cov.stop()
-			self.cov.save()
-			self.cov.start()
+			if self.cov:
+				self.cov.stop()
+				self.cov.save()
+				self.cov.start()
 		self.method(*args, **kw)
 		StopCoverageDecorator.inDecorator = False
