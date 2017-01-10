@@ -618,7 +618,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools._handleTraceback(info.message, tools._statusMessages[info.status]);
+					tools._handleTraceback(entities.decode(info.message), tools._statusMessages[info.status]);
 				}
 			}, custom);
 			return errorHandler;
@@ -820,9 +820,9 @@ define([
 				subject: encodeURIComponent(this.status('feedbackSubject'))
 			});
 			var feedbackLabel = _('Send as email');
-			var feedbackLink = '<a href="' + feedbackMailto + '">' + feedbackLabel + '</a>';
+			var feedbackLink = '<a href="' + entities.encode(feedbackMailto) + '">' + entities.encode(feedbackLabel) + '</a>';
 
-			var content = '<pre>' + message + '</pre>';
+			var content = '<pre>' + entities.encode(message) + '</pre>';
 			var hideLink = _('Hide server error message');
 			var showLink = _('Show server error message');
 
@@ -837,7 +837,7 @@ define([
 
 			var container = new ContainerWidget({});
 			container.addChild(new Text({
-				content: '<p>' + statusMessage + '</p>'
+				content: '<p>' + entities.encode(statusMessage) + '</p>'
 			}));
 			container.addChild(titlePane);
 
@@ -850,24 +850,53 @@ define([
 				callback: function() {
 					window.location.href = feedbackMailto;
 				}
+			}, {
+				name: 'send',
+				'default': true,
+				label: _('Inform vendor'),
+				callback: lang.hitch(this, function() {
+					tools.sendTraceback(message, feedbackLink);
+				})
 			}];
-			var systemInfoLib = null;
-			try {
-				systemInfoLib = require('umc/modules/sysinfo/lib');
-			} catch(e) { }
-			if (systemInfoLib) {
-				options.push({
-					name: 'send',
-					'default': true,
-					label: _('Inform vendor'),
-					callback: lang.hitch(this, function() {
-						systemInfoLib.traceback(entities.decode(message), feedbackLink);
-					})
-				});
-			} else {
-				options[1]['default'] = true; // fallback: as_email is default
-			}
 			return dialog.confirm(container, options, title || _('An error occurred'));
+		},
+
+		sendTraceback: function(traceback, feedbackLink) {
+			dialog.confirmForm({
+				title: _('Send to vendor'),
+				widgets: [{
+					type: Text,
+					name: 'help',
+					content: _('Information about the error will be sent to the vendor along with some data about the operating system.')
+				}, {
+					type: TitlePane,
+					name: 'traceback',
+					title: _('Show error message'),
+					'class': 'umcTracebackPane',
+					style: 'display: block;',
+					open: false,
+					content: '<pre>' + entities.encode(traceback) + '</pre>'
+				}, {
+					type: TextArea,
+					name: 'remark',
+					label: _('Remarks (e.g. steps to reproduce) (optional)')
+				}, {
+					type: TextBox,
+					name: 'email',
+					label: _('Your email address (optional)')
+				}]
+			}).then(function(values) {
+				values.traceback = traceback;
+				tools.umcpCommand('sysinfo/traceback', values, false).then(function() {
+					dialog.alert(_('Thank you for your help'));
+				}, function() {
+					var alertString = _('Sending the information to the vendor failed');
+					if (feedbackLink) {
+						alertString += '. ' + _('You can also send the information via mail:') + ' ' + feedbackLink;
+					}
+					dialog.alert(alertString);
+				});
+			});
 		},
 
 		forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {

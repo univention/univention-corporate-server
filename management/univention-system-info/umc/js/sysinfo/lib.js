@@ -30,53 +30,10 @@
 
 define([
 	"umc/tools",
-	"umc/dialog",
-	"umc/widgets/TitlePane",
-	"umc/widgets/Text",
-	"umc/widgets/TextBox",
-	"umc/widgets/TextArea",
-	"umc/i18n!umc/modules/sysinfo"
-], function(tools, dialog, TitlePane, Text, TextBox, TextArea, _) {
+], function(tools) {
 	return {
 		traceback: function(traceback, feedbackLink) {
-			dialog.confirmForm({
-				title: _('Send to vendor'),
-				widgets: [{
-					type: Text,
-					name: 'help',
-					content: _('Information about the error will be sent to the vendor along with some data about the operating system.')
-				}, {
-					type: TitlePane,
-					name: 'traceback',
-					title: _('Show error message'),
-					'class': 'umcTracebackPane',
-					style: 'display: block;',
-					open: false,
-					content: '<pre>' + traceback + '</pre>'
-				}, {
-					type: TextArea,
-					name: 'remark',
-					label: _('Remarks (e.g. steps to reproduce) (optional)')
-				}, {
-					type: TextBox,
-					name: 'email',
-					label: _('Your email address (optional)')
-				}]
-			}).then(function(values) {
-				values.traceback = traceback;
-				tools.umcpCommand('sysinfo/traceback', values, false).then(
-					function() {
-						dialog.alert(_('Thank you for your help'));
-					},
-					function() {
-						var alertString = _('Sending the information to the vendor failed');
-						if (feedbackLink) {
-							alertString += '. ' + _('You can also send the information via mail:') + ' ' + feedbackLink;
-						}
-						dialog.alert(alertString);
-					}
-				);
-			});
+			return tools.sendTraceback(traceback, feedbackLink);
 		}
 	};
 });

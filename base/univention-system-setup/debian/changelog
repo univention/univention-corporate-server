@@ -1,3 +1,9 @@
+univention-system-setup (10.0.1-1) unstable; urgency=medium
+
+  * Bug #42169: move traceback sending into core
+
+ -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 19:10:26 +0100
+
 univention-system-setup (10.0.0-16) unstable; urgency=medium
 
   * Bug #32027: (Bug #42291): make the app store observable to prevent

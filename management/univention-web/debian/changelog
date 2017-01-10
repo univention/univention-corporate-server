@@ -1,3 +1,9 @@
+univention-web (1.0.3-1) unstable; urgency=medium
+
+  * Bug #42169: move traceback sending into core
+
+ -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 19:09:32 +0100
+
 univention-web (1.0.2-17) unstable; urgency=medium
 
   * Bug #43091: Jump to login dialog after session time out

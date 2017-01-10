@@ -182,6 +182,8 @@ class Instance(umcm.Base):
 			'email': email,
 			'ucs_version': ucs_version,
 			'uuid_system': uuid_system,
+			'uuid_license': ucr.get('uuid/license', ''),
+			'server_role': ucr.get('server/role'),
 		}
 		request = urllib2.Request(url, request_data)
 		urllib2.urlopen(request)

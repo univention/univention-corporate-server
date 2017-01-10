@@ -7,10 +7,13 @@
 		<categories>
 			<category name="system"/>
 		</categories>
+		<requiredCommands>
+			<requiredCommand name="sysinfo/general"/>
+		</requiredCommands>
 		<command name="sysinfo/general" function="get_general_info" />
 		<command name="sysinfo/system" function="get_system_info" />
 		<command name="sysinfo/mail" function="get_mail_info" />
 		<command name="sysinfo/upload" function="upload_archive" />
-		<command name="sysinfo/traceback" function="upload_traceback" />
+		<command name="sysinfo/traceback" function="upload_traceback" allow_anonymous="true"/>
 	</module>
 </umc>

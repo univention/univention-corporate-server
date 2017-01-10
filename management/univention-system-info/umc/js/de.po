@@ -140,14 +140,6 @@ msgstr ""
 "Im folgenden Schritt werden Ihnen zwei Möglichkeiten geboten, die "
 "Informationen an Univention zu übermitteln."
 
-#: umc/js/sysinfo/lib.js:47
-msgid ""
-"Information about the error will be sent to the vendor along with some data "
-"about the operating system."
-msgstr ""
-"Informationen zu diesem Fehler werden, zusammen mit Angaben über das "
-"Betriebssystem, an den Hersteller übermittelt."
-
 #: umc/js/sysinfo.js:65
 msgid "Manufacturer"
 msgstr "Hersteller"
@@ -172,33 +164,13 @@ msgstr "Netzwerkkarte"
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/sysinfo/lib.js:59
-msgid "Remarks (e.g. steps to reproduce) (optional)"
-msgstr "Bemerkungen (z.B. Schritte, den Fehler nachzustellen) (optional)"
-
 #: umc/js/sysinfo.js:177 umc/js/sysinfo.js:339
 msgid "Send mail"
 msgstr "Mail senden"
 
-#: umc/js/sysinfo/lib.js:43
-msgid "Send to vendor"
-msgstr "An den Hersteller senden"
-
-#: umc/js/sysinfo/lib.js:72
-msgid "Sending the information to the vendor failed"
-msgstr "Das Versenden der Informationen zum Hersteller ist fehlgeschlagen"
-
-#: umc/js/sysinfo/lib.js:51
-msgid "Show error message"
-msgstr "Fehlermeldung anzeigen"
-
 #: umc/js/sysinfo.js:89
 msgid "Support information"
 msgstr "Support Informationen"
-
-#: umc/js/sysinfo/lib.js:69
-msgid "Thank you for your help"
-msgstr "Vielen Dank für Ihre Hilfe"
 
 #: umc/js/sysinfo.js:77
 msgid "This is related to a support case"
@@ -244,11 +216,3 @@ msgstr "Hochladen"
 #: umc/js/sysinfo.js:264
 msgid "Uploading failed"
 msgstr "Hochladen fehlgeschlagen"
-
-#: umc/js/sysinfo/lib.js:74
-msgid "You can also send the information via mail:"
-msgstr "Sie können die Informationen auch per Mail schicken:"
-
-#: umc/js/sysinfo/lib.js:63
-msgid "Your email address (optional)"
-msgstr "Ihre E-Mail Adresse (optional)"

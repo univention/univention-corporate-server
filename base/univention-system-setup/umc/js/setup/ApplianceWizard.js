@@ -51,7 +51,6 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
-	"umc/modules/sysinfo/lib",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
@@ -70,7 +69,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, systemInfoLib, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -1921,7 +1920,7 @@ define([
 					onClick: lang.hitch(this, function() {
 						var msg = details.join('\n');
 						if (this.local_mode) {
-							systemInfoLib.traceback(msg);
+							tools.sendTraceback(msg);
 						} else {
 							tools._handleTraceback(msg, errorMsgHeader, _('Send to vendor'));
 						}
