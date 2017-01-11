@@ -1,3 +1,9 @@
+univention-updater (12.0.1-5) unstable; urgency=medium
+
+  * Bug #43257: Explicity add required dependencies
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 05 Jan 2017 14:36:20 +0100
+
 univention-updater (12.0.1-4) unstable; urgency=low
 
   * Bug #43300: Reset errata level
