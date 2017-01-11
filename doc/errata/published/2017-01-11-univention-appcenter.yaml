@@ -12,3 +12,5 @@ desc: |
  * Improved performance by reducing file access in the backend and only
    sending relevant data to the frontend when opening the App Center gallery.
 bug: [42816, 42803, 42872, 39632]
+erratum: 373
+announced: 2017-01-11
