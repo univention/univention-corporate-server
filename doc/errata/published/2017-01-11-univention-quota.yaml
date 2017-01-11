@@ -9,3 +9,5 @@ desc: |
  * It is not necessary to use wildcards in the search for users anymore.
  * It is now possible to reset quota limits to the defaults.
 bug: [42368, 42013]
+erratum: 374
+announced: 2017-01-11
