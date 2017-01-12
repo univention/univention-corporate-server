@@ -31,13 +31,18 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 
     samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
     controls = ["domain_scope:0"]
+    base = samdb.domain_dn()
+    if not base:
+        if verbose:
+            print 'wait_for_drs_replication(): skip, no samba domain found'
+        return
 
     if verbose:
         print "Waiting for DRS replication, filter: '%s'" % (ldap_filter, ),
     t = t0 = time.time()
     while t < t0 + timeout:
         try:
-            res = samdb.search(base=samdb.domain_dn(), scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
+            res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
             if res:
                 if verbose:
                     print "\nDRS replication took %d seconds" % (t - t0, )

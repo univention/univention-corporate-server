@@ -1,3 +1,10 @@
+ucs-test (7.0.6-46) unstable; urgency=medium
+
+  * Bug #43041: skip wait_for_drs_replication if no samba domain is found.
+  	otherwise this takes ages
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jan 2017 21:36:29 +0100
+
 ucs-test (7.0.6-45) unstable; urgency=medium
 
   * Bug #37337: Bug #8052: fix escaping
