@@ -22,4 +22,4 @@ if __name__ == '__main__':
 		ou2 = udm.create_object('container/ou', name=uts.random_name())
 
 		udm.move_object('container/ou', dn=ou, position=ou2)
-		utils.verify_ldap_object('ou=%s,%s' % (ldap.dn.escpae_dn_chars(ou_name), ou2))
+		utils.verify_ldap_object('ou=%s,%s' % (ldap.dn.escape_dn_chars(ou_name), ou2))
