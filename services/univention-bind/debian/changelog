@@ -1,3 +1,9 @@
+univention-bind (11.0.0-8) unstable; urgency=low
+
+  * Bug #42406: Disable bind9.service
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jan 2017 13:47:15 +0100
+
 univention-bind (11.0.0-7) unstable; urgency=low
 
   * Bug #43217: Convert addresses to string for UCR
