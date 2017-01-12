@@ -612,6 +612,9 @@
 			<listitem><simpara>
 				The &ucsUCRV; <envar>version/erratalevel</envar> gets reset to <literal>0</literal> (<u:bug>43300</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Renaming objects into names containing a comma is now possible (<u:bug>43332</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
