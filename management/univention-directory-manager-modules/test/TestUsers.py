@@ -40,8 +40,7 @@ import univention.admin.uldap as uldap
 class GroupMembershipError(TestError):
 
 	def __init__(self, test, group):
-		e1 = 'User %s at DN %s (module %s)' \
-		     % (test.name, test.dn, test.modname)
+		e1 = 'User %s at DN %s (module %s)' % (test.name, test.dn, test.modname)
 		e2 = ' not registered as a member of group %s' % group
 		error = e1 + e2
 		TestError.__init__(self, error, test)
@@ -50,8 +49,7 @@ class GroupMembershipError(TestError):
 class AccountEnabledError(TestError):
 
 	def __init__(self, test, type):
-		e1 = 'User %s at DN %s (module %s)' \
-		     % (test.name, test.dn, test.modname)
+		e1 = 'User %s at DN %s (module %s)' % (test.name, test.dn, test.modname)
 		e2 = ': %s account not disabled' % type.upper()
 		error = e1 + e2
 		TestError.__init__(self, error, test)
@@ -93,19 +91,12 @@ class UserBaseCase(GenericTestCase):
 			'roomNumber': '345',
 			'employeeNumber': '13',
 			'employeeType': 'paperboy',
-			'e-mail': {'append': ['foobar@example.com',
-					      'foobar@%s'
-					      % self.bc('domainname')]},
-			'phone': {'append': ['(+44)421-3424324322',
-					     '2421/3424324322']},
-			'mobileTelephoneNumber': {'append': ['007',
-							     '207']},
-			'pagerTelephoneNumber': {'append': ['008',
-							     '208']},
-			'homeTelephoneNumber': {'append': ['009',
-							     '209']},
-			'homePostalAddress': {'append': ['somewhere',
-							     'somewhere2']},
+			'e-mail': {'append': ['foobar@example.com', 'foobar@%s' % self.bc('domainname')]},
+			'phone': {'append': ['(+44)421-3424324322', '2421/3424324322']},
+			'mobileTelephoneNumber': {'append': ['007', '207']},
+			'pagerTelephoneNumber': {'append': ['008', '208']},
+			'homeTelephoneNumber': {'append': ['009', '209']},
+			'homePostalAddress': {'append': ['somewhere', 'somewhere2']},
 			'secretary': self.rdn('uid=Administrator,cn=users'),
 		}
 		propsAddPosix = {
@@ -149,8 +140,7 @@ class UserBaseCase(GenericTestCase):
 		propsModMail = {
 			'mailPrimaryAddress': 'foo_bar@example.com',
 			'mailGlobalSpamFolder': '0',
-			'mailAlternativeAddress': {'set':
-						   ['bar_fooz@example.com']},
+			'mailAlternativeAddress': {'set': ['bar_fooz@example.com']},
 		}
 		propsModPerson = {
 			'title': 'Mooh',
@@ -162,20 +152,12 @@ class UserBaseCase(GenericTestCase):
 			'roomNumber': '543',
 			'employeeNumber': '14',
 			'employeeType': 'milkman',
-			'e-mail': {'append': ['mooh@%s'
-					      % self.bc('domainname')],
-			'remove': ['foobar@%s'
-					      % self.bc('domainname')]},
-			'phone': {'append': ['05555555555', ],
-				  'remove': ['(+44)421-3424324322', ]},
-			'mobileTelephoneNumber': {'append': ['008'],
-						  'remove': ['007']},
-			'pagerTelephoneNumber': {'append': ['009'],
-						  'remove': ['008']},
-			'homeTelephoneNumber': {'append': ['010'],
-						  'remove': ['009']},
-			'homePostalAddress': {'append': ['somewhere3'],
-						  'remove': ['somewhere']},
+			'e-mail': {'append': ['mooh@%s' % self.bc('domainname')], 'remove': ['foobar@%s' % self.bc('domainname')]},
+			'phone': {'append': ['05555555555', ], 'remove': ['(+44)421-3424324322', ]},
+			'mobileTelephoneNumber': {'append': ['008'], 'remove': ['007']},
+			'pagerTelephoneNumber': {'append': ['009'], 'remove': ['008']},
+			'homeTelephoneNumber': {'append': ['010'], 'remove': ['009']},
+			'homePostalAddress': {'append': ['somewhere3'], 'remove': ['somewhere']},
 			'secretary': self.rdn('uid=foobar,cn=users'),
 		}
 		propsModPosix = {
@@ -213,10 +195,12 @@ class UserBaseCase(GenericTestCase):
 		super(UserBaseCase, self).setUp()
 		self.name = 'foobar'
 		self.uncheckedProperties.add('password')
-		self.__groups = [self.rdn('cn=Domain Guests,cn=groups'),
-				 self.rdn('cn=Domain Users,cn=groups'),
+		self.__groups = [
+			self.rdn('cn=Domain Guests,cn=groups'),
+			self.rdn('cn=Domain Users,cn=groups'),
 			self.rdn('cn=Domain Admins,cn=groups'),
-			self.rdn('cn=Users,cn=groups')]
+			self.rdn('cn=Users,cn=groups')
+		]
 		self.__setCreateProps()
 		self.__setModifyProps()
 		for o in self.__options:
@@ -229,8 +213,7 @@ class UserBaseCase(GenericTestCase):
 		if not self.posix:
 			return
 		attrs = self.ldap.get(dn=group, attr=['uniqueMember'])
-		if not ('uniqueMember' in attrs and
-			self.dn in attrs['uniqueMember']):
+		if not ('uniqueMember' in attrs and self.dn in attrs['uniqueMember']):
 			raise GroupMembershipError(self, group)
 
 	def __testPosixDisabled(self, passwd):
@@ -238,8 +221,7 @@ class UserBaseCase(GenericTestCase):
 			return
 		try:
 			master = self.bc('ldap/master')
-			ldap = uldap.access(binddn=self.dn, bindpw=passwd,
-					    host=master, base=self.dn)
+			uldap.access(binddn=self.dn, bindpw=passwd, host=master, base=self.dn)
 			raise AccountEnabledError(self, 'posix')
 		except uex.authFail:
 			pass

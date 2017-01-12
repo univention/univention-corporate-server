@@ -584,13 +584,7 @@ class Bus(object):
 		"""
 		return (
 			(dev.device not in self.unsupported) and
-			(
-			dev.target_bus == self.name or
-			(
-			not dev.target_bus and
-			self.default
-			)
-		)
+			(dev.target_bus == self.name or (not dev.target_bus and self.default))
 		)
 
 	def attach(self, devices):

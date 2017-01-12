@@ -45,34 +45,34 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return {
 			'0015-1': [uub.RESULT_WARN, 'failed to open file'],
 			'0015-2': [uub.RESULT_WARN, 'file contains "univention" incorrectly written'],
-          }
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
 
 	RE_WHITEWORD = re.compile('|'.join("""
-        [0-9][0-9]univention
-        punivention
-        fBunivention
-        invention
-        [Kk]uhnivention
-        onvention
-        unintention
-        univention
-        Univention
-        UNIVENTION
-        _univention
-        univention_
-        """.split()))
+		[0-9][0-9]univention
+		punivention
+		fBunivention
+		invention
+		[Kk]uhnivention
+		onvention
+		unintention
+		univention
+		Univention
+		UNIVENTION
+		_univention
+		univention_
+	""".split()))
 
 	RE_WHITELINE = re.compile('|'.join(r"""
-        \\[tnr]univention
-        -.univention
-        [SK]?[0-9][0-9]univention
-        univention[0-9]
-        univentionr\._baseconfig
-        /var/lib/univentions-client-boot/
-        """.split()))
+		\\[tnr]univention
+		-.univention
+		[SK]?[0-9][0-9]univention
+		univention[0-9]
+		univentionr\._baseconfig
+		/var/lib/univentions-client-boot/
+	""".split()))
 
 	def check(self, path):
 		""" the real check """

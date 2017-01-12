@@ -59,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-14': [uub.RESULT_WARN, 'no matching package in debian/control'],
 			'0011-15': [uub.RESULT_WARN, 'non-prefixed debhelper file'],
 			'0011-16': [uub.RESULT_INFO, 'unknown debhelper file'],
-          }
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """

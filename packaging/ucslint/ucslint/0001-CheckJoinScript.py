@@ -59,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-13': [uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'],
 			'0001-14': [uub.RESULT_ERROR, 'join script does not call "joinscript_init"'],
 			'0001-15': [uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'],
-          }
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -78,7 +78,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			return
 
 		lines = content.splitlines()
-		cnt = {'version': 0,
+		cnt = {
+			'version': 0,
 			'vversion': 0,
 			'credential_arg_missing': 0,
 			'unquoted_credential_arg': 0,
@@ -86,7 +87,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'joinscripthelper.lib': 0,
 			'joinscript_init': 0,
 			'joinscript_save_current_version': 0,
-         }
+		}
 		for line in lines:
 			line = line.strip()
 			if not line or line.startswith('#'):

@@ -124,7 +124,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-57': [uub.RESULT_INFO, 'No description found for UCR variable'],
 			'0004-58': [uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Preinst:" line'],
 			'0004-59': [uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line'],
-          }
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -257,8 +257,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if match:
 					fname = fn[fn.find('/conffiles/') + 10:]
 					if match.group(2) != fname:
-						self.addmsg('0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' %
-							(fname, match.group(1)), fn)
+						self.addmsg('0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' % (fname, match.group(1)), fn)
 
 		return conffiles
 

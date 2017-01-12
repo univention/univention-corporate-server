@@ -305,7 +305,7 @@ class Instance(umc.modules.Base):
 			except backend.Error as e:
 				yield {u'object': object, u'success': False, u'details': str(e), }
 			else:
-				yield {u'object': object, u'success': True, } 
+				yield {u'object': object, u'success': True, }
 		# Try to save firewall configuration
 		try:
 			firewall.save()

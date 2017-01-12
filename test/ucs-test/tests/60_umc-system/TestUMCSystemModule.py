@@ -256,7 +256,7 @@ class TestUMCSystem(object):
                                              "kerberos": True,
                                              "posix": True,
                                              "nagios": False},
-                                             "$policies$": {}},
+                               "$policies$": {}},
                     "options": {"container": "cn=computers," + self.ldap_base,
                                 "objectType": "computers/windows"}}]
         return self.make_udm_request("add", options, "computers/computer")
