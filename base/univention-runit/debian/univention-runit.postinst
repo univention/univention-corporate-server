@@ -38,4 +38,10 @@ fi
 
 #DEBHELPER#
 
+if [ -z "$2" ]
+then
+	# only start the daemon during the installation
+	invoke-rc.d univention-runit start
+fi
+
 exit 0

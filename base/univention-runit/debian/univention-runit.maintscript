@@ -1,1 +1,0 @@
-rm_conffile /etc/init.d/univention-runit 8.0.0-4~

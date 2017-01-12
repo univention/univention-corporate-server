@@ -1,3 +1,9 @@
+univention-runit (8.0.0-5) unstable; urgency=low
+
+  * Bug #42406: Re-add univention-runit
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jan 2017 15:10:32 +0100
+
 univention-runit (8.0.0-4) unstable; urgency=low
 
   * Bug #42406: Remove univention-runit

@@ -1,7 +1,12 @@
-#!/usr/bin/make -f
-#
-# Univention RunIt
-#  prerm script for the debian package
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          univention-runit
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention process supervision
+### END INIT INFO
 #
 # Copyright 2003-2017 Univention GmbH
 #
@@ -30,11 +35,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_installinit:
-	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 8 92"
+. /lib/lsb/init-functions
+NAME='univention-runit'
+DESC=$(get_lsb_header_val "$0" Short-Description)
+DAEMON="/usr/sbin/runsvdir-start"
 
-override_dh_auto_test:
-	ucslint
-
-%:
-	dh $@
+case "$1" in
+	start)
+		log_daemon_msg "Starting $DESC" "$NAME"
+		start-stop-daemon --start --background --exec "$DAEMON"
+		log_end_msg $?
+		;;
+	stop)
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		killall -s HUP runsvdir
+		log_end_msg $?
+		;;
+	restart|force-reload)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		killall -s HUP runsvdir
+		sleep 1
+		start-stop-daemon --start --background --exec "$DAEMON"
+		log_end_msg $?
+		;;
+	status)
+		status_of_proc "$DAEMON" "$DESC"
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|force-reload|status}"
+		exit 1
+		;;
+esac
