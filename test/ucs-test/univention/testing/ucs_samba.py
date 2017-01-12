@@ -32,7 +32,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
     samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
     controls = ["domain_scope:0"]
     base = samdb.domain_dn()
-    if not base:
+    if not base or base == 'None':
         if verbose:
             print 'wait_for_drs_replication(): skip, no samba domain found'
         return
