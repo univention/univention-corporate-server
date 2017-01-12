@@ -1,3 +1,9 @@
+univention-python (10.0.2-1) unstable; urgency=medium
+
+  * Bug #43332: fix DN syntax when renamed object contains ","
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jan 2017 18:34:56 +0100
+
 univention-python (10.0.1-1) unstable; urgency=medium
 
   * Bug #41812: make sure binddn is set when logged in via SAML

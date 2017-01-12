@@ -500,9 +500,9 @@ class access:
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
-		oldsdn = dn[dn.find(',') + 1:]
-		newrdn = newdn[:newdn.find(',')]
-		newsdn = newdn[newdn.find(',') + 1:]
+		oldsdn = self.parentDn(dn)
+		newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
+		newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
 
 		if not newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
