@@ -1,3 +1,9 @@
+ucs-test (7.0.6-45) unstable; urgency=medium
+
+  * Bug #37337: Bug #8052: fix escaping
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jan 2017 18:50:26 +0100
+
 ucs-test (7.0.6-44) unstable; urgency=medium
 
   * Bug #37337: Bug #8052: fix typo
