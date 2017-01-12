@@ -36,19 +36,6 @@ then
 	ln -s /etc/runit/univention /etc/service
 fi
 
-if grep -q 'runsvdir' /etc/inittab
-then
-	cp /etc/inittab /etc/inittab_univention-runit_postinst &&
-	grep -v runsvdir /etc/inittab_univention-runit_postinst > /etc/inittab &&
-	rm /etc/inittab_univention-runit_postinst
-fi
-
 #DEBHELPER#
-
-if [ -z "$2" ]
-then
-	# only start the daemon during the installation
-	invoke-rc.d univention-runit start
-fi
 
 exit 0

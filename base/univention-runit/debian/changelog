@@ -1,3 +1,9 @@
+univention-runit (8.0.0-4) unstable; urgency=low
+
+  * Bug #42406: Remove univention-runit
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Jan 2017 13:12:46 +0100
+
 univention-runit (8.0.0-3) unstable; urgency=low
 
   * Bug #42380: clamp Max-delay to 5s

@@ -30,9 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_installinit:
-	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 8 92"
-
 override_dh_auto_test:
 	ucslint
 
