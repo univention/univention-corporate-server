@@ -295,31 +295,33 @@ if configRegistry['ldap/server/type']=="master":
 	fi
 	;;
   graceful-stop)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	log_action_begin_msg "Sending HUP to ldap server(s): slapd "
-	signal_plan="HUP/10/TERM/5/KILL/1"
-	## first try with pidfile
-	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-		--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-		| while read line; do log_action_cont_msg "$line"; done
-	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -f "^$DAEMON")
-	if [ -n "$pid" ]; then
-		log_action_end_msg 1
-		## try via executable name
-		log_action_begin_msg "Slapd still running ($pid), sending HUP via executable name"
-		start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-			--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
-			| while read line; do log_action_cont_msg "$line"; done
-		rm -f "$pidfile"
-	fi
-	log_action_end_msg 0
+	$0 stop
+	# logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
+	# log_action_begin_msg "Sending HUP to ldap server(s): slapd "
+	# signal_plan="HUP/10/TERM/5/KILL/1"
+	# ## first try with pidfile
+	# start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
+	# 	--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+	# 	| while read line; do log_action_cont_msg "$line"; done
+	# ## check process (instead of [ $? -eq 2 ])
+	# pid=$(pgrep -f "^$DAEMON")
+	# if [ -n "$pid" ]; then
+	# 	log_action_end_msg 1
+	# 	## try via executable name
+	# 	log_action_begin_msg "Slapd still running ($pid), sending HUP via executable name"
+	# 	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
+	# 		--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+	# 		| while read line; do log_action_cont_msg "$line"; done
+	# 	rm -f "$pidfile"
+	# fi
+	# log_action_end_msg 0
 	;;
   graceful-restart)
-	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-	log_action_msg "Initiating graceful reload of ldap server(s)"
-	$0 graceful-stop
-	$0 start
+	$0 restart
+	# logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
+	# log_action_msg "Initiating graceful reload of ldap server(s)"
+	# $0 graceful-stop
+	# $0 start
 	;;
   *)
 	echo "Usage: $0 {start|stop|restart|force-stop|crestart|graceful-stop|graceful-restart}"
