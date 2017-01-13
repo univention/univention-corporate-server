@@ -42,4 +42,4 @@ remove,*|abort-install,*|disappear,*|*,y)
 	;;
 esac
 
-:
+exit 0

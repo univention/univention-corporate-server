@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 if dpkg --compare-versions "$2" lt 11.0.0-9
 then
 	dpkg-divert --quiet --rename \
@@ -40,4 +38,6 @@ then
 		--add /lib/systemd/system/bind9.service
 fi
 
-:
+#DEBHELPER#
+
+exit 0
