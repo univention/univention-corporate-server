@@ -1,3 +1,9 @@
+univention-squid (9.0.2-4) unstable; urgency=low
+
+  * Bug #34206: reduce NTLM password cache timeout to 60 seconds
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 13 Jan 2017 08:07:27 +0100
+
 univention-squid (9.0.2-3) unstable; urgency=low
 
   * Added cache UCR vars (Bug #37381)
