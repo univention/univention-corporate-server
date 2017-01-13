@@ -116,12 +116,11 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	<Directory ${REPODIR}>
 			   AllowOverride All
 			   Options +Indexes
-			   order allow,deny
-			   allow from all
+			   Require all granted
 	</Directory>
 	</VirtualHost>
 	EOF
-	ln -s "${BASEDIR}/apache2.conf" /etc/apache2/sites-enabled/univention-repository.$$
+	ln -s "${BASEDIR}/apache2.conf" /etc/apache2/sites-enabled/univention-repository.$$.conf
 	mkdir -p "${REPODIR}"
 	if test -f /etc/apache2/sites-enabled/univention-repository
 	then
