@@ -1,3 +1,9 @@
+univention-ldap (13.0.2-1) unstable; urgency=medium
+
+  * Bug #41797: add add_content_acl on configuration
+
+ -- Florian Best <best@univention.de>  Fri, 13 Jan 2017 18:55:46 +0100
+
 univention-ldap (13.0.1-1) unstable; urgency=medium
 
   * Replace the graceful-restart and graceful-stop with restart and stop
