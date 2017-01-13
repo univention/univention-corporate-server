@@ -3,8 +3,8 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 
+fix: 5.0.23-32.259.201701131558
 desc: |
  This update addresses the following issue(s):
  * The appcenter backend now correctly determines whether an app from the app store is a UCS component
-bug: []
+bug: [40102]

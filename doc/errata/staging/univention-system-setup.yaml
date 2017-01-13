@@ -6,5 +6,5 @@ src: univention-system-setup
 fix: 9.0.6-4.1004.201701131552
 desc: |
  This update addresses the following issue(s):
- * new API for univention-appcenter is used
+ * The setup module now uses a newer verison of the API for univention-appcenter
 bug: [40102]
