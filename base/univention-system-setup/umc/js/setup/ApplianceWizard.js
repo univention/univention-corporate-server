@@ -1204,7 +1204,7 @@ define([
 			var query = {
 				// make sure that all software components are allowed for the
 				// specified server role
-				serverrole: {
+				server_role: {
 					test: function(val) {
 						return serverRole != 'basesystem' && (!val.length || array.indexOf(val, serverRole) >= 0);
 					}

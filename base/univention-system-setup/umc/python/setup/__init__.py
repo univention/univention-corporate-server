@@ -654,7 +654,6 @@ class Instance(Base, ProgressMixin):
 		network._translation.set_language(str(self.locale))
 
 		# make sure that locale information is correctly reloaded
-		reload(util.app_center)
 
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response

@@ -1,3 +1,9 @@
+univention-system-setup (10.0.2-1) unstable; urgency=medium
+
+  * Bug #40102: use new API for univention-appcenter
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 17:36:51 +0100
+
 univention-system-setup (10.0.1-1) unstable; urgency=medium
 
   * Bug #42169: move traceback sending into core

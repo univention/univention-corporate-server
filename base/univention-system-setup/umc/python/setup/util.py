@@ -45,18 +45,20 @@ import csv
 import os.path
 import json
 import random
-import urllib2
 import psutil
 import traceback
 from contextlib import contextmanager
 from httplib import HTTPException
 
+from univention.appcenter import AppManager
+from univention.appcenter.actions import get_action
 from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
 from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
 from univention.lib.umc_connection import UMCConnection
+
 
 try:
 	# execute imports in try/except block as during build test scripts are
@@ -65,8 +67,6 @@ try:
 	import dns.resolver
 	import dns.reversename
 	import dns.exception
-	import univention.management.console.modules.appcenter.app_center as app_center
-	from univention.lib.package_manager import PackageManager
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 
@@ -763,30 +763,12 @@ def dhclient(interface, timeout=None):
 
 
 _apps = None
-
-
 def get_apps(no_cache=False):
 	global _apps
 	if _apps and not no_cache:
 		return _apps
-
-	package_manager = PackageManager(
-		info_handler=MODULE.process,
-		step_handler=None,
-		error_handler=MODULE.warn,
-		lock=False,
-		always_noninteractive=True,
-	)
-	package_manager.set_finished()  # currently not working. accepting new tasks
-
-	# circumvent download of categories.ini file
-	app_center.Application._get_category_translations(fake=True)
-	try:
-		applications = app_center.Application.all(only_local=True)
-	except (urllib2.HTTPError, urllib2.URLError) as e:
-		# should not happen as we only access cached, local data
-		raise UMC_Error(_('Could not query App Center: %s') % e)
-	_apps = [iapp.to_dict(package_manager) for iapp in applications if iapp.get('withoutrepository')]
+	domain = get_action('domain')
+	_apps = domain.to_dict([app for app in AppManager.get_all_apps() if app.is_ucs_component()])
 	return _apps
 
 
