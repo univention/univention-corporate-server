@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
+import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
@@ -16,6 +17,8 @@ from univention.lib.umc_connection import UMCConnection
 
 
 if __name__ == '__main__':
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
 		password = 'univention'
 		dn, username = udm.create_user(options=['ldap_pwd'], password=password)
@@ -27,7 +30,7 @@ if __name__ == '__main__':
 		assert username == lo.get(dn)['uid'][0]
 		print 'successfully did LDAP bind.'
 
-		connection = UMCConnection('localhost', username, password)
+		connection = UMCConnection(ucr['hostname'], username, password)
 		ldap_base = connection.request('ucr', ['ldap/base'], command='get')
 		print ldap_base
 		assert ldap_base, 'Could not do any random UMC request'
