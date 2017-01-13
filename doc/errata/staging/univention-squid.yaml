@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-squid
-fix: 
+fix: 9.0.2-4.238.201701130842
 desc: |
  This update addresses the following issue(s):
  * The lifetime of the NTLM password cache was reduced from one hour to
