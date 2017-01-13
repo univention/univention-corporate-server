@@ -1,3 +1,9 @@
+univention-appcenter (6.0.0-27) unstable; urgency=medium
+
+  * Bug #40102: fix wrong response from is_ucs_component()
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 17:41:03 +0100
+
 univention-appcenter (6.0.0-26) unstable; urgency=medium
 
   * Bug #39632: Performance improvements when opening the App Center
