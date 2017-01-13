@@ -106,6 +106,7 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The configuration <property>add_content_acl</property> has been enabled (<u:bug>41797</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
