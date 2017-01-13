@@ -1,3 +1,9 @@
+univention-system-setup (9.0.6-5) unstable; urgency=medium
+
+  * Bug #40102: bump version number because of failed build
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 17:04:36 +0100
+
 univention-system-setup (9.0.6-4) unstable; urgency=medium
 
   * Bug #40102: fix typo
