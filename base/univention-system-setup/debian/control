@@ -59,7 +59,7 @@ Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
  univention-network-common,
- python-univention-appcenter
+ python-univention-appcenter,
  univention-apache (>= 7.0.16-10),
  x11-utils,
  x11-xkb-utils,
