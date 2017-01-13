@@ -1,3 +1,10 @@
+univention-system-setup (10.0.2-3) unstable; urgency=medium
+
+  * Bug #40102: remove dead code, add explicit build dependency to
+    python-univention-appcenter
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 18:21:33 +0100
+
 univention-system-setup (10.0.2-2) unstable; urgency=medium
 
   * Bug #40102: fix dependencies
