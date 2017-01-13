@@ -12,6 +12,8 @@ if __name__ == '__main__':
 	ucr.load()
 
 	metadata_url = ucr['umc/saml/idp-server']
+	if metadata_url is None:
+		fail('The ucr key umc/saml/idp-server is not set')
 
 	res = []
 
