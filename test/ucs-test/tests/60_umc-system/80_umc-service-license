@@ -16,6 +16,8 @@ from time import sleep, time, localtime, strftime
 from subprocess import Popen, PIPE
 from tempfile import mkdtemp
 
+import ldap.dn
+
 from univention import uldap
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
@@ -46,14 +48,10 @@ class TestUMCLicenseManagement(TestUMCSystem):
         waits and creates a new connection after
         """
         print "\nRestarting the UMC Server to release active connections"
-        proc = Popen(("service",
-                      "univention-management-console-server",
-                      "restart"),
-                     stdout=PIPE, stderr=PIPE)
+        proc = Popen(("service", "univention-management-console-server", "restart"), stdout=PIPE, stderr=PIPE)
         stdout, stderr = proc.communicate()
         if stderr:
-            utils.fail("An error occured while trying to restart the UMC "
-                       "server: '%s'" % stderr)
+            utils.fail("An error occured while trying to restart the UMC server: '%s'" % stderr)
         sleep(10)  # wait while server is restarting
         self.create_connection_authenticate()
 
@@ -64,8 +62,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         """
         try:
             test_network_ip = self.UCR['interfaces/eth0/network']
-            self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') +
-                                                    1]
+            self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') + 1]
         except KeyError as exc:
             utils.fail("A KeyError exception while selecting an IP address "
                        "subnet for the test: %r" % exc)
@@ -82,8 +79,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         elif obj_type == 'user':
             obj_name_base = 'umc_test_user_' + random_username(6) + '_'
         else:
-            utils.fail("The given '%s' object type is not supported"
-                       % obj_type)
+            utils.fail("The given '%s' object type is not supported" % obj_type)
 
         for obj in range(amount):
             # the UMC connection is recreated every step in order to get the
@@ -91,26 +87,18 @@ class TestUMCLicenseManagement(TestUMCSystem):
             self.create_connection_authenticate()
             obj_name = obj_name_base + str(obj)
             if obj_type == 'computer':
-                request_result = self.create_computer(obj_name,
-                                                      [self.test_network_ip +
-                                                       str(obj + 51)],
-                                                      [''],
-                                                      [''])
+                request_result = self.create_computer(obj_name, [self.test_network_ip + str(obj + 51)], [''], [''])
             elif obj_type == 'user':
                 # use translated group name for non-Enlish AD case: Bug #37921
                 domain_users = self.get_groupname_translation('domainusers')
-                request_result = self.create_user(obj_name,
-                                                  'Univention@99',
-                                                  domain_users)
+                request_result = self.create_user(obj_name, 'Univention@99', domain_users)
             if request_result[0].get("success"):
                 if obj_type == 'computer':
                     self.computers_to_delete.append(obj_name)
                 elif obj_type == 'user':
                     self.users_to_delete.append(obj_name)
             else:
-                print("The creation of a %s (attempt %s) failed, request "
-                      "result: '%s', " % (obj_type, (obj + 1),
-                                          request_result[0]))
+                print("The creation of a %s (attempt %s) failed, request result: '%s', " % (obj_type, (obj + 1), request_result[0]))
                 return obj
         return amount
 
@@ -121,40 +109,42 @@ class TestUMCLicenseManagement(TestUMCSystem):
         with a provided 'username', 'password' and 'groupname'
         as a primary group.
         """
-        options = [{"object": {"disabled": "none",
-                               "CtxRASDialin": "E",
-                               "lastname": username,
-                               "password": password,
-                               "CtxShadow": "00000000",
-                               "overridePWHistory": False,
-                               "pwdChangeNextLogin": False,
-                               "primaryGroup": "cn=" + groupname +
-                                               ",cn=" + group_container +
-                                               "," + self.ldap_base,
-                               "CtxStartprogramClient": False,
-                               "username": username,
-                               "shell": "/bin/bash",
-                               "CtxBrokenSession": "0000",
-                               "locked": "none",
-                               "CtxReconnectSession": "0000",
-                               "CtxCfgClientPrinters": False,
-                               "homeSharePath": username,
-                               "unixhome": "/home/" + username,
-                               "overridePWLength": False,
-                               "CtxCfgDefaultClientPrinters": False,
-                               "displayName": username,
-                               "CtxCfgClientDrivers": False,
-                               "CtxCfgTSLogon": False,
-                               "$options$": {"samba": True,
-                                             "kerberos": True,
-                                             "person": True,
-                                             "posix": True,
-                                             "mail": True,
-                                             "pki": False,
-                                             "ldap_pwd": False}},
-                               "options": {"container": "cn=users," +
-                                                         self.ldap_base,
-                                           "objectType": "users/user"}}]
+        options = [{
+            "object": {
+                "disabled": "none",
+                "CtxRASDialin": "E",
+                "lastname": username,
+                "password": password,
+                "CtxShadow": "00000000",
+                "overridePWHistory": False,
+                "pwdChangeNextLogin": False,
+                "primaryGroup": "cn=" + ldap.dn.escape_dn_chars(groupname) + ",cn=" + ldap.dn.escape_dn_chars(group_container) + "," + self.ldap_base,
+                "CtxStartprogramClient": False,
+                "username": username,
+                "shell": "/bin/bash",
+                "CtxBrokenSession": "0000",
+                "locked": "none",
+                "CtxReconnectSession": "0000",
+                "CtxCfgClientPrinters": False,
+                "homeSharePath": username,
+                "unixhome": "/home/" + username,
+                "overridePWLength": False,
+                "CtxCfgDefaultClientPrinters": False,
+                "displayName": username,
+                "CtxCfgClientDrivers": False,
+                "CtxCfgTSLogon": False,
+                "$options$": {
+                    "samba": True,
+                    "kerberos": True,
+                    "person": True,
+                    "posix": True,
+                    "mail": True,
+                    "pki": False,
+                    "ldap_pwd": False
+                }
+            },
+            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
+        }]
         return self.make_udm_request("add", options, "users/user")
 
     def check_free_license_info(self):
@@ -167,34 +157,25 @@ class TestUMCLicenseManagement(TestUMCSystem):
         license_info = self.make_udm_request('license/info')
         try:
             if license_info['baseDN'] != self.ldap_base:
-                utils.fail("The free license info 'baseDn' is reported as "
-                           "different from ldap/base: '%s', but ldap/base='%s'"
-                           % (license_info, self.ldap_base))
+                utils.fail("The free license info 'baseDn' is reported as different from ldap/base: '%s', but ldap/base='%s'" % (license_info, self.ldap_base))
             if license_info['keyID']:
-                utils.fail("The free license should not have a license key: "
-                           "'%s'" % license_info)
+                utils.fail("The free license should not have a license key: '%s'" % license_info)
             if license_info['support'] not in ('0', 0):  # str possible
-                utils.fail("The free license 'support' should be '0', "
-                           "however: '%s'" % license_info)
+                utils.fail("The free license 'support' should be '0', however: '%s'" % license_info)
             if license_info['premiumSupport'] not in ('0', 0):  # str poss.
-                utils.fail("The free license 'premiumSupport' should be '0', "
-                           "however: '%s'" % license_info)
+                utils.fail("The free license 'premiumSupport' should be '0', however: '%s'" % license_info)
             if license_info['endDate'] != "unlimited":
-                utils.fail("The free license 'endDate' should be 'unlimited', "
-                           "however: '%s'" % license_info)
+                utils.fail("The free license 'endDate' should be 'unlimited', however: '%s'" % license_info)
 
             license_info = license_info['licenses']
             if license_info['corporateclients']:
-                utils.fail("The free license should not have "
-                           "'corporateclients'")
+                utils.fail("The free license should not have 'corporateclients'")
             if license_info['managedclients'] != 5:
                 utils.fail("The free license should have 5 'managedclients'")
             if license_info.get('virtualdesktopclients'):
-                utils.fail("The free license should not have "
-                           "'virtualdesktopclients'")
+                utils.fail("The free license should not have 'virtualdesktopclients'")
             if license_info.get('virtualdesktopusers'):
-                utils.fail("The free license should not have "
-                           "'virtualdesktopusers'")
+                utils.fail("The free license should not have 'virtualdesktopusers'")
             if license_info['users'] != 5:
                 utils.fail("The free license should have 5 'users'")
             if license_info['servers']:
@@ -332,10 +313,8 @@ class TestUMCLicenseManagement(TestUMCSystem):
         Uploads an expired license, attempts to create computers and users
         with it
         """
-        print("\nUploading an expired license 'ExpiredTest.license' "
-                                                               "for the test")
-        self.import_new_license(self.temp_license_folder +
-                                '/ExpiredTest.license')
+        print("\nUploading an expired license 'ExpiredTest.license' for the test")
+        self.import_new_license(self.temp_license_folder + '/ExpiredTest.license')
 
         print "\nAttempting to create 10 computers with an expired license"
         self.expired_license_limits_check('computer')
@@ -563,8 +542,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
 
         print("Temporary folder to be used to store obtained test licenses: "
               "'%s'" % self.temp_license_folder)
-        initial_license_file = (self.temp_license_folder +
-                                '/InitiallyInstalled.license')
+        initial_license_file = (self.temp_license_folder + '/InitiallyInstalled.license')
 
         try:
             self.prepare_licenses_for_test()
