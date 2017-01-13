@@ -1035,7 +1035,7 @@ class App(object):
 	def is_ucs_component(self):
 		if self._is_ucs_component is None:
 			app = App.from_ini(self.get_ini_file(), locale=False)
-			self._is_ucs_component = 'UCS Components' in app.categories
+			self._is_ucs_component = 'UCS components' in app.categories
 		return self._is_ucs_component
 
 	def get_share_dir(self):

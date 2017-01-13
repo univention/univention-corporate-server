@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-32) unstable; urgency=medium
+
+  * Bug #40102: fix minor typo
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 15:12:07 +0100
+
 univention-appcenter (5.0.23-31) unstable; urgency=medium
 
   * Bug #39632: Performance improvements when opening the App Center (3)
