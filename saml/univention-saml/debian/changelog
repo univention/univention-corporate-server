@@ -1,3 +1,10 @@
+univention-saml (4.0.1-1) unstable; urgency=medium
+
+  * Consider the renamed univention-saml apache site in 91univention-
+    saml.inst (Bug #42196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Jan 2017 16:54:16 +0100
+
 univention-saml (4.0.0-7) unstable; urgency=medium
 
   * Bug #41187: update .mo file
