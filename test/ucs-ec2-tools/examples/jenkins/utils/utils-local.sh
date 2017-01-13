@@ -47,6 +47,17 @@ ucsschool-fetch-results () {
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/mail.log" "$TARGETDIR"
 }
 
+fetch-coverage () {
+	local ADDR="$1"
+	local TARGETDIR="$2"
+	if [ -n "$TARGETDIR" ] ; then
+		[ ! -d "$TARGETDIR" ] && mkdir -p "$TARGETDIR"
+	else
+		TARGETDIR="."
+	fi
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"htmlcov/" "$TARGETDIR"
+}
+
 ec2-start-job-async () {
 	# Start a job asynchronously
 	# <EXAMPLE>: update all servers at once instead of waiting for each one
