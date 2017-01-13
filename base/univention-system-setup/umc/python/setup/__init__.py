@@ -653,8 +653,6 @@ class Instance(Base, ProgressMixin):
 		i18nXKeyboard.set_language(str(self.locale))
 		network._translation.set_language(str(self.locale))
 
-		# make sure that locale information is correctly reloaded
-
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response
 	def find_city(self, pattern, max_results):
@@ -696,13 +694,6 @@ class Instance(Base, ProgressMixin):
 			imatch['final_score'] = imatch['match_score'] + weighted_inv_max_population * imatch['population']
 
 		# sort matches...
-		def _cmp(imatch, jmatch):
-			'''Sort matched cities after their match score and then after their population.'''
-			result = -cmp(imatch['match_score'], jmatch['match_score'])
-			if result:
-				return result
-			return -cmp(imatch['population'], jmatch['population'])
-
 		matches.sort(key=lambda x: x['final_score'], reverse=True)
 		MODULE.info('Top 5 matches: %s' % json.dumps(matches[:5], indent=2))
 		matches = matches[:max_results]
