@@ -1,3 +1,9 @@
+univention-system-setup (10.0.2-2) unstable; urgency=medium
+
+  * Bug #40102: fix dependencies
+
+ -- Eduard Mai <mai@univention.de>  Fri, 13 Jan 2017 17:44:18 +0100
+
 univention-system-setup (10.0.2-1) unstable; urgency=medium
 
   * Bug #40102: use new API for univention-appcenter
