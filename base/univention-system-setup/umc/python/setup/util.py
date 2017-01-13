@@ -50,6 +50,10 @@ import traceback
 from contextlib import contextmanager
 from httplib import HTTPException
 
+import dns.resolver
+import dns.reversename
+import dns.exception
+
 from univention.appcenter import AppManager
 from univention.appcenter.actions import get_action
 from univention.lib.i18n import Translation, Locale
@@ -58,17 +62,6 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
 from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
 from univention.lib.umc_connection import UMCConnection
-
-
-try:
-	# execute imports in try/except block as during build test scripts are
-	# triggered that refer to the netconf python submodules... and this
-	# reference triggers the import below
-	import dns.resolver
-	import dns.reversename
-	import dns.exception
-except ImportError as e:
-	MODULE.warn('Ignoring import error: %s' % e)
 
 _ = Translation('univention-management-console-module-setup').translate
 
@@ -714,13 +707,15 @@ def dhclient(interface, timeout=None):
 """
 	tempfilename = tempfile.mkstemp('.out', 'dhclient.', '/tmp')[1]
 	pidfilename = tempfile.mkstemp('.pid', 'dhclient.', '/tmp')[1]
-	cmd = ('/sbin/dhclient',
-			'-1',
-			'-lf', '/tmp/dhclient.leases',
-			'-pf', pidfilename,
-			'-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
-			'-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
-			interface)
+	cmd = (
+		'/sbin/dhclient',
+		'-1',
+		'-lf', '/tmp/dhclient.leases',
+		'-pf', pidfilename,
+		'-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
+		'-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
+		interface
+	)
 	MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
 	p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
