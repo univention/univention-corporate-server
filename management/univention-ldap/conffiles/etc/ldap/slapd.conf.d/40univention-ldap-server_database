@@ -119,4 +119,3 @@ elif configRegistry['ldap/server/type'] == "slave":
 
 directory	"/var/lib/univention-ldap/ldap"
 lastmod		on
-add_content_acl on

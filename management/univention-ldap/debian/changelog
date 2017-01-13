@@ -1,9 +1,3 @@
-univention-ldap (12.1.6-41) unstable; urgency=medium
-
-  * Bug #41797: add add_content_acl on configuration
-
- -- Florian Best <best@univention.de>  Fri, 13 Jan 2017 18:55:46 +0100
-
 univention-ldap (12.1.6-40) unstable; urgency=medium
 
   * Bug #42103: enhance pam_unix password change configuration
