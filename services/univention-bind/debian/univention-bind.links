@@ -3,5 +3,3 @@
 /usr/share/univention-runit/sleep-dynamic etc/runit/univention-bind-samba4/finish
 /etc/init.d/bind9 etc/init.d/univention-bind
 /etc/init.d/bind9 etc/init.d/univention-bind-proxy
-/etc/init.d/bind9 etc/init.d/univention-bind
-/dev/null etc/systemd/system/bind9.service
