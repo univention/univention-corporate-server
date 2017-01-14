@@ -141,10 +141,10 @@ for FS in xfs ext2 ext3 ext4; do
 		test $used != $(((i+1)*1024*1024)) && fail_test 110
 
 		echo "Quota info: softlimit: $softlimit, expected: $SOFTLIMIT"
-		test $softlimit != $SOFTLIMIT && fail_test 110
+		test "$softlimit" != "$SOFTLIMIT" && fail_test 110
 
 		echo "Quota info: hadlimit: $hardlimit, expected: $HARDLIMIT"
-		test $hardlimit != $HARDLIMIT && fail_test 110
+		test "$hardlimit" != "$HARDLIMIT" && fail_test 110
 	done
 
 
