@@ -1,4 +1,4 @@
-ucs-test (7.0.6-49) unstable; urgency=medium
+ucs-test (7.0.6-50) unstable; urgency=medium
 
   * 09_updater/pool.sh: Adjust configuration to Apache 2.4 (Bug #42196)
 
