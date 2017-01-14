@@ -123,6 +123,9 @@ case "$ACTION" in
 	ucsschool-fetch-results)
 		ucsschool-fetch-results "$@"
 		;;
+	fetch-coverage)
+		fetch-coverage "$@"
+		;;
 	ec2-start-job-async)
 		ec2-start-job-async "$@"
 		;;
