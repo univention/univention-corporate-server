@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Creates dns host record entry and trys to resolve it
+## desc: Creates DNS host record entry and try to resolve it
 ## bugs: [39269]
 ## roles:
 ##  - domaincontroller_master
@@ -8,93 +8,59 @@
 ##   - univention-directory-manager-tools
 ## tags:
 ##  - skip_admember
-## versions:
-##  4.0-3: found
-## exposure: dangerous
+## exposure: careful
 
 import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
-import dns.rdatatype
 from essential.dns_helper import resolveDnsEntry
+from ipaddr import IPAddress
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
+		host = uts.random_name()
+		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
-			duration = 120
-			resourceRecord = 'A'
-			resourceRecord_Number = dns.rdatatype.A
+		forward_zone_properties = {
+			'zone': zone,
+			'nameserver': host,
+			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'serial': '%s' % (uts.random_int()),
+			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'retry': '%s' % (uts.random_int()),
+		}
+		forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
 
-			zone = uts.random_name() + '.' + uts.random_name()
+		#IPv4
+		ip = uts.random_ip()
+		host_record_properties = {
+			'name': host,
+			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+			'a': ip,
+			'mx': '50 %s' % uts.random_string(),
+			'txt': uts.random_string()
+		}
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
-			host = uts.random_name()
+		qname = '%s.%s' % (host, zone)
+		answers = resolveDnsEntry(qname, 'A')
+		answer = [IPAddress(rdata.address) for rdata in answers]
+		assert answer == [IPAddress(ip)], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
 
-			forward_zone_properties = {
-				'zone': zone,
-				'nameserver': host,
-				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
-				'serial': '%s' % (uts.random_int()),
-				'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
-				'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-				'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-				'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-				'retry': '%s' % (uts.random_int()),
-				'a': ['%s' % (uts.random_ip())]
-			}
+		#IPv6
+		ip = '2011:06f8:13dc:0002:19b7:d592:09dd:1041'  # create random_ipv6()-method?
+		host = uts.random_name()
+		host_record_properties.update({
+			'name': host,
+			'a': ip,
+		})
+		host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
-			baseDn = ucr.get('domainname').split('.')
-
-			pos = 'cn=dns'
-
-			for s in baseDn:
-				pos = pos + ',' + 'dc=' + s
-
-			forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
-
-			#IPv4
-			host_record_properties = {
-				'name': host,
-				'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
-				'a': uts.random_ip(),
-				'mx': '50 %s' % uts.random_string(),
-				'txt': uts.random_string()
-			}
-
-			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
-
-			zoneName = host_record_properties['name'] + '.' + forward_zone_properties['zone']
-
-			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
-
-			s = str(query.response.answer[0])
-			s = s[0:s.find('. ')]
-
-			if s != zoneName:
-				raise Exception('the resolved name is not equal to the created ldap-object')
-
-			#IPv6
-
-			host = uts.random_name()
-
-			host_record_properties.update({
-				'name': host,
-				'a': '2011:06f8:13dc:0002:19b7:d592:09dd:1041',  # create random_ipv6()-method?
-				'mx': '50 %s' % uts.random_string(),
-				'txt': uts.random_string()
-			})
-
-			host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
-
-			zoneName = host_record_properties['name'] + '.' + forward_zone_properties['zone']
-
-			resourceRecord = 'AAAA'
-
-			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
-
-			s = str(query.response.answer[0])
-			s = s[0:s.find('. ')]
-
-			if s != zoneName:
-				raise Exception('the resolved name is not equal to the created ldap-object')
+		qname = '%s.%s' % (host, zone)
+		answers = resolveDnsEntry(qname, 'AAAA')
+		answer = [IPAddress(rdata.address) for rdata in answers]
+		assert answer == [IPAddress(ip)], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
