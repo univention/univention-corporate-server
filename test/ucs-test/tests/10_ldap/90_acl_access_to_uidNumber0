@@ -3,6 +3,7 @@
 ## bugs: [41799]
 ## versions:
 ##  4.1-2: skip
+##  4.2-0: fixed
 ## roles-not:
 ##  - basesystem
 ## packages:
