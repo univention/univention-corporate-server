@@ -8,13 +8,14 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import UDMModule
+import json
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
 
-class TestUMCNetworkFunctionality(UMCBase):
+class TestUMCNetworkFunctionality(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -44,8 +45,7 @@ class TestUMCNetworkFunctionality(UMCBase):
                     "options": {"container": "cn=networks," + self.ldap_base,
                                 "objectType": "networks/network"}}]
 
-        request_result = self.make_udm_request("add", options,
-                                               "networks/network")
+        request_result = self.request("udm/add", options, "networks/network")
         if not request_result[0].get("success"):
             utils.fail("Creation of network named %r not successful. Response: %r\nRequest options: %r"
                        % (self.test_network_name, request_result, options))
@@ -60,7 +60,7 @@ class TestUMCNetworkFunctionality(UMCBase):
                    "objectProperty": "None",
                    "objectPropertyValue": "",
                    "hidden": True}
-        return self.make_query_request("udm", options, "dhcp/dhcp")
+        return self.request('udm/query', options, "dhcp/dhcp")
 
     def get_network_config(self, increase_counter=True):
         """
@@ -69,16 +69,14 @@ class TestUMCNetworkFunctionality(UMCBase):
         """
         options = {"networkDN": self.test_network_dn,
                    "increaseCounter": increase_counter}
-        return self.make_udm_request("network", options)
+        return self.request("udm/network", options)
 
     def get_network_choices(self, syntax):
         """
         Returns result of 'udm/syntax/choices' for a given 'syntax' reqest.
         """
         options = {"syntax": syntax}
-        return self.make_udm_request("syntax/choices",
-                                     options,
-                                     "computers/computer")
+        return self.request("udm/syntax/choices", options, "computers/computer")
 
     def check_network_in_choices(self):
         """
@@ -143,9 +141,7 @@ class TestUMCNetworkFunctionality(UMCBase):
                                   "ipRange": [ip_range],
                                   "network": network}}
 
-        for prop in self.make_udm_request('validate',
-                                           options,
-                                           "networks/network"):
+        for prop in self.request('udm/validate', options, "networks/network"):
             # Workaround for answers that have lists inside:
             try:
                 if True in prop.get('valid'):
@@ -192,7 +188,7 @@ class TestUMCNetworkFunctionality(UMCBase):
                    "objectProperty": "None",
                    "objectPropertyValue": "",
                    "hidden": True}
-        return self.make_query_request('udm', options, 'networks/network')
+        return self.request('udm/query', options, 'networks/network')
 
     def run_dns_dhcp_choices_checks(self):
         """
@@ -268,6 +264,17 @@ class TestUMCNetworkFunctionality(UMCBase):
             utils.fail("The response message '%s' does not include any of "
                        "'%s' messages, possibly another error with the "
                        "status code 400 " % (network_config, error_messages))
+
+    def make_custom_request(self, request_url, options):
+        options = {"options": options}
+        options = json.dumps(options)
+        umc_connection = self.connection.get_connection()
+        umc_connection.request('POST', request_url, options, self.connection._headers)
+        request_result = umc_connection.getresponse()
+        request_result = request_result.read()
+        if not request_result:
+            utils.fail("Request '%s' with options '%s' failed, hostname '%s'" % (request_url, options, self.hostname))
+        return json.loads(request_result)
 
     def run_checks_with_computers(self):
         """

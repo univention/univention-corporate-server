@@ -96,7 +96,7 @@ class TestUMCQuotasManagement(UMCBase):
         mount point 'self.test_mount_point' and 'self.partition_dev'.
         Makes a query for 'quota/partitions' request.
         """
-        for quota in self.make_query_request('quota/partitions'):
+        for quota in self.request('quota/partitions/query'):
             if ((quota['partitionDevice'] == self.partition_dev) and (quota['mountPoint'] == self.test_mount_point)):
                 return quota['inUse']
 
@@ -197,7 +197,7 @@ class TestUMCQuotasManagement(UMCBase):
             try:
                 print("Making 'quota/partitions' query request and "
                       "checking response structure")
-                quotas_query = self.make_query_request('quota/partitions')
+                quotas_query = self.request('quota/partitions/query')
                 self.check_quotas_query(quotas_query)
 
                 print("Choosing partition device for the test "

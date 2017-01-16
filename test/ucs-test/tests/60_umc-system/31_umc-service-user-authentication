@@ -9,7 +9,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import UDMModule
 
 import json
 from ldap.filter import filter_format
@@ -22,7 +22,7 @@ from univention.testing.umc import UMCConnection
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 
-class TestUMCUserAuthentication(UMCBase):
+class TestUMCUserAuthentication(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -101,7 +101,7 @@ class TestUMCUserAuthentication(UMCBase):
                                "$dn$": user_dn},
                     "options": {}}]
 
-        request_result = self.make_udm_request("put", options, "users/user")
+        request_result = self.request("udm/put", options, "users/user")
         if not request_result[0].get('success'):
             print "Change password UMC response: '%s'" % request_result
             utils.fail("The UMC request to change 'user'=%s password to '%s' "

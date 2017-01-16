@@ -68,28 +68,6 @@ class UMCBase(object):
 			sleep(5)
 			self.connection.auth(self.username, self.password)
 
-	def make_custom_request(self, request_url, options):
-		options = {"options": options}
-		options = json.dumps(options)
-		umc_connection = self.connection.get_connection()
-		umc_connection.request('POST', request_url, options, self.connection._headers)
-		request_result = umc_connection.getresponse()
-		request_result = request_result.read()
-		if not request_result:
-			utils.fail("Request '%s' with options '%s' failed, hostname '%s'" % (request_url, options, self.hostname))
-		return json.loads(request_result)
-
-	def make_query_request(self, prefix, options=None, flavor=None):
-		"""
-		Makes a '/query' UMC request with a provided 'prefix' argument,
-		optional 'flavor' and 'options', returns request result.
-		"""
-		request_result = None
-		request_result = self.connection.request(prefix + '/query', options, flavor)
-		if request_result is None:
-			utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
-		return request_result
-
 	def wait_rejoin_to_complete(self, poll_attempts):
 		"""
 		Polls the join process via UMC 'join/running' request to make
@@ -118,44 +96,6 @@ class UMCBase(object):
 		else:
 			print("The '%s' service is missing in the UMC response: %s" % (service_name, request_result))
 			sys.exit(TestCodes.REASON_INSTALL)
-
-	def make_udm_request(self, suffix, options=None, flavor=None):
-		"""
-		Makes 'umcp/command/udm/' + 'suffix' request with a given
-		'options' and a 'flavor' if any
-		"""
-		request_result = self.connection.request('udm/' + suffix, options, flavor)
-		if not request_result:
-			utils.fail("Request 'umcp/command/udm/%s' with options='%s' and flavor='%s' failed, no response or response is empty" % (suffix, options, flavor))
-		return request_result
-
-	def create_computer(self, computer_name, ip_address, dns_forward, dns_reverse):
-		"""
-		Creates a computer with given arguments and self.ldap_base,
-		self.test_network_dn via 'udm/add' UMC request
-		"""
-		options = [{
-			"object": {
-				"ip": ip_address,
-				"network": self.test_network_dn,
-				"unixhome": "/dev/null",
-				"ntCompatibility": False,
-				"shell": "/bin/false",
-				"primaryGroup": "cn=Windows Hosts,cn=groups," + self.ldap_base,
-				"dnsEntryZoneForward": dns_forward,
-				"name": computer_name,
-				"dnsEntryZoneReverse": dns_reverse,
-				"$options$": {
-					"samba": True,
-					"kerberos": True,
-					"posix": True,
-					"nagios": False
-				},
-				"$policies$": {}
-			},
-			"options": {"container": "cn=computers," + self.ldap_base, "objectType": "computers/windows"}
-		}]
-		return self.make_udm_request("add", options, "computers/computer")
 
 	def get_translation(self, obj_type, obj_name):
 		"""
@@ -196,7 +136,7 @@ class UMCBase(object):
 			"objectPropertyValue": "",
 			"hidden": True
 		}
-		for result in self.make_query_request('udm', options, obj_type):
+		for result in self.request('udm/query', options, obj_type):
 			if result['name'] == name:
 				return True
 
@@ -338,4 +278,31 @@ class JoinModule(UMCBase):
 
 
 class UDMModule(UMCBase):
-	pass
+
+	def create_computer(self, computer_name, ip_address, dns_forward, dns_reverse):
+		"""
+		Creates a computer with given arguments and self.ldap_base,
+		self.test_network_dn via 'udm/add' UMC request
+		"""
+		options = [{
+			"object": {
+				"ip": ip_address,
+				"network": self.test_network_dn,
+				"unixhome": "/dev/null",
+				"ntCompatibility": False,
+				"shell": "/bin/false",
+				"primaryGroup": "cn=Windows Hosts,cn=groups," + self.ldap_base,
+				"dnsEntryZoneForward": dns_forward,
+				"name": computer_name,
+				"dnsEntryZoneReverse": dns_reverse,
+				"$options$": {
+					"samba": True,
+					"kerberos": True,
+					"posix": True,
+					"nagios": False
+				},
+				"$policies$": {}
+			},
+			"options": {"container": "cn=computers," + self.ldap_base, "objectType": "computers/windows"}
+		}]
+		return self.request("udm/add", options, "computers/computer")

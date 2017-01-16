@@ -8,7 +8,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import UDMModule
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
@@ -16,7 +16,7 @@ import univention.testing.udm as udm_test
 import atexit
 
 
-class TestUMCExtendedAttributes(UMCBase):
+class TestUMCExtendedAttributes(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -94,7 +94,7 @@ class TestUMCExtendedAttributes(UMCBase):
         options = {"objectType": obj_type,
                    "properties": {attribute_name: test_value}}
         try:
-            for prop in self.make_udm_request('validate', options, obj_type):
+            for prop in self.request('udm/validate', options, obj_type):
                 if prop["property"] in attribute_name:
                     return prop["valid"]
         except KeyError as exc:
@@ -109,8 +109,7 @@ class TestUMCExtendedAttributes(UMCBase):
         properties and that the 'attribute_syntax' is correct,
         returns True when so. Makes a request for module properties inside.
         """
-        for prop in self.make_udm_request('properties',
-                                          flavor=attribute_module):
+        for prop in self.request('udm/properties', flavor=attribute_module):
             if prop.get('id') == attribute_name:
                 if prop.get('syntax') == attribute_syntax:
                     return True
@@ -149,15 +148,14 @@ class TestUMCExtendedAttributes(UMCBase):
         Returns a result of the 'udm/nav/object/query' UMC request
         made with respective options and 'navigation' flavor
         """
-        options = {"objectType": "None",
-                   "objectProperty": "None",
-                   "objectPropertyValue": "",
-                   "container": "cn=custom attributes,cn=univention," +
-                                 self.ldap_base,
-                   "hidden": True}
-        return self.make_query_request('udm/nav/object',
-                                       options,
-                                       "navigation")
+        options = {
+            "objectType": "None",
+            "objectProperty": "None",
+            "objectPropertyValue": "",
+            "container": "cn=custom attributes,cn=univention," + self.ldap_base,
+            "hidden": True
+        }
+        return self.request('udm/nav/object/query', options, "navigation")
 
     def create_check_extended_attribute(self, attribute_name,
                                         attribute_modules,
