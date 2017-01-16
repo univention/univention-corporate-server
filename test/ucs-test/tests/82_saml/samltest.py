@@ -144,7 +144,7 @@ def _error_evaluation(idp_response_body):
 		elif re.search('<h1>Incorrect username or password</h1>', bytes(idp_response_body)):
 			raise SamlError("Got incorrect username or password notice")
 		else:
-			raise SamlError("Unknown error in SAML response")
+			raise SamlError("Unknown error in SAML response.\nSAML response:\n%s" % idp_response_body)
 
 
 def _evaluate_idp_response(idp_response_body):
