@@ -47,17 +47,7 @@ class TestUMCProcessKilling(UMCBase):
         by making the UMC request 'top/query'.
         Returns True when exists.
         """
-        request_result = self.make_top_query_request()
-        for result in request_result:
-            try:
-                if result['pid'] == pid:
-                    if sys.executable in result['command']:
-                        return True
-            except KeyError as exc:
-                utils.fail("Failed to find key '%s' in"
-                           "the 'top/query' request respone from UMC: %r"
-                           % (exc, result))
-        return False
+        return any(result['pid'] == pid and sys.executable in result['command'] for result in self.request('top/query'))
 
     def force_process_kill(self):
         """

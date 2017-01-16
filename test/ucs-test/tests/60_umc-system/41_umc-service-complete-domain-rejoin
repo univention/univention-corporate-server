@@ -12,11 +12,11 @@ import sys
 from os import path
 
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import JoinModule
 import univention.testing.utils as utils
 
 
-class TestUMCDomainRejoin(UMCBase):
+class TestUMCDomainRejoin(JoinModule):
 
     def clear_status_file(self, file_path):
         """
@@ -55,16 +55,15 @@ class TestUMCDomainRejoin(UMCBase):
                   " (This operation may take up to 20 minutes)")
             self.clear_status_file(join_status_file)
             # check that no scripts are 'configured'==True wtih clean status
-            for result in self.make_join_scripts_query_request():
+            for result in self.query_joinscripts():
                 if result.get('configured'):
                     utils.fail("The following join script '%s' was "
                                "'configured'==True while should not be"
                                % result)
-            self.make_join_request('join',
-                                   hostname=self.ucr.get('ldap/master'))
+            self.join(hostname=self.ucr.get('ldap/master'))
             self.wait_rejoin_to_complete(120)
             # check that all scripts are 'configured'==True after rejoin
-            for result in self.make_join_scripts_query_request():
+            for result in self.query_joinscripts():
                 if not result.get('configured'):
                     utils.fail("The following join script '%s' was "
                                "'configured'==False while should be"

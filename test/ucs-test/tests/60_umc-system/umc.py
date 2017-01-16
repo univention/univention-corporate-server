@@ -54,6 +54,9 @@ class UMCBase(object):
 		# extracting the 'uid' value of the username string
 		self.username = self.username.split(',')[0][len('uid='):]
 
+	def request(self, *args, **kwargs):
+		self.connection.request(*args, **kwargs)
+
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
 		try:
@@ -66,13 +69,6 @@ class UMCBase(object):
 			self.connection.auth(self.username, self.password)
 
 	def make_custom_request(self, request_url, options):
-		"""
-		Makes a custom UMC 'POST' request with a given
-		'request_url' and given 'options' to avoid exceptions
-		(for anything other than response with status 200)
-		raised in the UMCConnection module. Returns formatted
-		response.
-		"""
 		options = {"options": options}
 		options = json.dumps(options)
 		umc_connection = self.connection.get_connection()
@@ -94,58 +90,9 @@ class UMCBase(object):
 			utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
 		return request_result
 
-	def make_top_query_request(self):
-		"""Makes a 'top/query' UMC request and returns result"""
-		return self.make_query_request('top')
-
 	def make_service_query_request(self):
 		"""Makes a 'services/query' UMC request and returns result"""
 		return self.make_query_request('services')
-
-	def make_join_scripts_query_request(self):
-		"""
-		Queries for all join scripts by making a UMC request
-		'join/scripts/query'
-		"""
-		return self.make_query_request('join/scripts', {"*": "*"})
-
-	def make_join_request(self, request, hostname=None, script_names=[], force=False):
-		"""
-		Makes a UMC request as the provided 'request'.
-		(Used with 40* and 41* domain join tests.)
-		"""
-		if request == 'join':
-			options = {
-				"hostname": hostname,
-				"username": self.username,
-				"password": self.password
-			}
-		elif request == 'run':
-			options = {
-				"scripts": script_names,
-				"force": force,
-				"username": self.username,
-				"password": self.password
-			}
-		else:
-			utils.fail("The join request '%s' is not supported" % request)
-
-		options = {"options": options}
-		options = json.dumps(options)
-		# defining request explicitly, since UMCConnection raises
-		# Exceptions for anything other than response with status 200
-		umc_connection = self.connection.get_connection()
-		umc_connection.request('POST', '/umcp/command/join/' + request, options, self.connection._headers)
-		request_result = umc_connection.getresponse()
-		request_result = request_result.read()
-		if not request_result:
-			utils.fail("Request 'join/%s' with options '%s' failed, hostname '%s'" % (request, options, self.hostname))
-
-		request_result = json.loads(request_result)
-		if request_result.get('status') != 202:
-			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (request, self.hostname, request_result))
-		if not request_result.get('result')['success']:
-			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (request, request_result, self.hostname))
 
 	def wait_rejoin_to_complete(self, poll_attempts):
 		"""
@@ -341,3 +288,56 @@ class UMCBase(object):
 	def return_code_result_skip(self):
 		"""Method to stop the test with the code 77, RESULT_SKIP """
 		sys.exit(TestCodes.RESULT_SKIP)
+
+
+class ServiceModule(UMCBase):
+	pass
+
+
+class TopModule(UMCBase):
+	pass
+
+
+class JoinModule(UMCBase):
+
+	def query_joinscripts(self):
+		return self.request('join/scripts/query', {"*": "*"})
+
+	def join(self, hostname):
+		options = {
+			"hostname": hostname,
+			"username": self.username,
+			"password": self.password,
+		}
+		return self._join('join/join', options)
+
+	def run_scripts(self, script_names, force=False):
+		options = {
+			"scripts": script_names,
+			"force": force,
+			"username": self.username,
+			"password": self.password,
+		}
+		return self._join('join/run', options)
+
+	def _join(self, path, options):
+		options = {"options": options}
+		options = json.dumps(options)
+		# defining request explicitly, since UMCConnection raises
+		# Exceptions for anything other than response with status 200
+		umc_connection = self.connection.get_connection()
+		umc_connection.request('POST', '/umcp/command/' + path, options, self.connection._headers)
+		request_result = umc_connection.getresponse()
+		request_result = request_result.read()
+		if not request_result:
+			utils.fail("Request 'join/%s' with options '%s' failed, hostname '%s'" % (path, options, self.hostname))
+
+		request_result = json.loads(request_result)
+		if request_result.get('status') != 202:
+			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (path, self.hostname, request_result))
+		if not request_result.get('result')['success']:
+			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, request_result, self.hostname))
+
+
+class UDMModule(UMCBase):
+	pass

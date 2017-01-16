@@ -13,11 +13,11 @@ import os
 import sys
 
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import JoinModule
 import univention.testing.utils as utils
 
 
-class TestUMCDomainJoinModule(UMCBase):
+class TestUMCDomainJoinModule(JoinModule):
 
     def link_join_script(self, script_name, path):
         """
@@ -61,7 +61,7 @@ class TestUMCDomainJoinModule(UMCBase):
         Makes a query request for all join scripts and returns the
         value of the 'configured' field for the given 'script_name'
         """
-        join_scripts = self.make_join_scripts_query_request()
+        join_scripts = self.query_joinscripts()
         for script in join_scripts:
             if script.get('script') == script_name:
                 return script.get('configured')
@@ -73,10 +73,10 @@ class TestUMCDomainJoinModule(UMCBase):
         request to execute them.
         """
         script_names = []
-        for script in self.make_join_scripts_query_request():
+        for script in self.query_joinscripts():
             if not script.get('configured'):
                 script_names.append(script.get('script'))
-        self.make_join_request('run', script_names=script_names)
+        self.run(script_names=script_names)
 
     def main(self):
         """
@@ -110,7 +110,7 @@ class TestUMCDomainJoinModule(UMCBase):
             # case 1: execute single join script
             print("Executing test join script '%s' via UMC request"
                   % test_script)
-            self.make_join_request('run', script_names=[test_script])
+            self.run(script_names=[test_script])
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
@@ -123,9 +123,7 @@ class TestUMCDomainJoinModule(UMCBase):
             print("Force executing test join script '%s' via UMC request"
                   % test_script)
             self.copy_file(join_status_file + '.bak', join_status_file)
-            self.make_join_request('run',
-                                   script_names=[test_script],
-                                   force=True)
+            self.run(script_names=[test_script], force=True)
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
