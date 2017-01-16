@@ -55,3 +55,6 @@ if [ -n "$app_packages" ]; then
 	# errata updates
 	/usr/share/univention-docker-container-mode/update_packages "$@"
 fi
+/usr/share/univention-updater/univention-updater-check
+
+exit 0
