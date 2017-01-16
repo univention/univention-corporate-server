@@ -41,7 +41,6 @@ class TestUMCDomainRejoin(JoinModule):
         """
         A method to test the UMC domain complete rejoin
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         join_status_file = '/var/univention-join/status'
 

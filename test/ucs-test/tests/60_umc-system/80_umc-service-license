@@ -532,7 +532,6 @@ class TestUMCLicenseManagement(UDMModule):
         """
         A method to test the licenses management through the UMC
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
 
         self.ldap_base = self.ucr.get('ldap/base')

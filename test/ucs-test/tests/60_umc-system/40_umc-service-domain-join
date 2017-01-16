@@ -82,7 +82,6 @@ class TestUMCDomainJoinModule(JoinModule):
         """
         A method to test the UMC domain join module
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
 
         test_script = '99univention-test-join-script'

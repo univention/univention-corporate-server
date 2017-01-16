@@ -236,9 +236,6 @@ class TestUMCUserAuthentication(UDMModule):
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'
 
-        self.reload_ucr()
-        self.get_ucr_credentials()
-
         with UCSTestUDM() as self.UDM:
             self.create_user_and_group()
 

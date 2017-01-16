@@ -98,7 +98,6 @@ class TestUMCGroupsCreation(UMCBase):
         """
         Method to test the UMC group creation, modification and deletion
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

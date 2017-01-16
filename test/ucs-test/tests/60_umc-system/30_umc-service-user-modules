@@ -63,7 +63,6 @@ class TestUMCUserModules(UMCBase):
         """
         Method to test the UMC modules access restrictions for regular users
         """
-        self.reload_ucr()
         self.hostname = self.ucr.get('hostname')
         ldap_base = self.ucr.get('ldap/base')
 

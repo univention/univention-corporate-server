@@ -10,13 +10,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import UDMModule
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
 
-class TestUMCUserCreation(UMCBase):
+class TestUMCUserCreation(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -124,7 +124,6 @@ class TestUMCUserCreation(UMCBase):
         """
         Method to test UMC users creation, modification and deletion
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

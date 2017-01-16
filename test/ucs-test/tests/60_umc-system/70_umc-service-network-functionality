@@ -362,7 +362,6 @@ class TestUMCNetworkFunctionality(UDMModule):
         """
         A method to test the UMC network functionality
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

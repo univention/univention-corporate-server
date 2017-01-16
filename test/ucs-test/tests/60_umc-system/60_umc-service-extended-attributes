@@ -241,7 +241,6 @@ class TestUMCExtendedAttributes(UDMModule):
         A method to test the UMC extended attributes creation, modification
         and module integration
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

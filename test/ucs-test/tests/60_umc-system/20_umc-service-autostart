@@ -31,7 +31,7 @@ class TestUMCServiceAutostart(ServiceModule):
         Get the current UCR configuration for provided 'service_name_value' var
         Reloads the UCR before proceeding.
         """
-        self.reload_ucr()
+        self.ucr.load()
         return self.ucr.get(service_name_value)
 
     def set_service_configuration(self, service_names, setting):
@@ -114,7 +114,6 @@ class TestUMCServiceAutostart(ServiceModule):
         Method to test the UMC 'service_name' service
         autostart behaviour
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
 
         self.check_service_presence(self.query(), service_name)

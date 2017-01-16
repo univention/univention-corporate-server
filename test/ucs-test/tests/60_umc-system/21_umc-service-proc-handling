@@ -220,7 +220,6 @@ class TestUMCServiceProcessHandling(ServiceModule):
         Method to test the UMC globally defined 'service_name' service process
         start/stop/restart behaviour.
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
 
         initial_state = self.query()

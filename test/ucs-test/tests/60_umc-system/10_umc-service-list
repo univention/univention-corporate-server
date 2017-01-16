@@ -49,7 +49,6 @@ class TestUMCServiceList(ServiceModule):
 
     def main(self):
         """Method to start the test of UMC services listing"""
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         request_result = self.query()
         self.check_response_structure(request_result)

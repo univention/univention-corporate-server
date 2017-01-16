@@ -9,7 +9,7 @@ from httplib import HTTPException
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import UMCTestConnection as UMCConnection
 
 
 class UMCBase(object):
@@ -24,35 +24,9 @@ class UMCBase(object):
 		self.hostname = None
 		self.connection = None
 		self.ldap_base = ''
-		self.test_network_dn = ''
 
 		self.ucr = ConfigRegistry()
-
-		# for getting the default English names of users/groups:
-		self.default_names = {
-			'domainadmins': "Domain Admins",
-			'domainusers': "Domain Users",
-			'windowshosts': "Windows Hosts",
-			'dcbackuphosts': "DC Backup Hosts",
-			'dcslavehosts': "DC Slave Hosts",
-			'computers': "Computers",
-			'printoperators': "Printer-Admins",
-			'administrator': "Administrator"
-		}
-
-	def reload_ucr(self):
-		"""Reload the UCR variables """
 		self.ucr.load()
-
-	def get_ucr_credentials(self):
-		"""Get credentials from the registry"""
-		self.reload_ucr()
-		self.username = self.ucr['tests/domainadmin/account']
-		self.password = self.ucr['tests/domainadmin/pwd']
-		self.hostname = self.ucr['hostname']
-
-		# extracting the 'uid' value of the username string
-		self.username = self.username.split(',')[0][len('uid='):]
 
 	def request(self, *args, **kwargs):
 		return self.connection.request(*args, **kwargs)
@@ -60,39 +34,15 @@ class UMCBase(object):
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
 		try:
-			self.connection = UMCConnection(self.hostname)
-			self.connection.auth(self.username, self.password)
+			self.connection = UMCConnection()
 		except HTTPException as exc:
 			print("An HTTPException while trying to authenticate to UMC: %r" % exc)
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
-			self.connection.auth(self.username, self.password)
-
-	def get_translation(self, obj_type, obj_name):
-		"""
-		Returns the translation taken from UCR for given 'obj_name' and
-		'obj_type'. If not translation found -> returns default English
-		name. If no English name availabe -> prints a messge, returns None.
-		"""
-		translated = self.ucr.get(obj_type + '/default/' + obj_name, self.default_names.get(obj_name))
-		if not translated:
-			print("\nNo translation and no default English name can be found for object %s of %s type" % (obj_name, obj_type))
-
-		return translated
-
-	def get_groupname_translation(self, groupname):
-		"""
-		Returns the localized translation for the given 'groupname'.
-		Groupname should be the UCR variable name (e.g. domainadmins).
-		"""
-		return self.get_translation('groups', groupname)
-
-	def get_username_translation(self, username):
-		"""
-		Returns the localized translation for the given 'username'.
-		Username should be the UCR variable name (e.g. administrator).
-		"""
-		return self.get_translation('users', username)
+			self.connection = UMCConnection()
+		self.username = self.connection.username
+		self.password = self.connection.password
+		self.hostname = self.connection.hostname
 
 	def check_obj_exists(self, name, obj_type):
 		"""
@@ -279,6 +229,20 @@ class JoinModule(UMCBase):
 
 class UDMModule(UMCBase):
 
+	# for getting the default English names of users/groups:
+	_default_names = {
+		'domainadmins': "Domain Admins",
+		'domainusers': "Domain Users",
+		'windowshosts': "Windows Hosts",
+		'dcbackuphosts': "DC Backup Hosts",
+		'dcslavehosts': "DC Slave Hosts",
+		'computers': "Computers",
+		'printoperators': "Printer-Admins",
+		'administrator': "Administrator"
+	}
+
+	test_network_dn = ''
+
 	def create_computer(self, computer_name, ip_address, dns_forward, dns_reverse):
 		"""
 		Creates a computer with given arguments and self.ldap_base,
@@ -306,3 +270,29 @@ class UDMModule(UMCBase):
 			"options": {"container": "cn=computers," + self.ldap_base, "objectType": "computers/windows"}
 		}]
 		return self.request("udm/add", options, "computers/computer")
+
+	def get_translation(self, obj_type, obj_name):
+		"""
+		Returns the translation taken from UCR for given 'obj_name' and
+		'obj_type'. If not translation found -> returns default English
+		name. If no English name availabe -> prints a messge, returns None.
+		"""
+		translated = self.ucr.get(obj_type + '/default/' + obj_name, self._default_names.get(obj_name))
+		if not translated:
+			print("\nNo translation and no default English name can be found for object %s of %s type" % (obj_name, obj_type))
+
+		return translated
+
+	def get_groupname_translation(self, groupname):
+		"""
+		Returns the localized translation for the given 'groupname'.
+		Groupname should be the UCR variable name (e.g. domainadmins).
+		"""
+		return self.get_translation('groups', groupname)
+
+	def get_username_translation(self, username):
+		"""
+		Returns the localized translation for the given 'username'.
+		Username should be the UCR variable name (e.g. administrator).
+		"""
+		return self.get_translation('users', username)

@@ -183,7 +183,6 @@ class TestUMCQuotasManagement(UMCBase):
         """
         A method to test the filesystem quota management through UMC
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
 
         test_username = 'umc_test_user_' + random_username(6)

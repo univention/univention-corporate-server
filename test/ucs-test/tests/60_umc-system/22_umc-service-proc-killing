@@ -132,7 +132,6 @@ class TestUMCProcessKilling(UMCBase):
         """
         Method to start the test of the UMC backend process killing.
         """
-        self.get_ucr_credentials()
         self.create_connection_authenticate()
         print "Test process max running time (sec) is:", self.MAX_PROCESS_TIME
 
