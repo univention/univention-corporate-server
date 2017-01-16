@@ -7,12 +7,6 @@ import univention.config_registry as configRegistry
 ucr = configRegistry.ConfigRegistry()
 ucr.load()
 
-# TODO: Verify ceritficate. SNI problem? Wait for python 2.7.9 or later.
-# Verify certificate by changeing:
-# verify=False
-# to:
-# verify='/etc/univention/ssl/ucsCA/CAcert.pem'
-
 HOSTNAME = '%s.%s' % (ucr['hostname'], ucr['domainname'])
 
 
@@ -55,10 +49,12 @@ def _request(method, url, status_code, position, data=None, cookies=None, IdP_IP
 		'POST': requests.post}
 
 	try:
-		response = _requests[method](url, cookies=cookies, data=data, verify=False, allow_redirects=True, headers=headers)
+		response = _requests[method](url, cookies=cookies, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', allow_redirects=True, headers=headers)
 		#import pdb; pdb.set_trace()
 	except requests.exceptions.SSLError as E:
-		raise SamlError("Problem while %s\nSSL error: %s" % (position, E.message))
+		# Bug: https://github.com/shazow/urllib3/issues/556
+		# raise SamlError("Problem while %s\nSSL error: %s" % (position, E.message))
+		raise SamlError("Problem while %s\nSSL error: %s" % (position, 'Some ssl error'))
 	except requests.ConnectionError as E:
 		raise SamlError("Problem while %s\nNo connection to server: %s" % (position, E.message))
 
