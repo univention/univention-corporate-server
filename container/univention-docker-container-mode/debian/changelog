@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.14-7) unstable; urgency=low
+
+  * Bug #43177: install package updates update_app_version
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Jan 2017 13:29:18 +0100
+
 univention-docker-container-mode (1.0.14-6) unstable; urgency=low
 
   * Bug #43177: install package updates update_app_version
