@@ -306,10 +306,23 @@ class Register(CredentialsAction):
 			if app_id == app.id:
 				current_port_config[app.ucr_ports_key % container_port] = str(host_port)
 				updates[app.ucr_ports_key % container_port] = None
+				updates[app.ucr_ports_key % container_port + '/protocol'] = None
 		for port in app.ports_exclusive:
 			updates[app.ucr_ports_key % port] = str(port)
 		for port in app.ports_redirection:
 			host_port, container_port = port.split(':')
+			try:
+				# maybe 8080/udp? /tcp is standard
+				container_port, protocol = container_port.split('/')
+			except ValueError:
+				protocol = 'tcp'
+			protocol_key = app.ucr_ports_key % container_port + '/protocol'
+			protocol_value = updates.get(protocol_key)
+			if protocol_value:
+				protocol_value = '%s, %s' % (protocol_value, protocol)
+			else:
+				protocol_value = protocol
+			updates[protocol_key] = protocol_value
 			updates[app.ucr_ports_key % container_port] = str(host_port)
 		if app.auto_mod_proxy and app.has_local_web_interface():
 			self.log('Setting ports for apache proxy')

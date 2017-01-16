@@ -44,7 +44,7 @@ from gzip import GzipFile
 import requests
 from hashlib import sha256
 
-from univention.appcenter.utils import app_ports, call_process, shell_safe, _
+from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
@@ -297,9 +297,10 @@ class Docker(object):
 
 	def create(self, hostname, env):
 		ports = []
-		for app_id, container_port, host_port in app_ports():
+		for app_id, container_port, host_port, protocol in app_ports_with_protocol():
 			if app_id == self.app.id:
-				ports.append('%d:%d' % (host_port, container_port))
+				port_definition = '%d:%d/%s' % (host_port, container_port, protocol)
+				ports.append(port_definition)
 		volumes = set(self.app.docker_volumes[:])
 		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir()]:
 			app_volume = '%s:%s' % (app_volume, app_volume)
