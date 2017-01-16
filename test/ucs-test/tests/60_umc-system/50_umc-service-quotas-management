@@ -8,7 +8,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import json
 
@@ -17,7 +17,7 @@ import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
 
 
-class TestUMCQuotasManagement(TestUMCSystem):
+class TestUMCQuotasManagement(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -34,11 +34,11 @@ class TestUMCQuotasManagement(TestUMCSystem):
         try:
             # defining request explicitly, since the status
             # code can be other than 200 and/or result might be empty
-            umc_connection = self.Connection.get_connection()
+            umc_connection = self.connection.get_connection()
             umc_connection.request('POST',
                                    '/umcp/command/quota/users/query',
                                    options,
-                                   self.Connection._headers)
+                                   self.connection._headers)
 
             request_result = umc_connection.getresponse()
             request_result = request_result.read()
@@ -126,7 +126,7 @@ class TestUMCQuotasManagement(TestUMCSystem):
         """
         options = {"partitionDevice": self.partition_dev}
         try:
-            request_result = self.Connection.request('quota/partitions/' +
+            request_result = self.connection.request('quota/partitions/' +
                                                       command,
                                                      options)
             if not request_result:
@@ -164,7 +164,7 @@ class TestUMCQuotasManagement(TestUMCSystem):
             utils.fail("The provided command '%s' is not supported, request "
                        "or/and its options are unknown" % command)
         try:
-            request_result = self.Connection.request('quota/users/' + command,
+            request_result = self.connection.request('quota/users/' + command,
                                                      options)
             if not request_result:
                 utils.fail("Request 'quota/users/%s' wtih options '%s' "

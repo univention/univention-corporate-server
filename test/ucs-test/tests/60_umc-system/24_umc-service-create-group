@@ -8,13 +8,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
 
-class TestUMCGroupsCreation(TestUMCSystem):
+class TestUMCGroupsCreation(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -38,7 +38,7 @@ class TestUMCGroupsCreation(TestUMCSystem):
                                            "objectType": "groups/group"}}]
 
         try:
-            request_result = self.Connection.request('udm/add', options, 'groups/group')
+            request_result = self.connection.request('udm/add', options, 'groups/group')
             if not request_result:
                 utils.fail("Request 'udm/add' group failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))
@@ -62,7 +62,7 @@ class TestUMCGroupsCreation(TestUMCSystem):
                                           self.ldap_base},
                                  "options": {}}]
         try:
-            request_result = self.Connection.request('udm/put',
+            request_result = self.connection.request('udm/put',
                                                      options,
                                                      'groups/group')
             if not request_result:
@@ -84,7 +84,7 @@ class TestUMCGroupsCreation(TestUMCSystem):
         """
         options = ["cn=" + groupname + ",cn=groups," + self.ldap_base]
         try:
-            request_result = self.Connection.request('udm/get', options,
+            request_result = self.connection.request('udm/get', options,
                                                      'groups/group')
             if not request_result:
                 utils.fail("Request 'udm/get' with options '%s' failed, "
@@ -100,7 +100,7 @@ class TestUMCGroupsCreation(TestUMCSystem):
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.ldap_base = self.ucr.get('ldap/base')
 
         test_groupname = 'umc_test_group_' + random_username(6)
         policyname = "default-udm-self"

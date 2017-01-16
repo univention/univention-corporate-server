@@ -12,7 +12,7 @@ import univention.testing.utils as utils
 from univention.testing.umc import UMCConnection
 
 
-class TestUMCSystem(object):
+class UMCBase(object):
 	"""
 	A base class for testing UMC-system
 	"""
@@ -22,11 +22,11 @@ class TestUMCSystem(object):
 		self.username = None
 		self.password = None
 		self.hostname = None
-		self.Connection = None
+		self.connection = None
 		self.ldap_base = ''
 		self.test_network_dn = ''
 
-		self.UCR = ConfigRegistry()
+		self.ucr = ConfigRegistry()
 
 		# for getting the default English names of users/groups:
 		self.default_names = {
@@ -42,14 +42,14 @@ class TestUMCSystem(object):
 
 	def reload_ucr(self):
 		"""Reload the UCR variables """
-		self.UCR.load()
+		self.ucr.load()
 
 	def get_ucr_credentials(self):
 		"""Get credentials from the registry"""
 		self.reload_ucr()
-		self.username = self.UCR['tests/domainadmin/account']
-		self.password = self.UCR['tests/domainadmin/pwd']
-		self.hostname = self.UCR['hostname']
+		self.username = self.ucr['tests/domainadmin/account']
+		self.password = self.ucr['tests/domainadmin/pwd']
+		self.hostname = self.ucr['hostname']
 
 		# extracting the 'uid' value of the username string
 		self.username = self.username.split(',')[0][len('uid='):]
@@ -57,13 +57,13 @@ class TestUMCSystem(object):
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
 		try:
-			self.Connection = UMCConnection(self.hostname)
-			self.Connection.auth(self.username, self.password)
+			self.connection = UMCConnection(self.hostname)
+			self.connection.auth(self.username, self.password)
 		except HTTPException as exc:
 			print("An HTTPException while trying to authenticate to UMC: %r" % exc)
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
-			self.Connection.auth(self.username, self.password)
+			self.connection.auth(self.username, self.password)
 		except Exception as exc:
 			utils.fail("Failed to authenticate, hostname '%s' : %s" % (self.hostname, exc))
 
@@ -78,8 +78,8 @@ class TestUMCSystem(object):
 		options = {"options": options}
 		options = json.dumps(options)
 		try:
-			umc_connection = self.Connection.get_connection()
-			umc_connection.request('POST', request_url, options, self.Connection._headers)
+			umc_connection = self.connection.get_connection()
+			umc_connection.request('POST', request_url, options, self.connection._headers)
 			request_result = umc_connection.getresponse()
 			request_result = request_result.read()
 			if not request_result:
@@ -95,7 +95,7 @@ class TestUMCSystem(object):
 		"""
 		request_result = None
 		try:
-			request_result = self.Connection.request(prefix + '/query', options, flavor)
+			request_result = self.connection.request(prefix + '/query', options, flavor)
 			if request_result is None:
 				utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
 			return request_result
@@ -143,8 +143,8 @@ class TestUMCSystem(object):
 		try:
 			# defining request explicitly, since UMCConnection raises
 			# Exceptions for anything other than response with status 200
-			umc_connection = self.Connection.get_connection()
-			umc_connection.request('POST', '/umcp/command/join/' + request, options, self.Connection._headers)
+			umc_connection = self.connection.get_connection()
+			umc_connection.request('POST', '/umcp/command/join/' + request, options, self.connection._headers)
 			request_result = umc_connection.getresponse()
 			request_result = request_result.read()
 			if not request_result:
@@ -167,7 +167,7 @@ class TestUMCSystem(object):
 		"""
 		for attempt in range(poll_attempts):
 			try:
-				request_result = self.Connection.request('join/running')
+				request_result = self.connection.request('join/running')
 				if request_result is None:
 					utils.fail("No response on UMC 'join/running' request")
 				elif request_result is False:
@@ -196,7 +196,7 @@ class TestUMCSystem(object):
 		'options' and a 'flavor' if any
 		"""
 		try:
-			request_result = self.Connection.request('udm/' + suffix, options, flavor)
+			request_result = self.connection.request('udm/' + suffix, options, flavor)
 			if not request_result:
 				utils.fail("Request 'umcp/command/udm/%s' with options='%s' and flavor='%s' failed, no response or response is empty" % (suffix, options, flavor))
 			return request_result
@@ -237,7 +237,7 @@ class TestUMCSystem(object):
 		'obj_type'. If not translation found -> returns default English
 		name. If no English name availabe -> prints a messge, returns None.
 		"""
-		translated = self.UCR.get(obj_type + '/default/' + obj_name, self.default_names.get(obj_name))
+		translated = self.ucr.get(obj_type + '/default/' + obj_name, self.default_names.get(obj_name))
 		if not translated:
 			print("\nNo translation and no default English name can be found for object %s of %s type" % (obj_name, obj_type))
 
@@ -283,7 +283,7 @@ class TestUMCSystem(object):
 		made with provided 'options' and 'flavor'
 		"""
 		try:
-			request_result = self.Connection.request('udm/get', options, flavor)
+			request_result = self.connection.request('udm/get', options, flavor)
 			if request_result is None:
 				utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
 			return request_result
@@ -296,7 +296,7 @@ class TestUMCSystem(object):
 		UMC request 'udm/put', checks for 'success' in the response
 		"""
 		try:
-			request_result = self.Connection.request('udm/put', options, flavor)
+			request_result = self.connection.request('udm/put', options, flavor)
 			if not request_result:
 				utils.fail("Request 'udm/put' to modify an object with options '%s' failed, hostname %s" % (options, self.hostname))
 			if not request_result[0].get('success'):
@@ -333,7 +333,7 @@ class TestUMCSystem(object):
 			}
 		}]
 		try:
-			request_result = self.Connection.request('udm/remove', options, flavor)
+			request_result = self.connection.request('udm/remove', options, flavor)
 			if not request_result:
 				utils.fail("Request 'udm/remove' to delete object with options '%s' failed, hostname %s" % (options, self.hostname))
 			if not request_result[0].get('success'):

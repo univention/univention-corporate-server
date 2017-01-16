@@ -12,11 +12,11 @@ import sys
 from os import path
 
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 import univention.testing.utils as utils
 
 
-class TestUMCDomainRejoin(TestUMCSystem):
+class TestUMCDomainRejoin(UMCBase):
 
     def clear_status_file(self, file_path):
         """
@@ -61,7 +61,7 @@ class TestUMCDomainRejoin(TestUMCSystem):
                                "'configured'==True while should not be"
                                % result)
             self.make_join_request('join',
-                                   hostname=self.UCR.get('ldap/master'))
+                                   hostname=self.ucr.get('ldap/master'))
             self.wait_rejoin_to_complete(120)
             # check that all scripts are 'configured'==True after rejoin
             for result in self.make_join_scripts_query_request():

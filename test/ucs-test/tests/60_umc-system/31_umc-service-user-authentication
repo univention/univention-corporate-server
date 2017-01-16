@@ -9,7 +9,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import json
 from ldap.filter import filter_format
@@ -22,7 +22,7 @@ from univention.testing.umc import UMCConnection
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 
-class TestUMCUserAuthentication(TestUMCSystem):
+class TestUMCUserAuthentication(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -53,18 +53,18 @@ class TestUMCUserAuthentication(TestUMCSystem):
 
     def authenticate_to_umc(self, username, password):
         """
-        Authenticates to UMC using 'self.Connection' and given
+        Authenticates to UMC using 'self.connection' and given
         'password' with 'username'. Updates the cookie.
         Returns 'True' on success and 'False' in any other case.
         """
         options = {"options": {"username": username,
                                "password": password}}
         try:
-            umc_connection = self.Connection.get_connection()
+            umc_connection = self.connection.get_connection()
             umc_connection.request('POST',
                                    '/umcp/auth',
                                    json.dumps(options),
-                                   self.Connection._headers)
+                                   self.connection._headers)
 
             request_result = umc_connection.getresponse()
             cookie = request_result.getheader('set-cookie')
@@ -74,7 +74,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
             print "Response Cookie:", cookie
             print "Response Message:", request_result.read()
 
-            self.Connection._headers['Cookie'] = cookie
+            self.connection._headers['Cookie'] = cookie
             if cookie and status_code == 200:
                 return True
 
@@ -242,7 +242,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
         with UCSTestUDM() as self.UDM:
             self.create_user_and_group()
 
-            self.Connection = UMCConnection(self.UCR['hostname'])
+            self.connection = UMCConnection(self.ucr['hostname'])
 
             self.check_random_and_valid_passwords()
             self.check_change_old_new_unicode_passwords()

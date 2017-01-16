@@ -11,11 +11,11 @@ from time import sleep
 from psutil import Process, TimeoutExpired
 from os import wait4, WNOHANG, WTERMSIG, fork
 
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 import univention.testing.utils as utils
 
 
-class TestUMCProcessKilling(TestUMCSystem):
+class TestUMCProcessKilling(UMCBase):
     MAX_PROCESS_TIME = 30  # seconds
 
     def __init__(self):
@@ -29,7 +29,7 @@ class TestUMCProcessKilling(TestUMCSystem):
         provided by making a UMC request 'top/kill' with respective options.
         """
         try:
-            request_result = self.Connection.request('top/kill',
+            request_result = self.connection.request('top/kill',
                                                      {'signal': signal,
                                                       'pid': pids})
             if not request_result:

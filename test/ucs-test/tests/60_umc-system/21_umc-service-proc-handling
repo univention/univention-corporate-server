@@ -5,13 +5,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import subprocess
 import univention.testing.utils as utils
 
 
-class TestUMCServiceProcessHandling(TestUMCSystem):
+class TestUMCServiceProcessHandling(UMCBase):
 
     def __init__(self, service_name):
         """Test Class constructor"""
@@ -87,7 +87,7 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
         Possible options for actions are: start/stop/restart.
         """
         try:
-            request_result = self.Connection.request('services/' + action,
+            request_result = self.connection.request('services/' + action,
                                                      service_names)
             if not request_result:
                 utils.fail("Request 'services/%s' failed, no response "

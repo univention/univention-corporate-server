@@ -8,7 +8,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 from os import path
 from shutil import rmtree, copy as file_copy
@@ -25,7 +25,7 @@ from univention.testing.strings import random_username
 from univention.testing.license_client import TestLicenseClient, CredentialsMissing
 
 
-class TestUMCLicenseManagement(TestUMCSystem):
+class TestUMCLicenseManagement(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -61,7 +61,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         UCR variable and removing its ending
         """
         try:
-            test_network_ip = self.UCR['interfaces/eth0/network']
+            test_network_ip = self.ucr['interfaces/eth0/network']
             self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') + 1]
         except KeyError as exc:
             utils.fail("A KeyError exception while selecting an IP address "
@@ -535,7 +535,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         self.get_ucr_credentials()
         self.create_connection_authenticate()
 
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = "cn=admin,cn=license,cn=univention," + self.ldap_base
         self.test_network_dn = "cn=default,cn=networks," + self.ldap_base
         self.select_ip_address_subnet()

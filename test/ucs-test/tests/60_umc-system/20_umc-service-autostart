@@ -5,13 +5,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 from univention.config_registry.frontend import ucr_update
 import univention.testing.utils as utils
 
 
-class TestUMCServiceAutostart(TestUMCSystem):
+class TestUMCServiceAutostart(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -23,7 +23,7 @@ class TestUMCServiceAutostart(TestUMCSystem):
         Restores the autostart configuration as saved in the global var
         for provided 'service_name'
         """
-        ucr_update(self.UCR,
+        ucr_update(self.ucr,
                    {service_name + '/autostart': self.initial_service_config})
 
     def get_service_current_configuration(self, service_name_value):
@@ -32,12 +32,12 @@ class TestUMCServiceAutostart(TestUMCSystem):
         Reloads the UCR before proceeding.
         """
         self.reload_ucr()
-        return self.UCR.get(service_name_value)
+        return self.ucr.get(service_name_value)
 
     def set_service_configuration(self, service_names, setting):
         """Set the 'setting' for list of 'service_names' via UMC request"""
         try:
-            request_result = self.Connection.request('services/' + setting,
+            request_result = self.connection.request('services/' + setting,
                                                      service_names)
             if not request_result:
                 utils.fail("Request 'services/%s' failed, no response "

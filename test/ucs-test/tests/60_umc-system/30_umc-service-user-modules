@@ -5,7 +5,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import json
 
@@ -15,7 +15,7 @@ from univention.testing.strings import random_username
 from univention.testing.umc import UMCConnection
 
 
-class TestUMCUserModules(TestUMCSystem):
+class TestUMCUserModules(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -64,8 +64,8 @@ class TestUMCUserModules(TestUMCSystem):
         Method to test the UMC modules access restrictions for regular users
         """
         self.reload_ucr()
-        self.hostname = self.UCR.get('hostname')
-        ldap_base = self.UCR.get('ldap/base')
+        self.hostname = self.ucr.get('hostname')
+        ldap_base = self.ucr.get('ldap/base')
 
         test_username = 'umc_test_user_' + random_username(6)
         test_password = 'univention'

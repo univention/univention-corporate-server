@@ -8,13 +8,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
 
-class TestUMCNetworkFunctionality(TestUMCSystem):
+class TestUMCNetworkFunctionality(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -199,7 +199,7 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         Checks if the correct options are reported for 'DNS_ForwardZone'
         and 'dhcpService' configurations
         """
-        domain_name = self.UCR.get('domainname')
+        domain_name = self.ucr.get('domainname')
         print("\nChecking if DNS forward zone '%s' is reported "
               "in choices for '%s' computer"
               % (domain_name, self.test_computer_name))
@@ -357,11 +357,11 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.ldap_base = self.ucr.get('ldap/base')
 
         self.test_computer_name = 'umc_test_computer_' + random_username(6)
         self.test_network_name = 'umc_test_network_' + random_username(6)
-        self.test_network = self.UCR.get('interfaces/eth0/network')
+        self.test_network = self.ucr.get('interfaces/eth0/network')
         self.test_network_subnet = self.test_network[:self.test_network.rfind('.')]
         self.test_ip_range = [self.test_network_subnet + '.50',
                               self.test_network_subnet + '.70']

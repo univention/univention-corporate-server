@@ -18,7 +18,7 @@ class TestUMCServiceList(object):
         self.username = None
         self.password = None
         self.hostname = None
-        self.Connection = None
+        self.connection = None
 
     def get_ucr_credentials(self):
         """Get credentials from the registry"""
@@ -42,8 +42,8 @@ class TestUMCServiceList(object):
     def create_connection_authenticate(self):
         """Create UMC connection and authenticate"""
         try:
-            self.Connection = UMCConnection(self.hostname)
-            self.Connection.auth(self.username, self.password)
+            self.connection = UMCConnection(self.hostname)
+            self.connection.auth(self.username, self.password)
         except Exception as exc:
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
                        (self.hostname, exc))
@@ -51,7 +51,7 @@ class TestUMCServiceList(object):
     def make_service_query_request(self):
         """Make a service/query request and return result"""
         try:
-            request_result = self.Connection.request('services/query')
+            request_result = self.connection.request('services/query')
             if not request_result:
                 utils.fail("Request 'services/query' failed, hostname %s" %
                            self.hostname)

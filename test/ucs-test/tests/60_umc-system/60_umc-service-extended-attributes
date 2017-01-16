@@ -8,7 +8,7 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
@@ -16,7 +16,7 @@ import univention.testing.udm as udm_test
 import atexit
 
 
-class TestUMCExtendedAttributes(TestUMCSystem):
+class TestUMCExtendedAttributes(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -195,7 +195,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
                                 "objectType": "settings/extended_attribute",
                                 "objectTemplate": "None"}}]
         try:
-            request_result = self.Connection.request('udm/add', options,
+            request_result = self.connection.request('udm/add', options,
                                                      "navigation")
             if not request_result:
                 utils.fail("Request 'udm/add' failed. Response: %r\nRequest options: %r\n"
@@ -245,7 +245,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.ldap_base = self.ucr.get('ldap/base')
 
         test_username = 'umc_test_user_' + random_username(6)
         test_attribute_name = 'umc_test_attribute_' + random_username(6)

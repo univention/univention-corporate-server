@@ -13,11 +13,11 @@ import os
 import sys
 
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 import univention.testing.utils as utils
 
 
-class TestUMCDomainJoinModule(TestUMCSystem):
+class TestUMCDomainJoinModule(UMCBase):
 
     def link_join_script(self, script_name, path):
         """

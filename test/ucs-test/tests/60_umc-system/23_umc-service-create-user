@@ -10,13 +10,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
+from umc import UMCBase
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
 
-class TestUMCUserCreation(TestUMCSystem):
+class TestUMCUserCreation(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -29,7 +29,7 @@ class TestUMCUserCreation(TestUMCSystem):
         """
         options = ["uid=" + uid + ",cn=users," + self.ldap_base]
         try:
-            request_result = self.Connection.request('udm/get', options,
+            request_result = self.connection.request('udm/get', options,
                                                      'users/user')
             if not request_result:
                 utils.fail("Request 'udm/get' with options '%s' failed, "
@@ -51,7 +51,7 @@ class TestUMCUserCreation(TestUMCSystem):
                                        ",cn=users," + self.ldap_base},
                                "options": {}}]
         try:
-            request_result = self.Connection.request('udm/put', options,
+            request_result = self.connection.request('udm/put', options,
                                                      'users/user')
             if not request_result:
                 utils.fail("Request 'udm/put' to change user '%s' groups "
@@ -108,7 +108,7 @@ class TestUMCUserCreation(TestUMCSystem):
                                                          self.ldap_base,
                                            "objectType": "users/user"}}]
         try:
-            request_result = self.Connection.request('udm/add', options,
+            request_result = self.connection.request('udm/add', options,
                                                      'users/user')
             if not request_result:
                 utils.fail("Request 'udm/add' user failed. Response: %r\nRequest options: %r\n"
@@ -126,7 +126,7 @@ class TestUMCUserCreation(TestUMCSystem):
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.ldap_base = self.ucr.get('ldap/base')
 
         test_username = 'umc_test_user_' + random_username(6)
         test_username_admin = test_username + '_admin'
