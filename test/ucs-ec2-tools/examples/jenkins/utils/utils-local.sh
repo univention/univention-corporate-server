@@ -27,8 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ucsschool-fetch-results () {
-	# ucsschool-fetch-results <IP-ADDRESS>
+fetch-results () {
+	# fetch-results <IP-ADDRESS>
 	local ADDR="$1"
 	local TARGETDIR="$2"
 	if [ -n "$TARGETDIR" ] ; then
@@ -39,12 +39,15 @@ ucsschool-fetch-results () {
 	scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:ucs-test.log "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:test-reports "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/management* "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/{join,setup,listener,system-stats,updater}.log" "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater}.log" "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{syslog,auth.log}" "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/connector* "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/samba/* "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/dovecot.log" "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{mail,dovecot,daemon}.log" "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/mail.log" "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/config-registry.replog" config-registry.replog.log
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/apache2/error.log apache2-error.log .
+	#scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/apache2/access.log apache2-access.log .
 }
 
 fetch-coverage () {
@@ -110,8 +113,11 @@ ACTION="$1"
 shift || exit 1
 
 case "$ACTION" in
+	fetch-results)
+		fetch-results "$@"
+		;;
 	ucsschool-fetch-results)
-		ucsschool-fetch-results "$@"
+		fetch-results "$@"
 		;;
 	fetch-coverage)
 		fetch-coverage "$@"
