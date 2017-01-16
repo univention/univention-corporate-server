@@ -12,12 +12,14 @@ sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
 import json
+from ldap.filter import filter_format
 from time import sleep, time, localtime, strftime
 
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
 from univention.testing.umc import UMCConnection
+from univention.testing.ucs_samba import wait_for_drs_replication
 
 
 class TestUMCUserAuthentication(TestUMCSystem):
@@ -190,7 +192,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                dn=self.test_user_dn,
                                userexpiry=expiry_date)
 
-        self.wait_for_samba_replication(self.test_username)
+        wait_for_drs_replication(filter_format('(sAMAccountName=%s)' % (self.test_username,)))
         if self.authenticate_to_umc(self.test_username,
                                     self.test_password_unicode):
             utils.fail("Authentication with an expired user account "
@@ -210,7 +212,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                dn=self.test_user_dn,
                                disabled="all")
 
-        self.wait_for_samba_replication(self.test_username)
+        wait_for_drs_replication(filter_format('(sAMAccountName=%s)' % (self.test_username,)))
         if self.authenticate_to_umc(self.test_username,
                                     self.test_password_unicode):
             utils.fail("Authentication with a deactivated user account "
