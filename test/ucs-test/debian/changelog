@@ -1,3 +1,9 @@
+ucs-test (7.0.7-2) unstable; urgency=medium
+
+  * Bug #43348: move 60-umc_system to 60-umc
+
+ -- Florian Best <best@univention.de>  Mon, 16 Jan 2017 19:27:10 +0100
+
 ucs-test (7.0.7-1) unstable; urgency=medium
 
   * Bug #43312: add test case 10_ldap/91_ldap_constraints

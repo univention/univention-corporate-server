@@ -478,8 +478,7 @@ Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends}
 Provides: ucs-test-module
-Description: Test scripts to test the UMC system modules
- This package includes test-cases for the UMC system modules.
+Description: Transitional package
 
 Package: ucs-test-nfs
 Architecture: all
