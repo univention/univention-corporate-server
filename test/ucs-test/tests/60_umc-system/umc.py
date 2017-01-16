@@ -64,8 +64,6 @@ class UMCBase(object):
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
 			self.connection.auth(self.username, self.password)
-		except Exception as exc:
-			utils.fail("Failed to authenticate, hostname '%s' : %s" % (self.hostname, exc))
 
 	def make_custom_request(self, request_url, options):
 		"""
@@ -77,16 +75,13 @@ class UMCBase(object):
 		"""
 		options = {"options": options}
 		options = json.dumps(options)
-		try:
-			umc_connection = self.connection.get_connection()
-			umc_connection.request('POST', request_url, options, self.connection._headers)
-			request_result = umc_connection.getresponse()
-			request_result = request_result.read()
-			if not request_result:
-				utils.fail("Request '%s' with options '%s' failed, hostname '%s'" % (request_url, options, self.hostname))
-			return json.loads(request_result)
-		except Exception as exc:
-			utils.fail("Exception while making '%s' request: %s" % (request_url, exc))
+		umc_connection = self.connection.get_connection()
+		umc_connection.request('POST', request_url, options, self.connection._headers)
+		request_result = umc_connection.getresponse()
+		request_result = request_result.read()
+		if not request_result:
+			utils.fail("Request '%s' with options '%s' failed, hostname '%s'" % (request_url, options, self.hostname))
+		return json.loads(request_result)
 
 	def make_query_request(self, prefix, options=None, flavor=None):
 		"""
@@ -94,13 +89,10 @@ class UMCBase(object):
 		optional 'flavor' and 'options', returns request result.
 		"""
 		request_result = None
-		try:
-			request_result = self.connection.request(prefix + '/query', options, flavor)
-			if request_result is None:
-				utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
-			return request_result
-		except Exception as exc:
-			utils.fail("Exception while making '%s/query' request: %s" % (prefix, exc))
+		request_result = self.connection.request(prefix + '/query', options, flavor)
+		if request_result is None:
+			utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
+		return request_result
 
 	def make_top_query_request(self):
 		"""Makes a 'top/query' UMC request and returns result"""
@@ -140,23 +132,20 @@ class UMCBase(object):
 
 		options = {"options": options}
 		options = json.dumps(options)
-		try:
-			# defining request explicitly, since UMCConnection raises
-			# Exceptions for anything other than response with status 200
-			umc_connection = self.connection.get_connection()
-			umc_connection.request('POST', '/umcp/command/join/' + request, options, self.connection._headers)
-			request_result = umc_connection.getresponse()
-			request_result = request_result.read()
-			if not request_result:
-				utils.fail("Request 'join/%s' with options '%s' failed, hostname '%s'" % (request, options, self.hostname))
+		# defining request explicitly, since UMCConnection raises
+		# Exceptions for anything other than response with status 200
+		umc_connection = self.connection.get_connection()
+		umc_connection.request('POST', '/umcp/command/join/' + request, options, self.connection._headers)
+		request_result = umc_connection.getresponse()
+		request_result = request_result.read()
+		if not request_result:
+			utils.fail("Request 'join/%s' with options '%s' failed, hostname '%s'" % (request, options, self.hostname))
 
-			request_result = json.loads(request_result)
-			if request_result.get('status') != 202:
-				utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (request, self.hostname, request_result))
-			if not request_result.get('result')['success']:
-				utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (request, request_result, self.hostname))
-		except Exception as exc:
-			utils.fail("Exception while making 'join/%s' request: %s" % (request, exc))
+		request_result = json.loads(request_result)
+		if request_result.get('status') != 202:
+			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (request, self.hostname, request_result))
+		if not request_result.get('result')['success']:
+			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (request, request_result, self.hostname))
 
 	def wait_rejoin_to_complete(self, poll_attempts):
 		"""
@@ -166,14 +155,11 @@ class UMCBase(object):
 		'poll_attempts'. Returns when process is not reported as running.
 		"""
 		for attempt in range(poll_attempts):
-			try:
-				request_result = self.connection.request('join/running')
-				if request_result is None:
-					utils.fail("No response on UMC 'join/running' request")
-				elif request_result is False:
-					return
-			except Exception as exc:
-				utils.fail("Exception while making 'join/running' request: %s" % exc)
+			request_result = self.connection.request('join/running')
+			if request_result is None:
+				utils.fail("No response on UMC 'join/running' request")
+			elif request_result is False:
+				return
 			print "Waiting 10 seconds before next poll request..."
 			sleep(10)
 		utils.fail("Failed to wait for join script(-s) to finish")
@@ -195,13 +181,10 @@ class UMCBase(object):
 		Makes 'umcp/command/udm/' + 'suffix' request with a given
 		'options' and a 'flavor' if any
 		"""
-		try:
-			request_result = self.connection.request('udm/' + suffix, options, flavor)
-			if not request_result:
-				utils.fail("Request 'umcp/command/udm/%s' with options='%s' and flavor='%s' failed, no response or response is empty" % (suffix, options, flavor))
-			return request_result
-		except Exception as exc:
-			utils.fail("Exception while making 'udm/%s' request with options '%s': %s" % (suffix, options, exc))
+		request_result = self.connection.request('udm/' + suffix, options, flavor)
+		if not request_result:
+			utils.fail("Request 'umcp/command/udm/%s' with options='%s' and flavor='%s' failed, no response or response is empty" % (suffix, options, flavor))
+		return request_result
 
 	def create_computer(self, computer_name, ip_address, dns_forward, dns_reverse):
 		"""
@@ -270,39 +253,30 @@ class UMCBase(object):
 			"objectPropertyValue": "",
 			"hidden": True
 		}
-		try:
-			for result in self.make_query_request('udm', options, obj_type):
-				if result['name'] == name:
-					return True
-		except KeyError as exc:
-			utils.fail("KeyError exception while parsing 'udm/query' request result: %s" % exc)
+		for result in self.make_query_request('udm', options, obj_type):
+			if result['name'] == name:
+				return True
 
 	def get_object(self, options, flavor):
 		"""
 		Returns the request result of the 'udm/get' UMC connection,
 		made with provided 'options' and 'flavor'
 		"""
-		try:
-			request_result = self.connection.request('udm/get', options, flavor)
-			if request_result is None:
-				utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
-			return request_result
-		except Exception as exc:
-			utils.fail("Exception while making 'udm/get' request: %s" % exc)
+		request_result = self.connection.request('udm/get', options, flavor)
+		if request_result is None:
+			utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
+		return request_result
 
 	def modify_object(self, options, flavor):
 		"""
 		Modifies the 'flavor' object as given in 'options' by making a
 		UMC request 'udm/put', checks for 'success' in the response
 		"""
-		try:
-			request_result = self.connection.request('udm/put', options, flavor)
-			if not request_result:
-				utils.fail("Request 'udm/put' to modify an object with options '%s' failed, hostname %s" % (options, self.hostname))
-			if not request_result[0].get('success'):
-				utils.fail("Request 'udm/put' to modify an object with options '%s' failed, no success = True in response, hostname %s, response '%s'" % (options, self.hostname, request_result))
-		except Exception as exc:
-			utils.fail("Exception while making 'udm/put' request with options '%s': %s" % (options, exc))
+		request_result = self.connection.request('udm/put', options, flavor)
+		if not request_result:
+			utils.fail("Request 'udm/put' to modify an object with options '%s' failed, hostname %s" % (options, self.hostname))
+		if not request_result[0].get('success'):
+			utils.fail("Request 'udm/put' to modify an object with options '%s' failed, no success = True in response, hostname %s, response '%s'" % (options, self.hostname, request_result))
 
 	def delete_obj(self, name, obj_type, flavor):
 		"""
@@ -332,14 +306,11 @@ class UMCBase(object):
 				"recursive": True
 			}
 		}]
-		try:
-			request_result = self.connection.request('udm/remove', options, flavor)
-			if not request_result:
-				utils.fail("Request 'udm/remove' to delete object with options '%s' failed, hostname %s" % (options, self.hostname))
-			if not request_result[0].get('success'):
-				utils.fail("Request 'udm/remove' to delete object with options '%s' failed, no success = True in response, hostname '%s', response '%s'" % (options, self.hostname, request_result))
-		except Exception as exc:
-			utils.fail("Exception while making 'udm/remove' request: %s" % exc)
+		request_result = self.connection.request('udm/remove', options, flavor)
+		if not request_result:
+			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, hostname %s" % (options, self.hostname))
+		if not request_result[0].get('success'):
+			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, no success = True in response, hostname '%s', response '%s'" % (options, self.hostname, request_result))
 
 	def copy_file(self, src, dst):
 		"""
