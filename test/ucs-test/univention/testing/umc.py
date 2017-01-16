@@ -85,7 +85,7 @@ class UMCTestConnection(UMCConnection):
 			data = {}
 		data = self.build_data(data, flavor)
 		connection = self.get_connection()
-		umcp_command = '/umcp/%s' % command
+		umcp_command = '/univention/%s' % command
 		if url:
 			umcp_command = '%s/%s' % (umcp_command, url)
 		connection = httplib.HTTPSConnection(self._host, timeout=timeout)
