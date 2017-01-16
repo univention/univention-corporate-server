@@ -47,7 +47,7 @@ from json import dumps, loads
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, _
+from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
 
 
@@ -1024,7 +1024,7 @@ class App(object):
 		return packages
 
 	def is_installed(self):
-		if self.docker and not ucr_get('docker/container/uuid'):
+		if self.docker and not container_mode():
 			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version
 		else:
 			if not self.without_repository:
@@ -1174,7 +1174,7 @@ class App(object):
 		'''The application uses a container technology while the system
 		itself runs in a container. Using the application is not
 		supported on this host'''
-		return not self.docker or not ucr_get('docker/container/uuid')
+		return not self.docker or not container_mode()
 
 	@hard_requirement('install', 'upgrade')
 	def must_have_valid_license(self):

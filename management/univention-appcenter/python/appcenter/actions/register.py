@@ -44,7 +44,7 @@ from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_o
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password
+from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password, container_mode
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
 
@@ -101,7 +101,7 @@ class Register(CredentialsAction):
 			ucr_save(updates)
 
 	def _register_component(self, app, server=None, delay=False):
-		if app.docker and not ucr_get('docker/container/uuid'):
+		if app.docker and not container_mode():
 			self.log('Component needs to be registered in the container')
 			return {}
 		if app.without_repository:

@@ -76,7 +76,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from univention.appcenter.utils import app_ports, gpg_verify
+from univention.appcenter.utils import app_ports, gpg_verify, container_mode
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
@@ -1056,7 +1056,7 @@ class Application(object):
 
 	@HardRequirement('install', 'update')
 	def must_not_be_docker_in_docker(self):
-		return not self.get('docker') or not ucr.get('docker/container/uuid')
+		return not self.get('docker') or not container_mode()
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
@@ -1258,7 +1258,7 @@ class Application(object):
 		return packages
 
 	def is_installed(self, package_manager, strict=True):
-		if self.get('dockerimage') and not ucr.get('docker/container/uuid'):
+		if self.get('dockerimage') and not container_mode():
 			return ucr.get('appcenter/apps/%s/status' % self.id) in ['installed', 'stalled'] and ucr.get('appcenter/apps/%s/version' % self.id) == self.version
 		default_packages = self.get_packages()
 		if strict:
