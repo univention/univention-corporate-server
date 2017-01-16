@@ -97,6 +97,8 @@ def docker_is_running():
 
 
 def app_ports():
+	'''Returns a list for ports of an App:
+	[(app_id, container_port, host_port), ...]'''
 	ret = []
 	for key in ucr_keys():
 		match = re.match(r'^appcenter/apps/(.*)/ports/(\d*)', key)
@@ -106,6 +108,17 @@ def app_ports():
 			except ValueError:
 				pass
 	return sorted(ret)
+
+
+def app_ports_with_protocol():
+	'''Returns a list for ports of an App:
+	[(app_id, container_port, host_port, protocol), ...]'''
+	ret = []
+	for app_id, container_port, host_port in app_ports():
+		protocol = ucr_get('appcenter/apps/%s/ports/%s/protocol' % (app_id, container_port), 'tcp')
+		for proto in protocol.split(', '):
+			ret.append((app_id, container_port, host_port, proto))
+	return ret
 
 
 class NoMorePorts(Exception):
@@ -356,11 +369,13 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 def get_local_fqdn():
 	return '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 
+
 def get_server():
 	server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
 	if not server.startswith('http'):
 		server = 'https://%s' % server
 	return server
+
 
 def send_information(action, app, status):
 	logger = get_base_logger().getChild('utils')
@@ -387,4 +402,3 @@ def send_information(action, app, status):
 		urlopen(request)
 	except Exception as exc:
 		logger.info('Error sending app infos to the App Center server: %s', exc)
-

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-33) unstable; urgency=medium
+
+  * Bug #43108: Support UDP ports for Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Jan 2017 10:42:21 +0100
+
 univention-appcenter (5.0.23-32) unstable; urgency=medium
 
   * Bug #40102: fix minor typo
