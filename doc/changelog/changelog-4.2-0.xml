@@ -109,7 +109,7 @@
 						The configuration <property>add_content_acl</property> has been enabled (<u:bug>41797</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						The overlay module <property>constraint<property> has been enabled.
+						The overlay module <property>constraint</property> has been enabled.
 						Security restrictions for the attributes <property>uidNumber</property> and <property>gidNumber</property> has been added (<u:bug>43312</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
