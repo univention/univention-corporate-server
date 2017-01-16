@@ -12,6 +12,7 @@ if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true(
 	print "moduleload\tppolicy.so"
 if configRegistry.is_true('ldap/shadowbind', True):
 	print 'moduleload\tshadowbind.so'
+print 'moduleload constraint.so'
 
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
@@ -124,4 +125,9 @@ elif configRegistry['ldap/server/type'] == "slave":
 
 directory	"/var/lib/univention-ldap/ldap"
 lastmod		on
+
 add_content_acl on
+
+overlay constraint
+constraint_attribute uidNumber regex ^[^0]+\d*$
+constraint_attribute gidNumber regex ^[^0]+\d*$
