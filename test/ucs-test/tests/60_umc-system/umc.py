@@ -55,7 +55,7 @@ class UMCBase(object):
 		self.username = self.username.split(',')[0][len('uid='):]
 
 	def request(self, *args, **kwargs):
-		self.connection.request(*args, **kwargs)
+		return self.connection.request(*args, **kwargs)
 
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
@@ -67,35 +67,6 @@ class UMCBase(object):
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
 			self.connection.auth(self.username, self.password)
-
-	def wait_rejoin_to_complete(self, poll_attempts):
-		"""
-		Polls the join process via UMC 'join/running' request to make
-		sure joining is still going on, sleeps 10 secs after every poll
-		attempt, fails in case process still going after the given
-		'poll_attempts'. Returns when process is not reported as running.
-		"""
-		for attempt in range(poll_attempts):
-			request_result = self.connection.request('join/running')
-			if request_result is None:
-				utils.fail("No response on UMC 'join/running' request")
-			elif request_result is False:
-				return
-			print "Waiting 10 seconds before next poll request..."
-			sleep(10)
-		utils.fail("Failed to wait for join script(-s) to finish")
-
-	def check_service_presence(self, request_result, service_name):
-		"""
-		Check if the service with 'service_name' was listed in the response
-		'request_result'. Returns 'missing software' code 137 when missing.
-		"""
-		for result in request_result:
-			if result['service'] == service_name:
-				break
-		else:
-			print("The '%s' service is missing in the UMC response: %s" % (service_name, request_result))
-			sys.exit(TestCodes.REASON_INSTALL)
 
 	def get_translation(self, obj_type, obj_name):
 		"""
@@ -195,32 +166,6 @@ class UMCBase(object):
 		if not request_result[0].get('success'):
 			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, no success = True in response, hostname '%s', response '%s'" % (options, self.hostname, request_result))
 
-	def copy_file(self, src, dst):
-		"""
-		Makes a copy of the 'src' file to 'dst' file if 'src' exists
-		"""
-		try:
-			if os.path.exists(src):
-				shutil.copy2(src, dst)
-				if not os.path.exists(dst):
-					utils.fail("The 'shutil' did not copy file '%s' to '%s'" % (src, dst))
-			else:
-				utils.fail("Failed to find the file at the provided " "path '%s'" % src)
-		except (OSError, shutil.Error) as exc:
-			utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
-
-	def delete_file(self, path):
-		"""
-		Checks if 'path' file exists and deletes it
-		"""
-		try:
-			if os.path.exists(path):
-				os.remove(path)
-			else:
-				print("Failed to find the file at the provided path '%s'" % path)
-		except OSError as exc:
-			utils.fail("An exception occured while deleting a file located at '%s': '%s'" % (path, exc))
-
 	def return_code_result_skip(self):
 		"""Method to stop the test with the code 77, RESULT_SKIP """
 		sys.exit(TestCodes.RESULT_SKIP)
@@ -230,6 +175,18 @@ class ServiceModule(UMCBase):
 
 	def query(self):
 		return self.request('services/query')
+
+	def check_service_presence(self, request_result, service_name):
+		"""
+		Check if the service with 'service_name' was listed in the response
+		'request_result'. Returns 'missing software' code 137 when missing.
+		"""
+		for result in request_result:
+			if result['service'] == service_name:
+				break
+		else:
+			print("The '%s' service is missing in the UMC response: %s" % (service_name, request_result))
+			sys.exit(TestCodes.REASON_INSTALL)
 
 
 class TopModule(UMCBase):
@@ -275,6 +232,49 @@ class JoinModule(UMCBase):
 			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (path, self.hostname, request_result))
 		if not request_result.get('result')['success']:
 			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, request_result, self.hostname))
+
+	def wait_rejoin_to_complete(self, poll_attempts):
+		"""
+		Polls the join process via UMC 'join/running' request to make
+		sure joining is still going on, sleeps 10 secs after every poll
+		attempt, fails in case process still going after the given
+		'poll_attempts'. Returns when process is not reported as running.
+		"""
+		for attempt in range(poll_attempts):
+			request_result = self.connection.request('join/running')
+			if request_result is None:
+				utils.fail("No response on UMC 'join/running' request")
+			elif request_result is False:
+				return
+			print "Waiting 10 seconds before next poll request..."
+			sleep(10)
+		utils.fail("Failed to wait for join script(-s) to finish")
+
+	def copy_file(self, src, dst):
+		"""
+		Makes a copy of the 'src' file to 'dst' file if 'src' exists
+		"""
+		try:
+			if os.path.exists(src):
+				shutil.copy2(src, dst)
+				if not os.path.exists(dst):
+					utils.fail("The 'shutil' did not copy file '%s' to '%s'" % (src, dst))
+			else:
+				utils.fail("Failed to find the file at the provided " "path '%s'" % src)
+		except (OSError, shutil.Error) as exc:
+			utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
+
+	def delete_file(self, path):
+		"""
+		Checks if 'path' file exists and deletes it
+		"""
+		try:
+			if os.path.exists(path):
+				os.remove(path)
+			else:
+				print("Failed to find the file at the provided path '%s'" % path)
+		except OSError as exc:
+			utils.fail("An exception occured while deleting a file located at '%s': '%s'" % (path, exc))
 
 
 class UDMModule(UMCBase):
