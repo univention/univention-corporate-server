@@ -20,7 +20,7 @@ setup () {
 	udm-test dhcp/pool create \
 		--superordinate "cn=$NET,cn=$name,$BASE" \
 		--set name="pool" \
-		--set range="${NET%.0}.2 ${NET%.}.253"
+		--set range="${NET%.0}.2 ${NET%.0}.253"
 
 	udm-test policies/dhcp_routing create \
 		--position "cn=$name,$BASE" \
