@@ -49,7 +49,7 @@ from urllib2 import quote, Request, HTTPError
 
 from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
-from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify
+from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode
 from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
 
 
@@ -264,6 +264,9 @@ class Update(UniventionAppAction):
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
+		if container_mode():
+			self.debug('do not update files in container mode...')
+			return
 		update_files = {
 			'inst': lambda x: self._get_joinscript_path(x, unjoin=False),
 			'schema': lambda x: x.get_share_file('schema'),

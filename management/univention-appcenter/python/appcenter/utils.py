@@ -376,6 +376,9 @@ def get_server():
 		server = 'https://%s' % server
 	return server
 
+def container_mode():
+	''' returns True if this system is an container '''
+	return bool(ucr_get('docker/container/uuid'))
 
 def send_information(action, app, status):
 	logger = get_base_logger().getChild('utils')

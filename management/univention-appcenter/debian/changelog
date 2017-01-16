@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-34) unstable; urgency=low
+
+  * Bug #42934: added container_mode, ignore _update_local_files
+    in container_mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Jan 2017 14:33:30 +0100
+
 univention-appcenter (5.0.23-33) unstable; urgency=medium
 
   * Bug #43108: Support UDP ports for Docker Apps
