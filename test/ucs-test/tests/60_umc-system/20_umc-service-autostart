@@ -5,13 +5,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import ServiceModule
 
 from univention.config_registry.frontend import ucr_update
 import univention.testing.utils as utils
 
 
-class TestUMCServiceAutostart(UMCBase):
+class TestUMCServiceAutostart(ServiceModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -117,8 +117,7 @@ class TestUMCServiceAutostart(UMCBase):
         self.get_ucr_credentials()
         self.create_connection_authenticate()
 
-        self.check_service_presence(self.make_service_query_request(),
-                                    service_name)
+        self.check_service_presence(self.query(), service_name)
         try:
             self.check_service_autostart_possibilities(service_name)
         finally:

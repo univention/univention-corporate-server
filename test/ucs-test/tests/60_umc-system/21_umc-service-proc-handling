@@ -5,13 +5,13 @@
 
 import sys
 sys.path.insert(0, '.')
-from umc import UMCBase
+from umc import ServiceModule
 
 import subprocess
 import univention.testing.utils as utils
 
 
-class TestUMCServiceProcessHandling(UMCBase):
+class TestUMCServiceProcessHandling(ServiceModule):
 
     def __init__(self, service_name):
         """Test Class constructor"""
@@ -50,7 +50,7 @@ class TestUMCServiceProcessHandling(UMCBase):
         Get the current state for provided 'service_name' by making
         'services/query' UMC request and returning 'isRunning' field value
         """
-        request_result = self.make_service_query_request()
+        request_result = self.query()
         for result in request_result:
             try:
                 if result['service'] == self.service_name:
@@ -223,7 +223,7 @@ class TestUMCServiceProcessHandling(UMCBase):
         self.get_ucr_credentials()
         self.create_connection_authenticate()
 
-        initial_state = self.make_service_query_request()
+        initial_state = self.query()
         self.check_service_presence(initial_state, self.service_name)
         for result in initial_state:
             try:

@@ -90,10 +90,6 @@ class UMCBase(object):
 			utils.fail("Request '%s/query' failed, no result, hostname %s" % (prefix, self.hostname))
 		return request_result
 
-	def make_service_query_request(self):
-		"""Makes a 'services/query' UMC request and returns result"""
-		return self.make_query_request('services')
-
 	def wait_rejoin_to_complete(self, poll_attempts):
 		"""
 		Polls the join process via UMC 'join/running' request to make
@@ -291,7 +287,9 @@ class UMCBase(object):
 
 
 class ServiceModule(UMCBase):
-	pass
+
+	def query(self):
+		return self.request('services/query')
 
 
 class TopModule(UMCBase):
