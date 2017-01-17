@@ -95,6 +95,7 @@ define([
 		isSubPage: false,
 
 		appCenterInformation: _('<p>Univention App Center is designed for easy and comfortable administration of Apps. It uses online services provided by Univention, for example, for downloading Apps, descriptions or graphics, or for the search function.</p><p>By using Univention App Center, you agree that the data transferred to Univention, such as requirements for downloading software or search queries, will be stored together with a unique identification of your system and evaluated by Univention for market research purposes.</p><p>When installing and uninstalling some Apps, the App provider will be notified of the operation. The e-mail address used to activate the system is transferred to the provider. Furthermore, no transfer of personal or individually assignable data is made to third parties.</p>'),
+		appCenterInformationReadAgain: _('<p><b>Note:</b> This information has been updated. Please read it again.</p>'),
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
