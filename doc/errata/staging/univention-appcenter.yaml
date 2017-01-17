@@ -12,4 +12,4 @@ desc: |
    copied to the system.
  * The initial information dialog about usage of email address and user data
    has been updated.
-bug: [40102, 43108, 42934, 43261]
+bug: [43363, 43108, 42934, 43261]
