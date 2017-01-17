@@ -1,3 +1,9 @@
+univention-ldap (13.0.3-2) unstable; urgency=medium
+
+  * Bug #43312: fix regex in constraint
+
+ -- Florian Best <best@univention.de>  Tue, 17 Jan 2017 13:42:37 +0100
+
 univention-ldap (13.0.3-1) unstable; urgency=medium
 
   * Bug #43312: add constraint for value=0 on attribute uidNumber / gidNumber

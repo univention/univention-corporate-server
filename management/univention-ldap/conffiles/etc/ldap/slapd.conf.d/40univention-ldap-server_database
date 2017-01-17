@@ -129,5 +129,5 @@ lastmod		on
 add_content_acl on
 
 overlay constraint
-constraint_attribute uidNumber regex ^[^0]+\d*$
-constraint_attribute gidNumber regex ^[^0]+\d*$
+constraint_attribute uidNumber regex ^[^0]+[0-9]*$
+constraint_attribute gidNumber regex ^[^0]+[0-9]*$
