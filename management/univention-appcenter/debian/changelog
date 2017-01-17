@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-35) unstable; urgency=medium
+
+  * Bug #43261: adjust App Center info text for first usage
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jan 2017 15:53:39 +0100
+
 univention-appcenter (5.0.23-34) unstable; urgency=low
 
   * Bug #42934: added container_mode, ignore _update_local_files

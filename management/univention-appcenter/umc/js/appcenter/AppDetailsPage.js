@@ -94,17 +94,7 @@ define([
 		configDialog: null,
 		isSubPage: false,
 
-		appCenterInformation:
-			'<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
-			'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
-			'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
-				'<ul>' +
-					'<li>' + _('Name of the installed application') + '</li>' +
-					'<li>' + _('Registered email address') + '</li>' +
-				'</ul>' +
-			_('The description of every application includes a respective indication for such cases.') + '</p>' +
-			'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Core Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
-			'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>',
+		appCenterInformation: _('<p>Univention App Center is designed for easy and comfortable administration of Apps. It uses online services provided by Univention, for example, for downloading Apps, descriptions or graphics, or for the search function.</p><p>By using Univention App Center, you agree that the data transferred to Univention, such as requirements for downloading software or search queries, will be stored together with a unique identification of your system and evaluated by Univention for market research purposes.</p><p>When installing and uninstalling some Apps, the App provider will be notified of the operation. The e-mail address used to activate the system is transferred to the provider. Furthermore, no transfer of personal or individually assignable data is made to third parties.</p>'),
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
