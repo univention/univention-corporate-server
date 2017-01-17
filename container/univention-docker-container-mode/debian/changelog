@@ -1,3 +1,9 @@
+univention-docker-container-mode (2.0.0-11) unstable; urgency=medium
+
+  * Bug #43324: Fix UCR restoration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Jan 2017 14:21:47 +0100
+
 univention-docker-container-mode (2.0.0-10) unstable; urgency=low
 
   * Bug #43177: install package updates update_app_version
