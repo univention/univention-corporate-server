@@ -10,4 +10,6 @@ desc: |
  * Docker Apps now support UDP ports to be opened.
  * In case the App Center runs in container mode, join scripts etc. are not
    copied to the system.
-bug: [40102, 43108, 42934]
+ * The initial information dialog about usage of email address and user data
+   has been updated.
+bug: [40102, 43108, 42934, 43261]
