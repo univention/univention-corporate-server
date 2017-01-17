@@ -1213,7 +1213,7 @@ define([
 
 			if (serverRole != 'domaincontroller_master') {
 				// hide entries that need to install packages on the DC master
-				query.defaultpackagesmaster = {
+				query.default_packages_master = {
 					test: function(val) {
 						return !val.length;
 					}
@@ -1221,7 +1221,7 @@ define([
 			}
 
 			if (this._isAdMember()) {
-				query.admemberissuehide = {
+				query.ad_member_issue_hide = {
 					test: function(val) {
 						return !val;
 					}
