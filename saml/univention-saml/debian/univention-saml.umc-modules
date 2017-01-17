@@ -1,4 +1,2 @@
-Module: umc-core
-Category: none
+Module: saml
 Definition: umc/saml-serviceprovider.xml
-Icons: umc/icons
