@@ -620,6 +620,11 @@
 			<listitem><simpara>
 				Renaming objects into names containing a comma is now possible (<u:bug>43332</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The generation of the maintenance script to remove obsolete files form a local repository has been fixed:
+				It no longer removes the cryptographic signatures of the updater scripts and <filename class="directory">dists/</filename> directories required for network installation (<u:bug>39582</u:bug>).
+				It also uses the correct path to remove obsolete packages (<u:bug>28048</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
