@@ -32,6 +32,7 @@ Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive
 Variables: ldap/server/port
 Variables: squid/ntlmauth/tool
+Variables: squid/ntlmauth/cache/timeout
 Variables: squid/krb5auth/tool
 Variables: squid/append_domain
 Variables: squid/auth/allowed_groups

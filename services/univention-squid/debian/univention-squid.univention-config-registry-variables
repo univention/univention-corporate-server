@@ -118,6 +118,12 @@ Description[en]=The program used by Squid for NTLM authentication. If the variab
 Type=str
 Categories=service-webproxy
 
+[squid/ntlmauth/cache/timeout]
+Description[de]=Gültigkeitsdauer für Einträge im NTLM-Passwort-Cache in Sekunden. Standard ist 60.
+Description[en]=Lifetime of entries in NTLM password cache in seconds. Default is 60.
+Type=int
+Categories=service-webproxy
+
 [squid/krb5auth/tool]
 Description[de]=Das von Squid für die Kerberos-Authentifizierung verwendete Programm. Ist die Variable nicht gesetzt, wird '/usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm' verwendet. Diese Einstellung sollte in der Regel nicht verändert werden.
 Description[en]=The program used by Squid for Kerberos authentication. If the variable is unset, '/usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm' is used. This setting should usually not be modified.
