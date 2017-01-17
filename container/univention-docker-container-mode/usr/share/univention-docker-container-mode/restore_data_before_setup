@@ -87,12 +87,11 @@ def restore_ucr_layer(ucr_file, options):
 	f = open(ucr_file, "r")
 	vv = []
 	for v in f.readlines():
-		v = v.strip()
-		if not v or v.startswith('#'):
+		if v.startswith('#') or ': ' not in v:
 			continue
-		key, value = v.split(':', 1)
+		key, value = v.split(': ', 1)
 		if key not in BLACKLIST_UCR_VARIABLES:
-			vv.append('%s=%s' % (key, value))
+			vv.append('%s=%s' % (key, value.strip()))
 	if vv:
 		print vv
 		univention.config_registry.handler_set(vv, opts=options)
