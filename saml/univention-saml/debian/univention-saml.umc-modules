@@ -1,2 +1,4 @@
-Module: saml
+Module: udm-saml
 Definition: umc/saml-serviceprovider.xml
+Python: umc/python
+Javascript: umc/js
