@@ -55,7 +55,7 @@ import dns.reversename
 import dns.exception
 
 from univention.appcenter import AppManager
-from univention.appcenter.actions import get_action
+from univention.appcenter.actions.get import Get
 from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
@@ -762,8 +762,7 @@ def get_apps(no_cache=False):
 	global _apps
 	if _apps and not no_cache:
 		return _apps
-	domain = get_action('domain')
-	_apps = domain.to_dict([app for app in AppManager.get_all_apps() if app.is_ucs_component()])
+	_apps = [Get.to_dict(app) for app in AppManager.get_all_apps() if app.is_ucs_component()]
 	return _apps
 
 

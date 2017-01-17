@@ -1,3 +1,9 @@
+univention-system-setup (10.0.2-4) unstable; urgency=medium
+
+  * Bug #40102: don't query whole domain for apps during setup
+
+ -- Eduard Mai <mai@univention.de>  Tue, 17 Jan 2017 15:55:15 +0100
+
 univention-system-setup (10.0.2-3) unstable; urgency=medium
 
   * Bug #40102: remove dead code, add explicit build dependency to
