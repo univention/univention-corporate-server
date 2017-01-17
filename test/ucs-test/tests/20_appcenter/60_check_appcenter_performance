@@ -1,13 +1,12 @@
 #!/usr/share/ucs-test/runner python
 ## desc: |
 ##  Check the performance for requests against the UMC appcenter.
-##  Set to SKIP because of known bug: 39632
 ## bugs: [38545, 39632]
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
-## tags: [appcenter, performance, SKIP]
+## tags: [appcenter, performance]
 
 import univention.lib.umc_connection as UMCC
 import univention.testing.utils as utils
@@ -21,9 +20,9 @@ def main():
 	appcenter_update.call()
 
 	print("Appcenter update done")
-	max_time = 5
+	max_time = 3
 	account = utils.UCSTestDomainAdminCredentials()
-	request_query = ('appcenter/query', {}, )
+	request_query = ('appcenter/query', { 'quick': True }, )
 
 	print("Getting umc_connection")
 	c = UMCC.UMCConnection('localhost')
