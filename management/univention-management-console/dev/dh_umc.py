@@ -184,7 +184,9 @@ class UMC_Module(dict):
 		except KeyError:
 			return
 		for lang in LANGUAGES:
-			yield os.path.join(path, '%s.po' % lang)
+			path = os.path.join(path, '%s.po' % lang)
+			if os.path.exists(path):
+				yield path
 
 	@property
 	def js_po_files(self):
@@ -194,7 +196,9 @@ class UMC_Module(dict):
 		except KeyError:
 			return
 		for lang in LANGUAGES:
-			yield os.path.join(path, '%s.po' % lang)
+			path = os.path.join(path, '%s.po' % lang)
+			if os.path.exists(path):
+				yield path
 
 	@property
 	def xml_po_files(self):
@@ -203,7 +207,9 @@ class UMC_Module(dict):
 			return
 		dirpath = os.path.dirname(self.xml_definition)
 		for lang in LANGUAGES:
-			yield (lang, os.path.join(dirpath, '%s.po' % lang))
+			path = os.path.join(dirpath, '%s.po' % lang)
+			if os.path.exists(path):
+				yield (lang, path)
 
 	@property
 	def icons(self):
@@ -296,18 +302,22 @@ def create_po_file(po_file, package, files, language='python'):
 		os.unlink(message_po)
 	if isinstance(files, basestring):
 		files = [files]
-	if dh_ucs.doIt('xgettext',
-			'--force-po',
-			'--add-comments=i18n',
-			'--from-code=UTF-8',
-			'--sort-output',
-			'--package-name=%s' % package,
-			'--msgid-bugs-address=packages@univention.de',
-			'--copyright-holder=Univention GmbH',
-			'--language', language,
-			'-o', message_po,
-			*files):
-		raise Error('xgettext failed for the files: %r' % (files,))
+	xgettext = dh_ucs.doIt(
+		'xgettext',
+		'--force-po',
+		'--add-comments=i18n',
+		'--from-code=UTF-8',
+		'--sort-output',
+		'--package-name=%s' % package,
+		'--msgid-bugs-address=packages@univention.de',
+		'--copyright-holder=Univention GmbH',
+		'--language', language,
+		'-o', message_po,
+		*files
+	)
+	if xgettext:
+		raise Error('xgettext failed for the files: %r' % (list(files),))
+
 	po = polib.pofile(message_po)
 	po.header = PO_HEADER
 	po.metadata['Content-Type'] = 'text/plain; charset=UTF-8'
@@ -317,6 +327,7 @@ def create_po_file(po_file, package, files, language='python'):
 		except ValueError:
 			pass
 	po.save()
+
 	if os.path.isfile(po_file):
 		try:
 			if dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po):

@@ -1,3 +1,9 @@
+univention-management-console (9.0.15-1) unstable; urgency=medium
+
+  * Bug #42220: check if translation file exists
+
+ -- Florian Best <best@univention.de>  Tue, 17 Jan 2017 11:09:32 +0100
+
 univention-management-console (9.0.14-1) unstable; urgency=medium
 
   * Bug #42114: make it possible to define required commands for a
