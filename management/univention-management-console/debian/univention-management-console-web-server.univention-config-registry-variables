@@ -69,3 +69,9 @@ Description[de]=Definiert die maximale Größe einer HTTP-Anfrage an den UMC-Web
 Description[en]=Defines the maximum size in bytes of a HTTP request against the UMC-Webserver (default: 104857600).
 Type=int
 Categories=management-umc
+
+[umc/http/content-security-policy/.*]
+Description[en]=Defines the Content-Security-Policy header of all UMC HTTP responses. Possible subvariables are default-src, script-src, object-src, style-src, img-src, media-src, frame-src, child-src, font-src, connect-src, form-action, frame-ancestors.
+Description[de]=Definiert den Content-Security-Policy Header von allen UMC HTTP Antworten. Mögliche Untervariablen sind default-src, script-src, object-src, style-src, img-src, media-src, frame-src, child-src, font-src, connect-src, form-action, frame-ancestors.
+Type=str
+Categories=management-umc
