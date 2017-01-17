@@ -154,6 +154,10 @@
 				<listitem><simpara>
 						The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/http/autostart</envar> (<u:bug>42340</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Various security improvements have been done to guard against Cross Site Request Forgery (XSRF), Cross Site Scripting (XSS) and Clickjacking attacks.
+					The HTTP response header <property>X-Frame-Options</property>, <property>Content-Security-Policy</property>, <property>X-Content-Type-Options</property>, <property>X-XSS-Protection</property> and <property>X-Permitted-Cross-Domain-Policies</property> are now set by default (<u:bug>39733</u:bug>, <u:bug>39731</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
