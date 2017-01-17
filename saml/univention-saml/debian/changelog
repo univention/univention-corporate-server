@@ -1,4 +1,4 @@
-univention-saml (4.0.1-2) unstable; urgency=medium
+univention-saml (4.0.2-1) unstable; urgency=medium
 
   * Bug #43349: fix UMC module definition
 
