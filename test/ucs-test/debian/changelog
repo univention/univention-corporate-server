@@ -1,3 +1,9 @@
+ucs-test (7.0.8-3) unstable; urgency=medium
+
+  * Bug #40115: add 67_app_installation_fails_with_missing_package
+
+ -- Florian Best <best@univention.de>  Wed, 18 Jan 2017 17:45:37 +0100
+
 ucs-test (7.0.8-2) unstable; urgency=medium
 
   * 41933: skip broken test 00 in 85_ucs-translation-template
