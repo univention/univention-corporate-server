@@ -1,3 +1,9 @@
+univention-portal (0.4) unstable; urgency=medium
+
+  * Bug #42233: bump
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 18 Jan 2017 19:02:25 +0100
+
 univention-portal (0.3) unstable; urgency=medium
 
   * Bug #42233: use stylus for css
