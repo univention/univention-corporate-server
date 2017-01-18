@@ -1,3 +1,9 @@
+univention-kernel-image-signed (2.0.0-10) unstable; urgency=low
+
+  * Bug #42754: Update to linux-4.1.37-ucs218
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2017 13:44:05 +0100
+
 univention-kernel-image-signed (2.0.0-9) unstable; urgency=low
 
   * Bug #42754: Update to linux-4.1.36-ucs217
