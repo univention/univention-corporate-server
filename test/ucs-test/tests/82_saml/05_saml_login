@@ -8,19 +8,20 @@
 ## tags:
 ##  - skip_admember
 
-import samltest as samllogin
+import samltest
 import univention.testing.utils as utils
 
 
 def main():
 	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
 	try:
-		cookies = samllogin.login_with_new_session_at_IdP(account.username, account.bindpw)
-		samllogin.test_login(cookies)
-		cookies = samllogin.logout_at_IdP(cookies)
-		cookies = samllogin.test_logout_at_IdP(cookies)
-		samllogin.test_logout(cookies)
-	except samllogin.SamlError as exc:
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
+		SamlSession.logout_at_IdP()
+		SamlSession.test_logout_at_IdP()
+		SamlSession.test_logout()
+	except samltest.SamlError as exc:
 		utils.fail(exc.message)
 
 
