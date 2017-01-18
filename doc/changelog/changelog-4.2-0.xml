@@ -598,6 +598,9 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				All packages have been updated to no longer depend on deprecated packages and features (<u:bug>42183</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				<command>ucslint</command> check for missing quoting in function local variable assignments (<u:bug>41926</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
