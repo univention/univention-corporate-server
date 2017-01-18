@@ -41,6 +41,8 @@ define([
 		searchableAttributes: null,
 
 		postMixInProperties: function() {
+			this.inherited(arguments);
+
 			var _searchableAttributes = ['name', 'description', 'categories', 'keywords'];
 			this.searchableAttributes = this.searchableAttributes || _searchableAttributes;
 		},

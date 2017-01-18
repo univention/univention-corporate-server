@@ -36,7 +36,7 @@ define([
 	"dojo/store/Observable",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
-	"portal/PortalGallery",
+	"./PortalGallery",
 ], function(declare, domClass, domQuery, Memory, Observable, Text, ContainerWidget, PortalGallery) {
 	return declare("PortalCategory", [ContainerWidget], {
 		baseClass: 'portalCategory',

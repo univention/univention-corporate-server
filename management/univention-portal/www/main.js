@@ -37,8 +37,8 @@ define([
 	"dojo/dom-class",
 	"dojo/promise/all",
 	"umc/tools",
-	"portal/PortalCategory",
-	"portal/PortalLiveSearchSideBar",
+	"./PortalCategory",
+	"./PortalLiveSearchSideBar",
 	"put-selector/put"
 ], function(declare, lang, array, on, mouse, domClass, all, tools, PortalCategory, PortalLiveSearchSideBar, put) {
 	return {

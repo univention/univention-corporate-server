@@ -74,19 +74,20 @@ define([
 		renderRow: function(item) {
 			var div = this.inherited(arguments);
 
-			put(div, 'div.boxShadow.bl div.hoverBackground << div.boxShadow.tr div.hoverBackground');
+			var innerDiv = put(div, 'a[href=$]', this._getWebInterfaceUrl(item));
+			put(innerDiv, 'div.boxShadow.bl div.hoverBackground << div.boxShadow.tr div.hoverBackground');
 
 			// clone the old node to remove eventListeners
 			var _appInnerWrapper = div.querySelector('.appInnerWrapper');
 			appInnerWrapper = dojo.clone(_appInnerWrapper);
 			dojo.destroy(_appInnerWrapper);
 
-			put(div, appInnerWrapper.querySelector('.appIcon'));
+			put(innerDiv, appInnerWrapper.querySelector('.appIcon'));
 			put(appInnerWrapper.querySelector('.border'), '!');
 			put(appInnerWrapper.querySelector('.umcGalleryVendor'), '!');
 			put(appInnerWrapper.querySelector('.umcGalleryName'), '+ div.umcGalleryHost', item.host_name);
 			put(appInnerWrapper, 'div.contentWrapper', appInnerWrapper.querySelector('.appContent'), '+', appInnerWrapper.querySelector('.appHover'));
-			put(div, 'a[href=$]', this._getWebInterfaceUrl(item), appInnerWrapper);
+			put(innerDiv, appInnerWrapper);
 
 			on(div, mouse.enter, function() {
 				domClass.add(div, 'hover');

@@ -1,3 +1,9 @@
+univention-portal (0.3) unstable; urgency=medium
+
+  * Bug #42233: use stylus for css
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 18 Jan 2017 18:30:02 +0100
+
 univention-portal (0.2) unstable; urgency=medium
 
   * Bug #42228: implement univention portal
