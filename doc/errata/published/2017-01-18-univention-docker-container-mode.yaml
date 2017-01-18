@@ -11,3 +11,5 @@ desc: |
  * Install package updates when updating the app.
  * Restoring UCR after an image exchange has been fixed.
 bug: [42923, 43177, 43324]
+erratum: 378
+announced: 2017-01-18
