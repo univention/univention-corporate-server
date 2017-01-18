@@ -11,3 +11,5 @@ desc: |
  * In case the App Center runs in container mode, join scripts etc. are not
    copied to the system.
 bug: [43363, 43108, 42934]
+erratum: 377
+announced: 2017-01-18
