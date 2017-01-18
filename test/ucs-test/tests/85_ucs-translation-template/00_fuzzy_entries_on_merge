@@ -4,12 +4,11 @@
 ##  Does univention-ucs-translation-merge create fuzzy entries correctly when
 ##  merging into an existing translation?
 ## bugs: [41223]
-## tags: [translation-template, skip_admember]
+## tags: [WIP, translation-template, skip_admember]
 ## roles:
 ##  - domaincontroller_master
 ## versions:
 ##  4.1-2: found
-##  4.1-2: fixed
 ## exposure: safe
 ## packages:
 ##   - univention-ucs-translation-template

@@ -1,3 +1,9 @@
+ucs-test (7.0.8-2) unstable; urgency=medium
+
+  * 41933: skip broken test 00 in 85_ucs-translation-template
+
+ -- Eduard Mai <mai@univention.de>  Wed, 18 Jan 2017 16:55:11 +0100
+
 ucs-test (7.0.8-1) unstable; urgency=medium
 
   * Bug #43312: handle constraint violation
