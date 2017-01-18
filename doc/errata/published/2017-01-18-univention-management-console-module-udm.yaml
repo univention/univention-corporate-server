@@ -9,3 +9,5 @@ desc: |
  * An error was fixed that prevented syntax classes which were set via UCR to
    be used with a ComboBox widget.
 bug: [43094]
+erratum: 376
+announced: 2017-01-18
