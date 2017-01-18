@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * An issue with renaming windows clients has been fixed.
 bug: [43321]
+erratum: 379
+announced: 2017-01-18
