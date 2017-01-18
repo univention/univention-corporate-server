@@ -3,9 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-kernel-image-signed
-fix: 2.0.0-9.24.201612141729
+fix: 2.0.0-11.25.201701181403
 desc: |
- This update addresses the following issues:
+ This update of the Linux kernel to 4.1.37 addresses the following issues:
  * The rfcomm_sock_bind function in net/bluetooth/rfcomm/sock.c in the Linux
    kernel before 4.2 allows local users to obtain sensitive information or
    cause a denial of service (NULL pointer dereference) via vectors involving
