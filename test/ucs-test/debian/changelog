@@ -1,3 +1,9 @@
+ucs-test (7.0.8-1) unstable; urgency=medium
+
+  * Bug #43312: handle constraint violation
+
+ -- Florian Best <best@univention.de>  Wed, 18 Jan 2017 11:03:11 +0100
+
 ucs-test (7.0.7-3) unstable; urgency=medium
 
   * Bug #39632: update and enable 20_appcenter/60_check_appcenter_performance
