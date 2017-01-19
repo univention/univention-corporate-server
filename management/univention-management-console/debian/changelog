@@ -1,3 +1,10 @@
+univention-management-console (9.0.16-1) unstable; urgency=medium
+
+  * Bug #42114: fix crash of UMC-Server due to __processes not defined in
+  	subclass
+
+ -- Florian Best <best@univention.de>  Thu, 19 Jan 2017 11:44:33 +0100
+
 univention-management-console (9.0.15-1) unstable; urgency=medium
 
   * Bug #42220: check if translation file exists

@@ -335,6 +335,15 @@ class ProcessorBase(Base):
 			self.i18n.set_locale('C')
 			raise UMC_Error(self._('Specified locale is not available'), status=406)
 
+	def update_module_passwords(self):
+		for module_name, proc in self.__processes.items():
+			CORE.info('Changing password for module %s' % (module_name,))
+			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
+			try:
+				proc.request(req)
+			except:
+				CORE.error(traceback.format_exc())
+
 	@sanitize(DictSanitizer(dict(
 		tmpfile=StringSanitizer(required=True),
 		filename=StringSanitizer(required=True),
@@ -757,15 +766,6 @@ class Processor(ProcessorBase):
 			self.auth_type = None
 			self._password = new_password
 			self.update_module_passwords()
-
-	def update_module_passwords(self):
-		for module_name, proc in self.__processes.items():
-			CORE.info('Changing password for module %s' % (module_name,))
-			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
-			try:
-				proc.request(req)
-			except:
-				CORE.error(traceback.format_exc())
 
 	def handle_request_get_user_preferences(self, request):
 		# fallback is an empty dict
