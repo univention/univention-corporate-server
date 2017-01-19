@@ -2254,7 +2254,7 @@ class dhcpEntry(complex):
 			ip, mac = text[1:]
 		except (IndexError, ValueError):
 			pass
-		return super(dhcpEntry, cls).parse(filter(None, [service, ip, mac]))
+		return super(dhcpEntry, cls).parse([service, ip, mac])
 
 
 class DHCP_Option(complex):
