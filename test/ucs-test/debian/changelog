@@ -1,3 +1,9 @@
+ucs-test (7.0.8-5) unstable; urgency=low
+
+  * Bug #43306: Remove test for insserv
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 Jan 2017 11:01:43 +0100
+
 ucs-test (7.0.8-4) unstable; urgency=medium
 
   * Bug #43333: Updates for new simplesaml (82_saml) 

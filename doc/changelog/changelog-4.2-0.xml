@@ -620,6 +620,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The init scripts of all services have been made <orgname>Linux Standard Base</orgname> (<acronym>LSB</acronym>) compliant to allow <command>insserv</command> to automatically reorder them based on dependencies (<u:bug>38438</u:bug>).
+				The test for <command>insserv</command> has been remove (<u:bug>43306</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The &ucsUCRV; <envar>version/erratalevel</envar> gets reset to <literal>0</literal> (<u:bug>43300</u:bug>).
