@@ -1,0 +1,58 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test IP address / network / dhcp handling and dhcpEntryZone syntax
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import ldap.dn
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+
+if __name__ == '__main__':
+	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
+		computerName = uts.random_name()
+
+		lo = utils.get_ldap_connection()
+		with udm_test.UCSTestUDM() as udm:
+			service = udm.create_object('dhcp/service', service=uts.random_name())
+			net = '192.0.2'
+			network = udm.create_object('networks/network', name=uts.random_name(), network='%s.0' % (net,), netmask='24', dhcpEntryZone=service, ipRange='%s.2 %s.253' % (net, net))
+
+			print 'Let Network choose the IP'
+			computerName = uts.random_name()
+			mac = uts.random_mac()
+			computer = udm.create_object(role, name=computerName, mac=mac, network=network)
+			utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {'dhcpHWAddress': ['ethernet %s' % (mac,)], 'univentionObjectType': ['dhcp/host']})
+			ip = lo.getAttr('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), 'univentionDhcpFixedAddress')[0]
+			assert ip.startswith('%s.' % (net,))
+			utils.verify_ldap_object(computer, {'aRecord': [ip], 'macAddress': [mac]})
+
+			print 'Give explicit IP, but DHCP from Network'
+			ip = uts.random_ip()
+			mac = uts.random_mac()
+			computerName = uts.random_name()
+			computer = udm.create_object(role, name=computerName, mac=mac, ip=ip, network=network)
+#			utils.verify_ldap_object(computer, {'aRecord': [ip], 'macAddress': [mac]})
+			utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {'dhcpHWAddress': ['ethernet %s' % (mac,)], 'univentionObjectType': ['dhcp/host']})
+			assert lo.getAttr('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), 'univentionDhcpFixedAddress')[0].startswith('%s.' % (net,))
+
+			print 'Manual DHCP with dynamic IP from known-hosts-pool'
+			computerName = uts.random_name()
+			mac = uts.random_mac()
+			computer = udm.create_object(role, name=computerName, mac=mac, dhcpEntryZone='%s %s' % (service, mac))
+			utils.verify_ldap_object(computer, {'macAddress': [mac]})
+			utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {'univentionDhcpFixedAddress': [''], 'dhcpHWAddress': ['ethernet %s' % (mac,)], 'univentionObjectType': ['dhcp/host']})
+
+			print 'Manual DHCP with fixed IP'
+			computerName = uts.random_name()
+			ip = uts.random_ip()
+			mac = uts.random_mac()
+			computer = udm.create_object(role, name=computerName, mac=mac, ip=ip, dhcpEntryZone='%s %s %s' % (service, ip, mac))
+			utils.verify_ldap_object(computer, {'aRecord': [ip], 'macAddress': [mac]})
+			utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {'univentionDhcpFixedAddress': [ip], 'dhcpHWAddress': ['ethernet %s' % (mac,)], 'univentionObjectType': ['dhcp/host']})

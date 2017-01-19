@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import ldap.dn
 
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -44,10 +45,10 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
 			})
 			for service, ip, mac in dhcpEntryZones[:2]:
-				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), should_exist=False)
+				utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), should_exist=False)
 
 			for service, ip, mac in dhcpEntryZones[2:]:
-				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
+				utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})

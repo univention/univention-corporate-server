@@ -18,5 +18,6 @@ if __name__ == '__main__':
 		dhcp_subnet = udm.create_object('dhcp/subnet', subnet='10.20.30.0', subnetmask='24', superordinate=dhcp_service)
 
 		range = '10.20.30.1 10.20.30.254'
-		dhcp_pool = udm.create_object('dhcp/pool', name=uts.random_name(), range=range, superordinate=dhcp_subnet)
-		utils.verify_ldap_object(dhcp_pool, {'dhcpRange': [range]})
+		name = uts.random_name()
+		dhcp_pool = udm.create_object('dhcp/pool', name=name, range=range, superordinate=dhcp_subnet)
+		utils.verify_ldap_object(dhcp_pool, {'dhcpRange': [range], 'cn': [name]})
