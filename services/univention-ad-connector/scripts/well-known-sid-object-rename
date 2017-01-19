@@ -44,7 +44,6 @@ import univention.connector.ad
 import univention.config_registry
 from univention.config_registry.frontend import ucr_update
 import univention.debug as ud
-import subprocess
 import univention.lib.s4
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
@@ -500,5 +499,3 @@ if __name__ == "__main__":
 	else:
 		mapper = WellKnownSIDMapper.with_udm_renaming(ucr, options.binddn, options.bindpwd)
 	mapper.map_well_known_sids()
-
-	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])

@@ -58,7 +58,7 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 			connector/debug/level?2 \
 			connector/password/service/encoding?"iso8859-15" \
 			connector/ad/mapping/user/primarymail?false \
-			connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/language?de \
+			connector/ad/mapping/group/primarymail?false \
 			connector/ad/mapping/syncmode?sync \
 			connector/ad/mapping/user/ignorelist?"Administrator,krbtgt,root,pcpatch" \
 			connector/ad/mapping/group/grouptype?true \

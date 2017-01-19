@@ -102,19 +102,6 @@ def adsearch(query):
 	return p1, stdout, stderr
 
 
-def guess_ad_domain_language():
-	'''AD Connector supports "en" and "de", this check detects a German AD
-	Domain and returns "en" as fallback.'''
-	p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins'.encode('latin1'))
-	if stderr:
-		MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
-	for line in stdout.split('\n'):
-		line = line.lower().strip()
-		if line.decode('latin1') == 'samaccountname: domänen-admins':
-			return 'de'
-	return 'en'
-
-
 def get_ad_binddn_from_name(base, server, username, password):
 	lp = LoadParm()
 	creds = Credentials()
@@ -147,7 +134,6 @@ class Instance(Base, ProgressMixin):
 		('DebugLevel', 'connector/debug/level', 2),
 		('DebugFunction', 'connector/debug/function', False),
 		('MappingSyncMode', 'connector/ad/mapping/syncmode', 'sync'),
-		('MappingGroupLanguage', 'connector/ad/mapping/group/language', 'de')
 	)
 
 	def init(self):
@@ -203,7 +189,6 @@ class Instance(Base, ProgressMixin):
 			PollSleep: time in seconds between polls
 			RetryRejected: how many time to retry a synchronisation
 			MappingSyncMode: synchronisation mode
-			MappingGroupLanguage: language of the AD server
 
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
@@ -256,11 +241,6 @@ class Instance(Base, ProgressMixin):
 		else:
 			MODULE.warn('SSL is not supported')
 			admember.disable_ssl()
-
-		# UCR variables are set, and now we can try to guess the language of
-		# the AD domain
-		ad_lang = guess_ad_domain_language()
-		univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
 
 		self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved.')})
 

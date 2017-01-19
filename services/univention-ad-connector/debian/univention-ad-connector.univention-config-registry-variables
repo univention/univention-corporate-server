@@ -64,12 +64,6 @@ Description[en]=Defines whether the alternative e-mail addresses on group object
 Type=str
 Categories=service-adcon
 
-[con.*/ad/mapping/group/language]
-Description[de]=Die Variable definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory (Gruppenamen sind lokalisiert) genutzt werden soll. Durch Setzen von 'de' kann ein Mapping für ein deutschsprachiges Active Directory aktiviert werden. Ist die Variable nicht gesetzt, erfolgt kein Mapping.
-Description[en]=Defines which mapping of standard group names should be used between UCS (group names are always English) and Active Directory (group names are localised). A mapping for a Active Directory in German can be set with 'de'. If the variable is unset no mapping is made.
-Type=str
-Categories=service-adcon
-
 [connector/ad/mapping/user/table/.*]
 Description[de]=Eine statische Liste von Zuordnungen von Benutzernamen im UCS-LDAP zu Benutzernamen im Active Directory-LDAP. Benutzernamen im UCS-LDAP sind immer englisch. Beispielsweise sorgt die Zuordnung "connector/ad/mapping/user/table/Guest=Gast" dafür, dass der AD-Connector ein Benutzerobjekt, das in UCS-LDAP den Namen "Guest" trägt, mit einem Benutzerobjekt mit dem Namen "Gast" im Active Directory Benutzerverzeichnis synchronisiert. Diese Variable wird intern von verschiedenen UCS-Tools verwendet und sollte nicht manuell angepasst werden.
 Description[en]=A static list mapping user names in UCS LDAP to user names in the Active Directory user directory. User names in UCS LDAP are always in English. The mapping "connector/ad/mapping/user/table/'Guest'=Gast" e.g. advises the AD Connector to synchronise a user object called "Guest" in UCS-LDAP with a user object called "Gast" in the Active Directory user directory. This variable is used internally by UCS tools and should not be adapted manually.
