@@ -70,6 +70,18 @@ Description[en]=Defines which mapping of standard group names should be used bet
 Type=str
 Categories=service-adcon
 
+[connector/ad/mapping/user/table/.*]
+Description[de]=Eine statische Liste von Zuordnungen von Benutzernamen im UCS-LDAP zu Benutzernamen im Active Directory-LDAP. Benutzernamen im UCS-LDAP sind immer englisch. Beispielsweise sorgt die Zuordnung "connector/ad/mapping/user/table/Guest=Gast" dafür, dass der AD-Connector ein Benutzerobjekt, das in UCS-LDAP den Namen "Guest" trägt, mit einem Benutzerobjekt mit dem Namen "Gast" im Active Directory Benutzerverzeichnis synchronisiert. Diese Variable wird intern von verschiedenen UCS-Tools verwendet und sollte nicht manuell angepasst werden.
+Description[en]=A static list mapping user names in UCS LDAP to user names in the Active Directory user directory. User names in UCS LDAP are always in English. The mapping "connector/ad/mapping/user/table/'Guest'=Gast" e.g. advises the AD Connector to synchronise a user object called "Guest" in UCS-LDAP with a user object called "Gast" in the Active Directory user directory. This variable is used internally by UCS tools and should not be adapted manually.
+Type=str
+Categories=service-adcon
+
+[connector/ad/mapping/group/table/.*]
+Description[de]=Eine statische Liste von Zuordnungen von Gruppennamen im UCS-LDAP zu Gruppennamen im Active Directory-LDAP. Gruppennamen im UCS-LDAP sind immer englisch. Beispielsweise sorgt die Zuordnung "connector/ad/mapping/group/table/'Domain Users'=Domänen-Benutzer" dafür, dass der AD-Connector ein Gruppenobjekt, das in UCS-LDAP den Namen "Domain Users" trägt, mit einem Gruppenobjekt mit dem Namen "Domänen-Benutzer" im Active Directory Benutzerverzeichnis synchronisiert. Diese Variable wird intern von verschiedenen UCS-Tools verwendet und sollte nicht manuell angepasst werden.
+Description[en]=A static list mapping group names in UCS LDAP to group names in the Active Directory user directory. Group names in UCS LDAP are always in English. The mapping "connector/ad/mapping/group/table/'Domain Users'=Domänen-Benutzer" e.g. advises the AD Connector to synchronise a group object called "Domain Users" in UCS-LDAP with a group object called "Domänen-Benutzer" in the Active Directory user directory. This variable is used internally by UCS tools and should not be adapted manually.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/group/grouptype]
 Description[de]=Ist diese Option aktiviert, werden die unterschiedlichen Active Directory Gruppen synchronisiert mit Ausnhme der lokalen Gruppen. Ist die Variable nicht gesetzt, werden nur globale Active Directory Gruppen synchronisiert.
 Description[en]=If this option is activated, the different Active Directory groups are synchronized except the local groups. If the variable is unset only global Active Directory groups are synchronized.
