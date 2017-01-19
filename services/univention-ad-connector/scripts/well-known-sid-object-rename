@@ -228,7 +228,8 @@ class WellKnownSIDMapper(object):
 
 			if sid == "S-1-5-32-550":  # Special: Printer-Admins / Print Operators / Opérateurs d’impression
 				# don't rename, adjust group name mapping for S4 connector instead.
-				subprocess.call(["univention-config-registry", "set", "connector/ad/mapping/group/table/Printer-Admins=%s" % (ad_object_name,)])
+				ucr_group_rename = UCRGroupRenameHandler(self.lo, self.ucr, clean=False)
+				ucr_group_rename("Printer-Admins", ad_object_name)
 				continue
 
 			ucsldap_object_name = canonical_name  # default
