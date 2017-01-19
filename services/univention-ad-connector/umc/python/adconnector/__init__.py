@@ -244,6 +244,24 @@ class Instance(Base, ProgressMixin):
 
 		self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved.')})
 
+	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+		ad_server_address=StringSanitizer(required=True),
+	)
+	@simple_response
+	def adconnector_map_known(self, username, password, ad_server_address):
+		binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
+		rename = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename',
+			'--binddn', binddn, '--bindpwd', password, '--ucr-mapping'],
+			stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+		(stdout, stderr) = rename.communicate()
+
+		MODULE.process(stdout)
+		if rename.returncode != 0:
+			MODULE.error("well-known-sid-object-rename failed with %d (%s)" % (rename.returncode, stderr))
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_server_address)
+
 	def _create_certificate(self, request):
 		ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
 

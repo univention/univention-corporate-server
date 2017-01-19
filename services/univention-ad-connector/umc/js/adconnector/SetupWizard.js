@@ -393,6 +393,15 @@ define([
 			});
 		},
 
+		adConnectorMapKnown: function() {
+			var vals = this._getCredentials();
+			return this.standbyDuring(tools.umcpCommand('adconnector/adconnector/map_known', vals)).then(lang.hitch(this, function(response) {
+				return true;
+			}), function(err) {
+				return false;
+			});
+		},
+
 		adConnectorStart: function() {
 			return this.standbyDuring(tools.umcpCommand('adconnector/service', {
 				action: 'start'
@@ -478,9 +487,19 @@ define([
 				return 'config-adconnector';
 			}
 			if (pageName == 'config-adconnector') {
-				return this.adConnectorSaveValues(this._adDomainInfo).then(lang.hitch(this, function(success) {
+				return this.adConnectorSaveValues(this._adDomainInfo)
+					.then(lang.hitch(this, function(success) {
 						if (success) {
-							this.adConnectorStart();
+							return this.adConnectorMapKnown();
+						}
+						return false;
+					})).then(lang.hitch(this, function(success) {
+						if (success) {
+							return this.adConnectorStart();
+						}
+						return false;
+					})).then(lang.hitch(this, function(success) {
+						if (success) {
 							return 'finished-adconnector';
 						} else {
 							return pageName;
