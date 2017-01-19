@@ -105,18 +105,20 @@ class AD_Connection():
 			sys.exit(1)
 
 
-class Well_Known_SID_object_renamer():
+class WellKnownSIDMapper(object):
 
-	''' Provides methods for renaming users/groups with Well Known SIDs in UDM
+	''' Provides methods for mapping users/groups with Well-Known-SIDs.
 		NOTE: copied from univention-management-console-module-adtakeover
 	'''
 
-	def __init__(self, ucr, binddn, bindpwd):
+	def __init__(self, ucr, binddn, bindpwd, group_handler, user_handler):
 		self.ucr = ucr
 		self.ad_ldap_binddn = binddn
 		self.ad_ldap_bindpwd = bindpwd
-		self.ad_connect()
+		self.group_handler = group_handler
+		self.user_handler = user_handler
 
+		self.ad_connect()
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
 
 		self.old_domainsid = None
@@ -130,6 +132,10 @@ class Well_Known_SID_object_renamer():
 		else:
 			log(ud.ERROR, 'Did not find a sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
 			# FIXME: probably sys.exit()?
+
+	@classmethod
+	def with_udm_renaming(cls, ucr, binddn, bindpwd):
+		return cls(ucr, binddn, bindpwd, UDMGroupRenameHandler, UDMUserRenameHandler)
 
 	def ad_connect(self):
 		''' stripped down univention.connector.ad.main
@@ -189,7 +195,7 @@ class Well_Known_SID_object_renamer():
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
 
-	def rewrite_sambaSIDs_in_OpenLDAP(self):
+	def map_well_known_sids(self):
 
 		# Identify and rename UCS group names to match Samba4 (localized) group names
 		AD_well_known_sids = {}
@@ -197,8 +203,8 @@ class Well_Known_SID_object_renamer():
 			AD_well_known_sids["%s-%s" % (self.ad.ad_sid, rid)] = name
 		AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
-		groupRenameHandler = GroupRenameHandler(self.lo)
-		userRenameHandler = UserRenameHandler(self.lo)
+		groupRenameHandler = self.group_handler(self.lo)
+		userRenameHandler = self.user_handler(self.lo)
 
 		for (sid, canonical_name) in AD_well_known_sids.items():
 
@@ -240,12 +246,12 @@ class Well_Known_SID_object_renamer():
 			ad_object_name = unicode(ad_object_name, 'utf8')
 			if ad_object_name.lower() != ucsldap_object_name.lower():
 				if "group" in oc or "foreignSecurityPrincipal" in oc:
-					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
+					groupRenameHandler(ucsldap_object_name, ad_object_name)
 				elif "user" in oc:
-					userRenameHandler.rename_ucs_user(ucsldap_object_name, ad_object_name)
+					userRenameHandler(ucsldap_object_name, ad_object_name)
 
 
-class UserRenameHandler:
+class UDMUserRenameHandler(object):
 
 	''' Provides methods for renaming users in UDM
 		NOTE: copied from univention-management-console-module-adtakeover
@@ -280,7 +286,7 @@ class UserRenameHandler:
 
 		return new_userdn
 
-	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
+	def __call__(self, ucsldap_object_name, ad_object_name):
 		userdns = self.lo.searchDn(
 			filter="(&(objectClass=sambaSamAccount)(uid=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
@@ -292,7 +298,7 @@ class UserRenameHandler:
 			new_userdn = self.udm_rename_ucs_user(userdn, ad_object_name)
 
 
-class GroupRenameHandler:
+class UDMGroupRenameHandler(object):
 
 	''' Provides methods for renaming groups in UDM
 		NOTE: copied from univention-management-console-module-adtakeover
@@ -348,13 +354,13 @@ class GroupRenameHandler:
 
 		lookup_filter = udm_filter.conjunction('|', [
 			udm_filter.expression(propertyname, groupdn)
-			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
+			for propertyname in UDMGroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
 		])
 
 		referring_objects = udm_modules.lookup('settings/default', None, self.lo, scope='sub', base=self.lo.base, filter=lookup_filter)
 		for referring_object in referring_objects:
 			changed = False
-			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
+			for propertyname in UDMGroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
 				if groupdn in referring_object[propertyname]:
 					referring_object[propertyname] = new_groupdn
 					changed = True
@@ -362,7 +368,7 @@ class GroupRenameHandler:
 				log(ud.PROCESS, "Modifying '%s' in UCS LDAP." % (referring_object.dn,))
 				referring_object.modify()
 
-	def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
+	def __call__(self, ucsldap_object_name, ad_object_name):
 		groupdns = self.lo.searchDn(
 			filter="(&(objectClass=sambaGroupMapping)(cn=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
@@ -430,6 +436,8 @@ if __name__ == "__main__":
 	ud.init(LOGFILE, ud.FLUSH, ud.NO_FUNCTION)
 	debug_level = ucr.get('connector/debug/level', 2)
 	ud.set_level(ud.LDAP, int(debug_level))
-	ad = Well_Known_SID_object_renamer(ucr, options.binddn, options.bindpwd)
-	ad.rewrite_sambaSIDs_in_OpenLDAP()
+
+	mapper = WellKnownSIDMapper.with_udm_renaming(ucr, options.binddn, options.bindpwd)
+	mapper.map_well_known_sids()
+
 	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])
