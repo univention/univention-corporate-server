@@ -18,6 +18,8 @@ class Coverage(object):
 	COVERAGE_DEBUG_PATH = '/tmp/ucs-test-coverage'
 	COVERAGE_DEBUG = os.path.exists(COVERAGE_DEBUG_PATH)
 
+	coverage = None
+
 	def __init__(self, options):
 		self.coverage_config = options.coverage_config
 		self.branch_coverage = options.branch_coverage
@@ -96,7 +98,7 @@ class Coverage(object):
 		"""The option group for ucs-test-framework"""
 		coverage_group = OptionGroup(parser, 'Code coverage measurement options')
 		coverage_group.add_option("--with-coverage", dest="coverage", action='store_true', default=False)
-		coverage_group.add_option("--coverage-config", dest="coverage_config", default=os.path.abspath(os.path.expanduser('~/.coveragerc')))
+		coverage_group.add_option("--coverage-config", dest="coverage_config", default=os.path.abspath(os.path.expanduser('~/.coveragerc')))  # don't use this, doesn't work!
 		coverage_group.add_option("--branch-coverage", dest="branch_coverage", action='store_true', default=False)
 		coverage_group.add_option('--coverage-sources', dest='coverage_sources', action='append', default=[])
 		coverage_group.add_option("--coverage-debug", dest="coverage_debug", action='store_true', default=False)
@@ -107,8 +109,9 @@ class Coverage(object):
 	def startup(cls):
 		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
-		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg or 'ucr' in arg for arg in argv[:2]):
-			cls.debug_message('skip non-ucs process', argv)
+		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg or 'ucr' in arg for arg in argv):
+			if argv != ['/usr/bin/python2.7', '']:
+				cls.debug_message('skip non-ucs process', argv)
 			return  # don't change non UCS-python scripts
 		if any('listener' in arg or 'notifier' in arg for arg in argv[2:]):
 			cls.debug_message('skip listener', argv)
@@ -118,10 +121,11 @@ class Coverage(object):
 		atexit.register(lambda: cls.debug_message('STOP'))
 
 		if not os.environ.get('COVERAGE_PROCESS_START'):
+			os.environ["COVERAGE_PROCESS_START"] = os.path.abspath(os.path.expanduser('~/.coveragerc'))
 			cls.debug_message('ENVIRON WAS CLEARED BY PARENT PROCESS', argv)
 
 		import coverage
-		cov = coverage.process_startup()
+		cls.coverage = coverage.coverage(config_file=os.environ['COVERAGE_PROCESS_START'], auto_data=True)
 
 		# FIXME: univention-cli-server calls os.fork() which causes the coverage measurement not to start in the forked process
 		# https://bitbucket.org/ned/coveragepy/issues/310/coverage-fails-with-osfork-and-os_exit
@@ -134,30 +138,36 @@ class Coverage(object):
 				cls.startup()
 			else:
 				cls.debug_message('FORK PARENT')
-				cls.stop_measurement(cov)
+				cls.stop_measurement(True)
 			return pid
+		os.fork = fork
 
+		# https://bitbucket.org/ned/coveragepy/issues/43/coverage-measurement-fails-on-code
 		# if the process calls one of the process-replacement functions the coverage must be started in the new process
-		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe']:  # 'fork', '_exit']:
-			setattr(os, method, StopCoverageDecorator(cov, getattr(os, method)))
+		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe', '_exit']:
+			if isinstance(getattr(os, method), StopCoverageDecorator):
+				continue  # restarted in the same process (e.g. os.fork())
+			setattr(os, method, StopCoverageDecorator(getattr(os, method)))
 
 		# There are test cases which e.g. kill the unvention-cli-server.
 		# The atexit-handler of coverage will not be called for SIGTERM, so we need to stop coverage manually
 		def sigterm(sig, frame):
 			cls.debug_message('signal handler', sig, argv)
-			cls.stop_measurement(cov)
+			cls.stop_measurement()
 			signal.signal(signal.SIGTERM, previous)
 			os.kill(os.getpid(), sig)
 		previous = signal.signal(signal.SIGTERM, sigterm)
 
 	@classmethod
-	def stop_measurement(cls, cov, start=False):
-		if not cov:
+	def stop_measurement(cls, start=False):
+		cover = cls.coverage
+		cls.debug_message('STOP MEASURE', bool(cover))
+		if not cover:
 			return
-		cov.stop()
-		cov.save()
+		cover.stop()
+		cover.save()
 		if start:
-			cov.start()
+			cover.start()
 
 	@classmethod
 	def debug_message(cls, *messages):
@@ -170,18 +180,21 @@ class Coverage(object):
 			pass
 
 
-class StopCoverageDecorator:
-	"""Ripped from https://bitbucket.org/ned/coveragepy/issues/43/coverage-measurement-fails-on-code"""
+class StopCoverageDecorator(object):
 	inDecorator = False
 
-	def __init__(self, cov, method):
-		self.cov = cov
+	def __init__(self, method):
 		self.method = method
 
 	def __call__(self, *args, **kw):
 		if not StopCoverageDecorator.inDecorator:
 			StopCoverageDecorator.inDecorator = True
-			Coverage.debug_message('StopCoverageDecorator', self.method.__name__, 'cov=', bool(self.cov), open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
-			Coverage.stop_measurement(self.cov, True)
-		self.method(*args, **kw)
-		StopCoverageDecorator.inDecorator = False
+			Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
+			Coverage.stop_measurement(True)
+		try:
+			self.method(*args, **kw)
+		finally:
+			StopCoverageDecorator.inDecorator = False
+
+	def __repr__(self):
+		return '<StopCoverageDecorator %r>' % (self.method,)
