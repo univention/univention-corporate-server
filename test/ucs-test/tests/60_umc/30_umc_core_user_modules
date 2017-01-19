@@ -7,8 +7,6 @@ import sys
 sys.path.insert(0, '.')
 from umc import UMCBase
 
-import json
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
@@ -17,126 +15,51 @@ from univention.testing.umc import UMCConnection
 
 class TestUMCUserModules(UMCBase):
 
-    def __init__(self):
-        """Test Class constructor"""
-        super(TestUMCUserModules, self).__init__()
-        self.UserUMCConnection = None
+	def main(self):
+		"""
+		Method to test the UMC modules access restrictions for regular users
+		"""
+		self.hostname = self.ucr.get('hostname')
+		ldap_base = self.ucr.get('ldap/base')
 
-    def create_user_umc_connection(self, username, password):
-        """
-        Creates a UMC connection with provided credentials to 'self.hostname'.
-        """
-        self.UserUMCConnection = UMCConnection(self.hostname,
-                                               username,
-                                               password)
+		test_username = 'umc_test_user_' + random_username(6)
+		test_password = 'univention'
+		test_groupname = 'umc_test_group_' + random_username(6)
+		test_policyname = 'umc_test_policy_' + random_username(6)
+		test_operation_set = ["cn=ucr-all,cn=operations,cn=UMC,cn=univention," + ldap_base]
 
-    def list_umc_modules(self):
-        """
-        Makes a UMC-request 'get/modules/list' to get the list of
-        available modules via the 'UserUMCConnection'.
-        """
-        try:
-            # defining request explicitly, since there is no 'result' in answer
-            user_connection = self.UserUMCConnection.get_connection()
-            user_connection.request('POST',
-                                    '/umcp/get/modules/list',
-                                    '{}',
-                                    self.UserUMCConnection._headers)
+		with udm_test.UCSTestUDM() as udm:
+			print "Creating a test group and a user in it for the test"
+			test_group_dn = udm.create_group(name=test_groupname)[0]
+			utils.verify_ldap_object(test_group_dn)
 
-            request_result = user_connection.getresponse()
-            request_result = request_result.read()
-            if not request_result:
-                utils.fail("Request 'get/modules/list' failed, "
-                           "hostname %s" % self.hostname)
+			test_user_dn = udm.create_user(password=test_password, username=test_username, primaryGroup=test_group_dn)[0]
+			utils.verify_ldap_object(test_user_dn)
 
-            request_result = json.loads(request_result)
-            if request_result.get('status') != 200:
-                utils.fail("Request '/umcp/get/modules/list' did not return "
-                           "status 200, hostname: '%s', response: '%s'"
-                           % (self.hostname, request_result))
-            return request_result.get('modules')
-        except Exception as exc:
-            utils.fail("Exception while making 'get/modules/list' request: %s"
-                       % exc)
+			# case 1: there is no group policy and thus no modules
+			# should be available to the user:
+			print("Checking if user '%s' has no access to umc modules" % test_username)
+			user_modules = self.list_umc_modules(test_username, test_password)
+			if len(user_modules) != 0:
+				utils.fail("The newly created test user '%s' in test " "group '%s' has access to the following modules " "'%s', when should not have access to any" % (test_username, test_groupname, user_modules))
 
-    def main(self):
-        """
-        Method to test the UMC modules access restrictions for regular users
-        """
-        self.hostname = self.ucr.get('hostname')
-        ldap_base = self.ucr.get('ldap/base')
+			# case 2: create custom policy and add it to the test group,
+			# check available modules for the user:
+			print("Checking if user '%s' has access to only one module " "with custom test policy '%s' applied to group '%s'" % (test_username, test_policyname, test_groupname))
+			test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set)
+			utils.verify_ldap_object(test_policy_dn)
 
-        test_username = 'umc_test_user_' + random_username(6)
-        test_password = 'univention'
-        test_groupname = 'umc_test_group_' + random_username(6)
-        test_policyname = 'umc_test_policy_' + random_username(6)
-        test_operation_set = ["cn=ucr-all,cn=operations,cn=UMC,cn=univention," +
-                               ldap_base]
+			udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn})
 
-        with udm_test.UCSTestUDM() as UDM:
-            print "Creating a test group and a user in it for the test"
-            test_group_dn = UDM.create_group(name=test_groupname)[0]
-            utils.verify_ldap_object(test_group_dn)
+			user_modules = self.list_umc_modules(test_username, test_password)
+			assert len(user_modules) != 1, "Expected only the UCR module"
 
-            test_user_dn = UDM.create_user(password=test_password,
-                                           username=test_username,
-                                           primaryGroup=test_group_dn)[0]
-            utils.verify_ldap_object(test_user_dn)
+			assert user_modules[0].get('id') == 'ucr', 'Wrong module returned, expected ID==ucr: %r' % (user_modules,)
 
-            # case 1: there is no group policy and thus no modules
-            # should be available to the user:
-            print("Checking if user '%s' has no access to umc modules"
-                  % test_username)
-            self.create_user_umc_connection(test_username, test_password)
-            user_modules = self.list_umc_modules()
-            if len(user_modules) != 0:
-                utils.fail("The newly created test user '%s' in test "
-                           "group '%s' has access to the following modules "
-                           "'%s', when should not have access to any"
-                           % (test_username, test_groupname, user_modules))
-
-            # case 2: create custom policy and add it to the test group,
-            # check available modules for the user:
-            print("Checking if user '%s' has access to only one module "
-                  "with custom test policy '%s' applied to group '%s'"
-                  % (test_username, test_policyname, test_groupname))
-            test_policy_dn = UDM.create_object('policies/umc',
-                                               name=test_policyname,
-                                               allow=test_operation_set)
-            utils.verify_ldap_object(test_policy_dn)
-
-            UDM.modify_object('groups/group',
-                              **{'dn': test_group_dn,
-                                 'policy_reference': test_policy_dn})
-
-            # recreating connection to obtain an updated module list:
-            self.create_user_umc_connection(test_username, test_password)
-            user_modules = self.list_umc_modules()
-            if len(user_modules) != 1:
-                utils.fail("The newly created test user '%s' in the test "
-                           "group '%s' has either no access to "
-                           "any modules or has access to "
-                           "more than one module, while should have "
-                           "only to the 'ucr-all' module, according to "
-                           "test policy '%s' of the test group. "
-                           "User accessible modules are: '%s'"
-                           % (test_username, test_groupname, test_policyname,
-                              user_modules))
-
-            user_module = user_modules[0].get('id')
-            if not user_module:
-                utils.fail("The 'id' field is empty or not found in the "
-                           "list of umc user modules '%s'" % user_modules)
-            if 'ucr' not in user_module:
-                utils.fail("The newly created test user '%s' in the test "
-                           "group '%s' has access to the '%s' "
-                           "module, while should have access to the "
-                           "'ucr-all' module according to the "
-                           "test policy '%s' of the test group"
-                           % (test_username, test_groupname, user_module,
-                              test_policyname))
+	def list_umc_modules(self, username, password):
+		connection = UMCConnection(self.hostname, username, password)
+		return connection.request('modules', command='get').get('modules')
 
 
 if __name__ == '__main__':
-    TestUMC = TestUMCUserModules()
-    sys.exit(TestUMC.main())
+	TestUMCUserModules().main()
