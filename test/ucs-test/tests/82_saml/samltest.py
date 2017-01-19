@@ -26,53 +26,31 @@ class SamlTest(object):
 		self.password = password
 		self.session = requests.Session()
 		self.page = None
+		self.position = 'Init...'
 
-	def _change_IdP_url_to_IdP_IP(self, IdP_IP, url):
-		sso_fqdn = 'ucs-sso.%(domainname)s' % self.ucr
-		if sso_fqdn in url:
-			headers = {'host': sso_fqdn}
-			url = url.replace(sso_fqdn, IdP_IP)
-			for cookie in self.session.cookies:
-				if cookie.domain == sso_fqdn:
-					cookie.domain = IdP_IP
-					self.session.cookies.set_cookie(cookie)
-		else:
-			headers = None
-		return headers, url
+	def _check_status_code(self, status_code):
+		# check for an expected status_code as a different would indicate an error
+		# in the current login step.
+		if self.page.status_code != status_code:
+			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.text))
 
-	def _request(self, method, url, status_code, position, data=None, IdP_IP=None):
+	def _request(self, method, url, status_code, data=None):
 		"""does POST or GET requests and raises SamlError which encodes the login step
 		through position parameter."""
-
-		if IdP_IP:
-			print("Change IdP url to custom IdP IP")
-			headers, url = self._change_IdP_url_to_IdP_IP(IdP_IP, url)
-		else:
-			headers = None
 
 		_requests = {
 			'GET': self.session.get,
 			'POST': self.session.post}
 
 		try:
-			self.page = _requests[method](url, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', allow_redirects=True, headers=headers)		
+			self.page = _requests[method](url, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem')
 		except requests.exceptions.SSLError as E:
 			# Bug: https://github.com/shazow/urllib3/issues/556
-			# raise SamlError("Problem while %s\nSSL error: %s" % (position, E.message))
-			raise SamlError("Problem while %s\nSSL error: %s" % (position, 'Some ssl error'))
+			# raise SamlError("Problem while %s\nSSL error: %s" % (self.position, E.message))
+			raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
 		except requests.ConnectionError as E:
-			raise SamlError("Problem while %s\nNo connection to server: %s" % (position, E.message))
-
-		if self.page.status_code in range(300, 400) and 'Location' in self.page.headers:
-			# manually execute HTTP redirect
-			print("Follow redirect to: %s" % self.page.headers['Location'])
-			self.page = self._request('GET', self.page.headers['Location'], 200, position, data=data, IdP_IP=IdP_IP)
-
-		# check for an expected status_code as a different would indicate an error
-		# in the current login step.
-		if self.page.status_code != status_code:
-			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (position, self.page.status_code, status_code, self.page.text))
-
+			raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, E.message))
+		self._check_status_code(status_code)
 
 	def _login_at_idp_with_credentials(self):
 		"""Send form with login data"""
@@ -80,13 +58,9 @@ class SamlTest(object):
 		auth_state = self._extract_auth_state_from()
 
 		print("POST form with username and password to: %s" % self.page.url)
-		self._request(
-			'POST',
-			self.page.url,
-			200,
-			"posting login form",
-			data={'username': self.username, 'password': self.password, 'AuthState': auth_state}
-			)
+		self.position = "posting login form"
+		data = {'username': self.username, 'password': self.password, 'Au    thState': auth_state}
+		self._request('POST', self.page.url, 200, data=data)
 
 	def _extract_saml_msg_from(self):
 		print("Extract SAML message from SAML response")
@@ -112,25 +86,28 @@ class SamlTest(object):
 	def _send_saml_response_to_sp(self, url, saml_msg):
 		# POST the SAML message to SP, thus logging in.
 		print("POST SAML message to: %s" % url)
-		self._request('POST', url, 200, "posting SAML message", data={'SAMLResponse': saml_msg})
+		self.position = "posting SAML message"
+		self._request('POST', url, 200, data={'SAMLResponse': saml_msg})
 
 	def test_login(self):
 		"""Test login at umc"""
 		print("Test login...")
-		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 200, "testing login")
+		self.position = "testing login"
+		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 200)
 		print("Login success")
 
 	def test_logout(self):
 		"""Test logout at umc"""
 		print("Test logout at SP...")
-		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 405, "testing logout")
+		self.position = "testing logout"
+		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 405)
 		print("Logout success at SP")
 
-	def test_logout_at_IdP(self, IdP_IP=None):
+	def test_logout_at_IdP(self):
 		"""Test that passwordless login is not possible after logout"""
 		print("Test logout at IdP...")
 		try:
-			self.login_with_existing_session_at_IdP(IdP_IP=None)
+			self.login_with_existing_session_at_IdP()
 		except SamlError:
 			print("Logout success at IdP")
 		else:
@@ -157,28 +134,29 @@ class SamlTest(object):
 		else:
 			self._error_evaluation()
 
-	def login_with_existing_session_at_IdP(self, IdP_IP=None):
+	def login_with_existing_session_at_IdP(self):
 		"""Use Identity Provider to log in to a Service Provider.
 		If the IdP already knows the session and doesn't ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with SAML message
 		url = "https://%s/univention/saml/" % self.hostname
 		print("GET SAML login form at: %s" % url)
-		self._request('GET', url, 200, "requesting SAML message", IdP_IP=IdP_IP)
+		self.position = "requesting SAML message"
+		self._request('GET', url, 200)
 
 		url, saml_msg = self._evaluate_idp_response()
 
 		self._send_saml_response_to_sp(url, saml_msg)
 
-
-	def login_with_new_session_at_IdP(self, IdP_IP=None):
+	def login_with_new_session_at_IdP(self):
 		"""Use Identity Provider to log in to a Service Provider.
 		The IdP doesn't know the session and has to ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with login prompt
 		url = "https://%s/univention/saml/" % self.hostname
 		print("GET SAML login form at: %s" % url)
-		self._request('GET', url, 200, "reaching login dialog", IdP_IP=IdP_IP)
+		self.position = "reaching login dialog"
+		self._request('GET', url, 200)
 
 		# Login at IdP. IdP answers with SAML message and url to SP in body
 		self._login_at_idp_with_credentials()
@@ -187,9 +165,9 @@ class SamlTest(object):
 
 		self._send_saml_response_to_sp(url, saml_msg)
 
-
 	def logout_at_IdP(self):
 		"""Logout from session"""
 		url = "https://%s/univention/logout" % self.hostname
 		print("Loging out at url: %s" % url)
-		self._request('GET', url, 200, "trying to logout")
+		self.position = "trying to logout"
+		self._request('GET', url, 200)

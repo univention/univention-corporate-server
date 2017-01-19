@@ -5,13 +5,15 @@
 ## bugs: [39479]
 ## roles: [domaincontroller_backup]
 ## join: true
-## exposure: safe
+## exposure: dangerous
 ## packages:
 ##  - python-requests
 ## tags:
 ##  - skip_admember
 
 import time
+import subprocess
+import socket
 
 import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
@@ -21,6 +23,23 @@ import samltest
 ucr = configRegistry.ConfigRegistry()
 ucr.load()
 udm_modules.update()
+
+
+class BackupAsIdP:
+	def __enter__(self):
+		subprocess.call(['ucr', 'set', 'hosts/static/127.0.1.1=ucs-sso.univention.intranet'])
+		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+		IdP_IP = socket.gethostbyname('ucs-sso.univention.intranet')
+		if IdP_IP != '127.0.1.1':
+			utils.fail("Couldn't set backup as IdP")
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		subprocess.call(['ucr', 'unset', 'hosts/static/127.0.1.1'])
+		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+		IdP_IP = socket.gethostbyname('ucs-sso.univention.intranet')
+		if IdP_IP == '127.0.1.1':
+			utils.fail("Couldn't unset backup as IdP.\nThat might be a problem for further tests.")
+
 
 
 def main():
@@ -35,8 +54,9 @@ def main():
 		cookies = SamlSession.login_with_new_session_at_IdP()
 		time.sleep(1)
 		SamlSession.hostname = master_hostname
-		SamlSession.login_with_existing_session_at_IdP(IdP_IP=ucr['interfaces/eth0/address'])
-		SamlSession.test_login()
+		with BackupAsIdP():
+			SamlSession.login_with_existing_session_at_IdP()
+			SamlSession.test_login()
 	except samltest.SamlError as exc:
 		utils.fail(exc.message)
 

@@ -1,3 +1,9 @@
+ucs-test (7.0.8-6) unstable; urgency=medium
+
+  * Bug #43333: Fixed testcase 82_saml/19_IdP_on_backup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 19 Jan 2017 11:19:02 +0100
+
 ucs-test (7.0.8-5) unstable; urgency=low
 
   * Bug #43306: Remove test for insserv
