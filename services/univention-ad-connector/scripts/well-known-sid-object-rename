@@ -42,6 +42,7 @@ import univention
 import univention.connector
 import univention.connector.ad
 import univention.config_registry
+from univention.config_registry.frontend import ucr_update
 import univention.debug as ud
 import subprocess
 import univention.lib.s4
@@ -137,6 +138,10 @@ class WellKnownSIDMapper(object):
 	def with_udm_renaming(cls, ucr, binddn, bindpwd):
 		return cls(ucr, binddn, bindpwd, UDMGroupRenameHandler, UDMUserRenameHandler)
 
+	@classmethod
+	def with_ucr_mapping(cls, ucr, binddn, bindpwd):
+		return cls(ucr, binddn, bindpwd, UCRGroupRenameHandler, UCRUserRenameHandler)
+
 	def ad_connect(self):
 		''' stripped down univention.connector.ad.main
 			difference: pass "bindpwd" directly instead of "bindpw" filename
@@ -203,8 +208,8 @@ class WellKnownSIDMapper(object):
 			AD_well_known_sids["%s-%s" % (self.ad.ad_sid, rid)] = name
 		AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
-		groupRenameHandler = self.group_handler(self.lo)
-		userRenameHandler = self.user_handler(self.lo)
+		groupRenameHandler = self.group_handler(self.lo, self.ucr)
+		userRenameHandler = self.user_handler(self.lo, self.ucr)
 
 		for (sid, canonical_name) in AD_well_known_sids.items():
 
@@ -257,7 +262,7 @@ class UDMUserRenameHandler(object):
 		NOTE: copied from univention-management-console-module-adtakeover
 	'''
 
-	def __init__(self, lo):
+	def __init__(self, lo, _ucr):
 		self.lo = lo
 		self.position = univention.admin.uldap.position(self.lo.base)
 
@@ -313,7 +318,7 @@ class UDMGroupRenameHandler(object):
 		"defaultMemberServerGroup",
 	)
 
-	def __init__(self, lo):
+	def __init__(self, lo, _ucr):
 		self.lo = lo
 		self.position = univention.admin.uldap.position(self.lo.base)
 
@@ -379,6 +384,55 @@ class UDMGroupRenameHandler(object):
 		for groupdn in groupdns:
 			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
 			self.udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
+
+
+class UCRBaseRenameHandler(object):
+	''' Provides base methods for renaming groups/users in UCR via the
+		variables `$CONFIGBASENAME/ad/mapping/{group,user}/table*`.
+	'''
+
+	def __init__(self, _lo, ucr, clean=True):
+		self.ucr = ucr
+		self.prefix = "{}/ad/mapping/{}/table/".format(CONFIGBASENAME, self.namespace)
+
+		if clean:
+			self._clean()
+
+	def _clean(self):
+		keys = filter(lambda x: x.startswith(self.prefix), ucr.keys())
+		if keys:
+			log(ud.PROCESS, "Cleanup old mappings in UCR {}".format(keys))
+
+		change = {key: None for key in keys}
+		ucr_update(self.ucr, change)
+
+	def __call__(self, ucs_name, ad_name):
+		message = "Mapping {}: '{}' to '{}' using UCR variable."
+		log(ud.PROCESS, message.format(self.namespace, ucs_name, ad_name))
+		change = {self.prefix + ucs_name: ad_name}
+		ucr_update(self.ucr, change)
+
+
+class UCRUserRenameHandler(UCRBaseRenameHandler):
+
+	''' Provides methods for renaming users in UCR via the variables
+		`$CONFIGBASENAME/ad/mapping/user/table/*`.
+	'''
+
+	@property
+	def namespace(self):
+		return "user"
+
+
+class UCRGroupRenameHandler(UCRBaseRenameHandler):
+
+	''' Provides methods for renaming users in UCR via the variables
+		`$CONFIGBASENAME/ad/mapping/group/table/*`.
+	'''
+
+	@property
+	def namespace(self):
+		return "group"
 
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):
