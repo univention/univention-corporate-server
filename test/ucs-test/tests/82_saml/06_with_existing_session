@@ -24,7 +24,8 @@ def main():
 	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
 	try:
 		SamlSession.login_with_new_session_at_IdP()
-		SamlSession.hostname = master_hostname
+		SamlSession.test_login()
+		SamlSession.target_sp_hostname = master_hostname
 		SamlSession.login_with_existing_session_at_IdP()
 		SamlSession.test_login()
 	except samltest.SamlError as exc:

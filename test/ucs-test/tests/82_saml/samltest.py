@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import re
 import requests
+import subprocess
+import socket
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
@@ -8,7 +10,6 @@ import univention.config_registry as configRegistry
 
 class SamlError(Exception):
 	"""Custom error for everything SAML related"""
-
 	def __init__(self, msg):
 		self.message = msg
 
@@ -16,12 +17,28 @@ class SamlError(Exception):
 		return repr(self.message)
 
 
-class SamlTest(object):
+class GuaranteedIdP(object):
+	def __init__(self, ip):
+		self.ip = ip
 
+	def __enter__(self):
+		subprocess.call(['ucr', 'set', 'hosts/static/%s=ucs-sso.univention.intranet' % self.ip])
+		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+		IdP_IP = socket.gethostbyname('ucs-sso.univention.intranet')
+		if IdP_IP != self.ip:
+			utils.fail("Couldn't set guaranteed IdP")
+		print('Set IdP to: %s' % self.ip)
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		subprocess.call(['ucr', 'unset', 'hosts/static/%s' % self.ip])
+		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+
+
+class SamlTest(object):
 	def __init__(self, username, password):
 		self.ucr = configRegistry.ConfigRegistry()
 		self.ucr.load()
-		self.hostname = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		self.target_sp_hostname = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		self.username = username
 		self.password = password
 		self.session = requests.Session()
@@ -37,11 +54,9 @@ class SamlTest(object):
 	def _request(self, method, url, status_code, data=None):
 		"""does POST or GET requests and raises SamlError which encodes the login step
 		through position parameter."""
-
 		_requests = {
 			'GET': self.session.get,
 			'POST': self.session.post}
-
 		try:
 			self.page = _requests[method](url, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem')
 		except requests.exceptions.SSLError as E:
@@ -54,12 +69,10 @@ class SamlTest(object):
 
 	def _login_at_idp_with_credentials(self):
 		"""Send form with login data"""
-
 		auth_state = self._extract_auth_state_from()
-
 		print("POST form with username and password to: %s" % self.page.url)
 		self.position = "posting login form"
-		data = {'username': self.username, 'password': self.password, 'Au    thState': auth_state}
+		data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
 		self._request('POST', self.page.url, 200, data=data)
 
 	def _extract_saml_msg_from(self):
@@ -90,17 +103,19 @@ class SamlTest(object):
 		self._request('POST', url, 200, data={'SAMLResponse': saml_msg})
 
 	def test_login(self):
-		"""Test login at umc"""
-		print("Test login...")
+		"""Test login on umc"""
+		url = "https://%s/univention/get/hosts" % self.target_sp_hostname
+		print("Test login @ %s" % url)
 		self.position = "testing login"
-		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 200)
+		self._request('GET', url, 200)
 		print("Login success")
 
 	def test_logout(self):
-		"""Test logout at umc"""
-		print("Test logout at SP...")
+		"""Test logout on umc"""
+		url = "https://%s/univention/get/hosts" % self.target_sp_hostname
+		print("Test logout @ %s" % url)
 		self.position = "testing logout"
-		self._request('GET', "https://%s/univention/get/hosts" % self.hostname, 405)
+		self._request('GET', url, 405)
 		print("Logout success at SP")
 
 	def test_logout_at_IdP(self):
@@ -126,6 +141,7 @@ class SamlTest(object):
 	def _evaluate_idp_response(self):
 		"""Make sure the Identity Provider has returned a SAML message and a url at the Service Provider,
 		if not evaluate the response body for common error cases"""
+		print('SAML message recieved from %s' % self.page.url)
 		url = self._extract_sp_url_from()
 		saml_msg = self._extract_saml_msg_from()
 
@@ -139,13 +155,11 @@ class SamlTest(object):
 		If the IdP already knows the session and doesn't ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with SAML message
-		url = "https://%s/univention/saml/" % self.hostname
+		url = "https://%s/univention/saml/" % self.target_sp_hostname
 		print("GET SAML login form at: %s" % url)
 		self.position = "requesting SAML message"
 		self._request('GET', url, 200)
-
 		url, saml_msg = self._evaluate_idp_response()
-
 		self._send_saml_response_to_sp(url, saml_msg)
 
 	def login_with_new_session_at_IdP(self):
@@ -153,21 +167,19 @@ class SamlTest(object):
 		The IdP doesn't know the session and has to ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with login prompt
-		url = "https://%s/univention/saml/" % self.hostname
+		url = "https://%s/univention/saml/" % self.target_sp_hostname
 		print("GET SAML login form at: %s" % url)
 		self.position = "reaching login dialog"
 		self._request('GET', url, 200)
 
 		# Login at IdP. IdP answers with SAML message and url to SP in body
 		self._login_at_idp_with_credentials()
-
 		url, saml_msg = self._evaluate_idp_response()
-
 		self._send_saml_response_to_sp(url, saml_msg)
 
 	def logout_at_IdP(self):
 		"""Logout from session"""
-		url = "https://%s/univention/logout" % self.hostname
+		url = "https://%s/univention/logout" % self.target_sp_hostname
 		print("Loging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)
