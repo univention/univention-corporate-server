@@ -466,6 +466,9 @@ if __name__ == "__main__":
 	parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 	parser.add_option("--binddn", dest="binddn", help="", metavar="BINDDN")
 	parser.add_option("--bindpwd", dest="bindpwd", help="", metavar="BINDPWD")
+	parser.add_option("--ucr-mapping", action="store_true", dest="ucr_mapping",
+		help="Don't rename in UDM, but create UCR variables for dynamic mapping (see `connector/ad/mapping/{user,group}/table/*`",
+		default=False)
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
@@ -492,7 +495,10 @@ if __name__ == "__main__":
 	debug_level = ucr.get('connector/debug/level', 2)
 	ud.set_level(ud.LDAP, int(debug_level))
 
-	mapper = WellKnownSIDMapper.with_udm_renaming(ucr, options.binddn, options.bindpwd)
+	if options.ucr_mapping:
+		mapper = WellKnownSIDMapper.with_ucr_mapping(ucr, options.binddn, options.bindpwd)
+	else:
+		mapper = WellKnownSIDMapper.with_udm_renaming(ucr, options.binddn, options.bindpwd)
 	mapper.map_well_known_sids()
 
 	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])
