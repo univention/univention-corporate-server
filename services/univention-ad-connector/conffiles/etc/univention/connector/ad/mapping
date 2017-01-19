@@ -295,6 +295,22 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 						),
 			},
 
+			mapping_table = {
+@!@
+user_map = {}
+key_prefix = "connector/ad/mapping/user/table/"
+for key,value in configRegistry.items():
+	if key.startswith(key_prefix):
+		ucs_username = key[len(key_prefix):]
+		user_map[ucs_username] = value
+if user_map:
+	print "\n\t\t\t'samAccountName': ["
+	for key,value in user_map.items():
+		print "\t\t\t\t(u'%s', u'%s')," % (key, value)
+	print "\t\t\t\t]"
+@!@
+			},
+
 		),
 
 	'group': univention.connector.property (
@@ -418,15 +434,19 @@ if 'connector/ad/mapping/group/exchange' in configRegistry and configRegistry['c
 				},
 
 			mapping_table = {
-						@!@
-if 'connector/ad/mapping/group/language' in configRegistry and configRegistry['connector/ad/mapping/group/language'] in ['de','DE']:
-	print """
-				'cn': [( u'Domain Users' , u'Domänen-Benutzer'), ( u'Domain Users' , u'Domain Users'),
-						(u'Domain Admins', u'Domänen-Admins'), (u'Domain Admins', u'Domain Admins'),
-						(u'Windows Hosts', u'Domänencomputer'), (u'Windows Hosts', u'Windows Hosts'),
-						(u'Domain Guests', u'Domänen-Gäste'), (u'Domain Guests', u'Domain Guests')]
-					"""
-					@!@
+@!@
+group_map = {}
+key_prefix = "connector/ad/mapping/group/table/"
+for key,value in configRegistry.items():
+	if key.startswith(key_prefix):
+		ucs_groupname = key[len(key_prefix):]
+		group_map[ucs_groupname] = value
+if group_map:
+	print "\n\t\t\t'cn': ["
+	for key,value in group_map.items():
+		print "\t\t\t\t(u'%s', u'%s')," % (key, value)
+	print "\t\t\t\t]"
+@!@
 			},
 
 		),
