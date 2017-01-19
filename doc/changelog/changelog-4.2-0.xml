@@ -633,6 +633,9 @@
 				It no longer removes the cryptographic signatures of the updater scripts and <filename class="directory">dists/</filename> directories required for network installation (<u:bug>39582</u:bug>).
 				It also uses the correct path to remove obsolete packages (<u:bug>28048</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				<method>unbind()</method> methods have been added to the classes <classname>univention.uldap</classname> and <classname>univention.admin.uldap</classname> (<u:bug>37519</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
