@@ -125,7 +125,10 @@ class Coverage(object):
 			cls.debug_message('ENVIRON WAS CLEARED BY PARENT PROCESS', argv)
 
 		import coverage
-		cls.coverage = coverage.coverage(config_file=os.environ['COVERAGE_PROCESS_START'], auto_data=True)
+		cls.coverage = coverage.process_startup()
+		if not cls.coverage:
+			cls.debug_message('no coverage startup (already started?, environ cleared?)')
+			return
 
 		# FIXME: univention-cli-server calls os.fork() which causes the coverage measurement not to start in the forked process
 		# https://bitbucket.org/ned/coveragepy/issues/310/coverage-fails-with-osfork-and-os_exit
