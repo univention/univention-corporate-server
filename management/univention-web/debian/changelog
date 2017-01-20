@@ -1,3 +1,9 @@
+univention-web (1.0.3-3) unstable; urgency=medium
+
+  * Bug #32027: Remove fuzzy entry 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 15:41:33 +0100
+
 univention-web (1.0.3-2) unstable; urgency=medium
 
   * Bug #32027: Tree and Grid updates for better compatibility 
