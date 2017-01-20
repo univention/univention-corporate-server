@@ -53,6 +53,7 @@ import univention.testing.ucr
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import ldap
+import ldap.filter
 import time
 from univention.testing.ucs_samba import wait_for_drs_replication
 
@@ -205,8 +206,9 @@ class UCSTestUDM(object):
         # find DN of freshly created object and add it to cleanup list
         for line in stdout.splitlines():  # :pylint: disable-msg=E1103
             if line.startswith('Object created: ') or line.startswith('Object exists: '):
-                dn = line.split('Object created: ', 1)[-1].split('Object exists: ', 1)[-1]
-                self._cleanup.setdefault(modulename, []).append(dn)
+                dn = line.split(': ', 1)[-1]
+                if not line.startswith('Object exists: '):
+                    self._cleanup.setdefault(modulename, []).append(dn)
                 break
         else:
             raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
@@ -216,7 +218,7 @@ class UCSTestUDM(object):
             if check_for_drs_replication:
                 if utils.package_installed('univention-samba4'):
                     if "options" not in kwargs or "kerberos" in kwargs["options"]:
-                        wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+                        wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1])))
         return dn
 
     def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
