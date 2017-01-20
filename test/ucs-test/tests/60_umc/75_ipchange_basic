@@ -6,7 +6,7 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import Client
 from univention.config_registry import ConfigRegistry
 
 if __name__ == '__main__':
@@ -29,8 +29,8 @@ if __name__ == '__main__':
 		new_ip = '1.2.3.4'
 
 		iface = ucr.get('interfaces/primary', 'eth0')
-		connection = UMCConnection(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
-		connection.request('ip/change', {'ip': new_ip, 'oldip': ip, 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+		client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
+		client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip, 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
 		utils.wait_for_replication()
 		utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)

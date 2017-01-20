@@ -47,7 +47,7 @@ import univention.appcenter.log as app_logger
 from univention.appcenter.actions import get_action
 from univention.config_registry import ConfigRegistry
 
-import univention.testing.umc as umc
+from univention.testing.umc import Client
 import univention.testing.utils as utils
 import univention.testing.debian_package as debian_package
 
@@ -87,30 +87,26 @@ class AppCenterTestFailure(Exception):
 class AppCenterOperations(object):
 
 	def __init__(self):
-		self.connection = umc.UMCTestConnection()
+		self.client = Client.test_connection()
 
 	def _error_handler(self, error):
 		raise AppCenterOperationError(error)
 
 	def _renew_connection(self):
-		status = self.connection.get_custom_connection("session-info", command="get")
-		if status.getresponse().status != 200:
-			self.connection.auth(self.connection.username, self.connection.password)
-
-	def _silent_request(self, *args, **kwargs):
-		#  we want the original version, and not the verbose one from
-		#  `univention.testing.umc`.
-		connection = super(umc.UMCConnection, self.connection)
-		return connection.request(*args, **kwargs)
+		try:
+			if self.client.umc_get('session-info').status != 200:
+				raise ValueError()
+		except BaseException:
+			self.client.authenticate(self.client.username, self.client.password)
 
 	def query(self):
 		self._renew_connection()
-		return self.connection.request("appcenter/query")
+		return self.client.umc_command("appcenter/query").result
 
 	def get(self, application):
 		self._renew_connection()
 		data = {"application": application}
-		return self.connection.request("appcenter/get", data)
+		return self.client.umc_command("appcenter/get", data).result
 
 	def invoke(self, callback=None, **options):
 		"""Call the UMC command `appcenter/invoke` with the given options.
@@ -122,12 +118,12 @@ class AppCenterOperations(object):
 		function was given and `info` or `steps` changed"""
 		def _thread(event, options):
 			try:
-				self.connection.request("appcenter/keep_alive")
+				self.client.umc_command("appcenter/keep_alive")
 			finally:
 				event.set()
 
 		self._renew_connection()
-		result = self.connection.request("appcenter/invoke", options)
+		result = self.client.umc_command("appcenter/invoke", options).result
 		if not result.get("serious_problems", True):
 			event = threading.Event()
 			threading.Thread(target=_thread, args=(event, options)).start()
@@ -137,7 +133,7 @@ class AppCenterOperations(object):
 			(last_info, last_steps) = ("", 0)
 
 			while not (event.wait(3) and finished):
-				progress = self._silent_request("appcenter/progress")
+				progress = self.client.umc_command("appcenter/progress", print_request=False, print_response=False)
 				info = progress.get("info") or last_info
 				steps = progress.get("steps") or last_steps
 				changed = (info, steps) != (last_info, last_steps)

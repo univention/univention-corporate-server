@@ -13,7 +13,7 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 import univention.admin.uldap
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import Client
 
 
 if __name__ == '__main__':
@@ -30,8 +30,8 @@ if __name__ == '__main__':
 		assert username == lo.get(dn)['uid'][0]
 		print 'successfully did LDAP bind.'
 
-		connection = UMCConnection(ucr['hostname'], username, password)
-		ldap_base = connection.request('ucr', ['ldap/base'], command='get')
+		client = Client(ucr['hostname'], username, password)
+		ldap_base = client.umc_get('ucr', ['ldap/base']).result
 		print ldap_base
 		assert ldap_base, 'Could not do any random UMC request'
 		print 'successfully did UMC authentication'

@@ -2,14 +2,13 @@ import os
 import sys
 import shutil
 
-import json
 from time import sleep
-from httplib import HTTPException
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
-from univention.testing.umc import UMCTestConnection as UMCConnection
+from univention.testing.umc import Client
+from univention.lib.umc import HTTPError, ConnectionError
 
 
 class UMCBase(object):
@@ -22,27 +21,27 @@ class UMCBase(object):
 		self.username = None
 		self.password = None
 		self.hostname = None
-		self.connection = None
+		self.client = None
 		self.ldap_base = ''
 
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
 
 	def request(self, *args, **kwargs):
-		return self.connection.request(*args, **kwargs)
+		return self.client.umc_command(*args, **kwargs).result
 
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
 		try:
-			self.connection = UMCConnection()
-		except HTTPException as exc:
-			print("An HTTPException while trying to authenticate to UMC: %r" % exc)
+			self.client = Client.test_connection()
+		except (HTTPError, ConnectionError) as exc:
+			print("An error while trying to authenticate to UMC: %r" % exc)
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
-			self.connection = UMCConnection()
-		self.username = self.connection.username
-		self.password = self.connection.password
-		self.hostname = self.connection.hostname
+			self.client = Client.test_connection()
+		self.username = self.client.username
+		self.password = self.client.password
+		self.hostname = self.client.hostname
 
 	def check_obj_exists(self, name, obj_type):
 		"""
@@ -66,7 +65,7 @@ class UMCBase(object):
 		Returns the request result of the 'udm/get' UMC connection,
 		made with provided 'options' and 'flavor'
 		"""
-		request_result = self.connection.request('udm/get', options, flavor)
+		request_result = self.client.umc_command('udm/get', options, flavor).result
 		if request_result is None:
 			utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
 		return request_result
@@ -76,7 +75,7 @@ class UMCBase(object):
 		Modifies the 'flavor' object as given in 'options' by making a
 		UMC request 'udm/put', checks for 'success' in the response
 		"""
-		request_result = self.connection.request('udm/put', options, flavor)
+		request_result = self.client.umc_command('udm/put', options, flavor).result
 		if not request_result:
 			utils.fail("Request 'udm/put' to modify an object with options '%s' failed, hostname %s" % (options, self.hostname))
 		if not request_result[0].get('success'):
@@ -110,7 +109,7 @@ class UMCBase(object):
 				"recursive": True
 			}
 		}]
-		request_result = self.connection.request('udm/remove', options, flavor)
+		request_result = self.client.umc_command('udm/remove', options, flavor).result
 		if not request_result:
 			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, hostname %s" % (options, self.hostname))
 		if not request_result[0].get('success'):
@@ -166,22 +165,12 @@ class JoinModule(UMCBase):
 		return self._join('join/run', options)
 
 	def _join(self, path, options):
-		options = {"options": options}
-		options = json.dumps(options)
-		# defining request explicitly, since UMCConnection raises
-		# Exceptions for anything other than response with status 200
-		umc_connection = self.connection.get_connection()
-		umc_connection.request('POST', '/umcp/command/' + path, options, self.connection._headers)
-		request_result = umc_connection.getresponse()
-		request_result = request_result.read()
-		if not request_result:
-			utils.fail("Request 'join/%s' with options '%s' failed, hostname '%s'" % (path, options, self.hostname))
+		response = self.client.umc_command(path, options)
 
-		request_result = json.loads(request_result)
-		if request_result.get('status') != 202:
-			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (path, self.hostname, request_result))
-		if not request_result.get('result')['success']:
-			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, request_result, self.hostname))
+		if response.status != 202:
+			utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (path, self.hostname, response.status))
+		if not response.result['success']:
+			utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, response.result, self.hostname))
 
 	def wait_rejoin_to_complete(self, poll_attempts):
 		"""
@@ -191,7 +180,7 @@ class JoinModule(UMCBase):
 		'poll_attempts'. Returns when process is not reported as running.
 		"""
 		for attempt in range(poll_attempts):
-			request_result = self.connection.request('join/running')
+			request_result = self.client.umc_command('join/running').result
 			if request_result is None:
 				utils.fail("No response on UMC 'join/running' request")
 			elif request_result is False:

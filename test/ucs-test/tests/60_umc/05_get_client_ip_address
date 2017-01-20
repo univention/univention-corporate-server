@@ -4,20 +4,16 @@
 ## packages:
 ##    - univention-management-console-web-server (>= 3.0.152)
 
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import Client
 import univention.testing.utils as utils
 import univention.testing.network as network
-from json import loads
 import univention.config_registry as configRegistry
 import ldap
 
 
 def get_ip_address(host, username, password):
-	connection = UMCConnection(host)
-	connection.auth(username, password)
-	rawcon = connection.get_connection()
-	rawcon.request('POST', '/umcp/get/ipaddress', connection.build_data({}))
-	return loads(rawcon.getresponse().read())
+	client = Client(host, username, password)
+	return client.umc_get('ipaddress').data
 
 
 def main():

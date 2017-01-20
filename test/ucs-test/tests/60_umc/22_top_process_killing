@@ -29,9 +29,7 @@ class TestUMCProcessKilling(UMCBase):
         provided by making a UMC request 'top/kill' with respective options.
         """
         try:
-            request_result = self.connection.request('top/kill',
-                                                     {'signal': signal,
-                                                      'pid': pids})
+            request_result = self.client.request('top/kill', {'signal': signal, 'pid': pids}).result
             if not request_result:
                 utils.fail("Request 'top/kill' with signal '%s' for "
                            "pids '%s' failed, no 'True' in response. "

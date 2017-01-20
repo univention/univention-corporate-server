@@ -38,7 +38,7 @@ class TestUMCGroupsCreation(UMCBase):
                                            "objectType": "groups/group"}}]
 
         try:
-            request_result = self.connection.request('udm/add', options, 'groups/group')
+            request_result = self.client.umc_command('udm/add', options, 'groups/group').result
             if not request_result:
                 utils.fail("Request 'udm/add' group failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))
@@ -62,9 +62,7 @@ class TestUMCGroupsCreation(UMCBase):
                                           self.ldap_base},
                                  "options": {}}]
         try:
-            request_result = self.connection.request('udm/put',
-                                                     options,
-                                                     'groups/group')
+            request_result = self.client.umc_command('udm/put', options, 'groups/group').result
             if not request_result:
                 utils.fail("Request 'udm/put' to add policy to a group "
                            "with options '%s' failed, hostname %s"
@@ -84,8 +82,7 @@ class TestUMCGroupsCreation(UMCBase):
         """
         options = ["cn=" + groupname + ",cn=groups," + self.ldap_base]
         try:
-            request_result = self.connection.request('udm/get', options,
-                                                     'groups/group')
+            request_result = self.client.umc_command('udm/get', options, 'groups/group').result
             if not request_result:
                 utils.fail("Request 'udm/get' with options '%s' failed, "
                            "hostname '%s'" % (options, self.hostname))

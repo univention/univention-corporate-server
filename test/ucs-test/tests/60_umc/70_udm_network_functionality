@@ -9,9 +9,9 @@
 import sys
 sys.path.insert(0, '.')
 from umc import UDMModule
-import json
 
 import univention.testing.utils as utils
+from univention.lib.umc import BadRequest
 from univention.testing.strings import random_username
 
 
@@ -245,36 +245,18 @@ class TestUMCNetworkFunctionality(UDMModule):
               "changing '%s' network ip range to '%s'"
               % (self.test_network_name, self.test_ip_range))
         self.modify_network_ip_range()
-        # using custom request to avoid exceptions in UMCConnection module:
         options = {"networkDN": self.test_network_dn,
                    "increaseCounter": True}
-        network_config = self.make_custom_request(
-            '/umcp/command/udm/network', options)
-        if network_config.get('status') != 400:
-            utils.fail("The '%s' network configuration reported '%s', "
-                       "status other than '400', i.e. possibly has "
-                       "options for IP addresses in the test range: "
-                       "'%s', while should not" % (self.test_network_name,
-                       network_config, self.test_ip_range))
+        with pytest.raises(BadRequest):
+            network_config = self.client.umc_command('udm/network', options)
 
         error_messages = ("Fehler bei der automatischen IP Adresszuweisung",
                           "Failed to automatically assign an IP address")
 
-        if not any(msg in network_config.get('message') for msg in error_messages):
+        if not any(msg in network_config.message for msg in error_messages):
             utils.fail("The response message '%s' does not include any of "
                        "'%s' messages, possibly another error with the "
-                       "status code 400 " % (network_config, error_messages))
-
-    def make_custom_request(self, request_url, options):
-        options = {"options": options}
-        options = json.dumps(options)
-        umc_connection = self.connection.get_connection()
-        umc_connection.request('POST', request_url, options, self.connection._headers)
-        request_result = umc_connection.getresponse()
-        request_result = request_result.read()
-        if not request_result:
-            utils.fail("Request '%s' with options '%s' failed, hostname '%s'" % (request_url, options, self.hostname))
-        return json.loads(request_result)
+                       "status code 400 " % (network_config.message, error_messages))
 
     def run_checks_with_computers(self):
         """

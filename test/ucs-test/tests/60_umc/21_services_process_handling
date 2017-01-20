@@ -87,8 +87,7 @@ class TestUMCServiceProcessHandling(ServiceModule):
         Possible options for actions are: start/stop/restart.
         """
         try:
-            request_result = self.connection.request('services/' + action,
-                                                     service_names)
+            request_result = self.client.umc_command('services/' + action, service_names).result
             if not request_result:
                 utils.fail("Request 'services/%s' failed, no response "
                            "from hostname '%s'" % (action, self.hostname))

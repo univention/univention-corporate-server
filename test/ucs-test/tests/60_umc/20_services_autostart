@@ -37,8 +37,7 @@ class TestUMCServiceAutostart(ServiceModule):
     def set_service_configuration(self, service_names, setting):
         """Set the 'setting' for list of 'service_names' via UMC request"""
         try:
-            request_result = self.connection.request('services/' + setting,
-                                                     service_names)
+            request_result = self.client.umc_command('services/' + setting, service_names).result
             if not request_result:
                 utils.fail("Request 'services/%s' failed, no response "
                            "from hostname '%s'" % (setting, self.hostname))

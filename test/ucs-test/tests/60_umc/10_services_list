@@ -6,10 +6,8 @@
 import sys
 sys.path.insert(0, '.')
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
-from univention.testing.umc import UMCConnection
 
 from umc import ServiceModule
 

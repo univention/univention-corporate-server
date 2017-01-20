@@ -8,7 +8,7 @@
 
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import Client
 from univention.testing.strings import random_name
 
 ldap_base = UCSTestUDM.LDAP_BASE
@@ -31,8 +31,7 @@ def logged_in(func):
 	def _decorated(*args, **kwargs):
 		global UMCC
 		if UMCC is None:
-			UMCC = UMCConnection(HOSTNAME)
-			UMCC.auth(USERNAME, PASSWORD)
+			UMCC = Client(HOSTNAME, USERNAME, PASSWORD)
 		return func(*args, **kwargs)
 	return _decorated
 
@@ -50,7 +49,7 @@ def get_policy_result(objectDN, policyDN, container):
 		'container': container
 	}]
 
-	result = UMCC.request('udm/object/policies', data, 'navigation')
+	result = UMCC.umc_command('udm/object/policies', data, 'navigation')
 	return ['='.join(r['value']) for r in result[0]['registry']]
 
 

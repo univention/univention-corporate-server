@@ -11,13 +11,14 @@
 import os
 import sys
 from univention.appcenter import AppManager
-from univention.testing import umc
+from univention.testing.umc import Client
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as str_test
 from univention import config_registry
 
 
 opened_files = []
+
 
 def open_file(prefix, suffix):
 	path = '%s.%s' % (prefix, suffix)
@@ -81,6 +82,7 @@ README_TYPES = (
 	'README_POST_UNINSTALL',
 )
 
+
 def write_readme_file(app_prefix, readme_filename):
 	with open_file(app_prefix, readme_filename) as readme_file:
 		readme_file.write('--%s--' % readme_filename)
@@ -100,7 +102,7 @@ def test_readme_files(umc_data, lang):
 	sys.stdout.flush()
 	for readme in README_TYPES:
 		expected_val = '--%s_%s--' % (readme, lang)
-		val = umc_data[readme.lower()] 
+		val = umc_data[readme.lower()]
 		assert val == expected_val, 'Entry %s=%s does not match expected value %s!' % (readme, val, expected_val)
 	print 'SUCCESS'
 
@@ -110,6 +112,7 @@ RATINGS = (
 	'EditorsAward',
 	'PopularityAward',
 )
+
 
 def write_ratings(app_prefix, *keys):
 	print 'Writing new META file'
@@ -136,9 +139,9 @@ def test_ratings(umc_data, *keys):
 
 def get_app_from_umc(lang='en_US'):
 	# UMC query
-	connection = umc.UMCTestConnection()
-	connection.request('', {'locale': lang}, command='set')
-	apps = connection.request('appcenter/query', print_response=False, print_request_data=False)
+	client = Client.test_connection(language=lang)
+	client.umc_set({'locale': lang})
+	apps = client.umc_command('appcenter/query', print_response=False, print_request_data=False)
 
 	# pick our test app from the list of all apps
 	matches = [iapp for iapp in apps if iapp['id'] == 'test_app']
@@ -184,5 +187,3 @@ if __name__ == '__main__':
 			test_all()
 		finally:
 			cleanup()
-
-

@@ -8,7 +8,7 @@
 ## exposure: safe
 ## tags: [appcenter, performance]
 
-import univention.lib.umc_connection as UMCC
+from univention.testing.umc import Client
 import univention.testing.utils as utils
 from univention.appcenter import actions
 import time
@@ -21,18 +21,16 @@ def main():
 
 	print("Appcenter update done")
 	max_time = 4.5
-	account = utils.UCSTestDomainAdminCredentials()
-	request_query = ('appcenter/query', { 'quick': True }, )
+	request_query = ('appcenter/query', {'quick': True}, )
 
 	print("Getting umc_connection")
-	c = UMCC.UMCConnection('localhost')
-	c.auth(account.username, account.bindpw)
+	client = Client.test_connection()
 
 	print("Start request to appcenter")
 	# To get the best performance result, appcenter_update.call() is called again.
 	appcenter_update.call()
 	start_time = time.time()
-	c.request(*request_query)
+	client.umc_command(*request_query)
 	end_time = time.time()
 	print("Request finished")
 

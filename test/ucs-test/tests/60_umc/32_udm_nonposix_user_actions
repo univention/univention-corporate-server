@@ -10,12 +10,10 @@ import sys
 sys.path.insert(0, '.')
 from umc import UMCBase
 
-import json
-
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import Client
 
 
 class TestUMCUserAuthentication(UMCBase):
@@ -54,28 +52,14 @@ class TestUMCUserAuthentication(UMCBase):
 
 	def authenticate_to_umc(self, username, password):
 		"""
-		Authenticates to UMC using 'self.connection' and given
+		Authenticates to UMC using 'self.client' and given
 		'password' with 'username'. Updates the cookie.
 		Returns 'True' on success and 'False' in any other case.
 		"""
-		options = {"options": {"username": username, "password": password}}
 		try:
-			umc_connection = self.connection.get_connection()
-			umc_connection.request('POST', '/umcp/auth', json.dumps(options), self.connection._headers)
-
-			request_result = umc_connection.getresponse()
-			cookie = request_result.getheader('set-cookie')
-			status_code = request_result.status
-
-			print "Response Code:", status_code
-			print "Response Cookie:", cookie
-			print "Response Message:", request_result.read()
-
-			self.connection._headers['Cookie'] = cookie
-			if cookie and status_code == 200:
-				return True
-
-			return False
+			response = self.client.authenticate(username, password)
+			assert response.status == 200
+			return True
 		except Exception as exc:
 			utils.fail("An exception while trying to authenticate to UMC "
 				"with a 'username'=%s and 'password'=%s: %r"
@@ -90,7 +74,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 		with UCSTestUDM() as self.UDM:
 			self.create_user()
-			self.connection = UMCConnection(self.ucr['hostname'])
+			self.client = Client()
 			self.authenticate_to_umc(self.test_username, self.test_password)
 			self.query_udm()
 

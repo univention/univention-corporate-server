@@ -14,7 +14,7 @@ import univention.testing.strings as uts
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 
 from univention.config_registry import ConfigRegistry
-from univention.testing.umc import UMCTestConnection as UMCConnection
+from univention.testing.umc import Client
 
 
 def main():
@@ -27,7 +27,6 @@ def main():
 	"""
 	ucr = ConfigRegistry()
 	ucr.load()
-	localhost = ucr['hostname']
 
 	with UCSTestUDM() as udm:
 		# create an ldap container:
@@ -59,8 +58,8 @@ def main():
 		# try to authenticate and change password of the user
 		# to the 'complex' one (should work):
 		print "\nTrying to change user password to '%s':" % complex_password
-		connection = UMCConnection(localhost, user_name, user_password)
-		response = connection.get_custom_connection('', {'password': {'password': user_password, 'new_password': complex_password}}, command='set').getresponse()
+		client = Client(None, user_name, user_password)
+		response = client.umc_set({'password': {'password': user_password, 'new_password': complex_password}})
 		print "RESPONSE:", response
 		if response.status != 200:
 			utils.fail("Changing user password did not work in the case it should")
@@ -68,8 +67,8 @@ def main():
 		# try to authenticate with a new user password
 		# and change it to a simple one (should not work):
 		print "\nTrying to change user password to '%s':" % simple_password
-		connection = UMCConnection(localhost, user_name, complex_password)
-		response = connection.get_custom_connection('', {'password': {'password': complex_password, 'new_password': simple_password}}, command='set').getresponse()
+		client = Client(None, user_name, complex_password)
+		response = client.umc_set({'password': {'password': complex_password, 'new_password': simple_password}})
 		print "RESPONSE:", response
 		if response.status != 400:
 			if response.status == 200:

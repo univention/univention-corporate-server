@@ -29,8 +29,7 @@ class TestUMCUserCreation(UDMModule):
         """
         options = ["uid=" + uid + ",cn=users," + self.ldap_base]
         try:
-            request_result = self.connection.request('udm/get', options,
-                                                     'users/user')
+            request_result = self.client.request('udm/get', options, 'users/user').result
             if not request_result:
                 utils.fail("Request 'udm/get' with options '%s' failed, "
                            "hostname '%s'" % (options, self.hostname))
@@ -51,8 +50,7 @@ class TestUMCUserCreation(UDMModule):
                                        ",cn=users," + self.ldap_base},
                                "options": {}}]
         try:
-            request_result = self.connection.request('udm/put', options,
-                                                     'users/user')
+            request_result = self.client.request('udm/put', options, 'users/user').result
             if not request_result:
                 utils.fail("Request 'udm/put' to change user '%s' groups "
                            "with options '%s' failed, hostname %s"
@@ -108,8 +106,7 @@ class TestUMCUserCreation(UDMModule):
                                                          self.ldap_base,
                                            "objectType": "users/user"}}]
         try:
-            request_result = self.connection.request('udm/add', options,
-                                                     'users/user')
+            request_result = self.client.umc_command('udm/add', options, 'users/user').result
             if not request_result:
                 utils.fail("Request 'udm/add' user failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))

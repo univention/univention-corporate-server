@@ -10,7 +10,7 @@ from umc import UMCBase
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
-from univention.testing.umc import UMCConnection
+from univention.testing.umc import Client
 
 
 class TestUMCUserModules(UMCBase):
@@ -19,7 +19,6 @@ class TestUMCUserModules(UMCBase):
 		"""
 		Method to test the UMC modules access restrictions for regular users
 		"""
-		self.hostname = self.ucr.get('hostname')
 		ldap_base = self.ucr.get('ldap/base')
 
 		test_username = 'umc_test_user_' + random_username(6)
@@ -57,8 +56,8 @@ class TestUMCUserModules(UMCBase):
 			assert user_modules[0].get('id') == 'ucr', 'Wrong module returned, expected ID==ucr: %r' % (user_modules,)
 
 	def list_umc_modules(self, username, password):
-		connection = UMCConnection(self.hostname, username, password)
-		return connection.request('modules', command='get').get('modules')
+		client = Client(None, username, password)
+		return client.umc_get('modules').data.get('modules')
 
 
 if __name__ == '__main__':

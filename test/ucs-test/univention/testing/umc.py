@@ -34,8 +34,26 @@ import sys
 import pprint
 import httplib
 
+from univention.lib.client import Client as _Client
 from univention.lib.umc_connection import UMCConnection as _UMCConnection
 from univention.config_registry import ConfigRegistry
+
+
+class Client(_Client):
+
+	@classmethod
+	def test_connection(cls, hostname=None, *args, **kwargs):
+		ucr = ConfigRegistry()
+		ucr.load()
+		username = ucr.get('tests/domainadmin/account')
+		username = username.split(',')[0][len('uid='):]
+		password = ucr.get('tests/domainadmin/pwd')
+		return cls(hostname, username, password, *args, **kwargs)
+
+	def umc_command(self, *args, **kwargs):
+		kwargs.pop('print_response', True)
+		kwargs.pop('print_request', True)
+		return super(Client, self).umc_command(*args, **kwargs)
 
 
 class UMCConnection(_UMCConnection):

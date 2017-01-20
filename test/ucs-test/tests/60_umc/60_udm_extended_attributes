@@ -193,8 +193,7 @@ class TestUMCExtendedAttributes(UDMModule):
                                 "objectType": "settings/extended_attribute",
                                 "objectTemplate": "None"}}]
         try:
-            request_result = self.connection.request('udm/add', options,
-                                                     "navigation")
+            request_result = self.client.umc_command('udm/add', options, "navigation").result
             if not request_result:
                 utils.fail("Request 'udm/add' failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))

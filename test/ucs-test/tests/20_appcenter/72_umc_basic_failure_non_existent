@@ -8,8 +8,10 @@
 ## tags: [appcenter]
 from __future__ import print_function
 
-import httplib
 import appcentertest as app_test
+from univention.lib.umc import HTTPError, ConnectionError
+
+HTTPException = (HTTPError, ConnectionError)
 
 
 @app_test.test_case
@@ -20,7 +22,7 @@ def test_install_non_existent_dry_run(app_center, application):
 
 	try:
 		app_center.install(application, only_dry_run=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Install of non existent app did not fail.")
@@ -34,7 +36,7 @@ def test_install_non_existent(app_center, application):
 
 	try:
 		app_center.install(application, force=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Install of non existent app did not fail.")
@@ -48,7 +50,7 @@ def test_update_non_existent_dry_run(app_center, application):
 
 	try:
 		app_center.update(application, only_dry_run=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Update of non existent app did not fail.")
@@ -62,7 +64,7 @@ def test_update_non_existent(app_center, application):
 
 	try:
 		app_center.update(application, force=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Update of non existent app did not fail.")
@@ -76,7 +78,7 @@ def test_uninstall_non_existent_dry_run(app_center, application):
 
 	try:
 		app_center.uninstall(application, only_dry_run=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Uninstall of non existent app did not fail.")
@@ -90,7 +92,7 @@ def test_uninstall_non_existent(app_center, application):
 
 	try:
 		app_center.uninstall(application, force=True)
-	except httplib.HTTPException:
+	except HTTPException:
 		pass
 	else:
 		app_test.fail("Dry-Update of non existent app did not fail.")
