@@ -1,3 +1,9 @@
+univention-management-console (9.0.16-2) unstable; urgency=medium
+
+  * Bug #43308: Fix requiring of some Dialogs and added missing css file
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 20 Jan 2017 10:14:58 +0100
+
 univention-management-console (9.0.16-1) unstable; urgency=medium
 
   * Bug #42114: fix crash of UMC-Server due to __processes not defined in

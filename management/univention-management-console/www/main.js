@@ -554,7 +554,7 @@ define([
 				return;
 			}
 
-			require(["management/StartupDialog"], lang.hitch(this, function(StartupDialog) {
+			require(["management/widgets/StartupDialog"], lang.hitch(this, function(StartupDialog) {
 				var startupDialog = new StartupDialog({});
 				startupDialog.on('hide', function() {
 					// dialog is being closed
@@ -1434,7 +1434,7 @@ define([
 
 			// require given Page reference and display the dialog
 			var deferred = new Deferred();
-			require(["management" + _PageRef], lang.hitch(this, function(_pageConf) {
+			require(["management/widgets/" + _PageRef], lang.hitch(this, function(_pageConf) {
 				// prepare dict
 				var pageConf = lang.mixin({
 					'class': ''

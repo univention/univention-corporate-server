@@ -25,31 +25,31 @@
 }
 
 .umc .umcAppDialogPage-welcome .umcPageIcon {
-	background-image: url(app/welcome.svg);
+	background-image: url(widgets/welcome.svg);
 }
 
 .umc .umcAppDialogPage-feedback .umcPageIcon {
-	background-image: url(app/feedback.svg);
+	background-image: url(widgets/feedback.svg);
 }
 
 .umc .umcAppDialogPage-activation .umcPageIcon {
-	background-image: url(app/activation.svg);
+	background-image: url(widgets/activation.svg);
 }
 
 .umc .umcAppDialogPage-licenseImport .umcPageIcon {
-	background-image: url(app/licenseMail.svg);
+	background-image: url(widgets/licenseMail.svg);
 }
 
 .umc .umcAppDialogPage-help .umcPageIcon {
-	background-image: url(app/help.svg);
+	background-image: url(widgets/help.svg);
 }
 
 .umc .umcAppDialogPage-finished .umcPageIcon {
-	background-image: url(app/finished.svg);
+	background-image: url(widgets/finished.svg);
 }
 
 .umc .umcAppDialogPage-about .umcPageIcon {
-	background-image: url(app/about.svg);
+	background-image: url(widgets/about.svg);
 }
 
 .umc .umcAppDialogPage-feedback .umcFeedbackHardwareStatistics {
