@@ -1,3 +1,9 @@
+univention-system-setup (9.0.6-11) unstable; urgency=medium
+
+  * Bug #40102: working around dependency problems; see FIXME
+
+ -- Eduard Mai <mai@univention.de>  Fri, 20 Jan 2017 16:51:17 +0100
+
 univention-system-setup (9.0.6-10) unstable; urgency=medium
 
   * Bug #40102: working around dependency problems; see FIXME

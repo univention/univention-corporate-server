@@ -54,7 +54,6 @@ import dns.resolver
 import dns.reversename
 import dns.exception
 
-from univention.appcenter.actions.get import Get
 from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
@@ -68,6 +67,7 @@ from univention.lib.umc_connection import UMCConnection
 # The try except can be removed as soon as the dependency is added in the
 # univention-lib package.
 try:
+	from univention.appcenter.actions.get import Get
 	from univention.appcenter import AppManager
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
