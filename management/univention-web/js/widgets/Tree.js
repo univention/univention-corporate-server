@@ -53,6 +53,7 @@ define([
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
 	
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
+		showRoot: true,
 		postMixInProperties: function() {
 			this.inherited(arguments);
 		},
@@ -61,12 +62,12 @@ define([
 			this.inherited(arguments);
 			this._gridTree = new GridTree(lang.mixin({
 				collection: null,
+				selectionMode: 'single',
 				collapseOnRefresh: true,
 				shouldExpand: lang.hitch(this, 'shouldExpandAndSelect'),
 				showHeader: false,
 				columns: {
 					label: {
-						label: 'DN',
 						renderExpando: true,
 						formatter: lang.hitch(this, function(value, object) {
 							return this.getRowIconHTML(object.icon) + value;
@@ -101,10 +102,23 @@ define([
 					return this.model.mayHaveChildren(item);
 				})
 			});
-			this.model.getRoot(lang.hitch(this, function(item) {
-				store.put(item);
-				this.emit("load", {});
-			}));
+			if (this.showRoot) {
+				this.model.getRoot(lang.hitch(this, function(item) {
+					store.put(item);
+					this.emit("load", {});
+					this.onLoad();
+				}));
+			} else {
+				this.model.getRoot(lang.hitch(this, function(rootItem) {
+					this.model.getChildren(rootItem, lang.hitch(this, function(items){
+						items.forEach(lang.hitch(this, function(item) {
+							store.put(item);
+							this.emit("load", {});
+							this.onLoad();
+						}));
+					}));
+				}));
+			}
 			return store;
 		},
 
@@ -163,14 +177,17 @@ define([
 			return this.selectedItems;
 		},
 
+		_getSelectedIds: function() {
+			return array.filter(Object.keys(this._gridTree.selection), function(id) {
+				return this._gridTree.selection[id];
+			}, this);
+		},
+
 		_getSelectedObjects: function() {
-			var selectedItems = [];
-			for (var id in this._gridTree.selection) {
-				if (this._gridTree.selection[id]) {
-					selectedItems.push(this._getObject(id));
-				}
-			}
-			return selectedItems;
+			var selectedIds = this._getSelectedIds();
+			return array.map(selectedIds, function(id) {
+				return this._getObject(id);
+			}, this);
 		},
 
 		_getObject: function(id) {
@@ -185,16 +202,18 @@ define([
 				if (typeof(_location) === 'object') {
 					path.push(_location);
 				} else {
-					path.push(this._getObject(_location));
-				}
-			}));
-			if (this.path && path.length === this.path.length) {
-				for (var i = 0; i < path.length; i++) {
-					if (this.path[i].id !== path[i].id) {
-						pathChanged = true;
-						break;
+					var objectOnLocation = this._getObject(_location);
+					if (objectOnLocation) {
+						path.push(objectOnLocation);
+					} else {
+						path.push({id: _location});
 					}
 				}
+			}));
+			if (path.length === this.path.length) {
+				pathChanged = !array.every(path, function(_location, i) {
+					return _location === this.path[i];
+				}, this);
 			} else {
 				pathChanged = true;
 			}
@@ -208,8 +227,25 @@ define([
 			return;
 		},
 
+		dndController: {
+			singular: true
+		},
+
 		indentDetector: {
 			style: ''
+		},
+
+		_getFirst: function() {
+			return {item: this._gridTree.collection.fetchSync()[0]};
+		},
+
+		_getLast: function() {
+			var items = this._gridTree.collection.fetchSync();
+			return {item: items[items.length - 1]};
+		},
+
+		onLoad: function() {
+			return;
 		}
 	});
 });

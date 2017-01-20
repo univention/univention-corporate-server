@@ -1,3 +1,9 @@
+univention-web (1.0.3-2) unstable; urgency=medium
+
+  * Bug #32027: Tree and Grid updates for better compatibility 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 15:19:50 +0100
+
 univention-web (1.0.3-1) unstable; urgency=medium
 
   * Bug #42169: move traceback sending into core

@@ -52,7 +52,6 @@ define([
 	"dgrid/extensions/DijitRegistry",
 	"dgrid/Selector",
 	"dstore/legacy/StoreAdapter",
-	"dstore/Trackable",
 	"dstore/Memory",
 	"./Button",
 	"./Text",
@@ -65,7 +64,7 @@ define([
 	"../i18n!",
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
 		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton,
-		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Trackable, Memory, Button, Text, ContainerWidget,
+		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
@@ -75,8 +74,6 @@ define([
 			return item;
  		}
  	});
-
-	var TrackableStoreAdapter = declare([ Trackable, Memory, StoreAdapter ]);
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
@@ -199,6 +196,7 @@ define([
 
 		// internal adapter to the module store
 		_store: null,
+		collection: null,
 
 		_iconFormatter: function(valueField, iconField) {
 			// summary:
@@ -257,7 +255,7 @@ define([
 			this._grid.resize();
 			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
 			if (gridIsFullyRendered) {
-				style.set(this._pleaseWait.domNode, "display", "none");
+				this._statusMessage.set('content', _('Done'));
 				this._scrollSignal.remove();
 				return;
 			}
@@ -269,7 +267,6 @@ define([
 			}
 			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
 			this.own(this._scrollSignal);
-			style.set(this._pleaseWait.domNode, "display", "block");
 			var viewPortHeight = dojoWindow.getBox().h;
 			var gridHeight = Math.round(viewPortHeight + viewPortHeight / 3);
 			this._heightenGrid(gridHeight);
@@ -282,7 +279,7 @@ define([
 			}));
 		},
 
-		_setGridSorting: function() {
+		_updateGridSorting: function() {
 			if (typeof this.sortIndex === "number" && this.sortIndex !== 0) {
 				var column = this.columns[Math.abs(this.sortIndex) - 1];
 				this._grid.set('sort', [{property: column.name, descending: this.sortIndex < 0 }]);
@@ -293,24 +290,23 @@ define([
 			this.inherited(arguments);
 
 			this._disabledIDs = {};
-			this._store = (new TrackableStoreAdapter({
+			this._store = new StoreAdapter({
 				objectStore: this.moduleStore,
-				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function"
-			}));
-			var tracked = this._store.track();
-			tracked.on('add, update, delete', function(){
-				this._updateGridInfoContent();
+				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function",
+				idProperty: this.moduleStore.idProperty
 			});
 			if (this._store.isUmcpCommandStore) {
 				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
 					this.filter(this.query);
 				})));
-			} else {
-				var observer = this.moduleStore.query().observe(lang.hitch(this, function() {
-					this._store.emit('update');
+			} else if (this.moduleStore.query().observe) {
+				this.moduleStore.query().observe(lang.hitch(this, function() {
+					this.filter(this.query);
 				}));
-				this.own(observer);
 			}
+			this.collection = new Memory({
+				idProperty: this._store.idProperty
+			});
 		},
 
 		buildRendering: function() {
@@ -328,34 +324,36 @@ define([
 			this.addChild(this._gridInfo);
 
 			this._grid = new _Grid(lang.mixin({
-				collection: this._store,
+				collection: this.collection,
 				className: 'dgrid-autoheight',
 				bufferRows: 0,
+				_refresh: lang.hitch(this, '_refresh'),
 				selectionMode: 'extended',
 				allowSelectAll: true,
 				allowSelect: lang.hitch(this, 'allowSelect'),
 				_selectAll: lang.hitch(this, '_selectAll'),
+				update: lang.hitch(this, 'update'),
 				selectAll: function() {
 					this.inherited(arguments);
 					this._selectAll(); //Bug: dgrid #1198
 				}
 			}, this.gridOptions || {}));
 
-			this._setGridSorting();
+			this._updateGridSorting();
 
 			this._contextMenu = new Menu({
 				targetNodeIds: [this._grid.domNode]
 			});
 			this.own(this._contextMenu);
-			this._pleaseWait = new Text({
-				content: _("Please wait...")
+			this._statusMessage = new Text({
+				content: _("Please perform a search")
 			});
-			this.own(this._pleaseWait);
+			this.own(this._statusMessage);
 
 			this.setColumnsAndActions(this.columns, this.actions);
 
 			this.addChild(this._grid);
-			this.addChild(this._pleaseWait);
+			this.addChild(this._statusMessage);
 
 			//
 			// register event handler
@@ -382,7 +380,7 @@ define([
 				if (action.canExecute) {
 					var enabled = action.canExecute(items);
 					array.forEach(this._toolbar.getChildren(), function(button) {
-						if (button.name == action.name) {
+						if (button.name === action.name) {
 							button.set('disabled', !enabled);
 						}
 					});
@@ -436,14 +434,13 @@ define([
 //					editable: false,
 //					description: ''
 				}, icol, {
-					field: icol.name,
-					label: icol.label
+					field: icol.name
 				});
 //				delete col.label;
 
 				// default action
 				var defaultActionExists = this.defaultAction && (typeof this.defaultAction === "function" || array.indexOf(array.map(this.actions, function(iact) { return iact.name; }), this.defaultAction) !== -1);
-				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
+				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name === this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
 					col.renderCell = lang.hitch(this, function(item, value, node, options) {
@@ -486,12 +483,16 @@ define([
 					col.width = (this._getHeaderWidth(col.label) + 10) + 'px';
 				}
 
-				// set cell type
-				//TODO
-				if (typeof icol.type === "string" && 'checkbox' === icol.type.toLowerCase()) {
-					col.cellType = cells.Bool;
+				if (icol.formatter) {
+					col.formatter = function(name, columnValue) {
+						var colContent = icol.formatter(name, columnValue, columnValue);
+						if (colContent && colContent.domNode) {
+							return colContent.domNode.outerHTML;
+						} else {
+							return colContent;
+						}
+					};
 				}
-
 				// check for an icon
 				if (icol.iconField) {
 					// we need to specify a formatter
@@ -759,7 +760,7 @@ define([
 			if (defaultAction) {
 				var action;
 				array.forEach(this.actions, function(iaction) {
-					if (iaction.name == defaultAction) {
+					if (iaction.name === defaultAction) {
 						action = iaction;
 						return false;
 					}
@@ -773,13 +774,13 @@ define([
 			}
 		},
 
-		_setDisabledAttr: function(value) {
-			this.disabled = value;
+		_setDisabledAttr: function(disabled) {
+			this.disabled = disabled;
 
 			// disable items
 			this._grid.collection.fetch().forEach(lang.hitch(this, function(item) {
 				var id = item[this.moduleStore.idProperty];
-				this.setDisabledItem(id, value);
+				this.setDisabledItem(id, disabled);
 			}));
 			// re-disable explicitly disabled items
 			//this._updateDisabledItems();
@@ -787,7 +788,7 @@ define([
 			// disable all actions
 			array.forEach(this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch(this, function(widget) {
 				if (widget instanceof Button || widget instanceof _DropDownButton) {
-					widget.set('disabled', value);
+					widget.set('disabled', disabled);
 				}
 			}));
 		},
@@ -828,6 +829,19 @@ define([
 			}));
 		},
 
+		_refresh: function() {
+			this.filter(this.query);
+		},
+
+		update: function() {
+			var updateNotPaused = false;
+			if (this.getSelectedIDs().length === 0) {
+				updateNotPaused = true;
+				this._filter(this.query);
+			}
+			return updateNotPaused;
+		},
+
 		uninitialize: function() {
 			// remove the temporary cell from the DOM
 			if (this._tmpCellHeader) {
@@ -839,30 +853,39 @@ define([
 		},
 
 		filter: function(query, options) {
-			// store the last query
-			this.query = query;
+			this._statusMessage.set('content', _('Please wait...'));
+			this.standby(true);
 			style.set(this._grid.domNode, 'max-height', '1px');
-			//this.moduleStore.clearCache();
-			if (this._store.isUmcpCommandStore) {
-				this.standby(true);
-				// umcpCommand doesn't know a range option -> need to cache
-				this._store.filter(query, options).fetch().then(lang.hitch(this, function(result) {
-					var tempStore = new Memory({
-						idProperty: this.moduleStore.idProperty,
-						data: result
-					});
-					this._grid.set('collection', tempStore);
-					this._updateGridInfoContent();
-					this.standby(false);
-					this.onFilterDone(true);
-					this._setInitialGridHeight();
-				}));
-			} else {
-				this._grid.set('collection', this._store.filter(query, options));
+			this._filter(query, options).then(lang.hitch(this, function() {
+				this.standby(false);
+				this._setInitialGridHeight();
+			}));
+		},
+
+		_filter: function(query, options) {
+			var onSuccess = lang.hitch(this, function(result) {
+				this.collection.setData(result);
+				this._grid.refresh();
 				this._updateGridInfoContent();
 				this.onFilterDone(true);
-				this._setInitialGridHeight();
-			}
+			});
+			var onError = lang.hitch(this, function(error) {
+				if (error && error.response && error.response.text) {
+					this._statusMessage.set('content', JSON.parse(error.response.text).message);
+				} else {
+					this._statusMessage.set('content', _('Could not load search results'));
+				}
+				this._grid.set('collection', new Memory());
+				this._updateGridInfoContent();
+			});
+			// store the last query
+			this.query = query;
+			// umcpCommand doesn't know a range option -> need to cache
+			// StoreAdapter doesn't work with fetchSync -> need to cache
+			return this._store.filter(query, options).fetch().then(
+					onSuccess,
+					onError
+			);
 		},
 
 		getAllItems: function() {
@@ -890,13 +913,9 @@ define([
 			//		Return the currently selected items.
 			// returns:
 			//		An array of id strings (as specified by moduleStore.idProperty).
-			var ids = [];
-			for (var id in this._grid.selection){
-				if (this._grid.selection[id]) {
-					ids.push(id);
-				}
-			}
-			return ids; // String[]
+			return array.filter(Object.keys(this._grid.selection), function(id) {
+				return this._grid.selection[id];
+			}, this);
 		},
 
 		getRowValues: function(row) {
@@ -1033,7 +1052,7 @@ define([
 
 			if (typeof action === "string") {
 				var tmpActions = array.filter(this.actions, function(iaction) {
-					return iaction.isMultiAction && iaction.name == action;
+					return iaction.isMultiAction && iaction.name === action;
 				});
 				if (!tmpActions.length) {
 					throw 'unknown action ' + action;
