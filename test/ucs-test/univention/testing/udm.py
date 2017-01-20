@@ -218,7 +218,7 @@ class UCSTestUDM(object):
             if check_for_drs_replication:
                 if utils.package_installed('univention-samba4'):
                     if "options" not in kwargs or "kerberos" in kwargs["options"]:
-                        wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1])))
+                        wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
         return dn
 
     def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):

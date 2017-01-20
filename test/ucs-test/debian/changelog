@@ -1,4 +1,4 @@
-ucs-test (7.0.9-1) unstable; urgency=medium
+ucs-test (7.0.9-2) unstable; urgency=medium
 
   * Bug #42672: don't remove objects created with ignore_exists
 
