@@ -54,7 +54,6 @@ import dns.resolver
 import dns.reversename
 import dns.exception
 
-from univention.appcenter import AppManager
 from univention.appcenter.actions.get import Get
 from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
@@ -63,6 +62,15 @@ from univention.management.console.modules import UMC_Error
 from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
 from univention.lib.umc_connection import UMCConnection
 
+# FIXME: this triggers imports from univention-lib during build time test execution.
+# This in effect imports univention-ldap which is not an explicit dependency for
+# univention-lib as of writing.
+# The try except can be removed as soon as the dependency is added in the
+# univention-lib package.
+try:
+	from univention.appcenter import AppManager
+except ImportError as e:
+	MODULE.warn('Ignoring import error: %s' % e)
 _ = Translation('univention-management-console-module-setup').translate
 
 ucr = univention.config_registry.ConfigRegistry()
