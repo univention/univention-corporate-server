@@ -56,7 +56,16 @@ from univention.lib.i18n import Translation, Locale
 import univention.config_registry
 from univention.lib.admember import lookup_adds_dc, connectionFailed, failedADConnect
 from univention.management.console.modules import UMC_Error
-from univention.appcenter import AppManager
+
+# FIXME: this triggers imports from univention-lib during build time test execution.
+# This in effect imports univention-ldap which is not an explicit dependency for
+# univention-lib as of writing.
+# The try except can be removed as soon as the dependency is added in the
+# univention-lib package.
+try:
+	from univention.appcenter import AppManager
+except ImportError as e:
+	MODULE.warn('Ignoring import error: %s' % e)
 
 
 import util
