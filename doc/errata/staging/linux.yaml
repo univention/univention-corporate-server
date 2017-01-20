@@ -3,9 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: linux
-fix: 4.1.6-1.218.201701181054
+fix: 4.1.6-1.221.201701191522
 desc: |
- This update of the Linux kernel to 4.1.37 addresses the following issues:
+ This update of the Linux kernel to 4.1.38 addresses the following issues:
  * The rfcomm_sock_bind function in net/bluetooth/rfcomm/sock.c in the Linux
    kernel before 4.2 allows local users to obtain sensitive information or
    cause a denial of service (NULL pointer dereference) via vectors involving
@@ -35,12 +35,18 @@ desc: |
    leveraging the CAP_NET_ADMIN capability (CVE-2016-8632)
  * fs: Avoid premature clearing of capabilities (CVE-2015-1350)
  * posix_acl: Clear SGID bit when setting file permissions (CVE-2016-7097)
- * mnt: Add a per mount namespace limit on the number of
-   mounts(CVE-2016-6213)
+ * mnt: Add a per mount namespace limit on the number of mounts
+   (CVE-2016-6213)
  * ptrace: being capable wrt a process requires mapped uids/gids
    (CVE-2015-8709)
  * net: add recursion limit to GRO (CVE-2016-7039)
  * net: ping: check minimum size on ICMP header length (CVE-2016-8399)
+ * kvm: nVMX: uncaught software exceptions in L1 guest lead to DoS
+   (CVE-2016-9588)
+ * Memory corruption in SCSI generic device interface (CVE-2016-10088)
+ * crash by spawning mcrypt(alg) with incompatible algorithm (CVE-2016-10147)
+ * KVM: x86: fix emulation of "MOV SS, null selector" (CVE-2017-2583)
+ * kvm: use after free in complete_emulated_mmio (CVE-2017-2584)
  * The simple-framebuffer has been disabled because it breaks the linux
    console for many DRM drivers.
 note: This is the first part of the update.
@@ -59,3 +65,8 @@ cve:
  - CVE-2016-8655
  - CVE-2016-8633
  - CVE-2016-9178
+ - CVE-2016-9588
+ - CVE-2016-10088
+ - CVE-2016-10147
+ - CVE-2017-2583
+ - CVE-2017-2584
