@@ -636,6 +636,9 @@
 			<listitem><simpara>
 				<methodname>unbind()</methodname> methods have been added to the classes <classname>univention.uldap</classname> and <classname>univention.admin.uldap</classname> (<u:bug>37519</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The class <classname>univention.lib.umc_connection.UMCConnection</classname> has been replaced with the new and more flexible class <classname>univention.lib.umc.Client</classname> (<u:bug>34498</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
