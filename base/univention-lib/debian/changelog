@@ -1,3 +1,9 @@
+univention-lib (6.0.6-1) unstable; urgency=medium
+
+  * Bug #34498: add univention.lib.umc
+
+ -- Florian Best <best@univention.de>  Fri, 20 Jan 2017 18:31:42 +0100
+
 univention-lib (6.0.5-2) unstable; urgency=medium
 
   * Bug #41221: Added comments for translators.
