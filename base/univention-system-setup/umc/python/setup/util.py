@@ -757,13 +757,10 @@ def dhclient(interface, timeout=None):
 	return dhcp_dict
 
 
-_apps = None
 def get_apps(no_cache=False):
-	global _apps
-	if _apps and not no_cache:
-		return _apps
-	_apps = [Get.to_dict(app) for app in AppManager.get_all_apps() if app.is_ucs_component()]
-	return _apps
+	if no_cache:
+		AppManager.clear_cache()
+	return [Get.to_dict(app) for app in AppManager.get_all_apps() if app.is_ucs_component()]
 
 
 def is_proxy(proxy):

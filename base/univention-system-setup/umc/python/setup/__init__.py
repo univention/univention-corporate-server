@@ -56,6 +56,8 @@ from univention.lib.i18n import Translation, Locale
 import univention.config_registry
 from univention.lib.admember import lookup_adds_dc, connectionFailed, failedADConnect
 from univention.management.console.modules import UMC_Error
+from univention.appcenter import AppManager
+
 
 import util
 from . import network
@@ -675,6 +677,7 @@ class Instance(Base, ProgressMixin):
 		_translation.set_language(str(self.locale))
 		i18nXKeyboard.set_language(str(self.locale))
 		network._translation.set_language(str(self.locale))
+		AppManager.clear_cache()
 
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response
