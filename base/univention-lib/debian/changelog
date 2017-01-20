@@ -1,4 +1,4 @@
-univention-lib (6.0.6-1) unstable; urgency=medium
+univention-lib (6.0.6-2) unstable; urgency=medium
 
   * Bug #34498: add univention.lib.umc
 

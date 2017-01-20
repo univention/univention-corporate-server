@@ -211,13 +211,17 @@ class Client(object):
 		self._timeout = timeout
 		self._raise_errors = True
 		self.__automatic_reauthenticate = False
+		self.username = username
+		self.password = password
 		if username:
-			self.auth(username, password)
+			self.authenticate(username, password)
 
 	def authenticate(self, username, password):
 		'''Tries to authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
 		session probably expires after 10 minutes of inactivity)'''
+		self.username = username
+		self.password = password
 		return self.umc_auth(username, password)
 
 	def set_basic_http_authentication(self, username, password):
