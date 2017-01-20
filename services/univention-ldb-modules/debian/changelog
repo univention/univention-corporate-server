@@ -1,3 +1,9 @@
+univention-ldb-modules (5.0.9-1) unstable; urgency=medium
+
+  * Bug #34498: use univention.lib.umc.Client
+
+ -- Florian Best <best@univention.de>  Fri, 20 Jan 2017 18:33:34 +0100
+
 univention-ldb-modules (5.0.8-4) unstable; urgency=medium
 
   * Bug #40435: Compatibility with umc-slective-udm pre 5.0.0-2
