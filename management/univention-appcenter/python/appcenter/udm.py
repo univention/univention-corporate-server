@@ -66,10 +66,18 @@ def _get_module(module, lo, pos):
 	return mod
 
 
-def init_object(module, lo, pos, dn=''):
+def init_object(module, lo, pos, dn='', attrs=None):
 	module = _get_module(module, lo, pos)
 	obj = udm_objects.get(module, None, lo, pos, dn)
 	udm_objects.open(obj)
+	if attrs:
+		if 'policies' in attrs:
+			obj.policies = attrs.pop('policies')
+		for key, value in attrs.iteritems():
+			if key == 'objectFlag':  # Bug #43148; ignore syntax for the time being
+				obj.info[key] = value
+			else:
+				obj[key] = value
 	return obj
 
 
@@ -83,22 +91,24 @@ def remove_object_if_exists(module, lo, pos, dn):
 		udm_objects.performCleanup(obj)
 
 
-def create_object_if_not_exists(module, lo, pos, **kwargs):
-	obj = init_object(module, lo, pos)
-	if 'policies' in kwargs:
-		obj.policies = kwargs.pop('policies')
-	for key, value in kwargs.iteritems():
-		if key == 'objectFlag':  # Bug #43148; ignore syntax for the time being
-			obj.info[key] = value
-		else:
-			obj[key] = value
+def create_object_if_not_exists(_module, _lo, _pos, **kwargs):
+	obj = init_object(_module, _lo, _pos, attrs=kwargs)
 	dn = obj._ldap_dn()
 	try:
-		existing_obj = init_object(module, lo, pos, dn)
+		existing_obj = init_object(_module, _lo, _pos, dn)
 		if not existing_obj.exists():  # workaround for Bug #38110, will be fixed in UCS 4.2
 			raise udm_errors.noObject(dn)
 	except udm_errors.noObject:
 		obj.create()
+		return obj
+
+
+def modify_object(_module, _lo, _pos, _dn, **kwargs):
+	obj = init_object(_module, _lo, _pos, _dn, attrs=kwargs)
+	if not obj.exists():  # workaround for Bug #38110, will be fixed in UCS 4.2
+		return
+	else:
+		obj.modify()
 		return obj
 
 
@@ -114,6 +124,15 @@ def search_objects(module, lo, pos, base='', **kwargs):
 	for obj in objs:
 		udm_objects.open(obj)
 	return objs
+
+
+def dn_exists(dn, lo):
+	try:
+		lo.searchDn(base=dn, scope='base')
+	except udm_errors.noObject:
+		return False
+	else:
+		return True
 
 
 def get_machine_connection():
@@ -164,15 +183,8 @@ class ApplicationLDAPObject(object):
 			self._create_obj(app)
 
 	def _create_obj(self, app):
-		containers = explode_dn(self._container, 1)
-		containers = containers[0:containers.index('apps')]
-		base = 'cn=apps,cn=univention,%s' % ucr_get('ldap/base')
-		self._pos.setDn(base)
-		for container in reversed(containers):
-			if not search_objects('container/cn', self._lo, self._pos, base, cn=container):
-				create_object_if_not_exists('container/cn', self._lo, self._pos, name=container)
-			base = 'cn=%s,%s' % (container, base)
-			self._pos.setDn(base)
+		create_recursive_container(self._container, self._lo, self._pos)
+		self._pos.setDn(self._container)
 		base64icon = ''
 		icon_file = app.get_cache_file('logo')
 		if os.path.exists(icon_file):
@@ -254,3 +266,18 @@ def get_app_ldap_object(app, lo=None, pos=None, or_create=False):
 	if lo is None or pos is None:
 		lo, pos = get_machine_connection()
 	return ApplicationLDAPObject(app, lo, pos, or_create)
+
+
+def create_recursive_container(dn, lo, pos):
+	if dn_exists(dn, lo):
+		return
+	position_parts = explode_dn(dn)
+	previous_position = ','.join(position_parts[1:])
+	create_recursive_container(previous_position, lo, pos)
+	pos.setDn(previous_position)
+	name = explode_dn(position_parts[0], 1)[0]
+	if dn.startswith('ou'):
+		module = 'container/ou'
+	else:
+		module = 'container/cn'
+	create_object_if_not_exists(module, lo, pos, name=name)

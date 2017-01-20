@@ -79,6 +79,8 @@ class Install(InstallRemoveUpgrade):
 			self.percentage = 10
 			self._register_database(app)
 			self.percentage = 15
+			self._register_attributes(app, args)
+			self.percentage = 25
 			if self._install_app(app, args):
 				self.percentage = 80
 				self._call_join_script(app, args)

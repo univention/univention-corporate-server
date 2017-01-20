@@ -150,6 +150,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		old_container = old_docker.container
 		if self._backup_container(self.old_app, backup_data='copy') is False:
 			raise Abort('Could not backup container!')
+		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
 		args.set_vars = self._get_config(self.old_app, args)
@@ -160,7 +161,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._register_app(app, args)
 		self._call_join_script(app, args)
 		self.old_app = app
-		self._had_image_upgrade = True
 
 	def _upgrade_docker(self, app, args):
 		install = get_action('install')()

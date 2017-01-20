@@ -37,7 +37,7 @@ import os
 import os.path
 from glob import glob
 import re
-from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, ParsingError
+from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
 from copy import copy
 from distutils.version import LooseVersion
 import platform
@@ -47,7 +47,7 @@ from json import dumps, loads
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
+from univention.appcenter.utils import read_ini_file, app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
 
 
@@ -60,22 +60,7 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
-def _read_ini_file(filename, parser_class=RawConfigParser):
-	parser = parser_class()
-	try:
-		with open(filename, 'rb') as f:
-			parser.readfp(f)
-	except TypeError:
-		pass
-	except EnvironmentError:
-		pass
-	except ParsingError as exc:
-		app_logger.warn('Could not parse %s' % filename)
-		app_logger.warn(str(exc))
-	else:
-		return parser
-	# in case of error return empty parser
-	return parser_class()
+_read_ini_file = read_ini_file
 
 
 def _get_from_parser(parser, section, attr):
@@ -855,6 +840,7 @@ class App(object):
 	umc_module_flavor = AppAttribute()
 
 	user_activation_required = AppBooleanAttribute()
+	generic_user_activation = AppBooleanAttribute()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
 	ports_redirection = AppListAttribute(regex='^\d+:\d+(/(tcp|udp))?$')
