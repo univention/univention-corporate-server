@@ -360,10 +360,10 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term><package>univention.lib.umc_connection</package></term>
+					<term><package>univention.lib.umc</package></term>
 					<listitem>
 						<para>
-							This module provides the class <classname>UMCConnection</classname> to handle connections to remote <abbrev>UMC</abbrev> servers.
+							This module provides the class <classname>Client</classname> to handle connections to remote <abbrev>UMC</abbrev> servers.
 						</para>
 					</listitem>
 				</varlistentry>
