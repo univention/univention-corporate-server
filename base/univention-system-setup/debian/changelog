@@ -1,3 +1,9 @@
+univention-system-setup (10.0.3-1) unstable; urgency=medium
+
+  * Bug #34498: use univention.lib.umc.Client
+
+ -- Florian Best <best@univention.de>  Fri, 20 Jan 2017 18:34:43 +0100
+
 univention-system-setup (10.0.2-5) unstable; urgency=medium
 
   * Bug #40102: remove in module caching, use the appcenter API for this

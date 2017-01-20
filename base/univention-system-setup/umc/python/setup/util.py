@@ -48,7 +48,6 @@ import random
 import psutil
 import traceback
 from contextlib import contextmanager
-from httplib import HTTPException
 
 import dns.resolver
 import dns.reversename
@@ -59,7 +58,7 @@ from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
 from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
-from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc import Client, ConnectionError, HTTPError
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for
@@ -1090,10 +1089,10 @@ def domain_has_activated_license(nameserver, username, password):
 		return False
 
 	try:
-		connection = UMCConnection(fqdn_master, username, password)
-		result = connection.request('udm/license/info')
-	except HTTPException as e:
-		raise UMC_Error(e.message)
+		client = Client(fqdn_master, username, password)
+		result = client.umc_command('udm/license/info').result
+	except (HTTPError, ConnectionError) as exc:
+		raise UMC_Error(str(exc))
 
 	return bool(result.get('keyID'))
 
