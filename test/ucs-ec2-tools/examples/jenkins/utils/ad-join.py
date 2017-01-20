@@ -31,17 +31,12 @@
 from optparse import OptionParser
 from sys import exit
 
-try:
-	# with 3.1
-	from univention.management.console.modules.appcenter.util import UMCConnection
-except ImportError:
-	# with 3.2
-	from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc import Client
 
 from time import sleep
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
-connection = None
+client = None
 
 parser = OptionParser()
 parser.add_option('-H', '--host', dest='host', default='localhost',
@@ -74,7 +69,7 @@ def join_sync_mode():
 		"username": options.domain_admin,
 		"password": options.domain_password,
 		"mode": "adconnector"}
-	result = connection.request("adconnector/check_domain", data=request_options)
+	result = client.umc_command("adconnector/check_domain", request_options).result
 
 	# configure / save options:
 	print '=== AD-JOIN CONFIGURATION ==='
@@ -94,14 +89,14 @@ def join_sync_mode():
 		'LDAP_Password': options.domain_password,
 		'MappingSyncMode': "sync"}
 
-	conf_result = connection.request("adconnector/adconnector/save", data=request_options)
+	conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
 	if not conf_result['success']:
 		print "\nThe AD Connector configuration was not saved successfully: %s" % conf_result
 		exit(1)
 
 	# start AD connector:
 	print '=== AD-JOIN STARTING CONNECTOR ==='
-	start_result = connection.request("adconnector/service", data={'action': "start"})
+	start_result = client.umc_command("adconnector/service", {'action': "start"}).result
 	if not start_result['success']:
 		print "\nThe AD Connector was not started successfully: %s" % start_result
 		exit(1)
@@ -118,7 +113,7 @@ def join_read_mode():
 		'username': options.domain_admin
 	}
 
-	result = connection.request("adconnector/admember/join", data=send_data)
+	result = client.umc_command("adconnector/admember/join", send_data).result
 
 	if not result:
 		print 'ERROR: Failed to join ad domain!'
@@ -131,7 +126,7 @@ def join_read_mode():
 	status = {'finished': False}
 	while not status['finished']:
 		# FIXME: this might loop forever?
-		status = connection.request('adconnector/admember/progress', data=progress_data)
+		status = client.umc_command('adconnector/admember/progress', progress_data).result
 		percentage = status['percentage']
 		print percentage
 		sleep(2)
@@ -147,9 +142,8 @@ def join_read_mode():
 def join_ad():
 	""" Function for joining an AD domain, mimicking a join from umc"""
 
-	global connection
-	connection = UMCConnection(options.host)
-	connection.auth(options.username, options.password)
+	global client
+	client = Client(options.host, options.username, options.password)
 
 	if options.sync_mode:
 		# join in sync mode:

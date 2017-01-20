@@ -30,16 +30,10 @@
 
 from optparse import OptionParser
 import sys
-import socket
 import time
 import traceback
 
-try:
-	# with 3.1
-	from univention.management.console.modules.appcenter.util import UMCConnection
-except ImportError:
-	# with 3.2
-	from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc import Client, ConnectionError, HTTPError
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
@@ -109,8 +103,7 @@ if not options.ou:
 		parser.error('Please specify a school OU (-o)!')
 	options.ou = ''
 
-connection = UMCConnection(options.host)
-connection.auth(options.username, options.password)
+client = Client(options.host, options.username, options.password)
 
 params = {
 	'setup': options.setup,
@@ -126,7 +119,7 @@ if options.server_type:
 if options.name_edu_server:
 	params['nameEduServer'] = options.name_edu_server
 
-result = connection.request('schoolinstaller/install', params)
+result = client.umc_command('schoolinstaller/install', params).result
 if result and not result.get('success', True):  # backwards compatibility
 	print 'ERROR: Failed to run installer!'
 	print 'output: %s' % result
@@ -141,11 +134,11 @@ while not status['finished']:
 		print 'ERROR: %d failed attempts - comitting suicide' % (failcount, )
 		sys.exit(1)
 	try:
-		status = connection.request('schoolinstaller/progress')
+		status = client.umc_command('schoolinstaller/progress').result
 		failcount = 0
-	except socket.error as exc:
+	except (HTTPError, ConnectionError) as exc:
 		failcount += 1
-		print 'TRACEBACK %d in connection.request("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),)
+		print 'TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),)
 		time.sleep(1)
 	message = '%(component)s - %(info)s' % status
 	if last_message != message:
@@ -159,7 +152,7 @@ if len(status['errors']) > 0:
 	print 'output: %s' % status
 	sys.exit(1)
 
-result = connection.request('lib/server/restart')
+result = client.umc_command('lib/server/restart').result
 if not result:
 	print 'ERROR: Failed to restart UMC'
 	print 'output: %s' % result

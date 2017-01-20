@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-1) unstable; urgency=medium
+
+  * Bug #34498: use univention.lib.umc.Client
+
+ -- Florian Best <best@univention.de>  Fri, 20 Jan 2017 18:53:49 +0100
+
 ucs-ec2-tools (3.0.1-5) unstable; urgency=low
 
   * Bug #41571: Run set_windows_localadmin_password_for_ucs_test also
