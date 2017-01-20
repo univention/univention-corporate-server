@@ -17,7 +17,6 @@ from essential.dns_helper import resolveDnsEntry
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		host = uts.random_name()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
 		#IPv4
@@ -25,7 +24,7 @@ if __name__ == '__main__':
 		subnet = ipv4[:3]
 		reverse_zone_properties = {
 			'subnet': '.'.join(subnet),
-			'nameserver': host,
+			'nameserver': udm.FQHN,
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),

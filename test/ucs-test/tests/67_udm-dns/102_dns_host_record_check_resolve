@@ -19,12 +19,11 @@ from ipaddr import IPAddress
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		host = uts.random_name()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
 		forward_zone_properties = {
 			'zone': zone,
-			'nameserver': host,
+			'nameserver': udm.FQHN,
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
@@ -37,6 +36,7 @@ if __name__ == '__main__':
 
 		#IPv4
 		ip = uts.random_ip()
+		host = uts.random_name()
 		host_record_properties = {
 			'name': host,
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),

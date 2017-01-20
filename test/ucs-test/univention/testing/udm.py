@@ -132,6 +132,7 @@ class UCSTestUDM(object):
                         'computers/ipmanagedclient')
 
     LDAP_BASE = _ucr['ldap/base']
+    FQHN = '%(hostname)s.%(domainname)s.' % _ucr
     UNIVENTION_CONTAINER = 'cn=univention,%s' % LDAP_BASE
     UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % LDAP_BASE
 

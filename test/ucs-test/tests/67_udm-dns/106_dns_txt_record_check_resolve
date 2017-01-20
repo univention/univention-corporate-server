@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Creates dns pointer record entry and trys to resolve it
+## desc: Creates DNS pointer record entry and try to resolve it
 ## bugs: [39269]
 ## roles:
 ##  - domaincontroller_master
@@ -13,19 +13,17 @@
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 from essential.dns_helper import resolveDnsEntry
-import sys
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		host = uts.random_name()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 
 		txt = uts.random_string()
 		forward_zone_properties = {
 			'zone': zone,
-			'nameserver': host,
+			'nameserver': udm.FQHN,
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
