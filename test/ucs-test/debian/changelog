@@ -1,3 +1,9 @@
+ucs-test (7.0.8-8) unstable; urgency=medium
+
+  * Bug #43333: More verbose saml tests and code cleanup (82_saml)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
+
 ucs-test (7.0.8-7) unstable; urgency=medium
 
   * Bug #43333: Guarantee use of both IdP 82_saml/19_IdP_on_backup

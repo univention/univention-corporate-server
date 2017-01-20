@@ -17,6 +17,23 @@ class SamlError(Exception):
 		return repr(self.message)
 
 
+class SamlLoginError(SamlError):
+	def __init__(self, page):
+		self.page = page
+		self.message = ''
+		self._error_evaluation()
+
+	def _error_evaluation(self):
+			if re.search('<h1>Password change required</h1>', bytes(self.page.text)):
+				self.message = "Got password expired notice"
+			elif re.search('<h1>Account expired</h1>', bytes(self.page.text)):
+				self.message = "Got account expired notice"
+			elif re.search('<h1>Incorrect username or password</h1>', bytes(self.page.text)):
+				self.message = "Got incorrect username or password notice"
+			else:
+				self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
+
+
 class GuaranteedIdP(object):
 	def __init__(self, ip):
 		self.ip = ip
@@ -70,29 +87,37 @@ class SamlTest(object):
 	def _login_at_idp_with_credentials(self):
 		"""Send form with login data"""
 		auth_state = self._extract_auth_state_from()
-		print("POST form with username and password to: %s" % self.page.url)
 		self.position = "posting login form"
+		print("Post SAML login form to: %s" % self.page.url)
 		data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
 		self._request('POST', self.page.url, 200, data=data)
 
 	def _extract_saml_msg_from(self):
 		print("Extract SAML message from SAML response")
 		try:
-			return re.search('name="SAMLResponse" value="([^"]+)"', bytes(self.page.text)).group(1)
+			saml_message = re.search('name="SAMLResponse" value="([^"]+)"', bytes(self.page.text)).group(1)
+			print("The SAML message is:\n%s" % saml_message)
+			return saml_message
 		except AttributeError:
-			return None
+			print("No SAML message found")
+			raise SamlLoginError(self.page)
 
 	def _extract_sp_url_from(self):
 		print("Extract url to post SAML message to")
 		try:
-			return re.search('method="post" action="([^"]+)"', bytes(self.page.text)).group(1)
+			url = re.search('method="post" action="([^"]+)"', bytes(self.page.text)).group(1)
+			print("The url to post SAML message to is: %s" % url)
+			return url
 		except AttributeError:
-			return None
+			print("No url to post SAML message to found")
+			raise SamlLoginError(self.page)
 
 	def _extract_auth_state_from(self):
-		print("Extract url to post SAML message to")
+		print("Extract AuthState")
 		try:
-			return re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
+			auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
+			print("The SAML AuthState is:\n%s" % auth_state)
+			return auth_state
 		except AttributeError:
 			raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.text)
 
@@ -123,32 +148,10 @@ class SamlTest(object):
 		print("Test logout at IdP...")
 		try:
 			self.login_with_existing_session_at_IdP()
-		except SamlError:
+		except SamlLoginError:
 			print("Logout success at IdP")
 		else:
 			utils.fail("Session not closed at IdP after logout")
-
-	def _error_evaluation(self):
-			if re.search('<h1>Password change required</h1>', bytes(self.page.text)):
-				raise SamlError("Got password expired notice")
-			elif re.search('<h1>Account expired</h1>', bytes(self.page.text)):
-				raise SamlError("Got account expired notice")
-			elif re.search('<h1>Incorrect username or password</h1>', bytes(self.page.text)):
-				raise SamlError("Got incorrect username or password notice")
-			else:
-				raise SamlError("Unknown error in SAML response.\nSAML response:\n%s" % self.page.text)
-
-	def _evaluate_idp_response(self):
-		"""Make sure the Identity Provider has returned a SAML message and a url at the Service Provider,
-		if not evaluate the response body for common error cases"""
-		print('SAML message recieved from %s' % self.page.url)
-		url = self._extract_sp_url_from()
-		saml_msg = self._extract_saml_msg_from()
-
-		if url and saml_msg:
-			return url, saml_msg
-		else:
-			self._error_evaluation()
 
 	def login_with_existing_session_at_IdP(self):
 		"""Use Identity Provider to log in to a Service Provider.
@@ -159,7 +162,9 @@ class SamlTest(object):
 		print("GET SAML login form at: %s" % url)
 		self.position = "requesting SAML message"
 		self._request('GET', url, 200)
-		url, saml_msg = self._evaluate_idp_response()
+		print('SAML message recieved from %s' % self.page.url)
+		url = self._extract_sp_url_from()
+		saml_msg = self._extract_saml_msg_from()
 		self._send_saml_response_to_sp(url, saml_msg)
 
 	def login_with_new_session_at_IdP(self):
@@ -171,10 +176,12 @@ class SamlTest(object):
 		print("GET SAML login form at: %s" % url)
 		self.position = "reaching login dialog"
 		self._request('GET', url, 200)
+		print('SAML message recieved from %s' % self.page.url)
 
 		# Login at IdP. IdP answers with SAML message and url to SP in body
 		self._login_at_idp_with_credentials()
-		url, saml_msg = self._evaluate_idp_response()
+		url = self._extract_sp_url_from()
+		saml_msg = self._extract_saml_msg_from()
 		self._send_saml_response_to_sp(url, saml_msg)
 
 	def logout_at_IdP(self):

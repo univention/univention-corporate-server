@@ -26,11 +26,13 @@ def main():
 
 		try:
 			SamlSession.login_with_new_session_at_IdP()
-		except samltest.SamlError as exc:
-			if exc.message == 'Got account expired notice':
+		except samltest.SamlLoginError as exc:
+			expected_error = 'Got account expired notice'
+			if exc.message == expected_error:
 				return
 			else:
-				utils.fail(exc.message)
+				error_message = "Expected message: %s\nReceived message: %s" % (expected_error, exc.message)
+				utils.fail(error_message)
 		utils.fail("Could login with expired account")
 
 
