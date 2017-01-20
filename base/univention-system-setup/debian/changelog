@@ -1,3 +1,10 @@
+univention-system-setup (10.0.2-5) unstable; urgency=medium
+
+  * Bug #40102: remove in module caching, use the appcenter API for this
+    * decode html elements in component description
+
+ -- Eduard Mai <mai@univention.de>  Fri, 20 Jan 2017 15:34:32 +0100
+
 univention-system-setup (10.0.2-4) unstable; urgency=medium
 
   * Bug #40102: don't query whole domain for apps during setup

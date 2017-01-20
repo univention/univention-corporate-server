@@ -1244,7 +1244,7 @@ define([
 						return lang.replace('<div>{name}</div><div class="umcAppDescription">{description}</div>', item);
 					})
 				}, {
-					name: 'longdescription',
+					name: 'long_description',
 					label: ' ',
 					width: '45px',
 					formatter: function(description) {
@@ -1252,7 +1252,7 @@ define([
 						button = new Button({
 							iconClass: 'umcIconInfo',
 							callback: function(evt) {
-								_showTooltip(button.domNode, description, evt);
+								_showTooltip(button.domNode, entities.decode(description), evt);
 							}
 						});
 						return button;
