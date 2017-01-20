@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-1) unstable; urgency=medium
+
+  * Bug #34498: use univention.lib.umc.Client
+
+ -- Florian Best <best@univention.de>  Fri, 20 Jan 2017 18:34:20 +0100
+
 univention-appcenter (6.0.0-29) unstable; urgency=low
 
   * Bug #42934: added container_mode, ignore _update_local_files

@@ -38,7 +38,6 @@ import time
 import sys
 from contextlib import contextmanager
 # import urllib2
-from httplib import HTTPException
 import logging
 from tempfile import NamedTemporaryFile
 
@@ -49,7 +48,7 @@ import apt  # for independent apt.Cache
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
-from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc import Client, ConnectionError, HTTPError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
@@ -350,21 +349,20 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response(with_progress=True)
 	def invoke_remote_docker(self, host, function, app, force, values, progress):
-		connection = UMCConnection(host, error_handler=MODULE.warn)
-		connection.auth(self.username, self.password)
 		options = {'function': function, 'app': app, 'force': force, 'values': values}
-		result = connection.request('appcenter/docker/invoke', options)
-		self._remote_progress[progress.id] = connection, result['id']
+		client = Client(host, self.username, self.password)
+		result = client.umc_command('appcenter/docker/invoke', options).result
+		self._remote_progress[progress.id] = client, result['id']
 
 	@simple_response
 	def remote_progress(self, progress_id):
 		try:
-			connection, remote_progress_id = self._remote_progress[progress_id]
+			client, remote_progress_id = self._remote_progress[progress_id]
 		except KeyError:
 			# actually happens: before invoke_remote_docker is finished, remote_progress is already called
 			return {}
 		else:
-			return connection.request('appcenter/docker/progress', {'progress_id': remote_progress_id})
+			return client.umc_command('appcenter/docker/progress', {'progress_id': remote_progress_id}).result
 
 	@require_apps_update
 	@require_password
@@ -465,10 +463,10 @@ class Instance(umcm.Base, ProgressMixin):
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname'):
 			try:
-				connection = UMCConnection(host, error_handler=MODULE.warn)
-				connection.auth(self._username, self.password)
-				result = connection.request('appcenter/invoke', request.options)
-			except HTTPException:
+				client = Client(host, self.username, self.password)
+				result = client.umc_command('appcenter/invoke', request.options).result
+			except (ConnectionError, HTTPError) as exc:
+				MODULE.error('Error during remote appcenter/invoke: %s' % (exc,))
 				result = {
 					'unreachable': [host],
 					'master_unreachable': True,
@@ -477,15 +475,15 @@ class Instance(umcm.Base, ProgressMixin):
 				}
 			else:
 				if result['can_continue']:
-					def _thread_remote(_connection, _package_manager):
+					def _thread_remote(_client, _package_manager):
 						with _package_manager.locked(reset_status=True, set_finished=True):
 							_package_manager.unlock()   # not really locked locally, but busy, so "with locked()" is appropriate
-							Application._query_remote_progress(_connection, _package_manager)
+							Application._query_remote_progress(_client, _package_manager)
 
 					def _finished_remote(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
+					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread_remote, client, self.package_manager), _finished_remote)
 					thread.run()
 			self.finished(request.id, result)
 			return

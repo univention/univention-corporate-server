@@ -55,8 +55,6 @@ import urllib
 import urllib2
 from glob import glob
 from urlparse import urlsplit, urljoin
-from httplib import HTTPException
-from socket import error as SocketError
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 from operator import attrgetter
@@ -70,7 +68,7 @@ from univention.config_registry import handler_commit
 from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
-from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
@@ -1344,31 +1342,36 @@ class Application(object):
 			def _check_remote_host(application_id, host, host_is_master, username, password, force, remote_function):
 				MODULE.process('Starting dry_run for %s on %s' % (application_id, host))
 				try:
-					connection = UMCConnection(host, error_handler=MODULE.warn)
-					connection.auth(username, password)
-				except HTTPException as e:
-					MODULE.warn('%s: %s' % (host, e))
+					client = Client(host, username, password)
+				except (ConnectionError, HTTPError) as exc:
+					MODULE.warn('_check_remote_host: %s: %s' % (host, exc))
 					unreachable.append(host)
 					if host_is_master:
 						remote_info['master_unreachable'] = True
 				else:
 					host_info = {}
 					try:
-						host_version = connection.request('appcenter/version')
-					except NotImplementedError:
+						host_version = client.umc_command('appcenter/version').result
+					except Forbidden:
 						# command is not yet known (older app center)
 						host_version = None
+					except (ConnectionError, HTTPError) as exc:
+						MODULE.warn('Could not get appcenter/version: %s' % (exc,))
+						raise
 					host_info['compatible_version'] = Application.compatible_version(host_version)
 					try:
-						host_info['result'] = connection.request('appcenter/invoke_dry_run', {
+						host_info['result'] = client.umc_command('appcenter/invoke_dry_run', {
 							'function': remote_function,
 							'application': application_id,
 							'force': force,
 							'dont_remote_install': True,
-						})
-					except NotImplementedError:
+						}).result
+					except Forbidden:
 						# command is not yet known (older app center)
 						host_info['result'] = {'can_continue': False, 'serious_problems': False}
+					except (ConnectionError, HTTPError) as exc:
+						MODULE.warn('Could not get appcenter/version: %s' % (exc,))
+						raise
 					if not host_info['compatible_version'] or not host_info['result']['can_continue']:
 						remote_info['problems_with_hosts'] = True
 						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
@@ -1586,16 +1589,16 @@ class Application(object):
 		return packages
 
 	@classmethod
-	def _query_remote_progress(cls, connection, package_manager):
+	def _query_remote_progress(cls, client, package_manager):
 		all_errors = set()
 		number_failures = 0
 		number_failures_max = 20
-		host = connection._host
+		host = client.hostname
 		while True:
 			try:
-				result = connection.request('appcenter/progress')
-			except (HTTPException, SocketError) as e:
-				MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, e))
+				result = client.umc_command('appcenter/progress').result
+			except (ConnectionError, HTTPError) as exc:
+				MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, exc))
 				number_failures += 1
 				if number_failures >= number_failures_max:
 					MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
@@ -1628,10 +1631,10 @@ class Application(object):
 			function = 'update-schema'
 		else:
 			function = 'install-schema'
-		connection = UMCConnection(host, username, password, error_handler=MODULE.warn)
-		result = connection.request('appcenter/invoke', {'function': function, 'application': self.id, 'force': True, 'dont_remote_install': True})
+		client = Client(host, username, password)
+		result = client.umc_command('appcenter/invoke', {'function': function, 'application': self.id, 'force': True, 'dont_remote_install': True}).result
 		if result['can_continue']:
-			all_errors = self._query_remote_progress(connection, package_manager)
+			all_errors = self._query_remote_progress(client, package_manager)
 			return len(all_errors) == 0
 		else:
 			MODULE.warn('%r' % result)
