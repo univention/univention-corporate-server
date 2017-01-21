@@ -34,7 +34,7 @@ import sys
 import pprint
 import httplib
 
-from univention.lib.client import Client as _Client
+from univention.lib.umc import Client as _Client
 from univention.lib.umc_connection import UMCConnection as _UMCConnection
 from univention.config_registry import ConfigRegistry
 
