@@ -1,3 +1,9 @@
+univention-lib (6.0.6-3) unstable; urgency=medium
+
+  * Bug #34498: fix parameters
+
+ -- Florian Best <best@univention.de>  Sun, 22 Jan 2017 11:22:13 +0100
+
 univention-lib (6.0.6-2) unstable; urgency=medium
 
   * Bug #34498: add univention.lib.umc

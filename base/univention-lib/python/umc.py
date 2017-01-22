@@ -245,11 +245,10 @@ class Client(object):
 
 	def umc_set(self, options):
 		data = self.__build_data(options)
-		request = Request('POST', 'set', data)
-		return self.request(request)
+		return self.request('POST', 'set', data)
 
-	def umc_get(self, path):
-		return self.request('POST', 'get/%s' % path, {})
+	def umc_get(self, path, options):
+		return self.request('POST', 'get/%s' % path, self.__build_data(options))
 
 	def umc_upload(self):
 		raise NotImplementedError('File uploads currently need to be done manually.')
