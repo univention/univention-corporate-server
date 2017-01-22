@@ -364,6 +364,19 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 			super(AppBooleanAttribute, self).test_type(value, basestring)
 
 
+class AppAttributeOrTrueOrNone(AppBooleanAttribute):
+	def parse(self, value):
+		if value == 'True':
+			value = True
+		elif value == 'None':
+			value = None
+		return value
+
+	def test_type(self, value, instance_type):
+		if value is not True and value is not None:
+			super(AppBooleanAttribute, self).test_type(value, basestring)
+
+
 class AppFileAttribute(AppAttribute):
 	# TODO: UCR TOKEN
 
@@ -840,7 +853,7 @@ class App(object):
 	umc_module_flavor = AppAttribute()
 
 	user_activation_required = AppBooleanAttribute()
-	generic_user_activation = AppBooleanAttribute()
+	generic_user_activation = AppAttributeOrTrueOrNone()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
 	ports_redirection = AppListAttribute(regex='^\d+:\d+(/(tcp|udp))?$')

@@ -213,10 +213,18 @@ class Register(CredentialsAction):
 				opts.ucsversionstart = None
 				opts.ucsversionend = None
 				os.environ['UNIVENTION_APP_IDENTIFIER'] = app.id
-				schema_obj.register(schema_file, opts, udm_passthrough_options)
-				del os.environ['UNIVENTION_APP_IDENTIFIER']
-				if not schema_obj.wait_for_activation():
-					raise Abort('Registering schema file %s failed' % schema_file)
+				try:
+					schema_obj.register(schema_file, opts, udm_passthrough_options)
+				except SystemExit as exc:
+					if exc.code == 4:
+						self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
+					else:
+						raise Abort('Registration of schema extension failed (Code: %s)' % exc.code)
+				else:
+					if not schema_obj.wait_for_activation():
+						raise Abort('Registering schema file %s failed' % schema_file)
+				finally:
+					del os.environ['UNIVENTION_APP_IDENTIFIER']
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = App.from_ini(app.get_ini_file(), locale=False)
