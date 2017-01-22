@@ -36,17 +36,21 @@ import os.path
 import shutil
 import time
 import re
+from optparse import Values
 
 from ldap.dn import str2dn, dn2str
 
-from univention.appcenter.app import AppManager
-from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
+from univention.lib.ldap_extension import UniventionLDAPSchema
+
+from univention.appcenter.app import AppManager, App
+from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
 from univention.appcenter.database import DatabaseConnector, DatabaseError
+from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute
 from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password, container_mode
 from univention.appcenter.log import catch_stdout
-from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
+from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys, ucr_instance
 
 
 class Register(CredentialsAction):
@@ -56,11 +60,12 @@ class Register(CredentialsAction):
 
 	def setup_parser(self, parser):
 		super(Register, self).setup_parser(parser)
-		parser.add_argument('--files', dest='register_task', action='append_const', const='files', help='Creating shared directories; copying files from App Center server')
 		parser.add_argument('--component', dest='register_task', action='append_const', const='component', help='Adding the component to the list of available repositories')
+		parser.add_argument('--files', dest='register_task', action='append_const', const='files', help='Creating shared directories; copying files from App Center server')
 		parser.add_argument('--host', dest='register_task', action='append_const', const='host', help='Creating a computer object for the app (docker apps only)')
 		parser.add_argument('--app', dest='register_task', action='append_const', const='app', help='Registering the app itself (internal UCR variables, ucs-overview variables, adding a special LDAP object for the app)')
 		parser.add_argument('--database', dest='register_task', action='append_const', const='database', help='Installing, starting a database management system and creating a databse for the app (if necessary)')
+		parser.add_argument('--attributes', dest='register_task', action='append_const', const='attributes', help='Adding schema extions to LDAP; adding extended attributes')
 		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
 		parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
@@ -76,6 +81,7 @@ class Register(CredentialsAction):
 		self._register_host_for_apps(apps, args)
 		self._register_app_for_apps(apps, args)
 		self._register_database_for_apps(apps, args)
+		self._register_attributes_for_apps(apps, args)
 		self._register_installed_apps_in_ucr()
 
 	def _do_register(self, app, args):
@@ -170,10 +176,70 @@ class Register(CredentialsAction):
 			if os.path.exists(fname):
 				self.log('Copying %s' % fname)
 				shutil.copy2(fname, app.get_share_file(ext))
+			else:
+				if ext == 'schema':
+					schema = get_schema(app)
+					if schema:
+						with open(app.get_share_file(ext), 'wb') as fd:
+							fd.write(schema)
 
 	def _unregister_files(self, app):
 		# not removing anything here. these may be important backup files
 		pass
+
+	def _register_attributes_for_apps(self, apps, args):
+		if not self._shall_register(args, 'attributes'):
+			return
+		for app in apps:
+			if self._do_register(app, args):
+				self._register_attributes(app, args)
+			else:
+				self._unregister_attributes(app, args)
+
+	def _register_attributes(self, app, args):
+		# FIXME: there is no better lib function than this snippet
+		schema_file = app.get_share_file('schema')
+		if os.path.exists(schema_file):
+			self.log('Registering schema %s' % schema_file)
+			lo, pos = self._get_ldap_connection(args)
+			with self._get_password_file(args) as password_file:
+				create_recursive_container('cn=ldapschema,cn=univention,%s' % ucr_get('ldap/base'), lo, pos)
+				schema_obj = UniventionLDAPSchema(ucr_instance())
+				userdn = self._get_userdn(args)
+				udm_passthrough_options = ['--binddn', userdn, '--bindpwdfile', password_file]
+				opts = Values()
+				opts.packagename = 'appcenter-app-%s' % app.id
+				opts.packageversion = app.version
+				opts.ucsversionstart = None
+				opts.ucsversionend = None
+				os.environ['UNIVENTION_APP_IDENTIFIER'] = app.id
+				try:
+					schema_obj.register(schema_file, opts, udm_passthrough_options)
+				except SystemExit as exc:
+					if exc.code == 4:
+						self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
+					else:
+						raise Abort('Registration of schema extension failed (Code: %s)' % exc.code)
+				else:
+					if not schema_obj.wait_for_activation():
+						raise Abort('Registering schema file %s failed' % schema_file)
+				finally:
+					del os.environ['UNIVENTION_APP_IDENTIFIER']
+
+				# and this is what should be there after one line of lib.register_schema(schema_file)
+				app = App.from_ini(app.get_ini_file(), locale=False)
+				attributes, __ = get_extended_attributes(app)
+				if attributes:
+					for i, attribute in enumerate(attributes):
+						self.log('Registering attribute %s' % attribute.name)
+						create_extended_attribute(attribute, app, i + 1, lo, pos)
+
+	def _unregister_attributes(self, app, args):
+		attributes, __ = get_extended_attributes(app)
+		if attributes:
+			lo, pos = self._get_ldap_connection(args)
+			for attribute in attributes:
+				remove_extended_attribute(attribute, lo, pos)
 
 	def _register_host_for_apps(self, apps, args):
 		if not self._shall_register(args, 'host'):

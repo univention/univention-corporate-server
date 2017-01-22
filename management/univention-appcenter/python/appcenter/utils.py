@@ -50,6 +50,7 @@ from hashlib import md5, sha256
 import socket
 import tempfile
 from locale import getlocale
+from ConfigParser import RawConfigParser, ParsingError
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -60,6 +61,27 @@ from univention.appcenter.ucr import ucr_get, ucr_keys
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc
 _ = Translation('univention-appcenter').translate
+
+
+utils_logger = get_base_logger().getChild('utils')
+
+
+def read_ini_file(filename, parser_class=RawConfigParser):
+	parser = parser_class()
+	try:
+		with open(filename, 'rb') as f:
+			parser.readfp(f)
+	except TypeError:
+		pass
+	except EnvironmentError:
+		pass
+	except ParsingError as exc:
+		utils_logger.warn('Could not parse %s' % filename)
+		utils_logger.warn(str(exc))
+	else:
+		return parser
+	# in case of error return empty parser
+	return parser_class()
 
 
 def docker_bridge_network_conflict():
@@ -376,13 +398,14 @@ def get_server():
 		server = 'https://%s' % server
 	return server
 
+
 def container_mode():
 	''' returns True if this system is an container '''
 	return bool(ucr_get('docker/container/uuid'))
 
+
 def send_information(action, app, status):
-	logger = get_base_logger().getChild('utils')
-	logger.debug('%s %s: %s', action, app.id, status)
+	utils_logger.debug('%s %s: %s', action, app.id, status)
 	server = get_server()
 	url = '%s/postinst' % server
 	uuid = '00000000-0000-0000-0000-000000000000'
@@ -404,4 +427,4 @@ def send_information(action, app, status):
 		request = urllib2.Request(url, request_data)
 		urlopen(request)
 	except Exception as exc:
-		logger.info('Error sending app infos to the App Center server: %s', exc)
+		utils_logger.info('Error sending app infos to the App Center server: %s', exc)

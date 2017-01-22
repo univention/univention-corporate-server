@@ -55,7 +55,7 @@ class Install(Install, DockerActionMixin):
 			return super(Install, self)._install_app(app, args)
 		else:
 			hostdn, password = self._register_host(app, args)
-			self.percentage = 20
+			self.percentage = 30
 			self._start_docker_image(app, hostdn, password, args)
 			self.percentage = 50
 			self._setup_docker_image(app, args)
