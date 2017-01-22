@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test Extended Attributes integration
-## tags: [docker2]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
