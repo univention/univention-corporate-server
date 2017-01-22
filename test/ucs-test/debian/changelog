@@ -1,3 +1,9 @@
+ucs-test (6.0.37-43) unstable; urgency=medium
+
+  * Bug #31804: Test GenericUserActivation=True, .attributes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 22 Jan 2017 14:01:52 +0100
+
 ucs-test (6.0.37-42) unstable; urgency=medium
 
   * Bug #37102: make coverage work with S4-Connector?!
