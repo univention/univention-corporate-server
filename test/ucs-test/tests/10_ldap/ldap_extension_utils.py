@@ -77,6 +77,7 @@ def get_schema_attribute_id():
 
 
 def call_join_script(join_script_name):
+	print 'call_join_script(%r)' % (join_script_name,)
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -86,6 +87,7 @@ def call_join_script(join_script_name):
 
 
 def call_unjoin_script(unjoin_script_name):
+	print 'call_unjoin_script(%r)' % (unjoin_script_name,)
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -137,5 +139,6 @@ def get_ldap_master_connection(user_dn):
 
 
 def set_container_description(user_dn, container):
+	print 'set_container_description(%r, %r)' % (user_dn, container)
 	lo = get_ldap_master_connection(user_dn)
 	lo.modify(container, [('description', '', random_name())])
