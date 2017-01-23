@@ -41,6 +41,9 @@ from univention.config_registry import ConfigRegistry
 
 class Client(_Client):
 
+	print_response = True
+	print_request_data = True
+
 	@classmethod
 	def test_connection(cls, hostname=None, *args, **kwargs):
 		ucr = ConfigRegistry()
@@ -51,9 +54,31 @@ class Client(_Client):
 		return cls(hostname, username, password, *args, **kwargs)
 
 	def umc_command(self, *args, **kwargs):
-		kwargs.pop('print_response', True)
-		kwargs.pop('print_request', True)
-		return super(Client, self).umc_command(*args, **kwargs)
+		self.print_request_data = kwargs.pop('print_request_data', True)
+		self.print_response = kwargs.pop('print_response', True)
+		try:
+			return super(Client, self).umc_command(*args, **kwargs)
+		finally:
+			self.print_request_data = True
+			self.print_response = True
+
+	def request(self, method, path, data=None, headers=None):
+		print ''
+		print '*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else '')
+		if self.print_request_data:
+			print '  data = %s' % (pprint.pformat(data), )
+		try:
+			response = super(Client, self).request(method, path, data, headers)
+		except:
+			print 'UMC request failed: %s' % (sys.exc_info()[1],)
+			print ''
+			raise
+		if self.print_response:
+			print '*** UMC response: %s' % (pprint.pformat(response.data),)
+		else:
+			print '*** UMC reponse received'
+		print ''
+		return response
 
 
 class UMCConnection(_UMCConnection):
