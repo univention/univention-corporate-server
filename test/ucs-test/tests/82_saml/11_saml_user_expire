@@ -3,6 +3,7 @@
 ## tags:
 ##  - saml
 ##  - univention
+##  - SKIP
 ## join: true
 ## exposure: dangerous
 ## packages:
