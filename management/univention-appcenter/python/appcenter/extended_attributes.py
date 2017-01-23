@@ -145,7 +145,7 @@ class ExtendedAttribute(SchemaObject):
 
 	description = HiddenAttribute()
 	description_de = HiddenAttribute()
-	long_description = Attribute()
+	long_description = HiddenAttribute()
 	long_description_de = HiddenAttribute()
 
 	syntax = SyntaxAttribute()
