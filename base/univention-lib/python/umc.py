@@ -198,7 +198,7 @@ class Client(object):
 
 	ConnectionType = HTTPSConnection
 
-	def __init__(self, hostname=None, username=None, password=None, language='en-US', timeout=None):
+	def __init__(self, hostname=None, username=None, password=None, language='en-US', timeout=None, automatic_reauthentication=False):
 		self.hostname = hostname or '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 		self._language = language
 		self._headers = {
@@ -210,7 +210,7 @@ class Client(object):
 		self._base_uri = '/univention/'
 		self._timeout = timeout
 		self._raise_errors = True
-		self.__automatic_reauthenticate = False
+		self._automatic_reauthentication = automatic_reauthentication
 		self.username = username
 		self.password = password
 		if username:
@@ -223,6 +223,9 @@ class Client(object):
 		self.username = username
 		self.password = password
 		return self.umc_auth(username, password)
+
+	def reauthenticate(self):
+		return self.authenticate(self.username, self.password)
 
 	def set_basic_http_authentication(self, username, password):
 		self._headers['Authorization'] = 'Basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip()
@@ -265,7 +268,7 @@ class Client(object):
 		try:
 			return self.send(request)
 		except Unauthorized:
-			if not self.__automatic_reauthenticate:
+			if not self._automatic_reauthentication:
 				raise
 			self.reauthenticate()
 			return self.send(request)
