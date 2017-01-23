@@ -186,6 +186,7 @@ define([
 			// share appCenterInformation among AppCenter and DetailPage
 			//   needs to be specified in AppDetailsPage for apps.js
 			AppCenterPage.prototype.appCenterInformation = AppDetailsPage.prototype.appCenterInformation;
+			AppCenterPage.prototype.appCenterInformationReadAgain = AppDetailsPage.prototype.appCenterInformationReadAgain;
 		},
 
 		showApp: function(app) {

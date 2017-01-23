@@ -100,17 +100,22 @@ define([
 			this.createMetaCategories();
 
 			this.standbyDuring(when(this.getAppCenterSeen()).then(lang.hitch(this, function(appcenterSeen) {
-				if (tools.isTrue(appcenterSeen)) {
+				if (appcenterSeen >= 2) {
 					// load apps
 					return this.updateApplications();
 				} else {
+					var msg = this.appCenterInformation;
+					if (appcenterSeen == 1) {
+						// show an additional hint that the user should read this information again
+						msg = this.appCenterInformationReadAgain + this.appCenterInformation;
+					}
 					return dialog.confirmForm({
 						title: _('Univention App Center'),
 						widgets: [
 							{
 								type: Text,
 								name: 'help_text',
-								content: '<div style="width: 535px">' + this.appCenterInformation + '</div>'
+								content: '<div style="width: 535px">' + msg + '</div>'
 							},
 							{
 								type: CheckBox,
@@ -125,7 +130,7 @@ define([
 						}]
 					}).then(
 						lang.hitch(this, function(data) {
-							tools.setUserPreference({appcenterSeen: data.do_not_show_again ? 'true' : 'false'});
+							tools.setUserPreference({appcenterSeen: data.do_not_show_again ? 2 : 'false'});
 							return this.updateApplications();
 						}),
 						lang.hitch(this, function() {
@@ -175,10 +180,22 @@ define([
 		},
 
 		getAppCenterSeen: function() {
+			// final value that is returned by this function:
+			//   0 -> user has never seen the App Center info dialog
+			//   1 -> user has seen the App Center dialog in its first version
+			//        appcenterSeen == "true"
+			//   2 -> user has seen the App Center dialog in its second version
+			//        (since January 2017)
+			//        appcenterSeen == "2"
 			var deferred = new Deferred();
 			tools.getUserPreferences().then(
 				function(data) {
-					deferred.resolve(data.appcenterSeen);
+					var val = parseInt(data.appcenterSeen);
+					if (isNaN(val)) {
+						// should be "false" or "true"
+						val = tools.isTrue(data.appcenterSeen) ? 1 : 0;
+					}
+					deferred.resolve(val);
 				},
 				function() {
 					deferred.reject();
