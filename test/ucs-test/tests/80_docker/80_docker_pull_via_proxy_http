@@ -46,7 +46,7 @@ class TestCase:
 
 		self.imgname = 'docker.software-univention.de/ucs-appbox-amd64:4.1-0'
 
-                required_pkgname = 'univention-squid'
+		required_pkgname = 'univention-squid'
 		if not deb_package_is_installed(required_pkgname):
 			deb_install_package(required_pkgname)
 			self.remove_pkgname = required_pkgname

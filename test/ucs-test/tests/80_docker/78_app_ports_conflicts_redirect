@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create and install a simple docker app and check ports redirection constraints
-## tags: [docker]
+## tags: [docker,SKIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io

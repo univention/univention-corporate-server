@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the update_available script
-## tags: [docker]
+## tags: [docker,SKIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
