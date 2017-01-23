@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * Apps may now automatically extend User Management to add a generic user
    activation.
-bug: [31804]
+ * The initial information dialog about usage of email address and user data
+   has been updated.
+bug: [31804, 43261]
