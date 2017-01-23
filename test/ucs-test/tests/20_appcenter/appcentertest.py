@@ -87,7 +87,7 @@ class AppCenterTestFailure(Exception):
 class AppCenterOperations(object):
 
 	def __init__(self):
-		self.client = Client.test_connection()
+		self.client = Client.get_test_connection()
 
 	def _error_handler(self, error):
 		raise AppCenterOperationError(error)

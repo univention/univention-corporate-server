@@ -24,7 +24,7 @@ def main():
 	request_query = ('appcenter/query', {'quick': True}, )
 
 	print("Getting umc_connection")
-	client = Client.test_connection()
+	client = Client.get_test_connection()
 
 	print("Start request to appcenter")
 	# To get the best performance result, appcenter_update.call() is called again.

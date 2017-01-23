@@ -33,12 +33,12 @@ class UMCBase(object):
 	def create_connection_authenticate(self):
 		"""Create UMC connection and authenticate"""
 		try:
-			self.client = Client.test_connection()
+			self.client = Client.get_test_connection()
 		except (HTTPError, ConnectionError) as exc:
 			print("An error while trying to authenticate to UMC: %r" % exc)
 			print "Waiting 5 seconds and making another attempt"
 			sleep(5)
-			self.client = Client.test_connection()
+			self.client = Client.get_test_connection()
 		self.username = self.client.username
 		self.password = self.client.password
 		self.hostname = self.client.hostname

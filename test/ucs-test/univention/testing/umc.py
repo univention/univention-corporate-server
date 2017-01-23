@@ -45,7 +45,7 @@ class Client(_Client):
 	print_request_data = True
 
 	@classmethod
-	def test_connection(cls, hostname=None, *args, **kwargs):
+	def get_test_connection(cls, hostname=None, *args, **kwargs):
 		ucr = ConfigRegistry()
 		ucr.load()
 		username = ucr.get('tests/domainadmin/account')
