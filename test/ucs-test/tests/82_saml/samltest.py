@@ -7,6 +7,9 @@ import socket
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
 
+from HTMLParser import HTMLParser
+html = HTMLParser()
+
 
 class SamlError(Exception):
 	"""Custom error for everything SAML related"""
@@ -96,6 +99,7 @@ class SamlTest(object):
 		print("Extract SAML message from SAML response")
 		try:
 			saml_message = re.search('name="SAMLResponse" value="([^"]+)"', bytes(self.page.text)).group(1)
+			saml_message = html.unescape(saml_message)
 			print("The SAML message is:\n%s" % saml_message)
 			return saml_message
 		except AttributeError:
@@ -106,6 +110,7 @@ class SamlTest(object):
 		print("Extract url to post SAML message to")
 		try:
 			url = re.search('method="post" action="([^"]+)"', bytes(self.page.text)).group(1)
+			url = html.unescape(url)
 			print("The url to post SAML message to is: %s" % url)
 			return url
 		except AttributeError:
@@ -116,6 +121,7 @@ class SamlTest(object):
 		print("Extract AuthState")
 		try:
 			auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
+			auth_state = html.unescape(auth_state)
 			print("The SAML AuthState is:\n%s" % auth_state)
 			return auth_state
 		except AttributeError:
