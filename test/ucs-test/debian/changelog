@@ -1,3 +1,9 @@
+ucs-test (7.0.10-4) unstable; urgency=medium
+
+  * Bug #39122: Reenable 35smbclient_auth.test
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 23 Jan 2017 10:36:18 +0100
+
 ucs-test (7.0.10-3) unstable; urgency=medium
 
   * Bug #41797: add verbosity to test cases
