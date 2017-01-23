@@ -238,6 +238,10 @@ class Register(CredentialsAction):
 		attributes, __ = get_extended_attributes(app)
 		if attributes:
 			lo, pos = self._get_ldap_connection(args)
+			ldap_object = get_app_ldap_object(app, lo, pos)
+			if ldap_object.get_siblings():
+				self.debug('Not removing attributes, App is still installed somewhere')
+				return
 			for attribute in attributes:
 				remove_extended_attribute(attribute, lo, pos)
 

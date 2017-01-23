@@ -665,6 +665,14 @@ class App(object):
 			modified ("activated") to use the application, the App
 			Center may generate a link to point the the Users
 			module of UMC.
+		generic_user_activation: Automatically registers an LDAP schema
+			and adds a flag to the UCS user management that should
+			then be used to identify a user as "activated for the
+			App". If set to True, the name of the attribute is
+			*id*Activated. If set to anything else, the value is
+			used for the name of the attribute. If a schema file is
+			shipped along with the App, this file is used instead
+			of the auto generated one.
 		ports_exclusive: A list of ports the App requires to acquire
 			exclusively. Implicitly adds *conflicted_apps*. Docker
 			Apps will have these exact ports forwarded. The App
