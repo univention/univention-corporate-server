@@ -7,6 +7,7 @@
 ## tags: [basic, apptest, skip_admember]
 ## exposure: dangerous
 
+import pytest
 from time import sleep
 
 import univention.testing.utils as utils
@@ -15,6 +16,7 @@ from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.umc import Client
+from univention.lib.umc import BadRequest
 
 
 def main():
@@ -68,13 +70,11 @@ def main():
 		# and change it to a simple one (should not work):
 		print "\nTrying to change user password to '%s':" % simple_password
 		client = Client(None, user_name, complex_password)
-		response = client.umc_set({'password': {'password': complex_password, 'new_password': simple_password}})
-		print "RESPONSE:", response
-		if response.status != 400:
+		with pytest.raises(BadRequest):
+			response = client.umc_set({'password': {'password': complex_password, 'new_password': simple_password}})
+			print "RESPONSE:", response
 			if response.status == 200:
 				utils.fail("Changing user password worked in the case it should not")
-
-			utils.fail("The expected response status code is 400, while %s is received" % (response.status,))
 
 
 if __name__ == '__main__':
