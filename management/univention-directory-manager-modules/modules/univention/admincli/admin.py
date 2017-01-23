@@ -40,6 +40,8 @@ import os
 import subprocess
 import traceback
 
+import ldap
+
 import univention.debug
 
 import univention.admin.uexceptions
@@ -851,15 +853,12 @@ def _doit(arglist):
 			if not position_dn:
 				out.append("need new position for moving object")
 			else:
-				res = ''
-				try:  # check if goal-position exists
-					res = lo.get(position_dn)
-				except:
-					pass
-				if not res:
+				try:  # check if destination exists
+					lo.get(position_dn, required=True)
+				except (univention.admin.uexceptions.noObject, ldap.INVALID_DN_SYNTAX):
 					out.append("position does not exsist: %s" % position_dn)
 					return out + ["OPERATION FAILED"]
-				rdn = dn[:string.find(dn, ',')]
+				rdn = ldap.dn.dn2str([ldap.dn.str2dn(dn)[0]])
 				newdn = "%s,%s" % (rdn, position_dn)
 				try:
 					object.move(newdn)
@@ -867,16 +866,16 @@ def _doit(arglist):
 				except univention.admin.uexceptions.noObject:
 					out.append('E: object not found')
 					return out + ["OPERATION FAILED"]
-				except univention.admin.uexceptions.ldapError, msg:
+				except univention.admin.uexceptions.ldapError as msg:
 					out.append("ldap Error: %s" % msg)
 					return out + ["OPERATION FAILED"]
 				except univention.admin.uexceptions.nextFreeIp:
 					out.append('E: No free IP address found')
 					return out + ['OPERATION FAILED']
-				except univention.admin.uexceptions.valueInvalidSyntax, err:
+				except univention.admin.uexceptions.valueInvalidSyntax as err:
 					out.append('E: Invalid Syntax: %s' % err)
 					return out + ["OPERATION FAILED"]
-				except univention.admin.uexceptions.invalidOperation, msg:
+				except univention.admin.uexceptions.invalidOperation as msg:
 					out.append(str(msg))
 					return out + ["OPERATION FAILED"]
 
