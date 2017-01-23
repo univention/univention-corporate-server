@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-38.265.201701221403
+fix: 5.0.23-39.266.201701231755
 desc: |
  This update addresses the following issues:
  * Apps may now automatically extend User Management to add a generic user
