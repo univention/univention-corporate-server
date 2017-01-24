@@ -13,4 +13,4 @@
 
 univention-s4connector-list-rejected
 /usr/lib/nagios/plugins/check_univention_s4_connector
-
+exit $?
