@@ -46,6 +46,7 @@ The API is currently under heavy development and may/will change before next UCS
 
 import subprocess
 import os
+import sys
 import pipes
 import psutil
 import copy
@@ -264,7 +265,7 @@ class UCSTestUDM(object):
             utils.wait_for_replication(verbose=False)
             if check_for_drs_replication:
                 if utils.package_installed('univention-samba4'):
-                    wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+                    wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
         return dn
 
     def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
@@ -298,7 +299,7 @@ class UCSTestUDM(object):
             utils.wait_for_replication(verbose=False)
             if check_for_drs_replication:
                 if utils.package_installed('univention-samba4'):
-                    wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+                    wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
         return new_dn
 
     def remove_object(self, modulename, wait_for_replication=True, **kwargs):
@@ -401,6 +402,9 @@ class UCSTestUDM(object):
 
                 child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
                 (stdout, stderr) = child.communicate()
+
+                if child.returncode or 'Object removed:' not in stdout:
+                    print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
         self._cleanup = {}
 
         for lock_type, values in self._cleanupLocks.items():
