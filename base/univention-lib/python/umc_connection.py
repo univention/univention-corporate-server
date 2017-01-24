@@ -52,8 +52,7 @@ class UMCConnection(object):
 	def __init__(self, host, username=None, password=None, error_handler=None):
 		self.client = Client(host, username, password)
 		self._error_handler = error_handler
-
-	build_data = Client._Client__build_data
+		self.build_data = self.client._Client__build_data
 
 	@property
 	def _headers(self):

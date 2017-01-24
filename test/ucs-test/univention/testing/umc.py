@@ -32,10 +32,8 @@
 
 import sys
 import pprint
-import httplib
 
 from univention.lib.umc import Client as _Client
-from univention.lib.umc_connection import UMCConnection as _UMCConnection
 from univention.config_registry import ConfigRegistry
 
 
@@ -79,63 +77,3 @@ class Client(_Client):
 			print '*** UMC reponse received'
 		print ''
 		return response
-
-
-class UMCConnection(_UMCConnection):
-
-	def request(self, url, data=None, flavor=None, command='command', print_response=True, print_request_data=True):
-		print ''
-		print '*** UMC request: "%s/%s" %s' % (command, url, '(%s)' % (flavor,) if flavor else '')
-		if print_request_data:
-			print '  data = %s' % (pprint.pformat(data), )
-		try:
-			response = super(UMCConnection, self).request(url, data, flavor, command)
-		except:
-			print 'UMC request failed: %s' % (sys.exc_info()[1],)
-			print ''
-			raise
-		if print_response:
-			print '*** UMC response: %s' % (pprint.pformat(response),)
-		else:
-			print '*** UMC reponse received'
-		print ''
-		return response
-
-
-class UMCTestConnection(UMCConnection):
-
-	def __init__(self, host=None, username=None, password=None, error_handler=None):
-		"""
-		All credentials are initialised with ucr values.
-		The parameters can be used to overwrite them.
-		The super constructor will do the authentification.
-		"""
-		self.ucr = ConfigRegistry()
-		self.ucr.load()
-		self.hostname = self.ucr.get('hostname')
-		self.username = self.ucr.get('tests/domainadmin/account')
-		self.username = self.username.split(',')[0][len('uid='):]
-		self.password = self.ucr.get('tests/domainadmin/pwd')
-
-		if host:
-			self.hostname = host
-
-		if username:
-			self.username = username
-
-		if password:
-			self.password = password
-
-		super(UMCTestConnection, self).__init__(self.hostname, self.username, self.password, error_handler)
-
-	def get_custom_connection(self, url=None, data=None, flavor=None, command='command', timeout=10):
-		if data is None:
-			data = {}
-		data = self.build_data(data, flavor)
-		connection = self.get_connection()
-		umcp_command = '/univention/%s' % command
-		if url:
-			umcp_command = '%s/%s' % (umcp_command, url)
-		connection = httplib.HTTPSConnection(self._host, timeout=timeout)
-		connection.request('POST', umcp_command, data, headers=self._headers)
-		return connection
