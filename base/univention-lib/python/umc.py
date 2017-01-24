@@ -250,7 +250,7 @@ class Client(object):
 		data = self.__build_data(options)
 		return self.request('POST', 'set', data)
 
-	def umc_get(self, path, options):
+	def umc_get(self, path, options=None):
 		return self.request('POST', 'get/%s' % path, self.__build_data(options))
 
 	def umc_upload(self):
