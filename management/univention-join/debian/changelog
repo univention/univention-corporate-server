@@ -1,3 +1,9 @@
+univention-join (9.0.2-1) unstable; urgency=medium
+
+  * Bug #41539: fix decoding error if logfile contains non-utf-8 character
+
+ -- Florian Best <best@univention.de>  Tue, 24 Jan 2017 10:59:06 +0100
+
 univention-join (9.0.1-4) unstable; urgency=medium
 
   * Bug #41221: Added comments for translators.

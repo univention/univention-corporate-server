@@ -383,8 +383,8 @@ class Instance(Base):
 	@simple_response
 	def logview(self):
 		"""Returns the last 2MB of the join.log file"""
-		with open(LOGFILE) as fd:
-			return fd.read(2097152)
+		with open(LOGFILE, 'rb') as fd:
+			return fd.read(2097152).decode('utf-8', 'replace')
 
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
