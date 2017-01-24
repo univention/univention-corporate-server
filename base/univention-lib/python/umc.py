@@ -174,12 +174,12 @@ class Response(object):
 		self.body = body
 		self.headers = headers
 		self._response = _response
-		self.data = self.encode_body()
+		self.data = self.decode_body()
 
 	def get_header(self, name, default=None):
 		return self._response.getheader(name, default)
 
-	def encode_body(self):
+	def decode_body(self):
 		data = self.body
 		if self.get_header('Content-Type', '').startswith('application/json'):
 			try:
@@ -244,16 +244,16 @@ class Client(object):
 			raise ConnectionError('Could not read /etc/machine.secret', reason=exc)
 		self.authenticate(username, password)
 
-	def umc_command(self, path, options=None, flavor=None):
+	def umc_command(self, path, options=None, flavor=None, headers=None):
 		data = self.__build_data(options, flavor)
-		return self.request('POST', 'command/%s' % (path,), data)
+		return self.request('POST', 'command/%s' % (path,), data, headers)
 
-	def umc_set(self, options):
+	def umc_set(self, options, headers=None):
 		data = self.__build_data(options)
-		return self.request('POST', 'set', data)
+		return self.request('POST', 'set', data, headers)
 
-	def umc_get(self, path, options=None):
-		return self.request('POST', 'get/%s' % path, self.__build_data(options))
+	def umc_get(self, path, options=None, headers=None):
+		return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
 
 	def umc_upload(self):
 		raise NotImplementedError('File uploads currently need to be done manually.')
