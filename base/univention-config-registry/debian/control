@@ -36,8 +36,8 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-config-registry (= ${source:Version}),
- ldap-utils
-Suggests: python-debian,
+ ldap-utils,
+ python-debian,
 Replaces: univention-config-registry (<< 7.0.9~),
  shell-univention-lib (<< 6.0.2),
 Breaks:

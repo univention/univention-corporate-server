@@ -38,6 +38,8 @@ from hashlib import md5
 from optparse import OptionParser
 from textwrap import dedent
 
+from debian.deb822 import Deb822
+
 PREFIX = '/etc/univention'
 SUFFIX = ('.dpkg-new', '.dpkg-dist')
 K64 = 1 << 16
@@ -120,36 +122,20 @@ def check_md5(verbose=False):
 		sys.exit(2)
 
 
-try:
-	from debian.deb822 import Deb822
-
-	def iter_templates():
-		with open('/var/lib/dpkg/status', 'r') as dpkg_status:
-			for pkg in Deb822.iter_paragraphs(dpkg_status, ["Conffiles"]):
-				try:
-					conffiles = pkg["Conffiles"]
-				except KeyError:
+def iter_templates():
+	with open('/var/lib/dpkg/status', 'r') as dpkg_status:
+		for pkg in Deb822.iter_paragraphs(dpkg_status, ["Conffiles"], use_apt_pkg=True):
+			try:
+				conffiles = pkg["Conffiles"]
+			except KeyError:
+				continue
+			for conffile in conffiles.splitlines():
+				fields = [_.strip() for _ in conffile.rsplit(' ', 1) if _]
+				# skip obsolete and new conffiles
+				if not fields or 'newconffile' in fields or 'obsolete' in fields:
 					continue
-				for conffile in conffiles.splitlines():
-					fields = [_.strip() for _ in conffile.rsplit(' ', 1) if _]
-					# skip obsolete and new conffiles
-					if not fields or 'newconffile' in fields or 'obsolete' in fields:
-						continue
-					filepath, fmd5 = fields
-					if filepath.startswith(PREFIX):
-						yield filepath, fmd5
-except ImportError:
-	def iter_templates():
-		prefix = " " + PREFIX
-		with open('/var/lib/dpkg/status', 'r') as dpkg_status:
-			for line in dpkg_status:
-				if line.startswith(prefix):
-					line = line.strip()
-					fields = [_.strip() for _ in line.rsplit(' ', 1)]
-					# skip obsolete and new conffiles
-					if not fields or 'newconffile' in fields or 'obsolete' in fields:
-						continue
-					filepath, fmd5 = fields
+				filepath, fmd5 = fields
+				if filepath.startswith(PREFIX):
 					yield filepath, fmd5
 
 
