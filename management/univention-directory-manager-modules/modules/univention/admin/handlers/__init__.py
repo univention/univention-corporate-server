@@ -357,25 +357,25 @@ class base(object):
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be moved.'))
 
-		goaldn = ','.join(ldap.explode_dn(newdn)[1:])
+		goaldn = self.lo.parentDn(newdn)
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
 		goalmodule = univention.admin.modules.get(goalmodule)
 		if not goalmodule or not hasattr(goalmodule, 'childs') or not goalmodule.childs == 1:
-			raise univention.admin.uexceptions.invalidOperation, _("Destination object can't have sub objects.")
+			raise univention.admin.uexceptions.invalidOperation(_("Destination object can't have sub objects."))
 
 		if self.dn.lower() == newdn.lower():
 			if self.dn == newdn:
-				raise univention.admin.uexceptions.ldapError, _('Moving not possible: old and new DN are identical.')
+				raise univention.admin.uexceptions.ldapError(_('Moving not possible: old and new DN are identical.'))
 			else:
 				# We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
 				temporary_ou = self._create_temporary_ou()
 				new_rdn = ldap.explode_rdn(newdn)[0]
-				new_dn = '%s,%s,%s' % (new_rdn, temporary_ou, self.lo.base)
-				self.move(new_dn, ignore_license, temporary_ou)
-				self.dn = new_dn
+				temp_dn = '%s,%s,%s' % (new_rdn, temporary_ou, self.lo.base)
+				self.move(temp_dn, ignore_license, temporary_ou)
+				self.dn = temp_dn
 
 		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
-			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed.")
+			raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
 
 		if univention.admin.modules.supports(self.module, 'subtree_move'):
 			# check if is subtree:
@@ -386,7 +386,7 @@ class base(object):
 				# create copy of myself
 				module = univention.admin.modules.get(self.module)
 				position = univention.admin.uldap.position(self.lo.base)
-				position.setDn(','.join(ldap.explode_dn(newdn)[1:]))
+				position.setDn(self.lo.parentDn(newdn))
 				copyobject = module.object(None, self.lo, position)
 				copyobject.open()
 				for key in self.keys():
@@ -403,7 +403,7 @@ class base(object):
 						#   self.dn: ou=test_h81,LDAP_BASE
 						#   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
 						rdn = ldap.explode_dn(subolddn)[0]
-						subolddn_dn_without_rdn_lower = ','.join(ldap.explode_dn(subolddn)[1:]).lower()
+						subolddn_dn_without_rdn_lower = self.lo.parentDn(subolddn).lower()
 						subnewdn = '%s,%s' % (rdn, subolddn_dn_without_rdn_lower.replace(self.dn.lower(), newdn))
 						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 						submodule = univention.admin.modules.get(submodule)
@@ -418,7 +418,7 @@ class base(object):
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, trying to move back.')
 					position = univention.admin.uldap.position(self.lo.base)
-					position.setDn(','.join(ldap.explode_dn(olddn)[1:]))
+					position.setDn(self.lo.parentDn(olddn))
 					for subolddn, subnewdn in moved:
 						submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
 						submodule = univention.admin.modules.get(submodule)
@@ -428,6 +428,8 @@ class base(object):
 					copyobject.remove()
 					self._delete_temporary_ou_if_empty(temporary_ou)
 					raise
+				self.dn = newdn
+				return newdn
 			else:
 				# normal move, fails on subtrees
 				res = self._move(newdn, ignore_license=ignore_license)

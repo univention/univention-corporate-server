@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.12-2) unstable; urgency=medium
+
+  * Bug #43332: fix return value of object.move() which supports subtree_move
+  	and has sub objects
+
+ -- Florian Best <best@univention.de>  Tue, 24 Jan 2017 14:41:57 +0100
+
 univention-directory-manager-modules (12.0.12-1) unstable; urgency=medium
 
   * Bug #43332: fix moving of objects containing ","
