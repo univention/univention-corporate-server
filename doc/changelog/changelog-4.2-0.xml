@@ -212,6 +212,9 @@
 				<listitem><simpara>
 					The "execute pending join scripts" button is now grayed out if no unconfigured join scripts exists (<u:bug>35326</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Illegal characters don't cause a crash when viewing the logfile anymore (<u:bug>41539</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
