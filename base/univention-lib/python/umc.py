@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import json
+from Cookie import SimpleCookie
 from httplib import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
@@ -211,6 +212,7 @@ class Client(object):
 		self._timeout = timeout
 		self._raise_errors = True
 		self._automatic_reauthentication = automatic_reauthentication
+		self.cookies = {}
 		self.username = username
 		self.password = password
 		if username:
@@ -274,7 +276,8 @@ class Client(object):
 			return self.send(request)
 
 	def send(self, request):
-		request.headers = dict(self._headers, **request.headers)
+		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
 		try:
 			response = self.__request(request)
 		except (HTTPException, EnvironmentError) as exc:
@@ -286,10 +289,10 @@ class Client(object):
 		return response
 
 	def _handle_cookies(self, response):
-		cookie = response.getheader('set-cookie')
-		if cookie is None:
-			return
-		self._headers['Cookie'] = cookie  # FIXME: transform Set-Cookie to Cookie
+		# FIXME: this cookie handling doesn't respect path, domain and expiry
+		cookies = SimpleCookie()
+		cookies.load(response.getheader('set-cookie', ''))
+		self.cookies.update(dict((cookie.key, cookie.value) for cookie in cookies.values()))
 
 	def __request(self, request):
 		uri = '%s%s' % (self._base_uri, request.path)
