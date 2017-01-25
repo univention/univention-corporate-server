@@ -1,3 +1,16 @@
+univention-ad-connector (10.0.2-27) unstable; urgency=medium
+
+  * Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'
+    (mailPrimaryAddress, mailAlternativeAddress) <-> proxyAddresses
+    instead of
+    (mailPrimaryAddress <-> mail, mailAlternativeAddress <-> proxyAddresses)
+  * split proxyAddresses methods off into separate module
+  * A sync_mode='read' hack for mailAlternativeAddress has been introduced
+    to avoid duplicate ldap.MOD_REPLACE entries in sync_from_ucs modlist
+  * Note: currently this leaves the "mail" attribute unsynchronized
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 18:27:38 +0100
+
 univention-ad-connector (10.0.2-26) unstable; urgency=medium
 
   * Bug #43216: remove ancient code from __set_values:
