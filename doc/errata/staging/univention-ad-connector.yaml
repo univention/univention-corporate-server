@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-ad-connector
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The attribute mapping for windowscomputer->samAccountName has been
+   set to write only (changes in AD samAccountName are handle via the
+   windowscomputer->cn mapping).
+bug: [43229]
