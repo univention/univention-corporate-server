@@ -320,7 +320,7 @@ class configsaver:
 
 class attribute:
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', con_value_map_function='', ucs_value_map_function='', mapping=(), reverse_attribute_check=False):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', con_value_map_function='', ucs_value_map_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
@@ -338,6 +338,7 @@ class attribute:
 		# considered. 
 		# Seee https://forge.univention.org/bugzilla/show_bug.cgi?id=25823
 		self.reverse_attribute_check = reverse_attribute_check
+		self.sync_mode = sync_mode
 
 
 class property:
@@ -1096,7 +1097,8 @@ class ucs:
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 
 		for attr_key in self.property[property_type].attributes.keys():
-			set_values(self.property[property_type].attributes[attr_key])
+			if self.property[property_type].attributes[attr_key].sync_mode in ['read', 'sync']:
+				set_values(self.property[property_type].attributes[attr_key])
 
 		# post-values
 		if not self.property[property_type].post_attributes:
@@ -1106,13 +1108,14 @@ class ucs:
 			if hasattr(self.property[property_type].post_attributes[attr_key], 'mapping'):
 				set_values(self.property[property_type].post_attributes[attr_key].mapping[1](self, property_type, object))
 			else:
-				if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
-					if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
-						set_values(self.property[property_type].post_attributes[attr_key])
+				if self.property[property_type].post_attributes[attr_key].sync_mode in ['read', 'sync']:
+					if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
+						if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
+							set_values(self.property[property_type].post_attributes[attr_key])
+						else:
+							ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
 					else:
-						ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
-				else:
-					set_values(self.property[property_type].post_attributes[attr_key])
+						set_values(self.property[property_type].post_attributes[attr_key])
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
 		if 'custom_attributes' in object:

@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-21) unstable; urgency=medium
+
+  * Bug #42618: support attribute level sync_mode configuration
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 14:22:03 +0100
+
 univention-ad-connector (10.0.2-20) unstable; urgency=medium
 
   * Bug #42507: Code cleanup
