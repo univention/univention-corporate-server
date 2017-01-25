@@ -3,11 +3,12 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ad-connector
-fix: 10.0.2-24.522.201701251518
+fix: 10.0.2-27.523.201701251828
 desc: |
  This update addresses the following issue(s):
+ * The lockup for the LDAP base DN on the AD server has been fixed.
  * The attribute mapping for windowscomputer->samAccountName has been
    set to write only (changes in AD samAccountName are handle via the
    windowscomputer->cn mapping).
- * The lockup for the LDAP base DN on the AD server has been fixed.
-bug: [43229,40816]
+ * Revised mapping for MS-Exchange related 'proxyAddresses'
+bug: [40816,43229,43216]
