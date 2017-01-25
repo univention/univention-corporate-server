@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.5-1) unstable; urgency=medium
+
+  * Bug #32086: dn is no attribute, search for entryDN attribute instead
+
+ -- Florian Best <best@univention.de>  Wed, 25 Jan 2017 13:17:21 +0100
+
 univention-s4-connector (11.0.4-2) unstable; urgency=low
 
   * Bug #43321: check uid and sAMAccountName in

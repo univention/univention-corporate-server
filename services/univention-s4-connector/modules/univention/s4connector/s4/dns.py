@@ -749,7 +749,7 @@ def s4_zone_create(s4connector, object):
 
 	# Create the forward zone in S4 if it does not exist
 	try:
-		_ = s4connector.lo_s4.getAttr(zone_dn, 'dn', required=True)
+		_ = s4connector.lo_s4.getAttr(zone_dn, 'entryDN', required=True)
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone(s4connector, zone_dn)
 
