@@ -423,6 +423,7 @@ if ignore_filter:
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
 							compare_function=univention.connector.compare_lowercase,
+							sync_mode='write',
 						),
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
