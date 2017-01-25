@@ -1104,18 +1104,15 @@ class ucs:
 		if not self.property[property_type].post_attributes:
 			return
 		for attr_key in self.property[property_type].post_attributes.keys():
-			ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
-			if hasattr(self.property[property_type].post_attributes[attr_key], 'mapping'):
-				set_values(self.property[property_type].post_attributes[attr_key].mapping[1](self, property_type, object))
-			else:
-				if self.property[property_type].post_attributes[attr_key].sync_mode in ['read', 'sync']:
-					if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
-						if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
-							set_values(self.property[property_type].post_attributes[attr_key])
-						else:
-							ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
-					else:
+			if self.property[property_type].post_attributes[attr_key].sync_mode in ['read', 'sync']:
+				ud.debug(ud.LDAP, ud.INFO, '__set_values: mapping for attribute: %s' % attr_key)
+				if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
+					if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
 						set_values(self.property[property_type].post_attributes[attr_key])
+					else:
+						ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
+				else:
+					set_values(self.property[property_type].post_attributes[attr_key])
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
 		if 'custom_attributes' in object:

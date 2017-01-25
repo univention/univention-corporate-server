@@ -1,3 +1,14 @@
+univention-ad-connector (10.0.2-26) unstable; urgency=medium
+
+  * Bug #43216: remove ancient code from __set_values:
+    If mapping[1] is defined for a post_attribute the method __set_values
+    calls it and passes the result to set_values. Since the latter expects
+    an object of class attribute this cannot work and must have been broken
+    a long time ago. In the mapping I don't see any case where mapping
+    functions are defined for a post_attribute.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 15:31:57 +0100
+
 univention-ad-connector (10.0.2-25) unstable; urgency=medium
 
   * Bug #43216: backport from s4connector:
