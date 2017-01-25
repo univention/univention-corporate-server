@@ -1,6 +1,7 @@
 univention-management-console-module-udm (6.0.11-36) unstable; urgency=medium
 
   * Bug #43423: treat asterisk/asterisk as superordinate module with a tree
+  * Bug #43048: fix containers underneath of superordinate objects
 
  -- Florian Best <best@univention.de>  Wed, 25 Jan 2017 17:14:14 +0100
 
