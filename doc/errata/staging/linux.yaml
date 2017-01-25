@@ -49,6 +49,7 @@ desc: |
  * kvm: use after free in complete_emulated_mmio (CVE-2017-2584)
  * The simple-framebuffer has been disabled because it breaks the linux
    console for many DRM drivers.
+ * sgid bit not cleared on tmpfs (CVE-2017-5551)
 note: This is the first part of the update.
 bug: [42754]
 cve:
@@ -70,3 +71,4 @@ cve:
  - CVE-2016-10147
  - CVE-2017-2583
  - CVE-2017-2584
+ - CVE-2017-5551
