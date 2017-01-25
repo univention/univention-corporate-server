@@ -8,3 +8,5 @@ desc: |
  This update fixes a regression in squid3. The last errata update (346)
  has been built without SSL support.
 bug: [43408]
+erratum: 380
+announced: 2017-01-25
