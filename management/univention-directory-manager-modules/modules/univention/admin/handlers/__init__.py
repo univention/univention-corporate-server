@@ -1004,8 +1004,8 @@ class simpleLdap(base):
 			raise
 
 	def _remove(self, remove_childs=0):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() called for %s' % self.dn)
-		self.exceptions=[]
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() called for %r with remove_childs=%r' % (self.dn, remove_childs))
+		self.exceptions = []
 
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be removed.'))
@@ -1020,7 +1020,10 @@ class simpleLdap(base):
 			if not self.dn:
 				raise univention.admin.uexceptions.noObject
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() childs of base dn %s' % self.dn)
-			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
+			subelements = []
+			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
+				subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
 				try:
 					for subolddn, suboldattrs in subelements:

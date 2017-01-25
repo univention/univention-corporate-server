@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-45) unstable; urgency=medium
+
+  * Backport of Bug #43195: don't search for children of objects which doesn't have
+    subordinates to prevent administrative limits
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 25 Jan 2017 10:46:10 +0100
+
 univention-directory-manager-modules (9.0.76-44) unstable; urgency=medium
 
   * Bug #42379: fix missing _ function
