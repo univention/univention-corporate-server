@@ -9,4 +9,5 @@ desc: |
  * The attribute mapping for windowscomputer->samAccountName has been
    set to write only (changes in AD samAccountName are handle via the
    windowscomputer->cn mapping).
-bug: [43229]
+ * The lockup for the LDAP base DN on the AD server has been fixed.
+bug: [43229,40816]
