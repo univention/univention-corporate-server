@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-directory-manager-modules
+fix: 12.0.12-3A~4.2.0.201701251723
+desc: |
+ This update addresses the following issue(s):
+ * The python API for UDM modules find the superordinate object automatically
+   if it is not given.
+bug: [43423]
