@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-24) unstable; urgency=low
+
+  * Bug #40816: fixed "Determine ad_ldap_base" in open_ad()
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Jan 2017 15:16:43 +0100
+
 univention-ad-connector (10.0.2-23) unstable; urgency=medium
 
   * Bug #43216: backport from s4connector:
