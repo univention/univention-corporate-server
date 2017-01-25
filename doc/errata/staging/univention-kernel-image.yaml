@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-kernel-image
-fix: 9.0.0-15.121.201701200827
+fix: 9.0.0-16.122.201701251450
 desc: |
  This update of the Linux kernel to 4.1.38 addresses the following issues:
  * The rfcomm_sock_bind function in net/bluetooth/rfcomm/sock.c in the Linux
