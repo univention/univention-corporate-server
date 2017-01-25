@@ -469,7 +469,7 @@ define([
 				});
 			}
 
-			var hasSuperordinates = this.moduleFlavor == 'dhcp/dhcp' || this.moduleFlavor == 'dns/dns';
+			var hasSuperordinates = this.moduleFlavor === 'dhcp/dhcp' || this.moduleFlavor === 'dns/dns' || this.moduleFlavor === 'asterisk/asterisk';
 			this.renderGrid();
 			this.renderSearchForm(containers, hasSuperordinates);
 
