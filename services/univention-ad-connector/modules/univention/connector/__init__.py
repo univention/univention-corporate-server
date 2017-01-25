@@ -1632,8 +1632,9 @@ class ucs:
 					if attribute == self.property[key].attributes[attr_key].ldap_attribute:
 						# mapping function
 						if hasattr(self.property[key].attributes[attr_key], 'mapping'):
-							object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = self.property[key].attributes[attr_key].mapping[0](self, key, object)
-						# direct mapping
+							# direct mapping
+							if self.property[key].attributes[attr_key].mapping[0]:
+								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = self.property[key].attributes[attr_key].mapping[0](self, key, object)
 						else:
 							if self.property[key].attributes[attr_key].con_other_attribute:
 								object_out['attributes'][self.property[key].attributes[attr_key].con_attribute] = [values[0]]
@@ -1658,7 +1659,8 @@ class ucs:
 					for attr_key in self.property[key].post_attributes.keys():
 						if attribute == self.property[key].post_attributes[attr_key].ldap_attribute:
 							if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
-								object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
+								if self.property[key].post_attributes[attr_key].mapping[0]:
+									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = self.property[key].post_attributes[attr_key].mapping[0](self, key, object)
 							else:
 								if self.property[key].post_attributes[attr_key].con_other_attribute:
 									object_out['attributes'][self.property[key].post_attributes[attr_key].con_attribute] = [values[0]]
@@ -1674,8 +1676,9 @@ class ucs:
 						if attribute == self.property[key].attributes[attr_key].con_attribute:
 							# mapping function
 							if hasattr(self.property[key].attributes[attr_key], 'mapping'):
-								object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = self.property[key].attributes[attr_key].mapping[1](self, key, object)
-							# direct mapping
+								# direct mapping
+								if self.property[key].attributes[attr_key].mapping[1]:
+									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = self.property[key].attributes[attr_key].mapping[1](self, key, object)
 							else:
 								if self.property[key].attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute):
 									object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = values + object['attributes'].get(self.property[key].attributes[attr_key].con_other_attribute)
@@ -1699,7 +1702,8 @@ class ucs:
 						for attr_key in self.property[key].post_attributes.keys():
 							if attribute == self.property[key].post_attributes[attr_key].con_attribute:
 								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
-									object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
+									if self.property[key].post_attributes[attr_key].mapping[1]:
+										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
 								else:
 									if self.property[key].post_attributes[attr_key].con_other_attribute and object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute):
 										object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values + object['attributes'].get(self.property[key].post_attributes[attr_key].con_other_attribute)

@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-25) unstable; urgency=medium
+
+  * Bug #43216: backport from s4connector:
+    support None for mapping functions in sync_to_ucs
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 15:24:12 +0100
+
 univention-ad-connector (10.0.2-24) unstable; urgency=low
 
   * Bug #40816: fixed "Determine ad_ldap_base" in open_ad()
