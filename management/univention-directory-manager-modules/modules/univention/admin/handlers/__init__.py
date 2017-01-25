@@ -570,6 +570,8 @@ class simpleLdap(base):
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
+		if not self.superordinate:
+			self.superordinate = univention.admin.objects.get_superordinate(self.module, None, self.lo, self.dn or self.position.getDn())
 		self._validate_superordinate()
 
 		self.info = {}
@@ -601,9 +603,6 @@ class simpleLdap(base):
 			return  # module has no superodinates
 
 		if not self.superordinate:
-			if superordinate_names == set(['settings/cn']):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'No settings/cn superordinate was given.')
-				return   # settings/cn might be misued as superordinate, don't risk currently
 			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given.'))
 
 		if self.superordinate and not self.dn and not self.position:
