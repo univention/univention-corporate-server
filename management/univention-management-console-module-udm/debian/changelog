@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-36) unstable; urgency=medium
+
+  * Bug #43423: treat asterisk/asterisk as superordinate module with a tree
+
+ -- Florian Best <best@univention.de>  Wed, 25 Jan 2017 17:14:14 +0100
+
 univention-management-console-module-udm (6.0.11-35) unstable; urgency=medium
 
   * Bug #43094: allow syntax overriden via UCR to have choices
