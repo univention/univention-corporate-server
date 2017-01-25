@@ -530,7 +530,8 @@ class Instance(Base, ProgressMixin):
 				if mod is not None:
 					MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
 					superordinate = mod.get(superordinate)
-					request.options['container'] = superordinate.dn
+					if not request.options.get('container'):
+						request.options['container'] = superordinate.dn
 				else:
 					raise SuperordinateDoesNotExist(superordinate)
 

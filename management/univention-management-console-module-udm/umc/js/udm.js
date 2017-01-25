@@ -1546,14 +1546,9 @@ define([
 			if (this._tree) {
 				// the tree view (navigation, DHCP, DNS) might contain containers (e.g. also underneath of a superordinate!)
 				// we need to set the currently selected container if it's not a superordinate
-				var path = this._tree.get('path');
+				var path = lang.clone(this._tree.get('path'));
 				if (path.length) {
 					values.container = path[path.length - 1].id;
-					values.superordinate = path[path.length - 1].id;
-					if (!path[path.length -1].$isSuperordinate$) {
-						// a regular container is selected in the tree (which might be underneath of a superordinate)
-						delete values.superordinate;
-					}
 				}
 			}
 			if (values.superordinate) {
