@@ -905,15 +905,19 @@ class ad(univention.connector.ucs):
 		if '%s/ad/ldap/ssl' % self.CONFIGBASENAME in self.baseConfig and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
 			ud.debug(ud.LDAP, ud.INFO, "__init__: The LDAP connection to AD does not use SSL (switched off by UCR \"%s/ad/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
+		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
 
 		# Determine ad_ldap_base with exact case
 		try:
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base='', binddn=None, bindpw=None, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_cer)
-			self.ad_ldap_base = self.lo_ad.lo.search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'], timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
-		except Exception:
-			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value.')
-
-		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
+			self.lo_ad = univention.uldap.access(
+				host=self.ad_ldap_host, port=int(self.ad_ldap_port),
+				base='', binddn=None, bindpw=None, start_tls=tls_mode,
+				use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
+			self.ad_ldap_base = self.lo_ad.lo.search_ext_s(
+				'', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'],
+				timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
+		except Exception as ex:
+			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
 
 		if self.baseConfig.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
 			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'

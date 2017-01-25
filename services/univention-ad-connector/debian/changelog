@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.5-12) unstable; urgency=low
+
+  * Bug #40816: fixed "Determine ad_ldap_base" in open_ad()
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Jan 2017 15:24:42 +0100
+
 univention-ad-connector (11.0.5-11) unstable; urgency=low
 
   * Bug #43229: mapping -> windowscomputer -> samAccountName
