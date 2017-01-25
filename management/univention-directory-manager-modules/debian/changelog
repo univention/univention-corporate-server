@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-56) unstable; urgency=medium
+
+  * Bug #43423: find superordinate automatically if not given
+
+ -- Florian Best <best@univention.de>  Wed, 25 Jan 2017 17:10:29 +0100
+
 univention-directory-manager-modules (11.0.3-55) unstable; urgency=medium
 
   * Bug #43236: don't search for children of objects which doesn't have
