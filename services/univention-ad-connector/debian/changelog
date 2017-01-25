@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-22) unstable; urgency=low
+
+  * Bug #43229: mapping -> windowscomputer -> samAccountName
+    is write only (changes in ad are handled via cn)
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Jan 2017 14:44:08 +0100
+
 univention-ad-connector (10.0.2-21) unstable; urgency=medium
 
   * Bug #42618: support attribute level sync_mode configuration
