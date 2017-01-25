@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-extsec3.2
 src: univention-directory-manager-modules
-fix: 9.0.76-145.1451.201701201343
+fix: 9.0.76-45.1452.201701251058
 desc: |
  This update addresses the following issue(s):
  * Removing objects which don't have subelements is now possible even if the
