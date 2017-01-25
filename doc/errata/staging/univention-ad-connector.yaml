@@ -6,9 +6,10 @@ src: univention-ad-connector
 fix: 10.0.2-27.523.201701251828
 desc: |
  This update addresses the following issue(s):
+ * sync_from_ucs now logs the modlist in case of a traceback
  * The lockup for the LDAP base DN on the AD server has been fixed.
  * The attribute mapping for windowscomputer->samAccountName has been
    set to write only (changes in AD samAccountName are handle via the
    windowscomputer->cn mapping).
  * Revised mapping for MS-Exchange related 'proxyAddresses'
-bug: [40816,43229,43216]
+bug: [29988,40816,43229,43216]
