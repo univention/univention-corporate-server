@@ -2369,6 +2369,8 @@ class ad(univention.connector.ucs):
 						else:
 							modlist.append((ldap.MOD_DELETE, attr, None))
 
+			ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
+			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
 			self.lo_ad.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist))  # FIXME encoding
 
 			if property_type == 'group':
@@ -2381,7 +2383,13 @@ class ad(univention.connector.ucs):
 
 			ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
 			if modlist:
-				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
+				try:
+					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+				except:
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
+					raise
 
 			if hasattr(self.property[property_type], "post_con_modify_functions"):
 				for f in self.property[property_type].post_con_modify_functions:
@@ -2492,8 +2500,17 @@ class ad(univention.connector.ucs):
 					if value is not None:
 						modlist.append((ldap.MOD_DELETE, yank_empty_attr, None))
 
-			if modlist:
-				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+			if not modlist:
+				ud.debug(ud.LDAP, ud.ALL, "nothing to modify: %s" % object['dn'])
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
+				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
+				try:
+					self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+				except:
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
+					raise
 
 			if hasattr(self.property[property_type], "post_con_modify_functions"):
 				for f in self.property[property_type].post_con_modify_functions:

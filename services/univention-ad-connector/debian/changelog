@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-23) unstable; urgency=medium
+
+  * Bug #43216: backport from s4connector:
+    debug output for addlist and modlist in sync_from_ucs
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 14:51:12 +0100
+
 univention-ad-connector (10.0.2-22) unstable; urgency=low
 
   * Bug #43229: mapping -> windowscomputer -> samAccountName
