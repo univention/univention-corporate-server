@@ -50,6 +50,7 @@ if __name__ == '__main__':
 					dn = udm.create_object(
 						'settings/udm_%s' % extension_type,
 						name=extension_name,
+						position=udm.UNIVENTION_CONTAINER,
 						**properties
 					)
 				else:

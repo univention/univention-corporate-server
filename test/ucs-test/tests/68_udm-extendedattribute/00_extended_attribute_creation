@@ -23,7 +23,7 @@ if __name__ == '__main__':
 			'ldapMapping': 'univentionFreeAttribute15'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', **properties)
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		utils.verify_ldap_object(extended_attribute, {
 			'univentionUDMPropertyShortDescription': [properties['shortDescription']],

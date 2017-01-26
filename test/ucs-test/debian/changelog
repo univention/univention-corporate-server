@@ -1,3 +1,9 @@
+ucs-test (6.0.10-8) unstable; urgency=medium
+
+  * Bug #43423: create settings/* objects underneath of cn=univention
+
+ -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 11:35:40 +0100
+
 ucs-test (7.0.10-7) unstable; urgency=medium
 
   * Bug #43348: add missing provides

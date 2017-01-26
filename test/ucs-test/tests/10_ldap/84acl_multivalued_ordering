@@ -23,6 +23,7 @@ names = ['%s%d' % (random_name(), i) for i in range(2)]
 with UCSTestUDM() as udm:
     dn = udm.create_object(
         'settings/prohibited_username',
+        position=udm.UNIVENTION_CONTAINER,
         name=container_name,
         usernames=names,
     )

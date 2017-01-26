@@ -46,7 +46,7 @@ if __name__ == '__main__':
 			'set': {'options': uts.random_string()}  # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', **properties)
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		utils.verify_ldap_object(extended_attribute, {
 			'univentionUDMPropertyShortDescription': [properties['shortDescription']],

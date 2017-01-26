@@ -43,6 +43,7 @@ if __name__ == '__main__':
 
 		app = udm.create_object(
 			'appcenter/app',
+			position=udm.UNIVENTION_CONTAINER,
 			id=id,
 			name=name,
 			version=version,
