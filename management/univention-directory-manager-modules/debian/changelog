@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-57) unstable; urgency=medium
+
+  * Bug #43423: defer validations to the bottom of __init__, readd settings/cn
+  	workaround
+
+ -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 13:39:09 +0100
+
 univention-directory-manager-modules (11.0.3-56) unstable; urgency=medium
 
   * Bug #43423: find superordinate automatically if not given

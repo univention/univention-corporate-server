@@ -568,10 +568,6 @@ class simpleLdap(base):
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
-		if not self.superordinate:
-			self.superordinate = univention.admin.objects.get_superordinate(self.module, None, self.lo, self.dn or self.position.getDn())
-		self._validate_superordinate()
-
 		self.info = {}
 		self.oldattr = {}
 		if attributes:
@@ -593,6 +589,8 @@ class simpleLdap(base):
 		self.__set_options()
 		self.save()
 
+		self._validate_superordinate()
+
 	def exists(self):
 		return self._exists
 
@@ -601,16 +599,21 @@ class simpleLdap(base):
 		if not superordinate_names:
 			return  # module has no superodinates
 
+		if not self.dn and not self.position:
+			# this check existed in all modules with superordinates, so still check it here, too
+			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
+
 		if not self.superordinate:
-			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given.'))
+			self.superordinate = univention.admin.objects.get_superordinate(self.module, None, self.lo, self.dn or self.position.getDn())
+
+		if not self.superordinate:
+			if superordinate_names == set(['settings/cn']):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'No settings/cn superordinate was given.')
+				return   # settings/cn might be misued as superordinate, don't risk currently
+			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given'))
 
 		if not isinstance(self.superordinate, simpleLdap):
 			return  # UCS@school < 4.2 is broken
-
-		if self.superordinate and not self.dn and not self.position:
-			# this check existed in all modules with superordinates, so still check it here, too
-			# TODO: change into setting the position to the superordinate dn?
-			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
 		# check if the superordinate is of the correct object type
 		if not set([self.superordinate.module]) & superordinate_names:
