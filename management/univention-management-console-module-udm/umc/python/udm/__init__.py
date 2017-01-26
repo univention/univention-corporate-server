@@ -975,12 +975,13 @@ class Instance(Base, ProgressMixin):
 		if not container:
 			container = ucr['ldap/base']
 			defaults = {}
+			if request.flavor != 'navigation':
+				defaults['$operations$'] = ['search', ],  # disallow edit
 			if request.flavor in ('dns/dns', 'dhcp/dhcp'):
-				defaults = {
+				defaults.update({
 					'label': UDM_Module(request.flavor).title,
 					'icon': 'udm-%s' % (request.flavor.replace('/', '-'),),
-					'$operations$': ['search', ],  # disallow edit
-				}
+				})
 			return [dict({
 				'id': container,
 				'label': ldap_dn2path(container),

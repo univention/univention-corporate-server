@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-37) unstable; urgency=medium
+
+  * Bug #43423: set tree root operations to search-only except for navigation
+  * Bug #43423: add workaround for Bug #43427
+
+ -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 13:34:06 +0100
+
 univention-management-console-module-udm (6.0.11-36) unstable; urgency=medium
 
   * Bug #43423: treat asterisk/asterisk as superordinate module with a tree

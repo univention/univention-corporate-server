@@ -695,15 +695,14 @@ class UDM_Module(object):
 
 		# only return properties that are in the layout
 		properties = []
-		for iprop in self.properties:
+		for iprop in self.properties(ldap_dn):
 			if iprop['id'] in inLayout:
 				properties.append(iprop)
 
 		return properties
 
-	@property
 	@LDAP_Connection
-	def properties(self, ldap_connection=None, ldap_position=None):
+	def properties(self, position_dn, ldap_connection=None, ldap_position=None):
 		"""All properties of the UDM module"""
 		props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
@@ -737,6 +736,10 @@ class UDM_Module(object):
 				else:
 					item['default'] = str(prop.base_default)
 			elif key == 'primaryGroup':  # set default for primaryGroup
+				if position_dn:
+					# settings/usertemplate requires a superordinate to be given. The superordinate is automatically searched for if ommited. We need to set the position here.
+					# better would be to use the default position, but settings/usertemplate doesn't set one: Bug #43427
+					ldap_position.setDn(position_dn)
 				obj = self.module.object(None, ldap_connection, ldap_position, None)
 				obj.open()
 				default_group = obj.get('primaryGroup', None)
