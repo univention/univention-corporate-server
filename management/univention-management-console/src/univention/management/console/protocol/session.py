@@ -853,6 +853,7 @@ class SessionHandler(ProcessorBase):
 		self.processor = None
 		self.authenticated = False
 		self.__credentials = None
+		self.__locale = None
 
 	def _reload_acls(self):
 		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
@@ -904,6 +905,8 @@ class SessionHandler(ProcessorBase):
 				self._response(response)
 		elif request.command == 'GET' and 'newsession' in request.arguments:
 			CORE.info('Renewing session')
+			if self.processor:
+				self.__locale = str(self.processor.locale)
 			self.processor = None
 			self.finished(request.id, None)
 		else:
@@ -914,6 +917,8 @@ class SessionHandler(ProcessorBase):
 		if not self.processor:
 			self.processor = Processor()
 			self.processor.signal_connect('success', self._response)
+			if self.__locale:
+				self.processor.update_language([self.__locale])
 
 		# set the (new) password (also on re-authentication in the same session)
 		self.processor.set_credentials(**self.__credentials)

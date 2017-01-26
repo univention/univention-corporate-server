@@ -1,6 +1,7 @@
 univention-management-console (9.0.17-1) unstable; urgency=medium
 
   * Bug #40612: set authentication via HTTP header during login
+  * Bug #40612: Bug #38370: fix language mix after e.g. installing a app
 
  -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 18:22:33 +0100
 
