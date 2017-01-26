@@ -49,22 +49,22 @@ methods of a class named *Instance* that inherits :class:`.Base`.
 
 The following python code example matches the definition in the previous section::
 
- from univention.management.console import Translation
- from univention.management.console.config import ucr
- from univention.management.console.modules import Base
- from univention.management.console.modules.decorators import sanitize
- from univention.management.console.modules.sanitizers import IntegerSanitizer
- from univention.management.console.log import MODULE
+	from univention.management.console import Translation
+	from univention.management.console.config import ucr
+	from univention.management.console.modules import Base
+	from univention.management.console.modules.decorators import sanitize
+	from univention.management.console.modules.sanitizers import IntegerSanitizer
+	from univention.management.console.log import MODULE
 
- _ = Translation('univention-management-console-modules-udm').translate
+	_ = Translation('univention-management-console-modules-udm').translate
 
- class Instance(Base):
+	class Instance(Base):
 
-   @sanitize(end=IntegerSanitizer(minimum=0),)
-   def query(self, request):
-     end = request.options['end']
-     result = list(range(end))
-     self.finished(request.id, result)
+		@sanitize(end=IntegerSanitizer(minimum=0),)
+		def query(self, request):
+			end = request.options['end']
+			result = list(range(end))
+			self.finished(request.id, result)
 
 Each command methods has one parameter that contains the UMCP request of
 type
@@ -95,13 +95,13 @@ The base class for modules provides some properties and methods that
 could be useful when writing UMC modules:
 
 Properties
- * *username*: The username of the owner of this session
- * *password*: The password of the user
- * *auth_type*: The authentication method which was used to authenticate this user
+* *username*: The username of the owner of this session
+* *password*: The password of the user
+* *auth_type*: The authentication method which was used to authenticate this user
 
 Methods
- * *init*: Is invoked after the module process has been initialised. At that moment, the settings, like locale and username and password are available.
- * *permitted*: Can be used to determine if a specific UMCP command can be invoked by the current user. This method has two parameters: The ''command'' name and the ''options''.
+* *init*: Is invoked after the module process has been initialised. At that moment, the settings, like locale and username and password are available.
+* *permitted*: Can be used to determine if a specific UMCP command can be invoked by the current user. This method has two parameters: The ''command'' name and the ''options''.
 
 """
 

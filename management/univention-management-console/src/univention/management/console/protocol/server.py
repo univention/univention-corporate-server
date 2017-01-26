@@ -46,7 +46,6 @@ import notifier.signals as signals
 from OpenSSL import SSL
 
 from univention.lib.i18n import Translation
-_ = Translation('univention.management.console').translate
 
 from .message import Message, IncompleteMessageError, ParseError
 from .session import SessionHandler
@@ -56,13 +55,15 @@ from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
 from ..config import ucr, SERVER_MAX_CONNECTIONS
 
+_ = Translation('univention.management.console').translate
+
 
 class MagicBucket(object):
 
 	'''Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
 	accepted. After the user has authenticated the commands are passed
-	on to the Processor.'''
+	on to the SessionHandler.'''
 
 	def __init__(self):
 		self.__states = {}
