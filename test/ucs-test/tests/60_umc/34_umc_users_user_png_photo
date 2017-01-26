@@ -17,6 +17,7 @@ import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
 from univention.testing.umc import Client
+from univention.lib.umc import Unauthorized
 
 
 class TestUMCUserAuthentication(UMCBase):
@@ -80,8 +81,8 @@ class TestUMCUserAuthentication(UMCBase):
 			response = self.client.authenticate(username, password)
 			assert response.status == 200
 			return True
-		except Exception as exc:
-			utils.fail("An exception while trying to authenticate to UMC with a 'username'=%s and 'password'=%s: %r" % (self.test_username, password, exc))
+		except Unauthorized:
+			return False
 
 	def main(self):
 		"""
@@ -93,7 +94,7 @@ class TestUMCUserAuthentication(UMCBase):
 		with UCSTestUDM() as self.UDM:
 			self.create_user()
 			self.client = Client()
-			self.authenticate_to_umc(self.username, self.password)
+			self.authenticate_to_umc(self.test_username, self.test_password)
 
 			self.set_image_jpeg()
 			self.set_image_jpg()

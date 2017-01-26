@@ -51,7 +51,7 @@ class TestUMCUserModules(UMCBase):
 			udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn})
 
 			user_modules = self.list_umc_modules(test_username, test_password)
-			assert len(user_modules) != 1, "Expected only the UCR module"
+			assert len(user_modules) == 1, "Expected only the UCR module"
 
 			assert user_modules[0].get('id') == 'ucr', 'Wrong module returned, expected ID==ucr: %r' % (user_modules,)
 

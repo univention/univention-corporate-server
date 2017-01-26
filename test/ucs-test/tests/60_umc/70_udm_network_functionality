@@ -8,6 +8,7 @@
 
 import sys
 sys.path.insert(0, '.')
+import pytest
 from umc import UDMModule
 
 import univention.testing.utils as utils

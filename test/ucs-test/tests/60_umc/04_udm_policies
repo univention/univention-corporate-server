@@ -12,11 +12,10 @@ from univention.testing.umc import Client
 from univention.testing.strings import random_name
 
 ldap_base = UCSTestUDM.LDAP_BASE
-HOSTNAME = 'localhost'
 USERNAME = None
 PASSWORD = 'univention'
 
-UMCC = None
+client = None
 
 
 def get_policy_result_new(container=None, policyDN=None):
@@ -29,9 +28,9 @@ def get_policy_result_edit(objectDN=None, policyDN=None):
 
 def logged_in(func):
 	def _decorated(*args, **kwargs):
-		global UMCC
-		if UMCC is None:
-			UMCC = Client(HOSTNAME, USERNAME, PASSWORD)
+		global client
+		if client is None:
+			client = Client(None, USERNAME, PASSWORD)
 		return func(*args, **kwargs)
 	return _decorated
 
@@ -49,14 +48,15 @@ def get_policy_result(objectDN, policyDN, container):
 		'container': container
 	}]
 
-	result = UMCC.umc_command('udm/object/policies', data, 'navigation')
+	result = client.umc_command('udm/object/policies', data, 'navigation').result
 	return ['='.join(r['value']) for r in result[0]['registry']]
 
 
 def main():
 	with UCSTestUDM() as udm:
 		# create an UMC operation set to allow the udm/object/policies command
-		operation_set_dn = udm.create_object('settings/umc_operationset',
+		operation_set_dn = udm.create_object(
+			'settings/umc_operationset',
 			position="cn=operations,cn=UMC,cn=univention,%s" % ldap_base,
 			name='test-umc-opset',
 			description="policy result test op set",

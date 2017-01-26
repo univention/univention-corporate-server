@@ -28,41 +28,30 @@ class TestUMCUserCreation(UDMModule):
         Returns the 'uid' user data obtained by 'udm/get' UMC request.
         """
         options = ["uid=" + uid + ",cn=users," + self.ldap_base]
-        try:
-            request_result = self.client.request('udm/get', options, 'users/user').result
-            if not request_result:
-                utils.fail("Request 'udm/get' with options '%s' failed, "
-                           "hostname '%s'" % (options, self.hostname))
-            return request_result
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/get' request: %s" %
-                       exc)
+        request_result = self.client.umc_command('udm/get', options, 'users/user').result
+        if not request_result:
+            utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
+        return request_result
 
     def modify_user_groups(self, username, groupnames):
         """
         Modifies a user group with provided 'username' and a list of
         'groupnames' via UMC 'udm/put' request.
         """
-        options = [{"object": {"groups": groupnames,
-                               "CtxBrokenSession": "0000",
-                               "CtxReconnectSession": "0000",
-                               "$dn$": "uid=" + username +
-                                       ",cn=users," + self.ldap_base},
-                               "options": {}}]
-        try:
-            request_result = self.client.request('udm/put', options, 'users/user').result
-            if not request_result:
-                utils.fail("Request 'udm/put' to change user '%s' groups "
-                           "with options '%s' failed, hostname %s"
-                           % (username, options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/put' to change user '%s' groups "
-                           "with options '%s' failed, no success = True in "
-                           "response, hostname %s"
-                           % (username, options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/put' request: %s" %
-                       exc)
+        options = [{
+            "object": {
+                "groups": groupnames,
+                "CtxBrokenSession": "0000",
+                "CtxReconnectSession": "0000",
+                "$dn$": "uid=" + username + ",cn=users," + self.ldap_base
+            },
+            "options": {}
+        }]
+        request_result = self.client.umc_command('udm/put', options, 'users/user').result
+        if not request_result:
+            utils.fail("Request 'udm/put' to change user '%s' groups with options '%s' failed, hostname %s" % (username, options, self.hostname))
+        if not request_result[0].get('success'):
+            utils.fail("Request 'udm/put' to change user '%s' groups with options '%s' failed, no success = True in response, hostname %s" % (username, options, self.hostname))
 
     def create_user(self, username, password, groupname,
                     group_container="groups"):
@@ -71,40 +60,43 @@ class TestUMCUserCreation(UDMModule):
         with provided 'username', 'password' and the 'groupname'
         as a primary group.
         """
-        options = [{"object": {"disabled": "none",
-                               "CtxRASDialin": "E",
-                               "lastname": username,
-                               "password": password,
-                               "CtxShadow": "00000000",
-                               "overridePWHistory": False,
-                               "pwdChangeNextLogin": False,
-                               "primaryGroup": "cn=" + groupname +
-                                               ",cn=" + group_container +
-                                               "," + self.ldap_base,
-                               "CtxStartprogramClient": False,
-                               "username": username,
-                               "shell": "/bin/bash",
-                               "CtxBrokenSession": "0000",
-                               "locked": "none",
-                               "CtxReconnectSession": "0000",
-                               "CtxCfgClientPrinters": False,
-                               "homeSharePath": username,
-                               "unixhome": "/home/" + username,
-                               "overridePWLength": False,
-                               "CtxCfgDefaultClientPrinters": False,
-                               "displayName": username,
-                               "CtxCfgClientDrivers": False,
-                               "CtxCfgTSLogon": False,
-                               "$options$": {"samba": True,
-                                             "kerberos": True,
-                                             "person": True,
-                                             "posix": True,
-                                             "mail": True,
-                                             "pki": False,
-                                             "ldap_pwd": False}},
-                               "options": {"container": "cn=users," +
-                                                         self.ldap_base,
-                                           "objectType": "users/user"}}]
+        options = [{
+            "object": {
+                "disabled": "none",
+                "CtxRASDialin": "E",
+                "lastname": username,
+                "password": password,
+                "CtxShadow": "00000000",
+                "overridePWHistory": False,
+                "pwdChangeNextLogin": False,
+                "primaryGroup": "cn=" + groupname + ",cn=" + group_container + "," + self.ldap_base,
+                "CtxStartprogramClient": False,
+                "username": username,
+                "shell": "/bin/bash",
+                "CtxBrokenSession": "0000",
+                "locked": "none",
+                "CtxReconnectSession": "0000",
+                "CtxCfgClientPrinters": False,
+                "homeSharePath": username,
+                "unixhome": "/home/" + username,
+                "overridePWLength": False,
+                "CtxCfgDefaultClientPrinters": False,
+                "displayName": username,
+                "CtxCfgClientDrivers": False,
+                "CtxCfgTSLogon": False,
+                "$options$": {"samba": True,
+                              "kerberos": True,
+                              "person": True,
+                              "posix": True,
+                              "mail": True,
+                              "pki": False,
+                              "ldap_pwd": False}
+            },
+            "options": {
+                "container": "cn=users," + self.ldap_base,
+                "objectType": "users/user"
+            }
+        }]
         try:
             request_result = self.client.umc_command('udm/add', options, 'users/user').result
             if not request_result:
@@ -150,10 +142,7 @@ class TestUMCUserCreation(UDMModule):
                            "was just created" % test_username_admin)
 
             print "Modifing simple user '%s' groups" % test_username
-            test_groupnames = ["cn=" + domain_users + ",cn=groups," +
-                                self.ldap_base,
-                               "cn=" + print_admins + ",cn=groups," +
-                                self.ldap_base]
+            test_groupnames = ["cn=" + domain_users + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 
             print "Checking simple user '%s' groups" % test_username
@@ -167,10 +156,7 @@ class TestUMCUserCreation(UDMModule):
                            % (test_username, user_groups, test_groupnames))
 
             print "Modifing advanced user '%s' groups" % test_username_admin
-            test_groupnames = ["cn=" + domain_admins + ",cn=groups," +
-                                self.ldap_base,
-                               "cn=" + print_admins + ",cn=groups," +
-                                self.ldap_base]
+            test_groupnames = ["cn=" + domain_admins + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username_admin, test_groupnames)
 
             print "Checking advanced user '%s' groups" % test_username_admin
