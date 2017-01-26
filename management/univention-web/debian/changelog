@@ -1,3 +1,9 @@
+univention-web (1.0.4-1) unstable; urgency=medium
+
+  * Bug #40612: set authentication via HTTP header during login
+
+ -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 18:20:54 +0100
+
 univention-web (1.0.3-3) unstable; urgency=medium
 
   * Bug #32027: Remove fuzzy entry 

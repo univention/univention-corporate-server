@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define setTimeout*/
+/*global define,setTimeout*/
 
 define([
 	"dojo/_base/lang",
@@ -114,16 +114,20 @@ define([
 		authenticated: function(username) {
 			topic.publish('/umc/actions', 'session', 'relogin');
 			//console.debug('authenticated');
-			return tools.umcpCommand('set', {
-				locale: i18nTools.defaultLang().replace('-', '_')
-			}).then(lang.hitch(this, function() {
-				//console.debug('locale set');
-				topic.publish('/umc/authenticated', username);
-				return username;
-			}), lang.hitch(function(error) {
-				dialog.login();
-				throw error;
-			}));
+			if (tools.status('authType') === 'SAML') {
+				return tools.umcpCommand('set', {
+					locale: i18nTools.defaultLang().replace('-', '_')
+				}).then(lang.hitch(this, function() {
+					//console.debug('locale set');
+					topic.publish('/umc/authenticated', username);
+					return username;
+				}), lang.hitch(function(error) {
+					dialog.login();
+					throw error;
+				}));
+			}
+			topic.publish('/umc/authenticated', username);
+			return username;
 		},
 
 		autologin: function() {
