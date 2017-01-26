@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.6-1) unstable; urgency=medium
+
+  * Bug #32086: fix getAttr change in svn r75089
+
+ -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 12:41:40 +0100
+
 univention-s4-connector (11.0.5-1) unstable; urgency=medium
 
   * Bug #32086: dn is no attribute, search for entryDN attribute instead

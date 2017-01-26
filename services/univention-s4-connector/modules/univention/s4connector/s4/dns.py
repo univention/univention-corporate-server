@@ -749,7 +749,7 @@ def s4_zone_create(s4connector, object):
 
 	# Create the forward zone in S4 if it does not exist
 	try:
-		_ = s4connector.lo_s4.getAttr(zone_dn, 'entryDN', required=True)
+		s4connector.lo_s4.get(zone_dn, attr=[''], required=True)
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone(s4connector, zone_dn)
 
@@ -757,7 +757,7 @@ def s4_zone_create(s4connector, object):
 	old_dnsRecords = []
 
 	try:
-		old_dnsRecords = s4connector.lo_s4.getAttr(soa_dn, 'dnsRecord', required=True)
+		old_dnsRecords = s4connector.lo_s4.getAttr(soa_dn, attr=['dnsRecord'], required=True).get('dnsRecord')
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone_soa(s4connector, soa_dn)
 
@@ -894,7 +894,7 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
 	# Create dnsNode object
 	dnsNodeDn = object['dn']
 	try:
-		old_dnsRecords = s4connector.lo_s4.getAttr(dnsNodeDn, 'dnsRecord', required=True)
+		old_dnsRecords = s4connector.lo_s4.get(dnsNodeDn, attr=['dnsRecord'], required=True).get('dnsRecord')
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords)
 	else:
