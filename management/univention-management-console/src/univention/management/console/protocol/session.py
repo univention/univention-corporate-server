@@ -152,7 +152,7 @@ class ProcessorBase(Base):
 	def lo(self):
 		return get_machine_connection(write=False)[0]
 
-	def __init__(self, username=None, password=None, auth_type=None):
+	def __init__(self):
 		Base.__init__(self, 'univention-management-console')
 		self.__processes = {}
 		self.__killtimer = {}
@@ -160,13 +160,13 @@ class ProcessorBase(Base):
 		self.i18n = I18N_Manager()
 		self.i18n['umc-core'] = I18N()
 
-		self.set_credentials(username, password, auth_type)
-		self._reload_acls_and_permitted_commands()
-
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
 		self.password = password
 		self.auth_type = auth_type
+		self._search_user_dn()
+		self._reload_acls_and_permitted_commands()
+		self.update_module_passwords()
 
 	def _reload_acls_and_permitted_commands(self):
 		self._reload_acls()
@@ -177,6 +177,21 @@ class ProcessorBase(Base):
 
 	def _reload_i18n(self):
 		self.i18n.set_locale(str(self.i18n.locale))
+
+	def _search_user_dn(self):
+		if self.lo and self._username:
+			# get the LDAP DN of the authorized user
+			try:
+				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
+			except (ldap.LDAPError, udm_errors.base):
+				ldap_dn = None
+				CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
+			if ldap_dn:
+				self._user_dn = ldap_dn[0]
+				CORE.info('The LDAP DN for user %s is %s' % (self._username, self._user_dn))
+
+		if not self._user_dn and self._username not in ('root', '__systemsetup__', None):
+			CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self._username, self.lo))
 
 	def error_handling(self, etype, exc, etraceback):
 		super(ProcessorBase, self).error_handling(etype, exc, etraceback)
@@ -189,7 +204,7 @@ class ProcessorBase(Base):
 
 		:param Request msg: UMCP request
 		"""
-		if msg.command in ('EXIT', 'GET', 'SET', 'VERSION', 'COMMAND', 'UPLOAD'):
+		if msg.command in ('AUTH', 'EXIT', 'GET', 'SET', 'VERSION', 'COMMAND', 'UPLOAD'):
 			method = 'handle_request_%s' % (msg.command.lower(),)
 		else:
 			method = 'handle_request_unknown'
@@ -203,6 +218,17 @@ class ProcessorBase(Base):
 		:param Request msg: UMCP request
 		"""
 		raise UMC_Error(status=405)  # BAD_REQUEST_NOT_FOUND)
+
+	def handle_request_auth(self, request):
+		result = request.authentication_result
+		del request.authentication_result
+		self.update_language(re.split('\s*,\s*', request.headers.get('Accept-Language', '')))
+		response = Response(request)
+		response.status = result.status
+		if result.message:
+			response.message = result.message
+		response.result = result.result
+		self.finished(request.id, response)
 
 	handle_request_get_ucr = handle_request_unknown
 	handle_request_get_info = handle_request_unknown
@@ -325,15 +351,21 @@ class ProcessorBase(Base):
 	@sanitize(locale=StringSanitizer(required=True))
 	@simple_response
 	def handle_request_set_locale(self, locale):
-		try:
-			self.set_language(locale)
-			CORE.info('Setting locale: %r' % (locale,))
-			self.i18n.set_locale(locale)
-		except (I18N_Error, AttributeError):
-			CORE.warn('Setting locale to specified locale failed (%r)' % (locale,))
-			self.set_language('C')
-			self.i18n.set_locale('C')
-			raise UMC_Error(self._('Specified locale is not available'), status=406)
+		self.update_language([locale])
+
+	def update_language(self, locales):
+		for locale in locales:
+			try:
+				self.set_language(locale)
+				CORE.info('Setting locale: %r' % (locale,))
+				self.i18n.set_locale(locale)
+				return
+			except (I18N_Error, AttributeError):
+				CORE.info('Failed setting new locale %r' % (locale,))
+		CORE.warn('Could not set language. Reseting locale.')
+		self.set_language('C')
+		self.i18n.set_locale('C')
+		raise UMC_Error(self._('Specified locale is not available'), status=406)
 
 	def update_module_passwords(self):
 		for module_name, proc in self.__processes.items():
@@ -676,25 +708,6 @@ class ProcessorBase(Base):
 
 class Processor(ProcessorBase):
 
-	def __init__(self, username, password, auth_type):
-		super(Processor, self).__init__(username, password, auth_type)
-		self._search_user_dn()
-
-	def _search_user_dn(self):
-		if self.lo:
-			# get the LDAP DN of the authorized user
-			try:
-				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
-			except (ldap.LDAPError, udm_errors.base):
-				ldap_dn = None
-				CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
-			if ldap_dn:
-				self._user_dn = ldap_dn[0]
-				CORE.info('The LDAP DN for user %s is %s' % (self._username, self._user_dn))
-
-		if not self._user_dn and self._username not in ('root', '__systemsetup__'):
-			CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self._username, self.lo))
-
 	@sanitize(StringSanitizer(required=True))
 	def handle_request_get_ucr(self, request):
 		ucr.load()
@@ -835,8 +848,7 @@ class SessionHandler(ProcessorBase):
 	def __init__(self):
 		super(SessionHandler, self).__init__()
 		self.__auth = AuthHandler()
-		self.__auth.signal_connect('authenticated', self._auth_response)
-		self.__auth.signal_connect('authenticated', self._authenticated)
+		self.__auth.signal_connect('authenticated', self._authentication_finished)
 
 		self.processor = None
 		self.authenticated = False
@@ -862,29 +874,18 @@ class SessionHandler(ProcessorBase):
 			self.processor.__del__()
 		self.processor = None
 
-	def _auth_response(self, result, request):
-		response = Response(request)
-		response.status = result.status
-		if result.message:
-			response.message = result.message
-		response.result = result.result
-		self.signal_emit('success', response)
-
-	def _authenticated(self, result, request):
+	def _authentication_finished(self, result, request):
 		self.authenticated = bool(result)
-		if not self.authenticated:
-			return
-		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
-			return  # don't downgrade a regular login to e.g. a SAML login
-		self.__credentials = result.credentials
-		if self.processor is None:
-			return
-		# a second authentication request must cause an update of the password in all modules
-		self.processor.set_credentials(**self.__credentials)
-		try:
-			self.processor.update_module_passwords()
-		except Exception:  # don't let it crash here until we catch exceptions on a higher layer
-			CORE.error('Failed to update module passwords: %s' % (traceback.format_exc(),))
+		request.authentication_result = result
+		if self.authenticated:
+			if self.processor is None or self.processor.auth_type is not None or result.credentials['auth_type']:
+				# only set the credentials in 1. a new session 2. if password changed or 3. if logged in via plain authentication
+				# to prevent a downgrade of the regular login to a SAML login
+				self.__credentials = result.credentials
+			self.initalize_processor(request)
+			self.processor.request(request)
+		else:
+			self.request(request)
 
 	def handle(self, request):
 		"""Ensures that commands are only passed to the processor if a
@@ -906,10 +907,16 @@ class SessionHandler(ProcessorBase):
 			self.processor = None
 			self.finished(request.id, None)
 		else:
-			if not self.processor:
-				self.processor = Processor(**self.__credentials)
-				self.processor.signal_connect('success', self._response)
+			self.initalize_processor(request)
 			self.processor.request(request)
+
+	def initalize_processor(self, request):
+		if not self.processor:
+			self.processor = Processor()
+			self.processor.signal_connect('success', self._response)
+
+		# set the (new) password (also on re-authentication in the same session)
+		self.processor.set_credentials(**self.__credentials)
 
 	def _response(self, response):
 		self.signal_emit('success', response)

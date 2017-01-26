@@ -754,16 +754,31 @@ class CPgeneric(Ressource):
 				args['flavor'] = kwargs['flavor']
 		return args
 
+	def build_request(self, sessionid, request, response_queue):
+		self.add_request_headers(request)
+		self.set_accept_language(request)
+		return QueueRequest(sessionid, request, response_queue, get_ip_address(), self.session_validity)
+
+	def set_accept_language(self, request):
+		# set language based on Accept-Language header
+		try:
+			languages = [x.value for x in cherrypy.request.headers.elements('Accept-Language') if x.qvalue > 0]
+		except Exception as exc:
+			CORE.warn('malformed Accept-Language header: %s' % (exc,))
+			languages = []
+
+		# pre parse the HTTP syntax so that the UMC-Server doesn't need to do this (because there are no utility functions there)
+		request.headers['Accept-Language'] = ', '.join(languages)
+
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
 		req = self.get_request('/'.join(path), args)
-		self.add_request_headers(req)
 
 		# create new response queue
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
+		request = self.build_request(sessionid, req, response_queue)
 		UMCP_Dispatcher._queue_send.put(request)
 
 		self._log(99, 'queue(0x%x): sessionid=%r' % (id(response_queue), sessionid,))
@@ -996,13 +1011,11 @@ class CPAuth(CPgeneric):
 		return self._auth_request(req, sessionid)
 
 	def _auth_request(self, req, sessionid):
-		req.body['locale'] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
-
 		# create new response queue
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
+		request = self.build_request(sessionid, req, response_queue)
 		UMCP_Dispatcher._queue_send.put(request)
 		response = response_queue.get()
 
@@ -1047,25 +1060,6 @@ class CPAuth(CPgeneric):
 			"password": password
 		}
 		self._auth_request(req, sessionid)
-
-		# set language based on Accept-Language header
-		try:
-			languages = cherrypy.request.headers.elements('Accept-Language')
-		except Exception as exc:
-			CORE.warn('malformed Accept-Language header: %s' % (exc,))
-			return
-		for language in languages:
-			if language.qvalue <= 0:
-				break
-			response_queue = Queue.Queue()
-			CORE.process('Setting language %r' % (language.value,))
-			req = Request('SET', options={'locale': language.value})
-			request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
-			UMCP_Dispatcher._queue_send.put(request)
-			response = response_queue.get()
-			CORE.process('response status of setting language is %s' % (response.status,))
-			if response.status == 200:
-				break
 
 
 class Root(Ressource):
@@ -1404,20 +1398,23 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 	def __init__(self):
 		self.parser = OptionParser()
-		self.parser.add_option('-n', '--no-daemon', action='store_false',
+		self.parser.add_option(
+			'-n', '--no-daemon', action='store_false',
 			dest='daemon_mode', default=True,
 			help='if set the process will not fork into the background'
-                         )
+		)
 		try:
 			default_debug = int(ucr.get('umc/server/debug/level', '1'))
-		except:
+		except (TypeError, ValueError):
 			default_debug = 1
-		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
+		self.parser.add_option(
+			'-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
 			help='if given than debugging is activated and set to the specified level [default: %default]'
-                         )
-		self.parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
+		)
+		self.parser.add_option(
+			'-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
 			help='specifies an alternative log file [default: %default]'
-                         )
+		)
 		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
