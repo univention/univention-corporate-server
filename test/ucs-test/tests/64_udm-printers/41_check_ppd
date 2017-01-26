@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check PPD files
-## tags: [udm]
+## tags: [udm,SKIP]
+## bugs: [43417]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_slave
