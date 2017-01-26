@@ -757,7 +757,7 @@ def s4_zone_create(s4connector, object):
 	old_dnsRecords = []
 
 	try:
-		old_dnsRecords = s4connector.lo_s4.getAttr(soa_dn, attr=['dnsRecord'], required=True).get('dnsRecord')
+		old_dnsRecords = s4connector.lo_s4.get(soa_dn, attr=['dnsRecord'], required=True).get('dnsRecord')
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_forward_zone_soa(s4connector, soa_dn)
 
