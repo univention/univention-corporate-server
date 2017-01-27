@@ -231,7 +231,7 @@ property_descriptions = {
 	'postcode': univention.admin.property(
 		short_description=_('Postal code'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
 		options=[],
 		required=False,
@@ -241,12 +241,21 @@ property_descriptions = {
 	'city': univention.admin.property(
 		short_description=_('City'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.TwoThirdsString,
 		multivalue=False,
 		options=[],
 		required=False,
 		may_change=True,
 		identifies=False
+	),
+	'country': univention.admin.property(
+		short_description=_('Country'),
+		long_description='',
+		syntax=univention.admin.syntax.Country,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
 	),
 	'phone': univention.admin.property(
 		short_description=_('Telephone number'),
@@ -257,6 +266,24 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False
+	),
+	'employeeNumber': univention.admin.property(
+		short_description=_('Employee number'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
+	'roomNumber': univention.admin.property(
+		short_description=_('Room number'),
+		long_description='',
+		syntax=univention.admin.syntax.OneThirdString,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
 	),
 	'secretary': univention.admin.property(
 		short_description=_('Superior'),
@@ -271,7 +298,7 @@ property_descriptions = {
 	'departmentNumber': univention.admin.property(
 		short_description=_('Department number'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
 		options=['person'],
 		required=False,
@@ -373,19 +400,20 @@ layout = [
 	]),
 	Tab(_('User Contact'), _('Contact Information'), layout=[
 		Group(_('User Contact'), layout=[
-			["e-mail", "phone"],
-			"street",
-			["postcode", "city"]
+			"e-mail",
+			"phone",
+			['roomNumber', 'departmentNumber'],
+			['street', 'postcode', 'city', 'country'],
 		]),
 	]),
 	Tab(_('Employee'), _('Employee Information'), layout=[
-		Group(_('Employee'), layout=[
-			"employeeType",
-			"departmentNumber",
+		Group(_('Organisation'), layout=[
+			'organisation',
+			['employeeNumber', 'employeeType'],
 			"secretary"
 		]),
 	]),
-	Tab(_('Linux'), _('Unix Account Settings'), layout=[
+	Tab(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
 		Group(_('Linux'), layout=[
 			["unixhome", "shell"],
 			["homeShare", "homeSharePath"]
@@ -424,11 +452,14 @@ mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.Li
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
+mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
+mapping.register('roomNumber', 'roomNumber', None, univention.admin.mapping.ListToString)
+mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
+mapping.register('departmentNumber', 'departmentNumber', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
-mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
 mapping.register('disabled', 'userDisabledPreset', None, univention.admin.mapping.ListToString)
 mapping.register('pwdChangeNextLogin', 'userPwdMustChangePreset', None, univention.admin.mapping.ListToString)
@@ -436,7 +467,7 @@ mapping.register('homeShare', 'userHomeSharePreset', None, univention.admin.mapp
 mapping.register('homeSharePath', 'userHomeSharePathPreset', None, univention.admin.mapping.ListToString)
 mapping.register('primaryGroup', 'userPrimaryGroupPreset', None, univention.admin.mapping.ListToString)
 mapping.register('groups', 'userGroupsPreset')
-mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 
 
