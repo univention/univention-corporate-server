@@ -281,7 +281,7 @@ class Client(object):
 		try:
 			response = self.__request(request)
 		except (HTTPException, EnvironmentError) as exc:
-			raise ConnectionError(reason=exc)
+			raise ConnectionError('Could not send request.', reason=exc)
 		self._handle_cookies(response)
 		response = Response._from_httplib_response(response)
 		if self._raise_errors and response.status > 299:
