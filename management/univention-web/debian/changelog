@@ -1,3 +1,9 @@
+univention-web (1.0.5-1) unstable; urgency=medium
+
+  * Bug #40612: Add language switch to the menu bar
+
+ -- Florian Best <best@univention.de>  Fri, 27 Jan 2017 18:26:51 +0100
+
 univention-web (1.0.4-1) unstable; urgency=medium
 
   * Bug #40612: set authentication via HTTP header during login

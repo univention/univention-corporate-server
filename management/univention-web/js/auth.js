@@ -98,8 +98,12 @@ define([
 
 		sessioninfo: function() {
 			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(function(response) {
+				tools.status('loggedIn', true);
 				tools.status('authType', response.result.auth_type);
 				return response;
+			}, function(error) {
+				tools.status('loggedIn', false);
+				throw error;
 			});
 		},
 

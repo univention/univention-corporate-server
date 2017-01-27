@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console setTimeout window document*/
+/*global define,require,console,setTimeout,window,document*/
 
 define([
 	"dojo/_base/lang",
@@ -76,6 +76,7 @@ define([
 			overview: true,
 			setupGui: false,
 			loggingIn: false,
+			loggedIn: false,
 			feedbackSubject: '[UMC-Feedback] Traceback',
 			feedbackAddress: 'feedback@univention.de',
 			// default value for the session timeout
