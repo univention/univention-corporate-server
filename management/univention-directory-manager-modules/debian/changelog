@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.12-5) unstable; urgency=medium
+
+  * Bug #43332: fix also DN snytax in error messages/description
+
+ -- Florian Best <best@univention.de>  Fri, 27 Jan 2017 11:29:00 +0100
+
 univention-directory-manager-modules (12.0.12-4) unstable; urgency=medium
 
   * Bug #43423: defer validations to the bottom of __init__, readd settings/cn
