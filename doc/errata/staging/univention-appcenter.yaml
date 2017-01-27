@@ -3,11 +3,11 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-40.267.201701231816
+fix: 5.0.23-5.0.23-41.268.201701271827
 desc: |
  This update addresses the following issues:
  * Apps may now automatically extend User Management to add a generic user
    activation.
  * The initial information dialog about usage of email address and user data
    has been updated.
-bug: [31804, 43261]
+bug: [31804, 43261, 43109]
