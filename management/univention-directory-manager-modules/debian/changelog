@@ -1,3 +1,12 @@
+univention-directory-manager-modules (12.0.12-6) unstable; urgency=low
+
+  * Bug #43428: Remove options from user template
+  * Bug #42765: Adapt usertemplate layout
+  * Bug #42765: Swap homeDrive and sambaHome layout
+  * Bug #29672: Fix usertemplate LDAP mapping
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Jan 2017 17:21:40 +0100
+
 univention-directory-manager-modules (12.0.12-5) unstable; urgency=medium
 
   * Bug #43332: fix also DN snytax in error messages/description
