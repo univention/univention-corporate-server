@@ -19,9 +19,8 @@ from univention.testing.strings import random_username
 class TestUMCnonUCRpolicies(UMCBase):
 
 	def __init__(self):
+		super(TestUMCnonUCRpolicies, self).__init__()
 		self.UDM = None
-
-		self.ldap_base = ''
 
 		self.base_container_dn = ''
 		self.intermediate_container_dn = ''

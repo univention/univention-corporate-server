@@ -22,10 +22,9 @@ class UMCBase(object):
 		self.password = None
 		self.hostname = None
 		self.client = None
-		self.ldap_base = ''
-
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
+		self.ldap_base = self.ucr.get('ldap/base')
 
 	def request(self, *args, **kwargs):
 		return self.client.umc_command(*args, **kwargs).result
