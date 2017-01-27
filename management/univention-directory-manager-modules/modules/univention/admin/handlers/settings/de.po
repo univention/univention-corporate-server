@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-03-02 16:36+0100\n"
+"POT-Creation-Date: 2017-01-27 13:23+0100\n"
 "PO-Revision-Date: 2015-07-19 22:32+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -67,13 +67,17 @@ msgstr "Dateiname der ACL"
 msgid "ACL name"
 msgstr "Name der ACL"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:360
-msgid "Account Settings"
-msgstr "Kontoeinstellungen"
+#: modules/univention/admin/handlers/settings/usertemplate.py:408
+msgid "Account"
+msgstr "Konto"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:116
 msgid "Account deactivation"
 msgstr "Kontodeaktivierung"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:408
+msgid "Account settings"
+msgstr "Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:167
 #: modules/univention/admin/handlers/settings/ldapschema.py:143
@@ -149,6 +153,10 @@ msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
+#: modules/univention/admin/handlers/settings/usertemplate.py:422
+msgid "Business"
+msgstr "Geschäftlich"
+
 #: modules/univention/admin/handlers/settings/usertemplate.py:105
 #: modules/univention/admin/handlers/settings/usertemplate.py:106
 msgid "Change password on next login"
@@ -186,6 +194,10 @@ msgstr "Konfiguration der zu erweiternden Module"
 msgid "Connection"
 msgstr "Verbindung"
 
+#: modules/univention/admin/handlers/settings/usertemplate.py:421
+msgid "Contact"
+msgstr "Kontakt"
+
 #: modules/univention/admin/handlers/settings/usertemplate.py:371
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
@@ -193,6 +205,10 @@ msgstr "Kontaktinformationen"
 #: modules/univention/admin/handlers/settings/license.py:268
 msgid "Corporate clients"
 msgstr "Corporate Clients"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:369
+msgid "Country"
+msgstr "Land"
 
 #: modules/univention/admin/handlers/settings/directory.py:87
 msgid "DHCP Link"
@@ -348,14 +364,9 @@ msgstr "Editierbar"
 msgid "Editable after creation"
 msgstr "Nachträglich modifizierbar"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:378
-#: modules/univention/admin/handlers/settings/usertemplate.py:379
-msgid "Employee"
-msgstr "Mitarbeiter"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:378
-msgid "Employee Information"
-msgstr "Mitarbeiterinformationen"
+#: modules/univention/admin/handlers/settings/usertemplate.py:391
+msgid "Employee number"
+msgstr "Mitarbeiternummer"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:280
 msgid "Employee type"
@@ -658,11 +669,6 @@ msgstr "Lizenzverweise"
 msgid "Licensing Information"
 msgstr "Lizenz-Informationen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
-#: modules/univention/admin/handlers/settings/usertemplate.py:386
-msgid "Linux"
-msgstr "Linux/UNIX"
-
 #: modules/univention/admin/handlers/settings/umc_operationset.py:51
 msgid "List of Operations for UMC"
 msgstr "Liste von UMC-Operationen"
@@ -703,6 +709,10 @@ msgstr "Sperrobjekte"
 msgid "Locked until"
 msgstr "Gesperrt bis"
 
+#: modules/univention/admin/handlers/settings/usertemplate.py:409
+msgid "Locking and deactivation"
+msgstr "Konto-Deaktivierung"
+
 #: modules/univention/admin/handlers/settings/sambaconfig.py:141
 msgid "Lockout Duration Minutes"
 msgstr "Dauer der Aussperrung"
@@ -728,22 +738,13 @@ msgid "Long description for the option as shown on the Option tab."
 msgstr ""
 "Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:365
-#: modules/univention/admin/handlers/settings/usertemplate.py:366
-msgid "Mail"
-msgstr "Mail"
-
-#: modules/univention/admin/handlers/settings/directory.py:157
+#: modules/univention/admin/handlers/settings/directory.py:161
 msgid "Mail Link"
 msgstr "Mailverweis"
 
 #: modules/univention/admin/handlers/settings/directory.py:210
 msgid "Mail Links"
 msgstr "Mailverweise"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:365
-msgid "Mail Settings"
-msgstr "Maileinstellungen"
 
 #: modules/univention/admin/handlers/settings/license.py:228
 msgid "Managed Clients"
@@ -1002,6 +1003,14 @@ msgstr "Existierende Karteikarte überschreiben"
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
+#: modules/univention/admin/handlers/settings/usertemplate.py:416
+msgid "POSIX (Linux/UNIX)"
+msgstr "POSIX (Linux/UNIX)"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:416
+msgid "POSIX (Linux/UNIX) account settings"
+msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
+
 #: modules/univention/admin/handlers/settings/packages.py:66
 #: modules/univention/admin/handlers/settings/packages.py:67
 #: modules/univention/admin/handlers/settings/packages.py:79
@@ -1039,6 +1048,10 @@ msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
 #: modules/univention/admin/handlers/settings/usertemplate.py:159
 msgid "Path to the home directory on the home share"
 msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:393
+msgid "Personal information"
+msgstr "Persönliche Informationen"
 
 #: modules/univention/admin/handlers/settings/directory.py:67
 msgid "Policy Link"
@@ -1175,6 +1188,10 @@ msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
 #: modules/univention/admin/handlers/settings/xconfig_choices.py:67
 msgid "Resolution"
 msgstr "Auflösung"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:280
+msgid "Room number"
+msgstr "Raumnummer"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:84
 msgid "Samba SID"
@@ -1641,23 +1658,9 @@ msgstr "Univention Verbotene Benutzernamen"
 msgid "Univention Settings"
 msgstr "Univention-Einstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
-msgid "Unix Account Settings"
-msgstr "UNIX-Kontoeinstellungen"
-
 #: modules/univention/admin/handlers/settings/usertemplate.py:137
 msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:360
-#: modules/univention/admin/handlers/settings/usertemplate.py:361
-msgid "User Account"
-msgstr "Benutzer-Konto"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:371
-#: modules/univention/admin/handlers/settings/usertemplate.py:372
-msgid "User Contact"
-msgstr "Kontakt"
 
 #: modules/univention/admin/handlers/settings/directory.py:97
 msgid "User Link"
@@ -1666,6 +1669,10 @@ msgstr "Benutzerverweis"
 #: modules/univention/admin/handlers/settings/directory.py:183
 msgid "User Links"
 msgstr "Benutzerverweise"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:387
+msgid "User account"
+msgstr "Benutzerkonto"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:121
 msgid "User must Logon to Change Password"

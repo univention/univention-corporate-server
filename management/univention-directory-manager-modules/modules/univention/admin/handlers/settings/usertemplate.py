@@ -381,54 +381,49 @@ for key, value in mungeddial.properties.items():
 layout = [
 	Tab(_('General'), _('Basic values'), layout=[
 		Group(_('General user template settings'), layout=[
-			["name", "description"],
-			["title", "organisation"],
-			["displayName"],
+			"name",
 			["_options"],
 		]),
-	]),
-	Tab(_('User Account'), _('Account Settings'), layout=[
-		Group(_('User Account'), layout=[
-			["disabled", "pwdChangeNextLogin"]
-		]),
-	]),
-	Tab(_('Mail'), _('Mail Settings'), layout=[
-		Group(_('Mail'), layout=[
+		Group(_('User account'), layout=[
+			"title",
+			"description",
 			"mailPrimaryAddress",
 			"mailAlternativeAddress",
 		]),
-	]),
-	Tab(_('User Contact'), _('Contact Information'), layout=[
-		Group(_('User Contact'), layout=[
-			"e-mail",
-			"phone",
-			['roomNumber', 'departmentNumber'],
-			['street', 'postcode', 'city', 'country'],
+		Group(_('Personal information'), layout=[
+			["displayName"],
 		]),
-	]),
-	Tab(_('Employee'), _('Employee Information'), layout=[
 		Group(_('Organisation'), layout=[
 			'organisation',
 			['employeeNumber', 'employeeType'],
 			"secretary"
 		]),
 	]),
-	Tab(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
-		Group(_('Linux'), layout=[
-			["unixhome", "shell"],
-			["homeShare", "homeSharePath"]
-		]),
-	]),
-	Tab(_('Windows'), _('Windows Account Settings'), layout=[
-		Group(_('Windows'), layout=[
-			['homedrive', 'sambahome'],
-			["scriptpath", "profilepath"]
-		]),
-	]),
 	Tab(_('Groups'), _('Group Memberships'), layout=[
 		Group(_('Groups'), layout=[
 			["primaryGroup"],
 			["groups"]
+		]),
+	]),
+	Tab(_('Account'), _('Account settings'), layout=[
+		Group(_('Locking and deactivation'), layout=[
+			["disabled", "pwdChangeNextLogin"]
+		]),
+		Group(_('Windows'), _('Windows Account Settings'), layout=[
+			['homedrive', 'sambahome'],
+			["scriptpath", "profilepath"]
+		]),
+		Group(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
+			["unixhome", "shell"],
+			["homeShare", "homeSharePath"]
+		]),
+	]),
+	Tab(_('Contact'), _('Contact Information'), layout=[
+		Group(_('Business'), layout=[
+			"e-mail",
+			"phone",
+			['roomNumber', 'departmentNumber'],
+			['street', 'postcode', 'city', 'country'],
 		]),
 	]),
 ]
