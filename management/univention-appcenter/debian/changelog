@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-41) unstable; urgency=medium
+
+  * Bug #43109: add tracking for search strings
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Jan 2017 18:08:22 +0100
+
 univention-appcenter (5.0.23-40) unstable; urgency=medium
 
   * Bug #31804: Support GenericUserActivation=True (fixes (2))
