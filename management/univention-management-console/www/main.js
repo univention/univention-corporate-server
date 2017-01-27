@@ -84,6 +84,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Module",
 	"./widgets/CategoryButton",
+	"./widgets/LanguageSwitch",
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
@@ -91,7 +92,7 @@ define([
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton,
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton, LanguageSwitch,
 		i18nTools, _
 ) {
 	// cache UCR variables
@@ -1303,6 +1304,14 @@ define([
 				id: 'umcMenuSettings',
 				popup: new Menu({}),
 				'class': 'dijitHidden'
+			}));
+
+			this.addMenuEntry(new PopupMenuItem({
+				$parentMenu$: 'umcMenuUsername',
+				$priority$: 55,
+				label: _('Switch language'),
+				id: 'umcMenuLanguage',
+				popup: LanguageSwitch()._languageMenu
 			}));
 
 			// the help context menu

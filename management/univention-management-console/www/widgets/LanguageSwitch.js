@@ -26,13 +26,14 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window setTimeout */
+/*global define*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/tools",
+	"umc/dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
@@ -43,7 +44,7 @@ define([
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, tools, Menu, MenuItem, DropDownButton, ContainerWidget, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, tools, dialog, Menu, MenuItem, DropDownButton, ContainerWidget, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.app.LanguageSwitch", [ContainerWidget], {
 		_languageMenu: null,
 		_languageButton: null,
@@ -60,7 +61,21 @@ define([
 			array.forEach(i18nTools.availableLanguages, function(language) {
 				this._languageMenu.addChild(new MenuItem({
 					label: language.label,
+					disabled: language.id === i18nTools.defaultLang(),
 					onClick: function() {
+						if (tools.status('loggedIn')) {
+							dialog.confirm(_('<b>Warning</b>: The current session with all opened modules and unsaved settings gets lost and a page reload is done when switching the language.'), [{
+								name: 'change',
+								label: _('Switch language'),
+								callback: function() {
+									i18nTools.setLanguage(language.id);
+								}
+							}, {
+								name: 'cancel',
+								label: _('Cancel')
+							}], _('Changing language'));
+							return;
+						}
 						i18nTools.setLanguage(language.id);
 					}
 				}));
