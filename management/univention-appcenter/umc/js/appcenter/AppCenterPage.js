@@ -59,6 +59,7 @@ define([
 		liveSearch: true,
 		addMissingAppButton: false,
 		appQuery: null,
+		_sendSearchStringDeferred: null,
 
 		title: _("App management"),
 		//helpText: _("Install or remove applications on this or another UCS system."),
@@ -80,6 +81,7 @@ define([
 				});
 				this.addChild(this._searchSidebar);
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
+				this._searchSidebar.on('search', lang.hitch(this, 'trackSearchString'));
 				this._searchSidebar.on('categorySelected', lang.hitch(this, 'toggleGridSize'));
 			}
 
@@ -265,6 +267,23 @@ define([
 				}
 			}));
 			return updating;
+		},
+
+		trackSearchString: function() {
+			// is called upon each key press... identify the whole words
+
+			var _sendSearchString = function(searchString) {
+				tools.umcpCommand('appcenter/track', {action: 'search', value: searchString});
+			}
+
+			if (this._sendSearchStringDeferred && !this._sendSearchStringDeferred.isFulfilled()) {
+				// cancel Deferred as a new keypress event has been send before the timeout
+				this._sendSearchStringDeferred.cancel()
+			}
+
+			// start new timeout after which the search string is send to the backend
+			var searchPattern = lang.trim(this._searchSidebar.get('value'));
+			this._sendSearchStringDeferred = tools.defer(lang.hitch(this, _sendSearchString, searchPattern), 1000).then(null, function() {})
 		},
 
 		filterApplications: function() {
