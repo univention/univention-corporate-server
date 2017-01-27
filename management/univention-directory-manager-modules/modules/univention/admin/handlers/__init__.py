@@ -36,7 +36,7 @@ import re
 import time
 import ldap
 import ipaddr
-from ldap.filter import filter_format, escape_filter_chars
+from ldap.filter import filter_format
 from ldap.dn import explode_rdn, explode_dn, escape_dn_chars
 
 import univention.debug
@@ -1595,7 +1595,7 @@ class simpleComputer(simpleLdap):
 				return
 
 			# check if the object exists
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), explode_dn(zoneDn)[0]), unique=False)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart] + list(ldap.dn.str2dn(zoneDn)[0][0][:2])), unique=False)
 			if not results:
 				self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn), [
 					('objectClass', ['top', 'dNSZone', 'univentionObject']),
