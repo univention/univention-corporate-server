@@ -222,6 +222,14 @@
 			<title>Users module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Templates used when creating new users now work for all properties regardless (<u:bug>43428</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The layout of user templates has been synchronized with the layout of the users modules (<u:bug>42765</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some broken mappings of user templates have been fixed (<u:bug>29672</u:bug>).
+
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
