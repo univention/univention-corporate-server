@@ -1,4 +1,5 @@
 import ldap
+import ldap.dn
 from univention.config_registry import ConfigRegistry
 from ldap.controls import LDAPControl
 import ldap.modlist as modlist
@@ -16,19 +17,24 @@ baseConfig.load()
 
 
 def get_rdn(dn):
-	index = dn.find(',')
-	if index == -1:
-		return dn
-	else:
-		return dn[0:index]
+	r"""
+	>>> get_rdn(r'a=b\,c+d=e,f=g+h=i\,j')
+	'a=b\\,c+d=e'
+	>>> get_rdn(r'a=b')
+	'a=b'
+	"""
+	rdn = ldap.dn.str2dn(dn)[0]
+	return ldap.dn.dn2str([rdn])
 
 
 def get_parent_dn(dn):
-	index = dn.find(',')
-	if index == -1:
-		return None
-	else:
-		return dn[index + 1:len(dn)]
+	r"""
+	>>> get_parent_dn(r'a=b\,c+d=e,f=g+h=i\,j')
+	'f=g+h=i\\,j'
+	>>> get_parent_dn(r'a=b')
+	"""
+	parent = ldap.dn.str2dn(dn)[1:]
+	return ldap.dn.dn2str(parent) if parent else None
 
 
 class LDAPConnection(object):
@@ -131,5 +137,10 @@ class LDAPConnection(object):
 		"""Remove 'value' from attribute 'key' of LDAP object at 'dn'."""
 		ml = [(ldap.MOD_DELETE, key, compatible_modstring(unicode(value)))]
 		self.lo.modify_s(compatible_modstring(unicode(dn)), ml)
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
 
 # vim: set filetype=python ts=4:

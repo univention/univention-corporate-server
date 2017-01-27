@@ -1,7 +1,5 @@
 import ldap
 import univention.config_registry
-from ldap.controls import LDAPControl
-import ldap.modlist as modlist
 import sys
 import ldap_glue_s4
 import univention.s4connector.s4 as s4

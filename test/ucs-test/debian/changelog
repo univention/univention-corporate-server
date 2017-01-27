@@ -1,3 +1,9 @@
+ucs-test (6.0.10-9) unstable; urgency=low
+
+  * Bug #43431: Fix wrong DN handling
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Jan 2017 10:58:01 +0100
+
 ucs-test (6.0.10-8) unstable; urgency=medium
 
   * Bug #43423: create settings/* objects underneath of cn=univention
