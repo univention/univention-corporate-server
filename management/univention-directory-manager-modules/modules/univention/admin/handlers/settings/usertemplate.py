@@ -421,7 +421,7 @@ layout = [
 	]),
 	Tab(_('Windows'), _('Windows Account Settings'), layout=[
 		Group(_('Windows'), layout=[
-			["sambahome", "homedrive"],
+			['homedrive', 'sambahome'],
 			["scriptpath", "profilepath"]
 		]),
 	]),
