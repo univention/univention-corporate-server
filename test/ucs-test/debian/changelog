@@ -1,3 +1,14 @@
+ucs-test (7.0.10-11) UNRELEASED; urgency=medium
+
+  * Rename tests/60_umc/100_umc_frontend_i18n.py to
+    tests/60_umc/100_umc_frontend_i18n:
+     $ ./lint
+     [...]
+     FAIL: Wrong file name tests/60_umc/100_umc_frontend_i18n.py
+    (Bug #43348)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 29 Jan 2017 19:12:11 +0100
+
 ucs-test (7.0.10-10) unstable; urgency=medium
 
   * 10_ldap/31ldapi: Added default shell to user nobody otherwise the
