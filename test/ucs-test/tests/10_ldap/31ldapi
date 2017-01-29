@@ -49,7 +49,7 @@ then
 	fail_test 1
 fi
 echo -e "\n\n***Try to call ldapdelete via the ldapi interfaceas user nobody. This shouln't work."
-if ! su - "nobody" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user nobody via ldapi socket.' && exit 1 || exit 0"
+if ! su -s /bin/bash - "nobody" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user nobody via ldapi socket.' && exit 1 || exit 0"
 then
 	fail_test 1
 fi
