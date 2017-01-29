@@ -1,4 +1,4 @@
-ucs-test (6.0.10-10) unstable; urgency=medium
+ucs-test (7.0.10-10) unstable; urgency=medium
 
   * 10_ldap/31ldapi: Added default shell to user nobody otherwise the
     message 'This account is currently not available' is shown
@@ -6,13 +6,13 @@ ucs-test (6.0.10-10) unstable; urgency=medium
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 29 Jan 2017 18:52:20 +0100
 
-ucs-test (6.0.10-9) unstable; urgency=low
+ucs-test (7.0.10-9) unstable; urgency=low
 
   * Bug #43431: Fix wrong DN handling
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 27 Jan 2017 10:58:01 +0100
 
-ucs-test (6.0.10-8) unstable; urgency=medium
+ucs-test (7.0.10-8) unstable; urgency=medium
 
   * Bug #43423: create settings/* objects underneath of cn=univention
 
