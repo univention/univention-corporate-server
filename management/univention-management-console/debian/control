@@ -152,7 +152,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-frontend,
  univention-management-console-server,
- python-univention-management-console (>> 9.0.0-1),
+ python-univention-management-console (= ${source:Version}),
  univention-base-files,
  curl,
  openssl,
