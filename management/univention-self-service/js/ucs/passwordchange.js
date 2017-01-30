@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window */
+/*global define*/
 
 define([
 	"dojo/_base/lang",
@@ -37,11 +37,12 @@ define([
 	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
+	"umc/tools",
 	"./TextBox",
 	"./LabelPane",
 	"./lib",
 	"./i18n!."
-], function(lang, on, keys, dom, json, xhr, Button, put, TextBox, LabelPane, lib, _) {
+], function(lang, on, keys, dom, json, xhr, Button, put, tools, TextBox, LabelPane, lib, _) {
 
 	return {
 		_createTitle: function() {
@@ -145,22 +146,15 @@ define([
 				this._verifyPassword.isValid();
 
 			if (allInputFieldsAreValid) {
-				data = json.stringify({
+				var data = {
 					password: {
 						'username': this._username.get('value'),
 						'password': this._oldPassword.get('value'),
 						'new_password': this._newPassword.get('value')
 					}
-				});
+				};
 
-				xhr.post('/univention-management-console/set', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': lib.getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
+				tools.umcpCommand('set', data).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
 					var callback = function() {
 						lib.showLastMessage({
@@ -174,11 +168,7 @@ define([
 					});
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
-					lib.showMessage({content: message, 'class': '.error'});
+					lib.showMessage({content: err.message, 'class': '.error'});
 				})).always(lang.hitch(this, function(){
 					this._submitButton.set('disabled', false);
 				}));

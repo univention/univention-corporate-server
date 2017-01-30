@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window */
+/*global define*/
 
 define([
 	"dojo/_base/lang",
@@ -38,13 +38,14 @@ define([
 	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
+	"umc/tools",
 	"./ContainerWidget",
 	"./LabelPane",
 	"./TextBox",
 	"./RadioButton",
 	"./lib",
 	"./i18n!."
-], function(lang, array, on, keys, dom, json, xhr, Button, put, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
+], function(lang, array, on, keys, dom, json, xhr, Button, put, tools, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
 
 	return {
 		selectedTokenMethod: null,
@@ -164,28 +165,18 @@ define([
 
 			var validCredentials = this._username.isValid() && this._password.isValid();
 			if (validCredentials) {
-				data = json.stringify({
+				var data = {
 					'username': this._username.get('value'),
 					'password': this._password.get('value')
-				});
-				xhr.post('/univention-management-console/command/passwordreset/get_contact', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': lib.getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
+				};
+				tools.umcpCommand('passwordreset/get_contact', data).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
 					put(this._showContactInformationButton.domNode, '.dijitHidden');
 					this._displayContactInformation(data.result);
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
+				}), lang.hitch(this, function(err) {
+					// TODO: test this error handling
 					lib.showMessage({
-						content: message,
+						content: err.message,
 						targetNode: this.usernameNode,
 						'class': '.error'
 					});
@@ -220,17 +211,10 @@ define([
 			this._cancelButton.set('disabled', true);
 			this._saveButton.set('disabled', true);
 
-			data = this._getNewContactInformation();
+			var data = this._getNewContactInformation();
 			var isValidMail = this._validateMail(data.email);
 			if (isValidMail) {
-				xhr.post('/univention-management-console/command/passwordreset/set_contact', {
-						handleAs: 'json',
-						headers: {
-							'Content-Type': 'application/json',
-							'Accept-Language': lib.getQuery('lang') || 'en-US'
-						},
-						data: json.stringify(data)
-					}).then(lang.hitch(this, function(data) {
+				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
 						lib._removeMessage();
 						var callback = function() {
 							lib.showLastMessage({
@@ -243,12 +227,8 @@ define([
 							callback: callback
 						});
 					}), lang.hitch(this, function(err){
-						var message = err.name + ": " + err.message;
-						if (err.response && err.response.data && err.response.data.message) {
-							message = err.response.data.message;
-						}
 						lib.showMessage({
-							content: message,
+							content: err.message,
 							targetNode: this.contactInformationNode,
 							'class': '.error'
 						});

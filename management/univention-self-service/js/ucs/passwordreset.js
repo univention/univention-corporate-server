@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window */
+/*global define*/
 
 define([
 	"dojo/_base/lang",
@@ -38,13 +38,14 @@ define([
 	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
+	"umc/tools",
 	"./ContainerWidget",
 	"./LabelPane",
 	"./TextBox",
 	"./RadioButton",
 	"./lib",
 	"./i18n!."
-], function(lang, array, on, keys, dom, json, xhr, Button, put, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
+], function(lang, array, on, keys, dom, json, xhr, Button, put, tools, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
 
 	return {
 		selectedTokenMethod: null,
@@ -203,30 +204,17 @@ define([
 			this._usernameButton.set('disabled', true);
 
 			if (this._username.isValid()) {
-				data = json.stringify({
-					options: {
-						'username': this._username.get('value')
-					}
-				});
-				xhr.post('/univention-management-console/command/passwordreset/get_reset_methods', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': lib.getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
+				var data = {
+					'username': this._username.get('value')
+				};
+				tools.umcpCommand('passwordreset/get_reset_methods', data).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
 					put(this._usernameButton.domNode, '.dijitHidden');
 					put(this.contactNode, '!');
 					this._buildTokenOptions(data.result);
 				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
 					lib.showMessage({
-						content: message,
+						content: err.message,
 						targetNode: this.usernameNode,
 						'class': '.error'
 					});
@@ -272,20 +260,11 @@ define([
 
 			if (this.selectedTokenMethod) {
 				this._requestTokenButton.set('disabled', true);
-				data = json.stringify({
-					options: {
-						'username': this._username.get('value'),
-						'method': this.selectedTokenMethod.method
-					}
-				});
-				xhr.post('/univention-management-console/command/passwordreset/send_token', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': lib.getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
+				var data = {
+					'username': this._username.get('value'),
+					'method': this.selectedTokenMethod.method
+				};
+				tools.umcpCommand('passwordreset/send_token', data).then(lang.hitch(this, function(data) {
 					lib.showMessage({
 						content: data.message,
 						targetNode: this.tokenNode,
@@ -293,13 +272,9 @@ define([
 					});
 					put(this._requestTokenButton.domNode, '.dijitHidden');
 					put(this.newPasswordNode, '!hide-step');
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
+				}), lang.hitch(this, function(err) {
 					lib.showMessage({
-						content: message,
+						content: err.message,
 						targetNode: this.tokenNode,
 						'class': '.error'
 					});
@@ -319,21 +294,12 @@ define([
 				this._verifyPassword.isValid();
 
 			if (isTokenAndNewPassValid) {
-				data = json.stringify({
-					options: {
-						'username': this._username.get('value'),
-						'password': this._verifyPassword.get('value'),
-						'token' : this._token.get('value')
-					}
-				});
-				xhr.post('/univention-management-console/command/passwordreset/set_password', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': lib.getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
+				var data = {
+					'username': this._username.get('value'),
+					'password': this._verifyPassword.get('value'),
+					'token' : this._token.get('value')
+				};
+				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
 					var callback = function() {
 						lib.showLastMessage({
@@ -346,12 +312,8 @@ define([
 						callback: callback
 					});
 				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
 					lib.showMessage({
-						content: message,
+						content: err.message,
 						targetNode: this.newPasswordNode,
 						'class': '.error'
 					});
