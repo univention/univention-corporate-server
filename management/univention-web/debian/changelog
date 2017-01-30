@@ -1,3 +1,9 @@
+univention-web (1.0.6-1) unstable; urgency=medium
+
+  * Bug #42321: Removed reference to LinkList in tests
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 Jan 2017 18:49:09 +0100
+
 univention-web (1.0.5-1) unstable; urgency=medium
 
   * Bug #40612: Add language switch to the menu bar

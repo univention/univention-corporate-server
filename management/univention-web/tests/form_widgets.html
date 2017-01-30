@@ -27,7 +27,6 @@
 				"umc/widgets/HiddenInput",
 				"umc/widgets/Image",
 				"umc/widgets/ImageUploader",
-				"umc/widgets/LinkList",
 				"umc/widgets/MixedInput",
 				"umc/widgets/MultiInput",
 				"umc/widgets/MultiObjectSelect",
@@ -42,7 +41,7 @@
 				"umc/widgets/UnixAccessRights",
 				"umc/widgets/Uploader",
 			],
-			callback: function(win, Deferred, json, tools, Form, CheckBox, ComboBox, ComplexInput, DateBox, HiddenInput, Image, ImageUploader, LinkList, MixedInput, MultiInput, MultiObjectSelect, MultiSelect, MultiUploader, NumberSpinner, PasswordInputBox, TextArea, TextBox, Text, TimeBox, UnixAccessRights, Uploader, WidgetGroup) {
+			callback: function(win, Deferred, json, tools, Form, CheckBox, ComboBox, ComplexInput, DateBox, HiddenInput, Image, ImageUploader, MixedInput, MultiInput, MultiObjectSelect, MultiSelect, MultiUploader, NumberSpinner, PasswordInputBox, TextArea, TextBox, Text, TimeBox, UnixAccessRights, Uploader, WidgetGroup) {
 				var values = [ 'value1', 'value2', 'value3' ];
 				var imgBase64 = 'R0lGODlhUAAPAKIAAAsLav///88PD9WqsYmApmZmZtZfYmdakyH5BAQUAP8ALAAAAABQAA8AAAPbWLrc/jDKSVe4OOvNu/9gqARDSRBHegyGMahqO4R0bQcjIQ8E4BMCQc930JluyGRmdAAcdiigMLVrApTYWy5FKM1IQe+Mp+L4rphz+qIOBAUYeCY4p2tGrJZeH9y79mZsawFoaIRxF3JyiYxuHiMGb5KTkpFvZj4ZbYeCiXaOiKBwnxh4fnt9e3ktgZyHhrChinONs3cFAShFF2JhvCZlG5uchYNun5eedRxMAF15XEFRXgZWWdciuM8GCmdSQ84lLQfY5R14wDB5Lyon4ubwS7jx9NcV9/j5+g4JADs=';
 				var widgets = [{
@@ -85,23 +84,6 @@
 					type: ImageUploader,
 					label: 'ImageUploader',
 					name: 'ImageUploader'
-				}, {
-					type: LinkList,
-					label: 'LinkList',
-					name: 'LinkList',
-					dynamicValues: function() {
-						return [{
-							module: 'users/user',
-							id: 'uid=Administrator,cn=users,dc=my,dc=base',
-							objectType: 'users/user',
-							icon: 'udm-users'
-						}, {
-							module: 'users/user',
-							id: 'uid=nobody,cn=users,dc=my,dc=base',
-							objectType: 'users/user',
-							icon: 'udm-users'
-						}];
-					}
 				/*}, {
 					type: MixedInput,
 					label: 'MixedInput',
