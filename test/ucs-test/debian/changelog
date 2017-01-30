@@ -1,3 +1,9 @@
+ucs-test (6.0.37-47) unstable; urgency=medium
+
+  * Bug #43216: Fix check that UDM e-mail is left unchanged
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 17:16:02 +0100
+
 ucs-test (6.0.37-46) unstable; urgency=medium
 
   * Bug #43216: Test new proxyAddresses sync behaviour
