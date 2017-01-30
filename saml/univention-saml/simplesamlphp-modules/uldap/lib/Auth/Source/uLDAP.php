@@ -54,13 +54,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		assert('is_string($password)');
 
 		try {
-			$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
-		} catch (Exception $e) {
-			$this->throw_common_login_errors($username);
+			return $this->ldapConfig->login($username, $password, $sasl_args);
+		} catch (SimpleSAML_Error_Error $e) {
+			if ($e->getMessage() == 'WRONGUSERPASS') {
+				$this->throw_common_login_errors($username);
+			}
 			throw $e;
 		}
 
-		return $attributes;
 	}
 
 
