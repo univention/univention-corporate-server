@@ -2528,7 +2528,19 @@ class s4(univention.s4connector.ucs):
 									to_remove = old_values - new_values
 
 								if s4_other_attribute:
-									# in this case we need lists because sets are unorded and the order is important
+									# This is the case, where we map from a multi-valued UCS attribute to two S4 attributes.
+									# telephoneNumber/otherTelephone (S4) to telephoneNumber (UCS) would be an example.
+									#
+									# The direct mapping assumes preserved ordering of the multi-valued UCS
+									# attributes and places the first value in the primary S4 attribute,
+									# the rest in the secondary S4 attributes.
+									# Assuming preserved ordering is wrong, as LDAP does not guarantee is and the
+									# deduplication of LDAP attribute values in `__set_values()` destroys it.
+									#
+									# The following code handles the correct distribution of the UCS attribute,
+									# to two S4 attributes. It also ensures, that the primary S4 attribute keeps
+									# its value as long as that value is not removed. If removed the primary
+									# attribute is assigned a random value from the UCS attribute.
 									try:
 										current_s4_values = set([v for k, v in s4_object.iteritems() if s4_attribute.lower() == k.lower()][0])
 									except IndexError:

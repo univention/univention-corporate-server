@@ -1142,6 +1142,11 @@ class ucs:
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
+							# This is deduplication of LDAP attribute values for S4 -> UCS.
+							# It destroys ordering of multi-valued attributes. This seems problematic
+							# as the handling of `con_other_attribute` assumes preserved ordering
+							# (this is not guaranteed by LDAP).
+							# See the MODIFY-case in `sync_from_ucs()` for more.
 							if isinstance(value, list):
 								ucs_object[ucs_key] = list(set(value))
 							else:
