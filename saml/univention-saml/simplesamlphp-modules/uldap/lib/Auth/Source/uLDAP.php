@@ -16,6 +16,8 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 	 * A LDAP configuration object.
 	 */
 	private $ldapConfig;
+	private $ldap;
+	private $config;
 
 
 	/**
@@ -33,6 +35,9 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
 			'Authentication source ' . var_export($this->authId, TRUE));
+		$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enableTLS'], $config['debug'], $config['timeout']);
+		$this->ldap->bind($config['search.username'], $config['search.password']);
+		$this->config = $config;
 	}
 
 
@@ -47,8 +52,28 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 	protected function login($username, $password, array $sasl_args = NULL) {
 		assert('is_string($username)');
 		assert('is_string($password)');
-		
-		$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
+
+		try {
+			$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
+		} catch (Exception $e) {
+			$this->throw_common_login_errors($username);
+			throw $e;
+		}
+
+		return $attributes;
+	}
+
+
+	/**
+	 * Investigate login failure
+	 *
+	 * @param string $username  The username the user wrote.
+	 */
+	private function throw_common_login_errors($username) {
+		assert('is_string($username)');
+
+		$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
+		$attributes = $this->ldap->getAttributes($user_dn);
 		SimpleSAML_Logger::debug('got LDAP attributes:' . var_export($attributes, true));
 
 		$the_time = time();
@@ -123,7 +148,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		}
 		// ldap: locking ldap is done by modifying password > but then ldap bind has failed anyway
 
-		return $attributes;
+		return;
 	}
 
 }
