@@ -64,7 +64,7 @@ class Client(_Client):
 		print ''
 		print '*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else '')
 		if self.print_request_data:
-			print '  data = %s' % (pprint.pformat(data), )
+			print 'UMC request payload: \n%s' % (pprint.pformat(data), )
 		try:
 			response = super(Client, self).request(method, path, data, headers)
 		except:
@@ -72,7 +72,7 @@ class Client(_Client):
 			print ''
 			raise
 		if self.print_response:
-			print '*** UMC response: %s' % (pprint.pformat(response.data),)
+			print '*** UMC response: \n%s\n***' % (pprint.pformat(response.data),)
 		else:
 			print '*** UMC reponse received'
 		print ''
