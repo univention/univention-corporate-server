@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import json
+import locale
 from Cookie import SimpleCookie
 from httplib import HTTPSConnection, HTTPException
 
@@ -199,13 +200,13 @@ class Client(object):
 
 	ConnectionType = HTTPSConnection
 
-	def __init__(self, hostname=None, username=None, password=None, language='en-US', timeout=None, automatic_reauthentication=False):
+	def __init__(self, hostname=None, username=None, password=None, language=None, timeout=None, automatic_reauthentication=False):
 		self.hostname = hostname or '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		self._language = language
+		self._language = language or locale.getdefaultlocale()[0] or ''
 		self._headers = {
 			'Content-Type': 'application/json; charset=UTF-8',
 			'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
-			'Accept-Language': language,
+			'Accept-Language': self._language.replace('_', '-'),
 			'X-Requested-With': 'XMLHttpRequest',
 		}
 		self._base_uri = '/univention/'
