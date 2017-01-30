@@ -48,7 +48,8 @@ udm_create "users/user" "" "" "" "" \
 	--option=person --option=mail --option=posix --option=samba --option=pki --option=kerberos || fail_test 110
 
 udm_modify "users/user" "" "" "" "" \
-	--set mailAlternativeAddress="$UDM_users_user_mailAlternativeAddress" || fail_test 110
+	--set mailAlternativeAddress="$UDM_users_user_mailAlternativeAddress" \
+	--set e-mail="private1@external.org" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
 
@@ -57,12 +58,16 @@ ad_exists "$AD_DN"; fail_bool 0 110
 
 udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
 udm_verify_udm_attribute "mailAlternativeAddress" "$UDM_users_user_mailAlternativeAddress" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "e-mail" "private1@external.org" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
@@ -79,22 +84,41 @@ udm_modify "users/user" "" "" "" "" \
 #		   --set Exchange-Homeserver="$UDM_users_user_Exchange_Homeserver" \
 #		   --set Exchange-homeMDB="$UDM_users_user_Exchange_homeMDB" \
 #		   --set Exchange-Nickname="$UDM_users_user_Exchange_Nickname" \
+
 ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
+
 udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "mailAlternativeAddress" "$UDM_users_user_mailAlternativeAddress" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "e-mail" "private1@external.org" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
 
 echo ==========Replace proxyAddresses value in AD==========
 ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress" || fail_test 110
+
 ad_wait_for_synchronization; fail_bool 0 110
+
 ad_verify_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-udm_verify_udm_attribute "mailAlternativeAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
+	"$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 1 110
+udm_verify_udm_attribute "e-mail" "private1@external.org" "users/user"; fail_bool 0 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+## and the mailPrimaryAddress should get written back to AD:mail too
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
 
 echo ==========Set+Append new preferred proxyAddress in AD==========
 #UDM_users_user_Exchange_Homeserver="$(random_chars)"
@@ -102,6 +126,7 @@ echo ==========Set+Append new preferred proxyAddress in AD==========
 #UDM_users_user_Exchange_Nickname="$(random_chars)"
 UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
 AD_preferred_sip_address="SIP:$(random_chars)@$(random_chars)"
+
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
 ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress" || fail_test 110
 ad_append_to_attribute "$AD_DN" "proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress" || fail_test 110
@@ -109,45 +134,58 @@ ad_append_to_attribute "$AD_DN" "proxyAddresses" "$AD_preferred_sip_address" || 
 #ad_set_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_set_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_set_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
+
 ad_wait_for_synchronization; fail_bool 0 110
+
 ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
-	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "$AD_preferred_sip_address"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
+
 udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 	"$UDM_users_user_mailAlternativeAddress" "users/user"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
-	"$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+	"$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 1 110
+udm_verify_udm_attribute "e-mail" "private1@external.org" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
 
 echo ==========Set multivalue mailAlternativeAddress==========
 UDM_users_user_mailAlternativeAddress2="$(random_chars)@${UDM_mail_domain_name}"
 udm_modify "users/user" "" "" "" "" \
 		   --append mailAlternativeAddress="$UDM_users_user_mailAlternativeAddress2" || fail_test 110
+
 ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_DN" \
-	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
+
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "$AD_preferred_sip_address"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress2"; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "mailPrimaryAddress" \
+	"$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 	"$UDM_users_user_mailAlternativeAddress" "users/user"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
-	"$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
 	"$UDM_users_user_mailAlternativeAddress2" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "e-mail" "private1@external.org" "users/user"; fail_bool 0 110
 
 udm_remove "users/user" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110

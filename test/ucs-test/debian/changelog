@@ -1,3 +1,15 @@
+ucs-test (7.0.10-14) unstable; urgency=medium
+
+  * Bug #43216: Fix check that UDM e-mail is left unchanged
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 17:25:13 +0100
+
+ucs-test (7.0.10-13) unstable; urgency=medium
+
+  * Bug #43216: Test new proxyAddresses sync behaviour
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 16:59:40 +0100
+
 ucs-test (7.0.10-12) unstable; urgency=medium
 
   * Bug #43444: Saml tests for login with wrong account or password 
