@@ -47,9 +47,11 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
+	"umc/widgets/TextArea",
+	"umc/widgets/TextBox",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, _window, xhr, basexhr, Deferred, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, TextArea, TextBox, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
@@ -801,7 +803,8 @@ define([
 		},
 
 		_handleTraceback: function(message, statusMessage, title) {
-			var readableMessage = message.replace(/<br *\/?>/g, "\n").split('\n');
+			message = message.replace(/<br *\/?>/g, "\n");
+			var readableMessage = message.split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
 			// See Bug #33798
 			// But add the first line, just in case it is "The following function failed:"
