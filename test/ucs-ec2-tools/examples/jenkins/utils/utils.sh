@@ -657,6 +657,3 @@ set_windows_localadmin_password_for_ucs_test () {
 }
 
 # vim:set filetype=sh ts=4:
-release_update=testing
-errata_update=testing
-JOB_NAME=UCS-4.2/UCS-4.2-0/AutotestUpgrade/SambaVersion=s3,Systemrolle=master
