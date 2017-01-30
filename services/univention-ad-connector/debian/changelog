@@ -1,3 +1,40 @@
+univention-ad-connector (11.0.5-18) unstable; urgency=low
+
+  * Bug #43216: Continue writing mailPrimaryAddress to AD attribute mail.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 17:23:21 +0100
+
+univention-ad-connector (11.0.5-17) unstable; urgency=low
+
+  * Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'
+    (mailPrimaryAddress, mailAlternativeAddress) <-> proxyAddresses
+    instead of
+    (mailPrimaryAddress <-> mail, mailAlternativeAddress <-> proxyAddresses)
+  * split proxyAddresses methods off into separate module
+  * A sync_mode='read' hack for mailAlternativeAddress has been introduced
+    to avoid duplicate ldap.MOD_REPLACE entries in sync_from_ucs modlist
+  * Note: currently this leaves the "mail" attribute unsynchronized
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 18:27:38 +0100
+
+univention-ad-connector (11.0.5-16) unstable; urgency=low
+
+  * Bug #43216: remove ancient code from __set_values:
+    If mapping[1] is defined for a post_attribute the method __set_values
+    calls it and passes the result to set_values. Since the latter expects
+    an object of class attribute this cannot work and must have been broken
+    a long time ago. In the mapping I don't see any case where mapping
+    functions are defined for a post_attribute.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 15:31:57 +0100
+
+univention-ad-connector (11.0.5-15) unstable; urgency=low
+
+  * Bug #43216: backport from s4connector:
+    support None for mapping functions in sync_to_ucs
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jan 2017 15:24:12 +0100
+
 univention-ad-connector (11.0.5-14) unstable; urgency=low
 
   * Bug #43216: backport from s4connector:

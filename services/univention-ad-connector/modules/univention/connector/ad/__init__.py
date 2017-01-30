@@ -71,81 +71,6 @@ class netbiosDomainnameNotFound(Exception):
 PAGE_SIZE = 1000
 
 
-class proxyAddresses:
-
-	@classmethod
-	def valid_mailaddress(cls, val):
-		# invalid is: <transport>:<address> iff <transport>.lower() != smtp
-		idx = val.find(':')
-		if idx == -1:
-			return val
-		else:
-			# check if the colon is unquoted
-			idx2 = val.find('"')
-			if (idx2 == -1) or (idx2 > idx):
-				if val[0:idx].lower() == 'smtp':
-					return val[5:]
-		return None
-
-	@classmethod
-	def prepend_smtp(cls, val):
-		return 'smtp:' + val
-
-	@classmethod
-	def equal(cls, values1, values2):
-		_d = ud.function('%s.equal' % cls.__name__)
-		# usually this is used as:
-		# values1 are ucs and values2 are con
-		# but let's not rely on that
-		values_normalized = []
-		for values in (values1, values2):
-			if not isinstance(values, type(types.ListType())):
-				values = [values]
-			values_normalized.append(
-				filter(lambda v: v, map(cls.valid_mailaddress, values))
-			)
-		if set(values_normalized[0]) == set(values_normalized[1]):
-			return True
-		else:
-			return False
-
-	@classmethod
-	def con2ucs(cls, con_values, old_ucs_values=None):
-		_d = ud.function('%s.con2ucs' % cls.__name__)
-
-		if not isinstance(con_values, type(types.ListType())):
-			values = [con_values]
-		else:
-			values = con_values
-		new_ucs_values = filter(lambda v: v, map(cls.valid_mailaddress, values))
-		if len(new_ucs_values) == 1:
-			new_ucs_values = new_ucs_values[0]
-		ud.debug(ud.LDAP, ud.ALL, "%s.con2ucs: %s" % (cls.__name__, new_ucs_values))
-		return new_ucs_values
-
-	@classmethod
-	def ucs2con(cls, ucs_values, old_con_values=None):
-		_d = ud.function('%s.ucs2con' % cls.__name__)
-		new_con_values = []
-		con_valid_mailaddress = []
-		if old_con_values:
-			# first preserve all non-email-Addresses and those we have in UCS
-			for con_value in old_con_values:
-				valid_mailaddress = cls.valid_mailaddress(con_value)
-				if valid_mailaddress:
-					if valid_mailaddress in ucs_values:
-						con_valid_mailaddress.append(valid_mailaddress)
-						new_con_values.append(con_value)
-				else:
-					new_con_values.append(con_value)
-		# then add the addresses which are only in UCS
-		for ucs_value in ucs_values:
-			if ucs_value not in con_valid_mailaddress:
-				new_con_values.append(cls.prepend_smtp(ucs_value))
-		ud.debug(ud.LDAP, ud.ALL, "%s.ucs2con: %s" % (cls.__name__, new_con_values))
-		return new_con_values
-
-
 def activate_user(connector, key, object):
 	# set userAccountControl to 544
 	for i in range(0, 10):
@@ -2353,8 +2278,6 @@ class ad(univention.connector.ucs):
 						attribute = self.property[property_type].attributes[attr_key]
 						if attr not in (attribute.con_attribute, attribute.con_other_attribute):
 							continue
-						if attribute.ucs_value_map_function:
-							value = attribute.ucs_value_map_function(value)
 						addlist.append((attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
 				for attr, value in object['attributes'].items():
@@ -2367,8 +2290,6 @@ class ad(univention.connector.ucs):
 							continue
 
 						if value:
-							if post_attribute.ucs_value_map_function:
-								value = post_attribute.ucs_value_map_function(value)
 							modlist.append((ldap.MOD_REPLACE, attr, value))
 						else:
 							modlist.append((ldap.MOD_DELETE, attr, None))
@@ -2421,8 +2342,6 @@ class ad(univention.connector.ucs):
 
 						if attr not in ad_object:
 							if value:
-								if attribute.ucs_value_map_function:
-									value = attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if attribute.compare_function:
@@ -2430,8 +2349,8 @@ class ad(univention.connector.ucs):
 							else:
 								equal = univention.connector.compare_lowercase(value, ad_object[attr])
 							if not equal:
-								if attribute.ucs_value_map_function:
-									value = attribute.ucs_value_map_function(value, ad_object[attr])
+								if attribute.con_value_merge_function:
+									value = attribute.con_value_merge_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
 				for attr, value in object['attributes'].items():
@@ -2450,8 +2369,6 @@ class ad(univention.connector.ucs):
 								continue
 						if attr not in ad_object:
 							if value:
-								if post_attribute.ucs_value_map_function:
-									value = post_attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if post_attribute.compare_function:
@@ -2459,8 +2376,8 @@ class ad(univention.connector.ucs):
 							else:
 								equal = univention.connector.compare_lowercase(value, ad_object[attr])
 							if not equal:
-								if post_attribute.ucs_value_map_function:
-									value = post_attribute.ucs_value_map_function(value, ad_object[attr])
+								if post_attribute.con_value_merge_function:
+									value = post_attribute.con_value_merge_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 
 			attrs_in_current_ucs_object = object['attributes'].keys()

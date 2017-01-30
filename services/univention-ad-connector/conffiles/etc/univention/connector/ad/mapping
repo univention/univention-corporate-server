@@ -33,6 +33,7 @@
 import univention.connector.ad
 import univention.connector.ad.mapping
 import univention.connector.ad.password
+import univention.connector.ad.proxyAddresses as proxyAddresses
 
 @!@
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
@@ -167,27 +168,46 @@ if 'connector/ad/mapping/user/exchange' in configRegistry and configRegistry['co
 							con_attribute='mailNickname',
 					),
 					"""
-if 'connector/ad/mapping/user/primarymail' in configRegistry and configRegistry['connector/ad/mapping/user/primarymail'] in ['yes','true']:
+if configRegistry.is_true('connector/ad/mapping/user/primarymail'):
 	print """
 					'mailPrimaryAddress': univention.connector.attribute (
 						ucs_attribute='mailPrimaryAddress',
 						ldap_attribute='mailPrimaryAddress',
+						con_attribute='proxyAddresses',
+						mapping = (
+							proxyAddresses.to_proxyAddresses,
+							proxyAddresses.to_mailPrimaryAddress
+						),
+						compare_function = proxyAddresses.equal,
+						con_value_merge_function = proxyAddresses.merge_ucs2con,
+					),
+					"""
+	print """
+					'mailPrimaryAddress_to_mail': univention.connector.attribute (
+						sync_mode='write',
+						ucs_attribute='mailPrimaryAddress',
+						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
-						reverse_attribute_check = True,
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
+	if configRegistry.is_true('connector/ad/mapping/user/primarymail'):
+		sync_mode = 'read'	## proxyAddresses.to_mailPrimaryAddress does the write
+	else:
+		sync_mode = 'sync'
 	print """
 					'mailAlternativeAddress': univention.connector.attribute (
+						sync_mode='%s',
 						ucs_attribute='mailAlternativeAddress',
 						ldap_attribute='mailAlternativeAddress',
 						con_attribute='proxyAddresses',
-						reverse_attribute_check = True,
-						compare_function = univention.connector.ad.proxyAddresses.equal,
-						ucs_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
-						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
+						mapping = (
+							None,
+							proxyAddresses.to_mailAlternativeAddress
+						),
+						compare_function = proxyAddresses.equal,
 					),
-					"""
+					""" % sync_mode
 @!@
 					'description': univention.connector.attribute (
 						ucs_attribute='description',
@@ -325,27 +345,47 @@ if configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
 							con_attribute='description',
 						),
 						@!@
-if 'connector/ad/mapping/group/primarymail' in configRegistry and configRegistry['connector/ad/mapping/group/primarymail'] in ['yes','true']:
+if configRegistry.is_true('connector/ad/mapping/group/primarymail'):
 	print """
 					'mailAddress': univention.connector.attribute (
+						sync_mode='read',
+						ucs_attribute='mailAddress',
+						ldap_attribute='mailPrimaryAddress',
+						con_attribute='proxyAddresses',
+						mapping = (
+							proxyAddresses.to_proxyAddresses,
+							proxyAddresses.to_mailPrimaryAddress
+						),
+						compare_function = proxyAddresses.equal,
+						con_value_merge_function = proxyAddresses.merge_ucs2con,
+					),
+					"""
+	print """
+					'mailPrimaryAddress_to_mail': univention.connector.attribute (
+						sync_mode='write',
 						ucs_attribute='mailAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
-						reverse_attribute_check = True,
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
+	if configRegistry.is_true('connector/ad/mapping/group/primarymail'):
+		sync_mode = 'read'	## proxyAddresses.to_mailPrimaryAddress does the write
+	else:
+		sync_mode = 'sync'
 	print """
 					'mailAlternativeAddress': univention.connector.attribute (
+						sync_mode='%s',
 						ucs_attribute='mailAlternativeAddress',
 						ldap_attribute='mailAlternativeAddress',
 						con_attribute='proxyAddresses',
-						reverse_attribute_check = True,
-						compare_function = univention.connector.ad.proxyAddresses.equal,
-						ucs_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
-						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
+						mapping = (
+							None,
+							proxyAddresses.to_mailAlternativeAddress
+						),
+						compare_function = proxyAddresses.equal,
 					),
-					"""
+					""" % sync_mode
 if 'connector/ad/mapping/group/exchange' in configRegistry and configRegistry['connector/ad/mapping/group/exchange'] in ['yes','true']:
 	print """
 					'Exchange-Nickname': univention.connector.attribute (
