@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.3-5) unstable; urgency=medium
+
+  * Bug #42321: removed 'FIXME' comment from LinkList
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 30 Jan 2017 18:50:55 +0100
+
 univention-management-console-module-udm (7.0.3-4) unstable; urgency=medium
 
   * Bug #43423: set tree root operations to search-only except for navigation

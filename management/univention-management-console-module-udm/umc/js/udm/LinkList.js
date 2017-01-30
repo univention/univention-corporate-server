@@ -44,8 +44,6 @@ define([
 		// summary:
 		//		Provides a list of buttons opening a given object
 
-		// FIXME: should be part of the UDM module
-
 		name: '',
 
 		value: null,
