@@ -1,0 +1,38 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and install a simple app with latest appbox image
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+
+import requests
+import json
+
+if __name__ == '__main__':
+
+	# get latest app box image
+	url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
+	username = 'ucs'
+	password = 'readonly'
+	resp = requests.get(url, auth=(username, password)).content
+	data = json.loads(resp)
+	latest_tag = max(data['tags'])
+
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app_name = 'testapp'
+		app = App(name=app_name, version='1.9', build_package=False)
+		app.set_ini_parameter(
+			DockerImage='docker.software-univention.de/ucs-appbox-amd64:%s' % latest_tag,
+			DefaultPackages='mc',
+		)
+		app.add_to_local_appcenter()
+		try:
+			appcenter.update()
+			app.install_via_umc()
+			app.verify()
+		finally:
+			app.uninstall()
+			app.remove()

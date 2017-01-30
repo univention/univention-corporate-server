@@ -1,3 +1,9 @@
+ucs-test (7.0.10-15) unstable; urgency=low
+
+  * Bug #43326: 40_app_umc_install_latest_appbox
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Jan 2017 19:07:40 +0100
+
 ucs-test (7.0.10-14) unstable; urgency=medium
 
   * Bug #43216: Fix check that UDM e-mail is left unchanged

@@ -33,10 +33,12 @@ from univention.testing.strings import random_name, random_version
 from univention.testing.debian_package import DebianPackage
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.config_registry import handler_set, ConfigRegistry
+from univention.testing import umc
 import os
 import shutil
 import subprocess
 import urllib2
+import threading
 
 
 class UCSTest_Docker_Exception(Exception):
@@ -80,6 +82,10 @@ class UCSTest_DockerApp_RemoveFailed(Exception):
 
 
 class UCSTest_DockerApp_ModProxyFailed(Exception):
+	pass
+
+
+class UCTTest_DockerApp_UMCInstallFailed(Exception):
 	pass
 
 
@@ -235,6 +241,47 @@ class App(object):
 		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
 		self.installed = True
+
+	def install_via_umc(self):
+		def _thread(event, options):
+			try:
+				connection.request("appcenter/keep_alive")
+			finally:
+				event.set()
+		print 'App.umc_install()'
+		connection = umc.UMCTestConnection()
+		connection.auth(connection.username, connection.password)
+		status = connection.get_custom_connection('session-info', command='get')
+		options = dict(
+			function='install',
+			application=self.app_name,
+			app=self.app_name,
+			force=True)
+		resp = connection.request('appcenter/docker/invoke', options)
+		progress_id = resp.get('id')
+		if not resp:
+			raise UCTTest_DockerApp_UMCInstallFailed(resp)
+		errors = list()
+		finished = False
+		progress = None
+		event = threading.Event()
+		threading.Thread(target=_thread, args=(event, options)).start()
+		while not (event.wait(3) and finished):
+			options = dict(progress_id=progress_id)
+			c = super(umc.UMCConnection, connection)
+			progress = c.request('appcenter/docker/progress', options)
+			info = progress.get('info', None)
+			for i in progress.get('intermediate', []):
+				if i['level'] in ['WARNING', 'ERROR', 'CRITICAL']:
+					errors.append(i)
+			finished = progress.get('finished', False)
+		if not progress['result'].get('success', False) or not progress['result'].get('can_continue', False):
+			raise UCTTest_DockerApp_UMCInstallFailed(progress)
+		self.ucr.load()
+		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+		self.installed = True
+		if errors:
+			raise UCTTest_DockerApp_UMCInstallFailed(errors)
 
 	def install_via_add_app(self):
 		self._update()
