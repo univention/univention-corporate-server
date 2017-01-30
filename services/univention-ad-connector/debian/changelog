@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.5-14) unstable; urgency=low
+
+  * Bug #43216: backport from s4connector:
+    debug output for addlist and modlist in sync_from_ucs
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 17:21:25 +0100
+
 univention-ad-connector (11.0.5-13) unstable; urgency=low
 
   * Bug #42618: support attribute level sync_mode configuration
