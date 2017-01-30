@@ -110,7 +110,7 @@ define([
 				// return the whole dictionary
 				return this._status;
 			}
-			if (typeof key == "string") {
+			if (typeof key === "string") {
 				if (undefined === value) {
 					// return the specified key
 					return this._status[key];
@@ -208,7 +208,7 @@ define([
 						topic.publish('/umc/actions', 'session', 'timeout');
 						// try to login
 						var def;
-						if (tools.status('authType') == 'SAML') {
+						if (tools.status('authType') === 'SAML') {
 							def = require('umc/auth').passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
 						} else {
 							def = dialog.login();
@@ -280,7 +280,7 @@ define([
 			topic.publish('/umc/module/reset');
 			topic.publish('/umc/actions', 'session', 'reset');
 			array.forEach(this._resetCallbacks, function(callback) {
-				if (typeof callback != 'function') {
+				if (typeof callback !== 'function') {
 					// only execute functions
 					return;
 				}
@@ -375,7 +375,7 @@ define([
 						var info = tools.parseError(error);
 						info.exception = error;
 
-						if (!this.noLogin && 401 == info.status) {
+						if (!this.noLogin && 401 === info.status) {
 							// command was rejected, user is not authorized... continue to poll after successful login
 							var deferred = require('umc/auth').handleAuthenticationError(info);
 							if (deferred) {
@@ -390,7 +390,7 @@ define([
 							// the server could not been reached within a short time interval
 							// -> that is an error
 							++this._nErrors;
-							if (this._nErrors == 1) {
+							if (this._nErrors === 1) {
 								// log the error time
 								this._firstErrorTime = (new Date()).getTime();
 							}
@@ -431,7 +431,7 @@ define([
 			var _body = {
 				 options: dataObj || {}
 			};
-			if (typeof flavor == "string") {
+			if (typeof flavor === "string") {
 				_body.flavor = flavor;
 			}
 
@@ -459,7 +459,7 @@ define([
 				body = args.data;
 				tools.removeRecursive(body, function(key) {
 					// hidden properties or un-jsonable values
-					return key.substr(0, 18) == '_univention_cache_';
+					return key.substr(0, 18) === '_univention_cache_';
 				});
 				body = json.stringify(body);
 			}
@@ -528,7 +528,7 @@ define([
 						handleErrors.onValidationError(info.message, info.result);
 					}
 				};
-			} else if (typeof handleErrors == 'object') {
+			} else if (typeof handleErrors === 'object') {
 				custom = handleErrors;
 			}
 
@@ -543,7 +543,7 @@ define([
 					var formatter = function(result) {
 						message += '<ul>';
 						tools.forIn(result, function(key, value) {
-							if (typeof value == 'object') {
+							if (typeof value === 'object') {
 								message += '<li>' + entities.encode(key);
 								formatter(value);
 								message += '</li>';
@@ -563,7 +563,7 @@ define([
 					}
 					// do not modify the data!
 					if (data && data.message) {
-						if (parseInt(data.status, 10) == 200) {
+						if (parseInt(data.status, 10) === 200) {
 							dialog.notify(data.message);
 						} else {
 							dialog.alert(data.message);
@@ -594,14 +594,14 @@ define([
 						return;
 					}
 
-					if (status == 401) {
+					if (status === 401) {
 						return;
 					}
 
 					// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
 					if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 						this.displayTraceback(info);
-					} else if (503 == status && dialog.loginOpened()) {
+					} else if (503 === status && dialog.loginOpened()) {
 						// either the UMC-server or the UMC-Web-Server is not runnning
 						dialog._loginDialog.updateForm({message: statusMessage});
 						if (message) {
@@ -725,11 +725,11 @@ define([
 		},
 
 		_parseStatus: function(stat) {
-			if (typeof stat == 'number') {
+			if (typeof stat === 'number') {
 				// easy -> stat is a number
 				return stat;
 			}
-			if (typeof stat == 'string') {
+			if (typeof stat === 'string') {
 				// stat is a string, i.e., it could be "400" or "400 Bad Request"... try to parse it
 				try {
 					return parseInt(stat, 10);
@@ -796,7 +796,7 @@ define([
 			var info = this.parseError(error);
 			info.exception = error;
 
-			if (401 == info.status) {
+			if (401 === info.status) {
 				return; /*already handled*/
 			}
 			this.__getErrorHandler(handleErrors ? handleErrors : {}).error(info);
@@ -1068,7 +1068,7 @@ define([
 
 			// in case we got a single array as argument,
 			var args = arguments;
-			if (1 == arguments.length && arguments[0] instanceof Array) {
+			if (1 === arguments.length && arguments[0] instanceof Array) {
 				args = arguments[0];
 			}
 
@@ -1083,10 +1083,10 @@ define([
 				};
 
 				// entry for ordering can by a String or an Object
-				if (typeof args[i] == "string") {
+				if (typeof args[i] === "string") {
 					o.attr = args[i];
 				}
-				else if (typeof args[i] == "object" && 'attribute' in args[i]) {
+				else if (typeof args[i] === "object" && 'attribute' in args[i]) {
 					o.attr = args[i].attribute;
 					o.desc = (args[i].descending ? -1 : 1);
 					o.ignCase = undefined === args[i].ignoreCase ? true : args[i].ignoreCase;
@@ -1145,7 +1145,7 @@ define([
 				}
 				return true;
 			}
-			if (typeof a == "object" && typeof b == "object" && !(a === null || b === null)) {
+			if (typeof a === "object" && typeof b === "object" && !(a === null || b === null)) {
 				var allKeys = lang.mixin({}, a, b);
 				var result = true;
 				tools.forIn(allKeys, function(key) {
@@ -1170,7 +1170,7 @@ define([
 				dir: 'scalable'
 			};
 
-			if (size == 'scalable') {
+			if (size === 'scalable') {
 				values.s = '';
 			}
 
@@ -1180,7 +1180,7 @@ define([
 			}
 
 			var iconClass;
-			if (icon.substr(0, 4) == ('http')) {
+			if (icon.substr(0, 4) === ('http')) {
 				// absolute path. use!
 				// iconClass must be modified to the icon file name
 				values.url = icon;
@@ -1213,7 +1213,7 @@ define([
 					// add dynamic style sheet information for the given icon
 					var css = lang.replace(
 						'background: no-repeat;' +
-						(size == 'scalable' ? '' : 'width: {s}px; height: {s}px;') +
+						(size === 'scalable' ? '' : 'width: {s}px; height: {s}px;') +
 						'background-image: url("{url}");' +
 						cssStyle,
 						values);
@@ -1257,7 +1257,7 @@ define([
 					delete obj[key];
 				} else {
 					// [] instanceof Object is true, but we test for Array because of readability
-					if (value && typeof value != "function" && (value instanceof Array || value instanceof Object)) {
+					if (value && typeof value !== "function" && (value instanceof Array || value instanceof Object)) {
 						tools.removeRecursive(value, func);
 					}
 				}
@@ -1305,7 +1305,7 @@ define([
 				return this._userPreferences; // Object
 			}
 			// only one parameter, type: String -> return specified preference
-			if (1 == arguments.length && typeof param1 == "string") {
+			if (1 === arguments.length && typeof param1 === "string") {
 				if (param1 in this._defaultPreferences) {
 					return this._userPreferences[param1]; // Boolean|String|Integer
 				}
@@ -1316,7 +1316,7 @@ define([
 			var oldPrefs = lang.clone(this._userPreferences);
 
 			// only one parameter, type: Object -> set all parameters as specified in the object
-			if (1 == arguments.length) {
+			if (1 === arguments.length) {
 				// only consider keys that are defined in defaultPreferences
 				tools.forIn(this._defaultPreferences, lang.hitch(this, function(key) {
 					if (key in param1) {
@@ -1325,7 +1325,7 @@ define([
 				}));
 			}
 			// two parameters, type parameter1: String -> set specified user preference
-			else if (2 == arguments.length && typeof param1 == "string") {
+			else if (2 === arguments.length && typeof param1 === "string") {
 				// make sure preference is in defaultPreferences
 				if (param1 in this._defaultPreferences) {
 					this._userPreferences[param1] = value;
@@ -1338,7 +1338,7 @@ define([
 
 			// publish changes in user preferences
 			tools.forIn(this._userPreferences, function(key, val) {
-				if (val != oldPrefs[key]) {
+				if (val !== oldPrefs[key]) {
 					// entry has changed
 					topic.publish('/umc/preferences/' + key, val);
 				}
@@ -1365,7 +1365,7 @@ define([
 		},
 
 		isFalse: function(/*mixed*/ input) {
-			if (typeof input == "string") {
+			if (typeof input === "string") {
 				switch (input.toLowerCase()) {
 					case 'no':
 					case 'not':
@@ -1389,7 +1389,7 @@ define([
 		},
 
 		isFreeLicense: function(/*string*/ licenseValue) {
-			return licenseValue == 'Free for personal use edition' || licenseValue == 'UCS Core Edition';
+			return licenseValue === 'Free for personal use edition' || licenseValue === 'UCS Core Edition';
 		},
 
 		explodeDn: function(dn, noTypes) {
@@ -1401,7 +1401,7 @@ define([
 			//		If set to true, the type part ('.*=') of each LDAP DN part will be removed.
 
 			var res = [];
-			if (typeof dn == "string") {
+			if (typeof dn === "string") {
 				res = dn.split(',');
 			}
 			if (noTypes) {
@@ -1439,7 +1439,7 @@ define([
 
 			var matched = false;
 			array.forEach(bases, function(ibase) {
-				if (ibase.prototype.declaredClass == c) {
+				if (ibase.prototype.declaredClass === c) {
 					matched = true;
 					return false;
 				}
@@ -1451,7 +1451,7 @@ define([
 			// summary:
 			//		Return the enclosing module of the widget.
 
-			if (!widget || typeof widget.getParent != 'function') {
+			if (!widget || typeof widget.getParent !== 'function') {
 				return null;
 			}
 
@@ -1470,7 +1470,7 @@ define([
 		capitalize: function(/*String*/ str) {
 			// summary:
 			//		Return a string with the first letter in upper case.
-			if (typeof str != "string") {
+			if (typeof str !== "string") {
 				return str;
 			}
 			return str.slice(0, 1).toUpperCase() + str.slice(1);
@@ -1482,7 +1482,7 @@ define([
 			//		and if input is an array, the array is not modified. In any other
 			//		case, the function returns an empty array.
 
-			if (typeof input == "string") {
+			if (typeof input === "string") {
 				return [ input ];
 			}
 			if (input instanceof Array) {
@@ -1508,10 +1508,10 @@ define([
 			//		Calling the function doit() of the AMD module foo/bar:
 			// |	stringOrFunction('javascript:foo/bar:doit');
 
-			if (typeof input == "function") {
+			if (typeof input === "function") {
 				return input;
 			}
-			if (typeof input == "string") {
+			if (typeof input === "string") {
 				var match = this._regFuncDotStyle.exec(input);
 				var deferred = null;
 				if (match) {
