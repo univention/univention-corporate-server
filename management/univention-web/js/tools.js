@@ -361,6 +361,7 @@ define([
 						headers: lang.mixin({
 							'Accept-Language': i18nTools.defaultLang(),
 							'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
+							'X-XSRF-Protection': tools.getCookies().sessionID,
 							'Content-Type': 'application/json'
 						}, args.headers),
 						withCredentials: args.withCredentials,
@@ -482,6 +483,7 @@ define([
 					headers: lang.mixin({
 						'Accept-Language': i18nTools.defaultLang(),
 						'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
+						'X-XSRF-Protection': tools.getCookies().sessionID,
 						'Content-Type': 'application/json'
 					}, args.headers),
 					withCredentials: args.withCredentials

@@ -98,6 +98,8 @@ class CLI_Client(Client):
 
 	def create(self, command, args=[], options=[], flavor=None):
 		msg = umcp.Request(command.upper())
+		msg.cookies['Cookie'] = 'UMCSessionId=00000000-0000-0000-0000-000000000000'
+		msg.headers['X-XSRF-Protection'] = '00000000-0000-0000-0000-000000000000'
 		msg.arguments = args
 		if options.flavor is not None:
 			msg.flavor = options.flavor

@@ -279,6 +279,7 @@ class Client(object):
 	def send(self, request):
 		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
 		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
+		request.headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		try:
 			response = self.__request(request)
 		except (HTTPException, EnvironmentError) as exc:

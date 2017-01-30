@@ -156,7 +156,11 @@ class Message(object):
 			PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
 	def _get_key(self, key, default=None):
+		if isinstance(default, dict):
+			default = default.copy()
 		if self.mimetype == MIMETYPE_JSON:
+			if isinstance(default, dict):
+				self.body.setdefault(key, default)
 			return self.body.get(key, default)
 		else:
 			PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
