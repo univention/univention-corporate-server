@@ -1,0 +1,38 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether SSO is not possible with non existing user account
+## tags:
+##  - saml
+##  - univention
+## join: true
+## exposure: dangerous
+## packages:
+##  - python-requests
+## tags:
+##  - skip_admember
+
+from datetime import date, timedelta
+
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+import samltest
+
+
+def main():
+	SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
+
+	try:
+		SamlSession.login_with_new_session_at_IdP()
+	except samltest.SamlLoginError as exc:
+		expected_error = 'Got incorrect username or password notice'
+		if exc.message == expected_error:
+			return
+		else:
+			error_message = "Expected message: %s\nReceived message: %s" % (expected_error, exc.message)
+			utils.fail(error_message)
+	utils.fail("Could login with non existing account")
+
+
+if __name__ == '__main__':
+	main()
+	print("Success: It is not possible to login with non existing account")

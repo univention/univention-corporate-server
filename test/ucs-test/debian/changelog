@@ -1,3 +1,10 @@
+ucs-test (7.0.10-12) unstable; urgency=medium
+
+  * Bug #43444: Saml tests for login with wrong account or password 
+  * Bug #43384: reenable saml tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
+
 ucs-test (7.0.10-11) UNRELEASED; urgency=medium
 
   * Rename tests/60_umc/100_umc_frontend_i18n.py to
