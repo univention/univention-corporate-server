@@ -3,85 +3,43 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+from univention.testing.umc import Client
 
-from httplib import HTTPSConnection
 from threading import Thread
 from smtpd import SMTPServer
 import subprocess
 import contextlib
 import asyncore
-import json
 import fcntl
 
 
-class HTTPError(Exception):
-
-	def __init__(self, response, content):
-		self.response = response
-		self.content = content
-		super(HTTPError, self).__init__(response, content)
-		print self
-
-	def __str__(self):
-		return unicode(self).encode('utf-8')
-
-	def __unicode__(self):
-		return u'Status: %s, content=%r' % (self.response.status, self.content)
-
-
-class Connection(object):
-
-	def __init__(self, host='localhost'):
-		self._headers = {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json; q=1.0; text/html; q=0.5; */*; q=0.1',
-			'X-Requested-With': 'XMLHttpRequest',
-			'Accept-Language': 'en-US',
-		}
-		self.base_host = host
-		self.base_uri = 'https://%s/univention-management-console/command/%%s' % (self.base_host,)
-
-	def request(self, uri, data):
-		print 'requesting %r with %r' % (self.base_uri % (uri,), data)
-		connection = HTTPSConnection(self.base_host)
-		connection.request('POST', self.base_uri % (uri,), json.dumps(data), headers=self._headers)
-		response = connection.getresponse()
-		content = response.read()
-		print 'response = %s' % (response.status,)
-		assert response.getheader('Content-Type', '').startswith('application/json'), content
-		content = json.loads(content)
-		if response.status >= 300:
-			raise HTTPError(response, content)
-		return content
-		# TODO: kill all self-service UMC module processes because 1 process per request sums up and blocks resources for 15 minutes
-
-
-class SelfServiceUser(Connection):
+class SelfServiceUser(object):
 
 	def __init__(self, username, password):
-		super(SelfServiceUser, self).__init__()
+		self._client = Client()
 		self.username = username
 		self.password = password
 
 	def request(self, uri, **kwargs):
-		data = {'username': self.username, 'password': self.password}
-		data.update(kwargs)
-		return super(SelfServiceUser, self).request(uri, data)
+		options = {'username': self.username, 'password': self.password}
+		options.update(kwargs)
+		return self._client.umc_command(uri, options)
+		# TODO: kill all self-service UMC module processes because 1 process per request sums up and blocks resources for 15 minutes
 
 	def get_contact(self):
-		return dict((data['id'], data['value']) for data in self.request('passwordreset/get_contact').get('result'))
+		return dict((data['id'], data['value']) for data in self.request('passwordreset/get_contact').result)
 
 	def set_contact(self, email='', mobile=''):
-		return self.request('passwordreset/set_contact', email=email, mobile=mobile).get('result')
+		return self.request('passwordreset/set_contact', email=email, mobile=mobile).result
 
 	def get_reset_methods(self):
-		return [x['id'] for x in self.request('passwordreset/get_reset_methods').get('result')]
+		return [x['id'] for x in self.request('passwordreset/get_reset_methods').result]
 
 	def send_token(self, method):
-		return self.request('passwordreset/send_token', method=method).get('result')
+		return self.request('passwordreset/send_token', method=method).result
 
 	def set_password(self, token, password):
-		return self.request('passwordreset/set_password', token=token, password=password).get('result')
+		return self.request('passwordreset/set_password', token=token, password=password).result
 
 
 @contextlib.contextmanager

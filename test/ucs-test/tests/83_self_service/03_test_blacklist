@@ -8,7 +8,8 @@
 ##   - univention-self-service-passwordreset-umc
 
 from univention.testing import utils
-from test_self_service import SelfServiceUser, HTTPError
+from test_self_service import SelfServiceUser
+from univention.lib.umc import HTTPError
 
 error_get_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
 error_set_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
@@ -33,7 +34,7 @@ def assert_raises(exc_type, message, callback, *args, **kwargs):
 		callback(*args, **kwargs)
 	except exc_type as exc:
 		if message:
-			assert message in str(exc), 'Exception %r doesnt contain %r' % (str(exc), message)
+			assert exc.message and message in exc.message, 'Exception %r doesnt contain %r' % (exc.message, message)
 	else:
 		assert False, 'did not raise %r' % (exc_type,)
 

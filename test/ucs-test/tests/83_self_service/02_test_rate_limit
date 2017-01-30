@@ -7,9 +7,10 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
-from test_self_service import self_service_user, HTTPError, capture_mails
+from test_self_service import self_service_user, capture_mails
 from univention.testing.ucr import UCSTestConfigRegistry as UCR
 from univention.config_registry import handler_set, handler_unset
+from univention.lib.umc import ServiceUnavailable
 
 from subprocess import call
 from time import sleep
@@ -72,11 +73,9 @@ def fail_after(user, x, retry_after):
 	try:
 		print 'We should fail now...'
 		user.send_token('email')
-	except HTTPError as exc:
+	except ServiceUnavailable as exc:
 		retry_after = 'Please retry in %s.' % (retry_after,)
-		assert isinstance(exc.content, dict), repr(exc.content)
-		assert exc.response.status == 503
-		assert retry_after in exc.content.get('message', ''), '%r not in %r' % (retry_after, exc.content)
+		assert exc.message and retry_after in exc.message, '%r not in %r' % (retry_after, exc.content)
 		print 'Yippie, failed!'
 		return True
 	assert False, 'limit not evaluated'
