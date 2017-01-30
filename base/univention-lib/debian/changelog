@@ -1,3 +1,9 @@
+univention-lib (6.0.6-6) unstable; urgency=medium
+
+  * Bug #39731: set X-XSRF-Protection header
+
+ -- Florian Best <best@univention.de>  Mon, 30 Jan 2017 19:20:38 +0100
+
 univention-lib (6.0.6-5) unstable; urgency=medium
 
   * Bug #34498: fix error handling
