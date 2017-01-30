@@ -175,11 +175,19 @@ if configRegistry.is_true('connector/ad/mapping/user/primarymail'):
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='proxyAddresses',
 						mapping = (
-							proxyAddresses.ucs_to_ad_mapping,
+							proxyAddresses.to_proxyAddresses,
 							proxyAddresses.to_mailPrimaryAddress
 						),
 						compare_function = proxyAddresses.equal,
 						con_value_merge_function = proxyAddresses.merge_ucs2con,
+					),
+					"""
+	print """
+					'mailPrimaryAddress_to_mail': univention.connector.attribute (
+						sync_mode='write',
+						ucs_attribute='mailPrimaryAddress',
+						ldap_attribute='mailPrimaryAddress',
+						con_attribute='mail',
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
@@ -345,11 +353,19 @@ if configRegistry.is_true('connector/ad/mapping/group/primarymail'):
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='proxyAddresses',
 						mapping = (
-							proxyAddresses.ucs_to_ad_mapping,
+							proxyAddresses.to_proxyAddresses,
 							proxyAddresses.to_mailPrimaryAddress
 						),
 						compare_function = proxyAddresses.equal,
 						con_value_merge_function = proxyAddresses.merge_ucs2con,
+					),
+					"""
+	print """
+					'mailPrimaryAddress_to_mail': univention.connector.attribute (
+						sync_mode='write',
+						ucs_attribute='mailAddress',
+						ldap_attribute='mailPrimaryAddress',
+						con_attribute='mail',
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
