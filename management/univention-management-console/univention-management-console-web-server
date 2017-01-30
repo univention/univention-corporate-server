@@ -447,18 +447,14 @@ class SAMLUser(object):
 def default_error_page(status, message, traceback, version, result=None):
 	if traceback:
 		CORE.error('%s' % (traceback,))
-	# accept_json, accept_html = True, True
-	# for accept in cherrypy.request.headers.elements('Accept'):
-	#	acceptable = accept.qvalue > 0
-	#	mimetype = accept.value
-	#	if mimetype in ('*/*', 'text/*', 'text/html'):
-	#		accept_html = acceptable
-	#	if mimetype in ('*/*', 'application/*', 'application/json'):
-	#		accept_json = acceptable
-	is_ajax = cherrypy.request.headers.get('X-Requested-With', '').lower() == 'XMLHttpRequest'.lower()
-
-	# if not accept_json or (not is_ajax and accept_html):
-	if not is_ajax:
+	accept_json, accept_html = 0, 0
+	for accept in cherrypy.request.headers.elements('Accept'):
+		mimetype = accept.value
+		if mimetype in ('*/*', 'text/*', 'text/html'):
+			accept_html = max(accept_html, accept.qvalue)
+		if mimetype in ('*/*', 'application/*', 'application/json'):
+			accept_json = max(accept_json, accept.qvalue)
+	if accept_json < accept_html:
 		return default_error_page_html(status, message, traceback, version, result)
 	page = default_error_page_json(status, message, traceback, version, result)
 	if 'X-Iframe-Response' in cherrypy.request.headers:
@@ -881,7 +877,7 @@ class CPCommand(CPgeneric):
 
 	def get_request_upload(self, path, args):
 		self._log('info', 'Handle upload command')
-		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		cherrypy.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
 		if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
 			cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		req = Request('UPLOAD', arguments=[path])
@@ -1145,7 +1141,7 @@ class SAML(Ressource):
 		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
-		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		cherrypy.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
 		cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
