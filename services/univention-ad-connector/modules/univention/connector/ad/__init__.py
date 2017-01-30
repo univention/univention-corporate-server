@@ -2407,6 +2407,10 @@ class ad(univention.connector.ucs):
 						if attr not in (attribute.con_attribute, attribute.con_other_attribute):
 							continue
 
+						if not attribute.sync_mode in ['write', 'sync']:
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
+							continue
+
 						if attr not in ad_object:
 							if value:
 								if attribute.ucs_value_map_function:
@@ -2427,6 +2431,10 @@ class ad(univention.connector.ucs):
 					for attr_key in self.property[property_type].post_attributes.keys():
 						post_attribute = self.property[property_type].post_attributes[attr_key]
 						if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
+							continue
+
+						if not post_attribute.sync_mode in ['write', 'sync']:
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
 							continue
 
 						if post_attribute.reverse_attribute_check:

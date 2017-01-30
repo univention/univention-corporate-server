@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.5-13) unstable; urgency=low
+
+  * Bug #42618: support attribute level sync_mode configuration
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 17:19:43 +0100
+
 univention-ad-connector (11.0.5-12) unstable; urgency=low
 
   * Bug #40816: fixed "Determine ad_ldap_base" in open_ad()
