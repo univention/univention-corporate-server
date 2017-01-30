@@ -131,7 +131,7 @@ def wait_for_slapd_to_be_started():
     Looks for slapd process and sleeos few seconds if not found.
     """
     for proc in psutil.process_iter():
-        if 'slapd' in proc.name:
+        if 'slapd' in proc.name():
             # 'slapd' process found
             return
 
