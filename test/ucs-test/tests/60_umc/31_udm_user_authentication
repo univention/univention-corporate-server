@@ -71,10 +71,10 @@ class TestUMCUserAuthentication(UDMModule):
         """
         # authenticate as 'Administrator' to be able to change user's password:
         print("\nTrying to authenticate to UMC with username '%s' and "
-              "a password '%s':" % (self.username, self.password))
-        if not self.authenticate_to_umc(self.username, self.password):
+              "a password '%s':" % (self.test_username, self.test_password))
+        if not self.authenticate_to_umc(self.test_username, self.test_password):
             utils.fail("Failed to authenticate as '%s' with password '%s'."
-                       % (self.username, self.password))
+                       % (self.test_username, self.test_password))
 
         print "\nChanging '%s' user password to '%s'" % (user_dn, new_password)
         options = [{"object": {"password": new_password,
