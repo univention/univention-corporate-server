@@ -638,7 +638,7 @@ if [ -n "$KerberosPasswd" ]; then
 		fi
 	fi
 
-hostname "$hostname"
+hostname "$hostname" >>/var/log/univention/join.log 2>&1
 univention-config-registry set hostname="$hostname" ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 
 if [ -e "/usr/lib/univention-install/.index.txt" ]; then

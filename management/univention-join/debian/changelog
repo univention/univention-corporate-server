@@ -1,3 +1,9 @@
+univention-join (8.0.4-8) unstable; urgency=low
+
+  * Bug #43381: redirect hostname warning to join.log
+
+ -- Felix Botner <botner@univention.de>  Tue, 31 Jan 2017 10:04:59 +0100
+
 univention-join (8.0.4-7) unstable; urgency=low
 
   * Bug #39068: Only update hostane and hosdn after /etc/machine.secret
