@@ -581,6 +581,11 @@
 					to flush caches during initial install before committing
 					the SYSVOL ACLs (<u:bug>41319</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Samba has been adjusted to avoid problems in case
+					an administrator created a container CN=System somewhere
+					(<u:bug>31763</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
