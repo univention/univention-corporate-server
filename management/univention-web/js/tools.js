@@ -881,11 +881,11 @@ define([
 					open: false,
 					content: '<pre>' + entities.encode(traceback) + '</pre>'
 				}, {
-					type: "umc/widgets/TextArea",
+					type: "TextArea",
 					name: 'remark',
 					label: _('Remarks (e.g. steps to reproduce) (optional)')
 				}, {
-					type: "umc/widgets/TextBox",
+					type: "TextBox",
 					name: 'email',
 					label: _('Your email address (optional)')
 				}]
