@@ -1,3 +1,9 @@
+univention-management-console (9.0.19-1) unstable; urgency=medium
+
+  * Bug #39731: enforce X-XSRF-Protection request header to be set
+
+ -- Florian Best <best@univention.de>  Tue, 31 Jan 2017 16:51:37 +0100
+
 univention-management-console (9.0.18-2) unstable; urgency=medium
 
   * Bug #42261: changed layout of header, removed animation of modules and

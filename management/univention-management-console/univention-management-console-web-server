@@ -703,9 +703,9 @@ class CPgeneric(Ressource):
 
 	def add_request_headers(self, request):
 		request.http_method = cherrypy.request.method
-		request.headers = dict(cherrypy.request.headers)
+		request.headers = dict((name.decode('ISO8859-1').title(), value.decode('ISO8859-1')) for name, value in cherrypy.request.headers.iteritems())
 		request.headers.pop('Cookie', None)
-		request.cookies = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
+		request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
 
 	def add_response_headers(self, response):
 		cherrypy.response.headers.update(response.headers)

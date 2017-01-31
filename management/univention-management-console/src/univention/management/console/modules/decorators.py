@@ -43,9 +43,9 @@ logic is often as simple as returning one single value.
 This module provides functions that can be used to separate repeating
 tasks from the actual business logic. This means:
 
- * less time to code
- * fewer bugs
- * consistent behaviour throughout the UMC in standard cases
+* less time to code
+* fewer bugs
+* consistent behaviour throughout the UMC in standard cases
 
 Note that the functions defined herein do not cover every corner case during
 UMC module development. You are not bound to use them if you need more
@@ -62,12 +62,13 @@ import functools
 from threading import Thread
 
 from univention.lib.i18n import Translation
-_ = Translation('univention.management.console').translate
 
-from univention.management.console.base import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_OptionSanitizeError
+from univention.management.console.base import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error, UMC_OptionSanitizeError
 from univention.management.console.log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
+
+_ = Translation('univention.management.console').translate
 
 
 def sanitize(*args, **kwargs):
@@ -266,7 +267,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 			try:
 				return '%s_%s_%s' % (self._saved_dict[variable1], variable2, flavor)
 			except KeyError:
-				raise UMC_CommandError('Something went wrong')
+				raise UMC_Error('Something went wrong')
 
 	'''
 	if function is None:
@@ -351,7 +352,7 @@ def multi_response(function=None, with_flavor=None, single_values=False, progres
 					# now they are set
 					yield '%s_%s' % (self._saved_dict[variable1], variable2)
 			except KeyError:
-				raise UMC_CommandError('Something went wrong')
+				raise UMC_Error('Something went wrong')
 			else:
 				# only when everything went right...
 				do_some_cleanup_stuff()
@@ -615,7 +616,7 @@ def file_upload(function):
 
 	def _response(self, request):
 		if request.command != 'UPLOAD':
-			raise UMC_CommandError(_('%s can only be used as UPLOAD') % (function.__name__))
+			raise UMC_Error(_('%s can only be used as UPLOAD') % (function.__name__))
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
@@ -646,6 +647,21 @@ def require_password(function):
 		self.require_password()
 		return function(self, request, *args, **kwargs)
 	return _decorated
+
+
+def allow_get(function):
+	function.allow_get = True
+	return function
+
+
+def prevent_xsrf_check(function):
+	function.xsrf_protection = False
+	return function
+
+
+def prevent_referer_check(function):
+	function.referer_protection = False
+	return function
 
 
 __all__ = ['simple_response', 'multi_response', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload', 'reloading_ucr', 'require_password']

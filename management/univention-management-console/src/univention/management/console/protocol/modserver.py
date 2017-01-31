@@ -36,6 +36,13 @@ the UMC server class
 :class:`~univention.management.console.protocol.server.Server`.
 """
 
+import errno
+import sys
+import traceback
+import socket
+import locale
+import notifier
+
 from .server import Server
 from .message import Response, Message, IncompleteMessageError, ParseError
 from .definitions import (
@@ -50,13 +57,6 @@ from univention.management.console.log import MODULE, PROTOCOL
 from univention.lib.i18n import Locale, Translation
 
 _ = Translation('univention.management.console').translate
-
-import errno
-import sys
-import traceback
-import socket
-import locale
-import notifier
 
 
 class ModuleServer(Server):
@@ -103,7 +103,8 @@ class ModuleServer(Server):
 			error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
 			MODULE.error(error)
 			if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
-				error = '\n'.join((_('The requested module %r does not exist.') % (modname,),
+				error = '\n'.join((
+					_('The requested module %r does not exist.') % (modname,),
 					_('The module may have been removed recently.'),
 					_('Please relogin to the Univention Management Console to see if the error persists.'),
 					_('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),

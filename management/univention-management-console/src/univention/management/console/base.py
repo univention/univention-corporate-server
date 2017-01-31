@@ -112,6 +112,7 @@ import traceback
 import ldap
 import ldap.sasl
 import sys
+import urlparse
 
 from univention.lib.i18n import Translation
 
@@ -129,10 +130,11 @@ _ = Translation('univention.management.console').translate
 class UMC_Error(Exception):
 	status = BAD_REQUEST
 
-	def __init__(self, message=None, status=None, result=None):
+	def __init__(self, message=None, status=None, result=None, headers=None):
 		super(UMC_Error, self).__init__(message)
 		self.msg = message
 		self.result = result
+		self.headers = None
 		if isinstance(status, int):
 			self.status = status
 
@@ -270,20 +272,33 @@ class Base(signals.Provider, Translation):
 		self.__requests[request.id] = (request, method)
 
 		try:
-			function = getattr(self, method).__func__
+			function = getattr(self, method)
 		except AttributeError:
 			message = _('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
 			self.finished(request.id, None, message=message, status=500)
 			return
 
-		MODULE.info('Executing %s' % (request.arguments,))
 		try:
-			function(self, request, *args, **kwargs)
+			MODULE.info('Executing %s' % (request.arguments,))
+			self.security_checks(request, function)
+			function.__func__(self, request, *args, **kwargs)
 		except (KeyboardInterrupt, SystemExit):
 			self.finished(request.id, None, _('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
 			raise
 		except:
 			self.__error_handling(request, method, *sys.exc_info())
+
+	def security_checks(self, request, function):
+		if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
+			status = 405 if request.http_method in (u'GET', u'HEAD') else 501
+			raise UMC_Error(_('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
+
+		if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
+			raise UMC_Error(_('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
+
+		if getattr(function, 'referer_protection', True) and request.headers.get('Referer') and not urlparse.urlparse(request.headers['Referer']).path.startswith('/univention/'):
+			# FIXME: we must also check the netloc/hostname/IP
+			raise UMC_Error(_('The "Referer" HTTP header must start with "/univention/".'), status=503)
 
 	def thread_finished_callback(self, thread, result, request):
 		if not isinstance(result, BaseException):
@@ -301,6 +316,7 @@ class Base(signals.Provider, Translation):
 	def __error_handling(self, request, method, etype, exc, etraceback):
 		message = ''
 		result = None
+		headers = None
 		try:
 			try:
 				self.error_handling(etype, exc, etraceback)
@@ -311,6 +327,7 @@ class Base(signals.Provider, Translation):
 		except UMC_Error as exc:
 			status = exc.status
 			result = exc.result
+			headers = exc.headers
 			if isinstance(exc, UMC_OptionTypeError):
 				message = _('An option passed to %(method)s has the wrong type: %(exc)s') % {'method': method, 'exc': exc}
 			elif isinstance(exc, UMC_OptionMissing):
@@ -327,7 +344,7 @@ class Base(signals.Provider, Translation):
 				'text': unicode(traceback.format_exc())
 			}
 		MODULE.process(str(message))
-		self.finished(request.id, result, message, status=status)
+		self.finished(request.id, result, message, status=status, headers=headers)
 
 	def default_response_headers(self):
 		return {}
