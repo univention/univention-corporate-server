@@ -8,9 +8,10 @@ desc: |
  This update addresses the following issue(s):
  * The LDAP modification list can now be logged in case of a traceback
    if the changes are synchronized from UCS to Active Directory.
- * The lockup for the LDAP base DN on the AD server has been fixed.
- * The attribute mapping for windowscomputer->samAccountName has been
-   set to write only (changes in AD samAccountName are handle via the
-   windowscomputer->cn mapping).
+ * The lookup for the LDAP base DN of the Active Directory server has
+   been fixed.
+ * The samAccountName sycnhronization for Windows clients has been set
+   to write only because a changed samAccountName attribute in Active
+   Directory is handled via the CN synchronization.
  * Revised mapping for MS-Exchange related 'proxyAddresses'
 bug: [29988,40816,43229,43216]
