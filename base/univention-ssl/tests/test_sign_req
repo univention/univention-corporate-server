@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+init
+
+# gen req
+opensslconf="$sslbase/my-ssl.conf"
+password="univention"
+days="1000"
+name="${R64}"
+subjectAltName="dummy"
+mk_config "$opensslconf" "$password" "$days" "$name" "$subjectAltName"
+openssl genrsa -out "$sslbase/my-private.key" "2048"
+openssl req -batch -config "$opensslconf" -new -key "$sslbase/my-private.key" -out "$sslbase/my-req.pem"
+openssl req -in "$sslbase/my-req.pem" -text
+
+univention-certificate sign -request "$sslbase/my-req.pem"
+list_cert_names | grep -F -e "${R64}"
+[ 01 = "$(has_valid_cert "${R64}")" ]
+
+renew_cert "${name}"
+list_cert_names | grep -F -e "${R64}"
+[ 02 = "$(has_valid_cert "${R64}")" ]
+
+revoke_cert "${name}"
+has_valid_cert "${R64}" && exit 1
+list_cert_names | grep -F -e "${R64}" && exit 1
+
+:

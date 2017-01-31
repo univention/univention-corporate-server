@@ -46,10 +46,12 @@ usage () {
 	echo "        check"
 	echo "        dump"
 	echo "        list"
+	echo "        sign"
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
 	echo "        -days <days>"
+	echo "        -request <req.pem>"
 
 	[ -n "$1" ] && exit 2 || exit 0
 }
@@ -88,8 +90,10 @@ do
 	check) command="$1" ;;
 	list) command="$1" name="DUMMY" ;;
 	dump) command="$1" ;;
+	sign) command="$1" name="DUMMY" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
 	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
+	-request|--request) request="${2:?Missing argument to -request}" ; shift ;;
 	-h|--help|--usage|-\?) usage ;;
 	-*) usage "Unknown option: '$1'" >&2 ;;
 	*) usage "Unknown command: '$1'" >&2 ;;
@@ -99,8 +103,10 @@ done
 
 [ -n "$command" ] || usage "Missing command"
 : ${name:?Missing argument '-name'}
+[ "$command" = "sign" ] && : ${request:?Missing argument '-request'}
 
-. /usr/share/univention-ssl/make-certificates.sh
+. ${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}
+
 cd "$SSLBASE"
 
 new () {
@@ -154,6 +160,20 @@ dump () {
 			die "Can not read file '$filename'"
 		echo "Dump certificate: $name"
 		openssl x509 -in "$filename" -noout -text
+}
+
+sign () {
+	run_only master exclusive
+	[ -r "$request" ] || die "Can not read request file '$request'"
+	name="$(getcnreq "$request")"
+	[ -n "$name" ] || die "Can not find CN in request '$request'"
+	echo "Signing request: $name"
+	EXTERNAL_REQUEST_FILE=$request gencert "$SSLBASE/$name" "$name" "$days"
+	if getent group "DC Backup Hosts" 2>&1 >/dev/null
+	then
+		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+		chmod -R g+rX "$SSLBASE/$name"
+	fi
 }
 
 "$command"
