@@ -1,3 +1,9 @@
+univention-dojo (10.0.0-3) unstable; urgency=medium
+
+  * Bug #42291: Updated dojo 1.12.1 and xstyle 0.3.2 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 31 Jan 2017 11:21:49 +0100
+
 univention-dojo (10.0.0-2) unstable; urgency=medium
 
   * Bug #42291: Added/Updated dgrid and dstore 

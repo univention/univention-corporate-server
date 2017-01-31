@@ -61,15 +61,11 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
 	patch -p1 < ../fix_Dialog_resize_handling.patch && \
 	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch && \
-	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch && \
-	patch -p1 < ../fix_dojo_uacss_add_rules_for_trident.patch
+	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz
 	mkdir -p libs
 	tar -C libs --no-same-owner -xzf $<
 	if [ ! -d $@ ]; then mv $@*/ $@; fi
-	if echo "$<" | grep -q xstyle; then \
-		patch -p0 < fix_xstyle.patch; \
-	fi
 

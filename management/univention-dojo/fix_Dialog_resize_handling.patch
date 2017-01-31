@@ -11,16 +11,15 @@
  			this._relativePosition = nodePosition;
  			this._position();
  		},
-@@ -210,14 +210,15 @@
+@@ -213,14 +213,15 @@
  				var node = this.domNode,
  					viewport = winUtils.getBox(this.ownerDocument),
  					p = this._relativePosition,
--					bb = p ? null : domGeometry.position(node),
-+					bb = domGeometry.position(node),
- 					l = Math.floor(viewport.l + (p ? p.x : (viewport.w - bb.w) / 2)),
--					t = Math.floor(viewport.t + (p ? p.y : (viewport.h - bb.h) / 2))
-+					t = Math.floor(viewport.t + (p ? p.y : Math.max(0, (viewport.h - bb.h) / 2)))
- 					;
+					bb = domGeometry.position(node),
+					l = Math.floor(viewport.l + (p ? Math.min(p.x, viewport.w - bb.w) : (viewport.w - bb.w) / 2)),
+-					t = Math.floor(viewport.t + (p ? Math.min(p.y, viewport.h - bb.h) : (viewport.h - bb.h) / 2));
++					t = Math.floor(viewport.t + (p ? Math.min(p.y, viewport.h - bb.h) : Math.max(0, (viewport.h - bb.h) / 2)));
+
  				domStyle.set(node, {
  					left: l + "px",
  					top: t + "px"
