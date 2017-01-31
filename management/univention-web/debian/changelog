@@ -1,3 +1,10 @@
+univention-web (1.0.8-1) unstable; urgency=medium
+
+  * Bug #42261: various styling changes for the umcOverview of the new
+    UMC 4.2 design
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Jan 2017 10:36:48 +0100
+
 univention-web (1.0.7-1) unstable; urgency=medium
 
   * Bug #42169: fix circular import
