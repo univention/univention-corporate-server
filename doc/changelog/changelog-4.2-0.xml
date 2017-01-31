@@ -672,6 +672,11 @@
 				<package>golang-github-pmezard-go-difflib</package>, <package>libseccomp</package>,
 				<package>golang-github-vishvananda-netns</package>, <package>golang-objx</package> (<u:bug>42282</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The following packages have been added to the maintained section of
+				the software repository:
+				<package>python-cups</package>, <package>univention-mysql</package> (<u:bug>42311</u:bug>, <u:bug>42509</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
