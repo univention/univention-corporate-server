@@ -777,7 +777,8 @@ class ucs:
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'))) or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn))):
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), old, new))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1216,7 +1217,7 @@ class ucs:
 					object_mapping = self._object_mapping(key, subobject, 'ucs')
 					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
 					if not self._ignore_object(key, object_mapping):
-						if not self.sync_to_ucs(key, subobject, object_mapping['dn']):
+						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
 							try:
 								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
 							except (ldap.SERVER_DOWN, SystemExit):
@@ -1231,7 +1232,7 @@ class ucs:
 			else:
 				raise
 
-	def sync_to_ucs(self, property_type, object, premapped_ad_dn, retry=True):
+	def sync_to_ucs(self, property_type, object, premapped_ad_dn, original_object, retry=True):
 		_d = ud.function('ldap.sync_to_ucs')  # noqa: F841
 		# this function gets an object from the ad class, which should be converted into a ucs modul
 
@@ -1326,14 +1327,15 @@ class ucs:
 			# LDAP idletimeout? try once again
 			if retry:
 				self.open_ucs()
-				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
+				return self.sync_to_ucs(property_type, object, premapped_ad_dn,
+					original_object, False)
 			else:
 				raise
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, old_dn=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object = None, new_ucs_object = None):
 		# dummy
 		return False
 
