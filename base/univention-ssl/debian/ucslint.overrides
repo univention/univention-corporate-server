@@ -13,3 +13,4 @@
 0010-2: tests/test_init_valid
 0010-2: tests/test_role
 0010-2: tests/test_defaults
+0010-2: tests/test_sign_req

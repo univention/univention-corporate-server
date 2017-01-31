@@ -378,6 +378,33 @@ revoke_cert () {
 	gencrl
 }
 
+# Parameter 1: Request file
+
+getcnreq () {
+	local request="${1:?Missing argument: request}"
+	openssl req -noout -verify -in "$request" 2>/dev/null
+	if [ ! $? -eq 0 ]
+	then
+		echo "FATAL: could not verify request '$request'" >&2
+		return 1
+	fi
+	# CN=blabla/bla/emailAddress
+	# CN=blablabla/bla/OU=youknow/email
+	# Corporate Server/CN=dummy.bla.bla/emailAddress=ssl@w2k12.test
+	# Corporate Server/CN=dummy.bla.bla
+python -c '
+try:
+	import sys
+	import M2Crypto
+	req = M2Crypto.X509.load_request("'$request'")
+	subject = req.get_subject()
+	cn = subject.get_entries_by_nid(M2Crypto.m2.NID_commonName)
+	if cn: print cn[0].get_data().as_text().replace("/", ".")
+except Exception as err:
+	sys.stderr.write("FATAL: could not get CN from request '$request' (%s)\n" % err)
+	sys.exit(1)
+'
+}
 
 # Parameter 1: Name des Unterverzeichnisses, in dem das neue Zertifikat abgelegt werden soll
 # Parameter 2: Name des CN für den das Zertifikat ausgestellt wird.
@@ -397,16 +424,22 @@ gencert () {
 
 	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 
-	# generate a key pair
 	install -m 700 -d "$name"
 	if [ ${#fqdn} -gt 64 ]
 	then
 		echo "INFO: FQDN '$fqdn' is longer than 64 characters, using hostname '$hostname' as CN."
 		cn="$hostname"
 	fi
-	mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname"
-	openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
-	openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
+	if [ -n "$EXTERNAL_REQUEST_FILE" ]
+	then
+		cp "$EXTERNAL_REQUEST_FILE" "$name/req.pem"
+		[ -n "$EXTERNAL_REQUEST_FILE_KEY" ] && cp "$EXTERNAL_REQUEST_FILE_KEY" "$name/private.key"
+	else
+		# generate a key pair
+		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname"
+		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
+		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
+	fi
 
 	_common_gen_cert "$name" "$fqdn"
 }
