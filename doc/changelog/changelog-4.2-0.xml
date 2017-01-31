@@ -100,6 +100,10 @@
 					matches this filter) can be configured with the &ucsUCRV;
 					<envar>ldap/shadowbind/ignorefilter</envar> (<u:bug>36215</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					If the slapd is already running when trying to start, the init-script does not signal failure anymore. (<u:bug>43450</u:bug>).
+					A 5 s delay when starting slapd was removed. (<u:bug>43450</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
