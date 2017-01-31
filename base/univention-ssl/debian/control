@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends-Indep: debhelper,
  univention-config-dev,
- ucslint-univention
+ ucslint-univention,
+ shell-univention-lib
 Standards-Version: 3.5.5
 
 Package: univention-ssl

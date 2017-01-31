@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-20) unstable; urgency=low
+
+  * Bug #22085: added sign command
+
+ -- Felix Botner <botner@univention.de>  Tue, 31 Jan 2017 16:27:40 +0100
+
 univention-ssl (10.0.0-19) unstable; urgency=low
 
   * Bug #22085: added sign command
