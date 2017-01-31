@@ -34,7 +34,7 @@
 import uuid
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
+from univention.management.console.modules import UMC_Error, Base
 from univention.management.console.log import MODULE
 
 _ = Translation('univention-management-console-module-dummy').translate
@@ -109,6 +109,6 @@ class Instance(Base):
 			result = filter(lambda x: x['id'] in ids, Instance.entries)
 		else:
 			MODULE.warn('dummy.get: wrong parameter, expected list of strings, but got: %s' % str(ids))
-			raise UMC_OptionTypeError('Expected list of strings, but got: %s' % str(ids))
+			raise UMC_Error('Expected list of strings, but got: %s' % str(ids))
 		MODULE.info('dummy.get: results: %s' % str(result))
 		self.finished(request.id, result)
