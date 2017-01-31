@@ -2406,6 +2406,9 @@ class ad(univention.connector.ucs):
 		sys.stdout.flush()
 		return change_count
 
+	def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
+		return not old_ucs_object.get(attribute) == new_ucs_object.get(attribute)
+
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
@@ -2539,97 +2542,144 @@ class ad(univention.connector.ucs):
 		#
 		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s" % object['dn'])
-			attr_list = []
-			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes is not None:
-				for attr, value in object['attributes'].items():
-					attr_list.append(attr)
-					for attr_key in self.property[property_type].attributes.keys():
-						attribute = self.property[property_type].attributes[attr_key]
-						if attr not in (attribute.con_attribute, attribute.con_other_attribute):
+			ud.debug(ud.LDAP, ud.INFO,
+				"sync_from_ucs: old_object: %s" % old_ucs_object)
+			ud.debug(ud.LDAP, ud.INFO,
+				"sync_from_ucs: new_object: %s" % new_ucs_object)
+			object['old_ucs_object'] = old_ucs_object
+			object['new_ucs_object'] = new_ucs_object
+			attribute_list = set(old_ucs_object.keys() + new_ucs_object.keys())
+
+			# Iterate over attributes and post_attributes
+			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
+					('post_attributes', self.property[property_type].post_attributes)]:
+				if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
+					for attr in attribute_list:
+						value = new_ucs_object.get(attr)
+						if not self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object):
 							continue
 
-						if attribute.sync_mode not in ['write', 'sync']:
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
-							continue
+						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The following attribute has been changed: %s" % attr)
 
-						if attr not in ad_object:
-							if value:
-								modlist.append((ldap.MOD_ADD, attr, value))
-						else:
-							if attribute.compare_function:
-								equal = attribute.compare_function(value, ad_object[attr])
-							else:
-								equal = univention.connector.compare_lowercase(value, ad_object[attr])
-							if not equal:
-								if attribute.con_value_merge_function:
-									value = attribute.con_value_merge_function(value, ad_object[attr])
-								modlist.append((ldap.MOD_REPLACE, attr, value))
-			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
-				for attr, value in object['attributes'].items():
-					attr_list.append(attr)
-					for attr_key in self.property[property_type].post_attributes.keys():
-						post_attribute = self.property[property_type].post_attributes[attr_key]
-						if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
-							continue
-
-						if post_attribute.sync_mode not in ['write', 'sync']:
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
-							continue
-
-						if post_attribute.reverse_attribute_check:
-							if not object['attributes'].get(post_attribute.ldap_attribute):
+						for attribute in attribute_type.keys():
+							if attribute_type[attribute].ldap_attribute != attr:
 								continue
-						if attr not in ad_object:
-							if value:
-								modlist.append((ldap.MOD_ADD, attr, value))
-						else:
-							if post_attribute.compare_function:
-								equal = post_attribute.compare_function(value, ad_object[attr])
+
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
+							ad_attribute = attribute_type[attribute].con_attribute
+							ad_other_attribute = attribute_type[attribute].con_other_attribute
+
+							if attribute_type[attribute].sync_mode not in ['write', 'sync']:
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attribute)
+								continue
+
+							modify = False
+
+							# Get the UCS attributes
+							old_values = set(old_ucs_object.get(attr, []))
+							new_values = set(new_ucs_object.get(attr, []))
+
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
+
+							if attribute_type[attribute].compare_function:
+								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
+									modify = True
+							# FIXME: use defined compare-function from mapping.py
+							elif not univention.adconnector.compare_lowercase(list(old_values), list(new_values)):
+								modify = True
+
+							if not modify:
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
+								continue
+
+							# So, at this point we have the old and the new UCS object.
+							# Thus we can create the diff, but we have to check the current AD object
+
+							if not old_values:
+								to_add = new_values
+								to_remove = set([])
+							elif not new_values:
+								to_remove = old_values
+								to_add = set([])
 							else:
-								equal = univention.connector.compare_lowercase(value, ad_object[attr])
-							if not equal:
-								if post_attribute.con_value_merge_function:
-									value = post_attribute.con_value_merge_function(value, ad_object[attr])
-								modlist.append((ldap.MOD_REPLACE, attr, value))
+								to_add = new_values - old_values
+								to_remove = old_values - new_values
 
-			attrs_which_should_be_mapped = []
-			attrs_to_remove_from_ad_object = []
+							if ad_other_attribute:
+								# This is the case, where we map from a multi-valued UCS attribute to two AD attributes.
+								# telephoneNumber/otherTelephone (AD) to telephoneNumber (UCS) would be an example.
+								#
+								# The direct mapping assumes preserved ordering of the multi-valued UCS
+								# attributes and places the first value in the primary AD attribute,
+								# the rest in the secondary AD attributes.
+								# Assuming preserved ordering is wrong, as LDAP does not guarantee is and the
+								# deduplication of LDAP attribute values in `__set_values()` destroys it.
+								#
+								# The following code handles the correct distribution of the UCS attribute,
+								# to two AD attributes. It also ensures, that the primary AD attribute keeps
+								# its value as long as that value is not removed. If removed the primary
+								# attribute is assigned a random value from the UCS attribute.
+								try:
+									current_ad_values = set([v for k, v in ad_object.iteritems() if ad_attribute.lower() == k.lower()][0])
+								except IndexError:
+									current_ad_values = set([])
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 
-			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes is not None:
-				for ac in self.property[property_type].attributes.keys():
-					if not self.property[property_type].attributes[ac].con_attribute in attrs_which_should_be_mapped:
-						attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_attribute)
-					if self.property[property_type].attributes[ac].con_other_attribute:
-						if not self.property[property_type].attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
-							attrs_which_should_be_mapped.append(self.property[property_type].attributes[ac].con_other_attribute)
+								try:
+									current_ad_other_values = set([v for k, v in ad_object.iteritems() if ad_other_attribute.lower() == k.lower()][0])
+								except IndexError:
+									current_ad_other_values = set([])
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD other values: %s" % current_ad_other_values)
 
-			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
-				for ac in self.property[property_type].post_attributes.keys():
-					if not self.property[property_type].post_attributes[ac].con_attribute in attrs_which_should_be_mapped:
-						if self.property[property_type].post_attributes[ac].reverse_attribute_check:
-							if object['attributes'].get(self.property[property_type].post_attributes[ac].ldap_attribute):
-								attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
-							elif ad_object.get(self.property[property_type].post_attributes[ac].con_attribute):
-								modlist.append((ldap.MOD_DELETE, self.property[property_type].post_attributes[ac].con_attribute, None))
-						else:
-							attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_attribute)
-					if self.property[property_type].post_attributes[ac].con_other_attribute:
-						if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
-							attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)
+								new_ad_values = current_ad_values - to_remove
+								if not new_ad_values and to_add:
+									for n_value in new_ucs_object.get(attr, []):
+										if n_value in to_add:
+											to_add = to_add - set([n_value])
+											new_ad_values = [n_value]
+											break
 
-			for expected_attribute in attrs_which_should_be_mapped:
-				if expected_attribute not in object['attributes']:
-					attrs_to_remove_from_ad_object.append(expected_attribute)
+								new_ad_other_values = (current_ad_other_values | to_add) - to_remove - current_ad_values
+								if current_ad_values != new_ad_values:
+									if new_ad_values:
+										modlist.append((ldap.MOD_REPLACE, ad_attribute, new_ad_values))
+									else:
+										modlist.append((ldap.MOD_REPLACE, ad_attribute, []))
 
-				if modlist:
-					for modified_attrs in modlist:
-						if modified_attrs[1] in attrs_to_remove_from_ad_object and len(modified_attrs[2]) > 0:
-							attrs_to_remove_from_ad_object.remove(modified_attrs[1])
+								if current_ad_other_values != new_ad_other_values:
+									modlist.append((ldap.MOD_REPLACE, ad_other_attribute, new_ad_other_values))
+							else:
+								try:
+									current_ad_values = set([v for k, v in ad_object.iteritems() if ad_attribute.lower() == k.lower()][0])
+								except IndexError:
+									current_ad_values = set([])
 
-			for yank_empty_attr in attrs_to_remove_from_ad_object:
-				if yank_empty_attr in ad_object:
-					if value is not None:
-						modlist.append((ldap.MOD_DELETE, yank_empty_attr, None))
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
+
+								if (to_add or to_remove) and attribute_type[attribute].single_value:
+									modify = False
+									if not current_ad_values or not value:
+										modify = True
+									elif attribute_type[attribute].compare_function:
+										if not attribute_type[attribute].compare_function(list(current_ad_values), list(value)):
+											modify = True
+									elif not univention.adconnector.compare_lowercase(list(current_ad_values), list(value)):
+										modify = True
+									if modify:
+										if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
+											ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
+											value = attribute_type[attribute].mapping[0](self, None, object)
+										modlist.append((ldap.MOD_REPLACE, ad_attribute, value))
+								else:
+									if to_remove:
+										r = current_ad_values & to_remove
+										if r:
+											modlist.append((ldap.MOD_DELETE, ad_attribute, r))
+									if to_add:
+										a = to_add - current_ad_values
+										if a:
+											modlist.append((ldap.MOD_ADD, ad_attribute, a))
 
 			if not modlist:
 				ud.debug(ud.LDAP, ud.ALL, "nothing to modify: %s" % object['dn'])
