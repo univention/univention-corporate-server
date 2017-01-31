@@ -248,8 +248,8 @@ class TestUMCNetworkFunctionality(UDMModule):
         self.modify_network_ip_range()
         options = {"networkDN": self.test_network_dn,
                    "increaseCounter": True}
-        with pytest.raises(BadRequest):
-            network_config = self.client.umc_command('udm/network', options)
+        with pytest.raises(BadRequest) as network_config:
+            self.client.umc_command('udm/network', options)
 
         error_messages = ("Fehler bei der automatischen IP Adresszuweisung",
                           "Failed to automatically assign an IP address")
