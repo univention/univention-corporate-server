@@ -84,7 +84,8 @@ joinscript_container_file_touch () {
 
 joinscript_container_file () {
 	joinscript_container_is_running 1>/dev/null || die
-	echo "/var/lib/docker/overlay/$CONTAINER/merged/$1"
+	docker_dir="$(docker inspect --format={{.GraphDriver.Data.MergedDir}} $CONTAINER)"
+	echo "${docker_dir}/${1}"
 }
 
 joinscript_register_schema () {

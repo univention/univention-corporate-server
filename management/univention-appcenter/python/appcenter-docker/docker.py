@@ -223,12 +223,23 @@ class Docker(object):
 		self.app = app
 		self.logger = logger or _logger
 		self.container = ucr_get(self.app.ucr_container_key)
+		self._root_dir = None
 
 	def inspect_image(self):
 		return inspect(self.image)
 
 	def inspect_container(self):
 		return inspect(self.container)
+
+	@property
+	def root_dir(self):
+		if self._root_dir is None:
+			try:
+				self._root_dir = self.inspect_container()['GraphDriver']['Data']['MergedDir']
+			except KeyError:
+				# old docker (4.1). maybe containers are still running?
+				self._root_dir = os.path.join('/var/lib/docker/overlay', self.container, 'merged')
+		return self._root_dir
 
 	@property
 	def image(self):
@@ -284,7 +295,7 @@ class Docker(object):
 			return
 		if filename.startswith('/'):
 			filename = filename[1:]
-		return os.path.join('/var/lib/docker/overlay', self.container, 'merged', filename)
+		return os.path.join(self.root_dir, filename)
 
 	def ucr_filter_env_file(self):
 		if os.path.exists(self.app.get_cache_file('env')):
