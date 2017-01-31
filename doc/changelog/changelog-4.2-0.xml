@@ -176,6 +176,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Adjustments have been made to work with the new Docker version (<u:bug>43338</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
