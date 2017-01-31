@@ -926,30 +926,6 @@ class ucs:
 		# dummy
 		pass
 
-	def _generate_dn_list_from(self, files):
-		'''
-		Save all filenames in a dictonary with dn as key
-		If more than one pickle file was created for one DN we could skip the first one
-		'''
-		if len(files) > 200:
-			# Show an info if it takes some time
-			ud.debug(ud.LDAP, ud.PROCESS, 'Scan all changes from UCS ...')
-		self.dn_list = {}
-		for listener_file in files:
-			filename = os.path.join(self.listener_dir, listener_file)
-			if not filename == "%s/tmp" % self.baseConfig['%s/ad/listener/dir' % self.CONFIGBASENAME]:
-				if filename not in self.rejected_files:
-					try:
-						f = file(filename, 'r')
-					except IOError:  # file not found so there's nothing to sync
-						continue
-
-					dn, new, old, old_dn = cPickle.load(f)
-					if not self.dn_list.get(dn):
-						self.dn_list[dn] = [filename]
-					else:
-						self.dn_list[dn].append(filename)
-
 	def poll_ucs(self):
 		'''
 		poll changes from UCS: iterates over files exported by directory-listener module
@@ -968,9 +944,6 @@ class ucs:
 		done_counter = 0
 		files = sorted(os.listdir(self.listener_dir))
 
-		# Create a dictonary with all DNs
-		self._generate_dn_list_from(files)
-
 		# We may dropped the parent object, so don't show the traceback in any case
 		traceback_level = ud.WARN
 
@@ -982,43 +955,29 @@ class ucs:
 					try:
 						f = file(filename, 'r')
 					except IOError:  # file not found so there's nothing to sync
-						if self.dn_list.get(dn):
-							self.dn_list[dn].remove(filename)
 						continue
 
 					dn, new, old, old_dn = cPickle.load(f)
 
-					if len(self.dn_list.get(dn, [])) < 2 or not old or not new:
-						# If the list contains more then one file, the DN will be synced later
-						# But if the object was added or remoed, the synchronization is required
-						for i in [0, 1]:  # do it twice if the LDAP connection was closed
-							try:
-								sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
-							except (ldap.SERVER_DOWN, SystemExit):
-								# once again, ldap idletimeout ...
-								if i == 0:
-									self.open_ucs()
-									continue
-								raise
-							except:
-								self._save_rejected_ucs(filename, dn)
-								# We may dropped the parent object, so don't show this warning
-								self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
-							if sync_successfull:
-								os.remove(os.path.join(self.listener_dir, listener_file))
-								change_counter += 1
-							break
-					else:
-						os.remove(os.path.join(filename))
-						traceback_level = ud.INFO
-						# Show the drop process message only if in write or sync mode
+					# If the list contains more then one file, the DN will be synced later
+					# But if the object was added or remoed, the synchonization is required
+					for i in [0, 1]:  # do it twice if the LDAP connection was closed
 						try:
-							ud.debug(ud.LDAP, ud.INFO, 'Drop %s. The DN %s will synced later' % (filename, dn))
+							sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
+						except (ldap.SERVER_DOWN, SystemExit):
+							# once again, ldap idletimeout ...
+							if i == 0:
+								self.open_ucs()
+								continue
+							raise
 						except:
-							ud.debug(ud.LDAP, ud.INFO, 'Drop %s. The object will synced later' % (filename))
-
-					if self.dn_list.get(dn):
-						self.dn_list[dn].remove(filename)
+							self._save_rejected_ucs(filename, dn)
+							# We may dropped the parent object, so don't show this warning
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
+						if sync_successfull:
+							os.remove(os.path.join(self.listener_dir, listener_file))
+							change_counter += 1
+						break
 
 				done_counter += 1
 				print("%s" % done_counter, end=' ')
