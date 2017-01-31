@@ -284,10 +284,10 @@ class Instance(umcm.Base, ProgressMixin):
 		service = get_action(mode)
 		service.call(app=app)
 
-	@sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search']), value=StringSanitizer())
+	@sanitize(app=AppSanitizer(required=True), action=ChoicesSanitizer(['get', 'buy']))
 	@simple_response
-	def track(self, app, action, value):
-		send_information(action, app=app, value=value)
+	def track(self, app, action):
+		send_information(action, app, 200)
 
 	@require_password
 	def _invoke_docker(self, function, application, force, values):
