@@ -1,3 +1,10 @@
+univention-ldap (13.0.3-3) unstable; urgency=medium
+
+  * Remove hardcoded sleep (Bug #43450)
+  * Do not signal failure if daemon is already running (Bug #43450)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 31 Jan 2017 18:59:38 +0100
+
 univention-ldap (13.0.3-2) unstable; urgency=medium
 
   * Bug #43312: fix regex in constraint

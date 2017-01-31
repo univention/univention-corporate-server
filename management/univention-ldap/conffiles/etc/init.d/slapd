@@ -98,7 +98,6 @@ bdbrecover ()
 
 check_subschema ()
 {
-	sleep 5
 	tmpfile=`mktemp`
 	res=1
 	count=0
@@ -107,7 +106,7 @@ check_subschema ()
 		res=$?
 		if [ $res != 0 ]; then
 			count=$((count+1))
-			if [ $count -ge 2 ]; then
+			if [ $count -ge 5 ]; then
 				echo "Failed to search schema"
 				exit 1
 			fi
@@ -186,7 +185,7 @@ case "$1" in
 	# check that no slapd is running
 	if ! start-stop-daemon --start --quiet --exec $DAEMON --test > /dev/null; then
 		log_action_msg "LDAP server already running"
-		exit 2
+		exit 0
 	fi
 	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 @!@
