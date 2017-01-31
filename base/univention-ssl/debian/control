@@ -5,7 +5,9 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends-Indep: debhelper,
  univention-config-dev,
  ucslint-univention,
- shell-univention-lib
+ shell-univention-lib,
+ openssl,
+ python-m2crypto
 Standards-Version: 3.5.5
 
 Package: univention-ssl
@@ -15,7 +17,8 @@ Depends: ${misc:Depends},
  univention-directory-listener,
  openssl-blacklist,
  shell-univention-lib (>= 3.0.1-1),
- python-univention-lib (>= 3.0.1-1)
+ python-univention-lib (>= 3.0.1-1),
+ python-m2crypto
 Recommends:
  rdate,
 Description: UCS - SSL/TLS certificates
