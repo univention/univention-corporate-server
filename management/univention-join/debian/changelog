@@ -1,3 +1,9 @@
+univention-join (9.0.2-2) unstable; urgency=low
+
+  * Bug #43381: redirect hostname warning to join.log
+
+ -- Felix Botner <botner@univention.de>  Tue, 31 Jan 2017 10:07:21 +0100
+
 univention-join (9.0.2-1) unstable; urgency=medium
 
   * Bug #41539: fix decoding error if logfile contains non-utf-8 character
