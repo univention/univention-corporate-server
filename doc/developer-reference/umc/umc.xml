@@ -313,7 +313,7 @@ RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
 			<example id="umc:http:example:auth">
 				<title>Authentication request</title>
 				<programlisting><![CDATA[
-POST http://10.200.15.31/umcp/auth HTTP/1.1
+POST http://10.200.15.31/univention/auth HTTP/1.1
 
 {"options": {"username": "root", "password": "univention"}}
 				]]></programlisting>
@@ -322,7 +322,7 @@ POST http://10.200.15.31/umcp/auth HTTP/1.1
 				<title>search for users</title>
 				<simpara>Request</simpara>
 				<programlisting><![CDATA[
-POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
+POST http://10.200.15.31/univention/command/udm/query HTTP/1.1
 
 {"options": {"container": "all",
             "objectType":"users/user",

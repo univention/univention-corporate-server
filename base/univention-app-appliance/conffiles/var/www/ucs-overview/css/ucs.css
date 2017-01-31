@@ -28,7 +28,7 @@ body {
 }
 
 body #header-left {
-	background-image: url(/univention-management-console/js/dijit/themes/umc/images/appliance_header_logo.svg);
+	background-image: url(/univention/js/dijit/themes/umc/images/appliance_header_logo.svg);
 	background-size: auto 50%%;
 }
 
@@ -37,7 +37,7 @@ body #header-right {
 }
 
 body #header-right .dijitArrowButtonInner {
-	background-image: url(/univention-management-console/js/dijit/themes/umc/images/icons%(icon_color)s.svg);
+	background-image: url(/univention/js/dijit/themes/umc/images/icons%(icon_color)s.svg);
 }
 
 body .container #title {

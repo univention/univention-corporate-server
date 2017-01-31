@@ -85,7 +85,7 @@ class SourceFilesHTML(SourceFileSet):
 						new_entry = polib.POEntry(msgid=element.get('data-i18n'),
 							occurrences=[(os.path.basename(html_path), element.sourceline)])
 						new_po.append(new_entry)
-				# Inline JavaScript may use underscorce funtion, e.g. univention-management-console/index.html
+				# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
 				if tree.xpath('//script'):
 					# xgettext in UCS 4.1 has no 'JavaScript' language option
 					pofile.join_existing('Python', new_po_path, html_path, cwd=self.src_pkg_path)

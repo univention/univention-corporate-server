@@ -38,14 +38,14 @@ define([
 	//FIXME: for now, the text-loader cannot process .json files
 	// -> http://bugs.dojotoolkit.org/ticket/15867
 	// should be fixed later on
-	//"dojo/text!/univention-management-console/languages.json"
+	//"dojo/text!/univention/languages.json"
 ], function(dojo, array, json, ioQuery, cookie) {
 	var i18nTools = {};
 
 	// i18nTools.availableLanguages: Object[]
 	//		Dictonary with keys "id" and "label" of available languages They
 	//		are configured by default in:
-	//		univention-management-console/language.json
+	//		/univention/language.json
 	//		which is created by univention-config-registry using locale and
 	//		umc/server/languages/*
 	i18nTools.availableLanguages = [];

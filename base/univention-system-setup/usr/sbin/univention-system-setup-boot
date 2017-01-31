@@ -44,7 +44,7 @@ ACTION=$1
 eval "$(univention-config-registry shell)"
 
 SITE_INITIALSETUP="ucs-overview/initialsetup.html"
-SITE_SYSTEM_SETUP='univention-management-console/?module=setup\&flavor=wizard\&overview=false\&username=root'
+SITE_SYSTEM_SETUP='univention/management/?module=setup\&flavor=wizard\&overview=false\&username=root'
 
 _has_system_setup_boot_startsite() {
 	if [ "$apache2_startsite" = "$SITE_SYSTEM_SETUP" -o "$apache2_startsite" = "$SITE_INITIALSETUP" ]; then

@@ -501,7 +501,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Received an unsolicited SAML response. Please try to single sign on again by "
-"accessing /univention-management-console/saml/. Error message: %s"
+"accessing /univention/saml/. Error message: %s"
 msgstr ""
 
 #: umc/tools.js:249

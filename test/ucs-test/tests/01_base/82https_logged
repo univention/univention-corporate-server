@@ -17,7 +17,7 @@ key="Wget/$(date +%s)-$$-$RANDOM"
 echo "***Connecting this machine via $url and checking the log"
 
 wget --no-check-certificate -O - --user-agent="$key" "$url" >/dev/null 2>&1
-if egrep -q "\"GET /(ucs-overview|univention-management-console)/.*\"$key\"" /var/log/apache2/access.log; then
+if egrep -q "\"GET /(ucs-overview|univention/management/)/.*\"$key\"" /var/log/apache2/access.log; then
 	ret=100
 fi
 

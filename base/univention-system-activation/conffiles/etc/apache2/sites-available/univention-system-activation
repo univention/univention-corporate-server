@@ -43,5 +43,5 @@ Alias /icon/ /var/www/icon/
 Include /etc/apache2/sites-available/univention-management-console
 
 # redirect accesses to UMC to the activation service
-# RedirectMatch ^/univention-management-console.*$ /
+# RedirectMatch ^/univention/management/.*$ /
 

@@ -40,9 +40,9 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/scalable/univention-management-console.svg" \
-	ucs/web/overview/entries/admin/umc/link="/univention-management-console?lang=en-US" \
-	ucs/web/overview/entries/admin/umc/link/de="/univention-management-console?lang=de-DE" \
+ucr set	ucs/web/overview/entries/admin/umc/icon="/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg" \
+	ucs/web/overview/entries/admin/umc/link="/univention/management?lang=en-US" \
+	ucs/web/overview/entries/admin/umc/link/de="/univention/management?lang=de-DE" \
 	ucs/web/overview/entries/admin/umc/priority="10"
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
@@ -66,6 +66,7 @@ else
 fi
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
+	# Update to UCS 4.2
 	udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base"
 fi
 

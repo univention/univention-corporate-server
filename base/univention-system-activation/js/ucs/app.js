@@ -391,7 +391,7 @@ define([
 			lang.mixin(query, {
 				username: 'Administrator'
 			});
-			var uri = '/univention-management-console?' + ioQuery.objectToQuery(query);
+			var uri = '/univention/management/?' + ioQuery.objectToQuery(query);
 			var reachableDeferred = new Deferred();
 			reachableDeferred.then(function() {
 				location.href = uri;
