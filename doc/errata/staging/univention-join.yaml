@@ -6,5 +6,5 @@ src: univention-join
 fix: 8.0.4-8.522.201701311006
 desc: |
  This update addresses the following issue(s):
- * Redirect warning message to join.log in univention-join.
+ * Redirect warning messages to join.log in univention-join.
 bug: [43381]
