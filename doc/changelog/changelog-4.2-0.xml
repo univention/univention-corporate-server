@@ -186,6 +186,9 @@
 				<listitem><simpara>
 					The existence of objects is now checked before initializing it (<u:bug>38110</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The UDM specific JavaScript widget <function>LinkList</function> has been moved to <package>univention-management-console-module-udm</package> from <package>univention-management-console-frontend</package> (<u:bug>42321</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
