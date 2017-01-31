@@ -1,3 +1,9 @@
+univention-web (1.0.7-1) unstable; urgency=medium
+
+  * Bug #42169: fix circular import
+
+ -- Florian Best <best@univention.de>  Tue, 31 Jan 2017 10:09:40 +0100
+
 univention-web (1.0.6-1) unstable; urgency=medium
 
   * Bug #42321: Removed reference to LinkList in tests
