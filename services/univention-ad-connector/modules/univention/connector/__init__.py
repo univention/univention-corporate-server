@@ -46,6 +46,7 @@ import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+from univention.connector.adcache import ADCache
 import univention.debug2 as ud
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
@@ -420,6 +421,10 @@ class ucs:
 
 		configdbfile = '/etc/univention/%s/internal.sqlite' % self.CONFIGBASENAME
 		self.config = configdb(configdbfile)
+
+
+		adcachedbfile='/etc/univention/%s/adcache.sqlite' % self.CONFIGBASENAME
+		self.adcache = ADCache(adcachedbfile)
 
 		configfile = '/etc/univention/%s/internal.cfg' % self.CONFIGBASENAME
 		if os.path.exists(configfile):
@@ -1285,6 +1290,7 @@ class ucs:
 			if object['modtype'] == 'add':
 				result = self.add_in_ucs(property_type, object, module, position)
 				self._check_dn_mapping(object['dn'], premapped_ad_dn)
+				self.adcache.add_entry(guid, original_object.get('attributes'))
 			if object['modtype'] == 'delete':
 				if not old_object:
 					ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exsist, ignore (%s)" % object['dn'])
@@ -1292,6 +1298,7 @@ class ucs:
 				else:
 					result = self.delete_in_ucs(property_type, object, module, position)
 				self._remove_dn_mapping(object['dn'], premapped_ad_dn)
+				self.adcache.remove_entry(guid)
 			if object['modtype'] == 'move':
 				result = self.move_in_ucs(property_type, object, module, position)
 				self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
@@ -1300,6 +1307,7 @@ class ucs:
 			if object['modtype'] == 'modify':
 				result = self.modify_in_ucs(property_type, object, module, position)
 				self._check_dn_mapping(object['dn'], premapped_ad_dn)
+				self.adcache.add_entry(guid, original_object.get('attributes'))
 
 			if not result:
 				ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%s)" % object['dn'])
