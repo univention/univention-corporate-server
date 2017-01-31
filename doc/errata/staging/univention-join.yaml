@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-join
-fix: 
+fix: 8.0.4-8.522.201701311006
 desc: |
  This update addresses the following issue(s):
  * Redirect warning message to join.log in univention-join.
