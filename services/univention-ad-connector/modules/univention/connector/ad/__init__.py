@@ -2256,7 +2256,7 @@ class ad(univention.connector.ucs):
 						mapped_object = self._object_mapping(property_key, object)
 						try:
 							if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, object):
-								sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn)
+								sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn, object)
 							else:
 								sync_successfull = True
 						except (ldap.SERVER_DOWN, SystemExit):
@@ -2342,7 +2342,7 @@ class ad(univention.connector.ucs):
 					try:
 						mapped_object = self._object_mapping(property_key, object)
 						if not self._ignore_object(property_key, mapped_object):
-							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'])
+							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'], object)
 						else:
 							sync_successfull = True
 					except (ldap.SERVER_DOWN, SystemExit):
@@ -2406,7 +2406,7 @@ class ad(univention.connector.ucs):
 		sys.stdout.flush()
 		return change_count
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
