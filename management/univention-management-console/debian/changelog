@@ -1,3 +1,10 @@
+univention-management-console (9.0.18-2) unstable; urgency=medium
+
+  * Bug #42261: changed layout of header, removed animation of modules and
+    simplified styling of category buttons
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Jan 2017 10:28:43 +0100
+
 univention-management-console (9.0.18-1) unstable; urgency=medium
 
   * Bug #40612: Add language switch to the menu bar

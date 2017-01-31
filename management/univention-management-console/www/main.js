@@ -33,7 +33,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
-	"dojo/_base/fx",
 	"dojo/_base/window",
 	"dojo/window",
 	"dojo/on",
@@ -48,11 +47,9 @@ define([
 	"dojo/cookie",
 	"dojo/topic",
 	"dojo/io-query",
-	"dojo/fx/easing",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/dom",
-	"dojo/dom-style",
 	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
@@ -67,6 +64,7 @@ define([
 	"umc/auth",
 	"umc/dialog",
 	"umc/store",
+	"dijit/_WidgetBase",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
@@ -82,17 +80,15 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Button",
 	"umc/widgets/Text",
-	"umc/widgets/Module",
-	"./widgets/CategoryButton",
 	"./widgets/LanguageSwitch",
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, tap, aspect, has,
-		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
-		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton, LanguageSwitch,
+], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
+		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
+		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
+		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
 		i18nTools, _
 ) {
 	// cache UCR variables
@@ -112,108 +108,6 @@ define([
 	var isFavorite = function(mod) {
 		return array.indexOf(mod.categories, '_favorites_') >= 0;
 	};
-
-	var _StackContainer = declare([StackContainer], {
-		constructor: function() {
-			this.animationFinished = new Deferred();
-			this.animationFinished.resolve();
-			this.animationOff = 0;
-		},
-
-		ready: function() {
-			return this.animationFinished.promise;
-		},
-
-		_transition: function(/*dijit/_WidgetBase?*/ newWidget, /*dijit/_WidgetBase?*/ oldWidget) {
-			if (!oldWidget || (!newWidget.isOverview && !oldWidget.isOverview)) {
-				return this.inherited(arguments);
-			}
-
-			if (!this.animationFinished.isFulfilled()) {
-				this.animationFinished.cancel();
-			}
-
-			var overviewWidget = newWidget.isOverview ? newWidget : oldWidget;
-			var moduleWidget = newWidget.isOverview ? oldWidget : newWidget;
-			var headlessHeight = win.getBox().h - domGeometry.position(overviewWidget.domNode).y;
-			var overviewHeight = Math.max(domGeometry.getMarginBox(overviewWidget.domNode).h, headlessHeight);
-
-			var _setup = lang.hitch(this, function() {
-				win.scrollIntoView("umcHeader");
-
-				// this check was take from:
-				// https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
-				var hasScrollbar = window.innerWidth == document.documentElement.clientWidth;
-				if (hasScrollbar) {
-					style.set(baseWin.body(), {overflow: 'hidden'});
-				}
-
-				if (newWidget._wrapper) {
-					domClass.replace(newWidget._wrapper, "dijitVisible", "dijitHidden");
-				}
-
-				style.set(moduleWidget._wrapper, {
-					position: 'absolute',
-					overflow: 'hidden',
-					width: '100%'
-				});
-				style.set(overviewWidget.domNode, {
-					height: overviewHeight + 'px'
-				});
-			});
-
-			var _cleanup = lang.hitch(this, function() {
-				style.set(overviewWidget.domNode, {height: 'initial'});
-				style.set(baseWin.body(), {overflow: ''});
-				if (moduleWidget.domNode && moduleWidget._wrapper) {
-					style.set(moduleWidget.domNode, {height: 'initial'});
-					style.set(moduleWidget._wrapper, {
-						position: '',
-						overflow: '',
-						width: '',
-						top: ''
-					});
-				}
-			});
-
-			this.animationFinished = new Deferred();
-			this.animationFinished.then(_cleanup, _cleanup);
-
-			this._animation = new baseFx.Animation({
-				node: overviewWidget.domNode,
-				duration: parseInt(_ucr['umc/web/overview/tabs/animation_length'], 10) || 500,
-				curve: [0, 1],
-				easing: fxEasing.cubicInOut
-			});
-
-			// fade the module widget out of the view
-			this._animation.on('Animate', lang.hitch(this, function(value) {
-				if (!moduleWidget._wrapper) {
-					// module got destroyed... stop the animation
-					this._animation.destroy();
-					this.animationFinished.cancel();
-					return;
-				}
-				var t = newWidget.isOverview ? value * headlessHeight : (1 - value) * headlessHeight;
-				var h = headlessHeight - t;
-				style.set(moduleWidget._wrapper, {
-					top: t + 'px'
-				});
-				style.set(moduleWidget.domNode, {
-					height: h + 'px'
-				});
-			}));
-
-			var _arguments = arguments;
-			this._animation.on('End', lang.hitch(this, function() {
-				this.inherited(_arguments);
-				this.animationFinished.resolve();
-			}));
-
-			_setup();
-			this._animation.play();
-		}
-	});
 
 	var _OverviewPane = declare([GalleryPane], {
 //		categories: null,
@@ -376,7 +270,7 @@ define([
 			item.is_shallow_copy = !this._isNotShallowCopy(item.category);
 			item.category_for_color = item.category;
 			if (item.is_shallow_copy && item.categories.length > 1) {
-				item.category_for_color = array.filter(item.categories, this._isNotShallowCopy)[0] || 
+				item.category_for_color = array.filter(item.categories, this._isNotShallowCopy)[0] ||
 					array.filter(item.categories, this._isNotFavorites)[0];
 			}
 			return item;
@@ -578,65 +472,248 @@ define([
 	var UmcHeader = declare([ContainerWidget], {
 
 		// top tap bar (handed over upon instantiation)
-		tabContainer: null,
-		tabController: null,
+		_tabController: null,
+		_tabContainer: null,
 
-		_headerLeft: null,
 		_headerRight: null,
-		_headerCenter: null,
 		_mobileMenu: null,
 		_hostInfo: null,
 		_hostMenu: null,
 		_menuMap: null,
 
+		_resizeDeferred: null,
+		_handleWindowResize: function() {
+			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
+				this._resizeDeferred.cancel();
+			}
+
+			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
+				this.__updateHeaderAfterResize();
+			}), 200);
+
+			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
+		},
+
+		__updateHeaderAfterResize: function() {
+			if (tools.status('overview') && !tools.status('singleModule')) {
+				this._updateMoreTabsVisibility();
+			}
+		},
+
 		setupGui: function() {
 			// show the menu bar
 			this.setupHeader();
 			this.setupMenus();
-		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			this._headerLeft = new ContainerWidget({
-				'class': 'umcHeaderLeft col-xxs-12 col-xs-6'
-			});
-			this.addChild(this._headerLeft);
-
-			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight col-xxs-12 col-xs-6',
-				style: 'display: none'
-			});
-			this.addChild(this._headerRight);
-
-			this._headerCenter = new ContainerWidget({
-				'class': 'umcHeaderCenter',
-				style: 'display: none'
-			});
-			this.addChild(this._headerCenter);
+			on(window, 'resize', lang.hitch(this, function() {
+				this._handleWindowResize();
+			}));
 		},
 
 		setupHeader: function() {
-			this._menuMap = {};
-			if (tools.status('overview')) {
-				style.set(this._headerRight.domNode, 'display', 'block');
-				style.set(this._headerCenter.domNode, 'display', 'block');
-
-				this._setupMenu();
-			}
-
 			if (tools.status('overview') && !tools.status('singleModule')) {
 				this.setupBackToOverview();
-				this.setupSearchField();
+				this._setupModuleTabs();
+			}
+			this._setupRightHeader();
+		},
+
+		_setupModuleTabs: function() {
+			var Table = declare('Table', [ContainerWidget], {
+				baseClass: 'table',
+				buildRendering: function() {
+					this.domNode = put('table');
+					this.inherited(arguments);
+				}
+			});
+			var TableRow = declare('TableRow', [ContainerWidget], {
+				baseClass: 'tableRow',
+				buildRendering: function() {
+					this.domNode = put('tr');
+					this.inherited(arguments);
+				}
+			});
+			var TableCell = declare('TableCell', [_WidgetBase], {
+				baseClass: 'tableCell',
+				buildRendering: function() {
+					this.domNode = put('td');
+					this.inherited(arguments);
+				},
+				_setContentAttr: function(content) {
+					this.domNode.innerHTML = content;
+					this._set('content', content);
+				}
+			});
+
+			this._moreTabsDropDownButton = new DropDownButton({
+				'class': 'umcMoreTabsDropDownButton invisible',
+				iconClass: '', // prevent 'dijitNoIcon' to be set
+				dropDown: new Table({
+					'class': 'umcMoreTabsDropDownMenuContent'
+				})
+			});
+			aspect.after(this._moreTabsDropDownButton, 'openDropDown', lang.hitch(this, function(ret) {
+				domClass.add(this._moreTabsDropDownButton.dropDown._popupWrapper, 'umcMoreTabsMenuPopupWrapper');
+				return ret;
+			}));
+
+			var aspectHandlesMap = {};
+			this._tabController.on('addChild', lang.hitch(this, function(module) {
+				if (!module.isOverview) {
+					var label = new TableCell({
+						'class': 'label',
+						content: module.title
+					});
+					var closeButton = new TableCell({
+						'class': 'iconCell',
+						content: '<div class="icon"></div>'
+					});
+					var menuItem = new TableRow({
+						'class': 'dijitHidden',
+						correspondingModuleID: module.id,
+						_setLabelAttr: function(_label) {
+							label.set('content', _label);
+						}
+					});
+
+					label.on('click', lang.hitch(this._tabContainer, 'selectChild', module));
+					closeButton.on('click', lang.hitch(this._tabContainer, 'removeChild', module));
+
+					menuItem.addChild(label);
+					menuItem.addChild(closeButton);
+					this._moreTabsDropDownButton.dropDown.addChild(menuItem);
+
+					this._updateMoreTabsVisibility();
+
+					aspectHandlesMap[module.id] = aspect.after(module, '_setTitleAttr', lang.hitch(this, function(label) {
+						var menuItemToUpdate = this._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
+							return menuItem.correspondingModuleID == module.id;
+						});
+						menuItemToUpdate.set('label', label);
+						this._updateMoreTabsVisibility();
+					}), true);
+				}
+			}));
+			this._tabController.on('removeChild', lang.hitch(this, function(module) {
+				aspectHandlesMap[module.id].remove();
+				delete aspectHandlesMap[module.id];
+
+				var menuItemToRemove = this._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
+					return menuItem.correspondingModuleID == module.id;
+				});
+				this._moreTabsDropDownButton.dropDown.removeChild(menuItemToRemove);
+				this._updateMoreTabsVisibility();
+			}));
+
+			this.addChild(this._tabController);
+			this.addChild(this._moreTabsDropDownButton);
+
+			domClass.toggle(this._tabController.domNode, 'dijitHidden', tools.isTrue(tools.status('mobileView')));
+			domClass.toggle(this._moreTabsDropDownButton.domNode, 'dijitHidden', tools.isTrue(tools.status('mobileView')));
+		},
+
+		_updateMoreTabsVisibility: function() {
+			this._resetMoreTabsVisibility();
+
+			// get available width for tabs and the width the tabs currently occupy
+			var headerWidth = domGeometry.getContentBox(this.domNode).w;
+			var moreTabsWidth = domGeometry.getMarginBox(this._moreTabsDropDownButton.domNode).w;
+			var backToOverviewWidth = domGeometry.getMarginBox(this._backToOverviewButton.domNode).w;
+			var headerRightWidth = domGeometry.getMarginBox(this._headerRight.domNode).w;
+			var extraPadding = 10;
+			var availableWidthForTabs = headerWidth - (headerRightWidth + backToOverviewWidth + moreTabsWidth + extraPadding);
+			var tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
+
+			// If tabs occupy more space than available hide one tab after another until
+			// they occupy less space than available.
+			// Also show a drop down button that opens a menu with all hidden tabs.
+			var tabIndexOffset = 0;
+			var tabs = this._tabController.getChildren();
+			tabs.shift(); // remove the overview tab
+			var extraTabs = this._moreTabsDropDownButton.dropDown.getChildren();
+			var numOfTabs = extraTabs.length;
+			while (tabsWidth > availableWidthForTabs && tabIndexOffset < numOfTabs) {
+				tabIndexOffset++;
+				domClass.add(tabs[numOfTabs - tabIndexOffset].domNode, 'dijitHidden');
+				domClass.remove(extraTabs[numOfTabs - tabIndexOffset].domNode, 'dijitHidden');
+				tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
+			}
+			if (tabIndexOffset > 0) {
+				domClass.remove(this._moreTabsDropDownButton.domNode, 'invisible');
 			}
 		},
 
-		_setupMenu: function() {
-			if (tools.status('mobileView')) {
-				this._setupMobileMenuToggleButton();
-				this._setupMobileMenu();
-			} else {
-				this._setupDesktopMenu();
+		_resetMoreTabsVisibility: function() {
+			var tabs = this._tabController.getChildren();
+			tabs.shift(); // remove the overview tab
+			array.forEach(tabs, function(tab) {
+				domClass.remove(tab.domNode, 'dijitHidden');
+			});
+			var extraTabs = this._moreTabsDropDownButton.dropDown.getChildren();
+			array.forEach(extraTabs, function(tab) {
+				domClass.add(tab.domNode, 'dijitHidden');
+			});
+			domClass.add(this._moreTabsDropDownButton.domNode, 'invisible');
+		},
+
+		_setupRightHeader: function() {
+			this._headerRight = new ContainerWidget({
+				'class': 'umcHeaderRight'
+			});
+			this.addChild(this._headerRight);
+
+			if (tools.status('overview') && !tools.status('singleModule')) {
+				this.setupSearchField();
 			}
+			this._menuMap = {};
+			if (tools.status('overview')) {
+				this._setupMenu();
+			}
+			this._headerRight.addChild(new ContainerWidget({
+				'class': 'univentionLogo'
+			}));
+		},
+
+		setupSearchField: function() {
+			this._searchSidebarWrapper = new ContainerWidget({
+				'class': 'umcLiveSearchSidebarWrapper collapsed'
+			});
+			this._searchSidebar = new LiveSearchSidebar({
+				searchLabel: _('Module search')
+			});
+
+			this._searchSidebarWrapper.on('click', lang.hitch(this, function() {
+				this._searchSidebar.focus();
+				this._expandSearch();
+			}));
+
+			on(this._searchSidebar._searchTextBox.textbox, 'blur', lang.hitch(this, function() {
+				if (!this._searchSidebar.get('value')) {
+					this._collapseSearch();
+				}
+			}));
+
+			this._searchSidebarWrapper.addChild(this._searchSidebar);
+			this._headerRight.addChild(this._searchSidebarWrapper);
+		},
+
+		_expandSearch: function() {
+			domClass.remove(this._searchSidebarWrapper.domNode, 'collapsed');
+			this._updateMoreTabsVisibility();
+		},
+
+		_collapseSearch: function() {
+			domClass.add(this._searchSidebarWrapper.domNode, 'collapsed');
+		},
+
+		_setupMenu: function() {
+			this._setupMobileMenuToggleButton();
+			this._setupMobileMenu();
+		},
+
+		_setupMobileMenuToggleButton: function() {
+			var mobileMenuToggleButton = this._createMobileMenuToggleButton();
+			this._headerRight.addChild(mobileMenuToggleButton);
 		},
 
 		_setupMobileMenu: function() {
@@ -808,35 +885,26 @@ define([
 			// Menu entries or other sub-menus can be added to this sub-menu.
 			//
 			// takes an object as paramter with the following properties:
-			// 	Required:
-			// 		label: String
-			// 		popup: Object[]
-			// 			Array of objects. Each object defines a menu entry that will be a child of
-			// 			this sub-menu.
-			// 			The objects needs to be in the format described at the 'addMenuEntry' method.
-			// 			Can be empty.
+			//	Required:
+			//		label: String
+			//		popup: Object[]
+			//			Array of objects. Each object defines a menu entry that will be a child of
+			//			this sub-menu.
+			//			The objects needs to be in the format described at the 'addMenuEntry' method.
+			//			Can be empty.
 			//  Optional:
-			//  	priority: Number
-			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
-			//  		The highest number is the first Menu entry, the lowest number the last.
-			//  		Defaults to 0.
-			//  	parentMenuId: String
-			//  		The id of the parentMenu as String. The Menu entry will be the child of that parent if it exists.
-			//  		Defaults to 'umcMenuUsername'.
-			//  	id: String
+			//		priority: Number
+			//			The priority affects at which position the MenuItem will be placed in the parent menu.
+			//			The highest number is the first Menu entry, the lowest number the last.
+			//			Defaults to 0.
+			//		parentMenuId: String
+			//			The id of the parentMenu as String. The Menu entry will be the child of that parent if it exists.
+			//			Defaults to 'umcMenuUsername'.
+			//		id: String
 
 
 			//function definitions (jump to 'start')
-			var _createPopupMenuItem = function() {
-				// create the correct widget for either mobile or desktop
-				if (tools.status('mobileView')) {
-					_createPopupMenuItemMobile();
-				} else {
-					_createPopupMenuItemDesktop();
-				}
-			};
-
-			var _createPopupMenuItemMobile = lang.hitch(this, function() {
+			var _createPopupMenuItem = lang.hitch(this, function() {
 				var _menuSlide = this._buildMenuSlide(item.id, item.label, true);
 				var _parentSlide = registry.byId(item.parentMenuId || defaultParentMenu);
 				var childItemsCounterNode = domConstruct.create('div', {
@@ -882,23 +950,11 @@ define([
 				}));
 			});
 
-			var _createPopupMenuItemDesktop = lang.hitch(this, function() {
-				popupMenuItem = new PopupMenuItem({
-					priority: item.priority || 0,
-					id: item.id,
-					label: _(item.label),
-					popup: new Menu({}),
-					'class': 'dijitHidden'
-				});
-				this._menuMap[popupMenuItem.id] = popupMenuItem.popup;
-			});
-
 			var _addChildEntries = lang.hitch(this, function() {
 				// add MenuEntries to the subMenu
-				var subMenuTitleId = tools.status('mobileView') ? popupMenuItem.popup.id : popupMenuItem.id;
 				if (item.popup && item.popup.length > 0) {
 					array.forEach(item.popup, lang.hitch(this, function(menuEntry) {
-						menuEntry.parentMenuId = subMenuTitleId;
+						menuEntry.parentMenuId = popupMenuItem.popup.id;
 						if (menuEntry.popup) {
 							this.addSubMenu(menuEntry);
 						} else {
@@ -927,12 +983,10 @@ define([
 			});
 
 			var _incrementPopupMenuItemCounter = function() {
-				if (tools.status('mobileView')) {
-					var parentMenu = registry.byId(item.parentMenuId || defaultParentMenu);
-					if (parentMenu && parentMenu.popupMenuItem) {
-						parentMenu.popupMenuItem.childItemsCounter++;
-						parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
-					}
+				var parentMenu = registry.byId(item.parentMenuId || defaultParentMenu);
+				if (parentMenu && parentMenu.popupMenuItem) {
+					parentMenu.popupMenuItem.childItemsCounter++;
+					parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
 				}
 			};
 
@@ -948,19 +1002,19 @@ define([
 
 		addMenuEntry: function(/*Object*/ item) {
 			// takes an object as parameter with the following properties:
-			// 	Required:
-			// 		label: String
-			// 		onClick: Function
-			// 	Optional:
-			// 		priority: Number
-			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
-			//  		The highest number is the first Menu entry, the lowest number the last.
-			//  		Defaults to 0.
-			// 		parentMenuId: String
-			//  		The id of the parentMenu as String. The Menu entry will be the
-			//  		child of that parent if it exists.
-			//  		Defaults to 'umcMenuUsername'
-			//  	id: String
+			//	Required:
+			//		label: String
+			//		onClick: Function
+			//	Optional:
+			//		priority: Number
+			//			The priority affects at which position the MenuItem will be placed in the parent menu.
+			//			The highest number is the first Menu entry, the lowest number the last.
+			//			Defaults to 0.
+			//		parentMenuId: String
+			//			The id of the parentMenu as String. The Menu entry will be the
+			//			child of that parent if it exists.
+			//			Defaults to 'umcMenuUsername'
+			//		id: String
 			//
 			//  To insert a Menu separator leave out the required parameters. Any or none optional parameters can still be passed.
 
@@ -980,25 +1034,12 @@ define([
 			//function definitions (jump to 'start')
 			var _unhideParent = function() {
 				// unhide the parent menu in case it is hidden
-				if (parentMenu) {
-					if (tools.status('mobileView') && parentMenu.popupMenuItem) {
-						domClass.remove(parentMenu.popupMenuItem.domNode, 'dijitHidden');
-					} else {
-						domClass.remove(parentMenu.domNode, 'dijitHidden');
-					}
+				if (parentMenu && parentMenu.popupMenuItem) {
+					domClass.remove(parentMenu.popupMenuItem.domNode, 'dijitHidden');
 				}
 			};
 
 			var _createMenuEntry = function() {
-				// create the correct widget for either mobile or desktop
-				if (tools.status('mobileView')) {
-					_createMenuEntryMobile();
-				} else {
-					_createMenuEntryDesktop();
-				}
-			};
-
-			var _createMenuEntryMobile = function() {
 				if (!item.onClick && !item.label) {
 					menuEntry = new Text({
 						id: item.id,
@@ -1015,21 +1056,6 @@ define([
 					menuEntry.domNode.onclick = function() {
 						item.onClick();
 					};
-				}
-			};
-
-			var _createMenuEntryDesktop = function() {
-				if (!item.onClick && !item.label) {
-					menuEntry = new MenuSeparator({
-						id: item.id
-					});
-				} else {
-					menuEntry = new MenuItem({
-						priority: item.priority || 0,
-						label: _(item.label),
-						id: item.id,
-						onClick: item.onClick
-					});
 				}
 			};
 
@@ -1053,13 +1079,11 @@ define([
 			});
 
 			var _incrementPopupMenuItemCounter = function() {
-				if (tools.status('mobileView')) {
-					//increase counter of the popupMenuItem
-					if (!domClass.contains(menuEntry.domNode, 'separator')) {
-						if (parentMenu && parentMenu.popupMenuItem) {
-							parentMenu.popupMenuItem.childItemsCounter++;
-							parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
-						}
+				//increase counter of the popupMenuItem
+				if (!domClass.contains(menuEntry.domNode, 'separator')) {
+					if (parentMenu && parentMenu.popupMenuItem) {
+						parentMenu.popupMenuItem.childItemsCounter++;
+						parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
 					}
 				}
 			};
@@ -1077,16 +1101,16 @@ define([
 
 		addMenuSeparator: function(/*Object*/ item) {
 			// takes an object as parameter with the following properties:
-			// 	Optional:
-			// 		priority: Number
-			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
-			//  		The highest number is the first Menu entry, the lowest number the last.
-			//  		Defaults to 0.
-			// 		parentMenuId: String
-			//  		The id of the parentMenu as String. The Menu entry will be the
-			//  		child of that parent if it exists.
-			//  		Defaults to 'umcMenuUsername'
-			//  	id: String
+			//	Optional:
+			//		priority: Number
+			//			The priority affects at which position the MenuItem will be placed in the parent menu.
+			//			The highest number is the first Menu entry, the lowest number the last.
+			//			Defaults to 0.
+			//		parentMenuId: String
+			//			The id of the parentMenu as String. The Menu entry will be the
+			//			child of that parent if it exists.
+			//			Defaults to 'umcMenuUsername'
+			//		id: String
 
 			var _item = {
 				priority: item ? item.priority : undefined,
@@ -1138,77 +1162,14 @@ define([
 			domClass.toggle(this._mobileMenu.permaHeader.domNode, 'subMenu', isSubMenu);
 		},
 
-		setupSearchField: function() {
-			this._searchSidebar = new LiveSearchSidebar({
-				searchLabel: _('Module search')
-			});
-
-			if (tools.status('mobileView')) {
-				this._setupMobileSearchField();
-			} else {
-				this._setupDesktopSearchField();
-			}
-
-			this._headerRight.addChild(this._searchSidebar);
-		},
-
-		_setupMobileSearchField: function() {
-			var moduleSearchToggleButton = domConstruct.create('div', {
-				'class': 'moduleSearchToggleButton'
-			}, this._headerRight.domNode);
-
-			//create icon divs
-			put(moduleSearchToggleButton, 
-					'div.moduleSearchToggleButtonTouchStyle' +
-					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonSearchIcon' +
-					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonOpenIcon' +
-					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonCloseIcon'
-			);
-
-			//add listeners
-			if (has('touch')) {
-				on(moduleSearchToggleButton, touch.press, function() {
-					domClass.add(this, 'moduleSearchToggleButtonTouched');
-				});
-				on(moduleSearchToggleButton, [touch.leave, touch.release], function() {
-					tools.defer(lang.hitch(this, function() {
-						domClass.remove(this, 'moduleSearchToggleButtonTouched');
-					}), 200);
-				});
-			} else {
-				on(moduleSearchToggleButton, mouse.enter, function() {
-					domClass.add(this, 'moduleSearchToggleButtonHover');
-				});
-				on(moduleSearchToggleButton, mouse.leave, function() {
-					domClass.remove(this, 'moduleSearchToggleButtonHover');
-				});
-			}
-
-			this._searchSidebar.toggleButton = moduleSearchToggleButton;
-		},
-
-		_setupDesktopSearchField: function() {
-			// add an empty element to force a line break
-			this._headerRight.addChild(new Text({
-				'class': 'clearfix'
-			}));
-
-			// enforce same width as username button
-			var usernameButtonPos = domGeometry.position(this._usernameButton.domNode);
-			usernameButtonPos.w = Math.max(usernameButtonPos.w, 165);
-			style.set(this._searchSidebar.domNode, 'width', usernameButtonPos.w + 'px');
-		},
-
 		setupBackToOverview: function() {
 			this._backToOverviewButton = new Button({
-				label: _('Back to overview'),
 				'class': 'umcBackToOverview',
-				iconClass: 'umcArrowUpIcon',
 				onClick: function() {
 					require('umc/app').switchToOverview();
 				}
 			});
-			this._headerCenter.addChild(this._backToOverviewButton);
+			this.addChild(this._backToOverviewButton);
 		},
 
 		toggleBackToOverviewVisibility: function(visible) {
@@ -1217,23 +1178,13 @@ define([
 			}
 		},
 
-		_setupMobileMenuToggleButton: function() {
-			var mobileMenuToggleButton = this._createMobileMenuToggleButton();
-			this._headerRight.addChild(mobileMenuToggleButton);
-		},
-
 		_createMobileMenuToggleButton: function() {
 			var mobileMenuToggleButton = new ContainerWidget({
 				'class': 'umcMobileMenuToggleButton'
 			});
 
 			//create hamburger stripes
-			var hamburgerStripes = domConstruct.toDom("<div class='hamburgerStripe'></div><div class='hamburgerStripe'></div><div class='hamburgerStripe'></div>");
-			domConstruct.place(hamburgerStripes, mobileMenuToggleButton.domNode);
-
-			domConstruct.create('div', {
-				'class': 'umcMobileMenuToggleButtonTouchStyle'
-			}, mobileMenuToggleButton.domNode);
+			put(mobileMenuToggleButton.domNode, 'div + div + div + div.umcMobileMenuToggleButtonTouchStyle');
 
 			// add listeners
 			if (has('touch')) {
@@ -1279,7 +1230,7 @@ define([
 			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
-			this._moduleOpeningListener = this.tabController.on('selectChild', lang.hitch(this, function() {
+			this._moduleOpeningListener = this._tabController.on('selectChild', lang.hitch(this, function() {
 				this.closeMobileMenu();
 			}));
 		},
@@ -1333,9 +1284,8 @@ define([
 			}));
 
 			this._setupHelpMenu();
-			if (!tools.status('mobileView')) {
-				this._setupHostInfoMenu();
-			}
+			// TODO add into menu
+			// this._setupHostInfoMenu();
 		},
 
 		_setupHelpMenu: function() {
@@ -1605,7 +1555,7 @@ define([
 			});
 
 			// module (and overview) container
-			this._tabContainer = new _StackContainer({
+			this._tabContainer = new StackContainer({
 				'class': 'umcMainTabContainer dijitTabContainer dijitTabContainerTop'
 			});
 
@@ -1614,20 +1564,18 @@ define([
 				'class': 'umcMainTabController dijitTabContainer dijitTabContainerTop-tabs dijitHidden',
 				containerId: this._tabContainer.id
 			});
-			domClass.toggle(this._tabController.domNode, 'dijitHidden', tools.status('mobileView'));
 
 			// the header
 			this._header = new UmcHeader({
 				id: 'umcHeader',
 				'class': 'umcHeader',
-				tabController: this._tabController,
-				tabContainer: this._tabContainer
+				_tabController: this._tabController,
+				_tabContainer: this._tabContainer
 			});
 
 			this.registerTabSwitchHandling();
 
 			// put everything together
-			this._topContainer.addChild(this._tabController, 0);
 			this._topContainer.addChild(this._header);
 			this._topContainer.addChild(dialog.createNotificationMaster());
 			this._topContainer.addChild(this._tabContainer);
@@ -1663,30 +1611,32 @@ define([
 			// register events for closing and focusing
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
 				this._lastSelectedChild = oldModule;
+				this._updateHeaderColor(oldModule, newModule);
+
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
 					this._updateStateHash();
-				} else if (!newModule.$isDummy$) {
+				} else {
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
 					this._updateStateHash();
 				}
 				var overviewShown = (newModule === this._overviewPage);
-				this._header.toggleBackToOverviewVisibility(!overviewShown);
+				this._header.toggleBackToOverviewVisibility(tools.status('numOfTabs') > 0);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				if (!tools.status('mobileView')) {
 					domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
 				}
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
-					this._tabContainer.ready().then(lang.hitch(newModule.selectedChildWidget, '_onShow'));
+					newModule.selectedChildWidget._onShow();
 				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
-				if (!module.$isDummy$) {
-					this._updateNumOfTabs(-1);
-					topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
-				}
+				this._updateNumOfTabs(-1);
+				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
+				this._header.toggleBackToOverviewVisibility(tools.status('numOfTabs') > 0);
+
 				if (module == this._tabContainer.get('selectedChildWidget')) {
 					if (array.indexOf(this._tabContainer.getChildren(), this._lastSelectedChild) !== -1) {
 						this._tabContainer.selectChild(this._lastSelectedChild);
@@ -1695,6 +1645,20 @@ define([
 					}
 				}
 			}));
+		},
+
+		_updateHeaderColor: function(oldModule, newModule) {
+			var headerColorCss;
+			// remove color of oldModule if it was not the overview
+			if (oldModule && oldModule.moduleID) {
+				headerColorCss = lang.replace('headerColor-{categoryColor}', oldModule);
+				domClass.remove(this._header.domNode, headerColorCss);
+			}
+			// add color of newModule if it is not the overview
+			if (newModule.moduleID) {
+				headerColorCss = lang.replace('headerColor-{categoryColor}', newModule);
+				domClass.add(this._header.domNode, headerColorCss);
+			}
 		},
 
 		switchToOverview: function() {
@@ -1734,7 +1698,6 @@ define([
 				'umc/web/startupdialog',
 				'umc/web/host_referrallimit',
 				'umc/web/sso/newwindow',
-				'umc/web/overview/tabs/animation_length',
 				'umc/http/session/timeout',
 				'ssl/validity/host',
 				'ssl/validity/root',
@@ -1930,64 +1893,12 @@ define([
 
 			// setup menus
 			this._header.setupGui();
-			if (tools.status('mobileView') && tools.status('overview') && !tools.status('singleModule')) {
-				this._registerMobileModuleSearchListeners();
-			}
 			this._setupOverviewPage();
 			this._setupStateHashing();
 
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
-		},
-
-		_registerMobileModuleSearchListeners: function() {
-			var moduleSearchToggleButton = this._header._searchSidebar.toggleButton;
-
-			//add inner functions
-			var hideModuleSearch = lang.hitch(this, function() {
-				if (this._hideDeferred) {
-					return;
-				}
-
-				domClass.remove(this._header.domNode, 'moduleSearchActive');
-				domClass.remove(moduleSearchToggleButton, 'moduleSearchToggleButtonActive');
-				this._hideDeferred = tools.defer(function() {
-					//stub
-				}, 300).then(lang.hitch(this, function() {
-					this._hideDeferred = null;
-				}));
-			});
-			var _mobileModuleSearchClick = lang.hitch(this, function() {
-				if (this._focusDeferred && !this._focusDeferred.isFulfilled()) {
-					this._focusDeferred.cancel();
-				}
-				if (domClass.contains(this._header.domNode, 'moduleSearchActive')) {
-					this._header._searchSidebar.set('value', '');
-					this._updateQuery();
-				} else if (!this._hideDeferred) {
-					domClass.add(this._header.domNode, 'moduleSearchActive');
-					domClass.add(moduleSearchToggleButton, 'moduleSearchToggleButtonActive');
-					this._focusDeferred = tools.defer(lang.hitch(this, function() {
-						this._header._searchSidebar.focus();
-					}), 530);
-				}
-			});
-
-			//add listeners
-			on(moduleSearchToggleButton, tap, lang.hitch(this, function(evt) {
-				_mobileModuleSearchClick();
-			}));
-			this._header._searchSidebar._searchTextBox.on('blur', lang.hitch(this, function() {
-				if (this._header._searchSidebar.get('value') === "") {
-					_mobileModuleSearchClick();
-				}
-			}));
-			aspect.after(this._header._searchSidebar, '_setValueAttr', function(obj) {
-				if (obj.value === "") {
-					hideModuleSearch();
-				}
-			});
 		},
 
 		// return the index for the given module tab, i.e., the index regarding other
@@ -1998,7 +1909,7 @@ define([
 				if (itab.id == tab.id) {
 					return true;
 				}
-				if (itab.moduleID == tab.moduleID && itab.moduleFlavor == tab.moduleFlavor && !itab.$isDummy$) {
+				if (itab.moduleID == tab.moduleID && itab.moduleFlavor == tab.moduleFlavor) {
 					++idx;
 				}
 			}, this);
@@ -2120,7 +2031,6 @@ define([
 						if (!item.is_link) {
 							this.openModule(item);
 						}
-						//this._tabContainer.transition(id, item);
 					})
 				}, {
 					name: 'toggle_favorites',
@@ -2174,17 +2084,26 @@ define([
 				} else {
 					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
 				}
-				var button = new CategoryButton({
+				var button = new Button({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
 					onClick: lang.hitch(this, function() {
 						this._lastCategory = category;
 						this._updateQuery(category);
+
+						this._header._searchSidebar._searchTextBox._updateInlineLabelVisibility();
+						this._header._collapseSearch();
+						this._header._updateMoreTabsVisibility();
 					}),
 					color: color,
 					categoryID: category.id,
 					iconClass: iconClass
 				});
+
+				// add a node to the button for the colored circle
+				put(button.iconNode, '-div.umcCategoryButtonCircleWrapper div.circle <', button.iconNode);
+				styles.insertCssRule(lang.replace('.umcCategory-{id} .umcCategoryButtonCircleWrapper .circle', category), lang.replace('background-color: {0};', [color]));
+
 				category._button = button;
 				this._categoryButtons.addChild(button);
 			}));
@@ -2299,8 +2218,6 @@ define([
 					});
 					if (sameModules.length) {
 						tab = sameModules[0];
-						this._tabContainer.selectChild(tab, true);
-						deferred.resolve(tab);
 					}
 				}
 				if (!tab) {
@@ -2311,40 +2228,21 @@ define([
 						closable: tools.status('overview') && !tools.status('singleModule'),  // closing tabs is only enabled if the overview is visible
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
+						categoryColor: module.category_for_color,
 						description: module.description
 					}, props);
-					if (lang.getObject('_tabContainer.selectedChildWidget.isOverview', false, this)) {
-						var dummy = new Module(lang.mixin({
-							$isDummy$: true
-						}, params));
-						this._tabContainer.addChild(dummy);
-						this.__insertTabStyles(dummy, module);
-						this._tabContainer.selectChild(dummy);
-						this._tabContainer.ready().then(lang.hitch(this, function() {
-							tab = new BaseClass(params);
-							tab.watch('moduleState', lang.hitch(this, '_updateStateHash'));
-							this._tabContainer.addChild(tab);
-							this.__insertTabStyles(tab, module);
-							this._updateNumOfTabs(-1);
-							topic.publish('/umc/actions', module.id, module.flavor, 'open');
-							this._tabContainer.selectChild(tab, true);
-							this._tabContainer.removeChild(dummy, true);
-							dummy.destroyRecursive();
-							deferred.resolve(tab);
-							tools.checkReloadRequired();
-						}));
-					} else {
-						tab = new BaseClass(params);
-						tab.watch('moduleState', lang.hitch(this, '_updateStateHash'));
-						this._tabContainer.addChild(tab);
-						this.__insertTabStyles(tab, module);
-						this._updateNumOfTabs();
-						topic.publish('/umc/actions', module.id, module.flavor, 'open');
-						this._tabContainer.selectChild(tab, true);
-						tools.checkReloadRequired();
-						deferred.resolve(tab);
-					}
+
+					tab = new BaseClass(params);
+					tab.watch('moduleState', lang.hitch(this, '_updateStateHash'));
+					this._tabContainer.addChild(tab);
+					tab.startup();
+					this._updateNumOfTabs();
+					this.__insertTabStyles(tab, module);
+					topic.publish('/umc/actions', module.id, module.flavor, 'open');
+					tools.checkReloadRequired();
 				}
+				this._tabContainer.selectChild(tab, true);
+				deferred.resolve(tab);
 			})).otherwise(function(err) {
 				console.warn('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();
@@ -2353,20 +2251,36 @@ define([
 			return deferred;
 		},
 
+		_insertedTabStyles: [],
 		__insertTabStyles: function(tab, module) {
 			var module_flavor_css = module.id;
 			if (module.flavor) {
 				module_flavor_css = lang.replace('{id}-{flavor}', module);
 			}
 			module_flavor_css = module_flavor_css.replace(/[^_a-zA-Z0-9\-]/g, '-');
+			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
+			var menuTab = this._header._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
+				return menuItem.correspondingModuleID == tab.id;
+			});
+			domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
+
+			if (this._insertedTabStyles.includes(module_flavor_css)) {
+				// do not insert the same styles more than once
+				return;
+			}
+
+			this._insertedTabStyles.push(module_flavor_css);
+
 			var color = this.__getModuleColor(module);
 			var defaultClasses = '.umc .dijitTabContainerTop-tabs .dijitTab';
 			var cssProperties = lang.replace('background-color: {0}; background-image: none; filter: none;', [color]);
 
-			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
+			styles.insertCssRule(lang.replace('.umc .headerColor-{0} .dijitTabContainerTop-tabs .dijitTab.umcModuleTab-{1}.dijitTabHover', [module.category_for_color, module_flavor_css]), 'background-color: rgba(0, 0, 0, 0.1)');
 			styles.insertCssRule(lang.replace('.umcModuleHeader-{0}', [module_flavor_css]), cssProperties);
+			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
+			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent tr.color-{0}:hover', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
 		},
 
 		__getModuleColor: function(module) {
