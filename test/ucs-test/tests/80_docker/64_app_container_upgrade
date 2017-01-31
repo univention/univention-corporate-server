@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the container upgrade without a re-join
-## tags: [docker,SKIP]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
