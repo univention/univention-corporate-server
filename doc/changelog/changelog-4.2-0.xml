@@ -555,6 +555,7 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Docker has been updated to 1.12 (<u:bug>42282</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
@@ -649,6 +650,18 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The class <classname>univention.lib.umc_connection.UMCConnection</classname> has been replaced with the new and more flexible class <classname>univention.lib.umc.Client</classname> (<u:bug>34498</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The following packages have been backported and built in order to update to the newer docker version:
+				<package>golang</package>, <package>containerd</package>, <package>golang-1.6</package>, <package>runc</package>,
+				<package>golang-codegangsta-cli</package>, <package>golang-github-coreos-go-systemd</package>,
+				<package>golang-github-docker-go-units</package>, <package>golang-github-opencontainers-specs</package>,
+				<package>golang-github-seccomp-libseccomp-golang</package>, <package>golang-github-vishvananda-netlink</package>,
+				<package>dh-golang</package>, <package>golang-dbus</package>, <package>golang-github-xeipuuv-gojsonschema</package>,
+				<package>golang-testify</package>, <package>golang-github-xeipuuv-gojsonreference</package>,
+				<package>golang-github-xeipuuv-gojsonpointer</package>, <package>golang-github-davecgh-go-spew</package>,
+				<package>golang-github-pmezard-go-difflib</package>, <package>libseccomp</package>,
+				<package>golang-github-vishvananda-netns</package>, <package>golang-objx</package> (<u:bug>42282</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
