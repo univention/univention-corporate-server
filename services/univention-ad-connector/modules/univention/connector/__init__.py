@@ -1251,6 +1251,32 @@ class ucs:
 			return True
 
 		try:
+			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
+			# to compensate for __object_from_element
+			guid_blob = guid_unicode.encode('ISO-8859-1')
+			guid = str(ndr_unpack(misc.GUID, guid_blob))
+
+			object['changed_attributes'] = []
+			if object['modtype'] == 'modify' and original_object:
+				old_ad_object = self.adcache.get_entry(guid)
+				ud.debug(ud.LDAP, ud.INFO,
+					"sync_to_ucs: old_ad_object: %s" % old_ad_object)
+				ud.debug(ud.LDAP, ud.INFO,
+					"sync_to_ucs: new_ad_object: %s" % original_object['attributes'])
+				original_attributes = original_object['attributes']
+				if old_ad_object:
+					for attr in original_object['attributes']:
+						if old_ad_object.get(attr) != original_attributes.get(attr):
+							object['changed_attributes'].append(attr)
+					for attr in old_ad_object:
+						if old_ad_object.get(attr) != original_attributes.get(attr):
+							if attr not in object['changed_attributes']:
+								object['changed_attributes'].append(attr)
+				else:
+					object['changed_attributes'] = original_attributes.keys()
+			ud.debug(ud.LDAP, ud.INFO,
+				"The following attributes have been changed: %s" % object['changed_attributes'])
+
 			result = False
 
 			# Check if the object on UCS side should be synchronized
