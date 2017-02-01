@@ -1,0 +1,9 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test apache redirection rules
+## exposure: dangerous
+## packages: [univention-management-console-module-udm]
+
+import sys
+
+if __name__ == '__main__':
+	sys.exit(pytest.main())

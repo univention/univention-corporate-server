@@ -61,3 +61,9 @@ def ConnectionError():
 @pytest.fixture()
 def HTTPError():
 	return univention.lib.umc.HTTPError
+
+
+@pytest.fixture
+def umc_get_request(path, Client):
+	client = Client()
+	return client.request('GET', path)
