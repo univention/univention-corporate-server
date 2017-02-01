@@ -12,3 +12,4 @@ univentionLicenseCreateSignature_LDADD = ../lib/libuniventionlicense.la
 
 univentionLicenseGenerate_SOURCES = genkey.c
 univentionLicenseGenerate_LDADD = ../lib/libuniventionlicense.la
+univentionLicenseGenerate_LDFLAGS = $(CRYPTO_LIB)

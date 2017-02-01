@@ -14,14 +14,12 @@ AC_PROG_INSTALL
 AC_LANG_C
 AC_HEADER_STDC
 
-AC_CHECK_LIB([ssl], [RSA_generate_key], [SSL_LIB=-lssl], [AC_MSG_ERROR([OpenSSL library is missing])])
 AC_CHECK_LIB([crypto], [RSA_sign], [CRYPTO_LIB=-lcrypto], [AC_MSG_ERROR([Crypto library is missing])])
 AC_CHECK_LIB([ldap], [ldap_init], [LDAP_LIB=-lldap], [AC_MSG_ERROR([LDAP library is missing])])
 
 AC_CHECK_HEADER([openssl/rsa.h], [], [AC_MSG_ERROR([OpenSSL development files are missing])])
 AC_CHECK_HEADER([ldap.h], [], [AC_MSG_ERROR([LDAP developmenmt files are missing])])
 
-AC_SUBST([SSL_LIB])
 AC_SUBST([CRYPTO_LIB])
 AC_SUBST([LDAP_LIB])
 
