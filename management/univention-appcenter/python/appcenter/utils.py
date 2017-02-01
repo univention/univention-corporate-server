@@ -404,27 +404,35 @@ def container_mode():
 	return bool(ucr_get('docker/container/uuid'))
 
 
-def send_information(action, app, status):
-	utils_logger.debug('%s %s: %s', action, app.id, status)
+def send_information(action, app=None, status=200, value=None):
+	app_id = app and app.id
+	utils_logger.debug('send_information: action=%s app=%s value=%s status=%s' % (action, app_id, value, status))
+
 	server = get_server()
 	url = '%s/postinst' % server
+
 	uuid = '00000000-0000-0000-0000-000000000000'
 	system_uuid = '00000000-0000-0000-0000-000000000000'
-	if app.notify_vendor:
+	if not app or app.notify_vendor:
 		uuid = ucr_get('uuid/license', uuid)
 		system_uuid = ucr_get('uuid/system', system_uuid)
+
+	values = {
+		'action': action,
+		'status': status,
+		'uuid': uuid,
+		'system-uuid': system_uuid,
+		'role': ucr_get('server/role'),
+	}
+	if app:
+		values['app'] = app.id
+		values['version'] = app.version
+	if value:
+		values['value'] = value
+	utils_logger.debug('tracking information: %s' % str(values))
 	try:
-		values = {
-			'uuid': uuid,
-			'system-uuid': system_uuid,
-			'app': app.id,
-			'version': app.version,
-			'action': action,
-			'status': status,
-			'role': ucr_get('server/role'),
-		}
 		request_data = urllib.urlencode(values)
 		request = urllib2.Request(url, request_data)
 		urlopen(request)
 	except Exception as exc:
-		utils_logger.info('Error sending app infos to the App Center server: %s', exc)
+		utils_logger.info('Error sending app infos to the App Center server: %s' % exc)

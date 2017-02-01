@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-44) unstable; urgency=medium
+
+  * Bug #43109 + #43261: Revert the last reversions
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Feb 2017 12:03:32 +0100
+
 univention-appcenter (5.0.23-43) unstable; urgency=medium
 
   * Bug #43109: Revert
