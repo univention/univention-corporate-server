@@ -9,8 +9,7 @@ TESTS_ENVIRONMENT = \
 	host_cpu=$(host_cpu) \
 	PYTHON=$(PYTHON) \
 	PYTHON_VERSION=$(PYTHON_VERSION) \
-	LC_ALL=C \
-	$(SHELL)
+	LC_ALL=C
 TESTS = test_c
 if HAVE_PYTHON
 TESTS += test_py
