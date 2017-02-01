@@ -1,4 +1,4 @@
-univention-errata-level (4.2.0-1) unstable; urgency=low
+univention-errata-level (4.2.0-0) unstable; urgency=low
 
   * Bug #41963: Bump version to reset the errata level for UCS 4.2
 

@@ -1,0 +1,8 @@
+This is the dummy package to be shipped with a UCS minor release.
+
+For errata it will be created on-the-fly by repo/errata.py
+As such the version number in "debian/changelog" must be below
+"$MAJOR.$MINOR.$PATH-1"!
+
+Do NOT bump the first number of the package version number on each minor
+release, as this will break the above schema!
