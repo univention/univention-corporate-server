@@ -48,7 +48,7 @@ from ldap import LDAPError, INVALID_CREDENTIALS
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
-from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
+from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
 	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
@@ -270,6 +270,7 @@ class Instance(Base, ProgressMixin):
 
 		self.finished(request.id, license_data)
 
+	@prevent_xsrf_check
 	@LDAP_Connection
 	def license_import(self, request, ldap_connection=None, ldap_position=None):
 		filename = None

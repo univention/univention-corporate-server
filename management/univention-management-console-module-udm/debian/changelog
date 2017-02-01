@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.4-1) unstable; urgency=medium
+
+  * Bug #39731: prevent XSRF check when uploading license
+
+ -- Florian Best <best@univention.de>  Wed, 01 Feb 2017 17:06:18 +0100
+
 univention-management-console-module-udm (7.0.3-5) unstable; urgency=medium
 
   * Bug #42321: removed 'FIXME' comment from LinkList
