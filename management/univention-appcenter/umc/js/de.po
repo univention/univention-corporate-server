@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-01-23 17:42+0100\n"
+"POT-Creation-Date: 2017-02-01 12:15+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -155,19 +155,31 @@ msgid ""
 "<p>Univention App Center is designed for easy and comfortable administration "
 "of Apps. It uses online services provided by Univention, for example, for "
 "downloading Apps, descriptions or graphics, or for the search function.</"
-"p><p>By using Univention App Center, you agree that emerging usage data may "
-"be stored and evaluated by Univention for product improvements as well as "
-"market research purposes. Usage data consists of information such as "
-"installing/deinstalling Apps or search queries. These will be transmitted to "
-"Univention together with a unique identification of the UCS system.</"
+"p><p>By using Univention App Center, you agree that originating user data "
+"may be stored and evaluated by Univention for product improvements as well "
+"as market research purposes. Usage data consists of information such as "
+"installing / uninstalling Apps or search queries. These will be transmitted "
+"to Univention together with a unique identification of the UCS system.</"
 "p><p>When installing and uninstalling some Apps, the App provider will be "
 "notified of the operation. The e-mail address used to activate the system is "
 "transferred to the provider. Other than that, no transfer of personal or "
 "individually assignable data is made to third parties.</p><p>"
 msgstr ""
-"<p>Univention App Center dient zur einfachen und komfortablen Verwaltung von Apps. Es nutzt dabei von Univention bereit gestellte Online-Dienste, beispielsweise für das Herunterladen von Apps, von Beschreibungen oder Grafiken oder für die Suchfunktion.</p>"
-"<p>Durch die Benutzung von Univention App Center erklären Sie sich damit einverstanden, dass entstehenden Nutzungsdaten von Univention gespeichert und zur Produktverbesserung sowie zu Marktforschungszwecken ausgewertet werden können. Zu den Nutzungsdaten zählen beispielsweise die Installation/Deinstallation von Apps oder Suchanfragen. Diese werden zusammen mit einer eindeutigen Identifikation des UCS-Systems an Univention übertragen.</p>"
-"<p>Bei Installation und Deinstallation einiger Apps wird außerdem der Anbieter der jeweiligen App über den Vorgang informiert. Dabei wird auch die E-Mail-Adresse übermittelt, die zur Aktivierung des Systems verwendet wurde. Darüber hinaus erfolgt keine Weitergabe persönlicher oder individuell zuordenbarer Daten an Dritte.</p>"
+"<p>Univention App Center dient der einfachen und komfortablen Verwaltung von "
+"Apps. Es nutzt dabei von Univention bereit gestellte Online-Dienste, "
+"beispielsweise für das Herunterladen von Apps, von Beschreibungen oder "
+"Grafiken oder für die Suchfunktion.</p><p>Durch die Benutzung von Univention "
+"App Center erklären Sie sich damit einverstanden, dass entstehende "
+"Nutzungsdaten von Univention gespeichert und zur Produktverbesserung sowie "
+"zu Marktforschungszwecken ausgewertet werden können. Zu den Nutzungsdaten "
+"zählen beispielsweise die Installation/Deinstallation von Apps oder "
+"Suchanfragen. Diese werden zusammen mit einer eindeutigen Identifikation des "
+"UCS-Systems an Univention übertragen.</p><p>Bei Installation und "
+"Deinstallation einiger Apps wird außerdem der Anbieter der jeweiligen App "
+"über den Vorgang informiert. Dabei wird auch die E-Mail-Adresse übermittelt, "
+"die zur Aktivierung des Systems verwendet wurde. Darüber hinaus erfolgt "
+"keine Weitergabe persönlicher oder individuell zuordenbarer Daten an Dritte."
+"</p>"
 
 #: umc/js/appcenter/AppDetailsPage.js:1166
 #, python-format
@@ -218,7 +230,7 @@ msgstr "Weitere Einstellungen"
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: umc/js/appcenter/AppCenterPage.js:263 umc/js/appcenter/AppCenterPage.js:288
+#: umc/js/appcenter/AppCenterPage.js:265 umc/js/appcenter/AppCenterPage.js:307
 msgid "All"
 msgstr "Alle"
 
@@ -240,7 +252,7 @@ msgid "App installation notes"
 msgstr "App-Installationshinweise"
 
 #: umc/js/appcenter/AppConfigDialog.js:53
-#: umc/js/appcenter/AppDetailsDialog.js:59 umc/js/appcenter/AppCenterPage.js:63
+#: umc/js/appcenter/AppDetailsDialog.js:59 umc/js/appcenter/AppCenterPage.js:64
 #: umc/js/appcenter/AppChooseHostDialog.js:47
 #: umc/js/appcenter/AppDetailsPage.js:83
 msgid "App management"
@@ -283,7 +295,7 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autostart"
 
-#: umc/js/appcenter/SettingsPage.js:249 umc/js/appcenter/AppCenterPage.js:175
+#: umc/js/appcenter/SettingsPage.js:249 umc/js/appcenter/AppCenterPage.js:177
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -366,7 +378,7 @@ msgstr "Konfiguriere %s"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/appcenter/AppCenterPage.js:129 umc/js/appcenter/AppDetailsPage.js:821
+#: umc/js/appcenter/AppCenterPage.js:131 umc/js/appcenter/AppDetailsPage.js:821
 #: umc/js/appcenter/AppDetailsPage.js:878
 msgid "Continue"
 msgstr "Fortfahren"
@@ -422,7 +434,7 @@ msgstr "Diese Komponente deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: umc/js/appcenter/AppCenterPage.js:123 umc/js/appcenter/AppDetailsPage.js:872
+#: umc/js/appcenter/AppCenterPage.js:125 umc/js/appcenter/AppDetailsPage.js:872
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeigen"
 
@@ -537,7 +549,7 @@ msgstr "Installieren"
 msgid "Install Information"
 msgstr "Informationen zur Installation"
 
-#: umc/js/appcenter/AppCenterPage.js:64
+#: umc/js/appcenter/AppCenterPage.js:65
 msgid "Install or remove applications on this or another UCS system."
 msgstr ""
 "Fügen Sie dieser oder einer anderen UCS-Instanz Applikationen hinzu oder "
@@ -561,7 +573,7 @@ msgstr "Installation von %s"
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: umc/js/appcenter/SettingsPage.js:253 umc/js/appcenter/AppCenterPage.js:169
+#: umc/js/appcenter/SettingsPage.js:253 umc/js/appcenter/AppCenterPage.js:171
 #: umc/js/appcenter/AppDetailsPage.js:389
 msgid "Installed"
 msgstr "Installiert"
@@ -615,7 +627,7 @@ msgstr "Fortfahren nicht empfohlen"
 msgid "Less"
 msgstr "Weniger"
 
-#: umc/js/appcenter/AppCenterPage.js:91
+#: umc/js/appcenter/AppCenterPage.js:93
 msgid "Let us know if you you miss any application in Univention App Center!"
 msgstr ""
 "Teilen Sie uns mit, welche Anwendung Sie im Univention App Center vermissen!"
@@ -850,7 +862,7 @@ msgstr "Aktualisieren"
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:229
+#: umc/js/appcenter/AppCenterPage.js:231
 msgid ""
 "Registration of the applications in the domain failed. It will be retried "
 "when opening this module again. This may also cause problems when installing "
@@ -889,7 +901,7 @@ msgstr "Zurücksetzen"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/js/appcenter/AppCenterPage.js:78
+#: umc/js/appcenter/AppCenterPage.js:79
 msgid "Search applications..."
 msgstr "Suche Applikationen..."
 
@@ -949,7 +961,7 @@ msgstr "Status"
 msgid "Stop the application"
 msgstr "Applikation stoppen"
 
-#: umc/js/appcenter/AppCenterPage.js:92
+#: umc/js/appcenter/AppCenterPage.js:94
 msgid "Suggest new app"
 msgstr "Neue App vorschlagen"
 
@@ -1228,7 +1240,7 @@ msgstr "Deinstalliere %(name)s von Rechner %(host)s"
 msgid "Uninstalling %s from this host"
 msgstr "Deinstalliere %s von diesem Rechner"
 
-#: umc/js/appcenter/AppCenterPage.js:113
+#: umc/js/appcenter/AppCenterPage.js:115
 msgid "Univention App Center"
 msgstr "Univention App Center"
 
@@ -1365,7 +1377,7 @@ msgstr "eine unbekannte Anzahl"
 msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
-#: umc/js/appcenter/AppCenterPage.js:88
+#: umc/js/appcenter/AppCenterPage.js:90
 msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"
 msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 
