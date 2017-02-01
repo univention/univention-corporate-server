@@ -74,7 +74,7 @@ properties = {
 	'module': 'container/cn',
 	'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
 	'ldapMapping': 'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id,
-	'position': 'cn=custom attributes,' % udm.UNIVENTION_CONTAINER}
+	'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER}
 }
 extended_attribute = udm.create_object('settings/extended_attribute', **properties)
 

@@ -203,8 +203,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         if not self.check_dns_dhcp_in_choices("DNS_ForwardZone",
                                               domain_name):
             utils.fail("The '%s' was not reported as an option for DNS "
-                       "forward zones for '%s' computer" % (domain_name,
-                       self.test_computer_name))
+                       "forward zones for '%s' computer" % (domain_name, self.test_computer_name))
 
         print("\nChecking if a DHCP service is reported "
               "in choices for '%s' computer" % self.test_computer_name)
@@ -214,8 +213,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             if not self.check_dns_dhcp_in_choices("dhcpService",
                                                   dhcp_service_name):
                 utils.fail("The '%s' was not reported as an option for DHCP "
-                           "service for '%s' computer" % (dhcp_service_name,
-                           self.test_computer_name))
+                           "service for '%s' computer" % (dhcp_service_name, self.test_computer_name))
         else:
             print("\nCheck skipped, since no DHCP services in the "
                   "domain were found...")
@@ -236,8 +234,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         if network_config.get('ip') in (self.test_network_subnet + '.0',
                                         self.test_network_subnet + '.1'):
             utils.fail("The '%s' network configuration reported IP: '%s' "
-                       "as an option" % (self.test_network_name,
-                       network_config.get('ip')))
+                       "as an option" % (self.test_network_name, network_config.get('ip')))
 
         self.test_ip_range = [self.test_network_subnet + '.254',
                               self.test_network_subnet + '.254']
@@ -250,6 +247,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "increaseCounter": True}
         with pytest.raises(BadRequest) as network_config:
             self.client.umc_command('udm/network', options)
+        network_config = network_config.value
 
         error_messages = ("Fehler bei der automatischen IP Adresszuweisung",
                           "Failed to automatically assign an IP address")
@@ -272,8 +270,9 @@ class TestUMCNetworkFunctionality(UDMModule):
                        "choice for a test computer '%s'"
                        % (self.test_network_name, self.test_computer_name))
         network_config = self.get_network_config()
-        creation_result = self.create_computer(self.test_computer_name,
-                               [network_config.get('ip')],
+        creation_result = self.create_computer(
+            self.test_computer_name,
+            [network_config.get('ip')],
             network_config.get('dnsEntryZoneForward'),
             network_config.get('dnsEntryZoneReverse'))
         if not creation_result[0].get("success"):
@@ -285,8 +284,9 @@ class TestUMCNetworkFunctionality(UDMModule):
         print("\nAttempting to create another test computer '%s' in the "
               "test network '%s' where no more free ip addresses are left"
               % ((self.test_computer_name + '_2'), self.test_network_name))
-        creation_result = self.create_computer(self.test_computer_name + '_2',
-                               [network_config.get('ip')],
+        creation_result = self.create_computer(
+            self.test_computer_name + '_2',
+            [network_config.get('ip')],
             network_config.get('dnsEntryZoneForward'),
             network_config.get('dnsEntryZoneReverse'))
         if creation_result[0].get("success"):
