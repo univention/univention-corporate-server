@@ -131,6 +131,9 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The Listener daemon is now compiled with hardening options and return code checks have been improved (<u:bug>26039</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
 						Kerberos support was removed from the Listener (<u:bug>42678</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
