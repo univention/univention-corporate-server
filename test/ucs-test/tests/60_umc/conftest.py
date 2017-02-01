@@ -56,6 +56,11 @@ def ConnectionError():
 
 
 @pytest.fixture()
+def Unauthorized():
+	return univention.lib.umc.Unauthorized
+
+
+@pytest.fixture()
 def HTTPError():
 	return univention.lib.umc.HTTPError
 
