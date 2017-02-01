@@ -434,7 +434,7 @@ class UCSTestUDM(object):
         for signal in (15, 9):
             for proc in procs:
                 try:
-                    print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
+                    print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),)
                     os.kill(proc.pid, signal)
                 except (psutil.NoSuchProcess, EnvironmentError):
                     print 'process already terminated'
