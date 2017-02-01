@@ -201,6 +201,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The package <package>dbus-x11</package> is installed by default to silence <package>firefox</package> (<u:bug>36168</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -577,8 +578,7 @@
 				<listitem><simpara>
 				</simpara></listitem>
 				<listitem><simpara>
-					Samba has been updated to version 4.6.0~rc2
-					(<u:bug>40661</u:bug>).
+					Samba has been updated to version <literal>4.6.0~rc2</literal> (<u:bug>40661</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<package>univention-samba4</package> has been adjusted
@@ -587,7 +587,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Samba has been adjusted to avoid problems in case
-					an administrator created a container CN=System somewhere
+					an administrator created a container <uri>CN=System</uri> somewhere
 					(<u:bug>31763</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -665,7 +665,7 @@
 				The class <classname>univention.lib.umc_connection.UMCConnection</classname> has been replaced with the new and more flexible class <classname>univention.lib.umc.Client</classname> (<u:bug>34498</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The following packages have been backported and built in order to update to the newer docker version:
+				The following packages have been back-ported and built in order to update to the newer docker version:
 				<package>golang</package>, <package>containerd</package>, <package>golang-1.6</package>, <package>runc</package>,
 				<package>golang-codegangsta-cli</package>, <package>golang-github-coreos-go-systemd</package>,
 				<package>golang-github-docker-go-units</package>, <package>golang-github-opencontainers-specs</package>,
