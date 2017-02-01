@@ -3,7 +3,8 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-module-udm]
 
+import pytest
 import sys
 
 if __name__ == '__main__':
-	sys.exit(pytest.main())
+	sys.exit(pytest.main(['-s']))

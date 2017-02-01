@@ -1,16 +1,12 @@
 import pytest
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import verify_ldap_object as _verify_ldap_object, get_ldap_connection
-from univention.testing.umc import Client as _Client
+from univention.testing import ucr as _ucr, udm as _udm, utils, umc, strings
 import univention.lib.umc
 
 
-@pytest.fixture(scope="module")
+@pytest.yield_fixture()
 def ucr():
-	ucr = UCSTestConfigRegistry()
-	ucr.load()
-	return ucr
+	with _ucr.UCSTestConfigRegistry() as ucr:
+		yield ucr
 
 
 @pytest.fixture(scope="module")
@@ -28,24 +24,25 @@ def ldap_master(ucr):
 	return ucr.get('ldap/master')
 
 
-@pytest.fixture(scope="module")
-def UDM():
-	return UCSTestUDM
+@pytest.yield_fixture()
+def udm():
+	with _udm.UCSTestUDM() as udm:
+		yield udm
 
 
 @pytest.fixture(scope="module")
 def Client():
-	return _Client
+	return umc.Client
 
 
 @pytest.fixture(scope="module")
 def lo():
-	return get_ldap_connection()
+	return utils.get_ldap_connection()
 
 
 @pytest.fixture(scope="module")
 def verify_ldap_object():
-	return _verify_ldap_object
+	return utils.verify_ldap_object
 
 
 @pytest.fixture()
@@ -67,3 +64,18 @@ def HTTPError():
 def umc_get_request(path, Client):
 	client = Client()
 	return client.request('GET', path)
+
+
+@pytest.fixture
+def random_string():
+	return strings.random_string
+
+
+@pytest.fixture
+def random_name():
+	return strings.random_name
+
+
+@pytest.fixture
+def random_username():
+	return strings.random_username
