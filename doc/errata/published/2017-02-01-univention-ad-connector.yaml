@@ -32,3 +32,5 @@ desc: |
    3. 'smtp:' prefixed values in 'proxyAddresses' continue to be synchronized
    with OpenLDAP 'mailAlternativeAddress'.
 bug: [29988,40816,42618,43229,43216]
+erratum: 386
+announced: 2017-02-01
