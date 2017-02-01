@@ -1073,8 +1073,9 @@ msgid ""
 "clients. Use this only if auto-detection fails for servers with multiple IP "
 "addresses."
 msgstr ""
-"Eine IP-Adresse des Servers, der von den Clients für weitere Anfragen "
-"genutzt werden soll. Die Verwendung dieser Option wird nicht empfohlen."
+"Die IP-Adresse des DHCP-Servers, die von den Clients genutzt werden soll. "
+"Diese Option sollte nur verwendet werden, wenn die automatische Erkennung "
+"bei Servern mit mehreren IP-Adressen fehlschlägt."
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:106
 msgid "The node type of clients for NetBIOS over TCP/IP"

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.12-7) unstable; urgency=low
+
+  * Bug #34441: Fix German translation for DHCP server policy
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Feb 2017 13:22:39 +0100
+
 univention-directory-manager-modules (12.0.12-6) unstable; urgency=low
 
   * Bug #43428: Remove options from user template

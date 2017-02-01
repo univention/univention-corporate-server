@@ -331,6 +331,7 @@
 			<title>Policies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The long descriptions of the DHCP server statements policy have been corrected (<u:bug>34441</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
