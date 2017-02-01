@@ -1,4 +1,4 @@
-univention-updater (12.0.1-6) unstable; urgency=medium
+univention-updater (12.0.1-7) unstable; urgency=medium
 
   * Bug #43233: Extend the user agent string with number of users and the server role
 
