@@ -33,13 +33,12 @@
 
 import univention.config_registry
 from univention.lib import Translation, admember
-from univention.management.console.modules import Base
+from univention.management.console.base import Base, UMC_Error
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
+from univention.management.console.modules.decorators import file_upload, prevent_xsrf_check, sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
 from ldap import explode_rdn
@@ -115,6 +114,7 @@ def guess_ad_domain_language():
 			return 'de'
 	return 'en'
 
+
 def get_ad_binddn_from_name(base, server, username, password):
 	lp = LoadParm()
 	creds = Credentials()
@@ -124,9 +124,10 @@ def get_ad_binddn_from_name(base, server, username, password):
 	binddn = 'cn=%s,cn=users,%s' % (ldap.dn.escape_dn_chars(username), base)
 	try:
 		samdb = SamDB(url='ldap://%s' % server, session_info=system_session(), credentials=creds, lp=lp)
-		res = samdb.search(base,
+		res = samdb.search(
+			base,
 			scope=ldb.SCOPE_SUBTREE,
-			expression=ldap.filter.filter_format('(samAccountName=%s)', [username,]),
+			expression=ldap.filter.filter_format('(samAccountName=%s)', [username, ]),
 			attrs=['samaccountname'])
 		if res.count == 1:
 			binddn = res.msgs[0].get('dn', idx=0).extended_str()
@@ -279,6 +280,7 @@ class Instance(Base, ProgressMixin):
 		proc.signal_connect('finished', cb)
 		proc.start()
 
+	@prevent_xsrf_check
 	@file_upload
 	def upload_certificate(self, request):
 		def _return(pid, status, bufstdout, bufstderr, request, fn):
@@ -288,7 +290,7 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % (status, '\n'.join(bufstdout), '\n'.join(bufstderr)))
 				try:
 					self._enable_ssl_and_test_connection(fn)
-				except UMC_CommandError:
+				except UMC_Error:
 					message = _('Could not establish connection. Either the certificate is wrong, the Active Directory server is unreachable or it does not support SSL.')
 					success = False
 			else:
@@ -392,19 +394,19 @@ class Instance(Base, ProgressMixin):
 			admember.check_ad_account(ad_domain_info, username, password)
 		except admember.invalidUCSServerRole as exc:  # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The AD member mode can only be configured on a DC master server.'))
+			raise UMC_Error(_('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:  # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_address)
+			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_address)
 		except admember.domainnameMismatch as exc:  # check_domain()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
+			raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
 		except admember.connectionFailed as exc:  # check_connection()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.notDomainAdminInAD as exc:  # check_ad_account()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
+			raise UMC_Error(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
@@ -565,7 +567,7 @@ class Instance(Base, ProgressMixin):
 					except ADNotAvailable:
 						success = False
 				if not success:
-					raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+					raise UMC_Error(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
 			else:
 				MODULE.warn('connector is not configured yet, cannot test connection')
 

@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-1) unstable; urgency=medium
+
+  * Bug #39731: allow file uploads without XSRF protection
+
+ -- Florian Best <best@univention.de>  Wed, 01 Feb 2017 14:36:32 +0100
+
 univention-ad-connector (11.0.5-18) unstable; urgency=low
 
   * Bug #43216: Continue writing mailPrimaryAddress to AD attribute mail.
