@@ -110,7 +110,7 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The configuration <property>add_content_acl</property> has been enabled (<u:bug>41797</u:bug>).
+						The <package>slapd</package> configuration option <property>add_content_acl</property> has been turned on (<u:bug>41797</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						The overlay module <property>constraint</property> has been enabled.
