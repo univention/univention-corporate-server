@@ -28,11 +28,11 @@ def kill_ucstest():
 	search_mask = set(['/usr/sbin/univention-management-console-module', '-m', 'ucstest'])
 	for process in psutil.process_iter():
 		if not (search_mask - set(process.cmdline())):
-			print 'Found module process and killing it ...'
+			print 'Found module process %s %r and killing it ...' % (process.pid, process.cmdline(),)
 			process.kill()
 	for process in psutil.process_iter():
 		if not (search_mask - set(process.cmdline())):
-			assert False, 'ERROR: ... module process ist still there, this should not happen!'
+			assert False, 'ERROR: ... module process %s %r ist still there, this should not happen!' % (process.pid, process.cmdline(),)
 
 
 def restart_web_server():
@@ -44,7 +44,9 @@ class AsyncClient(Client):
 	def async_request(self, path):
 		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
 		headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
+		headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		connection = httplib.HTTPSConnection(self.hostname, timeout=10)
+		print '*** POST to /univention/command/%s with headers=%r' % (path, headers)
 		connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
 		return connection
 
@@ -66,6 +68,7 @@ def main():
 	for i_connection in connections:
 		try:
 			response = i_connection.getresponse()
+			print '*** RESPONSE Status=%s; body=\n%r\n***' % (response.status, response.read())
 			if response.status != RESPONSE_STATUS_CODE:
 				print 'ERROR: Unexpected status of response %s (expected was %s)' % (response.status, RESPONSE_STATUS_CODE)
 				success = False
