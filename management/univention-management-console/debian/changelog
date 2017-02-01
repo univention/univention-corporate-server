@@ -1,3 +1,10 @@
+univention-management-console (9.0.20-1) unstable; urgency=medium
+
+  * Bug #39731: remove cookies/headers from JSON response otherwise injections
+  	are still possible
+
+ -- Florian Best <best@univention.de>  Wed, 01 Feb 2017 17:07:45 +0100
+
 univention-management-console (9.0.19-1) unstable; urgency=medium
 
   * Bug #39731: enforce X-XSRF-Protection request header to be set

@@ -715,6 +715,9 @@ class CPgeneric(Ressource):
 				cherrypy.response.cookie[key].update(item)
 			else:
 				cherrypy.response.cookie[key] = item
+		if isinstance(response.body, dict):
+			response.body.pop('headers', None)
+			response.body.pop('cookies', None)
 
 	def load_json(self, body):
 		try:
