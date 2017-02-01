@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ssl
 import json
 import locale
 from Cookie import SimpleCookie
@@ -282,7 +283,7 @@ class Client(object):
 		request.headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		try:
 			response = self.__request(request)
-		except (HTTPException, EnvironmentError) as exc:
+		except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:
 			raise ConnectionError('Could not send request.', reason=exc)
 		self._handle_cookies(response)
 		response = Response._from_httplib_response(response)
