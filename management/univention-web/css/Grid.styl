@@ -1,156 +1,156 @@
-@import "variables";
+@import "variables"
 
-.umcGrid .dojoxGridScrollbox {
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
+.umcGrid .dojoxGridScrollbox
+	overflow-y: scroll
+	overflow-x: hidden
 
-.umc .umcMultiSelect .dojoxGridView {
-	min-width: 100%;
-	max-width: 100%;
 
-	.dojoxGridContent {
-		min-width: 100%;
-		max-width: 100%;
+.umc .umcMultiSelect .dojoxGridView
+	min-width: 100%
+	max-width: 100%
 
-		div[role="presentation"] {
-			max-width: 100%;
+	.dojoxGridContent
+		min-width: 100%
+		max-width: 100%
 
-			.dojoxGridRow {
-				max-width: 100%;
+		div[role="presentation"]
+			max-width: 100%
+
+			.dojoxGridRow
+				max-width: 100%
 				
-				.dojoxGridRowTable {
-					width: 100% !important;
-				}
-			}
-		}
-	}
-}
+				.dojoxGridRowTable
+					width: 100% !important
 
-.umc .umcGridHeader {
-	padding-bottom: 0.5em;
-	display: inline-block;
-}
 
-.umc .umcGridHeader > *:after {
-	content: " ";
-	display: block;
-	clear: both;
-	height: 0px;
-	visibility: hidden;
-}
 
-.umc .dojoxGridHeader {
-	background-color: $text-color;
-	.dojoxGridCell {
-		background-color: $text-color;
-		color: $text-color-dark-background;
-	}
-	.dojoxGridCellOver {
-		background-color: $primary-color;
-	}
+
+
+
+.umc .umcGridHeader
+	padding-bottom: 0.5em
+	display: inline-block
+
+
+.umc .umcGridHeader > *:after
+	content: " "
+	display: block
+	clear: both
+	height: 0px
+	visibility: hidden
+
+
+.umc .dojoxGridHeader
+	background-color: $text-color
+	.dojoxGridCell
+		background-color: $text-color
+		color: $text-color-dark-background
+
+	.dojoxGridCellOver
+		background-color: $primary-color
+
 	.dojoxGridCellFocus,
 	.dojoxGridCell,
-	.dojoxGridCellOver {
-		border: none;
-	}
-	.dijitCheckBox {
+	.dojoxGridCellOver
+		border: none
+
+	.dijitCheckBox
 		$_iconImage = replace("^(.*)(\.\w*)$", "$1-small-white$2", $image-icons)
 		_urlPNG = replace("\.svg$", ".png", $_iconImage)
-		background-image: url($_iconImage);
+		background-image: url($_iconImage)
 		html.dj_trident &,
-		html.dj_ie & {
-			background-image: url(_urlPNG);
-		}
-	}
-}
-.umc .dojoxGrid {
-	font-family: inherit;
-	background: none;
+		html.dj_ie &
+			background-image: url(_urlPNG)
 
-	.dojoxGridRow {
-		background-color: white;
-		border: none;
-	}
-	.dojoxGridRowOdd {
-		background-color: $grey-lightest;
-	}
-	.dojoxGridRowSelected {
-		background-color: $grey-medium;
-	}
-	.dojoxGridCell {
-		background-image: none;
-		border: none;
 
-		.dijitButton {
-			.dijitIcon {
-				margin-top: -3px;
-				margin-bottom: -2px;
-			}
 
-			.dijitButtonText {
-				font-size: 1em;
-				margin-top: -3px;
-				margin-bottom: 0px;
-				padding: 0;
-			}
+.umc .dojoxGrid
+	font-family: inherit
+	background: none
 
-			.dijitButtonNode {
-				padding-top: 0;
-				padding-bottom: 0;
-			}
-		}
+	.dojoxGridRow
+		background-color: white
+		border: none
 
-		.selectable {
-			-webkit-user-select: text;
-			-moz-user-select: text;
-			-ms-user-select: text;
-			user-select: text;
-		}
+	.dojoxGridRowOdd
+		background-color: $grey-lightest
 
-		.selectable:hover {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-	}
-}
+	.dojoxGridRowSelected
+		background-color: $grey-medium
 
-.umcGrid .dgrid-scroller {
-	max-height: inherit;
-}
+	.dojoxGridCell
+		background-image: none
+		border: none
 
-.umcGrid .dgrid-cell div {
-	display: inline;
-}
+		.dijitButton
+			.dijitIcon
+				margin-top: -3px
+				margin-bottom: -2px
 
-.umcGrid .umcGridDefaultAction:hover {
-	text-decoration: underline;
-	cursor: pointer;
-}
 
-.umc .umcGridFooter {
-  margin-bottom: 0.5em;
-}
+			.dijitButtonText
+				font-size: 1em
+				margin-top: -3px
+				margin-bottom: 0px
+				padding: 0
 
-.umc .umcGrid .dgrid-cell {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
 
-.umc .dojoxGridArrowButtonChar {
-	display: none;
-	float: right;
-}
-.umc .dojoxGridSortUp .dojoxGridArrowButtonNode {
-	background-position: -60px 0px;
-}
-.umc .dojoxGridArrowButtonNode {
-	background: url("images/icons-small-white.svg") -48px 0px no-repeat;
-	display: block;
-	float: right;
-	margin: 2px 4px 0 5px;
-	padding-left: 0;
-	width: 12px;
+			.dijitButtonNode
+				padding-top: 0
+				padding-bottom: 0
+
+
+
+		.selectable
+			-webkit-user-select: text
+			-moz-user-select: text
+			-ms-user-select: text
+			user-select: text
+
+
+		.selectable:hover
+			text-decoration: underline
+			cursor: pointer
+
+
+
+
+.umcGrid .dgrid-scroller
+	max-height: inherit
+
+
+.umcGrid .dgrid-cell div
+	display: inline
+
+
+.umcGrid .umcGridDefaultAction:hover
+	text-decoration: underline
+	cursor: pointer
+
+
+.umc .umcGridFooter
+	margin-bottom: 0.5em
+
+
+.umc .umcGrid .dgrid-cell
+	white-space: nowrap
+	overflow: hidden
+	text-overflow: ellipsis
+
+
+.umc .dojoxGridArrowButtonChar
+	display: none
+	float: right
+
+.umc .dojoxGridSortUp .dojoxGridArrowButtonNode
+	background-position: -60px 0px
+
+.umc .dojoxGridArrowButtonNode
+	background: url("images/icons-small-white.svg") -48px 0px no-repeat
+	display: block
+	float: right
+	margin: 2px 4px 0 5px
+	padding-left: 0
+	width: 12px
 	height: 12px
-}
+

@@ -2,37 +2,37 @@
 
 /*========================= common css =========================*/
 
-@import "../variables";
+@import "../variables"
 
 /* 'dijitTextBox' refers to 'dijit(TextBox|DateTextBox|CurrencyTextBox|...)' */
 
-.umc .dijitTextBox {
-//.umc .dijitInputInner {
-	color: $text-color;
-	font-size: $font-size-title;
-	width: 100%;
-}
+.umc .dijitTextBox
+//.umc .dijitInputInner
+	color: $text-color
+	font-size: $font-size-title
+	width: 100%
 
-.umc .dijitValidationTextBoxError .dijitValidationContainer {
-	//background-color: $erroricon-background-color;
-	background-image: url("../" + $image-form-error);
-	background-position: center right;
-	background-repeat: no-repeat;
-	background-size: contain;
-	//border: solid $erroricon-background-color 0;
-	width: 20px;
-	height: 20px;
-	margin: 2px 2px 0 0;
-}
 
-//.umc .dijitTextBoxError .dijitValidationContainer {
-//	border-left-width: 1px;
-//}
+.umc .dijitValidationTextBoxError .dijitValidationContainer
+	//background-color: $erroricon-background-color
+	background-image: url("../" + $image-form-error)
+	background-position: center right
+	background-repeat: no-repeat
+	background-size: contain
+	//border: solid $erroricon-background-color 0
+	width: 20px
+	height: 20px
+	margin: 2px 2px 0 0
 
-.umc .dijitValidationTextBoxError .dijitValidationIcon {
-	width: 0;
-	background-color: transparent; /* so the INPUT doesn't obscure the border in rtl+a11y */
-}
+
+//.umc .dijitTextBoxError .dijitValidationContainer
+//	border-left-width: 1px
+//
+
+.umc .dijitValidationTextBoxError .dijitValidationIcon
+	width: 0
+	background-color: transparent /* so the INPUT doesn't obscure the border in rtl+a11y */
+
 
 /* Padding for the input area of TextBox based widgets, and corresponding padding for the
  * down arrow button and the placeholder.   placeholder is explicitly listed  because
@@ -40,73 +40,72 @@
  * won't affect it
  */
 .umc .dijitTextArea,
-.umc .dijitInputField .dijitPlaceHolder {
-	padding: $textbox-padding;
-	font-size: 1em;
-}
+.umc .dijitInputField .dijitPlaceHolder
+	padding: $textbox-padding
+	font-size: 1em
+
 
 .umc .dijitSelect,
-.umc .dijitTextBox {
+.umc .dijitTextBox
 	// Subtract 1px from top/bottom because we add 1px to other nodes, see rules below.
 	// Although we are theoretically only adding 1px to top/bottom browsers seem to pad inputs by 1px on left/right,
 	// although that varies by so compensate for that too.
-	padding: $textbox-padding !important;
-	position: relative;
-}
+	padding: $textbox-padding !important
+	position: relative
+
 
 .umc .dijitSelect:before,
 .umc .dijitTextBox:before,
 .umc .dijitSelect:after,
-.umc .dijitTextBox:after {
-	content: "";
-	position: absolute;
-	height: 5px;
-	bottom: 0;
-	transition-duration: 0.25s;
-}
+.umc .dijitTextBox:after
+	content: ""
+	position: absolute
+	height: 5px
+	bottom: 0
+	transition-duration(0.25s)
+
 
 .umc .dijitSelect:before,
-.umc .dijitTextBox:before {
-	border-left: thin solid $border-color;
-	left: 0;
-}
+.umc .dijitTextBox:before
+	border-left: thin solid $border-color
+	left: 0
+
 
 .umc .dijitSelect:after,
-.umc .dijitTextBox:after {
-	right: 0;
-	border-right: thin solid $border-color;
-}
+.umc .dijitTextBox:after
+	right: 0
+	border-right: thin solid $border-color
+
 
 .dj_gecko .umc .dijitTextBox .dijitInputInner,
-.dj_webkit .umc .dijitTextBox .dijitInputInner {
+.dj_webkit .umc .dijitTextBox .dijitInputInner
 	// Although we are theoretically only adding 1px to top/bottom, some browsers seem to pad inputs by 1px on left/right,
 	// so compensate for that too.
-	padding: $textbox-padding;
-}
+	padding: $textbox-padding
+
 
 .umc .dijitSelect,
 .umc .dijitSelect .dijitButtonContents,
 .umc .dijitTextBox,
-.umc .dijitTextBox .dijitButtonNode {
+.umc .dijitTextBox .dijitButtonNode
 	/* color for (outer) border on *TextBox widgets, and border between input and buttons on ComboBox and Spinner */
-	border-color: $border-color;
-	border: 0 none;
-	border-bottom: 1px solid;
-	transition-property: background-color, border;
- 	transition-duration: .25s;
-	//width: 100%;
-}
-.umc .dijitTextArea {
-	border-width: thin;
-	border-style: solid;
-	width: 100%;
-	height: 110px;
-}
+	border-color: $border-color
+	border: 0 none
+	border-bottom: 1px solid
+	transition-property: background-color, border
+	transition-duration(0.25s)
+
+.umc .dijitTextArea
+	border-width: thin
+	border-style: solid
+	width: 100%
+	height: 110px
+
 
 .umc .dijitSelect,
-.umc .dijitTextBox {
-	//background-color: $textbox-background-color;
-}
+.umc .dijitTextBox
+	//background-color: $textbox-background-color
+
 
 /* hover */
 .umc .dijitSelectHover,
@@ -116,15 +115,15 @@
 .umc .dijitSelectHover:before,
 .umc .dijitTextBoxHover:before,
 .umc .dijitSelectHover:after,
-.umc .dijitTextBoxHover:after {
-	border-color: $hovered-border-color;
-	transition-duration: .25s;
-}
+.umc .dijitTextBoxHover:after
+	border-color: $hovered-border-color
+	transition-duration(.25s)
 
-.umc .dijitTextBoxHover {
-	//background-color: $textbox-hovered-background-color;
-	textbox-background-image();
-}
+
+.umc .dijitTextBoxHover
+	//background-color: $textbox-hovered-background-color
+	textbox-background-image()
+
 
 /* error state */
 .umc .dijitSelectError,
@@ -134,9 +133,9 @@
 .umc .dijitSelectError:before,
 .umc .dijitTextBoxError:before,
 .umc .dijitSelectError:after,
-.umc .dijitTextBoxError:after {
-	border-color: $error-border-color;
-}
+.umc .dijitTextBoxError:after
+	border-color: $error-border-color
+
 
 /* focused state */
 .umc .dijitSelectFocused,
@@ -146,18 +145,18 @@
 .umc .dijitSelectFocused:before, 
 .umc .dijitTextBoxFocused:before,
 .umc .dijitSelectFocused:after,
-.umc .dijitTextBoxFocused:after {
-	border-color: $focused-border-color;
-	transition-duration: .1s;
-}
+.umc .dijitTextBoxFocused:after
+	border-color: $focused-border-color
+	transition-duration: .1s
 
-.umc .dijitTextBoxFocused {
-	//background-color: $textbox-focused-background-color;
-	textbox-background-image();
-}
-.umc .dijitTextBoxFocused .dijitInputContainer {
-	//background: $textbox-focused-background-color;
-}
+
+.umc .dijitTextBoxFocused
+	//background-color: $textbox-focused-background-color
+	textbox-background-image()
+
+.umc .dijitTextBoxFocused .dijitInputContainer
+	//background: $textbox-focused-background-color
+
 
 .umc .dijitSelectErrorFocused,
 .umc .dijitSelectErrorFocused .dijitButtonContents,
@@ -166,9 +165,9 @@
 .umc .dijitSelectErrorFocused:before,
 .umc .dijitTextBoxErrorFocused:before,
 .umc .dijitSelectErrorFocused:after,
-.umc .dijitTextBoxErrorFocused:after {
-	border-color: $error-focused-border-color;
-}
+.umc .dijitTextBoxErrorFocused:after
+	border-color: $error-focused-border-color
+
 
 /* disabled state */
 .umc .dijitSelectDisabled:before,
@@ -178,32 +177,32 @@
 .umc .dijitSelectDisabled,
 .umc .dijitSelectDisabled .dijitButtonContents,
 .umc .dijitTextBoxDisabled,
-.umc .dijitTextBoxDisabled .dijitButtonNode {
-	border-color: $disabled-border-color;
-}
+.umc .dijitTextBoxDisabled .dijitButtonNode
+	border-color: $disabled-border-color
+
 
 .umc .dijitSelectDisabled,
 .umc .dijitTextBoxDisabled,
-.umc .dijitTextBoxDisabled .dijitInputContainer {
-	background-color: $textbox-disabled-background-color;
-	//background-image: none;
-}
+.umc .dijitTextBoxDisabled .dijitInputContainer
+	background-color: $textbox-disabled-background-color
+	//background-image: none
+
 
 .umc .dijitSelectDisabled,
 .umc .dijitTextBoxDisabled,
-.umc .dijitTextBoxDisabled .dijitInputInner {
-	color: $disabled-text-color;
-}
+.umc .dijitTextBoxDisabled .dijitInputInner
+	color: $disabled-text-color
 
-.dj_webkit .umc .dijitDisabled input {
+
+.dj_webkit .umc .dijitDisabled input
 	/* because WebKit lightens disabled input/textarea no matter what color you specify */
 	//color: darken($disabled-text-color, 10%)
-}
 
-.dj_webkit .umc textarea.dijitTextAreaDisabled {
+
+.dj_webkit .umc textarea.dijitTextAreaDisabled
 	/* because WebKit lightens disabled input/textarea no matter what color you specify */
 	//color: darken($disabled-text-color, 80%)
-}
+
 
 /*========================= for special widgets =========================*/
 
@@ -212,40 +211,40 @@
 .umc .dijitSelect.dijitSelectDisabled .dijitArrowButtonInner,
 .umc .dijitComboBox.dijitComboBoxDisabled .dijitArrowButtonInner,
 .umc .dijitSelect .dijitArrowButtonInner,
-.umc .dijitComboBox .dijitArrowButtonInner {
-	//background-image: url("../" + $image-form-common-arrows);
-	//background-position:-35px 53%;
-	//background-repeat: no-repeat;
-	margin: 2px 0 0 0;
-	//width:16px;
-	icon-image(0, 0, "../");
-	height: 20px !important;  // override dijit.css CSS rule
-}
+.umc .dijitComboBox .dijitArrowButtonInner
+	//background-image: url("../" + $image-form-common-arrows)
+	//background-position:-35px 53%
+	//background-repeat: no-repeat
+	margin: 2px 0 0 0
+	//width:16px
+	icon-image(0, 0, "../")
+	height: 20px !important  // override dijit.css CSS rule
 
-.umc .dijitComboBox .dijitArrowButtonInner {
-	//border: 1px solid $arrowbutton-inner-border-color;	// white gutter around the arrow button
-}
 
-.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner {
-	border: none;
-}
+.umc .dijitComboBox .dijitArrowButtonInner
+	//border: 1px solid $arrowbutton-inner-border-color	// white gutter around the arrow button
 
-.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner {
-	border: none;
-}
+
+.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner
+	border: none
+
+
+.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner
+	border: none
+
 
 ///* Add 1px vertical padding to the <input> where user types and the validation icon,
 //   to match the 1px border on arrow button */
 //.umc .dijitSelectLabel,
 //.umc .dijitTextBox .dijitInputInner,
-//.umc .dijitValidationTextBox .dijitValidationContainer {
-//	padding: 1px 0;
-//}
+//.umc .dijitValidationTextBox .dijitValidationContainer
+//	padding: 1px 0
+//
 
-.umc .dijitComboBox .dijitButtonNode {
-	//background-color: $arrowbutton-background-color;
-	standard-gradient("../");
-}
+.umc .dijitComboBox .dijitButtonNode
+	//background-color: $arrowbutton-background-color
+	standard-gradient("../")
+
 
 /* Arrow "hover" effect:
  * The arrow button should change color whenever the mouse is in a position such that clicking it
@@ -254,135 +253,135 @@
  */
 .umc .dijitComboBoxOpenOnClickHover .dijitButtonNode,
 .umc .dijitComboBox .dijitDownArrowButtonHover,
-.umc .dijitComboBoxFocused .dijitArrowButton {
-	//background-color:$arrowbutton-hovered-background-color;
-}
+.umc .dijitComboBoxFocused .dijitArrowButton
+	//background-color:$arrowbutton-hovered-background-color
 
-.umc {
+
+.umc
 	.dijitComboBoxOpenOnClickHover,
-	.dijitComboBox .dijitDownArrowButtonHover {
-		.dijitArrowButtonInner {
-			background-position: -20px 0;
-			opacity: 0.66;
-		}
-	}
-}
+	.dijitComboBox .dijitDownArrowButtonHover
+		.dijitArrowButtonInner
+			background-position: -20px 0
+			opacity: 0.66
+
+
+
 
 .umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner,
-.umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
-	//background-position:-70px 53%;
-}
+.umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner
+	//background-position:-70px 53%
 
-.umc .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner {
-	background-position: -20px 0;
-	opacity: 1;
-}
+
+.umc .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner
+	background-position: -20px 0
+	opacity: 1
+
 
 /* Arrow Button change when drop down is open */
-.umc .dijitComboBox .dijitHasDropDownOpen {	// .dijitHasDropDown is on dijitArrowButton node
-	//background-color: $pressed-background-color;
-	//active-gradient("../");
-	//padding: 1px;		// Since no border on arrow button (see rule below)
-}
+.umc .dijitComboBox .dijitHasDropDownOpen	// .dijitHasDropDown is on dijitArrowButton node
+	//background-color: $pressed-background-color
+	//active-gradient("../")
+	//padding: 1px		// Since no border on arrow button (see rule below)
 
-.dj_iequirks .umc .dijitComboBox .dijitHasDropDownOpen {
-	padding: 1px 0;
-}
 
-.umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
-	//background-position:-70px 53%;
-	border: 0 none;
-}
+.dj_iequirks .umc .dijitComboBox .dijitHasDropDownOpen
+	padding: 1px 0
+
+
+.umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
+	//background-position:-70px 53%
+	border: 0 none
+
 
 /* disabled state */
-.umc div.dijitComboBoxDisabled .dijitArrowButtonInner {
+.umc div.dijitComboBoxDisabled .dijitArrowButtonInner
 	/* specific selector set to override background-position setting from Button.js
 	 * (.umc .dijitComboBoxDisabled .dijitArrowButtonInner) */
-	//background-position:0 50%;
-	//background-color:$disabled-background-color;
-}
+	//background-position:0 50%
+	//background-color:$disabled-background-color
+
 
 
 /* labels for form elements */
-label {
+label
 	/* overwrite bootstrap bold font weight */
-	font-weight: normal;
-}
+	font-weight: normal
 
-.umc .umcLabelPane {
-	display: inline-block;
-	vertical-align: top;
-	.umcLabelPaneLabeNodeBottom label {
-		padding-top: 0.25em;
-	}
-	.umcLabelPaneLabeNodeRight label {
-		display: inline-block;
-		padding: 0 1.25em 0 0;
-	}
-}
 
-.umc .umcLabelPane .umcToolTip{
+.umc .umcLabelPane
+	display: inline-block
+	vertical-align: top
+	.umcLabelPaneLabeNodeBottom label
+		padding-top: 0.25em
 
-	background-position: 0 -36px;
+	.umcLabelPaneLabeNodeRight label
+		display: inline-block
+		padding: 0 1.25em 0 0
 
-	.umcToolTipHover {
-		background-position: -12px -36px;
-		opacity: 0.66;
-	}
 
-	.umcToolTipClicked {
-		background-position: -48px -36px;
-	}
-}
 
-.umc {
+.umc .umcLabelPane .umcToolTip
+
+	background-position: 0 -36px
+
+	.umcToolTipHover
+		background-position: -12px -36px
+		opacity: 0.66
+
+
+	.umcToolTipClicked
+		background-position: -48px -36px
+
+
+
+.umc
 	/* inline label */
-	.dijitTextBox .umcInlineLabel {
-		visibility: hidden;
-		position: absolute;
-		top: 0;
-		left: 0;
-		color: $text-color-lightest;
-	}
-	.dijitTextBox .umcInlineLabel.umcEmptyValue {
-		visibility: visible;
-	}
-	.dijitTextBox.dijitFocused .umcInlineLabel {
-		color: $text-color-lightest;
-	}
-}
+	.dijitTextBox .umcInlineLabel
+		visibility: hidden
+		position: absolute
+		top: 0
+		left: 0
+		color: $text-color-lightest
 
-.umc .umcSearchForm {
-	.umcSearchFormSubmitButton {
-		width: 3.5em;
-		margin: 0;
+	.dijitTextBox .umcInlineLabel.umcEmptyValue
+		visibility: visible
 
-		.dijitButton {
-			margin-top: 0;
-		}
-		.dijitButtonNode {
-			padding: 3px;
-		}
-	}
+	.dijitTextBox.dijitFocused .umcInlineLabel
+		color: $text-color-lightest
 
-	.umcLabelPane.umcSearchFormElementBeforeSubmitButton {
-		margin-right: -3.5em;
-		padding-right: 3.5em;
-	}
-}
+
+
+.umc .umcSearchForm
+	.umcSearchFormSubmitButton
+		width: 3.5em
+		margin: 0
+
+		.dijitButton
+			margin-top: 0
+
+		.dijitButtonNode
+			padding: 3px
+
+
+
+	.umcLabelPane.umcSearchFormElementBeforeSubmitButton
+		margin-right: -3.5em
+		padding-right: 3.5em
+
+
 
 /*========================= hacks for browsers =========================*/
 /* it seems the input[type="hidden"] has a height (16px) too... this may cause the widget's height calculate error */
-.dj_ff3 .umc .dijitInputField input[type="hidden"] {
-	display: none;
-	height: 0;
-	width: 0;
-}
+.dj_ff3 .umc .dijitInputField input[type="hidden"]
+	display: none
+	height: 0
+	width: 0
 
-.dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
-	width:18px;				// quirks mode means border-box sizing, so 18px with the border (same as 16px without border)
-}
 
-.dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner {
-	width:16px;				// when no border, then back to 16px just like content-box sizing
-}
+.dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
+	width:18px				// quirks mode means border-box sizing, so 18px with the border (same as 16px without border)
+
+
+.dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner
+	width:16px				// when no border, then back to 16px just like content-box sizing
+

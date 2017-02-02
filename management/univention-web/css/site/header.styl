@@ -1,819 +1,819 @@
-@import "../variables";
+@import "../variables"
 
-insertBorder() {
-	content: '';
-	display: block;
-	position: absolute;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	border-bottom: arguments;
-}
+insertBorder()
+	content: ''
+	display: block
+	position: absolute
+	right: 0
+	left: 0
+	bottom: 0
+	border-bottom: arguments
+
 
 /* mobile view */
-.umc.umcMobileView {
-	.umcHeader {
-		min-height: 55px;
-		height: @min-height;
-		overflow: hidden;
-		transition: height 0.5s;
+.umc.umcMobileView
+	.umcHeader
+		min-height: 55px
+		height: @min-height
+		overflow: hidden
+		transition: height 0.5s
 
-		.umcHeaderCenter {
-			@media (max-width: 410px) {
-				width: 100px;
-				margin-left: -50px;
+		.umcHeaderCenter
+			@media (max-width: 410px)
+				width: 100px
+				margin-left: -50px
 
-				.dijitButtonText {
-					width: 150px;
-					margin-left: -27px;
-				}
-			}
-			@media (max-width: 360px) {
-				width: 60px;
-				margin-left: -30px;
+				.dijitButtonText
+					width: 150px
+					margin-left: -27px
 
-				.dijitButtonText {
-					margin-left: -47px;
-				}
-			}
-			@media (max-width: 320px) {
-				margin: 0;
-				left: auto;
-				right: 120px;
-			}
-		}
-	}
 
-	.umcTopContainer {
-		transition: transform 0.5s;
-		-webkit-transition: -webkit-transform 0.5s;
-	}
-}
+			@media (max-width: 360px)
+				width: 60px
+				margin-left: -30px
+
+				.dijitButtonText
+					margin-left: -47px
+
+
+			@media (max-width: 320px)
+				margin: 0
+				left: auto
+				right: 120px
+
+
+
+
+	.umcTopContainer
+		transition: transform 0.5s
+		-webkit-transition: -webkit-transform 0.5s
+
+
 
 /* Header elements */
 
-.umc .umcHeader {
-	height: 46px;
-	position: relative;
-	padding: 0;
-	overflow: hidden;
-	transition: background-color 0.35s;
+.umc .umcHeader
+	height: 46px
+	position: relative
+	padding: 0
+	overflow: hidden
+	transition: background-color 0.35s
 
-	.dijitTextBox {
-		background-color: transparent;
-	}
+	.dijitTextBox
+		background-color: transparent
+
 
 	/* do not treat formatted elements differently */
-	.dijitButtonText * {
-		vertical-align: baseline;
-	}
+	.dijitButtonText *
+		vertical-align: baseline
 
-	.umcBackToOverview {
-		background-image: url('../images/home-white.svg');
-		background-repeat: no-repeat;
-		background-position: center center;
-		float: left;
-		width: 60px;
-		height: @height;
-		margin: 0;
-		transition: background-color 0.35s;
 
-		.dijitButtonNode {
-			display: inline-block;
-			width: 100%;
-			height: 100% !important;
-		}
-	}
+	.umcBackToOverview
+		background-image: url('../images/home-white.svg')
+		background-repeat: no-repeat
+		background-position: center center
+		float: left
+		width: 60px
+		height: @height
+		margin: 0
+		transition: background-color 0.35s
 
-	.umcMainTabController {
-		background: none;
-		float: left;
+		.dijitButtonNode
+			display: inline-block
+			width: 100%
+			height: 100% !important
 
-		.dijitTab {
+
+
+	.umcMainTabController
+		background: none
+		float: left
+
+		.dijitTab
 			// override unwanted styles
-			margin: 0;
-			padding: 0;
-			background: none;
-			min-width: 0;
-			box-shadow: none;
+			margin: 0
+			padding: 0
+			background: none
+			min-width: 0
+			box-shadow: none
 
-			.tabLabel {
-				height: @height;
-				line-height: @height;
-				margin-left: 13px;
-				margin-right: 5px;
-			}
+			.tabLabel
+				height: @height
+				line-height: @height
+				margin-left: 13px
+				margin-right: 5px
 
-			.dijitTabCloseButton {
-				height: @height;
-				width: @height;
-				transition: background-color 0.25s;
+
+			.dijitTabCloseButton
+				height: @height
+				width: @height
+				transition: background-color 0.25s
 
 				// override unwanted styles
-				position: relative;
-				background: transparent;
-				top: 0;
-				right: 0;
-				margin-left: 0;
+				position: relative
+				background: transparent
+				top: 0
+				right: 0
+				margin-left: 0
 
-				&:after {
-					content: '';
-					display: block;
-					margin: 17px;
-					icon-image(0, 0, '../', '-small', 12px, 12px);
-				}
+				&:after
+					content: ''
+					display: block
+					margin: 17px
+					icon-image(0, 0, '../', '-small', 12px, 12px)
 
-				&.dijitTabCloseButtonHover {
-					background-color: rgba(0, 0, 0, 0.1);
 
-					&:after {
-						background-position-x: -12px !important;
-					}
-				}
-			}
+				&.dijitTabCloseButtonHover
+					background-color: rgba(0, 0, 0, 0.1)
+
+					&:after
+						background-position-x: -12px !important
+
+
+
 
 			&.dijitTabChecked,
-			&.dijitTabHover {
-				.dijitTabCloseButton:after {
-					icon-image(0, 0, '../', '-small-white', 12px, 12px);
-				}
-			}
-		}
-	}
+			&.dijitTabHover
+				.dijitTabCloseButton:after
+					icon-image(0, 0, '../', '-small-white', 12px, 12px)
 
-	.umcMoreTabsDropDownButton {
-		float: left;
-		width: 30px;
+
+
+
+
+	.umcMoreTabsDropDownButton
+		float: left
+		width: 30px
 		height: 100%
-		margin: 0;
-		transition: background-color 0.35s;
+		margin: 0
+		transition: background-color 0.35s
 		
-		.dijitButtonNode {
-			width: 100%;
-			height: 100% !important;
+		.dijitButtonNode
+			width: 100%
+			height: 100% !important
 
-			.dijitDownArrowButton {
-				width: 100%;
-				height: 100%;
+			.dijitDownArrowButton
+				width: 100%
+				height: 100%
 
-				.dijitIcon {
-					icon-image(-300, -20, '../', '-white');
-					margin: 13px 5px;
-				}
+				.dijitIcon
+					icon-image(-300, -20, '../', '-white')
+					margin: 13px 5px
 
-				.dijitArrowButtonInner {
-					display: none;
-				}
-			}
-		}
 
-		&.dijitHover {
-			background-color: rgba(0, 0, 0, 0.1);
-		}
+				.dijitArrowButtonInner
+					display: none
 
-		&.invisible {
-			visibility: hidden;
-		}
-	}
 
-	.umcHeaderRight {
-		height: 100%;
-		margin-right: 30px;
-		position: absolute;
-		right: 0;
 
-		.umcLiveSearchSidebarWrapper {
-			display: inline-block;
-			vertical-align: top;
-			height: 100%;
-			width: 150px;
 
-			.umcLiveSearchSidebar {
-				float: right;
-				width: @width;
-				height: 100%;
-				transition: width 0.3s;
+		&.dijitHover
+			background-color: rgba(0, 0, 0, 0.1)
 
-				.umcSearchBox {
-					margin-top: 10px;
-				}
 
-				.dijitInputField {
-					transition: opacity 0.25s, width 0.25s;
-					width: 100%;
-				}
+		&.invisible
+			visibility: hidden
 
-				.umcSearchIcon {
-					transition: opacity 0.25s, right 0.25s;
-				}
 
-				.umcLiveSearchSidebarRadioButtonGroup {
-					display: none;
-				}
-			}
 
-			&.collapsed {
-				width: 60px;
+	.umcHeaderRight
+		height: 100%
+		margin-right: 30px
+		position: absolute
+		right: 0
 
-				.umcLiveSearchSidebar {
-					width: @width;
+		.umcLiveSearchSidebarWrapper
+			display: inline-block
+			vertical-align: top
+			height: 100%
+			width: 150px
+
+			.umcLiveSearchSidebar
+				float: right
+				width: @width
+				height: 100%
+				transition: width 0.3s
+
+				.umcSearchBox
+					margin-top: 10px
+
+
+				.dijitInputField
+					transition: opacity 0.25s, width 0.25s
+					width: 100%
+
+
+				.umcSearchIcon
+					transition: opacity 0.25s, right 0.25s
+
+
+				.umcLiveSearchSidebarRadioButtonGroup
+					display: none
+
+
+
+			&.collapsed
+				width: 60px
+
+				.umcLiveSearchSidebar
+					width: @width
 
 					.umcSearchBox,
 					.umcSearchBox:before,
-					.umcSearchBox:after {
-						border-color: transparent;
-					}
+					.umcSearchBox:after
+						border-color: transparent
 
-					.umcSearchIcon {
-						right: 20px;
-					}
 
-					.dijitInputField {
-						opacity: 0;
-						width: 0;
-					}
-				}
-			}
-		}
+					.umcSearchIcon
+						right: 20px
 
-		.umcMobileMenuToggleButton {
-			display: inline-block;
-			vertical-align: top;
-		}
 
-		.univentionLogo {
-			display: inline-block;
-			vertical-align: top;
-			background-image: url(../images/univention.svg);
-			background-repeat: no-repeat;
-			background-position: center center;
-			height: 100%;
-			width: 160px;
-			margin-left: 15px;
-		}
-	}
+					.dijitInputField
+						opacity: 0
+						width: 0
 
-	.dijitButtonNode {
-		height: auto !important;
-		background: none;
-		filter: none;
-		border-radius: 0;
-		border: none;
-		padding: 0;
-		box-shadow: none;
-	}
+
+
+
+
+		.umcMobileMenuToggleButton
+			display: inline-block
+			vertical-align: top
+
+
+		.univentionLogo
+			display: inline-block
+			vertical-align: top
+			background-image: url(../images/univention.svg)
+			background-repeat: no-repeat
+			background-position: center center
+			height: 100%
+			width: 160px
+			margin-left: 15px
+
+
+
+	.dijitButtonNode
+		height: auto !important
+		background: none
+		filter: none
+		border-radius: 0
+		border: none
+		padding: 0
+		box-shadow: none
+
 
 	.dijitDropDownButton[widgetid=umcMenuHost],
-	.dijitDropDownButton[widgetid=umcMenuUsername] {
-		display: inline-block;
-		text-align: left;
-		padding-right: 2px;
+	.dijitDropDownButton[widgetid=umcMenuUsername]
+		display: inline-block
+		text-align: left
+		padding-right: 2px
 
-		.dijitDownArrowButton {
-			text-align: left;
-		}
+		.dijitDownArrowButton
+			text-align: left
 
-		&.dijitDisabled {
-			.dijitIcon {
-				opacity: 1 !important;
-			}
-			.dijitButtonText {
-				padding-right: 0;
-			}
-		}
-	}
 
-	@media (max-width: 549px) {
-		.dijitDropDownButton[widgetid=umcMenuHost] {
-			max-width: 60%;
-			float: left;
-		}
-		.dijitDropDownButton[widgetid=umcMenuUsername] {
-			max-width: 40%;
-		}
-	}
+		&.dijitDisabled
+			.dijitIcon
+				opacity: 1 !important
+
+			.dijitButtonText
+				padding-right: 0
+
+
+
+
+	@media (max-width: 549px)
+		.dijitDropDownButton[widgetid=umcMenuHost]
+			max-width: 60%
+			float: left
+
+		.dijitDropDownButton[widgetid=umcMenuUsername]
+			max-width: 40%
+
+
 
 	#umcMenuUsername,
-	#umcMenuHost {
-		outline: none;
-	}
+	#umcMenuHost
+		outline: none
+
 
 	#umcMenuUsername .dijitButtonText,
-	#umcMenuHost .dijitButtonText {
-		display: inline-block;
-		background: none;
-		filter: none;
-		box-shadow: none;
-		color: $text-color;
-		font-size: $font-size-title;
-		opacity: 1 !important; /*overwrite generic disabled rule*/
-	}
+	#umcMenuHost .dijitButtonText
+		display: inline-block
+		background: none
+		filter: none
+		box-shadow: none
+		color: $text-color
+		font-size: $font-size-title
+		opacity: 1 !important /*overwrite generic disabled rule*/
 
-	.dijitDisabled #umcMenuHost .dijitArrowButtonInner {
-		width: 0;
-	}
-}
 
-.umc {
-	&.umcOverviewShown .umcHeader {
-		.umcBackToOverview {
-			background-image: url('../images/home.svg');
-			background-color: #c6c6c6;
+	.dijitDisabled #umcMenuHost .dijitArrowButtonInner
+		width: 0
+
+
+
+.umc
+	&.umcOverviewShown .umcHeader
+		.umcBackToOverview
+			background-image: url('../images/home.svg')
+			background-color: #c6c6c6
 
 			&.dijitHover,
-			&.dijitActive {
-				.dijitButtonNode {
-					cursor: default;
-				}
-			}
-		}
-		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon {
-			icon-image(-300, -20, '../');
-		}
-	}
-	&.umcOverviewNotShown .umcHeader {
-		.umcBackToOverview {
-			&.dijitHover {
-				background-color: rgba(0, 0, 0, 0.1);
-			}
-		}
-		.umcMainTabController .dijitTab {
-			color: white;
+			&.dijitActive
+				.dijitButtonNode
+					cursor: default
 
-			.dijitTabCloseButton:after {
-				icon-image(0, 0, '../', '-small-white', 12px, 12px);
-			}
 
-			&.dijitTabChecked {
-				background-color: rgba(0, 0, 0, 0.15) !important;
-			}
-			&.dijitTabCheckedHover {
-				background-color: rgba(0, 0, 0, 0.2) !important;
-			}
-		}
-		.umcHeaderRight {
+
+		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon
+			icon-image(-300, -20, '../')
+
+
+	&.umcOverviewNotShown .umcHeader
+		.umcBackToOverview
+			&.dijitHover
+				background-color: rgba(0, 0, 0, 0.1)
+
+
+		.umcMainTabController .dijitTab
+			color: white
+
+			.dijitTabCloseButton:after
+				icon-image(0, 0, '../', '-small-white', 12px, 12px)
+
+
+			&.dijitTabChecked
+				background-color: rgba(0, 0, 0, 0.15) !important
+
+			&.dijitTabCheckedHover
+				background-color: rgba(0, 0, 0, 0.2) !important
+
+
+		.umcHeaderRight
 			.umcSearchBox,
 			.umcSearchBox:before,
-			.umcSearchBox:after {
-				color: #fff;
-				border-color: #fff;
-			}
+			.umcSearchBox:after
+				color: #fff
+				border-color: #fff
 
-			.umcSearchIcon {
-				icon-image(-260, -40, '../', '-white');
-			}
 
-			.umcMobileMenuToggleButton div {
-				background-color: #fff;
-			}
+			.umcSearchIcon
+				icon-image(-260, -40, '../', '-white')
 
-			.univentionLogo {
-				background-image: url(../images/univention-white.svg);
-			}
-		}
-	}
-}
 
-.umc .umcMoreTabsMenuPopupWrapper {
-	margin: 3px 0 0 3px;
-}
+			.umcMobileMenuToggleButton div
+				background-color: #fff
 
-.umc .umcMoreTabsDropDownMenuContent {
-	margin: 0;
-	background-color: #fff;
 
-	tr {
+			.univentionLogo
+				background-image: url(../images/univention-white.svg)
+
+
+
+
+
+.umc .umcMoreTabsMenuPopupWrapper
+	margin: 3px 0 0 3px
+
+
+.umc .umcMoreTabsDropDownMenuContent
+	margin: 0
+	background-color: #fff
+
+	tr
 		transition: background-color 0.3s
-		cursor: pointer;
+		cursor: pointer
 
-		.label {
-			padding: 0 10px;
-			line-height: 30px;
-			transition-property: color;
-			transition-duration: inherit;
+		.label
+			padding: 0 10px
+			line-height: 30px
+			transition-property: color
+			transition-duration: inherit
 
-			^[-1]:hover ^[-1..-1] {
-				color: white;
-			}
-		}
+			^[-1]:hover ^[-1..-1]
+				color: white
 
-		.iconCell {
-			padding: 0;
-			transition: inherit;
 
-			&:hover {
-				background-color: rgba(0, 0, 0, 0.1) !important;
-			}
 
-			.icon {
-				icon-image(0, 0, '../', '-small', 12px, 12px);
-				margin: 9px;
+		.iconCell
+			padding: 0
+			transition: inherit
 
-				^[-2]:hover ^[-2..-1] {
-					icon-image(0, 0, '../', '-small-white', 12px, 12px);
-				}
-				^[-1]:hover ^[-1..-1] {
-					background-position-x: -12px; 
-				}
-			}
-		}
-	}
-}
+			&:hover
+				background-color: rgba(0, 0, 0, 0.1) !important
+
+
+			.icon
+				icon-image(0, 0, '../', '-small', 12px, 12px)
+				margin: 9px
+
+				^[-2]:hover ^[-2..-1]
+					icon-image(0, 0, '../', '-small-white', 12px, 12px)
+
+				^[-1]:hover ^[-1..-1]
+					background-position-x: -12px 
+
+
+
+
+
 
 /* special stylings depending on device class */
 
-@media (max-width: 500px) {
-	.col-xxs-12 {
-		width: 100%;
-	}
-}
+@media (max-width: 500px)
+	.col-xxs-12
+		width: 100%
 
-@media (min-width: 1755px) {
-	.col-xlg-4 {
-		width: 33.33333333%;
-	}
-	.col-xlg-push-3 {
-		left: 25%;
-	}
-	.col-xlg-pull-4 {
-		right: 33.33333333%;
-	}
-}
+
+
+@media (min-width: 1755px)
+	.col-xlg-4
+		width: 33.33333333%
+
+	.col-xlg-push-3
+		left: 25%
+
+	.col-xlg-pull-4
+		right: 33.33333333%
+
+
 
 /**
  * style the main container of UMC
  */
-.umc .umcTopContainer .dijitTabContainerTop {
-	clear: both;
-}
+.umc .umcTopContainer .dijitTabContainerTop
+	clear: both
+
 
 /* menu styling */
-.umc {
-	.umcMobileMenuToggleButton {
-		position: relative;
-		width: parentWidth = 60px;
-		height: parentHeight = 46px;
+.umc
+	.umcMobileMenuToggleButton
+		position: relative
+		width: parentWidth = 60px
+		height: parentHeight = 46px
 		
-		div {
-			position: absolute;
-			width: 25px;
-			height: 5px;
-			right: ((parentWidth - @width) / 2);
-			background-color: $text-color;
+		div
+			position: absolute
+			width: 25px
+			height: 5px
+			right: ((parentWidth - @width) / 2)
+			background-color: $text-color
 
 			//for firefox mobile
-			pointer-events: none;
+			pointer-events: none
 
-			transition: transform 0.5s, width 0.5s, right 0.5s;
+			transition: transform 0.5s, width 0.5s, right 0.5s
 			//for mobile(chrome)
-			-webkit-transition: -webkit-transform 0.5s, width 0.5s, right 0.5s;
-		}
+			-webkit-transition: -webkit-transform 0.5s, width 0.5s, right 0.5s
 
-		div:nth-child(1) {
-			top: 12px;
-		}
-		div:nth-child(2) {
-			top: 20px;
-		}
-		div:nth-child(3) {
-			top: 28px;
-		}
 
-		.umcMobileMenuToggleButtonTouchStyle {
-			width: w = 2px;
-			height: h = 2px;
-			position: absolute;
-			top: ((parentHeight - h) / 2);
-			left: ((parentWidth - w) /2);
-			color = rgba(0, 0, 0, 0.2);
-			background-color: color;
-			box-shadow: 0 0 15px 27px color;
-			border-radius: 100%;
-			opacity: 0;
-			transition: opacity 0.4s;
-		}
+		div:nth-child(1)
+			top: 12px
 
-		&.umcMobileMenuToggleButtonTouched {
-			.umcMobileMenuToggleButtonTouchStyle {
-				opacity: 1;
-			}
-		}
+		div:nth-child(2)
+			top: 20px
 
-		&.umcMobileMenuToggleButtonHover {
-			div:nth-child(1) {
-				width: 18px;
-				right: 24.5px;
-				transform: translate(0, 2px) rotate(-38deg);
-			}
-			div:nth-child(2) {
-				top: 20px;
-			}
-			div:nth-child(3) {
-				width: 18px;
-				right: 24.5px;
-				transform: translate(0, -2px) rotate(38deg);
-			}
-		}
+		div:nth-child(3)
+			top: 28px
 
-		&.umcMobileMenuToggleButtonActive {
-			div:nth-child(1) {
-				transform: translate3d(0, 8px, 0) rotate(45deg);
-			}
-			div:nth-child(2) {
-				transform: rotate(45deg);
-			}
-			div:nth-child(3) {
-				transform: translate3d(0, -8px, 0) rotate(-45deg);
-			}
-		}
-	}
 
-	.mobileMenu {
-		overflow: hidden;
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		width: 80%;
-		max-width: 360px;
-		background-color: #5d5d5d;
-		transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s;
-		-webkit-transition: -webkit-transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s;
-		z-index: 30;
-		transform: translate3d(110%, 0, 0);
+		.umcMobileMenuToggleButtonTouchStyle
+			width: w = 2px
+			height: h = 2px
+			position: absolute
+			top: ((parentHeight - h) / 2)
+			left: ((parentWidth - w) /2)
+			color = rgba(0, 0, 0, 0.2)
+			background-color: color
+			box-shadow: 0 0 15px 27px color
+			border-radius: 100%
+			opacity: 0
+			transition: opacity 0.4s
 
-		.umcMobileMenuToggleButton {
-			z-index: 10;
-			margin: 0 !important;
-			float: right;
 
-			div {
-				background-color: white;
-			}
+		&.umcMobileMenuToggleButtonTouched
+			.umcMobileMenuToggleButtonTouchStyle
+				opacity: 1
 
-			&.umcMobileMenuToggleButtonTouchStyle {
+
+
+		&.umcMobileMenuToggleButtonHover
+			div:nth-child(1)
+				width: 18px
+				right: 24.5px
+				transform: translate(0, 2px) rotate(-38deg)
+
+			div:nth-child(2)
+				top: 20px
+
+			div:nth-child(3)
+				width: 18px
+				right: 24.5px
+				transform: translate(0, -2px) rotate(38deg)
+
+
+
+		&.umcMobileMenuToggleButtonActive
+			div:nth-child(1)
+				transform: translate3d(0, 8px, 0) rotate(45deg)
+
+			div:nth-child(2)
+				transform: rotate(45deg)
+
+			div:nth-child(3)
+				transform: translate3d(0, -8px, 0) rotate(-45deg)
+
+
+
+
+	.mobileMenu
+		overflow: hidden
+		position: fixed
+		top: 0
+		bottom: 0
+		right: 0
+		width: 80%
+		max-width: 360px
+		background-color: #5d5d5d
+		transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s
+		-webkit-transition: -webkit-transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s
+		z-index: 30
+		transform: translate3d(110%, 0, 0)
+
+		.umcMobileMenuToggleButton
+			z-index: 10
+			margin: 0 !important
+			float: right
+
+			div
+				background-color: white
+
+
+			&.umcMobileMenuToggleButtonTouchStyle
 				box-shadow: 0 0 15px 27px rgba(255, 255, 255, 0.2)
-			}
 
-			&.umcMobileMenuToggleButtonHover {
-				div:nth-child(1) {
-					width: 18px;
-					right: 17px;
-					transform: translate(0, 2px) rotate(38deg) !important;
-				}
-				div:nth-child(2) {
-					top: 20px;
-					transform: none !important;
-				}
-				div:nth-child(3) {
-					width: 18px;
-					right: 17px;
-					transform: translate(0, -2px) rotate(-38deg) !important;
-				}
-			}
-		}
 
-		.umcText.fullWidthTile {
-			color: $text-color-dark-background;
-			position: relative;
-			height: 50px;
-			line-height: 20px;
-			padding: ((@height - @line-height) / 2) 0;
-		}
+			&.umcMobileMenuToggleButtonHover
+				div:nth-child(1)
+					width: 18px
+					right: 17px
+					transform: translate(0, 2px) rotate(38deg) !important
 
-		.menuSlideHeader {
-			text-align: center;
-			font-size: 20px;
-			cursor: default;
+				div:nth-child(2)
+					top: 20px
+					transform: none !important
 
-			&.subMenu {
-				cursor: pointer;
+				div:nth-child(3)
+					width: 18px
+					right: 17px
+					transform: translate(0, -2px) rotate(-38deg) !important
 
-				&:before {
-					content: '';
-					icon-image(-200, -20, '../', '-white');
-					position: absolute;
-					left: 0;
-					margin-left: 20px;
-				}
-			}
 
-			&.permaHeader {
-				display: none;
-			}
 
-			&:after {
-				insertBorder(2px solid #b4b4b4);
-			}
-		}
 
-		&.hasPermaHeader {
-			$top = 0;
-			$height = 50px;
-			.menuSlideHeader.permaHeader {
-				display: block;
-				position: absolute;
-				top: $top;
-				left: 0;
-				right: 0;
-				height: $height;
-				background-color: rgba(0, 0, 0, 0.3);
-			}
+		.umcText.fullWidthTile
+			color: $text-color-dark-background
+			position: relative
+			height: 50px
+			line-height: 20px
+			padding: ((@height - @line-height) / 2) 0
 
-			.menuSlides {
-				top: $height + $top;
-				.menuSlide .menuSlideHeader {
-					display: none;
-				}
-			}
-		}
+
+		.menuSlideHeader
+			text-align: center
+			font-size: 20px
+			cursor: default
+
+			&.subMenu
+				cursor: pointer
+
+				&:before
+					content: ''
+					icon-image(-200, -20, '../', '-white')
+					position: absolute
+					left: 0
+					margin-left: 20px
+
+
+
+			&.permaHeader
+				display: none
+
+
+			&:after
+				insertBorder(2px solid #b4b4b4)
+
+
+
+		&.hasPermaHeader
+			$top = 0
+			$height = 50px
+			.menuSlideHeader.permaHeader
+				display: block
+				position: absolute
+				top: $top
+				left: 0
+				right: 0
+				height: $height
+				background-color: rgba(0, 0, 0, 0.3)
+
+
+			.menuSlides
+				top: $height + $top
+				.menuSlide .menuSlideHeader
+					display: none
+
+
+
 
 		.menuSlides,
-		.menuSlide {
-			position: absolute;
-			z-index: 0;
-			background: inherit;
-		}
+		.menuSlide
+			position: absolute
+			z-index: 0
+			background: inherit
 
-		.menuSlides {
-			top: 0;
-			bottom: 0px;
-			left: 0;
-			right: 0;
 
-			overflow: hidden;
+		.menuSlides
+			top: 0
+			bottom: 0px
+			left: 0
+			right: 0
 
-			.menuSlide {
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0;
+			overflow: hidden
 
-				overflow: auto;
+			.menuSlide
+				top: 0
+				bottom: 0
+				left: 0
+				right: 0
 
-				transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s;
-				-webkit-transition: -webkit-transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s;
+				overflow: auto
 
-				.menuSlideItemsContainer {
-					.menuItem {
-						$freeLeftSpace = 20px;
+				transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s
+				-webkit-transition: -webkit-transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.3s
 
-						cursor: pointer;
-						padding-left: $freeLeftSpace;
+				.menuSlideItemsContainer
+					.menuItem
+						$freeLeftSpace = 20px
 
-						&:after {
-							insertBorder(1px solid #c8c8c8);
-							left: $freeLeftSpace;
-						}
+						cursor: pointer
+						padding-left: $freeLeftSpace
 
-						&:before {
-							insertBorder(1px solid #c8c8c8);
-							bottom: 50px;
-							opacity: 0;
-						}
+						&:after
+							insertBorder(1px solid #c8c8c8)
+							left: $freeLeftSpace
+
+
+						&:before
+							insertBorder(1px solid #c8c8c8)
+							bottom: 50px
+							opacity: 0
+
 
 						&:hover,
-						&.menuItemActive {
-							color: #282828;
-							background-color: rgba(255, 255, 255, 0.4);
+						&.menuItemActive
+							color: #282828
+							background-color: rgba(255, 255, 255, 0.4)
 
-							.popupMenuItemArrowActive {
-								opacity: 1;
-							}
+							.popupMenuItemArrowActive
+								opacity: 1
 
-							&:before {
-								opacity: 1;
-							}
-							&:after {
-								left: 0;
-							}
-						}
 
-						&.menuItemActive {
-							color: #282828;
-							background-color: rgba(255, 255, 255, 0.7);
-						}
-						&.menuItemActiveTransition {
-							$transitionDur = 0.4s;
+							&:before
+								opacity: 1
 
-							transition: background-color $transitionDur, color $transitionDur;
+							&:after
+								left: 0
+
+
+
+						&.menuItemActive
+							color: #282828
+							background-color: rgba(255, 255, 255, 0.7)
+
+						&.menuItemActiveTransition
+							$transitionDur = 0.4s
+
+							transition: background-color $transitionDur, color $transitionDur
 							.popupMenuItemArrow,
-							.popupMenuItemArrowActive {
-								transition: opacity $transitionDur;
-							}
-							&:before {
-								transition: opacity $transitionDur;
-							}
-						}
-					}
+							.popupMenuItemArrowActive
+								transition: opacity $transitionDur
 
-					.popupMenuItem {
-						.childItemsCounter {
-							position: absolute;
-							right: 0;
-							margin-right: 40px;
-							display: inline;
-						}
+							&:before
+								transition: opacity $transitionDur
+
+
+
+
+					.popupMenuItem
+						.childItemsCounter
+							position: absolute
+							right: 0
+							margin-right: 40px
+							display: inline
+
 
 						.popupMenuItemArrow,
-						.popupMenuItemArrowActive {
-							content: '';
-							position: absolute;
-							right: 0;
-							margin-right: 12px;
-							display: inline;
-							margin-top: 1px;
-						}
+						.popupMenuItemArrowActive
+							content: ''
+							position: absolute
+							right: 0
+							margin-right: 12px
+							display: inline
+							margin-top: 1px
 
-						.popupMenuItemArrow {
-							opacity: 1;
-							icon-image(-220, -20, '../', '-white');
-						}
-						.popupMenuItemArrowActive {
-							opacity: 0;
-							icon-image(-220, -20, '../');
-						}
-					}
 
-					.separator {
-						display: none;
+						.popupMenuItemArrow
+							opacity: 1
+							icon-image(-220, -20, '../', '-white')
 
-						padding: 0;
-						height: 0;
-						border-width: 2px;
+						.popupMenuItemArrowActive
+							opacity: 0
+							icon-image(-220, -20, '../')
 
-						&:after {
-							insertBorder(3px solid #c8c8c8);
-							left: 20px;
-							bottom: -2px;
-						}
-					}
-				}
-			}
 
-			&.popupSlideNormalTransition .menuSlide {
-				transform: translate3d(100%, 0, 0);
-			}
 
-			.hiddenSlide {
-				display: none !important;
-			}
+					.separator
+						display: none
 
-			.topLevelSlide {
-				z-index: 1;
-			}
+						padding: 0
+						height: 0
+						border-width: 2px
 
-			.menuSlide.visibleSlide {
-				transform: translate3d(0, 0, 0) scale(1, 1);
-				transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s;
-				-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s;
-			}
-		}
-	}
+						&:after
+							insertBorder(3px solid #c8c8c8)
+							left: 20px
+							bottom: -2px
 
-	.mobileMenuCloseOverlay {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: inherit;
-		opacity: 0;
-		z-index: 1;
-		visibility: hidden;
-		transition: opacity 0.5s, visibility 0.5s;
-		-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0.5s;
-	}
 
-	&.mobileMenuActive {
-		overflow: hidden !important;
 
-		.mobileMenuCloseOverlay {
-			visibility: visible;
-			opacity: 0.7;
-			transition: opacity 0.5s, visibility 0s;
-			-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0s;
-		}
 
-		.mobileMenu {
-			transform: translate3d(0, 0, 0) !important;
-			box-shadow: 0px 0px 10px 3px $grey-dark;
-			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s;
-			-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s;
-		}
-	}
 
-	&.mobileMenuToggleButtonActive {
-		.umcMobileMenuToggleButton {
-			div:nth-child(1) {
-				transform: translate3d(0, 8px, 0) rotate(45deg);
-			}
-			div:nth-child(2) {
-				transform: rotate(45deg);
-			}
-			div:nth-child(3) {
-				transform: translate3d(0, -8px, 0) rotate(-45deg);
-			}
-		}
-	}
-}
+			&.popupSlideNormalTransition .menuSlide
+				transform: translate3d(100%, 0, 0)
+
+
+			.hiddenSlide
+				display: none !important
+
+
+			.topLevelSlide
+				z-index: 1
+
+
+			.menuSlide.visibleSlide
+				transform: translate3d(0, 0, 0) scale(1, 1)
+				transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
+				-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
+
+
+
+
+	.mobileMenuCloseOverlay
+		position: fixed
+		top: 0
+		bottom: 0
+		left: 0
+		right: 0
+		background: inherit
+		opacity: 0
+		z-index: 1
+		visibility: hidden
+		transition: opacity 0.5s, visibility 0.5s
+		-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0.5s
+
+
+	&.mobileMenuActive
+		overflow: hidden !important
+
+		.mobileMenuCloseOverlay
+			visibility: visible
+			opacity: 0.7
+			transition: opacity 0.5s, visibility 0s
+			-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0s
+
+
+		.mobileMenu
+			transform: translate3d(0, 0, 0) !important
+			box-shadow: 0px 0px 10px 3px $grey-dark
+			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
+			-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
+
+
+
+	&.mobileMenuToggleButtonActive
+		.umcMobileMenuToggleButton
+			div:nth-child(1)
+				transform: translate3d(0, 8px, 0) rotate(45deg)
+
+			div:nth-child(2)
+				transform: rotate(45deg)
+
+			div:nth-child(3)
+				transform: translate3d(0, -8px, 0) rotate(-45deg)
+
+
+
+

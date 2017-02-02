@@ -17,100 +17,100 @@
  *
  * In the case you use this program under the terms of the GNU AGPL V3,
  * the program is provided in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Publi
  * License with the Debian GNU/Linux or Univention distribution in file
- * /usr/share/common-licenses/AGPL-3; if not, see
+ * /usr/share/common-licenses/AGPL-3 if not, see
  * <http://www.gnu.org/licenses/>.
  */
 
-@import "../variables";
+@import "../variables"
 
-.umc .umcMultiInput {
-	margin-bottom: 1.5em;
+.umc .umcMultiInput
+	margin-bottom: 1.5em
 
-	.umcMultiInputContainer {
-		position: relative;
-	}
+	.umcMultiInputContainer
+		position: relative
+
 
 	/* add a padding to the last element of a row */
-	.umcMultiInputContainer .umcMultiInputLastRowEntry {
-		padding-right: 45px;
-	}
+	.umcMultiInputContainer .umcMultiInputLastRowEntry
+		padding-right: 45px
+
 
 	/* move the removal button over the last element of the row */
-	.umcMultiInputRemoveButton {
-		margin: 0 0 0 -35px;
+	.umcMultiInputRemoveButton
+		margin: 0 0 0 -35px
 
-		.dijitButtonNode {
+		.dijitButtonNode
 			/* make sure the button width matches the margin to avoid a line break */
-			width: 27px;
-			padding: 3px;
-		}
-	}
+			width: 27px
+			padding: 3px
+
+
 	
 	/* Buttons were cut off a little to the left - this fixes it*/
-	.umcMultiInputAddButton {
-		margin: 0 0 0 6px;
-	}
-}
-
-.umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput {
-	margin-bottom: 0;
-}
+	.umcMultiInputAddButton
+		margin: 0 0 0 6px
 
 
-.umc .umcLabelPane .umcTooltipIcon {
-	span.umcHelpIcon {
-		opacity: 0.6;
-	}
-	&:hover span.umcHelpIcon {
-		background-position: -60px -200px;
-	}
-	&:active span.umcHelpIcon {
-		background-position: -60px -200px;
-		opacity: 1;
-	}
-}
 
-.umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry {
-	padding-right: 0;
-}
+.umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput
+	margin-bottom: 0
 
-.umc .umcLiveSearchSidebarRadioButtonGroup {
-	margin-top: 1.5em;
-}
 
-.umc .umcMultiSelect {
+
+.umc .umcLabelPane .umcTooltipIcon
+	span.umcHelpIcon
+		opacity: 0.6
+
+	&:hover span.umcHelpIcon
+		background-position: -60px -200px
+
+	&:active span.umcHelpIcon
+		background-position: -60px -200px
+		opacity: 1
+
+
+
+.umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry
+	padding-right: 0
+
+
+.umc .umcLiveSearchSidebarRadioButtonGroup
+	margin-top: 1.5em
+
+
+.umc .umcMultiSelect
 	border: 1px solid $border-color
-}
+
 
 .umc .umcProgressBar,
-.umc .umcProgressInfo {
-	width: 400px;
-	> * {
-		width: 100%;
-	}
-}
+.umc .umcProgressInfo
+	width: 400px
+	> *
+		width: 100%
 
-.umc .umcSearchBox .umcSearchIcon {
-	position: absolute;
-	right: 3px;
-	bottom: 3px;
-	z-index: 1;
 
-	opacity: 1;
-	transition: opacity 0.25s;
 
-	&:hover {
-		opacity: 0.66;
-	}
+.umc .umcSearchBox .umcSearchIcon
+	position: absolute
+	right: 3px
+	bottom: 3px
+	z-index: 1
 
-	&:active {
-		opacity: 1;
-	}
-}
+	opacity: 1
+	transition: opacity 0.25s
+
+	&:hover
+		opacity: 0.66
+
+
+	&:active
+		opacity: 1
+
+
 

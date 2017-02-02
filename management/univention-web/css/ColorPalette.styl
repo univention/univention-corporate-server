@@ -21,24 +21,24 @@
  *		adds border for active or selected state
  */
 
-@import "variables";
+@import "variables"
 
-.umc  .dijitColorPalette {
-	border: 1px solid $border-color;
-	background: $colorpalette-background-color;
-	border-radius: 0;
-}
+.umc  .dijitColorPalette
+	border: 1px solid $border-color
+	background: $colorpalette-background-color
+	border-radius: 0
 
-.umc .dijitColorPalette .dijitPaletteImg {
+
+.umc .dijitColorPalette .dijitPaletteImg
 	/* transparent (but clickable) <img> node inside of each <td>, overlaying the color swatch.
 	 * displays border around a color swatch
 	 * overrides border color in dijit.css */
-	border: 1px solid $minor-border-color;
-}
-.umc .dijitColorPalette .dijitPaletteCell:hover .dijitPaletteImg {
-	border: 1px solid $swatch-hovered-border-color;
-}
+	border: 1px solid $minor-border-color
+
+.umc .dijitColorPalette .dijitPaletteCell:hover .dijitPaletteImg
+	border: 1px solid $swatch-hovered-border-color
+
 .umc .dijitColorPalette .dijitPaletteCell:active .dijitPaletteImg,
-.umc .dijitColorPalette .dijitPaletteTable .dijitPaletteCellSelected .dijitPaletteImg {
-	border: 2px solid $swatch-selected-border-color;
-}
+.umc .dijitColorPalette .dijitPaletteTable .dijitPaletteCellSelected .dijitPaletteImg
+	border: 2px solid $swatch-selected-border-color
+

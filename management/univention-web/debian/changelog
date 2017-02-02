@@ -1,3 +1,9 @@
+univention-web (1.0.12-1) unstable; urgency=medium
+
+  * Bug #42261: remove ';' + curly brackets (ensuring that output is the same)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 23:17:21 +0100
+
 univention-web (1.0.11-2) unstable; urgency=medium
 
   * Bug #42261: fix build target

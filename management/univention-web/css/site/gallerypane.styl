@@ -1,185 +1,185 @@
-@import "../variables";
+@import "../variables"
 
 /* GalleryPane */
-.umcGalleryPane.dgrid {
-	overflow: hidden;
-	&.umcOverviewPane {
-		overflow: visible;
-	}
-	height: auto;
-	border: none;
+.umcGalleryPane.dgrid
+	overflow: hidden
+	&.umcOverviewPane
+		overflow: visible
 
-	.dgrid-scroller {
-		outline: none;
-		position: relative;
-		overflow: visible;
-	}
+	height: auto
+	border: none
 
-	.dgrid-selected {
-		background-color: inherit;
-	}
-}
+	.dgrid-scroller
+		outline: none
+		position: relative
+		overflow: visible
+
+
+	.dgrid-selected
+		background-color: inherit
+
+
 
 /* gallery header may be outside of gallerypane */
-.umcGalleryCategoryHeader {
-	padding: 0 0 0.25em 0;
-	margin: 1em 5px 0.5em 5px;
-	font-size: $font-size-title;
-	font-weight: bold;
-	border-bottom: solid 1px $base-border-color;
+.umcGalleryCategoryHeader
+	padding: 0 0 0.25em 0
+	margin: 1em 5px 0.5em 5px
+	font-size: $font-size-title
+	font-weight: bold
+	border-bottom: solid 1px $base-border-color
 	// on the android tablet the border would only be displayed at width ~300px
 	// this background image hack fixes the problem, see:
 	//   http://stackoverflow.com/a/13550951
-	background-image: url(../images/blank.png);
-}
+	background-image: url(../images/blank.png)
 
-.umcGalleryCategoryHeader:first-child {
-	margin-top: 0;
-}
 
-.umcGalleryPane {
+.umcGalleryCategoryHeader:first-child
+	margin-top: 0
+
+
+.umcGalleryPane
 	// disable selection on touch devices
 	// taken from: http://stackoverflow.com/a/11237968
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
+	-webkit-touch-callout:none
+	-webkit-user-select:none
 
-	.umcGalleryWrapperItem {
-		padding: 10px;
-	}
+	.umcGalleryWrapperItem
+		padding: 10px
 
-	.umcGalleryItem {
-		position: relative;
-		outline: none;
-		padding: 16px;
-		background-color: #fff;
-		box-sizing: content-box;
+
+	.umcGalleryItem
+		position: relative
+		outline: none
+		padding: 16px
+		background-color: #fff
+		box-sizing: content-box
 		material-shadow-common()
 		material-shadow(1)
 		border-radius: 2px
 
 		// definitions in px instead of em due to size of image in px
-		height: 80px;
-		overflow: hidden;
+		height: 80px
+		overflow: hidden
 
-		.umcGalleryName {
-			font-size: $font-size-subheading;
-			color: $text-color-lighter;
-			font-weight: 500;
-			transition-duration: inherit;
-			transition-property: color, border;
-			word-break: break-word;
-			margin-right: 24px;
-		}
+		.umcGalleryName
+			font-size: $font-size-subheading
+			color: $text-color-lighter
+			font-weight: 500
+			transition-duration: inherit
+			transition-property: color, border
+			word-break: break-word
+			margin-right: 24px
 
-		.umcGalleryDescription {
-			color: $text-color-lightest;
-			padding-top: 5px;
-			min-height: 70px;
-			transition-duration: inherit;
-			transition-property: color;
-		}
 
-		.umcGalleryIcon {
-			height: 78px;
-			width: 80px;
-			float: left;
-			background-position: center center;
+		.umcGalleryDescription
+			color: $text-color-lightest
+			padding-top: 5px
+			min-height: 70px
+			transition-duration: inherit
+			transition-property: color
+
+
+		.umcGalleryIcon
+			height: 78px
+			width: 80px
+			float: left
+			background-position: center center
 			/* make sure to have some spacing for SVG images with the property background-size=contain */
-			border: 5px transparent solid;
-		}
+			border: 5px transparent solid
+
 
 		/* if an icon is present, set a margin to the text elements */
 		.umcGalleryIcon + .umcGalleryName,
-		.umcGalleryIcon + .umcGalleryName + .umcGalleryDescription {
-			margin-left: 85px;
-		}
+		.umcGalleryIcon + .umcGalleryName + .umcGalleryDescription
+			margin-left: 85px
 
-		.umcGalleryStatusIcon {
-			position: absolute;
-			width: 20px;
-			height: 20px;
-			top: 5px;
-			left: auto;
-			right: 5px;
-		}
+
+		.umcGalleryStatusIcon
+			position: absolute
+			width: 20px
+			height: 20px
+			top: 5px
+			left: auto
+			right: 5px
+
 
 		.umcFavoriteIconDefault,
-		.umcFavoriteIconInverted {
-			position: absolute;
-			top: 0;
-			right: 13px;
-			width: 10px;
-			height: 10px;
-			line-height: 0;
-		}
+		.umcFavoriteIconInverted
+			position: absolute
+			top: 0
+			right: 13px
+			width: 10px
+			height: 10px
+			line-height: 0
 
-		.umcGalleryContextIcon {
-			icon-image(0, -40, "../");
-			position: absolute;
-			top: 11px;
-			left: auto;
-			right: 8px;
-		}
-	}
+
+		.umcGalleryContextIcon
+			icon-image(0, -40, "../")
+			position: absolute
+			top: 11px
+			left: auto
+			right: 8px
+
+
 
 	.umcGalleryItem.touched,
-	.umcGalleryItemActive {
-		cursor: pointer;
-		.umcGalleryCategoryFavorite {
-			background-color: #ffffff!important;
-		}
+	.umcGalleryItemActive
+		cursor: pointer
+		.umcGalleryCategoryFavorite
+			background-color: #ffffff!important
+
 		.umcGalleryName,
-		.umcGalleryDescription {
-			color: white;
-		}
-		.umcFavoriteIconDefault {
-			display: none;
-		}
-		.umcGalleryContextIcon {
-			icon-image(0, -40, "../", "-white");
-		}
-		.umcGalleryContextIcon:hover {
-			background-position: -20px -40px;
-		}
-		.umcGalleryContextIcon:active {
-			background-position: -20px -40px;
-			opacity: 0.67;
-		}
-	}
-}
-body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover {
-	cursor: pointer;
-	.umcGalleryCategoryFavorite {
-		background-color: #ffffff!important;
-	}
+		.umcGalleryDescription
+			color: white
+
+		.umcFavoriteIconDefault
+			display: none
+
+		.umcGalleryContextIcon
+			icon-image(0, -40, "../", "-white")
+
+		.umcGalleryContextIcon:hover
+			background-position: -20px -40px
+
+		.umcGalleryContextIcon:active
+			background-position: -20px -40px
+			opacity: 0.67
+
+
+
+body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover
+	cursor: pointer
+	.umcGalleryCategoryFavorite
+		background-color: #ffffff!important
+
 	.umcGalleryName,
-	.umcGalleryDescription {
-		color: white;
-	}
-	.umcFavoriteIconDefault {
-		display: none;
-	}
-	.umcGalleryContextIcon {
-		icon-image(0, -40, "../", "-white");
-	}
-	.umcGalleryContextIcon:hover {
-		background-position: -20px -40px;
-	}
-	.umcGalleryContextIcon:active {
-		background-position: -20px -40px;
-		opacity: 0.67;
-	}
-}
+	.umcGalleryDescription
+		color: white
+
+	.umcFavoriteIconDefault
+		display: none
+
+	.umcGalleryContextIcon
+		icon-image(0, -40, "../", "-white")
+
+	.umcGalleryContextIcon:hover
+		background-position: -20px -40px
+
+	.umcGalleryContextIcon:active
+		background-position: -20px -40px
+		opacity: 0.67
+
+
 
 .umcGalleryPane .umcGalleryItem:active
 	material-shadow(2)
 
 // no left/right padding for full size item
-@media (max-width: $xxs-max) {
-	.umcGalleryPane .umcGalleryWrapperItem {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
+@media (max-width: $xxs-max)
+	.umcGalleryPane .umcGalleryWrapperItem
+		padding-left: 0
+		padding-right: 0
+
+
 
 

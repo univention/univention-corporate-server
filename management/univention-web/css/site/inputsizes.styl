@@ -17,85 +17,97 @@
  *
  * In the case you use this program under the terms of the GNU AGPL V3,
  * the program is provided in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Publi
  * License with the Debian GNU/Linux or Univention distribution in file
- * /usr/share/common-licenses/AGPL-3; if not, see
+ * /usr/share/common-licenses/AGPL-3 if not, see
  * <http://www.gnu.org/licenses/>.
  */
 
-@import "../variables";
+@import "../variables"
 
-$twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols) {
-	$_rules = '';
-	for $icol in 1 2 3 4 5 6 7 8 9 10 11 12 {
-		if ($icol >= $nMinCols) {
-			if ($_rules) {
+$twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols)
+	$_rules = ''
+	for $icol in 1 2 3 4 5 6 7 8 9 10 11 12
+		if ($icol >= $nMinCols)
+			if ($_rules)
 				$_rules += ',\n'
-			}
+
 			$_rules += '.umcPage > .col-' + $deviceClass + '-' + $icol
-		}
-	}
 
-	$_mediaQuery = '';
-	if ($minWidth) {
+
+
+	$_mediaQuery = ''
+	if ($minWidth)
 		$_mediaQuery = 'min-width: ' + $minWidth
-	}
-	if ($maxWidth) {
-		if ($_mediaQuery) {
-			$_mediaQuery += ') and (';
-		}
-		$_mediaQuery += 'max-width: ' + $maxWidth ;
-	}
 
-	@media ({$_mediaQuery}) {
-		{$_rules} {
-			.umcSize-OneThird { width: (100% / 6);}
-			.umcSize-Half { width: (100% / 4);}
-			.umcSize-TwoThirds { width: (100% / 3);}
-			.umcSize-One { width: (100% / 2);}
-			.umcSize-FourThirds { width: (200% / 3);}
-			.umcSize-OneAndAHalf { width: (300% / 4);}
-			.umcSize-FiveThirds { width: (250% / 3);}
-			.umcSize-Two { width: 100%;}
-		}
-	}
-}
+	if ($maxWidth)
+		if ($_mediaQuery)
+			$_mediaQuery += ') and ('
+
+		$_mediaQuery += 'max-width: ' + $maxWidth 
+
+
+	@media ({$_mediaQuery})
+		{$_rules}
+			.umcSize-OneThird
+				width: (100% / 6)
+			.umcSize-Half
+				width: (100% / 4)
+			.umcSize-TwoThirds
+				width: (100% / 3)
+			.umcSize-One
+				width: (100% / 2)
+			.umcSize-FourThirds
+				width: (200% / 3)
+			.umcSize-OneAndAHalf
+				width: (300% / 4)
+			.umcSize-FiveThirds
+				width: (250% / 3)
+			.umcSize-Two
+				width: 100%
+
+
+
 
 .umc .umcLayoutRow .umcLabelPane,
-.umc .umcLayoutRow > .dijitButton {
-	padding: 0 0.5em 1em 0.5em;
-}
+.umc .umcLayoutRow > .dijitButton
+	padding: 0 0.5em 1em 0.5em
 
-.umc .umcLayoutRow {
+
+.umc .umcLayoutRow
 	.umcLabelPane-umcMultiInput,
-	.umcLabelPane-umcPasswordInputBox {
-		padding-left: 0;
-		padding-right: 0;
-	}
+	.umcLabelPane-umcPasswordInputBox
+		padding-left: 0
+		padding-right: 0
+
 
 	.umcLabelPane-umcMultiInput,
-	.umcLabelPane-umcComplexInput {
-		display: block;
-	}
-}
+	.umcLabelPane-umcComplexInput
+		display: block
 
-.umc .umcLayoutRow {
-	margin: 0 -0.5em 0 -0.5em;
-}
+
+
+.umc .umcLayoutRow
+	margin: 0 -0.5em 0 -0.5em
+
 
 /* mobile first (width=$xxs-max): default is a one-column layout */
-.umcSize-OneThird { width: (100% / 3);}
-.umcSize-Half { width: (100% / 2); }
-.umcSize-TwoThirds { width: (100% / 1.5);}
+.umcSize-OneThird
+	width: (100% / 3)
+.umcSize-Half
+	width: (100% / 2)
+.umcSize-TwoThirds
+	width: (100% / 1.5)
 .umcSize-One,
 .umcSize-FourThirds,
 .umcSize-OneAndAHalf,
 .umcSize-FiveThirds,
-.umcSize-Two { width: 100%;}
+.umcSize-Two
+	width: 100%
 
 $twoColumnLayoutRules($xs-min, $xs-max, 'xs', 9)
 $twoColumnLayoutRules($sm-min, $sm-max, 'sm', 9)

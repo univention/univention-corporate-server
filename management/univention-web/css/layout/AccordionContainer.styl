@@ -28,72 +28,72 @@
  * 		.dijitAccordionInnerContainerHover .dijitAccordionTitle - for text color
  */
 
-@import "../variables";
+@import "../variables"
 
-.umc .dijitAccordionContainer {
-	border:none;
-}
-.umc .dijitAccordionInnerContainer {
-	background-color: $unselected-background-color;	/* gray, for closed pane */
-	border:solid 1px $border-color;
-	margin-bottom:1px;
-	transition-property: background-color,border;
- 	transition-duration: .3s;
-	transition-timing-function: linear;
-}
-.umc .dijitAccordionTitle {
-	background-color: transparent;	/* pick up color from dijitAccordionInnerContainer */
-	standard-gradient("../");
-	padding: 5px 7px 2px 7px;
-	min-height:17px;
-	color:$unselected-text-color;
-}
+.umc .dijitAccordionContainer
+	border:none
 
-.umc .dijitAccordionContainer .dijitAccordionChildWrapper {
+.umc .dijitAccordionInnerContainer
+	background-color: $unselected-background-color	/* gray, for closed pane */
+	border:solid 1px $border-color
+	margin-bottom:1px
+	transition-property: background-color,border
+	transition-duration: .3s
+	transition-timing-function: linear
+
+.umc .dijitAccordionTitle
+	background-color: transparent	/* pick up color from dijitAccordionInnerContainer */
+	standard-gradient("../")
+	padding: 5px 7px 2px 7px
+	min-height:17px
+	color:$unselected-text-color
+
+
+.umc .dijitAccordionContainer .dijitAccordionChildWrapper
 	/* this extends the blue trim styling of the title bar to wrapping around the node.
 	 * done by setting margin
 	 */
-	background-color:$pane-background-color;
-	border:1px solid $selected-border-color;
-	margin: 0 2px 2px;
-}
+	background-color:$pane-background-color
+	border:1px solid $selected-border-color
+	margin: 0 2px 2px
+
 	
-.umc .dijitAccordionContainer .dijitAccordionContainer-child {
+.umc .dijitAccordionContainer .dijitAccordionContainer-child
 	/* this is affecting the child widget itself */
-	padding: 9px;
-}
+	padding: 9px
+
 
 /* Hover state for closed pane */
 
-.umc .dijitAccordionInnerContainerHover {
-	border:1px solid $hovered-border-color;
-	background-color:$hovered-background-color;
-	transition-duration: .2s;
-}
+.umc .dijitAccordionInnerContainerHover
+	border:1px solid $hovered-border-color
+	background-color:$hovered-background-color
+	transition-duration: .2s
 
-.umc .dijitAccordionInnerContainerHover .dijitAccordionTitle {
-	color:$hovered-text-color;
-}
+
+.umc .dijitAccordionInnerContainerHover .dijitAccordionTitle
+	color:$hovered-text-color
+
 
 /* Active state for closed pane */
 
-.umc .dijitAccordionInnerContainerActive {
-	border:1px solid $selected-border-color;
-	background-color:$pressed-background-color;
-	transition-duration: .1s;
-}
-.umc .dijitAccordionInnerContainerActive .dijitAccordionTitle {
-	active-gradient("../");
-	color:$selected-text-color;
-}
+.umc .dijitAccordionInnerContainerActive
+	border:1px solid $selected-border-color
+	background-color:$pressed-background-color
+	transition-duration: .1s
+
+.umc .dijitAccordionInnerContainerActive .dijitAccordionTitle
+	active-gradient("../")
+	color:$selected-text-color
+
 
 /* Open (a.k.a. selected) pane */
 
-.umc .dijitAccordionInnerContainerSelected {
-	border-color:$selected-border-color;
-	background-color: $selected-background-color;
-}
-.umc .dijitAccordionInnerContainerSelected .dijitAccordionTitle {
-	color:$selected-text-color;
-	standard-gradient("../");	/* avoid effect when clicking the title of the open pane */
-}
+.umc .dijitAccordionInnerContainerSelected
+	border-color:$selected-border-color
+	background-color: $selected-background-color
+
+.umc .dijitAccordionInnerContainerSelected .dijitAccordionTitle
+	color:$selected-text-color
+	standard-gradient("../")	/* avoid effect when clicking the title of the open pane */
+

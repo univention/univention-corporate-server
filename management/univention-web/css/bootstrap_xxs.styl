@@ -17,23 +17,23 @@
  *
  * In the case you use this program under the terms of the GNU AGPL V3,
  * the program is provided in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Publi
  * License with the Debian GNU/Linux or Univention distribution in file
- * /usr/share/common-licenses/AGPL-3; if not, see
+ * /usr/share/common-licenses/AGPL-3 if not, see
  * <http://www.gnu.org/licenses/>.
  */
 
-@import "variables";
+@import "variables"
 
 $twelve = 1 2 3 4 5 6 7 8 9 10 11 12
-@media (max-width: $xxs-max) {
-	for $i in $twelve {
-		.col-xxs-{$i} {
-			width: (100*$i/12.0)%;
-		}
-	}
-}
+@media (max-width: $xxs-max)
+	for $i in $twelve
+		.col-xxs-{$i}
+			width: (100*$i/12.0)%
+
+
+

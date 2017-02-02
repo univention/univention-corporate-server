@@ -1,18 +1,18 @@
 /* ======= Styling for the document itself (overriding dojo.css) ======== */
 
-@import "variables";
-@import url("../../../dojo/resources/dojo.css");
+@import "variables"
+@import url("../../../dojo/resources/dojo.css")
 
-*:focus {
+*:focus
 	// remove outline in chromium
-	outline: 0;
-}
+	outline: 0
 
-.umc {
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  color: $document-text-color;
-}
+
+.umc
+	font-family: 'Roboto', sans-serif
+	font-size: 14px
+	color: $document-text-color
+
 
 html
 	height: 100%
@@ -20,102 +20,86 @@ html
 
 body.umc,
 .umc p
-	line-height: 1.4em;
+	line-height: 1.4em
 
 .umc td,
-.umc th {
-	padding: 0em 1em 0.3em 0em;
-}
-.umc a {
-	color: $text-color-lightest;
-	text-decoration: underline;
-}
-.umc .umcGalleryItem a {
-	text-decoration: none;
-}
-.umc a:hover {
-	color: $text-color;
-}
+.umc th
+	padding: 0em 1em 0.3em 0em
+
+.umc a
+	color: $text-color-lightest
+	text-decoration: underline
+
+.umc .umcGalleryItem a
+	text-decoration: none
+
+.umc a:hover
+	color: $text-color
+
 
 body.umc .umcBackground,
-body.umc {
-	overflow-x: hidden;
-	background-color: $document-background-color;
-}
-
-.dj_ie9 body.umc .umcBackground,
-.dj_ie8 body.umc .umcBackground,
-.dj_ie9 body.umc,
-.dj_ie8 body.umc {
-}
-
-.dj_ie9 body.umc:before .umcBackground,
-.dj_ie8 body.umc:before .umcBackground,
-.dj_ie9 body.umc:before,
-.dj_ie8 body.umc:before {
-}
+body.umc
+	overflow-x: hidden
+	background-color: $document-background-color
 
 .dj_ie9 body.umc.umcOverviewShown:before,
 .dj_ie8 body.umc.umcOverviewShown:before,
-body.umc.umcOverviewShown {
-	min-height: 100%;
-}
-body.umc.umcOverviewNotShown {
-}
+body.umc.umcOverviewShown
+	min-height: 100%
 
-body.umc.umcHeadless {
+body.umc.umcHeadless
 	#umcHeader,
-	#umcHeader .umcHeaderLeft {
-		overflow: hidden;
-		min-height: 0;
-		height: 42px;
-	}
-	#umcHeader {
-		border-bottom: 2px solid $ucs-green;
-	}
-	.umcModuleHeader {
-		background-color: transparent!important;
-		.umcModuleTitle {
-			color: $text-color;
-		}
-	}
-}
+	#umcHeader .umcHeaderLeft
+		overflow: hidden
+		min-height: 0
+		height: 42px
+
+	#umcHeader
+		border-bottom: 2px solid $ucs-green
+
+	.umcModuleHeader
+		background-color: transparent!important
+		.umcModuleTitle
+			color: $text-color
+
+
+
 
 /* Headings */
-.umc h1 {
-	font-size: $font-size-title;
+.umc h1
+	font-size: $font-size-title
 	font-weight: bold
-	margin-bottom:0.727em;
-}
-.umc h2 { 
-	font-size: $font-size-title;
-	margin-top:1em; 
-	margin-bottom:0.60em;
-	font-weight: normal;
-}
-.umc h3, .umc h4, .umc h5, .umc h6 {
-	font-size:1em; 
-	font-weight: bold; 
-}
+	margin-bottom:0.727em
+
+.umc h2 
+	font-size: $font-size-title
+	margin-top:1em 
+	margin-bottom:0.60em
+	font-weight: normal
+
+.umc h3, .umc h4, .umc h5, .umc h6
+	font-size:1em 
+	font-weight: bold 
+
 
 /* paragraphs, quotes and lists */
 
 .umc hr
-	border-top: 2px solid $border-color;
+	border-top: 2px solid $border-color
 
 .umc p
-	margin-bottom: 0.7em;
+	margin-bottom: 0.7em
 
 /* pre and code */
-.umc pre, .umc code { 
-	//font-family:inherit; 
-	//background-color: $document-shadedsection-background-color; 
-	border: 1px solid $document-border-color;
-	word-wrap: normal;
-}
+.umc pre, .umc code 
+	//font-family:inherit 
+	//background-color: $document-shadedsection-background-color 
+	border: 1px solid $document-border-color
+	word-wrap: normal
+
 
 /* tables */
-.umc table.dojoTabular thead, .umc table.dojoTabular tfoot { 
-	background-color: $document-shadedsection-background-color; 
-	border: 1px solid $document-border-color; 
-}
+.umc table.dojoTabular thead, .umc table.dojoTabular tfoot 
+	background-color: $document-shadedsection-background-color 
+	border: 1px solid $document-border-color 
+

@@ -23,14 +23,14 @@
  * 		.dijitTreeNode .dojoDndItemBefore/.dojoDndItemAfter - use border style simulate a separate line
  */
 
-@import "variables";
+@import "variables"
 
-.umc .dijitTreeNode {
-    zoom: 1;	/* force layout on IE (TODO: may not be needed anymore) */
-}
-.umc .dijitTreeIsRoot {
-    background-image: none;
-}
+.umc .dijitTreeNode
+    zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */
+
+.umc .dijitTreeIsRoot
+    background-image: none
+
 
 /* Styling for basic tree node (unhovered, unselected)
  * Also use this styling when dropping between items on the tree (in other words, don't
@@ -38,93 +38,93 @@
  */
 .umc .dijitTreeRow,
 .umc .dijitTreeNode .dojoDndItemBefore,
-.umc .dijitTreeNode .dojoDndItemAfter {
+.umc .dijitTreeNode .dojoDndItemAfter
 	/* so insert line shows up on IE when dropping after a target element */
-	padding: 4px 0 2px 0;
+	padding: 4px 0 2px 0
 
-	background-color: none;	// IE6 doesn't understand rgba() or transparent below
-	background-color: transparent;	// IE8 doesn't understand rgba() below
-	background-color: rgba(171,214,255,0);	// rgba() instead of transparent to prevent flash on hover fade-in
-	background-position:0 0;
-	background-repeat:repeat-x;
+	background-color: none	// IE6 doesn't understand rgba() or transparent below
+	background-color: transparent	// IE8 doesn't understand rgba() below
+	background-color: rgba(171,214,255,0)	// rgba() instead of transparent to prevent flash on hover fade-in
+	background-position:0 0
+	background-repeat:repeat-x
 
-	border: solid 0 transparent;
+	border: solid 0 transparent
 
-	color: $text-color;
+	color: $text-color
 
-	transition-property: background-color, border-color;
-	transition-duration: .25s;
-	transition-timing-function: ease-out;
-}
+	transition-property: background-color, border-color
+	transition-duration: .25s
+	transition-timing-function: ease-out
 
-.umc .dijitTreeRowSelected {
-	background-color: $selected-background-color;
-	standard-gradient();
-	padding: 3px 0 1px;
-	border-color: $selected-border-color;
-	border-width: 1px 0;
-	color: $selected-text-color;
-}
-.umc .dijitTreeRowHover {
-	background-color: $hovered-background-color;
-	standard-gradient();
-	padding: 3px 0 1px;
-	border-color: $hovered-border-color;
-	border-width: 1px 0;
-	color: $hovered-text-color;
-	transition-duration: .25s;
-}
-.umc .dijitTreeRowActive {
-	background-color:$pressed-background-color;
-	active-gradient();
-	padding: 3px 0 1px;
-	border-color: $pressed-border-color;
-	border-width: 1px 0;
-	color: $selected-text-color;
-}
-.umc .dijitTreeRowFocused {
-	background-repeat: repeat;
-}
+
+.umc .dijitTreeRowSelected
+	background-color: $selected-background-color
+	standard-gradient()
+	padding: 3px 0 1px
+	border-color: $selected-border-color
+	border-width: 1px 0
+	color: $selected-text-color
+
+.umc .dijitTreeRowHover
+	background-color: $hovered-background-color
+	standard-gradient()
+	padding: 3px 0 1px
+	border-color: $hovered-border-color
+	border-width: 1px 0
+	color: $hovered-text-color
+	transition-duration: .25s
+
+.umc .dijitTreeRowActive
+	background-color:$pressed-background-color
+	active-gradient()
+	padding: 3px 0 1px
+	border-color: $pressed-border-color
+	border-width: 1px 0
+	color: $selected-text-color
+
+.umc .dijitTreeRowFocused
+	background-repeat: repeat
+
 
 /* expando (open/closed) icon */
 
-.umc .dijitTreeExpando {
-	background-image: url($image-tree-expand);
-    width: 16px;
-    height: 16px;
-	background-position: -35px 0;		/* for dijitTreeExpandoOpened */
-}
-.dj_ie6 .umc .dijitTreeExpando {
-	background-image: url($image-tree-expand-ie6);
-}
-.umc .dijitTreeRowHover .dijitTreeExpandoOpened {
-	background-position: -53px 0;
-}
-.umc .dijitTreeExpandoClosed {
-	background-position: 1px 0;
-}
-.umc .dijitTreeRowHover .dijitTreeExpandoClosed {
-	background-position: -17px 0;
-}
+.umc .dijitTreeExpando
+	background-image: url($image-tree-expand)
+	width: 16px
+	height: 16px
+	background-position: -35px 0		/* for dijitTreeExpandoOpened */
+
+.dj_ie6 .umc .dijitTreeExpando
+	background-image: url($image-tree-expand-ie6)
+
+.umc .dijitTreeRowHover .dijitTreeExpandoOpened
+	background-position: -53px 0
+
+.umc .dijitTreeExpandoClosed
+	background-position: 1px 0
+
+.umc .dijitTreeRowHover .dijitTreeExpandoClosed
+	background-position: -17px 0
+
 .umc .dijitTreeExpandoLeaf,
-.dj_ie6 .umc .dijitTreeExpandoLeaf {
-	background-image:none;
-}
-.umc .dijitTreeExpandoLoading {
-	background-image: url($image-loading-animation);
-}
+.dj_ie6 .umc .dijitTreeExpandoLeaf
+	background-image:none
+
+.umc .dijitTreeExpandoLoading
+	background-image: url($image-loading-animation)
+
 
 /* Drag and Drop on TreeNodes
  * Put insert line on dijitTreeContent node so it's aligned w/
  * (ie, indented equally with) target element, even
  * though dijitTreeRowNode is the actual "drag object"
  */
-.umc .dijitTreeNode .dojoDndItemBefore .dijitTreeContent {
-	border-top: 2px solid $dnd-dropseparator-color;		// TODO: normal separator is just 1px, why is this 2px?
-}
-.umc .dijitTreeNode .dojoDndItemAfter .dijitTreeContent {
-	border-bottom: 2px solid $dnd-dropseparator-color;	// TODO: normal separator is just 1px, why is this 2px?
-}
-.umc .dgrid-row-table .dgrid-tree-icon {
-	margin-right: 5px;
-}
+.umc .dijitTreeNode .dojoDndItemBefore .dijitTreeContent
+	border-top: 2px solid $dnd-dropseparator-color		// TODO: normal separator is just 1px, why is this 2px?
+
+.umc .dijitTreeNode .dojoDndItemAfter .dijitTreeContent
+	border-bottom: 2px solid $dnd-dropseparator-color	// TODO: normal separator is just 1px, why is this 2px?
+
+.umc .dgrid-row-table .dgrid-tree-icon
+	margin-right: 5px
+

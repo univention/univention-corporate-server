@@ -1,195 +1,195 @@
-@import "../variables";
+@import "../variables"
 
-#umcLoginWrapper {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	display: none;
-}
+#umcLoginWrapper
+	position: absolute
+	height: 100%
+	width: 100%
+	display: none
 
-#umcLoginDialog, .umcLoginDialog {
-	background-image: url('../images/login_bg.png');
-	background-color: #eeeeef;
-	width: 313px;
-	height: 313px;
-	margin: 0 auto;
-	padding: 3px;
-	border: 0 none;
-	position: relative !important;
-}
 
-#umcLoginDialog * {
-	overflow: hidden;
-}
+#umcLoginDialog, .umcLoginDialog
+	background-image: url('../images/login_bg.png')
+	background-color: #eeeeef
+	width: 313px
+	height: 313px
+	margin: 0 auto
+	padding: 3px
+	border: 0 none
+	position: relative !important
 
-#umcLoginCenterer {
-	height: 50%;
-	margin-bottom: -156px; /* half of the height of #umcLoginDialog*/
-}
 
-#umcLoginIframe {
-	position: absolute;
-	border: 0 none;
-	height: 0;
-	width: 0;
-}
+#umcLoginDialog *
+	overflow: hidden
+
+
+#umcLoginCenterer
+	height: 50%
+	margin-bottom: -156px /* half of the height of #umcLoginDialog*/
+
+
+#umcLoginIframe
+	position: absolute
+	border: 0 none
+	height: 0
+	width: 0
+
 
 #umcLoginDialog.umcLoginLoading,
-.umcLoginDialog.umcLoginLoading {
-	background-image: url('../images/login_bg.gif');
-}
-#umcLoginDialog .umcLoginLogo img {
-	height: 120px;
-	margin: 53px auto 0;
-	display: block;
-	transition(margin-top 1s);
-}
+.umcLoginDialog.umcLoginLoading
+	background-image: url('../images/login_bg.gif')
 
-#umcLoginDialog.umcLoginLoading .umcLoginLogo img {
-	margin-top: 85px;
-}
+#umcLoginDialog .umcLoginLogo img
+	height: 120px
+	margin: 53px auto 0
+	display: block
+	transition(margin-top 1s)
 
-#umcLoginDialog .umcLoginForm {
-	margin: 15px;
-}
 
-#umcLoginDialog.umcLoginLoading .umcLoginForm {
-	display: none!important;
-}
+#umcLoginDialog.umcLoginLoading .umcLoginLogo img
+	margin-top: 85px
 
-#umcLoginDialog .umcLoginForm label {
-	width: 100%;
-	height: 30px;
-	display: block;
-	padding: 0;
-	margin: 20px 0;
-	border-bottom: thin solid #969696;
-	position: relative;
-}
-#umcLoginDialog .umcLoginForm input {
-	padding-right: 20px;
-	margin: 0;
-	border: 0 none;
-	outline: none;
-	background: transparent;
-	font-size: 1.5em;
-	color: #787878;
-	width: 100%;
-	height: 100%;
-}
+
+#umcLoginDialog .umcLoginForm
+	margin: 15px
+
+
+#umcLoginDialog.umcLoginLoading .umcLoginForm
+	display: none!important
+
+
+#umcLoginDialog .umcLoginForm label
+	width: 100%
+	height: 30px
+	display: block
+	padding: 0
+	margin: 20px 0
+	border-bottom: thin solid #969696
+	position: relative
+
+#umcLoginDialog .umcLoginForm input
+	padding-right: 20px
+	margin: 0
+	border: 0 none
+	outline: none
+	background: transparent
+	font-size: 1.5em
+	color: #787878
+	width: 100%
+	height: 100%
+
 #umcLoginDialog .umcLoginForm label a,
-#umcLoginDialog .umcLoginForm input[type=submit] {
-	position: absolute;
-	right: 0;
-	bottom: 5px;
-}
-#umcLoginDialog .umcLoginForm label a {
-	span.umcHelpIcon {
-		opacity: 0.6;
-	}
-	&:hover span.umcHelpIcon {
-		background-position: -60px -200px;
-	}
-	&:active span.umcHelpIcon {
-		background-position: -60px -200px;
-		opacity: 1;
-	}
-}
-#umcLoginDialog .umcLoginForm input[type=submit] {
-	icon-image(0, -160, "../");
-	color: transparent;
-	&:hover {
-		background-position: -20px -160px;
-	}
-	&:active {
-		icon-image(0, -160, "../", "-white");
-	}
-}
+#umcLoginDialog .umcLoginForm input[type=submit]
+	position: absolute
+	right: 0
+	bottom: 5px
 
-#umcLoginMessages {
-	margin: 0 auto;
-	padding: 1.3em;
-	width: 313px;
-	background-color: #696969;
-	border: thin solid #a8a8a8;
-	color: #ffffff;
-	font-size: 0.9em;
-	box-shadow: 0px 2px 5px #888888;
-}
-#umcLoginMessages a {
-	color: #ffffff;
-	text-decoration: underline;
-}
+#umcLoginDialog .umcLoginForm label a
+	span.umcHelpIcon
+		opacity: 0.6
+
+	&:hover span.umcHelpIcon
+		background-position: -60px -200px
+
+	&:active span.umcHelpIcon
+		background-position: -60px -200px
+		opacity: 1
+
+
+#umcLoginDialog .umcLoginForm input[type=submit]
+	icon-image(0, -160, "../")
+	color: transparent
+	&:hover
+		background-position: -20px -160px
+
+	&:active
+		icon-image(0, -160, "../", "-white")
+
+
+
+#umcLoginMessages
+	margin: 0 auto
+	padding: 1.3em
+	width: 313px
+	background-color: #696969
+	border: thin solid #a8a8a8
+	color: #ffffff
+	font-size: 0.9em
+	box-shadow: 0px 2px 5px #888888
+
+#umcLoginMessages a
+	color: #ffffff
+	text-decoration: underline
+
 #umcLoginMessages a:hover,
-#umcLoginMessages a:focus {
-	color: #7db523;
-}
-#umcLoginMessages h1 {
-	font-size: 1.7em;
-	margin: 0;
-	padding: 0.3em 0;
-	margin-bottom: 0.3em;
-	border-bottom: thin inset #ffffff;
-}
-#umcLoginMessages p {
-	margin: 0;
-	padding: 0;
-}
+#umcLoginMessages a:focus
+	color: #7db523
 
-#umcLoginHeaderRight {
-	position: absolute;
-	top: 0;
-	right: 0;
-}
+#umcLoginMessages h1
+	font-size: 1.7em
+	margin: 0
+	padding: 0.3em 0
+	margin-bottom: 0.3em
+	border-bottom: thin inset #ffffff
 
-#umcLanguageSwitch, #umcSingleSignOn {
-	float: left;
-	.dijitButtonNode {
-		border: 0 none;
-		box-shadow: none;
-		background: none;
-		filter: none;
-	}
-}
+#umcLoginMessages p
+	margin: 0
+	padding: 0
 
-#umcSingleSignOn {
-	padding-top: 2px;
-}
-#umcSingleSignOn .dijitButtonNode .dijitIcon {
-	background-position: -140px -20px;
-	float: right;
-}
-#umcSingleSignOn .dijitHover .dijitIcon {
-	opacity: 0.66;
-}
-#umcSingleSignOn .dijitActive .dijitIcon {
-	opacity: 1;
-}
 
-#umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner {
-	icon-image(0, -220, "../", "", 20px, 25px);
-}
+#umcLoginHeaderRight
+	position: absolute
+	top: 0
+	right: 0
 
-#umcLanguageSwitch .dijitHover .dijitArrowButtonInner {
-	background-position: -20px -220px;
-	opacity: 0.66;
-}
-#umcLanguageSwitch .dijitActive .dijitArrowButtonInner {
-	background-position: -20px -220px;
-	opacity: 1;
-}
 
-body #umcFakeLoginLogo {
-	@media (max-width: 400px) {
-		background: url("../images/univention_u.svg") no-repeat 12px 12px;
-	}
-	background: url("../images/univention.svg") no-repeat 10px 12px;
-	position: absolute;
-	width: 200px;
-	height: 40px;
-}
+#umcLanguageSwitch, #umcSingleSignOn
+	float: left
+	.dijitButtonNode
+		border: 0 none
+		box-shadow: none
+		background: none
+		filter: none
+
+
+
+#umcSingleSignOn
+	padding-top: 2px
+
+#umcSingleSignOn .dijitButtonNode .dijitIcon
+	background-position: -140px -20px
+	float: right
+
+#umcSingleSignOn .dijitHover .dijitIcon
+	opacity: 0.66
+
+#umcSingleSignOn .dijitActive .dijitIcon
+	opacity: 1
+
+
+#umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner
+	icon-image(0, -220, "../", "", 20px, 25px)
+
+
+#umcLanguageSwitch .dijitHover .dijitArrowButtonInner
+	background-position: -20px -220px
+	opacity: 0.66
+
+#umcLanguageSwitch .dijitActive .dijitArrowButtonInner
+	background-position: -20px -220px
+	opacity: 1
+
+
+body #umcFakeLoginLogo
+	@media (max-width: 400px)
+		background: url("../images/univention_u.svg") no-repeat 12px 12px
+
+	background: url("../images/univention.svg") no-repeat 10px 12px
+	position: absolute
+	width: 200px
+	height: 40px
+
 
 /* do not show the dark underlay during the login screen */
-.umc .dijitDialogUnderlayWrapper.umcBackground .dijitDialogUnderlay {
-	background: none;
-}
+.umc .dijitDialogUnderlayWrapper.umcBackground .dijitDialogUnderlay
+	background: none
+

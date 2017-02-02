@@ -25,58 +25,58 @@
  * 		sets animated gif for the progress bar in 'indeterminate' mode
  */
 
-@import "variables";
+@import "variables"
 
-.umc .dijitProgressBar {
-	margin:2px 0 2px 0;
-	border-radius: 18px;
-}
-.umc .dijitProgressBarEmpty {
+.umc .dijitProgressBar
+	margin:2px 0 2px 0
+	border-radius: 18px
+
+.umc .dijitProgressBarEmpty
 	/* outer container and background of the bar that's not finished yet*/
-	//background-color: $progressbar-empty-background-color;
-	border-color: $progressbar-border-color;
-	//background: $progressbar-empty-background-color;
-	vertical-gradient-and-filter($secondary-color, $grey-medium);
-}
-.umc .dijitProgressBarTile {
+	//background-color: $progressbar-empty-background-color
+	border-color: $progressbar-border-color
+	//background: $progressbar-empty-background-color
+	vertical-gradient-and-filter($secondary-color, $grey-medium)
+
+.umc .dijitProgressBarTile
 	/* inner container for finished portion when in 'tile' (image) mode */
-	background-color: $progressbar-full-background-color;
+	background-color: $progressbar-full-background-color
 
 	// gradient background using CSS gradient, with fallback to image for IE
-	//background-image: url("images/progressBarFull.png");
-	//background-repeat: repeat-x;
-	//alpha-white-gradient((0.93 0px), (0.41 1px), (0.7 2px), (0 100%));
-	background-attachment: scroll;	// override strange "fixed" setting from dijit.css
-}
-.dj_ie6 .umc .dijitProgressBarTile {
-	background-image: none;
-} 
-.umc .dijitProgressBarFull {
-	border: 0px solid $progressbar-border-color;
-	border-right-width: 1px;
-	transition-property: width;
-	transition-duration: .5s;
-	height: 20px;
-	box-sizing: content-box;
-}
-.umc .dijitProgressBarIndeterminate .dijitProgressBarFull {
-	transition: none;
-}
-.umc .dijitProgressBar[aria-valuenow="0"] .dijitProgressBarFull {
-	transition: none;
-}
-.umc .dijitProgressBarLabel {
-	color: $progressbar-text-color;
-	padding: 2px 0;
-	transition-property: color;
-	transition-duration: .5s;
-}
-.umc .dijitProgressBarGreaterThan50Percent .dijitProgressBarLabel {
-	color: $text-color-dark-background;
-	padding: 2px 0;
-}
-.umc .dijitProgressBarIndeterminate .dijitProgressBarTile {
-	/* use an animated gif for the progress bar in 'indeterminate' mode;
+	//background-image: url("images/progressBarFull.png")
+	//background-repeat: repeat-x
+	//alpha-white-gradient((0.93 0px), (0.41 1px), (0.7 2px), (0 100%))
+	background-attachment: scroll	// override strange "fixed" setting from dijit.css
+
+.dj_ie6 .umc .dijitProgressBarTile
+	background-image: none
+ 
+.umc .dijitProgressBarFull
+	border: 0px solid $progressbar-border-color
+	border-right-width: 1px
+	transition-property: width
+	transition-duration: .5s
+	height: 20px
+	box-sizing: content-box
+
+.umc .dijitProgressBarIndeterminate .dijitProgressBarFull
+	transition: none
+
+.umc .dijitProgressBar[aria-valuenow="0"] .dijitProgressBarFull
+	transition: none
+
+.umc .dijitProgressBarLabel
+	color: $progressbar-text-color
+	padding: 2px 0
+	transition-property: color
+	transition-duration: .5s
+
+.umc .dijitProgressBarGreaterThan50Percent .dijitProgressBarLabel
+	color: $text-color-dark-background
+	padding: 2px 0
+
+.umc .dijitProgressBarIndeterminate .dijitProgressBarTile
+	/* use an animated gif for the progress bar in 'indeterminate' mode
 		background-color won't appear unless user has turned off background images */
-	background: $bar-background-color url($image-progressbar-anim) repeat-x top;
-} 
+	background: $bar-background-color url($image-progressbar-anim) repeat-x top
+ 

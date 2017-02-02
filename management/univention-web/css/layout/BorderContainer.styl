@@ -30,107 +30,107 @@ Splitters and gutters:
 .dijitSplitterVActive - for background-color of an active horizontal splitter
 */
 
-@import "../variables";
+@import "../variables"
 
-.umc .dijitBorderContainer {
+.umc .dijitBorderContainer
 	/* matches the width of the splitters between panes */
-	padding: 5px;
-}
+	padding: 5px
+
 
 .umc .dijitSplitContainer-child,
-.umc .dijitBorderContainer-child {
+.umc .dijitBorderContainer-child
 	/* By default put borders on all children of BorderContainer,
 	 *  to give illusion of borders on the splitters themselves.
 	 */
-	border: 1px $border-color solid;
-}
+	border: 1px $border-color solid
+
 
 .umc .dijitBorderContainer-dijitTabContainerTop,
 .umc .dijitBorderContainer-dijitTabContainerBottom,
 .umc .dijitBorderContainer-dijitTabContainerLeft,
 .umc .dijitBorderContainer-dijitTabContainerRight,
-.umc .dijitBorderContainer-dijitAccordionContainer {
+.umc .dijitBorderContainer-dijitAccordionContainer
 	/* except that TabContainer defines borders on it's sub-nodes (tablist and dijitTabPaneWrapper),
 	 * so override rule setting border on domNode
 	 */
-	 border: none;
+	 border: none
 
-}
-.umc .dijitBorderContainer-dijitBorderContainer {
+
+.umc .dijitBorderContainer-dijitBorderContainer
 	/* make nested BorderContainers look like a single big widget with lots of splitters */
-	border: 0;
-	padding: 0;
-}
+	border: 0
+	padding: 0
+
 
 /* Splitters and gutters */
 
 .umc .dijitSplitterH,
-.umc .dijitGutterH {
-	background:none;
-	border:0;
-	height:5px;
-}
-.dj_ios .umc .dijitSplitterH, .dj_android .umc .dijitSplitterH {
-	height: 11px;
-}
+.umc .dijitGutterH
+	background:none
+	border:0
+	height:5px
 
-.umc .dijitSplitterH .dijitSplitterThumb {
-	background:$border-color none;
-	height:1px;
-	top:2px;
-	width:19px;
-}
-.dj_ios .umc .dijitSplitterH .dijitSplitterThumb, .dj_android .umc .dijitSplitterH .dijitSplitterThumb {
-	top:5px;
-}
+.dj_ios .umc .dijitSplitterH, .dj_android .umc .dijitSplitterH
+	height: 11px
+
+
+.umc .dijitSplitterH .dijitSplitterThumb
+	background:$border-color none
+	height:1px
+	top:2px
+	width:19px
+
+.dj_ios .umc .dijitSplitterH .dijitSplitterThumb, .dj_android .umc .dijitSplitterH .dijitSplitterThumb
+	top:5px
+
 
 .umc .dijitSplitterV,
-.umc .dijitGutterV {
-	background:none;
-	border:0;
-	width:5px;
-	margin: 0;
-}
-.dj_ios .umc .dijitSplitterV, .dj_android .umc .dijitSplitterV {
-	width: 11px;
-}
+.umc .dijitGutterV
+	background:none
+	border:0
+	width:5px
+	margin: 0
 
-.umc .dijitSplitterV .dijitSplitterThumb {
-	background:$border-color none;
-	height:19px;
-	left:2px;
-	width:1px;
-	margin: 0;
-}
-.dj_ios .umc .dijitSplitterV .dijitSplitterThumb, .dj_android .umc .dijitSplitterV .dijitSplitterThumb {
-	left:5px;
-}
+.dj_ios .umc .dijitSplitterV, .dj_android .umc .dijitSplitterV
+	width: 11px
+
+
+.umc .dijitSplitterV .dijitSplitterThumb
+	background:$border-color none
+	height:19px
+	left:2px
+	width:1px
+	margin: 0
+
+.dj_ios .umc .dijitSplitterV .dijitSplitterThumb, .dj_android .umc .dijitSplitterV .dijitSplitterThumb
+	left:5px
+
 
 /* hovered splitter */
 .umc .dijitSplitterHHover,
-.umc .dijitSplitterVHover {
-	font-size: 1px;
-	background-color: $splitter-hovered-background-color;
-}
+.umc .dijitSplitterVHover
+	font-size: 1px
+	background-color: $splitter-hovered-background-color
 
-.umc .dijitSplitterHHover {
-	alpha-white-gradient(left, (1 0px), (0 50%), (1 100%));
-}
 
-.umc .dijitSplitterVHover {
-	alpha-white-gradient(top, (1 0px), (0 50%), (1 100%));
-}
+.umc .dijitSplitterHHover
+	alpha-white-gradient(left, (1 0px), (0 50%), (1 100%))
+
+
+.umc .dijitSplitterVHover
+	alpha-white-gradient(top, (1 0px), (0 50%), (1 100%))
+
 
 .umc .dijitSplitterHHover .dijitSplitterThumb,
-.umc .dijitSplitterVHover .dijitSplitterThumb {
-	background:$hovered-border-color none;
-}
+.umc .dijitSplitterVHover .dijitSplitterThumb
+	background:$hovered-border-color none
+
 
 
 /* active splitter */
 .umc .dijitSplitterHActive,
-.umc .dijitSplitterVActive {
-	font-size: 1px;
-	background-color:$splitter-dragged-background-color;
-	background-image: none;		// color all the way across, not gradient like in hover mode
-}
+.umc .dijitSplitterVActive
+	font-size: 1px
+	background-color:$splitter-dragged-background-color
+	background-image: none		// color all the way across, not gradient like in hover mode
+
