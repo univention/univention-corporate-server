@@ -112,7 +112,10 @@ $(BUILD_THEME_DIR)/umc.css: tmp-css
 	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $(TMP_DIR)/dojo $(TMP_DIR)/dijit -name "*.css")
 	# compile all .css files into one big file
 	mkdir -p $(@D)
-	stylus --resolve-url --include-css -o $(@D) $(TMP_THEME_CSS)
+	cp $(TMP_THEME_CSS) $(TMP_THEME_CSS).bak
+	stylus --resolve-url --include-css $(TMP_THEME_CSS)
+	mv $(TMP_THEME_CSS) $(@D)
+	mv $(TMP_THEME_CSS).bak $(TMP_THEME_CSS)
 	# Workaround: remove the temporarily commented lines
 	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@
 
