@@ -48,7 +48,7 @@ build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/css/fonts
 		[ -e $(buildJsDir)/$$idir ] || ln -s /usr/share/univention-dojo/$$idir $(buildJsDir); \
 	done
 	# symlink for languages.json
-	ln -s /var/www/ucs-overview/languages.json $(buildDir)
+	ln -s /var/www/univention/languages.json $(buildDir)
 	# create empty entries.json file
 	echo '{ "license_uuid": "", "license_requested": "false" }' > $(buildDir)/entries.json
 

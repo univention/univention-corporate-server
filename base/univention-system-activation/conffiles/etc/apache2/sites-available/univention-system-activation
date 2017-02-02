@@ -28,8 +28,8 @@ DocumentRoot /usr/share/univention-system-activation/www
 
 WSGIScriptAlias /license /usr/share/pyshared/univention/system_activation/wsgi.py
 
-Alias /ucs-overview/ /var/www/ucs-overview/
-<Directory /var/www/ucs-overview>
+Alias /univention/ /var/www/univention/
+<Directory /var/www/univention>
     Order allow,deny
     allow from all
 </Directory>
