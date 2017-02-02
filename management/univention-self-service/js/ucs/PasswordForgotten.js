@@ -243,7 +243,7 @@ define([
 				this._requestTokenButton.set('disabled', true);
 				var data = {
 					'username': this._username.get('value'),
-					'method': this.selectedTokenMethod.method
+					'method': this.selectedRenewOption.method
 				};
 				tools.umcpCommand('passwordreset/send_token', data).then(lang.hitch(this, function(data) {
 					lib.showMessage({
@@ -362,9 +362,9 @@ define([
 
 			if (isTokenAndNewPassValid) {
 				var data = {
-					'username': this._username.get('value'),
+					'username': credentials.username,
 					'password': this._verifyPassword.get('value'),
-					'token' : this._token.get('value')
+					'token' : credentials.token
 				};
 				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function(data) {
 					lib.showLastMessage({
@@ -404,10 +404,13 @@ define([
 		_getCredentials: function() {
 			var token = lib.getQuery('token');
 			var username = lib.getQuery('username');
+			var password = lib.getQuery('password')
+
 			if (token && username) {
 				return {
 					username: username,
-					token: token
+					token: token,
+					password: password
 				};
 			}
 			return null;

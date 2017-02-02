@@ -221,7 +221,7 @@ define([
 				return {
 					id: option.id,
 					getValue: function() { return inputRetype.get('value');},
-					isValid: function() { return inputRetype.isValid();}
+					isValid: function() { return inputRetype.isValid();},
 				};
 			});
 			this._saveButton = new Button({
@@ -252,9 +252,9 @@ define([
 			//var isValidMail = this._validateMail(data.email);
 			if (allOptionsAreValid) {
 				data = this._getNewContactInformation();
-				tools.umcpCommand('post', 'passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
+				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
 						lib.showLastMessage({
-							content: data.result.message,
+							content: data.message,
 							'class': '.success'
 						});
 						this._deleteRenewOptions();
@@ -318,6 +318,11 @@ define([
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();
 			this._password.reset();
+			// destroy email input widget
+			array.forEach(this._renewInputs, function(renewInput) {
+				var Input = dijit.byId(renewInput.id);
+				Input.destroy();
+			});
 		}
 	};
 });
