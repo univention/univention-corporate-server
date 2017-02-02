@@ -118,7 +118,6 @@ define([
 
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);
-			this.__colorizeModuleHeader();
 
 			// redirect childrens to stack container
 			this.containerNode = this.__container.containerNode;
@@ -126,14 +125,6 @@ define([
 			this.watch('selected', lang.hitch(this, function(attr, oldval, newval) {
 				this._top.set('isModuleTabSelected', newval);
 			}));
-		},
-
-		__colorizeModuleHeader: function() {
-			var cls = this.moduleID;
-			if (this.moduleFlavor) {
-				cls = lang.replace('{moduleID}-{moduleFlavor}', this);
-			}
-			domClass.add(this._top.domNode, lang.replace('umcModuleHeader-{0}', [cls]).replace(/[^_a-zA-Z0-9\-]/g, '-'));
 		},
 
 		selectChild: function(child, animate) {
@@ -170,7 +161,6 @@ define([
 				headerButtons.push({
 					name: 'close',
 					label: _('Close'),
-					iconClass: 'umcCloseIconWhite',
 					callback: lang.hitch(this, 'closeModule')
 				});
 			}
@@ -184,6 +174,11 @@ define([
 				child.$headerButtons$.destroyRecursive();
 				delete child.$headerButtons$;
 			}
+
+			// make sure no icons are shown in the module header
+			array.forEach(headerButtons, function(btn) {
+				delete btn.iconClass;
+			});
 
 			child._headerButtons = null;
 			if (headerButtons && headerButtons.length) {

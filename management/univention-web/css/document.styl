@@ -15,10 +15,9 @@
   color: $document-text-color;
 }
 
-html {
-	height: 100%;
-	background: white;
-}
+html
+	height: 100%
+	background-color: $document-background-color
 
 .umc td,
 .umc th {
@@ -45,28 +44,19 @@ html {
 body.umc .umcBackground,
 body.umc {
 	overflow-x: hidden;
-	background-color: #f2f2f2;
+	background-color: $document-background-color;
 }
 
 .dj_ie9 body.umc .umcBackground,
 .dj_ie8 body.umc .umcBackground,
 .dj_ie9 body.umc,
 .dj_ie8 body.umc {
-	/* fallback on horizontal gradient for IE8/9 */
-	filter: unquote("progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0f0f0', endColorstr='#b3b3b3',GradientType=1)");
-	background: #cdcdcd;
 }
 
 .dj_ie9 body.umc:before .umcBackground,
 .dj_ie8 body.umc:before .umcBackground,
 .dj_ie9 body.umc:before,
 .dj_ie8 body.umc:before {
-	/* add the repeating background for IE9 additionally */
-	content: "";
-	background: url(images/background-tile.png) repeat;
-	position: absolute;
-	width: 100%;
-	height: 210px;
 }
 
 .dj_ie9 body.umc.umcOverviewShown:before,

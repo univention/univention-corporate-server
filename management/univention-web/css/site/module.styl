@@ -62,36 +62,36 @@
 		}
 	}
 
-	.dijitButton {
-		margin-left: 12px;
-
-		.dijitButtonNode {
-			background: none;
-			filter: none;
-			border-radius: 0;
-			border: none;
-			padding: 0;
-			box-shadow: none;
-
-			.dijitButtonText {
-				display: none;
-				position: absolute;
-				color: #ffffff;
-				width: auto;
-				padding: 0;
-				text-align: left;
-			}
-
-			.dijitIcon {
-				display: block;
-				width: 20px;
-				margin: auto;
-			}
-		}
-	}
-	.dijitButton.dijitButtonHover .dijitButtonText {
-		display: inherit;
-	}
+//	.dijitButton {
+//		margin-left: 12px;
+//
+//		.dijitButtonNode {
+//			background: none;
+//			filter: none;
+//			border-radius: 0;
+//			border: none;
+//			padding: 0;
+//			box-shadow: none;
+//
+//			.dijitButtonText {
+//				display: none;
+//				position: absolute;
+//				color: #ffffff;
+//				width: auto;
+//				padding: 0;
+//				text-align: left;
+//			}
+//
+//			.dijitIcon {
+//				display: block;
+//				width: 20px;
+//				margin: auto;
+//			}
+//		}
+//	}
+//	.dijitButton.dijitButtonHover .dijitButtonText {
+//		display: inherit;
+//	}
 }
 
 body.umc:not([class~=umcHeadless]) .umcModuleHeader {
@@ -117,18 +117,19 @@ body.umc:not([class~=umcHeadless]) .umcModuleHeader {
 
 .umc .umcModuleTitle {
 	font-size: $font-size-large;
-	color: $text-color-dark-background;
-	font-weight: bold;
+	color: $text-color;
+	font-weight: normal;
 	line-height: 1em;
+	padding: 18px 0;
 }
 
-.umc .umcModule {
-	background-color: #ffffff;
-	.umcModuleWrapper {
-		margin: 0 auto;
-		padding: 0;
-	}
-}
+.umc .umcModule
+	background-color: $document-background-color
+
+	.umcModuleWrapper
+		margin: 0 auto
+		padding: 0
+
 
 .umc .umcPageHelpText {
 	margin-bottom: 1.5em;
