@@ -33,9 +33,11 @@
 import notifier
 import smtplib
 
-from univention.management.console.modules import Base
+from univention.management.console.base import Base
 from univention.management.console.log import MODULE
-from univention.management.console.config import ucr
+#from univention.management.console.config import ucr
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer
 
 from univention.lib.i18n import Translation
 
@@ -53,14 +55,22 @@ class Instance(Base):
 	def configuration(self, request):
 		"""Returns a directionary of initial values for the form."""
 		self.finished(request.id, {
-			'sender': self._username + '@example.com',
+			'sender': self.username + '@example.com',
 			'subject': 'Test mail from PACKAGENAME',
-			'recipient': 'test@example.com'})
+			'recipient': 'test@example.com'
+		})
 
+	@sanitize(
+		sender=StringSanitizer(required=True),
+		recipient=StringSanitizer(required=True),
+		subject=StringSanitizer(required=True),
+		message=StringSanitizer(required=True),
+	)
 	def send(self, request):
 		def _send_thread(sender, recipient, subject, message):
 			MODULE.info('sending mail: thread running')
 
+			# FIXME: contains header injection
 			msg = u'From: ' + sender + u'\r\n'
 			msg += u'To: ' + recipient + u'\r\n'
 			msg += u'Subject: %s\r\n' % subject
@@ -74,31 +84,16 @@ class Instance(Base):
 			server.set_debuglevel(0)
 			server.sendmail(sender, recipient, msg)
 			server.quit()
+			return True
 
-		def _send_return(thread, result, request):
-			import traceback
-
-			if not isinstance(result, BaseException):
-				MODULE.info('sending mail: completed successfully')
-				self.finished(request.id, True)
-			else:
-				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.process('sending mail:An internal error occurred: %s' % msg)
-				self.finished(request.id, False, msg, False)
-
-		keys = ['sender', 'recipient', 'subject', 'message']
-		self.required_options(request, *keys)
-		for key in keys:
-			if request.options[key]:
-				MODULE.info('send ' + key + '=' + request.options[key].replace('%', '_'))
-
-		func = notifier.Callback(_send_thread,
+		func = notifier.Callback(
+			_send_thread,
 			request.options['sender'],
 			request.options['recipient'],
 			request.options['subject'],
 			request.options['message']
 		)
 		MODULE.info('sending mail: starting thread')
-		cb = notifier.Callback(_send_return, request)
+		cb = notifier.Callback(self.thread_finished_callback, request)
 		thread = notifier.threads.Simple('mailing', func, cb)
 		thread.run()
