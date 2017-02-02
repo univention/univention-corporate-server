@@ -1,4 +1,4 @@
-univention-web (1.0.9-1) unstable; urgency=medium
+univention-web (1.0.10-1) unstable; urgency=medium
 
   * Bug #42228: migrate essential ucs-overview things into this package
 
