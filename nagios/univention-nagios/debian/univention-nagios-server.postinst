@@ -59,40 +59,7 @@ univention-config-registry set \
 univention-config-registry unset \
 	ucs/web/overview/entries/admin/nagios/icon
 
-if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '7.0.0-0'; then
-	mkdir -p /etc/univention/templates/removed/	
-	files="en.html.d/50nagios-en.html de.html.d/50nagios-de.html"
-	for file in $files; do
-		if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
-			mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
-		fi
-	done
-fi
-
-if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '5.0.0-0'
-then # update from previous version
-	# migrate UCRV auth/*/services
-	if univention-config-registry get auth/user/services  | grep -Eqs '(^| )nagios( |$)'
-	then
-		univention-config-registry set 'auth/nagios/group/Domain Users?yes'
-	fi
-	if univention-config-registry get auth/admin/services | grep -Eqs '(^| )nagios( |$)'
-	then
-		univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
-	fi
-	# set defaults
-	univention-config-registry set 'auth/nagios/user/Administrator?yes'
-	univention-config-registry set 'auth/nagios/restrict?yes'
-	# migrate from univention-nagios-group-access
-	oldgroups="$(univention-config-registry get nagios/server/webaccess/groups)"
-	OLDIFS="$IFS"
-	for group in $oldgroups
-	do
-		univention-config-registry set "auth/nagios/group/${group}?yes"
-	done
-	IFS="$OLDIFS"
-	univention-config-registry unset 'nagios/server/webaccess/groups'
-elif [ "$1" = 'configure' -a -z "$2" ]
+if [ "$1" = 'configure' -a -z "$2" ]
 then
 	univention-config-registry set 'auth/nagios/group/Domain Admins?yes'
 	univention-config-registry set 'auth/nagios/user/Administrator?yes'
