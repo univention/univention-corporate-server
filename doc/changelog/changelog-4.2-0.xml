@@ -165,6 +165,12 @@
 					Various security improvements have been done to guard against Cross Site Request Forgery (XSRF), Cross Site Scripting (XSS) and Clickjacking attacks.
 					The HTTP response header <property>X-Frame-Options</property>, <property>Content-Security-Policy</property>, <property>X-Content-Type-Options</property>, <property>X-XSS-Protection</property> and <property>X-Permitted-Cross-Domain-Policies</property> are now set by default (<u:bug>39733</u:bug>, <u:bug>39731</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A menu entry for changing the language has been added (<u:bug>40612</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					In certain situations it was possible that the translations were mixed. This has been fixed (<u:bug>38370</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
