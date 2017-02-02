@@ -1,10 +1,10 @@
 [
 	{
 		"input_files": [
-			"var/www/ucs-overview/initialsetup.html"
+			"var/www/univention/initialsetup.html"
 		],
-		"po_subdir": "var/www/ucs-overview/js/initialsetup",
+		"po_subdir": "var/www/univention/js/initialsetup",
 		"target_type": "json",
-		"destination": "var/www/ucs-overview/js/initialsetup/{lang}.json"
+		"destination": "var/www/univention/js/initialsetup/{lang}.json"
 	}
 ]

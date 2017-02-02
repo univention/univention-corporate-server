@@ -1,3 +1,9 @@
+univention-system-setup (10.0.4-1) unstable; urgency=medium
+
+  * Bug #42228: ucs-overview → univention
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 21:10:57 +0100
+
 univention-system-setup (10.0.3-1) unstable; urgency=medium
 
   * Bug #34498: use univention.lib.umc.Client

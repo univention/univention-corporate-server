@@ -150,7 +150,7 @@ run_setup_join ()
 {
 	local srv rv=0
 	/usr/lib/univention-system-setup/scripts/setup-join.sh || rv=$?
-	ucr set apache2/startsite='ucs-overview/' # Bug #31682
+	ucr set apache2/startsite='univention/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2
 	do
 		invoke-rc.d "$srv" restart
@@ -166,7 +166,7 @@ run_setup_join_on_non_master ()
 	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	echo -n "$admin_password" >/tmp/univention
 	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention || rv=$?
-	ucr set apache2/startsite='ucs-overview/' # Bug #31682
+	ucr set apache2/startsite='univention/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2
 	do
 		invoke-rc.d "$srv" restart

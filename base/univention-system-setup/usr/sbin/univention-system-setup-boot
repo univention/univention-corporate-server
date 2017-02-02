@@ -43,7 +43,7 @@ ACTION=$1
 
 eval "$(univention-config-registry shell)"
 
-SITE_INITIALSETUP="ucs-overview/initialsetup.html"
+SITE_INITIALSETUP="univention/initialsetup.html"
 SITE_SYSTEM_SETUP='univention/management/?module=setup\&flavor=wizard\&overview=false\&username=root'
 
 _has_system_setup_boot_startsite() {
@@ -87,7 +87,7 @@ elif [ "$ACTION" = "stop" ]; then
 
 	# reset apache2/startsite
 	if _has_system_setup_boot_startsite; then
-		univention-config-registry set apache2/startsite="${system_setup_prev_apache2_startsite:-ucs-overview/}"
+		univention-config-registry set apache2/startsite="${system_setup_prev_apache2_startsite:-univention/}"
 		univention-config-registry unset system/setup/prev/apache2/startsite
 		[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
 	fi

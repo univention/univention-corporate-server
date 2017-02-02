@@ -29,7 +29,7 @@
 
 .PHONY: build install clean
 
-INITIALSETUP_DE_JSON := var/www/ucs-overview/js/initialsetup/de.json
+INITIALSETUP_DE_JSON := var/www/univention/js/initialsetup/de.json
 
 build: $(INITIALSETUP_DE_JSON) get-volume-set-identifier
 
