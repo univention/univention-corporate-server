@@ -13,7 +13,7 @@ $error-color ?= #db062e;
 $ucs-green ?= #7ab51d;
 $text-color-dark-background ?= #fff;
 
-$font-size-buttons ?= 1.3em;
+$font-size-buttons ?= 14px;
 $font-size-medium ?= 1.6em;
 $font-size-large ?= 2.5em;
 
@@ -65,9 +65,9 @@ $popup-background-color ?= $container-background-color;					// Background for Di
 // Buttons
 $button-border-color ?=  $base-border-color;								// Border for (stand-alone) buttons in normal, hovered, or active state
 $button-background-color ?= $unfocused-clickable-color;					// Background color for (unhovered) buttons
-$button-hovered-background-color ?= $minor-selected-color;	// Background color for hovered buttons
-$button-pressed-background-color ?= $minor-selected-color;				// Background color for active buttons
-$button-border-radius ?= 0px;												// Rounded corner radius for buttons (except in toolbar)
+$button-hovered-background-color ?= rgba(0, 0, 0, 0.0784);	// Background color for hovered buttons
+$button-pressed-background-color ?= rgba(0, 0, 0, 0.16);				// Background color for active buttons
+$button-border-radius ?= 2px;												// Rounded corner radius for buttons (except in toolbar)
 $button-gradient-bottom-color ?= #c8c8c8;
 $button-gradient-top-color ?= #e6e6e6;
 $default-button-border-color ?= #646464;
@@ -272,6 +272,24 @@ transition-timing-function() {
 	-moz-transition-timing-function: arguments;
 	transition-timing-function: arguments;
 }
+
+material-shadow-common() {
+	transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+
+material-shadow(level)
+	if level == 1
+		box-shadow: 0 1px 6px rgba(1,0,0,0.117647), 0 1px 4px rgba(0,1,0,0.117647)
+	else if level == 2
+		box-shadow: 0 3px 10px rgba(1,0,0,0.156863), 0 3px 10px rgba(0,1,0,0.227451)
+	else if level == 3
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
+	else if level == 4
+		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
+	else if level == 5
+		box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
+	else
+		box-shadow: none
 
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px) {
 	_iconImage = replace("^(.*)(\.\w*)", "$1" + filesuffix + "$2", $image-icons)

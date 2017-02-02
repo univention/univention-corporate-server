@@ -28,10 +28,17 @@
 
 @import "../variables";
 
+.umc .dijitButton {
+	margin: 12px
+	material-shadow-common()
+	material-shadow(1)
+	border-radius: $button-border-radius;
+}
+
 .umc .dijitButtonNode {
 	/* rules for dijit.form.*Button widgets and arrow nodes on ComboBox, Spinner etc. */
-	transition-property: background-color;
- 	transition-duration: .3s;
+	//transition-property: background-color;
+ 	//transition-duration: .3s;
 }
 
 .umc .dijitButton .dijitButtonNode,
@@ -39,13 +46,15 @@
 .umc .dijitComboButton .dijitButtonNode,
 .umc .dijitToggleButton .dijitButtonNode {
 	/* rules for the dijit.form.*Button widgets (see also ComboButton section below) */
-	border: 1px solid $button-border-color;
-	padding: 3px 6px 5px 6px;
+	border: none;
+	padding: 0px;
+	height: 36px;
+	line-height: 36px;
 	color: $text-color;
 	border-radius: $button-border-radius;
-	box-shadow: 0 0 2px rgba(0,0,0,0.15);
+	background-color: white;
 
-	vertical-gradient-and-filter($button-gradient-top-color, $button-gradient-bottom-color);
+	//vertical-gradient-and-filter($button-gradient-top-color, $button-gradient-bottom-color);
 
 	//background-color: desaturate(darken($button-background-color, 10), 20);
 
@@ -57,13 +66,16 @@
 	//_background-image: none;	// IE6 can't handle background-color and background-image at once.
 }
 
-.umc .dijitButton.dijitDefaultButton .dijitButtonNode {
-	vertical-gradient-and-filter($default-button-gradient-top-color, $default-button-gradient-bottom-color);
-	border-color: $default-button-border-color;
-	.dijitButtonText {
-		color: $text-color-dark-background;
-	}
-}
+.umc .dijitButton .dijitButtonNode .dijitButtonContents
+	line-height: 36px
+
+//.umc .dijitButton.dijitDefaultButton .dijitButtonNode {
+//	vertical-gradient-and-filter($default-button-gradient-top-color, $default-button-gradient-bottom-color);
+//	border-color: $default-button-border-color;
+//	.dijitButtonText {
+//		color: $text-color-dark-background;
+//	}
+//}
 
 .umc .dijitComboButton .dijitArrowButton {
 	border-left-width: 0;
@@ -110,10 +122,12 @@
 
 
 .umc .dijitButtonText {
-	padding: 0 0.3em;
+	padding: 0 16px;
 	text-align: center;
 	font-size: $font-size-buttons;
 	color: $text-color-lighter;
+	font-weight: 500;
+	text-transform: uppercase;
 }
 
 /* hover status */
@@ -122,13 +136,12 @@
 .umc .dijitComboButton .dijitButtonNodeHover, 
 .umc .dijitComboButton .dijitDownArrowButtonHover,
 .umc .dijitToggleButtonHover .dijitButtonNode {
-	//background-color: desaturate(darken($button-hovered-background-color, 10), 20);
-	color:$text-color;
-	transition-duration: .2s;
+	background-color: $button-hovered-background-color;
+	//color:$text-color;
+	//transition-duration: .2s;
 	.dijitArrowButtonInner {
 		opacity: 0.66;
 	}
-	box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
 /* focused state */
@@ -136,7 +149,8 @@
 .umc .dijitDropDownButtonFocused .dijitButtonText,
 .umc .dijitComboButtonFocused .dijitButtonText,
 .umc .dijitToggleButtonFocused .dijitButtonText {
-	text-decoration: underline;
+	//TODO: border around button for focused state
+	//text-decoration: underline;
 }
 
 /* active, checked status */
@@ -145,13 +159,20 @@
 .umc .dijitComboButtonActive .dijitButtonNode,
 .umc .dijitToggleButtonActive .dijitButtonNode,
 .umc .dijitToggleButtonChecked .dijitButtonNode {
-	background-color: desaturate(darken($button-pressed-background-color, 10), 20);
-	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
-	transition-duration: .1s;
+	background-color: $button-pressed-background-color;
+	//box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+	//transition-duration: .1s;
 	.dijitArrowButtonInner {
 		opacity: 1;
 	}
 }
+
+.umc .dijitButtonActive,
+.umc .dijitDropDownButtonActive,
+.umc .dijitComboButtonActive,
+.umc .dijitToggleButtonActive,
+.umc .dijitToggleButtonChecked
+	material-shadow(2)
 
 /* disabled status */
 .umc .dijitButtonDisabled,
@@ -169,7 +190,7 @@
 	background-color: $disabled-background-color;
 	border: solid 1px $disabled-border-color;
 	color: $disabled-text-color;
-	box-shadow: 0 0 0 rgba(0,0,0,0);
+	//box-shadow: 0 0 0 rgba(0,0,0,0);
 
 	// Change the gradient from light to dark.
 	// Again using CSS gradient with fallback to image for IE.

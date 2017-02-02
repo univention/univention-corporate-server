@@ -1,3 +1,11 @@
+univention-web (1.0.8-5) unstable; urgency=medium
+
+  Bug #42261:
+  * Adjust Button styling
+  * Provide stylus functions for shadows
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 17:13:31 +0100
+
 univention-web (1.0.8-4) unstable; urgency=medium
 
   * Bug #42261: fix Makefile for build-dev target
