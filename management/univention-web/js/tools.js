@@ -53,6 +53,7 @@ define([
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
+	var auth = {};
 	var dialog = {
 		login: function() {
 			return new Deferred();
@@ -64,6 +65,9 @@ define([
 	require(['umc/dialog'], function(_dialog) {
 		// register the real umc/dialog module in the local scope
 		dialog = _dialog;
+	});
+	require(['umc/auth'], function(_auth) {
+		auth = _auth;
 	});
 
 	// define umc/tools
@@ -193,7 +197,7 @@ define([
 				this._checkSessionTimer = new timing.Timer(30000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
 					// check whether session is still valid
-					this._checkSessionRequest = require('umc/auth').sessioninfo().otherwise(lang.hitch(this, function(error) {
+					this._checkSessionRequest = auth.sessioninfo().otherwise(lang.hitch(this, function(error) {
 						if (tools.parseError(error).status !== 401) {
 							// ignore any other error than unauthenticated (e.g. not reachable, or UCS 4.0 webserver still running)
 							return;
@@ -207,7 +211,7 @@ define([
 						// try to login
 						var def;
 						if (tools.status('authType') === 'SAML') {
-							def = require('umc/auth').passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
+							def = auth.passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
 						} else {
 							def = dialog.login();
 						}
@@ -376,7 +380,7 @@ define([
 
 						if (!this.noLogin && 401 === info.status) {
 							// command was rejected, user is not authorized... continue to poll after successful login
-							var deferred = require('umc/auth').handleAuthenticationError(info);
+							var deferred = auth.handleAuthenticationError(info);
 							if (deferred) {
 								deferred.then(lang.hitch(this, 'sendRequest'));
 								return;
@@ -536,7 +540,7 @@ define([
 				displayMessages: true,
 				displayErrors: true,
 
-				401: lang.hitch(require('umc/auth'), 'handleAuthenticationError'),
+				401: lang.hitch(auth, 'handleAuthenticationError'),
 
 				display422: function(info) {
 					var message = info.message + ':<br>';
