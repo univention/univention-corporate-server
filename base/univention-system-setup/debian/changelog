@@ -1,3 +1,9 @@
+univention-system-setup (9.0.7-1) unstable; urgency=medium
+
+  * Bug #40102: fix remaining usage of old appcenter API properties
+
+ -- Eduard Mai <mai@univention.de>  Thu, 02 Feb 2017 21:23:35 +0100
+
 univention-system-setup (9.0.6-11) unstable; urgency=medium
 
   * Bug #40102: working around dependency problems; see FIXME
