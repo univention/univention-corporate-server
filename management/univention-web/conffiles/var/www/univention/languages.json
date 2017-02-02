@@ -1,8 +1,8 @@
 @!@
-locale = configRegistry.get('locale', '') 
+locale = configRegistry.get('locale', '')
 
 locales = []
-for l in locale.split(' '): 
+for l in locale.split(' '):
         if '.' in l:
                 l = l.split('.')[0]
         configured_locale = configRegistry.get('ucs/server/languages/%s' % l)

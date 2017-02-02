@@ -88,9 +88,3 @@ Variables: domainname
 Variables: umc/web/appliance/name
 Variables: server/amazon
 Variables: interfaces/
-
-Type: file
-File: var/www/ucs-overview/languages.json
-Variables: locale
-Variables: ucs/server/languages/.*
-Variables: interfaces/.*/address

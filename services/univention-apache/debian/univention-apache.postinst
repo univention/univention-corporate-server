@@ -36,6 +36,9 @@
 if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 	ucr update
 	a2dismod auth_pam
+	if [ "$(ucr get apache2/startsite)" = "ucs-overview/" ]; then
+		univention-config-registry unset "apache2/startsite"
+	fi
 fi
 
 a2enmod authnz_pam || true
@@ -57,7 +60,7 @@ univention-config-registry set apache2/loglevel?"warn"
 univention-config-registry set apache2/documentroot?"/var/www/"
 univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root
-univention-config-registry set apache2/startsite?"ucs-overview/"
+univention-config-registry set apache2/startsite?"univention/"
 
 # configure firewall
 ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \
@@ -105,11 +108,5 @@ if [ -x /etc/init.d/apache2 ]; then
 	sleep 3
 	invoke-rc.d apache2 start
 fi
-
-ucr set "ucs/server/languages/en_US?English" \
-	"ucs/server/languages/de_DE?Deutsch" \
-	"ucs/server/languages/en_GB?English (United Kingdom)" \
-	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
-	"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
 
 exit 0

@@ -1,5 +1,11 @@
 univention-web (1.0.9-1) unstable; urgency=medium
 
+  * Bug #42228: migrate essential ucs-overview things into this package
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 20:50:10 +0100
+
+univention-web (1.0.9-1) unstable; urgency=medium
+
   * Bug #42266: adjust styling of modules headers
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 20:53:51 +0100

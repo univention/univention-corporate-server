@@ -1,3 +1,2 @@
 08univention-apache.inst usr/lib/univention-install
-www/ucs-overview var/www
 www/favicon.ico var/www

@@ -5,10 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint-univention,
- univention-dojo-dev,
- univention-management-console-dev,
- stylus,
- unzip,
 Standards-Version: 3.8.2
 
 Package: univention-apache
@@ -21,8 +17,6 @@ Depends: ${misc:Depends},
  python2.7,
  php5,
 Conflicts: apache
-Breaks: univention-webui-style
-Replaces: univention-webui-style
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
  Apache web server.

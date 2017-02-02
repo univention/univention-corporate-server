@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#! /bin/bash
 #
-# Univention Common Python and Shell Library
-#  rules file for the debian package
+# Univention Web
+#  postinst file for the univention-web-js debian package
 #
-# Copyright 2011-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,14 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+#DEBHELPER#
 
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	dh_auto_install --exclude .svn
+ucr set "ucs/server/languages/en_US?English" \
+	"ucs/server/languages/de_DE?Deutsch" \
+	"ucs/server/languages/en_GB?English (United Kingdom)" \
+	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
+	"ucs/server/languages/de_CH?Deutsch (Schweiz)"
 
-%:
-	dh $@
+exit 0

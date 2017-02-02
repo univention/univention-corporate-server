@@ -1,0 +1,8 @@
+Type: file
+File: var/www/univention/languages.json
+Variables: locale
+Variables: ucs/server/languages/.*
+Variables: interfaces/.*/address
+
+Type: file
+File: etc/apache2/conf-available/univention-web.conf
