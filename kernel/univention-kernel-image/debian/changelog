@@ -1,3 +1,9 @@
+univention-kernel-image (10.0.0-2) unstable; urgency=medium
+
+  * Bug #42048: Update to 4.9.0-ucs101
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 02 Feb 2017 14:24:08 +0100
+
 univention-kernel-image (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
