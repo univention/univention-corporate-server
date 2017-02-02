@@ -1,3 +1,9 @@
+univention-saml (4.0.3-1) unstable; urgency=medium
+
+  * Bug #42228: ucs-overview → univention
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 21:13:53 +0100
+
 univention-saml (4.0.2-4) unstable; urgency=medium
 
   *Bug #43384: Catch more specific exception

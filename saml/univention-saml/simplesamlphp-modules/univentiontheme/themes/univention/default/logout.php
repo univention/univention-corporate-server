@@ -8,7 +8,7 @@ $this->data['header'] = $this->t('{logout:title}');
 		<span class="samllogintext"><?php echo($this->t('{univentiontheme:logout:logged_out_text}')); ?></span>
 
 <?php
-echo('<p><a href="/ucs-overview">' .
+echo('<p><a href="/univention/">' .
 	htmlspecialchars($this->t('{univentiontheme:logout:default_link_text}')) . '</a></p>');
 ?>
 

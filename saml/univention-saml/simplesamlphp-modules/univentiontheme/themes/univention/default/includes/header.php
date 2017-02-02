@@ -63,7 +63,7 @@ if(array_key_exists('head', $this->data)) {
 }
 
 // read and sort available languages and prepare an array to later display them
-$jsonfile = file_get_contents('/var/www/ucs-overview/languages.json');
+$jsonfile = file_get_contents('/var/www/univention/languages.json');
 $json = json_decode($jsonfile, true);
 if($json != NULL) {
 	function sort_by_label($a, $b) {
@@ -94,15 +94,15 @@ if($json != NULL) {
 ?>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/ucs-overview/js/dijit/themes/dijit.css">
-<link rel="stylesheet" href="/ucs-overview/css/bootstrap.css">
-<link rel="stylesheet" href="/ucs-overview/css/ucs.css">
+<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css">
+<link rel="stylesheet" href="/ucs-overview/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/ucs-overview/css/ucs.css" type="text/css">
 
 <script type="text/javascript">
 	var availableLocales = <?php echo json_encode($langlinkarray); ?>;
 </script>
 <script type="text/javascript" src="/ucs-overview/js/ucs/query.js"></script>
-<script type="text/javascript" src="/ucs-overview/js/dojo/dojo.js"></script>
+<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
 <?php
 /** don't display language switcher when e.g. forms were sent */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
