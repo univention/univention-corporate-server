@@ -67,13 +67,6 @@ univention-config-registry set \
 
 /usr/lib/univention-server/server_password_change.d/univention-self-service postchange || die
 
-a2enmod wsgi
-a2ensite univention-self-service
-
-# restart, so apache reloads WSGI and sees activated plugin in its config
-# retry if fail because of to quick successive restarts (from other frontend packages)
-invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
-
 joinscript_save_current_version
 
 exit 0
