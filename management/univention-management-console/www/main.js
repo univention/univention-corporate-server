@@ -2278,7 +2278,6 @@ define([
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('.umc .headerColor-{0} .dijitTabContainerTop-tabs .dijitTab.umcModuleTab-{1}.dijitTabHover', [module.category_for_color, module_flavor_css]), 'background-color: rgba(0, 0, 0, 0.1)');
-			styles.insertCssRule(lang.replace('.umcModuleHeader-{0}', [module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
 			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent tr.color-{0}:hover', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
 		},

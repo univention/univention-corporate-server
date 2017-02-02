@@ -1,3 +1,9 @@
+univention-management-console (9.0.22-1) unstable; urgency=medium
+
+  * Bug #42266: remove CSS rule for colored module header
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 20:51:40 +0100
+
 univention-management-console (9.0.21-2) unstable; urgency=medium
 
   * Bug #40612: Bug #38370: fix updating of language
