@@ -708,7 +708,8 @@ class CPgeneric(Ressource):
 		request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
 
 	def add_response_headers(self, response):
-		cherrypy.response.headers.update(response.headers)
+		if response.headers:
+			cherrypy.response.headers.update(response.headers)
 		for key, item in response.cookies:
 			if isinstance(item, dict):
 				cherrypy.response.cookie[key] = item.pop('value', '')
