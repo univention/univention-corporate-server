@@ -13,7 +13,7 @@ trap "rm -f '$outfile'" EXIT #Clean tempfile on exit
 echo "Checking link in overview..."
 wget "http://localhost" -O "$outfile"
 
-if grep -Es "https?:///ucs-overview" "$outfile"
+if grep -Es "https?:///univention" "$outfile"
 then
 	echo "Found: (BAD)"
 	exit 111
