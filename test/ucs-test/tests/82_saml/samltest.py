@@ -136,7 +136,7 @@ class SamlTest(object):
 
 	def test_login(self):
 		"""Test login on umc"""
-		url = "https://%s/univention/get/hosts" % self.target_sp_hostname
+		url = "https://%s/univention/get/session-info" % self.target_sp_hostname
 		print("Test login @ %s" % url)
 		self.position = "testing login"
 		self._request('GET', url, 200)
@@ -144,10 +144,10 @@ class SamlTest(object):
 
 	def test_logout(self):
 		"""Test logout on umc"""
-		url = "https://%s/univention/get/hosts" % self.target_sp_hostname
+		url = "https://%s/univention/get/session-info" % self.target_sp_hostname
 		print("Test logout @ %s" % url)
 		self.position = "testing logout"
-		self._request('GET', url, 405)
+		self._request('GET', url, 401)
 		print("Logout success at SP")
 
 	def test_logout_at_IdP(self):
