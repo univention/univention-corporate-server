@@ -107,14 +107,17 @@ Methods
 
 from __future__ import absolute_import
 
-from notifier import signals
+import re
+import sys
+import locale
+import urlparse
 import traceback
+
 import ldap
 import ldap.sasl
-import sys
-import urlparse
+from notifier import signals
 
-from univention.lib.i18n import Translation
+from univention.lib.i18n import Locale, Translation, I18N_Error
 
 import univention.admin.uexceptions as udm_errors
 
@@ -216,8 +219,32 @@ class Base(signals.Provider, Translation):
 		self._password = None
 		self.__auth_type = None
 		self.__acls = None
+		self.__current_language = None
 		self.__requests = {}
 		Translation.__init__(self, domain)
+
+	def update_language(self, locales):
+		for _locale in locales:
+			try:
+				CORE.info("Setting locale %r" % (_locale,))
+				_locale = Locale(_locale)
+				language = '%s-%s' % (_locale.language, _locale.territory) if _locale.territory else '%s' % (_locale.language,)
+				if language != self.__current_language:
+					self.set_locale(str(_locale))
+				self.__current_language = language
+				return
+			except (locale.Error, I18N_Error) as exc:
+				CORE.warn("Locale %r is not available: %s" % (str(_locale), exc))
+		CORE.warn('Could not set language. Reseting locale.')
+		self.set_locale('C')
+		self.__current_language = None
+		raise UMC_Error(self._('Specified locale is not available'), status=406)
+
+	def set_locale(self, _locale):
+		self.set_language(_locale)
+		_locale = str(Locale(_locale))
+		locale.setlocale(locale.LC_MESSAGES, _locale)
+		locale.setlocale(locale.LC_CTYPE, _locale)
 
 	@property
 	def username(self):
@@ -274,31 +301,41 @@ class Base(signals.Provider, Translation):
 		try:
 			function = getattr(self, method)
 		except AttributeError:
-			message = _('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
+			message = self._('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
 			self.finished(request.id, None, message=message, status=500)
 			return
 
 		try:
 			MODULE.info('Executing %s' % (request.arguments,))
+			self._parse_accept_language(request)
 			self.security_checks(request, function)
 			function.__func__(self, request, *args, **kwargs)
 		except (KeyboardInterrupt, SystemExit):
-			self.finished(request.id, None, _('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
+			self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
 			raise
 		except:
 			self.__error_handling(request, method, *sys.exc_info())
 
+	def _parse_accept_language(self, request):
+		"""Parses language tokens from Accept-Language, transforms it into locale and set the language."""
+		if request.headers.get('X-Requested-With'.title(), '').lower() != 'XMLHTTPRequest'.lower():
+			return  # don't change the language if Accept-Language header contains the value of the browser and not those we set in Javascript
+
+		accepted_locales = re.split('\s*,\s*', request.headers.get('Accept-Language', ''))
+		if accepted_locales:
+			self.update_language(l.replace('-', '_') for l in accepted_locales)
+
 	def security_checks(self, request, function):
 		if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
 			status = 405 if request.http_method in (u'GET', u'HEAD') else 501
-			raise UMC_Error(_('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
+			raise UMC_Error(self._('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
 
 		if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
-			raise UMC_Error(_('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
+			raise UMC_Error(self._('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
 
 		if getattr(function, 'referer_protection', True) and request.headers.get('Referer') and not urlparse.urlparse(request.headers['Referer']).path.startswith('/univention/'):
 			# FIXME: we must also check the netloc/hostname/IP
-			raise UMC_Error(_('The "Referer" HTTP header must start with "/univention/".'), status=503)
+			raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503)
 
 	def thread_finished_callback(self, thread, result, request):
 		if not isinstance(result, BaseException):
@@ -329,16 +366,16 @@ class Base(signals.Provider, Translation):
 			result = exc.result
 			headers = exc.headers
 			if isinstance(exc, UMC_OptionTypeError):
-				message = _('An option passed to %(method)s has the wrong type: %(exc)s') % {'method': method, 'exc': exc}
+				message = self._('An option passed to %(method)s has the wrong type: %(exc)s') % {'method': method, 'exc': exc}
 			elif isinstance(exc, UMC_OptionMissing):
-				message = _('One or more options to %(method)s are missing: %(exc)s') % {'method': method, 'exc': exc}
+				message = self._('One or more options to %(method)s are missing: %(exc)s') % {'method': method, 'exc': exc}
 			elif isinstance(exc, UMC_CommandError):
-				message = _('The command has failed: %s') % (exc,)
+				message = self._('The command has failed: %s') % (exc,)
 			else:
 				message = str(exc)
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
-			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
+			message = self._("Execution of command '%(command)s' has failed:\n\n%(text)s")
 			message = message % {
 				'command': ('%s %s' % (' '.join(request.arguments), request.flavor or '')).strip().decode('utf-8', 'replace'),
 				'text': unicode(traceback.format_exc())
@@ -347,7 +384,12 @@ class Base(signals.Provider, Translation):
 		self.finished(request.id, result, message, status=status, headers=headers)
 
 	def default_response_headers(self):
-		return {}
+		headers = {
+			'Vary': 'Content-Language',
+		}
+		if self.__current_language:
+			headers['Content-Language'] = self.__current_language
+		return headers
 
 	def get_user_ldap_connection(self):
 		if not self._user_dn:
@@ -402,7 +444,7 @@ class Base(signals.Provider, Translation):
 			else:
 				res.result = response
 				res.message = message
-				res.headers = headers or self.default_response_headers()
+				res.headers = dict(self.default_response_headers(), **headers or {})
 		else:
 			res = response
 

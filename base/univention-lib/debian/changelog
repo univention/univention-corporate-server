@@ -1,3 +1,9 @@
+univention-lib (6.0.6-7) unstable; urgency=medium
+
+  * Bug #40612: raise I18NError instead of AttributeError if parsing fails
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 15:19:25 +0100
+
 univention-lib (6.0.6-6) unstable; urgency=medium
 
   * Bug #39731: set X-XSRF-Protection header

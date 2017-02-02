@@ -40,21 +40,17 @@ import errno
 import sys
 import traceback
 import socket
-import locale
 import notifier
 
 from .server import Server
 from .message import Response, Message, IncompleteMessageError, ParseError
-from .definitions import (
-	BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
-	MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE, status_description
-)
+from .definitions import MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE
 
 from univention.management.console.acl import ACLs
 from univention.management.console.module import Module
 from univention.management.console.log import MODULE, PROTOCOL
 
-from univention.lib.i18n import Locale, Translation
+from univention.lib.i18n import Translation
 
 _ = Translation('univention.management.console').translate
 
@@ -86,8 +82,9 @@ class ModuleServer(Server):
 		self.__username = None
 		self.__user_dn = None
 		self.__password = None
-		self.__init_error_message = None
-		self.__init_error_status = MODULE_ERR_INIT_FAILED
+		self.__init_etype = None
+		self.__init_exc = None
+		self.__init_etraceback = None
 		self.__handler = None
 		self._load_module()
 		Server.__init__(self, ssl=False, unix=socket, magic=False, load_ressources=False)
@@ -95,21 +92,25 @@ class ModuleServer(Server):
 
 	def _load_module(self):
 		modname = self.__module
+		from ..base import UMC_Error
 		try:
-			file_ = 'univention.management.console.modules.%s' % (modname,)
-			self.__module = __import__(file_, [], [], modname)
-			self.__handler = self.__module.Instance()
-		except Exception as exc:
-			error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
-			MODULE.error(error)
-			if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
-				error = '\n'.join((
-					_('The requested module %r does not exist.') % (modname,),
-					_('The module may have been removed recently.'),
-					_('Please relogin to the Univention Management Console to see if the error persists.'),
-					_('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),
-				))
-			self.__init_error_message = error
+			try:
+				file_ = 'univention.management.console.modules.%s' % (modname,)
+				self.__module = __import__(file_, [], [], modname)
+				self.__handler = self.__module.Instance()
+			except Exception as exc:
+				error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
+				MODULE.error(error)
+				if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
+					error = '\n'.join((
+						_('The requested module %r does not exist.') % (modname,),
+						_('The module may have been removed recently.'),
+						_('Please relogin to the Univention Management Console to see if the error persists.'),
+						_('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),
+					))
+				raise UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
+		except UMC_Error:
+			self.__init_etype, self.__init_exc, self.__init_etraceback = sys.exc_info()
 		else:
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
 
@@ -169,22 +170,51 @@ class ModuleServer(Server):
 		self.__buffer += data
 
 		msg = None
-		try:
-			while self.__buffer:
+		while self.__buffer:
+			try:
 				msg = Message()
 				self.__buffer = msg.parse(self.__buffer)
 				MODULE.info("Received request %s" % msg.id)
 				self.handle(msg)
-		except IncompleteMessageError:
-			MODULE.info('Failed to parse incomplete message')
-		except ParseError as exc:
-			MODULE.error('Failed to parse message: %s' % (exc,))
-			res = Response(msg)
-			res.id = -1
-			res.status = exc.args[0]
-			self.response(res)
+			except IncompleteMessageError:
+				MODULE.info('Failed to parse incomplete message')
+				return True
+			except ParseError as exc:
+				MODULE.error('Failed to parse message: %s' % (exc,))
+				if not msg.id:
+					msg.id = -1
+				status, message = exc.args
+				from ..base import UMC_Error
+				raise UMC_Error(message, status=status)
+			except (KeyboardInterrupt, SystemExit, GeneratorExit):
+				raise
+			except:
+				self.error_handling(msg, 'init', *sys.exc_info())
 
 		return True
+
+	def error_handling(self, request, method, etype, exc, etraceback):
+		if self.__handler:
+			self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
+			return
+
+		trace = ''.join(traceback.format_exception(etype, exc, etraceback))
+		MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
+		from ..base import UMC_Error
+		if not isinstance(exc, UMC_Error):
+			error = _('The initialization of the module failed: %s') % (trace,)
+			exc = UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
+
+		self.__init_etype = etype
+		self.__init_exc = exc
+		self.__init_etraceback = etraceback
+
+		resp = Response(request)
+		resp.status = exc.status
+		resp.message = str(exc)
+		resp.result = exc.result
+		resp.headers = exc.headers
+		self.response(resp)
 
 	def handle(self, msg):
 		"""Handles incoming UMCP requests. This function is called only
@@ -198,30 +228,27 @@ class ModuleServer(Server):
 		* SET (acls|username|credentials)
 		* EXIT
 		"""
+		from ..base import UMC_Error
 		self.__time_remaining = self.__timeout
 		PROTOCOL.info('Received UMCP %s REQUEST %s' % (msg.command, msg.id))
+
+		resp = Response(msg)
+		resp.status = SUCCESS
+
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
 			MODULE.info("EXIT: module shutdown in %dms" % shutdown_timeout)
 			# shutdown module after one second
-			resp = Response(msg)
-			resp.body = {'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout)}
-			resp.status = SUCCESS
+			resp.message = 'module %s will shutdown in %dms' % (msg.arguments[0], shutdown_timeout)
 			self.response(resp)
 			notifier.timer_add(shutdown_timeout, self._timed_out)
 			return
 
 		if not self.__handler:
-			resp = Response(msg)
-			resp.status = self.__init_error_status
-			resp.message = self.__init_error_message
-			self.response(resp)
 			notifier.timer_add(10000, self._timed_out)
-			return
+			raise self.__init_etype, self.__init_exc, self.__init_etraceback
 
 		if msg.command == 'SET':
-			resp = Response(msg)
-			resp.status = SUCCESS
 			for key, value in msg.options.items():
 				if key == 'acls':
 					self.__acls = ACLs(acls=value)
@@ -247,48 +274,19 @@ class ModuleServer(Server):
 					self.__handler.password = self.__password
 					self.__handler.auth_type = self.__auth_type
 				elif key == 'locale' and value is not None:
-					self.__locale = value
-					try:
-						locale_obj = Locale(value)
-						locale.setlocale(locale.LC_MESSAGES, str(locale_obj))
-						MODULE.info("Setting specified locale (%s)" % str(locale_obj))
-					except locale.Error:
-						MODULE.warn("Specified locale is not available (%s)" % str(locale_obj))
-						MODULE.warn("Falling back to C")
-						# specified locale is not available -> falling back to C
-						locale.setlocale(locale.LC_MESSAGES, 'C')
-						self.__locale = 'C'
-					self.__handler.set_language(self.__locale)
+					self.__handler.update_language([value])
 				else:
-					resp.status = BAD_REQUEST_INVALID_OPTS
-					break
+					raise UMC_Error(status=422)
 
 			# if SET command contains 'acls', commands' and
 			# 'credentials' it is the initialization of the module
 			# process
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
-					try:
-						self.__handler.init()
-					except:
-						self.__handler.error_handling(*sys.exc_info())
-						raise
-				except BaseException as exc:
+					self.__handler.init()
+				except BaseException:
 					self.__handler = None
-					error = _('The initialization of the module failed: %s') % (exc,)
-					trace = traceback.format_exc()
-
-					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
-
-					from ..base import UMC_Error
-					if not isinstance(exc, UMC_Error):
-						error = trace
-					else:
-						self.__init_error_status = exc.status or MODULE_ERR_INIT_FAILED
-
-					resp.status = self.__init_error_status
-					self.__init_error_message = error
-					resp.message = error
+					raise
 
 			self.response(resp)
 			return
@@ -300,12 +298,7 @@ class ModuleServer(Server):
 				self.__active_requests += 1
 				self.__handler.execute(cmd_obj.method, msg)
 				return
-			else:
-				resp = Response(msg)
-				# status 415 (command not allowed) should be checked by the server
-				resp.status = BAD_REQUEST_NOT_FOUND
-				resp.message = status_description(resp.status)
-				self.response(resp)
+			raise UMC_Error('Not initialized.', status=403)
 
 	def command_get(self, command_name):
 		"""Returns the command object that matches the given command name"""

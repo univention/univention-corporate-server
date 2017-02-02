@@ -1,3 +1,9 @@
+univention-management-console (9.0.21-2) unstable; urgency=medium
+
+  * Bug #40612: Bug #38370: fix updating of language
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 15:12:20 +0100
+
 univention-management-console (9.0.21-1) unstable; urgency=medium
 
   * Bug #39733: Allow data: img-src URI's in CSP; Allow /univention/saml to be

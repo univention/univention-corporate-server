@@ -52,8 +52,6 @@ from notifier import threads
 
 import univention.admin.uexceptions as udm_errors
 
-from univention.lib.i18n import I18N_Error
-
 from .message import Response, Request, MIMETYPE_JSON
 from .client import Client, NoSocketError
 from .version import VERSION
@@ -160,6 +158,11 @@ class ProcessorBase(Base):
 		self.i18n = I18N_Manager()
 		self.i18n['umc-core'] = I18N()
 
+	def set_locale(self, locale):
+		# don't call the super method because it sets the process locale LC_*!
+		self.set_language(locale)
+		self.i18n.set_locale(locale)
+
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
 		self.password = password
@@ -227,7 +230,6 @@ class ProcessorBase(Base):
 	def handle_request_auth(self, request):
 		result = request.authentication_result
 		del request.authentication_result
-		self.update_language(re.split('\s*,\s*', request.headers.get('Accept-Language', '')))
 		response = Response(request)
 		response.status = result.status
 		if result.message:
@@ -359,20 +361,6 @@ class ProcessorBase(Base):
 	@simple_response
 	def handle_request_set_locale(self, locale):
 		self.update_language([locale])
-
-	def update_language(self, locales):
-		for locale in locales:
-			try:
-				self.set_language(locale)
-				CORE.info('Setting locale: %r' % (locale,))
-				self.i18n.set_locale(locale)
-				return
-			except (I18N_Error, AttributeError):
-				CORE.info('Failed setting new locale %r' % (locale,))
-		CORE.warn('Could not set language. Reseting locale.')
-		self.set_language('C')
-		self.i18n.set_locale('C')
-		raise UMC_Error(self._('Specified locale is not available'), status=406)
 
 	def update_module_passwords(self):
 		for module_name, proc in self.__processes.items():

@@ -63,7 +63,7 @@ class Locale(object):
 		self.__reset()
 		regex = Locale.REGEX.match(locale)
 		if not regex:
-			raise AttributeError('attribute does not match locale specification language[_territory][.codeset][@modifier]')
+			raise I18N_Error('attribute does not match locale specification language[_territory][.codeset][@modifier]')
 
 		self.codeset = 'UTF-8'  # default encoding
 		for key, value in regex.groupdict().items():

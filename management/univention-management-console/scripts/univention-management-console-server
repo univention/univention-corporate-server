@@ -59,18 +59,23 @@ class UMC_Daemon(DaemonRunner):
 		default_debug = SERVER_DEBUG_LEVEL
 		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
 		self.parser = OptionParser()
-		self.parser.add_option('-n', '--no-daemon', action='store_false',
+		self.parser.add_option(
+			'-n', '--no-daemon', action='store_false',
 			dest='daemon_mode', default=True,
 			help='if set the process will not fork into the background')
-		self.parser.add_option('-p', '--port', action='store', type='int',
+		self.parser.add_option(
+			'-p', '--port', action='store', type='int',
 			dest='port', default=6670,
 			help='defines an alternative port number [default %default]')
-		self.parser.add_option('-l', '--language', type='string', action='store',
+		self.parser.add_option(
+			'-l', '--language', type='string', action='store',
 			dest='language', default=default_locale,
 			help='defines the language to use [default: %default]')
-		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
+		self.parser.add_option(
+			'-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
 			help='if given than debugging is activated and set to the specified level [default: %default]')
-		self.parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-server',
+		self.parser.add_option(
+			'-L', '--log-file', action='store', dest='logfile', default='management-console-server',
 			help='specifies an alternative log file [default: %default]')
 		(self.options, self.arguments) = self.parser.parse_args()
 
@@ -120,7 +125,8 @@ class UMC_Daemon(DaemonRunner):
 		# set locale
 		try:
 			locale.setlocale(locale.LC_MESSAGES, locale.normalize(self.options.language))
-		except:
+			locale.setlocale(locale.LC_CTYPE, locale.normalize(self.options.language))
+		except locale.Error:
 			CORE.process('Specified locale is not available (%s)' % self.options.language)
 
 	def _reload(self):
