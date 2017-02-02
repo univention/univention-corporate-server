@@ -65,7 +65,7 @@ build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIR
 # shortcut rule
 i18n: js/de.po js/en.po
 
-tmp-css: $(TMP_THEME_DIR) $(TMP_THEME_DIR)/bootstrap.css $(addprefix $(TMP_THEME_DIR)/images/,icons-white.svg icons-small-white.svg icons.png icons-small.png icons-white.png icons-small-white.png univention-white.svg home-white.svg)
+tmp-css: $(TMP_THEME_DIR) $(TMP_THEME_DIR)/bootstrap.css $(addprefix $(TMP_THEME_DIR)/images/,icons-white.svg icons-small-white.svg icons.png icons-small.png icons-white.png icons-small-white.png univention-white.svg home-white.svg) $(TMP_THEME_DIR)/fonts
 
 
 $(TMP_DIR):
@@ -87,7 +87,7 @@ $(TMP_THEME_DIR): $(TMP_DIR)
 %.png: %.svg
 	convert -background transparent "$<" "$@"
 
-$(BUILD_THEME_DIR)/fonts: roboto.zip
+$(BUILD_THEME_DIR)/fonts $(TMP_THEME_DIR)/fonts: roboto.zip
 	mkdir -p $@
 	unzip -o $< -d $@
 
@@ -112,8 +112,7 @@ $(BUILD_THEME_DIR)/umc.css: tmp-css
 	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $(TMP_DIR)/dojo $(TMP_DIR)/dijit -name "*.css")
 	# compile all .css files into one big file
 	mkdir -p $(@D)
-	stylus --resolve-url --include-css $(TMP_THEME_CSS)
-	cp $(TMP_THEME_CSS) $(@D)/$(CSS_FILE_NAME)
+	stylus --resolve-url --include-css -o $(@D) $(TMP_THEME_CSS)
 	# Workaround: remove the temporarily commented lines
 	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@
 
