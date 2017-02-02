@@ -1318,7 +1318,7 @@ define([
 				label: _('UCS start site'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
-					var w = window.open('/ucs-overview?lang=' + kernel.locale, 'ucs-start-site');
+					var w = window.open('/univention?lang=' + kernel.locale, 'ucs-start-site');
 					w.focus();
 				}
 			}));
