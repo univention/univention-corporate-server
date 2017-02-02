@@ -31,7 +31,7 @@
 
 # extend the list LANGUAGES to support l10n for other languages
 LANGUAGES := de en
-CLOUDINIT_DE_JSON := var/www/ucs-overview/js/ci-appliance/de.json
+CLOUDINIT_DE_JSON := var/www/univention/js/ci-appliance/de.json
 
 build: $(CLOUDINIT_DE_JSON)
 

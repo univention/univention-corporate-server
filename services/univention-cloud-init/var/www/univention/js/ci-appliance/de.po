@@ -44,9 +44,9 @@ msgid "use this link to reach the overview page"
 msgstr "diesen Link nutzen um zur Startseite zu gelangen"
 
 msgid "After the setup has finished, you will be redirected. Alternatively,"
-" after setup is finished, you can <a href='/ucs-overview/'>"
+" after setup is finished, you can <a href='/univention/'>"
 "use this link to reach the overview page</a>."
 msgstr "Nachdem die Einrichtung fertig ist werden sie weitergeleitet. Alternativ "
-"können Sie, nachdem die Einrichtung beendet wurde, <a href='/ucs-overview/'>"
+"können Sie, nachdem die Einrichtung beendet wurde, <a href='/univention/'>"
 "diesen Link nutzen um zur Startseite zu gelangen</a>."
 

@@ -71,7 +71,7 @@ case "$1" in
 					done < /var/cache/univention-system-setup/installapps
 				fi
 			fi
-			ucr set apache2/startsite="ucs-overview/"
+			ucr set apache2/startsite="univention/"
 			invoke-rc.d apache2 reload
 		fi
 		log_action_end_msg 0

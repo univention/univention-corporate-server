@@ -1,10 +1,10 @@
 [
 	{
 		"input_files": [
-			"var/www/ucs-overview/cloud-init-setup.html"
+			"var/www/univention/cloud-init-setup.html"
 		],
-		"po_subdir": "var/www/ucs-overview/js/ci-appliance",
+		"po_subdir": "var/www/univention/js/ci-appliance",
 		"target_type": "json",
-		"destination": "var/www/ucs-overview/js/ci-appliance/{lang}.json"
+		"destination": "var/www/univention/js/ci-appliance/{lang}.json"
 	}
 ]
