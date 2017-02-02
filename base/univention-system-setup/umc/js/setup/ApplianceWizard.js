@@ -2170,7 +2170,7 @@ define([
 				// validate software components
 				var packages = {};
 				array.forEach(this._gallery.getSelectedItems(), function(iapp) {
-					var ipackages = [].concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
+					var ipackages = [].concat(iapp.default_packages, iapp.default_packages_master);
 					array.forEach(ipackages, function(ipackage) {
 						packages[ipackage] = true;
 					});
@@ -2933,7 +2933,7 @@ define([
 			// software components
 			var packages = [];
 			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
-				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
+				packages = packages.concat(iapp.default_packages, iapp.default_packages_master);
 			});
 			vals.components = packages;
 

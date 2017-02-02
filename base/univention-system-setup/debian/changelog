@@ -1,3 +1,9 @@
+univention-system-setup (9.0.7-2) unstable; urgency=medium
+
+  * Bug #40102: reflect property changes in frontend
+
+ -- Eduard Mai <mai@univention.de>  Thu, 02 Feb 2017 22:17:15 +0100
+
 univention-system-setup (9.0.7-1) unstable; urgency=medium
 
   * Bug #40102: fix remaining usage of old appcenter API properties
