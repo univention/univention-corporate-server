@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-19 09:19+0100\n"
+"POT-Creation-Date: 2016-04-01 13:30+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,23 +12,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: passwordreset.js:115
-msgid " If you already have a token you can <a>skip this step</a>."
-msgstr ""
-" Wenn Sie bereits über einen Token verfügen, dann können Sie <a>diesen "
-"Schritt überspringen</a>."
+#: ProtectAccountAccess.js:216
+msgid " (retype)"
+msgstr " (Wiederholung)"
 
-#: passwordreset.js:138
-msgid " If your token has expired you can <a>request a new token</a>."
-msgstr ""
-" Wenn Ihr Token abgelaufen ist, können Sie einen <a>neuen Token anfordern</"
-"a>."
-
-#: lib.js:103
+#: lib.js:111
 msgid "</br><a href='/{0}'>Back to the overview.</a>"
 msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"
 
-#: lib.js:92
+#: lib.js:100
 msgid ""
 "</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> "
 "second(s).</div>"
@@ -36,41 +28,45 @@ msgstr ""
 "</br><div>Sie werden in <a id='redirectTimer'> {1} </a> Sekunden {0} "
 "weitergeleitet.</div>"
 
-#: setcontactinformation.js:152
+#: ProtectAccountAccess.js:212
+msgid "Activate renew options."
+msgstr "Wiederherstellungsoptionen aktivieren."
+
+#: ProtectAccountAccess.js:239
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: passwordchange.js:48
-msgid "Change Password"
-msgstr "Passwort ändern"
-
-#: passwordchange.js:124 passwordreset.js:194
+#: PasswordChange.js:173 PasswordForgotten.js:367
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: setcontactinformation.js:53
-msgid "Contact information for Password reset"
-msgstr "Kontaktinformationen zum Zurücksetzen des Passworts"
+#: PasswordChange.js:48
+msgid "Change your (expired) password."
+msgstr "Ändern Sie Ihr (abgelaufenes) Passwort."
 
-#: setcontactinformation.js:122
-msgid "EMail"
-msgstr "E-Mail"
-
-#: setcontactinformation.js:118
+#: ProtectAccountAccess.js:50
 msgid ""
-"Feel free to change your contact information. Press \"Save\" to confirm your "
-"changes."
+"Everyone forgets their password now and then. Protect yourself and activate "
+"the opportunity to set a new password."
 msgstr ""
-"Bitte tragen Sie Ihre Kontaktinformationen ein und drücken Sie anschließend "
-"\"Speichern\", um Ihre Änderungen zu bestätigen."
+"Jeder vergißt mal das Passwort. Schützen Sie sich und aktivieren Sie die "
+"Möglichkeit ihr Passwort erneuern zu können."
 
-#: lib.js:118
+#: PasswordBox.js:71
+msgid "Forbidden chars:"
+msgstr "Vorbotene Zeichen:"
+
+#: lib.js:126
 msgid ""
 "Forbidden redirect to: {0}\n"
 " The url has to start with (only) one \"/\"."
 msgstr ""
-"Verbotene Weiterleitung nach: {0}\n "
-"Die URL muss mit (nur) einem \"/\" beginnen."
+"Verbotene Weiterleitung nach: {0}\n"
+" Die URL muss mit (nur) einem \"/\" beginnen."
+
+#: PasswordForgotten.js:52
+msgid "Forgot your password? Set a new one: "
+msgstr "Haben Sie ihr Passwort vergessen? Setzen Sie ein Neues:"
 
 #: i18n.js:96
 #, python-format
@@ -82,125 +78,96 @@ msgstr "Hallo %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hallo %s %s!"
 
+#: PasswordForgotten.js:314
+msgid ""
+"If you did not received an e-mail please check your spam directory or use "
+"this link to go back to step 2."
+msgstr ""
+"Sollten Sie keine E-Mail erhalten haben, dann prüfen Sie bitte Ihr SPAM-"
+"Verzeichnis oder nutzen Sie diesen Link und kehren zu Schritt 2 zurück."
+
 #: LanguagesDropDown.js:89
 msgid "Language"
 msgstr "Sprache"
 
-#: setcontactinformation.js:134
-msgid "Mobile"
-msgstr "Mobilfunknummer"
-
-#: passwordchange.js:96 passwordreset.js:159
-msgid "New password"
+#: PasswordChange.js:140 PasswordForgotten.js:324
+msgid "New Password"
 msgstr "Neues Passwort"
 
-#: passwordchange.js:109 passwordreset.js:176
-msgid "New password (retype)"
+#: PasswordChange.js:150 PasswordForgotten.js:339
+msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: setcontactinformation.js:111 passwordreset.js:94 passwordreset.js:122
+#: ProtectAccountAccess.js:152 PasswordForgotten.js:153
+#: PasswordForgotten.js:214
 msgid "Next"
 msgstr "Weiter"
 
-#: passwordchange.js:83
-msgid "Old password"
+#: PasswordChange.js:120
+msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: passwordchange.js:49
-msgid ""
-"On this page you can change your password. If you have lost your password, "
-"use this link to the <a href=\"/univention-self-service/{0}#passwordreset"
-"\">password reset</a> page."
-msgstr ""
-"Auf dieser Seite können Sie Ihr Passwort ändern. Wenn Sie Ihr Passwort "
-"vergessen haben, nutzen Sie bitte den folgenden Link: <a href=\"/univention-"
-"self-service/{0}#passwordreset\">Passwort zurücksetzen.</a>"
-
-#: passwordreset.js:54
-msgid ""
-"On this page you can reset your lost password or provide contact information "
-"for setting a new password in the future."
-msgstr ""
-"Auf dieser Seite können Sie Ihr Passwort zurücksetzen oder Ihre "
-"Kontaktinformationen angeben, um zukünftig Ihr Passwort zurücksetzen zu "
-"können."
-
-#: setcontactinformation.js:54
-msgid ""
-"On this page you can set your contact information to reset your password in "
-"the future. During the reset process a token is sent to you. Without contact "
-"information it is not possible to reset your password."
-msgstr ""
-"Auf dieser Seite können Sie Ihre Kontaktinformationen angeben. Diese "
-"Informationen werden benötigt, um Ihnen einen Token (Sicherheitsschlüssel) "
-"zuzusenden. Nur mit Hilfe eines Tokens ist es möglich das Passwort "
-"zurückzusetzen."
-
-#: setcontactinformation.js:94
+#: ProtectAccountAccess.js:126
 msgid "Password"
 msgstr "Passwort"
 
-#: passwordreset.js:53
-msgid "Password Reset"
-msgstr "Passwort zurücksetzen"
+#: PasswordChange.js:47
+msgid "Password change"
+msgstr "Passwort ändern"
 
-#: passwordreset.js:113
-msgid "Please choose a method to receive the token."
-msgstr ""
-"Bitte wählen Sie eine Benachrichtigungsart über die Sie einen Token "
-"(Sicherheitsschlüssel) erhalten möchten."
+#: PasswordForgotten.js:51
+msgid "Password forgotten"
+msgstr "Passwort vergessen"
 
-#: passwordreset.js:103
-msgid ""
-"Please click the following link to <a href=\"/univention-self-service/{0}"
-"#setcontactinformation\">change your contact information</a> for resetting "
-"your password in the future."
-msgstr ""
-"Bitte nutzen Sie den folgenden Link, um Ihre <a href=\"/univention-self-"
-"service/{0}#setcontactinformation\">  Kontaktinformationen zu ändern</a> "
-"damit Sie zukünftig Ihr Passwort zurücksetzen können."
+#: PasswordForgotten.js:209
+msgid "Please choose an option to renew your password."
+msgstr "Bitte wählen Sie eine Wiederherstellungsoption aus."
 
-#: setcontactinformation.js:279
+#: ProtectAccountAccess.js:308
 msgid "Please enter a valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
-#: passwordreset.js:136
-msgid "Please enter the token and your new password."
-msgstr ""
-"Bitte geben Sie den Token (Sicherheitsschlüssel) und ein neues Passwort ein."
+#: ProtectAccountAccess.js:49
+msgid "Protect Account Access"
+msgstr "Kontozugang schützen"
 
-#: setcontactinformation.js:74
-msgid ""
-"Please enter your username and password to display your contact information."
-msgstr ""
-"Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein, um Ihre "
-"Kontaktinformationen einsehen und ändern zu können."
+#: PasswordBox.js:75
+msgid "Required chars:"
+msgstr "Erforderliche Zeichen:"
 
-#: passwordchange.js:66
-msgid "Please provide the required data to change your password."
-msgstr "Bitte geben Sie die notwendigen Daten ein, um Ihr Passwort zu ändern."
+#: PasswordBox.js:55
+msgid "Required length:"
+msgstr "Erforderliche Passwortlänge:"
 
-#: passwordreset.js:76
-msgid ""
-"Please provide your username to receive a token that is required to reset "
-"your password."
-msgstr ""
-"Bitte geben Sie Ihren Benutzernamen ein. Sie erhalten anschließend einen "
-"Token (Sicherheitsschlüssel) mit dem Sie Ihr Passwort zurücksetzen können."
+#: PasswordBox.js:59
+msgid "Required number of lower case letters:"
+msgstr "Erforderliche Anzahl von Kleinbuchstaben:"
 
-#: passwordreset.js:101
-msgid "Provide your contact information."
-msgstr "Geben Sie Ihre Kontaktinformationen an."
+#: PasswordBox.js:67
+msgid "Required number of special characters (nor digit or letters):"
+msgstr "Erforderliche Anzahl von Sonderzeichen:"
 
-#: passwordreset.js:75
-msgid "Reset your password."
-msgstr "Passwort zurücksetzen."
+#: PasswordBox.js:63
+msgid "Required number of upper case letters:"
+msgstr "Erforderliche Anzahl von Großbuchstaben:"
 
-#: setcontactinformation.js:146
+#: ProtectAccountAccess.js:233
 msgid "Save"
 msgstr "Speichern"
 
-#: passwordchange.js:116 passwordreset.js:183
+#: PasswordForgotten.js:53
+msgid "Set a new password!"
+msgstr "Setzen Sie ein neues Passwort!"
+
+#: ProtectAccountAccess.js:226
+msgid "The entries do not match, please retype again."
+msgstr "Die Eingaben stimmen nicht überein. Bitte versuchen Sie es erneut."
+
+#: PasswordBox.js:139
+msgid "The password must fullfill following conditions:"
+msgstr "Das Passwort muss folgende Bedingungen erfüllen:"
+
+#: PasswordChange.js:159 PasswordForgotten.js:348
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -209,167 +176,32 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr "Die Gesamtkosten waren %.2f EUR!"
 
-#: passwordreset.js:143
-msgid "Token"
-msgstr "Token (Sicherheitsschlüssel)"
+#: PasswordBox.js:47 PasswordBox.js:100
+msgid "This value is required."
+msgstr "Pflichtfeld."
 
 #: i18n.js:93
 msgid "Translate me!"
 msgstr "Übersetz mich!"
 
-#: setcontactinformation.js:78 passwordchange.js:71 passwordreset.js:79
+#: PasswordChange.js:101 ProtectAccountAccess.js:102 PasswordForgotten.js:135
 msgid "Username"
 msgstr "Benutzername"
 
-#: lib.js:126
+#: PasswordForgotten.js:312
+msgid ""
+"We have send you an e-mail to your alternative e-mail address, that you have "
+"provided on the page \"Protect Account Access\". Please check your mails and "
+"follow the link to renew your password."
+msgstr ""
+"Wir haben Ihnen eine E-Mail an Ihre alternative E-Mailadresse geschickt. "
+"Diese haben Sie auf der Seite \"Kontugang schützen\" hinterlegt. Bitte "
+"prüfen Sie Ihre E-Mails und folgen Sie den Link, um Ihr Passwort zu erneuern."
+
+#: PasswordForgotten.js:310
+msgid "You have mail!"
+msgstr "Sie haben eine neue E-Mail!"
+
+#: lib.js:148
 msgid "to '{0}'"
 msgstr "zu '{0}'"
-
-#~ msgid ""
-#~ "A license file has been sent to <strong id=\"email-address\">{0}</"
-#~ "strong>. This file is necessary to activate the system. For this, please "
-#~ "carry out the following steps: <ol><li>Open the email.</li><li>Save the "
-#~ "attachement (ucs.license) on your computer.</li><li>Click the button "
-#~ "'Upload license file'.</li><li>Select the file (ucs.license) you just "
-#~ "saved.</li><li>Confirm the selection.</li></ol>Once the activation has "
-#~ "been finished your email address will be sent to the app provider. The "
-#~ "app provider may contact you."
-#~ msgstr ""
-#~ "Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
-#~ "gesendet. Sie wird benötigt um das System zu aktivieren. Bitte führen Sie "
-#~ "dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</"
-#~ "li><li>Speichern Sie den Anhang (ucs.license) auf Ihren Computer.</"
-#~ "li><li>Klicken Sie auf die Schaltfläche 'Lizenzdatei hochladen'.</"
-#~ "li><li>Wählen Sie die soeben gespeicherte Datei (ucs.license) aus.</"
-#~ "li><li>Bestätigen Sie die Auswahl.</li></ol> Sobald die Aktivierung "
-#~ "durchgeführt ist, wird Ihre E-Mail-Adresse an den App-Anbieter "
-#~ "weitergeleitet. Der App-Anbieter wird Sie ggf. kontaktieren."
-
-#~ msgid "Activation of {appliance_name} Univention App"
-#~ msgstr "Aktivierung von {appliance_name} Univention App"
-
-#~ msgid "Activation successful!"
-#~ msgstr "Aktivierung erfolgreich!"
-
-#~ msgid "An unknown error has occurred."
-#~ msgstr "Ein unbekannter Fehler trat auf."
-
-#~ msgid "An unknown error occured. Please try it again later!"
-#~ msgstr ""
-#~ "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch "
-#~ "einmal!"
-
-#~ msgid "Confirm username"
-#~ msgstr "Benutzername bestätigen"
-
-#~ msgid "Continue"
-#~ msgstr "Weiter"
-
-#~ msgid "E-mail address"
-#~ msgstr "E-Mail-Adresse"
-
-#~ msgid "Error "
-#~ msgstr "Fehler "
-
-#~ msgid "I have forgotten my password."
-#~ msgstr "Ich habe mein Passwort vergessen."
-
-#~ msgid "I want to change my (expired) password."
-#~ msgstr "Ich will mein (abgelaufenes) Passwort ändern."
-
-#~ msgid ""
-#~ "I would like to set my contact information for resetting my password."
-#~ msgstr ""
-#~ "Ich möchte meine Kontaktinformationen ändern, um zukünftig mein Password  "
-#~ "zurücksetzen zu können."
-
-#~ msgid ""
-#~ "If you did not receive an email, please check your SPAM directory or <a "
-#~ "href=\"#register\"> request the email again</a>."
-#~ msgstr ""
-#~ "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
-#~ "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
-
-#~ msgid ""
-#~ "If you encounter problems during the activation, please send an email to: "
-#~ "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-#~ "#000\">feedback@univention.de</a></strong>"
-#~ msgstr ""
-#~ "Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-"
-#~ "Mail an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-#~ "#000\">feedback@univention.de</a></strong>"
-
-#~ msgid ""
-#~ "In order to reset your password please carry out the following steps: "
-#~ msgstr ""
-#~ "Um Ihr Passwort zurückzusetzen führen Sie bitte die folgenden Schritte "
-#~ "aus: "
-
-#~ msgid "License request."
-#~ msgstr "Anforderung einer Lizenz."
-
-#~ msgid ""
-#~ "More details about the activation can be found in the <a href=\"http://"
-#~ "docs.univention.de/manual.html#central:license\" target=\"_blank\">UCS "
-#~ "manual</a>."
-#~ msgstr ""
-#~ "Weitere Informationen zu der Aktivierung können im <a href=\"http://docs."
-#~ "univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
-#~ "Handbuch</a> gefunden werden."
-
-#~ msgid "Password self-service"
-#~ msgstr "Passwort verwalten"
-
-#~ msgid ""
-#~ "Please enter a valid email address in order to activate {appliance_name} "
-#~ "Univention App. The activation is mandatory to deploy the system. In the "
-#~ "next step you can upload the license file that has been sent to your "
-#~ "email address."
-#~ msgstr ""
-#~ "Bitte geben Sie eine gültige E-Mail-Adresse ein, um {appliance_name} "
-#~ "Univention App zu aktivieren. Die Aktivierung ist Voraussetzung, um das "
-#~ "System in Gebrauch zu nehmen. Im nächsten Schritt können sie die "
-#~ "Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
-
-#~ msgid "Please enter your username."
-#~ msgstr "Bitte geben Sie Ihren Benutzernamen ein."
-
-#~ msgid "Request token"
-#~ msgstr "Token anfordern"
-
-#~ msgid "Show contact information"
-#~ msgstr "Kontaktinformationen anzeigen"
-
-#~ msgid "The following error occurred:"
-#~ msgstr "Der folgende Fehler trat auf:"
-
-#~ msgid "The server is not responding. Please restart the system."
-#~ msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
-
-#~ msgid "Upload license file"
-#~ msgstr "Lizenzdatei hochladen"
-
-#~ msgid ""
-#~ "Welcome to the Password self-service. On this site you can reset and "
-#~ "change your password. Please select an option to get more information."
-#~ msgstr ""
-#~ "Willkommen zur Passwortverwaltung. Auf dieser Seite können Sie Ihr "
-#~ "Passwort  zurücksetzen oder ändern. Bitte wählen Sie eine Option, um mehr "
-#~ "Informationen  zu erhalten."
-
-#~ msgid "You have got mail!"
-#~ msgstr "Sie haben eine neue E-Mail!"
-
-#~ msgid "You have received a license file by email!"
-#~ msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
-
-#~ msgid "your email address"
-#~ msgstr "Ihre E-Mail-Adresse"
-
-#~ msgid ""
-#~ "{appliance_name} Univention App is now activated. Click \"Continue\" to "
-#~ "access the management interface (which may take a while)."
-#~ msgstr ""
-#~ "{appliance_name} Univention App ist nun aktiviert. Klicken sie auf "
-#~ "\"Weiter\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann "
-#~ "einige Zeit benötigen.)"

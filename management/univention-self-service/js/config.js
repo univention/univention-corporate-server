@@ -1,43 +1,43 @@
-// get locale from query string
-function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
-	// parse the URI query string
-	var query = window.location.search.substring(1);
-	var vars = query.split('&');
-	for (var i = 0; i < vars.length; i++) {
-		// parse the tuple
-		var tuple = vars[i].split('=');
-		// check whether we found the particular parameter we are interested in
-		if (2 == tuple.length && param == tuple[0]) {
+/**
+* Search the value of the QueryString for an given key.
+* @param: {string} key - Key for the searched value.
+* @param: {mixed} defaultVal - default value if no value is found.
+* */
+function getQuery(key, defaultVal) {
+	var queryString = window.location.search.substring(1);
+	var items = queryString.split('&');
+	for (var i = 0; i < items.length; i++) {
+		var tuple = items[i].split('=');
+		if (2 == tuple.length && key == tuple[0]) {
 			return tuple[1];
 		}
 	}
+	return defaultVal;
 }
 
-locale = getQuery('lang');
-if (locale) {
+
+/**
+ * Get the current language from the queryString
+ * */
+function getLocale() {
+	var locale = getQuery('lang', 'en-US');
 	locale = locale.replace('_', '-');
+	return locale;
 }
 
-// load the javascript module that is specified in the hash
-var selfService = document.location.hash.substr(1);
 
 var dojoConfig = {
 	isDebug: false,
-	locale: locale,
+	locale: getLocale(),
 	async: true,
 	callback: function() {
 		require([
-			"dojo/hash",
-			"dojo/topic",
-			"ucs/" + selfService,
+			"ucs/PasswordService",
 			"ucs/LanguagesDropDown",
 			"dojo/domReady!"
-		], function(hash, topic, app, LanguagesDropDown) {
-			app.start();
+		], function(PasswordService, LanguagesDropDown) {
+			PasswordService.start();
 			LanguagesDropDown.start();
-			topic.subscribe("/dojo/hashchange", function(changedHash) {
-				window.location.reload();
-			});
 		});
 	}
 };

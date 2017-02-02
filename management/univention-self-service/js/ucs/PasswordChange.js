@@ -39,77 +39,120 @@ define([
 	"put-selector/put",
 	"umc/tools",
 	"./TextBox",
-	"./LabelPane",
+	"./PasswordBox",
 	"./lib",
 	"./i18n!."
-], function(lang, on, keys, dom, json, xhr, Button, put, tools, TextBox, LabelPane, lib, _) {
+], function(lang, on, keys, dom, json, xhr, Button, put, tools, TextBox, PasswordBox, lib, _) {
 
 	return {
-		_createTitle: function() {
-			var title = _('Change Password');
-			var siteDescription = lang.replace(_('On this page you can change your password. If you have lost your password, use this link to the <a href="/univention-self-service/{0}#passwordreset">password reset</a> page.', [lib.getCurrentLanguageQuery()]));
-			document.title = title;
-			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', title);
-			put(titleNode, 'p', { innerHTML : siteDescription });
-			put(titleNode, '!.dijitHidden');
+		title: _('Password change'),
+		desc: _('Change your (expired) password.'),
+		hash: 'passwordchange',
+		contentContainer: null,
+		steps: null,
+
+		/**
+		 * Returns the title of the subpage.
+		 * */
+		getTitle: function() {
+			return _(this.title);
 		},
 
-		_createContent: function() {
-			var contentNode = dom.byId('content');
-			var formNode = this._getFormNode();
-			put(formNode, '[id=form]!dijitHidden');
-			put(contentNode, formNode);
+		/**
+		 * Returns the description of the subpage.
+		 * */
+		getDesc: function() {
+			return _(this.desc);
 		},
 
-		_getFormNode: function() {
-			var formNode = put('div.step');
-			put(formNode, 'p > b', _('Please provide the required data to change your password.'));
-			var stepContent = put(formNode, 'div.stepContent');
+		/**
+		 * Return the content node of the subpage.
+		 * If the content does not exists, it will be generated.
+		 * */
+		getContent: function() {
+			if (!this.contentContainer) {
+				this.contentContainer = put('div.contentWrapper');
+				put(this.contentContainer, 'div.contentDesc', this.getDesc());
+				put(this.contentContainer, this._getSteps());
+			}
+			return this.contentContainer;
+		},
 
-			// create input field for username
+		/**
+		 * Return the steps for the content node.
+		 * If the steps do not exists, they will be generated.
+		 * Note: Please call getContent for generating the steps.
+		 * */
+		_getSteps: function() {
+			if (!this.steps) {
+				this.steps = put('ol#PasswordChangeSteps.PasswordOl');
+				this._createUsername();
+				this._createOldPassword();
+				this._createNewPassword();
+				this._createSubmit();
+			}
+			return this.steps;
+		},
+
+		/**
+		 * Creates input field for username.
+		 * */
+		_createUsername: function() {
+			var step = put('li.step');
+			var label = put('div.stepLabel', _('Username'));
+			put(step, label);
 			this._username = new TextBox({
-				label: _('Username'),
-				'class': 'doubleLabelPane block',
+				'class': 'soloLabelPane',
 				isValid: function() {
 					return !!this.get('value');
 				},
 				required: true
 			});
-			put(stepContent, '>', this._username.label.domNode);
 			this._username.startup();
+			put(step, this._username.domNode);
+			put(this.steps, step);
+		},
 
-			// create input field for old password
+		/**
+		 * Creates input field for old password.
+		 * */
+		_createOldPassword: function() {
+			var step = put('li.step');
+			var label = put('div.stepLabel', _('Old Password'));
+			put(step, label);
 			this._oldPassword = new TextBox({
-				label: _('Old password'),
+				'class': 'soloLabelPane',
 				type: 'password',
-				'class': 'doubleLabelPane block',
 				isValid: function() {
 					return !!this.get('value');
 				},
 				required: true
 			});
-			put(stepContent, '>', this._oldPassword.label.domNode);
 			this._oldPassword.startup();
+			put(step, this._oldPassword.domNode);
+			put(this.steps, step);
+		},
 
-			// create input fields for new password
-			this._newPassword = new TextBox({
-				label: _('New password'),
-				type: 'password',
-				'class': 'doubleLabelPane left',
-				isValid: function() {
-					return !!this.get('value');
-				},
-				required: true
+		/**
+		 * Creates input fields for new password.
+		 * */
+		_createNewPassword: function() {
+			var step = put('li.step');
+			var label = put('div.stepLabel', _('New Password'));
+			put(step, label);
+			this._newPassword = new PasswordBox({
+				'class': 'soloLabelPane left'
 			});
-			put(stepContent, '>', this._newPassword.label.domNode);
 			this._newPassword.startup();
+			put(step, this._newPassword.domNode);
+			put(this.steps, step);
 
-			// create input fields for new password
+			step = put('li.step');
+			label = put('div.stepLabel', _('New Password (retype)'));
+			put(step, label);
 			this._verifyPassword = new TextBox({
-				label: _('New password (retype)'),
 				type: 'password',
-				'class': 'doubleLabelPane',
+				'class': 'soloLabelPane',
 				isValid: lang.hitch(this, function() {
 					return this._newPassword.get('value') ===
 						this._verifyPassword.get('value');
@@ -117,28 +160,35 @@ define([
 				invalidMessage: _('The passwords do not match, please retype again.'),
 				required: true
 			});
-			put(stepContent, '>', this._verifyPassword.label.domNode);
 			this._verifyPassword.startup();
-
-			// create submit button
-			this._submitButton = new Button({
-				label: _('Change password'),
-				onClick: lang.hitch(this, '_submit')
-			});
-			put(stepContent, '>', this._submitButton.domNode);
-
-			// let the user submit form by pressing ENTER
-			on(document, "keyup", lang.hitch(this, function(evt) {
-				if (evt.keyCode === keys.ENTER && !this._submitButton.get('disabled')) {
-					this._submit();
-				}
-			}));
-
-			return formNode;
+			put(step, this._verifyPassword.domNode);
+			put(this.steps, step);
 		},
 
-		_submit: function() {
-			this._showValidStatusOfInputFields();
+		/**
+		 * Creates submit button.
+		 * */
+		_createSubmit: function() {
+			var step = put('div');
+			this._submitButton = new Button({
+				label: _('Change password'),
+				onClick: lang.hitch(this, '_setPassword')
+			});
+			put(step, '>', this._submitButton.domNode);
+
+			// let the user submit the form by pressing ENTER
+			on(document, "keyup", lang.hitch(this, function(evt) {
+				if (evt.keyCode === keys.ENTER && !this._submitButton.get('disabled')) {
+					this._setPassword();
+				}
+			}));
+			put(this.steps, step);
+		},
+
+		/**
+		 * Changes the current password if all input fields are valid.
+		 * */
+		_setPassword: function() {
 			this._submitButton.set('disabled', true);
 			var allInputFieldsAreValid = this._username.isValid() &&
 				this._oldPassword.isValid() &&
@@ -177,23 +227,14 @@ define([
 			}
 		},
 
-		_showValidStatusOfInputFields: function() {
-			this._username.setValid(this._username.isValid());
-			this._oldPassword.setValid(this._oldPassword.isValid());
-			this._newPassword.setValid(this._newPassword.isValid());
-			//this._verifyPassword.setValid(this._verifyPassword.isValid());
-		},
-
+		/**
+		 * Clears all input field values of the subpage.
+		 * */
 		_clearAllInputFields: function() {
 			this._username.reset();
 			this._oldPassword.reset();
 			this._newPassword.reset();
 			this._verifyPassword.reset();
-		},
-
-		start: function() {
-			this._createTitle();
-			this._createContent();
 		}
 	};
 });

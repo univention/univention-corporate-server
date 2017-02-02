@@ -270,7 +270,7 @@ define([
 			if (description && !this.content.handlesTooltips) {
 				//default to the 'new' tooltip style
 				if (!this.usesHoverTooltip) {
-					if (this._isLabelDisplayed() && this.label && !(this.label === '&nbsp;')) {
+					if (this._isLabelDisplayed() && this.label && this.label !== '&nbsp;') {
 						labelNode = this._getLabelNode();
 						this.tooltipNode = domConstruct.create("div",{
 							'class': "umcDescription umcDescriptionIcon"

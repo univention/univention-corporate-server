@@ -4,50 +4,50 @@
 }
 
 #navigation {
-	.button-container {
+	.PasswordServiceNav {
 		display: inline-block;
+		width: 14.2857%;
+		min-width: 95px;
+		max-width: 160px;
+		margin: 5px 0;
+		position: relative;
+		vertical-align: top;
+		cursor: pointer;
 	}
 
-	.button {
+	.PasswordServiceNav:active {
+		font-weight: bold;
+	}
+
+	.PasswordServiceNavBubble {
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		background-color: aliceblue;
 		width: 70px;
 		height: 70px;
-		margin: 0 2em;
-		background: url(icons/tab-buttons.svg) no-repeat;
-		display: inline-block;
+		margin: auto;
+		background-repeat: no-repeat;
+		background-position: 50% 40%;
 	}
-
-	#register-button {
-		background-position: 0 -70px;
-		&.focused {
-			background-position: 0 0;
+		.password_change {
+			background-color: #8ebe43;
+			background-image: url("../../icon/password_change.png");
 		}
-	}
-
-	#upload-button {
-		background-position: -70px -70px;
-		&.focused {
-			background-position: -70px 0;
+		.password_forgotten {
+			background-color: #fd5745;
+			background-image: url("../../icon/password_forgotten.png");
 		}
-	}
-
-	#finished-button {
-		background-position: -140px -70px;
-		&.focused {
-			background-position: -140px 0;
+		.protect_account_access {
+			background-color: #f8cd23;
+			background-image: url("../../icon/protect_account_access.png");
 		}
-	}
 
-	.loading-bar {
-		opacity: 0;
-		transition: opacity 1s ease-in-out;
-		width: 100%;
-		height: 32px;
-		background: url(icons/loading-bubbles.gif) no-repeat;
-		background-position: center center;
-	}
-
-	.loading-bar.focused {
-		opacity: 1;
+	.PasswordServiceNavTitle {
+		display: block;
+		font-size: 1em;
+		margin-top: 0.5em;
+		white-space: pre-line;
 	}
 }
 

@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title></title>
+		<title>Password Settings</title>
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
 		<link rel="stylesheet" href="css/bootstrap.css"/>
@@ -16,17 +16,20 @@
 		<div id="wrapper">
 			<div id="site-header">
 				<div id="header-top">
-					<div id="header-left">
-					</div>
+					<a id="header-left" href="/ucs-overview">
+					</a>
+					<a id="header-middle" href="/ucs-overview"></a>
 					<div id="header-right">
 						<div class="dropdown" id="dropDownButton"></div>
 					</div>
 				</div>
 			</div>
 			<div class="container">
-				<div id="title" class="dijitHidden">
+				<div id="title">
+					Password Settings
 				</div>
-				<div id="content">
+				<div id="navigation"></div>
+				<div id="content" class="tab-content">
 					<noscript>
 						<div>
 							<h1 class="no-js">Welcome to Univention Corporate Server</h1>
@@ -39,7 +42,9 @@
 						</div>
 					</noscript>
 				</div>
+				<div id="server_msg"></div>
 			</div>
+			<div class="footer dijitHidden" id="footer"></div>
 		</div>
 	</body>
 </html>

@@ -36,16 +36,22 @@ define([
 	"dojo/io-query",
 	"dojox/html/entities",
 	"put-selector/put",
+	"dojo/request",
 	"./i18n!."
-], function(lang, fx, dom, domGeom, ioQuery, htmlEntities, put, _) {
+], function(lang, fx, dom, domGeom, ioQuery, htmlEntities, put, request, _) {
 
 	return {
 		getCurrentLanguageQuery: function() {
 			return '?lang=' + (this.getQuery('lang') || 'en-US');
 		},
 
+		/**
+		 * Displays given message.
+		 * @param {object} msg - Provides targetNode, class and content
+		 * for the message.
+		 */
 		showMessage: function(msg) {
-			var targetNode = msg.targetNode || dom.byId("content");
+			var targetNode = msg.targetNode || dom.byId("server_msg");
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
@@ -64,7 +70,7 @@ define([
 		},
 
 		showLastMessage: function(msg) {
-			var targetNode = msg.targetNode || dom.byId("title");
+			var targetNode = msg.targetNode || dom.byId("server_msg");
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
@@ -107,20 +113,32 @@ define([
 			return message;
 		},
 
+		/**
+		 * Returns relative url from query string.
+		 */
 		_getUrlForRedirect: function() {
 			var queryUrl = this.getQuery('url');
 			if (queryUrl) {
-				// checking if queryUrl is relative = has to start wit only one '/'
-				var reg = /^\/([^\/]|$)/;
-				var isUrlRelative = reg.test(queryUrl);
-				if (isUrlRelative) {
+				if (this._isUrlRelative(queryUrl)) {
 					return queryUrl;
 				} else {
-					// forbidden to provide absolute urls
-					console.error(lang.replace(_('Forbidden redirect to: {0}\n The url has to start with (only) one "/".', [queryUrl])));
+					var msg = {
+						content: lang.replace(_('Forbidden redirect to: {0}\n The url has to start with (only) one "/".', [queryUrl])),
+						'class': 'error'
+					};
+					this.showMessage(msg);
 				}
 			}
 			return;
+		},
+
+		/** Returns boolean if given url is relative.
+		 * @param {string} url - url to test
+		 * */
+		_isUrlRelative: function(url) {
+				var reg = /^\/([^\/]|$)/;
+				var isUrlRelative = reg.test(url);
+				return isUrlRelative;
 		},
 
 		_getUrlLabelForRedirect: function() {
@@ -133,6 +151,9 @@ define([
 			}
 		},
 
+		/**
+		 * Returns the value of the query string for a given key.
+		 * */
 		getQuery: function(key) {
 			var queryString = window.location.search.substring(1);
 			var queryObject = ioQuery.queryToObject(queryString);
@@ -143,6 +164,24 @@ define([
 			var msgNode = dom.byId('msg');
 			if (msgNode) {
 				put(msgNode, "!");
+			}
+		},
+
+		/**
+		 * Returns the needed backend information for the Password Service
+		 * as a promise or as an object.
+		 * The information is requested once and will be cached in
+		 * this._backend_info.
+		 * */
+		getBackendInformation: function() {
+			if (!this._backend_info) {
+				var promise = request.get("/univention-self-service/entries.json");
+				promise.then(lang.hitch(this, function(data){
+					this._backend_info = data;
+				}));
+				return promise;
+			} else {
+				return this._backend_info;
 			}
 		},
 

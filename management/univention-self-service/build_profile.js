@@ -52,17 +52,28 @@ var profile = {
 	}, {
 		name: 'put-selector',
 		location: '/usr/share/univention-dojo/put-selector'
+	}, {
+		name: 'dgrid',
+		location: '/usr/share/univention-dojo/dgrid'
+	}, {
+		name: 'dstore',
+		location: '/usr/share/univention-dojo/dstore'
+	}, {
+		name: 'xstyle',
+		location: '/usr/share/univention-dojo/xstyle'
 	},
-		'ucs'
+		'ucs',
+		'umc'
 	],
 
 	layers: {
 		"dojo/dojo": {
-			customBase: true,
-			include: [
-				"ucs/passwordchange",
-				"ucs/passwordreset"
-			]
+			customBase: true //,
+			//include: [
+			//	"ucs/PasswordChange",
+			//	"ucs/PasswordForgotten",
+			//	"ucs/ProtectAccountAccess"
+			//]
 		}
 	}
 };

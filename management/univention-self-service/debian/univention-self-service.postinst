@@ -52,27 +52,26 @@ touch $ACCESS_LOG $ERROR_LOG
 chown self-service:adm $ACCESS_LOG $ERROR_LOG
 chmod 640 $ACCESS_LOG $ERROR_LOG
 
-univention-config-registry set \
-	self-service/passwordreset/web/enabled?yes \
-	"ucs/web/overview/entries/service/passwordreset/description=Reset your password or provide contact information" \
-	"ucs/web/overview/entries/service/passwordreset/description/de=Setzen Sie Ihr Passwort zurück oder hinterlegen Sie Kontaktinformationen." \
-	"ucs/web/overview/entries/service/passwordreset/label=Password Reset" \
-	"ucs/web/overview/entries/service/passwordreset/label/de=Passwort zurücksetzen" \
-	"ucs/web/overview/entries/service/passwordreset/link=/univention-self-service/?lang=en-US#passwordreset" \
-	"ucs/web/overview/entries/service/passwordreset/link/de=/univention-self-service/?lang=de-DE#passwordreset" \
-	"ucs/web/overview/entries/service/passwordreset/port_http=" \
-	"ucs/web/overview/entries/service/passwordreset/port_https=443"
+# UCR Variable für Passwort Service
+# default: Passwort Service aktiviert
+univention-config-registry set self-service/passwordchange/web/enabled?yes
 
-univention-config-registry set \
-	self-service/passwordchange/web/enabled?yes \
-	"ucs/web/overview/entries/service/passwordchange/description=Change your (expired) password." \
-	"ucs/web/overview/entries/service/passwordchange/description/de=Ändern Sie Ihr (abgelaufenes) Passwort." \
-	"ucs/web/overview/entries/service/passwordchange/label=Change Password" \
-	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort ändern" \
-	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/?lang=en-US#passwordchange" \
-	"ucs/web/overview/entries/service/passwordchange/link/de=/univention-self-service/?lang=de-DE#passwordchange" \
+# UCR Variablen für Unterseiten des Passwort Services
+univention-config-registry set "umc/self-service/passwordservice/subpage/password_change=yes" \
+	"umc/self-service/passwordservice/subpage/password_forgotten=yes" \
+	"umc/self-service/passwordservice/subpage/protect_account_access=yes"
+
+# Link für Passwort Service
+# Informationen für den Link zum Passwort Service
+univention-config-registry set "ucs/web/overview/entries/service/passwordchange/label=Password settings" \
+	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort-Einstellungen" \
+	"ucs/web/overview/entries/service/passwordchange/description=Password change and protection." \
+	"ucs/web/overview/entries/service/passwordchange/description/de=Passwort ändern und Kontozugang schützen." \
+	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/?lang=en-US" \
+	"ucs/web/overview/entries/service/passwordchange/link/de=/univention-self-service/?lang=de-DE" \
 	"ucs/web/overview/entries/service/passwordchange/port_http=" \
-	"ucs/web/overview/entries/service/passwordchange/port_https=443"
+	"ucs/web/overview/entries/service/passwordchange/port_https=443" \
+	"ucs/web/overview/entries/service/passwordchange/icon=/icon/password.png"
 
 
 if [ "$1" = "configure" ]; then

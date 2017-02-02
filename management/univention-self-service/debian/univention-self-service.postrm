@@ -38,18 +38,9 @@ case "$1" in
 	;;
 esac
 
+# UCR Variablen bei Deinstallation löschen
 if [ "$1" = "remove" -o "$1" = "purge" ]; then
-	univention-config-registry unset \
-		ucs/web/overview/entries/service/passwordreset/description \
-		ucs/web/overview/entries/service/passwordreset/description/de \
-		ucs/web/overview/entries/service/passwordreset/icon \
-		ucs/web/overview/entries/service/passwordreset/label \
-		ucs/web/overview/entries/service/passwordreset/label/de \
-		ucs/web/overview/entries/service/passwordreset/link \
-		ucs/web/overview/entries/service/passwordreset/link/de \
-		ucs/web/overview/entries/service/passwordreset/port_http \
-		ucs/web/overview/entries/service/passwordreset/port_https
-
+	# Informationen für den Link zum Passwort Service löschen
 	univention-config-registry unset \
 		ucs/web/overview/entries/service/passwordchange/description \
 		ucs/web/overview/entries/service/passwordchange/description/de \
@@ -59,7 +50,14 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
 		ucs/web/overview/entries/service/passwordchange/link \
 		ucs/web/overview/entries/service/passwordchange/link/de \
 		ucs/web/overview/entries/service/passwordchange/port_http \
-		ucs/web/overview/entries/service/passwordchange/port_https
+		ucs/web/overview/entries/service/passwordchange/port_https \
+		ucs/web/overview/entries/service/passwordchange/icon
+
+	# UCR Variablen für die Unterseiten des Passwort Services löschen
+	univention-config-registry unset \
+		umc/self-service/passwordservice/subpage/password_change \
+		umc/self-service/passwordservice/subpage/password_forgotten \
+		umc/self-service/passwordservice/subpage/protect_account_access
 
 	# restart, so apache unloads WSGI and deactivats plugin in its config
 	# retry if fail because of to quick successive restarts (from other frontend packages)
