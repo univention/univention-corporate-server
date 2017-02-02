@@ -19,6 +19,7 @@
 	margin: 5px 0;
 	position: relative;
 	vertical-align: top;
+	box-shadow: none;
 
 	.dijitButtonNode {
 		margin: auto;
@@ -26,8 +27,8 @@
 		border: 0 none;
 		background: none;
 		filter: none;
-		box-shadow: none;
 		display: block;
+		height: auto;
 
 		.dijitButtonContents {
 			.umcCategoryButtonCircleWrapper {
@@ -41,9 +42,8 @@
 					width: 70px;
 					border-radius: 50%;
 					display: inline-block;
-					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-					box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.12), 0 1.5px 4px rgba(0, 0, 0, 0.24);
-					transition: box-shadow 0.25s;
+					material-shadow-common()
+					material-shadow(1)
 				}
 			}
 		}
@@ -70,7 +70,7 @@
 	&.dijitButtonHover,
 	&.dijitButtonFocused {
 		.dijitButtonNode .dijitButtonContents .umcCategoryButtonCircleWrapper .circle{
-			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 30px rgba(0, 0, 0, 0.19);
+			material-shadow(2)
 		}
 	}
 
@@ -82,7 +82,7 @@
 					transform: scale(1, 1);
 
 					.circle {
-						box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 30px rgba(0, 0, 0, 0.19);
+						material-shadow(3)
 					}
 
 					.dijitIcon {

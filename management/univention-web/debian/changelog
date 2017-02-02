@@ -1,3 +1,9 @@
+univention-web (1.0.8-6) unstable; urgency=medium
+
+  * Bug #42261: fix shadow for UMC overview
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 17:30:16 +0100
+
 univention-web (1.0.8-5) unstable; urgency=medium
 
   Bug #42261:

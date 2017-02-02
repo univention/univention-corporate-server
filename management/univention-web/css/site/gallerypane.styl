@@ -52,10 +52,10 @@
 		outline: none;
 		padding: 8px;
 		background-color: #fff;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
-		transition-duration: 0.25s;
-		transition-property: background-color, opacity, border, box-shadow;
 		box-sizing: content-box;
+		material-shadow-common()
+		material-shadow(1)
+		border-radius: 2px
 
 		// definitions in px instead of em due to size of image in px
 		height: 90px;
@@ -151,7 +151,6 @@
 	}
 }
 body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover {
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19)
 	cursor: pointer;
 	.umcGalleryCategoryFavorite {
 		background-color: #ffffff!important;
@@ -174,6 +173,9 @@ body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover {
 		opacity: 0.67;
 	}
 }
+
+.umcGalleryPane .umcGalleryItem:active
+	material-shadow(2)
 
 // no left/right padding for full size item
 @media (max-width: $xxs-max) {
