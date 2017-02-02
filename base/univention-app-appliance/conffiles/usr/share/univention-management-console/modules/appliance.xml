@@ -44,7 +44,7 @@ link_web_interface = '''
 
 link_overview = '''
 	<link id="appliance_overview" priority="50" version="1.0" translationId="appliance">
-		<url>/ucs-overview</url>
+		<url>/univention/</url>
 		<name>UCS Overview</name>
 		<description>Link to the UCS Overview</description>
 		<categories>
