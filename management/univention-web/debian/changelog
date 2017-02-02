@@ -1,3 +1,9 @@
+univention-web (1.0.11-1) unstable; urgency=medium
+
+  * Bug #42261: adjust font stylings and gallery of overview site
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Feb 2017 22:14:25 +0100
+
 univention-web (1.0.10-1) unstable; urgency=medium
 
   * Bug #42228: migrate essential ucs-overview things into this package

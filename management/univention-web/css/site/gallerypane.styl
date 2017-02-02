@@ -24,7 +24,7 @@
 .umcGalleryCategoryHeader {
 	padding: 0 0 0.25em 0;
 	margin: 1em 5px 0.5em 5px;
-	font-size: $font-size-medium;
+	font-size: $font-size-title;
 	font-weight: bold;
 	border-bottom: solid 1px $base-border-color;
 	// on the android tablet the border would only be displayed at width ~300px
@@ -50,7 +50,7 @@
 	.umcGalleryItem {
 		position: relative;
 		outline: none;
-		padding: 8px;
+		padding: 16px;
 		background-color: #fff;
 		box-sizing: content-box;
 		material-shadow-common()
@@ -58,15 +58,13 @@
 		border-radius: 2px
 
 		// definitions in px instead of em due to size of image in px
-		height: 90px;
+		height: 80px;
 		overflow: hidden;
 
 		.umcGalleryName {
-			font-size: $font-size-medium;
+			font-size: $font-size-subheading;
 			color: $text-color-lighter;
-			font-weight: bold;
-			line-height: 1.05em;
-			min-height: 55%;
+			font-weight: 500;
 			transition-duration: inherit;
 			transition-property: color, border;
 			word-break: break-word;
@@ -75,15 +73,14 @@
 
 		.umcGalleryDescription {
 			color: $text-color-lightest;
-			line-height: 1.05em;
-			min-height: 45%;
 			padding-top: 5px;
+			min-height: 70px;
 			transition-duration: inherit;
 			transition-property: color;
 		}
 
 		.umcGalleryIcon {
-			height: 90px;
+			height: 78px;
 			width: 80px;
 			float: left;
 			background-position: center center;

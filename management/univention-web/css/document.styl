@@ -10,14 +10,17 @@
 
 .umc {
   font-family: 'Roboto', sans-serif;
-  //font-size: .75em;
-  font-size: 12px;
+  font-size: 14px;
   color: $document-text-color;
 }
 
 html
 	height: 100%
 	background-color: $document-background-color
+
+body.umc,
+.umc p
+	line-height: 1.4em;
 
 .umc td,
 .umc th {
@@ -32,13 +35,6 @@ html
 }
 .umc a:hover {
 	color: $text-color;
-}
-
-.umc p {
-	line-height: 1.2em;
-}
-.umc hr {
-	border-top: 2px solid $border-color;
 }
 
 body.umc .umcBackground,
@@ -87,13 +83,12 @@ body.umc.umcHeadless {
 
 /* Headings */
 .umc h1 {
-	font-size: $font-size-medium;
+	font-size: $font-size-title;
 	font-weight: bold
 	margin-bottom:0.727em;
 }
 .umc h2 { 
-	font-size: $font-size-medium;
-	//line-height: 1.455em; 
+	font-size: $font-size-title;
 	margin-top:1em; 
 	margin-bottom:0.60em;
 	font-weight: normal;
@@ -104,13 +99,12 @@ body.umc.umcHeadless {
 }
 
 /* paragraphs, quotes and lists */
-body.umc,
-.umc p { 
-	line-height: 1.3em;
-}
-.umc p { 
+
+.umc hr
+	border-top: 2px solid $border-color;
+
+.umc p
 	margin-bottom: 0.7em;
-}
 
 /* pre and code */
 .umc pre, .umc code { 
