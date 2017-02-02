@@ -44,7 +44,7 @@ univention-config-registry unset \
 
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.0.0-1'; then
 	mkdir -p /etc/univention/templates/removed/
-	files="ucs-overview/en.html.d/90univention-doc-en.html ucs-overview/de.html.d/90univention-doc-de.html univention-doc/index.html"
+	files="univention/en.html.d/90univention-doc-en.html univention/de.html.d/90univention-doc-de.html univention-doc/index.html"
 	for file in $files; do
 		if [ -e "/etc/univention/templates/files/var/www/$file" ]; then
 			mv "/etc/univention/templates/files/var/www/$file" /etc/univention/templates/removed/

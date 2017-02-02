@@ -1,3 +1,9 @@
+univention-doc (4.0.0-2) unstable; urgency=medium
+
+  * Bug #42228: ucs-overview → univention
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 21:19:18 +0100
+
 univention-doc (4.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
