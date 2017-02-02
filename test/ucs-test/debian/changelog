@@ -1,3 +1,9 @@
+ucs-test (7.0.10-20) unstable; urgency=medium
+
+  * Bug #43348: remove executable flags FTBFS
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 09:48:03 +0100
+
 ucs-test (7.0.10-19) unstable; urgency=medium
 
   * Bug #43348: add missing executable flags
@@ -47,7 +53,7 @@ ucs-test (7.0.10-12) unstable; urgency=medium
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
 
-ucs-test (7.0.10-11) UNRELEASED; urgency=medium
+ucs-test (7.0.10-11) unstable; urgency=medium
 
   * Rename tests/60_umc/100_umc_frontend_i18n.py to
     tests/60_umc/100_umc_frontend_i18n:
