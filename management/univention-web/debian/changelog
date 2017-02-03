@@ -1,6 +1,12 @@
+univention-web (1.0.13-1) unstable; urgency=medium
+
+  * Bug #42228: redirect /univention/
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2017 17:20:01 +0100
+
 univention-web (1.0.12-4) unstable; urgency=medium
 
-  * #42174: re-fix error accessing umc/auth
+  * Bug #42174: re-fix error accessing umc/auth
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Feb 2017 14:33:59 +0100
 

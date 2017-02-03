@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+a2enconf univention-web
+
 ucr set "ucs/server/languages/en_US?English" \
 	"ucs/server/languages/de_DE?Deutsch" \
 	"ucs/server/languages/en_GB?English (United Kingdom)" \
