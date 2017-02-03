@@ -541,7 +541,7 @@ define([
 				displayErrors: true,
 
 				401: function() {
-					auth.call(auth, arguments);
+					auth.handleAuthenticationError.call(auth, arguments);
 				},
 
 				display422: function(info) {

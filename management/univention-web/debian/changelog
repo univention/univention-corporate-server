@@ -1,3 +1,9 @@
+univention-web (1.0.12-4) unstable; urgency=medium
+
+  * #42174: re-fix error accessing umc/auth
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Feb 2017 14:33:59 +0100
+
 univention-web (1.0.12-3) unstable; urgency=medium
 
   * Bug #42174: fix error in setup wizard when accessing umc/auth
