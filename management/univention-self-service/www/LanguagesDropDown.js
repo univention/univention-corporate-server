@@ -32,11 +32,11 @@ define([
 	"dojo/_base/array",
 	"dojo/dom",
 	"dojo/dom-construct",
-	"dojo/io-query", 
+	"dojo/io-query",
 	"dijit/MenuItem",
 	"dijit/DropDownMenu",
 	"dijit/form/DropDownButton",
-	"./text!/univention-self-service/languages.json",
+	"./text!/univention/languages.json",
 	"./i18n!."
 ], function(array, dom, domConstruct, ioQuery, MenuItem, DropDownMenu, DropDownButton, _availableLocales, _) {
 

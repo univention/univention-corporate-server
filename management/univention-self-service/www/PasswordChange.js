@@ -41,7 +41,7 @@ define([
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
-	"./i18n!."
+	"umc/i18n!."
 ], function(lang, on, keys, dom, json, xhr, Button, put, tools, TextBox, PasswordBox, lib, _) {
 
 	return {

@@ -37,7 +37,7 @@ define([
 	"dojox/html/entities",
 	"put-selector/put",
 	"dojo/request",
-	"./i18n!."
+	"umc/i18n!."
 ], function(lang, fx, dom, domGeom, ioQuery, htmlEntities, put, request, _) {
 
 	return {

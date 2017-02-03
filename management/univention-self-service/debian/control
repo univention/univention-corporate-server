@@ -9,10 +9,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-polib,
  univention-config-dev,
  univention-management-console-dev,
- univention-dojo-dev,
- unzip,
- sed,
- stylus
 Standards-Version: 3.7.2
 XS-Python-Version: 2.7
 
@@ -22,7 +18,6 @@ Depends: ${misc:Depends},
  univention-config,
  univention-join,
  shell-univention-lib,
- python-cherrypy3,
  univention-management-console-module-passwordchange
 Description: Univention Self Service
  This package contains the password self service module that

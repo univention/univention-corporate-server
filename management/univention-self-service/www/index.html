@@ -46,11 +46,11 @@
 			}
 			var dojoConfig = {
 				isDebug: false,
-				locale: getLocale(),
+				locale: locale,
 				async: true,
 				callback: function() {
 					require([
-						"./PasswordService",
+						"./PasswordService.js",
 						"dojo/domReady!"
 					], function(PasswordService) {
 						PasswordService.start();

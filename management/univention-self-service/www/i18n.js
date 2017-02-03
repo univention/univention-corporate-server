@@ -35,7 +35,7 @@ define("ucs/i18n", [
 	"dojo/request",
 	"dojo/json",
 	"dojo/Deferred",
-	"./text!/univention-self-service/languages.json"
+	"./text!/univention/languages.json"
 ], function(lang, array, kernel, request, json, Deferred, _availableLocales) {
 
 	// make sure that en-US exists

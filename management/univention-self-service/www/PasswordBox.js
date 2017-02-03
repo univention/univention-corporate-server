@@ -38,7 +38,7 @@ define([
 	"./_FormWidgetMixin",
 	"./LabelPane",
 	"./lib",
-	"./i18n!."
+	"umc/i18n!."
 ], function(declare, lang, array, when, json, ValidationTextBox, _FormWidgetMixin, LabelPane, lib, _) {
 	return declare('umc.widgets.PasswordBox', [ ValidationTextBox, _FormWidgetMixin ], {
 		label: null,
