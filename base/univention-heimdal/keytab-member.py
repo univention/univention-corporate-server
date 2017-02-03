@@ -34,8 +34,10 @@ import listener
 import os
 import pwd
 import univention.debug
-import univention.config_registry
 from subprocess import call
+
+server_role = listener.configRegistry['server/role']
+
 
 name = 'keytab-member'
 description = 'Kerberos 5 keytab maintainance for memberserver'
@@ -51,10 +53,6 @@ def clean():
 def handler(dn, new, old):
 	global keytab
 
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
-	server_role = configRegistry['server/role']
 	if server_role == 'domaincontroller_master':
 
 		if not new.get('krb5Key'):

@@ -34,28 +34,25 @@ import listener
 import os
 import time
 import univention.debug
-import univention.config_registry
 from subprocess import call
 
-hostname = listener.baseConfig['hostname']
-domainname = listener.baseConfig['domainname']
-realm = listener.baseConfig['kerberos/realm']
-server_role = listener.baseConfig['server/role']
-ldap_master = listener.baseConfig['ldap/master']
+hostname = listener.configRegistry['hostname']
+domainname = listener.configRegistry['domainname']
+realm = listener.configRegistry['kerberos/realm']
+server_role = listener.configRegistry['server/role']
+ldap_master = listener.configRegistry['ldap/master']
+samba4_role = listener.configRegistry.get('samba4/role', '')
 
 
 name = 'keytab'
 description = 'Kerberos 5 keytab maintainance'
-filter = '(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm)
+filter = '(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.configRegistry['ldap/base'].replace('dc=', '').replace(',', '.'), realm, hostname, listener.configRegistry['ldap/base'].replace('dc=', '').replace(',', '.'), realm)
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
 
 
 def clean():
 	# don't do anything here if this system is joined as a Samba 4 DC
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	samba4_role = ucr.get('samba4/role', '')
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
@@ -69,9 +66,6 @@ def clean():
 
 def handler(dn, new, old):
 	# don't do anything here if this system is joined as a Samba 4 DC
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	samba4_role = ucr.get('samba4/role', '')
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
