@@ -1,3 +1,9 @@
+univention-heimdal (10.0.0-3) unstable; urgency=low
+
+  * Bug #43492: Find heiumdal tools using $PATH
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 14:33:45 +0100
+
 univention-heimdal (10.0.0-2) unstable; urgency=low
 
   * Bug #34258: Add missing Conflicts between packages
