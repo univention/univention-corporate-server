@@ -497,6 +497,9 @@
 				<listitem><simpara>
 					The missing package conflicts between <package>univention-heimdal-kdc</package> and <package>univention-heimdal-member</package> were added (<u:bug>34258</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Listener scripts for creating Kerberos keys were fixed to no drop root permissions (<u:bug>43409</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

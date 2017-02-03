@@ -48,7 +48,6 @@ description = 'Kerberos 5 keytab maintainance'
 filter = '(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm)
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
-listener.setuid(0)
 
 
 def clean():
@@ -80,22 +79,23 @@ def handler(dn, new, old):
 
 	if server_role == 'memberserver':
 		listener.setuid(0)
-		if os.path.exists('/etc/krb5.keytab'):
-			os.remove('/etc/krb5.keytab')
-		count = 0
-		while not os.path.exists('/etc/krb5.keytab'):
-			os.spawnv(os.P_WAIT, '/usr/sbin/univention-scp', ['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
-			if not os.path.exists('/etc/krb5.keytab'):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'W: failed to download keytab for memberserver, retry')
-				if count > 30:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'E: failed to download keytab for memberserver')
-					listener.unsetuid()
-					return -1
-				count = count + 1
-				time.sleep(2)
-		os.chown('/etc/krb5.keytab', 0, 0)
-		os.chmod('/etc/krb5.keytab', 0o600)
-		listener.unsetuid()
+		try:
+			if os.path.exists('/etc/krb5.keytab'):
+				os.remove('/etc/krb5.keytab')
+			count = 0
+			while not os.path.exists('/etc/krb5.keytab'):
+				os.spawnv(os.P_WAIT, '/usr/sbin/univention-scp', ['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
+				if not os.path.exists('/etc/krb5.keytab'):
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'W: failed to download keytab for memberserver, retry')
+					if count > 30:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'E: failed to download keytab for memberserver')
+						return -1
+					count = count + 1
+					time.sleep(2)
+			os.chown('/etc/krb5.keytab', 0, 0)
+			os.chmod('/etc/krb5.keytab', 0o600)
+		finally:
+			listener.unsetuid()
 	else:
 		listener.setuid(0)
 		try:
@@ -103,7 +103,6 @@ def handler(dn, new, old):
 				os.spawnv(os.P_WAIT, '/usr/sbin/ktutil', ['ktutil', 'remove', '-p', old['krb5PrincipalName'][0]])
 			if new:
 				os.spawnv(os.P_WAIT, '/usr/sbin/kadmin', ['kadmin', '-l', 'ext', new['krb5PrincipalName'][0]])
-
 		finally:
 			listener.unsetuid()
 
