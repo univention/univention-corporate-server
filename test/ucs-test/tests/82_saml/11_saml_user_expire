@@ -10,7 +10,7 @@
 ## tags:
 ##  - skip_admember
 
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
@@ -19,9 +19,14 @@ import samltest
 
 
 def main():
-	yesterday = date.today() - timedelta(days=1)
+	test_expired_account()
+	test_unexpired_account()
+
+
+def test_expired_account():
+	yesterday = datetime.utcnow() - timedelta(days=1)
 	with udm_test.UCSTestUDM() as udm:
-		testcase_user_name = udm.create_user(userexpiry=yesterday.isoformat())[1]
+		testcase_user_name = udm.create_user(userexpiry=yesterday.isoformat()[:10])[1]
 		SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
 
 		try:
@@ -34,6 +39,15 @@ def main():
 				error_message = "Expected message: %s\nReceived message: %s" % (expected_error, exc.message)
 				utils.fail(error_message)
 		utils.fail("Could login with expired account")
+
+
+def test_unexpired_account():
+	tomorrow = datetime.utcnow() + timedelta(days=1)
+	with udm_test.UCSTestUDM() as udm:
+		testcase_user_name = udm.create_user(userexpiry=tomorrow.isoformat()[:10])[1]
+		SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
 
 
 if __name__ == '__main__':

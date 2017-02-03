@@ -1,3 +1,9 @@
+ucs-test (7.0.11-2) unstable; urgency=medium
+
+  * Bug #43384: Fixed timezone in saml test 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 03 Feb 2017 16:28:46 +0100
+
 ucs-test (7.0.11-1) unstable; urgency=medium
 
   * Bug #42228: ucs-overview → univention

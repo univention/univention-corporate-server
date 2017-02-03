@@ -3,6 +3,7 @@ import re
 import requests
 import subprocess
 import socket
+import json
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
@@ -140,6 +141,9 @@ class SamlTest(object):
 		print("Test login @ %s" % url)
 		self.position = "testing login"
 		self._request('GET', url, 200)
+		auth_type = json.loads(self.page.text)['result']['auth_type']
+		if auth_type != 'SAML':
+			utils.fail("SAML wasn't used for login?")
 		print("Login success")
 
 	def test_logout(self):
