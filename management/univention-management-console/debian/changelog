@@ -1,3 +1,9 @@
+univention-management-console (9.0.22-5) unstable; urgency=medium
+
+  * Bug #42261: fix traceback accessing this._header._moreTabsDropDownButton
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Feb 2017 14:47:50 +0100
+
 univention-management-console (9.0.22-4) unstable; urgency=medium
 
   * Bug #42267: add reusable config.js to not copy and paste this everywhere

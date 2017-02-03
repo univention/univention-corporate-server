@@ -2259,10 +2259,13 @@ define([
 			}
 			module_flavor_css = module_flavor_css.replace(/[^_a-zA-Z0-9\-]/g, '-');
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
-			var menuTab = this._header._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
-				return menuItem.correspondingModuleID == tab.id;
-			});
-			domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
+			var moreTabsDropDown = lang.getObject('_header._moreTabsDropDownButton.dropDown', false, this);
+			if (moreTabsDropDown) {
+				var menuTab = moreTabsDropDown.getChildren().find(function(menuItem) {
+					return menuItem.correspondingModuleID == tab.id;
+				});
+				domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
+			}
 
 			if (this._insertedTabStyles.includes(module_flavor_css)) {
 				// do not insert the same styles more than once
