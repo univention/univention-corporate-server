@@ -572,6 +572,9 @@
 				<listitem><simpara>
 					Error handling has been improved (<u:bug>38634</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The start script for <command>libvirtd</command> has been updates to be compatible with <package>systemd</package> (<u:bug>43493</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

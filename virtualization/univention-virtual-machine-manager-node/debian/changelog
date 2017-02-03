@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (5.0.0-3) unstable; urgency=low
+
+  * Bug #43493: libvirtd.service:type=notify is incompatible with daemonize
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 17:17:05 +0100
+
 univention-virtual-machine-manager-node (5.0.0-2) unstable; urgency=low
 
   * Bug #42622: New UCRV libvirt/group for unix_socket_group
