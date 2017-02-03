@@ -33,7 +33,7 @@ __package__ = ''  # workaround for PEP 366
 import listener
 import os
 import pwd
-import univention.debug
+import univention.debug as ud
 from subprocess import call
 
 server_role = listener.configRegistry['server/role']
@@ -69,6 +69,7 @@ def handler(dn, new, old):
 		try:
 			if old:
 				cn = old['cn'][0]
+				ud.debug(ud.LISTENER, ud.PROCESS, 'Purging k5tab of %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				try:
 					os.unlink(ktab)
@@ -76,6 +77,7 @@ def handler(dn, new, old):
 					pass
 			if new:
 				cn = new['cn'][0]
+				ud.debug(ud.LISTENER, ud.PROCESS, 'Generating k5tab for %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				# FIXME: otherwise the keytab entry is duplicated
 				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0]])

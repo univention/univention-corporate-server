@@ -33,7 +33,7 @@ __package__ = ''  # workaround for PEP 366
 import listener
 import os
 import time
-import univention.debug
+import univention.debug as ud
 from subprocess import call
 
 hostname = listener.configRegistry['hostname']
@@ -89,6 +89,7 @@ def handler(dn, new, old):
 		return
 
 	if server_role == 'memberserver':
+		ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master))
 		listener.setuid(0)
 		try:
 			if os.path.exists(K5TAB):
@@ -97,10 +98,10 @@ def handler(dn, new, old):
 			while not os.path.exists(K5TAB):
 				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
 				if not os.path.exists(K5TAB):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'W: failed to download keytab for memberserver, retry')
 					if count > 30:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'E: failed to download keytab for memberserver')
+						ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for memberserver')
 						return -1
+					ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for memberserver, retry')
 					count = count + 1
 					time.sleep(2)
 			os.chown(K5TAB, 0, 0)
@@ -108,6 +109,7 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 	else:
+		ud.debug(ud.LISTENER, ud.PROCESS, 'Exporting %s on %s' % (K5TAB, server_role))
 		listener.setuid(0)
 		try:
 			if old:
@@ -119,4 +121,4 @@ def handler(dn, new, old):
 
 
 def initialize():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init keytab')
+	ud.debug(ud.LISTENER, ud.INFO, 'init keytab')
