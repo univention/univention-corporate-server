@@ -245,19 +245,18 @@ class App(object):
 	def install_via_umc(self):
 		def _thread(event, options):
 			try:
-				connection.request("appcenter/keep_alive")
+				client.umc_command("appcenter/keep_alive")
 			finally:
 				event.set()
 		print 'App.umc_install()'
-		connection = umc.UMCTestConnection()
-		connection.auth(connection.username, connection.password)
-		status = connection.get_custom_connection('session-info', command='get')
+		client = umc.Client.get_test_connection()
+		client.umc_get('session-info')
 		options = dict(
 			function='install',
 			application=self.app_name,
 			app=self.app_name,
 			force=True)
-		resp = connection.request('appcenter/docker/invoke', options)
+		resp = client.umc_command('appcenter/docker/invoke', options).result
 		progress_id = resp.get('id')
 		if not resp:
 			raise UCTTest_DockerApp_UMCInstallFailed(resp)
@@ -268,9 +267,8 @@ class App(object):
 		threading.Thread(target=_thread, args=(event, options)).start()
 		while not (event.wait(3) and finished):
 			options = dict(progress_id=progress_id)
-			c = super(umc.UMCConnection, connection)
-			progress = c.request('appcenter/docker/progress', options)
-			info = progress.get('info', None)
+			progress = client.umc_comamand('appcenter/docker/progress', options, print_request_data=False, print_response=False).result
+			progress.get('info', None)
 			for i in progress.get('intermediate', []):
 				if i['level'] in ['WARNING', 'ERROR', 'CRITICAL']:
 					errors.append(i)
