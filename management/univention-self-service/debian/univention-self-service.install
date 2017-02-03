@@ -3,4 +3,4 @@
 univention-self-service usr/lib/univention-server/server_password_change.d/
 univention-self-service-modules usr/sbin/
 www/* var/www/univention/self-service
-icon/*.png var/www/icon
+icons/*.png var/www/univention/self-service/icons
