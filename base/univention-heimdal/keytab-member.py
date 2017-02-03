@@ -41,7 +41,14 @@ server_role = listener.configRegistry['server/role']
 
 name = 'keytab-member'
 description = 'Kerberos 5 keytab maintainance for memberserver'
-filter = '(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(objectClass=univentionMemberServer))'
+filter = (
+	'(&'
+	'(objectClass=krb5Principal)'
+	'(objectClass=krb5KDCEntry)'
+	'(krb5KeyVersionNumber=*)'
+	'(objectClass=univentionMemberServer)'
+	')'
+)
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
 
