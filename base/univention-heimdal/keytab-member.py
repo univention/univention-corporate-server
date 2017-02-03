@@ -52,11 +52,10 @@ filter = (
 
 
 def handler(dn, new, old):
+	if not new.get('krb5Key'):
+		return
+
 	if server_role == 'domaincontroller_master':
-
-		if not new.get('krb5Key'):
-			return
-
 		listener.setuid(0)
 		try:
 			if old:
@@ -79,6 +78,5 @@ def handler(dn, new, old):
 					os.chmod(ktab, 0o660)
 				except (KeyError, EnvironmentError):
 					pass
-
 		finally:
 			listener.unsetuid()

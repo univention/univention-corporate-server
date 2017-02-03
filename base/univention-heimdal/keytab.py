@@ -101,7 +101,7 @@ def handler(dn, new, old):
 						ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for memberserver')
 						return -1
 					ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for memberserver, retry')
-					count = count + 1
+					count += 1
 					time.sleep(2)
 			os.chown(K5TAB, 0, 0)
 			os.chmod(K5TAB, 0o600)
