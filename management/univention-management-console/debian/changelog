@@ -1,3 +1,9 @@
+univention-management-console (9.0.22-3) unstable; urgency=medium
+
+  * Bug #40907: fix rewrite rule for empty translation files
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2017 11:41:32 +0100
+
 univention-management-console (9.0.22-2) unstable; urgency=medium
 
   * Bug #42114: fix executing anonymous commands
