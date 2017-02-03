@@ -28,7 +28,7 @@
  */
 /*global define require console */
 
-define("ucs/i18n", [
+define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/kernel",

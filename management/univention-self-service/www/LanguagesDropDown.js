@@ -36,7 +36,7 @@ define([
 	"dijit/MenuItem",
 	"dijit/DropDownMenu",
 	"dijit/form/DropDownButton",
-	"./text!/univention/languages.json",
+	"selfservice/text!/univention/languages.json",
 	"./i18n!."
 ], function(array, dom, domConstruct, ioQuery, MenuItem, DropDownMenu, DropDownButton, _availableLocales, _) {
 

@@ -41,8 +41,7 @@ define([
 	"./PasswordChange",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
-	"./lib",
-	"dojo/domReady!"
+	"./lib"
 ], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, lib){
 
 	return {
