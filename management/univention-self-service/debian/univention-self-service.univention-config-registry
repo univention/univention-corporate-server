@@ -1,0 +1,9 @@
+Type: file
+File: usr/share/univention-self-service/www/languages.json
+Variables: locale
+Variables: ucs/server/languages/.*
+
+Type: file
+File: usr/share/univention-self-service/www/entries.json
+Variables: umc/self-service/passwordservice/subpage/.*
+Variables: password/quality/.*
