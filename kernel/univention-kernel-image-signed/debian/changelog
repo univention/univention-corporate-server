@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-1) unstable; urgency=medium
+
+  * Bug #42048: Update to ucs102
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 03 Feb 2017 12:09:43 +0100
+
 univention-kernel-image-signed (3.0.1-1) unstable; urgency=medium
 
   * Bug #42048: Update to 4.9.0-ucs101
