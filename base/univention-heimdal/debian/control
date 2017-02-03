@@ -24,6 +24,7 @@ Depends: ${misc:Depends},
  python-cracklib,
  univention-heimdal-common (= ${binary:Version}),
  python-univention-lib (>= 1.0.25-1)
+Conflicts: univention-heimdal-member
 Description: UCS - Kerberos KDC
  This package installs a Kerberos Key Distribution Center
  (KDC) using LDAP for the key storage.
@@ -43,6 +44,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools,
  univention-directory-listener,
  univention-heimdal-common (= ${binary:Version})
+Conflicts: univention-heimdal-kdc
 Description: UCS - Kerberos member server
  This package configures the computer as a Kerberos member
  server.
