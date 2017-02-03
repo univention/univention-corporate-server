@@ -1,3 +1,9 @@
+univention-saml (4.0.3-2) unstable; urgency=medium
+
+  * Bug #43384: Always check for expired password/user
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 03 Feb 2017 16:25:03 +0100
+
 univention-saml (4.0.3-1) unstable; urgency=medium
 
   * Bug #42228: ucs-overview → univention
@@ -6,13 +12,13 @@ univention-saml (4.0.3-1) unstable; urgency=medium
 
 univention-saml (4.0.2-4) unstable; urgency=medium
 
-  *Bug #43384: Catch more specific exception
+  * Bug #43384: Catch more specific exception
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 30 Jan 2017 14:50:28 +0100
 
 univention-saml (4.0.2-3) unstable; urgency=medium
 
-  *Bug #43384: Fix login failure checks 
+  * Bug #43384: Fix login failure checks 
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 30 Jan 2017 14:00:32 +0100
 

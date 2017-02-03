@@ -54,13 +54,17 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		assert('is_string($password)');
 
 		try {
-			return $this->ldapConfig->login($username, $password, $sasl_args);
+			$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
 		} catch (SimpleSAML_Error_Error $e) {
 			if ($e->getMessage() == 'WRONGUSERPASS') {
-				$this->throw_common_login_errors($username);
+				$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
+				$attributes = $this->ldap->getAttributes($user_dn);
+				$this->throw_common_login_errors($attributes);
 			}
 			throw $e;
 		}
+		$this->throw_common_login_errors($attributes);
+		return $attributes;
 
 	}
 
@@ -68,13 +72,9 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 	/**
 	 * Investigate login failure
 	 *
-	 * @param string $username  The username the user wrote.
+	 * @param array $attributes
 	 */
-	private function throw_common_login_errors($username) {
-		assert('is_string($username)');
-
-		$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
-		$attributes = $this->ldap->getAttributes($user_dn);
+	private function throw_common_login_errors($attributes) {
 		SimpleSAML_Logger::debug('got LDAP attributes:' . var_export($attributes, true));
 
 		$the_time = time();
@@ -85,7 +85,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 				SimpleSAML_Logger::debug('LDAP Account disabled');
 				throw new SimpleSAML_Error_Error('LDAP_ACCDISABLED');
 			}
-			else if ((int)$attributes['shadowExpire'][0] < (round($the_time / 86400))) {
+			else if ((int)$attributes['shadowExpire'][0] < (floor($the_time / 86400))) {
 				SimpleSAML_Logger::debug('LDAP Account expired');
 				throw new SimpleSAML_Error_Error('LDAP_ACCEXPIRED');
 			}
