@@ -63,7 +63,6 @@ filter = (
 	')'
 ) % locals()
 
-etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
 K5TAB = '/etc/krb5.keytab'
 
 

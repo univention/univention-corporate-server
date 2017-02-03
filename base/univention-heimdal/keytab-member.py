@@ -50,16 +50,8 @@ filter = (
 	')'
 )
 
-etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
-
-
-def clean():
-	pass
-
 
 def handler(dn, new, old):
-	global keytab
-
 	if server_role == 'domaincontroller_master':
 
 		if not new.get('krb5Key'):
