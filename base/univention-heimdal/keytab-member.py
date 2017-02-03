@@ -73,7 +73,7 @@ def handler(dn, new, old):
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				try:
 					os.unlink(ktab)
-				except:
+				except EnvironmentError:
 					pass
 			if new:
 				cn = new['cn'][0]
@@ -85,7 +85,7 @@ def handler(dn, new, old):
 					userID = pwd.getpwnam('%s$' % cn)[2]
 					os.chown(ktab, userID, 0)
 					os.chmod(ktab, 0o660)
-				except:
+				except (KeyError, EnvironmentError):
 					pass
 
 		finally:
