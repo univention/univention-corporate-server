@@ -175,7 +175,7 @@ define([
 		 * */
 		getBackendInformation: function() {
 			if (!this._backend_info) {
-				var promise = request.get("/univention-self-service/entries.json");
+				var promise = request.get("/univention/self-service/entries.json");
 				promise.then(lang.hitch(this, function(data){
 					this._backend_info = data;
 				}));

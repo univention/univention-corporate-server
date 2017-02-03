@@ -79,7 +79,7 @@ define([
 		 **/
 		_requestActiveSubpages: function() {
 			xhr.get({
-				url: "/univention-self-service/entries.json",
+				url: "/univention/self-service/entries.json",
 				load: lang.hitch(this, function(data) {
 					this.backend_info = JSON.parse(data, true);
 					this._addSubPages(this.backend_info.subpages || []);
