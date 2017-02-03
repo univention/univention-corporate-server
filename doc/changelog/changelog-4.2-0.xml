@@ -57,6 +57,9 @@
 				<listitem><simpara>
 					The robustness of the services module has been improved to better handle process changes (<u:bug>34234</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					An internal fallback implementation for <function>pipes.quote()</function> was added to fix an upgrade issue while <package>python</package> is not configured (<u:bug>43341</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
