@@ -1,3 +1,10 @@
+univention-kernel-image (10.0.0-4) unstable; urgency=medium
+
+  * Chang the dependency temporarily to the unsigned version
+    (Bug #42048)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Feb 2017 06:31:39 +0100
+
 univention-kernel-image (10.0.0-3) unstable; urgency=medium
 
   * Update to 4.9 ucs102 (Bug #42048)
