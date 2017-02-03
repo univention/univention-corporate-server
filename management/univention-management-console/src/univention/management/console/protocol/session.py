@@ -853,6 +853,7 @@ class SessionHandler(ProcessorBase):
 		self.authenticated = False
 		self.__credentials = None
 		self.__locale = None
+		self._reload_acls_and_permitted_commands()
 
 	def _reload_acls(self):
 		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
