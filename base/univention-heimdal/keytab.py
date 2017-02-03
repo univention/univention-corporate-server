@@ -35,6 +35,7 @@ import os
 import time
 import univention.debug
 import univention.config_registry
+from subprocess import call
 
 hostname = listener.baseConfig['hostname']
 domainname = listener.baseConfig['domainname']
@@ -84,7 +85,7 @@ def handler(dn, new, old):
 				os.remove('/etc/krb5.keytab')
 			count = 0
 			while not os.path.exists('/etc/krb5.keytab'):
-				os.spawnv(os.P_WAIT, '/usr/sbin/univention-scp', ['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
+				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
 				if not os.path.exists('/etc/krb5.keytab'):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'W: failed to download keytab for memberserver, retry')
 					if count > 30:
@@ -100,9 +101,9 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			if old:
-				os.spawnv(os.P_WAIT, '/usr/sbin/ktutil', ['ktutil', 'remove', '-p', old['krb5PrincipalName'][0]])
+				call(['ktutil', 'remove', '-p', old['krb5PrincipalName'][0]])
 			if new:
-				os.spawnv(os.P_WAIT, '/usr/sbin/kadmin', ['kadmin', '-l', 'ext', new['krb5PrincipalName'][0]])
+				call(['kadmin', '-l', 'ext', new['krb5PrincipalName'][0]])
 		finally:
 			listener.unsetuid()
 

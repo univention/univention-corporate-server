@@ -500,6 +500,9 @@
 				<listitem><simpara>
 					The Listener scripts for creating Kerberos keys were fixed to no drop root permissions (<u:bug>43409</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Listener scripts for creating Kerberos keys were updated to use the new location of <command>ktutil</command> and <command>kadmin</command> (<u:bug>43492</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

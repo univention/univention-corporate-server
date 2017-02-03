@@ -35,6 +35,7 @@ import os
 import pwd
 import univention.debug
 import univention.config_registry
+from subprocess import call
 
 name = 'keytab-member'
 description = 'Kerberos 5 keytab maintainance for memberserver'
@@ -68,7 +69,7 @@ def handler(dn, new, old):
 					pass
 			if new:
 				# FIXME: otherwise the keytab entry is duplicated
-				os.spawnv(os.P_WAIT, '/usr/sbin/kadmin', ['kadmin', '-l', 'ext', '--keytab=/var/lib/univention-heimdal/%s' % new['cn'][0], new['krb5PrincipalName'][0]])
+				call(['kadmin', '-l', 'ext', '--keytab=/var/lib/univention-heimdal/%s' % new['cn'][0], new['krb5PrincipalName'][0]])
 				try:
 					userID = pwd.getpwnam('%s$' % new['cn'][0])[2]
 					os.chown('/var/lib/univention-heimdal/%s' % new['cn'][0], userID, 0)

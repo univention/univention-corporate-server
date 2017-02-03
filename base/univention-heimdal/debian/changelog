@@ -2,6 +2,7 @@ univention-heimdal (10.0.0-2) unstable; urgency=low
 
   * Bug #34258: Add missing Conflicts between packages
   * Bug #43410: Fix credential leak
+  * Bug #43492: Find heiumdal tools using $PATH
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 13:02:44 +0100
 
