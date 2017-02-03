@@ -37,13 +37,12 @@ import os
 import sys
 import re
 import time
-from pipes import quote as escape_value
 from univention.config_registry.backend import \
 	exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import \
 	run_filter, ConfigHandlers
 from univention.config_registry.misc import \
-	validate_key
+	validate_key, escape_value
 from univention.config_registry.filters import \
 	Output, filter_shell, filter_keys_only, filter_sort
 

@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from pipes import quote as escape_value
-from univention.config_registry.misc import key_shell_escape
+from univention.config_registry.misc import key_shell_escape, escape_value
 
 __all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
 
