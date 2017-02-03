@@ -1,3 +1,10 @@
+univention-system-setup (10.0.4-4) unstable; urgency=medium
+
+  * Bug #40612: rename method set_locale as this name is now used in the Base
+  	class
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2017 14:53:16 +0100
+
 univention-system-setup (10.0.4-3) unstable; urgency=medium
 
   * Bug #40102: reflect property changes in frontend

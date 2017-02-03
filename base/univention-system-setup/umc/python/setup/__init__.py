@@ -647,7 +647,7 @@ class Instance(Base, ProgressMixin):
 
 	@sanitize(locale=StringSanitizer(default='en_US'))
 	@simple_response
-	def set_locale(self, locale):
+	def reset_locale(self, locale):
 		locale = Locale(locale)
 		locale.codeset = self.locale.codeset
 		MODULE.info('Switching language to: %s' % locale)
