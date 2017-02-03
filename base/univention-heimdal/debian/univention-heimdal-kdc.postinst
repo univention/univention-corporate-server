@@ -70,21 +70,14 @@ for fn in kdc.conf kadmind.acl ; do
 done
 
 if [ "$1" = "configure" ]; then
-
-	if [ -z "$2" ]; then	## fresh install
-
-		/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
-
-	else					## package update
-
-		/etc/init.d/heimdal-kdc restart
+	if [ -n "$2" ]; then
+		invoke-rc.d heimdal-kdc restart
 	fi
 
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart
+	if test -x /etc/init.d/univention-directory-listener
+	then
+		invoke-rc.d univention-directory-listener crestart
 	fi
-
 fi
 
 hdbdir='/var/lib/heimdal-kdc'	## configured by heimdal/debian/rules
@@ -94,4 +87,3 @@ if [ -f "$kstash_file" ]; then
 fi
 
 exit 0
-
