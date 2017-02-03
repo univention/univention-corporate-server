@@ -64,6 +64,7 @@ filter = (
 ) % locals()
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
+K5TAB = '/etc/krb5.keytab'
 
 
 def clean():
@@ -73,8 +74,8 @@ def clean():
 
 	listener.setuid(0)
 	try:
-		if os.path.exists('/etc/krb5.keytab'):
-			os.unlink('/etc/krb5.keytab')
+		if os.path.exists(K5TAB):
+			os.unlink(K5TAB)
 	finally:
 		listener.unsetuid()
 
@@ -90,20 +91,20 @@ def handler(dn, new, old):
 	if server_role == 'memberserver':
 		listener.setuid(0)
 		try:
-			if os.path.exists('/etc/krb5.keytab'):
-				os.remove('/etc/krb5.keytab')
+			if os.path.exists(K5TAB):
+				os.remove(K5TAB)
 			count = 0
-			while not os.path.exists('/etc/krb5.keytab'):
-				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
-				if not os.path.exists('/etc/krb5.keytab'):
+			while not os.path.exists(K5TAB):
+				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
+				if not os.path.exists(K5TAB):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'W: failed to download keytab for memberserver, retry')
 					if count > 30:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'E: failed to download keytab for memberserver')
 						return -1
 					count = count + 1
 					time.sleep(2)
-			os.chown('/etc/krb5.keytab', 0, 0)
-			os.chmod('/etc/krb5.keytab', 0o600)
+			os.chown(K5TAB, 0, 0)
+			os.chmod(K5TAB, 0o600)
 		finally:
 			listener.unsetuid()
 	else:

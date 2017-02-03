@@ -68,17 +68,21 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			if old:
+				cn = old['cn'][0]
+				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				try:
-					os.unlink('/var/lib/univention-heimdal/%s' % old['cn'][0])
+					os.unlink(ktab)
 				except:
 					pass
 			if new:
+				cn = new['cn'][0]
+				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				# FIXME: otherwise the keytab entry is duplicated
-				call(['kadmin', '-l', 'ext', '--keytab=/var/lib/univention-heimdal/%s' % new['cn'][0], new['krb5PrincipalName'][0]])
+				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0]])
 				try:
-					userID = pwd.getpwnam('%s$' % new['cn'][0])[2]
-					os.chown('/var/lib/univention-heimdal/%s' % new['cn'][0], userID, 0)
-					os.chmod('/var/lib/univention-heimdal/%s' % new['cn'][0], 0o660)
+					userID = pwd.getpwnam('%s$' % cn)[2]
+					os.chown(ktab, userID, 0)
+					os.chmod(ktab, 0o660)
 				except:
 					pass
 
