@@ -540,7 +540,9 @@ define([
 				displayMessages: true,
 				displayErrors: true,
 
-				401: lang.hitch(auth, 'handleAuthenticationError'),
+				401: function() {
+					auth.call(auth, arguments);
+				},
 
 				display422: function(info) {
 					var message = info.message + ':<br>';
