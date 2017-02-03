@@ -33,6 +33,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Linux kernel has been updated to 4.9.2 (<u:bug>42048</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
