@@ -66,6 +66,7 @@ import cPickle
 import itertools
 import operator
 from fnmatch import fnmatch
+from ldap.filter import filter_format
 
 from .config import ucr
 from .log import ACL
@@ -147,7 +148,7 @@ class ACLs(object):
 			elif host.startswith('service:'):
 				service = host[len('service:'):]
 				for role in ACLs._systemroles:
-					servers = role.lookup(None, self.lo, 'univentionService=%s' % service, base=self.__ldap_base)
+					servers = role.lookup(None, self.lo, filter_format('univentionService=%s', [service]), base=self.__ldap_base)
 					for server in servers:
 						if 'name' in server:
 							hosts.append(server['name'])
@@ -361,7 +362,7 @@ class LDAP_ACLs (ACLs):
 	def _read_from_ldap(self):
 		# TODO: check for fixed attributes
 		try:
-			userdn = self.lo.searchDn('(&(objectClass=person)(uid=%s))' % self.username, unique=True)[0]
+			userdn = self.lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
 			policy = self._get_policy_for_dn(userdn)
 		except (ldap.LDAPError, IndexError):
 			# read ACLs from file
@@ -373,7 +374,7 @@ class LDAP_ACLs (ACLs):
 				self._append(LDAP_ACLs.FROM_USER, self.lo.get(value))
 
 		# TODO: check for nested groups
-		groupDNs = self.lo.searchDn(filter='uniqueMember=%s' % userdn)
+		groupDNs = self.lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
 
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn(gDN)
