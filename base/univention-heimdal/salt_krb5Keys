@@ -71,21 +71,22 @@ class ldapconnection:
 			result_id = self.lo.search(base, scope, ldapfilter, attrlist)
 			while True:
 				result_type, result_data = self.lo.result(result_id, timeout)
-				if (result_data == []):
+				if not result_data:
 					break
-				else:
-					if result_type == ldap.RES_SEARCH_ENTRY:
-						yield result_data[0]
+				if result_type == ldap.RES_SEARCH_ENTRY:
+					yield result_data[0]
 		except ldap.LDAPError as error_message:
 			print error_message
 			raise
 
 	def ldapmodify_object(self, dn, object_dict):
 		try:
-			modlist = []
-			for attr, value in object_dict.items():
-				modlist.append((ldap.MOD_REPLACE, attr, value))
+			modlist = [
+				(ldap.MOD_REPLACE, attr, value)
+				for attr, value in object_dict.items()
+			]
 			res = self.lo.modify_s(dn, modlist)
+			return res
 		except ldap.LDAPError as error_message:
 			print error_message
 			raise
@@ -94,10 +95,8 @@ class ldapconnection:
 def main():
 	from optparse import OptionParser
 	parser = OptionParser(usage="%prog [-h|--help] [--binddn <binddn>] [--bindpwd <bindpwd>]")
-	parser.add_option("--binddn", action="store", dest="binddn",
-		help="binddn")
-	parser.add_option("--bindpwd", action="store", dest="bindpwd",
-		help="bindpwd")
+	parser.add_option("--binddn", action="store", dest="binddn", help="binddn")
+	parser.add_option("--bindpwd", action="store", dest="bindpwd", help="bindpwd")
 	(options, args) = parser.parse_args()
 
 	ucr = univention.config_registry.ConfigRegistry()
@@ -107,7 +106,7 @@ def main():
 	if not options.binddn:
 		if not ucr['server/role'] in ('domaincontroller_master', 'domaincontroller_backup'):
 			print "salt_krb5Keys: Without explicit credentials this only works on a Master or Backup server."
-			return 0
+			return 1
 		else:
 			options.binddn = "cn=admin,%s" % ldap_base
 			options.bindpwd = open('/etc/ldap.secret').read().strip()
@@ -130,4 +129,4 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+	sys.exit(main())

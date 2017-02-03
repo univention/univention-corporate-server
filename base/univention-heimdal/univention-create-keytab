@@ -34,46 +34,31 @@
 import heimdal
 from subprocess import call
 import binascii
-import univention.config_registry
 from optparse import OptionParser
 import tempfile
-import sys
 import os
 
 parser = OptionParser()
-parser.add_option("-k", "--keytab", dest="keytab",
-	help="write keytab to FILE", metavar="FILE")
-parser.add_option("-p", "--principal", dest="principal",
-	help="create keys for PRINCIPAL", metavar="PRINCIPAL")
-parser.add_option("-a", "--alias", dest="service_principal_names",
-	help="add alias", action="append")
-parser.add_option("-V", "--kvno", dest="kvno",
-	help="key version number")
-parser.add_option("-w", "--password", dest="password",
-	help="password")
+parser.add_option("-k", "--keytab", dest="keytab", help="write keytab to FILE", metavar="FILE")
+parser.add_option("-p", "--principal", dest="principal", help="create keys for PRINCIPAL", metavar="PRINCIPAL")
+parser.add_option("-a", "--alias", dest="service_principal_names", help="add alias", action="append")
+parser.add_option("-V", "--kvno", dest="kvno", help="key version number")
+parser.add_option("-w", "--password", dest="password", help="password")
 
 (options, args) = parser.parse_args()
 
 if not options.keytab:
-	print "keytab argument missing"
-	sys.exit(1)
+	parser.error("keytab argument missing")
 if not options.principal:
-	print "principal argument missing"
-	sys.exit(1)
+	parser.error("principal argument missing")
 if not options.service_principal_names:
-	print "alias argument missing"
-	sys.exit(1)
+	parser.error("alias argument missing")
 if not options.kvno:
-	print "kvno argument missing"
-	sys.exit(1)
+	parser.error("kvno argument missing")
 if not options.password:
-	print "password argument missing"
-	sys.exit(1)
+	parser.error("password argument missing")
 
 keytab_filename = options.keytab
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 
 krb5_context = heimdal.context()
 permitted_enctypes = krb5_context.get_permitted_enctypes()
