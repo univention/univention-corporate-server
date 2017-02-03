@@ -5,12 +5,61 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Password Settings</title>
-		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
-		<link rel="stylesheet" href="css/bootstrap.css"/>
-		<link rel="stylesheet" href="css/ucs.css">
-		<script type="text/javascript" src="js/config.js"></script>
-		<script type="text/javascript" src="js/dojo/dojo.js"></script>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="style.css" type="text/css"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="css/ucs.css"> <!-- removeme ? -->
+		<script type="text/javascript">
+			//<!--
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
+			function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
+				// find the given parameter in the cookie string
+				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
+				var m = reg.exec(document.cookie);
+				if (m && m[1]) {
+					return m[1];
+				}
+
+				// in case the parameter does not exist, return the default value
+				return defaultVal;
+			}
+			var locale = getQuery('lang') || getCookie('UMCLang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
+			var dojoConfig = {
+				isDebug: false,
+				locale: getLocale(),
+				async: true,
+				callback: function() {
+					require([
+						"./PasswordService",
+						"dojo/domReady!"
+					], function(PasswordService) {
+						PasswordService.start();
+					});
+				}
+			};
+			//-->
+		</script>
+		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="ucs">
 		<div id="wrapper">
