@@ -1,4 +1,4 @@
-univention-ad-connector (11.0.6-3) unstable; urgency=low
+univention-s4-connector (11.0.6-3) unstable; urgency=low
 
   * Bug #38438: start-stop-daemon --oknodo
 
