@@ -52,21 +52,13 @@ case "$1" in
 			check_autostart s4-connector connector/s4/autostart
 		fi
 		log_daemon_msg "Starting $DESC" "$NAME"
-		if start-stop-daemon --start --quiet --pidfile "$S4CONNECTORPID" --startas "$DAEMON"
-		then
-			log_end_msg 0
-		else
-			log_end_msg 1
-		fi
+		start-stop-daemon --start --oknodo --quiet --pidfile "$S4CONNECTORPID" --startas "$DAEMON"
+		log_end_msg $?
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID"
-		then
-			log_end_msg 0
-		else
-			log_end_msg 1
-		fi
+		start-stop-daemon --stop --oknodo --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID"
+		log_end_msg $?
 		;;
 	restart|force-reload)
 		"$0" stop

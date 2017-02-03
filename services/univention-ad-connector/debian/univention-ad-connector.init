@@ -51,21 +51,13 @@ case "$1" in
 			check_autostart ad-connector connector/ad/autostart
 		fi
 		log_daemon_msg "Starting $DESC" "$NAME"
-		if start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" --startas "$DAEMON"
-		then
-			log_end_msg 0
-		else
-			log_end_msg 1
-		fi
+		start-stop-daemon --start --oknodo --quiet --pidfile "$ADCONNECTORPID" --startas "$DAEMON"
+		log_end_msg $?
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID"
-		then
-			log_end_msg 0
-		else
-			log_end_msg 1
-		fi
+		start-stop-daemon --stop --oknodo --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID"
+		log_end_msg $?
 		;;
 	restart|force-reload)
 		"$0" stop

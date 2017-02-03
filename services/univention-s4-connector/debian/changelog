@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-3) unstable; urgency=low
+
+  * Bug #38438: start-stop-daemon --oknodo
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 08:53:55 +0100
+
 univention-s4-connector (11.0.6-2) unstable; urgency=medium
 
   * Bug #32086: fix getAttr() -> get() change in r76123

@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-2) unstable; urgency=low
+
+  * Bug #38438: start-stop-daemon --oknodo
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 08:53:55 +0100
+
 univention-ad-connector (11.0.6-1) unstable; urgency=medium
 
   * Bug #39731: allow file uploads without XSRF protection
