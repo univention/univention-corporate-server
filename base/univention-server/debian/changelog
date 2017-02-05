@@ -1,3 +1,10 @@
+univention-server (12.0.0-2) unstable; urgency=medium
+
+  * Make univention-portal a dependency of master and backup
+    (Bug #43495)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 05 Feb 2017 10:36:18 +0100
+
 univention-server (12.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
