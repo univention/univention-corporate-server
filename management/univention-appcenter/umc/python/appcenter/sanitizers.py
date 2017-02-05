@@ -40,7 +40,7 @@ from univention.management.console.modules.sanitizers import Sanitizer, StringSa
 from univention.management.console.modules.appcenter.app_center import AppcenterServerContactFailed
 from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
 from univention.appcenter.actions import Abort
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
@@ -70,7 +70,7 @@ def error_handling(etype, exc, etraceback):
 class AppSanitizer(Sanitizer):
 
 	def _sanitize(self, value, name, further_args):
-		return AppManager.find(value)
+		return Apps().find(value)
 
 
 # TODO: remove this, unused!

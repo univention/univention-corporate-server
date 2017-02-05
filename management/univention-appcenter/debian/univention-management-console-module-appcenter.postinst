@@ -34,8 +34,4 @@ update-python-modules --post-install
 
 #DEBHELPER#
 
-univention-config-registry set repository/app_center/server?appcenter.software-univention.de \
-	appcenter/domainwide?true
-
-
 exit 0

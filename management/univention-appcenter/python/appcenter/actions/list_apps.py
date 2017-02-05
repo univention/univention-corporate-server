@@ -36,7 +36,8 @@ import re
 from fnmatch import fnmatch
 
 from univention.appcenter.actions import UniventionAppAction
-from univention.appcenter.app import App, AppManager
+from univention.appcenter.app import App
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.udm import get_app_ldap_object
 from univention.appcenter.utils import flatten
 from univention.appcenter.ucr import ucr_get, ucr_is_true
@@ -80,7 +81,7 @@ class List(UniventionAppAction):
 	@classmethod
 	def get_apps(cls):
 		ret = []
-		apps = AppManager.get_all_apps()
+		apps = Apps().get_all_apps()
 		blacklist = ucr_get('repository/app_center/blacklist')
 		whitelist = ucr_get('repository/app_center/whitelist')
 		if blacklist:
@@ -99,9 +100,9 @@ class List(UniventionAppAction):
 			if ucr_get('server/role') not in app.server_role:
 				continue
 			if app.docker and ucr_is_true('appcenter/prudence/docker/%s' % app.id):
-				apps = [_app for _app in AppManager.get_all_apps_with_id(app.id) if _app.docker_migration_works or not _app.docker]
+				_apps = [_app for _app in Apps().get_all_apps_with_id(app.id) if _app.docker_migration_works or not _app.docker]
 				try:
-					app = sorted(apps)[-1]
+					app = sorted(_apps)[-1]
 				except IndexError:
 					continue
 			ret.append(app)
@@ -130,8 +131,8 @@ class List(UniventionAppAction):
 			if pattern:
 				if not fnmatch(app.id, pattern):
 					continue
-			app = AppManager.find(app, latest=True)
-			for _app in AppManager.get_all_apps_with_id(app.id):
+			app = Apps().find(app.id, latest=True)
+			for _app in Apps().get_all_apps_with_id(app.id):
 				ldap_obj = get_app_ldap_object(_app)
 				servers = ldap_obj.installed_on_servers()
 				versions.append(_app.version)

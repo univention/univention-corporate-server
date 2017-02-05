@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.ucr import ucr_save, ucr_is_true
 
@@ -52,7 +52,7 @@ class UpgradeSearch(UniventionAppAction):
 			get_action('update').call()
 		apps = args.app
 		if not apps:
-			apps = AppManager.get_all_locally_installed_apps()
+			apps = Apps().get_all_locally_installed_apps()
 		for app in apps:
 			self.debug('Checking %s' % app)
 			if not app.is_installed():
@@ -65,4 +65,4 @@ class UpgradeSearch(UniventionAppAction):
 		return any(ucr_is_true(app.ucr_upgrade_key) for app in apps)
 
 	def _check_for_upgrades(self, app):
-		return AppManager.find_candidate(app) is not None
+		return Apps().find_candidate(app) is not None

@@ -43,7 +43,7 @@ from univention.config_registry import handler_commit
 
 from univention.appcenter.actions.update import Update
 from univention.appcenter.log import catch_stdout
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
 
@@ -63,8 +63,8 @@ class Update(Update):
 		for isvg in glob(os.path.join(FRONTEND_ICONS_DIR, 'apps-*.svg')):
 			os.unlink(isvg)
 
-		for app in AppManager.get_all_apps():
-			for _app in AppManager.get_all_apps_with_id(app.id):
+		for app in Apps().get_all_apps():
+			for _app in Apps().get_all_apps_with_id(app.id):
 				self._update_svg_file(_app.logo_name, _app.get_cache_file('logo'))
 				self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
 

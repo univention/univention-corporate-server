@@ -38,7 +38,8 @@ from argparse import Action
 from fnmatch import translate
 from ConfigParser import NoOptionError, NoSectionError
 
-from univention.appcenter.app import CaseSensitiveConfigParser, AppManager
+from univention.appcenter.app import CaseSensitiveConfigParser
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.ucr import ucr_get
@@ -119,7 +120,7 @@ class Get(UniventionAppAction):
 	@classmethod
 	def _candidate_dict(cls, app):
 		ret = {}
-		candidate = AppManager.find_candidate(app)
+		candidate = Apps().find_candidate(app)
 		if candidate:
 			ret['update_available'] = True
 			ret['candidate_docker'] = candidate.docker

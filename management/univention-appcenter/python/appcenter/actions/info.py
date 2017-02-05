@@ -35,7 +35,7 @@
 from json import dumps
 
 from univention.appcenter.actions import UniventionAppAction, get_action
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 
 
@@ -84,7 +84,7 @@ class Info(UniventionAppAction):
 		return 4
 
 	def get_installed_apps(self):
-		return AppManager.get_all_locally_installed_apps()
+		return Apps().get_all_locally_installed_apps()
 
 	def get_upgradable_apps(self):
 		upgrade = get_action('upgrade')

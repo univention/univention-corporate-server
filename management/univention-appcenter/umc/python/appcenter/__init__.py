@@ -39,7 +39,6 @@ import sys
 from contextlib import contextmanager
 # import urllib2
 import logging
-from tempfile import NamedTemporaryFile
 
 # related third party
 import notifier
@@ -58,7 +57,8 @@ from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
-from univention.appcenter.app import AppManager
+from univention.appcenter.packages import reload_package_manager, get_package_manager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -152,7 +152,7 @@ class Instance(umcm.Base, ProgressMixin):
 		self.package_manager.set_finished()  # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
-		AppManager.set_package_manager(self.package_manager)
+		get_package_manager._package_manager = self.package_manager
 
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
@@ -187,7 +187,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if not quick:
 			self.update_applications()
 		self.ucr.load()
-		AppManager.reload_package_manager()
+		reload_package_manager()
 		list_apps = get_action('list')
 		domain = get_action('domain')
 		apps = list_apps.get_apps()
@@ -246,10 +246,10 @@ class Instance(umcm.Base, ProgressMixin):
 	def get_by_component_id(self, component_id):
 		domain = get_action('domain')
 		if isinstance(component_id, list):
-			requested_apps = [AppManager.find_by_component_id(cid) for cid in component_id]
+			requested_apps = [Apps().find_by_component_id(cid) for cid in component_id]
 			return domain.to_dict(requested_apps)
 		else:
-			app = AppManager.find_by_component_id(component_id)
+			app = Apps().find_by_component_id(component_id)
 			if app:
 				return domain.to_dict([app])[0]
 			else:
@@ -266,7 +266,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def get(self, application):
 		domain = get_action('domain')
-		app = AppManager.find(application)
+		app = Apps().find(application)
 		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]
@@ -287,53 +287,6 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def track(self, app, action, value):
 		send_information(action, app=app, value=value)
-
-	@require_password
-	def _invoke_docker(self, function, application, force, values):
-		can_continue = force  # always show configuration after first request
-		serious_problems = False
-		app = AppManager.find(application.id)
-		errors, warnings = app.check(function)
-		if errors:
-			MODULE.process('Cannot %s %s: %r' % (function, application.id, errors))
-			serious_problems = True
-			can_continue = False
-		if warnings:
-			MODULE.process('Warning trying to %s %s: %r' % (function, application.id, warnings))
-		result = {
-			'serious_problems': serious_problems,
-			'invokation_forbidden_details': errors,
-			'invokation_warning_details': warnings,
-			'can_continue': can_continue,
-			'software_changes_computed': False,
-		}
-		if can_continue:
-			def _thread(app, function):
-				with self.package_manager.locked(reset_status=True, set_finished=True):
-					with self.package_manager.no_umc_restart(exclude_apache=True):
-						if function not in ['install', 'uninstall', 'update']:
-							raise umcm.UMC_CommandError('Cannot %s. Not supported!' % function)
-						if function == 'update':
-							function = 'upgrade'
-						if function == 'uninstall':
-							function = 'remove'
-						action = get_action(function)
-						kwargs = {'noninteractive': True}
-						if function in ['install', 'upgrade']:
-							kwargs['set_vars'] = values
-						if function == 'uninstall':
-							kwargs['keep_data'] = not values.get('dont_keep_data', False)
-						with NamedTemporaryFile('w+b') as password_file:
-							password_file.write(self.password)
-							password_file.flush()
-							action.call(app=app, username=self._username, pwdfile=password_file.name, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service'], **kwargs)
-
-			def _finished(thread, result):
-				if isinstance(result, BaseException):
-					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
-			thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, app, function), _finished)
-			thread.run()
-		return result
 
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
@@ -379,7 +332,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
 		if function == 'upgrade':
-			app = AppManager.find_candidate(app)
+			app = Apps().find_candidate(app)
 		serious_problems = False
 		progress.title = _('%s: Running tests') % (app.name,)
 		errors, warnings = app.check(function)
@@ -604,7 +557,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def buy(self, application):
-		app = AppManager.find(application)
+		app = Apps().find(application)
 		if not app or not app.shop_url:
 			return None
 		ret = {}
@@ -619,7 +572,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def enable_disable_app(self, application, enable=True):
-		app = AppManager.find(application)
+		app = Apps().find(application)
 		if not app:
 			return
 		stall = get_action('stall')

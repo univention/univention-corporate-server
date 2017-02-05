@@ -1,9 +1,9 @@
 @!@
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import app_ports
 
 for app_id, container_port, host_port in app_ports():
-	app = AppManager.find(app_id)
+	app = Apps().find(app_id)
 	if app and app.auto_mod_proxy and app.has_local_web_interface():
 		web_interface = app.web_interface
 		scheme = app.web_interface_proxy_scheme

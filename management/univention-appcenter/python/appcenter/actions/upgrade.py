@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions.install import Install
 from univention.appcenter.ucr import ucr_is_true
 
@@ -61,9 +61,9 @@ class Upgrade(Install):
 
 	def main(self, args):
 		app = args.app
-		self.old_app = AppManager.find(app)
+		self.old_app = Apps().find(app.id)
 		if app == self.old_app:
-			app = AppManager.find_candidate(app) or app
+			app = Apps().find_candidate(app) or app
 		if self._app_too_old(self.old_app, app):
 			return
 		args.app = app
@@ -96,6 +96,6 @@ class Upgrade(Install):
 
 	@classmethod
 	def iter_upgradable_apps(self):
-		for app in AppManager.get_all_locally_installed_apps():
+		for app in Apps().get_all_locally_installed_apps():
 			if ucr_is_true(app.ucr_upgrade_key):
 				yield app

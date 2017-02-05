@@ -32,22 +32,21 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import sys
 import os
 import os.path
-from glob import glob
+from urlparse import urlsplit
 import re
 from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
 from copy import copy
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
-from json import dumps, loads
+from weakref import ref
 
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
+from univention.appcenter.packages import get_package_manager, packages_are_installed
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import read_ini_file, app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
+from univention.appcenter.utils import read_ini_file, app_ports, mkdir, get_current_ram_available, get_locale, container_mode, get_server_and_version, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
 
 
@@ -239,7 +238,7 @@ class AppComponentIDAttribute(AppAttribute):
 
 class AppUCSVersionAttribute(AppAttribute):
 	def get_value(self, component_id, ini_parser, meta_parser, locale):
-		return '4.1'
+		return ucr_get('version/version')
 
 
 class AppBooleanAttribute(AppAttribute):
@@ -622,6 +621,9 @@ class App(object):
 			App to work (because a specific feature was added or
 			a bug was fixed after the initial release of this UCS
 			version). Examples: 4.1-1, 4.1-1 errata200.
+		supported_ucs_versions: List of UCS versions that may install
+			this App. Only makes sense for Docker Apps. Example:
+			4.1-4 errata370, 4.2-0
 		required_app_version_upgrade: The App version that has to be
 			installed before an upgrade to this version is allowed.
 			Does nothing when installing (not upgrading) the App.
@@ -844,6 +846,7 @@ class App(object):
 	required_apps_in_domain = AppListAttribute()
 	conflicted_system_packages = AppListAttribute()
 	required_ucs_version = AppAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
+	supported_ucs_versions = AppListAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
 	required_app_version_upgrade = AppAttribute()
 	end_of_life = AppBooleanAttribute()
 
@@ -901,9 +904,11 @@ class App(object):
 	host_certificate_access = AppBooleanAttribute()
 
 	def __init__(self, **kwargs):
-		self._is_ucs_component = None
+		self._weak_ref_app_cache = None
+		self.set_app_cache_obj(kwargs.pop('_cache', None))
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
+		self.ucs_version = self.get_ucs_version()  # compatibility
 		if self.docker:
 			self.supported_architectures = ['amd64']
 		else:
@@ -934,10 +939,19 @@ class App(object):
 		return _get_license_descriptions(self.get_locale()).get(self.license)
 
 	def __str__(self):
-		return '%s=%s' % (self.id, self.version)
+		annotation = ''
+		server, ucs_version = get_server_and_version()[0]
+		if ucs_version != self.get_ucs_version():
+			annotation = self.get_ucs_version()
+		if server != self.get_server():
+			server = urlsplit(self.get_server()).netloc
+			annotation = '%s@%s' % (annotation, server)
+		if annotation:
+			annotation += '/'
+		return '%s%s=%s' % (annotation, self.id, self.version)
 
 	def __repr__(self):
-		return 'App(id="%s", version="%s")' % (self.id, self.version)
+		return 'App(id="%s", version="%s", ucs_version="%s", server="%s")' % (self.id, self.version, self.get_ucs_version(), self.get_server())
 
 	@classmethod
 	def _get_meta_parser(cls, ini_file, ini_parser):
@@ -977,6 +991,14 @@ class App(object):
 	@property
 	def ucr_version_key(self):
 		return 'appcenter/apps/%s/version' % self.id
+
+	@property
+	def ucr_ucs_version_key(self):
+		return 'appcenter/apps/%s/ucs' % self.id
+
+	@property
+	def ucr_server_key(self):
+		return 'appcenter/apps/%s/server' % self.id
 
 	@property
 	def ucr_upgrade_key(self):
@@ -1030,9 +1052,17 @@ class App(object):
 			packages.extend(self.additional_packages_member)
 		return packages
 
+	def supports_ucs_version(self):
+		if not self.supported_ucs_versions:
+			return self.get_ucs_version() == ucr_get('version/version')
+		for supported_version in self.supported_ucs_versions:
+			if supported_version.startswith('%s-' % ucr_get('version/version')):
+				return True
+		return False
+
 	def is_installed(self):
 		if self.docker and not container_mode():
-			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version
+			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key) == self.get_ucs_version() and ucr_get(self.ucr_server_key) == self.get_server()
 		else:
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
@@ -1040,10 +1070,9 @@ class App(object):
 			return packages_are_installed(self.default_packages)
 
 	def is_ucs_component(self):
-		if self._is_ucs_component is None:
-			app = App.from_ini(self.get_ini_file(), locale=False)
-			self._is_ucs_component = 'UCS components' in app.categories
-		return self._is_ucs_component
+		cache = self.get_app_cache_obj()
+		app = cache.copy(locale='en').find_by_component_id(self.component_id)
+		return 'UCS components' in app.categories
 
 	def get_share_dir(self):
 		return os.path.join(SHARE_DIR, self.id)
@@ -1066,16 +1095,33 @@ class App(object):
 		return fname
 
 	def get_ucs_version(self):
-		return self.ucs_version
+		app_cache = self.get_app_cache_obj()
+		return app_cache.get_ucs_version()
 
 	def get_locale(self):
-		return get_locale()
+		app_cache = self.get_app_cache_obj()
+		return app_cache.get_locale()
 
 	def get_server(self):
-		return AppManager.get_server()
+		app_cache = self.get_app_cache_obj()
+		return app_cache.get_server()
 
 	def get_cache_dir(self):
-		return CACHE_DIR
+		app_cache = self.get_app_cache_obj()
+		return app_cache.get_cache_dir()
+
+	def get_app_cache_obj(self):
+		if self._weak_ref_app_cache is None:
+			from univention.appcenter.app_cache import AppCache
+			app_cache = AppCache.build()
+			self.set_app_cache_obj(app_cache)
+		return self._weak_ref_app_cache()
+
+	def set_app_cache_obj(self, app_cache_obj):
+		if app_cache_obj:
+			self._weak_ref_app_cache = ref(app_cache_obj)
+		else:
+			self._weak_ref_app_cache = None
 
 	def get_cache_file(self, ext):
 		return os.path.join(self.get_cache_dir(), '%s.%s' % (self.component_id, ext))
@@ -1136,9 +1182,10 @@ class App(object):
 	def must_have_fitting_app_version(self):
 		'''To upgrade, at least version %(required_version)s needs to
 		be installed.'''
+		from univention.appcenter.app_cache import Apps
 		if self.required_app_version_upgrade:
 			required_version = LooseVersion(self.required_app_version_upgrade)
-			installed_app = AppManager.find(self)
+			installed_app = Apps().find(self)
 			installed_version = LooseVersion(installed_app.version)
 			if required_version > installed_version:
 				return {'required_version': self.required_app_version_upgrade}
@@ -1146,20 +1193,30 @@ class App(object):
 
 	@hard_requirement('install', 'upgrade')
 	def must_have_fitting_ucs_version(self):
-		'''The application requires UCS version %(required_version)s or
-		later.'''
-		required_version = self.required_ucs_version
-		if not required_version:
-			return True
-		ucr_load()
-		version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_version).groups()
+		'''The application requires UCS version %(required_version)s.'''
+		required_ucs_version = None
+		for supported_version in self.supported_ucs_versions:
+			if supported_version.startswith('%s-' % ucr_get('version/version')):
+				required_ucs_version = supported_version
+				break
+		else:
+			if self.get_ucs_version() == ucr_get('version/version'):
+				if self.required_ucs_version:
+					required_ucs_version = self.required_ucs_version
+				else:
+					return True
+		if required_ucs_version is None:
+			return {'required_version': self.get_ucs_version()}
 		major, minor = ucr_get('version/version').split('.', 1)
 		patchlevel = ucr_get('version/patchlevel')
 		errata = ucr_get('version/erratalevel')
+		version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version).groups()
 		comparisons = zip(version_bits, [major, minor, patchlevel, errata])
 		for required, present in comparisons:
 			if int(required or 0) > int(present):
-				return {'required_version': required_version}
+				return {'required_version': required_ucs_version}
+			if int(required or 0) < int(present):
+				return True
 		return True
 
 	@hard_requirement('install', 'upgrade')
@@ -1277,9 +1334,11 @@ class App(object):
 	def must_have_no_conflicts_apps(self):
 		'''The application conflicts with the following applications:
 			%r'''
+		from univention.appcenter.app_cache import Apps
 		conflictedapps = set()
+		apps_cache = Apps()
 		# check ConflictedApps
-		for app in AppManager.get_all_apps():
+		for app in apps_cache.get_all_apps():
 			if not app._allowed_on_local_server():
 				# cannot be installed, continue
 				continue
@@ -1296,17 +1355,19 @@ class App(object):
 			if app_id != self.id and str(host_port) in ports:
 				conflictedapps.add(app_id)
 		if conflictedapps:
-			conflictedapps = [AppManager.find(app_id) for app_id in conflictedapps]
+			conflictedapps = [apps_cache.find(app_id) for app_id in conflictedapps]
 			return [{'id': app.id, 'name': app.name} for app in conflictedapps if app]
 		return True
 
 	@hard_requirement('install', 'upgrade')
 	def must_have_no_unmet_dependencies(self):
 		'''The application requires the following applications: %r'''
+		from univention.appcenter.app_cache import Apps
 		unmet_packages = []
 
+		apps_cache = Apps()
 		# RequiredApps
-		for app in AppManager.get_all_apps():
+		for app in apps_cache.get_all_apps():
 			if app.id in self.required_apps:
 				if not app.is_installed():
 					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
@@ -1314,7 +1375,7 @@ class App(object):
 		# RequiredAppsInDomain
 		from univention.appcenter.actions import get_action
 		domain = get_action('domain')
-		apps = [AppManager.find(app_id) for app_id in self.required_apps_in_domain]
+		apps = [apps_cache.find(app_id) for app_id in self.required_apps_in_domain]
 		apps_info = domain.to_dict(apps)
 		for app in apps_info:
 			if not app:
@@ -1330,15 +1391,18 @@ class App(object):
 	def must_not_be_depended_on(self):
 		'''The application is required for the following applications
 		to work: %r'''
+		from univention.appcenter.app_cache import Apps
 		depending_apps = []
 
+		apps_cache = Apps()
 		# RequiredApps
-		for app in AppManager.get_all_apps():
+		# RequiredApps
+		for app in apps_cache.get_all_apps():
 			if self.id in app.required_apps and app.is_installed():
 				depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
-		apps = [app for app in AppManager.get_all_apps() if self.id in app.required_apps_in_domain]
+		apps = [app for app in apps_cache.get_all_apps() if self.id in app.required_apps_in_domain]
 		if apps:
 			from univention.appcenter.actions import get_action
 			domain = get_action('domain')
@@ -1359,13 +1423,14 @@ class App(object):
 	def shall_have_enough_ram(self, function):
 		'''The application requires %(minimum)d MB of free RAM but only
 		%(current)d MB are available.'''
+		from univention.appcenter.app_cache import Apps
 		current_ram = get_current_ram_available()
 		required_ram = self.min_physical_ram
 		if function == 'upgrade':
 			# is already installed, just a minor version upgrade
 			#   RAM "used" by this installed app should count
 			#   as free. best approach: substract it
-			installed_app = AppManager.find(self)
+			installed_app = Apps().find(self)
 			old_required_ram = installed_app.min_physical_ram
 			required_ram = required_ram - old_required_ram
 		if current_ram < required_ram:
@@ -1389,11 +1454,12 @@ class App(object):
 		return True
 
 	def check(self, function):
+		from univention.appcenter.app_cache import Apps
 		package_manager = get_package_manager()
 		hard_problems = {}
 		soft_problems = {}
 		if function == 'upgrade':
-			app = AppManager.find(self)
+			app = Apps().find(self)
 			if app > self:
 				# upgrade is not possible,
 				#   special handling
@@ -1418,223 +1484,4 @@ class App(object):
 		return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
 	def __cmp__(self, other):
-		return cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version))
-
-
-class AppManager(object):
-	_locale = None
-	_cache = []
-	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
-	_AppClass = App
-
-	@classmethod
-	def _invalidate_cache_file(cls):
-		if cls._cache_file:
-			cache_pattern = re.sub(r'%\(.*?\).', '*', cls._cache_file)
-			for cache_file in glob(cache_pattern):
-				try:
-					os.unlink(cache_file)
-				except OSError:
-					pass
-
-	@classmethod
-	def _get_cache_file(cls):
-		if cls._cache_file:
-			return cls._cache_file % {'locale': cls._locale}
-
-	@classmethod
-	def _save_cache(cls, cache):
-		cache_file = cls._get_cache_file()
-		if cache_file:
-			try:
-				cache_obj = dumps([app.attrs_dict() for app in cache], indent=2)
-				with open(cache_file, 'wb') as fd:
-					fd.write(cache_obj)
-			except (IOError, TypeError):
-				return False
-			else:
-				return True
-
-	@classmethod
-	def _load_cache(cls):
-		cache_file = cls._get_cache_file()
-		if cache_file:
-			try:
-				cache_modified = os.stat(cache_file).st_mtime
-				for master_file in cls._relevant_master_files():
-					master_file_modified = os.stat(master_file).st_mtime
-					if cache_modified < master_file_modified:
-						return None
-				with open(cache_file, 'rb') as fd:
-					json = fd.read()
-				cache = loads(json)
-			except (OSError, IOError, ValueError):
-				return None
-			else:
-				try:
-					cache_attributes = set(cache[0].keys())
-				except (TypeError, AttributeError, IndexError, KeyError):
-					return None
-				else:
-					code_attributes = set(attr.name for attr in cls._AppClass._attrs)
-					if cache_attributes != code_attributes:
-						return None
-					return [cls._build_app_from_attrs(attrs) for attrs in cache]
-
-	@classmethod
-	def _relevant_master_files(cls):
-		ret = set()
-		ret.add(os.path.join(CACHE_DIR, '.index.json.gz'))
-		classes_visited = set()
-
-		def add_class(klass):
-			if klass in classes_visited:
-				return
-			classes_visited.add(klass)
-			try:
-				module = sys.modules[klass.__module__]
-				ret.add(module.__file__)
-			except (AttributeError, KeyError):
-				pass
-			if hasattr(klass, '__bases__'):
-				for base in klass.__bases__:
-					add_class(base)
-			if hasattr(klass, '__metaclass__'):
-				add_class(klass.__metaclass__)
-
-		add_class(cls._AppClass)
-		return ret
-
-	@classmethod
-	def _relevant_ini_files(cls):
-		return glob(os.path.join(CACHE_DIR, '*.ini'))
-
-	@classmethod
-	def _build_app_from_attrs(cls, attrs):
-		return cls._AppClass(**attrs)
-
-	@classmethod
-	def _build_app_from_ini(cls, ini):
-		app = cls._AppClass.from_ini(ini, locale=cls._locale)
-		if app:
-			for attr in app._attrs:
-				attr.post_creation(app)
-		return app
-
-	@classmethod
-	def clear_cache(cls):
-		ucr_load()
-		cls._cache[:] = []
-		reload_package_manager()
-		cls._invalidate_cache_file()
-		_get_rating_items._cache = None
-		_get_license_descriptions._cache = None
-
-	@classmethod
-	def _get_every_single_app(cls):
-		if not cls._cache:
-			cls._locale = get_locale() or 'en'
-			try:
-				cached_apps = cls._load_cache()
-				if cached_apps is not None:
-					cls._cache = cached_apps
-					app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
-				else:
-					for ini in cls._relevant_ini_files():
-						app = cls._build_app_from_ini(ini)
-						if app is not None:
-							cls._cache.append(app)
-					cls._cache.sort()
-					if cls._save_cache(cls._cache):
-						app_logger.debug('Saved %d apps into cache' % len(cls._cache))
-					else:
-						app_logger.warn('Unable to cache apps')
-			finally:
-				cls._locale = None
-		return cls._cache
-
-	@classmethod
-	def get_all_apps(cls):
-		ret = []
-		ids = set()
-		for app in cls._get_every_single_app():
-			ids.add(app.id)
-		for app_id in sorted(ids):
-			ret.append(cls.find(app_id))
-		return ret
-
-	@classmethod
-	def get_all_locally_installed_apps(cls):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.is_installed():
-				ret.append(app)
-		return ret
-
-	@classmethod
-	def find_by_component_id(cls, component_id):
-		for app in cls._get_every_single_app():
-			if app.component_id == component_id:
-				return app
-
-	@classmethod
-	def get_all_apps_with_id(cls, app_id):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.id == app_id:
-				ret.append(app)
-		return ret
-
-	@classmethod
-	def find(cls, app_id, app_version=None, latest=False):
-		if isinstance(app_id, cls._AppClass):
-			app_id = app_id.id
-		apps = list(reversed(cls.get_all_apps_with_id(app_id)))
-		if app_version:
-			for app in apps:
-				if app.version == app_version:
-					return app
-			return None
-		elif not latest:
-			for app in apps:
-				if app.is_installed():
-					return app
-		if apps:
-			return apps[0]
-
-	@classmethod
-	def find_candidate(cls, app, prevent_docker=None):
-		if prevent_docker is None:
-			prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
-		if app.docker:
-			prevent_docker = False
-		app_version = LooseVersion(app.version)
-		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
-		for _app in apps:
-			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
-				continue
-			if _app <= app:
-				break
-			if _app.required_app_version_upgrade:
-				if LooseVersion(_app.required_app_version_upgrade) > app_version:
-					continue
-			return _app
-
-	@classmethod
-	def reload_package_manager(cls):
-		reload_package_manager()
-
-	@classmethod
-	def get_package_manager(cls):
-		return get_package_manager()
-
-	@classmethod
-	def set_package_manager(cls, package_manager):
-		get_package_manager._package_manager = package_manager
-
-	@classmethod
-	def get_server(cls):
-		server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
-		if not server.startswith('http'):
-			server = 'https://%s' % server
-		return server
+		return cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id)

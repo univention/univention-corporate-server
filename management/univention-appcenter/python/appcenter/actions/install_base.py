@@ -40,11 +40,12 @@ import subprocess
 from argparse import SUPPRESS
 from tempfile import NamedTemporaryFile
 
-from univention.appcenter.app import App, AppManager
+from univention.appcenter.app import App
 from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
+from univention.appcenter.packages import reload_package_manager
 
 
 class _AptLogger(object):
@@ -97,7 +98,7 @@ class InstallRemoveUpgrade(Register):
 			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
 			errors, warnings = app.check(action)
 			can_continue = self._handle_errors(app, args, errors, True)
-			can_continue = self._handle_errors(app, args, warnings, False) and can_continue
+			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
 			if not can_continue or not self._call_prescript(app):
 				status = 0
 				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
@@ -259,13 +260,13 @@ class InstallRemoveUpgrade(Register):
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0o755)
-			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
-				ret = self._call_script('/usr/sbin/univention-run-join-scripts')
-			else:
-				with self._get_password_file(args) as password_file:
-					if password_file:
-						username = self._get_username(args)
-						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
+		if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+			ret = self._call_script('/usr/sbin/univention-run-join-scripts')
+		else:
+			with self._get_password_file(args) as password_file:
+				if password_file:
+					username = self._get_username(args)
+					ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
 
 	def _reload_apache(self):
@@ -273,7 +274,7 @@ class InstallRemoveUpgrade(Register):
 
 	def _apt_get_update(self):
 		self._subprocess(['/usr/bin/apt-get', 'update'])
-		AppManager.reload_package_manager()
+		reload_package_manager()
 
 	def _apt_get(self, command, packages, percentage_end=100, update=True):
 		env = os.environ.copy()
@@ -284,4 +285,4 @@ class InstallRemoveUpgrade(Register):
 		try:
 			return self._subprocess(['/usr/bin/apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
 		finally:
-			AppManager.reload_package_manager()
+			reload_package_manager()

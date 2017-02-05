@@ -49,9 +49,9 @@ from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
 
-from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
+from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_localhost_ip
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_localhost_ip, get_server
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -95,10 +95,16 @@ class DevUseTestAppcenter(UniventionAppAction):
 		revert_group.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-use-test-appcenter')
 
 	def main(self, args):
+		appcenter_servers = ucr_get('appcenter/server', 'appcenter.software-univention.de').split(' ')
 		if args.revert:
-			ucr_save({'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
+			appcenter_servers = ['4.2@appcenter.software-univention.de', '4.1@appcenter.software-univention.de']
+			ucr_save({'appcenter/server': ' '.join(appcenter_servers), 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
 		else:
-			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
+			for ucs_version in ['4.1', '4.2']:
+				appcenter_server = '%s@%s' % (ucs_version, args.appcenter_host)
+				if appcenter_server not in appcenter_servers:
+					appcenter_servers.insert(0, appcenter_server)
+			ucr_save({'appcenter/server': ' '.join(appcenter_servers), 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
 
@@ -272,7 +278,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 
 	def setup_parser(self, parser):
 		super(DevRegenerateMetaInf, self).setup_parser(parser)
-		parser.add_argument('--appcenter-host', default=ucr_get('repository/app_center/server'), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=get_server(), help='The hostname of the new App Center. Default: %(default)s')
 
 	@classmethod
 	def generate_index_json(cls, meta_inf_dir, repo_dir, ucs_version, appcenter_host):
@@ -343,7 +349,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('-p', '--packages', nargs='+', help='Path to debian packages files for the app', metavar='PACKAGE')
 		parser.add_argument('-u', '--unmaintained', nargs='+', help='Package names that exist in the unmaintained repository for UCS. ATTENTION: Only works for --ucs-version=%s; takes some time, but it is only needed once, so for further package updates of this very app version this is not need to be done again. ATTENTION: Only works for architecture %s.' % (version, arch), metavar='PACKAGE')
 		parser.add_argument('-d', '--do-not-delete-duplicates', action='store_true', help=' If any PACKAGE already exist in the repository (e.g. another version), they are removed. Unless this option is set.')
-		parser.add_argument('--appcenter-host', default=ucr_get('repository/app_center/server'), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=get_server(), help='The hostname of the new App Center. Default: %(default)s')
 
 	def main(self, args):
 		component_id = args.component_id
@@ -631,7 +637,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
 			for supra_file in ['categories.ini', 'rating.ini', 'license_types.ini']:
 				with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
-					categories = urlopen('%s/meta-inf/%s' % (AppManager.get_server(), supra_file)).read()
+					categories = urlopen('%s/meta-inf/%s' % (get_server(), supra_file)).read()
 					f.write(categories)
 			server = 'http://%s' % args.appcenter_host
 			use_test_appcenter = get_action('dev-use-test-appcenter')
@@ -715,9 +721,9 @@ class DevSet(UniventionAppAction):
 			tmp_ini_file.flush()
 			if not args.meta:
 				for locale in ['en', 'de']:
-					new_app = App.from_ini(tmp_ini_file.name, locale=locale)
+					new_app = App.from_ini(tmp_ini_file.name, locale=locale, cache=args.app.get_app_cache_obj())
 					if new_app is None:
 						raise Abort('ini file would be malformed. Not saving attributes!')
 			shutil.copy2(tmp_ini_file.name, ini_file)
 			os.chmod(ini_file, 0o644)
-			AppManager.clear_cache()
+			args.app.get_app_cache_obj().clear_cache()

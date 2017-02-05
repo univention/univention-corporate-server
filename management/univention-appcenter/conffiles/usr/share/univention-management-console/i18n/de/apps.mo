@@ -20,9 +20,8 @@ entry = POEntry(
 )
 po.append(entry)
 try:
-	from univention.appcenter.actions import get_action
-	from univention.appcenter.app import AppManager
-	apps = AppManager.get_all_locally_installed_apps()
+	from univention.appcenter.app_cache import Apps
+	apps = Apps().get_all_locally_installed_apps()
 except ImportError:
 	# this happens sometimes during release updates
 	# ... an empty file is fine then
@@ -32,19 +31,16 @@ except:
 	# Anyway, just use an empty file. The problem will be visible as soon as the UMC module
 	# is opened
 	apps = []
-get = get_action('get')()
 for app in apps:
-	for attr in ('Name', 'Description'):
-		try:
-			msgid = list(get.get_values(app, [('Application', attr)]))[0][2]
-			msgstr = list(get.get_values(app, [('de', attr)]))[0][2]
-		except IndexError:
-			pass
-		else:
-			entry = POEntry(
-				msgid=msgid,
-				msgstr=msgstr
-			)
-			po.append(entry)
+	for attr in ('name', 'description'):
+		app_en = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
+		app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
+		msgid = getattr(app_en, attr)
+		msgstr = getattr(app_de, attr)
+		entry = POEntry(
+			msgid=msgid,
+			msgstr=msgstr
+		)
+		po.append(entry)
 print po.to_binary()
 @!@

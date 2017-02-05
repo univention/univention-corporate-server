@@ -47,7 +47,8 @@ import tarfile
 from urlparse import urlsplit
 from urllib2 import quote, Request, HTTPError
 
-from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
+from univention.appcenter.app import LOCAL_ARCHIVE
+from univention.appcenter.app_cache import AppCache, Apps
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode
 from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
@@ -63,7 +64,7 @@ class Update(UniventionAppAction):
 		self._cache_dir = None
 		self._ucs_version = None
 		self._appcenter_server = None
-		self._files_downloaded = dict()
+		self._files_downloaded = {}
 
 	def setup_parser(self, parser):
 		parser.add_argument('--ucs-version', help=SUPPRESS)
@@ -74,6 +75,10 @@ class Update(UniventionAppAction):
 		self._cache_dir = args.cache_dir
 		self._ucs_version = args.ucs_version
 		self._appcenter_server = args.appcenter_server
+		if self._cache_dir is None and self._ucs_version is None and self._appcenter_server is None:
+			# nothing given (univention-app update) => Update every configured AppCache
+			Apps().call_update()
+			return
 		something_changed_locally = self._extract_local_archive()
 		self._download_supra_files()
 		json_apps = self._load_index_json()
@@ -100,11 +105,18 @@ class Update(UniventionAppAction):
 		for thread in threads:
 			thread.join()
 		if something_changed_locally or something_changed_remotely:
-			AppManager.clear_cache()
-			for app in AppManager.get_all_locally_installed_apps():
-				if AppManager.find_candidate(app):
+			self.clear_cache()
+			for app in self.get_app_cache().get_all_locally_installed_apps():
+				if self.get_app_cache().find_candidate(app):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
+
+	def clear_cache(self):
+		app_cache = self.get_app_cache()
+		app_cache.clear_cache()
+
+	def get_app_cache(self):
+		return AppCache.build(ucs_version=self._get_ucs_version(), server=self._get_server(), cache_dir=self._get_cache_dir())
 
 	@possible_network_error
 	def _download_supra_files(self):
@@ -142,7 +154,7 @@ class Update(UniventionAppAction):
 			content = response.read()
 			with open(os.path.join(self._get_cache_dir(), '.%s' % filename), 'wb') as f:
 				f.write(content)
-			AppManager.clear_cache()
+			self.clear_cache()
 
 		_download_supra_file('index.json.gz', version_specific=True)
 		if not ucr_is_false('appcenter/index/verify'):
@@ -246,7 +258,7 @@ class Update(UniventionAppAction):
 	#	else:
 	#		new_app = App.from_ini(filename)
 	#		if new_app:
-	#			local_app = AppManager.find(new_app.id)
+	#			local_app = Apps().find(new_app.id)
 	#			if local_app.is_installed() and local_app < new_app:
 	#				ucr = ConfigRegistry()
 	#				ucr_update(ucr, {local_app.ucr_upgrade_key: 'yes'})
@@ -272,7 +284,7 @@ class Update(UniventionAppAction):
 			'schema': lambda x: x.get_share_file('schema'),
 			'univention-config-registry-variables': lambda x: x.get_share_file('univention-config-registry-variables'),
 		}
-		for app in AppManager.get_all_locally_installed_apps():
+		for app in self.get_app_cache().get_all_locally_installed_apps():
 			for file in update_files:
 				src = app.get_cache_file(file)
 				dest = update_files[file](app)
@@ -304,6 +316,9 @@ class Update(UniventionAppAction):
 		if not os.path.exists(LOCAL_ARCHIVE):
 			# for some reason the archive is not there. should only happen when deleted intentionally...
 			return False
+		if ucr_get('version/version') != self._get_ucs_version():
+			# Not my LOCAL_ARCHIVE
+			return False
 		self.log('Filling the App Center file cache from our local archive!')
 		try:
 			archive = tarfile.open(LOCAL_ARCHIVE, 'r:*')
@@ -328,16 +343,9 @@ class Update(UniventionAppAction):
 		return '%s/meta-inf/%s' % (self._get_server(), self._get_ucs_version())
 
 	def _get_cache_dir(self):
-		if self._cache_dir is None:
-			self._cache_dir = CACHE_DIR
 		return self._cache_dir
 
 	def _get_server(self):
-		if self._appcenter_server is None:
-			server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
-			self._appcenter_server = server
-		if not self._appcenter_server.startswith('http'):
-			self._appcenter_server = 'https://%s' % self._appcenter_server
 		return self._appcenter_server
 
 	def _load_index_json(self):

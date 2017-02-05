@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
@@ -60,9 +60,12 @@ class Install(InstallRemoveUpgrade):
 	def main(self, args):
 		app = args.app
 		if app.docker and ucr_is_true('appcenter/prudence/docker/%s' % app.id):
-			apps = [_app for _app in AppManager.get_all_apps_with_id(app.id) if not _app.docker]
-			app = sorted(apps)[-1]
-			self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
+			apps = [_app for _app in Apps().get_all_apps_with_id(app.id) if not _app.docker]
+			if apps:
+				app = sorted(apps)[-1]
+				self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
+			else:
+				raise Abort('Cannot use %s as docker is to be ignored, yet, only non-docker versions could be found' % args.app)
 		args.app = app
 		return self.do_it(args)
 
@@ -92,7 +95,7 @@ class Install(InstallRemoveUpgrade):
 		return self._apt_get('install', packages, percentage_end, update=update)
 
 	def _install_master_packages(self, app, percentage_end=100, unregister_if_uninstalled=False):
-		old_app = AppManager.find(app)
+		old_app = Apps().find(app.id)
 		was_installed = old_app.is_installed()
 		self._register_component(app)
 		ret = self._install_packages(app.default_packages_master, percentage_end)

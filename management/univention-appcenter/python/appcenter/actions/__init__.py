@@ -38,13 +38,12 @@ import os.path
 from argparse import ArgumentParser, Action, Namespace
 import logging
 import urllib2
-import urllib
 from functools import wraps
+from urlparse import urlsplit
 
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import AllApps
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error, send_information
-from univention.appcenter.ucr import ucr_get
+from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -69,17 +68,58 @@ def possible_network_error(func):
 
 
 class StoreAppAction(Action):
+	cache_class = AllApps
+
+	@classmethod
+	def parse_app_id_string(cls, app_id):
+		try:
+			app_id, app_version = app_id.split('=', 1)
+		except ValueError:
+			app_id, app_version = app_id, None
+		try:
+			ucs_version, app_id = app_id.split('/', 1)
+		except ValueError:
+			ucs_version, app_id = None, app_id
+		if ucs_version:
+			try:
+				ucs_version, server = ucs_version.split('@', 1)
+			except ValueError:
+				ucs_version, server = ucs_version, None
+		else:
+			server = None
+		ucs_version = ucs_version or None
+		return app_id, app_version, ucs_version, server
+
+	@classmethod
+	def get_app_from_app_id_string(cls, app_id, app_version, ucs_version, server):
+		app_cache = cls.cache_class()
+		if ucs_version or server:
+			apps = []
+			for cache in app_cache.app_caches:
+				if ucs_version and ucs_version != cache.get_ucs_version():
+					continue
+				if server and server != urlsplit(cache.get_server()).netloc:
+					continue
+				app = cache.find(app_id, app_version=app_version)
+				if app:
+					if app.is_installed():
+						return app
+					apps.append(app)
+			if apps:
+				return sorted(apps)[-1]
+		else:
+			return app_cache.find(app_id, app_version=app_version)
 
 	def __call__(self, parser, namespace, value, option_string=None):
 		apps = []
 		if self.nargs is None:
 			value = [value]
 		for val in value:
-			try:
-				app_id, app_version = val.split('=', 1)
-			except ValueError:
-				app_id, app_version = val, None
-			app = AppManager.find(app_id, app_version)
+			app_id, app_version, ucs_version, server = self.parse_app_id_string(val)
+			if self.cache_class:
+				app = self.get_app_from_app_id_string(app_id, app_version, ucs_version, server)
+			else:
+				app = app_id, app_version, ucs_version, server
 			if app is None:
 				if app_version is not None:
 					parser.error('Unable to find version %s of app %s. Maybe "%s update" to get the latest list of applications?' % (app_version, app_id, sys.argv[0]))

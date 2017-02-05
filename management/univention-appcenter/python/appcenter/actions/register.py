@@ -42,7 +42,9 @@ from ldap.dn import str2dn, dn2str
 
 from univention.lib.ldap_extension import UniventionLDAPSchema
 
-from univention.appcenter.app import AppManager, App
+from univention.appcenter.app import App
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute
@@ -71,11 +73,11 @@ class Register(CredentialsAction):
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
 
 	def main(self, args):
-		AppManager.reload_package_manager()
+		reload_package_manager()
 		apps = args.apps
 		if not apps:
 			self.debug('No apps given. Using all')
-			apps = AppManager.get_all_apps()
+			apps = Apps().get_all_apps()
 		self._register_component_for_apps(apps, args)
 		self._register_files_for_apps(apps, args)
 		self._register_host_for_apps(apps, args)
@@ -95,32 +97,27 @@ class Register(CredentialsAction):
 	def _register_component_for_apps(self, apps, args):
 		if not self._shall_register(args, 'component'):
 			return
-		server = AppManager.get_server()
-		server = server[server.find('/') + 2:]
 		updates = {}
 		for app in apps:
 			if self._do_register(app, args):
-				updates.update(self._register_component(app, server, delay=True))
+				updates.update(self._register_component(app, delay=True))
 			else:
 				updates.update(self._unregister_component_dict(app))
 		with catch_stdout(self.logger):
 			ucr_save(updates)
 
-	def _register_component(self, app, server=None, delay=False):
+	def _register_component(self, app, delay=False):
 		if app.docker and not container_mode():
 			self.log('Component needs to be registered in the container')
 			return {}
 		if app.without_repository:
 			self.log('No repository to register')
 			return {}
-		if server is None:
-			server = AppManager.get_server()
-			server = server[server.find('/') + 2:]
 		updates = {}
 		self.log('Registering component for %s' % app.id)
-		for _app in AppManager.get_all_apps_with_id(app.id):
+		for _app in Apps().get_all_apps_with_id(app.id):
 			if _app == app:
-				updates.update(self._register_component_dict(_app, server))
+				updates.update(self._register_component_dict(_app))
 			else:
 				updates.update(self._unregister_component_dict(_app))
 		if not delay:
@@ -128,13 +125,13 @@ class Register(CredentialsAction):
 				ucr_save(updates)
 		return updates
 
-	def _register_component_dict(self, app, server):
+	def _register_component_dict(self, app):
 		ret = {}
 		ucr_base_key = app.ucr_component_key
 		self.debug('Adding %s' % ucr_base_key)
 		ret[ucr_base_key] = 'enabled'
 		ucr_base_key = '%s/%%s' % ucr_base_key
-		ret[ucr_base_key % 'server'] = server
+		ret[ucr_base_key % 'server'] = app._get_server()
 		ret[ucr_base_key % 'description'] = app.name
 		ret[ucr_base_key % 'localmirror'] = 'false'
 		ret[ucr_base_key % 'version'] = ucr_get(ucr_base_key % 'version', 'current')
@@ -317,7 +314,8 @@ class Register(CredentialsAction):
 			status = ucr_get(app.ucr_status_key, 'installed')
 		else:
 			status = 'installed'
-		ucr_save({app.ucr_status_key: status, app.ucr_version_key: app.version})
+		print {app.ucr_status_key: status, app.ucr_version_key: app.version, app.ucr_ucs_version_key: app.get_ucs_version(), app.ucr_server_key: app.get_server()}
+		ucr_save({app.ucr_status_key: status, app.ucr_version_key: app.version, app.ucr_ucs_version_key: app.get_ucs_version(), app.ucr_server_key: app.get_server()})
 		self._register_ports(app)
 		updates.update(self._register_docker_variables(app))
 		updates.update(self._register_app_report_variables(app))
@@ -518,7 +516,7 @@ class Register(CredentialsAction):
 
 	def _register_installed_apps_in_ucr(self):
 		installed_codes = []
-		for app in AppManager.get_all_apps():
+		for app in Apps().get_all_apps():
 			if app.is_installed():
 				installed_codes.append(app.code)
 		with catch_stdout(self.logger):

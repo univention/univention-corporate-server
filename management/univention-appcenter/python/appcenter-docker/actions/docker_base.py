@@ -169,10 +169,11 @@ class DockerActionMixin(object):
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
 		ucr_keys_list = list(ucr_keys())
-		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'appcenter/index/verify', 'ldap/master.*', 'locale.*', 'domainname']:
+		for var in ['nameserver.*', 'repository/online/server', 'appcenter/apps/%s/.*' % app.id, 'repository/app_center/server', 'update/secure_apt', 'appcenter/index/verify', 'ldap/master.*', 'locale.*', 'domainname']:
 			for key in ucr_keys_list:
 				if re.match(var, key):
 					set_vars[key] = ucr_get(key)
+		set_vars['repository/app_center/server'] = ucr_get(app.ucr_server_key) or set_vars.get('repository/app_center/server')
 		if set_vars.get('nameserver1', '127.0.0.1') == '127.0.0.1':
 			set_vars['nameserver1'] = get_localhost_ip()
 		set_vars['updater/identify'] = 'Docker App'

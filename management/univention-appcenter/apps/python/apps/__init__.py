@@ -39,7 +39,7 @@ from univention.management.console.modules.decorators import simple_response
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.modules.appcenter.sanitizers import error_handling
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import log_to_logfile
 from univention.appcenter.actions import get_action
 
@@ -57,7 +57,7 @@ class Instance(umcm.Base):
 
 	@simple_response
 	def get(self, application):
-		app = AppManager.find(application)
+		app = Apps().find(application)
 		domain = get_action('domain')
 		if app is None:
 			return None

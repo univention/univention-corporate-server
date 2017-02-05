@@ -95,9 +95,9 @@ def docker_bridge_network_conflict():
 
 
 def app_is_running(app):
-	from univention.appcenter.app import AppManager
+	from univention.appcenter.app_cache import Apps
 	if isinstance(app, basestring):
-		app = AppManager.find(app)
+		app = Apps().find(app)
 	if app:
 		if not app.docker:
 			return False
@@ -392,11 +392,34 @@ def get_local_fqdn():
 	return '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 
 
-def get_server():
-	server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
+def get_server_and_version_from_string(server):
+	'''Parses server and UCS version from a string
+
+	>>> get_server_and_version_from_string('appcenter-test.software-univention.de')
+	'https://appcenter-test.software-univention.de', '4.2'
+	>>> get_server_and_version_from_string('4.1@http://appcenter.software-univention.de')
+	'http://appcenter.software-univention.de', '4.1'
+	'''
+	try:
+		ucs_version, server = server.split('@')
+	except ValueError:
+		ucs_version = ucr_get('version/version')
 	if not server.startswith('http'):
 		server = 'https://%s' % server
-	return server
+	return server, ucs_version
+
+
+def get_server_and_version():
+	ret = []
+	appcenter_servers = ucr_get('appcenter/server', 'appcenter.software-univention.de').split(' ')
+	for server in appcenter_servers:
+		server, ucs_version = get_server_and_version_from_string(server)
+		ret.append((server, ucs_version))
+	return ret
+
+
+def get_server():
+	return get_server_and_version()[0][0]
 
 
 def container_mode():

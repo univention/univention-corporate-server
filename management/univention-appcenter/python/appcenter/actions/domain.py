@@ -37,7 +37,7 @@ import re
 from univention.appcenter.log import LogCatcher
 from univention.appcenter.utils import call_process, get_local_fqdn
 from univention.appcenter.udm import search_objects
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_get, ucr_is_false
@@ -135,12 +135,12 @@ class Domain(CredentialsAction):
 				# unable to compute directly... better treat as not available
 				update_available = False
 			elif version:
-				remote_app = AppManager.find(app.id, app_version=version)
+				remote_app = Apps().find(app.id, app_version=version)
 				if remote_app:
 					prevent_docker = None
 					if not is_local:
 						prevent_docker = True
-					candidate = AppManager.find_candidate(remote_app, prevent_docker=prevent_docker) or remote_app
+					candidate = Apps().find_candidate(remote_app, prevent_docker=prevent_docker) or remote_app
 					update_available = remote_app < candidate
 			ret[host['name']] = {
 				'ucs_version': remote_ucs_version,
@@ -154,5 +154,5 @@ class Domain(CredentialsAction):
 		return ret
 
 	def _find_latest_app_version(self, app):
-		candidate = AppManager.find_candidate(app)
+		candidate = Apps().find_candidate(app)
 		return candidate or app
