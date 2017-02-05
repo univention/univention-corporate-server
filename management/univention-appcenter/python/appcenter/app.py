@@ -1067,6 +1067,8 @@ class App(object):
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
 					return False
+			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version() or ucr_get(self.ucr_server_key, self.get_server()) != self.get_server():
+				return False
 			return packages_are_installed(self.default_packages)
 
 	def is_ucs_component(self):
@@ -1484,4 +1486,4 @@ class App(object):
 		return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
 	def __cmp__(self, other):
-		return cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id)
+		return cmp(LooseVersion(self.get_server()), LooseVersion(other.get_server())) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id)
