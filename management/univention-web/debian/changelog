@@ -1,3 +1,9 @@
+univention-web (1.0.14-2) unstable; urgency=medium
+
+  * Bug #38824: make _getPackageName more robst
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 15:17:56 +0100
+
 univention-web (1.0.14-1) unstable; urgency=medium
 
   * Bug #38824: provide a generic config.js for Dojo Toolkit
