@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.0-3) unstable; urgency=low
+
+  * Bug #41055: escape LDAP queries
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 06 Feb 2017 11:42:06 +0100
+
 univention-mail-postfix (11.0.0-2) unstable; urgency=low
 
   * add UCVR mail/postfix/myorigin to configure myorigin option (Bug #42300)

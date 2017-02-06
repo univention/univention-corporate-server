@@ -37,6 +37,7 @@ import sys
 import re
 import traceback
 import syslog
+from ldap.filter import filter_format
 from univention.config_registry import ConfigRegistry
 
 usage = "help"
@@ -79,7 +80,9 @@ def listfilter(attrib):
 			# try the ldap stuff, if that fails send email anyway
 			# get recipient restriction
 			ldap_attr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
-			ldap_filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
+			ldap_filter = filter_format(
+				'(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))',
+				(recipient,))
 			result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=ldap_attr)
 
 			if result:
@@ -99,13 +102,15 @@ def listfilter(attrib):
 
 					# get dn and groups of sender
 					if check_sasl_username:
-						ldap_filter = '(&(uid=%s)(objectclass=posixAccount))' % sender
+						ldap_filter = filter_format('(&(uid=%s)(objectclass=posixAccount))', (sender,))
 					else:
-						ldap_filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
+						ldap_filter = filter_format(
+							'(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))',
+							(sender, sender, sender))
 					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]
-						ldap_filter = '(uniqueMember=%s)' % user_dn
+						ldap_filter = filter_format('(uniqueMember=%s)', (user_dn,))
 						group_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 						if group_result:
 							for i in group_result:
@@ -137,12 +142,10 @@ def listfilter(attrib):
 			else:
 				return "DUNNO no group found for %s" % recipient
 		except Exception:
-			return "WARN Error with attrib={}, check_sasl_username={}, traceback={}".format(
-				attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
+			return "WARN Error with sender={} recipient={} attrib={}, check_sasl_username={}, traceback={}".format(
+				sender, recipient, attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
 
 # main
-
-
 attr = {}
 
 # testing
@@ -154,7 +157,7 @@ if options.test:
 	attr["sender"] = options.sender
 	attr["recipient"] = options.recipient
 	action = listfilter(attr)
-	print "action={}\n".format(action)
+	print("action={}\n".format(action))
 else:
 	# read from stdin python -u is required for unbufferd streams
 	while True:
