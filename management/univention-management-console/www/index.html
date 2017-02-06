@@ -9,44 +9,32 @@
 		<link rel="stylesheet" href="style.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 
-		<script type="text/javascript" src="/univention/management/config.js"></script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
 			//<!--
-			var dojoConfig = {
-				has: {
-					'dojo-undef-api': true
-				},
-				isDebug: getQuery('debug') === '1',
-				locale: getLocale(),
-				async: true,
-				deps: [],
-				packages: [
-					{ name: 'management', location: '/univention/management' }
-				],
-				map: {
-					'*': {
-						'umc/app': 'management',
-						'umc/modules': 'management/modules'
-					}
-				},
-				callback: function() {
-					require(["dojo/parser", "management", "umc/tools", "umc/hook", "dojo/domReady!"], function(parser, management, tools) {
-						// parse the DOM tree
-						parser.parse();
-
-						// set the version of the UMC frontend
-						tools.status('version', '%VERSION%');
-
-						// start the application when everything has been loaded
-						management.start({
-							username: getQuery('username'),
-							password: getQuery('password'),
-							module: getQuery('module'),
-							flavor: getQuery('flavor'),
-							overview: getQuery('overview', true)
-						});
-					});
+			dojoConfig.map = {
+				'*': {
+					'umc/app': 'management',
+					'umc/modules': 'management/modules'
 				}
+			};
+			dojoConfig.callback = function() {
+				require(["dojo/parser", "management", "umc/tools", "umc/hook", "dojo/domReady!"], function(parser, management, tools) {
+					// parse the DOM tree
+					parser.parse();
+
+					// set the version of the UMC frontend
+					tools.status('version', '%VERSION%');
+
+					// start the application when everything has been loaded
+					management.start({
+						username: getQuery('username'),
+						password: getQuery('password'),
+						module: getQuery('module'),
+						flavor: getQuery('flavor'),
+						overview: getQuery('overview', true)
+					});
+				});
 			};
 			//-->
 		</script>

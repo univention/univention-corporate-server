@@ -56,9 +56,9 @@ THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
 .PHONY: build-dev install clean
 
-build: $(BUILD_DIR)/dojo/dojo.js build-css
+build: $(BUILD_DIR)/dojo/dojo.js build-css $(BUILD_DIR)/config.js
 
-build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css $(TMP_DIR)/dijit/themes/umc/icons
+build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css $(TMP_DIR)/dijit/themes/umc/icons $(TMP_DIR)/config.js
 
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
@@ -75,6 +75,11 @@ $(TMP_DIR):
 	rm -rf $@/util
 	# copy univention JS files into the tmp dir
 	cp -rfs "$(CURDIR)/js" $@/umc
+	cp config.js $@
+
+%/config.js: config.js
+	# copy the config.js to its appropriate directory
+	cp $< $@
 
 $(TMP_THEME_DIR): $(TMP_DIR)
 	# link theme files into the tmp dir

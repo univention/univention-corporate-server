@@ -1,3 +1,9 @@
+univention-management-console (9.0.23-1) unstable; urgency=medium
+
+  * Bug #38824: use the generic config.js for Dojo Toolkit
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 14:45:28 +0100
+
 univention-management-console (9.0.22-5) unstable; urgency=medium
 
   * Bug #42261: fix traceback accessing this._header._moreTabsDropDownButton

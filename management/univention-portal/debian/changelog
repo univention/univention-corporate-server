@@ -1,22 +1,30 @@
-univention-portal (0.4) unstable; urgency=medium
+univention-portal (1.0.4-2) unstable; urgency=medium
+
+  Bug #38824:
+  * Use the generic config.js for Dojo Toolkit
+  * Fix versioning
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 14:47:11 +0100
+
+univention-portal (0.0.4-1) unstable; urgency=medium
 
   * Bug #42233: bump
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 18 Jan 2017 19:02:25 +0100
 
-univention-portal (0.3) unstable; urgency=medium
+univention-portal (0.0.3-1) unstable; urgency=medium
 
   * Bug #42233: use stylus for css
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 18 Jan 2017 18:30:02 +0100
 
-univention-portal (0.2) unstable; urgency=medium
+univention-portal (0.0.2-1) unstable; urgency=medium
 
   * Bug #42228: implement univention portal
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 22 Sep 2016 18:50:01 +0200
 
-univention-portal (0.1) unstable; urgency=low
+univention-portal (0.0.1-1) unstable; urgency=low
 
   * Initial Release.
 
