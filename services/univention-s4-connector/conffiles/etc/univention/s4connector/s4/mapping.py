@@ -40,6 +40,7 @@ import univention.s4connector.s4.dc
 import univention.s4connector.s4.computer
 
 @!@
+
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
 			'cn=networks,@%@ldap/base@%@', 'cn=kerberos,@%@ldap/base@%@',
@@ -102,12 +103,10 @@ else:
 			con_search_filter='(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))',
 			match_filter='(&(|(&(objectClass=posixAccount)(objectClass=krb5Principal))(objectClass=user))(!(objectClass=univentionHost)))',
 @!@
-ignore_filter = ''
-for user in configRegistry.get('connector/s4/mapping/user/ignorelist', '').split(','):
-	if user:
-		ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
+from univention.s4connector.s4.mapping import ignore_filter_from_tmpl
+ignore_filter = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/s4/mapping/user/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 			ignore_subtree = global_ignore_subtree,
 			
@@ -313,13 +312,12 @@ else:
 			scope='sub',
 
 @!@
-ignore_filter = ''
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/group/ignorelist')
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
-	ignore_filter += '(sambaGroupType=5)(groupType=5)'
-for group in configRegistry.get('connector/s4/mapping/group/ignorelist', '').split(','):
-	if group:
-		ignore_filter += '(cn=%s)' % (group)
-print "			ignore_filter='(|%s)'," % ignore_filter
+	ignore_filter = '(|{}{})'.format('(sambaGroupType=5)(groupType=5)', ignore_filter)
+if ignore_filter:
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -431,12 +429,10 @@ if group_map:
 			# and this subobject would avoid a deletion of this DC in S4
 			con_subtree_delete_objects = [ 'cn=rid set' ],
 @!@
-ignore_filter = ''
-for dc in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
-	if dc:
-		ignore_filter += '(cn=%s)' % (dc)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/dc/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 	
 			@!@
@@ -533,12 +529,10 @@ else:
 
 			ignore_subtree = global_ignore_subtree,
 @!@
-ignore_filter = ''
-for computer in configRegistry.get('connector/s4/mapping/windowscomputer/ignorelist', '').split(','):
-	if computer:
-		ignore_filter += '(cn=%s)' % (computer)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/windowscomputer/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			con_create_objectclass=['top', 'computer' ],
@@ -635,13 +629,12 @@ dns_section = '''
 	's4_dns_ldap_base': s4_dns_ldap_base,
 	}
 
-ignore_filter = ''
-for dns in configRegistry.get('connector/s4/mapping/dns/ignorelist', '').split(','):
-	if dns:
-		ignore_filter += '(DC=%s)' % (dns)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('dc', 'connector/s4/mapping/dns/ignorelist')
+
 if ignore_filter:
 	dns_section = dns_section + '''
-			ignore_filter='(|%s)',''' % ignore_filter
+			ignore_filter=%r,''' % ignore_filter
 
 	dns_section = dns_section + '''
 			ignore_subtree = global_ignore_subtree,
@@ -653,12 +646,10 @@ if ignore_filter:
 
 print dns_section
 
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
 
 if configRegistry.is_true('connector/s4/mapping/gpo', True):
-	ignore_filter = ''
-	for gpo in configRegistry.get('connector/s4/mapping/gpo/ignorelist', '').split(','):
-		if gpo:
-			ignore_filter += '(cn=%s)' % (gpo)
+	ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/gpo/ignorelist')
 	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
 	else:
@@ -673,7 +664,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 
 			con_search_filter='(&(objectClass=container)(objectClass=groupPolicyContainer))',
 
-			ignore_filter='%(ignore_filter)s',
+			ignore_filter=%(ignore_filter)r,
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -772,11 +763,10 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 '''
 	print section
 
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+
 if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
-	ignore_filter = ''
-	for wmifilter in configRegistry.get('connector/s4/mapping/wmifilter/ignorelist', '').split(','):
-		if wmifilter:
-			ignore_filter += '(cn=%s)' % (wmifilter)
+	ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/wmifilter/ignorelist')
 	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
 	else:
@@ -791,7 +781,7 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 
 			con_search_filter='(objectClass=msWMI-Som)',
 
-			ignore_filter='%(ignore_filter)s',
+			ignore_filter=%(ignore_filter)r,
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -901,11 +891,10 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 		),
 ''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
 
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+
 if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False):
-	ignore_filter = ''
-	for cfilter in configRegistry.get('connector/s4/mapping/msprintconnectionpolicy/ignorelist', '').split(','):
-		if cfilter:
-			ignore_filter += '(cn=%s)' % (cfilter)
+	ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/msprintconnectionpolicy/ignorelist')
 	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
 	else:
@@ -916,7 +905,7 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 			sync_mode='%(sync_mode_ou)s',
 			scope='sub',
 			con_search_filter='(objectClass=msPrint-ConnectionPolicy)',
-			ignore_filter='%(ignore_filter)s',
+			ignore_filter=%(ignore_filter)r,
 			ignore_subtree = global_ignore_subtree,
 			con_create_objectclass=['top', 'msPrint-ConnectionPolicy' ],
 			attributes= {
@@ -984,12 +973,10 @@ else:
 			con_search_filter='(&(|(objectClass=container)(objectClass=builtinDomain))(!(objectClass=groupPolicyContainer)))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
 @!@
-ignore_filter = ''
-for cn in configRegistry.get('connector/s4/mapping/container/ignorelist', 'mail,kerberos,MicrosoftDNS').split(','):
-	if cn:
-		ignore_filter += '(cn=%s)' % (cn)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/container/ignorelist', 'mail,kerberos,MicrosoftDNS')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -1041,12 +1028,10 @@ else:
 			con_search_filter='objectClass=organizationalUnit',
 
 @!@
-ignore_filter = ''
-for ou in configRegistry.get('connector/s4/mapping/ou/ignorelist', '').split(','):
-	if ou:
-		ignore_filter += '(ou=%s)' % (ou)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('ou', 'connector/s4/mapping/ou/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -1100,12 +1085,11 @@ else:
 			con_search_filter='(|(&(objectClass=domain)(!(|(name=DomainDnsZones)(name=ForestDnsZones))))(objectClass=sambaDomainName))',
 
 @!@
-ignore_filter = ''
-for cn in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
-	if cn:
-		ignore_filter += '(cn=%s)' % (cn)
+from univention.s4connector.s4.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/dc/ignorelist')
+
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,

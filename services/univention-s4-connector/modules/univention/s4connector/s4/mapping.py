@@ -36,8 +36,45 @@ import univention.config_registry as ucr
 import univention.debug2 as ud
 import univention.s4connector.s4
 
+from univention.s4connector.s4 import format_escaped
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
+
+
+def ignore_filter_from_tmpl(template, ucr_key, default=''):
+	"""
+	Construct an `ignore_filter` from a `ucr_key`
+	(`connector/s4/mapping/*/ignorelist`, a comma delimited list of values), as
+	specified by `template` while correctly escaping the filter-expression.
+
+	`template` must be formatted as required by `format_escaped`.
+
+	>>> ignore_filter_from_tmpl('(cn={0!e})',
+	... 'connector/s4/mapping/nonexistend/ignorelist',
+	... 'one,two,three')
+	'(|(cn=one)(cn=two)(cn=three))'
+	"""
+	variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
+	filter_parts = [format_escaped(template, v) for v in variables]
+	if filter_parts:
+		return '(|{})'.format(''.join(filter_parts))
+	return ''
+
+
+def ignore_filter_from_attr(attribute, ucr_key, default=''):
+	"""
+	Convenience-wrapper arround `ignore_filter_from_tmpl()`.
+
+	This expects a single `attribute` instead of a `template` argument.
+
+	>>> ignore_filter_from_attr('cn',
+	... 'connector/s4/mapping/nonexistend/ignorelist',
+	... 'one,two,three')
+	'(|(cn=one)(cn=two)(cn=three))'
+	"""
+	template = '({}={{0!e}})'.format(attribute)
+	return ignore_filter_from_tmpl(template, ucr_key, default)
 
 
 def ucs2s4_sid(s4connector, key, object):
