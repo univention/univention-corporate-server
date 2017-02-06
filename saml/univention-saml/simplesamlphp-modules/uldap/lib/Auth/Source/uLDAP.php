@@ -108,9 +108,9 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		}
 
 		// Password change required:
-		// shadowMax + shadowLastChange < (round(time() / 86400))
+		// shadowMax + shadowLastChange < (floor(time() / 86400))
 		if (isset($attributes['shadowMax']) && is_array($attributes['shadowLastChange'])) {
-			if (((int)$attributes['shadowMax'][0] + (int)$attributes['shadowLastChange'][0]) < (round($the_time / 86400))) {
+			if (((int)$attributes['shadowMax'][0] + (int)$attributes['shadowLastChange'][0]) < (floor($the_time / 86400))) {
 				SimpleSAML_Logger::debug('LDAP password change required');
 				throw new SimpleSAML_Error_Error('LDAP_PWCHANGE');
 			}
