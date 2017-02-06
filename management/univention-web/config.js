@@ -66,15 +66,11 @@ var getLocale = function() {
 };
 
 var _getPackageName = function() {
-	var _sanitizeString = function(str) {
-		return str.replace(/-/g, '')
-	};
-
 	// return the name of the AMD package based on the current URI
 	var parts = location.pathname.split('/');
 	for (var i = parts.length - 1; i >= 0; --i) {
 		if (parts[i]) {
-			return _sanitizeString(parts[i]);
+			return parts[i];
 		}
 	}
 	return 'unknown';
