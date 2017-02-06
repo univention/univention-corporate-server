@@ -251,7 +251,7 @@ define([
 		}),
 		must_not_remove_plugin: new Requirement({
 			reasonDescription: function(details) {
-				return _('It is currently impossible to remove a plugin once it is installed. Remove %s instead.', entities.encode(details.detail.name));
+				return _('It is currently impossible to remove a plugin once it is installed. Remove %s instead.', entities.encode(details.name));
 			}
 		}),
 		must_not_be_depended_on: new Requirement({
