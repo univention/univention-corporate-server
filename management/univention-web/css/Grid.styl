@@ -4,7 +4,6 @@
 	overflow-y: scroll
 	overflow-x: hidden
 
-
 .umc .umcMultiSelect .dojoxGridView
 	min-width: 100%
 	max-width: 100%
@@ -22,15 +21,99 @@
 				.dojoxGridRowTable
 					width: 100% !important
 
+.umc .umcGrid
+	background-color: #fff
+	material-shadow(1)
+
+	.umcGridHeader
+		width: 100%
+		padding: 0
+
+		.dijitButton
+			box-shadow: none
+
+			.dijitIcon
+				display: none
+
+	.dgrid
+		border: none
+
+		.dgrid-cell
+			border: none
+			vertical-align: middle
+			padding: 0
+
+			&.dgrid-selector
+				box-sizing: content-box
+				width: 20px !important
+				padding: 0 23px
+
+				&:after
+					content: ''
+					display: block
+					icon-image(-260, -60)
+
+					^[-3] .dgrid-row.dgrid-selected ^[-3..-1]
+						icon-image(-280, -60)
+
+				input
+					display: none
+
+			div img
+				float: none !important
+
+			.dgrid-sort-arrow
+				float: left
+
+		.dgrid-header
+			height: 56px
+			line-height: @height
+			font-size: 12px
+			background-color: inherit
+
+			.dgrid-cell
+				color: rgba(0, 0, 0, 0.54)
+
+				.dgrid-sort-arrow
+					opacity: 0.87
+					float: none
+					display: inline-block
+					vertical-align: text-bottom
+
+				&.dgrid-sort-up,
+				&.dgrid-sort-down
+					color: rgba(0, 0, 0, 0.87)
 
 
+				&.dgrid-sort-up .dgrid-sort-arrow
+					icon-image(-280, -80)
 
+				&.dgrid-sort-down .dgrid-sort-arrow
+					icon-image(-260, -80)
 
+		.dgrid-row
+			color: rgba(0, 0, 0, 0.87)
+			height: 48px
+			line-height: @height
+			border-top: 1px solid #e0e0e0
+			box-sizing: content-box
+			transition: background-color 0.2s
+
+			&:hover
+				background-color: #eeeeee
+
+			&.dgrid-selected
+				background-color: #f5f5f5
+	
+	.umcGridStatus
+		height: 54px
+		line-height: @height
+		text-align: center
+		border-top: 1px solid #e0e0e0
 
 .umc .umcGridHeader
 	padding-bottom: 0.5em
 	display: inline-block
-
 
 .umc .umcGridHeader > *:after
 	content: " "
@@ -38,7 +121,6 @@
 	clear: both
 	height: 0px
 	visibility: hidden
-
 
 .umc .dojoxGridHeader
 	background-color: $text-color
@@ -61,8 +143,6 @@
 		html.dj_trident &,
 		html.dj_ie &
 			background-image: url(_urlPNG)
-
-
 
 .umc .dojoxGrid
 	font-family: inherit
@@ -87,19 +167,15 @@
 				margin-top: -3px
 				margin-bottom: -2px
 
-
 			.dijitButtonText
 				font-size: 1em
 				margin-top: -3px
 				margin-bottom: 0px
 				padding: 0
 
-
 			.dijitButtonNode
 				padding-top: 0
 				padding-bottom: 0
-
-
 
 		.selectable
 			-webkit-user-select: text
@@ -107,36 +183,27 @@
 			-ms-user-select: text
 			user-select: text
 
-
 		.selectable:hover
 			text-decoration: underline
 			cursor: pointer
 
-
-
-
 .umcGrid .dgrid-scroller
 	max-height: inherit
 
-
 .umcGrid .dgrid-cell div
 	display: inline
-
 
 .umcGrid .umcGridDefaultAction:hover
 	text-decoration: underline
 	cursor: pointer
 
-
 .umc .umcGridFooter
-	margin-bottom: 0.5em
-
+	display: none
 
 .umc .umcGrid .dgrid-cell
 	white-space: nowrap
 	overflow: hidden
 	text-overflow: ellipsis
-
 
 .umc .dojoxGridArrowButtonChar
 	display: none
@@ -153,4 +220,3 @@
 	padding-left: 0
 	width: 12px
 	height: 12px
-

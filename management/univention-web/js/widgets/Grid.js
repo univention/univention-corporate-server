@@ -346,6 +346,7 @@ define([
 			});
 			this.own(this._contextMenu);
 			this._statusMessage = new Text({
+				'class': 'umcGridStatus',
 				content: _("Please perform a search")
 			});
 			this.own(this._statusMessage);
