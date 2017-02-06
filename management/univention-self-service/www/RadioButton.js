@@ -35,9 +35,9 @@ define([
 	"dojo/_base/array",
 	"dijit/form/RadioButton",
 	"dijit/registry",
-	"./_FormWidgetMixin",
+	"umc/widgets/_FormWidgetMixin",
 	"./ContainerWidget",
-	"./LabelPane"
+	"umc/widgets/LabelPane"
 ], function(declare, lang, array, RadioButton, registry, _FormWidgetMixin, ContainerWidget, LabelPane) {
 	function forIn(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
 		scope = scope || _window.global;

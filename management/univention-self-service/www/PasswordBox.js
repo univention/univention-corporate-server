@@ -35,8 +35,8 @@ define([
 	"dojo/when",
 	"dojo/json",
 	"dijit/form/ValidationTextBox",
-	"./_FormWidgetMixin",
-	"./LabelPane",
+	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/LabelPane",
 	"./lib",
 	"umc/i18n!."
 ], function(declare, lang, array, when, json, ValidationTextBox, _FormWidgetMixin, LabelPane, lib, _) {

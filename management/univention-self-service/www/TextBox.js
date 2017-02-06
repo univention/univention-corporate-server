@@ -30,9 +30,9 @@
 
 define([
 	"dojo/_base/declare",
-	"dijit/form/ValidationTextBox"
-], function(declare, ValidationTextBox) {
-	return declare("selfservice.password.TextBox", [ ValidationTextBox ], {
+	"umc/widgets/TextBox"
+], function(declare, TextBox) {
+	return declare("selfservice.password.TextBox", [ TextBox], {
 
 		buildRendering: function() {
 			this.inherited(arguments);

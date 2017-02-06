@@ -40,7 +40,7 @@ define([
 	"put-selector/put",
 	"umc/tools",
 	"./ContainerWidget",
-	"./LabelPane",
+	"umc/widgets/LabelPane",
 	"./TextBox",
 	"./RadioButton",
 	"./lib",
