@@ -1,4 +1,4 @@
-univention-web (1.0.13-2) unstable; urgency=medium
+univention-web (1.0.13-3) unstable; urgency=medium
 
   * Bug #32027: fix formatter parameter of grid actions
 

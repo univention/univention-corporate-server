@@ -444,7 +444,7 @@ define([
 
 				if (defaultActionExists && isDefaultActionColumn) {
 					col.renderCell = lang.hitch(this, function(item, value, node, options) {
-						value = icol.formatter ? icol.formatter(value, item, icol) : value;
+						value = icol.formatter ? icol.formatter(value, item) : value;
 
 						var defaultAction = this._getDefaultActionForItem(item);
 
@@ -484,8 +484,8 @@ define([
 				}
 
 				if (icol.formatter) {
-					col.formatter = function(name, columnValue, column) {
-						var colContent = icol.formatter(name, columnValue, column);
+					col.formatter = function(name, columnValue) {
+						var colContent = icol.formatter(name, columnValue, column, col);
 						if (colContent && colContent.domNode) {
 							return colContent.domNode.outerHTML;
 						} else {
@@ -496,7 +496,7 @@ define([
 				// check for an icon
 				if (icol.iconField) {
 					// we need to specify a formatter
-					col.formatter = this._iconFormatter(icol.name, icol.iconField, icol);
+					col.formatter = this._iconFormatter(icol.name, icol.iconField);
 				}
 
 				return col;
