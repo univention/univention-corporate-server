@@ -60,7 +60,7 @@ def handler(dn, new, old):
 		try:
 			if old:
 				cn = old['cn'][0]
-				ud.debug(ud.LISTENER, ud.PROCESS, 'Purging k5tab of %s' % (cn,))
+				ud.debug(ud.LISTENER, ud.PROCESS, 'Purging krb5.keytab of %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				try:
 					os.unlink(ktab)
@@ -68,7 +68,7 @@ def handler(dn, new, old):
 					pass
 			if new:
 				cn = new['cn'][0]
-				ud.debug(ud.LISTENER, ud.PROCESS, 'Generating k5tab for %s' % (cn,))
+				ud.debug(ud.LISTENER, ud.PROCESS, 'Generating krb5.keytab for %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				# FIXME: otherwise the keytab entry is duplicated
 				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0]])

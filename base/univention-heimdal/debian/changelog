@@ -1,6 +1,12 @@
+univention-heimdal (10.0.0-4) unstable; urgency=low
+
+  * Bug #43492: Improve debug output
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2017 14:03:45 +0100
+
 univention-heimdal (10.0.0-3) unstable; urgency=low
 
-  * Bug #43492: Find heiumdal tools using $PATH
+  * Bug #43492: Find heimdal tools using $PATH
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 14:33:45 +0100
 
@@ -8,7 +14,7 @@ univention-heimdal (10.0.0-2) unstable; urgency=low
 
   * Bug #34258: Add missing Conflicts between packages
   * Bug #43410: Fix credential leak
-  * Bug #43492: Find heiumdal tools using $PATH
+  * Bug #43492: Find heimdal tools using $PATH
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 03 Feb 2017 13:02:44 +0100
 
