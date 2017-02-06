@@ -78,7 +78,7 @@ from univention.appcenter.utils import app_ports, gpg_verify, container_mode
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
@@ -1159,6 +1159,12 @@ class Application(object):
 				if not app.is_installed(package_manager):
 					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
 
+		# Plugin
+		if self.get('plugin_of'):
+			app = Application.find(self.get('plugin_of'))
+			if not app.is_installed(package_manager):
+				unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
+
 		# RequiredAppsInDomain
 		apps = [Application.find(app_id) for app_id in self.get('requiredappsindomain')]
 		for app in apps:
@@ -1181,6 +1187,12 @@ class Application(object):
 		for app in self.all():
 			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
 				depending_apps.append({'id': app.id, 'name': app.name})
+
+		# Plugin
+		if not self.get('docker'):
+			for app in Application.all():
+				if self.id == app.get('plugin_of'):
+					depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
 		apps = [app for app in Application.all() if self.id in app.get('requiredappsindomain')]
@@ -1299,7 +1311,7 @@ class Application(object):
 			self.tell_ldap(component_manager.ucr, package_manager)
 
 			register = get_action('register')
-			app = AppManager.find(self.id, self.version)
+			app = Apps().find(self.id, self.version)
 			if app:
 				register.call_safe(apps=[app], do_it=False)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
@@ -1766,7 +1778,7 @@ class Application(object):
 			# successful installation
 			if not only_master_packages:
 				register = get_action('register')
-				app = AppManager.find(self.id, self.version)
+				app = Apps().find(self.id, self.version)
 				if app:
 					register.call_safe(apps=[app], do_it=True)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})

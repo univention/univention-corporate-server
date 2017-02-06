@@ -34,6 +34,7 @@
 
 import os.path
 
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 
 ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
@@ -42,16 +43,16 @@ ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 class Service(UniventionAppAction):
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be started')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be controlled')
 
 	@classmethod
-	def get_init(self, app):
+	def get_init(cls, app):
 		return '/etc/init.d/docker-app-%s' % app.id
 
 	def call_init(self, app, command):
 		init = self.get_init(app)
 		if not os.path.exists(init):
-			self.fatal('%s is not installed' % app.id)
+			self.fatal('%s is not supported' % app.id)
 			return False
 		return self._call_script(self.get_init(app), command)
 
@@ -96,6 +97,12 @@ class Status(Service):
 
 	'''Ask service about status. Possible answers: running stopped'''
 	help = 'Retrieve status of an app'
+
+	@classmethod
+	def get_init(cls, app):
+		if app.plugin_of:
+			app = Apps().find(app.plugin_of)
+		return super(Status, cls).get_init(app)
 
 	def main(self, args):
 		return self.call_init(args.app, 'status')

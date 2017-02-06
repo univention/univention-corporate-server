@@ -53,7 +53,10 @@ class Remove(Remove, DockerActionMixin):
 		if not app.docker:
 			super(Remove, self)._remove_app(app, args)
 		else:
-			self._remove_docker_container(app, args)
+			if app.plugin_of:
+				raise Abort('Uninstallation of a plugin is not supported!')
+			else:
+				self._remove_docker_container(app, args)
 
 	def _remove_docker_container(self, app, args):
 		if args.backup:

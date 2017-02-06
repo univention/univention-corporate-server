@@ -346,7 +346,7 @@ class Register(CredentialsAction):
 
 	def _register_docker_variables(self, app):
 		updates = {}
-		if app.docker:
+		if app.docker and not app.plugin_of:
 			try:
 				from univention.appcenter.actions.service import Service, ORIGINAL_INIT_SCRIPT
 			except ImportError:
@@ -492,7 +492,7 @@ class Register(CredentialsAction):
 				updates[key] = None
 			if re.match('appreport/%s/' % app.id, key):
 				updates[key] = None
-		if app.docker:
+		if app.docker and not app.plugin_of:
 			try:
 				from univention.appcenter.actions.service import Service
 			except ImportError:

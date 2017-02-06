@@ -607,6 +607,10 @@ class App(object):
 			for a file that holds the password for the DB. If set,
 			this file is created in the Docker Container;
 			*docker_env_database_password* will not be used.
+		plugin_of: App ID of the App the "base App" of this App. For
+			Docker Apps, the plugin is installed into the container
+			of *plugin_of*. For Non-Docker Apps this is just like
+			*required_apps*, but important for later migrations.
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
@@ -841,6 +845,7 @@ class App(object):
 	docker_env_database_password = AppAttribute(default='DB_PASSWORD')
 	docker_env_database_password_file = AppAttribute()
 
+	plugin_of = AppAttribute()
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
 	required_apps_in_domain = AppListAttribute()
@@ -911,6 +916,10 @@ class App(object):
 		self.ucs_version = self.get_ucs_version()  # compatibility
 		if self.docker:
 			self.supported_architectures = ['amd64']
+			if self.plugin_of:
+				for script in ['docker_script_restore_data_before_setup', 'docker_script_restore_data_after_setup']:
+					if getattr(self, script) == self.get_attr(script).default:
+						setattr(self, script, '')
 		else:
 			self.auto_mod_proxy = False
 			self.ports_redirection = []
@@ -1365,14 +1374,20 @@ class App(object):
 	def must_have_no_unmet_dependencies(self):
 		'''The application requires the following applications: %r'''
 		from univention.appcenter.app_cache import Apps
-		unmet_packages = []
+		unmet_apps = []
 
 		apps_cache = Apps()
 		# RequiredApps
 		for app in apps_cache.get_all_apps():
 			if app.id in self.required_apps:
 				if not app.is_installed():
-					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
+					unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
+
+		# Plugin
+		if self.plugin_of:
+			app = Apps.find(self.plugin_of)
+			if not app.is_installed():
+				unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
 
 		# RequiredAppsInDomain
 		from univention.appcenter.actions import get_action
@@ -1384,9 +1399,9 @@ class App(object):
 				continue
 			if not app['is_installed_anywhere']:
 				local_allowed = app['id'] not in self.conflicted_apps
-				unmet_packages.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
-		if unmet_packages:
-			return unmet_packages
+				unmet_apps.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
+		if unmet_apps:
+			return unmet_apps
 		return True
 
 	@hard_requirement('remove')
@@ -1403,6 +1418,12 @@ class App(object):
 			if self.id in app.required_apps and app.is_installed():
 				depending_apps.append({'id': app.id, 'name': app.name})
 
+		# Plugin
+		if not self.docker:
+			for app in apps_cache.get_all_apps():
+				if self.id == app.plugin_of:
+					depending_apps.append({'id': app.id, 'name': app.name})
+
 		# RequiredAppsInDomain
 		apps = [app for app in apps_cache.get_all_apps() if self.id in app.required_apps_in_domain]
 		if apps:
@@ -1417,6 +1438,31 @@ class App(object):
 					if app['is_installed_anywhere']:
 						depending_apps.append({'id': app['id'], 'name': app['name']})
 
+		if depending_apps:
+			return depending_apps
+		return True
+
+	@hard_requirement('remove')
+	def must_not_remove_plugin(self):
+		'''It is currently impossible to remove a plugin once it is
+		installed. Remove %r instead.'''
+		from univention.appcenter.app_cache import Apps
+
+		if self.docker and self.plugin_of:
+			app = Apps().find(self.plugin_of)
+			return {'id': app.id, 'name': app.name}
+		return True
+
+	@soft_requirement('remove')
+	def shall_not_have_plugins_in_docker(self):
+		'''Uninstalling the App will also remove the following plugins:
+		%r'''
+		from univention.appcenter.app_cache import Apps
+		depending_apps = []
+		if self.docker:
+			for app in Apps().get_all_apps():
+				if self.id == app.plugin_of:
+					depending_apps.append({'id': app.id, 'name': app.name})
 		if depending_apps:
 			return depending_apps
 		return True
@@ -1487,3 +1533,223 @@ class App(object):
 
 	def __cmp__(self, other):
 		return cmp(LooseVersion(self.get_server()), LooseVersion(other.get_server())) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id)
+
+
+# LEGACY; deprecated!
+class AppManager(object):
+	_locale = None
+	_cache = []
+	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
+	_AppClass = App
+
+	@classmethod
+	def _invalidate_cache_file(cls):
+		if cls._cache_file:
+			cache_pattern = re.sub(r'%\(.*?\).', '*', cls._cache_file)
+			for cache_file in glob(cache_pattern):
+				try:
+					os.unlink(cache_file)
+				except OSError:
+					pass
+
+	@classmethod
+	def _get_cache_file(cls):
+		if cls._cache_file:
+			return cls._cache_file % {'locale': cls._locale}
+
+	@classmethod
+	def _save_cache(cls, cache):
+		cache_file = cls._get_cache_file()
+		if cache_file:
+			try:
+				cache_obj = dumps([app.attrs_dict() for app in cache], indent=2)
+				with open(cache_file, 'wb') as fd:
+					fd.write(cache_obj)
+			except (IOError, TypeError):
+				return False
+			else:
+				return True
+
+	@classmethod
+	def _load_cache(cls):
+		cache_file = cls._get_cache_file()
+		if cache_file:
+			try:
+				cache_modified = os.stat(cache_file).st_mtime
+				for master_file in cls._relevant_master_files():
+					master_file_modified = os.stat(master_file).st_mtime
+					if cache_modified < master_file_modified:
+						return None
+				with open(cache_file, 'rb') as fd:
+					json = fd.read()
+				cache = loads(json)
+			except (OSError, IOError, ValueError):
+				return None
+			else:
+				try:
+					cache_attributes = set(cache[0].keys())
+				except (TypeError, AttributeError, IndexError, KeyError):
+					return None
+				else:
+					code_attributes = set(attr.name for attr in cls._AppClass._attrs)
+					if cache_attributes != code_attributes:
+						return None
+					return [cls._build_app_from_attrs(attrs) for attrs in cache]
+
+	@classmethod
+	def _relevant_master_files(cls):
+		ret = set()
+		ret.add(os.path.join(CACHE_DIR, '.index.json.gz'))
+		classes_visited = set()
+
+		def add_class(klass):
+			if klass in classes_visited:
+				return
+			classes_visited.add(klass)
+			try:
+				module = sys.modules[klass.__module__]
+				ret.add(module.__file__)
+			except (AttributeError, KeyError):
+				pass
+			if hasattr(klass, '__bases__'):
+				for base in klass.__bases__:
+					add_class(base)
+			if hasattr(klass, '__metaclass__'):
+				add_class(klass.__metaclass__)
+
+		add_class(cls._AppClass)
+		return ret
+
+	@classmethod
+	def _relevant_ini_files(cls):
+		return glob(os.path.join(CACHE_DIR, '*.ini'))
+
+	@classmethod
+	def _build_app_from_attrs(cls, attrs):
+		return cls._AppClass(**attrs)
+
+	@classmethod
+	def _build_app_from_ini(cls, ini):
+		app = cls._AppClass.from_ini(ini, locale=cls._locale)
+		if app:
+			for attr in app._attrs:
+				attr.post_creation(app)
+		return app
+
+	@classmethod
+	def clear_cache(cls):
+		ucr_load()
+		cls._cache[:] = []
+		reload_package_manager()
+		cls._invalidate_cache_file()
+		_get_rating_items._cache = None
+		_get_license_descriptions._cache = None
+
+	@classmethod
+	def _get_every_single_app(cls):
+		if not cls._cache:
+			cls._locale = get_locale() or 'en'
+			try:
+				cached_apps = cls._load_cache()
+				if cached_apps is not None:
+					cls._cache = cached_apps
+					app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
+				else:
+					for ini in cls._relevant_ini_files():
+						app = cls._build_app_from_ini(ini)
+						if app is not None:
+							cls._cache.append(app)
+					cls._cache.sort()
+					if cls._save_cache(cls._cache):
+						app_logger.debug('Saved %d apps into cache' % len(cls._cache))
+					else:
+						app_logger.warn('Unable to cache apps')
+			finally:
+				cls._locale = None
+		return cls._cache
+
+	@classmethod
+	def get_all_apps(cls):
+		ret = []
+		ids = set()
+		for app in cls._get_every_single_app():
+			ids.add(app.id)
+		for app_id in sorted(ids):
+			ret.append(cls.find(app_id))
+		return ret
+
+	@classmethod
+	def get_all_locally_installed_apps(cls):
+		ret = []
+		for app in cls._get_every_single_app():
+			if app.is_installed():
+				ret.append(app)
+		return ret
+
+	@classmethod
+	def find_by_component_id(cls, component_id):
+		for app in cls._get_every_single_app():
+			if app.component_id == component_id:
+				return app
+
+	@classmethod
+	def get_all_apps_with_id(cls, app_id):
+		ret = []
+		for app in cls._get_every_single_app():
+			if app.id == app_id:
+				ret.append(app)
+		return ret
+
+	@classmethod
+	def find(cls, app_id, app_version=None, latest=False):
+		if isinstance(app_id, cls._AppClass):
+			app_id = app_id.id
+		apps = list(reversed(cls.get_all_apps_with_id(app_id)))
+		if app_version:
+			for app in apps:
+				if app.version == app_version:
+					return app
+			return None
+		elif not latest:
+			for app in apps:
+				if app.is_installed():
+					return app
+		if apps:
+			return apps[0]
+
+	@classmethod
+	def find_candidate(cls, app, prevent_docker=None):
+		if prevent_docker is None:
+			prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
+		if app.docker:
+			prevent_docker = False
+		app_version = LooseVersion(app.version)
+		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
+		for _app in apps:
+			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
+				continue
+			if _app <= app:
+				break
+			if _app.required_app_version_upgrade:
+				if LooseVersion(_app.required_app_version_upgrade) > app_version:
+					continue
+			return _app
+
+	@classmethod
+	def reload_package_manager(cls):
+		reload_package_manager()
+
+	@classmethod
+	def get_package_manager(cls):
+		return get_package_manager()
+
+	@classmethod
+	def set_package_manager(cls, package_manager):
+		get_package_manager._package_manager = package_manager
+
+	@classmethod
+	def get_server(cls):
+		server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
+		if not server.startswith('http'):
+			server = 'https://%s' % server
+		return server

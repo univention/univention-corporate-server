@@ -351,38 +351,3 @@ class Apps(_AppCache):
 class AllApps(Apps):
 	def include_app(self, app):
 		return True
-
-
-# LEGACY
-#import univention.appcenter.app as appcenter_app
-from univention.appcenter.packages import get_package_manager, reload_package_manager
-
-
-class _AppManager(AppCache):
-	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
-	_AppClass = App
-
-	def get_app_class(self):
-		return self._AppClass
-
-	def get_cache_dir(self):
-		return CACHE_DIR
-
-	def get_cache_file(self):
-		if self._cache_file:
-			return self._cache_file % {'locale': self.get_locale()}
-
-	@classmethod
-	def reload_package_manager(cls):
-		reload_package_manager()
-
-	@classmethod
-	def get_package_manager(cls):
-		return get_package_manager()
-
-	@classmethod
-	def set_package_manager(cls, package_manager):
-		get_package_manager._package_manager = package_manager
-
-AppManager = _AppManager()
-#appcenter_app.AppManager = AppManager
