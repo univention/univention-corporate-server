@@ -172,3 +172,20 @@ Description: UCS Management Console - Web server
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-login
+Architecture: all
+Depends: ${misc:Depends},
+ univention-apache,
+ univention-web-js,
+ univention-web-style,
+Description: UCS Management Console - Login page
+ UCS Management Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the generic login page.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

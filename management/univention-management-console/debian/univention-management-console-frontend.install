@@ -1,2 +1,1 @@
-www/* usr/share/univention-management-console-frontend/
-login var/www/univention
+www/management/* usr/share/univention-management-console-frontend/
