@@ -519,36 +519,10 @@ define([
 		},
 
 		_setupModuleTabs: function() {
-			var Table = declare('Table', [ContainerWidget], {
-				baseClass: 'table',
-				buildRendering: function() {
-					this.domNode = put('table');
-					this.inherited(arguments);
-				}
-			});
-			var TableRow = declare('TableRow', [ContainerWidget], {
-				baseClass: 'tableRow',
-				buildRendering: function() {
-					this.domNode = put('tr');
-					this.inherited(arguments);
-				}
-			});
-			var TableCell = declare('TableCell', [_WidgetBase], {
-				baseClass: 'tableCell',
-				buildRendering: function() {
-					this.domNode = put('td');
-					this.inherited(arguments);
-				},
-				_setContentAttr: function(content) {
-					this.domNode.innerHTML = content;
-					this._set('content', content);
-				}
-			});
-
 			this._moreTabsDropDownButton = new DropDownButton({
 				'class': 'umcMoreTabsDropDownButton invisible',
 				iconClass: '', // prevent 'dijitNoIcon' to be set
-				dropDown: new Table({
+				dropDown: new Menu({
 					'class': 'umcMoreTabsDropDownMenuContent'
 				})
 			});
@@ -560,27 +534,12 @@ define([
 			var aspectHandlesMap = {};
 			this._tabController.on('addChild', lang.hitch(this, function(module) {
 				if (!module.isOverview) {
-					var label = new TableCell({
-						'class': 'label',
-						content: module.title
-					});
-					var closeButton = new TableCell({
-						'class': 'iconCell',
-						content: '<div class="icon"></div>'
-					});
-					var menuItem = new TableRow({
-						'class': 'dijitHidden',
+					var menuItem = new MenuItem({
+						'class': 'dijitDisplayNone',
 						correspondingModuleID: module.id,
-						_setLabelAttr: function(_label) {
-							label.set('content', _label);
-						}
+						label: module.title,
+						onClick: lang.hitch(this._tabContainer, 'selectChild', module)
 					});
-
-					label.on('click', lang.hitch(this._tabContainer, 'selectChild', module));
-					closeButton.on('click', lang.hitch(this._tabContainer, 'removeChild', module));
-
-					menuItem.addChild(label);
-					menuItem.addChild(closeButton);
 					this._moreTabsDropDownButton.dropDown.addChild(menuItem);
 
 					this._updateMoreTabsVisibility();
@@ -608,8 +567,8 @@ define([
 			this.addChild(this._tabController);
 			this.addChild(this._moreTabsDropDownButton);
 
-			domClass.toggle(this._tabController.domNode, 'dijitHidden', tools.isTrue(tools.status('mobileView')));
-			domClass.toggle(this._moreTabsDropDownButton.domNode, 'dijitHidden', tools.isTrue(tools.status('mobileView')));
+			domClass.toggle(this._tabController.domNode, 'dijitDisplayNone', tools.isTrue(tools.status('mobileView')));
+			domClass.toggle(this._moreTabsDropDownButton.domNode, 'dijitDisplayNone', tools.isTrue(tools.status('mobileView')));
 		},
 
 		_updateMoreTabsVisibility: function() {
@@ -634,8 +593,8 @@ define([
 			var numOfTabs = extraTabs.length;
 			while (tabsWidth > availableWidthForTabs && tabIndexOffset < numOfTabs) {
 				tabIndexOffset++;
-				domClass.add(tabs[numOfTabs - tabIndexOffset].domNode, 'dijitHidden');
-				domClass.remove(extraTabs[numOfTabs - tabIndexOffset].domNode, 'dijitHidden');
+				domClass.add(tabs[numOfTabs - tabIndexOffset].domNode, 'dijitDisplayNone');
+				domClass.remove(extraTabs[numOfTabs - tabIndexOffset].domNode, 'dijitDisplayNone');
 				tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
 			}
 			if (tabIndexOffset > 0) {
@@ -647,11 +606,11 @@ define([
 			var tabs = this._tabController.getChildren();
 			tabs.shift(); // remove the overview tab
 			array.forEach(tabs, function(tab) {
-				domClass.remove(tab.domNode, 'dijitHidden');
+				domClass.remove(tab.domNode, 'dijitDisplayNone');
 			});
 			var extraTabs = this._moreTabsDropDownButton.dropDown.getChildren();
 			array.forEach(extraTabs, function(tab) {
-				domClass.add(tab.domNode, 'dijitHidden');
+				domClass.add(tab.domNode, 'dijitDisplayNone');
 			});
 			domClass.add(this._moreTabsDropDownButton.domNode, 'invisible');
 		},
@@ -1561,7 +1520,7 @@ define([
 
 			// the tab bar
 			this._tabController = new TabController({
-				'class': 'umcMainTabController dijitTabContainer dijitTabContainerTop-tabs dijitHidden',
+				'class': 'umcMainTabController dijitTabContainer dijitTabContainerTop-tabs dijitDisplayNone',
 				containerId: this._tabContainer.id
 			});
 
@@ -1626,7 +1585,7 @@ define([
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				if (!tools.status('mobileView')) {
-					domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
+					domClass.toggle(this._tabController.domNode, 'dijitDisplayNone', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
 				}
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
 					newModule.selectedChildWidget._onShow();
@@ -2258,6 +2217,7 @@ define([
 				module_flavor_css = lang.replace('{id}-{flavor}', module);
 			}
 			module_flavor_css = module_flavor_css.replace(/[^_a-zA-Z0-9\-]/g, '-');
+			domClass.add(tab.domNode, lang.replace('color-{0}', [tab.categoryColor]));
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
 			var moreTabsDropDown = lang.getObject('_header._moreTabsDropDownButton.dropDown', false, this);
 			if (moreTabsDropDown) {
@@ -2280,9 +2240,9 @@ define([
 
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
-			styles.insertCssRule(lang.replace('.umc .headerColor-{0} .dijitTabContainerTop-tabs .dijitTab.umcModuleTab-{1}.dijitTabHover', [module.category_for_color, module_flavor_css]), 'background-color: rgba(0, 0, 0, 0.1)');
 			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
-			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent tr.color-{0}:hover', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader .dijitButtonText', [tab.categoryColor]), lang.replace('color: {0}', [color]));
 		},
 
 		__getModuleColor: function(module) {
