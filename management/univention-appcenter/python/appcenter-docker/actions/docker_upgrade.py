@@ -34,7 +34,7 @@
 #
 
 from univention.appcenter.docker import rm as docker_rm
-from univention.appcenter.app.app_cache import Apps
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
