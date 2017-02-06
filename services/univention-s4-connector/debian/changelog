@@ -1,3 +1,11 @@
+univention-s4-connector (11.0.6-4) unstable; urgency=medium
+
+  * Bug #43397: s4-connector: fix `connector/s4/mapping/{dns,dc}/ignorelist` handling.
+  * Bug #43397: s4-connector: correct `connector/s4/mapping/dns/ignorelist` in postinst
+  * Bug #32086: s4-connector: escape ignore_filters in mapping.py
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 06 Feb 2017 15:43:04 +0100
+
 univention-s4-connector (11.0.6-3) unstable; urgency=low
 
   * Bug #38438: start-stop-daemon --oknodo
