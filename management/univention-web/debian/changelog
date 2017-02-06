@@ -1,3 +1,9 @@
+univention-web (1.0.14-4) unstable; urgency=medium
+
+  * Bug #38824: adjust Makefile build-dev target to create symlink to /var/www
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 16:15:15 +0100
+
 univention-web (1.0.14-3) unstable; urgency=medium
 
   * Bug #38824: undo last changes for _getPackageName()

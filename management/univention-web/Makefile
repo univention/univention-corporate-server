@@ -34,6 +34,7 @@ DOJO_DIR:=/usr/share/univention-dojo
 VERSION:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 BUILD_DIR:=$(CURDIR)/build
 TESTS_DIR:=$(CURDIR)/tests
+WWW_JS_DIR:=/var/www/univention/js
 JS_FILES:=$(shell find js -name "*.js")
 I18N_FILES= $(addprefix js/, de.json en.json de.po en.po)
 TMP_I18N_FILES= $(addprefix $(TMP_DIR)/umc/i18n/, en/app.json de/app.json)
@@ -59,6 +60,11 @@ THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 build: $(BUILD_DIR)/dojo/dojo.js build-css $(BUILD_DIR)/config.js
 
 build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css $(TMP_DIR)/dijit/themes/umc/icons $(TMP_DIR)/config.js
+	# divert original js symlink and create symlink to temporary build dir "tmp"
+	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "/usr/share/univention-web/js" ]; then \
+		dpkg-divert --package univention-web-make-build-dev --add --rename --divert $(WWW_JS_DIR).real $(WWW_JS_DIR) ;\
+		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
+	fi
 
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
@@ -172,3 +178,9 @@ install: build
 
 clean:
 	rm -rf $(TMP_DIR) $(BUILD_DIR) js/de.json js/en.json
+	# remove link to temporary build dir "tmp" and undivert original js directory
+	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "$(TMP_DIR)" ]; then \
+		rm $(WWW_JS_DIR) ;\
+		dpkg-divert --package univention-web-make-build-dev --remove --rename "$(WWW_JS_DIR)" ;\
+	fi
+
