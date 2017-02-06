@@ -102,14 +102,7 @@ def listfilter(attrib):
 
 					# get dn and groups of sender
 					if check_sasl_username:
-						if "@" in sender:
-							ldap_filter = filter_format(
-								'(&(mailPrimaryAddress=%s)(objectclass=posixAccount))',
-								(sender,))
-						else:
-							ldap_filter = filter_format(
-								'(&(uid=%s)(objectclass=posixAccount))',
-								(sender,))
+						ldap_filter = filter_format('(&(uid=%s)(objectclass=posixAccount))', (sender,))
 					else:
 						ldap_filter = filter_format(
 							'(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))',
@@ -153,8 +146,6 @@ def listfilter(attrib):
 				sender, recipient, attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
 
 # main
-
-
 attr = {}
 
 # testing
@@ -166,7 +157,7 @@ if options.test:
 	attr["sender"] = options.sender
 	attr["recipient"] = options.recipient
 	action = listfilter(attr)
-	print "action={}\n".format(action)
+	print("action={}\n".format(action))
 else:
 	# read from stdin python -u is required for unbufferd streams
 	while True:

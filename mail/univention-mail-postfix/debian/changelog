@@ -1,3 +1,10 @@
+univention-mail-postfix (10.0.0-18) unstable; urgency=low
+
+  * Bug #41055: sasl_username always contains uid, partly revert r74354
+    (10.0.0-17)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 06 Feb 2017 11:42:06 +0100
+
 univention-mail-postfix (10.0.0-17) unstable; urgency=low
 
   * Bug #41055: allow email addresses as sasl_username, escape LDAP filter

@@ -3,9 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-mail-postfix
-fix: 10.0.0-17.286.201611111501
+fix:
 desc: |
  This update addresses the following issue(s):
- * Email addresses are now accepted as senders when checking access for a
-   restricted mailing list.
+ * LDAP queries are now escaped correctly, when checking checking access for
+   a restricted mailing list.
 bug: [41055]
