@@ -1,6 +1,12 @@
+univention-web (1.0.15-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling for login
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 18:36:33 +0100
+
 univention-web (1.0.14-5) unstable; urgency=medium
 
-  * Bug #38824: added target build-live 
+  * Bug #38824: added target build-live
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 16:23:37 +0100
 

@@ -1,3 +1,9 @@
+univention-management-console (9.0.24-2) unstable; urgency=medium
+
+  * Bug #42174: adjust structure for styling of login
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Feb 2017 18:37:12 +0100
+
 univention-management-console (9.0.24-1) unstable; urgency=medium
 
   * Bug #42174: create initial structure of login page as separate package
