@@ -638,7 +638,7 @@ dns_section = '''
 ignore_filter = ''
 for dns in configRegistry.get('connector/s4/mapping/dns/ignorelist', '').split(','):
 	if dns:
-		ignore_filter += '(%s)' % (dns)
+		ignore_filter += '(DC=%s)' % (dns)
 if ignore_filter:
 	dns_section = dns_section + '''
 			ignore_filter='(|%s)',''' % ignore_filter
@@ -1101,9 +1101,9 @@ else:
 
 @!@
 ignore_filter = ''
-for dns in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
-	if dns:
-		ignore_filter += '(%s)' % (dns)
+for cn in configRegistry.get('connector/s4/mapping/dc/ignorelist', '').split(','):
+	if cn:
+		ignore_filter += '(cn=%s)' % (cn)
 if ignore_filter:
 	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
