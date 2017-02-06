@@ -39,13 +39,13 @@ define([
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
-	"./ContainerWidget",
+	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"./TextBox",
 	"./PasswordBox",
-	"./RadioButton",
+	"umc/widgets/RadioButton",
 	"./lib",
-	"./i18n!."
+	"umc/i18n!."
 ], function(lang, array, on, keys, dom, json, xhr, Button, put, tools, ContainerWidget, LabelPane, TextBox, PasswordBox, RadioButton, lib, _) {
 
 	return {
