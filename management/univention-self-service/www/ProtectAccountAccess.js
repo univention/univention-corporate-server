@@ -73,6 +73,7 @@ define([
 		getContent: function() {
 			if (!this.contentContainer) {
 				this.contentContainer = put('div.contentWrapper');
+				put(this.contentContainer, 'h2', this.getTitle());
 				put(this.contentContainer, 'div.contentDesc', this.getDesc());
 				put(this.contentContainer, this._getSteps());
 			}

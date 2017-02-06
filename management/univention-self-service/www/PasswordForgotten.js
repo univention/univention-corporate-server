@@ -89,6 +89,7 @@ define([
 		getContent: function() {
 			this.contentContainer = put('div.contentWrapper');
 			var credentials = this._getCredentials();
+			put(this.contentContainer, 'h2', this.getTitle())
 			if (credentials) {
 				put(this.contentContainer, 'div.contentDesc', this.getSetNewPassDesc());
 				put(this.contentContainer, this._getSetNewSteps());
