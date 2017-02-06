@@ -225,21 +225,11 @@ stop_conflicting_services() {
 	unset tmp_ucr_key_value_list
 }
 
-get_samba_role() {
-	local samba4_role
-
+get_samba_role () {
 	case "$server_role" in
-		domaincontroller_*)
-			domaincontroller=true;;
+		domaincontroller_*) echo DC ;;
+		memberserver) echo MEMBER ;;
 	esac
-
-	if [ "$domaincontroller" = 'true' ]; then
-		samba4_role='DC'
-	elif [ "$server_role" = "memberserver" ]; then
-		samba4_role='MEMBER'
-	fi
-
-	echo "$samba4_role"
 }
 
 configure_samba_role() {
@@ -253,6 +243,7 @@ configure_samba_role() {
 	fi
 
 	univention-config-registry set samba4/role?"$samba4_role"
+	invoke-rc.d univention-directory-listener crestart
 }
 
 set_samba4_ldap_base() {

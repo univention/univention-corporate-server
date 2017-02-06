@@ -1,3 +1,9 @@
+univention-samba4 (6.0.9-3) unstable; urgency=low
+
+  * Bug #43501: Restart UDL after UCRV samba4/role is set
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2017 14:17:56 +0100
+
 univention-samba4 (6.0.9-2) unstable; urgency=medium
 
   * Bug #42624: New UCR variable samba4/kccsrv/samba_kcc

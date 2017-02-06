@@ -604,6 +604,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The &ucsUDL; is restarted after the &ucsUCRV; <envar>samba4/role</envar> is set (<u:bug>43501</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Samba has been updated to version <literal>4.6.0~rc2</literal> (<u:bug>40661</u:bug>).
