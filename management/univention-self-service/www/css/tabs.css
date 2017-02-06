@@ -50,16 +50,3 @@
 		white-space: pre-line;
 	}
 }
-
-.tab {
-	position: absolute;
-	opacity: 1;
-	visibility: visible;
-	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-
-.hide-tab {
-	visibility:hidden;
-	opacity: 0;
-	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
-}

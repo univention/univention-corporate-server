@@ -1,0 +1,89 @@
+div.PasswordServiceContent {
+	background: #f3f3f3;
+	padding: 1.3em;
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border: 0px solid #000000;
+	-webkit-box-shadow: 6px 6px 5px 0px rgba(131,131,131,1);
+	-moz-box-shadow: 6px 6px 5px 0px rgba(131,131,131,1);
+	box-shadow: 6px 6px 5px 0px rgba(131,131,131,1);
+
+	.contentDesc {
+		font-weight: bold;
+	}
+}
+
+ol.PasswordOl {
+	margin-left: 0;
+	padding-right: 0;
+	padding-left: 0;
+	list-style-type: none;
+
+	li.step {
+		counter-increment: step-counter;
+		margin-bottom: 1em;
+
+		div {
+			margin-top: 0.1em;
+		}
+
+		.dijitButton {
+			margin: 0.6em 0.6em 0 0;
+		}
+	}
+
+	li.step::before {
+		content: counter(step-counter);
+		margin-right: 5px;
+		font-size: 80%;
+		background-color: rgb(200,200,200);
+		color: white;
+		font-weight: bold;
+		padding: 3px 8px;
+		border-radius: 3px;
+	}
+
+	div.stepLabel {
+		display: inline;
+	}
+}
+
+ol#PasswordChangeSteps li.step::before {
+	background-color: #8ebe43;
+}
+
+ol#PasswordForgottenSteps li.step::before {
+	background-color: #fd5745;
+}
+
+ol#PasswordProtectSteps li.step::before {
+	background-color: #f8cd23;
+}
+
+div.stepContent {
+	margin-top: 1.5em;
+}
+
+div.step {
+	margin-bottom: 30px;
+	overflow: hidden;
+	opacity: 1;
+	visibility: visible;
+	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+
+	a {
+		cursor: pointer;
+	}
+}
+
+div.step.hide-step {
+	opacity: 0;
+	display: none;
+	visibility: hidden;
+	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
+}
+
+div.step .dijitButton {
+	margin-top: 9px;
+}
