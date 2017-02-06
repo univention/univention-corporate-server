@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-46) unstable; urgency=medium
+
+  * Bug #43499: Support for Plugins
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Feb 2017 13:44:44 +0100
+
 univention-appcenter (5.0.23-45) unstable; urgency=medium
 
   * Bug #43261: rephrasing + typos

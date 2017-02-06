@@ -1161,6 +1161,12 @@ class Application(object):
 				if not app.is_installed(package_manager):
 					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
 
+		# Plugin
+		if self.get('plugin_of'):
+			app = Application.find(self.get('plugin_of'))
+			if not app.is_installed(package_manager):
+				unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
+
 		# RequiredAppsInDomain
 		apps = [Application.find(app_id) for app_id in self.get('requiredappsindomain')]
 		for app in apps:
@@ -1183,6 +1189,12 @@ class Application(object):
 		for app in self.all():
 			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
 				depending_apps.append({'id': app.id, 'name': app.name})
+
+		# Plugin
+		if not self.get('docker'):
+			for app in Application.all():
+				if self.id == app.get('plugin_of'):
+					depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
 		apps = [app for app in Application.all() if self.id in app.get('requiredappsindomain')]

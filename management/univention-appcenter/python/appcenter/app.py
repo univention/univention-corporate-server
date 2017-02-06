@@ -239,7 +239,7 @@ class AppComponentIDAttribute(AppAttribute):
 
 class AppUCSVersionAttribute(AppAttribute):
 	def get_value(self, component_id, ini_parser, meta_parser, locale):
-		return '4.1'
+		return ucr_get('version/version')
 
 
 class AppBooleanAttribute(AppAttribute):
@@ -608,6 +608,10 @@ class App(object):
 			for a file that holds the password for the DB. If set,
 			this file is created in the Docker Container;
 			*docker_env_database_password* will not be used.
+		plugin_of: App ID of the App the "base App" of this App. For
+			Docker Apps, the plugin is installed into the container
+			of *plugin_of*. For Non-Docker Apps this is just like
+			*required_apps*, but important for later migrations.
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
@@ -839,6 +843,7 @@ class App(object):
 	docker_env_database_password = AppAttribute(default='DB_PASSWORD')
 	docker_env_database_password_file = AppAttribute()
 
+	plugin_of = AppAttribute()
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
 	required_apps_in_domain = AppListAttribute()
@@ -906,6 +911,10 @@ class App(object):
 			setattr(self, attr.name, kwargs.get(attr.name))
 		if self.docker:
 			self.supported_architectures = ['amd64']
+			if self.plugin_of:
+				for script in ['docker_script_restore_data_before_setup', 'docker_script_restore_data_after_setup']:
+					if getattr(self, script) == self.get_attr(script).default:
+						setattr(self, script, '')
 		else:
 			self.auto_mod_proxy = False
 			self.ports_redirection = []
@@ -1303,13 +1312,19 @@ class App(object):
 	@hard_requirement('install', 'upgrade')
 	def must_have_no_unmet_dependencies(self):
 		'''The application requires the following applications: %r'''
-		unmet_packages = []
+		unmet_apps = []
 
 		# RequiredApps
 		for app in AppManager.get_all_apps():
 			if app.id in self.required_apps:
 				if not app.is_installed():
-					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
+					unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
+
+		# Plugin
+		if self.plugin_of:
+			app = AppManager.find(self.plugin_of)
+			if not app.is_installed():
+				unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
 
 		# RequiredAppsInDomain
 		from univention.appcenter.actions import get_action
@@ -1321,9 +1336,9 @@ class App(object):
 				continue
 			if not app['is_installed_anywhere']:
 				local_allowed = app['id'] not in self.conflicted_apps
-				unmet_packages.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
-		if unmet_packages:
-			return unmet_packages
+				unmet_apps.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
+		if unmet_apps:
+			return unmet_apps
 		return True
 
 	@hard_requirement('remove')
@@ -1336,6 +1351,12 @@ class App(object):
 		for app in AppManager.get_all_apps():
 			if self.id in app.required_apps and app.is_installed():
 				depending_apps.append({'id': app.id, 'name': app.name})
+
+		# Plugin
+		if not self.docker:
+			for app in AppManager.get_all_apps():
+				if self.id == app.plugin_of:
+					depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
 		apps = [app for app in AppManager.get_all_apps() if self.id in app.required_apps_in_domain]
@@ -1351,6 +1372,28 @@ class App(object):
 					if app['is_installed_anywhere']:
 						depending_apps.append({'id': app['id'], 'name': app['name']})
 
+		if depending_apps:
+			return depending_apps
+		return True
+
+	@hard_requirement('remove')
+	def must_not_remove_plugin(self):
+		'''It is currently impossible to remove a plugin once it is
+		installed. Remove %r instead.'''
+		if self.docker and self.plugin_of:
+			app = AppManager.find(self.plugin_of)
+			return {'id': app.id, 'name': app.name}
+		return True
+
+	@soft_requirement('remove')
+	def shall_not_have_plugins_in_docker(self):
+		'''Uninstalling the App will also remove the following plugins:
+		%r'''
+		depending_apps = []
+		if self.docker:
+			for app in AppManager.get_all_apps():
+				if self.id == app.plugin_of:
+					depending_apps.append({'id': app.id, 'name': app.name})
 		if depending_apps:
 			return depending_apps
 		return True

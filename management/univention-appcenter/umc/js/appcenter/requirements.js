@@ -249,6 +249,11 @@ define([
 				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
+		must_not_remove_plugin: new Requirement({
+			reasonDescription: function(details) {
+				return _('It is currently impossible to remove a plugin once it is installed. Remove %s instead.', entities.encode(details.detail.name));
+			}
+		}),
 		must_not_be_depended_on: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s is required for the following applications to work.', entities.encode(details.name));
@@ -297,6 +302,13 @@ define([
 			},
 			solution: function(opts, details) {
 				window.open(details.migration_link);
+			}
+		}),
+		shall_not_have_plugins_in_docker: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('Uninstalling %s will also remove the following plugins:', entities.encode(details.name));
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return entities.encode(app.name); }).join('</li><li>') + '</li></ul>';
+				return txt;
 			}
 		}),
 		shall_have_enough_ram: new Requirement({
