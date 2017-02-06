@@ -52,7 +52,7 @@ define([
 			// we iterate over the children of the container to ensure the given widget is attached to THIS TabContainer
 			array.forEach( this.getChildren(), function( item ) {
 				if ( item == child ) {
-					domClass.toggle( item.controlButton.domNode, 'dijitHidden', ! visible );
+					domClass.toggle( item.controlButton.domNode, 'dijitDisplayNone', ! visible );
 					return false;
 				}
 			} );

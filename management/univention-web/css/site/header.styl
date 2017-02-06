@@ -9,7 +9,6 @@ insertBorder()
 	bottom: 0
 	border-bottom: arguments
 
-
 /* mobile view */
 .umc.umcMobileView
 	.umcHeader
@@ -27,7 +26,6 @@ insertBorder()
 					width: 150px
 					margin-left: -27px
 
-
 			@media (max-width: 360px)
 				width: 60px
 				margin-left: -30px
@@ -35,25 +33,20 @@ insertBorder()
 				.dijitButtonText
 					margin-left: -47px
 
-
 			@media (max-width: 320px)
 				margin: 0
 				left: auto
 				right: 120px
-
-
-
 
 	.umcTopContainer
 		transition: transform 0.5s
 		-webkit-transition: -webkit-transform 0.5s
 
 
-
 /* Header elements */
 
 .umc .umcHeader
-	height: 46px
+	height: 48px
 	position: relative
 	padding: 0
 	overflow: hidden
@@ -62,11 +55,9 @@ insertBorder()
 	.dijitTextBox
 		background-color: transparent
 
-
 	/* do not treat formatted elements differently */
 	.dijitButtonText *
 		vertical-align: baseline
-
 
 	.umcBackToOverview
 		background-image: url('../images/home-white.svg')
@@ -77,13 +68,13 @@ insertBorder()
 		height: @height
 		margin: 0
 		transition: background-color 0.35s
+		box-shadow: none
+		border-radius: 0
 
 		.dijitButtonNode
 			display: inline-block
 			width: 100%
 			height: 100% !important
-
-
 
 	.umcMainTabController
 		background: none
@@ -100,46 +91,20 @@ insertBorder()
 			.tabLabel
 				height: @height
 				line-height: @height
-				margin-left: 13px
-				margin-right: 5px
+				box-sizing: border-box
+				padding: 0 24px
+				text-transform: uppercase
+				font-weight: 500
+				font-size: $font-size-button
+				max-width: 264px
+				overflow: hidden
+				text-overflow: ellipsis
 
+				^[-1].dijitTabChecked ^[-1..-1]
+					border-bottom: 3px solid #fff
 
 			.dijitTabCloseButton
-				height: @height
-				width: @height
-				transition: background-color 0.25s
-
-				// override unwanted styles
-				position: relative
-				background: transparent
-				top: 0
-				right: 0
-				margin-left: 0
-
-				&:after
-					content: ''
-					display: block
-					margin: 17px
-					icon-image(0, 0, '../', '-small', 12px, 12px)
-
-
-				&.dijitTabCloseButtonHover
-					background-color: rgba(0, 0, 0, 0.1)
-
-					&:after
-						background-position-x: -12px !important
-
-
-
-
-			&.dijitTabChecked,
-			&.dijitTabHover
-				.dijitTabCloseButton:after
-					icon-image(0, 0, '../', '-small-white', 12px, 12px)
-
-
-
-
+				display: none
 
 	.umcMoreTabsDropDownButton
 		float: left
@@ -160,21 +125,14 @@ insertBorder()
 					icon-image(-300, -20, '../', '-white')
 					margin: 13px 5px
 
-
 				.dijitArrowButtonInner
 					display: none
-
-
-
 
 		&.dijitHover
 			background-color: rgba(0, 0, 0, 0.1)
 
-
 		&.invisible
 			visibility: hidden
-
-
 
 	.umcHeaderRight
 		height: 100%
@@ -195,22 +153,17 @@ insertBorder()
 				transition: width 0.3s
 
 				.umcSearchBox
-					margin-top: 10px
-
+					margin-top: 11px
 
 				.dijitInputField
 					transition: opacity 0.25s, width 0.25s
 					width: 100%
 
-
 				.umcSearchIcon
 					transition: opacity 0.25s, right 0.25s
 
-
 				.umcLiveSearchSidebarRadioButtonGroup
 					display: none
-
-
 
 			&.collapsed
 				width: 60px
@@ -223,23 +176,16 @@ insertBorder()
 					.umcSearchBox:after
 						border-color: transparent
 
-
 					.umcSearchIcon
 						right: 20px
-
 
 					.dijitInputField
 						opacity: 0
 						width: 0
 
-
-
-
-
 		.umcMobileMenuToggleButton
 			display: inline-block
 			vertical-align: top
-
 
 		.univentionLogo
 			display: inline-block
@@ -251,8 +197,6 @@ insertBorder()
 			width: 160px
 			margin-left: 15px
 
-
-
 	.dijitButtonNode
 		height: auto !important
 		background: none
@@ -261,7 +205,6 @@ insertBorder()
 		border: none
 		padding: 0
 		box-shadow: none
-
 
 	.dijitDropDownButton[widgetid=umcMenuHost],
 	.dijitDropDownButton[widgetid=umcMenuUsername]
@@ -272,16 +215,12 @@ insertBorder()
 		.dijitDownArrowButton
 			text-align: left
 
-
 		&.dijitDisabled
 			.dijitIcon
 				opacity: 1 !important
 
 			.dijitButtonText
 				padding-right: 0
-
-
-
 
 	@media (max-width: 549px)
 		.dijitDropDownButton[widgetid=umcMenuHost]
@@ -291,12 +230,9 @@ insertBorder()
 		.dijitDropDownButton[widgetid=umcMenuUsername]
 			max-width: 40%
 
-
-
 	#umcMenuUsername,
 	#umcMenuHost
 		outline: none
-
 
 	#umcMenuUsername .dijitButtonText,
 	#umcMenuHost .dijitButtonText
@@ -308,11 +244,8 @@ insertBorder()
 		font-size: $font-size-title
 		opacity: 1 !important /*overwrite generic disabled rule*/
 
-
 	.dijitDisabled #umcMenuHost .dijitArrowButtonInner
 		width: 0
-
-
 
 .umc
 	&.umcOverviewShown .umcHeader
@@ -325,31 +258,25 @@ insertBorder()
 				.dijitButtonNode
 					cursor: default
 
+		.umcMainTabController .dijitTab
+			color: rgba(0, 0, 0, 0.7)
 
+			&.dijitTabChecked
+				color: rgba(0, 0, 0, 1)
 
 		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon
 			icon-image(-300, -20, '../')
-
 
 	&.umcOverviewNotShown .umcHeader
 		.umcBackToOverview
 			&.dijitHover
 				background-color: rgba(0, 0, 0, 0.1)
 
-
 		.umcMainTabController .dijitTab
-			color: white
-
-			.dijitTabCloseButton:after
-				icon-image(0, 0, '../', '-small-white', 12px, 12px)
-
+			color: rgba(255, 255, 255, 0.7)
 
 			&.dijitTabChecked
-				background-color: rgba(0, 0, 0, 0.15) !important
-
-			&.dijitTabCheckedHover
-				background-color: rgba(0, 0, 0, 0.2) !important
-
+				color: rgba(255, 255, 255, 1)
 
 		.umcHeaderRight
 			.umcSearchBox,
@@ -358,25 +285,17 @@ insertBorder()
 				color: #fff
 				border-color: #fff
 
-
 			.umcSearchIcon
 				icon-image(-260, -40, '../', '-white')
-
 
 			.umcMobileMenuToggleButton div
 				background-color: #fff
 
-
 			.univentionLogo
 				background-image: url(../images/univention-white.svg)
 
-
-
-
-
 .umc .umcMoreTabsMenuPopupWrapper
 	margin: 3px 0 0 3px
-
 
 .umc .umcMoreTabsDropDownMenuContent
 	margin: 0
@@ -395,15 +314,12 @@ insertBorder()
 			^[-1]:hover ^[-1..-1]
 				color: white
 
-
-
 		.iconCell
 			padding: 0
 			transition: inherit
 
 			&:hover
 				background-color: rgba(0, 0, 0, 0.1) !important
-
 
 			.icon
 				icon-image(0, 0, '../', '-small', 12px, 12px)
@@ -415,18 +331,11 @@ insertBorder()
 				^[-1]:hover ^[-1..-1]
 					background-position-x: -12px 
 
-
-
-
-
-
 /* special stylings depending on device class */
 
 @media (max-width: 500px)
 	.col-xxs-12
 		width: 100%
-
-
 
 @media (min-width: 1755px)
 	.col-xlg-4
@@ -438,21 +347,18 @@ insertBorder()
 	.col-xlg-pull-4
 		right: 33.33333333%
 
-
-
 /**
  * style the main container of UMC
  */
 .umc .umcTopContainer .dijitTabContainerTop
 	clear: both
 
-
 /* menu styling */
 .umc
 	.umcMobileMenuToggleButton
 		position: relative
 		width: parentWidth = 60px
-		height: parentHeight = 46px
+		height: parentHeight = 48px
 
 		div
 			position: absolute
@@ -468,7 +374,6 @@ insertBorder()
 			//for mobile(chrome)
 			-webkit-transition: -webkit-transform 0.5s, width 0.5s, right 0.5s
 
-
 		div:nth-child(1)
 			top: 12px
 
@@ -477,7 +382,6 @@ insertBorder()
 
 		div:nth-child(3)
 			top: 26px
-
 
 		.umcMobileMenuToggleButtonTouchStyle
 			width: w = 2px
@@ -492,12 +396,9 @@ insertBorder()
 			opacity: 0
 			transition: opacity 0.4s
 
-
 		&.umcMobileMenuToggleButtonTouched
 			.umcMobileMenuToggleButtonTouchStyle
 				opacity: 1
-
-
 
 		&.umcMobileMenuToggleButtonHover
 			div:nth-child(1)
@@ -513,8 +414,6 @@ insertBorder()
 				right: 24.5px
 				transform: translate(0, -3px) rotate(38deg)
 
-
-
 		&.umcMobileMenuToggleButtonActive
 			div:nth-child(1)
 				transform: translate3d(0, 7px, 0) rotate(45deg)
@@ -524,9 +423,6 @@ insertBorder()
 
 			div:nth-child(3)
 				transform: translate3d(0, -7px, 0) rotate(-45deg)
-
-
-
 
 	.mobileMenu
 		overflow: hidden
@@ -550,10 +446,8 @@ insertBorder()
 			div
 				background-color: white
 
-
 			&.umcMobileMenuToggleButtonTouchStyle
 				box-shadow: 0 0 15px 27px rgba(255, 255, 255, 0.2)
-
 
 			&.umcMobileMenuToggleButtonHover
 				div:nth-child(1)
@@ -570,16 +464,12 @@ insertBorder()
 					right: 17px
 					transform: translate(0, -2px) rotate(-38deg) !important
 
-
-
-
 		.umcText.fullWidthTile
 			color: $text-color-dark-background
 			position: relative
 			height: 50px
 			line-height: 20px
 			padding: ((@height - @line-height) / 2) 0
-
 
 		.menuSlideHeader
 			text-align: center
@@ -596,16 +486,11 @@ insertBorder()
 					left: 0
 					margin-left: 20px
 
-
-
 			&.permaHeader
 				display: none
 
-
 			&:after
 				insertBorder(2px solid #b4b4b4)
-
-
 
 		&.hasPermaHeader
 			$top = 0
@@ -619,21 +504,16 @@ insertBorder()
 				height: $height
 				background-color: rgba(0, 0, 0, 0.3)
 
-
 			.menuSlides
 				top: $height + $top
 				.menuSlide .menuSlideHeader
 					display: none
-
-
-
 
 		.menuSlides,
 		.menuSlide
 			position: absolute
 			z-index: 0
 			background: inherit
-
 
 		.menuSlides
 			top: 0
@@ -665,12 +545,10 @@ insertBorder()
 							insertBorder(1px solid #c8c8c8)
 							left: $freeLeftSpace
 
-
 						&:before
 							insertBorder(1px solid #c8c8c8)
 							bottom: 50px
 							opacity: 0
-
 
 						&:hover,
 						&.menuItemActive
@@ -680,14 +558,11 @@ insertBorder()
 							.popupMenuItemArrowActive
 								opacity: 1
 
-
 							&:before
 								opacity: 1
 
 							&:after
 								left: 0
-
-
 
 						&.menuItemActive
 							color: #282828
@@ -704,16 +579,12 @@ insertBorder()
 							&:before
 								transition: opacity $transitionDur
 
-
-
-
 					.popupMenuItem
 						.childItemsCounter
 							position: absolute
 							right: 0
 							margin-right: 40px
 							display: inline
-
 
 						.popupMenuItemArrow,
 						.popupMenuItemArrowActive
@@ -724,7 +595,6 @@ insertBorder()
 							display: inline
 							margin-top: 1px
 
-
 						.popupMenuItemArrow
 							opacity: 1
 							icon-image(-220, -20, '../', '-white')
@@ -732,8 +602,6 @@ insertBorder()
 						.popupMenuItemArrowActive
 							opacity: 0
 							icon-image(-220, -20, '../')
-
-
 
 					.separator
 						display: none
@@ -747,29 +615,19 @@ insertBorder()
 							left: 20px
 							bottom: -2px
 
-
-
-
-
 			&.popupSlideNormalTransition .menuSlide
 				transform: translate3d(100%, 0, 0)
-
 
 			.hiddenSlide
 				display: none !important
 
-
 			.topLevelSlide
 				z-index: 1
-
 
 			.menuSlide.visibleSlide
 				transform: translate3d(0, 0, 0) scale(1, 1)
 				transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
 				-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
-
-
-
 
 	.mobileMenuCloseOverlay
 		position: fixed
@@ -784,7 +642,6 @@ insertBorder()
 		transition: opacity 0.5s, visibility 0.5s
 		-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0.5s
 
-
 	&.mobileMenuActive
 		overflow: hidden !important
 
@@ -794,14 +651,11 @@ insertBorder()
 			transition: opacity 0.5s, visibility 0s
 			-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0s
 
-
 		.mobileMenu
 			transform: translate3d(0, 0, 0) !important
 			box-shadow: 0px 0px 10px 3px $grey-dark
 			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
 			-webkit-transition: -webkit-transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.3s
-
-
 
 	&.mobileMenuToggleButtonActive
 		.umcMobileMenuToggleButton
@@ -813,7 +667,3 @@ insertBorder()
 
 			div:nth-child(3)
 				transform: translate3d(0, -7px, 0) rotate(-45deg)
-
-
-
-

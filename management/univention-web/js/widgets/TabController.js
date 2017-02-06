@@ -44,7 +44,7 @@ define([
 			array.forEach(this.getChildren(), lang.hitch(this, function(ibutton) {
 				if (ibutton.page == child) {
 					ibutton.set('disabled', !visible);
-					domClass.toggle(ibutton.domNode, 'dijitHidden', !visible);
+					domClass.toggle(ibutton.domNode, 'dijitDisplayNone', !visible);
 				}
 			}));
 		},
