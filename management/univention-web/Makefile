@@ -66,6 +66,13 @@ build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $
 		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
 	fi
 
+build-live: build-dev
+	# generate source maps
+	for idir in . form layout site; do \
+		cd $(TMP_THEME_DIR)/$$idir; \
+		stylus --sourcemap --watch . & \
+	done
+
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
 # shortcut rule
