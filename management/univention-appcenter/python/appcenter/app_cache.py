@@ -36,8 +36,10 @@
 import sys
 import os
 import os.path
+from contextlib import contextmanager
+from time import sleep
 from glob import glob
-from json import dumps, loads
+from json import dump, load
 from urlparse import urlsplit
 from distutils.version import LooseVersion
 
@@ -134,6 +136,7 @@ class AppCache(_AppCache):
 		self._cache_file = None
 		self._cache = []
 		self._cache_modified = None
+		self._lock = False
 
 	def copy(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
 		if app_class is None:
@@ -176,7 +179,6 @@ class AppCache(_AppCache):
 			locale = self.get_locale()
 			self._cache_file = os.path.join(cache_dir, '.apps.%s.json' % locale)
 		return self._cache_file
-	_get_cache_file = get_cache_file  # compatibility
 
 	@classmethod
 	def build(cls, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
@@ -198,9 +200,8 @@ class AppCache(_AppCache):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
-				cache_obj = dumps([app.attrs_dict() for app in self._cache], indent=2)
 				with open(cache_file, 'wb') as fd:
-					fd.write(cache_obj)
+					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
 			except (IOError, TypeError):
 				return False
 			else:
@@ -218,9 +219,8 @@ class AppCache(_AppCache):
 					if cache_modified < master_file_modified:
 						return None
 				with open(cache_file, 'rb') as fd:
-					json = fd.read()
+					cache = load(fd)
 				self._cache_modified = cache_modified
-				cache = loads(json)
 			except (OSError, IOError, ValueError):
 				return None
 			else:
@@ -281,33 +281,48 @@ class AppCache(_AppCache):
 		_get_rating_items._cache = None
 		_get_license_descriptions._cache = None
 
+	@contextmanager
+	def _locked(self):
+		timeout = 60
+		wait = 0.1
+		while self._lock:
+			if not timeout:
+				raise RuntimeError('Could not get lock in %s seconds' % timeout)
+			sleep(wait)
+			timeout -= wait
+		self._lock = True
+		try:
+			yield
+		finally:
+			self._lock = False
+
 	def get_every_single_app(self):
-		cache_file = self.get_cache_file()
-		if cache_file:
-			try:
-				cache_modified = os.stat(cache_file).st_mtime
-			except (EnvironmentError, ValueError):
-				cache_modified = None
-			if cache_modified is None or cache_modified > self._cache_modified:
-				app_logger.debug('Cache outdated. Need to rebuild')
-				self._cache[:] = []
-		if not self._cache:
-			cached_apps = self._load_cache()
-			if cached_apps is not None:
-				self._cache = cached_apps
-				app_logger.debug('Loaded %d apps from cache' % len(self._cache))
-			else:
-				for ini in self._relevant_ini_files():
-					app = self._build_app_from_ini(ini)
-					if app is not None:
-						self._cache.append(app)
-				self._cache.sort()
-				if self._save_cache():
-					app_logger.debug('Saved %d apps into cache' % len(self._cache))
+		with self._locked():
+			cache_file = self.get_cache_file()
+			if cache_file:
+				try:
+					cache_modified = os.stat(cache_file).st_mtime
+				except (EnvironmentError, ValueError):
+					cache_modified = None
+				if cache_modified is None or cache_modified > self._cache_modified:
+					app_logger.debug('Cache outdated. Need to rebuild')
+					self._cache[:] = []
+			if not self._cache:
+				cached_apps = self._load_cache()
+				if cached_apps is not None:
+					self._cache = cached_apps
+					app_logger.debug('Loaded %d apps from cache' % len(self._cache))
 				else:
-					app_logger.warn('Unable to cache apps')
+					for ini in self._relevant_ini_files():
+						app = self._build_app_from_ini(ini)
+						if app is not None:
+							self._cache.append(app)
+					self._cache.sort()
+					if self._save_cache():
+						app_logger.debug('Saved %d apps into cache' % len(self._cache))
+					else:
+						app_logger.warn('Unable to cache apps')
 		return self._cache
-	_get_every_single_app = get_every_single_app  # backwards compatibility
 
 	def get_app_class(self):
 		if self._app_class is None:

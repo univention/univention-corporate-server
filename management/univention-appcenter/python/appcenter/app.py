@@ -32,8 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import sys
 import os
 import os.path
+from glob import glob
 from urlparse import urlsplit
 import re
 from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
@@ -42,9 +44,10 @@ from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
 from weakref import ref
+from json import loads, dumps
 
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.packages import get_package_manager, packages_are_installed
+from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import read_ini_file, app_ports, mkdir, get_current_ram_available, get_locale, container_mode, get_server_and_version, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load

@@ -48,4 +48,8 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 5.0.22-7; then
 	ln -s /usr/share/pyshared/univention/appcenter/packages.py /usr/lib/pymodules/python2.7/univention/appcenter/packages.py
 fi
 
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 6.0.1-10; then
+	ln -s /usr/share/pyshared/univention/appcenter/app_cache.py /usr/lib/pymodules/python2.7/univention/appcenter/app_cache.py
+fi
+
 exit 0
