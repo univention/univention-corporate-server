@@ -641,8 +641,9 @@ if ignore_filter:
 			
 			con_sync_function = univention.s4connector.s4.dns.ucs2con,
 			ucs_sync_function = univention.s4connector.s4.dns.con2ucs,
+	'''
 
-		),'''
+dns_section += '	),'
 
 print dns_section
 
