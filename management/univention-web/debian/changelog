@@ -1,3 +1,9 @@
+univention-web (1.0.15-5) unstable; urgency=medium
+
+  * Bug #32027: fix columns without default actions
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 07 Feb 2017 11:08:21 +0100
+
 univention-web (1.0.15-4) unstable; urgency=medium
 
   * Bug #32027: fix formatter parameter of grid actions

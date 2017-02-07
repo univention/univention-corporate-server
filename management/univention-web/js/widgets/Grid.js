@@ -255,7 +255,7 @@ define([
 			this._grid.resize();
 			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
 			if (gridIsFullyRendered) {
-				this._statusMessage.set('content', _('Done'));
+				this._statusMessage.set('content', _('All entries loaded'));
 				this._scrollSignal.remove();
 				return;
 			}
@@ -452,8 +452,14 @@ define([
 						if (!defaultAction) {
 							if (value && value.domNode) {
 								this.own(value);
+								return value.domNode;
+							} else {
+								var valueText = new Text ({
+									content: value
+								});
+								this.own(valueText);
+								return valueText.domNode;
 							}
-							return value.domNode;
 						}
 
 						var container = null;
