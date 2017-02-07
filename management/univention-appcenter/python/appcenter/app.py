@@ -1499,10 +1499,18 @@ class App(object):
 		'''The application has not been approved to migrate all
 		existing data. Maybe there is a migration guide:
 		%(migration_link)s'''
-		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
+		problem = self._docker_prudence_is_true() and not self.docker_migration_works
 		if problem:
 			return {'migration_link': self.docker_migration_link}
 		return True
+
+	def _docker_prudence_is_true(self):
+		if self.docker:
+			return False
+		ret = ucr_is_true('appcenter/prudence/docker/%s' % self.id)
+		if not ret and self.plugin_of:
+			ret = ucr_is_true('appcenter/prudence/docker/%s' % self.plugin_of)
+		return ret
 
 	def check(self, function):
 		from univention.appcenter.app_cache import Apps
@@ -1723,7 +1731,7 @@ class AppManager(object):
 	@classmethod
 	def find_candidate(cls, app, prevent_docker=None):
 		if prevent_docker is None:
-			prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
+			prevent_docker = app._docker_prudence_is_true()
 		if app.docker:
 			prevent_docker = False
 		app_version = LooseVersion(app.version)

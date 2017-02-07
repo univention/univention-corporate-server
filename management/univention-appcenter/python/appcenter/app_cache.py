@@ -286,7 +286,7 @@ class AppCache(_AppCache):
 		timeout = 60
 		wait = 0.1
 		while self._lock:
-			if not timeout:
+			if timeout < 0:
 				raise RuntimeError('Could not get lock in %s seconds' % timeout)
 			sleep(wait)
 			timeout -= wait

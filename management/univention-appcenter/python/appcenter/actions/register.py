@@ -314,7 +314,6 @@ class Register(CredentialsAction):
 			status = ucr_get(app.ucr_status_key, 'installed')
 		else:
 			status = 'installed'
-		print {app.ucr_status_key: status, app.ucr_version_key: app.version, app.ucr_ucs_version_key: app.get_ucs_version(), app.ucr_server_key: app.get_server()}
 		ucr_save({app.ucr_status_key: status, app.ucr_version_key: app.version, app.ucr_ucs_version_key: app.get_ucs_version(), app.ucr_server_key: app.get_server()})
 		self._register_ports(app)
 		updates.update(self._register_docker_variables(app))
