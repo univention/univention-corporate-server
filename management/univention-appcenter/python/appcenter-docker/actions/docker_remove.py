@@ -33,6 +33,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort
 from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
@@ -48,6 +49,13 @@ class Remove(Remove, DockerActionMixin):
 		self._unregister_host(app, args)
 		self.percentage = 5
 		super(Remove, self)._do_it(app, args)
+
+	def _unregister_app(self, app, args, lo=None, pos=None, delay=False):
+		super(Remove, self)._unregister_app(app, args, lo, pos, delay)
+		if app.docker:
+			for _app in AppManager.get_all_apps():
+				if _app.docker and _app.plugin_of == app.id:
+					self._unregister_app(_app, args, lo, pos, delay)
 
 	def _remove_app(self, app, args):
 		if not app.docker:
