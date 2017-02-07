@@ -59,7 +59,7 @@ class Install(InstallRemoveUpgrade):
 
 	def main(self, args):
 		app = args.app
-		if app.docker and ucr_is_true('appcenter/prudence/docker/%s' % app.id):
+		if app._docker_prudence_is_true():
 			apps = [_app for _app in AppManager.get_all_apps_with_id(app.id) if not _app.docker]
 			app = sorted(apps)[-1]
 			self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
