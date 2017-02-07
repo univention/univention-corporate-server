@@ -1,3 +1,9 @@
+univention-management-console (9.0.24-4) unstable; urgency=medium
+
+  * Bug #39733: it seems since some days dojo needs unsafe-eval
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2017 12:03:18 +0100
+
 univention-management-console (9.0.24-3) unstable; urgency=medium
 
   * Bug #42261: adjust styling for module tabs
