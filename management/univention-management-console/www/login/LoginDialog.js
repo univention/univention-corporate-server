@@ -334,7 +334,7 @@ define([
 		_authenticate: function(data) {
 			this.standby(true);
 			tools.status('username', data.username);
-			require('umc/auth').authenticate(data).then(
+			require('login').authenticate(data).then(
 				lang.hitch(this, '_authenticated'),
 				lang.hitch(this, '_authentication_failed')
 			);

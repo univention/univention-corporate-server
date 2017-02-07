@@ -87,6 +87,9 @@ var dojoConfig = {
 	packages: [{
 		name: _getPackageName(),
 		location: location.pathname
+	}, {
+		name: 'login',
+		location: '/univention/login'
 	}],
 	map: {},
 	callback: function() {}

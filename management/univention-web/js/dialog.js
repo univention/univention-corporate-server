@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require setTimeout */
+/*global define,require,setTimeout */
 
 define([
 	"dojo/_base/lang",
@@ -37,7 +37,6 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-style",
-	"umc/dialog/LoginDialog",
 	"umc/dialog/NotificationContainer",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
@@ -45,53 +44,9 @@ define([
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
-
-		_loginDialog: null, // internal reference to the login dialog
-		_loginDeferred: null,
-
-		login: function() {
-			// summary:
-			//		Show the login screen.
-			// returns:
-			//		A Deferred object that is called upon successful login.
-			//		The callback receives the authorized username as parameter.
-
-			if (this._loginDeferred) {
-				// a login attempt is currently running
-				return this._loginDeferred;
-			}
-
-			// check if a page reload is required
-			tools.checkReloadRequired();
-
-			this._loginDeferred = require('umc/auth').autologin().then(undefined, lang.hitch(this, function() {
-				// auto authentication could not be executed or failed...
-				return this._loginDialog.ask();
-			}));
-
-			return this._loginDeferred;
-		},
-
-		_initLoginDialog: function() {
-			if (!this._loginDialog) {
-				this._loginDialog = new LoginDialog({});
-				this._loginDialog.startup();
-				topic.subscribe('/umc/authenticated', lang.hitch(this, function() {
-					// remove the reference to the login deferred object
-					this._loginDeferred = null;
-				}));
-			}
-		},
-
-		loginOpened: function() {
-			// summary:
-			//		Returns whether the login dialog has been opened or not
-
-			return this._loginDialog && this._loginDialog.get('open'); // Boolean
-		},
 
 		_notificationMaster: null,
 
@@ -164,11 +119,7 @@ define([
 			// update title
 			this._alertDialog.set('title', title || _('Notification'));
 			//this._alertDialog.startup();
-			if (this._loginDialog && this._loginDialog.get('open')) {
-				setTimeout(lang.hitch(this, function() { this._alertDialog.show(); }), 200);
-			} else {
-				this._alertDialog.show();
-			}
+			this._alertDialog.show();
 		},
 
 		centerAlertDialog: function() {

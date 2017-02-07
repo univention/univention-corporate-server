@@ -53,7 +53,7 @@ define([
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
-	var auth = {};
+	var login= {};
 	var dialog = {
 		login: function() {
 			return new Deferred();
@@ -66,8 +66,8 @@ define([
 		// register the real umc/dialog module in the local scope
 		dialog = _dialog;
 	});
-	require(['umc/auth'], function(_auth) {
-		auth = _auth;
+	require(['login'], function(_login) {
+		login = _login;
 	});
 
 	// define umc/tools
@@ -156,7 +156,7 @@ define([
 			return tools.umcpCommand('get/newsession', {}, false).then(null, lang.hitch(this, function(err) {
 				console.error('WARNING: Could not renew session... forcing re-login again instead:', err);
 				this.closeSession();
-				return dialog.login();
+				return login.showLoginDialog();
 			}));
 		},
 
@@ -197,7 +197,7 @@ define([
 				this._checkSessionTimer = new timing.Timer(30000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
 					// check whether session is still valid
-					this._checkSessionRequest = auth.sessioninfo().otherwise(lang.hitch(this, function(error) {
+					this._checkSessionRequest = login.sessioninfo().otherwise(lang.hitch(this, function(error) {
 						if (tools.parseError(error).status !== 401) {
 							// ignore any other error than unauthenticated (e.g. not reachable, or UCS 4.0 webserver still running)
 							return;
@@ -211,9 +211,9 @@ define([
 						// try to login
 						var def;
 						if (tools.status('authType') === 'SAML') {
-							def = auth.passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
+							def = login.passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
 						} else {
-							def = dialog.login();
+							def = login.showLoginDialog();
 						}
 						def.then(lang.hitch(this, function() {
 							if (!this._checkSessionTimer.isRunning) {
@@ -380,7 +380,7 @@ define([
 
 						if (!this.noLogin && 401 === info.status) {
 							// command was rejected, user is not authorized... continue to poll after successful login
-							var deferred = auth.handleAuthenticationError(info);
+							var deferred = login.handleAuthenticationError(info);
 							if (deferred) {
 								deferred.then(lang.hitch(this, 'sendRequest'));
 								return;
@@ -541,7 +541,7 @@ define([
 				displayErrors: true,
 
 				401: function() {
-					return auth.handleAuthenticationError.call(auth, arguments);
+					return login.handleAuthenticationError.call(login, arguments);
 				},
 
 				display422: function(info) {
@@ -607,9 +607,9 @@ define([
 					// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
 					if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 						this.displayTraceback(info);
-					} else if (503 === status && dialog.loginOpened()) {
+					} else if (503 === status && login.loginDialogOpened()) {
 						// either the UMC-server or the UMC-Web-Server is not runnning
-						dialog._loginDialog.updateForm({message: statusMessage});
+						login._loginDialog.updateForm({message: statusMessage});
 						if (message) {
 							dialog.alert(message, statusMessage);
 						}

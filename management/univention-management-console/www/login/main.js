@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,setTimeout*/
+/*global require,define,setTimeout*/
 
 define([
 	"dojo/_base/lang",
@@ -40,13 +40,14 @@ define([
 	"dojo/json",
 	"dojox/html/entities",
 	"umc/dialog",
+	"login/LoginDialog",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
+], function(lang, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Private utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -61,6 +62,49 @@ define([
 	var auth = {
 
 		_password_required: null,
+		_loginDialog: null, // internal reference to the login dialog
+		_loginDeferred: null,
+
+		showLoginDialog: function() {
+			// summary:
+			//		Show the login screen.
+			// returns:
+			//		A Deferred object that is called upon successful login.
+			//		The callback receives the authorized username as parameter.
+
+			if (this._loginDeferred) {
+				// a login attempt is currently running
+				return this._loginDeferred;
+			}
+
+			// check if a page reload is required
+			tools.checkReloadRequired();
+
+			this._loginDeferred = require('login').autologin().then(undefined, lang.hitch(this, function() {
+				// auto authentication could not be executed or failed...
+				return this._loginDialog.ask();
+			}));
+
+			return this._loginDeferred;
+		},
+
+		_initLoginDialog: function() {
+			if (!this._loginDialog) {
+				this._loginDialog = new LoginDialog({});
+				this._loginDialog.startup();
+				topic.subscribe('/umc/authenticated', lang.hitch(this, function() {
+					// remove the reference to the login deferred object
+					this._loginDeferred = null;
+				}));
+			}
+		},
+
+		loginDialogOpened: function() {
+			// summary:
+			//		Returns whether the login dialog has been opened or not
+
+			return this._loginDialog && this._loginDialog.get('open'); // Boolean
+		},
 
 		handleAuthenticationError: function(info) {
 			//console.debug('auth error');
@@ -76,23 +120,23 @@ define([
 				return this._password_required.promise;
 			}
 
-			dialog._loginDialog.updateForm(info);
+			this._loginDialog.updateForm(info);
 			if (tools.status('authType') === 'SAML') {
-				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(dialog, 'login'));
+				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(this, 'showLoginDialog'));
 			}
-			return dialog.login();
+			return this.showLoginDialog();
 		},
 
 		start: function() {
 			//console.debug('starting auth');
 
-			dialog._initLoginDialog();
-			dialog._loginDialog.standby(true);
-			dialog._loginDialog.show();
+			this._initLoginDialog();
+			this._loginDialog.standby(true);
+			this._loginDialog.show();
 
 			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
-				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(dialog, 'login'));
+				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, 'showLoginDialog'));
 			}));
 		},
 
@@ -126,7 +170,7 @@ define([
 					topic.publish('/umc/authenticated', username);
 					return username;
 				}), lang.hitch(function(error) {
-					dialog.login();
+					this.showLoginDialog();
 					throw error;
 				}));
 			}

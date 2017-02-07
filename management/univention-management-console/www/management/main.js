@@ -61,7 +61,7 @@ define([
 	"dojox/gfx",
 	"dijit/registry",
 	"umc/tools",
-	"umc/auth",
+	"login",
 	"umc/dialog",
 	"umc/store",
 	"dijit/_WidgetBase",
@@ -86,7 +86,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
+		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
 		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
 		i18nTools, _
@@ -1456,7 +1456,7 @@ define([
 			}
 
 			topic.subscribe('/umc/authenticated', lang.hitch(this, '_authenticated'));
-			auth.start();
+			login.start();
 		},
 
 		_authenticated: function(username) {
