@@ -26,4 +26,17 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-define([], function() { return null; });
+define(['umc/app', 'dijit/MenuItem', 'umc/i18n!'], function(app, MenuItem, _) {
+	app.registerOnStartup(function() {
+		app.addMenuEntry(new MenuItem({
+			id: 'umcMenuProtectAccount',
+			$parentMenu$: 'umcMenuSettings',
+			iconClass: 'icon24-umc-menu-pwchange',
+			label: _('Protect account'),
+			onClick: function() {
+				window.open('/univention/self-service#setcontactinformation');
+			}
+		}));
+	});
+	return null;
+});

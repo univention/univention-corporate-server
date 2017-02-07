@@ -43,7 +43,6 @@ define([
 	"./ProtectAccountAccess",
 	"./lib"
 ], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, lib){
-
 	return {
 		content_container: null,
 		content_controller: null,
