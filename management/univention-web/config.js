@@ -35,8 +35,8 @@ function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 		var tuple = vars[i].split('=');
 
 		// check whether we found the particular parameter we are interested in
-		if (2 === tuple.length && param === tuple[0]) {
-			return tuple[1];
+		if (2 === tuple.length && param === decodeURIComponent(tuple[0])) {
+			return decodeURIComponent(tuple[1]);
 		}
 	}
 

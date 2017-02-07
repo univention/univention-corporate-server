@@ -1,3 +1,9 @@
+univention-web (1.0.16-1) unstable; urgency=medium
+
+  * Bug #42174: correctly decode uri components in getQuery()
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2017 19:09:55 +0100
+
 univention-web (1.0.15-8) unstable; urgency=medium
 
   * Bug #42174: split login related things into umc-login package
