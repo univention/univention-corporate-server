@@ -1,3 +1,9 @@
+univention-self-service (2.0.2-3) unstable; urgency=medium
+
+  * Bug 42267: adjusted frontend for new design
+
+ -- Eduard Mai <mai@univention.de>  Tue, 07 Feb 2017 14:26:58 +0100
+
 univention-self-service (2.0.2-2) unstable; urgency=medium
 
   * Bug #42267: version bump

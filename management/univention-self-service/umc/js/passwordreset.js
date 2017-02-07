@@ -34,7 +34,7 @@ define(['umc/app', 'dijit/MenuItem', 'umc/i18n!'], function(app, MenuItem, _) {
 			iconClass: 'icon24-umc-menu-pwchange',
 			label: _('Protect account'),
 			onClick: function() {
-				window.open('/univention/self-service#setcontactinformation');
+				window.open('/univention/self-service/#setcontactinformation');
 			}
 		}));
 	});
