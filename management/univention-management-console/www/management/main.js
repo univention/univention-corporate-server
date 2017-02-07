@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global umc,define,require,console,document,window,getQuery,setTimeout*/
+/*global umc,define,require,console,window,setTimeout,dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -805,7 +805,7 @@ define([
 				};
 				//add menu entries to submenu
 				if (item.popup && item.popup.getChildren().length > 0) {
-					menuEntries = item.popup.getChildren();
+					var menuEntries = item.popup.getChildren();
 					array.forEach(menuEntries, function(menuEntry) {
 						var newEntry = {
 							priority: menuEntry.$priority$ || 0,
@@ -1447,8 +1447,6 @@ define([
 				domClass.add(dojo.body(), 'umcMobileView');
 			}
 
-			tools.status('app.loaded', new Deferred());
-
 			if (typeof props.module == "string") {
 				// a startup module is specified
 				tools.status('autoStartModule', props.module);
@@ -1464,18 +1462,14 @@ define([
 			tools.setUsernameCookie(username, { expires: 100, path: '/univention/' });
 			tools.status('username', username);
 
-			if (!tools.status('app.loaded').isFulfilled()) {
-				// start the timer for session checking
-				tools.checkSession(true);
+			// start the timer for session checking
+			tools.checkSession(true);
 
-				// setup static GUI part
-				this.setupStaticGui();
+			// setup static GUI part
+			this.setupStaticGui();
 
-				// load the modules
-				return this.load().always(function() {
-					tools.status('app.loaded').resolve();
-				});
-			}
+			// load the modules
+			return this.load();
 		},
 
 		_tabContainer: null,

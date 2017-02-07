@@ -94,10 +94,8 @@ define([
 			this._watchFormSubmits();
 
 			// hide the login dialog. but wait for the GUI to be rendered.
-			tools.status('app.loaded').then(lang.hitch(this, function() {
-				// display the UCS logo animation some time
-				setTimeout(lang.hitch(this, 'hide'), 1500);
-			}));
+			// display the UCS logo animation some time
+			//setTimeout(lang.hitch(this, 'hide'), 1500);
 		},
 
 		buildRendering: function() {
@@ -349,9 +347,9 @@ define([
 			this.onLogin(username);
 
 			// hide login dialog
-			if (tools.status('app.loaded').isFulfilled()) {
-				this.hide();
-			}
+			this.hide().then(function() {
+				window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submittsing e.g. ?location=mailto:foo
+			});
 		},
 
 		_authentication_failed: function(error) {

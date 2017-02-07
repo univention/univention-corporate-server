@@ -41,49 +41,7 @@
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewShown">
-		<div id="umcLoginWrapper">
-			<div id="umcFakeLoginLogo"></div>
-			<div id="umcLoginHeaderRight">
-				<div id="umcSingleSignOn" data-dojo-type="management/widgets/SingleSignOn"></div>
-				<div id="umcLanguageSwitch" data-dojo-type="management/widgets/LanguageSwitch"></div>
-			</div>
-			<div id="umcLoginCenterer"></div>
-			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
-				<div id="umcLoginLogo" class="umcLoginLogo">
-					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
-				</div>
-				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
-					<label for="umcLoginUsername">
-						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
-						<a href="javascript:void(0);" onclick="_showLoginTooltip(event);" tabindex="-1">
-							<span class="dijitReset dijitInline dijitIcon umcHelpIcon"></span>
-						</a>
-					</label>
-					<label for="umcLoginPassword">
-						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
-						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
-					</label>
-				</form>
-				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<label for="umcLoginNewPassword">
-						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off"/>
-					</label>
-					<label for="umcLoginNewPasswordRetype">
-						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password" autocomplete="off"/>
-						<input type="submit" name="submit" value="Login"/>
-					</label>
-				</form>
-				<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<label for="umcLoginCustomPrompt">
-						<input placeholder="One time password" id="umcLoginCustomPrompt" type="password" autocomplete="off"/>
-						<input type="submit" name="submit" value="Login"/>
-					</label>
-				</form>
-				<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
-			</div>
-		</div>
 		<div id="umcTopContainer" class="umcTopContainer"></div>
-		<iframe id="umcLoginIframe" src="/univention/login/login.html"></iframe>
 		<noscript>
 			<div class="warningWrapper">
 				<div class="warningCenterer"></div>

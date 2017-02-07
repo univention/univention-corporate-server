@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global require,define,setTimeout*/
+/*global define,setTimeout*/
 
 define([
 	"dojo/_base/lang",
@@ -66,6 +66,10 @@ define([
 		_loginDeferred: null,
 
 		showLoginDialog: function() {
+			dialog.alert('Session timeout. <a href="/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href)) + '">Please login again.</a>');
+		},
+
+		showLoginDialog2: function() {
 			// summary:
 			//		Show the login screen.
 			// returns:
@@ -80,7 +84,7 @@ define([
 			// check if a page reload is required
 			tools.checkReloadRequired();
 
-			this._loginDeferred = require('login').autologin().then(undefined, lang.hitch(this, function() {
+			this._loginDeferred = this.autologin().then(undefined, lang.hitch(this, function() {
 				// auto authentication could not be executed or failed...
 				return this._loginDialog.ask();
 			}));
@@ -130,13 +134,16 @@ define([
 		start: function() {
 			//console.debug('starting auth');
 
-			this._initLoginDialog();
-			this._loginDialog.standby(true);
-			this._loginDialog.show();
-
 			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
-				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, 'showLoginDialog'));
+				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
+				return passiveLogin.then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
+					var target = '/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href));
+					if (!passiveLogin.isCanceled()) {
+						target = '/univention/saml/';
+					}
+					window.location = target;
+				}));
 			}));
 		},
 
