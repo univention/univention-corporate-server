@@ -3,13 +3,11 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-48.273.201702071726
+fix: 5.0.23-49.274.201702071802
 desc: |
  This update addresses the following issues:
  * Apps may now automatically extend User Management to add a generic user
    activation.
- * Docker Apps now support plugins, i.e., other Apps may be plugins of these
-   Apps and are installed in the same container.
  * The initial information dialog about usage of email address and user data
    has been updated.
-bug: [31804, 43499, 43261, 43109]
+bug: [31804, 43261, 43109]
