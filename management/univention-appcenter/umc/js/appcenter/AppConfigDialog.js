@@ -176,9 +176,7 @@ define([
 				'class': 'umcAppDialogTitlePane',
 				title: _('Settings')
 			});
-			if (this.app.isDocker && !this.app.pluginOf) {
-				formTitlePane.addChild(this._serviceForm);
-			}
+			formTitlePane.addChild(this._serviceForm);
 			formTitlePane.addChild(this._confForm);
 			this._container.addChild(formTitlePane);
 

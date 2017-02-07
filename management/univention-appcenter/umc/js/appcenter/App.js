@@ -103,7 +103,6 @@ define([
 			this.dockerMigrationLink = props.docker_migration_link;
 			this.autoStart = props.autostart;
 			this.autoModProxy = props.auto_mod_proxy;
-			this.pluginOf = props.plugin_of;
 			this.config = props.config;
 			this.isRunning = props.is_running;
 			this.hostMaster = props.host_master;
