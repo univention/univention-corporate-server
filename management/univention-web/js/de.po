@@ -154,8 +154,8 @@ msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
 
 #: js/widgets/Grid.js:258
-msgid "Done"
-msgstr ""
+msgid "All entries loaded"
+msgstr "Alle Einträge geladen"
 
 #: js/widgets/ProgressBar.js:146
 msgid "Fetching information from the server failed!"

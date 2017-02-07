@@ -1,3 +1,9 @@
+univention-web (1.0.15-6) unstable; urgency=medium
+
+  * Bug #32027: fix translation
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 07 Feb 2017 11:24:11 +0100
+
 univention-web (1.0.15-5) unstable; urgency=medium
 
   * Bug #32027: fix columns without default actions
