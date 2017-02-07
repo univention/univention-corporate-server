@@ -635,6 +635,8 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The escaping of LDAP filter expressions in the S4 Connector has been improved (<u:bug>32086</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The generation of filters from &ucsUCRV; <envar>connector/s4/mapping/dns/ignorelist</envar> has been fixed (<u:bug>43397</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
