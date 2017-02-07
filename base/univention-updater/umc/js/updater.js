@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -35,6 +35,7 @@ define([
 	"dojo/on",
 	"dijit/Dialog",
 	"umc/dialog",
+	"umc/login",
 	"umc/app",
 	"umc/tools",
 	"umc/widgets/ConfirmDialog",
@@ -43,7 +44,7 @@ define([
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater",
 	"xstyle/css!./updater.css"
-], function(declare, lang, array, on, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, on, Dialog, dialog, login, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 
 	app.registerOnStartup(function() {
 		var checkUpdateIsRunning = function() {
@@ -409,14 +410,14 @@ define([
 				// While the login dialog is open -> all queries return at the
 				// error callback, but without data! (should be documented)
 				// FIXME: remove this if()
-				if (typeof(data) == 'undefined') {
+				if (typeof(data) === 'undefined') {
 					//console.error("QUERY '" + subject + "' without DATA");
 					return;
 				}
 				//console.error("QUERY '" + subject + "' STATUS = " + data.status);
 				var result = tools.parseError(data);
-				if (result.status == 401) {
-					if (this._connection_status != 2) {
+				if (result.status === 401) {
+					if (this._connection_status !== 2) {
 						this._connection_status = 2;
 
 						if (this._busy_dialog) {
@@ -425,7 +426,7 @@ define([
 							this._busy_dialog = null;
 						}
 
-						dialog.login().then(lang.hitch(this, function() {
+						login.showLoginDialog().then(lang.hitch(this, function() {
 							// if authenticated again -> reschedule refresh queries, Note that these
 							// methods are intelligent enough to do nothing if the timer in question
 							// is already active.
