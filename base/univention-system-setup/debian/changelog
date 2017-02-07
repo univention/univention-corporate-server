@@ -1,3 +1,10 @@
+univention-system-setup (10.0.5-1) unstable; urgency=medium
+
+  * Disable the software selection for UCS 4.2 MS1 in our setup wizard
+    (Bug #43506)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Feb 2017 06:20:42 +0100
+
 univention-system-setup (10.0.4-4) unstable; urgency=medium
 
   * Bug #40612: rename method set_locale as this name is now used in the Base
