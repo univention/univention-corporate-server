@@ -50,7 +50,7 @@ from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute
 from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password, container_mode
+from univention.appcenter.utils import mkdir, app_ports, app_ports_with_protocol, currently_free_port_in_range, generate_password, container_mode
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys, ucr_instance
 
@@ -374,6 +374,14 @@ class Register(CredentialsAction):
 				current_port_config[app.ucr_ports_key % container_port] = str(host_port)
 				updates[app.ucr_ports_key % container_port] = None
 				updates[app.ucr_ports_key % container_port + '/protocol'] = None
+		if app.docker and app.plugin_of:
+			# handling for plugins of Docker Apps: copy ports of base App
+			for app_id, container_port, host_port, proto in app_ports_with_protocol():
+				if app_id == app.plugin_of:
+					updates[app.ucr_ports_key % container_port] = str(host_port)
+					updates[app.ucr_ports_key % container_port + '/protocol'] = proto
+			ucr_save(updates)
+			return
 		for port in app.ports_exclusive:
 			updates[app.ucr_ports_key % port] = str(port)
 		for port in app.ports_redirection:

@@ -70,6 +70,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _docker_upgrade_mode(self, app):
 		mode = None
 		detail = None
+		if self.old_app.docker and app.plugin_of:
+			if app > self.old_app:
+				mode, detail = 'app', app.version
+			return mode, detail
 		if not self.old_app.docker:
 			return 'docker', None
 		if not Start.call(app=self.old_app):
