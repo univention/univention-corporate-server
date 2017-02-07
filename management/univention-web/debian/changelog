@@ -1,3 +1,9 @@
+univention-web (1.0.15-7) unstable; urgency=medium
+
+  * Bug #42261: adjust styling of umcHeader
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Feb 2017 14:19:24 +0100
+
 univention-web (1.0.15-6) unstable; urgency=medium
 
   * Bug #32027: fix translation

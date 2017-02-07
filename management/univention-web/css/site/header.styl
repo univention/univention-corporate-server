@@ -46,7 +46,7 @@ insertBorder()
 /* Header elements */
 
 .umc .umcHeader
-	height: 48px
+	height: headerHeight = 48px
 	position: relative
 	padding: 0
 	overflow: hidden
@@ -123,7 +123,7 @@ insertBorder()
 
 				.dijitIcon
 					icon-image(-300, -20, '../', '-white')
-					margin: 13px 5px
+					margin: ((headerHeight - 20px) / 2) 5px
 
 				.dijitArrowButtonInner
 					display: none
@@ -153,7 +153,7 @@ insertBorder()
 				transition: width 0.3s
 
 				.umcSearchBox
-					margin-top: 11px
+					margin-top: 13px
 
 				.dijitInputField
 					transition: opacity 0.25s, width 0.25s
@@ -300,36 +300,25 @@ insertBorder()
 .umc .umcMoreTabsDropDownMenuContent
 	margin: 0
 	background-color: #fff
+	padding: 8px 0
 
-	tr
-		transition: background-color 0.3s
-		cursor: pointer
+	.dijitMenuItem
+		transition-property: background-color, color
+		transition-duration: 0.2s
+		text-transform: uppercase
 
-		.label
-			padding: 0 10px
-			line-height: 30px
-			transition-property: color
-			transition-duration: inherit
+		.dijitMenuItemLabel
+			text-align: center
+			line-height: 32px
+			padding: 0 24px
 
-			^[-1]:hover ^[-1..-1]
-				color: white
+		.dijitMenuItemIconCell,
+		.dijitMenuArrowCell
+			display: none
 
-		.iconCell
-			padding: 0
-			transition: inherit
-
-			&:hover
-				background-color: rgba(0, 0, 0, 0.1) !important
-
-			.icon
-				icon-image(0, 0, '../', '-small', 12px, 12px)
-				margin: 9px
-
-				^[-2]:hover ^[-2..-1]
-					icon-image(0, 0, '../', '-small-white', 12px, 12px)
-
-				^[-1]:hover ^[-1..-1]
-					background-position-x: -12px 
+		&.dijitMenuItemSelected td,
+		&.dijitMenuItemHover td
+			background-color: inherit
 
 /* special stylings depending on device class */
 
@@ -359,29 +348,33 @@ insertBorder()
 		position: relative
 		width: parentWidth = 60px
 		height: parentHeight = 48px
+		$stripeWidth = 20px
+		$stripeHeight = 4px
+		$gap = 3px
+		$topPadding = (parentHeight - ($stripeHeight * 3) - ($gap * 2)) / 2
 
 		div
 			position: absolute
-			width: 20px
-			height: 4px
+			width: $stripeWidth
+			height: $stripeHeight
 			right: ((parentWidth - @width) / 2)
 			background-color: $text-color
 
 			//for firefox mobile
 			pointer-events: none
 
-			transition: transform 0.5s, width 0.5s, right 0.5s
+			transition: transform 0.35s, width 0.35s, right 0.35s
 			//for mobile(chrome)
-			-webkit-transition: -webkit-transform 0.5s, width 0.5s, right 0.5s
+			-webkit-transition: -webkit-transform 0.35s, width 0.35s, right 0.35s
 
 		div:nth-child(1)
-			top: 12px
+			top: $topPadding + ($stripeHeight * 0) + ($gap * 0)
 
 		div:nth-child(2)
-			top: 19px
+			top: $topPadding + ($stripeHeight * 1) + ($gap * 1)
 
 		div:nth-child(3)
-			top: 26px
+			top: $topPadding + ($stripeHeight * 2) + ($gap * 2)
 
 		.umcMobileMenuToggleButtonTouchStyle
 			width: w = 2px
@@ -403,15 +396,12 @@ insertBorder()
 		&.umcMobileMenuToggleButtonHover
 			div:nth-child(1)
 				width: 16px
-				right: 24.5px
+				right: 26px
 				transform: translate(0, 3px) rotate(-38deg)
-
-			div:nth-child(2)
-				top: 19px
 
 			div:nth-child(3)
 				width: 16px
-				right: 24.5px
+				right: 26px
 				transform: translate(0, -3px) rotate(38deg)
 
 		&.umcMobileMenuToggleButtonActive
@@ -453,16 +443,15 @@ insertBorder()
 				div:nth-child(1)
 					width: 16px
 					right: 17px
-					transform: translate(0, 2px) rotate(38deg) !important
+					transform: translate(0, 3px) rotate(38deg) !important
 
 				div:nth-child(2)
-					top: 19px
 					transform: none !important
 
 				div:nth-child(3)
 					width: 16px
 					right: 17px
-					transform: translate(0, -2px) rotate(-38deg) !important
+					transform: translate(0, -3px) rotate(-38deg) !important
 
 		.umcText.fullWidthTile
 			color: $text-color-dark-background
