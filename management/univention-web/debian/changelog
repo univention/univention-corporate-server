@@ -1,3 +1,9 @@
+univention-web (1.0.15-4) unstable; urgency=medium
+
+  * Bug #32027: fix formatter parameter of grid actions
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2017 10:57:18 +0100
+
 univention-web (1.0.15-3) unstable; urgency=medium
 
   * Bug #42261: adjust styling of umcHeader

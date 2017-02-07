@@ -486,7 +486,7 @@ define([
 
 				if (icol.formatter) {
 					col.formatter = function(name, columnValue) {
-						var colContent = icol.formatter(name, columnValue, column, col);
+						var colContent = icol.formatter(name, columnValue, col);
 						if (colContent && colContent.domNode) {
 							return colContent.domNode.outerHTML;
 						} else {
