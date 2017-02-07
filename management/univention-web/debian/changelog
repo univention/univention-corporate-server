@@ -1,3 +1,9 @@
+univention-web (1.0.15-8) unstable; urgency=medium
+
+  * Bug #42174: split login related things into umc-login package
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2017 18:05:08 +0100
+
 univention-web (1.0.15-7) unstable; urgency=medium
 
   * Bug #42261: adjust styling of umcHeader

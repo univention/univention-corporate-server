@@ -1,3 +1,9 @@
+univention-management-console (9.0.24-5) unstable; urgency=medium
+
+  * Bug #42174: split login related things into umc-login package
+
+ -- Florian Best <best@univention.de>  Tue, 07 Feb 2017 18:04:28 +0100
+
 univention-management-console (9.0.24-4) unstable; urgency=medium
 
   * Bug #39733: it seems since some days dojo needs unsafe-eval
