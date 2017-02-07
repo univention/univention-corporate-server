@@ -38,6 +38,7 @@ from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+from univention.config_registry.interfaces import Interfaces
 from DNS import DnsRequest
 from ipaddr import IPAddress, Bytes
 
@@ -57,8 +58,11 @@ def main():
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	forwarders = get_forwarders(ucr)
-	nameservers = get_nameservers(ucr, forwarders)
+	nameservers, forwarders = OrderedDict(), OrderedDict()
+	add_self(nameservers, ucr)
+	get_forwarders(forwarders, ucr)
+	get_nameservers(nameservers, forwarders, ucr)
+	validate_server(nameservers, forwarders, ucr['domainname'], options)
 	add_nameservers(nameservers, ucr['domainname'], options)
 	add_master(nameservers, ucr['ldap/master'], options)
 
@@ -90,6 +94,10 @@ def parse_args():
 		action='store_true',
 		help='Do not add other name-servers')
 	parser.add_option(
+		'--no-validation', '-V',
+		action='store_true',
+		help='Do not validate DNS servers')
+	parser.add_option(
 		'--run-tests',
 		action='store_true',
 		help=SUPPRESS_HELP)
@@ -102,7 +110,7 @@ def parse_args():
 
 
 def setup_logging(options):
-	FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-15s %(message)s'
+	FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
 	LEVELS = [ERROR, WARNING, INFO, DEBUG]
 	try:
 		level = LEVELS[options.verbose]
@@ -111,9 +119,17 @@ def setup_logging(options):
 	basicConfig(format=FORMAT, level=level, stream=stderr)
 
 
-def get_forwarders(ucr):
-	log = getLogger(__name__).getChild('fwd')
-	forwarders = OrderedDict()
+def add_self(nameservers, ucr):
+	log = getLogger(__name__).getChild('ucr/self')
+	iface = Interfaces(ucr)
+	mynet = iface.get_default_ip_address()
+	myself = mynet.ip
+	log.info('Myself %s', myself)
+	nameservers[myself] = None
+
+
+def get_forwarders(forwarders, ucr):
+	log = getLogger(__name__).getChild('ucr/fwd')
 
 	for var in FWD:
 		fwd = ucr.get(var, '').strip()
@@ -126,12 +142,9 @@ def get_forwarders(ucr):
 		log.info('Keeping forwarder %s', fwd)
 		forwarders[fwd] = None
 
-	return forwarders
 
-
-def get_nameservers(ucr, forwarders):
-	log = getLogger(__name__).getChild('fwd')
-	nameservers = OrderedDict({IPAddress(LOCAL): None})
+def get_nameservers(nameservers, forwarders, ucr):
+	log = getLogger(__name__).getChild('ucr/ns')
 
 	for var in DNS:
 		dns = ucr.get(var, '').strip()
@@ -147,7 +160,25 @@ def get_nameservers(ucr, forwarders):
 		log.info('Keeping server %s', dns)
 		nameservers[dns] = None
 
-	return nameservers
+
+def validate_server(nameservers, forwarders, domain, options):
+	log = getLogger(__name__).getChild('val')
+	if options.no_validation:
+		log.info('Skip validation of DNS servers')
+		return
+
+	rec = '_domaincontroller_master._tcp.%s.' % (domain.rstrip('.'),)
+	for server in nameservers:
+		log.debug('Querying %s for SRV %s', server, rec)
+		r = DnsRequest(rec, qtype='SRV', server=['%s' % (server,)], aa=1, rd=0).req()
+		log.debug('header=%r', r.header)
+
+		if r.header['status'] == 'NOERROR' and r.header['aa']:
+			log.info('Valid UCS domain server: %s', server)
+		else:
+			log.warn('UCS domain unknown at %s, making forwarder', server)
+			del nameservers[server]
+			forwarders[server] = None
 
 
 def add_nameservers(nameservers, domain, options):
