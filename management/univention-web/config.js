@@ -26,7 +26,6 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global require*/
 function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 	// parse the URI query string
 	var query = window.location.search.substring(1);
@@ -74,7 +73,7 @@ var _getPackageName = function() {
 		}
 	}
 	return 'unknown';
-}
+};
 
 // pre-defined dojoConfig, will be extende in the index.html of each webapp
 var dojoConfig = {
@@ -92,4 +91,3 @@ var dojoConfig = {
 	map: {},
 	callback: function() {}
 };
-
