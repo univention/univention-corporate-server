@@ -951,6 +951,7 @@ class CPCommand(CPgeneric):
 
 class CPAuth(CPgeneric):
 
+	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
 	def sso(self, *args, **kwargs):
 		remote = cherrypy.request.remote
@@ -979,6 +980,7 @@ class CPAuth(CPgeneric):
 		cherrypy.response.status = 303
 		cherrypy.response.headers['Location'] = '/univention/management/'
 
+	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
 	def default(self, **kwargs):
 		remote = cherrypy.request.remote
