@@ -30,33 +30,31 @@
 #portal
 	min-height: 100%
 	/* Chrome,Safari4+ */
-	background: url(images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
+	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
 	/* Chrome10+,Safari5.1+ */
-	background: url(images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)
+	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)
 	/* W3C */
-	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
+	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
 
 	.wrapper
 		margin-left: 50px
 		margin-right: 30px
 
-		.header
-			height: 45px
+		.umcHeader
 			box-sizing: content-box
+			overflow: visible
 
-			.headerLeft
+			.umcHeaderLeft
 				float: left
 				height: 100%
 
 				h1
-					margin: 0
-					padding-top: 7px
-					font-weight: bold
-					font-size: 2.5em
+					margin-top: 15px
 
-			.headerRight
+			.umcHeaderRight
 				float: right
 				height: 100%
+				margin-right: 0
 
 				.logo
 					/* display: inline-block */
@@ -73,13 +71,21 @@
 					transition: width 0.3s
 
 					.umcSearchBox
-						margin-top: 13px
+						margin-top: 5px
 
 					.umcSearchIcon
 						transition: opacity 0.25s, right 0.25s
 
 					.dijitInputField
 						transition: opacity 0.25s
+
+					.dijitTextBox
+						background-color: transparent
+
+						&:before,
+						&:after,
+						&
+							border-color: #282828
 
 				.search.collapsed
 					width: 60px
@@ -103,10 +109,6 @@
 
 				&:last-child
 					margin-bottom: 0
-
-				.title
-					font-size: 2.5em
-					line-height: 42px
 
 				.umcAppCenterGallery
 					overflow: visible
@@ -135,8 +137,8 @@
 			background-color: white
 			border-radius: 10px
 			overflow: hidden
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
-			transition: box-shadow 0.4s
+			box-shadow: 0 1px 6px rgba(1,0,0,0.117647), 0 1px 4px rgba(0,1,0,0.117647)
+			transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
 
 			.hoverBackground
 				width: 142px
@@ -161,7 +163,8 @@
 
 		.appIcon
 			width: 100%
-			height: 90px
+			height: 80px
+			margin: 5px 0
 			position: absolute
 			background-size: contain
 			background-position: center center
@@ -190,8 +193,6 @@
 
 		&.hover
 			.boxShadow
-				box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
-
 				.hoverBackground
 					bottom: 0 !important
 
@@ -204,3 +205,7 @@
 
 			.appIcon
 				opacity: 0.05
+		
+		&:active
+			.boxShadow
+				box-shadow: 0 3px 10px rgba(1,0,0,0.156863), 0 3px 10px rgba(0,1,0,0.227451)

@@ -31,13 +31,14 @@
 define([
 	"dojo/_base/declare",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/query",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"./PortalGallery",
-], function(declare, domClass, domQuery, Memory, Observable, Text, ContainerWidget, PortalGallery) {
+], function(declare, domClass, domConstruct, domQuery, Memory, Observable, Text, ContainerWidget, PortalGallery) {
 	return declare("PortalCategory", [ContainerWidget], {
 		baseClass: 'portalCategory',
 
@@ -60,9 +61,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var title = new Text({
-				'class': 'title',
-				content: this.title
+			var title = domConstruct.create("h2", {
+				innerHTML: this.title
 			});
 
 			var store = new Observable(new Memory({
@@ -74,7 +74,7 @@ define([
 				domainName: this.domainName
 			});
 
-			this.addChild(title);
+			domConstruct.place(title, this.containerNode)
 			this.addChild(this.grid);
 		},
 

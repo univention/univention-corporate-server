@@ -120,10 +120,10 @@ define([
 		},
 
 		createHeader: function() {
-			var header = put(this.wrapper, 'div.header');
-			var headerLeft = put(header, 'div.headerLeft');
+			var header = put(this.wrapper, 'div.umcHeader');
+			var headerLeft = put(header, 'div.umcHeaderLeft');
 			put(headerLeft, 'h1', 'Univention Portal');
-			this.headerRight = put(header, 'div.headerRight');
+			this.headerRight = put(header, 'div.umcHeaderRight');
 			put(this.headerRight, 'div.logo');
 			this.createLiveSearch();
 		},
