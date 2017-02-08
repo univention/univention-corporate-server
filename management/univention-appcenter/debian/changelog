@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-18) unstable; urgency=low
+
+  * Bug #43482: use env-file for all environment variables
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Feb 2017 17:18:21 +0100
+
 univention-appcenter (6.0.1-17) unstable; urgency=medium
 
   * Bug #43496: Fix setting server

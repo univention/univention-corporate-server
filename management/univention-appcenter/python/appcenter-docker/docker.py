@@ -37,6 +37,7 @@ import sys
 from subprocess import check_output, call, CalledProcessError
 import os
 import os.path
+import stat
 import shlex
 from json import loads
 from StringIO import StringIO
@@ -185,14 +186,10 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command, hostname=None, env=None, ports=None, volumes=None, env_file=None, args=None):
+def create(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
 	_args = []
 	if hostname:
 		_args.extend(['--hostname', hostname])
-	if env:
-		for key, value in env.iteritems():
-			_args.extend(['-e', '%s=%s' % (shell_safe(key), value)])
-			_args.extend(['-e', '%s=%s' % (shell_safe(key).upper(), value)])
 	if env_file:
 		_args.extend(['--env-file', env_file])
 	if ports:
@@ -297,14 +294,25 @@ class Docker(object):
 			filename = filename[1:]
 		return os.path.join(self.root_dir, filename)
 
-	def ucr_filter_env_file(self):
-		if os.path.exists(self.app.get_cache_file('env')):
-			env_file = os.path.join(self.app.get_data_dir().rstrip('data'), self.app.id + '.env')
-			with open(self.app.get_cache_file('env'), 'r') as infile:
-				with open(env_file, 'w') as outfile:
+	def ucr_filter_env_file(self, env):
+		env_file = os.path.join(self.app.get_data_dir().rstrip('data'), self.app.id + '.env')
+		# remove old env file
+		try:
+			os.remove(env_file)
+		except OSError:
+			pass
+		# create new env file
+		fd = os.open(env_file, os.O_RDWR|os.O_CREAT, stat.S_IRUSR)
+		with os.fdopen(fd, 'w') as outfile:
+			# appcenter env file
+			if os.path.exists(self.app.get_cache_file('env')):
+				with open(self.app.get_cache_file('env'), 'r') as infile:
 					outfile.write(ucr_run_filter(infile.read()))
-			return env_file
-		return None
+			# env variables from appcenter
+			for key, value in env.iteritems():
+				outfile.write('%s=%s\n' % (shell_safe(key), value))
+				outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
+		return env_file
 
 	def create(self, hostname, env):
 		ports = []
@@ -320,10 +328,10 @@ class Docker(object):
 			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.add(cert_volume)
-		env_file = self.ucr_filter_env_file()
+		env_file = self.ucr_filter_env_file(env)
 		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
-		container = create(self.image, command, hostname, env, ports, volumes, env_file, args)
+		container = create(self.image, command, hostname, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container
