@@ -1922,7 +1922,7 @@ define([
 						if (this.local_mode) {
 							tools.sendTraceback(msg);
 						} else {
-							tools._handleTraceback(msg, errorMsgHeader, _('Send to vendor'));
+							tools.showTracebackDialog(msg, errorMsgHeader, _('Send to vendor'));
 						}
 					})
 				});

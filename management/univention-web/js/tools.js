@@ -627,7 +627,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools._handleTraceback(entities.decode(info.message), tools._statusMessages[info.status]);
+					tools.showTracebackDialog(entities.decode(info.message), tools._statusMessages[info.status]);
 				}
 			}, custom);
 			return errorHandler;
@@ -808,7 +808,7 @@ define([
 			this.__getErrorHandler(handleErrors ? handleErrors : {}).error(info);
 		},
 
-		_handleTraceback: function(message, statusMessage, title) {
+		showTracebackDialog: function(message, statusMessage, title) {
 			message = message.replace(/<br *\/?>/g, "\n");
 			var readableMessage = message.split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
