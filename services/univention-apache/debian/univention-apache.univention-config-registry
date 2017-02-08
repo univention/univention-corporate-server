@@ -77,14 +77,3 @@ Variables: apache2/proxy/access/deny
 
 Type: file
 File: etc/apache2/ports.conf
-
-Type: file
-File: var/www/ucs-overview/entries.json
-Variables: ucs/web/overview/entries/.*
-Variables: locale
-Variables: umc/server/languages/.*
-Variables: hostname
-Variables: domainname
-Variables: umc/web/appliance/name
-Variables: server/amazon
-Variables: interfaces/
