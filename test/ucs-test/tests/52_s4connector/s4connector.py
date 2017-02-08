@@ -37,7 +37,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		if not sn:
 			sn = 'SomeSurName'
 
-		newdn = 'cn=%s,%s' % (cn, position)
+		newdn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), position)
 
 		attrs = {}
 		attrs['objectclass'] = ['top', 'user', 'person', 'organizationalPerson']
@@ -61,7 +61,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		if description:
 			attrs['description'] = description
 
-		self.create('cn=%s,%s' % (groupname, position), attrs)
+		self.create('cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), position), attrs)
 
 	def getprimarygroup(self, user_dn):
 		try:
@@ -72,7 +72,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		res = self.lo.search_ext_s(
 			self.adldapbase,
 			ldap.SCOPE_SUBTREE,
-			'objectClass=group'.encode('utf8'),
+			'objectClass=group',
 			timeout=10
 		)
 
@@ -101,7 +101,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		if description:
 			attrs['description'] = description
 
-		self.create('cn=%s,%s' % (name, position), attrs)
+		self.create('cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
 	def createou(self, name, position=None, description=None):
 
@@ -114,7 +114,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		if description:
 			attrs['description'] = description
 
-		self.create('ou=%s,%s' % (name, position), attrs)
+		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
@@ -152,8 +152,7 @@ def _replace_uid_with_cn(dn):
 
 
 def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn=False):
-	tmp = group_dn.split(',')
-	modified_group_dn = 'cn={0},{1},{2},{3}'.format(groupname2, tmp[1], tmp[2], tmp[3])
+	modified_group_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname2), ldap.dn.dn2str(ldap.dn.str2dn(group_dn)[1:4]))
 	udm_test_instance._cleanup['groups/group'].append(modified_group_dn)
 	if return_new_dn:
 		return modified_group_dn
@@ -163,12 +162,12 @@ def verify_users(group_dn, users):
 	print (" Checking Ldap Objects")
 	utils.verify_ldap_object(group_dn, {
 		'uniqueMember': [user for user in users],
-		'memberUid': [(user.split('=')[1]).split(',')[0] for user in users]
+		'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users]
 	})
 
 
 def modify_username(user_dn, new_user_name, udm_instance):
-	newdn = 'uid=%s,%s' % (new_user_name, user_dn.split(",", 1)[1])
+	newdn = ldap.dn.dn2str([[('uid', new_user_name, ldap.AVA_STRING)]] + ldap.dn.str2dn(user_dn)[1:])
 	udm_instance._cleanup['users/user'].append(newdn)
 	udm_instance.modify_object('users/user', dn=user_dn, username=new_user_name)
 	return newdn
