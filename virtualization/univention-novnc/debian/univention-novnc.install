@@ -27,4 +27,4 @@ include/websock.js	/usr/share/novnc/include
 include/webutil.js	/usr/share/novnc/include
 include/web-socket-js/*.js	/usr/share/novnc/include/web-socket-js
 include/web-socket-js/*.swf	/usr/share/novnc/include/web-socket-js
-univention-novnc.conf	/etc/apache2/conf.d
+univention-novnc.conf	/etc/apache2/conf-available

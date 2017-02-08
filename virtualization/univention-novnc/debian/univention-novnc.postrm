@@ -29,14 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 case "$1" in
 	purge)
 		: ${HOSTNAME:=$(hostname)}
 		setfacl -x u:novnc /etc/univention/ssl/$HOSTNAME /etc/univention/ssl/$HOSTNAME/cert.pem /etc/univention/ssl/$HOSTNAME/private.key
+		a2disconf univention-novnc || true
 		univention-config-registry unset \
 			security/packetfilter/package/univention-novnc/tcp/6080/all \
 			security/packetfilter/package/univention-novnc/tcp/6080/all/en
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+		[ -x "/usr/sbin/apache2ctl" ] && invoke-rc.d apache2 reload
 		;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
@@ -47,7 +51,5 @@ case "$1" in
         exit 1
     ;;
 esac
-
-#DEBHELPER#
 
 exit 0

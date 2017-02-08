@@ -29,15 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 case "$1" in
     configure)
 		adduser --system --no-create-home --disabled-password --disabled-login novnc
 		: ${HOSTNAME:=$(hostname)}
 		setfacl -m u:novnc:r /etc/univention/ssl/$HOSTNAME /etc/univention/ssl/$HOSTNAME/cert.pem /etc/univention/ssl/$HOSTNAME/private.key
-		[ -x /usr/sbin/apache2ctl ] && apache2ctl graceful
+		a2enconf univention-novnc || true
 		univention-config-registry set \
 			security/packetfilter/package/univention-novnc/tcp/6080/all?"ACCEPT" \
 			security/packetfilter/package/univention-novnc/tcp/6080/all/en?"noVNC"
+		[ -x "/usr/sbin/apache2ctl" ] && invoke-rc.d apache2 reload
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
     ;;
 
@@ -50,6 +53,5 @@ case "$1" in
     ;;
 esac
 
-#DEBHELPER#
 
 exit 0
