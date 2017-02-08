@@ -1,4 +1,4 @@
-univention-ad-connector (11.0.6-3) unstable; urgency=low
+univention-ad-connector (11.0.6-4) unstable; urgency=low
 
   * Bug #42296: removed apache config, no longer needed
 

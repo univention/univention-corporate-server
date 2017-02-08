@@ -7,9 +7,6 @@ scripts/make-deleted-objects-readable-for-this-machine usr/share/univention-ad-c
 
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 
-# apache config
-apache2.conf etc/apache2/conf.d/univention-ad-connector
-
 19univention-ad-connector.uinst usr/lib/univention-uninstall/
 81univention-ad-connector.inst usr/lib/univention-install/
 
