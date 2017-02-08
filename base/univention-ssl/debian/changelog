@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-23) unstable; urgency=low
+
+  * Bug #22085: Fix sign command
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Feb 2017 15:34:25 +0100
+
 univention-ssl (10.0.0-22) unstable; urgency=low
 
   * Bug #22085: added sign command
