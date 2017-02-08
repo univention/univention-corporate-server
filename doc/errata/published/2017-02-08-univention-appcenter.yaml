@@ -11,3 +11,5 @@ desc: |
  * The initial information dialog about usage of email address and user data
    has been updated.
 bug: [31804, 43261, 43109]
+erratum: 389
+announced: 2017-02-08
