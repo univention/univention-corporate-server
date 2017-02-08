@@ -539,8 +539,10 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Apache configuration files from <package>univention-apache</package> have been adapted
-					to apache version 2.4 (<u:bug>42196</u:bug>).
+					Apache configuration files in the packages <package>univention-apache</package>,
+					<package>univention-novnc</package>, <package>univention-nagios</package> and
+					<package>univention-system-activation</package>
+					have been adapted to apache version 2.4 (<u:bug>42196</u:bug>, <u:bug>42296</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
