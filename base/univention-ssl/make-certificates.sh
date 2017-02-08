@@ -382,8 +382,7 @@ revoke_cert () {
 
 getcnreq () {
 	local request="${1:?Missing argument: request}"
-	openssl req -noout -verify -in "$request" 2>/dev/null
-	if [ ! $? -eq 0 ]
+	if ! openssl req -noout -verify -in "$request" 2>/dev/null
 	then
 		echo "FATAL: could not verify request '$request'" >&2
 		return 1
@@ -396,14 +395,15 @@ python -c '
 try:
 	import sys
 	import M2Crypto
-	req = M2Crypto.X509.load_request("'$request'")
+	name = sys.argv[1]
+	req = M2Crypto.X509.load_request(name)
 	subject = req.get_subject()
-	cn = subject.get_entries_by_nid(M2Crypto.m2.NID_commonName)
-	if cn: print cn[0].get_data().as_text().replace("/", ".")
+	cn = subject.CN
+	if cn: print cn.replace("/", ".")
 except Exception as err:
-	sys.stderr.write("FATAL: could not get CN from request '$request' (%s)\n" % err)
+	sys.stderr.write("FATAL: could not get CN from request %s (%s)\n" % (name, err))
 	sys.exit(1)
-'
+' "$request"
 }
 
 # Parameter 1: Name des Unterverzeichnisses, in dem das neue Zertifikat abgelegt werden soll

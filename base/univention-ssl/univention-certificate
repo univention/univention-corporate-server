@@ -88,12 +88,12 @@ do
 	revoke) command="$1" ;;
 	renew) command="$1" ;;
 	check) command="$1" ;;
-	list) command="$1" name="DUMMY" ;;
+	list) command="$1" ;;
 	dump) command="$1" ;;
-	sign) command="$1" name="DUMMY" ;;
+	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
 	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
-	-request|--request) request="${2:?Missing argument to -request}" ; shift ;;
+	-request|--request) request="$(readlink -f "${2:?Missing argument to -request}")" ; shift ;;
 	-h|--help|--usage|-\?) usage ;;
 	-*) usage "Unknown option: '$1'" >&2 ;;
 	*) usage "Unknown command: '$1'" >&2 ;;
@@ -101,11 +101,13 @@ do
 	shift
 done
 
-[ -n "$command" ] || usage "Missing command"
-: ${name:?Missing argument '-name'}
-[ "$command" = "sign" ] && : ${request:?Missing argument '-request'}
+case "$command" in
+new|revoke|renew|check|dump) : ${name:?Missing argument '-name'} ;;
+sign) : ${request:?Missing argument '-request'} ;;
+list) ;;
+esac
 
-. ${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}
+. "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
 
 cd "$SSLBASE"
 
