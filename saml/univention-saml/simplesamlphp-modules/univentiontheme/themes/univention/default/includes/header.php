@@ -75,7 +75,7 @@ if ($json != NULL) {
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="/univention/management/style.css">
 <?php
 if ($this->isLanguageRTL()) {
 	echo '\t\t<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
