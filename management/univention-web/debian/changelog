@@ -1,3 +1,10 @@
+univention-web (1.0.17-2) unstable; urgency=medium
+
+  * Bug #42261: adjust styling of UDM detailpage and
+    added button to scroll back to top of window
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Feb 2017 16:41:50 +0100
+
 univention-web (1.0.17-1) unstable; urgency=medium
 
   * Bug #42228: move entries.json to univention-wen meta.json

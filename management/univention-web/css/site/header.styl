@@ -81,6 +81,8 @@ insertBorder()
 		float: left
 
 		.dijitTab
+			transition: background-color 0.2s
+
 			// override unwanted styles
 			margin: 0
 			padding: 0
@@ -153,7 +155,7 @@ insertBorder()
 				transition: width 0.3s
 
 				.umcSearchBox
-					margin-top: 13px
+					margin-top: 5px
 
 				.dijitInputField
 					transition: opacity 0.25s, width 0.25s
@@ -261,8 +263,9 @@ insertBorder()
 		.umcMainTabController .dijitTab
 			color: rgba(0, 0, 0, 0.7)
 
-			&.dijitTabChecked
-				color: rgba(0, 0, 0, 1)
+			&.dijitTabChecked,
+			&.dijitTabHover
+				color: rgba(255, 255, 255, 1)
 
 		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon
 			icon-image(-300, -20, '../')

@@ -32,12 +32,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/window",
+	"dojo/_base/fx",
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-geometry",
 	"dojo/window",
+	"dojo/on",
+	"dojo/fx/easing",
 	"dijit/layout/StackContainer",
 	"dojox/html/entities",
 	"umc/tools",
@@ -46,8 +50,10 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/Button",
+	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, topic, aspect, domClass, domStyle, domGeom, win, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
+], function(declare, lang, array, baseWindow, baseFx, topic, aspect, domClass, domStyle, domGeom, win, on, fxEasing, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, Button, put, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.
@@ -116,15 +122,76 @@ define([
 				title: this.get('title')
 			});
 
+			var scrollToTopFloatingButton = new ContainerWidget({
+				'class': 'scrollToTopFloatingButton'
+			});
+			var ink = put(scrollToTopFloatingButton.domNode, 'div.icon + div.ink');
+			scrollToTopFloatingButton.on('click', function(e) {
+				// show ink effect
+				var floatingButtonDiameter = domGeom.position(scrollToTopFloatingButton.domNode).w;
+				var floatingButtonLeft = scrollToTopFloatingButton.domNode.offsetLeft;
+				var floatingButtonTop = scrollToTopFloatingButton.domNode.offsetTop;
+				var innerClickX = e.clientX - floatingButtonLeft;
+				var innerClickY = e.clientY - floatingButtonTop;
+				var inkDiameter = Math.max(
+					(floatingButtonDiameter - innerClickX),
+					innerClickX,
+					(floatingButtonDiameter - innerClickY),
+					innerClickY
+				) * 2;
+				var inkRadius = inkDiameter / 2;
+				var x = innerClickX - inkRadius;
+				var y = innerClickY - inkRadius;
+				domStyle.set(ink, {
+					'transition': 'none',
+					'opacity': '',
+					'transform': '',
+					'left': x + 'px',
+					'top': y + 'px',
+					'width': inkDiameter + 'px',
+					'height': inkDiameter + 'px'
+				});
+				setTimeout(function() {
+					domStyle.set(ink, {
+						'transition': '',
+						'opacity': '0',
+						'transform': 'scale(1)'
+					});
+				}, 20);
+
+				// scroll to top of window
+				new baseFx.Animation({
+					duration: 300,
+					easing: fxEasing.cubicOut,
+					curve: [dojo.docScroll().y, 0],
+					onAnimate: function(val) {
+						window.scrollTo(0, val);
+					}
+				}).play();
+			});
+
+			var scrollToTopFloatingButtonSpacer = new ContainerWidget({
+				'class': 'scrollToTopFloatingButtonSpacer'
+			});
+
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);
+			ContainerWidget.prototype.addChild.apply(this, [scrollToTopFloatingButton]);
+			ContainerWidget.prototype.addChild.apply(this, [scrollToTopFloatingButtonSpacer]);
 
 			// redirect childrens to stack container
 			this.containerNode = this.__container.containerNode;
 
-			this.watch('selected', lang.hitch(this, function(attr, oldval, newval) {
-				this._top.set('isModuleTabSelected', newval);
-			}));
+			this.own(on(baseWindow.doc, 'scroll', lang.hitch(this, function() {
+				if (!this.selected) {
+					return;
+				}
+
+				// update scrollToTop Button visibility
+				var showScrollToTopButton = dojo.docScroll().y >= 300;
+				domClass.toggle(scrollToTopFloatingButton.domNode, 'shown', showScrollToTopButton);
+				domClass.toggle(scrollToTopFloatingButtonSpacer.domNode, 'shown', showScrollToTopButton);
+			})));
 		},
 
 		selectChild: function(child, animate) {

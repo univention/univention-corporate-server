@@ -3,12 +3,10 @@
 .umc .umcOverviewContainer
 	padding: 50px 0 0
 
-
 /* Category tabs */
 .umc .umcCategoryBar
 	text-align: center
 	margin-bottom: 35px
-
 
 .umc .umcCategoryBar .dijitButton
 	min-width: 95px
@@ -37,6 +35,10 @@
 				opacity: 0.75
 				transform: scale(0.8, 0.8)
 
+				^[-3].dijitButtonSelected ^[-3..-1]
+					opacity: 1
+					transform: scale(1, 1)
+
 				.circle
 					height: 70px
 					width: 70px
@@ -45,9 +47,12 @@
 					material-shadow-common()
 					material-shadow(1)
 
+					^[-4].dijitButtonHover ^[-4..-1],
+					^[-4].dijitButtonFocused ^[-4..-1]
+						material-shadow(2)
 
-
-
+					^[-4].dijitButtonSelected ^[-4..-1]
+						material-shadow(3)
 
 	.dijitButtonText
 		display: block
@@ -56,7 +61,6 @@
 		color: $text-color-lightest
 		margin-top: 1.5em
 		white-space: pre-line
-
 
 	.dijitIcon
 		display: block
@@ -68,32 +72,8 @@
 		-webkit-transition: -webkit-transform 0.3s 0.0s
 		transform: scale(0.8, 0.8)
 
-
-	&.dijitButtonHover,
-	&.dijitButtonFocused
-		.dijitButtonNode .dijitButtonContents .umcCategoryButtonCircleWrapper .circle
-			material-shadow(2)
-
-
-
-	&.dijitButtonSelected
-		.dijitButtonNode
-			.dijitButtonContents
-				.umcCategoryButtonCircleWrapper
-					opacity: 1
-					transform: scale(1, 1)
-
-					.circle
-						material-shadow(3)
-
-
-					.dijitIcon
-						transform: scale(1, 1)
-
-
-
-
-
+		^[-1].dijitButtonSelected ^[-1..-1]
+			transform: scale(1, 1)
 
 //		.dijitButtonContents
 //			width: 65px

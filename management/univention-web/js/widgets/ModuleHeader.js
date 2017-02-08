@@ -144,15 +144,11 @@ define([
 			container.addChild(this._left);
 			container.addChild(this._right);
 
-			this.own(on(baseWin.doc, 'scroll', lang.hitch(this, '_updateStickyHeader')));
-
 			this._title = new Text({
 				content: this.get('title'),
 				baseClass: 'umcModuleTitle'
 			});
 			this._left.addChild(this._title);
-
-			this.watch('isModuleTabSelected', lang.hitch(this, '_updateStickyHeader'));
 
 //			array.forEach(this.buttons.$order$, lang.hitch(this, function(button) {
 //				this._right.addChild(button);

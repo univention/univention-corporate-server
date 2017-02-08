@@ -57,12 +57,10 @@ unselected-tab-gradient($direction)
 topBottom-selected-tab-gradient($direction)
 	//alpha-white-gradient($direction, (1 0px), (1 1px), (0 2px), (1 7px))	// white line, blue line, remainder white
 
-
 /*** styling of top container ***/
 .umc .dijitTabContainerTop-tabs
 	border: none
 	background-color: rgba(0, 0, 0, 0.05)
-
 
 /*** some common features ***/
 .umc .dijitTabPaneWrapper
@@ -109,49 +107,33 @@ topBottom-selected-tab-gradient($direction)
 	margin-left: 3px
 
 .umc .dijitTab
-	//border: 1px solid $border-color
-	border-bottom: thin solid #000
-	background-color:$unselected-background-color
-	background-color: transparent
-	transition-property: background-color, border, color, background-image
+	transition-property: color, background-image
 	transition-duration(.35s)
-	color:$unselected-text-color
-	font-weight: bold
+	color: rgba(40, 40, 40, 0.54)
+	font-weight: 500
+	font-size: $font-size-subheading
 	padding: 0.25em
 
 .umc .dijitTabHover
-	border-color: $hovered-border-color
-	//background-color:$hovered-background-color
-	background-color: #000
 	transition-duration(.15s)
-	color:$hovered-text-color
+	color: rgba(40, 40, 40, 0.8)
 
 .umc .dijitTabActive
-	border-color: $pressed-border-color
-	background-color:$pressed-background-color
-	background-color: #000
-	color:$selected-text-color
-	color: #fff
+	color: rgba(40, 40, 40, 0.8)
 	transition-duration(.1s)
 
 .umc .dijitTabChecked
 	// selected tab
-	//border-color: $border-color			// don't use $selected-border-color because need to match border of TabContainer
-	border-color: #fff
-	//background-color: $selected-background-color
-	background-color: #000
-	color: $selected-text-color
+	color: rgba(40, 40, 40, 1)
 
 .umc .dijitTabDisabled
 	background-color: $tab-disabled-background-color
-
 
 .umc .tabStripButton
 	background-color: transparent
 	border: none
 
 /*** end common ***/
-
 
 /*************** top tab ***************/
 .umc .dijitTabContainerTop-tabs .dijitTab
@@ -172,7 +154,6 @@ topBottom-selected-tab-gradient($direction)
 	box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.04)
 	top: 0
 
-
 .umc .dijitTabContainerTop-tabs .dijitTabChecked
 	/* selected tab */
 	//padding-bottom: 4px
@@ -183,10 +164,7 @@ topBottom-selected-tab-gradient($direction)
 	//topBottom-selected-tab-gradient(top)
 
 	//box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05)
-
-
 /** end top tab **/
-
 
 /*************** bottom tab ***************/
 .umc .dijitTabContainerBottom-tabs .dijitTab
@@ -205,7 +183,6 @@ topBottom-selected-tab-gradient($direction)
 	unselected-tab-gradient(bottom)
 
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04)
-
 
 /* selected tab */
 .umc .dijitTabContainerBottom-tabs .dijitTabChecked
@@ -231,7 +208,6 @@ topBottom-selected-tab-gradient($direction)
 	background-image: url("images/tabLeftUnselected.png")
 	background-repeat: repeat-y
 	unselected-tab-gradient(left)
-
 
 /* selected tab */
 .umc .dijitTabContainerLeft-tabs .dijitTabChecked

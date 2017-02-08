@@ -9,9 +9,9 @@
 .umc .dijitTextBox
 //.umc .dijitInputInner
 	color: $text-color
-	font-size: $font-size-title
 	width: 100%
-
+	font-size: $font-size-subheading
+	background-color: #fff
 
 .umc .dijitValidationTextBoxError .dijitValidationContainer
 	//background-color: $erroricon-background-color
@@ -22,8 +22,7 @@
 	//border: solid $erroricon-background-color 0
 	width: 20px
 	height: 20px
-	margin: 2px 2px 0 0
-
+	margin: 6px 8px 0 0
 
 //.umc .dijitTextBoxError .dijitValidationContainer
 //	border-left-width: 1px
@@ -32,7 +31,6 @@
 .umc .dijitValidationTextBoxError .dijitValidationIcon
 	width: 0
 	background-color: transparent /* so the INPUT doesn't obscure the border in rtl+a11y */
-
 
 /* Padding for the input area of TextBox based widgets, and corresponding padding for the
  * down arrow button and the placeholder.   placeholder is explicitly listed  because
@@ -44,15 +42,12 @@
 	padding: $textbox-padding
 	font-size: 1em
 
-
 .umc .dijitSelect,
 .umc .dijitTextBox
 	// Subtract 1px from top/bottom because we add 1px to other nodes, see rules below.
 	// Although we are theoretically only adding 1px to top/bottom browsers seem to pad inputs by 1px on left/right,
 	// although that varies by so compensate for that too.
-	padding: $textbox-padding !important
 	position: relative
-
 
 .umc .dijitSelect:before,
 .umc .dijitTextBox:before,
@@ -64,34 +59,24 @@
 	bottom: 0
 	transition-duration(0.25s)
 
-
 .umc .dijitSelect:before,
 .umc .dijitTextBox:before
-	border-left: thin solid $border-color
+	border-left: thin solid #e0e0e0
 	left: 0
-
 
 .umc .dijitSelect:after,
 .umc .dijitTextBox:after
 	right: 0
-	border-right: thin solid $border-color
-
-
-.dj_gecko .umc .dijitTextBox .dijitInputInner,
-.dj_webkit .umc .dijitTextBox .dijitInputInner
-	// Although we are theoretically only adding 1px to top/bottom, some browsers seem to pad inputs by 1px on left/right,
-	// so compensate for that too.
-	padding: $textbox-padding
-
+	border-right: thin solid #e0e0e0
 
 .umc .dijitSelect,
 .umc .dijitSelect .dijitButtonContents,
 .umc .dijitTextBox,
 .umc .dijitTextBox .dijitButtonNode
 	/* color for (outer) border on *TextBox widgets, and border between input and buttons on ComboBox and Spinner */
-	border-color: $border-color
 	border: 0 none
 	border-bottom: 1px solid
+	border-color: #e0e0e0
 	transition-property: background-color, border
 	transition-duration(0.25s)
 
@@ -101,11 +86,26 @@
 	width: 100%
 	height: 110px
 
-
 .umc .dijitSelect,
 .umc .dijitTextBox
-	//background-color: $textbox-background-color
+	.dijitInputContainer
+		padding: 0 16px
 
+		.dijitInputInner,
+		.umcInlineLabel
+			line-height: 32px
+			text-overflow: ellipsis
+
+		.umcInlineLabel
+			visibility: hidden
+			position: absolute
+			color: $text-color-lightest
+
+			&.umcEmptyValue
+				visibility: visible
+
+			^[-2].dijitFocused ^[-2..-1]
+				color: $text-color-lightest
 
 /* hover */
 .umc .dijitSelectHover,
@@ -119,11 +119,9 @@
 	border-color: $hovered-border-color
 	transition-duration(.25s)
 
-
 .umc .dijitTextBoxHover
 	//background-color: $textbox-hovered-background-color
 	textbox-background-image()
-
 
 /* error state */
 .umc .dijitSelectError,
@@ -135,7 +133,6 @@
 .umc .dijitSelectError:after,
 .umc .dijitTextBoxError:after
 	border-color: $error-border-color
-
 
 /* focused state */
 .umc .dijitSelectFocused,
@@ -149,14 +146,12 @@
 	border-color: $focused-border-color
 	transition-duration: .1s
 
-
 .umc .dijitTextBoxFocused
 	//background-color: $textbox-focused-background-color
 	textbox-background-image()
 
 .umc .dijitTextBoxFocused .dijitInputContainer
 	//background: $textbox-focused-background-color
-
 
 .umc .dijitSelectErrorFocused,
 .umc .dijitSelectErrorFocused .dijitButtonContents,
@@ -167,7 +162,6 @@
 .umc .dijitSelectErrorFocused:after,
 .umc .dijitTextBoxErrorFocused:after
 	border-color: $error-focused-border-color
-
 
 /* disabled state */
 .umc .dijitSelectDisabled:before,
@@ -180,50 +174,31 @@
 .umc .dijitTextBoxDisabled .dijitButtonNode
 	border-color: $disabled-border-color
 
-
 .umc .dijitSelectDisabled,
 .umc .dijitTextBoxDisabled,
 .umc .dijitTextBoxDisabled .dijitInputContainer
 	background-color: $textbox-disabled-background-color
 	//background-image: none
 
-
 .umc .dijitSelectDisabled,
 .umc .dijitTextBoxDisabled,
 .umc .dijitTextBoxDisabled .dijitInputInner
 	color: $disabled-text-color
 
-
-.dj_webkit .umc .dijitDisabled input
-	/* because WebKit lightens disabled input/textarea no matter what color you specify */
-	//color: darken($disabled-text-color, 10%)
-
-
-.dj_webkit .umc textarea.dijitTextAreaDisabled
-	/* because WebKit lightens disabled input/textarea no matter what color you specify */
-	//color: darken($disabled-text-color, 80%)
-
-
 /*========================= for special widgets =========================*/
 
 /* Input boxes with an arrow (for a drop down) */
 
-.umc .dijitSelect.dijitSelectDisabled .dijitArrowButtonInner,
-.umc .dijitComboBox.dijitComboBoxDisabled .dijitArrowButtonInner,
-.umc .dijitSelect .dijitArrowButtonInner,
-.umc .dijitComboBox .dijitArrowButtonInner
-	//background-image: url("../" + $image-form-common-arrows)
-	//background-position:-35px 53%
-	//background-repeat: no-repeat
-	margin: 2px 0 0 0
-	//width:16px
-	icon-image(0, 0, "../")
-	height: 20px !important  // override dijit.css CSS rule
-
-
-.umc .dijitComboBox .dijitArrowButtonInner
-	//border: 1px solid $arrowbutton-inner-border-color	// white gutter around the arrow button
-
+.umc .dijitSelect.dijitSelectDisabled,
+.umc .dijitComboBox.dijitComboBoxDisabled,
+.umc .dijitSelect,
+.umc .dijitComboBox
+	.dijitArrowButtonContainer
+		margin: 6px 8px 0 0
+	
+		.dijitArrowButtonInner
+			icon-image(0, 0, "../")
+			height: 20px !important  // override dijit.css CSS rule
 
 .umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner
 	border: none
@@ -311,6 +286,10 @@ label
 .umc .umcLabelPane
 	display: inline-block
 	vertical-align: top
+
+	.umcLabelPaneLabelNode label
+		font-size: $font-size-caption
+
 	.umcLabelPaneLabeNodeBottom label
 		padding-top: 0.25em
 
@@ -318,38 +297,15 @@ label
 		display: inline-block
 		padding: 0 1.25em 0 0
 
-
-
 .umc .umcLabelPane .umcToolTip
-
 	background-position: 0 -36px
 
 	.umcToolTipHover
 		background-position: -12px -36px
 		opacity: 0.66
 
-
 	.umcToolTipClicked
 		background-position: -48px -36px
-
-
-
-.umc
-	/* inline label */
-	.dijitTextBox .umcInlineLabel
-		visibility: hidden
-		position: absolute
-		top: 0
-		left: 0
-		color: $text-color-lightest
-
-	.dijitTextBox .umcInlineLabel.umcEmptyValue
-		visibility: visible
-
-	.dijitTextBox.dijitFocused .umcInlineLabel
-		color: $text-color-lightest
-
-
 
 .umc .umcSearchForm
 	.umcSearchFormSubmitButton
@@ -362,13 +318,9 @@ label
 		.dijitButtonNode
 			padding: 3px
 
-
-
 	.umcLabelPane.umcSearchFormElementBeforeSubmitButton
 		margin-right: -3.5em
 		padding-right: 3.5em
-
-
 
 /*========================= hacks for browsers =========================*/
 /* it seems the input[type="hidden"] has a height (16px) too... this may cause the widget's height calculate error */
@@ -377,11 +329,8 @@ label
 	height: 0
 	width: 0
 
-
 .dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
 	width:18px				// quirks mode means border-box sizing, so 18px with the border (same as 16px without border)
 
-
 .dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner
 	width:16px				// when no border, then back to 16px just like content-box sizing
-
