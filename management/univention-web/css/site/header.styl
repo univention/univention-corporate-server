@@ -142,48 +142,42 @@ insertBorder()
 		position: absolute
 		right: 0
 
-		.umcLiveSearchSidebarWrapper
+		.umcLiveSearch
 			display: inline-block
 			vertical-align: top
 			height: 100%
 			width: 150px
 
-			.umcLiveSearchSidebar
-				float: right
-				width: @width
-				height: 100%
-				transition: width 0.3s
+			height: 100%
+			transition: width 0.3s
 
-				.umcSearchBox
-					margin-top: 5px
+			.umcSearchBox
+				margin-top: 5px
 
-				.dijitInputField
-					transition: opacity 0.25s, width 0.25s
-					width: 100%
+			.dijitInputField
+				transition: opacity 0.25s, width 0.25s
+				width: 100%
 
-				.umcSearchIcon
-					transition: opacity 0.25s, right 0.25s
+			.umcSearchIcon
+				transition: opacity 0.25s, right 0.25s
 
-				.umcLiveSearchSidebarRadioButtonGroup
-					display: none
+			.umcLiveSearchSidebarRadioButtonGroup
+				display: none
 
 			&.collapsed
 				width: 60px
 
-				.umcLiveSearchSidebar
-					width: @width
+				.umcSearchBox,
+				.umcSearchBox:before,
+				.umcSearchBox:after
+					border-color: transparent
 
-					.umcSearchBox,
-					.umcSearchBox:before,
-					.umcSearchBox:after
-						border-color: transparent
+				.umcSearchIcon
+					right: 20px
 
-					.umcSearchIcon
-						right: 20px
-
-					.dijitInputField
-						opacity: 0
-						width: 0
+				.dijitInputField
+					opacity: 0
+					width: 0
 
 		.umcMobileMenuToggleButton
 			display: inline-block

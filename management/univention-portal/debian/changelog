@@ -1,3 +1,9 @@
+univention-portal (1.0.6-1) unstable; urgency=medium
+
+  Bug #42233: Move PortalLiveSearchSideBar to umc/widgets/LiveSearch
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Feb 2017 00:01:24 +0100
+
 univention-portal (1.0.5-2) unstable; urgency=medium
 
   * Bug #42233: adjust styling to comply with common style

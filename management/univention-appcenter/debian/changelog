@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-19) unstable; urgency=medium
+
+  * Bug #42233: adjust font size on app tiles
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Feb 2017 00:04:33 +0100
+
 univention-appcenter (6.0.1-18) unstable; urgency=low
 
   * Bug #43482: use env-file for all environment variables

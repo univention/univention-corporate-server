@@ -73,7 +73,7 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/layout/StackContainer",
 	"umc/widgets/TabController",
-	"umc/widgets/LiveSearchSidebar",
+	"umc/widgets/LiveSearch",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
@@ -88,7 +88,7 @@ define([
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
 		i18nTools, _
 ) {
 	// cache UCR variables
@@ -190,7 +190,7 @@ define([
 				var allCategories = !category;
 				var matchesPattern = !searchPattern ||
 					// for a given pattern, ignore 'pseudo' entries in _favorites_ category
-					(searchQuery.test(null, obj) && obj.category != '_favorites_');
+					(searchQuery.test(obj) && obj.category != '_favorites_');
 				var matchesCategory = true;
 				if (!allCategories) {
 					matchesCategory = obj.category == category.id;
@@ -634,35 +634,11 @@ define([
 		},
 
 		setupSearchField: function() {
-			this._searchSidebarWrapper = new ContainerWidget({
-				'class': 'umcLiveSearchSidebarWrapper collapsed'
-			});
-			this._searchSidebar = new LiveSearchSidebar({
+			this._search = new LiveSearch({
 				searchLabel: _('Module search')
 			});
 
-			this._searchSidebarWrapper.on('click', lang.hitch(this, function() {
-				this._searchSidebar.focus();
-				this._expandSearch();
-			}));
-
-			on(this._searchSidebar._searchTextBox.textbox, 'blur', lang.hitch(this, function() {
-				if (!this._searchSidebar.get('value')) {
-					this._collapseSearch();
-				}
-			}));
-
-			this._searchSidebarWrapper.addChild(this._searchSidebar);
-			this._headerRight.addChild(this._searchSidebarWrapper);
-		},
-
-		_expandSearch: function() {
-			domClass.remove(this._searchSidebarWrapper.domNode, 'collapsed');
-			this._updateMoreTabsVisibility();
-		},
-
-		_collapseSearch: function() {
-			domClass.add(this._searchSidebarWrapper.domNode, 'collapsed');
+			this._headerRight.addChild(this._search);
 		},
 
 		_setupMenu: function() {
@@ -2044,8 +2020,7 @@ define([
 						this._lastCategory = category;
 						this._updateQuery(category);
 
-						this._header._searchSidebar._searchTextBox._updateInlineLabelVisibility();
-						this._header._collapseSearch();
+						this._header._search._searchTextBox._updateInlineLabelVisibility();
 						this._header._updateMoreTabsVisibility();
 					}),
 					color: color,
@@ -2074,21 +2049,21 @@ define([
 		},
 
 		_focusSearchField: function() {
-			if (!this._header._searchSidebar) {
+			if (!this._header._search) {
 				return;
 			}
 			if (!has('touch') && !tools.status('mobileView')) {
 				setTimeout(lang.hitch(this, function() {
-					this._header._searchSidebar.focus();
+					this._header._search.focus();
 				}, 0));
 			}
 		},
 
 		_registerGridEvents: function() {
-			if (!this._header._searchSidebar) {
+			if (!this._header._search) {
 				return;
 			}
-			this._header._searchSidebar.on('search', lang.hitch(this, function() {
+			this._header._search.on('search', lang.hitch(this, function() {
 				this.switchToOverview();
 				this._updateQuery(null);
 			}));
@@ -2100,11 +2075,11 @@ define([
 			var searchQuery = new RegExp('.*');
 
 			if (!category) {
-				searchPattern = lang.trim(this._header._searchSidebar.get('value'));
-				searchQuery = this._header._searchSidebar.getSearchQuery(searchPattern);
+				searchPattern = lang.trim(this._header._search.get('value'));
+				searchQuery = this._header._search.getSearchQuery(searchPattern);
 			} else {
-				if (this._header._searchSidebar) {
-					this._header._searchSidebar.set('value', null);
+				if (this._header._search) {
+					this._header._search.set('value', null);
 				}
 			}
 

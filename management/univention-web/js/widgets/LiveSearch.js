@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 Univention GmbH
+ * Copyright 2017 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,22 +26,34 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
-
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
+	"dojo/mouse",
 	"dojo/regexp",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/SearchBox",
+	"./ContainerWidget",
+	"./SearchBox",
 	"umc/i18n!"
-], function(declare, lang, array, regexp, ContainerWidget, SearchBox, _) {
-	return declare("PortalLiveSearchSideBar", [ContainerWidget], {
+], function(declare, lang, array, domClass, mouse, regexp, ContainerWidget, SearchBox, _) {
+	return declare("umc.widgets.LiveSearch", [ContainerWidget], {
+		// summary:
+		//		Offers a text box for live searching.
+		//		This class is used in the UMC overview and the App Center.
+
+		searchLabel: null,
+
+		collapsible: true,
+
+		// searchableAttributes: String[]
+		//		Array of strings that shall be searched.
+		//		defaults to ['name', 'description', 'categories', 'keywords']
 		searchableAttributes: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this.baseClass = 'umcLiveSearch';
 
 			var _searchableAttributes = ['name', 'description', 'categories', 'keywords'];
 			this.searchableAttributes = this.searchableAttributes || _searchableAttributes;
@@ -58,10 +70,25 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-
 			this._searchTextBox.on('keyup', lang.hitch(this, 'search'));
 			this._searchTextBox.on('focus', lang.hitch(this, 'onFocus'));
 			this._searchTextBox.on('blur', lang.hitch(this, 'onBlur'));
+			if (this.collapsible) {
+				this._searchTextBox.on(mouse.enter, lang.hitch(this, 'expandSearch'));
+				this._searchTextBox.on('focus', lang.hitch(this, 'expandSearch'));
+				this._searchTextBox.on(mouse.leave, lang.hitch(this, 'collapseSearch', false));
+				this._searchTextBox.on('blur', lang.hitch(this, 'collapseSearch', true));
+				this.collapseSearch(true);
+			}
+		},
+
+		expandSearch: function() {
+			domClass.remove(this.domNode, 'collapsed');
+		},
+
+		collapseSearch: function(ignoreFocus) {
+			var shouldCollapse = (ignoreFocus || !this.focused) && !this.get('value');
+			domClass.toggle(this.domNode, 'collapsed', shouldCollapse);
 		},
 
 		_getValueAttr: function() {
@@ -129,3 +156,5 @@ define([
 		}
 	});
 });
+
+

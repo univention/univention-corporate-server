@@ -34,14 +34,13 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/dom-class",
-	"dojo/regexp",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/SearchBox",
-	"umc/widgets/LabelPane",
-	"umc/widgets/RadioButton",
+	"./LiveSearch",
+	"./ContainerWidget",
+	"./LabelPane",
+	"./RadioButton",
 	"umc/i18n!"
-], function(declare, lang, array, has, domClass, regexp, ContainerWidget, SearchBox, LabelPane, RadioButton, _) {
-	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
+], function(declare, lang, array, has, domClass, LiveSearch, ContainerWidget, SearchBox, LabelPane, RadioButton, _) {
+	return declare("umc.widgets.LiveSearchSidebar", [LiveSearch], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
 		//		This class is used in the UMC overview and the App Center.
@@ -57,22 +56,15 @@ define([
 		//		Reference to the currently selected category
 		category: null,
 
+		collapsible: false,
+
 		// category: Object|String
 		//		Reference to the 'all' category
 		allCategory: null,
 
-		searchLabel: null,
-
 		baseClass: 'umcLiveSearchSidebar',
 
 		_radioButtons: null,
-
-		// searchableAttributes: String[]
-		//		Array of strings that shall be searched.
-		//		defaults to ['name', 'description', 'categories', 'keywords']
-		searchableAttributes: null,
-
-		_lastValue: '',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -81,14 +73,6 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			if (this.searchableAttributes === null) {
-				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
-			}
-
-			this._searchTextBox = new SearchBox({
-				inlineLabel: this.searchLabel || _('Search term')
-			});
-			this.addChild(this._searchTextBox);
 
 			this._categoryContainer = new ContainerWidget({
 				'class': 'umcLiveSearchSidebarRadioButtonGroup'
@@ -98,14 +82,7 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this._searchTextBox.on('keyup', lang.hitch(this, function() {
-				this._updateCss(); // ... just to be sure
-				if (this.get('value') || this._lastValue) {
-					// ignore empty search strings
-					this._lastValue = this.get('value');
-					this.onSearch();
-				}
-			}));
+			this._searchTextBox.on('keyup', lang.hitch(this, '_updateCss'));
 		},
 
 		_getUniformCategory: function(category) {
@@ -118,14 +95,6 @@ define([
 
 		_isInSearchMode: function() {
 			return Boolean(lang.trim(this.get('value')));
-		},
-
-		_getValueAttr: function() {
-			return this._searchTextBox.get('value');
-		},
-
-		_setValueAttr: function(value) {
-			return this._searchTextBox.set('value', value);
 		},
 
 		_getCategoryAttr: function() {
@@ -172,7 +141,7 @@ define([
 				var radioButton = new RadioButton({
 					label: category.label,
 					value: category.label,
-					checked: idx == 0,
+					checked: idx === 0,
 					radioButtonGroup: this.id + '-group',
 					_categoryID: category.id
 					/*callback: lang.hitch(this, function() {
@@ -210,39 +179,6 @@ define([
 				var isSelected = (currentCategory && currentCategory.id == ibutton._categoryID) || (!currentCategory && ibutton._categoryID == '$all$');
 				domClass.toggle(ibutton.domNode, 'umcCategorySelected', isSelected);
 			}));
-		},
-
-		getSearchQuery: function(searchPattern) {
-			// sanitize the search pattern
-			searchPattern = regexp.escapeString(searchPattern);
-			searchPattern = searchPattern.replace(/\\\*/g, '.*');
-			searchPattern = searchPattern.replace(/ /g, '\\s+');
-
-			// build together the search function
-			var regex  = new RegExp(searchPattern, 'i');
-			var searchableAttributes = this.searchableAttributes;
-			var query = {
-				test: function(value, obj) {
-					var string = '';
-					array.forEach(searchableAttributes, function(attr) {
-						var val = obj[attr] || '';
-						if (val instanceof Array) {
-							val = val.join(' ');
-						}
-						string += val + ' ';
-					});
-					return regex.test(string);
-				}
-			};
-			return query;
-		},
-
-		focus: function() {
-			this._searchTextBox.focus();
-		},
-
-		onSearch: function() {
-			// event stub
 		}
 	});
 });

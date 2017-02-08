@@ -35,15 +35,13 @@ define([
 	"dojo/on",
 	"dojo/json",
 	"dojo/dom",
-	"dojo/mouse",
-	"dojo/dom-class",
 	"dojo/promise/all",
 	"umc/tools",
-	"dojo/text!/univention/meta.json",
+	"umc/widgets/LiveSearch",
 	"./PortalCategory",
-	"./PortalLiveSearchSideBar",
-	"put-selector/put"
-], function(declare, lang, array, on, json, dom, mouse, domClass, all, tools, meta, PortalCategory, PortalLiveSearchSideBar, put) {
+	"put-selector/put",
+	"dojo/text!/univention/meta.json"
+], function(declare, lang, array, on, json, dom, all, tools, LiveSearch, PortalCategory, put, meta) {
 	meta = json.parse(meta);
 	return {
 		portalCategories: null,
@@ -129,26 +127,11 @@ define([
 		},
 
 		createLiveSearch: function() {
-			this.search = new PortalLiveSearchSideBar({
-				'class': 'search collapsed'
-			});
-			this.search.on(mouse.enter, lang.hitch(this, 'expandSearch'));
-			this.search.on('focus', lang.hitch(this, 'expandSearch'));
-			this.search.on(mouse.leave, lang.hitch(this, 'collapseSearch', false));
-			this.search.on('blur', lang.hitch(this, 'collapseSearch', true));
+			this.search = new LiveSearch();
 			this.search.on('search', lang.hitch(this, 'filterPortal'));
 			put(this.headerRight, this.search.domNode);
 		},
 		
-		expandSearch: function() {
-			domClass.remove(this.search.domNode, 'collapsed');
-		},
-
-		collapseSearch: function(ignoreFocus) {
-			var shouldCollapse = (ignoreFocus || !this.search.focused) && !this.search.get('value');
-			domClass.toggle(this.search.domNode, 'collapsed', shouldCollapse);
-		},
-
 		filterPortal: function() {
 			var searchPattern = lang.trim(this.search.get('value'));
 			var searchQuery = this.search.getSearchQuery(searchPattern);

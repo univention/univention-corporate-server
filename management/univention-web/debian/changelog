@@ -1,3 +1,11 @@
+univention-web (1.0.18-1) unstable; urgency=medium
+
+  Bug #42233:
+  * Split LiveSearchSidebar into two classes
+  * Merge code + style for header search from UMC + portal
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Feb 2017 23:58:16 +0100
+
 univention-web (1.0.17-2) unstable; urgency=medium
 
   * Bug #42261: adjust styling of UDM detailpage and

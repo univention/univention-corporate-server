@@ -27,7 +27,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#portal
+.umc
 	min-height: 100%
 	/* Chrome,Safari4+ */
 	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
@@ -64,42 +64,12 @@
 					background: url("/univention/js/dijit/themes/umc/images/univention.svg") no-repeat
 					background-position: center
 
-				.search
-					float: right
-					height: 100%
-					width: 200px
-					transition: width 0.3s
+			.umcLiveSearch .dijitTextBox
+					&:before,
+					&:after,
+					&
+						border-color: #282828
 
-					.umcSearchBox
-						margin-top: 5px
-
-					.umcSearchIcon
-						transition: opacity 0.25s, right 0.25s
-
-					.dijitInputField
-						transition: opacity 0.25s
-
-					.dijitTextBox
-						background-color: transparent
-
-						&:before,
-						&:after,
-						&
-							border-color: #282828
-
-				.search.collapsed
-					width: 60px
-
-					.umcSearchBox,
-					.umcSearchBox:before,
-					.umcSearchBox:after
-						border-color: transparent
-						
-					.umcSearchIcon
-						right: 20px
-
-					.dijitInputField
-						opacity: 0
 
 		.content
 			margin-top: 50px
@@ -116,7 +86,8 @@
 
 					.dgrid-scroller
 						margin: 0
-	
+
+.umc.portal
 	.umcGalleryWrapperItem
 		width: 155px
 		height: 165px
