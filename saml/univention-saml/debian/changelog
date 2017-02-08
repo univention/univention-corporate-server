@@ -1,3 +1,10 @@
+univention-saml (4.0.5-1) unstable; urgency=medium
+
+  * Bug #42174: remove SingleSignOn Button widget and related apache
+  	configuration
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2017 15:40:58 +0100
+
 univention-saml (4.0.4-2) unstable; urgency=medium
 
   * Bug #43384: Fix typo
