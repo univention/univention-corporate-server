@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Support the htmlinject hook, which allows modules to change header, pre and post body on all pages.
  */
@@ -16,17 +15,15 @@ if (array_key_exists('jquery', $this->data)) $jquery = $this->data['jquery'];
 
 if (array_key_exists('pageid', $this->data)) {
 	$hookinfo = array(
-		'pre' => &$this->data['htmlinject']['htmlContentPre'], 
-		'post' => &$this->data['htmlinject']['htmlContentPost'], 
-		'head' => &$this->data['htmlinject']['htmlContentHead'], 
+		'pre' => &$this->data['htmlinject']['htmlContentPre'],
+		'post' => &$this->data['htmlinject']['htmlContentPost'],
+		'head' => &$this->data['htmlinject']['htmlContentHead'],
 		'jquery' => &$jquery, 
 		'page' => $this->data['pageid']
 	);
 		
-	SimpleSAML_Module::callHooks('htmlinject', $hookinfo);	
+	SimpleSAML_Module::callHooks('htmlinject', $hookinfo);
 }
-
-// - o - o - o - o - o - o - o - o - o - o - o - o -
 
 /**
  * Do not allow to frame simpleSAMLphp pages from another location.
@@ -39,96 +36,102 @@ if (array_key_exists('pageid', $this->data)) {
  */
 header('X-Frame-Options: SAMEORIGIN');
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, height=device-height, initial-scale=1.0" />
-<title>Univention Corporate Server Single-Sign-On</title>
-
-	<link rel="icon" type="image/icon" href="/favicon.ico" />
-
-<?php	
-if ($this->isLanguageRTL()) {
-?>
-	<link rel="stylesheet" type="text/css" href="/<?php echo $this->data['baseurlpath']; ?>resources/default-rtl.css" />
-<?php
-}
-?>
-	<meta name="robots" content="noindex, nofollow" />
-<?php	
-if(array_key_exists('head', $this->data)) {
-	echo '<!-- head -->' . $this->data['head'] . '<!-- /head -->';
-}
-
 // read and sort available languages and prepare an array to later display them
 $jsonfile = file_get_contents('/var/www/univention/languages.json');
 $json = json_decode($jsonfile, true);
-if($json != NULL) {
+if ($json != NULL) {
 	function sort_by_label($a, $b) {
-		return(strcasecmp($a['label'], $b['label']));
+		return strcasecmp($a['label'], $b['label']);
 	}
 	// hardcode english
 	$en_us_found = false;
-	foreach($json AS $entry) {
-		if($entry['id'] === 'en-US'){
+	foreach ($json as $entry) {
+		if ($entry['id'] === 'en-US') {
 			$en_us_found = true;
 		}
 	}
-	if(! $en_us_found) {
+	if (!$en_us_found) {
 		$json[] = array ('id' => 'en-US', 'label' => 'English');
 	}
 	// sort entries and prepare html code
 	usort($json, "sort_by_label");
-	foreach($json AS $entry) {
+	foreach ($json as $entry) {
 		$splitarray = explode('-', $entry['id']);
 		$langstring = $splitarray[0];
 		$langlinkarray[] = array(
 			"id" => $entry['id'],
 			"label" => $entry['label'],
-			"href" => SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array($this->languageParameterName => $langstring ))
+			"href" => SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array($this->languageParameterName => $langstring))
 		);
 	}
 }
-?>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css">
-<link rel="stylesheet" href="/ucs-overview/css/bootstrap.css" type="text/css">
-<link rel="stylesheet" href="/ucs-overview/css/ucs.css" type="text/css">
-
-<script type="text/javascript">
-	var availableLocales = <?php echo json_encode($langlinkarray); ?>;
-</script>
-<script type="text/javascript" src="/ucs-overview/js/ucs/query.js"></script>
-<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
+?><!DOCTYPE html>
+<html>
+	<head>
+		<title>Univention Corporate Server Single-Sign-On</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, height=device-height, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="style.css">
 <?php
-/** don't display language switcher when e.g. forms were sent */
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-?>
-<style type="text/css">
-	<!--
-	#dropDownButton {
-		display: none!important;
-	}
-	-->
-</style>
-<?php
+if ($this->isLanguageRTL()) {
+	echo '\t\t<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
+}
+if(array_key_exists('head', $this->data)) {
+	echo '<!-- head -->' . $this->data['head'] . '<!-- /head -->';
 }
 ?>
-</head>
-<body>
-	<div id="wrap">
-		<div id="site-header">
-			<div class="container">
-				<div id="title">
-					<h1><?php echo($this->t('{univentiontheme:univention:serverwelcome}')); ?></h1>
-					<h2><?php echo($this->configuration->getValue('hostfqdn', '')); ?></h2>
-				</div>
-				<div id="header-left"></div>
-				<div id="header-right">
-					<div id="dropDownButton"></div>	
-				</div>
-			</div>
-		</div>
+		<script type="text/javascript">
+			var availableLocales = <?php echo json_encode($langlinkarray); ?>;
+		</script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
+		<script type="text/javascript">
+			dojoConfig.callback = function() {
+				require(["login", "dojo/domReady!"], function(login) {
+<?php
+/** don't display language switcher when e.g. forms were sent */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	// FIXME: !!!!
+}
+?>
+				});
+			};
+			var _fillUsernameField = function(username) {
+				require('dojo/dom').byId('umcLoginUsername').value = username;
+				require('dojo/dom').byId('umcLoginPassword').focus();
+				//fire change event manually for internet explorer
+				require(['dojo/dom', 'dojo/has'], function(dom, has) {
+					if (has('ie') < 10) {
+						var event = document.createEvent("HTMLEvents");
+						event.initEvent("change", true, false);
+						dom.byId('umcLoginUsername').dispatchEvent(event);
+					}
+				});
+			};
+
+			var _showLoginTooltip = function(evt) {
+				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
+					var node = evt.target;
+					var helpText = _('Please login with a valid username and password.') + ' ';
+					if (getQuery('username') === 'root') {
+						helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
+					} else {
+						helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
+					}
+					Tooltip.show(helpText, node);
+					if (evt) {
+						dojoEvent.stop(evt);
+					}
+					on.once(dojo.body(), 'click', function(evt) {
+						Tooltip.hide(node);
+						dojoEvent.stop(evt);
+					});
+				});
+			};
+		</script>
+		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+	</head>
+	<body class="umc">

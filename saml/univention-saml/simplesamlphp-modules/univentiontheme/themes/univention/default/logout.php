@@ -16,5 +16,4 @@ echo('<p><a href="/univention/">' .
 </div>
 <?php
 $this->includeAtTemplateBase('includes/footer.php');
-
 ?>

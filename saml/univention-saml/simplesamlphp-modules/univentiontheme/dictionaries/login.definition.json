@@ -1,8 +1,8 @@
 {
-	"user_pass_header": {
-		"en": "Please enter your username and password"
+	"loginat": {
+		"en": "Login at %s"
 	},
-	"user_pass_text": {
-		"en": "The service $$OrganizationName$$has requested you to authenticate yourself. Please enter your username and password in the form below."
+	"serverwelcome": {
+		"en": "Login with your domain account."
 	}
 }
