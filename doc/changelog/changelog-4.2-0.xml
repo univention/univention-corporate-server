@@ -712,7 +712,10 @@
 			<listitem><simpara>
 				The following packages have been added to the maintained section of
 				the software repository:
-				<package>python-cups</package>, <package>univention-mysql</package> (<u:bug>42311</u:bug>, <u:bug>42509</u:bug>)
+				<package>python-cups</package>, <package>univention-mysql</package>,
+				<package>recode</package>, <package>freetds</package>, <package>xmlrpc-epi</package>,
+				<package>libwebp</package>, <package>uw-imap</package>, <package>firebird2.5</package>
+				(<u:bug>42311</u:bug>, <u:bug>42509</u:bug>, <u:bug>43481</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 				The package <package>xserver-xorg-input-all</package> does no longer depend on <package>xserver-xorg-input-vmmouse</package>
