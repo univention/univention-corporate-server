@@ -1,3 +1,9 @@
+univention-management-console (9.0.25-2) unstable; urgency=medium
+
+  * Bug #42261: insert style for scrollToTop button in modules
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Feb 2017 16:29:11 +0100
+
 univention-management-console (9.0.25-1) unstable; urgency=medium
 
   * Bug #42174: remove login html structure from index.html

@@ -2232,11 +2232,17 @@ define([
 			var defaultClasses = '.umc .dijitTabContainerTop-tabs .dijitTab';
 			var cssProperties = lang.replace('background-color: {0}; background-image: none; filter: none;', [color]);
 
+			// color the umcHeader
+			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
+			// color the tabs in the tabs dropDownMenu of the umcHeaer
+			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+			// color module tabs
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
-			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
-			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+			// color action buttons in an dgrid
 			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader .dijitButtonText', [tab.categoryColor]), lang.replace('color: {0}', [color]));
+			// color scroll to top floating button 
+			styles.insertCssRule(lang.replace('.umcModule.color-{0} .scrollToTopFloatingButton', [tab.categoryColor]), lang.replace('background-color: {0}', [color]));
 		},
 
 		__getModuleColor: function(module) {
