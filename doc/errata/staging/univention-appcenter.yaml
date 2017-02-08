@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The App Center no longer uses '-e var=value' for environment
+   variables when starting container. Instead a env file is created.
+bug: [43482]
