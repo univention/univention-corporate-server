@@ -1,3 +1,9 @@
+univention-firewall (9.0.0-5) unstable; urgency=medium
+
+  * Bug #43471: Fix firewall not executing 20_docker.sh
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 08 Feb 2017 12:19:57 +0100
+
 univention-firewall (9.0.0-4) unstable; urgency=low
 
   * Bug #43310: Adapt to firewall locking
