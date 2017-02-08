@@ -40,7 +40,7 @@ Alias /icon/ /var/www/icon/
     allow from all
 </Directory>
 
-Include /etc/apache2/sites-available/univention-management-console
+Include /etc/apache2/sites-available/univention.conf
 
 # redirect accesses to UMC to the activation service
 # RedirectMatch ^/univention/management/.*$ /
