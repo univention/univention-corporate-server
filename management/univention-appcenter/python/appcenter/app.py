@@ -1505,7 +1505,7 @@ class App(object):
 		return True
 
 	def _docker_prudence_is_true(self):
-		if self.docker:
+		if not self.docker:
 			return False
 		ret = ucr_is_true('appcenter/prudence/docker/%s' % self.id)
 		if not ret and self.plugin_of:

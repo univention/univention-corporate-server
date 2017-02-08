@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-17) unstable; urgency=medium
+
+  * Bug #43496: Fix setting server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 08 Feb 2017 16:38:24 +0100
+
 univention-appcenter (6.0.1-16) unstable; urgency=medium
 
   * Bug #43499: Support for Plugins (4)

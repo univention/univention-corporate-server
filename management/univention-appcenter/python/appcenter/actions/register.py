@@ -131,7 +131,7 @@ class Register(CredentialsAction):
 		self.debug('Adding %s' % ucr_base_key)
 		ret[ucr_base_key] = 'enabled'
 		ucr_base_key = '%s/%%s' % ucr_base_key
-		ret[ucr_base_key % 'server'] = app._get_server()
+		ret[ucr_base_key % 'server'] = app.get_server()
 		ret[ucr_base_key % 'description'] = app.name
 		ret[ucr_base_key % 'localmirror'] = 'false'
 		ret[ucr_base_key % 'version'] = ucr_get(ucr_base_key % 'version', 'current')
