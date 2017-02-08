@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-6) unstable; urgency=low
+
+  * Bug #42296: no need to restart apache
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Feb 2017 12:45:31 +0100
+
 univention-ad-connector (11.0.6-5) unstable; urgency=low
 
   * Bug #42296: removed config from system
