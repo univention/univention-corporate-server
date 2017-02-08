@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.4-2) unstable; urgency=medium
+
+  * Bug #42261: add css class to position_text
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Feb 2017 16:33:11 +0100
+
 univention-management-console-module-udm (7.0.4-1) unstable; urgency=medium
 
   * Bug #39731: prevent XSRF check when uploading license
