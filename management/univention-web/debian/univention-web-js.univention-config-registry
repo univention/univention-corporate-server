@@ -6,3 +6,15 @@ Variables: interfaces/.*/address
 
 Type: file
 File: etc/apache2/conf-available/univention-web.conf
+
+Type: file
+File: var/www/univention/meta.json
+Variables: ucs/web/overview/entries/.*
+Variables: locale
+Variables: umc/server/languages/.*
+Variables: hostname
+Variables: domainname
+Variables: umc/web/appliance/name
+Variables: server/amazon
+Variables: interfaces/
+Variables: ldap/master

@@ -1,3 +1,9 @@
+univention-web (1.0.17-1) unstable; urgency=medium
+
+  * Bug #42228: move entries.json to univention-wen meta.json
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2017 11:50:11 +0100
+
 univention-web (1.0.16-1) unstable; urgency=medium
 
   * Bug #42174: correctly decode uri components in getQuery()

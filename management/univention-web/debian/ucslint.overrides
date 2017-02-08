@@ -15,3 +15,4 @@
 0008-4: js/en.po
 # No UCR header for JSON files
 0004-16: conffiles/var/www/univention/languages.json
+0004-16: conffiles/var/www/univention/meta.json
