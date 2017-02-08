@@ -33,37 +33,18 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/dom",
 	"dojo/mouse",
 	"dojo/dom-class",
 	"dojo/promise/all",
 	"umc/tools",
+	"dojo/text!/univention/meta.json",
 	"./PortalCategory",
 	"./PortalLiveSearchSideBar",
 	"put-selector/put"
-], function(declare, lang, array, on, mouse, domClass, all, tools, PortalCategory, PortalLiveSearchSideBar, put) {
+], function(declare, lang, array, on, dom, mouse, domClass, all, tools, meta, PortalCategory, PortalLiveSearchSideBar, put) {
 	return {
 		portalCategories: null,
-		domainName: null,
-		ldapMaster: null,
-
-		getLdapMaster: function() {
-			var regMaster = /(^[^.]*)[.].*$/;
-			return tools.umcpCommand('portal/getLdapMaster', {}).then(lang.hitch(this, function(data) {
-				this.ldapMaster = data.result.match(regMaster)[1];
-			}));
-		},
-
-		getHostName: function() {
-			return tools.umcpCommand('portal/getHostName', {}).then(lang.hitch(this, function(data) {
-				this.hostName = data.result;
-			}));
-		},
-
-		getDomainName: function() {
-			return tools.umcpCommand('portal/getDomainName', {}).then(lang.hitch(this, function(data) {
-				this.domainName = data.result;
-			}));
-		},
 
 		_getInstalledAppsInDomain: function() {
 			return tools.umcpCommand('portal/getInstalledAppsInDomain', {}).then(lang.hitch(this, function(data) {
@@ -106,7 +87,7 @@ define([
 				description: 'Administrate the UCS domain and the local system',
 				web_interface: '/univention/management',
 				logo_name: 'univention-management-console',
-				host_name: this.hostName
+				host_name: meta.hostname
 			}];
 			this._addCategory(title, apps);
 
@@ -121,27 +102,27 @@ define([
 			var portalCategory = new PortalCategory({
 				title: title,
 				apps: apps,
-				domainName: this.domainName
+				domainName: meta.domainname
 			});
 			this.content.appendChild(portalCategory.domNode);
 			this.portalCategories.push(portalCategory);
 		},
 
 		start: function() {
-			var portal = dojo.byId('portal');
+			var portal = dom.byId('portal');
 			this.wrapper = put(portal, 'div.wrapper');
 			this.createHeader();
 
 			this.content = put(this.wrapper, 'div.content');
-			all([this.getDomainName(), this.getHostName()]).then(lang.hitch(this, '_createCategories'));
+			this._createCategories();
 		},
 
 		createHeader: function() {
 			var header = put(this.wrapper, 'div.header');
 			var headerLeft = put(header, 'div.headerLeft');
-			var title = put(headerLeft, 'h1', 'Univention Portal');
+			put(headerLeft, 'h1', 'Univention Portal');
 			this.headerRight = put(header, 'div.headerRight');
-			var logo = put(this.headerRight, 'div.logo');
+			put(this.headerRight, 'div.logo');
 			this.createLiveSearch();
 		},
 

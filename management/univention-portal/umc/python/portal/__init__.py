@@ -33,7 +33,6 @@
 
 from univention.management.console.modules import Base
 from univention.appcenter import get_action
-from univention.appcenter.ucr import ucr_get
 from univention.management.console.modules.decorators import simple_response
 
 
@@ -51,15 +50,3 @@ class Instance(Base):
 
 		domain = get_action('domain')
 		return domain.to_dict(apps)
-
-	@simple_response
-	def get_domain_name(self):
-		return ucr_get('domainname')
-
-	@simple_response
-	def get_host_name(self):
-		return ucr_get('hostname')
-
-	@simple_response
-	def get_ldap_master(self):
-		return ucr_get('ldap/master')

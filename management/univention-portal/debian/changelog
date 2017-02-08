@@ -1,3 +1,9 @@
+univention-portal (1.0.5-1) unstable; urgency=medium
+
+  * Bug #42233: speed up initilization by using static meta.json
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2017 12:05:46 +0100
+
 univention-portal (1.0.4-3) unstable; urgency=medium
 
   * Bug #42174: version bump
