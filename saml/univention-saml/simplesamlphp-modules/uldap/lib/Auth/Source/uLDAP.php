@@ -35,7 +35,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
 			'Authentication source ' . var_export($this->authId, TRUE));
-		$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enableTLS'], $config['debug'], $config['timeout']);
+		$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enable_tls'], $config['debug'], $config['timeout']);
 		$this->ldap->bind($config['search.username'], $config['search.password']);
 		$this->config = $config;
 	}

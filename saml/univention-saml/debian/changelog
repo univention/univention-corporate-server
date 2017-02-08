@@ -1,3 +1,9 @@
+univention-saml (4.0.4-2) unstable; urgency=medium
+
+  * Bug #43384: Fix typo
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 08 Feb 2017 14:41:45 +0100
+
 univention-saml (4.0.4-1) unstable; urgency=medium
 
   * Bug #42174: adjust styling of SAML login
