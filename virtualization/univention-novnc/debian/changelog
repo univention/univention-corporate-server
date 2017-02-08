@@ -1,4 +1,4 @@
-univention-novnc (1.0.0-3) unstable; urgency=low
+univention-novnc (1.0.0-4) unstable; urgency=low
 
   * Bug #42296: moved apache conf
 
@@ -25,7 +25,7 @@ univention-novnc (0.4+0+20131014+git142aa45-5) unstable; urgency=low
 univention-novnc (0.4+0+20131014+git142aa45-4) unstable; urgency=low
 
   * Add HTML Metatags to forbid caching of vnc_auto.html. This avoids certificate
-    problems with https connections while using Internet Explorer (Bug #33968) 
+    problems with https connections while using Internet Explorer (Bug #33968)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 11 Apr 2014 16:20:29 +0200
 
