@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-50) unstable; urgency=low
+
+  * Bug #43482: use env-file for all environment variables
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Feb 2017 16:11:27 +0100
+
 univention-appcenter (5.0.23-49) unstable; urgency=medium
 
   * Bug #43499: Revert
