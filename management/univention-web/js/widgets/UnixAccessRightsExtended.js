@@ -37,8 +37,10 @@ define([
 	"umc/render",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
 	"umc/i18n!"
-], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, _FormWidgetMixin, _) {
+], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, _FormWidgetMixin, Text, CheckBox, _) {
 	return declare("umc.widgets.UnixAccessRightsExtended", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Displays a matrix of UNIX access rights
@@ -72,43 +74,43 @@ define([
 
 			// create widgets
 			this.widgets = [
-				{ type: 'Text', name: 'ownerLabel', content: _( 'Owner' ) },
-				{ type: 'Text', name: 'groupLabel', content: _( 'Group' ) },
-				{ type: 'Text', name: 'otherLabel', content: _( 'Others' ) }
+				{ type: Text, name: 'ownerLabel', content: _( 'Owner' ) },
+				{ type: Text, name: 'groupLabel', content: _( 'Group' ) },
+				{ type: Text, name: 'otherLabel', content: _( 'Others' ) }
 			];
 			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
-				this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
-				this.widgets.push( { type: 'CheckBox', name: item + 'Write', disabled: this.disabled } );
-				this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Read', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Write', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Execute', disabled: this.disabled } );
 			} ) );
 
 			this.widgets = this.widgets.concat([{
-				type: 'Text',
+				type: Text,
 				name: 'read',
 				content: _( 'Read' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'write',
 				content: _( 'Write' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'access',
 				content: _( 'Access' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'empty',
 				content: ''
 			},
-			{ type: 'Text', name: 'setgid', content: _( 'Setgid' ) },
-			{ type: 'Text', name: 'stickybit', content: _( 'Sticky bit' ) },
-			{ type: 'Text', name: 'empty1', content: '' },
-			{ type: 'Text', name: 'empty2', content: '' },
-			{ type: 'Text', name: 'empty3', content: '' },
-			{ type: 'Text', name: 'empty4', content: '' }
+			{ type: Text, name: 'setgid', content: _( 'Setgid' ) },
+			{ type: Text, name: 'stickybit', content: _( 'Sticky bit' ) },
+			{ type: Text, name: 'empty1', content: '' },
+			{ type: Text, name: 'empty2', content: '' },
+			{ type: Text, name: 'empty3', content: '' },
+			{ type: Text, name: 'empty4', content: '' }
 			]);
 			
 			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item ) {
-				this.widgets.push( { type: 'CheckBox', name: item + 'CheckBox', disabled: this.disabled } ); 
+				this.widgets.push( { type: CheckBox, name: item + 'CheckBox', disabled: this.disabled } );
 			} ) );
 
 			this._widgets = render.widgets( this.widgets );
@@ -135,7 +137,7 @@ define([
 			this._container.addChild( this._widgets.empty3 );
 			this._container.addChild( this._widgets.empty4 );
 			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item) {
-				this._container.addChild( this._widgets[ item + 'CheckBox' ] ); 
+				this._container.addChild( this._widgets[ item + 'CheckBox' ] );
 			} ) );
 
 			// watch value changes

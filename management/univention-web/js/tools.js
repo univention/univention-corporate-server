@@ -53,7 +53,7 @@ define([
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
-	var login= {};
+	var login = {}, TextBox = {}, TextArea = {};
 	var dialog = {
 		login: function() {
 			return new Deferred();
@@ -62,12 +62,12 @@ define([
 		alert: function() {},
 		centerAlertDialog: function() {}
 	};
-	require(['umc/dialog'], function(_dialog) {
+	require(['umc/dialog', 'login', 'umc/widgets/TextBox', 'umc/widgets/TextArea'], function(_dialog, _login, _TextBox, _TextArea) {
 		// register the real umc/dialog module in the local scope
 		dialog = _dialog;
-	});
-	require(['login'], function(_login) {
 		login = _login;
+		TextArea = _TextArea;
+		TextBox = _TextBox;
 	});
 
 	// define umc/tools
@@ -887,11 +887,11 @@ define([
 					open: false,
 					content: '<pre>' + entities.encode(traceback) + '</pre>'
 				}, {
-					type: "TextArea",
+					type: TextArea,
 					name: 'remark',
 					label: _('Remarks (e.g. steps to reproduce) (optional)')
 				}, {
-					type: "TextBox",
+					type: TextBox,
 					name: 'email',
 					label: _('Your email address (optional)')
 				}]

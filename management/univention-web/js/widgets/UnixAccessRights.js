@@ -36,9 +36,11 @@ define([
 	"umc/tools",
 	"umc/render",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/i18n!"
-], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, _FormWidgetMixin, _) {
+], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, Text, CheckBox, _FormWidgetMixin, _) {
 	return declare("umc.widgets.UnixAccessRights", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Displays a matrix of UNIX access rights
@@ -72,30 +74,30 @@ define([
 
 			// create widgets
 			this.widgets = [
-				{ type: 'Text', name: 'ownerLabel', content: _( 'Owner' ) },
-				{ type: 'Text', name: 'groupLabel', content: _( 'Group' ) },
-				{ type: 'Text', name: 'otherLabel', content: _( 'Others' ) }
+				{ type: Text, name: 'ownerLabel', content: _( 'Owner' ) },
+				{ type: Text, name: 'groupLabel', content: _( 'Group' ) },
+				{ type: Text, name: 'otherLabel', content: _( 'Others' ) }
 			];
 			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
-				this.widgets.push( { type: 'CheckBox', name: item + 'Read', disabled: this.disabled } );
-				this.widgets.push( { type: 'CheckBox', name: item + 'Write', disabled: this.disabled } );
-				this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Read', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Write', disabled: this.disabled } );
+				this.widgets.push( { type: CheckBox, name: item + 'Execute', disabled: this.disabled } );
 			} ) );
 
 			this.widgets = this.widgets.concat([{
-				type: 'Text',
+				type: Text,
 				name: 'read',
 				content: _( 'Read' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'write',
 				content: _( 'Write' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'access',
 				content: _( 'Access' )
 			}, {
-				type: 'Text',
+				type: Text,
 				name: 'empty',
 				content: ''
 			}]);
