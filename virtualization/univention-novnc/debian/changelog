@@ -1,4 +1,4 @@
-univention-novnc (1.0.0-2) unstable; urgency=low
+univention-novnc (1.0.0-3) unstable; urgency=low
 
   * Bug #42296: moved apache conf
 
