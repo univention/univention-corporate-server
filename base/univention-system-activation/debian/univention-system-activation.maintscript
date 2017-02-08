@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-system-activation 2.0.1-1~

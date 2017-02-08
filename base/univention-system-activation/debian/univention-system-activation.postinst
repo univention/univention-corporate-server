@@ -32,11 +32,6 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.1-2; then
-	remove_ucr_template /etc/apache2/sites-available/univention-system-activation
-fi
-
 case "$1" in
 	configure)
 		chmod og+w /var/cache/univention-system-activation
