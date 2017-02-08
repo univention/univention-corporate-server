@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/json",
 	"dojo/dom",
 	"dojo/mouse",
 	"dojo/dom-class",
@@ -42,7 +43,8 @@ define([
 	"./PortalCategory",
 	"./PortalLiveSearchSideBar",
 	"put-selector/put"
-], function(declare, lang, array, on, dom, mouse, domClass, all, tools, meta, PortalCategory, PortalLiveSearchSideBar, put) {
+], function(declare, lang, array, on, json, dom, mouse, domClass, all, tools, meta, PortalCategory, PortalLiveSearchSideBar, put) {
+	meta = json.parse(meta);
 	return {
 		portalCategories: null,
 
@@ -87,7 +89,7 @@ define([
 				description: 'Administrate the UCS domain and the local system',
 				web_interface: '/univention/management',
 				logo_name: 'univention-management-console',
-				host_name: meta.hostname
+				host_name: meta.ucr.hostname
 			}];
 			this._addCategory(title, apps);
 
@@ -102,7 +104,7 @@ define([
 			var portalCategory = new PortalCategory({
 				title: title,
 				apps: apps,
-				domainName: meta.domainname
+				domainName: meta.ucr.domainname
 			});
 			this.content.appendChild(portalCategory.domNode);
 			this.portalCategories.push(portalCategory);
