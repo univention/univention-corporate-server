@@ -9,3 +9,5 @@ desc: |
  * During setup UCS components are now correctly detected via the new
    univention-appcenter API.
 bug: [40102]
+erratum: 388
+announced: 2017-02-08
