@@ -479,11 +479,13 @@ def default_error_page_json(status, message, traceback, version, result=None):
 	status, _, description = valid_status(status)
 	if status == 401 and message == description:
 		message = ''
+	location = '%s/%s' % (cherrypy.request.base, cherrypy.request.uri[len(cherrypy.request.base) + 1:].split('/', 1)[0])
 	if status == 404:
 		traceback = None
 	response = {
 		'status': status,
-		'message': message
+		'message': message,
+		'location': location,
 	}
 	if result:
 		response['result'] = result

@@ -851,28 +851,39 @@ define([
 			}));
 			container.addChild(titlePane);
 
+			var deferred = new Deferred();
 			var options = [{
 				name: 'close',
-				label: _('Close')
+				label: _('Close'),
+				callback: function() {
+					deferred.cancel();
+				}
 			}, {
 				name: 'as_email',
 				label: feedbackLabel,
 				callback: function() {
-					window.location.href = feedbackMailto;
+					deferred.resolve();
+					window.open(feedbackMailto, '_blank');
 				}
 			}, {
 				name: 'send',
 				'default': true,
 				label: _('Inform vendor'),
 				callback: lang.hitch(this, function() {
-					tools.sendTraceback(message, feedbackLink);
+					tools.sendTraceback(message, feedbackLink).then(function() {
+						deferred.resolve();
+					}, function() {
+						deferred.reject();
+					});
 				})
 			}];
-			return dialog.confirm(container, options, title || _('An error occurred'));
+			return dialog.confirm(container, options, title || _('An error occurred')).then(function() {
+				return deferred;
+			});
 		},
 
 		sendTraceback: function(traceback, feedbackLink) {
-			dialog.confirmForm({
+			return dialog.confirmForm({
 				title: _('Send to vendor'),
 				widgets: [{
 					type: Text,
@@ -897,7 +908,7 @@ define([
 				}]
 			}).then(function(values) {
 				values.traceback = traceback;
-				tools.umcpCommand('sysinfo/traceback', values, false).then(function() {
+				return tools.umcpCommand('sysinfo/traceback', values, false).then(function() {
 					dialog.alert(_('Thank you for your help'));
 				}, function() {
 					var alertString = _('Sending the information to the vendor failed');
