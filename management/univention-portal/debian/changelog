@@ -1,3 +1,9 @@
+univention-portal (1.0.4-3) unstable; urgency=medium
+
+  * Bug #42174: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Feb 2017 10:13:55 +0100
+
 univention-portal (1.0.4-2) unstable; urgency=medium
 
   Bug #38824:
