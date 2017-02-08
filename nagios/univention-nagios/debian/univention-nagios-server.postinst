@@ -72,44 +72,17 @@ fi
 call_joinscript 28univention-nagios-server.inst
 call_joinscript 30univention-nagios-client.inst
 
-if [ ! -d /etc/apache2/conf.d ]; then
-	mkdir -p /etc/apache2/conf.d
-fi
-
-# upgrade nagios2 -> nagios3 (Bug #14594)
-# univention-nagios-server 5.0.X is shipped by UCS 3.0-X
-updateNagios2To3() {
-	/usr/sbin/univention-directory-listener-ctrl resync nagios-server
-	if [ -L /etc/apache2/conf.d/nagios2.conf ]; then
-		rm -f /etc/apache2/conf.d/nagios2.conf
-	fi
-}
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 5.0.0; then
-	updateNagios2To3
-fi
-
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart
+	test -f /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
+	if [ -e /usr/share/apache2/apache2-maintscript-helper ]; then
+		. /usr/share/apache2/apache2-maintscript-helper
+		apache2_invoke enconf nagios3
 	fi
-
-	if test -f /etc/init.d/apache2
-		then
-		/etc/init.d/apache2 restart
-	fi
-
-	/etc/init.d/nagios3 restart
-	
+	test -f /etc/init.d/nagios3 && invoke-rc.d nagios3 restart
 	# remove unjoin script
 	uinst=/usr/lib/univention-install/28univention-nagios-server.uinst
 	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-# create symlink here instead of u*-n*-server.links (Bug #35078)
-if [ ! -L /etc/apache2/conf.d/nagios3.conf ]; then
-	ln -s /etc/nagios3/apache2.conf /etc/apache2/conf.d/nagios3.conf
 fi
 
 exit 0

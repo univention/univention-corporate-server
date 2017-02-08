@@ -1,3 +1,9 @@
+univention-nagios (10.0.0-3) unstable; urgency=low
+
+  * Bug #42296: removed old apache code/config
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Feb 2017 12:38:03 +0100
+
 univention-nagios (10.0.0-2) unstable; urgency=medium
 
   * Bug #42228: ucs-overview → univention
