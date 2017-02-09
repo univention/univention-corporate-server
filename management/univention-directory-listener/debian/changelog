@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-4) unstable; urgency=medium
+
+  * Bug #23367: Use strdup instead of error prone malloc & strcpy
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Feb 2017 18:15:03 +0100
+
 univention-directory-listener (11.0.1-3) unstable; urgency=medium
 
   * Bug #23367: Add lost cosmetic patch hunk

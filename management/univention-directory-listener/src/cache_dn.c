@@ -211,13 +211,12 @@ int dntree_lookup_dn4id(MDB_cursor *cur, DNID dnid, char **dn)
 
 	subdn = (subDN *) data.mv_data;
 
-	*dn = malloc(strlen(subdn->data) + 1);
+	*dn = strdup(subdn->data);
 	if (*dn == NULL) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			"%s: Malloc failed", __func__);
+			"%s: Strdup failed", __func__);
 		abort();
 	}
-	strcpy(*dn, subdn->data);
 
 	return rv;
 }
