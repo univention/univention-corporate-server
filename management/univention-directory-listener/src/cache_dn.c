@@ -560,7 +560,7 @@ int dntree_init(MDB_dbi *dbi_p, MDB_txn *cache_init_txn_p, int mdb_flags)
 	key.mv_size = sizeof(DNID);
 	key.mv_data = &(DNID) {0};
 	data.mv_size = sizeof(subDN);
-	data.mv_data = &(subDN) {0, SUBDN_TYPE_NODE, {0}};
+	data.mv_data = &(subDN) {0, SUBDN_TYPE_NODE, ""};
 	// ignore exists
 	mdb_cursor_put(cur, &key, &data, MDB_NODUPDATA);
 	// not strictly required, mdb_txn_commit does it for write txn
