@@ -1,0 +1,27 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user
+## tags: [udm,apptest,SKIP]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+from univention.testing.strings import random_string
+
+if __name__ == '__main__':
+	lo = utils.get_ldap_connection()
+	with udm_test.UCSTestUDM() as udm:
+		groupdn = udm.create_object('groups/group', name=random_string())
+		groupdn2 = udm.create_object('groups/group', name=random_string())
+		sid = lo.getAttr(groupdn, 'sambaSID', required=True)
+		user = udm.create_user(primaryGroup=groupdn, groups=[groupdn2])[0]
+		utils.verify_ldap_object(user, {'sambaPrimaryGroupSID': sid})
+
+		utils.verify_ldap_object(groupdn, {'uniqueMember': [user]})
+		udm.modify_object('groups/group', dn=groupdn, remove={'users': [user]})
+		utils.verify_ldap_object(groupdn, {'uniqueMember': []})
+		utils.verify_ldap_object(user, {'sambaPrimaryGroupSID': []})  # This fails, Bug #27160
