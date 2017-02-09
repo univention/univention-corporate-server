@@ -9,3 +9,5 @@ desc: |
  * Removing objects which don't have subelements is now possible even if the
    ldap admin size limit is reached.
 bug: [43195]
+erratum: 29
+announced: 2017-02-09
