@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-2) unstable; urgency=medium
+
+  * Bug #23367: Update version number condition for conversion
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Feb 2017 15:46:58 +0100
+
 univention-directory-listener (11.0.1-1) unstable; urgency=medium
 
   * Bug #23367: Use LMDB for listener cache

@@ -103,7 +103,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 		mv /var/lib/univention-directory-listener/log.* /var/univention-backup/listener-cache-ucs_3.0-ms1/
 	fi
 
-	if dpkg --compare-versions "$2" lt 11.0.0-7; then
+	if dpkg --compare-versions "$2" lt 11.0.1-1; then
 		convert_to_lmdb
 	fi
 
