@@ -51,3 +51,9 @@ Description[de]=Diese Variable legt die untere Grenze für den freien Speicherpl
 Description[en]=This variable configures the lower limit for free space in the directories '/var/lib/univention-ldap/' and '/var/lib/univention-directory-listener/', when the Listener will be stopped. Default is 10 [MiB].
 Type=int
 Categories=service-ln
+
+[listener/cache/mdb/maxsize]
+Description[de]=Die maximale Größe der Cache-Datenbank in Bytes. Auf 64 Bit Systemen ist der Default 2 GiB. Auf 32 Bit Systemen ist der Default 1.9 GiB.
+Description[en]=The maximum size of the cache database in bytes. On 64 bit systems the default is 2 GiB. On 32 bit systems the default is 1.9 GiB.
+Type=str
+Categories=service-ln

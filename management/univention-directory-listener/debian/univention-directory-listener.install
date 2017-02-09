@@ -1,6 +1,7 @@
 src/listener usr/sbin/
 src/dump usr/sbin/
 src/verify usr/sbin/
+src/convert usr/sbin/
 src/listener-ctrl usr/sbin/
 python/get_notifier_id.py usr/share/univention-directory-listener/
 python/ldap_server.py usr/lib/univention-directory-listener/system/

@@ -7,6 +7,7 @@ Build-Depends: debhelper (>= 9),
  ucslint-univention,
  libssl-dev,
  libldap2-dev,
+ liblmdb-dev,
  libdb3-dev,
  python-all-dev,
  libunivention-debug-dev (>= 0.8),
@@ -27,6 +28,7 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
  python2.7-univention,
  python2.7-univention-debug,
  python-univention-lib (>= 1.0.25-1)
+Suggests: lmdb-utils
 Conflicts: univention-ldap-listener (<< 2.2.2)
 Description: UCS - Directory Listener
  UCS Directory Listener is a client for the UCS

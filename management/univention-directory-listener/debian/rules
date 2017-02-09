@@ -50,6 +50,7 @@ override_dh_install:
 	mv debian/univention-directory-listener/usr/sbin/listener debian/univention-directory-listener/usr/sbin/univention-directory-listener
 	mv debian/univention-directory-listener/usr/sbin/dump debian/univention-directory-listener/usr/sbin/univention-directory-listener-dump
 	mv debian/univention-directory-listener/usr/sbin/verify debian/univention-directory-listener/usr/sbin/univention-directory-listener-verify
+	mv debian/univention-directory-listener/usr/sbin/convert debian/univention-directory-listener/usr/sbin/univention-directory-listener-convert
 	mv debian/univention-directory-listener/usr/sbin/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
 
 override_dh_installinit:

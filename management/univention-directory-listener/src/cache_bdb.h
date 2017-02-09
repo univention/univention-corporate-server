@@ -30,71 +30,65 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CACHE_H_
-#define _CACHE_H_
+#ifndef _CACHE_BDB_H_
+#define _CACHE_BDB_H_
 
-#include <lmdb.h>
+#include <db.h>
 
 #include "network.h"
 #include "cache_entry.h"
 
-extern int INIT_ONLY;
-extern char *cache_dir;
-extern char *ldap_dir;
+extern char *bdb_cache_dir;
+extern char *bdb_ldap_dir;
 
-typedef struct _CacheMasterEntry {
+typedef struct _BdbCacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
-} CacheMasterEntry;
-extern CacheMasterEntry cache_master_entry;
+} BdbCacheMasterEntry;
+extern BdbCacheMasterEntry bdb_cache_master_entry;
 
-int	cache_lock(void);
-int	cache_init				(char *cache_mdb_dir,
-						 int mdb_flags);
-void	cache_sync(void);
-int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
-int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
-						 MDB_txn		 *dptxnp);
-int	cache_update_entry			(NotifierID		  id,
+int	bdb_cache_lock(void);
+int	bdb_cache_init				(void);
+void	bdb_cache_sync(void);
+int	bdb_cache_get_master_entry			(BdbCacheMasterEntry	 *master_entry);
+int	bdb_cache_update_master_entry		(BdbCacheMasterEntry	 *master_entry,
+						 DB_TXN			 *dptxnp);
+int	bdb_cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-inline int	cache_update_entry_lower			(NotifierID		  id,
+inline int	bdb_cache_update_entry_lower			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-int	cache_delete_entry			(NotifierID		  id,
+int	bdb_cache_delete_entry			(NotifierID		  id,
 						 char			 *dn);
-int	cache_delete_entry_lower_upper			(NotifierID		  id,
+int	bdb_cache_delete_entry_lower_upper			(NotifierID		  id,
 						 char			 *dn);
-int	cache_update_or_deleteifunused_entry	(NotifierID		  id,
-						 char			 *dn,
-						 CacheEntry		 *entry,
-						 MDB_cursor		**cur);
-int	cache_get_entry(
+int	bdb_cache_update_or_deleteifunused_entry	(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-int	cache_get_entry_lower_upper(
+int	bdb_cache_get_entry(
 						 char			 *dn,
 						 CacheEntry		 *entry);
-int	cache_first_entry			(MDB_cursor		**cur,
-						 MDB_cursor		**cur_dn,
+int	bdb_cache_get_entry_lower_upper(
+						 char			 *dn,
+						 CacheEntry		 *entry);
+int	bdb_cache_first_entry			(DBC			**cur,
 						 char			**dn,
 						 CacheEntry		 *entry);
-int	cache_next_entry			(MDB_cursor		**cur,
-						 MDB_cursor		**cur_dn,
+int	bdb_cache_next_entry			(DBC			**cur,
 						 char			**dn,
 						 CacheEntry		 *entry);
-int	cache_free_cursor			(MDB_cursor		 *cur,
-						 MDB_cursor		 *cur_dn);
-void	cache_close				(void);
+int	bdb_cache_free_cursor			(DBC			 *cur);
+int	bdb_cache_close				(void);
 
 /* deprecated with DB42*/
-int	cache_set_int				(char		 *key,
+int	bdb_cache_set_int				(char		 *key,
 						 const NotifierID		  value);
-int	cache_get_int				(char		 *key,
+int	bdb_cache_get_int				(char		 *key,
 						 NotifierID			 *value,
 						 const long		  def);
 
-int cache_get_schema_id(NotifierID *value, const long def);
-int cache_set_schema_id(const NotifierID value);
+int bdb_cache_get_schema_id(NotifierID *value, const long def);
+int bdb_cache_set_schema_id(const NotifierID value);
 
-#endif /* _CACHE_H_ */
+#endif /* _CACHE_BDB_H_ */

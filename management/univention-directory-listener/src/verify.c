@@ -140,7 +140,8 @@ int main(int argc, char* argv[])
 	char		*bindpw = NULL;
 	char		*basedn = NULL;
 	int		 rv;
-	DBC		*cur;
+	MDB_cursor	*id2entry_read_cursor_p = NULL;
+	MDB_cursor	*id2dn_read_cursor_p = NULL;
 	char		*dn;
 	CacheEntry	 entry;
 	LDAP		*ld;
@@ -155,6 +156,7 @@ int main(int argc, char* argv[])
 	};
 	int sizelimit0 = 0;
 	struct berval cred;
+	char	cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -221,11 +223,14 @@ int main(int argc, char* argv[])
 	}
 
 
-	if (cache_init() != 0)
+	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+	if (cache_init(cache_mdb_dir, MDB_RDONLY) != 0)
 		exit(1);
 
-	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
-			rv=cache_next_entry(&cur, &dn, &entry)) {
+	for (rv=cache_first_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry); rv != MDB_NOTFOUND;
+			rv=cache_next_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry)) {
 		if (rv < -1) break;
 
 		if (has_dn(dn)) {
@@ -245,7 +250,7 @@ int main(int argc, char* argv[])
 		}
 		add_dn(dn);
 	}
-	cache_free_cursor(cur);
+	cache_free_cursor(id2entry_read_cursor_p, id2dn_read_cursor_p);
 
 	if ((rv=ldap_search_ext_s(ld, basedn, LDAP_SCOPE_SUBTREE, "(objectClass=*)",
 			attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res)) != LDAP_SUCCESS) {
@@ -258,7 +263,7 @@ int main(int argc, char* argv[])
 			char *dn = ldap_get_dn(ld, cur);
 			if (has_dn(dn)) continue;
 
-			if ((rv = cache_get_entry(dn, &entry)) == DB_NOTFOUND) {
+			if ((rv = cache_get_entry(dn, &entry)) == MDB_NOTFOUND) {
 				printf("E: %s only in LDAP\n", dn);
 			} else if (rv != 0) {
 				printf("E: error reading %s from cache", dn);

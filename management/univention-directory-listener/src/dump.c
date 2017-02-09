@@ -67,9 +67,11 @@ int main(int argc, char* argv[])
 	char *output_file = NULL;
 	FILE *fp;
 	int rv;
-	DBC *cur;
+	MDB_cursor *id2entry_read_cursor_p = NULL;
+	MDB_cursor *id2dn_read_cursor_p = NULL;
 	char *dn = NULL;
 	CacheEntry entry;
+	char	cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -124,7 +126,10 @@ int main(int argc, char* argv[])
 			"Couldn't open dump file");
 		exit(1);
 	}
-	if (cache_init() != 0)
+	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+	if (cache_init(cache_mdb_dir, MDB_RDONLY) != 0)
 		exit(1);
 
 	if (id_only) {
@@ -133,8 +138,8 @@ int main(int argc, char* argv[])
 		printf("%ld %ld\n", cache_master_entry.id, cache_master_entry.schema_id);
 	} else {
 
-	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
-			rv=cache_next_entry(&cur, &dn, &entry)) {
+	for (rv=cache_first_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry); rv != MDB_NOTFOUND;
+			rv=cache_next_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry)) {
 		if ((rv == 0 && !broken_only) || (rv == -1 && broken_only)) {
 			cache_dump_entry(dn, &entry, fp);
 			fprintf(fp, "\n");
@@ -142,7 +147,7 @@ int main(int argc, char* argv[])
 		cache_free_entry(&dn, &entry);
 		if (rv < -1) break;
 	}
-	cache_free_cursor(cur);
+	cache_free_cursor(id2entry_read_cursor_p, id2dn_read_cursor_p);
 
 	}
 

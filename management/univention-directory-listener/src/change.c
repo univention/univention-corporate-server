@@ -40,7 +40,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <db.h>
+#include <lmdb.h>
 
 #include <univention/debug.h>
 #include <univention/config.h>
@@ -74,7 +74,8 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 	struct filter **f;
 	int rv;
 	CacheEntry cache_entry, old_cache_entry;
-	DBC *dbc_cur;
+	MDB_cursor *id2entry_cursor_p = NULL;
+	MDB_cursor *id2dn_cursor_p = NULL;
 	char *dn = NULL;
 	int i;
 	bool abort_init = false;
@@ -93,26 +94,26 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 	/* remove old entries for module */
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"remove old entries for module %s", handler->name);
-	for (rv=cache_first_entry(&dbc_cur, &dn, &cache_entry); rv != DB_NOTFOUND;
-			rv=cache_next_entry(&dbc_cur, &dn, &cache_entry)) {
+	for (rv=cache_first_entry(&id2entry_cursor_p, &id2dn_cursor_p, &dn, &cache_entry); rv != MDB_NOTFOUND;
+			rv=cache_next_entry(&id2entry_cursor_p, &id2dn_cursor_p, &dn, &cache_entry)) {
 		if (rv == -1) continue;
 		if (rv < 0) break;
 
 		cache_entry_module_remove(&cache_entry, handler->name);
-		cache_update_or_deleteifunused_entry(0, dn, &cache_entry);
+		cache_update_or_deleteifunused_entry(0, dn, &cache_entry, &id2dn_cursor_p);
 		cache_free_entry(&dn, &cache_entry);
 	}
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"call cache_free_cursor for module %s", handler->name);
-	cache_free_cursor(dbc_cur);
+	cache_free_cursor(id2entry_cursor_p, id2dn_cursor_p);
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"initialize schema for module %s", handler->name);
 	/* initialize schema; if it's not in cache yet (it really should be), it'll
 	   be initialized on the regular schema check after ldapsearches */
 	if ((rv = cache_get_entry_lower_upper("cn=Subschema", &cache_entry)) != 0 &&
-			rv != DB_NOTFOUND) {
+			rv != MDB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 				"error while reading from database");
 		return LDAP_OTHER;
@@ -184,7 +185,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		for (i=0; i<dn_count; i++) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
 
-			if ((rv = cache_get_entry_lower_upper(dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
+			if ((rv = cache_get_entry_lower_upper(dns[i].dn, &cache_entry)) == MDB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
 				int attrsonly0 = 0;
 				rv = LDAP_RETRY(lp, ldap_search_ext_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res2));
@@ -246,7 +247,6 @@ int change_new_modules(univention_ldap_parameters_t *lp)
 		}
 	}
 	INIT_ONLY = old_init_only;
-	cache_sync();
 
 	return 0;
 }
@@ -267,7 +267,7 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
 		goto result;
 	}
-	if ((rv = cache_get_entry_lower_upper(dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
+	if ((rv = cache_get_entry_lower_upper(dn, &old_cache_entry)) != 0 && rv != MDB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
 		rv = LDAP_OTHER;
 	} else {
@@ -694,7 +694,7 @@ int change_update_dn(struct transaction *trans) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
 
 	rv = cache_get_entry_lower_upper(trans->cur.notify.dn, &trans->cur.cache);
-	if (rv != 0 && rv != DB_NOTFOUND) {
+	if (rv != 0 && rv != MDB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error reading database for %s", trans->cur.notify.dn);
 		return LDAP_OTHER;
 	}

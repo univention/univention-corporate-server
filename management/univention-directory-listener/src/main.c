@@ -264,6 +264,18 @@ static void purge_cache(const char *cache_dir)
 		}
 		closedir(dir);
 	}
+
+	rv = snprintf(dirname, PATH_MAX,"%s/cache", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+	if ((dir = opendir(dirname)) != NULL) {
+		while ((dirent = readdir(dir))) {
+			char path[PATH_MAX];
+			snprintf(path, PATH_MAX, "%s/%s", dirname, dirent->d_name);
+			unlink(path);
+		}
+		closedir(dir);
+	}
 }
 
 
@@ -274,6 +286,13 @@ static void prepare_cache(const char *cache_dir)
 	int rv;
 
 	rv = snprintf(dirname, PATH_MAX, "%s/handlers", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+	if (stat(dirname, &stbuf) != 0) {
+		mkdir(dirname, 0700);
+	}
+
+	rv = snprintf(dirname, PATH_MAX,"%s/cache", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 	if (stat(dirname, &stbuf) != 0) {
@@ -344,6 +363,7 @@ int main(int argc, char* argv[])
 	int				 rv;
 	NotifierID			 id = -1;
 	struct stat			 stbuf;
+	char	cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -536,7 +556,13 @@ int main(int argc, char* argv[])
 
 	/* XXX: we shouldn't block all signals for so long */
 	signals_block();
-	cache_init();
+
+	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+	if (cache_init(cache_mdb_dir, 0) != 0)
+		exit(1);
+
 	handlers_init();
 
 	/* pass data to handlers */
@@ -560,7 +586,7 @@ int main(int argc, char* argv[])
 
 	/* if no ID is set, assume the database has just been initialized */
 	rv = cache_get_master_entry(&cache_master_entry);
-	if (rv == DB_NOTFOUND) {
+	if (rv == MDB_NOTFOUND) {
 		cache_get_int("notifier_id", &cache_master_entry.id, -1);
 		if (cache_master_entry.id == -1) {
 			rv = notifier_get_id_s(NULL, &cache_master_entry.id);

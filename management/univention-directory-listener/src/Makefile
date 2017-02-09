@@ -31,13 +31,12 @@
 #
 CC ?= gcc
 
-DB_LDLIBS := -ldb3
-DB_CFLAGS := -I/usr/include/db3 -DWITH_DB3
-DB_OBJS := cache.o cache_entry.o cache_lowlevel.o base64.o filter.o
+DB_LDLIBS := -llmdb
+DB_OBJS := cache.o cache_dn.o cache_entry.o cache_lowlevel.o base64.o filter.o
 
 LDAP_LDLIBS := -lldap -llber
 
-CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
+CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64
 LDLIBS := -luniventiondebug -luniventionconfig -licuuc
 LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython2.7 $(DB_LDLIBS)
 LISTENER_OBJS := main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
@@ -46,9 +45,11 @@ DUMP_OBJS := dump.o dump_signals.o utils.o $(DB_OBJS)
 DEMO_OBJS := demo.o network.o utils.o
 VERIFY_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS)
 VERIFY_OBJS := verify.o dump_signals.o utils.o $(DB_OBJS)
+CONVERT_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS) -ldb3
+CONVERT_OBJS := convert.o cache_bdb.o dump_signals.o utils.o $(DB_OBJS)
 
 .PHONY: all
-all: listener dump verify
+all: listener dump verify convert
 
 listener: $(LISTENER_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(LISTENER_LDLIBS)
@@ -62,6 +63,12 @@ demo: $(DEMO_OBJS)
 verify: $(VERIFY_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(VERIFY_LDLIBS)
 
+convert: $(CONVERT_OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(CONVERT_LDLIBS)
+
+cache_bdb.o: cache_bdb.c
+	$(CC) $(CFLAGS) -I/usr/include/db3 -DWITH_DB3 -c $^
+
 .PHONY: clean
 clean:
-	$(RM) *.o listener dump demo verify *.db3 *.db42
+	$(RM) *.o listener dump demo verify convert *.db3 *.db42

@@ -1,3 +1,11 @@
+univention-directory-listener (11.0.1-1) unstable; urgency=medium
+
+  * Bug #23367: Use LMDB for listener cache
+  * Run univention-directory-listener-convert in postinst
+  * New UCR variable listener/cache/mdb/maxsize
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Feb 2017 15:13:42 +0100
+
 univention-directory-listener (11.0.0-7) unstable; urgency=low
 
   * Bug #42725: Fix integer overflow
