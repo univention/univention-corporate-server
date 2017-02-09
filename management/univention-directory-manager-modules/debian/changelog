@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-146) unstable; urgency=medium
+
+  * Bug #43195: version bump
+
+ -- Florian Best <best@univention.de>  Thu, 09 Feb 2017 10:26:36 +0100
+
 univention-directory-manager-modules (9.0.76-145) unstable; urgency=medium
 
   * Bug #43195: don't search for children of objects which doesn't have
