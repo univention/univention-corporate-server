@@ -140,6 +140,9 @@
 					<listitem><simpara>
 						Kerberos support was removed from the Listener (<u:bug>42678</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						The Listener cache backend has been converted to LMDB (<u:bug>23367</u:bug>).
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 
