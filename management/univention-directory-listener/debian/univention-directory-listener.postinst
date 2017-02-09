@@ -71,6 +71,9 @@ convert_to_lmdb() {
 	if [ ! -f /var/lib/univention-directory-listener/cache/data.mdb ]; then
 		if [ ! -d /var/lib/univention-directory-listener/cache ]; then
 			mkdir /var/lib/univention-directory-listener/cache
+			chown listener.nogroup \
+				/var/lib/univention-directory-listener/cache
+			chmod 700 /var/lib/univention-directory-listener/cache
 		fi
 		if [ -f /var/lib/univention-directory-listener/cache.db ]; then
 			running=1
@@ -81,11 +84,9 @@ convert_to_lmdb() {
 				/etc/init.d/univention-directory-listener stop
 			fi
 
-			univention-directory-listener-convert \
-				/var/lib/univention-directory-listener/cache.db
-
-			chown -R listener.nogroup \
-				/var/lib/univention-directory-listener/cache
+			univention-directory-listener-convert
+			chown listener.nogroup \
+				/var/lib/univention-directory-listener/cache/*
 
 			if [ "$running" -eq 1 ]; then
 				/etc/init.d/univention-directory-listener start
