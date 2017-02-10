@@ -1192,13 +1192,16 @@ define([
 				'class': 'dijitHidden'
 			}));
 
-			this.addMenuEntry(new PopupMenuItem({
-				$parentMenu$: 'umcMenuUsername',
-				$priority$: 55,
-				label: _('Switch language'),
-				id: 'umcMenuLanguage',
-				popup: LanguageSwitch()._languageMenu
-			}));
+			// the language switch menu
+			if (i18nTools.availableLanguages.length > 1) {
+				this.addMenuEntry(new PopupMenuItem({
+					$parentMenu$: 'umcMenuUsername',
+					$priority$: 55,
+					label: _('Switch language'),
+					id: 'umcMenuLanguage',
+					popup: LanguageSwitch()._languageMenu
+				}));
+			}
 
 			// the help context menu
 			this.addMenuEntry(new PopupMenuItem({
