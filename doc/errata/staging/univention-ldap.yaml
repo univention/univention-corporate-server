@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-ldap
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * ldap/acl/read/regex has been added to allow the configuration
+   of regex expressions for the anonymous read.
+bug: [43523]
