@@ -68,8 +68,6 @@ modules/univention/admin/handlers/mail/de.po: $(wildcard modules/univention/admi
 modules/univention/admin/handlers/groups/de.po: $(wildcard modules/univention/admin/handlers/groups/*.py)
 modules/univention/admin/handlers/de.po: $(wildcard modules/univention/admin/handlers/*.py)
 modules/univention/admin/handlers/networks/de.po: $(wildcard modules/univention/admin/handlers/networks/*.py)
-modules/univention/admin/handlers/legacy/policies/de.po: $(wildcard modules/univention/admin/handlers/legacy/policies/*.py)
-modules/univention/admin/handlers/legacy/computers/de.po: $(wildcard modules/univention/admin/handlers/legacy/computers/*.py)
 modules/univention/admin/handlers/kerberos/de.po: $(wildcard modules/univention/admin/handlers/kerberos/*.py)
 modules/univention/admin/handlers/nagios/de.po: $(wildcard modules/univention/admin/handlers/nagios/*.py)
 modules/univention/admin/handlers/dns/de.po: $(wildcard modules/univention/admin/handlers/dns/*.py)

@@ -65,18 +65,3 @@ Description: UCS - Command-line based administration tools
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
-Package: python-univention-directory-manager-legacy-ucd-tcs
-Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-univention-directory-manager (= ${binary:Version})
-Provides: ${python:Provides}
-Replaces: python-univention-lib (<< 1.0.15-1)
-Description: UCS - Old UDM modules
- This package contains old UDM modules concerning
- UCD and TCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/

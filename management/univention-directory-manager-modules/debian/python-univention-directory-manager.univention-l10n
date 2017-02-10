@@ -65,22 +65,6 @@
 	},
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/legacy/computers/[^/]*.py"
-		],
-		"po_subdir": "modules/univention/admin/handlers/legacy/computers",
-		"target_type": "mo",
-		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-computers.mo"
-	},
-	{
-		"input_files": [
-			"modules/univention/admin/handlers/legacy/policies/[^/]*.py"
-		],
-		"po_subdir": "modules/univention/admin/handlers/legacy/policies",
-		"target_type": "mo",
-		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-policies.mo"
-	},
-	{
-		"input_files": [
 			"modules/univention/admin/handlers/mail/[^/]*.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/mail",
