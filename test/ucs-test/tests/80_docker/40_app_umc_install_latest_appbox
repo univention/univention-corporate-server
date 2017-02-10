@@ -9,6 +9,7 @@ from dockertest import *
 
 import requests
 import json
+import pytest
 
 if __name__ == '__main__':
 
@@ -31,16 +32,11 @@ echo "This message goes to stderr" >&2
 exit 1
 '''		)
 		app.add_to_local_appcenter()
-		try:
+		with pytest.raises(UCTTest_DockerApp_UMCInstallFailed):
 			appcenter.update()
 			app.install_via_umc()
-		except UCTTest_DockerApp_UMCInstallFailed:
-			pass
-		else:
-			raise UCSTest_Docker_Exception, 'test should have failed with UCTTest_DockerApp_UMCInstallFailed'
-		finally:
-			app.uninstall()
-			app.remove()
+		app.uninstall()
+		app.remove()
 
 	# installation should succeed if setup is fine
 	with Appcenter() as appcenter:
@@ -49,7 +45,7 @@ exit 1
 		app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
 		app.add_script(setup='''#!/bin/bash
 echo "This message goes to stdout"
-echo "This message goes to stderr" >&2
+echo "This message goes to stderr but script returns 0" >&2
 exit 0
 '''
 		)
