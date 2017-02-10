@@ -189,12 +189,9 @@ class ConfigRegistry(MutableMapping):
 			try:
 				registry = self._registry[reg]
 				value = registry[key]
-				if getscope:
-					return (reg, value)
-				else:
-					return value
 			except KeyError:
 				continue
+			return (reg, value) if getscope else value
 		return default
 
 	def has_key(self, key, write_registry_only=False):
@@ -222,6 +219,11 @@ class ConfigRegistry(MutableMapping):
 				if key not in merge:
 					merge[key] = (reg, value) if getscope else value
 		return merge
+
+	def items(self, getscope=False):
+		"""Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True."""
+		merge = self._merge(getscope=getscope)
+		return merge.items()
 
 	def __str__(self):
 		"""Return registry content as string."""

@@ -217,6 +217,14 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
 		)
 
+	def test_items_scopes(self):
+		"""Test merged items."""
+		ucr = self._setup_layers()
+		self.assertEqual(
+			sorted(ucr.items(getscope=True)),
+			sorted([('foo', (ConfigRegistry.FORCED, 'FORCED')), ('bar', (ConfigRegistry.FORCED, 'FORCED')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
+		)
+
 	def test_iteritems(self):
 		"""Test merged items."""
 		ucr = self._setup_layers()
