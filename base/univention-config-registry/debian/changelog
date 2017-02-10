@@ -1,3 +1,9 @@
+univention-config-registry (11.0.0-10) unstable; urgency=low
+
+  * Bug #43341: Provide fallback quote() implementation
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Feb 2017 11:21:28 +0100
+
 univention-config-registry (11.0.0-9) unstable; urgency=low
 
   * Bug #40659: Fix check for running proceeses with Docker
