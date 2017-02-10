@@ -727,6 +727,9 @@
 				The package <package>xserver-xorg-input-all</package> does no longer depend on <package>xserver-xorg-input-vmmouse</package>
 				since it is obsolete with the latest kernel changes (<u:bug>43460</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>python-univention-directory-manager-legacy-ucd-tcs</package> has been removed (<u:bug>41637</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
