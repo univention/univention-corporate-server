@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-41) unstable; urgency=low
+
+  * Bug #43523: added ldap/acl/read/regex
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Feb 2017 16:40:10 +0100
+
 univention-ldap (12.1.6-40) unstable; urgency=medium
 
   * Bug #42103: enhance pam_unix password change configuration
