@@ -61,69 +61,6 @@ define([
 			this._title.set('content', title);
 		},
 
-		_stickyTimer: null,
-
-		_stickyHeaderTopPadding: null,
-		_getStickyHeaderTopPadding: function() {
-			if (!this._stickyHeaderTopPadding) {
-				var stickyHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderSticky');
-				this._stickyHeaderTopPadding =  geometry.getPadExtents(stickyHeaderNode).t;
-				put(stickyHeaderNode.parentNode, '!');
-			}
-			return this._stickyHeaderTopPadding;
-		},
-
-		_moduleHeaderTopPadding: null,
-		_getModuleHeaderTopPadding: function() {
-			if (!this._moduleHeaderTopPadding) {
-				var moduleHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderOuterContainer');
-				this._moduleHeaderTopPadding =  geometry.getPadExtents(moduleHeaderNode).t;
-				put(moduleHeaderNode.parentNode, '!');
-			}
-			return this._moduleHeaderTopPadding;
-		},
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this._stickyTimer = new Deferred();
-			this._stickyTimer.resolve();
-		},
-
-		_removeModuleHeaderHeight: function()  {
-			this._stickyTimer = this._stickyTimer.then(lang.hitch(this, function() {
-				return tools.defer(lang.partial(domStyle.set, this.domNode, 'height', ''), 200);
-			})).then(null, function() {
-				// empty callback to catch cancel exceptions
-			});
-		},
-
-		_cancelRemoveModuleHeaderHeight: function()  {
-			this._stickyTimer.cancel();
-		},
-
-		_moduleHeaderHeight: null,
-		_updateStickyHeader: function() {
-			var isModuleVisible = !this.isModuleTabSelected || !this.domNode.getBoundingClientRect().height;
-			if (isModuleVisible) {
-				return;
-			}
-			var scroll = geometry.docScroll();
-			var bboxHeader = geometry.getMarginBox('umcHeader');
-			var topPaddingDifference = this._getModuleHeaderTopPadding() - this._getStickyHeaderTopPadding();
-			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + topPaddingDifference;
-			if (sticky) {
-				this._moduleHeaderHeight = this._moduleHeaderHeight || geometry.getContentBox(this.domNode).h;
-				this._cancelRemoveModuleHeaderHeight();
-				domStyle.set(this.domNode, 'height', this._moduleHeaderHeight + 'px');
-			} else if (this._moduleHeaderHeight) {
-				this._removeModuleHeaderHeight();
-				this._moduleHeaderHeight = 0;
-				this._moduleHeaderTopPadding = null;
-				this._stickyHeaderTopPadding = null;
-			}
-			domClass.toggle(this._outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
-		},
-
 		buildRendering: function() {
 			this.inherited(arguments);
 

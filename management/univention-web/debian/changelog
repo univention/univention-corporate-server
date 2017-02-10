@@ -1,3 +1,11 @@
+univention-web (1.0.18-2) unstable; urgency=medium
+
+  Bug #42261: 
+  * add standbyAnimation to gridfooter when not all entries are loaded
+  * removed unused code
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 10 Feb 2017 11:33:54 +0100
+
 univention-web (1.0.18-1) unstable; urgency=medium
 
   Bug #42233:

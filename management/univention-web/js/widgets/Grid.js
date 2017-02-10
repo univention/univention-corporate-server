@@ -85,6 +85,8 @@ define([
 		}
 	});
 
+	var _StatusText = declare([Text, StandbyMixin]);
+
 	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
@@ -242,7 +244,8 @@ define([
 				return;
 			}
 			var viewPortHeight = dojoWindow.getBox().h;
-			var atBottom = (window.pageYOffset + viewPortHeight) === win.body().clientHeight;
+			var statusMessagePosition = geometry.position(this._statusMessage.domNode);
+			var atBottom = (statusMessagePosition.y + statusMessagePosition.h) < viewPortHeight;
 			if (atBottom) {
 				this._heightenGrid(2 * viewPortHeight);
 			}
@@ -256,8 +259,11 @@ define([
 			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
 			if (gridIsFullyRendered) {
 				this._statusMessage.set('content', _('All entries loaded'));
+				this._statusMessage.standby(false);
 				this._scrollSignal.remove();
-				return;
+			} else {
+				this._statusMessage.set('content', '');
+				this._statusMessage.standby(true);
 			}
 		},
 
@@ -345,7 +351,7 @@ define([
 				targetNodeIds: [this._grid.domNode]
 			});
 			this.own(this._contextMenu);
-			this._statusMessage = new Text({
+			this._statusMessage = new _StatusText({
 				'class': 'umcGridStatus',
 				content: _("Please perform a search")
 			});
@@ -860,9 +866,9 @@ define([
 		},
 
 		filter: function(query, options) {
-			this._statusMessage.set('content', _('Please wait...'));
-			this.standby(true);
+			this._statusMessage.standby(false);
 			style.set(this._grid.domNode, 'max-height', '1px');
+			this.standby(true);
 			this._filter(query, options).then(lang.hitch(this, function() {
 				this.standby(false);
 				this._setInitialGridHeight();
@@ -882,6 +888,7 @@ define([
 				} else {
 					this._statusMessage.set('content', _('Could not load search results'));
 				}
+				this._statusMessage.standby(false);
 				this._grid.set('collection', new Memory());
 				this._updateGridInfoContent();
 			});

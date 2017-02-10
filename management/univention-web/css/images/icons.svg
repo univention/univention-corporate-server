@@ -28,9 +28,9 @@
      inkscape:window-height="1031"
      id="namedview493"
      showgrid="true"
-     inkscape:zoom="2.8282563"
-     inkscape:cx="160.08726"
-     inkscape:cy="127.94037"
+     inkscape:zoom="5.6565126"
+     inkscape:cx="255.06081"
+     inkscape:cy="199.83143"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -2362,18 +2362,13 @@
      sodipodi:nodetypes="cccsccccccccccsssss"
      id="path525" />
   <rect
-     style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
+     style="fill:none;fill-opacity:1;stroke:#282828;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect4650"
      width="16.000074"
      height="16.000074"
      x="261.99997"
      y="61.999962"
      rx="1" />
-  <path
-     style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
-     d="m 283,61.999924 14.00007,0 c 0.554,0 1,0.446 1,1 l 0,14.000074 c 0,0.554 -0.446,1 -1,1 l -14.00007,0 c -0.554,0 -1,-0.446 -1,-1 l 0,-14.000074 c 0,-0.554 0.446,-1 1,-1 z"
-     id="rect4650-3"
-     inkscape:connector-curvature="0" />
   <g
      transform="matrix(1.020278,0,0,1.0201564,278.3051,-42.700827)"
      id="g10570"
@@ -2386,11 +2381,20 @@
        transform="matrix(0.98619,0,0,-0.98619,15.519,104.77)"
        id="g10574"
        style="color:#282828;stroke-width:1.89339726;stroke-miterlimit:4;stroke-dasharray:none">
-      <path
-         inkscape:connector-curvature="0"
-         d="m 0,0 -5,-10 -3.255,5.597"
-         id="path10576"
-         style="color:#282828;fill:none;stroke:#282828;stroke-width:1.89339726;stroke-miterlimit:4;stroke-dasharray:none" />
+      <g
+         id="g4660">
+        <path
+           transform="matrix(0.99385009,0,0,-0.99396856,-292.32987,63.793855)"
+           inkscape:connector-curvature="0"
+           id="rect4650-3"
+           d="m 283,61.999924 14.00007,0 c 0.554,0 1,0.446 1,1 l 0,14.000074 c 0,0.554 -0.446,1 -1,1 l -14.00007,0 c -0.554,0 -1,-0.446 -1,-1 l 0,-14.000074 c 0,-0.554 0.446,-1 1,-1 z"
+           style="fill:none;fill-opacity:1;stroke:#282828;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="color:#282828;fill:none;stroke:#282828;stroke-width:1.89339726;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path10576"
+           d="m 0,0 -5,-10 -3.255,5.597"
+           inkscape:connector-curvature="0" />
+      </g>
     </g>
   </g>
   <path
