@@ -193,10 +193,6 @@ class VengefulConfigRegistry(ConfigRegistry):
 				ConfigRegistry.CUSTOM):
 			try:
 				registry = self._registry[reg]
-				# BUG: _ConfigRegistry[key] does not raise a KeyError for unset
-				# keys, but returns ''
-				if key not in registry:
-					raise KeyError(key)
 				value = registry[key]
 				return value
 			except KeyError:

@@ -1,3 +1,9 @@
+univention-config-registry (12.0.1-3) unstable; urgency=low
+
+  * Bug #33101: Fix UCR dict contract
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 10 Feb 2017 10:57:12 +0100
+
 univention-config-registry (12.0.1-2) unstable; urgency=low
 
   * Bug #43341: Provide fallback quote() implementation

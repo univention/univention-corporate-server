@@ -36,6 +36,7 @@ import fcntl
 import re
 import errno
 import time
+from collections import MutableMapping
 
 __all__ = ['StrictModeException', 'exception_occured',
 		'SCOPE', 'ConfigRegistry']
@@ -59,7 +60,7 @@ def exception_occured(out=sys.stderr):
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 
 
-class ConfigRegistry(dict):
+class ConfigRegistry(MutableMapping):
 
 	"""
 	Merged persistent value store.
@@ -75,7 +76,7 @@ class ConfigRegistry(dict):
 	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
-		dict.__init__(self)
+		super(ConfigRegistry, self).__init__()
 		self.file = os.getenv('UNIVENTION_BASECONF') or filename or None
 		if self.file:
 			self.scope = ConfigRegistry.CUSTOM
@@ -145,7 +146,9 @@ class ConfigRegistry(dict):
 		del registry[key]
 
 	def __getitem__(self, key):
-		"""Return registry value."""
+		"""Return registry value.
+		Bug #28276: ucr[key] returns None instead of raising KeyError - it would break many UCR templates!
+		"""
 		return self.get(key)
 
 	def __setitem__(self, key, value):
@@ -165,13 +168,16 @@ class ConfigRegistry(dict):
 				return True
 		return False
 
-	def iterkeys(self):
+	def __iter__(self):
 		"""Iterate over all registry keys."""
 		merge = self._merge()
 		for key in merge:
 			yield key
 
-	__iter__ = iterkeys
+	def __len__(self):
+		"""Return length."""
+		merge = self._merge()
+		return len(merge)
 
 	def get(self, key, default=None, getscope=False):
 		"""Return registry value (including optional scope)."""
@@ -182,10 +188,6 @@ class ConfigRegistry(dict):
 				ConfigRegistry.CUSTOM):
 			try:
 				registry = self._registry[reg]
-				# BUG: _ConfigRegistry[key] does not raise a KeyError for unset
-				# keys, but returns ''
-				if key not in registry:
-					continue
 				value = registry[key]
 				if getscope:
 					return (reg, value)
@@ -218,26 +220,8 @@ class ConfigRegistry(dict):
 				continue
 			for key, value in registry.items():
 				if key not in merge:
-					if getscope:
-						merge[key] = (reg, value)
-					else:
-						merge[key] = registry[key]
+					merge[key] = (reg, value) if getscope else value
 		return merge
-
-	def items(self, getscope=False):
-		"""Return all registry entries a 2-tuple (key, value)."""
-		merge = self._merge(getscope=getscope)
-		return merge.items()
-
-	def keys(self):
-		"""Return all registry keys."""
-		merge = self._merge()
-		return merge.keys()
-
-	def values(self):
-		"""Return all registry values."""
-		merge = self._merge()
-		return merge.values()
 
 	def __str__(self):
 		"""Return registry content as string."""
@@ -279,6 +263,13 @@ class ConfigRegistry(dict):
 			new_value = registry.get(key, value)
 			changed[key] = (old_value, new_value)
 		return changed
+
+	def setdefault(self, key, default=None):
+		# Bug #28276: setdefault() required KeyError
+		value = self.get(key, default=self)
+		if value is self:
+			value = self[key] = default
+		return value
 
 
 class _ConfigRegistry(dict):
@@ -409,13 +400,6 @@ class _ConfigRegistry(dict):
 	def unlock(self):
 		"""Un-lock sub registry file."""
 		self.lock_file.close()
-
-	def __getitem__(self, key):
-		"""Return value from sub registry."""
-		try:
-			return dict.__getitem__(self, key)
-		except KeyError:
-			return ''
 
 	def __setitem__(self, key, value):
 		"""Set value in sub registry."""

@@ -169,6 +169,24 @@ class TestConfigRegistry(unittest.TestCase):
 		ucr['foo'] = 'bar'
 		self.assertTrue(ucr.has_key('foo', write_registry_only=True))
 
+	def test_pop(self):
+		"""Test set ucr.pop(key)."""
+		ucr = ConfigRegistry()
+		ucr['foo'] = 'bar'
+		self.assertEqual(ucr.pop('foo'), 'bar')
+
+	def test_popitem(self):
+		"""Test set ucr.popitem()."""
+		ucr = ConfigRegistry()
+		ucr['foo'] = 'bar'
+		self.assertEqual(ucr.popitem(), ('foo', 'bar'))
+
+	def test_setdefault(self):
+		"""Test set ucr.setdefault()."""
+		ucr = ConfigRegistry()
+		ucr.setdefault('foo', 'bar')
+		self.assertEqual(ucr['foo'], 'bar')
+
 	@staticmethod
 	def _setup_layers():
 		ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
@@ -183,11 +201,27 @@ class TestConfigRegistry(unittest.TestCase):
 		ucr.load()
 		return ucr
 
+	def test_dict(self):
+		"""Test merged items."""
+		ucr = self._setup_layers()
+		self.assertEqual(
+			dict(ucr),
+			dict([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+		)
+
 	def test_items(self):
 		"""Test merged items."""
 		ucr = self._setup_layers()
 		self.assertEqual(
 			sorted(ucr.items()),
+			sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
+		)
+
+	def test_iteritems(self):
+		"""Test merged items."""
+		ucr = self._setup_layers()
+		self.assertEqual(
+			sorted(ucr.iteritems()),
 			sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
 		)
 
@@ -199,6 +233,14 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted(['foo', 'bar', 'baz'])
 		)
 
+	def test_iterkeys(self):
+		"""Test merged keys."""
+		ucr = self._setup_layers()
+		self.assertEqual(
+			sorted(ucr.iterkeys()),
+			sorted(['foo', 'bar', 'baz'])
+		)
+
 	def test_values(self):
 		"""Test merged values."""
 		ucr = self._setup_layers()
@@ -206,6 +248,22 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted(ucr.values()),
 			sorted(['FORCED', 'FORCED', 'NORMAL'])
 		)
+
+	def test_itervalues(self):
+		"""Test merged items."""
+		ucr = self._setup_layers()
+		self.assertEqual(
+			sorted(ucr.itervalues()),
+			sorted(['FORCED', 'FORCED', 'NORMAL'])
+		)
+
+	def test_clear(self):
+		"""Test set ucr.clear()."""
+		ucr = self._setup_layers()
+		ucr.clear()
+		self.assertEqual(ucr.get('foo', getscope=True), (ConfigRegistry.FORCED, 'FORCED'))
+		self.assertEqual(ucr.get('bar', getscope=True), (ConfigRegistry.FORCED, 'FORCED'))
+		self.assertIsNone(ucr.get('baz', getscope=True))
 
 	def test_is_true_unset(self):
 		"""Test unset is_true()."""

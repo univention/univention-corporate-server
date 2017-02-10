@@ -60,6 +60,10 @@
 				<listitem><simpara>
 					An internal fallback implementation for <function>pipes.quote()</function> was added to fix an upgrade issue while <package>python</package> is not configured (<u:bug>43341</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Python implementation has been changed to follow the Python contract for dictionaries, except one exception:
+					The method <function>get()</function> still returns <literal>None</literal> instead of raising the exception <literal>KeyError</literal> when the key is not found, as this is still required to be compatible with previous releases (<u:bug>33101</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
