@@ -1,8 +1,9 @@
 /*
- *  header information for dntree.c
+ * Univention Directory Listener
+ *  header information for cache_dn.c
  *
- * Copyright 2016 Univention GmbH
- * Copyright 2016 Arvid Requate
+ * Copyright 2016-2017 Univention GmbH
+ * Copyright 2016-2017 Arvid Requate
  *
  * http://www.univention.de/
  *

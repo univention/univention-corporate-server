@@ -137,10 +137,10 @@ int main(int argc, char* argv[])
 			rv=bdb_cache_next_entry(&cur, &dn, &entry)) {
 		if (rv != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			                 "error while reading database");
+				"error while reading database");
 		} else if ((rv=cache_update_entry_lower(0, dn, &entry)) != MDB_SUCCESS) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				                 "error while writing to database");
+					"error while writing to database");
 		}
 		cache_free_entry(&dn, &entry);
 		if (rv < -1) break;
