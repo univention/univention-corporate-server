@@ -38,9 +38,8 @@ from hashlib import md5
 import subprocess
 import psutil
 import pipes
-import urllib2
-import contextlib
 import yaml
+import requests
 
 import univention.hooks
 import notifier.threads
@@ -51,7 +50,7 @@ from univention.lib.i18n import Translation
 from univention.lib import atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer
 
@@ -214,14 +213,18 @@ class Instance(Base):
 	@simple_response
 	def query_maintenance_information(self):
 		ucr.load()
+		if ucr['license/extended_maintenance/disable_warning']:
+			return
 		version = self.uu.get_ucs_version()
 		try:
 			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
-			with contextlib.closing(urllib2.urlopen(url)) as f:
-				status = yaml.load(f)
-				maintained = str(status.get('maintained')).lower()
-		except urllib2.HTTPError as e:
-			raise UMC_Error(e)
+			response = requests.get(url)
+			if not response.ok:
+				return
+			status = yaml.load(response.content)
+			maintained = str(status.get('maintained')).lower()
+		except requests.exceptions.RequestException:
+			return
 		else:
 			udm_modules.update()
 			lo, po = udm_uldap.getMachineConnection()

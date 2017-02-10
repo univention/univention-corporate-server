@@ -1,3 +1,9 @@
+univention-updater (11.0.11-14) unstable; urgency=medium
+
+  * Bug #43026: Fix error handling and add ucr variable to turn of the warning
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 10 Feb 2017 14:27:47 +0100
+
 univention-updater (11.0.11-13) unstable; urgency=medium
 
   * Bug #43257: Explicity add required dependencies

@@ -635,11 +635,16 @@ define([
 			// load maintenance information and show message if current UCS version is out of maintenance
 			tools.umcpCommand('updater/maintenance_information').then(lang.hitch(this, function(data) {
 				var info = data.result;
+				if (!info) {
+					return;
+				}
+
 				var msg = '';
 				var msgBase = lang.replace(_("<b>Warning</b>: You are currently using UCS {0} {1}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br>"), [info.ucsVersion, '{0}']);
 				var msgExtended = _("{0} offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
 				var msgContact = _("We offer extended maintenance for some UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>");
 
+				// construct the correct message
 				if (info.maintained === 'extended' && !info.hasExtendedMaintenance) {
 					msg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br> We offer extended maintenance for this UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>"), [info.ucsVersion]);
 				} else if (info.maintained === 'false') {

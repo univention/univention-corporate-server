@@ -410,3 +410,9 @@ Description[de]=Der Zugriff auf das Univention Software Repository verlangen ein
 Description[en]=Access to the Univention software repository require authentication. The password can be configured with this variable. See also 'repository/credentials/.*/username'.
 Type=string
 Categories=service-software-management
+
+[license/extended_maintenance/disable_warning]
+Description[de]=Ist diese Option aktiviert, wird keine Warnung angezeigt, falls für die aktuelle UCS version keine Sicherheitsupdates mehr veröffentlicht werden. Ist die Variable nicht gesetzt, wird eine Warnung angezeigt.
+Description[en]=If this option is activated, the warning message, that is shown when no more security updates will be released for the current UCS version, is deactivated. If the variable is unset, the warning message is shown.
+Type=bool
+Categories=service-software-management
