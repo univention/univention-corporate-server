@@ -9,6 +9,7 @@ from dockertest import *
 
 import requests
 import json
+import pytest
 
 if __name__ == '__main__':
 
@@ -18,14 +19,51 @@ if __name__ == '__main__':
 	password = 'readonly'
 	resp = requests.get(url, auth=(username, password)).content
 	data = json.loads(resp)
-	latest_tag = max(data['tags'])
+	image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
 
+	# installation should fail if setup fails
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app = App(name=app_name, version='1.9', build_package=False)
+		app.set_ini_parameter( DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
+		app.add_script(setup='''#!/bin/bash
+echo "This message goes to stdout"
+echo "This message goes to stderr" >&2
+exit 1
+'''		)
+		app.add_to_local_appcenter()
+		with pytest.raises(UCTTest_DockerApp_UMCInstallFailed):
+			appcenter.update()
+			app.install_via_umc()
+		app.uninstall()
+		app.remove()
+
+	# installation should succeed if setup is fine
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app = App(name=app_name, version='1.9', build_package=False)
+		app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
+		app.add_script(setup='''#!/bin/bash
+echo "This message goes to stdout"
+echo "This message goes to stderr but script returns 0" >&2
+exit 0
+'''
+		)
+		app.add_to_local_appcenter()
+		try:
+			appcenter.update()
+			app.install_via_umc()
+		finally:
+			app.uninstall()
+			app.remove()
+
+	# test appbox app installation
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app_name = 'testapp'
 		app = App(name=app_name, version='1.9', build_package=False)
 		app.set_ini_parameter(
-			DockerImage='docker.software-univention.de/ucs-appbox-amd64:%s' % latest_tag,
+			DockerImage=image,
 			DefaultPackages='mc',
 		)
 		app.add_to_local_appcenter()

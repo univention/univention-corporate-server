@@ -1,3 +1,9 @@
+ucs-test (7.0.11-3) unstable; urgency=low
+
+  * Bug #43385: test stderr/return value in 40_app_umc_install_latest_appbox
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Feb 2017 13:07:42 +0100
+
 ucs-test (7.0.11-2) unstable; urgency=medium
 
   * Bug #43384: Fixed timezone in saml test 
