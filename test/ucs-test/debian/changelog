@@ -1,3 +1,9 @@
+ucs-test (6.0.37-49) unstable; urgency=low
+
+  * Bug #43385: test stderr/return value in 40_app_umc_install_latest_appbox
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Feb 2017 09:50:36 +0100
+
 ucs-test (6.0.37-48) unstable; urgency=low
 
   * Bug #43326: 40_app_umc_install_latest_appbox
