@@ -4,12 +4,12 @@ $this->includeAtTemplateBase('includes/header.php');
 $this->data['header'] = $this->t('{login:user_pass_header}');
 $this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'username';
 ?>
-		<div id="umcLoginWrapper" style="display: block;">
-			<div class="umcHeader">
-				<div class="umcHeaderRight">
-					<div class="univentionLogo"></div>
-				</div>
+		<div class="umcHeader">
+			<div class="umcHeaderRight">
+				<div class="univentionLogo"></div>
 			</div>
+		</div>
+		<div id="umcLoginWrapper">
 			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('hostfqdn', ''))); ?></h1>
 			<h2 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:serverwelcome}')); ?></h2>
 <?php
@@ -19,7 +19,6 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!
 ?>
-			<div id="umcLoginCenterer"></div>
 			<div id="umcLoginDialog" class="dijitDialog dojoxDialog umcLoginDialog">
 				<div id="umcLoginLogo" class="umcLoginLogo">
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
@@ -72,13 +71,12 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 }
 ?>
 				</form>
-				<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
 			</div>
 <?php
 
-if(!empty($this->data['links'])) {
+if (!empty($this->data['links'])) {
 	echo '<ul class="links" style="margin-top: 2em">';
-	foreach($this->data['links'] AS $l) {
+	foreach ($this->data['links'] AS $l) {
 		echo '<li><a href="' . htmlspecialchars($l['href']) . '">' . htmlspecialchars($this->t($l['text'])) . '</a></li>';
 	}
 	echo '</ul>';
