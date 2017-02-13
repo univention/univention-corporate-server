@@ -1431,8 +1431,7 @@ class ucs:
 
 		if object['dn'] != self.baseConfig['ldap/base']:
 			try:
-				# parent_dn = string.join(ldap.explode_dn(object_dn_mapped_to_ucr_ldap_base_case)[1:], ",")
-				parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
+				parent_dn = self.lo.parentDn(object['dn'])
 				position.setDn(parent_dn)
 				ud.debug(ud.LDAP, ud.INFO, 'sync_to_ucs: set position to %s' % parent_dn)
 			except univention.admin.uexceptions.noObject:

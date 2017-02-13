@@ -447,32 +447,35 @@ def __remove_dot(str):
 
 
 def __split_s4_dnsNode_dn(dn):
-	# split zone
-	dn = ldap.explode_dn(dn)
+	exploded_dn = ldap.dn.dn2str(dn)
 
 	# split the DC= from the zoneName
-	zoneName = string.join(dn[1].split('=')[1:], '=')
-	relativeDomainName = string.join(dn[0].split('=')[1:], '=')
-
+	(_, zoneName, _) = exploded_dn[1][0]
+	(_, relativeDomainName, _) = exploded_dn[0][0]
 	return (zoneName, relativeDomainName)
 
 
 def __split_ol_dNSZone_dn(dn, objectclasses):
-	dn = ldap.explode_dn(dn)
-	relativeDomainName = None
-	if dn[0].lower().startswith('zonename'):
-		zoneName = string.join(dn[0].split('=')[1:], '=')
+	exploded_dn = ldap.dn.dn2str(dn)
+	(fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
+	(snd_rdn_attribute, snd_rdn_value, _flags) = exploded_dn[1][0]
+
+	if fst_rdn_attribute.lower() == 'zonename':
+		zoneName = fst_rdn_value
 		if 'dnsNode' in objectclasses:
 			relativeDomainName = '@'
 		elif 'dnsZone' in objectclasses:
 			# make S4 dnsZone containers distinguishable from SOA records
 			relativeDomainName = zoneName
-	elif dn[1].lower().startswith('zonename'):
-		zoneName = string.join(dn[1].split('=')[1:], '=')
-		relativeDomainName = string.join(dn[0].split('=')[1:], '=')
+		else:
+			relativeDomainName = None
+	elif snd_rdn_attribute.lower() == 'zonename':
+		zoneName = snd_rdn_value
+		relativeDomainName = fst_rdn_value
 	else:
-		ud.debug(ud.LDAP, ud.WARN, 'Failed to get zone name for object %s' % (object['dn']))
 		zoneName = None
+		relativeDomainName = None
+		ud.debug(ud.LDAP, ud.WARN, 'Failed to get zone name for object %s' % (object['dn']))
 	return (zoneName, relativeDomainName)
 
 
