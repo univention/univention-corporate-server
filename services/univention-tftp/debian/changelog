@@ -1,3 +1,9 @@
+univention-tftp (8.0.0-2) unstable; urgency=medium
+
+  * Bug #43533: Adapt link to pxelinux.0 due to path change in new syslinux package
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 13 Feb 2017 16:22:48 +0100
+
 univention-tftp (8.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
