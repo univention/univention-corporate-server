@@ -567,6 +567,7 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
+						<package>univention-tftp</package> has been updated due to a newer <package>syslinux</package> version, this fixes the path to the <filename>pxelinux.0</filename> binary.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
