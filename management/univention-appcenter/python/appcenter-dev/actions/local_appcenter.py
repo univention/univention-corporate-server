@@ -49,10 +49,11 @@ from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
 
-from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
+from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_localhost_ip, get_server
 from univention.appcenter.ucr import ucr_save, ucr_get
+from univention.appcenter.ini_parser import read_ini_file
 
 
 # re-include Screenshot for ini files targetting UCS < 4.1
@@ -97,13 +98,12 @@ class DevUseTestAppcenter(UniventionAppAction):
 	def main(self, args):
 		appcenter_servers = ucr_get('appcenter/server', 'appcenter.software-univention.de').split(' ')
 		if args.revert:
-			appcenter_servers = ['4.2@appcenter.software-univention.de', '4.1@appcenter.software-univention.de']
-			ucr_save({'appcenter/server': ' '.join(appcenter_servers), 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
+			appcenter_server = 'appcenter.software-univention.de'
+			ucr_save({'appcenter/server': appcenter_server, 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
 		else:
-			for ucs_version in ['4.1', '4.2']:
-				appcenter_server = '%s@%s' % (ucs_version, args.appcenter_host)
-				if appcenter_server not in appcenter_servers:
-					appcenter_servers.insert(0, appcenter_server)
+			appcenter_server = args.appcenter_host
+			if appcenter_server not in appcenter_servers:
+				appcenter_servers.insert(0, appcenter_server)
 			ucr_save({'appcenter/server': ' '.join(appcenter_servers), 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
@@ -291,8 +291,11 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						appname = check_ini_file(filename)
 						if not appname:
 							continue
-						parser = _read_ini_file(path)
-						appid = _get_from_parser(parser, 'Application', 'ID')
+						parser = read_ini_file(path)
+						try:
+							appid = parser.get('Application', 'ID')
+						except (NoSectionError, NoOptionError):
+							continue
 						if not appid:
 							continue
 						app = AppcenterApp(appname, appid, ucs_version, meta_inf_dir, repo_dir, appcenter_host)
@@ -711,7 +714,7 @@ class DevSet(UniventionAppAction):
 			ini_file = args.app.get_cache_file('meta')
 		else:
 			ini_file = args.app.get_ini_file()
-		parser = _read_ini_file(ini_file, CaseSensitiveConfigParser)
+		parser = read_ini_file(ini_file, CaseSensitiveConfigParser)
 		for section, attr, value in args.attrs:
 			attribute = args.app.get_attr(underscore(attr))
 			self.process(args.app, attribute, section, camelcase(attr), value, parser)

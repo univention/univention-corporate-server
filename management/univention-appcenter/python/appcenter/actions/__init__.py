@@ -92,23 +92,25 @@ class StoreAppAction(Action):
 
 	@classmethod
 	def get_app_from_app_id_string(cls, app_id, app_version, ucs_version, server):
-		app_cache = cls.cache_class()
+		apps_cache = cls.cache_class()
 		if ucs_version or server:
 			apps = []
-			for cache in app_cache.app_caches:
-				if ucs_version and ucs_version != cache.get_ucs_version():
-					continue
-				if server and server != urlsplit(cache.get_server()).netloc:
-					continue
-				app = cache.find(app_id, app_version=app_version)
-				if app:
-					if app.is_installed():
-						return app
-					apps.append(app)
+			for appcenter_cache in apps_cache.get_appcenter_caches():
+				for cache in appcenter_cache.get_app_caches():
+					print cache
+					if ucs_version and ucs_version != cache.get_ucs_version():
+						continue
+					if server and server != urlsplit(cache.get_server()).netloc:
+						continue
+					app = cache.find(app_id, app_version=app_version)
+					if app:
+						if app.is_installed():
+							return app
+						apps.append(app)
 			if apps:
 				return sorted(apps)[-1]
 		else:
-			return app_cache.find(app_id, app_version=app_version)
+			return apps_cache.find(app_id, app_version=app_version)
 
 	def __call__(self, parser, namespace, value, option_string=None):
 		apps = []

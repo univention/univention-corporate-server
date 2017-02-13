@@ -36,7 +36,7 @@ update-python-modules python-univention-appcenter.public
 update-python-modules --post-install
 
 univention-config-registry unset repository/app_center/server
-univention-config-registry set appcenter/server?"4.2@appcenter.software-univention.de 4.1@appcenter.software-univention.de"\
+univention-config-registry set appcenter/server?"appcenter.software-univention.de"\
 	appcenter/domainwide?true
 
 #DEBHELPER#

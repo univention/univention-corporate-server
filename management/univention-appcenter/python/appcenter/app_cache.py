@@ -43,16 +43,16 @@ from json import dump, load
 from urlparse import urlsplit
 from distutils.version import LooseVersion
 
-from univention.appcenter.app import App, CACHE_DIR, app_logger, _get_rating_items, _get_license_descriptions
-#import univention.appcenter.app as appcenter_app
-#App = appcenter_app.App
-#CACHE_DIR = appcenter_app.CACHE_DIR
-#app_logger = appcenter_app.app_logger
-#_get_rating_items = appcenter_app._get_rating_items
-#_get_license_descriptions = appcenter_app._get_license_descriptions
+from univention.appcenter.app import App
+from univention.appcenter.log import get_base_logger
+from univention.appcenter.utils import mkdir, get_locale
+from univention.appcenter.ini_parser import IniSectionListAttribute, IniSectionAttribute, IniSectionObject
+from univention.appcenter.ucr import ucr_load, ucr_get, ucr_is_true
 
-from univention.appcenter.utils import mkdir, get_locale, get_server_and_version
-from univention.appcenter.ucr import ucr_load, ucr_is_true
+
+CACHE_DIR = '/var/cache/univention-appcenter'
+
+cache_logger = get_base_logger().getChild('cache')
 
 
 class _AppCache(object):
@@ -153,17 +153,17 @@ class AppCache(_AppCache):
 
 	def get_server(self):
 		if self._server is None:
-			self._server = get_server_and_version()[0][0]
+			self._server = default_server()
 		return self._server
 
 	def get_ucs_version(self):
 		if self._ucs_version is None:
-			self._ucs_version = get_server_and_version()[0][1]
+			self._ucs_version = default_ucs_version()
 		return self._ucs_version
 
 	def get_locale(self):
 		if self._locale is None:
-			self._locale = get_locale() or 'en'
+			self._locale = default_locale()
 		return self._locale
 
 	def get_cache_dir(self):
@@ -187,6 +187,9 @@ class AppCache(_AppCache):
 		if key not in cls._app_cache_cache:
 			cls._app_cache_cache[key] = obj
 		return cls._app_cache_cache[key]
+
+	def get_appcenter_cache_obj(self):
+		return AppCenterCache(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
 
 	def _invalidate_cache_file(self):
 		cache_dir = self.get_cache_dir()
@@ -278,8 +281,6 @@ class AppCache(_AppCache):
 		self._cache[:] = []
 		self._cache_modified = None
 		self._invalidate_cache_file()
-		_get_rating_items._cache = None
-		_get_license_descriptions._cache = None
 
 	@contextmanager
 	def _locked(self):
@@ -305,13 +306,13 @@ class AppCache(_AppCache):
 				except (EnvironmentError, ValueError):
 					cache_modified = None
 				if cache_modified is None or cache_modified > self._cache_modified:
-					app_logger.debug('Cache outdated. Need to rebuild')
+					cache_logger.debug('Cache outdated. Need to rebuild')
 					self._cache[:] = []
 			if not self._cache:
 				cached_apps = self._load_cache()
 				if cached_apps is not None:
 					self._cache = cached_apps
-					app_logger.debug('Loaded %d apps from cache' % len(self._cache))
+					cache_logger.debug('Loaded %d apps from cache' % len(self._cache))
 				else:
 					for ini in self._relevant_ini_files():
 						app = self._build_app_from_ini(ini)
@@ -319,9 +320,9 @@ class AppCache(_AppCache):
 							self._cache.append(app)
 					self._cache.sort()
 					if self._save_cache():
-						app_logger.debug('Saved %d apps into cache' % len(self._cache))
+						cache_logger.debug('Saved %d apps into cache' % len(self._cache))
 					else:
-						app_logger.warn('Unable to cache apps')
+						cache_logger.warn('Unable to cache apps')
 		return self._cache
 
 	def get_app_class(self):
@@ -329,27 +330,138 @@ class AppCache(_AppCache):
 			self._app_class = App
 		return self._app_class
 
-	def call_update(self):
-		from univention.appcenter import get_action
-		update = get_action('update')
-		update.call(ucs_version=self.get_ucs_version(), appcenter_server=self.get_server(), cache_dir=self.get_cache_dir())
-		self.clear_cache()
-
 	def __repr__(self):
 		return 'AppCache(app_class=%r, ucs_version=%r, server=%r, locale=%r, cache_dir=%r)' % (self.get_app_class(), self.get_ucs_version(), self.get_server(), self.get_locale(), self.get_cache_dir())
 
 
-class Apps(_AppCache):
-	def __init__(self, app_caches=None):
-		if app_caches is None:
-			app_caches = []
-			for server, ucs_version in get_server_and_version():
-				app_caches.append(AppCache.build(ucs_version=ucs_version, server=server))
-		self.app_caches = app_caches
+class AppCenterCache(_AppCache):
+	def __init__(self, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
+		self._cache_class = cache_class
+		self._server = server
+		self._ucs_versions = ucs_versions
+		self._locale = locale
+		self._cache_dir = cache_dir
+		self._license_type_cache = None
+		self._ratings_cache = None
+
+	def get_app_cache_class(self):
+		if self._cache_class is None:
+			self._cache_class = AppCache
+		return self._cache_class
+
+	def get_server(self):
+		if self._server is None:
+			self._server = default_server()
+		return self._server
+
+	def get_ucs_versions(self):
+		if self._ucs_versions is None:
+			cache_file = self.get_cache_file('.ucs.ini')
+			ucs_version = ucr_get('version/version')
+			versions = AppCenterVersion.all_from_file(cache_file)
+			for version in versions:
+				if version.name == ucs_version:
+					self._ucs_versions = version.supported_ucs_versions
+					break
+			else:
+				self._ucs_versions = [ucs_version]
+		return self._ucs_versions
+
+	def get_locale(self):
+		if self._locale is None:
+			self._locale = default_locale()
+		return self._locale
+
+	def get_cache_dir(self):
+		if self._cache_dir is None:
+			server = urlsplit(self.get_server()).netloc
+			self._cache_dir = os.path.join(CACHE_DIR, server)
+			mkdir(self._cache_dir)
+		return self._cache_dir
+
+	def get_cache_file(self, fname):
+		return os.path.join(self.get_cache_dir(), fname)
+
+	def get_app_caches(self):
+		ret = []
+		for ucs_version in self.get_ucs_versions():
+			ret.append(self._build_app_cache(ucs_version))
+		return ret
+
+	def _build_app_cache(self, ucs_version):
+		cache_dir = self.get_cache_file(ucs_version)
+		return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
+
+	def get_license_description(self, license_name):
+		if self._license_type_cache is None:
+			cache_file = self.get_cache_file('.license_types.ini')
+			self._license_type_cache = LicenseType.all_from_file(cache_file)
+		for license in self._license_type_cache:
+			if license.name == license_name:
+				return license.get_description(self.get_locale())
+
+	def get_ratings(self):
+		if self._ratings_cache is None:
+			cache_file = self.get_cache_file('.rating.ini')
+			self._ratings_cache = Rating.all_from_file(cache_file)
+		return self._ratings_cache
 
 	def get_every_single_app(self):
 		ret = []
-		for app_cache in self.app_caches:
+		for app_cache in self.get_app_caches():
+			ret.extend(app_cache.get_every_single_app())
+		return ret
+
+	def clear_cache(self):
+		ucr_load()
+		self._license_type_cache = None
+		self._ratings_cache = None
+		for fname in glob(self.get_cache_dir()):
+			if os.path.isdir(fname):
+				ucs_version = os.path.basename(fname)
+				app_cache = self._build_app_cache(ucs_version)
+				app_cache.clear_cache()
+
+	def __repr__(self):
+		return 'AppCenterCache(app_cache_class=%r, server=%r, ucs_versions=%r, locale=%r, cache_dir=%r)' % (self.get_appcenter_cache_class(), self.get_server(), self.get_ucs_versions(), self.get_locale(), self.get_cache_dir())
+
+
+class Apps(_AppCache):
+	def __init__(self, cache_class=None, locale=None):
+		self._cache_class = cache_class
+		self._locale = locale
+
+	def get_appcenter_cache_class(self):
+		if self._cache_class is None:
+			self._cache_class = AppCenterCache
+		return self._cache_class
+
+	def get_locale(self):
+		if self._locale is None:
+			self._locale = default_locale()
+		return self._locale
+
+	def get_appcenter_caches(self):
+		ret = []
+		for appcenter_server in ucr_get('appcenter/server', 'appcenter.software-univention.de').split():
+			try:
+				ucs_version, server = appcenter_server.split('@')
+			except ValueError:
+				ucs_version, server = None, appcenter_server
+			if ucs_version:
+				ucs_version = [ucs_version]
+			if not server.startswith('http'):
+				server = 'https://%s' % server
+			cache = self._build_appcenter_cache(server, ucs_version)
+			ret.append(cache)
+		return ret
+
+	def _build_appcenter_cache(self, server, ucs_versions):
+		return self.get_appcenter_cache_class()(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
+
+	def get_every_single_app(self):
+		ret = []
+		for app_cache in self.get_appcenter_caches():
 			for app in app_cache.get_every_single_app():
 				if self.include_app(app):
 					ret.append(app)
@@ -358,11 +470,64 @@ class Apps(_AppCache):
 	def include_app(self, app):
 		return app.supports_ucs_version()
 
-	def call_update(self):
-		for app_cache in self.app_caches:
-			app_cache.call_update()
-
 
 class AllApps(Apps):
 	def include_app(self, app):
 		return True
+
+
+class AppCenterVersion(IniSectionObject):
+	supported_ucs_versions = IniSectionListAttribute(required=True)
+
+
+class LicenseType(IniSectionObject):
+	description = IniSectionAttribute()
+	description_de = IniSectionAttribute()
+
+	def get_description(self, locale):
+		if locale == 'de':
+			return self.description_de or self.description
+		return self.description
+
+
+class Rating(IniSectionObject):
+	label = IniSectionAttribute()
+	label_de = IniSectionAttribute()
+	description = IniSectionAttribute()
+	description_de = IniSectionAttribute()
+
+	def get_label(self, locale):
+		if locale == 'de':
+			return self.label_de or self.label
+		return self.label
+
+	def get_description(self, locale):
+		if locale == 'de':
+			return self.label_de or self.label
+		return self.label
+
+	def to_dict(self, locale):
+		return {'name': self.name, 'description': self.get_description(locale), 'label': self.get_label(locale)}
+
+
+def default_locale():
+	return get_locale() or 'en'
+
+
+def default_server():
+	appcenter_servers = ucr_get('appcenter/server')
+	if appcenter_servers:
+		server = appcenter_servers.split(' ')[0]
+		try:
+			ucs_version, server = server.split('@')
+		except ValueError:
+			pass
+		if not server.startswith('http'):
+			server = 'https://%s' % server
+		return server
+	return 'https://appcenter.software-univention.de'
+
+
+def default_ucs_version():
+	cache = AppCenterCache(server=default_server())
+	return cache.get_ucs_versions()[0]

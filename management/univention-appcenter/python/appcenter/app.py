@@ -49,8 +49,9 @@ from json import loads, dumps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import read_ini_file, app_ports, mkdir, get_current_ram_available, get_locale, container_mode, get_server_and_version, _
+from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
+from univention.appcenter.ini_parser import read_ini_file
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -60,50 +61,6 @@ DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
-
-
-_read_ini_file = read_ini_file
-
-
-def _get_from_parser(parser, section, attr):
-	try:
-		return parser.get(section, attr)
-	except (NoSectionError, NoOptionError):
-		return None
-
-
-def _get_rating_items(locale):
-	if _get_rating_items._cache is None:
-		_get_rating_items._cache = []
-		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
-		for section in rating_parser.sections():
-			label = _get_from_parser(rating_parser, section, 'Label')
-			if locale:
-				label = _get_from_parser(rating_parser, section, 'Label[%s]' % locale) or label
-			description = _get_from_parser(rating_parser, section, 'Description')
-			if locale:
-				description = _get_from_parser(rating_parser, section, 'Description[%s]' % locale) or description
-			item = {'name': section, 'description': description, 'label': label}
-			_get_rating_items._cache.append(item)
-	return [itm.copy() for itm in _get_rating_items._cache]
-
-
-_get_rating_items._cache = None
-
-
-def _get_license_descriptions(locale):
-	if _get_license_descriptions._cache is None:
-		_get_license_descriptions._cache = {}
-		license_parser = _read_ini_file(os.path.join(CACHE_DIR, '.license_types.ini'))
-		for section in license_parser.sections():
-			description = _get_from_parser(license_parser, section, 'Description')
-			if locale:
-				description = _get_from_parser(license_parser, section, 'Description[%s]' % locale) or description
-			_get_license_descriptions._cache[section] = description
-	return _get_license_descriptions._cache
-
-
-_get_license_descriptions._cache = None
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -301,19 +258,20 @@ class AppListAttribute(AppAttribute):
 
 
 class AppRatingAttribute(AppListAttribute):
-	def get_value(self, component_id, ini_parser, meta_parser, locale):
+	def post_creation(self, app):
 		value = []
-		rating_items = _get_rating_items(locale)
-		for item in rating_items:
-			val = _get_from_parser(meta_parser, 'Application', item['name'])
+		ratings = app.get_app_cache_obj().get_appcenter_cache_obj().get_ratings()
+		meta_parser = read_ini_file(app.get_cache_file('meta'))
+		for rating in ratings:
 			try:
-				val = int(val)
-			except (ValueError, TypeError):
+				val = int(meta_parser.get('Application', rating.name))
+			except (ValueError, TypeError, NoSectionError, NoOptionError):
 				pass
 			else:
-				item['value'] = val
-				value.append(item)
-		return value
+				rating = rating.to_dict(app.get_locale())
+				rating['value'] = val
+				value.append(rating)
+		setattr(app, self.name, value)
 
 
 class AppLocalisedListAttribute(AppListAttribute):
@@ -324,7 +282,7 @@ class AppLocalisedListAttribute(AppListAttribute):
 		if fname not in cls._cache:
 			cls._cache[fname] = translations = {}
 			cached_file = os.path.join(CACHE_DIR, '.%s' % fname)
-			localiser = _read_ini_file(cached_file, CaseSensitiveConfigParser)
+			localiser = read_ini_file(cached_file, CaseSensitiveConfigParser)
 			for section in localiser.sections():
 				translations[section] = dict(localiser.items(section))
 		translations = cls._cache[fname].get(locale)
@@ -948,11 +906,13 @@ class App(object):
 
 	@property
 	def license_description(self):
-		return _get_license_descriptions(self.get_locale()).get(self.license)
+		return self.get_app_cache_obj().get_appcenter_cache_obj().get_license_description(self.license)
 
 	def __str__(self):
+		from univention.appcenter.app_cache import default_server, default_ucs_version
 		annotation = ''
-		server, ucs_version = get_server_and_version()[0]
+		server = default_server()
+		ucs_version = default_ucs_version()
 		if ucs_version != self.get_ucs_version():
 			annotation = self.get_ucs_version()
 		if server != self.get_server():
@@ -969,7 +929,7 @@ class App(object):
 	def _get_meta_parser(cls, ini_file, ini_parser):
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
 		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
-		return _read_ini_file(meta_file)
+		return read_ini_file(meta_file)
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True, cache=None):
@@ -977,7 +937,7 @@ class App(object):
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
-		ini_parser = _read_ini_file(ini_file)
+		ini_parser = read_ini_file(ini_file)
 		meta_parser = cls._get_meta_parser(ini_file, ini_parser)
 		attr_values = {}
 		for attr in cls._attrs:
@@ -1653,8 +1613,6 @@ class AppManager(object):
 		cls._cache[:] = []
 		reload_package_manager()
 		cls._invalidate_cache_file()
-		_get_rating_items._cache = None
-		_get_license_descriptions._cache = None
 
 	@classmethod
 	def _get_every_single_app(cls):

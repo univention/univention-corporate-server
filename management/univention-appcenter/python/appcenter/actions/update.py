@@ -39,7 +39,6 @@ from math import ceil
 from argparse import SUPPRESS
 import time
 from threading import Thread
-from urlparse import urljoin
 from glob import glob
 from gzip import open as gzip_open
 from json import loads
@@ -48,7 +47,7 @@ from urlparse import urlsplit
 from urllib2 import quote, Request, HTTPError
 
 from univention.appcenter.app import LOCAL_ARCHIVE
-from univention.appcenter.app_cache import AppCache, Apps
+from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode
 from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
@@ -72,22 +71,98 @@ class Update(UniventionAppAction):
 		parser.add_argument('--cache-dir', help=SUPPRESS)
 
 	def main(self, args):
-		self._cache_dir = args.cache_dir
-		self._ucs_version = args.ucs_version
-		self._appcenter_server = args.appcenter_server
-		if self._cache_dir is None and self._ucs_version is None and self._appcenter_server is None:
-			# nothing given (univention-app update) => Update every configured AppCache
-			Apps().call_update()
-			return
-		something_changed_locally = self._extract_local_archive()
-		self._download_supra_files()
-		json_apps = self._load_index_json()
-		files_to_download, something_changed_remotely = self._read_index_json(json_apps)
+		something_changed = False
+		for appcenter_cache in self._appcenter_caches(args):
+			if self._download_supra_files(appcenter_cache):
+				appcenter_cache.clear_cache()
+				something_changed = True
+		for app_cache in self._app_caches(args):
+			if self._extract_local_archive(app_cache):
+				something_changed = True
+			if self._download_apps(app_cache):
+				appcenter_cache.clear_cache()
+				something_changed = True
+		if something_changed:
+			apps_cache = Apps()
+			for app in apps_cache.get_all_locally_installed_apps():
+				newest_app = apps_cache.find_candidate(app)
+				if app < newest_app:
+					ucr_save({app.ucr_upgrade_key: 'yes'})
+			self._update_local_files()
+
+	def _appcenter_caches(self, args):
+		if args.appcenter_server:
+			return [AppCenterCache(server=args.appcenter_server)]
+		else:
+			ret = []
+			servers = set()
+			for appcenter_cache in Apps().get_appcenter_caches():
+				server = appcenter_cache.get_server()
+				if server not in servers:
+					servers.add(server)
+					ret.append(appcenter_cache)
+			return ret
+
+	def _app_caches(self, args):
+		for appcenter_cache in self._appcenter_caches(args):
+			for app_cache in appcenter_cache.get_app_caches():
+				if args.ucs_version:
+					yield app_cache.copy(ucs_version=args.ucs_version)
+					break
+				else:
+					yield app_cache
+
+	def _get_etags(self, etags_file):
+		ret = {}
+		try:
+			with open(etags_file, 'rb') as f:
+				for line in f:
+					try:
+						fname, etag = line.split('\t')
+					except ValueError:
+						pass
+					else:
+						ret[fname] = etag.rstrip('\n')
+		except EnvironmentError:
+			pass
+		return ret
+
+	def _download_supra_files(self, appcenter_cache):
+		updated = False
+		etags_file = os.path.join(appcenter_cache.get_cache_dir(), '.etags')
+		present_etags = self._get_etags(etags_file)
+		server = appcenter_cache.get_server()
+		cache_dir = appcenter_cache.get_cache_dir()
+		for filename in ['categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini']:
+			etag = present_etags.get(filename)
+			new_etag = self._download_file(server, filename, cache_dir, etag)
+			if new_etag:
+				present_etags[filename] = new_etag
+				updated = True
+		with open(etags_file, 'wb') as f:
+			for fname, etag in present_etags.iteritems():
+				f.write('%s\t%s\n' % (fname, etag))
+		return updated
+
+	def _download_apps(self, app_cache):
+		etags_file = os.path.join(app_cache.get_cache_dir(), '.etags')
+		present_etags = self._get_etags(etags_file)
+		server = app_cache.get_server()
+		cache_dir = app_cache.get_cache_dir()
+		ucs_version = app_cache.get_ucs_version()
+		filenames = ['index.json.gz']
+		if not ucr_is_false('appcenter/index/verify'):
+			filenames.append('index.json.gz.gpg')
+		for filename in filenames:
+			etag = present_etags.get(filename)
+			self._download_file(server, filename, cache_dir, etag, ucs_version)
+		json_apps = self._load_index_json(app_cache)
+		files_to_download, something_changed_remotely = self._read_index_json(cache_dir, json_apps)
 		num_files_to_be_downloaded = len(files_to_download)
 		self.log('%d file(s) are new' % num_files_to_be_downloaded)
 		num_files_threshold = 5
 		if num_files_to_be_downloaded > num_files_threshold:
-			files_to_download = self._download_archive(files_to_download)
+			files_to_download = self._download_archive(app_cache, files_to_download)
 		threads = []
 		max_threads = 10
 		files_per_thread = max(num_files_threshold, int(ceil(float(len(files_to_download)) / max_threads)))
@@ -98,95 +173,55 @@ class Update(UniventionAppAction):
 			# don't do this at once as this opens 100 connections.
 			files_to_download_in_thread, files_to_download = files_to_download[:files_per_thread], files_to_download[files_per_thread:]
 			self.log('Starting to download %d file(s) directly' % len(files_to_download_in_thread))
-			thread = Thread(target=self._download_directly, args=(files_to_download_in_thread,))
+			thread = Thread(target=self._download_directly, args=(app_cache, files_to_download_in_thread,))
 			thread.start()
 			threads.append(thread)
 			time.sleep(0.1)  # wait 100 milliseconds so that not all threads start at the same time
 		for thread in threads:
 			thread.join()
-		if something_changed_locally or something_changed_remotely:
-			self.clear_cache()
-			for app in self.get_app_cache().get_all_locally_installed_apps():
-				if self.get_app_cache().find_candidate(app):
-					ucr_save({app.ucr_upgrade_key: 'yes'})
-			self._update_local_files()
-
-	def clear_cache(self):
-		app_cache = self.get_app_cache()
-		app_cache.clear_cache()
-
-	def get_app_cache(self):
-		return AppCache.build(ucs_version=self._get_ucs_version(), server=self._get_server(), cache_dir=self._get_cache_dir())
 
 	@possible_network_error
-	def _download_supra_files(self):
-		present_etags = {}
-		etags_file = os.path.join(self._get_cache_dir(), '.etags')
-		if os.path.exists(etags_file):
-			with open(etags_file, 'rb') as f:
-				for line in f:
-					try:
-						fname, etag = line.split('\t')
-					except ValueError:
-						pass
-					else:
-						present_etags[fname] = etag.rstrip('\n')
-
-		def _download_supra_file(filename, version_specific):
-			if version_specific:
-				url = urljoin('%s/' % self._get_metainf_url(), '%s' % filename)
-			else:
-				url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
-			self.log('Downloading "%s"...' % url)
-			headers = {}
-			if filename in present_etags:
-				headers['If-None-Match'] = present_etags[filename]
-			request = Request(url, headers=headers)
-			try:
-				response = urlopen(request)
-			except HTTPError as exc:
-				if exc.getcode() == 304:
-					self.debug('  ... Not Modified')
-					return
-				raise
-			etag = response.headers.get('etag')
-			present_etags[filename] = etag
-			content = response.read()
-			with open(os.path.join(self._get_cache_dir(), '.%s' % filename), 'wb') as f:
-				f.write(content)
-			self.clear_cache()
-
-		_download_supra_file('index.json.gz', version_specific=True)
-		if not ucr_is_false('appcenter/index/verify'):
-			_download_supra_file('index.json.gz.gpg', version_specific=True)
-		_download_supra_file('categories.ini', version_specific=False)
-		_download_supra_file('rating.ini', version_specific=False)
-		_download_supra_file('license_types.ini', version_specific=False)
-		with open(etags_file, 'wb') as f:
-			for fname, etag in present_etags.iteritems():
-				f.write('%s\t%s\n' % (fname, etag))
+	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
+		url = os.path.join(base_url, 'meta-inf', ucs_version or '', filename)
+		self.log('Downloading "%s"...' % url)
+		headers = {}
+		if etag:
+			headers['If-None-Match'] = etag
+		request = Request(url, headers=headers)
+		try:
+			response = urlopen(request)
+		except HTTPError as exc:
+			if exc.getcode() == 304:
+				self.debug('  ... Not Modified')
+				return None
+			raise
+		etag = response.headers.get('etag')
+		content = response.read()
+		with open(os.path.join(cache_dir, '.%s' % filename), 'wb') as f:
+			f.write(content)
+		return etag
 
 	@possible_network_error
-	def _download_archive(self, files_to_download):
+	def _download_archive(self, app_cache, files_to_download):
 		# a lot of files to download? Do not download them
 		#   one at a time. Download the full archive!
 		files_still_to_download = []
-		archive_url = urljoin('%s/' % self._get_metainf_url(), 'all.tar.gz')
+		archive_url = os.path.join(app_cache.get_server(), 'meta-inf', app_cache.get_ucs_version(), 'all.tar.gz')
 		try:
 			self.log('Downloading "%s"...' % archive_url)
 			# for some reason saving this in memory is flawed.
 			# using StringIO and GZip objects has issues
 			# with "empty" files in tar.gz archives, i.e.
 			# doublets like .png logos
-			with open(os.path.join(self._get_cache_dir(), 'all.tar.gz'), 'wb') as f:
+			with open(os.path.join(app_cache.get_cache_dir(), 'all.tar.gz'), 'wb') as f:
 				f.write(urlopen(archive_url).read())
 			archive = tarfile.open(f.name, 'r:*')
 			try:
 				for filename_url, filename, remote_md5sum in files_to_download:
 					self.debug('Extracting %s' % filename)
 					try:
-						archive.extract(filename, path=self._get_cache_dir())
-						absolute_filename = os.path.join(self._get_cache_dir(), filename)
+						archive.extract(filename, path=app_cache.get_cache_dir())
+						absolute_filename = os.path.join(app_cache.get_cache_dir(), filename)
 						os.chown(absolute_filename, 0, 0)
 						os.chmod(absolute_filename, 0o664)
 						local_md5sum = get_md5_from_file(absolute_filename)
@@ -206,14 +241,14 @@ class Update(UniventionAppAction):
 			return files_to_download
 
 	@possible_network_error
-	def _download_directly(self, files_to_download):
+	def _download_directly(self, app_cache, files_to_download):
 		for filename_url, filename, remote_md5sum in files_to_download:
 			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
 			# but dont quote https:// -> https%3A//
 			path = quote(urlsplit(filename_url).path)
-			filename_url = '%s%s' % (self._get_server(), path)
+			filename_url = '%s%s' % (app_cache.get_server(), path)
 
-			cached_filename = os.path.join(self._get_cache_dir(), filename)
+			cached_filename = os.path.join(app_cache.get_cache_dir(), filename)
 
 			self.debug('Downloading %s' % filename_url)
 			try:
@@ -228,51 +263,6 @@ class Update(UniventionAppAction):
 					self.fatal('Checksum for %s should be %r but was %r! Rather removing this file...' % (filename, remote_md5sum, local_md5sum))
 					os.unlink(cached_filename)
 				self._files_downloaded[filename] = remote_md5sum
-
-	# def _process_new_file(self, filename):
-	#	self.log('Installing %s' % os.path.basename(filename))
-	#	component, ext = os.path.splitext(os.path.basename(filename))
-	#	ret = None
-	#	if hasattr(self, '_process_new_file_%s' % ext):
-	#		ini_file = os.path.join(self._get_cache_dir(), '%s.ini' % component)
-	#		try:
-	#			local_app = App.from_ini(ini_file)
-	#		except IOError:
-	#			self.log('Could not find a previously existing app with component %s' % component)
-	#		else:
-	#			ret = self.getattr('_process_new_file_%s' % ext)(filename, local_app)
-	#	if ret != 'reject':
-	#		shutil.copy2(filename, self._get_cache_dir())
-	#	return ret
-
-	# def _process_new_file_ini(self, filename, local_app):
-	#	if local_app.is_installed():
-	#		new_app = App.from_ini(filename)
-	#		if new_app:
-	#			if new_app.component_id == local_app.component_id:
-	#				pass
-	# register = get_action('register')()
-	# register._register_app(new_app)
-	#		else:
-	#			return 'reject'
-	#	else:
-	#		new_app = App.from_ini(filename)
-	#		if new_app:
-	#			local_app = Apps().find(new_app.id)
-	#			if local_app.is_installed() and local_app < new_app:
-	#				ucr = ConfigRegistry()
-	#				ucr_update(ucr, {local_app.ucr_upgrade_key: 'yes'})
-	#		else:
-	#			return 'reject'
-
-	# def _process_new_file_inst(self, filename, local_app):
-	#	if local_app.is_installed():
-	#		shutil.copy2(filename, JOINSCRIPT_DIR)
-
-	# def _process_new_file_uinst(self, filename, local_app):
-	#	uinst_filename = self._get_joinscript_path(local_app, unjoin=True)
-	#	if os.path.exists(uinst_filename):
-	#		shutil.copy2(filename, uinst_filename)
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
@@ -309,15 +299,15 @@ class Update(UniventionAppAction):
 						if file == 'inst':
 							os.chmod(dest, 0o755)
 
-	def _extract_local_archive(self):
-		if any(not fname.startswith('.') for fname in os.listdir(self._get_cache_dir())):
+	def _extract_local_archive(self, app_cache):
+		if ucr_get('version/version') != app_cache.get_ucs_version():
+			# Not my LOCAL_ARCHIVE
+			return False
+		if any(not fname.startswith('.') for fname in os.listdir(app_cache.get_cache_dir())):
 			# we already have a cache. our archive is just outdated...
 			return False
 		if not os.path.exists(LOCAL_ARCHIVE):
 			# for some reason the archive is not there. should only happen when deleted intentionally...
-			return False
-		if ucr_get('version/version') != self._get_ucs_version():
-			# Not my LOCAL_ARCHIVE
 			return False
 		self.log('Filling the App Center file cache from our local archive!')
 		try:
@@ -332,24 +322,14 @@ class Update(UniventionAppAction):
 					# just some paranoia
 					continue
 				self.debug('Extracting %s' % filename)
-				archive.extract(filename, path=self._get_cache_dir())
-				self._files_downloaded[filename] = get_md5_from_file(os.path.join(self._get_cache_dir(), filename))
+				archive.extract(filename, path=app_cache.get_cache_dir())
+				self._files_downloaded[filename] = get_md5_from_file(os.path.join(app_cache.get_cache_dir(), filename))
 		finally:
-			self._update_local_files()
 			archive.close()
 		return True
 
-	def _get_metainf_url(self):
-		return '%s/meta-inf/%s' % (self._get_server(), self._get_ucs_version())
-
-	def _get_cache_dir(self):
-		return self._cache_dir
-
-	def _get_server(self):
-		return self._appcenter_server
-
-	def _load_index_json(self):
-		index_json_gz_filename = os.path.join(self._get_cache_dir(), '.index.json.gz')
+	def _load_index_json(self, app_cache):
+		index_json_gz_filename = os.path.join(app_cache.get_cache_dir(), '.index.json.gz')
 		if not ucr_is_false('appcenter/index/verify'):
 			detached_sig_path = index_json_gz_filename + '.gpg'
 			(rc, gpg_error) = gpg_verify(index_json_gz_filename, detached_sig_path)
@@ -361,7 +341,7 @@ class Update(UniventionAppAction):
 			content = fgzip.read()
 			return loads(content)
 
-	def _read_index_json(self, json_apps):
+	def _read_index_json(self, cache_dir, json_apps):
 		files_to_download = []
 		something_changed = False
 		files_in_json_file = []
@@ -371,7 +351,7 @@ class Update(UniventionAppAction):
 				remote_md5sum = appfileinfo['md5']
 				remote_url = appfileinfo['url']
 				# compare with local cache
-				cached_filename = os.path.join(self._get_cache_dir(), filename)
+				cached_filename = os.path.join(cache_dir, filename)
 				files_in_json_file.append(cached_filename)
 				local_md5sum = get_md5_from_file(cached_filename)
 				if remote_md5sum != local_md5sum:
@@ -379,7 +359,7 @@ class Update(UniventionAppAction):
 					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
 		# remove those files that apparently do not exist on server anymore
-		for cached_filename in glob(os.path.join(self._get_cache_dir(), '*')):
+		for cached_filename in glob(os.path.join(cache_dir, '*')):
 			if os.path.basename(cached_filename).startswith('.'):
 				continue
 			if os.path.isdir(cached_filename):
@@ -389,32 +369,3 @@ class Update(UniventionAppAction):
 				something_changed = True
 				os.unlink(cached_filename)
 		return files_to_download, something_changed
-
-	def _get_ucs_version(self):
-		'''Returns the current UCS version (ucr get version/version).
-		During a release update of UCS, returns the target version instead
-		because the new ini files should now be used in any script'''
-		if self._ucs_version is None:
-			version = None
-			try:
-				still_running = False
-				next_version = None
-				status_file = '/var/lib/univention-updater/univention-updater.status'
-				if os.path.exists(status_file):
-					with open(status_file, 'r') as status:
-						for line in status:
-							line = line.strip()
-							key, value = line.split('=', 1)
-							if key == 'status':
-								still_running = value == 'RUNNING'
-							elif key == 'next_version':
-								next_version = value.split('-')[0]
-						if still_running and next_version:
-							version = next_version
-			except (IOError, ValueError) as exc:
-				self.warn('Could not parse univention-updater.status: %s' % exc)
-			if version is None:
-				version = ucr_get('version/version', '')
-			self.debug('UCS Version is %r' % version)
-			self._ucs_version = version
-		return self._ucs_version
