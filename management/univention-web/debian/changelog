@@ -1,3 +1,9 @@
+univention-web (1.0.19-1) unstable; urgency=medium
+
+  * Bug #42174: styling of login dialog
+
+ -- Florian Best <best@univention.de>  Mon, 13 Feb 2017 18:29:32 +0100
+
 univention-web (1.0.18-2) unstable; urgency=medium
 
   Bug #42261: 

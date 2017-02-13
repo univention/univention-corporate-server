@@ -1,16 +1,8 @@
 @import "../variables"
 
-#umcLoginWrapper
-	position: absolute
-	height: 100%
-	width: 100%
-	display: none
-
-
 #umcLoginDialog, .umcLoginDialog
 	background-color: #ffffff
 	width: 313px
-	height: 313px
 	margin: 0 auto
 	padding: 3px
 	border: 0 none
@@ -20,11 +12,6 @@
 
 #umcLoginDialog *
 	overflow: hidden
-
-
-#umcLoginCenterer
-	height: 50%
-	margin-bottom: -156px /* half of the height of #umcLoginDialog*/
 
 
 #umcLoginIframe
@@ -46,7 +33,7 @@
 
 
 #umcLoginDialog .umcLoginForm
-	margin: 15px
+	margin: 15px 15px 0 15px
 
 
 #umcLoginDialog.umcLoginLoading .umcLoginForm
@@ -70,7 +57,7 @@
 	background: transparent
 	font-size: 1.5em
 	color: #787878
-	width: 100%
+	width: 90%
 	height: 100%
 
 #umcLoginDialog .umcLoginForm label a,
@@ -100,6 +87,13 @@
 	&:active
 		icon-image(0, -160, "../", "-white")
 
+
+#umcLoginLinks
+	text-align: center
+	margin: 1em
+	a
+		color: $ucs-green
+		margin: 0 1em
 
 
 #umcLoginMessages
