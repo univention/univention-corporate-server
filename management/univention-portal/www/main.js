@@ -33,16 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
-	"dojo/json",
 	"dojo/dom",
 	"dojo/promise/all",
 	"umc/tools",
 	"umc/widgets/LiveSearch",
 	"./PortalCategory",
 	"put-selector/put",
-	"dojo/text!/univention/meta.json"
-], function(declare, lang, array, on, json, dom, all, tools, LiveSearch, PortalCategory, put, meta) {
-	meta = json.parse(meta);
+	"umc/json!/univention/meta.json"
+], function(declare, lang, array, on, dom, all, tools, LiveSearch, PortalCategory, put, meta) {
 	return {
 		portalCategories: null,
 
