@@ -1742,7 +1742,8 @@ define([
 
 			var superordinateWidget = this._searchForm.getWidget('superordinate');
 			if (superordinateWidget && superordinateWidget.get('value')) {  // validate that the selected item in the tree is a superordinate
-				superordinate = selectedContainer;
+				superordinate = superordinateWidget.get('value');
+				superordinate = {id: superordinate, label: superordinate, path: superordinate};
 			}
 
 			// open the dialog

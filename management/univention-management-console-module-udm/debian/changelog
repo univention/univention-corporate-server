@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.4-3) unstable; urgency=medium
+
+  * Bug #43048: fix creation of objects having a superordinate in
+  	subcontainers of the superordinate
+
+ -- Florian Best <best@univention.de>  Mon, 13 Feb 2017 12:45:28 +0100
+
 univention-management-console-module-udm (7.0.4-2) unstable; urgency=medium
 
   * Bug #42261: add css class to position_text

@@ -339,16 +339,18 @@ class UDM_Module(object):
 	@LDAP_Connection
 	def create(self, ldap_object, container=None, superordinate=None, ldap_connection=None, ldap_position=None):
 		"""Creates a LDAP object"""
-		if superordinate not in (None, 'None'):
-			try:
-				ldap_position.setDn(superordinate)
-			except udm_errors.noObject as e:
-				raise SuperordinateDoesNotExist(superordinate)
-		elif container is not None:
+		if superordinate == 'None':
+			superordinate = None
+		if container:
 			try:
 				ldap_position.setDn(container)
-			except udm_errors.noObject as e:
+			except udm_errors.noObject:
 				raise ObjectDoesNotExist(container)
+		elif superordinate:
+			try:
+				ldap_position.setDn(superordinate)
+			except udm_errors.noObject:
+				raise SuperordinateDoesNotExist(superordinate)
 		else:
 			if hasattr(self.module, 'policy_position_dn_prefix'):
 				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
@@ -359,16 +361,13 @@ class UDM_Module(object):
 
 			ldap_position.setDn(container)
 
-		if superordinate not in (None, 'None'):
+		if superordinate:
 			mod = get_module(self.name, superordinate)
-			if mod is not None:
-				MODULE.info('Found UDM module for superordinate')
-				superordinate = mod.get(superordinate)
-			else:
+			if not mod:
 				MODULE.error('Superordinate module not found: %s' % (superordinate,))
 				raise SuperordinateDoesNotExist(superordinate)
-		else:
-			superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, container)
+			MODULE.info('Found UDM module for superordinate')
+			superordinate = mod.get(superordinate)
 
 		obj = self.module.object(None, ldap_connection, ldap_position, superordinate=superordinate)
 		try:
