@@ -1,0 +1,23 @@
+<!-- top level element -->
+<!--  version: onyl 2.0 is allowed -->
+<!ELEMENT umc (categories)>
+<!ATTLIST umc
+	version (2.0) #REQUIRED
+	>
+
+<!-- definition of categories -->
+<!ELEMENT categories (category+)>
+
+<!-- a category -->
+<!--  priority: favories=100, monitor=1 -->
+<!ELEMENT category (name+)>
+<!ATTLIST category
+	priority CDATA #REQUIRED
+	id ID #REQUIRED
+	>
+
+<!-- translated names of vatehory -->
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+	lang CDATA #IMPLIED
+	>
