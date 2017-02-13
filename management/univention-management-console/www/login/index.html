@@ -9,58 +9,18 @@
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/management/style.css">
 		<script type="text/javascript" src="/univention/js/config.js"></script>
-		<script type="text/javascript">
-			dojoConfig.callback = function() {
-				require(["login", "dojo/domReady!"], function(login) {
-					login._initLoginDialog();
-					login._loginDialog.standby(true);
-					login._loginDialog.show();
-					login.showLoginDialog2();
-				});
-			};
-			var _fillUsernameField = function(username) {
-				require('dojo/dom').byId('umcLoginUsername').value = username;
-				require('dojo/dom').byId('umcLoginPassword').focus();
-				//fire change event manually for internet explorer
-				require(['dojo/dom', 'dojo/has'], function(dom, has) {
-					if (has('ie') < 10) {
-						var event = document.createEvent("HTMLEvents");
-						event.initEvent("change", true, false);
-						dom.byId('umcLoginUsername').dispatchEvent(event);
-					}
-				});
-			};
-
-			var _showLoginTooltip = function(evt) {
-				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
-					var node = evt.target;
-					var helpText = _('Please login with a valid username and password.') + ' ';
-					if (getQuery('username') === 'root') {
-						helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
-					} else {
-						helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
-					}
-					Tooltip.show(helpText, node);
-					if (evt) {
-						dojoEvent.stop(evt);
-					}
-					on.once(dojo.body(), 'click', function(evt) {
-						Tooltip.hide(node);
-						dojoEvent.stop(evt);
-					});
-				});
-			};
-		</script>
-		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+		<script type="text/javascript" src="/univention/login/config.js"></script>
+		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc">
-		<div id="umcLoginWrapper">
-			<div class="umcHeader">
-				<div class="umcHeaderRight">
-					<div class="univentionLogo"></div>
-				</div>
+		<div class="umcHeader">
+			<div class="umcHeaderRight">
+				<div class="univentionLogo"></div>
 			</div>
-			<div id="umcLoginCenterer"></div>
+		</div>
+		<div id="umcLoginWrapper">
+			<h1 style="text-align: center;" data-i18n="Login at %(hostname)s.%(domainname)s">Login at</h1>
+			<h2 style="text-align: center;" data-i18n="Login with your domain account.">Login with your domain account.</h2>
 			<div id="umcLoginDialog" class="dijitDialog dojoxDialog umcLoginDialog">
 				<div id="umcLoginLogo" class="umcLoginLogo">
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
@@ -68,9 +28,6 @@
 				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
 					<label for="umcLoginUsername">
 						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
-						<a href="javascript:void(0);" onclick="_showLoginTooltip(event);" tabindex="-1">
-							<span class="dijitReset dijitInline dijitIcon umcHelpIcon"></span>
-						</a>
 					</label>
 					<label for="umcLoginPassword">
 						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
@@ -92,9 +49,11 @@
 						<input type="submit" name="submit" value="Login"/>
 					</label>
 				</form>
-				<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
 			</div>
 		</div>
+		<div id="umcLoginLinks"/>
 
+		<!-- preload the image! -->
+		<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;">
 	</body>
 </html>

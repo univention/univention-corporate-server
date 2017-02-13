@@ -59,7 +59,7 @@ define([
 	 * * auhtentication failures e.g. PW wrong, server-down, disabled account, user unknown
 	 * * pass credentials to modules if logged in via SSO
 	 * */
-	var auth = {
+	var login = {
 
 		_password_required: null,
 		_loginDialog: null, // internal reference to the login dialog
@@ -69,13 +69,16 @@ define([
 			dialog.alert('Session timeout. <a href="/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href)) + '">Please login again.</a>');
 		},
 
-		showLoginDialog2: function() {
+		renderLoginDialog: function() {
 			// summary:
 			//		Show the login screen.
 			// returns:
 			//		A Deferred object that is called upon successful login.
 			//		The callback receives the authorized username as parameter.
 
+			this._initLoginDialog();
+			this._loginDialog.standby(true);
+			this._loginDialog.show();
 			if (this._loginDeferred) {
 				// a login attempt is currently running
 				return this._loginDeferred;
@@ -217,15 +220,7 @@ define([
 		authenticate: function(data) {
 			//console.debug('dialog auth');
 			return tools.umcpCommand('auth', data, this.errorHandler()).then(lang.hitch(this, function(data) {
-				var username;
-				try {
-					username = data.result.username;
-				} catch (error) {
-					// if the umc-webserver is not restarted after a upgrade from UCS 4.0 the auth request doesn't return a username yet
-					// TODO: remove in UCS 4.2
-					username = tools.status('username') || '';
-					try { username = username || dom.byId('umcLoginUsername').value; } catch (e) {}
-				}
+				var username = data.result.username;
 				//console.debug('auth via dialog successful');
 				return this.authenticated(username);
 			}));
@@ -314,6 +309,6 @@ define([
 			}));
 		}
 	};
-	lang.setObject('umc.auth', auth);
-	return auth;
+	lang.setObject('umc.login', login);
+	return login;
 });

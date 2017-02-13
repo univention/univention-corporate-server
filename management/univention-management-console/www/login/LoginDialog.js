@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, console, window, setTimeout, require*/
+/*global define, console, window, setTimeout, require, getQuery*/
 
 define([
 	"dojo/_base/declare",
@@ -101,11 +101,11 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// set the properties for the dialog underlay element
-			this.underlayAttrs = {
-				dialogId: this.id,
-				'class': 'dijitDialogUnderlay umcLoginDialogUnderlay'
-			};
+//			// set the properties for the dialog underlay element
+//			this.underlayAttrs = {
+//				dialogId: this.id,
+//				'class': 'dijitDialogUnderlay umcLoginDialogUnderlay'
+//			};
 
 			// create the info text
 			this._text = new Text({
@@ -114,12 +114,12 @@ define([
 			});
 			this._text.placeAt(this.domNode, 'last');
 
-			// automatically resize the DialogUnderlay container
-			this.own(on(win.global, 'resize', lang.hitch(this, function() {
-				if (Dialog._DialogLevelManager.isTop(this)) {
-					DialogUnderlay._singleton.layout();
-				}
-			})));
+//			// automatically resize the DialogUnderlay container
+//			this.own(on(win.global, 'resize', lang.hitch(this, function() {
+//				if (Dialog._DialogLevelManager.isTop(this)) {
+//					DialogUnderlay._singleton.layout();
+//				}
+//			})));
 		},
 
 		updateForm: function(info) {
@@ -352,14 +352,14 @@ define([
 			});
 		},
 
-		_authentication_failed: function(error) {
+		_authentication_failed: function() {
 			// the authentication failed and(!) was triggered by this dialog... we only need to show()+hide()
 			// errors must be handled by the _updateView() functions!!
 			// don't call _updateFormDeferred or _resetForm here!
 			// It would break setting of new_password
 			this.standby(false);
-			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
-			Dialog._DialogLevelManager.hide(this);
+//			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+//			Dialog._DialogLevelManager.hide(this);
 		},
 
 		_cookiesEnabled: function() {
@@ -417,13 +417,6 @@ define([
 			var msg = '';
 			var title = '';
 
-			// Show warning if connection is unsecured
-			if (window.location.protocol === 'http:' && window.location.host !== 'localhost') {
-				var link = '<a href="https://' + window.location.href.slice(7) + '">';
-				title = _('Insecure Connection');
-				msg = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link);
-			}
-
 			if (has('ie') < 11 || has('ff') < 38 || has('chrome') < 37 || has('safari') < 9) {
 			// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 			// they should work with UMC. albeit, they are
@@ -474,7 +467,7 @@ define([
 				// trigger IE9 workaround
 				this._replaceLabels();
 			}
-			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+//			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 			if (this._text.get('content')) {
 				deferred = this._wipeInMessage();
 			}
@@ -521,7 +514,7 @@ define([
 			var hide = lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
 				window.scrollTo(0, this._scrollPosY);
-				Dialog._DialogLevelManager.hide(this);
+//				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
 				try {
 					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', false);
