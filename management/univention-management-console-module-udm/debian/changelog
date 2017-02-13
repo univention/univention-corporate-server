@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-38) unstable; urgency=medium
+
+  * Bug #43048: fix creation of objects having a superordinate in
+    subcontainers of the superordinate
+
+ -- Florian Best <best@univention.de>  Mon, 13 Feb 2017 12:49:19 +0100
+
 univention-management-console-module-udm (6.0.11-37) unstable; urgency=medium
 
   * Bug #43423: set tree root operations to search-only except for navigation
