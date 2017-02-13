@@ -11,7 +11,8 @@ Package: univention-tftp
 Architecture: all
 Depends: ${misc:Depends},
  atftpd,
- syslinux
+ syslinux,
+ pxelinux
 Replaces: univention-client-boot-pxe
 Description: UCS - TFTP server
  This packages installs a TFTP server, which can be used

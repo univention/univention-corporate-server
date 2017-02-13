@@ -1,1 +1,2 @@
 usr/lib/PXELINUX/pxelinux.0 var/lib/univention-client-boot/pxelinux.0
+usr/lib/syslinux/modules/bios/ldlinux.c32 var/lib/univention-client-boot/ldlinux.c32

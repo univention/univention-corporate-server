@@ -1,3 +1,10 @@
+univention-tftp (8.0.0-3) unstable; urgency=medium
+
+  * Bug #43533: Add dependency to pxelinux
+  * Add link to ldlinux.c32
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 13 Feb 2017 16:49:17 +0100
+
 univention-tftp (8.0.0-2) unstable; urgency=medium
 
   * Bug #43533: Adapt link to pxelinux.0 due to path change in new syslinux package
