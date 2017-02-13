@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.6-6) unstable; urgency=medium
+
+  * Bug #32086: s4connector: fix ldap.explode_dn()
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 13 Feb 2017 16:52:06 +0100
+
 univention-s4-connector (11.0.6-5) unstable; urgency=medium
 
   * Bug #43397: ad-connector: fix closing parenthesis in mapping.py
