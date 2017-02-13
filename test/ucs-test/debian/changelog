@@ -1,3 +1,10 @@
+ucs-test (6.0.37-51) unstable; urgency=medium
+
+  * 20_appcenter/20_can_apps_be_installed: Increase timeout to 2 hours
+    (Bug #43525)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Feb 2017 06:48:48 +0100
+
 ucs-test (6.0.37-50) unstable; urgency=low
 
   * Bug #43385: test stderr/return value in 40_app_umc_install_latest_appbox
