@@ -32,7 +32,7 @@ Configure UCS-domain and forward DNS servers.
 from os import environ
 from sys import modules, stderr
 from collections import OrderedDict
-from subprocess import check_output
+from subprocess import check_output, check_call
 from optparse import OptionParser, SUPPRESS_HELP
 from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
 
@@ -250,6 +250,9 @@ def update_ucr(ucr, nameservers, forwarders, options):
 
 	if not options.no_act:
 		ucr_update(ucr, changes)
+
+		log.info('Reloading BIND')
+		check_call(('rndc', 'reconfig'))
 
 
 def get_ip(rr):

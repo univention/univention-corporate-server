@@ -86,7 +86,7 @@ if [ "$1" = "configure" ]; then
 	else
 		invoke-rc.d bind9 start
 	fi
-	dpkg --compare-versions "$2" lt 11.0.0-10 &&
+	dpkg --compare-versions "$2" lt 11.0.0-11 &&
 		! is_ucr_true nameserver/external &&
 		/usr/share/univention-bind/fix-ucr-dns
 	invoke-rc.d univention-directory-listener crestart
