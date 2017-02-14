@@ -24,31 +24,24 @@
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewNotShown">
-		<div id="wrapper">
-			<div id="site-header" class="umcHeader">
-				<div class="umcHeaderRight">
-					<div id="umcMenu" data-dojo-type="umc/Menu"></div>
-					<div class="univentionLogo"></div>
-				</div>
+		<div class="umcHeader">
+			<div class="umcHeaderRight">
+				<div id="umcMenu" data-dojo-type="umc/Menu"></div>
+				<div class="univentionLogo"></div>
 			</div>
-			<div class="container">
-				<div id="navigation"></div>
-				<div id="content" class="tab-content">
-					<noscript>
-						<div>
-							<h1 class="no-js">Welcome to Univention Corporate Server</h1>
-						</div>
-						<div class="warning" id="no-js">
-							<div class="icon"></div>
-							<div class="title">JavaScript required</div>
-							<p>A browser with JavaScript enabled is required in order to use this service.</p>
-							<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
-						</div>
-					</noscript>
-				</div>
-				<div id="server_msg"></div>
-			</div>
-			<div class="footer dijitHidden" id="footer"></div>
 		</div>
+		<div id="navigation"></div>
+		<div id="content" class="tab-content"></div>
+		<noscript>
+			<div>
+				<h1 class="no-js">Welcome to Univention Corporate Server</h1>
+			</div>
+			<div class="warning" id="no-js">
+				<div class="icon"></div>
+				<div class="title">JavaScript required</div>
+				<p>A browser with JavaScript enabled is required in order to use this service.</p>
+				<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+			</div>
+		</noscript>
 	</body>
 </html>

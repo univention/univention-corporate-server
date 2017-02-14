@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global define*/
 
 define([
 	"dojo/hash",
@@ -41,8 +42,9 @@ define([
 	"./PasswordChange",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
-	"./lib"
-], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, lib){
+	"./lib",
+	"umc/json!/univention/self-service/entries.json"
+], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, lib, entries){
 	return {
 		content_container: null,
 		content_controller: null,
@@ -62,7 +64,7 @@ define([
 			this._initContainer();
 			this._initController();
 			this._subscribeOnHashEvents();
-			this._requestActiveSubpages();
+			this._addSubPages(entries.subpages || []);
 		},
 
 		_subscribeOnHashEvents: function() {
@@ -71,22 +73,6 @@ define([
 				lib._removeMessage();
 				this._loadSubpage(changedHash);
 			}));
-		},
-
-		/**
-		 * Requests the active subpages.
-		 **/
-		_requestActiveSubpages: function() {
-			xhr.get({
-				url: "/univention/self-service/entries.json",
-				load: lang.hitch(this, function(data) {
-					this.backend_info = JSON.parse(data, true);
-					this._addSubPages(this.backend_info.subpages || []);
-				}),
-				error: lang.hitch(this, function(data) {
-					console.error(data);
-				})
-			});
 		},
 
 		_initContainer : function() {
@@ -119,8 +105,8 @@ define([
 							hash(module.hash);
 						})
 					});
-					var bubble = put(nav, "div.PasswordServiceNavBubble" + "." + page_name);
-					var title = put(nav, "div.PasswordServiceNavTitle", {
+					put(nav, "div.PasswordServiceNavBubble" + "." + page_name);
+					put(nav, "div.PasswordServiceNavTitle", {
 						innerHTML: module.getTitle()
 					});
 					put(this.content_controller, nav);

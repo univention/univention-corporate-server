@@ -1,3 +1,9 @@
+univention-self-service (2.0.3-1) unstable; urgency=medium
+
+  * Bug #42267: enhance html structure
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2017 17:28:24 +0100
+
 univention-self-service (2.0.2-3) unstable; urgency=medium
 
   * Bug 42267: adjusted frontend for new design
