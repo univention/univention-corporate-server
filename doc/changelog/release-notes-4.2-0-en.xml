@@ -115,6 +115,11 @@
 			Either using the UMC module  <guimenu>Domain join</guimenu> or by running the command <command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
 		</para>
 
+		</para>
+			The packages <package>univention-log-collector-server</package> and <package>univention-log-collector-client</package> are no longer maintained. If these packages are installed, they should
+			be removed.
+		</para>
+
 		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>

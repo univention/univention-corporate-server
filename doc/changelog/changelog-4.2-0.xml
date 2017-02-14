@@ -735,6 +735,9 @@
 			<listitem><simpara>
 				The package <package>python-univention-directory-manager-legacy-ucd-tcs</package> has been removed (<u:bug>41637</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The packages <package>univention-log-collector-server</package> and <package>univention-log-collector-client</package> have been removed from UCS (<u:bug>41638</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>

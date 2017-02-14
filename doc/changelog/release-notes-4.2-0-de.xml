@@ -93,8 +93,7 @@
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
 			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
 			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 2 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
-		</para>
-
+		</para> 
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
 			Alternativ kann das Update über &ucsUMC; durchgeführt werden.
@@ -114,6 +113,11 @@
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
 			Dies kann auf zwei Wegen erfolgen:
 			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
+		</para>
+
+		<para>
+			Die Pakete <package>univention-log-collector-server</package> und <package>univention-log-collector-client</package> werden nicht länger gepflegt. Sofern diese Pakete installiert sind, sollten diese 
+			entfernt werden.
 		</para>
 
 		<para>
