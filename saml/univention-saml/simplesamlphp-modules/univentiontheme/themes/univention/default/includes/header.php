@@ -78,7 +78,7 @@ if ($json != NULL) {
 		<link rel="stylesheet" href="/univention/management/style.css">
 <?php
 if ($this->isLanguageRTL()) {
-	echo '\t\t<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
+	echo '<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
 }
 if(array_key_exists('head', $this->data)) {
 	echo '<!-- head -->' . $this->data['head'] . '<!-- /head -->';
@@ -93,7 +93,7 @@ if(array_key_exists('head', $this->data)) {
 <?php
 /** don't display language switcher when e.g. forms were sent */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	echo 'umcConfig.allowLanguageSwitch = false;'
+	echo 'umcConfig.allowLanguageSwitch = false;';
 }
 ?>
 		</script>

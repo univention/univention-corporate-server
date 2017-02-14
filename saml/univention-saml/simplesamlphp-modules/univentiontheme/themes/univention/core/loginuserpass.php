@@ -9,7 +9,7 @@ $this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'u
 			<h2 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:serverwelcome}')); ?></h2>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
-	printf('\t\t\t<h3><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy']), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
+	printf('<h3><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy']), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
 }
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!
@@ -21,9 +21,6 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 				<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on">
 					<label for="umcLoginUsername">
 					<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}')); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="on"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username']); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
-						<a href="javascript:void(0);" onclick="_showLoginTooltip(event);" tabindex="-1">
-							<span class="dijitReset dijitInline dijitIcon umcHelpIcon"></span>
-						</a>
 					</label>
 					<label for="umcLoginPassword">
 					<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}')); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="on"/>
@@ -31,12 +28,12 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 					</label>
 <?php
 foreach ($this->data['stateparams'] as $name => $value) {
-	echo '\t\t\t\t\t<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />';
+	echo '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />';
 }
 ?>
 <?php
 if ($this->data['rememberUsernameEnabled']) {
-	printf('\t\t\t\t\t<input type="checkbox" id="remember_username" tabindex="4" name="remember_username" value="Yes" %s />', $this->data['rememberUsernameChecked'] ? 'checked="checked"' : '');
+	printf('<input type="checkbox" id="remember_username" tabindex="4" name="remember_username" value="Yes" %s />', $this->data['rememberUsernameChecked'] ? 'checked="checked"' : '');
 	echo htmlspecialchars($this->t('{login:remember_username}'));
 }
 if (array_key_exists('organizations', $this->data)) {
