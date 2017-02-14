@@ -559,6 +559,8 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The <package>PAM</package> configuration now uses the <option>user_envfile</option>
+					option for reading files from the user home directory (<u:bug>43287</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
