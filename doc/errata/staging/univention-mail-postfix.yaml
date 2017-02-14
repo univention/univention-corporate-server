@@ -6,6 +6,6 @@ src: univention-mail-postfix
 fix: 10.0.0-18.287.201702061150
 desc: |
  This update addresses the following issue(s):
- * LDAP queries are now escaped correctly, when checking checking access for
+ * LDAP queries are now escaped correctly, when checking access for
    a restricted mailing list.
 bug: [41055]
