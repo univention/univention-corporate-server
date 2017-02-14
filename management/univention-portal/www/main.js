@@ -32,15 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dijit/registry",
 	"dojo/on",
 	"dojo/dom",
 	"dojo/promise/all",
 	"umc/tools",
-	"umc/widgets/LiveSearch",
 	"./PortalCategory",
 	"put-selector/put",
 	"umc/json!/univention/meta.json"
-], function(declare, lang, array, on, dom, all, tools, LiveSearch, PortalCategory, put, meta) {
+], function(declare, lang, array, registry, on, dom, all, tools, PortalCategory, put, meta) {
 	return {
 		portalCategories: null,
 
@@ -107,27 +107,10 @@ define([
 		},
 
 		start: function() {
-			var portal = dom.byId('portal');
-			this.wrapper = put(portal, 'div.wrapper');
-			this.createHeader();
-
-			this.content = put(this.wrapper, 'div.content');
-			this._createCategories();
-		},
-
-		createHeader: function() {
-			var header = put(this.wrapper, 'div.umcHeader');
-			var headerLeft = put(header, 'div.umcHeaderLeft');
-			put(headerLeft, 'h1', 'Univention Portal');
-			this.headerRight = put(header, 'div.umcHeaderRight');
-			put(this.headerRight, 'div.logo');
-			this.createLiveSearch();
-		},
-
-		createLiveSearch: function() {
-			this.search = new LiveSearch();
+			this.content = dom.byId('content');
+			this.search = registry.byId('umcLiveSearch');
 			this.search.on('search', lang.hitch(this, 'filterPortal'));
-			put(this.headerRight, this.search.domNode);
+			this._createCategories();
 		},
 		
 		filterPortal: function() {

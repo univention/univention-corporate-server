@@ -22,12 +22,25 @@
 				}
 			};
 			dojoConfig.callback =function() {
-				require(["portal", "login", "dojo/domReady!"], function(portal) {
+				require(["dojo/parser", "portal", "login", "dojo/domReady!"], function(parser, portal) {
+					parser.parse();
 					portal.start();
 				});
 			};
 		</script>
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc portal" id="portal"></body>
+	<body class="umc portal" id="portal">
+		<div id="umcHeader" class="umcHeader">
+			<div class="umcHeaderLeft" id="umcHeaderLeft">
+				<h1>Univention Portal</h1>
+			</div>
+			<div class="umcHeaderRight" id="umcHeaderRight">
+				<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
+				<div class="univentionLogo"></div>
+			</div>
+		</div>
+		<div id="content">
+		</div>
+	</body>
 </html>
