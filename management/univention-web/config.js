@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global require*/
 function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 	// parse the URI query string
 	var query = window.location.search.substring(1);
@@ -75,7 +76,12 @@ var _getPackageName = function() {
 	return 'unknown';
 };
 
-// pre-defined dojoConfig, will be extende in the index.html of each webapp
+// pre-defined umcConfig, will be extende in the index.html of each webapp
+var umcConfig = {
+	allowLanguageSwitch: true,
+	callback: function() {}
+};
+
 var dojoConfig = {
 	has: {
 		'dojo-undef-api': true
@@ -92,5 +98,10 @@ var dojoConfig = {
 		location: '/univention/login'
 	}],
 	map: {},
-	callback: function() {}
+	callback: function() {
+		require(["dojo/parser", "login", "umc/Menu", "dojo/domReady!"], function(parser) {
+			parser.parse();
+			umcConfig.callback();
+		});
+	}
 };

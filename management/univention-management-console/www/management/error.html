@@ -18,14 +18,8 @@
 					'umc/modules': 'management/modules'
 				}
 			};
-			dojoConfig.callback = function() {
-				require(["dojo/parser", "umc/dialog", "umc/tools", "dojo/json", "dojox/html/entities", "umc/i18n!", "dojo/domReady!"], function(parser, dialog, tools, json, entities, _) {
-					// parse the DOM tree
-					parser.parse();
-
-					// set the version of the UMC frontend
-					tools.status('version', '%VERSION%');
-
+			umcConfig.callback = function() {
+				require(["umc/dialog", "umc/tools", "dojo/json", "dojox/html/entities", "umc/i18n!"], function(dialog, tools, json, entities, _) {
 					setTimeout(function() { /* dependency problem umc/dialog is not yet require()d in umc/tools*/
 						var data = json.parse(entities.decode(%ERROR%));
 						var info = tools.parseError(data);

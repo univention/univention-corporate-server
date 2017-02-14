@@ -18,15 +18,8 @@
 					'umc/modules': 'management/modules'
 				}
 			};
-			dojoConfig.callback = function() {
-				require(["dojo/parser", "management", "umc/tools", "umc/hook", "dojo/domReady!"], function(parser, management, tools) {
-					// parse the DOM tree
-					parser.parse();
-
-					// set the version of the UMC frontend
-					tools.status('version', '%VERSION%');
-
-					// start the application when everything has been loaded
+			umcConfig.callback = function() {
+				require(["management", "umc/tools", "umc/hook"], function(management, tools) {
 					management.start({
 						username: getQuery('username'),
 						password: getQuery('password'),

@@ -90,17 +90,19 @@ if(array_key_exists('head', $this->data)) {
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript" src="/univention/login/config.js"></script>
 		<script type="text/javascript">
-			dojoConfig.callback = function() {
-				require(["login", "dojo/domReady!"], function(login) {
 <?php
 /** don't display language switcher when e.g. forms were sent */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// FIXME: !!!!
+	echo 'umcConfig.allowLanguageSwitch = false;'
 }
 ?>
-				});
-			};
 		</script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc">
+		<div class="umcHeader">
+			<div class="umcHeaderRight">
+				<div id="umcMenu" data-dojo-type="umc/Menu"></div>
+				<div class="univentionLogo"></div>
+			</div>
+		</div>

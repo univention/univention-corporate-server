@@ -9,21 +9,16 @@
 		<link rel="stylesheet" href="/univention/self-service/css/self-service.css">
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 
-		<script type="text/javascript" src="/univention/management/config.js"></script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
-			var dojoConfig = {
-				isDebug: false,
-				locale: getLocale(),
-				async: true,
-				packages: [{ name: 'selfservice', location: '/univention/self-service'}],
-				callback: function() {
-					require([
-						"selfservice",
-						"dojo/domReady!"
-					], function(selfservice) {
-						selfservice.start();
-					});
-				},
+			dojoConfig.packages.push({
+				name: 'selfservice',
+				location: '/univention/self-service'
+			});
+			umcConfig.callback = function() {
+				require(["selfservice"], function(selfservice) {
+					selfservice.start();
+				});
 			};
 		</script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
@@ -32,8 +27,8 @@
 		<div id="wrapper">
 			<div id="site-header" class="umcHeader">
 				<div class="umcHeaderRight">
-					<div class="univentionLogo">
-					</div>
+					<div id="umcMenu" data-dojo-type="umc/Menu"></div>
+					<div class="univentionLogo"></div>
 				</div>
 			</div>
 			<div class="container">

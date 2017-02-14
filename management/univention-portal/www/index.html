@@ -21,9 +21,8 @@
 					'umc/modules': 'management/modules'
 				}
 			};
-			dojoConfig.callback =function() {
-				require(["dojo/parser", "portal", "login", "dojo/domReady!"], function(parser, portal) {
-					parser.parse();
+			umcConfig.callback =function() {
+				require(["portal", "umc/widgets/LiveSearch"], function(parser, portal) {
 					portal.start();
 				});
 			};
@@ -37,6 +36,7 @@
 			</div>
 			<div class="umcHeaderRight" id="umcHeaderRight">
 				<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
+				<div id="umcMenu" data-dojo-type="umc/Menu"></div>
 				<div class="univentionLogo"></div>
 			</div>
 		</div>

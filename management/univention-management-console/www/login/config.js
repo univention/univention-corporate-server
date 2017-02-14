@@ -1,6 +1,6 @@
-/* global dojoConfig,require*/
-dojoConfig.callback = function() {
-	require(["login/dialog", "dojo/domReady!"], function(dialog) {
+/* global umcConfig,require*/
+umcConfig.callback = function() {
+	require(["login/dialog"], function(dialog) {
 		dialog.renderLoginDialog();
 	});
 };

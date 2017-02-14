@@ -4,11 +4,6 @@ $this->includeAtTemplateBase('includes/header.php');
 $this->data['header'] = $this->t('{login:user_pass_header}');
 $this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'username';
 ?>
-		<div class="umcHeader">
-			<div class="umcHeaderRight">
-				<div class="univentionLogo"></div>
-			</div>
-		</div>
 		<div id="umcLoginWrapper">
 			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('hostfqdn', ''))); ?></h1>
 			<h2 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:serverwelcome}')); ?></h2>
