@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-squid
-fix:
+fix: 9.0.2-5.239.201701171054
 desc: |
  This update addresses the following issue(s):
  * The lifetime of NTLM password cache entries can now be set with the UCR
