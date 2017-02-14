@@ -1,3 +1,9 @@
+univention-web (1.0.20-1) unstable; urgency=medium
+
+  * Bug #42263: add a generic umc/Menu
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2017 15:42:20 +0100
+
 univention-web (1.0.19-1) unstable; urgency=medium
 
   * Bug #42174: styling of login dialog
