@@ -276,7 +276,7 @@ class Update(UniventionAppAction):
 			'schema': lambda x: x.get_share_file('schema'),
 			'univention-config-registry-variables': lambda x: x.get_share_file('univention-config-registry-variables'),
 		}
-		for app in self.get_app_cache().get_all_locally_installed_apps():
+		for app in Apps().get_all_locally_installed_apps():
 			for file in update_files:
 				src = app.get_cache_file(file)
 				dest = update_files[file](app)
