@@ -49,7 +49,7 @@ from urllib2 import quote, Request, HTTPError
 from univention.appcenter.app import LOCAL_ARCHIVE
 from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
-from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode
+from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode, mkdir
 from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
 
 
@@ -73,10 +73,12 @@ class Update(UniventionAppAction):
 	def main(self, args):
 		something_changed = False
 		for appcenter_cache in self._appcenter_caches(args):
+			mkdir(appcenter_cache.get_cache_dir())
 			if self._download_supra_files(appcenter_cache):
 				appcenter_cache.clear_cache()
 				something_changed = True
 		for app_cache in self._app_caches(args):
+			mkdir(app_cache.get_cache_dir())
 			if self._extract_local_archive(app_cache):
 				something_changed = True
 			if self._download_apps(app_cache):

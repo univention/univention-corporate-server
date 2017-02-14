@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-21) unstable; urgency=medium
+
+  * Bug #43496: Fix traceback on empty directories
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Feb 2017 12:40:13 +0100
+
 univention-appcenter (6.0.1-20) unstable; urgency=medium
 
   * Bug #43496: Auto discovery of supported UCS versions
