@@ -881,8 +881,8 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Server"
 #~ msgstr "Server"
 
-#~ msgid "Settings"
-#~ msgstr "Einstellungen"
+msgid "User settings"
+msgstr "Benutzereinstellungen"
 
 #~ msgid "Single Sign On"
 #~ msgstr "Single Sign-On"

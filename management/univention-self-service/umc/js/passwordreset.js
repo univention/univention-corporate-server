@@ -26,11 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global define*/
 define(['umc/app', 'dijit/MenuItem', 'umc/i18n!'], function(app, MenuItem, _) {
 	app.registerOnStartup(function() {
 		app.addMenuEntry(new MenuItem({
 			id: 'umcMenuProtectAccount',
-			$parentMenu$: 'umcMenuSettings',
+			$parentMenu$: 'umcMenuUserSettings',
 			iconClass: 'icon24-umc-menu-pwchange',
 			label: _('Protect account'),
 			onClick: function() {

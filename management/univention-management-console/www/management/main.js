@@ -680,10 +680,10 @@ define([
 		setupMenus: function() {
 			// the settings context menu
 			this.addMenuEntry(new PopupMenuItem({
-				$parentMenu$: 'umcMenuUsername',
+				$parentMenu$: 'umcMenuMain',
 				$priority$: 60,
-				label: _('Settings'),
-				id: 'umcMenuSettings',
+				label: _('User settings'),
+				id: 'umcMenuUserSettings',
 				popup: new Menu({}),
 				'class': 'dijitHidden'
 			}));
@@ -691,7 +691,7 @@ define([
 			// the language switch menu
 			if (i18nTools.availableLanguages.length > 1) {
 				this.addMenuEntry(new PopupMenuItem({
-					$parentMenu$: 'umcMenuUsername',
+					$parentMenu$: 'umcMenuMain',
 					$priority$: 55,
 					label: _('Switch language'),
 					id: 'umcMenuLanguage',
@@ -701,7 +701,7 @@ define([
 
 			// the help context menu
 			this.addMenuEntry(new PopupMenuItem({
-				$parentMenu$: 'umcMenuUsername',
+				$parentMenu$: 'umcMenuMain',
 				$priority$: 50,
 				label: _('Help'),
 				id: 'umcMenuHelp',
@@ -710,7 +710,7 @@ define([
 
 			// the logout button
 			this.addMenuEntry(new MenuItem({
-				$parentMenu$: 'umcMenuUsername',
+				$parentMenu$: 'umcMenuMain',
 				$priority$: -1,
 				id: 'umcMenuLogout',
 				label: _('Logout'),

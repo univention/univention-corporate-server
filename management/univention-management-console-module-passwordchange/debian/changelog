@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (2.0.1-1) unstable; urgency=medium
+
+  * Bug #42263: menu adjustments
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2017 16:16:57 +0100
+
 univention-management-console-module-passwordchange (2.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

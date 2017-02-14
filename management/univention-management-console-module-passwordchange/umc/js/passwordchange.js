@@ -46,7 +46,7 @@ define([
 	app.registerOnStartup(function() {
 		app.addMenuEntry(new MenuItem({
 			id: 'umcMenuChangePassword',
-			$parentMenu$: 'umcMenuSettings',
+			$parentMenu$: 'umcMenuUserSettings',
 			iconClass: 'icon24-umc-menu-pwchange',
 			label: _('Change password'),
 			onClick: function() {

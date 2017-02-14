@@ -115,7 +115,7 @@ define([
 		},
 
 		addUserMenu: function() {
-			var userMenu = this._buildMenuSlide('umcMenuUsername', _('Menu'));
+			var userMenu = this._buildMenuSlide('umcMenuMain', _('Menu'));
 			domClass.replace(userMenu.domNode, 'visibleSlide', 'hiddenSlide');
 			this.menuSlides.addChild(userMenu);
 			this._menuMap[userMenu.id] = userMenu.menuSlideItemsContainer;
@@ -218,7 +218,7 @@ define([
 			//			Defaults to 0.
 			//		parentMenuId: String
 			//			The id of the parentMenu as String. The Menu entry will be the child of that parent if it exists.
-			//			Defaults to 'umcMenuUsername'.
+			//			Defaults to 'umcMenuMain'.
 			//		id: String
 
 
@@ -306,7 +306,7 @@ define([
 			};
 
 			// start: creating sub menu
-			var defaultParentMenu = 'umcMenuUsername';
+			var defaultParentMenu = 'umcMenuMain';
 			var popupMenuItem;
 
 			_createPopupMenuItem();
@@ -343,7 +343,7 @@ define([
 			//		parentMenuId: String
 			//			The id of the parentMenu as String. The Menu entry will be the
 			//			child of that parent if it exists.
-			//			Defaults to 'umcMenuUsername'
+			//			Defaults to 'umcMenuMain'
 			//		id: String
 			//
 			//  To insert a Menu separator leave out the required parameters. Any or none optional parameters can still be passed.
@@ -419,7 +419,7 @@ define([
 			};
 
 			// start: creating menu entry
-			var defaultParentMenu = 'umcMenuUsername';
+			var defaultParentMenu = 'umcMenuMain';
 			var parentMenu = registry.byId(item.parentMenuId);
 			var menuEntry;
 
@@ -439,7 +439,7 @@ define([
 			//		parentMenuId: String
 			//			The id of the parentMenu as String. The Menu entry will be the
 			//			child of that parent if it exists.
-			//			Defaults to 'umcMenuUsername'
+			//			Defaults to 'umcMenuMain'
 			//		id: String
 
 			var _item = {
