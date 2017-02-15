@@ -235,6 +235,37 @@ check_space () {
 	fi
 }
 
+fail_if_role_package_will_be_removed ()
+{
+	local role_package
+
+	case "$server_role" in 
+    	domaincontroller_master) role_package="univention-server-master" ;;
+    	domaincontroller_backup) role_package="univention-server-backup" ;;
+    	domaincontroller_slave) role_package="univention-server-slave" ;;
+    	memberserver) role_package="univention-server-member" ;;
+    	basesystem) role_package="univention-basesystem" ;;
+    esac
+
+	#echo "Executing: LC_ALL=C $update_commands_distupgrade_simulate | grep -q "^Remv $role_package""  >&3 2>&3
+	LC_ALL=C $update_commands_distupgrade_simulate 2>&1 | grep -q "^Remv $role_package"
+	if [ $? = 0 ]; then
+		echo "ERROR: The pre-check of the update calculated that the"
+		echo "       essential software package $role_package will be removed"
+		echo "       during the upgrade. This could result into a broken system."
+		echo
+		# If you really know what you are doing, you can skip this check by
+		# setting the UCR variable update/commands/distupgrade/simulate to /bin/true.
+		# But you have been warned!
+		# In this case, you have to set the UCR variable after the update back 
+		# to the old value which can be get from /var/log/univention/config-registry.replog
+		echo "       Please contact the Univention Support in case you have an Enterprise"
+		echo "       Subscription. Otherwise please try the Univention Forum"
+		echo "       http://forum.univention.de/"
+		exit 1
+	fi
+}
+
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
@@ -355,6 +386,8 @@ done
 
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
+
+fail_if_role_package_will_be_removed
 
 echo ""
 echo "Starting update process, this may take a while."
