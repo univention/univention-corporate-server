@@ -158,6 +158,15 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+
+			<section id="changelog:domain:dhcpserver">
+				<title>DHCP server</title>
+				<itemizedlist>
+					<listitem><simpara>
+						Quoting of the server name has been added (<u:bug>42240</u:bug>).
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
 		</section>
 	</section>
 
