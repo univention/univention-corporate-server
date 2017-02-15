@@ -644,6 +644,10 @@
 					an administrator created a container <uri>CN=System</uri> somewhere
 					(<u:bug>31763</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <filename>samba4-idmap.py</filename> listener module has been improved to initialize the idmap during module resync
+					(<u:bug>42819</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
