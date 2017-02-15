@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-53.280.201702151748
+fix: 5.0.23-54.281.201702151759
 desc: |
  This update addresses the following issue(s):
  * The App Center no longer uses '-e var=value' for environment variables when
