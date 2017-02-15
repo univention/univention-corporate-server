@@ -27,7 +27,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-/*global define require window*/
+/*global define,require,window*/
 
 define([
 	"dojo/_base/kernel",
@@ -64,7 +64,7 @@ define([
 	// translate anything, we just return the very same string.
 	var en_us_present = false;
 	array.forEach(i18nTools.availableLanguages, function(lang) {
-		if (lang.id == 'en-US') {
+		if (lang.id === 'en-US') {
 			en_us_present = true;
 		}
 	});
@@ -90,11 +90,14 @@ define([
 		//			i18n.setLanguage('de-DE'); // wont do it again
 		//		});
 
-		if (locale != dojo.locale) {
+		if (locale !== dojo.locale) {
 			// reload the page when a different language is selected
 			var query = ioQuery.queryToObject(window.location.search.substring(1));
 			query.lang = locale;
 			cookie('UMCLang', query.lang, { expires: 100, path: '/univention/' });
+			if (window.location.pathname.indexOf('/univention/management/') === 0) {
+				require('umc/tools').renewSession();
+			}
 			window.location.search = '?' + ioQuery.objectToQuery(query);
 		}
 	};
@@ -111,7 +114,7 @@ define([
 
 		var lowercase_locale = dojo.locale.toLowerCase();
 		var exact_match = array.filter(i18nTools.availableLanguages, function(item) {
-			return lowercase_locale == item.id.toLowerCase();
+			return lowercase_locale === item.id.toLowerCase();
 		});
 		if (exact_match.length > 0) {
 			return exact_match[0].id;
