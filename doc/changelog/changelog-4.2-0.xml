@@ -472,6 +472,7 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The pacakge <package>python-pysaml2</package> 3.0.0-5 has been backported from debian stretch (<u:bug>43547</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
