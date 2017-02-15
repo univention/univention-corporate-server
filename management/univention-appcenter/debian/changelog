@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-54) unstable; urgency=medium
+
+  * Bug #43550: adapt error handling in case cn=apps,cn=univention does not
+  	exists
+
+ -- Florian Best <best@univention.de>  Wed, 15 Feb 2017 17:58:28 +0100
+
 univention-appcenter (5.0.23-53) unstable; urgency=medium
 
   * Bug #43550: use univention.admin.uldap instead of univention.uldap

@@ -958,7 +958,7 @@ class Application(object):
 			ret = {}
 			try:
 				app_objs = appcenter_udm_module.lookup(None, lo, None, base=self.ldap_container)
-			except LDAPError:  # NO_SUCH_OBJECT (self.ldap_container)
+			except udm_errors.noObject:
 				app_objs = []
 			for app_obj in app_objs:
 				# do not do it multiple times in the next loop
