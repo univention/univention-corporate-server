@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.6-7) unstable; urgency=medium
+
+  * Bug #32086: s4connector: fix ldap.dn.dn2str() in dns.py
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 15 Feb 2017 14:37:31 +0100
+
 univention-s4-connector (11.0.6-6) unstable; urgency=medium
 
   * Bug #32086: s4connector: fix ldap.explode_dn()
