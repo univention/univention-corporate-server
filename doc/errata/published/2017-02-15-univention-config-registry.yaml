@@ -11,3 +11,5 @@ desc: |
    needed to guarantee UCR is working even during the upgrade of the Python
    interpreter.
 bug: [43341]
+erratum: 390
+announced: 2017-02-15
