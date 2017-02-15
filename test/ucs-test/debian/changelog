@@ -1,3 +1,9 @@
+ucs-test (7.0.11-5) unstable; urgency=medium
+
+  * Bug #43386: Add PortsRedirectionUDP
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Feb 2017 02:55:34 +0100
+
 ucs-test (7.0.11-4) unstable; urgency=medium
 
   * 20_appcenter/20_can_apps_be_installed: Increase timeout to 2 hours

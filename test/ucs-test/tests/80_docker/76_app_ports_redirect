@@ -18,6 +18,7 @@ if __name__ == '__main__':
 		app_version = get_app_version()
 		app = App(name=app_name, version=app_version, build_package=False)
 		ports = ['4021:21', '4023:23']
+		udp_ports = ['6100:6100']  # unfortunately cannot be tested easily with is_port_open()...
 		packages = ['telnetd', 'proftpd']
 		image = 'docker.software-univention.de/ucs-appbox-amd64:4.1-0'
 
@@ -31,6 +32,7 @@ if __name__ == '__main__':
 			app.set_ini_parameter(
 				DockerImage=image,
 				PortsRedirection=','.join(ports),
+				PortsRedirectionUDP=','.join(udp_ports),
 				DefaultPackages=','.join(packages),
 				DockerScriptSetup='/usr/sbin/%s-setup' % app_name)
 			app.add_script(setup=dedent('''\
