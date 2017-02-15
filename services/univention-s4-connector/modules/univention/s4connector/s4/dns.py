@@ -447,7 +447,7 @@ def __remove_dot(str):
 
 
 def __split_s4_dnsNode_dn(dn):
-	exploded_dn = ldap.dn.dn2str(dn)
+	exploded_dn = ldap.dn.str2dn(dn)
 
 	# split the DC= from the zoneName
 	(_, zoneName, _) = exploded_dn[1][0]
@@ -456,7 +456,7 @@ def __split_s4_dnsNode_dn(dn):
 
 
 def __split_ol_dNSZone_dn(dn, objectclasses):
-	exploded_dn = ldap.dn.dn2str(dn)
+	exploded_dn = ldap.dn.str2dn(dn)
 	(fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
 	(snd_rdn_attribute, snd_rdn_value, _flags) = exploded_dn[1][0]
 
