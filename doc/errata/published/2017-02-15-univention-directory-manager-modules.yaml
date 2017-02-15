@@ -9,3 +9,5 @@ desc: |
  * The python API for UDM modules find the superordinate object automatically
    if it is not given.
 bug: [43423]
+erratum: 392
+announced: 2017-02-15
