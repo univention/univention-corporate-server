@@ -177,7 +177,10 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Improved internationalization for JavaScript files in UMC (<u:bug>42293</u:bug>)..
+						The general design of the web interface has been improved. Several aspects of the design are borrowed from the Google Material Design guidelines (<u:bug>42261</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Improved internationalization for JavaScript files in UMC (<u:bug>42293</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/http/autostart</envar> (<u:bug>42340</u:bug>).
