@@ -177,7 +177,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The general design of the web interface has been improved. Several aspects of the design are borrowed from the Google Material Design guidelines (<u:bug>42261</u:bug>).
+						The general design of the web interface has been improved. Several aspects of the design are borrowed from the Google Material Design guidelines (<u:bug>42261</u:bug>, <u:bug>42264</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Improved internationalization for JavaScript files in UMC (<u:bug>42293</u:bug>).
