@@ -1,3 +1,9 @@
+univention-portal (1.0.6-3) unstable; urgency=medium
+
+  * Bug #42263: fix typo
+
+ -- Florian Best <best@univention.de>  Wed, 15 Feb 2017 13:03:48 +0100
+
 univention-portal (1.0.6-2) unstable; urgency=medium
 
   * Bug #42263: version bump
