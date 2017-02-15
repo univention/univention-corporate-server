@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-56) unstable; urgency=medium
+
+  * Bug #43386: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Feb 2017 23:26:16 +0100
+
 univention-appcenter (5.0.23-55) unstable; urgency=medium
 
   * Bug #43151: Revert

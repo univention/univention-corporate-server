@@ -379,13 +379,13 @@ class Register(CredentialsAction):
 				updates[app.ucr_ports_key % container_port + '/protocol'] = None
 		for port in app.ports_exclusive:
 			updates[app.ucr_ports_key % port] = str(port)
-		redirection_ports = []
 		for port in app.ports_redirection:
-			redirection_ports.append((port, 'tcp'))
-		for port in app.ports_redirection_udp:
-			redirection_ports.append((port, 'udp'))
-		for port, protocol in redirection_ports:
 			host_port, container_port = port.split(':')
+			try:
+				# maybe 8080/udp? /tcp is standard
+				container_port, protocol = container_port.split('/')
+			except ValueError:
+				protocol = 'tcp'
 			protocol_key = app.ucr_ports_key % container_port + '/protocol'
 			protocol_value = updates.get(protocol_key)
 			if protocol_value:
