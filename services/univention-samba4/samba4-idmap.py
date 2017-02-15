@@ -43,6 +43,7 @@ from samba.dcerpc import security
 from samba.idmap import IDmapDB
 from samba.auth import system_session
 from samba.param import LoadParm
+from samba.provision import setup_idmapdb
 
 name = 'samba4-idmap'
 description = 'Update local IDmap entries'
@@ -97,16 +98,24 @@ __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
 
 def open_idmap():
 	global lp
+
+	if open_idmap.instance:
+		return open_idmap.instance
+
+	idmap_ldb = '/var/lib/samba/private/idmap.ldb'
 	listener.setuid(0)
 	try:
-		idmap = IDmapDB('/var/lib/samba/private/idmap.ldb', session_info=system_session(), lp=lp)
+		if not os.path.exists(idmap_ldb):
+			setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
+		open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
 	except ldb.LdbError:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
 		raise
 	finally:
 		listener.unsetuid()
 
-	return idmap
+	return open_idmap.instance
+open_idmap.instance = None
 
 
 def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_string, idmap=None):
@@ -229,14 +238,15 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 def initialize():
 	idmap_ldb = '/var/lib/samba/private/idmap.ldb'
-	if os.path.exists(idmap_ldb):
-		listener.setuid(0)
-		try:
+	listener.setuid(0)
+	try:
+		if os.path.exists(idmap_ldb):
 			idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
 			os.rename(idmap_ldb, idmap_ldb_backup)
-		finally:
-			listener.unsetuid()
+		setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
+	finally:
+		listener.unsetuid()
 
 
 def handler(dn, new, old, operation):

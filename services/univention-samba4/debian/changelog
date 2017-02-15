@@ -1,3 +1,9 @@
+univention-samba4 (6.0.9-4) unstable; urgency=medium
+
+  * Bug #42819: Let samba4-idmap listener module initialize the idmap.ldb
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Feb 2017 19:04:14 +0100
+
 univention-samba4 (6.0.9-3) unstable; urgency=low
 
   * Bug #43501: Restart UDL after UCRV samba4/role is set
