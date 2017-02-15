@@ -184,8 +184,6 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def query(self, quick=False):
-		if not quick:
-			self.update_applications()
 		self.ucr.load()
 		reload_package_manager()
 		list_apps = get_action('list')
@@ -236,6 +234,8 @@ class Instance(umcm.Base, ProgressMixin):
 		else:
 			raise umcm.UMC_CommandError(_('Unable to start the docker service!') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 
+	@require_apps_update
+	@require_password
 	@simple_response(with_progress=True)
 	def sync_ldap(self):
 		register = get_action('register')
