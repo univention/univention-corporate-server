@@ -9,3 +9,5 @@ desc: |
  * LDAP queries are now escaped correctly, when checking access for
    a restricted mailing list.
 bug: [41055]
+erratum: 394
+announced: 2017-02-15
