@@ -44,8 +44,6 @@ from StringIO import StringIO
 from gzip import GzipFile
 import requests
 from hashlib import sha256
-from tempfile import NamedTemporaryFile
-from contextlib import contextmanager
 
 from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, _
 from univention.appcenter.log import get_base_logger
@@ -262,21 +260,6 @@ class Docker(object):
 		except Exception as exc:
 			self.logger.fatal(str(exc))
 			raise Abort()
-
-	@contextmanager
-	def tmp_file(self):
-		path = self.path()
-		if not path:
-			yield None
-		else:
-			tmp_dir = os.path.join(path, 'tmp')
-			tmp_file = NamedTemporaryFile(dir=tmp_dir)
-			os.chmod(tmp_file.name, 0622)  # world writable for containers not using root as user
-			tmp_file.container_path = tmp_file.name[len(path) - 1:]
-			try:
-				yield tmp_file
-			finally:
-				tmp_file.close()
 
 	def execute_with_output(self, *args, **kwargs):
 		args = list(args)

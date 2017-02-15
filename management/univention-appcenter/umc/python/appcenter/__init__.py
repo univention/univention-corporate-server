@@ -185,6 +185,8 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def query(self, quick=False):
+		if not quick:
+			self.update_applications()
 		self.ucr.load()
 		AppManager.reload_package_manager()
 		list_apps = get_action('list')
