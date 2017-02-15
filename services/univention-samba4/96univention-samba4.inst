@@ -135,7 +135,7 @@ add_servicePrincipals() {
 	} | ldbmodify -H /var/lib/samba/private/secrets.ldb
 }
 
-remove_port ()
+remove_port()
 {
 	if [ -n "$1" -a -n "$2" ]; then
 		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
@@ -225,10 +225,10 @@ stop_conflicting_services() {
 	unset tmp_ucr_key_value_list
 }
 
-get_samba_role () {
+get_samba_role() {
 	case "$server_role" in
-		domaincontroller_*) echo DC ;;
-		memberserver) echo MEMBER ;;
+		domaincontroller_*) echo DC;;
+		memberserver) echo MEMBER;;
 	esac
 }
 
@@ -517,7 +517,7 @@ sysvol_fixup() {
 	set_default_fACL /var/lib/samba/sysvol
 }
 
-get_available_s4connector_dc () {
+get_available_s4connector_dc() {
 	local s4connector_dc
 	local s4connector_dc_candidates
 	s4connector_dc=()
@@ -538,7 +538,7 @@ get_available_s4connector_dc () {
 	echo "$s4connector_dc"
 }
 
-wait_until_dc_was_replicated_to_connector_dc () {
+wait_until_dc_was_replicated_to_connector_dc() {
 	s4connector_dc=$(get_available_s4connector_dc) || return $?
 	if [ -z "$s4connector_dc" ]; then
 		echo "WARNING: Failed to search for S4 connector DC"
@@ -625,7 +625,7 @@ restore_rIDNextRID() {
 	fi
 }
 
-cleanup_var_lib_samba ()
+cleanup_var_lib_samba()
 {
 	local backup_folder
 	backup_folder="/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
@@ -637,7 +637,7 @@ cleanup_var_lib_samba ()
 	fi
 }
 
-_create_group_with_special_sid ()
+_create_group_with_special_sid()
 {
 	local name="$1"
 	local sid="$2"
@@ -694,7 +694,7 @@ univentionSamba4SID: $sid
 }
 
 
-create_pseudo_groups ()
+create_pseudo_groups()
 {
 	udm container/cn create "$@" --ignore_exists --set name=Builtin
 
@@ -737,7 +737,7 @@ create_pseudo_groups ()
 
 }
 
-_update_pseudo_group ()
+_update_pseudo_group()
 {
 	local name="$1"
 
@@ -763,7 +763,7 @@ sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-738
 	fi
 }
 
-update_pseudo_groups ()
+update_pseudo_groups()
 {
 	_update_pseudo_group "Authenticated Users" "$@" || die
 	_update_pseudo_group "World Authority" "$@" || die
