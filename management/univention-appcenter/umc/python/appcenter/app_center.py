@@ -109,7 +109,7 @@ class License(object):
 		# last time we checked, no uuid was found
 		# but maybe the user installed a new license?
 		try:
-			lo = get_machine_connection(write=False)[0].lo
+			lo = get_machine_connection(write=False)[0]
 			data = lo.search('objectClass=univentionLicense')
 			self._uuid = data[0][1]['univentionLicenseKeyID'][0]
 		except Exception as e:
@@ -952,7 +952,6 @@ class Application(object):
 
 	@machine_connection(write=False, loarg='lo', poarg='pos')
 	def get_installations(self, hosts=None, lo=None, pos=None):
-		lo = lo.lo
 		try:
 			ret = {}
 			try:
@@ -1654,7 +1653,6 @@ class Application(object):
 
 	@machine_connection(write=False, loarg='lo', poarg='pos')
 	def find_all_hosts(self, is_master, lo=None, pos=None):
-		lo = lo.lo
 		hosts = []
 		if not is_master:
 			hosts.append((get_master(lo), True))

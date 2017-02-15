@@ -118,7 +118,6 @@ def get_all_hosts(lo=None, ucr=None):
 		lo = get_machine_connection(write=False)[0]
 		if lo is None:
 			return []
-		lo = lo.lo
 	return get_hosts(domaincontroller_master, lo, ucr) + \
 		get_hosts(domaincontroller_backup, lo, ucr) + \
 		get_hosts(domaincontroller_slave, lo, ucr) + \
