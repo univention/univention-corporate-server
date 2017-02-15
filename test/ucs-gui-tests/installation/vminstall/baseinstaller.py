@@ -43,12 +43,9 @@ class Installer(object):
 		self.args = self.parse_args()
 		self.ocr_config = self.get_ocr_config()
 		self.vm_config = vm_config
-		# TODO: Ask Alex if self.host could be removed. It is needed only
-		# here and once again, when the vnc-connection is refreshed. Maybe
-		# the refreshing could be done differently...
-		self.host = self.get_host()
+		host = self.get_host()
 		# Note: The second part of this initialisation is in __enter__().
-		self.vnc_connection = VNCConnection(self.host)
+		self.vnc_connection = VNCConnection(host)
 
 	def __enter__(self):
 		self.client = self.vnc_connection.__enter__()

@@ -41,12 +41,12 @@ class GermanMasterInstaller(GermanInstaller):
 		super(GermanMasterInstaller, self).__init__(vm_config)
 
 	def install(self):
-		#self.skip_boot_device_selection()
-		#self.select_german_language('German')
-		#self.set_country_and_keyboard_layout()
-		#self.network_setup()
-		#self.account_setup()
-		#self.hdd_setup()
+		self.skip_boot_device_selection()
+		self.select_german_language()
+		self.set_country_and_keyboard_layout()
+		self.network_setup()
+		self.account_setup()
+		self.hdd_setup()
 		self.setup_ucs()
 
 

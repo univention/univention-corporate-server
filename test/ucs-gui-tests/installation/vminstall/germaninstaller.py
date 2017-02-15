@@ -31,8 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from vncautomate import connect_vnc
-
 from baseinstaller import Installer
 
 
@@ -41,13 +39,7 @@ class GermanInstaller(Installer):
 		super(GermanInstaller, self).__init__(vm_config)
 
 	def select_german_language(self):
-		self.client.waitForText('select a language')
-
-		# Reconnect due to screen resize. FIXME: This seems dirty. The
-		# api.shutdown() is missing (vnc connection won't be closed).
-		self.client = connect_vnc(self.host)
-		self.client.updateOCRConfig(self.ocr_config)
-
+		self.client.waitForText('select a language', timeout=30)
 		self.client.mouseClickOnText('English')
 		self.client.enterText('German')
 		self.client.keyPress('enter')
@@ -71,7 +63,7 @@ class GermanInstaller(Installer):
 		self.client.waitForText('Netzwerk manuell einrichten', timeout=30)
 		self.client.mouseClickOnText('Netzwerk manuell einrichten')
 		self.client.keyPress('enter')
-		self.client.waitForText('Die IP-Adresse ist für ihren Rechner eindeutig und kann zwei verschiedene Formate haben')
+		self.client.waitForText('Die IP-Adresse ist für ihren Rechner eindeutig und kann zwei verschiedene Formate haben', timeout=30)
 		self.client.enterText(self.vm_config.ip)
 		self.client.keyPress('enter')
 
@@ -123,7 +115,7 @@ class GermanInstaller(Installer):
 		self.client.keyPress('enter')
 
 	def setup_ucs(self):
-		self.client.waitForText('Domäneneinstellungen', timeout=1200)
+		self.client.waitForText('Domäneneinstellungen', timeout=1200, prevent_screen_saver=True)
 		self.client.mouseClickOnText('Erstellen einer euen UCS-Domäne')
 		self.client.keyPress('enter')
 
@@ -141,10 +133,7 @@ class GermanInstaller(Installer):
 			self.client.mouseClickOnText('System nach der Einrichtung aktualisieren')
 		self.client.keyPress('enter')
 
-		self.client.waitForText('UCS-Einrichtung erfolgreich', timeout=2400)
-		self.client.mouseClickOnText('Fertigstellen')
+		self.client.waitForText('UCS-Einrichtung erfolgreich', timeout=2400, prevent_screen_saver=True)    # FIXME: Screen saver still active!
+		self.client.mouseClickOnText('Fertigstellen')    # This got lost once. Maybe the mouse needs to be held down longer.
 
-		# FIXME: The waitForText() function sends key-presses, while waiting.
-		# This switches from the greeting-screen to console. So I'm looking
-		# for a text, that appears in the console (as well).
-		self.client.waitForText(self.vm_config.ip, timeout=360)
+		self.client.waitForText("Willkommen auf Univention Corporate Server", timeout=360)
