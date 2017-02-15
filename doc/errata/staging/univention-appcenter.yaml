@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-52.279.201702150242
+fix: 5.0.23-53.280.201702151748
 desc: |
  This update addresses the following issue(s):
  * The App Center no longer uses '-e var=value' for environment variables when
@@ -12,4 +12,6 @@ desc: |
    them inside turned out to be unreliable.
  * UDP Ports are now configured with a different attribute to be backward
    compatible with older App Center versions.
-bug: [43482, 43386, 43151]
+ * An error during the installation of apps has been fixed which was caused by
+   code changes in erratum 395.
+bug: [43482, 43386, 43151, 43550]
