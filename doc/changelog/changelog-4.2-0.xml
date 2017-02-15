@@ -154,7 +154,7 @@
 				<title>DNS server</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The timeout and retry handling of the Bind9 LDAP database plugin has been improved (<u:bug>42389</u:bug>).
+						The timeout and retry handling of the BIND9 LDAP database plugin has been improved (<u:bug>42389</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
