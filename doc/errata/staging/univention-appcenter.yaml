@@ -3,9 +3,13 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-50.278.201702090915
+fix: 5.0.23-52.279.201702150242
 desc: |
  This update addresses the following issue(s):
- * The App Center no longer uses '-e var=value' for environment
-   variables when starting container. Instead a env file is created.
-bug: [43482]
+ * The App Center no longer uses '-e var=value' for environment variables when
+   starting container. Instead an env file is created.
+ * Temporary files in Docker containers are created from outside. Creating
+   them inside turned out to be unreliable.
+ * UDP Ports are now configured with a different attribute to be backward
+   compatible with older App Center versions.
+bug: [43482, 43386, 43151]
