@@ -1,3 +1,10 @@
+univention-system-setup (9.0.7-3) unstable; urgency=medium
+
+  * Bug #42915: Move welcome screen installation from appliance hook
+    to 90_postjoin
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 15 Feb 2017 15:35:57 +0100
+
 univention-system-setup (9.0.7-2) unstable; urgency=medium
 
   * Bug #40102: reflect property changes in frontend
