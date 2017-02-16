@@ -87,7 +87,8 @@ def all_xml_files_in(dir):
 	return filter(lambda x: os.path.isfile(x) and x.endswith('.xml'), map(lambda x: os.path.join(dir, x), os.listdir(dir)))
 
 
-setup(name='univention-management-console',
+setup(
+	name='univention-management-console',
 	description='Univention Management Console',
 	author='Univention GmbH',
 	author_email='packages@univention.de',
@@ -97,4 +98,4 @@ setup(name='univention-management-console',
 	scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
 	data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories')), ],
 	cmdclass={'build': Build, 'build_i18n': BuildI18N}
-      )
+)
