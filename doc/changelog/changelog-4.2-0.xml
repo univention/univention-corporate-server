@@ -12,6 +12,21 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The Debian basis has been updated from Debian 7 (Wheezy) to Debian 8 (Jessie) (<u:bug>43560</u:bug>).
+				This means, among other things, the following upgrades:
+				<itemizedlist>
+					<listitem><simpara>
+						Apache has been updated to 2.4.10.
+					</simpara></listitem>
+					<listitem><simpara>
+						Perl has been updated to 5.20.2.
+					</simpara></listitem>
+					<listitem><simpara>
+						...
+					</simpara></listitem>
+				</itemizedlist>
+			</simpara></listitem>
+			<listitem><simpara>
 				The codename for UCS 4.2 has been set to <wordasword>Lesum</wordasword> (<u:bug>42054</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
@@ -756,6 +771,11 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The packages <package>univention-log-collector-server</package> and <package>univention-log-collector-client</package> have been removed from UCS (<u:bug>41638</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				During the upgrade to UCS 4.2, it could happened that a restart of the SpamAssassin daemon failed due to old Perl modules.
+				The updated <package>perl</package> package ensures now that the <package>spamassassin</package> package is previously 
+				updated (<u:bug>43534</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
