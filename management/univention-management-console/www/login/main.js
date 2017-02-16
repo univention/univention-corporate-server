@@ -65,7 +65,13 @@ define([
 		_loginDialog: null, // internal reference to the login dialog
 		_loginDeferred: null,
 
-		showLoginDialog: function() {
+		showLoginDialog: function(info) {
+			if (this._loginDialog) {
+				this._loginDialog.updateForm(info || {});
+				return;
+			}
+
+			// FIXME: remove and show something else, e.g. a newly rendered login dialog
 			dialog.alert('Session timeout. <a href="/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href)) + '">Please login again.</a>');
 		},
 
@@ -127,11 +133,12 @@ define([
 				return this._password_required.promise;
 			}
 
-			this._loginDialog.updateForm(info);
 			if (tools.status('authType') === 'SAML') {
-				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(this, 'showLoginDialog'));
+				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(this, function() {
+					return this.showLoginDialog(info);
+				}));
 			}
-			return this.showLoginDialog();
+			return this.showLoginDialog(info);
 		},
 
 		start: function() {
