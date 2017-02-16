@@ -5,7 +5,7 @@
 import libvirt
 
 VM_NAME = "jenkins-installer-test"
-HOST = 'qemu+ssh://build@skepp.knut.univention.de/system'
+HOST = 'qemu+ssh://build@krus.knut.univention.de/system'
 
 conn = libvirt.open(HOST)
 dom = conn.lookupByName(VM_NAME)

@@ -29,7 +29,7 @@ VM_VNC = "0.0.0.0"
 UID = 2260  # FIXME: phahn
 GID = 1009  # FIXME: Tech
 POOL = '/var/lib/libvirt/images'
-HOST = 'qemu+ssh://build@skepp.knut.univention.de/system'
+HOST = 'qemu+ssh://build@krus.knut.univention.de/system'
 QEMU = '/usr/bin/kvm'
 LOCAL = '127.0.0.1'  # TODO: IPv6
 
