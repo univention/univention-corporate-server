@@ -48,6 +48,7 @@ define([
 	"dojox/encoding/base64",
 	"dojo/Deferred",
 	"dijit/Dialog",
+	"dijit/_WidgetBase",
 	"dijit/DialogUnderlay",
 	"dojox/html/entities",
 	"umc/tools",
@@ -56,7 +57,7 @@ define([
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {
+], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, _WidgetBase, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -65,7 +66,7 @@ define([
 	_('Login');
 	_('One time password');
 
-	return declare("umc.dialog.LoginDialog", [StandbyMixin], {
+	return declare("umc.dialog.LoginDialog", [_WidgetBase], {
 		_iframe: null,
 		_form: null,
 		_text: null,
@@ -108,7 +109,7 @@ define([
 				id: 'umcLoginMessages',
 				content: ''
 			});
-			this._text.placeAt(this.domNode, 'last');
+			this._text.placeAt(this.containerNode, 'last');
 
 //			// automatically resize the DialogUnderlay container
 //			this.own(on(win.global, 'resize', lang.hitch(this, function() {
@@ -133,8 +134,10 @@ define([
 				} else if (result.missing_prompts) {
 					title = _('One time password required');
 				}
-				message = '<h1>' + title + '</h1><p>' + message + '</p>';
+//				message = '<h1>' + title + '</h1><p>' + message + '</p>';
+				message = '<p class="umcLoginWarning">' + message + '</p>';
 			}
+			domClass.toggle(dom.byId('umcLoginForm'), 'umcLoginWarning', !!message);
 			this.set('LoginMessage', message);
 		},
 
@@ -349,7 +352,7 @@ define([
 
 			// hide login dialog
 			this.hide().then(function() {
-				window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submittsing e.g. ?location=mailto:foo
+				window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submitting e.g. ?location=mailto:foo
 			});
 		},
 
@@ -365,8 +368,9 @@ define([
 
 		standby: function(standby) {
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
-			if (standby && this._text.get('content')) {
-				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
+			if (standby) {
+				query('#umcLoginMessages').style('display', 'none');
+//				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
 			} else if (!standby) {
 				// only non hidden input fields can be focused
 				this._setFocus();
@@ -440,13 +444,13 @@ define([
 					// a saved password/username contains a placeholder if we don't run this again
 					this._replaceLabels();
 				}
-				try {
-					styles.insertCssRule('.umcBackground', 'background: inherit!important;');
-					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
-				} catch (e) {
-					// guessed the ID
-					console.log('dialogUnderlay', e);
-				}
+//				try {
+//					styles.insertCssRule('.umcBackground', 'background: inherit!important;');
+//					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
+//				} catch (e) {
+//					// guessed the ID
+//					console.log('dialogUnderlay', e);
+//				}
 			}
 			return when(deferred);
 		},
@@ -479,12 +483,12 @@ define([
 				window.scrollTo(0, this._scrollPosY);
 //				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
-				try {
-					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', false);
-				} catch (e) {
-					// guessed the ID
-					console.log('dialogUnderlay', e);
-				}
+//				try {
+//					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', false);
+//				} catch (e) {
+//					// guessed the ID
+//					console.log('dialogUnderlay', e);
+//				}
 				deferred.resolve();
 			});
 			baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: hide}).play();

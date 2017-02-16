@@ -53,6 +53,12 @@
 	border-bottom: thin solid #969696
 	position: relative
 
+#umcLoginDialog .umcLoginForm.umcLoginWarning label[for=umcLoginPassword]
+	border-bottom: thin solid $error-color
+
+#umcLoginDialog .umcLoginForm.umcLoginWarning input#umcLoginPassword
+	color: $error-color
+
 #umcLoginDialog .umcLoginForm input
 	padding-right: 20px
 	margin: 0
@@ -106,19 +112,7 @@
 	margin: 0 auto
 	padding: 1.3em
 	width: 313px
-	background-color: #696969
-	border: thin solid #a8a8a8
-	color: #ffffff
 	font-size: 0.9em
-	box-shadow: 0px 2px 5px #888888
-
-#umcLoginMessages a
-	color: #ffffff
-	text-decoration: underline
-
-#umcLoginMessages a:hover,
-#umcLoginMessages a:focus
-	color: #7db523
 
 #umcLoginMessages h1
 	font-size: 1.7em

@@ -1,3 +1,9 @@
+univention-management-console (9.0.28-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of login dialog
+
+ -- Florian Best <best@univention.de>  Thu, 16 Feb 2017 18:49:35 +0100
+
 univention-management-console (9.0.27-1) unstable; urgency=medium
 
   * Bug #42263: use umc/Menu

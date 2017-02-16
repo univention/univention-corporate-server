@@ -1,3 +1,9 @@
+univention-web (1.0.23-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of login dialog
+
+ -- Florian Best <best@univention.de>  Thu, 16 Feb 2017 18:49:11 +0100
+
 univention-web (1.0.22-1) unstable; urgency=medium
 
   * Bug #38370: renew session before switching language in UMC
