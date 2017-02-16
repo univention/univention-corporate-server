@@ -38,8 +38,8 @@ define([
 	"dojo/has",
 	"dojo/on",
 	"dojo/dom",
+	"dojo/dom-construct",
 	"dojo/query",
-	"dojo/cookie",
 	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojox/html/styles",
@@ -49,13 +49,14 @@ define([
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/DialogUnderlay",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, when, has, on, dom, query, cookie, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
+], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -76,11 +77,6 @@ define([
 		id: 'umcLoginWrapper',
 
 		open: false,
-
-		noCookieMsg: {
-			title: _('Please enable cookies'),
-			msg: _('Browser cookies are necessary for working with Univention Management Console. Please activate cookies in your browser.')
-		},
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -211,17 +207,22 @@ define([
 			}
 		},
 
+		disableForm: function(message) {
+			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], function(name) {
+				query('input', dom.byId(name)).forEach(function(node) {
+					attr.set(node, 'disabled', 'disabled');
+				});
+				query('#' + name).style('display', 'none');
+			});
+			domConstruct.place(domConstruct.toDom('<p>' + entities.encode(message) + '</p>'), dom.byId('umcLoginDialog'));
+			this.standby(true);
+		},
+
 		_watchFormSubmits: function() {
 			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], lang.hitch(this, function(name) {
 				var form = dom.byId(name);
 				on(form, 'submit', lang.hitch(this, function(evt) {
 					evt.preventDefault();
-					if (!this._cookiesEnabled()) {
-						require(['umc/dialog'], lang.hitch(this, function(umcDialog) {
-							umcDialog.alert(this.noCookieMsg.msg, this.noCookieMsg.title);
-						}));
-						return;
-					}
 					if (name === 'umcLoginForm') {
 						this._submitFakeForm();
 					}
@@ -362,22 +363,6 @@ define([
 //			Dialog._DialogLevelManager.hide(this);
 		},
 
-		_cookiesEnabled: function() {
-			if (!cookie.isSupported()) {
-				return false;
-			}
-			if (cookie('UMCUsername')) {
-				return true;
-			}
-			var cookieTestString = 'cookiesEnabled';
-			cookie('_umcCookieCheck', cookieTestString, {expires: 1});
-			if (cookie('_umcCookieCheck') !== cookieTestString) {
-				return false;
-			}
-			cookie('_umcCookieCheck', cookieTestString, {expires: -1});
-			return true;
-		},
-
 		standby: function(standby) {
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
 			if (standby && this._text.get('content')) {
@@ -417,28 +402,6 @@ define([
 			var msg = '';
 			var title = '';
 
-			if (has('ie') < 11 || has('ff') < 38 || has('chrome') < 37 || has('safari') < 9) {
-			// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
-			// they should work with UMC. albeit, they are
-			// VERY slow and escpecially IE 8 may take minutes (!)
-			// to load a heavy UDM object (on a slow computer at least).
-			// IE 8 is also known to cause timeouts when under heavy load
-			// (presumably because of many async requests to the server
-			// during UDM-Form loading).
-			// By browser vendor supported versions:
-			// The oldest supported Firefox ESR version is 38 (2016-01-27).
-			// Microsoft is ending the support for IE < 11 (2016-01-12).
-			// Chrome has no long term support version. Chromium 37 is supported through
-			// Ubuntu 12.04 LTS (2016-01-27).
-			// Apple has no long term support for safari. The latest version is 9 (2016-01-27)
-				title = _('Your browser is outdated') + ((title === '') ? title : '<br>' + title);
-				msg = _('Your browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + ((msg === '') ? msg : '<br>' + msg);
-			}
-
-			if (!this._cookiesEnabled()) {
-				title = this.noCookieMsg.title;
-				msg = this.noCookieMsg.msg;
-			}
 
 			if (tools.status('setupGui')) {
 				// user has already logged in before, show message for relogin
