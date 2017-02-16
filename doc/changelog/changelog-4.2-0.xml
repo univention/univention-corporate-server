@@ -213,7 +213,7 @@
 					In certain situations it was possible that the translations were mixed. This has been fixed (<u:bug>38370</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Traceback reports do not require an authenticated session anymor and can be sent anonymously (<u:bug>42169</u:bug>).
+					Traceback reports do not require an authenticated session anymore and can be sent anonymously (<u:bug>42169</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
