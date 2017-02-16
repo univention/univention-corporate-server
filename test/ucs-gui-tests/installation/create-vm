@@ -29,7 +29,7 @@ VM_VNC = "0.0.0.0"
 UID = 2260  # FIXME: phahn
 GID = 1009  # FIXME: Tech
 POOL = '/var/lib/libvirt/images'
-HOST = 'qemu+ssh://skepp.knut.univention.de/system'
+HOST = 'qemu+ssh://build@skepp.knut.univention.de/system'
 QEMU = '/usr/bin/kvm'
 LOCAL = '127.0.0.1'  # TODO: IPv6
 
@@ -260,8 +260,8 @@ class TestInstaller(object):
 		return self.get_vnc()
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		self.dom.destroyFlags()
-		self.dom.undefine()
+		pass
+		#self.dom.destroyFlags()
 
 	def get_vnc(self):
 		host = urlparse(HOST).hostname or LOCAL
@@ -287,9 +287,7 @@ def main():
 	tester = TestInstaller(VM_NAME)
 	tester.find_domain()
 	with tester as (host, port):
-		print (host, port)
-		#subprocess.call(['python', '00_master-de.py', 'skepp.knut.univention.de::%s' % (port,)])
-		sleep(20)
+		print ("%s::%d" % (host, port))
 
 
 if __name__ == '__main__':

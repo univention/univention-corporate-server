@@ -1,0 +1,13 @@
+#!/usr/bin/python
+# vim: set fileencoding=utf-8 :
+# pylint: disable=R0903,R0201
+
+import libvirt
+
+VM_NAME = "jenkins-installer-test"
+HOST = 'qemu+ssh://build@skepp.knut.univention.de/system'
+
+conn = libvirt.open(HOST)
+dom = conn.lookupByName(VM_NAME)
+dom.destroy()
+dom.undefine()
