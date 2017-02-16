@@ -670,6 +670,9 @@
 					The <filename>samba4-idmap.py</filename> listener module has been improved to initialize the idmap during module resync
 					(<u:bug>42819</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-samba</package> and <package>univention-samba4</package> now use the interfaces defined in &ucsUCR; (<u:bug>43073</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
