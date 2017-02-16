@@ -38,7 +38,7 @@ import time
 import univention.debug
 
 import ldb
-from samba.ndr import ndr_pack, ndr_unpack
+from samba.ndr import ndr_pack
 from samba.dcerpc import security
 from samba.idmap import IDmapDB
 from samba.auth import system_session
@@ -172,7 +172,6 @@ def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 			msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
 
 		if len(msg) != 0:
-			# objectSid = ndr_unpack(security.dom_sid, record["objectSid"][0])
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: modifying entry for %s" % (name, sambaSID))
 			if "xidNumber" in msg:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber))
@@ -314,6 +313,12 @@ def handler(dn, new, old, operation):
 
 if __name__ == '__main__':
 	from optparse import OptionParser
+	import sys
+	from univention.config_registry import ConfigRegistry
+	import subprocess
+	from ldif import LDIFParser
+	import StringIO
+
 	parser = OptionParser(usage="%prog [-h|--help] [--direct-resync]")
 	parser.add_option(
 		"--direct-resync", action="store_true", dest="direct_resync", default=False,
@@ -323,22 +328,17 @@ if __name__ == '__main__':
 
 	if not options.direct_resync:
 		parser.error("The option --direct-resync is required to run this module directly")
-		import sys
 		sys.exit(1)
 
 	univention.debug.init("stderr", univention.debug.NO_FLUSH, univention.debug.NO_FUNCTION)
-	from univention.config_registry import ConfigRegistry
 	ucr = ConfigRegistry()
 	ucr.load()
 	univention.debug.set_level(univention.debug.LISTENER, int(ucr.get('listener/debug/level', 2)))
 
-	import subprocess
 	cmd = ['/usr/bin/univention-ldapsearch', '-LLL', filter, 'objectClass']
 	cmd.extend(attributes)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	(stdout, stderr) = p1.communicate()
-
-	from ldif import LDIFParser
 
 	class ListenerHandler(LDIFParser):
 
@@ -348,7 +348,6 @@ if __name__ == '__main__':
 		def handle(self, dn, entry):
 			handler(dn, entry, {}, 'a')
 
-	import StringIO
 	parser = ListenerHandler(StringIO.StringIO(stdout))
 	parser.parse()
 
