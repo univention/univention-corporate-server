@@ -92,7 +92,7 @@ var dojoConfig = {
 	deps: [],
 	packages: [{
 		name: _getPackageName(),
-		location: location.pathname
+		location: location.pathname.substring(0, location.pathname.length - 1)
 	}, {
 		name: 'login',
 		location: '/univention/login'
