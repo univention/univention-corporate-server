@@ -12,7 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The Debian basis has been updated from Debian 7 (Wheezy) to Debian 8 (Jessie) (<u:bug>43560</u:bug>).
+				The Debian basis has been updated from Debian 7 (Wheezy) to Debian 8 (Jessie) (<u:bug>43560</u:bug>, <u:bug>41930</u:bug>).
 				This means, among other things, the following upgrades:
 				<itemizedlist>
 					<listitem><simpara>
