@@ -11,3 +11,5 @@ desc: |
  * An error during the installation of apps has been fixed which was caused by
    code changes in erratum 395.
 bug: [43482, 43550]
+erratum: 397
+announced: 2017-02-16
