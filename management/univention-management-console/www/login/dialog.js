@@ -26,26 +26,31 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,dojo,getQuery,require*/
+/*global define,dojo,getQuery*/
+
 
 define([
 	"login",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/query",
 	"dojo/dom",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/has",
+	"dojo/_base/event",
+	"dijit/Tooltip",
 	"dojox/html/entities",
 	"umc/json!/univention/meta.json",
 	"umc/i18n!login,umc/app"
-], function(login, lang, array, query, dom, domConstruct, domAttr, has, entities, meta, _) {
+], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, Tooltip, entities, meta, _) {
 
 	return {
 		renderLoginDialog: function() {
 			this.addLinks();
 			this.translateDOM();
+			this.addTooltips();
 			login.renderLoginDialog();
 		},
 
@@ -56,9 +61,16 @@ define([
 		},
 
 		getLinks: function() {
+			var helpText = _('Please login with a valid username and password.') + ' ';
+			if (getQuery('username') === 'root') {
+				helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
+			} else {
+				helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
+			}
+
 			// FIXME: show password forgot link only if self-service is installed?!
 			var links = [
-				'<a href="javascript:void(0);" onclick="require(\'login/dialog\')._showLoginTooltip(event);" data-i18n="Wie melde ich mich an?"></a>',
+				lang.replace('<a href="javascript:void(0);" data-i18n="Wie melde ich mich an?" title="{tooltip}"></a>', {tooltip: entities.encode(helpText)}),
 				'<a target="_blank" href="/univention/self-service/" data-i18n="Password vergessen?"></a>'
 			];
 
@@ -71,6 +83,14 @@ define([
 				}));
 			}
 			return links;
+		},
+
+		addTooltips: function() {
+			dojo.query('#umcLoginLinks a').forEach(lang.hitch(this, function(node) {
+				if (node.title) {
+					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node));
+				}
+			}));
 		},
 
 		translateDOM: function() {
@@ -94,23 +114,11 @@ define([
 			}
 		},
 
-		_showLoginTooltip: function(evt) {
-			require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
-				var node = evt.target;
-				var helpText = _('Please login with a valid username and password.') + ' ';
-				if (getQuery('username') === 'root') {
-					helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
-				} else {
-					helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
-				}
-				Tooltip.show(helpText, node);
-				if (evt) {
-					dojoEvent.stop(evt);
-				}
-				on.once(dojo.body(), 'click', function(evt) {
-					Tooltip.hide(node);
-					dojoEvent.stop(evt);
-				});
+		showTooltip: function(node) {
+			Tooltip.show(node.title, node);
+			on.once(dojo.body(), 'click', function(evt) {
+				Tooltip.hide(node);
+				dojoEvent.stop(evt);
 			});
 		}
 	};
