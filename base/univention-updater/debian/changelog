@@ -1,3 +1,10 @@
+univention-updater (12.0.3-2) unstable; urgency=medium
+
+  * preup.sh: fail_if_role_package_will_be_removed: don't fail if a
+    server role is not yet configured (Bug #39092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Feb 2017 08:45:44 +0100
+
 univention-updater (12.0.3-1) unstable; urgency=medium
 
   * Added fail_if_role_package_will_be_removed to preup.sh (Bug #39092)

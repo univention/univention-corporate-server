@@ -247,6 +247,8 @@ fail_if_role_package_will_be_removed ()
     	basesystem) role_package="univention-basesystem" ;;
     esac
 
+	test -z "$role_package" && return
+
 	#echo "Executing: LC_ALL=C $update_commands_distupgrade_simulate | grep -q "^Remv $role_package""  >&3 2>&3
 	LC_ALL=C $update_commands_distupgrade_simulate 2>&1 | grep -q "^Remv $role_package"
 	if [ $? = 0 ]; then
