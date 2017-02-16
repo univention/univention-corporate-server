@@ -351,3 +351,5 @@ if __name__ == '__main__':
 	import StringIO
 	parser = ListenerHandler(StringIO.StringIO(stdout))
 	parser.parse()
+
+	subprocess.call(['net', 'cache', 'flush'])

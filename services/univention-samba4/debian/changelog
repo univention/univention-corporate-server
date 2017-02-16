@@ -1,3 +1,9 @@
+univention-samba4 (6.0.9-6) unstable; urgency=medium
+
+  * Bug #41319: samba4-idmap --direct-resync now flushes the samba gencache
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Feb 2017 15:38:03 +0100
+
 univention-samba4 (6.0.9-5) unstable; urgency=medium
 
   * Bug #43073: Use standard UCR interfaces list
