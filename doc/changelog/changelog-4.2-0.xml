@@ -451,6 +451,10 @@
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
 				have been adapted to the needs of UCS 4.2 (<u:bug>42037</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The pre-check of the UCS 4.2 upgrade now checks if essential server role packages should be removed
+				during the upgrade. In this case the upgrade process is stopped previously (<u:bug>39092</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
