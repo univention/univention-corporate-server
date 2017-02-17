@@ -278,7 +278,7 @@ def do_app_updates(options, checkForUpdates, silent):
     dprint(silent, 'found\n')
     dprint(silent, 'The following apps can be upgraded:\n')
     for app in new_apps:
-        latest_app = AppManager.find(app, latest=True)
+        latest_app = AppManager.find_candidate(app)
         if latest_app > app:
             dprint(silent, '%(name)s: Version %(old)s can be upgraded to %(new)s' % {
                 'name': app.name,
@@ -301,7 +301,7 @@ def do_app_updates(options, checkForUpdates, silent):
     for app in new_apps:
         if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
-        success &= bool(app_upgrade.call(
+        success &= bool(app_upgrade.call_safe(
             app=app,
             noninteractive=not interactive,
             username=options.username,
@@ -310,7 +310,7 @@ def do_app_updates(options, checkForUpdates, silent):
 
     if not success:
         dprint(silent, 'ERROR: app upgrade failed. Please check /var/log/univention/updater.log\n')
-        sys.exit(1)
+        return False  # pretend no updates available; otherwise do_exec may result in inifinite loop
     dprint(silent, 'univention-app upgrade finished at %s...' % time.ctime(), debug=True)
     dprint(silent, 'done')
     return not success  # pending updates

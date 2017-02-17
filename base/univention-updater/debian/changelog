@@ -1,3 +1,14 @@
+univention-updater (12.0.3-3) unstable; urgency=medium
+
+  * Bug #43569: App updates via univention-upgrade: Fix showing the latest App
+    as App update, instead of the version that is actually going to be
+    installed
+  * Bug #42935: App updates via univention-upgrade: Do not abort
+    univention-upgrade if one App update fails
+  * Fix calling a funtion with too few arguments
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 14:40:45 +0100
+
 univention-updater (12.0.3-2) unstable; urgency=medium
 
   * preup.sh: fail_if_role_package_will_be_removed: don't fail if a
