@@ -496,13 +496,13 @@ define([
 			if (this.mobileToggleMouseLeave) {
 				this.mobileToggleMouseLeave.pause();
 			}
-			tools.defer(function() {
+			tools.defer(lang.hitch(this, function() {
 				domClass.remove(this.domNode, 'umcMobileMenuToggleButtonHover');
-			}, 510).then(function() {
+			}, 510)).then(lang.hitch(this, function() {
 				if (this.mobileToggleMouseLeave) {
 					this.mobileToggleMouseLeave.resume();
 				}
-			});
+			}));
 			if (domClass.contains(dojo.body(), 'mobileMenuActive')) {
 				this.closeMobileMenu();
 			} else {
