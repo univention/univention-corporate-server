@@ -337,6 +337,12 @@ class Base(signals.Provider, Translation):
 			# FIXME: we must also check the netloc/hostname/IP
 			raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503)
 
+		content_type = request.headers.get('Content-Type', '')
+		allowed_content_types = ('application/json', 'application/x-www-form-urlencoded', 'multipart/form-data')
+
+		if not re.match('^(%s)($|\s*;)' % '|'.join(re.escape(x) for x in allowed_content_types), content_type):
+			raise UMC_Error(self._('The requested Content-Type is not acceptable. Please use one of %s.' % (', '.join(allowed_content_types))), status=406)
+
 	def thread_finished_callback(self, thread, result, request):
 		if not isinstance(result, BaseException):
 			self.finished(request.id, result)
