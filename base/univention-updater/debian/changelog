@@ -1,3 +1,10 @@
+univention-updater (11.0.11-17) unstable; urgency=medium
+
+  * Bug #43026: add missing python-yaml dependency and improved
+    error handling
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 17 Feb 2017 16:01:44 +0100
+
 univention-updater (11.0.11-16) unstable; urgency=medium
 
   * Bug #42935: Better error handling

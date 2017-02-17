@@ -45,9 +45,10 @@ import univention.hooks
 import notifier.threads
 
 import univention.admin.modules as udm_modules
-import univention.admin.uldap as udm_uldap
+import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Translation
 from univention.lib import atjobs
+from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base
@@ -213,33 +214,53 @@ class Instance(Base):
 	@simple_response
 	def query_maintenance_information(self):
 		ucr.load()
-		if ucr['license/extended_maintenance/disable_warning']:
+		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return
 		version = self.uu.get_ucs_version()
 		try:
 			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
-			response = requests.get(url)
+			response = requests.get(url, timeout=10)
 			if not response.ok:
-				return
+				response.raise_for_status()
 			status = yaml.load(response.content)
-			maintained = str(status.get('maintained')).lower()
-		except requests.exceptions.RequestException:
+			# the yaml file contains for maintained either false, true or extended as value.
+			# yaml.load converts true and false into booleans but extended into string.
+			has_extended_maintenance = ucr.is_true('license/extended_maintenance/{}'.format(version))
+			maintained = status.get('maintained')
+			maintenance_extended = False
+			if maintained == 'extended':
+				maintained = False
+				maintenance_extended = True
+		except requests.exceptions.RequestException as exc:
+			MODULE.error("Querying maintenance information failed: %s" % (exc,))
 			return
-		else:
-			udm_modules.update()
-			lo, po = udm_uldap.getMachineConnection()
-			result = udm_modules.lookup('settings/license', None, lo, base=ucr['ldap/base'], scope='sub')
-			if result:
-				result = result[0]
-				result.open()
-				return {
-						'ucsVersion': version,
-						'maintained': maintained,
-						'hasExtendedMaintenance': ucr.is_true('license/extended_maintenance/%s' % version),
-						'baseDN': result.get('base'),
-						'support': result.get('support'),
-						'premiumSupport': result.get('premiumsupport')
-				}
+
+		udm_modules.update()
+		lo = get_machine_connection(write=False)[0]
+		base_dn = ucr.get('ldap/base')
+		support = False
+		premiumsupport = False
+		if lo:
+			try:
+				results = udm_modules.lookup('settings/license', None, lo, base=ucr['ldap/base'], scope='sub')
+			except udm_errors.base:
+				pass
+			else:
+				license_object = results[0]
+				license_object.open()
+				base_dn = license_object.get('base')
+				premiumsupport = bool(license_object.get('premiumsupport'))
+				support = bool(license_object.get('support'))
+
+		return {
+			'ucs_version': version,
+			'maintained': maintained,
+			'maintenance_extended': maintenance_extended,
+			'has_extended_maintenance': has_extended_maintenance,
+			'base_dn': base_dn,
+			'support': support,
+			'premium_support': premiumsupport
+		}
 
 	@simple_response
 	def poll(self):
