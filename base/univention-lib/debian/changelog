@@ -1,3 +1,9 @@
+univention-lib (6.0.6-8) unstable; urgency=medium
+
+  * Bug #39731: add missing copyright header
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Feb 2017 15:02:53 +0100
+
 univention-lib (6.0.6-7) unstable; urgency=medium
 
   * Bug #40612: raise I18NError instead of AttributeError if parsing fails
