@@ -301,7 +301,7 @@ def do_app_updates(options, checkForUpdates, silent):
     for app in new_apps:
         if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
-        success &= bool(app_upgrade.call(
+        success &= bool(app_upgrade.call_safe(
             app=app,
             noninteractive=not interactive,
             username=options.username,
@@ -310,6 +310,7 @@ def do_app_updates(options, checkForUpdates, silent):
 
     if not success:
         dprint(silent, 'ERROR: app upgrade failed. Please check /var/log/univention/updater.log\n')
+        return False  # pretend no updates available; otherwise do_exec may result in inifinite loop
     dprint(silent, 'univention-app upgrade finished at %s...' % time.ctime(), debug=True)
     dprint(silent, 'done')
     return not success  # pending updates

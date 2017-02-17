@@ -1,3 +1,9 @@
+univention-updater (11.0.11-16) unstable; urgency=medium
+
+  * Bug #42935: Better error handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 13:55:36 +0100
+
 univention-updater (11.0.11-15) unstable; urgency=medium
 
   * Bug #43569: App updates via univention-upgrade: Fix showing the latest App
