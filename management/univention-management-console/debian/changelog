@@ -1,3 +1,9 @@
+univention-management-console (9.0.29-2) unstable; urgency=medium
+
+  * Bug #43528: correct piwik notification
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Feb 2017 15:04:02 +0100
+
 univention-management-console (9.0.29-1) unstable; urgency=medium
 
   * Bug #39731: correctly encode HTML chars to prevent XSS attacks

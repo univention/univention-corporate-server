@@ -94,7 +94,7 @@ define([
 					var deferred = when(lang.hitch(thisDialog, '_evaluateActivation')()).then(function(success) {
 						// only advance if no error occurred
 						var actionLabel = success === true ? 'success' : 'failure';
-						topic.publish('/umc/actions', 'actions-wizard', 'activation', actionLabel);
+						topic.publish('/umc/actions', 'activation-wizard', 'activation', actionLabel);
 						return success ? nextPage : pageName;
 					});
 					thisDialog._progressBar.setInfo(_('Sending activation email...'), null, Infinity);
