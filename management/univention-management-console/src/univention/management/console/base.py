@@ -137,7 +137,7 @@ class UMC_Error(Exception):
 		super(UMC_Error, self).__init__(message)
 		self.msg = message
 		self.result = result
-		self.headers = None
+		self.headers = headers
 		if isinstance(status, int):
 			self.status = status
 

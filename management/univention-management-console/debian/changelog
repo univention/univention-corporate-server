@@ -1,3 +1,9 @@
+univention-management-console (9.0.29-3) unstable; urgency=medium
+
+  * Bug #39731: fix constructor for UMC_Error
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Feb 2017 15:15:35 +0100
+
 univention-management-console (9.0.29-2) unstable; urgency=medium
 
   * Bug #43528: correct piwik notification
