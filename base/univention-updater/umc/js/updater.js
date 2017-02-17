@@ -66,11 +66,14 @@ define([
 		var checkOutOfMaintenance = function() {
 			tools.umcpCommand('updater/maintenance_information').then(function(data) {
 				var info = data.result;
-				if ((info.maintained === 'extended' && !info.hasExtendedMaintenance) || info.maintained === 'false') {
-					var link = tools.linkToModule({module: 'updater'});
-					var warning = _("<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out of maintenance. Plase visit the %s for more information", link);
-					dialog.warn(warning);
+				if (!info || info.maintained || (info.maintenance_extended && info.has_extended_maintenance)) {
+					return;
 				}
+
+				// show warning notification
+				var link = tools.linkToModule({module: 'updater'});
+				var warning = _("<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out of maintenance. Plase visit the %s for more information", link);
+				dialog.warn(warning);
 			});
 		};
 		checkUpdateIsRunning();
