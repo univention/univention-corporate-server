@@ -134,15 +134,15 @@ define([
 				} else if (result.missing_prompts) {
 					title = _('One time password required');
 				}
-//				message = '<h1>' + title + '</h1><p>' + message + '</p>';
-				message = '<p class="umcLoginWarning">' + message + '</p>';
+//				message = '<h1>' + title + '</h1><p>' + entities.encode(message) + '</p>';
+				message = '<p class="umcLoginWarning">' + entities.encode(message) + '</p>';
 			}
 			domClass.toggle(dom.byId('umcLoginForm'), 'umcLoginWarning', !!message);
 			this.set('LoginMessage', message);
 		},
 
 		_setLoginMessageAttr: function(content) {
-			this._text.set('content', content);
+			this._text.set('content', entities.encode(content));
 			if (content) {
 				this._wipeInMessage();
 			} else {

@@ -545,7 +545,7 @@ define([
 				},
 
 				display422: function(info) {
-					var message = info.message + ':<br>';
+					var message = entities.encode(info.message) + ':<br>';
 					var formatter = function(result) {
 						message += '<ul>';
 						tools.forIn(result, function(key, value) {
@@ -570,9 +570,9 @@ define([
 					// do not modify the data!
 					if (data && data.message) {
 						if (parseInt(data.status, 10) === 200) {
-							dialog.notify(data.message);
+							dialog.notify(entities.encode(data.message));
 						} else {
-							dialog.alert(data.message);
+							dialog.alert(entities.encode(data.message));
 						}
 					}
 				},
@@ -611,11 +611,11 @@ define([
 						// either the UMC-server or the UMC-Web-Server is not runnning
 						login._loginDialog.updateForm({message: statusMessage});
 						if (message) {
-							dialog.alert(message, statusMessage);
+							dialog.alert(entities.encode(message).replace(/\n/g, '<br>'), statusMessage);
 						}
 					} else if (statusMessage) {
 						// all other cases
-						dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''), _('An error occurred'));
+						dialog.alert('<p>' + entities.encode(statusMessage) + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>' : ''), _('An error occurred'));
 					} else if (status) {
 						// unknown status code .. should not happen
 						dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
@@ -627,7 +627,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(entities.decode(info.message), tools._statusMessages[info.status]);
+					tools.showTracebackDialog(info.message, tools._statusMessages[info.status]);
 				}
 			}, custom);
 			return errorHandler;
@@ -790,7 +790,7 @@ define([
 
 			return {
 				status: this._parseStatus(status),
-				message: entities.encode(_(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'})).replace(/\n/g, '<br>'),
+				message: _(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'}),
 				result: result
 			};
 		},
@@ -809,7 +809,6 @@ define([
 		},
 
 		showTracebackDialog: function(message, statusMessage, title) {
-			message = message.replace(/<br *\/?>/g, "\n");
 			var readableMessage = message.split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
 			// See Bug #33798

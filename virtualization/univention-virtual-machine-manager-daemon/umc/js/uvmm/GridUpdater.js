@@ -34,10 +34,11 @@ define([
 	"dojo/_base/array",
 	"dojo/promise/all",
 	"dojox/timing/_base",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
 	"dijit/Destroyable"
-], function(declare, lang, array, all, timing, tools, dialog, Destroyable) {
+], function(declare, lang, array, all, timing, entities, tools, dialog, Destroyable) {
 	return declare("umc.modules.uvmm.GridUpdater", [Destroyable], {
 		grid: null, // reference to the grid
 		tree: null, // reference to the tree
@@ -127,10 +128,10 @@ define([
 						return results.result;
 					}), lang.hitch(this, function(error) {
 						var err = tools.parseError(error);
-						if (err.status == 503) {
+						if (err.status === 503) {
 							if (!this._uvmmErrorShown) {
 								this._uvmmErrorShown = true;
-								dialog.alert(err.message);
+								dialog.alert('<pre>' + entities.encode(err.message) + '</pre>');
 							}
 						} else {
 							tools.handleErrorStatus(error);

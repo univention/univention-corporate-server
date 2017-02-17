@@ -26,20 +26,21 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define setTimeout*/
+/*global define,setTimeout*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
+	"dojox/html/entities",
 	"dijit/ProgressBar",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
+], function(declare, lang, array, domClass, entities, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information
@@ -70,7 +71,7 @@ define([
 			this._progressBar.watch('value', lang.hitch(this, function(attr, oldValue, newValue) {
 				// looks buggy when setting value to Infinity and then back to 0
 				//   (like going backwards). Used in App Center; Bug #32649
-				var comesFromOrGoesToInfinity = oldValue == Infinity || newValue == Infinity;
+				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
 				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
 			}));
 
@@ -96,13 +97,13 @@ define([
 
 		setInfo: function(component, message, percentage, errors, critical) {
 			if (component) {
-				this._component.set('content', component);
+				this._component.set('content', entities.encode(component));
 			}
 			if (percentage) {
 				this._progressBar.set('value', percentage);
 			}
 			if (message || component) {
-				this._message.set('content', message || '&nbsp;');
+				this._message.set('content', entities.encode(message) || '&nbsp;');
 			}
 			this._addErrors(errors);
 			if (critical) {
@@ -170,7 +171,7 @@ define([
 			var errors = this.getErrors().errors;
 			if (errors.length && handleErrors) {
 				var msg = '';
-				if (errors.length == 1) {
+				if (errors.length === 1) {
 					msg = _('An error occurred: ') + errors[0];
 				} else {
 					msg = lang.replace(_('{number} errors occurred: '), {number : errors.length});

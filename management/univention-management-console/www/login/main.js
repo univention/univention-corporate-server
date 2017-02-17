@@ -280,7 +280,7 @@ define([
 		_requirePassword: function(message) {
 			var text = _('This action requires you to supply your password.');
 			if (message) {
-				text = message + '<br><br>' + text;
+				text = entities.encode(message) + '<br><br>' + entities.encode(text);
 			}
 			return dialog.confirmForm({
 				title: _('Authentication required'),
