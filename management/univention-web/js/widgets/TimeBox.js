@@ -61,6 +61,9 @@ define([
 		},
 
 		_dateToTime: function(dateObj) {
+			if (dateObj === null) {
+				return '';
+			}
 			try {
 				return sprintf('%02d:%02d', dateObj.getHours(), dateObj.getMinutes());
 			} catch(e) {
