@@ -412,7 +412,7 @@ Type=string
 Categories=service-software-management
 
 [license/extended_maintenance/disable_warning]
-Description[de]=Ist diese Option aktiviert, wird keine Warnung angezeigt, falls für die aktuelle UCS version keine Sicherheitsupdates mehr veröffentlicht werden. Ist die Variable nicht gesetzt, wird eine Warnung angezeigt.
-Description[en]=If this option is activated, the warning message, that is shown when no more security updates will be released for the current UCS version, is deactivated. If the variable is unset, the warning message is shown.
+Description[de]=Deaktiviert die Anzeige von Warnungen, wenn für die aktuelle UCS-Version keine Sicherheitsaktualisierungen mehr veröffentlicht werden. Standardmäßig wird eine Warnung angezeigt.
+Description[en]=Deactivates the display of warnings when no more security updates will be released for the current UCS version. By default, a warning will be shown.
 Type=bool
 Categories=service-software-management

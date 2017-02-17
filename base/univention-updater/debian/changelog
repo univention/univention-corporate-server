@@ -1,3 +1,10 @@
+univention-updater (11.0.11-18) unstable; urgency=medium
+
+  * Bug #43026: Better wording of the description of the ucr variable
+    for disabling the end of life warning
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 17 Feb 2017 17:53:41 +0100
+
 univention-updater (11.0.11-17) unstable; urgency=medium
 
   * Bug #43026: add missing python-yaml dependency and improved
