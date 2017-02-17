@@ -1,5 +1,6 @@
 univention-appcenter (5.0.23-57) unstable; urgency=medium
 
+  * Bug #43386: Support UDP for Docker Ports
   * Bug #43151: Create temp files in containers from outside
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 18:18:04 +0100

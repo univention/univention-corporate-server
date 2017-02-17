@@ -681,7 +681,10 @@ class App(object):
 			wants to get forwarded from the host to the container.
 			Example: 2222:22 will enable an SSH connection to the
 			container when the user is doing "ssh docker-host -p
-			2222". Also supports 9000:9000/udp to open UDP ports.
+			2222".
+		ports_redirection_udp: Just like *ports_redirection*, but opens
+			UDP ports. Can be combined with the same
+			*ports_redirection* if needed.
 		server_role: List of UCS roles the App may be installed on.
 		supported_architectures: Non-Docker Apps only. List of
 			architectures the App supports. Docker Apps always
@@ -864,7 +867,8 @@ class App(object):
 	generic_user_activation = AppAttributeOrTrueOrNone()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
-	ports_redirection = AppListAttribute(regex='^\d+:\d+(/(tcp|udp))?$')
+	ports_redirection = AppListAttribute(regex='^\d+:\d+$')
+	ports_redirection_udp = AppListAttribute(regex='^\d+:\d+$')
 
 	server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
