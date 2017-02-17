@@ -215,6 +215,9 @@
 				<listitem><simpara>
 					Traceback reports do not require an authenticated session anymore and can be sent anonymously (<u:bug>42169</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Plural forms for translations are now supported in the JavaScript code (<u:bug>42220</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
