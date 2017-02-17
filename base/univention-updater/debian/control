@@ -9,7 +9,6 @@ Build-Depends: debhelper (>> 7),
  python-support (>= 0.90),
  python-debian,
  python-apt,
- python-requests,
  ucslint-univention,
  univention-management-console-dev,
 XS-Python-Version: 2.6, 2.7
@@ -28,7 +27,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-directory-manager,
  python-debian,
  python-apt,
- python-requests,
  univention-errata-level,
  apt-transport-https,
  ca-certificates,
@@ -54,6 +52,7 @@ Depends: ${misc:Depends},
  univention-management-console-module-lib,
  python-psutil,
  python-yaml,
+ python-requests,
 Description: UMC module for UCS updater
  This package contains the UMC module for the UCS updater.
  .
