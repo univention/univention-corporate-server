@@ -1,3 +1,14 @@
+univention-updater (11.0.11-15) unstable; urgency=medium
+
+  * Bug #43569: App updates via univention-upgrade: Fix showing the latest App
+    as App update, instead of the version that is actually going to be
+    installed
+  * Bug #42935: App updates via univention-upgrade: Do not abort
+    univention-upgrade if one App update fails
+  * Fix calling a funtion with too few arguments
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 13:37:21 +0100
+
 univention-updater (11.0.11-14) unstable; urgency=medium
 
   * Bug #43026: Fix error handling and add ucr variable to turn of the warning

@@ -150,7 +150,7 @@ if __name__ == '__main__':
 		previously_registered = requested_app.register(component_manager, package_manager)
 		success = package_manager.install(*packages) and success
 		if not success or not legacy_call:
-			requested_app.unregister_all_and_register(previously_registered)
+			requested_app.unregister_all_and_register(previously_registered, component_manager, package_manager)
 		subprocess.call(['/usr/sbin/univention-register-apps'])
 	elif manually:
 		component_manager.put_app(requested_app)
