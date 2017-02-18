@@ -1437,17 +1437,14 @@ define([
 			this._tree.reload();
 		},
 
-		iconFormatter: function(value, rowIndex) {
+		iconFormatter: function(value, item) {
 			// summary:
 			//		Formatter method that adds in a given column of the search grid icons
 			//		according to the object types.
 
-			var item;
-			if (rowIndex === undefined) {
+			if (item === undefined) {
 				item = value;
 				value = lang.replace('{0} (<em>{1}</em>)', [item.name || item.label, item.path || item.id]);
-			} else {
-				item = this._grid._grid.getItem(rowIndex);
 			}
 			// get the iconName
 			var iconName = item.objectType || '';
