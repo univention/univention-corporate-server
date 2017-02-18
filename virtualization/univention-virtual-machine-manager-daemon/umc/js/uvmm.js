@@ -1260,8 +1260,7 @@ define([
 			});
 		},
 
-		_startFormatter: function(val, rowIndex, col) {
-			var item = this._grid._grid.getItem(rowIndex);
+		_startFormatter: function(val, item, col) {
 			if (!canStart(item)) {
 				return '';
 			}
@@ -1286,8 +1285,7 @@ define([
 			return btn;
 		},
 
-		_viewFormatter: function(val, rowIndex, col) {
-			var item = this._grid._grid.getItem(rowIndex);
+		_viewFormatter: function(val, item, col) {
 			if (!canVNC(item)) {
 				return '';
 			}
@@ -1526,11 +1524,10 @@ define([
 			}];
 		},
 
-		cpuUsageFormatter: function(id, rowIndex) {
+		cpuUsageFormatter: function(id, item) {
 			// summary:
 			//		Formatter method for cpu usage.
 
-			var item = this._grid._grid.getItem(rowIndex);
 			if (undefined === item.cpuUsage) {
 				return '';
 			}
@@ -1548,11 +1545,10 @@ define([
 			return '';
 		},
 
-		memoryUsageFormatter: function(id, rowIndex) {
+		memoryUsageFormatter: function(id, item) {
 			// summary:
 			//		Formatter method for memory usage.
 
-			var item = this._grid._grid.getItem(rowIndex);
 			if (item.type == 'node') {
 				// for the node, return a progressbar
 				var progressBar = new ProgressBar({
@@ -1598,13 +1594,12 @@ define([
 			return iconName + '.png';
 		},
 
-		iconFormatter: function(label, rowIndex) {
+		iconFormatter: function(label, item) {
 			// summary:
 			//		Formatter method that adds in a given column of the search grid icons
 			//		according to the object types.
 
 			// create an HTML image that contains the icon (if we have a valid iconName)
-			var item = this._grid._grid.getItem(rowIndex);
 			var html = string.substitute('<img src="${themeUrl}/icons/16x16/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
 				icon: this._iconClass(item),
 				height: '16px',

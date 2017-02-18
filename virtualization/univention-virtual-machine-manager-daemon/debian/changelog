@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.2-1) unstable; urgency=medium
+
+  * Bug #32027: adapt grid to new API
+
+ -- Florian Best <best@univention.de>  Sat, 18 Feb 2017 01:50:24 +0100
+
 univention-virtual-machine-manager-daemon (6.0.1-1) unstable; urgency=medium
 
   * Bug #39731: html encode message attribute
