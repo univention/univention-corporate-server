@@ -449,7 +449,7 @@ define([
 								this.own(value);
 								return value.domNode;
 							} else {
-								var valueText = new Text ({
+								var valueText = new Text({
 									content: value
 								});
 								this.own(valueText);
