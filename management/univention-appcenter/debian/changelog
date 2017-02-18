@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-27) unstable; urgency=medium
+
+  * Bug #43557: Fix error in univention-app update due to new cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 18 Feb 2017 03:31:15 +0100
+
 univention-appcenter (6.0.1-26) unstable; urgency=medium
 
   * Bug #43385: Only show ERROR or CRITICAL messages in frontend; adjust log

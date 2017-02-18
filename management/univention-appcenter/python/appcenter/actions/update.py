@@ -87,7 +87,7 @@ class Update(UniventionAppAction):
 		if something_changed:
 			apps_cache = Apps()
 			for app in apps_cache.get_all_locally_installed_apps():
-				newest_app = apps_cache.find_candidate(app)
+				newest_app = apps_cache.find_candidate(app) or app
 				if app < newest_app:
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
