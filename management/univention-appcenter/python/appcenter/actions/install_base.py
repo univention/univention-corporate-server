@@ -196,7 +196,7 @@ class InstallRemoveUpgrade(Register):
 				success = True
 			if not success:
 				for line in error_file:
-					self.warn(line)
+					self.fatal(line)
 			return success
 
 	def _revert(self, app, args):

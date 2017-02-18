@@ -1,3 +1,10 @@
+univention-appcenter (6.0.1-26) unstable; urgency=medium
+
+  * Bug #43385: Only show ERROR or CRITICAL messages in frontend; adjust log
+    level in backend.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 18 Feb 2017 03:15:46 +0100
+
 univention-appcenter (6.0.1-25) unstable; urgency=medium
 
   * Bug #43550: use univention.admin.uldap instead of univention.uldap

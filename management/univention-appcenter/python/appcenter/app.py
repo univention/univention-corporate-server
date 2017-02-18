@@ -949,7 +949,7 @@ class App(object):
 			try:
 				value = attr.get_value(component_id, ini_parser, meta_parser, locale)
 			except ValueError as e:
-				app_logger.info('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
+				app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
 				return
 			attr_values[attr.name] = value
 		if cache:

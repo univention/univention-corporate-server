@@ -37,7 +37,6 @@ import sys
 from subprocess import check_output, call, CalledProcessError
 import os
 import os.path
-import stat
 import shlex
 from json import loads
 from StringIO import StringIO
@@ -319,7 +318,8 @@ class Docker(object):
 		except OSError:
 			pass
 		# create new env file
-		fd = os.open(env_file, os.O_RDWR | os.O_CREAT, stat.S_IRUSR)
+		fd = os.open(env_file, os.O_RDWR | os.O_CREAT)
+		os.chmod(env_file, 0400)
 		with os.fdopen(fd, 'w') as outfile:
 			# appcenter env file
 			if os.path.exists(self.app.get_cache_file('env')):

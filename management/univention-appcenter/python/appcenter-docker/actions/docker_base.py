@@ -66,7 +66,7 @@ class DockerActionMixin(object):
 		if app.docker_script_store_data:
 			process = self._execute_container_script(app, 'store_data', _credentials=False)
 			if not process or process.returncode != 0:
-				self.warn('Image upgrade script (pre) failed')
+				self.fatal('Image upgrade script (pre) failed')
 				return False
 		return True
 
@@ -74,10 +74,10 @@ class DockerActionMixin(object):
 		docker = self._get_docker(app)
 		if docker.exists():
 			if not Start.call(app=app):
-				self.warn('Starting the container for %s failed' % app)
+				self.fatal('Starting the container for %s failed' % app)
 				return False
 			if not self._store_data(app):
-				self.warn('Storing data for %s failed' % app)
+				self.fatal('Storing data for %s failed' % app)
 				return False
 			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
 			if backup_data == 'copy':
@@ -87,13 +87,13 @@ class DockerActionMixin(object):
 				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
 				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
 			if not Stop.call(app=app):
-				self.warn('Stopping the container for %s failed' % app)
+				self.fatal('Stopping the container for %s failed' % app)
 				return False
 			image_id = docker.commit(image_name)
 			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
 			return image_id
 		else:
-			self.warn('No container found. Unable to backup')
+			self.fatal('No container found. Unable to backup')
 
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
@@ -134,7 +134,7 @@ class DockerActionMixin(object):
 				if process.returncode != 0:
 					with open(error_file.name, 'r+b') as error_handle:
 						for line in error_handle:
-							self.warn(line)
+							self.fatal(line)
 				return process
 
 	def _copy_files_into_container(self, app, *filenames):

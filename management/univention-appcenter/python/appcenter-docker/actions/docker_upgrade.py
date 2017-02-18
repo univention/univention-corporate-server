@@ -110,7 +110,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			elif mode == 'docker':
 				self._upgrade_docker(app, args)
 			else:
-				self.warn('Unable to process %r' % (mode,))
+				self.fatal('Unable to process %r' % (mode,))
 				return
 			self._last_mode = mode, detail
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
