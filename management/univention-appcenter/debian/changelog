@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-59) unstable; urgency=medium
+
+  * Bug #43385: Only show ERROR or CRITICAL messages in frontend; adjust log
+    level in backend.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 18 Feb 2017 03:13:09 +0100
+
 univention-appcenter (5.0.23-58) unstable; urgency=medium
 
   * Bug #43563: Updated all.tar.gz

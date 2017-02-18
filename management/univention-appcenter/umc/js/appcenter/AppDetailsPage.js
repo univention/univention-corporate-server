@@ -970,7 +970,7 @@ define([
 							undefined,
 							lang.hitch(this, function(result) {
 								var errors = array.map(result.intermediate, function(res) {
-									if (res.level == 'WARNING' || res.level == 'ERROR' || res.level == 'CRITICAL') {
+									if (res.level == 'ERROR' || res.level == 'CRITICAL') {
 										return res.message;
 									}
 								});
