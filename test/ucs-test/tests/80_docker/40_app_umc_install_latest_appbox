@@ -14,12 +14,7 @@ import pytest
 if __name__ == '__main__':
 
 	# get latest app box image
-	url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
-	username = 'ucs'
-	password = 'readonly'
-	resp = requests.get(url, auth=(username, password)).content
-	data = json.loads(resp)
-	image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
+	image = get_docker_appbox_image()
 
 	# installation should fail if setup fails
 	with Appcenter() as appcenter:
@@ -29,14 +24,23 @@ if __name__ == '__main__':
 		app.add_script(setup='''#!/bin/bash
 echo "This message goes to stdout"
 echo "This message goes to stderr" >&2
+. /usr/share/univention-docker-container-mode/lib.sh
+error_msg "This message goes to ERROR_FILE"
 exit 1
 '''		)
 		app.add_to_local_appcenter()
-		with pytest.raises(UCTTest_DockerApp_UMCInstallFailed):
-			appcenter.update()
-			app.install_via_umc()
-		app.uninstall()
-		app.remove()
+		appcenter.update()
+		try:
+			try:
+				app.install_via_umc()
+			except UCTTest_DockerApp_UMCInstallFailed as exc:
+				progress, errors = exc.args
+				assert errors == [{u'message': u'This message goes to ERROR_FILE\n', u'level': u'CRITICAL'}], errors
+			else:
+				raise AssertionError('Should not have been installed successfully!')
+		finally:
+			app.uninstall()
+			app.remove()
 
 	# installation should succeed if setup is fine
 	with Appcenter() as appcenter:
