@@ -44,6 +44,7 @@ OC = "univentionApp"
 
 module = 'appcenter/app'
 superordinate = 'settings/cn'
+default_containers = ['cn=apps,cn=univention']
 childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Appcenter: App Metadata')
@@ -348,24 +349,6 @@ mapping.register('server', 'univentionAppInstalledOnServer')
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global mapping
-		global property_descriptions
-
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-		self.options = []
-
-		self.alloc = []
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-	def _ldap_pre_create(self):
-		self.dn = 'univentionAppID=%s,%s' % (mapping.mapValue('id', self.info['id']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		ocs = ['top', OC]
