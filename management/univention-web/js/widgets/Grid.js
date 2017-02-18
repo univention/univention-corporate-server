@@ -47,6 +47,7 @@ define([
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
+	"dojox/html/entities",
 	"dgrid/OnDemandGrid",
 	"dgrid/Selection",
 	"dgrid/extensions/DijitRegistry",
@@ -63,7 +64,7 @@ define([
 	"../render",
 	"../i18n!",
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton,
+		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton, entities,
 		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
@@ -184,9 +185,6 @@ define([
 		_toolbar: null,
 
 		_header: null,
-		_gridInfo: null,
-
-		_gridInfoLegend: null,
 
 		// internal list of all disabled items... when data has been loaded, we need to
 		// disable these items again
@@ -258,7 +256,7 @@ define([
 			this._grid.resize();
 			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
 			if (gridIsFullyRendered) {
-				this._statusMessage.set('content', _('All entries loaded'));
+				this._updateFooterContent();
 				this._statusMessage.standby(false);
 				this._scrollSignal.remove();
 			} else {
@@ -323,12 +321,6 @@ define([
 			});
 			this.addChild(this._header);
 			
-			this._gridInfo = new ContainerWidget({
-				baseClass: 'umcGridFooter'
-			});
-			this._createGridInfo();
-			this.addChild(this._gridInfo);
-
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
 				className: 'dgrid-autoheight',
@@ -341,7 +333,7 @@ define([
 				update: lang.hitch(this, 'update'),
 				selectAll: function() {
 					this.inherited(arguments);
-					this._selectAll(); //Bug: dgrid #1198
+					this._selectAll(); // Bug: dgrid #1198
 				}
 			}, this.gridOptions || {}));
 
@@ -397,10 +389,7 @@ define([
 
 		_cleanupWidgets: function() {
 			this._widgetList = array.filter(this._widgetList, function(iwidget) {
-				if ((iwidget.isInstanceOf && !iwidget.isInstanceOf(Menu))
-						&& (iwidget.id && !document.getElementById(iwidget.id))
-						&& !iwidget._destroyed
-						&& iwidget.destroy) {
+				if ((iwidget.isInstanceOf && !iwidget.isInstanceOf(Menu)) && (iwidget.id && !document.getElementById(iwidget.id)) && !iwidget._destroyed && iwidget.destroy) {
 					iwidget.destroy();
 					return false;
 				}
@@ -450,7 +439,7 @@ define([
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name === this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
-					col.renderCell = lang.hitch(this, function(item, value, node, options) {
+					col.renderCell = lang.hitch(this, function(item, value/*, node, options*/) {
 						value = icol.formatter ? icol.formatter(value, item) : value;
 
 						var defaultAction = this._getDefaultActionForItem(item);
@@ -628,7 +617,8 @@ define([
 					if (iaction.description) {
 						try {
 						var idescription = typeof iaction.description === "function" ? iaction.description(undefined) : iaction.description;
-						var tooltip = new (iaction.tooltipClass || Tooltip)({
+						var TooltipClass = iaction.tooltipClass || Tooltip;
+						var tooltip = new TooltipClass({
 							label: idescription,
 							connectId: [btn.domNode]
 						});
@@ -712,7 +702,7 @@ define([
 			this._selectionChangeTimeout = setTimeout(lang.hitch(this, function() {
 				this._updateContextActions();
 
-				this._updateGridInfoContent();
+				this._updateFooterContent();
 			}), 50);
 		},
 
@@ -754,7 +744,7 @@ define([
 //				return;
 //			}
 
-			var hasClickedOnDefaultAction = (evt.target != evt.cellNode);
+			var hasClickedOnDefaultAction = (evt.target !== evt.cellNode);
 			var id = this._grid.row(evt).id;
 			var isSelected = this._grid.get('selection')[id];
 			if (!isSelected || hasClickedOnDefaultAction) {
@@ -806,23 +796,7 @@ define([
 			}));
 		},
 
-		_createGridInfo: function() {
-			// add a legend that states how many objects are currently selected
-			this._gridInfoLegend = new Text({
-				content: _('No object selected'),
-				style: 'padding-left: 5px'
-			});
-			this._gridInfo.addChild(this._gridInfoLegend);
-
-			this._gridInfo.startup();
-
-			// redo the layout since we added elements
-			this.layout();
-
-			return true;
-		},
-
-		_updateGridInfoContent: function() {
+		_updateFooterContent: function() {
 			var nItems = this.getSelectedIDs().length;
 			this._grid.collection.fetch().totalLength.then(lang.hitch(this, function(nItemsTotal) {
 				var msg = '';
@@ -837,8 +811,9 @@ define([
 					else if (1 === nItems) {
 						msg = _('1 entry of %d selected', nItemsTotal);
 					}
+					msg = _('All entries loaded');
 				}
-				this._gridInfoLegend.set('content', msg);
+				this._statusMessage.set('content', msg);
 			}));
 		},
 
@@ -879,27 +854,21 @@ define([
 			var onSuccess = lang.hitch(this, function(result) {
 				this.collection.setData(result);
 				this._grid.refresh();
-				this._updateGridInfoContent();
+				this._updateFooterContent();
 				this.onFilterDone(true);
 			});
 			var onError = lang.hitch(this, function(error) {
-				if (error && error.response && error.response.text) {
-					this._statusMessage.set('content', JSON.parse(error.response.text).message);
-				} else {
-					this._statusMessage.set('content', _('Could not load search results'));
-				}
+				error = tools.parseError(error);
+				this._statusMessage.set('content', entities.encode(error.message || _('Could not load search results')));
 				this._statusMessage.standby(false);
 				this._grid.set('collection', new Memory());
-				this._updateGridInfoContent();
+				this._updateFooterContent();
 			});
 			// store the last query
 			this.query = query;
 			// umcpCommand doesn't know a range option -> need to cache
 			// StoreAdapter doesn't work with fetchSync -> need to cache
-			return this._store.filter(query, options).fetch().then(
-					onSuccess,
-					onError
-			);
+			return this._store.filter(query, options).fetch().then(onSuccess, onError);
 		},
 
 		getAllItems: function() {
@@ -1080,7 +1049,7 @@ define([
 			return executableItems;
 		},
 
-		onFilterDone: function(success) {
+		onFilterDone: function(/*success*/) {
 			// event stub
 		}
 	});

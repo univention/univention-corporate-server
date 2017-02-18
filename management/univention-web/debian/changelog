@@ -1,3 +1,9 @@
+univention-web (1.0.25-1) unstable; urgency=medium
+
+  * Bug #32027: restore grid footer behavior
+
+ -- Florian Best <best@univention.de>  Sat, 18 Feb 2017 03:17:57 +0100
+
 univention-web (1.0.24-1) unstable; urgency=medium
 
   * Bug #39731: correctly encode HTML chars to prevent XSS attacks
