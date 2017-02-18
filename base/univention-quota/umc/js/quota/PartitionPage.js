@@ -142,8 +142,7 @@ define([
 				name: 'sizeLimitUsed',
 				label: _('Size (MB) (used/soft/hard)'),
 				width: 'adjust',
-				formatter: lang.hitch(this, function(id, rowIndex) {
-					var item = this._grid._grid.getItem(rowIndex);
+				formatter: lang.hitch(this, function(id, item) {
 					return sprintf('%(sizeLimitUsed).0f/%(sizeLimitSoft).0f/%(sizeLimitHard).0f', item);
 				})
 			}, {
@@ -154,8 +153,7 @@ define([
 				name: 'fileLimitUsed',
 				label: _('Files (used/soft/hard)'),
 				width: 'adjust',
-				formatter: lang.hitch(this, function(id, rowIndex) {
-					var item = this._grid._grid.getItem(rowIndex);
+				formatter: lang.hitch(this, function(id, item) {
 					return lang.replace('{fileLimitUsed}/{fileLimitSoft}/{fileLimitHard}', item);
 				})
 			}, {
@@ -186,7 +184,7 @@ define([
 			return true;
 		},
 
-		onShowDetailPage: function(data) {
+		onShowDetailPage: function(/*data*/) {
 			return true;
 		},
 
@@ -202,7 +200,7 @@ define([
 			}));
 			if (usernames.length === 0) {
 				return;
-			} else if (usernames.length == 1) {
+			} else if (usernames.length === 1) {
 				dialogMessage = _('Please confirm to remove the following user: %s', usernames);
 			} else {
 				dialogMessage = _('Please confirm to remove the following %(length)s users: %(usernames)s', {'usernames': usernames, 'length': usernames.length});
