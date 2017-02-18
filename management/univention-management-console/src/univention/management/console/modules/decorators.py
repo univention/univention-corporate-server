@@ -619,6 +619,8 @@ def file_upload(function):
 			raise UMC_Error(_('%s can only be used as UPLOAD') % (function.__name__))
 		return function(self, request)
 	copy_function_meta_data(function, _response)
+	prevent_referer_check(_response)
+	prevent_xsrf_check(_response)
 	return _response
 
 

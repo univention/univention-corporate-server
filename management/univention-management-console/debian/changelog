@@ -1,3 +1,9 @@
+univention-management-console (9.0.31-1) unstable; urgency=medium
+
+  * Bug #39731: extend file_upload decorator to ignore some security checks
+
+ -- Florian Best <best@univention.de>  Sat, 18 Feb 2017 03:43:22 +0100
+
 univention-management-console (9.0.30-1) unstable; urgency=medium
 
   * Bug #39731: Don't require Content-Type to be set on GET requests
