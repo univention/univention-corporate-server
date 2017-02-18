@@ -265,7 +265,7 @@ class App(object):
 		resp = connection.request('appcenter/docker/invoke', options)
 		progress_id = resp.get('id')
 		if not resp:
-			raise UCTTest_DockerApp_UMCInstallFailed(resp)
+			raise UCTTest_DockerApp_UMCInstallFailed(resp, None)
 		errors = list()
 		finished = False
 		progress = None
@@ -277,16 +277,16 @@ class App(object):
 			progress = c.request('appcenter/docker/progress', options)
 			info = progress.get('info', None)
 			for i in progress.get('intermediate', []):
-				if i['level'] in ['WARNING', 'ERROR', 'CRITICAL']:
+				if i['level'] in ['ERROR', 'CRITICAL']:
 					errors.append(i)
 			finished = progress.get('finished', False)
 		if not progress['result'].get('success', False) or not progress['result'].get('can_continue', False):
-			raise UCTTest_DockerApp_UMCInstallFailed(progress)
+			raise UCTTest_DockerApp_UMCInstallFailed(progress, errors)
 		self.ucr.load()
 		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 		self.installed = True
 		if errors:
-			raise UCTTest_DockerApp_UMCInstallFailed(errors)
+			raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
 
 	def install_via_add_app(self):
 		self._update()
