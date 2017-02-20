@@ -14,7 +14,12 @@ import pytest
 if __name__ == '__main__':
 
 	# get latest app box image
-	image = get_docker_appbox_image()
+	url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
+	username = 'ucs'
+	password = 'readonly'
+	resp = requests.get(url, auth=(username, password)).content
+	data = json.loads(resp)
+	image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
 
 	# installation should fail if setup fails
 	with Appcenter() as appcenter:
