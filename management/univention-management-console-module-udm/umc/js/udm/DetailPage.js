@@ -347,7 +347,7 @@ define([
 			array.forEach(properties, lang.hitch(this, function(iprop) {
 				if (iprop.nonempty_is_default && iprop['default'] === undefined) {
 					var widget = this._form.getWidget(iprop.id);
-					if (widget.getAllItems) {
+					if (!widget.get('value') && widget.getAllItems) {
 						var item = array.filter(widget.getAllItems(), function(item) { return item.id; })[0];
 						if (item !== undefined) {
 							vals[iprop.id] = item.id;
