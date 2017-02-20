@@ -63,7 +63,6 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this, {
-				cacheRowWidgets: false,
 				columns: [{
 					name: 'device',
 					label: _('Type'),

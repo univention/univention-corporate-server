@@ -50,7 +50,6 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this, {
-				cacheRowWidgets: false,
 				columns: [{
 					name: 'label',
 					label: _('Name')

@@ -54,7 +54,6 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this, {
-				cacheRowWidgets: false,
 				columns: [{
 					name: 'type',
 					label: _('Type'),
@@ -132,7 +131,7 @@ define([
 					selection.removeAllRanges();
 					selection.addRange(range);
 				}
-			}
+			};
 			
 			if (!mac) {
 				mac = _('automatic');
@@ -143,7 +142,7 @@ define([
 			var widget = new Text({
 				content: content
 			});
-			widget.on('click', function() { selectText(widget.domNode)});
+			widget.on('click', function() { selectText(widget.domNode); });
 			this.own(widget);
 			return widget;
 		},
