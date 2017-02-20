@@ -292,7 +292,7 @@ rm -f /var/lib/univention-ldap/root.secret
 # Rewrite apache2 default sites, workaround for
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27597
 ucr commit \
-	/var/www/ucs-overview/entries.json \
+	/var/www/univention/meta.json \
 	/var/www/univention/languages.json
 
 # Restart NSCD
