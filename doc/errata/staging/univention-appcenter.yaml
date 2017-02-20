@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-59.283.201702180315
+fix: 5.0.23-60.284.201702201735
 desc: |
  This update addresses the following issues:
  * After installing an App, warnings during the process are not shown as
