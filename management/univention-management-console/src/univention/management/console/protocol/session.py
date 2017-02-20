@@ -67,7 +67,7 @@ from ..locales import I18N, I18N_Manager
 from ..base import Base, UMC_Error
 from ..ldap import get_machine_connection
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
-from ..modules.decorators import sanitize, simple_response, allow_get, prevent_xsrf_check, prevent_referer_check
+from ..modules.decorators import sanitize, simple_response, allow_get_request
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
@@ -214,9 +214,7 @@ class ProcessorBase(Base):
 
 		self.execute(method, msg)
 
-	@allow_get
-	@prevent_xsrf_check
-	@prevent_referer_check
+	@allow_get_request
 	def handle_request_unknown(self, msg):
 		"""Handles an unknown or invalid request that is answered with a
 		status code BAD_REQUEST_NOT_FOUND.
@@ -225,8 +223,7 @@ class ProcessorBase(Base):
 		"""
 		raise UMC_Error(status=405)  # BAD_REQUEST_NOT_FOUND)
 
-	@allow_get
-	@prevent_xsrf_check
+	@allow_get_request
 	def handle_request_auth(self, request):
 		result = request.authentication_result
 		del request.authentication_result
@@ -246,8 +243,7 @@ class ProcessorBase(Base):
 	handle_request_set_user = handle_request_unknown
 	handle_request_version = handle_request_unknown
 
-	@allow_get
-	@prevent_xsrf_check
+	@allow_get_request
 	def handle_request_get(self, msg):
 		"""Handles a GET request"""
 
@@ -371,8 +367,7 @@ class ProcessorBase(Base):
 			except:
 				CORE.error(traceback.format_exc())
 
-	@allow_get
-	@prevent_xsrf_check
+	@allow_get_request
 	@sanitize(DictSanitizer(dict(
 		tmpfile=StringSanitizer(required=True),
 		filename=StringSanitizer(required=True),
@@ -424,8 +419,7 @@ class ProcessorBase(Base):
 		else:
 			self.handle_request_command(msg)
 
-	@allow_get
-	@prevent_xsrf_check
+	@allow_get_request
 	def handle_request_command(self, msg):
 		"""Handles a COMMAND request. The request must contain a valid
 		and known command that can be accessed by the current user. If
@@ -888,9 +882,7 @@ class SessionHandler(ProcessorBase):
 		else:
 			self.request(request)
 
-	@allow_get
-	@prevent_xsrf_check
-	@prevent_referer_check
+	@allow_get_request
 	def handle(self, request):
 		"""Ensures that commands are only passed to the processor if a
 			successful authentication has been completed."""
@@ -929,9 +921,7 @@ class SessionHandler(ProcessorBase):
 	def _response(self, response):
 		self.signal_emit('success', response)
 
-	@allow_get
-	@prevent_xsrf_check
-	@prevent_referer_check
+	@allow_get_request
 	def parse_error(self, request, parse_error):
 		status, message = parse_error.args
 		raise UMC_Error(message, status=status)

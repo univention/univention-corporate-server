@@ -36,7 +36,7 @@ from univention.lib import Translation, admember
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import file_upload, prevent_xsrf_check, sanitize, simple_response
+from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import StringSanitizer
 
@@ -280,7 +280,6 @@ class Instance(Base, ProgressMixin):
 		proc.signal_connect('finished', cb)
 		proc.start()
 
-	@prevent_xsrf_check
 	@file_upload
 	def upload_certificate(self, request):
 		def _return(pid, status, bufstdout, bufstderr, request, fn):

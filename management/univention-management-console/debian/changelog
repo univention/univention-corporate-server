@@ -1,3 +1,9 @@
+univention-management-console (9.0.32-1) unstable; urgency=medium
+
+  * Bug #39731: extend allow_get decorator to ignore some security checks
+
+ -- Florian Best <best@univention.de>  Mon, 20 Feb 2017 10:40:46 +0100
+
 univention-management-console (9.0.31-1) unstable; urgency=medium
 
   * Bug #39731: extend file_upload decorator to ignore some security checks

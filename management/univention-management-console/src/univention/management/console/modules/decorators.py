@@ -651,9 +651,18 @@ def require_password(function):
 	return _decorated
 
 
-def allow_get(function):
-	function.allow_get = True
-	return function
+def allow_get_request(function=None, xsrf_check=True, referer_check=True):
+	"""Allows HTTP GET requests. Additionally prevents the XSRF check and optional the referer check."""
+	def _decorator(function):
+		if not xsrf_check:
+			prevent_xsrf_check(function)
+		if not referer_check:
+			prevent_referer_check(function)
+		function.allow_get = True
+		return function
+	if function is None:
+		return _decorator
+	return _decorator(function)
 
 
 def prevent_xsrf_check(function):
