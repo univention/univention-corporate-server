@@ -138,6 +138,12 @@ Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/r
 Type=str
 Categories=service-ldap
 
+[ldap/acl/read/regex]
+Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'ldap/acl/read/anonymous'), können einzelne Regex Ausdrücke über diese Variable für den anonymen Lesezugriff freigeschaltet werden. Mehrere Werte werden durch Komma getrennt.
+Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual regex expressions addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas.
+Type=str
+Categories=service-ldap
+
 [ldap/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des LDAP-Servers. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the LDAP server. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.

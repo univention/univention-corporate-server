@@ -188,6 +188,10 @@ if configRegistry.is_false('ldap/acl/read/anonymous'):
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
 			print '   by peername.ip=%s read' % ip
+	ldap_acl_read_anonymous_regex = configRegistry.get('ldap/acl/read/regex')
+	if ldap_acl_read_anonymous_regex:
+		for regex in ldap_acl_read_anonymous_regex.split(','):
+			print '   by peername.regex=%s read' % regex
 	print '   by anonymous auth'
 	print '   by * +0 break'
 
@@ -204,6 +208,10 @@ if configRegistry.is_false('ldap/acl/read/anonymous'):
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
 			print '   by peername.ip=%s read' % ip
+	ldap_acl_read_anonymous_regex = configRegistry.get('ldap/acl/read/regex')
+	if ldap_acl_read_anonymous_regex:
+		for regex in ldap_acl_read_anonymous_regex.split(','):
+			print '   by peername.regex=%s read' % regex
 else:
 	print '   by * read'
 

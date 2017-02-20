@@ -1,3 +1,9 @@
+univention-ldap (13.0.3-4) unstable; urgency=low
+
+  * Bug #43523: added ldap/acl/read/regex
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2017 11:39:05 +0100
+
 univention-ldap (13.0.3-3) unstable; urgency=medium
 
   * Remove hardcoded sleep (Bug #43450)
