@@ -43,7 +43,6 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
-	"./setup/ApplianceWizard",
 	"umc/i18n!umc/modules/setup",
 	"xstyle/css!./setup.css",
 // Pages:
@@ -51,7 +50,7 @@ define([
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
 ], function(dojo, declare, lang, array, all, topic, Deferred, styles, entities,
-	tools, dialog, Module, ProgressBar, libServer, ApplianceWizard, _) {
+	tools, dialog, Module, ProgressBar, libServer, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
 		// empty class that indicates that the user canceled a dialog
