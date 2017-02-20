@@ -504,7 +504,9 @@ define([
 				return col;
 			}, this);
 
-			if (this.gridOptions && this.gridOptions.selectionMode && this.gridOptions.selectionMode !== 'none') {
+			var showCheckboxColumn = !this.gridOptions || !this.gridOptions.selectionMode || this.gridOptions.selectionMode !== 'none';
+
+			if (showCheckboxColumn) {
 				var selectionColumn = {
 					selector: 'checkbox',
 					label: 'Selector',
