@@ -504,12 +504,14 @@ define([
 				return col;
 			}, this);
 
-			var selectionColumn = {
-				selector: 'checkbox',
-				label: 'Selector',
-				width: '30px'
-			};
-			gridColumns.unshift(selectionColumn);
+			if (this.gridOptions.selectionMode && this.gridOptions.selectionMode !== 'none') {
+				var selectionColumn = {
+					selector: 'checkbox',
+					label: 'Selector',
+					width: '30px'
+				};
+				gridColumns.unshift(selectionColumn);
+			}
 
 			// set new grid structure
 			this._grid.set('columns', gridColumns);
