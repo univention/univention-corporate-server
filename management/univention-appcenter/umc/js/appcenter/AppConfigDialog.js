@@ -55,7 +55,7 @@ define([
 		showUp: function() {
 			this._clearWidget('_container', true);
 
-			this.set('headerText', _('Configure %s', entities.encode(this.app.name)));
+			this.set('headerText', _('Configure %s', this.app.name));
 			this.set('helpText', _('Here you can set configuration options as well as start and stop the application.'));
 
 			this.set('headerButtons', [{

@@ -34,11 +34,12 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
+	"dojox/html/entities",
 	"../dialog",
 	"../render",
 	"./Text",
 	"./ContainerWidget"
-], function(declare, kernel, lang, array, domClass, dialog, render, Text, ContainerWidget) {
+], function(declare, kernel, lang, array, domClass, entities, dialog, render, Text, ContainerWidget) {
 	return declare("umc.widgets.Page", [ContainerWidget], {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -49,11 +50,13 @@ define([
 		//		Text that describes the module, will be displayed at the top of a page.
 		helpText: '',
 		helpTextRegion: 'nav',
+		helpTextAllowHTML: true,  // FIXME: should be false
 
 		// headerText: String
 		//		Text that will be displayed as header title.
 		headerText: null,
 		headerTextRegion: 'nav',
+		headerTextAllowHTML: false,
 
 		// footerButtons: Object[]?
 		//		Optional array of dicts that describes buttons that shall be added
@@ -115,7 +118,7 @@ define([
 				}
 			}
 			domClass.toggle(this._helpTextPane.domNode, 'dijitHidden', !newVal);
-			this._helpTextPane.set('content', newVal);
+			this._helpTextPane.set('content', this.helpTextAllowHTML ? newVal : entities.encode(newVal));
 			this._set('helpText', newVal);
 		},
 
@@ -132,7 +135,7 @@ define([
 			}
 			// hide header if empty string
 			domClass.toggle(this._headerTextPane.domNode, 'dijitHidden', !newVal);
-			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
+			this._headerTextPane.set('content', '<h1>' + (this.headerTextAllowHTML ? newVal : entities.encode(newVal)) + '</h1>');
 			this._set('headerText', newVal);
 		},
 

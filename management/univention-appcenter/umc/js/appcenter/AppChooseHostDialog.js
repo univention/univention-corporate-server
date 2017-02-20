@@ -60,7 +60,7 @@ define([
 		reset: function(hosts, removedDueToInstalled, removedDueToRole) {
 			this._clearWidget('_form', true);
 
-			this.set('headerText', _('Installation of %s', entities.encode(this.app.name)));
+			this.set('headerText', _('Installation of %s', this.app.name));
 			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', entities.encode(this.app.name)));
 
 			if (this._continueDeferred) {

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -193,7 +193,7 @@ define([
 					name.focus();
 				}
 			} else {
-				this.set('headerText', lang.replace(_("Edit component details [{component}]"), {component: entities.encode(data)}));
+				this.set('headerText', lang.replace(_("Edit component details [{component}]"), {component: data}));
 				this.set('helpText', _("You're editing the details of the component definition."));
 
 				this._form.load(data).then(lang.hitch(this, function() { this.standby(false); }));
