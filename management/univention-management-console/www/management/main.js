@@ -1656,7 +1656,7 @@ define([
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
 						categoryColor: module.category_for_color,
-						description: module.description
+						description: ''
 					}, props);
 
 					tab = new BaseClass(params);
