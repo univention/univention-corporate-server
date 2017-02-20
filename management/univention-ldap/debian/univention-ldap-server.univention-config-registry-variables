@@ -133,14 +133,8 @@ Type=bool
 Categories=service-ldap
 
 [ldap/acl/read/ips]
-Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'ldap/acl/read/anonymous'), können einzelne IP-Adressen über diese Variable für den anonymen Lesezugriff freigeschaltet werden. Mehrere Werte werden durch Komma getrennt.
-Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual IP addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas.
-Type=str
-Categories=service-ldap
-
-[ldap/acl/read/regex]
-Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'ldap/acl/read/anonymous'), können einzelne Regex Ausdrücke über diese Variable für den anonymen Lesezugriff freigeschaltet werden. Mehrere Werte werden durch Komma getrennt.
-Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual regex expressions addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas.
+Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'ldap/acl/read/anonymous'), können einzelne IP-Adressen über diese Variable für den anonymen Lesezugriff freigeschaltet werden. Mehrere Werte werden durch Komma getrennt (z.B. ldap/acl/read/ips='127.0.0.1,192.168.0.0%255.255.255.0').
+Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual IP addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas (e.g. ldap/acl/read/ips='127.0.0.1,192.168.0.0%255.255.255.0').
 Type=str
 Categories=service-ldap
 
