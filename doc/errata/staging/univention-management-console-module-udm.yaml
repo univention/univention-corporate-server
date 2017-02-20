@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-management-console-module-udm
+fix: 6.0.11-39.679.201702202016
+desc: |
+ This update addresses the following issue(s):
+ * If a user template defined a default value for mailHomeServer the value
+   has not been set. This has been fixed.
+bug: [42903]
