@@ -1,3 +1,9 @@
+univention-ldap (13.0.3-5) unstable; urgency=low
+
+  * Bug #43523: revert
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2017 12:06:27 +0100
+
 univention-ldap (13.0.3-4) unstable; urgency=low
 
   * Bug #43523: added ldap/acl/read/regex
