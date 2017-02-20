@@ -108,30 +108,31 @@ class DockerActionMixin(object):
 		if not os.path.exists(container_interface_script):
 			self.warn('Interface script %s not found!' % interface)
 			return None
-		with docker.tmp_file() as error_file, docker.tmp_file() as password_file:
-			if _credentials:
-				self._get_ldap_connection(_args)  # to get a working username/password
-				username = self._get_username(_args)
-				password = self._get_password(_args)
-				with open(password_file.name, 'w') as f:
-					f.write(password)
-				kwargs['username'] = username
-				kwargs['password_file'] = password_file.container_path
-			kwargs['error_file'] = error_file.container_path
-			kwargs['app'] = _app.id
-			kwargs['app_version'] = _app.version
-			# locale = get_locale()
-			# if locale:
-			#	kwargs['locale'] = locale
-			if _output:
-				return docker.execute_with_output(interface, **kwargs)
-			else:
-				process = docker.execute(interface, **kwargs)
-				if process.returncode != 0:
-					with open(error_file.name, 'r+b') as error_handle:
-						for line in error_handle:
-							self.fatal(line)
-				return process
+		with docker.tmp_file() as error_file:
+			with docker.tmp_file() as password_file:
+				if _credentials:
+					self._get_ldap_connection(_args)  # to get a working username/password
+					username = self._get_username(_args)
+					password = self._get_password(_args)
+					with open(password_file.name, 'w') as f:
+						f.write(password)
+					kwargs['username'] = username
+					kwargs['password_file'] = password_file.container_path
+				kwargs['error_file'] = error_file.container_path
+				kwargs['app'] = _app.id
+				kwargs['app_version'] = _app.version
+				# locale = get_locale()
+				# if locale:
+				#	kwargs['locale'] = locale
+				if _output:
+					return docker.execute_with_output(interface, **kwargs)
+				else:
+					process = docker.execute(interface, **kwargs)
+					if process.returncode != 0:
+						with open(error_file.name, 'r+b') as error_handle:
+							for line in error_handle:
+								self.fatal(line)
+					return process
 
 	def _copy_files_into_container(self, app, *filenames):
 		docker = self._get_docker(app)

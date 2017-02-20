@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-60) unstable; urgency=medium
+
+  * Bug #43151: Do not show errors when python2.6 is installed
+  * Cleanup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Feb 2017 17:26:39 +0100
+
 univention-appcenter (5.0.23-59) unstable; urgency=medium
 
   * Bug #43385: Only show ERROR or CRITICAL messages in frontend; adjust log

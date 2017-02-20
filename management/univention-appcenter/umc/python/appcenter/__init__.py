@@ -40,7 +40,6 @@ from contextlib import contextmanager
 # import urllib2
 from httplib import HTTPException
 import logging
-from tempfile import NamedTemporaryFile
 
 # related third party
 import notifier
@@ -290,53 +289,6 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def track(self, app, action, value):
 		send_information(action, app=app, value=value)
-
-	@require_password
-	def _invoke_docker(self, function, application, force, values):
-		can_continue = force  # always show configuration after first request
-		serious_problems = False
-		app = AppManager.find(application.id)
-		errors, warnings = app.check(function)
-		if errors:
-			MODULE.process('Cannot %s %s: %r' % (function, application.id, errors))
-			serious_problems = True
-			can_continue = False
-		if warnings:
-			MODULE.process('Warning trying to %s %s: %r' % (function, application.id, warnings))
-		result = {
-			'serious_problems': serious_problems,
-			'invokation_forbidden_details': errors,
-			'invokation_warning_details': warnings,
-			'can_continue': can_continue,
-			'software_changes_computed': False,
-		}
-		if can_continue:
-			def _thread(app, function):
-				with self.package_manager.locked(reset_status=True, set_finished=True):
-					with self.package_manager.no_umc_restart(exclude_apache=True):
-						if function not in ['install', 'uninstall', 'update']:
-							raise umcm.UMC_CommandError('Cannot %s. Not supported!' % function)
-						if function == 'update':
-							function = 'upgrade'
-						if function == 'uninstall':
-							function = 'remove'
-						action = get_action(function)
-						kwargs = {'noninteractive': True}
-						if function in ['install', 'upgrade']:
-							kwargs['set_vars'] = values
-						if function == 'uninstall':
-							kwargs['keep_data'] = not values.get('dont_keep_data', False)
-						with NamedTemporaryFile('w+b') as password_file:
-							password_file.write(self.password)
-							password_file.flush()
-							action.call(app=app, username=self._username, pwdfile=password_file.name, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service'], **kwargs)
-
-			def _finished(thread, result):
-				if isinstance(result, BaseException):
-					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
-			thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, app, function), _finished)
-			thread.run()
-		return result
 
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
