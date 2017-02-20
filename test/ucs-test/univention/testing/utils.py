@@ -34,6 +34,7 @@ import ldap
 import time
 import socket
 import logging
+import os
 
 import univention.config_registry
 import univention.uldap as uldap
@@ -360,6 +361,20 @@ def uppercase_in_ldap_base():
     ucr.load()
     return not ucr.get('ldap/base').islower()
 
+def is_udp_port_open(port, ip=None):
+    if ip is None:
+        ip = '127.0.0.1'
+    try:
+        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udp_sock.connect((ip, int(port)))
+        os.write(udp_sock.fileno(), 'X')
+        os.write(udp_sock.fileno(), 'X')
+        os.write(udp_sock.fileno(), 'X')
+        return True
+    except OSError as ex:
+        logging.debug('is_port_open(%r) failed: %s', port, ex, exc_info=True)
+    return False
+        
 
 def is_port_open(port, hosts=None, timeout=60):
     '''
