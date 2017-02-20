@@ -333,7 +333,7 @@ define([
 				update: lang.hitch(this, 'update'),
 				selectAll: function() {
 					this.inherited(arguments);
-					this._selectAll(); // Bug: dgrid #1198
+					this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
 				}
 			}, this.gridOptions || {}));
 
@@ -504,7 +504,7 @@ define([
 				return col;
 			}, this);
 
-			if (this.gridOptions.selectionMode && this.gridOptions.selectionMode !== 'none') {
+			if (this.gridOptions && this.gridOptions.selectionMode && this.gridOptions.selectionMode !== 'none') {
 				var selectionColumn = {
 					selector: 'checkbox',
 					label: 'Selector',
