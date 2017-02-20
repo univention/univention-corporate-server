@@ -264,6 +264,37 @@ insertBorder()
 		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon
 			icon-image(-300, -20, '../')
 
+	&.umcOverviewNotShown .umcHeader
+		.umcBackToOverview
+			&.dijitHover
+				background-color: rgba(0, 0, 0, 0.1)
+
+		.umcMainTabController .dijitTab
+			color: rgba(255, 255, 255, 0.7)
+
+			&.dijitTabChecked
+				color: rgba(255, 255, 255, 1)
+
+		.umcHeaderRight
+			.umcSearchBox,
+			.umcSearchBox:before,
+			.umcSearchBox:after
+				color: #fff
+				border-color: #fff
+
+			.umcSearchIcon
+				icon-image(-260, -40, '../', '-white')
+
+			.umcMobileMenuToggleButton div
+				background-color: #fff
+
+			.univentionLogo
+				background-image: url(../images/univention-white.svg)
+
+		.dijitSelect, .dijitTextBox
+			.dijitInputContainer .umcInlineLabel
+				color: rgba(255, 255, 255, 1)
+
 .umc .umcMoreTabsMenuPopupWrapper
 	margin: 3px 0 0 3px
 

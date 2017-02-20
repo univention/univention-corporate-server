@@ -1,3 +1,9 @@
+univention-web (1.0.26-2) unstable; urgency=medium
+
+  * Bug #42172: revert last changes + fix inline label color in header search
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Feb 2017 13:25:03 +0100
+
 univention-web (1.0.26-1) unstable; urgency=medium
 
   Bug #42172:
