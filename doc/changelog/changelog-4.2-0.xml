@@ -259,6 +259,9 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The setup wizard has been refactored to be a standalone web application (<u:bug>42172</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The package <package>dbus-x11</package> is installed by default to silence <package>firefox</package> (<u:bug>36168</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
