@@ -1,3 +1,9 @@
+univention-management-console (9.0.34-1) unstable; urgency=medium
+
+  * Bug #42172: remove headless mode for setup wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Feb 2017 12:23:33 +0100
+
 univention-management-console (9.0.33-1) unstable; urgency=medium
 
   * Bug #42266: do not set module description as header text

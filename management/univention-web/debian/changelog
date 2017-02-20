@@ -1,3 +1,11 @@
+univention-web (1.0.26-1) unstable; urgency=medium
+
+  Bug #42172:
+  * Remove styling for headless mode for setup wizard
+  * Set color of standby overlay to new gray
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Feb 2017 12:25:21 +0100
+
 univention-web (1.0.25-2) unstable; urgency=medium
 
   * Bug #42266: adjust module header text and styling

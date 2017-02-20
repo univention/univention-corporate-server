@@ -63,8 +63,6 @@ define([
 
 	return declare("umc.modules.setup", [ Module ], {
 
-		wizard: null,
-
 		// this module can only be opened once
 		unique: true,
 
@@ -110,11 +108,7 @@ define([
 				// save current values
 				this._orgValues = lang.clone(values);
 
-				if (this.moduleFlavor === 'wizard') {
-					this._renderWizard(values, data.ucr);
-				} else {
-					this._renderTabs(values, data.ucr);
-				}
+				this._renderTabs(values, data.ucr);
 
 				this.startup();
 				this.standby(false);
@@ -189,104 +183,6 @@ define([
 				this.ready().then(lang.hitch(this, 'updateAllValues'));
 			}));
 			ipage.setValues(values);
-		},
-
-		_renderWizard: function(values, ucr) {
-			var partOfInstaller = tools.isTrue(ucr['system/setup/boot/installer']);
-
-			// add blacklist for pages. The pages will be removed without any replacement.
-			// empty lists are treated as if they were not defined at all (show all pages). list names should
-			// match the names in this.pages and can be separated by a ' '.
-			var fieldBlacklist = (ucr['system/setup/boot/fields/blacklist'] || '').split(' ');
-			var pageBlacklist = (ucr['system/setup/boot/pages/blacklist'] || '').split(' ');
-			if (!tools.isTrue(ucr['system/setup/boot/select/role'])) {
-				pageBlacklist.push('SystemRolePage');
-			}
-
-			pageBlacklist = array.map(pageBlacklist, function(page) {
-				var replacements = {
-					'SoftwarePage': 'software',
-					'SystemRolePage': 'role'
-				};
-				return replacements[page] || page;
-			});
-			var rolePageDisabled = array.indexOf('role', pageBlacklist) === -1;
-			if (rolePageDisabled) {
-				// make sure to disable all pages linked to role selection
-				pageBlacklist.push('role-nonmaster-ad');
-			}
-
-			this.wizard = new ApplianceWizard({
-				//progressBar: progressBar
-				moduleID: this.moduleID,
-				disabledPages: pageBlacklist,
-				disabledFields: fieldBlacklist,
-				local_mode: tools.status('username') == '__systemsetup__',
-				umcpCommand: lang.hitch(this, 'umcpCommand'),
-				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
-				partOfInstaller: partOfInstaller,
-				values: values,
-				ucr: ucr
-			});
-			this.addChild(this.wizard);
-			if (!tools.status('overview')) {
-				this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
-					this.set('title', child.get('headerText'));
-				}));
-				this.set('title', this.wizard.get('selectedChildWidget').get('headerText'));
-				styles.insertCssRule(lang.replace('#{id} .umcPageHeader', this.wizard), 'display: none!important;');
-			}
-			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
-				// wizard is done -> call cleanup command and redirect browser to new web address
-				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
-				tools.checkSession(false);
-				if (this.wizard.local_mode) {
-					this._showDummyProgressbar();
-					this.umcpCommand('setup/closebrowser').then(function(data) {
-						if (!data.result) {
-							window.close();
-						}
-					}, function(error) {
-						window.close();
-					});
-				} else {
-					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
-				}
-			}));
-			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, ucr));
-		},
-
-		_reloadWizard: function(values, ucr, newLocale) {
-			// update internal locale settings
-			var _setLocale = lang.hitch(this, function() {
-				dojo.locale = newLocale;
-				var locale = newLocale.replace('-', '_');
-				var deferreds = [];
-				deferreds.push(this.umcpCommand('set', {
-					locale: locale
-				}, false));
-				deferreds.push(this.umcpCommand('setup/set_locale', {
-					locale: locale
-				}, false));
-				deferreds.push(_.load());
-				return all(deferreds).then(lang.hitch(this, 'load'));
-			});
-
-			// remove wizard and render it again
-			var _cleanup = lang.hitch(this, function() {
-				this.removeChild(this.wizard);
-				this.wizard.destroy();
-				this._renderWizard(this._orgValues, ucr);
-			});
-
-			// chain tasks with some time in between to allow a smooth standby animation
-			this.standby(true);
-			var self = this;
-			tools.defer(_setLocale, 200).then(function() {
-				return tools.defer(_cleanup, 200);
-			}).then(function() {
-				return tools.defer(lang.hitch(self, 'standby', false), 200);
-			});
 		},
 
 		_displayNetworkPageWarning: function(networkDisabledBy) {
@@ -373,33 +269,6 @@ define([
 			this._progressBar.reset();
 			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
 			this.standby(true, this._progressBar);
-		},
-
-		_redirectBrowser: function(interfaces, primary_interface) {
-			// redirect to new UMC address and set username to Administrator
-			this.standby(true);
-			var target = '/univention/management/?username=Administrator';
-			if (this._orgValues.system_activation_installed && this.wizard._isRoleMaster()) {
-				// redirect to '/' as the system activation service is enabled
-				// (Note: For roles other than DC master, the system activation service
-				// will not be enabled as they may only join into a domain with an
-				// already activated license.)
-				// Add a random digit at the end to avoid caching effects
-				target = '/?_rnd=' + Math.floor(Math.random() * 10e10);
-			}
-			target = window.location.href.replace(new RegExp( "/univention/management/.*", "g" ), target);
-
-			// Consider IP changes, replace old ip in url by new ip
-			var newIp = this._getNewIpAddress(interfaces, primary_interface || 'eth0');
-			if (newIp) {
-				var oldIp = window.location.host;
-				target = target.replace(oldIp, newIp);
-			}
-
-			// give the restart/services function 10 seconds time to restart the services
-			setTimeout(function () {
-				window.location.replace(target);
-			}, 2000);
 		},
 
 		save: function() {

@@ -54,6 +54,8 @@ define([
 
 		standbyOpacity: 0.75,
 
+		standbyColor: '#f2f2f2',
+
 		_lastContent: null,
 
 		_standbyStartedDeferred: null,
@@ -74,7 +76,7 @@ define([
 				target: this.domNode,
 				duration: 200,
 				opacity: this.standbyOpacity,
-				color: '#FFF',
+				color: this.standbyColor,
 				image: animImage
 			}))[0];
 			this.domNode.appendChild(this._standbyWidget.domNode);

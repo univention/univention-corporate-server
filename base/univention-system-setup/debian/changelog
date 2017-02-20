@@ -1,3 +1,9 @@
+univention-system-setup (10.0.6-1) unstable; urgency=medium
+
+  * Bug #42172: move ApplianceWizard into standalone web app
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Feb 2017 12:26:08 +0100
+
 univention-system-setup (10.0.5-2) unstable; urgency=medium
 
   * Bug #42915: Move welcome screen installation from appliance hook

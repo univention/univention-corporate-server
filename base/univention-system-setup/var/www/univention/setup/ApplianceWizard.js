@@ -1273,8 +1273,9 @@ define([
 			this._addWidgetToPage('software', this._gallery);
 			this._gallery.on('filterDone', lang.hitch(this, function() {
 				this._apps.query({is_installed: true}).forEach(lang.hitch(this, function(iitem) {
-					var idx = this._gallery._grid.getItemIndex(iitem);
-					this._gallery._grid.selection.addToSelection(idx);
+					//TODO: uncomment these lines, getItemIndex() was undefined
+					//var idx = this._gallery._grid.getItemIndex(iitem);
+					//this._gallery._grid.selection.addToSelection(idx);
 				}));
 			}));
 			this.umcpCommand('setup/apps/query').then(lang.hitch(this, function(response) {

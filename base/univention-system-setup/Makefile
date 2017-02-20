@@ -30,14 +30,19 @@
 .PHONY: build install clean
 
 INITIALSETUP_DE_JSON := var/www/univention/js/initialsetup/de.json
+STYL_FILES := $(shell find var/www -name '*.styl')
+CSS_FILES := $(STYL_FILES:.styl=.css)
 
-build: $(INITIALSETUP_DE_JSON) get-volume-set-identifier
+build: $(INITIALSETUP_DE_JSON) get-volume-set-identifier $(CSS_FILES)
 
 clean:
-	rm -f $(INITIALSETUP_DE_JSON)
+	rm -f $(INITIALSETUP_DE_JSON) $(CSS_FILES)
 
 install: build
 	@echo "Nothing to install"
+
+%.css: %.styl
+	stylus "$<"
 
 %.json: %.po
 	dh-umc-po2json "$<"

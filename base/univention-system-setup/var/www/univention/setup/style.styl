@@ -1,0 +1,259 @@
+/*
+ * Copyright 2017 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Publi
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3 if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+$ucs-green ?= #7ab51d
+$text-color ?= #282828
+$header-color ?= #5a5a5a
+
+.umc
+	/* styling of headers and page */
+	.umcHeader,
+	.umcHeader .umcHeaderLeft
+		height: 42px
+
+	.umcHeader
+		background-color: $header-color
+		border-bottom: 2px solid $ucs-green
+
+		.umcHeaderRight
+			left: 0
+
+			.univentionLogo
+				background-image: url(/univention/js/dijit/themes/umc/images/univention-white.svg)
+				margin-left: 5px
+
+	.umcPage
+		margin-top: 75px
+
+		.umcPageNav .umcPageHeader
+			position: absolute
+			top: -45px
+
+			h1
+				font-size: 24px
+				font-weight: normal
+				width: 600px
+
+
+	/* stylings of live citz search */
+	.umc-ucssetup-wizard-livesearch
+		margin-top: 0.75em
+
+	.umc-ucssetup-wizard-city-details
+		min-width: 50%
+
+	.umc-ucssetup-wizard-change-locale-button
+		margin-top: 0.5em
+		float: right
+
+
+	/* generic stylings for all setup pages */
+	.umc-setup-page
+		.umcIconInfo
+			background-image: url(info-icon.png)
+			width: 16px
+			height: 16px
+
+		.umcLiveSearch
+			.dijitArrowButtonInner
+				background-position: -260px -40px
+
+			.umcLiveSearching .dijitArrowButtonInner
+				background-position: center
+				background-image: url('../../dijit/themes/umc/form/images/loading.gif')
+
+		.city-match td
+			padding-right: 0.5em
+			padding-bottom: 0.25em
+
+		.umcPageIcon
+			background-repeat: no-repeat
+			height: 120px
+			background-size: contain
+			background-position: center bottom
+
+		.umcPageHelpText
+			min-height: 50px
+
+		@media (max-width: 767px)
+			.umcPageIcon
+				height: 100px
+
+			.umcPageHelpText
+				min-height: 1px
+
+			.umcPageMain
+				/* overwrite autoHeight property for small devices */
+				min-height: 0px !important
+
+
+	/* specific stylings for various setup pages */
+	.umc-setup-page-validation li,
+	.umc-setup-page-error li
+		padding-bottom: 0.75em
+
+	.umc-setup-page-summary
+		ul
+			margin-top: 0
+
+		p
+			margin-top: 0.75em
+
+		.umcPageIcon
+			background-image: url(summary.svg)
+
+	.umc-setup-page-software
+		th .dojoxGridRowSelector
+			display: none
+
+		.umcPageIcon
+			height: 180px
+			background-image: url(software.svg)
+
+		//TODO
+		.umcUCSSetupSoftwareGrid
+			.dojoxGrid
+				height: 350px !important
+
+			.dojoxGridCell
+				.umcAppDescription
+					color: #818181
+
+				.dijitButtonContents
+					width: 17px
+
+	//.umc-setup-page-role .umcLabelPane,
+	//.umc-setup-page-role-nonmaster-ad .umcLabelPane,
+	//.umc-setup-page-summary .umcLabelPane
+	//	padding-bottom: 0
+
+	.umc-setup-page-welcome .umcPageIcon
+		background-image: url(welcome.svg)
+
+	.umc-setup-page-locale .umcPageIcon
+		background-image: url(locale.svg)
+
+	.umc-setup-page-license .umcPageIcon
+		background-image: url(license.svg)
+
+	.umc-setup-page-role .umcPageIcon,
+	.umc-setup-page-role-nonmaster-ad .umcPageIcon,
+	.umc-setup-page-warning-basesystem .umcPageIcon
+		background-image: url(domain.svg)
+
+	.umc-setup-page-network
+		.umcPageIcon
+			background-image: url(network.svg)
+
+		@media (min-width: 768px) and (max-width: 991px)
+			.umcSize-One
+				width: 50%
+
+	.umc-setup-page-credentials-master .umcPageIcon
+		background-image: url(account.svg)
+
+	.umc-setup-page-credentials-nonmaster .umcPageIcon,
+	.umc-setup-page-credentials-ad .umcPageIcon
+		background-image: url(credentials.svg)
+
+	.umc-setup-page-fqdn-master .umcPageIcon,
+	.umc-setup-page-fqdn-nonmaster-all .umcPageIcon
+		background-image: url(fqdn.svg)
+
+	.umc-setup-page-validation .umcPageIcon,
+	.umc-setup-page-error .umcPageIcon
+		background-image: url(error.svg)
+
+	.umc-setup-page-done .umcPageIcon
+		background-image: url(done.svg)
+
+
+	/* Virtual keyboard */
+	.umcKeyboardIcon
+		background-image: url(keyboard.svg)
+		background-repeat: no-repeat
+		background-size: contain
+		width: 24px
+		height: 24px
+		float: right
+		margin: 2px 5px
+
+	.umcKeyContainer
+		text-align: center
+
+	.umcKeyboardKey
+		margin: 5px
+		height: 40px
+		width: 40px
+
+		&.dijitButton .dijitButtonNode
+			-webkit-border-radius: 5px
+			-moz-border-radius: 5px
+			border-radius: 5px
+			height: 33px
+			width: 33px
+			max-width: 33px
+			max-height: 33px
+
+	.umcKeyboardRow .umcKeyboardKey .dijitReset.dijitInline.dijitButtonText
+		-webkit-user-select: none
+		-moz-user-select: none
+		-ms-user-select: none
+		user-select: none
+		text-decoration: none
+		padding: 0
+
+
+	/* other stylings */
+	.dijitTooltipContainer
+		width: 100%
+		max-width: 800px
+
+	.umcSetupMemoryWarning
+		background-image: url(warning.svg)
+		background-repeat: no-repeat
+		min-height: 96px
+		background-size: 96px
+		padding-left: 96px
+
+	.umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label
+		padding-bottom: 0
+		margin-bottom: 0
+
+	.umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label
+		margin-top: 0
+
+	.umc-ucssetup-wizard-indent
+		margin-left: 16px
+
+	.umcUCSSetupLicenseAgreement
+		overflow: auto
+		height: 350px !important
+
+

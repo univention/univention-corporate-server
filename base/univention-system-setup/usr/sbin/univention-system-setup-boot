@@ -44,7 +44,7 @@ ACTION=$1
 eval "$(univention-config-registry shell)"
 
 SITE_INITIALSETUP="univention/initialsetup.html"
-SITE_SYSTEM_SETUP='univention/management/?module=setup\&flavor=wizard\&overview=false\&username=root'
+SITE_SYSTEM_SETUP='univention/setup/?username=root'
 
 _has_system_setup_boot_startsite() {
 	if [ "$apache2_startsite" = "$SITE_SYSTEM_SETUP" -o "$apache2_startsite" = "$SITE_INITIALSETUP" ]; then
@@ -77,7 +77,7 @@ if [ "$ACTION" = "start" ]; then
 			univention-config-registry set apache2/startsite="$SITE_SYSTEM_SETUP"
 		fi
 	fi
-	univention-config-registry commit /var/www/ucs-overview/entries.json >/dev/null 2>&1
+	univention-config-registry commit /var/www/univention/meta.json >/dev/null 2>&1
 	[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
 elif [ "$ACTION" = "stop" ]; then
 	univention-config-registry set \

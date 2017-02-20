@@ -495,7 +495,7 @@ define([
 		},
 
 		__updateHeaderAfterResize: function() {
-			if (tools.status('overview') && !tools.status('singleModule')) {
+			if (!tools.status('singleModule')) {
 				this._updateMoreTabsVisibility();
 			}
 		},
@@ -511,7 +511,7 @@ define([
 		},
 
 		setupHeader: function() {
-			if (tools.status('overview') && !tools.status('singleModule')) {
+			if (!tools.status('singleModule')) {
 				this.setupBackToOverview();
 				this._setupModuleTabs();
 			}
@@ -621,12 +621,10 @@ define([
 			});
 			this.addChild(this._headerRight);
 
-			if (tools.status('overview') && !tools.status('singleModule')) {
+			if (!tools.status('singleModule')) {
 				this.setupSearchField();
 			}
-			if (tools.status('overview')) {
-				this._setupMenu();
-			}
+			this._setupMenu();
 			this._headerRight.addChild(new ContainerWidget({
 				'class': 'univentionLogo'
 			}));
@@ -902,15 +900,13 @@ define([
 			//		  with these credentials.
 			//		* module, flavor: if module is given, the module is started immediately,
 			//		  flavor is optional.
-			//		* overview: if false and a module is given for autostart, the overview and module header will
-			//		  not been shown and the module cannot be closed
 
 			// remove cookie from UCS 4.0 to prevent login problems
 			cookie('UMCSessionId', null, {path: '/', expires: -1});
 			cookie('UMCUsername', null, {path: '/', expires: -1});
 
-			// save some config properties
-			tools.status('overview', tools.isTrue(props.overview));
+			// set 'overview' to true for backwards compatibility
+			tools.status('overview', true);
 			// username will be overriden by final authenticated username
 			tools.status('username', props.username || tools.getCookies().username);
 			// password has been given in the query string... in this case we may cache it, as well
@@ -969,10 +965,6 @@ define([
 				this.setupTouchDevices();
 			}
 
-			if (!tools.status('overview')) {
-				domClass.toggle(baseWin.body(), 'umcHeadless', true);
-			}
-
 			// set up fundamental layout parts...
 
 			this._topContainer = new ContainerWidget({
@@ -1021,10 +1013,8 @@ define([
 			});
 			on.once(this, 'ModulesLoaded', lang.hitch(this, function() {
 				// run some checks (only if a overview page is available)
-				deferred.resolve(tools.status('overview'));
-				if (tools.status('overview')) {
-					topic.publish('/umc/started');
-				}
+				deferred.resolve(true);
+				topic.publish('/umc/started');
 			}));
 
 			this._setupStaticGui = true;
@@ -1184,7 +1174,6 @@ define([
 
 		_loadModules: function(reload) {
 			var options = reload ? {reload: true} : null;
-			var onlyLoadAutoStartModule = !tools.status('overview') && tools.status('autoStartModule');
 			return all({
 				modules: tools.umcpCommand('get/modules', options),
 				categories: tools.umcpCommand('get/categories')
@@ -1192,14 +1181,6 @@ define([
 				// update progress
 				var _modules = lang.getObject('modules.modules', false, data) || [];
 				var _categories = lang.getObject('categories.categories', false, data) || [];
-
-				if (onlyLoadAutoStartModule) {
-					_modules = array.filter(_modules, function(imod) {
-						var moduleMatched = tools.status('autoStartModule') === imod.id;
-						var flavorMatched = !tools.status('autoStartFlavor') || tools.status('autoStartFlavor') == imod.flavor;
-						return moduleMatched && flavorMatched;
-					});
-				}
 
 				this._loadJavascriptModules(_modules);
 
@@ -1441,12 +1422,6 @@ define([
 		},
 
 		_setupOverviewPage: function() {
-			if (!tools.status('overview')) {
-				// no overview page is being displayed
-				// (e.g., system setup in appliance scenario)
-				return;
-			}
-
 			this._grid = new _OverviewPane({
 				'class': 'umcOverviewPane',
 //				categories: this.getCategories(),
@@ -1652,7 +1627,7 @@ define([
 					var params = lang.mixin({
 						title: module.name,
 						//iconClass: tools.getIconClass(module.icon),
-						closable: tools.status('overview') && !tools.status('singleModule'),  // closing tabs is only enabled if the overview is visible
+						closable: !tools.status('singleModule'),  // closing tabs is only enabled if the overview is visible
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
 						categoryColor: module.category_for_color,
