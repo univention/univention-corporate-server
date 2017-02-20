@@ -1,5 +1,6 @@
 univention-appcenter (6.0.1-29) unstable; urgency=medium
 
+  * Bug #43151: Do not show errors when python2.6 is installed
   * Bug #43496: Always call find() with the ID
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Feb 2017 17:27:43 +0100
