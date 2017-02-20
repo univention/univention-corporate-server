@@ -1163,7 +1163,7 @@ class App(object):
 		from univention.appcenter.app_cache import Apps
 		if self.required_app_version_upgrade:
 			required_version = LooseVersion(self.required_app_version_upgrade)
-			installed_app = Apps().find(self)
+			installed_app = Apps().find(self.id)
 			installed_version = LooseVersion(installed_app.version)
 			if required_version > installed_version:
 				return {'required_version': self.required_app_version_upgrade}
@@ -1445,7 +1445,7 @@ class App(object):
 			# is already installed, just a minor version upgrade
 			#   RAM "used" by this installed app should count
 			#   as free. best approach: substract it
-			installed_app = Apps().find(self)
+			installed_app = Apps().find(self.id)
 			old_required_ram = installed_app.min_physical_ram
 			required_ram = required_ram - old_required_ram
 		if current_ram < required_ram:
@@ -1482,7 +1482,7 @@ class App(object):
 		hard_problems = {}
 		soft_problems = {}
 		if function == 'upgrade':
-			app = Apps().find(self)
+			app = Apps().find(self.id)
 			if app > self:
 				# upgrade is not possible,
 				#   special handling
