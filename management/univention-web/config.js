@@ -83,6 +83,7 @@ var umcConfig = {
 };
 
 var dojoConfig = {
+	cacheBust: 'prevent-cache=%VERSION%',
 	has: {
 		'dojo-undef-api': true
 	},

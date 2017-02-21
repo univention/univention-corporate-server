@@ -92,7 +92,7 @@ $(TMP_DIR):
 
 %/config.js: config.js
 	# copy the config.js to its appropriate directory
-	cp $< $@
+	sed 's/%VERSION%/$(VERSION)/' $< > $@
 
 $(TMP_THEME_DIR): $(TMP_DIR)
 	# link theme files into the tmp dir
