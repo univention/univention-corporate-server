@@ -1,6 +1,12 @@
+univention-system-setup (10.0.7-3) unstable; urgency=medium
+
+  * Bug #42172: adjust another typo in apache config
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Feb 2017 18:39:13 +0100
+
 univention-system-setup (10.0.7-2) unstable; urgency=medium
 
-  * Bug #42172: adjust type in apache config
+  * Bug #42172: adjust typo in apache config
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Feb 2017 18:38:11 +0100
 
