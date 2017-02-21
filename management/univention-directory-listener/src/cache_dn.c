@@ -1,6 +1,6 @@
 /*
  * Univention Directory Listener
- *  implementation for MDB dntree adjacency list
+ *  implementation for LMDB dntree adjacency list
  *
  * Copyright 2016-2017 Univention GmbH
  * Copyright 2016-2017 Arvid Requate

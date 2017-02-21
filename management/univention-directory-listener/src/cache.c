@@ -40,7 +40,7 @@
    with a given key. However, we're not working with cache entries
    as chunks of data later, but use C structures. So we'll need to
    convert the C structure we can work with to chunks of data we
-   can store in MDB, and the other way around.
+   can store in LMDB, and the other way around.
 
    We have decided on a pretty low level, but straightforward
    binary format for the chunk of data. For manual error recovery, a
