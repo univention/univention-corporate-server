@@ -1,3 +1,9 @@
+univention-ldap (13.0.3-6) unstable; urgency=low
+
+  * Bug #36215: disable ldap/shadowbind during update
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Feb 2017 14:30:38 +0100
+
 univention-ldap (13.0.3-5) unstable; urgency=low
 
   * Bug #43523: revert

@@ -95,6 +95,11 @@ if [ "i686" = "$(uname -m)" ]; then
 	mdb_max=1992294400 # 1.9 GB
 fi
 
+# set ldap/shadowbind to false for updates (4.1 -> 4.2)
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; then
+	ucr set ldap/shadowbind=false
+fi
+
 ucr set \
 	ldap/debug/level?0 \
 	slapd/port?"7389,389" \
