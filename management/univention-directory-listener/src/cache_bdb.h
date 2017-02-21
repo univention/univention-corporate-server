@@ -56,7 +56,7 @@ int	bdb_cache_update_master_entry		(BdbCacheMasterEntry	 *master_entry,
 int	bdb_cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-inline int	bdb_cache_update_entry_lower			(NotifierID		  id,
+int	bdb_cache_update_entry_lower			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
 int	bdb_cache_delete_entry			(NotifierID		  id,

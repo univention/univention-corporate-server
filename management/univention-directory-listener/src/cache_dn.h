@@ -38,13 +38,6 @@
 #include <lmdb.h>
 #include <ldap.h>
 
-typedef struct mdb_ctx {
-	MDB_env		*env;
-	MDB_dbi		dbi;
-	MDB_txn		*txn;
-	MDB_cursor	*cur;
-} mdb_ctx;
-
 #define	SUBDN_TYPE_NODE 0
 #define	SUBDN_TYPE_LINK 1
 

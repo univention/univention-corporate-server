@@ -36,11 +36,11 @@
    the new LDAP entry is compared with the cache entry, and both,
    old and new entries, are passed to the handler modules.
 
-   Berkeley DB provides a way to store and receive a chunk of data
+   MDB provides a way to store and receive a chunk of data
    with a given key. However, we're not working with cache entries
    as chunks of data later, but use C structures. So we'll need to
    convert the C structure we can work with to chunks of data we
-   can store in BDB, and the other way around.
+   can store in MDB, and the other way around.
 
    We have decided on a pretty low level, but straightforward
    binary format for the chunk of data. For manual error recovery, a
@@ -95,10 +95,10 @@ char *ldap_dir = "/var/lib/univention-ldap";
 
 CacheMasterEntry cache_master_entry;
 
-MDB_env	*env;
-MDB_dbi	id2dn;
-MDB_dbi	id2entry;
-int	mdb_readonly = 0;
+static MDB_env	*env;
+static MDB_dbi	id2dn;
+static MDB_dbi	id2entry;
+static int	mdb_readonly = 0;
 static FILE *lock_fp=NULL;
 
 static struct filter cache_filter;

@@ -58,7 +58,7 @@ int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-inline int	cache_update_entry_lower			(NotifierID		  id,
+int	cache_update_entry_lower			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_delete_entry			(NotifierID		  id,
