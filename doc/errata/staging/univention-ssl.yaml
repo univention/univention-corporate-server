@@ -1,0 +1,11 @@
+product: ucs
+release: "3.3"
+version: [1]
+scope: ucs_3.3-0-errata3.3-1
+src: univention-ssl
+fix: 8.100.0-1.181.201702211021
+desc: |
+ This update addresses the following issue(s):
+ * "renew" and "revoke" failed if the hostname was a substring of another
+   hostname. This has been fixed.
+bug: [43576]
