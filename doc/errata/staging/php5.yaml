@@ -18,7 +18,7 @@ desc: |
    arbitrary proxy server via a crafted Proxy header in an HTTP request,
    aka an "httpoxy" issue (CVE-2016-5385)
  * Denial of service or unspecified other impact via crafted serialized data
-   that leads to a __destruct call or magic method call (CVE-2016-7124)                                                              
+   that leads to a __destruct call or magic method call (CVE-2016-7124)
  * Information leak: The exif_process_IFD_in_TIFF mishandles the case of a
    thumbnail offset that exceeds the file size, which allows remote attackers
    to obtain sensitive information from process memory via a crafted TIFF
