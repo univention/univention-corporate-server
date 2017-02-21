@@ -1,3 +1,9 @@
+univention-debmirror (8.0.0-2) unstable; urgency=low
+
+  * Bug #42296: rename apache conf
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Feb 2017 16:04:58 +0100
+
 univention-debmirror (8.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

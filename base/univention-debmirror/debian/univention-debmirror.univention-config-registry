@@ -1,2 +1,2 @@
 Type: file
-File: etc/apache2/sites-available/univention-repository
+File: etc/apache2/sites-available/univention-repository.conf
