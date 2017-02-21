@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-updater
-fix: 11.0.11-18.1504.201702171756
+fix: 11.0.11-19.1505.201702211658
 desc: |
  This update addresses the following issue(s):
  * A warning message is shown when the currently used UCS version
@@ -14,4 +14,5 @@ desc: |
  * When upgrading Apps via univention-upgrade, in some situations a wrong App
    version was shown as the one to upgrade to. This was only a display issue,
    though. The upgrade was run with the correct App version.
-bug: [43026, 43257, 42935, 43569]
+ * The updater cleans the package cache now after a successful update.
+bug: [43026, 43257, 42935, 43569, 42433]
