@@ -1,3 +1,10 @@
+univention-updater (9.0.49-5) unstable; urgency=medium
+
+  * Removed the end of life message for UCS 3.2 extended security scope
+    (Bug #43536)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Feb 2017 21:30:50 +0100
+
 univention-updater (9.0.49-4) unstable; urgency=medium
 
   * Changed wording of the out-of-maintenance warning in the UMC updater
