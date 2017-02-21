@@ -32,11 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base
-from univention.management.console.protocol.definitions import BAD_REQUEST_INVALID_OPTS, SUCCESS
+from univention.management.console.base import Base, UMC_Error
 
 from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, DictSanitizer, StringSanitizer
 
 import univention.config_registry as ucr
 from univention.config_registry_info import ConfigRegistryInfo, Variable
@@ -92,44 +91,32 @@ class Instance(Base):
 		# does the same as put
 		self.put(request)
 
+	@sanitize(DictSanitizer({
+		'object': DictSanitizer({
+			'key': StringSanitizer(required=True),
+			'value': StringSanitizer(default=''),
+		})
+	}))
 	def put(self, request):
-		message = ''
-		request.status = SUCCESS
-		success = True
-		if isinstance(request.options, (list, tuple)):
-			for _var in request.options:
-				try:
-					var = _var['object']
-					value = var['value'] or ''
-					key = var['key']
-					if self.is_readonly(key):
-						success = False
-						message = _('The UCR variable %s is read-only and can not be changed!') % key
-						break
-					arg = ['%s=%s' % (key.encode(), value.encode())]
-					ucr.handler_set(arg)
+		for _var in request.options:
+			var = _var['object']
+			value = var['value'] or ''
+			key = var['key']
+			if self.is_readonly(key):
+				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
+			arg = ['%s=%s' % (key.encode(), value.encode())]
+			ucr.handler_set(arg)
 
-					# handle descriptions, type, and categories
-					if 'descriptions' in var or 'type' in var or 'categories' in var:
-						self.__create_variable_info(var)
-				except KeyError:
-					# handle the case that neither key nor value are given for an UCR variable entry
-					request.status = BAD_REQUEST_INVALID_OPTS
-					self.finished(request.id, False, message=_('Invalid UCR variable entry, the properties "key" and "value" need to be specified.'))
-					return
-		else:
-			success = False
-			request.status = BAD_REQUEST_INVALID_OPTS
-
-		self.finished(request.id, success, message)
+			# handle descriptions, type, and categories
+			if 'descriptions' in var or 'type' in var or 'categories' in var:
+				self.__create_variable_info(var)
+		return True
 
 	def remove(self, request):
 		variables = filter(lambda x: x is not None, map(lambda x: x.get('object'), request.options))
 		for var in variables:
 			if self.is_readonly(var):
-				message = _('The UCR variable %s is read-only and can not be removed!') % var
-				self.finished(request.id, False, message)
-				return
+				raise UMC_Error(_('The UCR variable %s is read-only and can not be removed!') % (var,))
 
 		ucr.handler_unset(variables)
 		self.finished(request.id, True)
@@ -154,9 +141,7 @@ class Instance(Base):
 				results.append(info.normalize())
 			else:
 				# variable not available, request failed
-				request.status = BAD_REQUEST_INVALID_OPTS
-				self.finished(request.id, False, message=_('The UCR variable %(key)s could not be found') % {'key': key})
-				return
+				raise UMC_Error(_('The UCR variable %(key)s could not be found') % {'key': key})
 		self.finished(request.id, results)
 
 	def categories(self, request):

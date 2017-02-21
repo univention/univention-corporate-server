@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (6.0.1-1) unstable; urgency=medium
+
+  * Bug #39731: wrong HTTP status code lead to confusion during QA; fix error
+  	handling
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2017 17:16:52 +0100
+
 univention-management-console-module-ucr (6.0.0-4) unstable; urgency=medium
 
   * Bug #23837: add ucslint to build process
