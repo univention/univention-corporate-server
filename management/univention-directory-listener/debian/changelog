@@ -1,4 +1,10 @@
-univention-directory-listener (11.0.1-8) UNRELEASED; urgency=medium
+univention-directory-listener (11.0.1-9) unstable; urgency=medium
+
+  * Bug #23367 Feedback from QA: Explain choice of MASTER_KEY
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Feb 2017 19:01:45 +0100
+
+univention-directory-listener (11.0.1-8) unstable; urgency=medium
 
   * Bug #23367 Feedback from QA:
   * Drop unused functions dntree_del_ldapdn and dntree_del_dn

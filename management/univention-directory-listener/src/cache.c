@@ -86,8 +86,9 @@
 #include "utils.h"
 #include "error.h"
 
-// #define MASTER_KEY "__master__"
-static size_t MASTER_KEY=0;
+/* id=0 is used for the root-dn='' in id2dn, but otherwise unused.
+ * We can use it to store the MasterCacheEntry in id2entry. */
+static DNID MASTER_KEY = 0;
 #define MASTER_KEY_SIZE (sizeof(DNID))
 
 char *cache_dir = "/var/lib/univention-directory-listener";
