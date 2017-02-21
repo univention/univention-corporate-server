@@ -425,11 +425,10 @@ int cache_get_master_entry(CacheMasterEntry *master_entry)
 	return MDB_SUCCESS;
 }
 
-/* The dbtxnp argument is only used when WITH_DB42 is defined - useless? */
-int cache_update_master_entry(CacheMasterEntry *master_entry, MDB_txn *dbtxnp)
+int cache_update_master_entry(CacheMasterEntry *master_entry)
 {
 	int		rv;
-	MDB_txn		*write_txn = dbtxnp;
+	MDB_txn		*write_txn;
 	MDB_val		key, data;
 
 	memset(&key, 0, sizeof(MDB_val));
@@ -441,12 +440,9 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, MDB_txn *dbtxnp)
 	data.mv_data=(void*)master_entry;
 	data.mv_size=sizeof(CacheMasterEntry);
 
-	if (!dbtxnp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
 				"cache_update_master_entry: Transaction begin");
-	}
-	if (!dbtxnp
-	    && (rv = mdb_txn_begin(env, NULL, 0, &write_txn)) != MDB_SUCCESS) {
+	if ((rv = mdb_txn_begin(env, NULL, 0, &write_txn)) != MDB_SUCCESS) {
 		cache_error_message(rv, "cache_update_master_entry: mdb_txn_begin");
 		return rv;
 	}
@@ -458,12 +454,9 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, MDB_txn *dbtxnp)
 		mdb_txn_abort(write_txn);
 		return rv;
 	}
-	if (!dbtxnp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
 				"cache_update_master_entry: Transaction commit");
-	}
-	if (!dbtxnp
-	    && (rv = mdb_txn_commit(write_txn)) != MDB_SUCCESS) {
+	if ((rv = mdb_txn_commit(write_txn)) != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"cache_update_master_entry: storing master entry in database failed");
 		cache_error_message(rv, "cache_update_master_entry: mdb_txn_commit");
@@ -473,60 +466,10 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, MDB_txn *dbtxnp)
 	return MDB_SUCCESS;
 }
 
-MDB_txn *cache_new_transaction(NotifierID id, char *dn)
-{
-#ifdef WITH_DB42
-	int			rv;
-	MDB_txn			*write_txn;
-	CacheMasterEntry	 master_entry;
-	NotifierID		*old_id;
-
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_new_transaction: Transaction begin");
-	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
-	if (rv != MDB_SUCCESS) {
-		cache_error_message(rv, "cache_new_transaction: mdb_txn_begin");
-		return NULL;
-	}
-
-	if (id != 0) {
-		rv = cache_get_master_entry(&master_entry);
-		if (rv != MDB_SUCCESS) {
-			mdb_txn_abort(write_txn);
-			return NULL;
-		}
-
-		if (strcmp(dn, "cn=Subschema") == 0)
-			old_id = &master_entry.schema_id;
-		else
-			old_id = &master_entry.id;
-
-		if (*old_id >= id) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"New ID (%ld) is not greater than old"
-				" ID (%ld): %s", id, *old_id, dn);
-			mdb_txn_abort(write_txn);
-			return NULL;
-		} else
-			*old_id = id;
-
-		rv = cache_update_master_entry(&master_entry, write_txn);
-		if (rv != MDB_SUCCESS) {
-			mdb_txn_abort(write_txn);
-			return NULL;
-		}
-	}
-
-	return write_txn;
-#else
-	return NULL;
-#endif
-}
-
 /* XXX: The NotifierID is passed for future use. Once the journal is
    implemented, entries other than the most recent one can be returned.
    At the moment, the id parameters for cache_update_entry, and
-   cache_delete_entry do nothing (at least if WITH_DB42 is undefined) */
+   cache_delete_entry do nothing */
 static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, CacheEntry *entry, MDB_cursor **id2dn_cursor_pp)
 {
 	int		rv;
@@ -578,12 +521,6 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	MDB_txn		*write_txn;
 	MDB_cursor	*id2dn_write_cursor_p;
 
-#ifdef WITH_DB42
-	write_txn = cache_new_transaction(id, dn);
-	if (write_txn == NULL) {
-		return 1;
-	}
-#else
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
 			"cache_update_entry: Transaction begin");
 	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
@@ -591,7 +528,6 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		cache_error_message(rv, "cache_update_entry: mdb_txn_begin");
 		return rv;
 	}
-#endif
 
 	rv = mdb_cursor_open(write_txn, id2dn, &id2dn_write_cursor_p);
 	if (rv != MDB_SUCCESS) {
@@ -685,12 +621,6 @@ int cache_delete_entry(NotifierID id, char *dn)
 	MDB_txn		*write_txn;
 	MDB_cursor	*id2dn_write_cursor_p;
 
-#ifdef WITH_DB42
-	write_txn = cache_new_transaction(id, dn);
-	if (write_txn == NULL) {
-		return 1;
-	}
-#else
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
 			"cache_delete_entry: Transaction begin");
 	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
@@ -698,7 +628,6 @@ int cache_delete_entry(NotifierID id, char *dn)
 		cache_error_message(rv, "cache_delete_entry: mdb_txn_begin");
 		return rv;
 	}
-#endif
 
 	rv = mdb_cursor_open(write_txn, id2dn, &id2dn_write_cursor_p);
 	if (rv != MDB_SUCCESS) {

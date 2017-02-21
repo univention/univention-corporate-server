@@ -598,7 +598,7 @@ int main(int argc, char* argv[])
 
 		cache_get_schema_id(&cache_master_entry.schema_id, 0);
 
-		rv = cache_update_master_entry(&cache_master_entry, NULL);
+		rv = cache_update_master_entry(&cache_master_entry);
 	}
 	if (rv != 0)
 		return rv;

@@ -71,4 +71,4 @@ cache_bdb.o: cache_bdb.c
 
 .PHONY: clean
 clean:
-	$(RM) *.o listener dump demo verify convert *.db3 *.db42
+	$(RM) *.o listener dump demo verify convert *.db3

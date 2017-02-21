@@ -357,7 +357,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not receive schema (%s)", ldap_err2string(rv));
 		}
 		cache_master_entry.schema_id = new_id;
-		rv = cache_update_master_entry(&cache_master_entry, NULL);
+		rv = cache_update_master_entry(&cache_master_entry);
 		if (cache_set_schema_id(new_id))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write schema ID");
 	}

@@ -1,3 +1,11 @@
+univention-directory-listener (11.0.1-11) unstable; urgency=medium
+
+  * Bug #23367 Feedback from QA:
+  * Remove db42 specific code from cache.c
+  * Remove transaction pointer from cache_update_master_entry ABI (cache.h)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Feb 2017 20:08:39 +0100
+
 univention-directory-listener (11.0.1-10) unstable; urgency=medium
 
   * Bug #23367 Feedback from QA:

@@ -220,7 +220,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 			goto out;
 
 		cache_master_entry.id = id;
-		cache_update_master_entry(&cache_master_entry, NULL);
+		cache_update_master_entry(&cache_master_entry);
 		if (cache_set_int("notifier_id", id))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write notifier ID");
 		change_free_transaction_op(&trans.cur);

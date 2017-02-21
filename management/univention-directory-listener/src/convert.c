@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 		exit(1);
 
 	bdb_cache_get_master_entry(&bdb_cache_master_entry);
-	rv = cache_update_master_entry(&cache_master_entry, NULL);
+	rv = cache_update_master_entry(&cache_master_entry);
 
 	for (rv=bdb_cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
 			rv=bdb_cache_next_entry(&cur, &dn, &entry)) {

@@ -53,8 +53,7 @@ int	cache_init				(char *cache_mdb_dir,
 						 int mdb_flags);
 void	cache_sync(void);
 int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
-int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
-						 MDB_txn		 *dptxnp);
+int	cache_update_master_entry		(CacheMasterEntry	 *master_entry);
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
@@ -87,7 +86,6 @@ int	cache_free_cursor			(MDB_cursor		 *cur,
 						 MDB_cursor		 *cur_dn);
 void	cache_close				(void);
 
-/* deprecated with DB42*/
 int	cache_set_int				(char		 *key,
 						 const NotifierID		  value);
 int	cache_get_int				(char		 *key,
