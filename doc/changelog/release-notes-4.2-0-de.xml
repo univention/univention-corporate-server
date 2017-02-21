@@ -121,6 +121,13 @@
 		</para>
 
 		<para>
+			In &ucsUCS; 4.2 verbietet der <emphasis>OpenLDAP</emphasis> Server standardmäßig den LDAP bind
+			falls Passwörter oder Accounts abgelaufen sind. Auf aktualisiereten Systemen ist diese nicht
+			aktiviert, kann aber durch das Setzen der &ucsUCRV; <envar>ldap/shadowbind</envar> auf
+			<emphasis>true</emphasis> aktiviert werden.
+		</para>
+
+		<para>
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
 

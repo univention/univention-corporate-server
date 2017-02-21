@@ -121,6 +121,13 @@
 		</para>
 
 		<para>
+			With &ucsUCS; 4.2 the <emphasis>OpenLDAP</emphasis> server by default denies the LDAP bind if 
+			passwords or the accounts are expired. This feature is not activated for systems updated
+			to &ucsUCS; 4.2. but can be activated by setting the &ucsUCRV; <envar>ldap/shadowbind</envar>
+			to <emphasis>true</emphasis>.
+		</para>
+
+		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>
 
