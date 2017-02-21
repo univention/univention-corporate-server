@@ -426,9 +426,6 @@ def main():
 
     deactivateSourcesListMethods(methods=['cdrom'])
 
-    if clean:
-        subprocess.call(['apt-get', 'clean'])
-
     vv = baseConfig['version/version']
     vp = baseConfig['version/patchlevel']
 
@@ -571,6 +568,9 @@ def main():
 
     if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
         os.system('/usr/sbin/univention-pkgdb-scan >>%s 2>&1' % LOGNAME)
+
+    if clean:
+        subprocess.call(['apt-get', 'clean'])
 
     if os.path.exists(failure):
         os.unlink(failure)
