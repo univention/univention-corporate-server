@@ -265,7 +265,7 @@ define([
 		dialog.alert(msg, _('Validation error'));
 	};
 
-	return declare('umc.modules.setup.ApplianceWizard', Wizard, {
+	return declare('setup.ApplianceWizard', Wizard, {
 		// __systemsetup__ user is logged in at local firefox session
 		local_mode: false,
 
@@ -2501,6 +2501,15 @@ define([
 				return this._forcedPage;
 			}
 			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'next');
+
+			// in case system/setup/boot/start == false go directly to the
+			// last page as system-setup-boot has been removed/disabled
+			// ... this avoids problems when page reloading (or a relogin)
+			// at the end of the wizard
+			if (this.ucr['system/setup/boot/start']) {
+				this._updateDonePage();
+				return this._forcePageTemporarily('done');
+			}
 
 			// validation of form fields
 			if (!this._validatePage(pageName)) {

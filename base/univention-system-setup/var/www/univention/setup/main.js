@@ -42,8 +42,9 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/ContainerWidget",
-	"./ApplianceWizard"
-], function(declare, lang, array, xhr, dom, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard) {
+	"./ApplianceWizard",
+	"umc/i18n!setup"
+], function(declare, lang, array, xhr, dom, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
 	return {
 		_container: null,
 		wizard: null,
@@ -77,6 +78,7 @@ define([
 				'system/setup/boot/fields/blacklist',
 				'system/setup/boot/minimal_memory',
 				'system/setup/boot/installer',
+				'system/setup/boot/start',
 				'docker/container/uuid',
 				'umc/modules/setup/network/disabled/by',
 				'umc/web/appliance/*'

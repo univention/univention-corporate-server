@@ -1,3 +1,14 @@
+univention-system-setup (10.0.7-1) unstable; urgency=medium
+
+  Bug #42172:
+  * Move setup wizard into univention-system-setup
+  * Redirect access to /univention/management
+  * Make sure that a reload to localhost is redirected to the last wizard page
+  * Add missing reference to '_'
+  * Remove UCR variable umc/module/setup/wizard/disabled
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Feb 2017 17:27:59 +0100
+
 univention-system-setup (10.0.6-3) unstable; urgency=medium
 
   * Bug #42172: remove obsolete setup.css

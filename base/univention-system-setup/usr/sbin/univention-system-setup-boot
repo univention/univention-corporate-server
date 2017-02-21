@@ -61,7 +61,6 @@ if [ "$ACTION" = "start" ]; then
 		'nssldap/timelimit=10'
 
 	univention-config-registry unset \
-		'umc/module/setup/wizard/disabled' \
 		'umc/web/startupdialog'
 
 	# set apache2/startsite
@@ -82,15 +81,14 @@ if [ "$ACTION" = "start" ]; then
 elif [ "$ACTION" = "stop" ]; then
 	univention-config-registry set \
 		'system/setup/boot/start=false' \
-		'umc/module/setup/wizard/disabled=true' \
 		"nssldap/timelimit=${system_setup_boot_nssldaptimeout:-30}"
 
 	# reset apache2/startsite
 	if _has_system_setup_boot_startsite; then
 		univention-config-registry set apache2/startsite="${system_setup_prev_apache2_startsite:-univention/}"
 		univention-config-registry unset system/setup/prev/apache2/startsite
-		[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
 	fi
+	[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
 else
 	echo
 	echo "ERROR: Unknown action given"

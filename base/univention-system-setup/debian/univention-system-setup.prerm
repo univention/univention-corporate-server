@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Univention Setup
-#  postinst script
+# Univention System Setup
+#  prerm script
 #
 # Copyright 2004-2017 Univention GmbH
 #
@@ -30,25 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+a2disconf univention-system-setup
+
 #DEBHELPER#
-
-. /usr/share/univention-lib/all.sh
-create_logfile /var/log/univention/setup.log "root:adm" 640
-
-chmod -R 700 /var/cache/univention-system-setup
-
-if dpkg --compare-versions "$2" lt-nl 8.1.63-2~
-then
-	ucr search --brief --non-empty '^interfaces/.*/options/' |
-		sed -rne 's,(interfaces/.*/options/.*): (miimon .*)$,\1=bond-\2,p' |
-		xargs -d '\n' --no-run-if-empty ucr set
-fi
-
-if dpkg --compare-versions "$2" lt-nl 8.1.63-2~ && [ -e /var/univention-join/joined ]
-then
-	ucr unset --force update/available
-fi
-
-a2enconf univention-system-setup
 
 exit 0
