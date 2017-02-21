@@ -383,19 +383,6 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid)
 	return rv;
 }
 
-int dntree_del_ldapdn(MDB_cursor *write_cursor_p, LDAPDN dn)
-{
-	int		rv;
-	DNID		id;
-
-	rv = dntree_lookup_id4ldapdn(write_cursor_p, dn, &id, NULL);
-	if (rv != MDB_SUCCESS) {
-		return rv;
-	}
-
-	return dntree_del_id(write_cursor_p, id);
-}
-
 
 static int dntree_get_id4ldapdn(MDB_cursor *write_cursor_p, LDAPDN dn, DNID *dnid_out)
 {
@@ -470,32 +457,6 @@ int dntree_get_id4dn(MDB_cursor *id2dn_cursor_p, char *dn, DNID *dnid, bool crea
 				__func__, dn);
 		}
 	}
-
-	ldap_dnfree(ldapdn);
-	return rv;
-}
-
-int dntree_del_dn(MDB_cursor *write_cursor_p, char *dn)
-{
-	int		rv;
-	LDAPDN		ldapdn;
-
-	rv = ldap_str2dn(dn, &ldapdn, LDAP_DN_FORMAT_LDAP);
-	if (rv != LDAP_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			"%s: ldap_str2dn failed: %s (%d)",
-			__func__, ldap_err2string(rv), rv);
-		return rv;
-	}
-
-	if (ldapdn == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			"%s: ldap_str2dn NULL: %s (%d): %s",
-			__func__, ldap_err2string(rv), rv, dn);
-		return 1;
-	}
-
-	rv = dntree_del_ldapdn(write_cursor_p, ldapdn); 
 
 	ldap_dnfree(ldapdn);
 	return rv;

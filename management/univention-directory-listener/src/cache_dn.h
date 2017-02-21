@@ -53,6 +53,5 @@ int dntree_init(MDB_dbi *dbi_ptr, MDB_txn *write_txn_p, int mdb_flags);
 int dntree_get_id4dn(MDB_cursor *cursor, char *dn, DNID *dnid, bool create);
 int dntree_lookup_dn4id(MDB_cursor *cur, DNID dnid, char **dn);
 int dntree_del_id(MDB_cursor *cursor, DNID dnid);
-int dntree_del_ldapdn(MDB_cursor *cursor, LDAPDN dn);
 
 #endif /* _DNTREE_H_ */
