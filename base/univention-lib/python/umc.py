@@ -209,6 +209,7 @@ class Client(object):
 			'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
 			'Accept-Language': self._language.replace('_', '-'),
 			'X-Requested-With': 'XMLHttpRequest',
+			'User-Agent': 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0')),
 		}
 		self._base_uri = '/univention/'
 		self._timeout = timeout
