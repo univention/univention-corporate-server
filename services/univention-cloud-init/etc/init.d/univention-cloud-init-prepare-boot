@@ -45,7 +45,7 @@ case "$1" in
 	start)
 		log_action_msg "Running $DESC"
 		if is_ucr_true server/cloud-init; then
-			ucr commit /var/www/ucs-overview/entries.json >/dev/null 2>&1
+			ucr commit /var/www/univention/meta.json >/dev/null 2>&1
 			ucr set apache2/startsite="univention/cloud-init-setup.html"
 		fi
 		log_action_end_msg 0
