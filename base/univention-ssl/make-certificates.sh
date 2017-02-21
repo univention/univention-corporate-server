@@ -3,7 +3,7 @@
 # Univention SSL
 #  gencertificate script
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -334,7 +334,7 @@ list_cert_names () {
 }
 
 has_valid_cert () {
-	list_cert_names | egrep -q "$1$"
+	list_cert_names | egrep -q -w "$1$"
 }
 
 renew_cert () {
@@ -347,7 +347,7 @@ renew_cert () {
 		return 1
 	fi
 
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
+	local NUM=`list_cert_names | grep -w "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
 	if [ -z "$NUM" ]; then
 		echo "no certificate for $1 registered" >&2
 		cd "$OPWD"
@@ -395,7 +395,7 @@ revoke_cert () {
 		return 1
 	fi
 
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
+	local NUM=`list_cert_names | grep -w "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
 	if [ -z "$NUM" ]; then
 		echo "no certificate for $1 registered" >&2
 		cd "$OPWD"

@@ -1,3 +1,9 @@
+univention-ssl (8.100.0-1) unstable; urgency=low
+
+  * Bug #43576: fixed renew, revoke if hostname is substring of other host
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Feb 2017 10:12:08 +0100
+
 univention-ssl (8.0.0-8) unstable; urgency=low
 
   * new default sha256 for ssl/default/hashfunction (Bug #30545)
