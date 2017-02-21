@@ -1003,9 +1003,6 @@ define([
 			if (tools.status('overview')) {
 				// the checks require an overview site
 				this._runChecks();
-
-				// show a warning that UCS 3.2 is out of maintenance
-				this._showOutOfMaintenanceWarning();
 			}
 			this._checkNoModuleAvailable();
 
@@ -1410,10 +1407,6 @@ define([
 					startupDialog.destroyRecursive();
 				});
 			}));
-		},
-
-		_showOutOfMaintenanceWarning: function() {
-			dialog.warn(_("<b style='color: #ff7070'>Warning:</b> You are using UCS 3.2. This version is outdated and no more security updates will be released for it. Please upgrade this system to a newer UCS version! An <a target='_blank' href='http://wiki.univention.de/index.php?title=Maintenance_Cycle_for_UCS'>overview about the maintenance cycle for different UCS versions</a> can be found in the Univention Wiki."));
 		},
 
 		_updateQuery: function() {

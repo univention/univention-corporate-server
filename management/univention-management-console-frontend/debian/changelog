@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.153-13) unstable; urgency=medium
+
+  * Removed the end of life message for UCS 3.2 extended security scope
+    (Bug #43536)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Feb 2017 21:31:56 +0100
+
 univention-management-console-frontend (3.0.153-12) unstable; urgency=medium
 
   * Bug #42951: Added out-of-maintenance warning
