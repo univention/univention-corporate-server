@@ -117,29 +117,31 @@ def sanitize(*args, **kwargs):
 				var1 = int(var1)
 				var2 = int(var2)
 			except (ValueError, TypeError):
-				self.finished(request.id, None, 'Cannot convert to int',
-					success=False, status=BAD_REQUEST_INVALID_OPTS)
+				self.finished(request.id, None, 'Cannot convert to int', status=400)
 				return
 			if var2 < 10:
-				self.finished(request.id, None, 'var2 must be >= 10',
-					success=False, status=BAD_REQUEST_INVALID_OPTS)
+				self.finished(request.id, None, 'var2 must be >= 10', status=400)
 				return
 			self.finished(request.id, var1 + var2)
 
 	After::
 
-		@sanitize(var1=IntegerSanitizer(required=True),
-			var2=IntegerSanitizer(required=True, minimum=10, default=20))
+		@sanitize(
+			var1=IntegerSanitizer(required=True),
+			var2=IntegerSanitizer(required=True, minimum=10, default=20)
+		)
 		def add(self, request):
-			var1 = request.options.get('var1') # could now use ['var1']
+			var1 = request.options.get('var1')  # could now use ['var1']
 			var2 = request.options.get('var2')
 			self.finished(request.id, var1 + var2)
 
 	The decorator can be combined with other decorators like
 	:func:`simple_response` (be careful with ordering of decorators here)::
 
-		@sanitize(var1=IntegerSanitizer(required=True),
-			var2=IntegerSanitizer(required=True, minimum=10))
+		@sanitize(
+			var1=IntegerSanitizer(required=True),
+			var2=IntegerSanitizer(required=True, minimum=10)
+		)
 		@simple_response
 		def add(self, var1, var2):
 			return var1 + var2
