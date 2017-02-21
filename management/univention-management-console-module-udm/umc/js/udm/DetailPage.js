@@ -271,19 +271,10 @@ define([
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
 			if (!this.ldapName || this._multiEdit) {
 				// no DN given or multi edit mode
-				all({
+				return all({
 					formBuild: formBuiltDeferred,
 					properties: this.propertyQuery
-				}).then(lang.hitch(this, function(result) {
-					if (!this._multiEdit) {
-						this._form.ready().then(lang.hitch(this, function() {
-							this._setNonEmptyValues(result.properties);
-						}));
-					}
-				}));
-				var deferred = new Deferred();
-				deferred.resolve();
-				return deferred;
+				});
 			}
 
 			return all({
@@ -329,29 +320,6 @@ define([
 
 		ready: function() {
 			return this._pageRenderedDeferred;
-		},
-
-		_setNonEmptyValues: function(properties) {
-			// Some properties have an empty value as first item.
-			// In this case this "empty" item is chosen as default
-			// by the frontend for new objects. Sometimes this is
-			// not wanted: The empty value as option is required
-			// but for new objects the first non-empty value should
-			// be the default value
-			// E.g. users/user mailHomeServer; see Bug #33329
-			var vals = {};
-			array.forEach(properties, lang.hitch(this, function(iprop) {
-				if (iprop.nonempty_is_default && iprop['default'] === undefined) {
-					var widget = this._form.getWidget(iprop.id);
-					if (!widget.get('value') && widget.getAllItems) {
-						var item = array.filter(widget.getAllItems(), function(item) { return item.id; })[0];
-						if (item !== undefined) {
-							vals[iprop.id] = item.id;
-						}
-					}
-				}
-			}));
-			this._form.setFormValues(vals);
 		},
 
 		_getInitialFormValues: function() {
@@ -1153,16 +1121,14 @@ define([
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
 				this.standby(false);
+
+				// initiate the template mechanism (only for new objects)
+				// searches for given default values in the properties... these will be replaced
 				this.templateObject = this.buildTemplate(template, properties, widgets);
 
 				if (this.note) {
 					// display notes
 					this.addNotification(this.note);
-				}
-
-				// initiate the template mechanism (only for new objects)
-				if (!this.ldapName && !this._multiEdit) {
-					// search for given default values in the properties... these will be replaced
 				}
 			}));
 			//this._tabs.selectChild(this._tabs.getChildren[0]);

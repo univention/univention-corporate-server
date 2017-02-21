@@ -52,7 +52,7 @@ import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 
-from .syntax import widget, default_value
+from univention.management.console.modules.udm.syntax import widget, default_value
 
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
@@ -747,6 +747,21 @@ class UDM_Module(object):
 
 			# read UCR configuration
 			item.update(widget(prop.syntax, item))
+
+			if prop.nonempty_is_default and 'default' not in item:
+				# Some properties have an empty value as first item.
+				# In this case this "empty" item is chosen as default
+				# by the frontend for new objects. Sometimes this is
+				# not wanted: The empty value as option is required
+				# but for new objects the first non-empty value should
+				# be the default value
+				# E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
+
+				try:
+					item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name)) if x['id']][0]
+				except IndexError:
+					pass
+
 			props.append(item)
 		props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
 		props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True})
@@ -1144,8 +1159,10 @@ def info_syntax_choices(syn, options={}):
 def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
 	syntax_name = syn.name
 
+	choices = getattr(syn, 'choices', [])
+
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
-		syn.choices = []
+		choices = []
 		# try to avoid using the slow udm interface
 		simple = False
 		attr = set()
@@ -1210,12 +1227,10 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 				if module.module is None:
 					continue
 				filter_s = _create_ldap_filter(syn, options, module)
-				if filter_s is None:
-					syn.choices = []
-				else:
+				if filter_s is not None:
 					search_options = {'filter': filter_s}
 					search_options.update(module_search_options)
-					syn.choices.extend(map_choices(module.search(**search_options)))
+					choices.extend(map_choices(module.search(**search_options)))
 		else:
 			for udm_module in syn.udm_modules:
 				module = UDM_Module(udm_module)
@@ -1239,21 +1254,16 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 								continue
 							if label is None:
 								label = ldap_connection.explodeDn(dn, 1)[0]
-							syn.choices.append((key, label))
+							choices.append((key, label))
 					else:
 						keys = module.search(**search_options)
 						if syn.label == 'dn':
 							labels = keys
 						else:
 							labels = [ldap_connection.explodeDn(dn, 1)[0] for dn in keys]
-						syn.choices.extend(zip(keys, labels))
-		if isinstance(syn.static_values, (tuple, list)):
-			for value in syn.static_values:
-				syn.choices.insert(0, value)
-		if syn.empty_value:
-			syn.choices.insert(0, ('', ''))
+						choices.extend(zip(keys, labels))
 	elif issubclass(syn.__class__, udm_syntax.UDM_Attribute):
-		syn.choices = []
+		choices = []
 
 		def filter_choice(obj):
 			# if attributes does not exist or is empty
@@ -1275,43 +1285,39 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 			if syn.is_complex:
 				return [(x[syn.key_index], x[syn.label_index]) for x in values]
 			if syn.label_format is not None:
-				choices = []
+				_choices = []
 				for value in values:
 					obj.info['$attribute$'] = value
-					choices.append((value, syn.label_format % obj.info))
-				return choices
+					_choices.append((value, syn.label_format % obj.info))
+				return _choices
 			return [(x, x) for x in values]
 
 		module = UDM_Module(syn.udm_module)
 		if module.module is None:
-			return
+			return []
 		MODULE.info('Found syntax %s with udm_module property' % syntax_name)
 		if syn.udm_filter == 'dn':
-			syn.choices = map_choice(module.get(options[syn.depends]))
+			choices = map_choice(module.get(options[syn.depends]))
 		else:
 			filter_s = _create_ldap_filter(syn, options, module)
-			if filter_s is None:
-				syn.choices = []
-			else:
+			if filter_s is not None:
 				for element in map(map_choice, filter(filter_choice, module.search(filter=filter_s))):
 					for item in element:
-						syn.choices.append(item)
-		if isinstance(syn.static_values, (tuple, list)):
-			for value in syn.static_values:
-				syn.choices.insert(0, value)
-		if syn.empty_value:
-			syn.choices.insert(0, ('', ''))
+						choices.append(item)
 	elif issubclass(syn.__class__, udm_syntax.ldapDn) and hasattr(syn, 'searchFilter'):
 		try:
 			result = ldap_connection.searchDn(filter=syn.searchFilter)
 		except udm_errors.base:
 			MODULE.process('Failed to initialize syntax class %s' % syntax_name)
-			return
-		syn.choices = []
+			return []
+		choices = []
 		for dn in result:
 			dn_list = ldap_connection.explodeDn(dn)
-			syn.choices.append((dn, dn_list[0].split('=', 1)[1]))
-	elif issubclass(syn.__class__, udm_syntax.LDAP_Search):
+			choices.append((dn, dn_list[0].split('=', 1)[1]))
+
+	choices = [{'id': x[0], 'label': x[1]} for x in choices]
+
+	if issubclass(syn.__class__, udm_syntax.LDAP_Search):
 		options = options.get('options', {})
 		try:
 			syntax = udm_syntax.LDAP_Search(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
@@ -1326,7 +1332,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 
 		syntax._prepare(ldap_connection, syntax.filter)
 
-		syntax.choices = []
+		choices = []
 		for item in syntax.values:
 			if syntax.viewonly:
 				dn, display_attr = item
@@ -1375,16 +1381,28 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 
 			# create list entry
 			if syntax.viewonly:
-				syntax.choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': dn, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
+				choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': dn, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
 			else:
-				syntax.choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': id, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
-		if syntax.addEmptyValue:
-			syntax.choices.insert(0, {'id': '', 'label': ''})
-		elif syntax.appendEmptyValue:
-			# with appendEmptyValue the list cannot be sorted by JS
-			# do it here!
-			syntax.choices.sort(key=lambda choice: choice['label'])
-			syntax.choices.append({'id': '', 'label': ''})
-		return syntax.choices
+				choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': id, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
 
-	return map(lambda x: {'id': x[0], 'label': x[1]}, getattr(syn, 'choices', []))
+	# sort choices before inserting / appending some special items
+	choices = sorted(choices, key=lambda choice: choice['label'])
+
+	if issubclass(syn.__class__, (udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute)):
+		if isinstance(syn.static_values, (tuple, list)):
+			for value in syn.static_values:
+				choices.insert(0, {'id': value[0], 'label': value[1]})
+		if syn.empty_value:
+			choices.insert(0, {'id': '', 'label': ''})
+	elif issubclass(syn.__class__, udm_syntax.LDAP_Search):
+		# then append empty value
+		if syntax.addEmptyValue:
+			choices.insert(0, {'id': '', 'label': ''})
+		elif syntax.appendEmptyValue:
+			choices.append({'id': '', 'label': ''})
+
+	return choices
+
+
+if __name__ == '__main__':
+	set_bind_function(lambda lo: lo.bind('uid=Administrator,cn=users,%s' % (ucr['ldap/base'],), 'univention'))
