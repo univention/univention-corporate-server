@@ -38,8 +38,8 @@
 #include <lmdb.h>
 #include <ldap.h>
 
-#define	SUBDN_TYPE_NODE 0
-#define	SUBDN_TYPE_LINK 1
+#define SUBDN_TYPE_NODE 0
+#define SUBDN_TYPE_LINK 1
 
 typedef unsigned char SUBDNTYPE;
 typedef unsigned long DNID;

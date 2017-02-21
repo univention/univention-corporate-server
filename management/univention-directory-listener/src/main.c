@@ -66,8 +66,7 @@ long long listener_lock_count = 100;
 char pidfile[PATH_MAX];
 
 
-static char* read_pwd_from_file(char *filename)
-{
+static char *read_pwd_from_file(char *filename) {
 	FILE *fp;
 	char line[1024];
 	int len;
@@ -83,15 +82,14 @@ static char* read_pwd_from_file(char *filename)
 	len = strlen(line);
 	if (!len)
 		return NULL;
-	if (line[len-1] == '\n')
-		line[len-1] = '\0';
+	if (line[len - 1] == '\n')
+		line[len - 1] = '\0';
 
 	return strdup(line);
 }
 
 
-static void daemonize(int lock_fd)
-{
+static void daemonize(int lock_fd) {
 	pid_t pid;
 	int null, log;
 	int fd, rv;
@@ -100,7 +98,7 @@ static void daemonize(int lock_fd)
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 
-	fd = open(pidfile, O_WRONLY|O_CREAT|O_EXCL, 0644);
+	fd = open(pidfile, O_WRONLY | O_CREAT | O_EXCL, 0644);
 	if (fd < 0) {
 		if (errno == EEXIST)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
@@ -147,17 +145,20 @@ static void daemonize(int lock_fd)
 		if (rv < 0 || rv >= sizeof buf)
 			abort();
 		rv = write(fd, buf, rv);
-		if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to write %s: %s", pidfile, strerror(errno));
+		if (rv)
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to write %s: %s", pidfile, strerror(errno));
 	}
 	rv = close(fd);
-	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close %s: %s", pidfile, strerror(errno));
+	if (rv)
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close %s: %s", pidfile, strerror(errno));
 
 	// Set new file permissions
 	umask(0);
 
 	// Change the working directory to the root directory
 	rv = chdir("/");
-	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to change directory: %s", strerror(errno));
+	if (rv)
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to change directory: %s", strerror(errno));
 
 	if ((null = open("/dev/null", O_RDWR)) == -1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open /dev/null: %s", strerror(errno));
@@ -168,12 +169,14 @@ static void daemonize(int lock_fd)
 	if ((log = open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND, 0640)) >= 0) {
 		dup2(log, STDERR_FILENO);
 		rv = close(log);
-		if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /var/log/univention/listener.log: %s", strerror(errno));
+		if (rv)
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /var/log/univention/listener.log: %s", strerror(errno));
 	} else {
 		dup2(null, STDERR_FILENO);
 	}
 	rv = close(null);
-	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /dev/null: %s", strerror(errno));
+	if (rv)
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /dev/null: %s", strerror(errno));
 
 	// Close all open file descriptors
 	for (fd = sysconf(_SC_OPEN_MAX); fd > STDERR_FILENO; fd--)
@@ -182,8 +185,7 @@ static void daemonize(int lock_fd)
 }
 
 
-void drop_privileges(void)
-{
+void drop_privileges(void) {
 	struct passwd *listener_user;
 
 	if (geteuid() != 0)
@@ -205,8 +207,7 @@ void drop_privileges(void)
 }
 
 
-static void usage(void)
-{
+static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-listener [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
@@ -233,9 +234,8 @@ static void usage(void)
 }
 
 
-static void purge_cache(const char *cache_dir)
-{
-	DIR* dir;
+static void purge_cache(const char *cache_dir) {
+	DIR *dir;
 	struct dirent *dirent;
 	char dirname[PATH_MAX];
 	int rv;
@@ -253,7 +253,7 @@ static void purge_cache(const char *cache_dir)
 	}
 	handlers_clean_all();
 
-	rv = snprintf(dirname, PATH_MAX,"%s/handlers", cache_dir);
+	rv = snprintf(dirname, PATH_MAX, "%s/handlers", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 	if ((dir = opendir(dirname)) != NULL) {
@@ -265,7 +265,7 @@ static void purge_cache(const char *cache_dir)
 		closedir(dir);
 	}
 
-	rv = snprintf(dirname, PATH_MAX,"%s/cache", cache_dir);
+	rv = snprintf(dirname, PATH_MAX, "%s/cache", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 	if ((dir = opendir(dirname)) != NULL) {
@@ -279,8 +279,7 @@ static void purge_cache(const char *cache_dir)
 }
 
 
-static void prepare_cache(const char *cache_dir)
-{
+static void prepare_cache(const char *cache_dir) {
 	char dirname[PATH_MAX];
 	struct stat stbuf;
 	int rv;
@@ -292,7 +291,7 @@ static void prepare_cache(const char *cache_dir)
 		mkdir(dirname, 0700);
 	}
 
-	rv = snprintf(dirname, PATH_MAX,"%s/cache", cache_dir);
+	rv = snprintf(dirname, PATH_MAX, "%s/cache", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 	if (stat(dirname, &stbuf) != 0) {
@@ -304,8 +303,7 @@ static void prepare_cache(const char *cache_dir)
 /* Open LDAP and Notifier connection.
  * @return 0 on success, 1 on error.
  */
-static int do_connection(univention_ldap_parameters_t *lp)
-{
+static int do_connection(univention_ldap_parameters_t *lp) {
 	LDAPMessage *res;
 	int rc;
 	char **_attrs = NULL;
@@ -313,8 +311,7 @@ static int do_connection(univention_ldap_parameters_t *lp)
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
 	struct timeval timeout = {
-		.tv_sec = 5*60,
-		.tv_usec = 0,
+	    .tv_sec = 5 * 60, .tv_usec = 0,
 	};
 	int sizelimit0 = 0;
 
@@ -326,20 +323,17 @@ static int do_connection(univention_ldap_parameters_t *lp)
 		goto fail;
 
 	/* check if we are connected to an OpenLDAP */
-	rc = ldap_search_ext_s(lp->ld, lp->base, LDAP_SCOPE_BASE, "objectClass=univentionBase",
-			_attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
+	rc = ldap_search_ext_s(lp->ld, lp->base, LDAP_SCOPE_BASE, "objectClass=univentionBase", _attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
 	ldap_msgfree(res);
 	switch (rc) {
-		case LDAP_SUCCESS:
-			return 0;
-		case LDAP_NO_SUCH_OBJECT:
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->host, lp->port);
-			break;
-		default:
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->host, lp->port, ldap_err2string(rc));
-			break;
+	case LDAP_SUCCESS:
+		return 0;
+	case LDAP_NO_SUCH_OBJECT:
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->host, lp->port);
+		break;
+	default:
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->host, lp->port, ldap_err2string(rc));
+		break;
 	}
 fail:
 	notifier_client_destroy(NULL);
@@ -350,27 +344,25 @@ fail:
 }
 
 
-int main(int argc, char* argv[])
-{
-	univention_ldap_parameters_t	*lp;
-	univention_ldap_parameters_t	*lp_local;
+int main(int argc, char *argv[]) {
+	univention_ldap_parameters_t *lp;
+	univention_ldap_parameters_t *lp_local;
 	char *server_role;
 	int debugging = 0;
 	bool from_scratch = false;
 	bool foreground = false;
 	bool initialize_only = false;
 	bool write_transaction_file = false;
-	int				 rv;
-	NotifierID			 id = -1;
-	struct stat			 stbuf;
-	char	cache_mdb_dir[PATH_MAX];
+	int rv;
+	NotifierID id = -1;
+	struct stat stbuf;
+	char cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
 	{
 		struct timeval timeout = {
-			.tv_sec = 5*60,
-			.tv_usec = 0,
+		    .tv_sec = 5 * 60, .tv_usec = 0,
 		};
 		int ret;
 		ret = ldap_set_option(NULL, LDAP_OPT_NETWORK_TIMEOUT, &timeout);
@@ -410,43 +402,44 @@ int main(int argc, char* argv[])
 			break;
 		switch (c) {
 		case 'd':
-			debugging=atoi(optarg);
+			debugging = atoi(optarg);
 			break;
 		case 'F':
 			foreground = true;
 			break;
 		case 'H':
-			lp->uri=strdup(optarg);
+			lp->uri = strdup(optarg);
 			break;
 		case 'h':
-			lp->host=strdup(optarg);
+			lp->host = strdup(optarg);
 			break;
 		case 'p':
-			lp->port=atoi(optarg);
+			lp->port = atoi(optarg);
 			break;
 		case 'b':
-			lp->base=strdup(optarg);
+			lp->base = strdup(optarg);
 			break;
 		case 'm':
-			if ((module_dirs = realloc(module_dirs, (module_dir_count+2)*sizeof(char*))) == NULL) {
+			if ((module_dirs = realloc(module_dirs, (module_dir_count + 2) * sizeof(char *))) == NULL) {
 				return 1;
 			}
 			module_dirs[module_dir_count] = strdup(optarg);
-			module_dirs[module_dir_count+1] = NULL;
+			module_dirs[module_dir_count + 1] = NULL;
 			module_dir_count++;
 			break;
 		case 'c':
-			cache_dir=strdup(optarg);
+			cache_dir = strdup(optarg);
 			break;
 		case 'l':
 			ldap_dir = strdup(optarg);
-			if (asprintf(&transaction_file, "%s/listener/listener", ldap_dir) < 0) abort();
+			if (asprintf(&transaction_file, "%s/listener/listener", ldap_dir) < 0)
+				abort();
 			break;
 		case 'D':
-			lp->binddn=strdup(optarg);
+			lp->binddn = strdup(optarg);
 			break;
 		case 'w':
-			lp->bindpw=strdup(optarg);
+			lp->bindpw = strdup(optarg);
 			/* remove password from process list */
 			memset(optarg, 'X', strlen(optarg));
 			break;
@@ -457,16 +450,17 @@ int main(int argc, char* argv[])
 			lp->authmethod = LDAP_AUTH_SIMPLE;
 			break;
 		case 'y':
-			lp->bindpw=read_pwd_from_file(optarg);
+			lp->bindpw = read_pwd_from_file(optarg);
 			break;
 		case 'Y':
-			lp->sasl_mech=strdup(optarg);
+			lp->sasl_mech = strdup(optarg);
 			break;
 		case 'U':
-			if (asprintf(&lp->sasl_authzid, "u:%s", optarg) < 0) abort();
+			if (asprintf(&lp->sasl_authzid, "u:%s", optarg) < 0)
+				abort();
 			break;
 		case 'R':
-			lp->sasl_realm=strdup(optarg);
+			lp->sasl_realm = strdup(optarg);
 			break;
 		case 'g':
 			from_scratch = true;
@@ -519,20 +513,16 @@ int main(int argc, char* argv[])
 	/* choose server to connect to */
 	if (lp->host == NULL && lp->uri == NULL) {
 		select_server(lp);
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"no server given, choosing one by myself (%s)",
-				lp->host);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "no server given, choosing one by myself (%s)", lp->host);
 	}
 
 	while (do_connection(lp) != 0) {
 		if (suspend_connect()) {
 			if (initialize_only) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"can not connect any server, exit");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "can not connect any server, exit");
 				exit(1);
 			}
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
-				"can not connect any server, retrying in 30 seconds");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect any server, retrying in 30 seconds");
 			sleep(30);
 		}
 
@@ -544,9 +534,9 @@ int main(int argc, char* argv[])
 
 	/* connect to local LDAP server */
 	server_role = univention_config_get_string("server/role");
-	if ( server_role != NULL ) {
-		if (!strcmp(server_role, "domaincontroller_backup") || !strcmp(server_role, "domaincontroller_slave")) {	// if not master
-			lp_local->host = strdup("localhost"); // or fqdn e.g. from univention_config_get_string("ldap/server/name");
+	if (server_role != NULL) {
+		if (!strcmp(server_role, "domaincontroller_backup") || !strcmp(server_role, "domaincontroller_slave")) {  // if not master
+			lp_local->host = strdup("localhost");                                                             // or fqdn e.g. from univention_config_get_string("ldap/server/name");
 			lp_local->base = strdup(lp->base);
 			lp_local->binddn = strdup(lp->binddn);
 			lp_local->bindpw = strdup(lp->bindpw);
@@ -581,7 +571,7 @@ int main(int argc, char* argv[])
 	}
 
 	if (initialize_only) {
-		INIT_ONLY=1;
+		INIT_ONLY = 1;
 	}
 
 	/* if no ID is set, assume the database has just been initialized */
@@ -607,11 +597,11 @@ int main(int argc, char* argv[])
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write notifier ID");
 
 	/* update schema */
-	if ((rv=change_update_schema(lp)) != LDAP_SUCCESS)
+	if ((rv = change_update_schema(lp)) != LDAP_SUCCESS)
 		return rv;
 
 	/* do initial import of entries */
-	if ((rv=change_new_modules(lp)) != LDAP_SUCCESS) {
+	if ((rv = change_new_modules(lp)) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_new_modules: %s", ldap_err2string(rv));
 		return rv;
 	}

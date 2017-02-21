@@ -63,8 +63,7 @@
 static NotifierClient global_client;
 
 /* Free notifier entry. */
-void notifier_entry_free(NotifierEntry *entry)
-{
+void notifier_entry_free(NotifierEntry *entry) {
 	free(entry->dn);
 	entry->dn = NULL;
 	entry->id = 0;
@@ -73,14 +72,13 @@ void notifier_entry_free(NotifierEntry *entry)
 
 
 /* parses "<ID> <DN> [amd]" line into NotifierEntry */
-static int parse_entry(const char *line, NotifierEntry *entry)
-{
+static int parse_entry(const char *line, NotifierEntry *entry) {
 	char *tmp;
 	char *p, *q;
 	size_t len;
 
 	len = strlen(line);
-	if (line[len-1] == '\n')
+	if (line[len - 1] == '\n')
 		--len;
 	tmp = strndup(line, len);
 
@@ -95,10 +93,10 @@ static int parse_entry(const char *line, NotifierEntry *entry)
 	entry->id = atoi(tmp);
 
 	++p;
-	q=strrchr(p, ' ');
-	if (q != NULL && *(q+1) != '\0' && *(q+2) == '\0') {
+	q = strrchr(p, ' ');
+	if (q != NULL && *(q + 1) != '\0' && *(q + 2) == '\0') {
 		*q = '\0';
-		entry->command = *(q+1);
+		entry->command = *(q + 1);
 	} else {
 		entry->command = 'm';
 	}
@@ -110,20 +108,18 @@ static int parse_entry(const char *line, NotifierEntry *entry)
 
 
 /* Send buffer in blocking mode. */
-static int send_block(NotifierClient *client, const char *buf, size_t len)
-{
+static int send_block(NotifierClient *client, const char *buf, size_t len) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>%s", buf);
 	return write(client->fd, buf, len);
 }
 
 
 /* Receive data in blocking mode. */
-static int recv_block(NotifierClient *client, char **back, time_t timeout)
-{
-	char	 buf[BUFSIZ];
-	char	*result, *pos;
-	size_t	 len;
-	int	 rv;
+static int recv_block(NotifierClient *client, char **back, time_t timeout) {
+	char buf[BUFSIZ];
+	char *result, *pos;
+	size_t len;
+	int rv;
 
 	/* receive block containing \n\n */
 	if (client->buf != NULL) {
@@ -138,7 +134,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 	   XXX: we could probably also check that \n\n is at the end of
 	   the buffer; if it isn't, it's probably the beginning of a further
 	   message; */
-	while(result == NULL || (pos = strstr(result, "\n\n")) == NULL) {
+	while (result == NULL || (pos = strstr(result, "\n\n")) == NULL) {
 		ssize_t r;
 
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "RESULT: [%s]", result);
@@ -157,7 +153,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 			return 0;
 		}
 
-		result = realloc(result, len+r+1);
+		result = realloc(result, len + r + 1);
 		result[len] = '\0';
 		strncat(result, buf, r);
 		len += r;
@@ -165,11 +161,11 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 	}
 
 	/* *(pos+1) is the second \n; split string there */
-	*(pos+1) = '\0';
+	*(pos + 1) = '\0';
 	*back = result;
 
-	if (*(pos+2) != '\0') {
-		client->buf = strdup(pos+2);
+	if (*(pos + 2) != '\0') {
+		client->buf = strdup(pos + 2);
 	} else {
 		client->buf = NULL;
 	}
@@ -180,27 +176,25 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 
 
 /* Send notifier command. */
-static int notifier_send_command(NotifierClient *client, const char *msg)
-{
-	char	buf[BUFSIZ];
-	int	msgid;
-	ssize_t	len;
+static int notifier_send_command(NotifierClient *client, const char *msg) {
+	char buf[BUFSIZ];
+	int msgid;
+	ssize_t len;
 
 	assert(client->fd > -1);
 	msgid = ++client->last_msgid;
 	len = snprintf(buf, BUFSIZ, "MSGID: %d\n%s", msgid, msg);
-	assert(len < BUFSIZ-1);
+	assert(len < BUFSIZ - 1);
 	send_block(client, buf, len);
 	return msgid;
 }
 
 
 /* Receive result of notifier command. */
-int notifier_recv_result(NotifierClient *client, time_t timeout)
-{
+int notifier_recv_result(NotifierClient *client, time_t timeout) {
 	NotifierMessage *msg;
-	char		*result, *tmp;
-	int		 rv;
+	char *result, *tmp;
+	int rv;
 
 	if (client == NULL)
 		client = &global_client;
@@ -233,7 +227,7 @@ int notifier_recv_result(NotifierClient *client, time_t timeout)
 		return 0;
 	}
 
-	msg->result = strdup(tmp+1);
+	msg->result = strdup(tmp + 1);
 	free(result);
 
 	/* insert into list */
@@ -245,15 +239,13 @@ int notifier_recv_result(NotifierClient *client, time_t timeout)
 
 
 /* Remove message from queue of received messages. */
-static NotifierMessage* notifier_remove_msg(NotifierClient *client, int msgid)
-{
+static NotifierMessage *notifier_remove_msg(NotifierClient *client, int msgid) {
 	NotifierMessage *cur, *prev;
 
 	if (client == NULL)
 		client = &global_client;
 
-	for (cur = client->messages, prev = NULL; cur != NULL;
-			prev = cur, cur = cur->next) {
+	for (cur = client->messages, prev = NULL; cur != NULL; prev = cur, cur = cur->next) {
 		if (cur->id == msgid) {
 			if (cur == client->messages)
 				client->messages = cur->next;
@@ -267,8 +259,7 @@ static NotifierMessage* notifier_remove_msg(NotifierClient *client, int msgid)
 
 
 /* Wait for and return specific message. */
-static NotifierMessage *notifier_wait_msg(NotifierClient *client, int msgid, time_t timeout)
-{
+static NotifierMessage *notifier_wait_msg(NotifierClient *client, int msgid, time_t timeout) {
 	NotifierMessage *msg;
 	int resid;
 
@@ -286,16 +277,14 @@ static NotifierMessage *notifier_wait_msg(NotifierClient *client, int msgid, tim
 
 
 /* Free message object. */
-static void notifier_msg_free(NotifierMessage *msg)
-{
+static void notifier_msg_free(NotifierMessage *msg) {
 	free(msg->result);
 	free(msg);
 }
 
 
 /* Return specific message. */
-NotifierMessage* notifier_get_msg(NotifierClient *client, int msgid)
-{
+NotifierMessage *notifier_get_msg(NotifierClient *client, int msgid) {
 	NotifierMessage *cur;
 
 	if (client == NULL)
@@ -316,15 +305,13 @@ NotifierMessage* notifier_get_msg(NotifierClient *client, int msgid)
  * @param starttls 0=no encryption, 2=require TLS (not supported)
  * @return 0 on success, 1 on (TLS, DNS, timeout, protocol) errors, 2 on connection-error.
  */
-int notifier_client_new(NotifierClient *client,
-		const char *server, int starttls)
-{
-	struct sockaddr_in	address4;
-	struct sockaddr_in6	address6;
-	struct sockaddr    *address;
-	socklen_t           addrlen;
-	struct addrinfo	hints, *res, *result_addrinfo;
-	char			   *ucrvalue;
+int notifier_client_new(NotifierClient *client, const char *server, int starttls) {
+	struct sockaddr_in address4;
+	struct sockaddr_in6 address6;
+	struct sockaddr *address;
+	socklen_t addrlen;
+	struct addrinfo hints, *res, *result_addrinfo;
+	char *ucrvalue;
 	char addrstr[100];
 	int err;
 
@@ -341,21 +328,21 @@ int notifier_client_new(NotifierClient *client,
 	client->starttls = 0;
 	client->messages = NULL;
 	client->last_msgid = 0;
-	client->buf = NULL ;
+	client->buf = NULL;
 
-	memset (&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;       /* Allow IPv4 or IPv6 */
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC; /* Allow IPv4 or IPv6 */
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = 0;
-	hints.ai_protocol = 0;             /* Any protocol */
+	hints.ai_protocol = 0; /* Any protocol */
 
 	/* limit address resolution to IPv4 XOR IPv6 */
 	ucrvalue = univention_config_get_string("listener/network/protocol");
 	if (ucrvalue) {
-	    if (!strcmp(ucrvalue, "ipv4")) {
-		    hints.ai_family = AF_INET;
+		if (!strcmp(ucrvalue, "ipv4")) {
+			hints.ai_family = AF_INET;
 		} else if (!strcmp(ucrvalue, "ipv6")) {
-		    hints.ai_family = AF_INET6;
+			hints.ai_family = AF_INET6;
 		}
 		free(ucrvalue);
 	}
@@ -369,48 +356,47 @@ int notifier_client_new(NotifierClient *client,
 
 	err = getaddrinfo(client->server, NULL, &hints, &result_addrinfo);
 	if (err != 0) {
-	  univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
-	  free(client->server);
-	  client->server = NULL;
-	  return 1;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
+		free(client->server);
+		client->server = NULL;
+		return 1;
 	}
 
 	/* process all results */
 	for (res = result_addrinfo; res != NULL; res = res->ai_next) {
-	    switch (res->ai_family) {
-		    case AF_INET:
-			    if ((client->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
-					continue;
-				}
-				memcpy(&address4.sin_addr, &((struct sockaddr_in *) res->ai_addr)->sin_addr, sizeof(address4.sin_addr));
-				/* convert IPv4 address to string */
-				inet_ntop(res->ai_family, &((struct sockaddr_in *) res->ai_addr)->sin_addr, addrstr, 100);
-				address = (struct sockaddr*)&address4;
-				addrlen = sizeof(address4);
-				break;
+		switch (res->ai_family) {
+		case AF_INET:
+			if ((client->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+				continue;
+			}
+			memcpy(&address4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(address4.sin_addr));
+			/* convert IPv4 address to string */
+			inet_ntop(res->ai_family, &((struct sockaddr_in *)res->ai_addr)->sin_addr, addrstr, 100);
+			address = (struct sockaddr *)&address4;
+			addrlen = sizeof(address4);
+			break;
 
-		    case AF_INET6:
-			    if ((client->fd = socket(AF_INET6, SOCK_STREAM, 0)) == -1) {
-				    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
-					continue;
-				}
-				memcpy(&address6.sin6_addr, &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr, sizeof(address6.sin6_addr));
-				/* convert IPv6 address to string */
-				inet_ntop(res->ai_family, &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr, addrstr, 100);
-				address = (struct sockaddr*)&address6;
-				addrlen = sizeof(address6);
-				break;
+		case AF_INET6:
+			if ((client->fd = socket(AF_INET6, SOCK_STREAM, 0)) == -1) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+				continue;
+			}
+			memcpy(&address6.sin6_addr, &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr, sizeof(address6.sin6_addr));
+			/* convert IPv6 address to string */
+			inet_ntop(res->ai_family, &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr, addrstr, 100);
+			address = (struct sockaddr *)&address6;
+			addrlen = sizeof(address6);
+			break;
 
-		    default:
-			    /* unknown protocol */
-			    continue;
+		default:
+			/* unknown protocol */
+			continue;
 		}
 
 		{
 			struct timeval timeout = {
-				.tv_sec = NOTIFIER_TIMEOUT * 2,
-				.tv_usec = 0,
+			    .tv_sec = NOTIFIER_TIMEOUT * 2, .tv_usec = 0,
 			};
 			int ret;
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
@@ -439,7 +425,7 @@ int notifier_client_new(NotifierClient *client,
 		}
 
 		if (connect(client->fd, address, addrlen) == -1) {
-		    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
 			close(client->fd);
 			client->fd = -1;
 			continue;
@@ -457,9 +443,9 @@ int notifier_client_new(NotifierClient *client,
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
 
-	const char	*header = "Version: 2\nCapabilities: \n\n";
+	const char *header = "Version: 2\nCapabilities: \n\n";
 	const size_t len = strlen(header);
-	char		*result, *tok;
+	char *result, *tok;
 
 	if (send_block(client, header, len) != len) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't send header");
@@ -475,7 +461,7 @@ int notifier_client_new(NotifierClient *client,
 	}
 
 	/* strtok modifies result, but we shouldn't need to care */
-	for(tok=strtok(result, "\n"); tok != NULL; tok=strtok(NULL, "\n")) {
+	for (tok = strtok(result, "\n"); tok != NULL; tok = strtok(NULL, "\n")) {
 		char *val;
 		if ((val = strchr(tok, ':')) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ignoring bad header: [%s]", tok);
@@ -504,8 +490,7 @@ int notifier_client_new(NotifierClient *client,
 
 
 /* Free notifier client data. */
-void notifier_client_destroy(NotifierClient * client)
-{
+void notifier_client_destroy(NotifierClient *client) {
 	if (client == NULL)
 		client = &global_client;
 
@@ -516,11 +501,10 @@ void notifier_client_destroy(NotifierClient * client)
 
 
 /* Wait for data from notifier. */
-int notifier_wait(NotifierClient *client, time_t timeout)
-{
-	fd_set         fds;
+int notifier_wait(NotifierClient *client, time_t timeout) {
+	fd_set fds;
 	struct timeval tv;
-	int            rv;
+	int rv;
 
 	if (client == NULL)
 		client = &global_client;
@@ -533,9 +517,9 @@ int notifier_wait(NotifierClient *client, time_t timeout)
 		if (timeout >= 0) {
 			tv.tv_sec = timeout;
 			tv.tv_usec = 0;
-			rv = select(client->fd+1, &fds, NULL, NULL, &tv);
+			rv = select(client->fd + 1, &fds, NULL, NULL, &tv);
 		} else {
-			rv = select(client->fd+1, &fds, NULL, NULL, NULL);
+			rv = select(client->fd + 1, &fds, NULL, NULL, NULL);
 		}
 	} while (rv == -1 && errno == EINTR);
 	if (rv == -1) {
@@ -547,8 +531,7 @@ int notifier_wait(NotifierClient *client, time_t timeout)
 
 
 /* Send message to retrieve DN of given transaction from notifier. */
-int notifier_get_dn(NotifierClient *client, NotifierID id)
-{
+int notifier_get_dn(NotifierClient *client, NotifierID id) {
 	char request[BUFSIZ];
 
 	if (client == NULL)
@@ -560,8 +543,7 @@ int notifier_get_dn(NotifierClient *client, NotifierID id)
 
 
 /* Resend message to retrieve DN from notifier. */
-int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id)
-{
+int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id) {
 	char buf[BUFSIZ];
 	ssize_t len;
 
@@ -570,7 +552,7 @@ int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id)
 
 	assert(client->fd > -1);
 	len = snprintf(buf, BUFSIZ, "MSGID: %d\nGET_DN %ld\n\n", msgid, id);
-	assert(len < BUFSIZ-1);
+	assert(len < BUFSIZ - 1);
 	send_block(client, buf, len);
 
 	return 0;
@@ -578,9 +560,8 @@ int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id)
 
 
 /* Wait for and return DN of transaction from notifier. */
-int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *entry)
-{
-	NotifierMessage	*msg;
+int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *entry) {
+	NotifierMessage *msg;
 
 	if (client == NULL)
 		client = &global_client;
@@ -595,10 +576,9 @@ int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *ent
 
 
 /* Retrieve current transaction ID from notifier. */
-int notifier_get_id_s(NotifierClient *client, NotifierID *id)
-{
-	int		 msgid;
-	NotifierMessage	*msg;
+int notifier_get_id_s(NotifierClient *client, NotifierID *id) {
+	int msgid;
+	NotifierMessage *msg;
 
 	if (client == NULL)
 		client = &global_client;
@@ -615,10 +595,9 @@ int notifier_get_id_s(NotifierClient *client, NotifierID *id)
 
 
 /* Retrieve current Schema-ID from notifier. */
-int notifier_get_schema_id_s(NotifierClient *client, NotifierID *id)
-{
-	int		 msgid;
-	NotifierMessage	*msg;
+int notifier_get_schema_id_s(NotifierClient *client, NotifierID *id) {
+	int msgid;
+	NotifierMessage *msg;
 
 	if (client == NULL)
 		client = &global_client;
@@ -635,10 +614,9 @@ int notifier_get_schema_id_s(NotifierClient *client, NotifierID *id)
 
 
 /* Send keep-alive message to notifier. */
-int notifier_alive_s(NotifierClient *client)
-{
-	int		 msgid;
-	NotifierMessage	*msg;
+int notifier_alive_s(NotifierClient *client) {
+	int msgid;
+	NotifierMessage *msg;
 
 	if (client == NULL)
 		client = &global_client;

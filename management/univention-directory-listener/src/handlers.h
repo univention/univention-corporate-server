@@ -52,53 +52,44 @@ enum state {
 };
 
 struct filter {
-	char	*base;
-	int	 scope;
-	char	*filter;
+	char *base;
+	int scope;
+	char *filter;
 };
 
 struct _Handler {
-	PyObject	 *module;
-	char		 *name;
-	char		 *description;
-	struct filter	**filters;
-	char		**attributes;
-	char		*modrdn;
-	PyObject	 *handler;
-	PyObject	 *initialize;
-	PyObject	 *clean;
-	PyObject	 *postrun;
-	PyObject	 *prerun;
-	PyObject	 *setdata;
-	struct _Handler	 *next;
+	PyObject *module;
+	char *name;
+	char *description;
+	struct filter **filters;
+	char **attributes;
+	char *modrdn;
+	PyObject *handler;
+	PyObject *initialize;
+	PyObject *clean;
+	PyObject *postrun;
+	PyObject *prerun;
+	PyObject *setdata;
+	struct _Handler *next;
 
-	enum state	  state;
-	int		  prepared : 1;
+	enum state state;
+	int prepared : 1;
 } typedef Handler;
 
-int	handlers_init			(void);
-int	handlers_free_all		(void);
+int handlers_init(void);
+int handlers_free_all(void);
 void handler_write_state(Handler *handler);
-int	handlers_load_path		(char		*filename);
-int	handlers_reload_all_paths	(void);
-int	handlers_update			(const char		*dn,
-					 CacheEntry	*new,
-					 CacheEntry	*old,
-					 char		command);
-int	handler_update			(const char		*dn,
-					 CacheEntry	*new,
-					 CacheEntry	*old,
-					 Handler	*handler,
-					 char		command);
-int	handlers_delete			(const char		*dn,
-					 CacheEntry	*old,
-					 char command);
-int	handler_clean			(Handler	*handler);
-int	handlers_clean_all		(void);
-int	handler_initialize		(Handler	*handler);
-int	handlers_initialize_all		(void);
-int	handlers_postrun_all		(void);
-int handlers_set_data_all		(char *key, char *value);
-char*	handlers_filter			(void);
+int handlers_load_path(char *filename);
+int handlers_reload_all_paths(void);
+int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command);
+int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command);
+int handlers_delete(const char *dn, CacheEntry *old, char command);
+int handler_clean(Handler *handler);
+int handlers_clean_all(void);
+int handler_initialize(Handler *handler);
+int handlers_initialize_all(void);
+int handlers_postrun_all(void);
+int handlers_set_data_all(char *key, char *value);
+char *handlers_filter(void);
 
 #endif /* _HANDLERS_H_ */

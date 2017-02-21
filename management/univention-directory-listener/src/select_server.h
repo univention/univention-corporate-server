@@ -36,7 +36,7 @@
 #include <univention/ldap.h>
 
 struct server_list {
-	char* server_name;
+	char *server_name;
 	int conn_attemp;
 };
 

@@ -35,12 +35,8 @@
 
 #include "cache.h"
 
-int	unparse_entry	(void		**data,
-			 u_int32_t	 *size,
-			 CacheEntry	 *entry);
-int	parse_entry	(void		 *data,
-			 u_int32_t	  size,
-			 CacheEntry	 *entry);
+int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry);
+int parse_entry(void *data, u_int32_t size, CacheEntry *entry);
 void hex_dump(int level, void *data, u_int32_t start, u_int32_t size);
 void abort_io(const char *func, const char *filename) __attribute__((noreturn));
 

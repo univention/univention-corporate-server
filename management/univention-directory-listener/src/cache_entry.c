@@ -56,8 +56,7 @@ static void cache_free_attribute(CacheEntryAttribute *attr) {
 	free(attr);
 }
 
-int cache_free_entry(char **dn, CacheEntry *entry)
-{
+int cache_free_entry(char **dn, CacheEntry *entry) {
 	int i;
 
 	if (dn != NULL) {
@@ -66,7 +65,7 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 	}
 
 	if (entry->attributes) {
-		for (i=0; i<entry->attribute_count; i++)
+		for (i = 0; i < entry->attribute_count; i++)
 			cache_free_attribute(entry->attributes[i]);
 		free(entry->attributes);
 		entry->attributes = NULL;
@@ -74,7 +73,7 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 	}
 
 	if (entry->modules) {
-		for (i=0; i<entry->module_count; i++)
+		for (i = 0; i < entry->module_count; i++)
 			free(entry->modules[i]);
 		free(entry->modules);
 		entry->modules = NULL;
@@ -84,26 +83,25 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 	return 0;
 }
 
-void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
-{
+void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp) {
 	char **module;
 
 	fprintf(fp, "dn: %s\n", dn);
 	int i, j;
-	for(i=0; i<entry->attribute_count; i++) {
+	for (i = 0; i < entry->attribute_count; i++) {
 		CacheEntryAttribute *attribute = entry->attributes[i];
-		for (j=0; j<entry->attributes[i]->value_count; j++) {
+		for (j = 0; j < entry->attributes[i]->value_count; j++) {
 			char *value = entry->attributes[i]->values[j];
 			char *c;
-			for (c=value; *c != '\0'; c++) {
+			for (c = value; *c != '\0'; c++) {
 				if (!isgraph(*c))
 					break;
 			}
 			if (*c != '\0') {
 				char *base64_value;
-				size_t srclen = entry->attributes[i]->length[j]-1;
-				base64_value = malloc(BASE64_ENCODE_LEN(srclen)+1);
-				base64_encode((u_char *)value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
+				size_t srclen = entry->attributes[i]->length[j] - 1;
+				base64_value = malloc(BASE64_ENCODE_LEN(srclen) + 1);
+				base64_encode((u_char *)value, srclen, base64_value, BASE64_ENCODE_LEN(srclen) + 1);
 				fprintf(fp, "%s:: %s\n", attribute->name, base64_value);
 				free(base64_value);
 			} else {
@@ -111,33 +109,31 @@ void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 			}
 		}
 	}
-	for (module=entry->modules; module != NULL && *module != NULL; module++) {
+	for (module = entry->modules; module != NULL && *module != NULL; module++) {
 		fprintf(fp, "listenerModule: %s\n", *module);
 	}
 }
 
-int cache_entry_module_add(CacheEntry *entry, char *module)
-{
+int cache_entry_module_add(CacheEntry *entry, char *module) {
 	char **cur;
 
-	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
+	for (cur = entry->modules; cur != NULL && *cur != NULL; cur++) {
 		if (strcmp(*cur, module) == 0)
 			return 0;
 	}
 
-	entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
+	entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char *));
 	entry->modules[entry->module_count] = strdup(module);
-	entry->modules[entry->module_count+1] = NULL;
+	entry->modules[entry->module_count + 1] = NULL;
 	entry->module_count++;
 
 	return 0;
 }
 
-int cache_entry_module_remove(CacheEntry *entry, char *module)
-{
+int cache_entry_module_remove(CacheEntry *entry, char *module) {
 	char **cur;
 
-	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
+	for (cur = entry->modules; cur != NULL && *cur != NULL; cur++) {
 		if (strcmp(*cur, module) == 0)
 			break;
 	}
@@ -147,30 +143,28 @@ int cache_entry_module_remove(CacheEntry *entry, char *module)
 
 	/* replace entry that is to be removed with last entry */
 	free(*cur);
-	entry->modules[cur-entry->modules] = entry->modules[entry->module_count-1];
-	entry->modules[entry->module_count-1] = NULL;
+	entry->modules[cur - entry->modules] = entry->modules[entry->module_count - 1];
+	entry->modules[entry->module_count - 1] = NULL;
 	entry->module_count--;
 
-	entry->modules = realloc(entry->modules, (entry->module_count+1)*sizeof(char*));
+	entry->modules = realloc(entry->modules, (entry->module_count + 1) * sizeof(char *));
 
 	return 0;
 }
 
-int cache_entry_module_present(CacheEntry *entry, char *module)
-{
+int cache_entry_module_present(CacheEntry *entry, char *module) {
 	char **cur;
 
 	if (entry == NULL)
 		return 0;
-	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
+	for (cur = entry->modules; cur != NULL && *cur != NULL; cur++) {
 		if (strcmp(*cur, module) == 0)
 			return 1;
 	}
 	return 0;
 }
 
-int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry)
-{
+int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry) {
 	BerElement *ber;
 	char *attr;
 	char *_dn;
@@ -186,16 +180,16 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	memset(cache_entry, 0, sizeof(CacheEntry));
 	if (dn != NULL) {
 		_dn = ldap_get_dn(ld, ldap_entry);
-		if(*dn)
-				free(*dn);
+		if (*dn)
+			free(*dn);
 		*dn = strdup(_dn);
 		ldap_memfree(_dn);
 	}
 
-	for (attr=ldap_first_attribute(ld, ldap_entry, &ber); attr != NULL; attr=ldap_next_attribute(ld, ldap_entry, ber)) {
+	for (attr = ldap_first_attribute(ld, ldap_entry, &ber); attr != NULL; attr = ldap_next_attribute(ld, ldap_entry, ber)) {
 		struct berval **val, **v;
 
-		if ((cache_entry->attributes = realloc(cache_entry->attributes, (cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
+		if ((cache_entry->attributes = realloc(cache_entry->attributes, (cache_entry->attribute_count + 2) * sizeof(CacheEntryAttribute *))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of attributes array failed");
 			rv = 1;
 			goto result;
@@ -205,11 +199,11 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			rv = 1;
 			goto result;
 		}
-		cache_entry->attributes[cache_entry->attribute_count]->name=strdup(attr);
-		cache_entry->attributes[cache_entry->attribute_count]->values=NULL;
-		cache_entry->attributes[cache_entry->attribute_count]->length=NULL;
-		cache_entry->attributes[cache_entry->attribute_count]->value_count=0;
-		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
+		cache_entry->attributes[cache_entry->attribute_count]->name = strdup(attr);
+		cache_entry->attributes[cache_entry->attribute_count]->values = NULL;
+		cache_entry->attributes[cache_entry->attribute_count]->length = NULL;
+		cache_entry->attributes[cache_entry->attribute_count]->value_count = 0;
+		cache_entry->attributes[cache_entry->attribute_count + 1] = NULL;
 
 		memberUidMode = false;
 		if (!strcmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid")) {
@@ -231,15 +225,16 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				free(ucrval);
 			}
 		}
-		if ((val=ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
+		if ((val = ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
 			rv = 1;
 			goto result;
 		}
 		for (v = val; *v != NULL; v++) {
-			if ( (*v)->bv_val == NULL ) {
+			if ((*v)->bv_val == NULL) {
 				// check here, strlen behavior might be undefined in this case
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len, cache_entry->attributes[cache_entry->attribute_count]->name, *dn);
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len,
+				                 cache_entry->attributes[cache_entry->attribute_count]->name, *dn);
 				rv = 1;
 				goto result;
 			}
@@ -247,10 +242,10 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			if (memberUidMode) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
 				duplicateMemberUid = 0;
-				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
-					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len+1) ) {
+				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
+					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
 						duplicateMemberUid = true;
 						break;
@@ -263,10 +258,10 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			if (uniqueMemberMode) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
 				duplicateUniqueMember = false;
-				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
-					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len+1) ) {
+				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
+					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
 						duplicateUniqueMember = true;
 						break;
@@ -276,35 +271,39 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 					continue;
 				}
 			}
-			if ((cache_entry->attributes[cache_entry->attribute_count]->values = realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count+2)*sizeof(char*))) == NULL) {
+			if ((cache_entry->attributes[cache_entry->attribute_count]->values =
+			         realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count + 2) * sizeof(char *))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
 				rv = 1;
 				goto result;
 			}
-			if ((cache_entry->attributes[cache_entry->attribute_count]->length = realloc(cache_entry->attributes[cache_entry->attribute_count]->length, (cache_entry->attributes[cache_entry->attribute_count]->value_count+2)*sizeof(int))) == NULL) {
+			if ((cache_entry->attributes[cache_entry->attribute_count]->length =
+			         realloc(cache_entry->attributes[cache_entry->attribute_count]->length, (cache_entry->attributes[cache_entry->attribute_count]->value_count + 2) * sizeof(int))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of length array failed");
 				rv = 1;
 				goto result;
 			}
 			if ((*v)->bv_len == strlen((*v)->bv_val)) {
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strdup((*v)->bv_val)) == NULL) {
+				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count] = strdup((*v)->bv_val)) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: strdup of value failed");
 					rv = 1;
 					goto result;
 				}
-				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strlen(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count])+1;
-			} else {	// in this case something is strange about the string in bv_val, maybe contains a '\0'
+				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count] =
+				    strlen(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]) + 1;
+			} else {  // in this case something is strange about the string in bv_val, maybe contains a '\0'
 				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=malloc(((*v)->bv_len+1)*sizeof(char))) == NULL) {
+				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count] = malloc(((*v)->bv_len + 1) * sizeof(char))) ==
+				    NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
 					rv = 1;
 					goto result;
 				}
-				memcpy(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count],(*v)->bv_val,(*v)->bv_len);
-				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count][(*v)->bv_len]='\0'; // terminate the string to be safe
-				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count]=(*v)->bv_len+1;
+				memcpy(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count], (*v)->bv_val, (*v)->bv_len);
+				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count][(*v)->bv_len] = '\0';  // terminate the string to be safe
+				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count] = (*v)->bv_len + 1;
 			}
-			cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count+1]=NULL;
+			cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count + 1] = NULL;
 			cache_entry->attributes[cache_entry->attribute_count]->value_count++;
 		}
 		cache_entry->attribute_count++;
@@ -325,13 +324,12 @@ result:
 /* return list of changes attributes between new and old; the caller will
    only need to free the (char**); the strings themselves are stolen from
    the new and old entries */
-char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
-{
+char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 	char **changes = NULL;
 	int changes_count = 0;
 	CacheEntryAttribute **cur1, **cur2;
 
-	for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
+	for (cur1 = new->attributes; cur1 != NULL &&*cur1 != NULL; cur1++) {
 		for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++)
 			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
@@ -344,22 +342,22 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 				continue;
 		}
 
-		changes = realloc(changes, (changes_count+2)*sizeof(char*));
+		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
 		changes[changes_count] = (*cur1)->name;
-		changes[changes_count+1] = NULL;
+		changes[changes_count + 1] = NULL;
 		changes_count++;
 	}
 
 	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
-		for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++)
+		for (cur1 = new->attributes; cur1 != NULL &&*cur1 != NULL; cur1++)
 			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;
 
-		changes = realloc(changes, (changes_count+2)*sizeof(char*));
+		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
 		changes[changes_count] = (*cur2)->name;
-		changes[changes_count+1] = NULL;
+		changes[changes_count + 1] = NULL;
 		changes_count++;
 	}
 
@@ -368,11 +366,11 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 	CacheEntryAttribute **cur1, **cur2;
-	int i=0;
-	int rv=0;
+	int i = 0;
+	int rv = 0;
 	memset(backup_cache_entry, 0, sizeof(CacheEntry));
 	for (cur1 = cache_entry->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
-		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
+		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count + 2) * sizeof(CacheEntryAttribute *))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of attributes array failed");
 			rv = 1;
 			goto result;
@@ -383,49 +381,49 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 			goto result;
 		}
 		cur2 = &backup_cache_entry->attributes[backup_cache_entry->attribute_count];
-		(*cur2)->name=strdup((*cur1)->name);
-		(*cur2)->values=NULL;
-		(*cur2)->length=NULL;
-		(*cur2)->value_count=0;
-		backup_cache_entry->attributes[backup_cache_entry->attribute_count+1]=NULL;
+		(*cur2)->name = strdup((*cur1)->name);
+		(*cur2)->values = NULL;
+		(*cur2)->length = NULL;
+		(*cur2)->value_count = 0;
+		backup_cache_entry->attributes[backup_cache_entry->attribute_count + 1] = NULL;
 
 		for (i = 0; i < (*cur1)->value_count; i++) {
-			if (((*cur2)->values = realloc((*cur2)->values, ((*cur2)->value_count+2)*sizeof(char*))) == NULL) {
+			if (((*cur2)->values = realloc((*cur2)->values, ((*cur2)->value_count + 2) * sizeof(char *))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
 				rv = 1;
 				goto result;
 			}
-			if (((*cur2)->length = realloc((*cur2)->length, ((*cur2)->value_count+2)*sizeof(int))) == NULL) {
+			if (((*cur2)->length = realloc((*cur2)->length, ((*cur2)->value_count + 2) * sizeof(int))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
 				rv = 1;
 				goto result;
 			}
 			if ((*cur1)->length[i] == strlen((*cur1)->values[i]) + 1) {
-				if (((*cur2)->values[(*cur2)->value_count]=strdup((*cur1)->values[i])) == NULL) {
+				if (((*cur2)->values[(*cur2)->value_count] = strdup((*cur1)->values[i])) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of value failed");
 					rv = 1;
 					goto result;
 				}
-				(*cur2)->length[(*cur2)->value_count]=strlen((*cur2)->values[(*cur2)->value_count])+1;
+				(*cur2)->length[(*cur2)->value_count] = strlen((*cur2)->values[(*cur2)->value_count]) + 1;
 			} else {
-				if (((*cur2)->values[(*cur2)->value_count]=malloc(((*cur1)->length[i])*sizeof(char))) == NULL) {
+				if (((*cur2)->values[(*cur2)->value_count] = malloc(((*cur1)->length[i]) * sizeof(char))) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for value failed");
 					rv = 1;
 					goto result;
 				}
-				memcpy((*cur2)->values[(*cur2)->value_count],(*cur1)->values[i],(*cur1)->length[i]);
-				(*cur2)->length[(*cur2)->value_count]=(*cur1)->length[i];
+				memcpy((*cur2)->values[(*cur2)->value_count], (*cur1)->values[i], (*cur1)->length[i]);
+				(*cur2)->length[(*cur2)->value_count] = (*cur1)->length[i];
 			}
-			(*cur2)->values[(*cur2)->value_count+1]=NULL;
+			(*cur2)->values[(*cur2)->value_count + 1] = NULL;
 			(*cur2)->value_count++;
 		}
 		backup_cache_entry->attribute_count++;
 	}
 	char **module_ptr;
-	for (module_ptr=cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
-		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count+2)*sizeof(char*));
+	for (module_ptr = cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
+		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count + 2) * sizeof(char *));
 		backup_cache_entry->modules[backup_cache_entry->module_count] = strdup(*module_ptr);
-		backup_cache_entry->modules[backup_cache_entry->module_count+1] = NULL;
+		backup_cache_entry->modules[backup_cache_entry->module_count + 1] = NULL;
 		backup_cache_entry->module_count++;
 	}
 result:
@@ -455,7 +453,7 @@ void cache_entry_set1(CacheEntry *entry, const char *key, const char *value) {
 		if (STRNEQ(attr->name, key))
 			continue;
 		assert(attr->value_count == 1);
-		free (attr->values[0]);
+		free(attr->values[0]);
 		attr->values[0] = strdup(value);
 		assert(attr->values[0]);
 		attr->length[0] = strlen(value) + 1;
@@ -529,7 +527,7 @@ static CacheEntryAttribute *_cache_entry_add_new_attribute(CacheEntry *entry, LD
 	entry->attributes[entry->attribute_count] = NULL;
 
 	return attr;
- error:
+error:
 	cache_free_attribute(attr);
 	return NULL;
 }
@@ -552,14 +550,12 @@ void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
 
 CacheEntryAttribute *cache_entry_add1(CacheEntry *entry, const char *key, const char *value) {
 	LDAPAVA ava = {
-		.la_attr = {
-			.bv_val = (char *)key,
-			.bv_len = strlen(key),
-		},
-		.la_value = {
-			.bv_val = (char *)value,
-			.bv_len = strlen(value),
-		},
+	    .la_attr = {
+	        .bv_val = (char *)key, .bv_len = strlen(key),
+	    },
+	    .la_value = {
+	        .bv_val = (char *)value, .bv_len = strlen(value),
+	    },
 	};
 	return _cache_entry_add_new_attribute(entry, &ava);
 }

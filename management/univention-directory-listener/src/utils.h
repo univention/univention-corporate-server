@@ -5,10 +5,10 @@
 #include <univention/config.h>
 
 
-#define FREE(ptr) \
-	do { \
-	free(ptr); \
-	ptr = NULL; \
+#define FREE(ptr)           \
+	do {                \
+		free(ptr);  \
+		ptr = NULL; \
 	} while (0)
 
 
@@ -34,20 +34,20 @@ static inline int ldap_timeout_scans() {
 
 extern int ldap_retries;
 extern int get_ldap_retries();
-#define LDAP_RETRY(lp, cmd) \
-	({ \
-		int _rv, _retry = 0; \
-		if (ldap_retries < 0) \
-			ldap_retries = get_ldap_retries(); \
-		do { \
-			_rv = (cmd); \
-			if (_rv != LDAP_SERVER_DOWN) \
-				break; \
+#define LDAP_RETRY(lp, cmd)                                                                       \
+	({                                                                                        \
+		int _rv, _retry = 0;                                                              \
+		if (ldap_retries < 0)                                                             \
+			ldap_retries = get_ldap_retries();                                        \
+		do {                                                                              \
+			_rv = (cmd);                                                              \
+			if (_rv != LDAP_SERVER_DOWN)                                              \
+				break;                                                            \
 			while (_retry < ldap_retries && univention_ldap_open(lp) != LDAP_SUCCESS) \
-				sleep(1 << (_retry++ % 6)); \
-		} while (_retry < ldap_retries); \
-		_rv; \
-	 })
+				sleep(1 << (_retry++ % 6));                                       \
+		} while (_retry < ldap_retries);                                                  \
+		_rv;                                                                              \
+	})
 
 extern char *lower_utf8(const char *str);
 extern bool same_dn(const char *left, const char *right);

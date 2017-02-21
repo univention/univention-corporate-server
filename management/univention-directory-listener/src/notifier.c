@@ -59,19 +59,17 @@
 #include "transfile.h"
 #include "select_server.h"
 
-#define DELAY_LDAP_CLOSE		15   /* 15 seconds */
-#define DELAY_ALIVE			5*60 /* 5 minutes */
-#define TIMEOUT_NOTIFIER_RECONNECT	5*60 /* 5 minutes */
+#define DELAY_LDAP_CLOSE 15               /* 15 seconds */
+#define DELAY_ALIVE 5 * 60                /* 5 minutes */
+#define TIMEOUT_NOTIFIER_RECONNECT 5 * 60 /* 5 minutes */
 
 
-static int connect_to_ldap(univention_ldap_parameters_t *lp)
-{
+static int connect_to_ldap(univention_ldap_parameters_t *lp) {
 	while (univention_ldap_open(lp) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 
 		if (suspend_connect()) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
-				"can not connect to any ldap server, retrying in 30 seconds");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to any ldap server, retrying in 30 seconds");
 			sleep(30);
 		}
 
@@ -82,14 +80,9 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp)
 	return LDAP_SUCCESS;
 }
 
-static void check_free_space()
-{
+static void check_free_space() {
 	static int64_t min_mib = -2;
-	const char *dirnames[] = {
-		cache_dir,
-		ldap_dir,
-		NULL
-	}, **dirname;
+	const char *dirnames[] = {cache_dir, ldap_dir, NULL}, **dirname;
 
 	if (min_mib == -2)
 		min_mib = univention_config_get_int("listener/freespace");
@@ -97,7 +90,7 @@ static void check_free_space()
 	if (min_mib <= 0)
 		return;
 
-	for (dirname=dirnames; *dirname; dirname++) {
+	for (dirname = dirnames; *dirname; dirname++) {
 		struct statvfs buf;
 		int64_t free_mib;
 
@@ -108,26 +101,22 @@ static void check_free_space()
 		if (free_mib >= min_mib)
 			continue;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %"PRId64" < %"PRId64, *dirname, free_mib, min_mib);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %" PRId64 " < %" PRId64, *dirname, free_mib, min_mib);
 		abort();
 	}
 }
 
 /* listen for ldap updates */
-int notifier_listen(univention_ldap_parameters_t *lp,
-		bool write_transaction_file,
-		univention_ldap_parameters_t *lp_local)
-{
+int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_file, univention_ldap_parameters_t *lp_local) {
 	int rv = 0;
 	NotifierID id = cache_master_entry.id;
 	struct transaction trans = {
-		.lp = lp,
-		.lp_local = lp_local,
+	    .lp = lp, .lp_local = lp_local,
 	};
 
 	for (;;) {
-		int		msgid;
-		time_t		timeout = DELAY_LDAP_CLOSE;
+		int msgid;
+		time_t timeout = DELAY_LDAP_CLOSE;
 
 		check_free_space();
 

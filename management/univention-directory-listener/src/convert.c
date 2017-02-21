@@ -45,8 +45,7 @@
 #include "cache.h"
 #include "common.h"
 
-static void exit_if_cache_mdb_exists(void)
-{
+static void exit_if_cache_mdb_exists(void) {
 	int rv;
 	char cache_mdb_filename[PATH_MAX];
 
@@ -54,15 +53,13 @@ static void exit_if_cache_mdb_exists(void)
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 
-	if( access( cache_mdb_filename, F_OK ) != -1 ) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"%s already exists", cache_mdb_filename);
+	if (access(cache_mdb_filename, F_OK) != -1) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s already exists", cache_mdb_filename);
 		exit(EXIT_FAILURE);
 	}
 }
 
-static void usage(void)
-{
+static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-listener-convert [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
@@ -70,14 +67,13 @@ static void usage(void)
 }
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
 	int debugging = 0;
 	int rv;
 	DBC *cur;
 	char *dn = NULL;
 	CacheEntry entry;
-	char	cache_mdb_dir[PATH_MAX];
+	char cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -90,11 +86,11 @@ int main(int argc, char* argv[])
 			break;
 		switch (c) {
 		case 'd':
-			debugging=atoi(optarg);
+			debugging = atoi(optarg);
 			break;
 		case 'c':
-			cache_dir=strdup(optarg);
-			bdb_cache_dir=strdup(optarg);
+			cache_dir = strdup(optarg);
+			bdb_cache_dir = strdup(optarg);
 			break;
 		default:
 			usage();
@@ -106,7 +102,7 @@ int main(int argc, char* argv[])
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_KERBEROS, UV_DEBUG_ALL);
-	} else if ( debugging > 0 ) {
+	} else if (debugging > 0) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_INFO);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_INFO);
 		univention_debug_set_level(UV_DEBUG_KERBEROS, UV_DEBUG_INFO);
@@ -133,17 +129,15 @@ int main(int argc, char* argv[])
 	bdb_cache_get_master_entry(&bdb_cache_master_entry);
 	rv = cache_update_master_entry(&cache_master_entry);
 
-	for (rv=bdb_cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
-			rv=bdb_cache_next_entry(&cur, &dn, &entry)) {
+	for (rv = bdb_cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND; rv = bdb_cache_next_entry(&cur, &dn, &entry)) {
 		if (rv != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"error while reading database");
-		} else if ((rv=cache_update_entry_lower(0, dn, &entry)) != MDB_SUCCESS) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"error while writing to database");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error while reading database");
+		} else if ((rv = cache_update_entry_lower(0, dn, &entry)) != MDB_SUCCESS) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error while writing to database");
 		}
 		cache_free_entry(&dn, &entry);
-		if (rv < -1) break;
+		if (rv < -1)
+			break;
 	}
 
 	bdb_cache_free_cursor(cur);

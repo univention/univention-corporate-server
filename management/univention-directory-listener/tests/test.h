@@ -9,13 +9,10 @@ struct test_info {
 };
 extern struct test_info __start_my_tests;
 extern struct test_info __stop_my_tests;
-#define _TEST(n)                               \
-	static bool test_##n(void);            \
-	static struct test_info __test_##n     \
-	__attribute((__section__("my_tests"))) \
-	__attribute((__used__)) = {            \
-		.name = "test_" # n,           \
-		.func = test_##n,              \
+#define _TEST(n)                                                                                              \
+	static bool test_##n(void);                                                                           \
+	static struct test_info __test_##n __attribute((__section__("my_tests"))) __attribute((__used__)) = { \
+	    .name = "test_" #n, .func = test_##n,                                                             \
 	}
 
 int main(int argc, char *argv[]) {

@@ -36,23 +36,18 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void signals_block(void)
-{
+void signals_block(void) {
 }
 
-void signals_unblock(void)
-{
+void signals_unblock(void) {
 }
 
-void exit_handler(int sig)
-{
-       exit(0);
+void exit_handler(int sig) {
+	exit(0);
 }
 
-void reload_handler(int sig)
-{
+void reload_handler(int sig) {
 }
 
-void signals_init(void)
-{
+void signals_init(void) {
 }

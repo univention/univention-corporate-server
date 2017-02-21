@@ -51,14 +51,13 @@ extern long long listener_lock_count;
 
 
 /* Open file exclusively. */
-static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
-{
+static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 	char buf[PATH_MAX];
 	FILE *file;
 	int count = 0;
 	int l_fd;
 
-	snprintf( buf, sizeof(buf), "%s.lock", name );
+	snprintf(buf, sizeof(buf), "%s.lock", name);
 
 	if ((*l_file = fopen(buf, "a")) == NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open lock file [%s]", buf);
@@ -83,7 +82,8 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]", name);
 
 		int rc = lockf(l_fd, F_ULOCK, 0);
-		if (rc) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to unlock %s: %s", buf, strerror(errno));
+		if (rc)
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to unlock %s: %s", buf, strerror(errno));
 		fclose(*l_file);
 		*l_file = NULL;
 	}
@@ -93,8 +93,7 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 
 
 /* Close file and lock file. */
-static int fclose_lock(FILE **file, FILE **l_file)
-{
+static int fclose_lock(FILE **file, FILE **l_file) {
 	int rv = 0;
 
 	if (*file != NULL) {
@@ -126,8 +125,7 @@ bool notifier_has_failed_ldif(void) {
 
 
 /* Write entry to transaction file. */
-int notifier_write_transaction_file(NotifierEntry entry)
-{
+int notifier_write_transaction_file(NotifierEntry entry) {
 	FILE *file, *l_file;
 	int res = -1;
 

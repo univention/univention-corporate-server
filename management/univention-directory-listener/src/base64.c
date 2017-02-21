@@ -56,8 +56,7 @@
 
 #include "common.h"
 
-static const char Base64[] =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char Base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char Pad64 = '=';
 
 /* (From RFC1521 and draft-ietf-dnssec-secext-03.txt)
@@ -113,18 +112,17 @@ static const char Pad64 = '=';
 
        (1) the final quantum of encoding input is an integral
            multiple of 24 bits; here, the final unit of encoded
-	   output will be an integral multiple of 4 characters
-	   with no "=" padding,
+           output will be an integral multiple of 4 characters
+           with no "=" padding,
        (2) the final quantum of encoding input is exactly 8 bits;
            here, the final unit of encoded output will be two
-	   characters followed by two "=" padding characters, or
+           characters followed by two "=" padding characters, or
        (3) the final quantum of encoding input is exactly 16 bits;
            here, the final unit of encoded output will be three
-	   characters followed by one "=" padding character.
+           characters followed by one "=" padding character.
    */
 
-int base64_encode(u_char const *src, size_t srclength, char *target, size_t targsize)
-{
+int base64_encode(u_char const *src, size_t srclength, char *target, size_t targsize) {
 	size_t datalength = 0;
 	u_char input[3];
 	u_char output[4];
@@ -179,7 +177,7 @@ int base64_encode(u_char const *src, size_t srclength, char *target, size_t targ
 	}
 	if (datalength >= targsize)
 		return (-1);
-	target[datalength] = '\0';	/* Returned value doesn't count \0. */
+	target[datalength] = '\0'; /* Returned value doesn't count \0. */
 	return (datalength);
 }
 
@@ -189,8 +187,7 @@ int base64_encode(u_char const *src, size_t srclength, char *target, size_t targ
    it returns the number of data bytes stored at the target, or -1 on error.
  */
 
-int base64_decode(char const *src, u_char *target, size_t targsize)
-{
+int base64_decode(char const *src, u_char *target, size_t targsize) {
 	int tarindex, state, ch;
 	char *pos;
 
@@ -198,14 +195,14 @@ int base64_decode(char const *src, u_char *target, size_t targsize)
 	tarindex = 0;
 
 	while ((ch = *src++) != '\0') {
-		if (isascii(ch) && isspace(ch))	/* Skip whitespace anywhere. */
+		if (isascii(ch) && isspace(ch)) /* Skip whitespace anywhere. */
 			continue;
 
 		if (ch == Pad64)
 			break;
 
 		pos = strchr(Base64, ch);
-		if (pos == 0) 		/* A non-base64 character. */
+		if (pos == 0) /* A non-base64 character. */
 			return (-1);
 
 		switch (state) {
@@ -221,9 +218,8 @@ int base64_decode(char const *src, u_char *target, size_t targsize)
 			if (target) {
 				if ((size_t)tarindex + 1 >= targsize)
 					return (-1);
-				target[tarindex]   |=  (pos - Base64) >> 4;
-				target[tarindex+1]  = ((pos - Base64) & 0x0f)
-							<< 4 ;
+				target[tarindex] |= (pos - Base64) >> 4;
+				target[tarindex + 1] = ((pos - Base64) & 0x0f) << 4;
 			}
 			tarindex++;
 			state = 2;
@@ -232,9 +228,8 @@ int base64_decode(char const *src, u_char *target, size_t targsize)
 			if (target) {
 				if ((size_t)tarindex + 1 >= targsize)
 					return (-1);
-				target[tarindex]   |=  (pos - Base64) >> 2;
-				target[tarindex+1]  = ((pos - Base64) & 0x03)
-							<< 6;
+				target[tarindex] |= (pos - Base64) >> 2;
+				target[tarindex + 1] = ((pos - Base64) & 0x03) << 6;
 			}
 			tarindex++;
 			state = 3;
@@ -258,32 +253,32 @@ int base64_decode(char const *src, u_char *target, size_t targsize)
 	 * on a byte boundary, and/or with erroneous trailing characters.
 	 */
 
-	if (ch == Pad64) {		/* We got a pad char. */
-		ch = *src++;		/* Skip it, get next. */
+	if (ch == Pad64) {   /* We got a pad char. */
+		ch = *src++; /* Skip it, get next. */
 		switch (state) {
-		case 0:		/* Invalid = in first position */
-		case 1:		/* Invalid = in second position */
+		case 0: /* Invalid = in first position */
+		case 1: /* Invalid = in second position */
 			return (-1);
 
-		case 2:		/* Valid, means one byte of info */
+		case 2: /* Valid, means one byte of info */
 			/* Skip any number of spaces. */
 			for ((void)NULL; ch != '\0'; ch = *src++)
-				if (! (isascii(ch) && isspace(ch)))
+				if (!(isascii(ch) && isspace(ch)))
 					break;
 			/* Make sure there is another trailing = sign. */
 			if (ch != Pad64)
 				return (-1);
-			ch = *src++;		/* Skip the = */
-			/* Fall through to "single trailing =" case. */
-			/* FALLTHROUGH */
+			ch = *src++; /* Skip the = */
+		                     /* Fall through to "single trailing =" case. */
+		                     /* FALLTHROUGH */
 
-		case 3:		/* Valid, means two bytes of info */
+		case 3: /* Valid, means two bytes of info */
 			/*
 			 * We know this char is an =.  Is there anything but
 			 * whitespace after it?
 			 */
 			for ((void)NULL; ch != '\0'; ch = *src++)
-				if (! (isascii(ch) && isspace(ch)))
+				if (!(isascii(ch) && isspace(ch)))
 					return (-1);
 
 			/*

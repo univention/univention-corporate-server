@@ -96,11 +96,11 @@ char *ldap_dir = "/var/lib/univention-ldap";
 
 CacheMasterEntry cache_master_entry;
 
-static MDB_env	*env;
-static MDB_dbi	id2dn;
-static MDB_dbi	id2entry;
-static int	mdb_readonly = 0;
-static FILE *lock_fp=NULL;
+static MDB_env *env;
+static MDB_dbi id2dn;
+static MDB_dbi id2entry;
+static int mdb_readonly = 0;
+static FILE *lock_fp = NULL;
 
 static struct filter cache_filter;
 static struct filter *cache_filters[] = {&cache_filter, NULL};
@@ -117,21 +117,17 @@ static void setup_cache_filter(void) {
 
 /*
 int mdb_message_func(const char *msg, void *ctx) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-			"%s\n", msg);
-	return MDB_SUCCESS;
+        univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+                        "%s\n", msg);
+        return MDB_SUCCESS;
 }
 */
 
-void cache_error_message(int rv, char *msg)
-{
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-		"%s: failed: %s (%d)\n",
-		msg, mdb_strerror(rv), rv);
+void cache_error_message(int rv, char *msg) {
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: failed: %s (%d)\n", msg, mdb_strerror(rv), rv);
 }
 
-int cache_lock(void)
-{
+int cache_lock(void) {
 	int rv, fd;
 	char lock_file[PATH_MAX];
 
@@ -142,17 +138,15 @@ int cache_lock(void)
 		abort();
 
 	if ((lock_fp = fopen(lock_file, "a+e")) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"Could not open lock file [%s]", lock_file);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open lock file [%s]", lock_file);
 		exit(EXIT_FAILURE);
 	}
 	fd = fileno(lock_fp);
 
 	if (lockf(fd, F_TLOCK, 0) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"Could not get lock for database [%s]; "
-				"Is another listener processs running?\n",
-				lock_file);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not get lock for database [%s]; "
+		                                                    "Is another listener processs running?\n",
+		                 lock_file);
 		exit(EXIT_FAILURE);
 	}
 
@@ -170,45 +164,37 @@ static size_t determine_mapsize_from_ucr() {
 	char *mapsize_str, *endptr;
 
 	mapsize_str = univention_config_get_string(ucr_var_mapsize);
-	if(mapsize_str) {
+	if (mapsize_str) {
 		errno = 0;
 		mapsize = strtol(mapsize_str, &endptr, 10);
 		free(mapsize_str);
 
-		if ((errno == ERANGE && (mapsize == LONG_MAX || mapsize == LONG_MIN))
-			|| (errno != 0 && mapsize == 0)) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"cache_init: Error parsing value of UCR variable %s as number: %s", ucr_var_mapsize, strerror(errno));
+		if ((errno == ERANGE && (mapsize == LONG_MAX || mapsize == LONG_MIN)) || (errno != 0 && mapsize == 0)) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: Error parsing value of UCR variable %s as number: %s", ucr_var_mapsize, strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 		if (endptr == mapsize_str) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"cache_init: Value of UCR variable %s is not a number", ucr_var_mapsize);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: Value of UCR variable %s is not a number", ucr_var_mapsize);
 			mapsize = default_mapsize;
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"cache_init: using default mapsize: %zu", mapsize);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: using default mapsize: %zu", mapsize);
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-					"cache_init: using UCR defined mapsize: %zu", mapsize);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "cache_init: using UCR defined mapsize: %zu", mapsize);
 		}
 	} else {
 		mapsize = default_mapsize;
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"cache_init: using default mapsize: %zu", mapsize);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "cache_init: using default mapsize: %zu", mapsize);
 	}
 	return mapsize;
 }
 
-int cache_init(char *cache_mdb_dir, int mdb_flags)
-{
+int cache_init(char *cache_mdb_dir, int mdb_flags) {
 	int rv;
 	MDB_txn *cache_init_txn;
 	int mdb_dbi_flags = MDB_INTEGERKEY;
 	size_t mapsize = determine_mapsize_from_ucr();
 
 	if ((mdb_flags & MDB_RDONLY) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"cache_init: MDB_RDONLY");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "cache_init: MDB_RDONLY");
 		mdb_readonly = MDB_RDONLY;
 	} else {
 		mdb_dbi_flags |= MDB_CREATE;
@@ -216,38 +202,33 @@ int cache_init(char *cache_mdb_dir, int mdb_flags)
 
 	rv = mdb_env_create(&env);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_init: creating environment handle failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: creating environment handle failed");
 		cache_error_message(rv, "cache_init: mdb_env_create");
 		return rv;
 	}
 
 	rv = mdb_env_set_mapsize(env, mapsize);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_init: setting mdb mapsize failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: setting mdb mapsize failed");
 		cache_error_message(rv, "cache_init: mdb_env_set_mapsize");
 		return rv;
 	}
 
 	rv = mdb_env_set_maxdbs(env, 2);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_init: setting mdb maxdbs failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: setting mdb maxdbs failed");
 		cache_error_message(rv, "cache_init: mdb_env_set_maxdbs");
 		return rv;
 	}
 
 	rv = mdb_env_open(env, cache_mdb_dir, mdb_readonly, 0600);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_init: opening database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_init: opening database failed");
 		cache_error_message(rv, "cache_init: mdb_env_open");
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_init: Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_init: Transaction begin");
 
 	rv = mdb_txn_begin(env, NULL, mdb_readonly, &cache_init_txn);
 	if (rv != MDB_SUCCESS) {
@@ -273,8 +254,7 @@ int cache_init(char *cache_mdb_dir, int mdb_flags)
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_init: Transaction commit");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_init: Transaction commit");
 
 	rv = mdb_txn_commit(cache_init_txn);
 	if (rv != MDB_SUCCESS) {
@@ -290,13 +270,11 @@ int cache_init(char *cache_mdb_dir, int mdb_flags)
 	return 0;
 }
 
-int cache_set_schema_id(const NotifierID value)
-{
+int cache_set_schema_id(const NotifierID value) {
 	int rv, fd, len;
 	char file[PATH_MAX], buf[15];
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
-			"Set Schema ID to %ld", value);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Set Schema ID to %ld", value);
 	len = snprintf(buf, sizeof buf, "%ld", value);
 	if (len < 0 || len >= sizeof buf)
 		return len;
@@ -321,8 +299,7 @@ int cache_set_schema_id(const NotifierID value)
 	return 0;
 }
 
-int cache_get_schema_id(NotifierID *value, const long def)
-{
+int cache_get_schema_id(NotifierID *value, const long def) {
 	FILE *fp;
 	char file[PATH_MAX];
 	int rv;
@@ -336,8 +313,7 @@ int cache_get_schema_id(NotifierID *value, const long def)
 	return fclose(fp) || (rv != 1);
 }
 
-int cache_set_int(char *key, const NotifierID value)
-{
+int cache_set_int(char *key, const NotifierID value) {
 	int rv;
 	FILE *fp;
 	char file[PATH_MAX], tmpfile[PATH_MAX];
@@ -359,8 +335,7 @@ int cache_set_int(char *key, const NotifierID value)
 	return rv;
 }
 
-int cache_get_int(char *key, NotifierID *value, const long def)
-{
+int cache_get_int(char *key, NotifierID *value, const long def) {
 	FILE *fp;
 	char file[PATH_MAX];
 	int rv;
@@ -374,20 +349,18 @@ int cache_get_int(char *key, NotifierID *value, const long def)
 	return fclose(fp) || (rv != 1);
 }
 
-int cache_get_master_entry(CacheMasterEntry *master_entry)
-{
-	int		rv;
-	MDB_txn		*read_txn;
-	MDB_val		key, data;
+int cache_get_master_entry(CacheMasterEntry *master_entry) {
+	int rv;
+	MDB_txn *read_txn;
+	MDB_val key, data;
 
 	memset(&key, 0, sizeof(MDB_val));
 	memset(&data, 0, sizeof(MDB_val));
 
-	key.mv_data=&MASTER_KEY;
-	key.mv_size=MASTER_KEY_SIZE;
+	key.mv_data = &MASTER_KEY;
+	key.mv_size = MASTER_KEY_SIZE;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_get_master_entry: Read Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_master_entry: Read Transaction begin");
 
 	rv = mdb_txn_begin(env, NULL, MDB_RDONLY, &read_txn);
 	if (rv != MDB_SUCCESS) {
@@ -397,26 +370,23 @@ int cache_get_master_entry(CacheMasterEntry *master_entry)
 
 	rv = mdb_get(read_txn, id2entry, &key, &data);
 	if (rv == MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_get_master_entry: Read Transaction abort"
-				": %s", mdb_strerror(rv));
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_master_entry: Read Transaction abort"
+		                                                  ": %s",
+		                 mdb_strerror(rv));
 		mdb_txn_abort(read_txn);
 		return rv;
 	} else if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_get_master_entry: reading master entry from database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_get_master_entry: reading master entry from database failed");
 		cache_error_message(rv, "cache_get_master_entry: mdb_get");
 		mdb_txn_abort(read_txn);
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-		"cache_get_master_entry: Read Transaction abort");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_master_entry: Read Transaction abort");
 	mdb_txn_abort(read_txn);
 
 	if (data.mv_size != sizeof(CacheMasterEntry)) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_get_master_entry: master entry has unexpected length");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_get_master_entry: master entry has unexpected length");
 		return 1;
 	}
 
@@ -425,40 +395,35 @@ int cache_get_master_entry(CacheMasterEntry *master_entry)
 	return MDB_SUCCESS;
 }
 
-int cache_update_master_entry(CacheMasterEntry *master_entry)
-{
-	int		rv;
-	MDB_txn		*write_txn;
-	MDB_val		key, data;
+int cache_update_master_entry(CacheMasterEntry *master_entry) {
+	int rv;
+	MDB_txn *write_txn;
+	MDB_val key, data;
 
 	memset(&key, 0, sizeof(MDB_val));
 	memset(&data, 0, sizeof(MDB_val));
 
-	key.mv_data=&MASTER_KEY;
-	key.mv_size=MASTER_KEY_SIZE;
+	key.mv_data = &MASTER_KEY;
+	key.mv_size = MASTER_KEY_SIZE;
 
-	data.mv_data=(void*)master_entry;
-	data.mv_size=sizeof(CacheMasterEntry);
+	data.mv_data = (void *)master_entry;
+	data.mv_size = sizeof(CacheMasterEntry);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_update_master_entry: Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_master_entry: Transaction begin");
 	if ((rv = mdb_txn_begin(env, NULL, 0, &write_txn)) != MDB_SUCCESS) {
 		cache_error_message(rv, "cache_update_master_entry: mdb_txn_begin");
 		return rv;
 	}
 	rv = mdb_put(write_txn, id2entry, &key, &data, 0);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_update_master_entry: storing master entry in database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_master_entry: storing master entry in database failed");
 		cache_error_message(rv, "cache_update_master_entry: mdb_put");
 		mdb_txn_abort(write_txn);
 		return rv;
 	}
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_update_master_entry: Transaction commit");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_master_entry: Transaction commit");
 	if ((rv = mdb_txn_commit(write_txn)) != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_update_master_entry: storing master entry in database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_master_entry: storing master entry in database failed");
 		cache_error_message(rv, "cache_update_master_entry: mdb_txn_commit");
 		return rv;
 	}
@@ -470,20 +435,18 @@ int cache_update_master_entry(CacheMasterEntry *master_entry)
    implemented, entries other than the most recent one can be returned.
    At the moment, the id parameters for cache_update_entry, and
    cache_delete_entry do nothing */
-static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, CacheEntry *entry, MDB_cursor **id2dn_cursor_pp)
-{
-	int		rv;
-	DNID		dnid;
-	MDB_txn		*write_txn;
-	MDB_val		key, data;
-	u_int32_t	tmp_size = 0;
+static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, CacheEntry *entry, MDB_cursor **id2dn_cursor_pp) {
+	int rv;
+	DNID dnid;
+	MDB_txn *write_txn;
+	MDB_val key, data;
+	u_int32_t tmp_size = 0;
 
 	memset(&data, 0, sizeof(MDB_val));
 	rv = unparse_entry(&data.mv_data, &tmp_size, entry);
 	data.mv_size = tmp_size;
 	if (rv != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_update_entry: unparsing entry failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: unparsing entry failed");
 		return rv;
 	}
 
@@ -501,28 +464,24 @@ static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, Cac
 	write_txn = mdb_cursor_txn(*id2dn_cursor_pp);
 	rv = mdb_put(write_txn, id2entry, &key, &data, 0);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_update_entry: storing entry in database failed: %s", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: storing entry in database failed: %s", dn);
 		cache_error_message(rv, "cache_update_entry: mdb_put");
 		signals_unblock();
 		return rv;
 	}
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"put %zu bytes for %s", data.mv_size, dn);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %zu bytes for %s", data.mv_size, dn);
 
 	signals_unblock();
 
 	return rv;
 }
 
-inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
-{
-	int		rv;
-	MDB_txn		*write_txn;
-	MDB_cursor	*id2dn_write_cursor_p;
+inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry) {
+	int rv;
+	MDB_txn *write_txn;
+	MDB_cursor *id2dn_write_cursor_p;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_update_entry: Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction begin");
 	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
 	if (rv != MDB_SUCCESS) {
 		cache_error_message(rv, "cache_update_entry: mdb_txn_begin");
@@ -540,18 +499,15 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	mdb_cursor_close(id2dn_write_cursor_p);
 
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_update_entry: Transaction abort");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction abort");
 		mdb_txn_abort(write_txn);
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_update_entry: Transaction commit");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction commit");
 	rv = mdb_txn_commit(write_txn);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_update_entry: storing updated entry in database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: storing updated entry in database failed");
 		cache_error_message(rv, "cache_update_entry: mdb_txn_commit");
 		return rv;
 	}
@@ -559,8 +515,7 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
-{
+int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry) {
 	char *lower_dn;
 	int rv = 0;
 
@@ -576,12 +531,11 @@ int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
 	return rv;
 }
 
-static inline int cache_delete_entry_in_transaction(NotifierID id, char *dn, MDB_cursor **id2dn_cursor_pp)
-{
-	int		rv;
-	DNID		dnid;
-	MDB_txn		*write_txn;
-	MDB_val		key;
+static inline int cache_delete_entry_in_transaction(NotifierID id, char *dn, MDB_cursor **id2dn_cursor_pp) {
+	int rv;
+	DNID dnid;
+	MDB_txn *write_txn;
+	MDB_val key;
 
 	signals_block();
 
@@ -597,8 +551,7 @@ static inline int cache_delete_entry_in_transaction(NotifierID id, char *dn, MDB
 	write_txn = mdb_cursor_txn(*id2dn_cursor_pp);
 	rv = mdb_del(write_txn, id2entry, &key, 0);
 	if (rv != MDB_SUCCESS && rv != MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_delete_entry: removing from database failed: %s", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_delete_entry: removing from database failed: %s", dn);
 		cache_error_message(rv, "cache_delete_entry: mdb_del");
 		signals_unblock();
 		return rv;
@@ -615,14 +568,12 @@ static inline int cache_delete_entry_in_transaction(NotifierID id, char *dn, MDB
 	return rv;
 }
 
-int cache_delete_entry(NotifierID id, char *dn)
-{
-	int		rv;
-	MDB_txn		*write_txn;
-	MDB_cursor	*id2dn_write_cursor_p;
+int cache_delete_entry(NotifierID id, char *dn) {
+	int rv;
+	MDB_txn *write_txn;
+	MDB_cursor *id2dn_write_cursor_p;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_delete_entry: Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_delete_entry: Transaction begin");
 	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
 	if (rv != MDB_SUCCESS) {
 		cache_error_message(rv, "cache_delete_entry: mdb_txn_begin");
@@ -640,29 +591,25 @@ int cache_delete_entry(NotifierID id, char *dn)
 	mdb_cursor_close(id2dn_write_cursor_p);
 
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_update_entry: Transaction abort");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction abort");
 		mdb_txn_abort(write_txn);
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_delete_entry: Transaction commit");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_delete_entry: Transaction commit");
 	rv = mdb_txn_commit(write_txn);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_delete_entry: storing entry removal from database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_delete_entry: storing entry removal from database failed");
 		cache_error_message(rv, "cache_delete_entry: mdb_txn_commit");
 	}
 
 	return rv;
 }
 
-int cache_delete_entry_lower_upper(NotifierID id, char *dn)
-{
+int cache_delete_entry_lower_upper(NotifierID id, char *dn) {
 	char *lower_dn;
 	bool mixedcase = false;
-	int	 rv, rv2;
+	int rv, rv2;
 
 	// convert to a lowercase dn
 	lower_dn = lower_utf8(dn);
@@ -670,39 +617,36 @@ int cache_delete_entry_lower_upper(NotifierID id, char *dn)
 	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
 		// try again with original dn
-		rv2=cache_delete_entry(id, dn);
+		rv2 = cache_delete_entry(id, dn);
 	}
 
 	free(lower_dn);
 	if (mixedcase) {
-		return rv?rv2:rv;	// if rv was bad (!=0) return rv2, otherwise return rv
+		return rv ? rv2 : rv;  // if rv was bad (!=0) return rv2, otherwise return rv
 	} else {
 		return rv;
 	}
 }
 
-int cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry, MDB_cursor **id2dn_cursor_pp)
-{
+int cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry, MDB_cursor **id2dn_cursor_pp) {
 	if (entry->module_count == 0)
 		return cache_delete_entry_in_transaction(id, dn, id2dn_cursor_pp);
 	else
 		return cache_update_entry_in_transaction(id, dn, entry, id2dn_cursor_pp);
 }
 
-int cache_get_entry(char *dn, CacheEntry *entry)
-{
-	int		rv;
-	DNID		dnid;
-	MDB_txn		*read_txn;
-	MDB_cursor	*id2dn_read_cursor_p;
-	MDB_val		key, data;
+int cache_get_entry(char *dn, CacheEntry *entry) {
+	int rv;
+	DNID dnid;
+	MDB_txn *read_txn;
+	MDB_cursor *id2dn_read_cursor_p;
+	MDB_val key, data;
 
 	memset(&key, 0, sizeof(MDB_val));
 	memset(&data, 0, sizeof(MDB_val));
 	memset(entry, 0, sizeof(CacheEntry));
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_get_entry: Read Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_entry: Read Transaction begin");
 
 	rv = mdb_txn_begin(env, NULL, MDB_RDONLY, &read_txn);
 	if (rv != MDB_SUCCESS) {
@@ -720,8 +664,7 @@ int cache_get_entry(char *dn, CacheEntry *entry)
 	rv = dntree_get_id4dn(id2dn_read_cursor_p, dn, &dnid, false);
 	mdb_cursor_close(id2dn_read_cursor_p);
 	if (rv == MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"cache_get_entry: Read Transaction abort");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_entry: Read Transaction abort");
 		mdb_txn_abort(read_txn);
 		return rv;
 	}
@@ -733,20 +676,16 @@ int cache_get_entry(char *dn, CacheEntry *entry)
 	rv = mdb_get(read_txn, id2entry, &key, &data);
 	// signals_unblock();
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_get_entry: Read Transaction abort");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_get_entry: Read Transaction abort");
 	mdb_txn_abort(read_txn);
 
 	if (rv == MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"got %zu bytes for %s", data.mv_size, dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "got %zu bytes for %s", data.mv_size, dn);
 	} else if (rv == MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-				"cache_get_entry: no cache entry found for %s", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "cache_get_entry: no cache entry found for %s", dn);
 		return rv;
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"reading %s from database failed", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "reading %s from database failed", dn);
 		cache_error_message(rv, "cache_get_entry: mdb_get");
 		return rv;
 	}
@@ -754,19 +693,17 @@ int cache_get_entry(char *dn, CacheEntry *entry)
 	assert(data.mv_size <= UINT32_MAX);
 	rv = parse_entry(data.mv_data, data.mv_size, entry);
 	if (rv != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_get_entry: parsing entry failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_get_entry: parsing entry failed");
 		exit(1);
 	}
 
 	return rv;
 }
 
-int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
-{
+int cache_get_entry_lower_upper(char *dn, CacheEntry *entry) {
 	char *lower_dn;
 	bool mixedcase = false;
-	int	 rv;
+	int rv;
 
 	// convert to a lowercase dn
 	lower_dn = lower_utf8(dn);
@@ -775,7 +712,7 @@ int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 	}
 
 	rv = cache_get_entry(lower_dn, entry);
-	if (rv == MDB_NOTFOUND && mixedcase ) {
+	if (rv == MDB_NOTFOUND && mixedcase) {
 		// try again with original dn
 		rv = cache_get_entry(dn, entry);
 	}
@@ -784,13 +721,11 @@ int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int cache_first_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_read_cursor_pp, char **dn, CacheEntry *entry)
-{
+int cache_first_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_read_cursor_pp, char **dn, CacheEntry *entry) {
 	MDB_txn *read_txn;
 	int rv;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_first_entry: Transaction begin");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_first_entry: Transaction begin");
 
 	rv = mdb_txn_begin(env, NULL, mdb_readonly, &read_txn);
 	if (rv != MDB_SUCCESS) {
@@ -818,14 +753,13 @@ int cache_first_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_r
 	MDB_env *env = mdb_txn_env(read_txn);
 	mdb_env_info(env, &stat);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-		"LAST COMMITTED TXN: %zu", stat.me_last_txnid);
+	        "LAST COMMITTED TXN: %zu", stat.me_last_txnid);
 	*/
 
 	return cache_next_entry(id2entry_read_cursor_pp, id2dn_read_cursor_pp, dn, entry);
 }
 
-int cache_next_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_read_cursor_pp, char **dn, CacheEntry *entry)
-{
+int cache_next_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_read_cursor_pp, char **dn, CacheEntry *entry) {
 	MDB_val key, data;
 	DNID dnid;
 	int rv;
@@ -843,19 +777,17 @@ int cache_next_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_re
 	}
 
 	// skip root node
-	dnid = * (DNID *) key.mv_data;
+	dnid = *(DNID *)key.mv_data;
 	if (dnid == MASTER_KEY) {
 		return cache_next_entry(id2entry_read_cursor_pp, id2dn_read_cursor_pp, dn, entry);
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"got %zu bytes", data.mv_size);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %zu bytes", data.mv_size);
 
 	assert(data.mv_size <= UINT32_MAX);
-	rv = parse_entry(data.mv_data, (u_int32_t) data.mv_size, entry);
+	rv = parse_entry(data.mv_data, (u_int32_t)data.mv_size, entry);
 	if (rv != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_next_entry: parsing entry failed: %s", *dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_next_entry: parsing entry failed: %s", *dn);
 		printf("%zu\n", data.mv_size);
 		return rv;
 	}
@@ -865,13 +797,11 @@ int cache_next_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_re
 		free(*dn);
 		*dn = NULL;
 	}
-		
+
 	rv = dntree_lookup_dn4id(*id2dn_read_cursor_pp, dnid, dn);
 
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_next_entry: DB corruption, DN entry for id %d not found",
-				*(int*)key.mv_data);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_next_entry: DB corruption, DN entry for id %d not found", *(int *)key.mv_data);
 		cache_error_message(rv, "cache_next_entry: mdb_get");
 		return rv;
 	}
@@ -879,8 +809,7 @@ int cache_next_entry(MDB_cursor **id2entry_read_cursor_pp, MDB_cursor **id2dn_re
 	return 0;
 }
 
-int cache_free_cursor(MDB_cursor *id2entry_read_cursor_pp, MDB_cursor *id2dn_read_cursor_pp)
-{
+int cache_free_cursor(MDB_cursor *id2entry_read_cursor_pp, MDB_cursor *id2dn_read_cursor_pp) {
 	int rv = 0;
 	MDB_txn *read_txn;
 
@@ -888,19 +817,16 @@ int cache_free_cursor(MDB_cursor *id2entry_read_cursor_pp, MDB_cursor *id2dn_rea
 	mdb_cursor_close(id2entry_read_cursor_pp);
 	mdb_cursor_close(id2dn_read_cursor_pp);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-			"cache_free_cursor: Transaction commit");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_free_cursor: Transaction commit");
 	rv = mdb_txn_commit(read_txn);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"cache_free_cursor: Transation commit failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_free_cursor: Transation commit failed");
 		cache_error_message(rv, "cache_free_cursor: mdb_txn_commit");
 	}
 	return rv;
 }
 
-void cache_close(void)
-{
+void cache_close(void) {
 	mdb_close(env, id2dn);
 	mdb_close(env, id2entry);
 	mdb_env_close(env);

@@ -48,8 +48,7 @@
 int INIT_ONLY = 0;
 
 
-static void usage(void)
-{
+static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-listener-dump [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
@@ -60,8 +59,7 @@ static void usage(void)
 }
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
 	int debugging = 0, broken_only = 0;
 	int id_only = 0;
 	char *output_file = NULL;
@@ -71,7 +69,7 @@ int main(int argc, char* argv[])
 	MDB_cursor *id2dn_read_cursor_p = NULL;
 	char *dn = NULL;
 	CacheEntry entry;
-	char	cache_mdb_dir[PATH_MAX];
+	char cache_mdb_dir[PATH_MAX];
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -84,20 +82,20 @@ int main(int argc, char* argv[])
 			break;
 		switch (c) {
 		case 'd':
-			debugging=atoi(optarg);
+			debugging = atoi(optarg);
 			break;
 		case 'c':
-			cache_dir=strdup(optarg);
+			cache_dir = strdup(optarg);
 			break;
 		case 'O':
 			if (strcmp(optarg, "-") != 0)
-				output_file=strdup(optarg);
+				output_file = strdup(optarg);
 			break;
 		case 'r':
-			broken_only=1;
+			broken_only = 1;
 			break;
 		case 'i':
-			id_only=1;
+			id_only = 1;
 			break;
 		default:
 			usage();
@@ -108,7 +106,7 @@ int main(int argc, char* argv[])
 	if (debugging > 1) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ALL);
-	} else if ( debugging > 0 ) {
+	} else if (debugging > 0) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_INFO);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_INFO);
 	} else {
@@ -122,8 +120,7 @@ int main(int argc, char* argv[])
 		fp = stdout;
 	}
 	if (fp == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			"Couldn't open dump file");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Couldn't open dump file");
 		exit(1);
 	}
 	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
@@ -137,18 +134,16 @@ int main(int argc, char* argv[])
 
 		printf("%ld %ld\n", cache_master_entry.id, cache_master_entry.schema_id);
 	} else {
-
-	for (rv=cache_first_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry); rv != MDB_NOTFOUND;
-			rv=cache_next_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry)) {
-		if ((rv == 0 && !broken_only) || (rv == -1 && broken_only)) {
-			cache_dump_entry(dn, &entry, fp);
-			fprintf(fp, "\n");
+		for (rv = cache_first_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry); rv != MDB_NOTFOUND; rv = cache_next_entry(&id2entry_read_cursor_p, &id2dn_read_cursor_p, &dn, &entry)) {
+			if ((rv == 0 && !broken_only) || (rv == -1 && broken_only)) {
+				cache_dump_entry(dn, &entry, fp);
+				fprintf(fp, "\n");
+			}
+			cache_free_entry(&dn, &entry);
+			if (rv < -1)
+				break;
 		}
-		cache_free_entry(&dn, &entry);
-		if (rv < -1) break;
-	}
-	cache_free_cursor(id2entry_read_cursor_p, id2dn_read_cursor_p);
-
+		cache_free_cursor(id2entry_read_cursor_p, id2dn_read_cursor_p);
 	}
 
 	cache_close();

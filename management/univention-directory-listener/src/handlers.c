@@ -53,8 +53,8 @@
 #include "filter.h"
 #include "handlers.h"
 
-static PyObject* handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old);
-static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command);
+static PyObject *handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old);
+static PyObject *handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command);
 
 extern char **module_dirs;
 extern int module_dir_count;
@@ -66,8 +66,7 @@ Handler *handlers = NULL;
 /* Import a Python module (source or compiled) the same way __import__ does.
    Unfortunately there doesn't seem to be any higher level interface for this.
    I agree this isn't very intuitive. */
-static PyObject* module_import(char *filename)
-{
+static PyObject *module_import(char *filename) {
 	/* It is essential that every module is imported under a different name;
 	   This used to be strdup("") which caused the modules to get overwritten,
 	   and as a consequence thereof, the handlers were called with a different
@@ -90,9 +89,9 @@ static PyObject* module_import(char *filename)
 
 		magic = PyMarshal_ReadLongFromFile(fp);
 		/* we should probably check the magic here */
-		(void) PyMarshal_ReadLongFromFile(fp);
+		(void)PyMarshal_ReadLongFromFile(fp);
 
-		co = (PyCodeObject*) PyMarshal_ReadLastObjectFromFile(fp);
+		co = (PyCodeObject *)PyMarshal_ReadLastObjectFromFile(fp);
 	} else {
 		node *n;
 
@@ -114,7 +113,7 @@ static PyObject* module_import(char *filename)
 	}
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "execCodeModuleEx %s", filename);
-	m = PyImport_ExecCodeModuleEx(name, (PyObject*) co, filename);
+	m = PyImport_ExecCodeModuleEx(name, (PyObject *)co, filename);
 	free(name);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Module done %s", filename);
 
@@ -123,8 +122,7 @@ static PyObject* module_import(char *filename)
 
 
 /* Retrieve object from Python module.  */
-static PyObject* module_get_object(PyObject *module, char *name)
-{
+static PyObject *module_get_object(PyObject *module, char *name) {
 	if (!PyObject_HasAttrString(module, name))
 		return NULL;
 	return PyObject_GetAttrString(module, name);
@@ -132,12 +130,11 @@ static PyObject* module_get_object(PyObject *module, char *name)
 
 
 /* Retrieve string from Python module. */
-static char* module_get_string(PyObject *module, char *name)
-{
+static char *module_get_string(PyObject *module, char *name) {
 	PyObject *var;
 	char *str1, *str2 = NULL;
 
-	if ((var=PyObject_GetAttrString(module, name)) == NULL)
+	if ((var = PyObject_GetAttrString(module, name)) == NULL)
 		goto error0;
 	PyArg_Parse(var, "s", &str1);
 	str2 = strdup(str1);
@@ -148,19 +145,18 @@ error0:
 
 
 /* Retrieve list of strings from Python module. */
-static char** module_get_string_list(PyObject *module, char *name)
-{
+static char **module_get_string_list(PyObject *module, char *name) {
 	PyObject *list;
 	char **res = NULL;
 	int len, i;
 
-	if ((list=PyObject_GetAttrString(module, name)) == NULL)
+	if ((list = PyObject_GetAttrString(module, name)) == NULL)
 		goto error0;
 	if (!PyList_Check(list))
 		goto error1;
 
 	len = PyList_Size(list);
-	if ((res = malloc((len+1)*sizeof(char*))) == NULL)
+	if ((res = malloc((len + 1) * sizeof(char *))) == NULL)
 		goto error1;
 	for (i = 0; i < len; i++) {
 		PyObject *var;
@@ -174,14 +170,13 @@ error1:
 	if (PyErr_Occurred())
 		PyErr_Print();
 error0:
-	PyErr_Clear(); // Silent error when attribute is not set
+	PyErr_Clear();  // Silent error when attribute is not set
 	return res;
 }
 
 
 /* load handler and insert it into list of handlers */
-static int handler_import(char* filename)
-{
+static int handler_import(char *filename) {
 	char *filter, *error_msg = NULL;
 	int num_filters = 0;
 	char state_filename[PATH_MAX];
@@ -195,7 +190,7 @@ static int handler_import(char* filename)
 		return 1;
 	memset(handler, 0, sizeof(Handler));
 
-	if ((handler->module=module_import(filename)) == NULL) {
+	if ((handler->module = module_import(filename)) == NULL) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed", filename);
 		error_msg = "module_import()";
 		goto error;
@@ -207,14 +202,14 @@ static int handler_import(char* filename)
 		goto error;
 	}
 
-	if ( PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
+	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
 		handler->modrdn = module_get_string(handler->module, "modrdn");
 		if (handler->modrdn == NULL) {
 			error_msg = "module_get_string(\"modrdn\")";
 			goto error;
 		}
 	}
-	PyErr_Clear(); // Silent error when attribute is not set
+	PyErr_Clear();  // Silent error when attribute is not set
 
 	handler->description = module_get_string(handler->module, "description"); /* required */
 	if (handler->description == NULL) {
@@ -223,7 +218,7 @@ static int handler_import(char* filename)
 	}
 
 	if ((filter = module_get_string(handler->module, "filter")) != NULL) { /* optional */
-		handler->filters = realloc(handler->filters, (num_filters+2)*sizeof(struct filter*));
+		handler->filters = realloc(handler->filters, (num_filters + 2) * sizeof(struct filter *));
 		if (handler->filters == NULL) {
 			error_msg = "malloc(struct filter[])";
 			goto error;
@@ -239,12 +234,12 @@ static int handler_import(char* filename)
 		num_filters++;
 		handler->filters[num_filters] = NULL;
 	} else {
-		PyErr_Clear(); // Silent error when attribute is not set
+		PyErr_Clear();  // Silent error when attribute is not set
 	}
 
 	handler->attributes = module_get_string_list(handler->module, "attributes"); /* optional */
 	if (handler->attributes == NULL) {
-		PyErr_Clear(); // Silent error when attribute is not set
+		PyErr_Clear();  // Silent error when attribute is not set
 	}
 
 	handler->handler = module_get_object(handler->module, "handler");
@@ -263,12 +258,13 @@ static int handler_import(char* filename)
 		handler->state = 0;
 	} else {
 		rv = fscanf(state_fp, "%u", &handler->state);
-		if (rv != 1) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed reading %s: %s", state_filename, strerror(errno));
+		if (rv != 1)
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed reading %s: %s", state_filename, strerror(errno));
 		fclose(state_fp);
 	}
 
 	/* insert into list */
-	if ( handlers == NULL ) {
+	if (handlers == NULL) {
 		handler->next = handlers;
 		handlers = handler;
 	} else {
@@ -315,8 +311,7 @@ error:
 
 /* run prerun handler; this only needs to be done once for multiple calls
    to the same handler until the postrun handler is run */
-static int handler_prerun(Handler *handler)
-{
+static int handler_prerun(Handler *handler) {
 	if (handler->prerun && !handler->prepared) {
 		PyObject *result = PyObject_CallObject(handler->prerun, NULL);
 		drop_privileges();
@@ -326,17 +321,15 @@ static int handler_prerun(Handler *handler)
 		}
 		Py_XDECREF(result);
 	}
-	handler->prepared=1;
+	handler->prepared = 1;
 
 	return 0;
 }
 
 
 /* run postrun handler */
-static int handler_postrun(Handler *handler)
-{
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "postrun handler: %s (prepared=%d)",
-			handler->name, handler->prepared);
+static int handler_postrun(Handler *handler) {
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "postrun handler: %s (prepared=%d)", handler->name, handler->prepared);
 	if (!handler->prepared)
 		return 0;
 	if (handler->postrun) {
@@ -348,18 +341,17 @@ static int handler_postrun(Handler *handler)
 		}
 		Py_XDECREF(result);
 	}
-	handler->prepared=0;
+	handler->prepared = 0;
 
 	return 0;
 }
 
 
 /* run all postrun handlers. */
-int handlers_postrun_all(void)
-{
+int handlers_postrun_all(void) {
 	Handler *cur;
 
-	for (cur=handlers; cur != NULL; cur=cur->next) {
+	for (cur = handlers; cur != NULL; cur = cur->next) {
 		handler_postrun(cur);
 	}
 	return 0;
@@ -367,8 +359,7 @@ int handlers_postrun_all(void)
 
 
 /* execute handler with arguments */
-static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command)
-{
+static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command) {
 	PyObject *argtuple, *result;
 	int rv = 0;
 	char cmd[2];
@@ -382,9 +373,9 @@ static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, Cache
 		}
 	}
 
-	if ( handler->modrdn ) {
-		cmd[0]=command;
-		cmd[1]='\0';
+	if (handler->modrdn) {
+		cmd[0] = command;
+		cmd[1] = '\0';
 		argtuple = handlers_argtuple_command(dn, new, old, cmd);
 	} else {
 		argtuple = handlers_argtuple(dn, new, old);
@@ -407,8 +398,7 @@ static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, Cache
 
 
 /* call clean function of handler */
-int handler_clean(Handler *handler)
-{
+int handler_clean(Handler *handler) {
 	PyObject *result;
 
 	if (handler->clean == NULL)
@@ -427,10 +417,9 @@ int handler_clean(Handler *handler)
 
 
 /* call clean function on all handlers. */
-int handlers_clean_all(void)
-{
+int handlers_clean_all(void) {
 	Handler *cur;
-	for (cur=handlers; cur != NULL; cur=cur->next) {
+	for (cur = handlers; cur != NULL; cur = cur->next) {
 		handler_clean(cur);
 	}
 	return 0;
@@ -438,8 +427,7 @@ int handlers_clean_all(void)
 
 
 /* call handler's initialize function */
-int handler_initialize(Handler *handler)
-{
+int handler_initialize(Handler *handler) {
 	PyObject *result;
 
 	if (handler->initialize == NULL)
@@ -457,10 +445,9 @@ int handler_initialize(Handler *handler)
 
 
 /* call initialize function on all handlers. */
-int handlers_initialize_all(void)
-{
+int handlers_initialize_all(void) {
 	Handler *cur;
-	for (cur=handlers; cur != NULL; cur=cur->next) {
+	for (cur = handlers; cur != NULL; cur = cur->next) {
 		handler_initialize(cur);
 	}
 	return 0;
@@ -468,8 +455,7 @@ int handlers_initialize_all(void)
 
 
 /* Load all handlers from one directory. */
-int handlers_load_path(char *path)
-{
+int handlers_load_path(char *path) {
 	struct stat st;
 	int rv = 1;
 
@@ -505,7 +491,7 @@ int handlers_load_path(char *path)
 				/* Only load *.py files */
 				if ((s != NULL) && (strcmp(s, ".py") == 0)) {
 					char filename[PATH_MAX];
-					rv = snprintf(filename, PATH_MAX,"%s/%s", path, de->d_name);
+					rv = snprintf(filename, PATH_MAX, "%s/%s", path, de->d_name);
 					if (rv < 0 || rv >= PATH_MAX)
 						abort();
 					rv = handler_import(filename);
@@ -524,11 +510,10 @@ int handlers_load_path(char *path)
 
 
 /* Load handlers from all directories. */
-static int handlers_load_all_paths(void)
-{
+static int handlers_load_all_paths(void) {
 	char **module_dir;
 
-	for (module_dir=module_dirs; module_dir != NULL && *module_dir != NULL; module_dir++) {
+	for (module_dir = module_dirs; module_dir != NULL && *module_dir != NULL; module_dir++) {
 		handlers_load_path(*module_dir);
 	}
 
@@ -559,12 +544,11 @@ void handler_write_state(Handler *handler) {
 
 
 /* Free one handler. */
-int handler_free(Handler *handler)
-{
+int handler_free(Handler *handler) {
 	char **a;
 	struct filter **f;
 
-	if ( handler == NULL || handler->name == NULL ) {
+	if (handler == NULL || handler->name == NULL) {
 		return 0;
 	}
 
@@ -594,8 +578,7 @@ int handler_free(Handler *handler)
 
 
 /* Free all handlers. */
-int handlers_free_all(void)
-{
+int handlers_free_all(void) {
 	Handler *cur;
 
 	while (handlers != NULL) {
@@ -610,16 +593,14 @@ int handlers_free_all(void)
 
 
 /* Reload handlers from all paths. */
-int handlers_reload_all_paths(void)
-{
+int handlers_reload_all_paths(void) {
 	handlers_free_all();
 	return handlers_load_all_paths();
 }
 
 
 /* Initialize all handlers. */
-int handlers_init(void)
-{
+int handlers_init(void) {
 	/* all byte-compiled Univention Python modules are compiled optimized,
 	   so we'll better run handlers optimized as well */
 	Py_OptimizeFlag++;
@@ -630,8 +611,7 @@ int handlers_init(void)
 
 
 /* convert our C entry structure into a Python dictionary */
-static PyObject* handlers_entrydict(CacheEntry *entry)
-{
+static PyObject *handlers_entrydict(CacheEntry *entry) {
 	PyObject *entrydict;
 	PyObject *valuelist, *s;
 	int i, j;
@@ -642,16 +622,16 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 	if (entry == NULL)
 		return entrydict;
 
-	for(i=0; i<entry->attribute_count; i++) {
+	for (i = 0; i < entry->attribute_count; i++) {
 		/* make value list */
 		if ((valuelist = PyList_New(entry->attributes[i]->value_count)) == NULL) {
-			Py_XDECREF (entrydict);
+			Py_XDECREF(entrydict);
 			return NULL;
 		}
 		s = PyString_FromString(entry->attributes[i]->name);
 
-		for(j=0; j<entry->attributes[i]->value_count; j++) {
-			PyList_SetItem(valuelist, j, PyString_FromStringAndSize(entry->attributes[i]->values[j], entry->attributes[i]->length[j]-1));
+		for (j = 0; j < entry->attributes[i]->value_count; j++) {
+			PyList_SetItem(valuelist, j, PyString_FromStringAndSize(entry->attributes[i]->values[j], entry->attributes[i]->length[j] - 1));
 		}
 
 		PyDict_SetItem(entrydict, s, valuelist);
@@ -664,8 +644,7 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 
 
 /* build Python argument tuple for handler */
-static PyObject* handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old)
-{
+static PyObject *handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old) {
 	PyObject *argtuple;
 	PyObject *newdict;
 	PyObject *olddict;
@@ -687,8 +666,7 @@ static PyObject* handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *
 
 
 /* build Python argument tuple for handler with mod_rdn enabled. */
-static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command)
-{
+static PyObject *handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command) {
 	PyObject *argtuple;
 	PyObject *newdict;
 	PyObject *olddict;
@@ -711,8 +689,7 @@ static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, Cach
 
 
 /* return boolean indicating whether attribute has changed */
-static int attribute_has_changed(char** changes, char* attribute)
-{
+static int attribute_has_changed(char **changes, char *attribute) {
 	char **cur;
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
@@ -726,19 +703,18 @@ static int attribute_has_changed(char** changes, char* attribute)
 
 
 /* a little more low-level interface than handler_update */
-static int handler__update(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes)
-{
+static int handler__update(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes) {
 	int matched;
 	int rv = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "handler: %s considered", handler->name);
 
-	/* check if attributes for handler have changed 
+	/* check if attributes for handler have changed
 
 	   the replication handler should be checked for the changed object in any case,
 	   especially if we have an incomplete cache
 	*/
-	if ( (strcmp(handler->name, "replication")) && cache_entry_module_present(old, handler->name)) {
+	if ((strcmp(handler->name, "replication")) && cache_entry_module_present(old, handler->name)) {
 		char **cur;
 		bool uptodate = false;
 
@@ -776,7 +752,7 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (failed)", handler->name);
-		rv=1;
+		rv = 1;
 	}
 
 	return rv;
@@ -784,22 +760,21 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 
 
 /* run all handlers if object has changed */
-int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command)
-{
+int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command) {
 	Handler *handler;
-	char** changes;
+	char **changes;
 	int rv = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers for %s", dn);
 
 	changes = cache_entry_changed_attributes(new, old);
 
-	for (handler=handlers; handler != NULL; handler=handler->next) {
+	for (handler = handlers; handler != NULL; handler = handler->next) {
 		if (!strcmp(handler->name, "replication")) {
 			handler__update(handler, dn, new, old, command, changes);
 		}
 	}
-	for (handler=handlers; handler != NULL; handler=handler->next) {
+	for (handler = handlers; handler != NULL; handler = handler->next) {
 		if (strcmp(handler->name, "replication")) {
 			handler__update(handler, dn, new, old, command, changes);
 		}
@@ -811,9 +786,8 @@ int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char comma
 
 
 /* run given handler if object has changed */
-int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command)
-{
-	char** changes;
+int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command) {
+	char **changes;
 	int rv = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers [%s] for %s", handler->name, dn);
@@ -829,25 +803,24 @@ int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *ha
 
 
 /* run handlers if object has been deleted */
-int handlers_delete(const char *dn, CacheEntry *old, char command)
-{
+int handlers_delete(const char *dn, CacheEntry *old, char command) {
 	Handler *handler;
-	int rv=0;
+	int rv = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "delete handlers for %s", dn);
 
-	for (handler=handlers; handler != NULL; handler=handler->next) {
+	for (handler = handlers; handler != NULL; handler = handler->next) {
 		/* run the replication handler in any case, see Bug #29475 */
 		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication")) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}
-		if (handler_exec(handler, dn, NULL, old, command) == 0 ){
+		if (handler_exec(handler, dn, NULL, old, command) == 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
 			cache_entry_module_remove(old, handler->name);
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (failed)", handler->name);
-			rv=1;
+			rv = 1;
 		}
 	}
 
@@ -856,15 +829,13 @@ int handlers_delete(const char *dn, CacheEntry *old, char command)
 
 
 /* build filter to match objects for all modules */
-char *handlers_filter(void)
-{
+char *handlers_filter(void) {
 	return NULL;
 }
 
 
 /* Pass configuration data from listener to one module. */
-static int handler_set_data(Handler *handler, PyObject *argtuple)
-{
+static int handler_set_data(Handler *handler, PyObject *argtuple) {
 	PyObject *result;
 	int rv;
 
@@ -882,9 +853,9 @@ static int handler_set_data(Handler *handler, PyObject *argtuple)
 	}
 
 	if (result != Py_None)
-		rv=1;
+		rv = 1;
 	else
-		rv=0;
+		rv = 0;
 
 	Py_XDECREF(result);
 	return rv;
@@ -892,8 +863,7 @@ static int handler_set_data(Handler *handler, PyObject *argtuple)
 
 
 /* Pass configuration data from listener to all modules. */
-int handlers_set_data_all(char *key, char *value)
-{
+int handlers_set_data_all(char *key, char *value) {
 	Handler *handler;
 	PyObject *argtuple;
 	__attribute__((unused)) int rv = 1;
@@ -911,7 +881,7 @@ int handlers_set_data_all(char *key, char *value)
 	if (handlers == NULL)
 		return 0;
 
-	for (handler=handlers; handler != NULL; handler=handler->next) {
+	for (handler = handlers; handler != NULL; handler = handler->next) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handler=%p", handler);
 		if (handler_set_data(handler, argtuple) < 0)
 			rv = -1;

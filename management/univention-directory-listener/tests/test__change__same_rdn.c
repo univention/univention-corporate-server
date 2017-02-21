@@ -13,25 +13,15 @@ static inline bool _test(const char *left, const char *right, bool expected) {
 	ldap_dnfree(b);
 	return rv == expected;
 }
-#define TEST(n, a, b, e)                                      \
-	static bool test_##n(void) { return _test(a, b, e); } \
+#define TEST(n, a, b, e)               \
+	static bool test_##n(void) {   \
+		return _test(a, b, e); \
+	}                              \
 	_TEST(n)
 
-TEST(same,
-	"cn=foo,dc=univention,dc=de",
-	"cn=foo,dc=univention,dc=de", true);
-TEST(different,
-	"cn=foo,dc=univention,dc=de",
-	"cn=bar,dc=univention,dc=de", false);
-TEST(same_rdn,
-	"cn=foo+cn=bar,dc=univention,dc=de",
-	"cn=foo+cn=bar,dc=univention,dc=de", true);
-TEST(different_rdn,
-	"cn=foo+cn=baz,dc=univention,dc=de",
-	"cn=bar+cn=baz,dc=univention,dc=de", false);
-TEST(subset_rdn,
-	"cn=foo,dc=univention,dc=de",
-	"cn=foo+cn=bar,dc=univention,dc=de", false);
-TEST(swapped_rdn,
-	"cn=foo+cn=bar,dc=univention,dc=de",
-	"cn=bar+cn=foo,dc=univention,dc=de", true);
+TEST(same, "cn=foo,dc=univention,dc=de", "cn=foo,dc=univention,dc=de", true);
+TEST(different, "cn=foo,dc=univention,dc=de", "cn=bar,dc=univention,dc=de", false);
+TEST(same_rdn, "cn=foo+cn=bar,dc=univention,dc=de", "cn=foo+cn=bar,dc=univention,dc=de", true);
+TEST(different_rdn, "cn=foo+cn=baz,dc=univention,dc=de", "cn=bar+cn=baz,dc=univention,dc=de", false);
+TEST(subset_rdn, "cn=foo,dc=univention,dc=de", "cn=foo+cn=bar,dc=univention,dc=de", false);
+TEST(swapped_rdn, "cn=foo+cn=bar,dc=univention,dc=de", "cn=bar+cn=foo,dc=univention,dc=de", true);

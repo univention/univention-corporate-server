@@ -43,17 +43,15 @@
 int INIT_ONLY = 0;
 
 
-static void usage(const char *name)
-{
+static void usage(const char *name) {
 	fprintf(stderr, "Usage: %s <HOST> get_id\n"
-			"       %s <HOST> get_schema_id\n"
-			"       %s <HOST> get_dn <ID>\n",
-			name, name, name);
+	                "       %s <HOST> get_schema_id\n"
+	                "       %s <HOST> get_dn <ID>\n",
+	        name, name, name);
 }
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	NotifierID id;
 	NotifierEntry entry;
 	int c;
@@ -70,7 +68,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (optind > argc-2) {
+	if (optind > argc - 2) {
 		fprintf(stderr, "Missing arguments\n");
 		usage(argv[0]);
 		return 1;
@@ -81,26 +79,26 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (strcmp(argv[optind+1], "get_id") == 0) {
+	if (strcmp(argv[optind + 1], "get_id") == 0) {
 		notifier_get_id_s(NULL, &id);
 		printf("%ld\n", id);
-	} else if (strcmp(argv[optind+1], "get_schema_id") == 0) {
+	} else if (strcmp(argv[optind + 1], "get_schema_id") == 0) {
 		notifier_get_schema_id_s(NULL, &id);
 		printf("%ld\n", id);
-	} else if (strcmp(argv[optind+1], "get_dn") == 0) {
+	} else if (strcmp(argv[optind + 1], "get_dn") == 0) {
 		int msgid;
 		long getid;
 
-		if (optind > argc-3) {
+		if (optind > argc - 3) {
 			usage(argv[0]);
 			return 1;
 		}
 
-		if (argv[optind+2][strlen(argv[optind+2])-1] == '-') {
+		if (argv[optind + 2][strlen(argv[optind + 2]) - 1] == '-') {
 			notifier_get_id_s(NULL, &id);
-			getid = id-atoi(argv[optind+2]);
+			getid = id - atoi(argv[optind + 2]);
 		} else {
-			getid = atoi(argv[optind+2]);
+			getid = atoi(argv[optind + 2]);
 		}
 
 		msgid = notifier_get_dn(NULL, getid);

@@ -41,7 +41,7 @@
 #include <unicode/ucnv.h>
 
 
-#define BUFSIZE(len) (((len) + 1) * sizeof (*out))
+#define BUFSIZE(len) (((len)+1) * sizeof(*out))
 
 static inline UChar *_from_utf8(const char *in, size_t len) {
 	static UConverter *conv;
@@ -59,14 +59,14 @@ static inline UChar *_from_utf8(const char *in, size_t len) {
 		UErrorCode status = U_ZERO_ERROR;
 		len = ucnv_toUChars(conv, out, size, in, -1, &status);
 		switch (status) {
-			default:
-				assert(status);
-			case U_ZERO_ERROR:
-				return out;
-			case U_STRING_NOT_TERMINATED_WARNING:
-				len++;
-			case U_BUFFER_OVERFLOW_ERROR:
-				assert(BUFSIZE(len) > size);
+		default:
+			assert(status);
+		case U_ZERO_ERROR:
+			return out;
+		case U_STRING_NOT_TERMINATED_WARNING:
+			len++;
+		case U_BUFFER_OVERFLOW_ERROR:
+			assert(BUFSIZE(len) > size);
 		}
 	}
 }
@@ -88,17 +88,17 @@ static inline char *_to_utf8(const UChar *in, size_t len) {
 		UErrorCode status = U_ZERO_ERROR;
 		len = ucnv_fromUChars(conv, out, size, in, -1, &status);
 		switch (status) {
-			default:
-				assert(status);
-			case U_ZERO_ERROR:
-				return out;
-			case U_STRING_NOT_TERMINATED_WARNING:
-				len++;
-			case U_BUFFER_OVERFLOW_ERROR:
+		default:
+			assert(status);
+		case U_ZERO_ERROR:
+			return out;
+		case U_STRING_NOT_TERMINATED_WARNING:
+			len++;
+		case U_BUFFER_OVERFLOW_ERROR:
 #ifdef DEBUG
-				printf("%zd\n", len);
+			printf("%zd\n", len);
 #endif
-				assert(BUFSIZE(len) > size);
+			assert(BUFSIZE(len) > size);
 		}
 	}
 }

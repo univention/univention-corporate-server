@@ -47,46 +47,26 @@ typedef struct _BdbCacheMasterEntry {
 } BdbCacheMasterEntry;
 extern BdbCacheMasterEntry bdb_cache_master_entry;
 
-int	bdb_cache_lock(void);
-int	bdb_cache_init				(void);
-void	bdb_cache_sync(void);
-int	bdb_cache_get_master_entry			(BdbCacheMasterEntry	 *master_entry);
-int	bdb_cache_update_master_entry		(BdbCacheMasterEntry	 *master_entry,
-						 DB_TXN			 *dptxnp);
-int	bdb_cache_update_entry			(NotifierID		  id,
-						 char			 *dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_update_entry_lower			(NotifierID		  id,
-						 char			 *dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_delete_entry			(NotifierID		  id,
-						 char			 *dn);
-int	bdb_cache_delete_entry_lower_upper			(NotifierID		  id,
-						 char			 *dn);
-int	bdb_cache_update_or_deleteifunused_entry	(NotifierID		  id,
-						 char			 *dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_get_entry(
-						 char			 *dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_get_entry_lower_upper(
-						 char			 *dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_first_entry			(DBC			**cur,
-						 char			**dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_next_entry			(DBC			**cur,
-						 char			**dn,
-						 CacheEntry		 *entry);
-int	bdb_cache_free_cursor			(DBC			 *cur);
-int	bdb_cache_close				(void);
+int bdb_cache_lock(void);
+int bdb_cache_init(void);
+void bdb_cache_sync(void);
+int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry);
+int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dptxnp);
+int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry);
+int bdb_cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry);
+int bdb_cache_delete_entry(NotifierID id, char *dn);
+int bdb_cache_delete_entry_lower_upper(NotifierID id, char *dn);
+int bdb_cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry);
+int bdb_cache_get_entry(char *dn, CacheEntry *entry);
+int bdb_cache_get_entry_lower_upper(char *dn, CacheEntry *entry);
+int bdb_cache_first_entry(DBC **cur, char **dn, CacheEntry *entry);
+int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry);
+int bdb_cache_free_cursor(DBC *cur);
+int bdb_cache_close(void);
 
 /* deprecated with DB42*/
-int	bdb_cache_set_int				(char		 *key,
-						 const NotifierID		  value);
-int	bdb_cache_get_int				(char		 *key,
-						 NotifierID			 *value,
-						 const long		  def);
+int bdb_cache_set_int(char *key, const NotifierID value);
+int bdb_cache_get_int(char *key, NotifierID *value, const long def);
 
 int bdb_cache_get_schema_id(NotifierID *value, const long def);
 int bdb_cache_set_schema_id(const NotifierID value);

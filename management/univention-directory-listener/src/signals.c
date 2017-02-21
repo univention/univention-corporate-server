@@ -49,8 +49,7 @@ extern char *pidfile;
 int sig_block_count = 0;
 sigset_t block_mask;
 
-void signals_block(void)
-{
+void signals_block(void) {
 	static int init_done = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "blocking signals (was %d)", sig_block_count);
@@ -72,8 +71,7 @@ void signals_block(void)
 	sigprocmask(SIG_BLOCK, &block_mask, NULL);
 }
 
-void signals_unblock(void)
-{
+void signals_unblock(void) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "unblocking signals (was %d)", sig_block_count);
 	if ((--sig_block_count) != 0)
 		return;
@@ -81,30 +79,27 @@ void signals_unblock(void)
 }
 
 
-void sig_usr1_handler(int sig)
-{
+void sig_usr1_handler(int sig) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
 	int loglevel = univention_debug_get_level(UV_DEBUG_LISTENER);
-	if ( loglevel < UV_DEBUG_ALL ) {
-		loglevel+=1;
+	if (loglevel < UV_DEBUG_ALL) {
+		loglevel += 1;
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "increasing univention_debug_level to %d", loglevel);
 		univention_debug_set_level(UV_DEBUG_LISTENER, loglevel);
 	}
 }
 
-void sig_usr2_handler(int sig)
-{
+void sig_usr2_handler(int sig) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
 	int loglevel = univention_debug_get_level(UV_DEBUG_LISTENER);
-	if ( loglevel > UV_DEBUG_ERROR ) {
-		loglevel-=1;
+	if (loglevel > UV_DEBUG_ERROR) {
+		loglevel -= 1;
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "decreasing univention_debug_level to %d", loglevel);
 		univention_debug_set_level(UV_DEBUG_LISTENER, loglevel);
 	}
 }
 
-void exit_handler(int sig)
-{
+void exit_handler(int sig) {
 	char **c;
 	static bool exit_handler_running = false;
 
@@ -120,7 +115,7 @@ void exit_handler(int sig)
 	cache_close();
 	unlink(pidfile);
 
-	for (c=module_dirs; c != NULL && *c != NULL; c++)
+	for (c = module_dirs; c != NULL && *c != NULL; c++)
 		free(*c);
 	free(module_dirs);
 
@@ -135,14 +130,12 @@ void exit_handler(int sig)
 	}
 }
 
-void reload_handler(int sig)
-{
+void reload_handler(int sig) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
 	handlers_reload_all_paths();
 }
 
-static void install_handler(int sig, void (*handler) (int sig))
-{
+static void install_handler(int sig, void (*handler)(int sig)) {
 	struct sigaction setup_action;
 	sigset_t block_mask;
 
@@ -163,46 +156,43 @@ static void install_handler(int sig, void (*handler) (int sig))
 #ifdef NEW_SIGNALS
 int pending_signals[16];
 
-void signal_handler(int signal)
-{
+void signal_handler(int signal) {
 	if (signal >= 0 && signal < 16)
 		pending_signals[signal] = 1;
 }
 
-void process_signals(void)
-{
+void process_signals(void) {
 	int signal;
 
 	for (signal = 0; signal < 16; signal++) {
 		if (!pending_signals[signal])
 			continue;
-		switch(signal) {
-			case SIGPIPE:
-			case SIGINT:
-			case SIGQUIT:
-			case SIGTERM:
-			case SIGABRT:
-				exit_handler(signal);
-				break;
-			case SIGHUP:
-				reload_handler(signal);
-				break;
-			case SIGUSR1:
-				sig_usr1_handler(signal);
-				break;
-			case SIGUSR2:
-				sig_usr2_handler(signal);
-				break;
+		switch (signal) {
+		case SIGPIPE:
+		case SIGINT:
+		case SIGQUIT:
+		case SIGTERM:
+		case SIGABRT:
+			exit_handler(signal);
+			break;
+		case SIGHUP:
+			reload_handler(signal);
+			break;
+		case SIGUSR1:
+			sig_usr1_handler(signal);
+			break;
+		case SIGUSR2:
+			sig_usr2_handler(signal);
+			break;
 		}
 		pending_signals[signal] = 0;
 	}
 }
 
-void signals_init(void)
-{
+void signals_init(void) {
 	int signal;
 
-	for (signal=0; signal<16; signal++)
+	for (signal = 0; signal < 16; signal++)
 		pending_signals[signal] = 0;
 
 	install_handler(SIGPIPE, &signal_handler);
@@ -216,8 +206,7 @@ void signals_init(void)
 }
 #else
 /* initialize signal handling */
-void signals_init(void)
-{
+void signals_init(void) {
 	install_handler(SIGPIPE, &exit_handler);
 	install_handler(SIGINT, &exit_handler);
 	install_handler(SIGQUIT, &exit_handler);

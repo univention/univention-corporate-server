@@ -95,7 +95,7 @@ DB *dbp;
 #ifdef WITH_DB42
 DB_ENV *dbenvp;
 #endif
-static FILE *lock_fp=NULL;
+static FILE *lock_fp = NULL;
 
 static struct filter cache_filter;
 static struct filter *cache_filters[] = {&cache_filter, NULL};
@@ -111,20 +111,16 @@ static void setup_cache_filter(void) {
 }
 
 #ifdef WITH_DB42
-static void bdb_cache_panic_call(DB_ENV *dbenvp, int errval)
-{
+static void bdb_cache_panic_call(DB_ENV *dbenvp, int errval) {
 	exit(1);
 }
 #endif
 
-static void bdb_cache_error_message(const char *errpfx, char *msg)
-{
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-			"database error: %s", msg);
+static void bdb_cache_error_message(const char *errpfx, char *msg) {
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "database error: %s", msg);
 }
 
-int bdb_cache_lock(void)
-{
+int bdb_cache_lock(void) {
 	int rv, fd;
 	char lock_file[PATH_MAX];
 
@@ -135,25 +131,22 @@ int bdb_cache_lock(void)
 		abort();
 
 	if ((lock_fp = fopen(lock_file, "a+e")) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"Could not open lock file [%s]", lock_file);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open lock file [%s]", lock_file);
 		exit(EXIT_FAILURE);
 	}
 	fd = fileno(lock_fp);
 
 	if (lockf(fd, F_TLOCK, 0) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"Could not get lock for database [%s]; "
-				"Is another listener processs running?\n",
-				lock_file);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not get lock for database [%s]; "
+		                                                    "Is another listener processs running?\n",
+		                 lock_file);
 		exit(EXIT_FAILURE);
 	}
 
 	return fd;
 }
 
-int bdb_cache_init(void)
-{
+int bdb_cache_init(void) {
 	int rv;
 	char file[PATH_MAX];
 
@@ -161,43 +154,35 @@ int bdb_cache_init(void)
 
 #ifdef WITH_DB42
 	if ((rv = db_env_create(&dbenvp, 0)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"creating database environment failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "creating database environment failed");
 		return rv;
 	}
 	dbenvp->set_errcall(dbenvp, bdb_cache_error_message);
 	dbenvp->set_paniccall(dbenvp, bdb_cache_panic_call);
 	if ((rv = dbenvp->open(dbenvp, bdb_cache_dir, DB_CREATE | DB_INIT_MPOOL |
-				/*DB_INIT_LOCK | */DB_INIT_LOG | DB_INIT_TXN |
-				DB_RECOVER, 0600)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"opening database environment failed");
+	                                                  /*DB_INIT_LOCK | */ DB_INIT_LOG | DB_INIT_TXN | DB_RECOVER,
+	                       0600)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "opening database environment failed");
 		dbenvp->err(dbenvp, rv, "%s", "environment");
 		return rv;
 	}
 	if ((rv = db_create(&dbp, dbenvp, 0)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"creating database handle failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "creating database handle failed");
 		return rv;
 	}
-	if ((rv = dbp->open(dbp, NULL, "cache.db", NULL, DB_BTREE,
-				DB_CREATE | DB_CHKSUM | DB_AUTO_COMMIT,
-				0600)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"opening database failed");
+	if ((rv = dbp->open(dbp, NULL, "cache.db", NULL, DB_BTREE, DB_CREATE | DB_CHKSUM | DB_AUTO_COMMIT, 0600)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "opening database failed");
 		dbp->err(dbp, rv, "open");
 		// FIXME: free dbp
 		return rv;
 	}
 #else
 	if ((rv = db_create(&dbp, NULL, 0)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"creating database handle failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "creating database handle failed");
 		return rv;
 	}
 	if ((rv = dbp->open(dbp, file, NULL, DB_BTREE, DB_CREATE, 0600)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"opening database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "opening database failed");
 		dbp->err(dbp, rv, "open");
 		// FIXME: free dbp
 		return rv;
@@ -214,8 +199,7 @@ void bdb_cache_sync(void) {
 	}
 }
 
-int bdb_cache_set_schema_id(const NotifierID value)
-{
+int bdb_cache_set_schema_id(const NotifierID value) {
 	int rv, fd, len;
 	char file[PATH_MAX], buf[15];
 
@@ -244,8 +228,7 @@ int bdb_cache_set_schema_id(const NotifierID value)
 	return 0;
 }
 
-int bdb_cache_get_schema_id(NotifierID *value, const long def)
-{
+int bdb_cache_get_schema_id(NotifierID *value, const long def) {
 	FILE *fp;
 	char file[PATH_MAX];
 	int rv;
@@ -259,8 +242,7 @@ int bdb_cache_get_schema_id(NotifierID *value, const long def)
 	return fclose(fp) || (rv != 1);
 }
 
-int bdb_cache_set_int(char *key, const NotifierID value)
-{
+int bdb_cache_set_int(char *key, const NotifierID value) {
 	int rv;
 	FILE *fp;
 	char file[PATH_MAX], tmpfile[PATH_MAX];
@@ -282,8 +264,7 @@ int bdb_cache_set_int(char *key, const NotifierID value)
 	return rv;
 }
 
-int bdb_cache_get_int(char *key, NotifierID *value, const long def)
-{
+int bdb_cache_get_int(char *key, NotifierID *value, const long def) {
 	FILE *fp;
 	char file[PATH_MAX];
 	int rv;
@@ -297,30 +278,27 @@ int bdb_cache_get_int(char *key, NotifierID *value, const long def)
 	return fclose(fp) || (rv != 1);
 }
 
-int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry)
-{
+int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry) {
 	DBT key, data;
 	int rv;
 
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
 
-	key.data=MASTER_KEY;
-	key.size=MASTER_KEY_SIZE;
+	key.data = MASTER_KEY;
+	key.size = MASTER_KEY_SIZE;
 	data.flags = DB_DBT_REALLOC;
 
-	if ((rv=dbp->get(dbp, NULL, &key, &data, 0)) == DB_NOTFOUND)
+	if ((rv = dbp->get(dbp, NULL, &key, &data, 0)) == DB_NOTFOUND)
 		return rv;
 	else if (rv != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"reading master entry from database failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "reading master entry from database failed");
 		dbp->err(dbp, rv, "get");
 		return rv;
 	}
 
 	if (data.size != sizeof(BdbCacheMasterEntry)) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"master entry has unexpected length");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "master entry has unexpected length");
 		return 1;
 	}
 
@@ -330,8 +308,7 @@ int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry)
 	return 0;
 }
 
-int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbtxnp)
-{
+int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbtxnp) {
 	DBT key, data;
 	int rv;
 	int flags;
@@ -339,11 +316,11 @@ int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbt
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
 
-	key.data=MASTER_KEY;
-	key.size=MASTER_KEY_SIZE;
+	key.data = MASTER_KEY;
+	key.size = MASTER_KEY_SIZE;
 
-	data.data=(void*)master_entry;
-	data.size=sizeof(BdbCacheMasterEntry);
+	data.data = (void *)master_entry;
+	data.size = sizeof(BdbCacheMasterEntry);
 
 #ifdef WITH_DB42
 	if (dbtxnp == NULL)
@@ -352,9 +329,8 @@ int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbt
 #endif
 		flags = 0;
 
-	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, flags)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"storing master entry in database failed");
+	if ((rv = dbp->put(dbp, dbtxnp, &key, &data, flags)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "storing master entry in database failed");
 		dbp->err(dbp, rv, "put");
 		return rv;
 	}
@@ -364,12 +340,11 @@ int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbt
 	return 0;
 }
 
-DB_TXN* bdb_cache_new_transaction(NotifierID id, char *dn)
-{
+DB_TXN *bdb_cache_new_transaction(NotifierID id, char *dn) {
 #ifdef WITH_DB42
-	DB_TXN			*dbtxnp;
-	BdbCacheMasterEntry	 master_entry;
-	NotifierID		*old_id;
+	DB_TXN *dbtxnp;
+	BdbCacheMasterEntry master_entry;
+	NotifierID *old_id;
 
 	dbenvp->txn_begin(dbenvp, NULL, &dbtxnp, 0);
 
@@ -385,9 +360,9 @@ DB_TXN* bdb_cache_new_transaction(NotifierID id, char *dn)
 			old_id = &master_entry.id;
 
 		if (*old_id >= id) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"New ID (%ld) is not greater than old"
-					" ID (%ld): %s", id, *old_id, dn);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "New ID (%ld) is not greater than old"
+			                                                    " ID (%ld): %s",
+			                 id, *old_id, dn);
 			dbtxnp->abort(dbtxnp);
 			return NULL;
 		} else
@@ -410,8 +385,7 @@ DB_TXN* bdb_cache_new_transaction(NotifierID id, char *dn)
    implemented, entries other than the most recent one can be returned.
    At the moment, the id parameters for bdb_cache_update_entry, and
    bdb_cache_delete_entry do nothing (at least if WITH_DB42 is undefined) */
-inline int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
-{
+inline int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry) {
 	DBT key, data;
 	DB_TXN *dbtxnp;
 	int rv = 0;
@@ -419,9 +393,8 @@ inline int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
 
-	if ((rv=unparse_entry(&data.data, &data.size, entry)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"unparsing entry failed");
+	if ((rv = unparse_entry(&data.data, &data.size, entry)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "unparsing entry failed");
 		return rv;
 	}
 
@@ -438,13 +411,12 @@ inline int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	dbtxnp = NULL;
 #endif
 
-	key.data=dn;
-	key.size=strlen(dn)+1;
+	key.data = dn;
+	key.size = strlen(dn) + 1;
 
-	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, 0)) != 0) {
+	if ((rv = dbp->put(dbp, dbtxnp, &key, &data, 0)) != 0) {
 		signals_unblock();
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"storing entry in database failed: %s", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "storing entry in database failed: %s", dn);
 		dbp->err(dbp, rv, "put");
 #ifdef WITH_DB42
 		dbtxnp->abort(dbtxnp);
@@ -465,8 +437,7 @@ inline int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int bdb_cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
-{
+int bdb_cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry) {
 	char *lower_dn;
 	int rv = 0;
 
@@ -482,16 +453,15 @@ int bdb_cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int bdb_cache_delete_entry(NotifierID id, char *dn)
-{
-	DB_TXN	*dbtxnp;
-	DBT	 key;
-	int	 rv;
+int bdb_cache_delete_entry(NotifierID id, char *dn) {
+	DB_TXN *dbtxnp;
+	DBT key;
+	int rv;
 
 	memset(&key, 0, sizeof(DBT));
 
-	key.data=dn;
-	key.size=strlen(dn)+1;
+	key.data = dn;
+	key.size = strlen(dn) + 1;
 
 	signals_block();
 #ifdef WITH_DB42
@@ -504,10 +474,9 @@ int bdb_cache_delete_entry(NotifierID id, char *dn)
 	dbtxnp = NULL;
 #endif
 
-	if ((rv=dbp->del(dbp, dbtxnp, &key, 0)) != 0 && rv != DB_NOTFOUND) {
+	if ((rv = dbp->del(dbp, dbtxnp, &key, 0)) != 0 && rv != DB_NOTFOUND) {
 		signals_unblock();
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"removing from database failed: %s", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "removing from database failed: %s", dn);
 		dbp->err(dbp, rv, "del");
 	}
 
@@ -520,39 +489,36 @@ int bdb_cache_delete_entry(NotifierID id, char *dn)
 	return rv;
 }
 
-int bdb_cache_delete_entry_lower_upper(NotifierID id, char *dn)
-{
+int bdb_cache_delete_entry_lower_upper(NotifierID id, char *dn) {
 	char *lower_dn;
 	bool mixedcase = false;
-	int	 rv, rv2;
+	int rv, rv2;
 
 	// convert to a lowercase dn
 	lower_dn = lower_utf8(dn);
-	rv=bdb_cache_delete_entry(id, lower_dn);
+	rv = bdb_cache_delete_entry(id, lower_dn);
 	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
 		// try again with original dn
-		rv2=bdb_cache_delete_entry(id, dn);
+		rv2 = bdb_cache_delete_entry(id, dn);
 	}
 
 	free(lower_dn);
-	if ( mixedcase ) {
-		return rv?rv2:rv;	// if rv was bad (!=0) return rv2, otherwise return rv
+	if (mixedcase) {
+		return rv ? rv2 : rv;  // if rv was bad (!=0) return rv2, otherwise return rv
 	} else {
 		return rv;
 	}
 }
 
-int bdb_cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry)
-{
+int bdb_cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry) {
 	if (entry->module_count == 0)
 		return bdb_cache_delete_entry(id, dn);
 	else
 		return bdb_cache_update_entry(id, dn, entry);
 }
 
-int bdb_cache_get_entry(char *dn, CacheEntry *entry)
-{
+int bdb_cache_get_entry(char *dn, CacheEntry *entry) {
 	DBT key, data;
 	int rv = 0;
 
@@ -560,31 +526,27 @@ int bdb_cache_get_entry(char *dn, CacheEntry *entry)
 	memset(&data, 0, sizeof(DBT));
 	memset(entry, 0, sizeof(CacheEntry));
 
-	key.data=dn;
-	key.size=strlen(dn)+1;
+	key.data = dn;
+	key.size = strlen(dn) + 1;
 	data.flags = DB_DBT_REALLOC;
 
 	signals_block();
-	rv=dbp->get(dbp, NULL, &key, &data, 0);
+	rv = dbp->get(dbp, NULL, &key, &data, 0);
 	signals_unblock();
 
 	if (rv != 0 && rv != DB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"reading %s from database failed", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "reading %s from database failed", dn);
 		dbp->err(dbp, rv, "get");
 		return rv;
 	} else if (rv == DB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "no cache entry found for %s",
-				dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "no cache entry found for %s", dn);
 		return rv;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes for %s",
-			data.size, dn);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes for %s", data.size, dn);
 
-	if ((rv=parse_entry(data.data, data.size, entry)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"parsing entry failed");
+	if ((rv = parse_entry(data.data, data.size, entry)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "parsing entry failed");
 		free(data.data);
 		exit(1);
 	}
@@ -593,11 +555,10 @@ int bdb_cache_get_entry(char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int bdb_cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
-{
+int bdb_cache_get_entry_lower_upper(char *dn, CacheEntry *entry) {
 	char *lower_dn;
 	bool mixedcase = false;
-	int	 rv;
+	int rv;
 
 	// convert to a lowercase dn
 	lower_dn = lower_utf8(dn);
@@ -606,7 +567,7 @@ int bdb_cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 	}
 
 	rv = bdb_cache_get_entry(lower_dn, entry);
-	if (rv == DB_NOTFOUND && mixedcase ) {
+	if (rv == DB_NOTFOUND && mixedcase) {
 		// try again with original dn
 		rv = bdb_cache_get_entry(dn, entry);
 	}
@@ -615,11 +576,10 @@ int bdb_cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int bdb_cache_first_entry(DBC **cur, char **dn, CacheEntry *entry)
-{
+int bdb_cache_first_entry(DBC **cur, char **dn, CacheEntry *entry) {
 	int rv;
 
-	if ((rv=dbp->cursor(dbp, NULL, cur, 0)) != 0) {
+	if ((rv = dbp->cursor(dbp, NULL, cur, 0)) != 0) {
 		dbp->err(dbp, rv, "cursor");
 		return rv;
 	}
@@ -627,21 +587,20 @@ int bdb_cache_first_entry(DBC **cur, char **dn, CacheEntry *entry)
 	return bdb_cache_next_entry(cur, dn, entry);
 }
 
-int bdb_cache_print_entries(char *dn)
-{
+int bdb_cache_print_entries(char *dn) {
 	DBT key, data;
 	DBC *cur;
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
 	key.data = strdup(dn);
-	key.size = strlen(dn)+1;
+	key.size = strlen(dn) + 1;
 	key.flags = DB_DBT_REALLOC;
 	data.flags = DB_DBT_REALLOC;
 
 	dbp->cursor(dbp, NULL, &cur, 0);
 	cur->c_get(cur, &key, &data, DB_FIRST);
 	do {
-		printf("%s\n", (char*)key.data);
+		printf("%s\n", (char *)key.data);
 	} while (cur->c_get(cur, &key, &data, DB_NEXT) == 0);
 
 	cur->c_close(cur);
@@ -650,8 +609,7 @@ int bdb_cache_print_entries(char *dn)
 	return 0;
 }
 
-int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
-{
+int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry) {
 	DBT key, data;
 	int rv;
 
@@ -660,7 +618,7 @@ int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 	memset(&data, 0, sizeof(DBT));
 	data.flags = DB_DBT_REALLOC;
 
-	if ((rv=(*cur)->c_get(*cur, &key, &data, DB_NEXT)) == DB_NOTFOUND) {
+	if ((rv = (*cur)->c_get(*cur, &key, &data, DB_NEXT)) == DB_NOTFOUND) {
 		return rv;
 	} else if (rv != 0) {
 		dbp->err(dbp, rv, "c_get");
@@ -680,9 +638,8 @@ int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes", data.size);
 
-	if ((rv=parse_entry(data.data, data.size, entry)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"parsing entry failed: %s", *dn);
+	if ((rv = parse_entry(data.data, data.size, entry)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "parsing entry failed: %s", *dn);
 		printf("%d\n", data.size);
 		free(key.data);
 		free(data.data);
@@ -695,13 +652,11 @@ int bdb_cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 	return 0;
 }
 
-int bdb_cache_free_cursor(DBC *cur)
-{
+int bdb_cache_free_cursor(DBC *cur) {
 	return cur->c_close(cur);
 }
 
-int bdb_cache_close(void)
-{
+int bdb_cache_close(void) {
 	int rv = 0;
 
 	if (dbp && (rv = dbp->close(dbp, 0)) != 0) {
@@ -710,8 +665,7 @@ int bdb_cache_close(void)
 	dbp = NULL;
 #ifdef WITH_DB42
 	if ((rv = dbenvp->close(dbenvp, 0)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"closing database environment failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "closing database environment failed");
 	}
 #endif
 	if (lock_fp != NULL) {

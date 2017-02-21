@@ -49,11 +49,10 @@ extern int backup_notifier;
 /* returns true, if all servers in [list] have been contacted same often.
  * BUG: Connection attempts are currently not counted, so this always return 1.
  */
-int suspend_connect(void)
-{
+int suspend_connect(void) {
 	int i;
 	for (i = 1; i < server_list_entries; i++) {
-		if (server_list[i].conn_attemp != server_list[i-1].conn_attemp) {
+		if (server_list[i].conn_attemp != server_list[i - 1].conn_attemp) {
 			return 0;
 		}
 	}
@@ -67,8 +66,7 @@ int suspend_connect(void)
  * 2. @*: ldap/backup[?] : ldap/backup/port, fallback: ldap/master : ldap/master/port
  * @param lp LDAP configuration object.
  */
-void select_server(univention_ldap_parameters_t *lp)
-{
+void select_server(univention_ldap_parameters_t *lp) {
 	static unsigned seed = 0;
 	char *server_role = NULL;
 	char *ldap_master = NULL;
@@ -93,8 +91,7 @@ void select_server(univention_ldap_parameters_t *lp)
 	ldap_master_port = univention_config_get_int("ldap/master/port");
 
 	/* if this is a master or backup return ldap/master */
-	if (!strcmp(server_role, "domaincontroller_master") ||
-		!strcmp(server_role, "domaincontroller_backup")) {
+	if (!strcmp(server_role, "domaincontroller_master") || !strcmp(server_role, "domaincontroller_backup")) {
 		lp->host = strdup(ldap_master);
 		if (ldap_master_port > 0)
 			lp->port = ldap_master_port;
@@ -125,9 +122,7 @@ void select_server(univention_ldap_parameters_t *lp)
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Backup found: %s", name);
 			}
 			if (server_list_entries >= ARRAY_SIZE(server_list))
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-						"Too many (more than %zd) backup-servers found",
-						ARRAY_SIZE(server_list));
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Too many (more than %zd) backup-servers found", ARRAY_SIZE(server_list));
 			/* Append notifier on DC Master unless explicitly disabled */
 			if (server_list_entries < ARRAY_SIZE(server_list) && !backup_notifier)
 				server_list[server_list_entries++].server_name = strdup(ldap_master);
@@ -137,19 +132,17 @@ void select_server(univention_ldap_parameters_t *lp)
 		if (server_list_entries) {
 			/* dump server list */
 			int i;
-			for(i = 0; i < server_list_entries; i++) {
+			for (i = 0; i < server_list_entries; i++) {
 				fprintf(stderr, "%d: %s\n", i, server_list[i].server_name);
 			}
 			/* randomize start point of server search */
 			if (!seed) {
 				seed = getpid() * time(NULL);
 				srandom(seed);
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-						"rands with seed %ud ", seed);
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "rands with seed %ud ", seed);
 			}
 			int randval = random() % server_list_entries;
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-					"randval = %d ", randval);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "randval = %d ", randval);
 
 			// server_list[randval].conn_attemp++;
 			lp->host = strdup(server_list[randval].server_name);
@@ -162,8 +155,7 @@ void select_server(univention_ldap_parameters_t *lp)
 					lp->port = backup_port;
 			}
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
-					"No Backup found, server is ldap/master");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "No Backup found, server is ldap/master");
 			lp->host = strdup(ldap_master);
 			if (ldap_master_port > 0)
 				lp->port = ldap_master_port;
