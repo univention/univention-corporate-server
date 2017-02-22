@@ -32,8 +32,8 @@
 
 #DEBHELPER#
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
-	ln -s /usr/share/pyshared/univention/management/console/ldap.py /usr/lib/pymodules/python2.7/univention/management/console/ldap.py
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.39-2; then
+	ln -s /usr/share/pyshared/univention/management/console/error.py /usr/lib/pymodules/python2.7/univention/management/console/error.py
 fi
 
 exit 0
