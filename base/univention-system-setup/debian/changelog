@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-7) unstable; urgency=medium
+
+  * Bug #43588: Add univention-printquota to download-packages
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Feb 2017 16:12:23 +0100
+
 univention-system-setup (10.0.7-6) unstable; urgency=medium
 
   * Bug #43506: re-enable software selection in setup wizard
