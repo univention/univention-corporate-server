@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-6) unstable; urgency=medium
+
+  * Bug #43506: re-enable software selection in setup wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 15:36:29 +0100
+
 univention-system-setup (10.0.7-5) unstable; urgency=medium
 
   * Bug #42172: remove css reference + add reference to ucr.sh
