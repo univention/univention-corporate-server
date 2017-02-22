@@ -59,6 +59,7 @@ univention-config-registry set self-service/passwordchange/web/enabled?yes
 # UCR Variablen für Unterseiten des Passwort Services
 univention-config-registry set "umc/self-service/passwordservice/subpage/password_change=yes" \
 	"umc/self-service/passwordservice/subpage/password_forgotten=yes" \
+	"umc/self-service/passwordservice/subpage/new_password=yes" \
 	"umc/self-service/passwordservice/subpage/protect_account_access=yes"
 
 # Link für Passwort Service

@@ -1,3 +1,9 @@
+univention-self-service (2.0.3-2) unstable; urgency=medium
+
+  * Bug #42267: multiple usability improvements 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 11:22:36 +0100
+
 univention-self-service (2.0.3-1) unstable; urgency=medium
 
   * Bug #42267: enhance html structure

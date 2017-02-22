@@ -29,6 +29,7 @@
 /*global define*/
 
 define([
+	"dojo/hash",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
@@ -39,6 +40,7 @@ define([
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
+	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"./TextBox",
@@ -46,7 +48,7 @@ define([
 	"umc/widgets/RadioButton",
 	"./lib",
 	"umc/i18n!."
-], function(lang, array, on, keys, dom, json, xhr, Button, put, tools, ContainerWidget, LabelPane, TextBox, PasswordBox, RadioButton, lib, _) {
+], function(hash, lang, array, on, keys, dom, json, xhr, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, PasswordBox, RadioButton, lib, _) {
 
 	return {
 		title: _("Password forgotten"),
@@ -56,6 +58,7 @@ define([
 		contentContainer: null,
 		steps: null,
 		selectedRenewOption: null,
+		startup: function() {return;},
 
 		/**
 		 * Returns the title of the subpage.
@@ -73,14 +76,6 @@ define([
 		},
 
 		/**
-		 * Returns the description for the subpage:
-		 * Set New Password.
-		 * */
-		getSetNewPassDesc: function() {
-			return _(this.altDesc);
-		},
-
-		/**
 		 * Checks if the the query string contains credentials
 		 * for setting a new password.
 		 * True -Return a subpage to set a new password.
@@ -88,15 +83,9 @@ define([
 		 * */
 		getContent: function() {
 			this.contentContainer = put('div.contentWrapper');
-			var credentials = this._getCredentials();
-			put(this.contentContainer, 'h2', this.getTitle())
-			if (credentials) {
-				put(this.contentContainer, 'div.contentDesc', this.getSetNewPassDesc());
-				put(this.contentContainer, this._getSetNewSteps());
-			} else {
-				put(this.contentContainer, 'div.contentDesc', this.getRequestNewPassDesc());
-				put(this.contentContainer, this._getRequestSteps());
-			}
+			put(this.contentContainer, 'h2', this.getTitle());
+			put(this.contentContainer, 'div.contentDesc', this.getRequestNewPassDesc());
+			put(this.contentContainer, this._getRequestSteps());
 			return this.contentContainer;
 		},
 
@@ -110,21 +99,6 @@ define([
 			if (!this.steps) {
 				this.steps = put('ol#PasswordForgottenSteps.PasswordOl');
 				this._createUsername();
-			}
-			return this.steps;
-		},
-
-		/**
-		 * Return the steps for the subpage:
-		 * Set New Password.
-		 * If the steps do not exists, they will be generated.
-		 * Note: Please call getContent for generating the steps.
-		 * */
-		_getSetNewSteps: function() {
-			if (!this.steps) {
-				this.steps = put('ol#PasswordForgottenSteps.PasswordOl');
-				this._createNewPassword();
-				this._createSubmitNewPassword();
 			}
 			return this.steps;
 		},
@@ -172,15 +146,11 @@ define([
 					'username': this._username.get('value')
 				};
 				tools.umcpCommand('passwordreset/get_reset_methods', data).then(lang.hitch(this, function(data) {
-					lib._removeMessage();
 					put(this._usernameButton.domNode, '.dijitHidden');
 					this._createRenewOptions(data.result);
-				}), lang.hitch(this, function(err){
-					lib.showMessage({
-						content: err.message,
-						'class': '.error'
-					});
+				}), lang.hitch(this, function(){
 					this._usernameButton.set('disabled', false);
+					this._username.set('value', '');
 					this._username.set('disabled', false);
 				}));
 			} else {
@@ -195,7 +165,6 @@ define([
 		 * @param {array} options - List of password renew options.
 		 * */
 		_createRenewOptions: function(options) {
-			// TODO: skipable for having a pin
 			var step = put('li.step.hide-step');
 			var label = put('div.stepLabel', _('Please choose an option to renew your password.'));
 			put(step, label);
@@ -207,6 +176,8 @@ define([
 			});
 			put(step, this._requestTokenButton.domNode);
 			put(this.steps, step);
+			var firstRenewOptions = renewOptions.firstChild.children[2].firstChild;
+			firstRenewOptions.focus();
 		},
 
 		/**
@@ -224,6 +195,11 @@ define([
 					radioButtonGroup: 'token',
 					_categoryID: 'token'
 				});
+				radioButton.on('keyup', lang.hitch(this, function(evt) {
+					if (evt.keyCode === keys.ENTER) {
+						this._requestToken();
+					}
+				}));
 				var label = new LabelPane({
 					'class': 'ucsRadioButtonLabel',
 					content: radioButton
@@ -247,17 +223,15 @@ define([
 					'method': this.selectedRenewOption.method
 				};
 				tools.umcpCommand('passwordreset/send_token', data).then(lang.hitch(this, function(data) {
-					lib.showMessage({
-						content: data.message,
-						'class': '.success'
-					});
-					put(this._requestTokenButton.domNode, '.dijitHidden');
-				}), lang.hitch(this, function(err) {
-					lib.showMessage({
-						content: err.message,
-						targetNode: this.tokenNode,
-						'class': '.error'
-					});
+					var username = this._username.get('value');
+					dialog.alert(data.message);
+					put(this.steps.children[1], "!");
+					this._username.set('value', '');
+					this._username.set('disabled', false);
+					put(this._usernameButton.domNode, '!.dijitHidden');
+					this._usernameButton.set('disabled', false);
+					hash('#newpassword?username=' + username);
+				}), lang.hitch(this, function() {
 					this._requestTokenButton.set('disabled', false);
 				}));
 			}
@@ -294,127 +268,5 @@ define([
 			put(step, hint);
 			put(this.steps, step);
 		},
-
-		/**
-		 * Creates input fields to set a new password.
-		 */
-		_createNewPassword: function() {
-			var step = put('li.step');
-			var label = put('div.stepLabel', _('New Password'));
-			put(step, label);
-			this._newPassword = new PasswordBox({
-				'class': 'soloLabelPane'
-			});
-			this._newPassword.on('keyup', lang.hitch(this, function(evt) {
-				if (evt.keyCode === keys.ENTER) {
-					this._setPassword();
-				}
-			}));
-			this._newPassword.startup();
-			put(step, this._newPassword.domNode);
-			put(this.steps, step);
-
-			step = put('li.step');
-			label = put('div.stepLabel', _('New Password (retype)'));
-			put(step, label);
-			this._verifyPassword = new TextBox({
-				type: 'password',
-				'class': 'soloLabelPane',
-				isValid: lang.hitch(this, function() {
-					return this._newPassword.get('value') ===
-						this._verifyPassword.get('value');
-				}),
-				invalidMessage: _('The passwords do not match, please retype again.'),
-				required: true
-			});
-			this._verifyPassword.on('keyup', lang.hitch(this, function(evt) {
-				if (evt.keyCode === keys.ENTER) {
-					this._setPassword();
-				}
-			}));
-			this._verifyPassword.startup();
-			put(step, this._verifyPassword.domNode);
-			put(this.steps, step);
-		},
-
-		/**
-		 * Creates submit button.
-		 * */
-		_createSubmitNewPassword: function() {
-			var step = put('div');
-			this._setPasswordButton = new Button({
-				label: _('Change password'),
-				onClick: lang.hitch(this, '_setPassword')
-			});
-			put(step, this._setPasswordButton.domNode);
-			put(this.steps, step);
-		},
-
-		/**
-		 * Sets the new password by sending it to the server.
-		 */
-		_setPassword: function() {
-			this._disableNewPasswordInputs(true);
-			var credentials = this._getCredentials();
-
-			var isTokenAndNewPassValid = credentials &&
-				this._newPassword.isValid() &&
-				this._verifyPassword.isValid();
-
-			if (isTokenAndNewPassValid) {
-				var data = {
-					'username': credentials.username,
-					'password': this._verifyPassword.get('value'),
-					'token' : credentials.token
-				};
-				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function(data) {
-					lib.showLastMessage({
-						content: data.message,
-						'class': '.success'
-					});
-					this._resetNewPasswordInputs();
-				}), lang.hitch(this, function(err){
-					lib.showMessage({
-						content: err.message,
-						targetNode: this.newPasswordNode,
-						'class': '.error'
-					});
-					this._disableNewPasswordInputs(false);
-				}));
-			} else {
-				this._disableNewPasswordInputs(false);
-			}
-		},
-
-		_disableNewPasswordInputs: function(/* boolean */ isDiabled) {
-			this._setPasswordButton.set('disabled', isDiabled);
-			this._newPassword.set('disabled', isDiabled);
-			this._verifyPassword.set('disabled', isDiabled);
-		},
-
-		_resetNewPasswordInputs: function() {
-			this._setPasswordButton.set('value', '');
-			this._newPassword.set('value', '');
-			this._verifyPassword.set('value', '');
-			this._disableNewPasswordInputs(false);
-		},
-
-		/**
-		 * Gets credentials (token and username) from query string.
-		 * */
-		_getCredentials: function() {
-			var token = lib.getQuery('token');
-			var username = lib.getQuery('username');
-			var password = lib.getQuery('password')
-
-			if (token && username) {
-				return {
-					username: username,
-					token: token,
-					password: password
-				};
-			}
-			return null;
-		}
 	};
 });

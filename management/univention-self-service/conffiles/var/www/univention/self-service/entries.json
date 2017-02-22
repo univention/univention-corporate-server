@@ -1,7 +1,7 @@
 @!@
 import json
 
-subpages = ['password_change', 'password_forgotten', 'protect_account_access']
+subpages = ['password_change', 'password_forgotten', 'protect_account_access', 'new_password']
 subpage_variable_path = "umc/self-service/passwordservice/subpage/{}"
 filtered_subpages = [page for page in subpages if configRegistry.is_true(subpage_variable_path.format(page))]
 

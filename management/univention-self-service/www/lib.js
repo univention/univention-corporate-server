@@ -26,23 +26,33 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window */
+/*global define, window */
 
 define([
 	"dojo/_base/lang",
 	"dojo/_base/fx",
 	"dojo/dom",
 	"dojo/dom-geometry",
+	"dojo/hash",
 	"dojo/io-query",
 	"dojox/html/entities",
 	"put-selector/put",
 	"dojo/request",
 	"umc/i18n!."
-], function(lang, fx, dom, domGeom, ioQuery, htmlEntities, put, request, _) {
+], function(lang, fx, dom, domGeom, hash, ioQuery, htmlEntities, put, request, _) {
 
 	return {
 		getCurrentLanguageQuery: function() {
 			return '?lang=' + (this.getQuery('lang') || 'en-US');
+		},
+
+		_getServerMsgNode: function() {
+			var serverMsgNode = dom.byId("server_msg");
+			if (serverMsgNode) {
+				return serverMsgNode;
+			}
+			serverMsgNode = put(dom.byId('contentContainer'), 'div[id=server_msg]');
+			return serverMsgNode;
 		},
 
 		/**
@@ -51,7 +61,7 @@ define([
 		 * for the message.
 		 */
 		showMessage: function(msg) {
-			var targetNode = msg.targetNode || dom.byId("server_msg");
+			var targetNode = msg.targetNode || this._getServerMsgNode();
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
@@ -70,7 +80,7 @@ define([
 		},
 
 		showLastMessage: function(msg) {
-			var targetNode = msg.targetNode || dom.byId("server_msg");
+			var targetNode = msg.targetNode || this._getServerMsgNode();
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
@@ -155,7 +165,10 @@ define([
 		 * Returns the value of the query string for a given key.
 		 * */
 		getQuery: function(key) {
-			var queryString = window.location.search.substring(1);
+			if (hash().split('?', 2).length !== 2) {
+				return null;
+			}
+			var queryString = hash().split('?', 2)[1];
 			var queryObject = ioQuery.queryToObject(queryString);
 			return queryObject[key];
 		},

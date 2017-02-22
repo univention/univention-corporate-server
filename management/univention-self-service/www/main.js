@@ -42,9 +42,10 @@ define([
 	"./PasswordChange",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
+	"./NewPassword",
 	"./lib",
 	"umc/json!/univention/self-service/entries.json"
-], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, lib, entries){
+], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, NewPassword, lib, entries){
 	return {
 		content_container: null,
 		content_controller: null,
@@ -52,7 +53,8 @@ define([
 		subpages: {
 			"password_change": PasswordChange,
 			"password_forgotten": PasswordForgotten,
-			"protect_account_access": ProtectAccountAccess
+			"protect_account_access": ProtectAccountAccess,
+			"new_password": NewPassword
 		},
 		site_hashes: {},
 
@@ -97,7 +99,8 @@ define([
 				var module = this.subpages[page_name];
 				if (module) {
 					var subpage = new ContentPane({
-						content: module.getContent()
+						content: module.getContent(),
+						page_name: page_name
 					});
 					this.site_hashes[module.hash] = subpage;
 					var nav = put("div.PasswordServiceNav", {
@@ -117,11 +120,15 @@ define([
 		},
 
 		_loadSubpage: function(changedHash) {
-			var subpage = this.site_hashes[changedHash];
+			var hashWithoutQuery = changedHash.split('?', 1)[0];
+			var subpage = this.site_hashes[hashWithoutQuery];
 			if (!subpage) {
 				subpage = this.content_container.getChildren()[0];
 			}
+			var page_name = this.site_hashes[hashWithoutQuery].page_name;
+			var module = this.subpages[page_name];
 			this.content_container.selectChild(subpage);
+			module.startup();
 		}
     };
 });

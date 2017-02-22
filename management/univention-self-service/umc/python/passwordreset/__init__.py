@@ -414,7 +414,10 @@ class Instance(Base):
 		try:
 			user = self.get_udm_user_dn(userdn=dn, admin=True)
 			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
-				user["PasswordRecoveryEmail"] = email
+				try:
+					user["PasswordRecoveryEmail"] = email
+				except udm_errors.valueInvalidSyntax as err:
+					raise UMC_Error(err)
 			if mobile is not None and mobile.lower() != user["PasswordRecoveryMobile"].lower():
 				user["PasswordRecoveryMobile"] = mobile
 			user.modify()

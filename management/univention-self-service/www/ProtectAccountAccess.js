@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window */
+/*global define, dijit*/
 
 define([
 	"dojo/_base/lang",
@@ -38,12 +38,14 @@ define([
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
+	"umc/dialog",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/PasswordBox",
 	"./TextBox",
 	"umc/widgets/RadioButton",
 	"./lib",
 	"umc/i18n!."
-], function(lang, array, on, keys, dom, json, Button, put, tools, ContainerWidget, TextBox, RadioButton, lib, _) {
+], function(lang, array, on, keys, dom, json, Button, put, tools, dialog, ContainerWidget, PasswordBox, TextBox, RadioButton, lib, _) {
 
 	return {
 		title: _('Protect Account Access'),
@@ -51,6 +53,10 @@ define([
 		hash: 'setcontactinformation',
 		contentContainer: null,
 		steps: null,
+
+		startup: function() {
+			this._username.focus();
+		},
 
 		/**
 		 * Returns the title of the subpage.
@@ -126,13 +132,10 @@ define([
 			var step = put('li.step');
 			var label = put('div.stepLabel', _('Password'));
 			put(step, label);
-			this._password = new TextBox({
+			this._password = new PasswordBox({
 				'class': 'soloLabelPane',
-				isValid: function() {
-					return !!this.get('value');
-				},
 				required: true,
-				type: 'password'
+				missingMessage: this.invalidMessage
 			});
 			this._password.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
@@ -172,22 +175,29 @@ define([
 					'password': this._password.get('value')
 				};
 				tools.umcpCommand('passwordreset/get_contact', data).then(lang.hitch(this, function(data) {
-					lib._removeMessage();
 					put(this._showContactInformationButton.domNode, '.dijitHidden');
 					this._createRenewOptions(data.result);
-				}), lang.hitch(this, function(err){
-					lib.showMessage({
-						content: err.message,
-						'class': '.error'
-					});
+				}), lang.hitch(this, function(){
 					this._showContactInformationButton.set('disabled', false);
+					this._username.reset();
 					this._username.set('disabled', false);
+					//this._username.focus(); Not possible because the error dialog steals the focus
+					this._password.reset();
 					this._password.set('disabled', false);
 				}));
 			} else {
 				this._showContactInformationButton.set('disabled', false);
 				this._username.set('disabled', false);
 				this._password.set('disabled', false);
+				if (!this._username.isValid()) {
+					this._username._hasBeenBlurred = true;
+					this._username.focus();
+					this._username.validate();
+				} else if (!this._password.isValid()) {
+					this._password._hasBeenBlurred = true;
+					this._password.focus();
+					this._password.validate();
+				}
 			}
 		},
 
@@ -201,7 +211,7 @@ define([
 			this._renewOptions = step;
 			var label = put('div.stepLabel', _('Activate renew options.'));
 			put(step, label);
-			this._renewInputs = array.map(options, function(option) {
+			this._renewInputs = array.map(options, lang.hitch(this, function(option) {
 				var optionNode = put('div');
 				put(optionNode, 'div', option.label + _(' (retype)'));
 				var input = new TextBox({
@@ -211,11 +221,21 @@ define([
 					value: option.value,
 					id: option.id,
 					isValid: function() {
-						return input.get('value') ===
-							this.get('value');
+						return input.get('value') === this.get('value');
 					},
-					invalidMessage: _('The entries do not match, please retype again.')
+					invalidMessage: _('The entries do not match, please retype again.'),
 				});
+				inputRetype.on('keyup', lang.hitch(this, function(evt) {
+					if (evt.keyCode === keys.ENTER) {
+						this._setContactInformation();
+					}
+				}));
+				input.on('keyup', lang.hitch(this, function(evt) {
+					if (evt.keyCode === keys.ENTER) {
+						this._setContactInformation();
+					}
+				}));
+				inputRetype.startup();
 				put(optionNode, input.domNode);
 				put(optionNode, inputRetype.domNode);
 				put(step, optionNode);
@@ -223,8 +243,12 @@ define([
 					id: option.id,
 					getValue: function() { return inputRetype.get('value');},
 					isValid: function() { return inputRetype.isValid();},
+					validate: function() { return inputRetype.validate();},
+					focus: function() {return inputRetype.focus();},
+					focusInput: function() {return input.focus();},
+					reset: function() {input.reset(); inputRetype.reset();}
 				};
-			});
+			}));
 			this._saveButton = new Button({
 				label: _('Save'),
 				onClick: lang.hitch(this, '_setContactInformation')
@@ -237,6 +261,7 @@ define([
 			});
 			put(step, this._cancelButton.domNode);
 			put(this.steps, step);
+			this._renewInputs[0].focusInput();
 		},
 
 		/**
@@ -247,22 +272,24 @@ define([
 			this._saveButton.set('disabled', true);
 
 			var allOptionsAreValid = array.some(this._renewInputs, function(input){
-				return input.isValid();
+				if (input.isValid()) {
+					return true;
+				} else {
+					input.focus();
+					input.validate();
+					return false;
+				}
 			});
 			
 			//var isValidMail = this._validateMail(data.email);
 			if (allOptionsAreValid) {
-				data = this._getNewContactInformation();
+				var data = this._getNewContactInformation();
 				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
-						lib.showLastMessage({
-							content: data.message,
-							'class': '.success'
-						});
+						dialog.alert(data.message);
 						this._deleteRenewOptions();
-					}), lang.hitch(this, function(err){
-						lib.showMessage({
-							content: err.message,
-							'class': '.error'
+					}), lang.hitch(this, function(){
+						array.forEach(this._renewInputs, function(input){
+							input.reset();
 						});
 						this._cancelButton.set('disabled', false);
 						this._saveButton.set('disabled', false);
@@ -319,11 +346,13 @@ define([
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();
 			this._password.reset();
+			this._password.set('disabled', false);
 			// destroy email input widget
 			array.forEach(this._renewInputs, function(renewInput) {
 				var Input = dijit.byId(renewInput.id);
 				Input.destroy();
 			});
+			//this._username.focus();
 		}
 	};
 });
