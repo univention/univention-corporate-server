@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-31) unstable; urgency=low
+
+  * Bug #41170: verfiy_cert_host in HTTPSConnection
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Feb 2017 10:33:00 +0100
+
 univention-appcenter (6.0.1-30) unstable; urgency=medium
 
   * Bug #43458: Revert
