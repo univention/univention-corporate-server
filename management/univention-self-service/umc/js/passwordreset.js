@@ -28,16 +28,14 @@
  */
 /*global define*/
 define(['umc/menu', 'dijit/MenuItem', 'umc/i18n!'], function(menu, MenuItem, _) {
-	app.registerOnStartup(function() {
-		menu.addEntry(new MenuItem({
-			id: 'umcMenuProtectAccount',
-			$parentMenu$: 'umcMenuUserSettings',
-			iconClass: 'icon24-umc-menu-pwchange',
-			label: _('Protect account'),
-			onClick: function() {
-				window.open('/univention/self-service/#setcontactinformation');
-			}
-		}));
-	});
+	menu.addEntry(new MenuItem({
+		id: 'umcMenuProtectAccount',
+		$parentMenu$: 'umcMenuUserSettings',
+		iconClass: 'icon24-umc-menu-pwchange',
+		label: _('Protect account'),
+		onClick: function() {
+			window.open('/univention/self-service/#setcontactinformation');
+		}
+	}));
 	return null;
 });
