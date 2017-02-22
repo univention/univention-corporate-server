@@ -43,7 +43,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"./TextBox",
-	"./PasswordBox",
+	"umc/widgets/PasswordBox",
 	"umc/widgets/RadioButton",
 	"./lib",
 	"umc/i18n!."

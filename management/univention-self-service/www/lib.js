@@ -180,24 +180,6 @@ define([
 			}
 		},
 
-		/**
-		 * Returns the needed backend information for the Password Service
-		 * as a promise or as an object.
-		 * The information is requested once and will be cached in
-		 * this._backend_info.
-		 * */
-		getBackendInformation: function() {
-			if (!this._backend_info) {
-				var promise = request.get("/univention/self-service/entries.json");
-				promise.then(lang.hitch(this, function(data){
-					this._backend_info = data;
-				}));
-				return promise;
-			} else {
-				return this._backend_info;
-			}
-		},
-
 		wipeInNode: function(conf) {
 			var endHeight = domGeom.getMarginBox(conf.node).h;
 			fx.animateProperty({

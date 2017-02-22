@@ -1,4 +1,0 @@
-Type: file
-File: var/www/univention/self-service/entries.json
-Variables: umc/self-service/passwordservice/subpage/.*
-Variables: password/quality/.*

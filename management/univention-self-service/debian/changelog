@@ -1,3 +1,9 @@
+univention-self-service (2.0.3-4) unstable; urgency=medium
+
+  * Bug #42267: entries.json not needed anymore -> removed 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 12:24:40 +0100
+
 univention-self-service (2.0.3-3) unstable; urgency=medium
 
   * Bug #42267: removed navigation bubbles 

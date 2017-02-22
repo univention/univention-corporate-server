@@ -44,8 +44,7 @@ define([
 	"./ProtectAccountAccess",
 	"./NewPassword",
 	"./lib",
-	"umc/json!/univention/self-service/entries.json"
-], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, NewPassword, lib, entries){
+], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, NewPassword, lib){
 	return {
 		content_container: null,
 		content_controller: null,
@@ -66,7 +65,7 @@ define([
 			this._initContainer();
 			this._initController();
 			this._subscribeOnHashEvents();
-			this._addSubPages(entries.subpages || []);
+			this._addSubPages(["password_forgotten", "protect_account_access", "new_password"]);
 		},
 
 		_subscribeOnHashEvents: function() {
