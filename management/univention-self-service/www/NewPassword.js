@@ -61,6 +61,10 @@ define([
 			if (!lib.getQuery('username')) {
 				this._username.focus();
 				return;
+			} else if (this._username) {
+				this._username.set('value', lib.getQuery('username'));
+				this._username.set('disabled', true);
+				return;
 			}
 			if (!lib.getQuery('token')) {
 				this._token.focus();

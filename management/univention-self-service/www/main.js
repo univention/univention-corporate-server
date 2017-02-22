@@ -103,16 +103,6 @@ define([
 						page_name: page_name
 					});
 					this.site_hashes[module.hash] = subpage;
-					var nav = put("div.PasswordServiceNav", {
-						onclick: lang.hitch(this, function() {
-							hash(module.hash);
-						})
-					});
-					put(nav, "div.PasswordServiceNavBubble" + "." + page_name);
-					put(nav, "div.PasswordServiceNavTitle", {
-						innerHTML: module.getTitle()
-					});
-					put(this.content_controller, nav);
 					this.content_container.addChild(subpage);
 				}
 			}));
