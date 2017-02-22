@@ -44,7 +44,6 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/setup",
-	"xstyle/css!./setup.css",
 // Pages:
 	"./setup/LanguagePage",
 	"./setup/NetworkPage",
