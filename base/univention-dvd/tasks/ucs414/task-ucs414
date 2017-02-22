@@ -79,6 +79,7 @@ univention-nagios-ad-connector
 univention-management-console-module-adtakeover
 
 univention-printserver
+univention-printquota
 univention-nagios-cups
 
 univention-dhcp

@@ -1,3 +1,9 @@
+univention-dvd (1.0.1-8) unstable; urgency=medium
+
+  * Bug #43588: Add univention-printquota
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Feb 2017 15:54:43 +0100
+
 univention-dvd (1.0.1-7) unstable; urgency=medium
 
   * Bug #42327: removed univention-ucs-translation-fr
