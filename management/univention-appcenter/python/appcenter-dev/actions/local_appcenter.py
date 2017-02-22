@@ -51,7 +51,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_localhost_ip, get_server
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_server
 from univention.appcenter.ucr import ucr_save, ucr_get
 from univention.appcenter.ini_parser import read_ini_file
 
@@ -618,7 +618,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 
 	def setup_parser(self, parser):
 		super(DevSetupLocalAppcenter, self).setup_parser(parser)
-		parser.add_argument('--appcenter-host', default=get_localhost_ip(), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=ucr_get('interfaces/eth0/address'), help='The hostname of the new App Center. Default: %(default)s')
 		parser.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-setup-local-appcenter')
 
 	def main(self, args):

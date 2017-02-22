@@ -54,9 +54,9 @@ from ConfigParser import RawConfigParser, ParsingError
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
-from univention.config_registry.interfaces import Interfaces
+from univention.config_registry import interfaces
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.ucr import ucr_get, ucr_keys, ucr_instance
+from univention.appcenter.ucr import ucr_get, ucr_keys
 
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc
@@ -86,7 +86,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 
 def docker_bridge_network_conflict():
 	docker0_net = ipaddr.IPv4Network(ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
-	for name, iface in Interfaces().ipv4_interfaces:
+	for name, iface in interfaces.Interfaces().ipv4_interfaces:
 		if 'network' in iface and 'netmask' in iface:
 			my_net = ipaddr.IPv4Network('%s/%s' % (iface['network'], iface['netmask']))
 			if my_net.overlaps(docker0_net):
@@ -400,13 +400,6 @@ def get_server():
 def container_mode():
 	''' returns True if this system is an container '''
 	return bool(ucr_get('docker/container/uuid'))
-
-
-def get_localhost_ip():
-	''' returns the IP configured on localhost (string) '''
-	network = Interfaces(ucr_instance()).get_default_ip_address()
-	if network:
-		return str(network.ip)
 
 
 def send_information(action, app=None, status=200, value=None):

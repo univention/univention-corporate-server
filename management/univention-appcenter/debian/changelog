@@ -1,5 +1,6 @@
 univention-appcenter (6.0.1-30) unstable; urgency=medium
 
+  * Bug #43458: Revert
   * Bug #43338: Apache sites changed names
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Feb 2017 02:20:05 +0100

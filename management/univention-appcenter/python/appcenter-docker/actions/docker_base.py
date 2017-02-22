@@ -44,7 +44,7 @@ from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.service import Start, Stop
-from univention.appcenter.utils import mkdir, get_localhost_ip  # get_locale
+from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get
 
 
@@ -174,8 +174,6 @@ class DockerActionMixin(object):
 				if re.match(var, key):
 					set_vars[key] = ucr_get(key)
 		set_vars['repository/app_center/server'] = ucr_get(app.ucr_server_key) or set_vars.get('repository/app_center/server')
-		if set_vars.get('nameserver1', '127.0.0.1') == '127.0.0.1':
-			set_vars['nameserver1'] = get_localhost_ip()
 		set_vars['updater/identify'] = 'Docker App'
 		database_connector = DatabaseConnector.get_connector(app)
 		database_password_file = None
