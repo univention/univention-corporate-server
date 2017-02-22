@@ -1228,14 +1228,16 @@ define([
 			});
 			try {
 				var path = 'umc/modules/' + module.id;
-				require([path], lang.hitch(this, function(baseClass) {
-					if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+				require({
+					cacheBust: module.version ? lang.replace('version={0}', [module.version]) : null
+				}, [path], lang.hitch(this, function(baseClass) {
+					if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 						deferred.resolve(baseClass);
 					} else if (baseClass === null) {
 						deferred.cancel(lang.replace('Module could not be loaded: {0}', [path]));
 					} else if (typeof baseClass === 'object') {
 						require([lang.replace('{0}!{1}', [path, module.flavor || ''])], lang.hitch(this, function(baseClass) {
-							if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+							if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 								deferred.resolve(baseClass);
 							} else {
 								deferred.cancel(lang.replace('{0} is not a umc.widgets._ModuleMixin! (1}', [module.id, baseClass]));
@@ -1600,7 +1602,7 @@ define([
 
 			var deferred = new Deferred();
 			// get the object in case we have a string
-			if (typeof(module) == 'string') {
+			if (typeof(module) === 'string') {
 				module = this.getModule(module, flavor);
 			}
 			if (undefined === module) {

@@ -305,7 +305,8 @@ class ProcessorBase(Base):
 						'icon': flavor.icon,
 						'categories': (flavor.categories or module.categories) + favcat,
 						'priority': flavor.priority,
-						'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
+						'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords])),
+						'version': flavor.version,
 					})
 			else:
 				favcat = []
@@ -322,7 +323,8 @@ class ProcessorBase(Base):
 					'icon': module.icon,
 					'categories': module.categories + favcat,
 					'priority': module.priority,
-					'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
+					'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords])),
+					'version': module.version,
 				})
 		CORE.info('Modules: %s' % (modules,))
 		res = Response(request)

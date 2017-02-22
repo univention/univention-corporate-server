@@ -1,3 +1,10 @@
+univention-management-console (9.0.37-1) unstable; urgency=medium
+
+  * Bug #42265: add the version number of UMC modules as querystring
+  	(dojoConfig.cacheBust) to prevent wrong file to be cached.
+
+ -- Florian Best <best@univention.de>  Wed, 22 Feb 2017 10:15:25 +0100
+
 univention-management-console (9.0.36-2) unstable; urgency=medium
 
   * Bug #42263: remove reference to hook.js

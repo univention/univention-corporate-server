@@ -153,7 +153,7 @@ class Flavor(JSON_Object):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
 
-	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None):
+	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -165,9 +165,11 @@ class Flavor(JSON_Object):
 		self.translationId = translationId
 		self.categories = categories or []
 		self.required_commands = required_commands or []
+		self.version = version
 
 	def merge(self, other):
 		self.id = self.id or other.id
+		self.version = self.version or other.version
 		self.name = self.name or other.name
 		self.description = self.description or other.description
 		self.icon = self.icon or other.icon
@@ -184,7 +186,7 @@ class Module(JSON_Object):
 
 	'''Represents a command attribute'''
 
-	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None):
+	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None, version=None):
 		self.id = id
 		self.name = name
 		self.url = url
@@ -195,6 +197,7 @@ class Module(JSON_Object):
 		self.flavors = JSON_List()
 		self.translationId = translationId
 		self.required_commands = required_commands or []
+		self.version = version
 		if flavors is not None:
 			self.append_flavors(flavors)
 
@@ -247,6 +250,7 @@ class Module(JSON_Object):
 		if not self.description:
 			self.description = other.description
 
+		self.version = self.version or other.version
 		self.keywords = list(set(self.keywords + other.keywords))
 		self.merge_flavors(other.flavors)
 		self.categories = JSON_List(set(self.categories + other.categories))
@@ -269,6 +273,10 @@ class XML_Definition(ET.ElementTree):
 	@property
 	def name(self):
 		return self.findtext('name')
+
+	@property
+	def version(self):
+		return self.root.findtext('version')
 
 	@property
 	def url(self):
@@ -332,6 +340,7 @@ class XML_Definition(ET.ElementTree):
 				priority=priority,
 				categories=[cat.get('name') for cat in elem.findall('categories/category')],
 				required_commands=[cat.get('name') for cat in elem.findall('requiredCommands/requiredCommand')],
+				version=self.version,
 			)
 
 	@property
@@ -354,6 +363,7 @@ class XML_Definition(ET.ElementTree):
 			keywords=self.keywords,
 			translationId=self.translationId,
 			required_commands=[cat.get('name') for cat in self.findall('requiredCommands/requiredCommand')],
+			version=self.version,
 		)
 
 	def get_flavor(self, name):
