@@ -1,3 +1,9 @@
+univention-system-setup (9.0.7-4) unstable; urgency=medium
+
+  * Bug #43588: Add univention-printquota to download-packages
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Feb 2017 16:06:31 +0100
+
 univention-system-setup (9.0.7-3) unstable; urgency=medium
 
   * Bug #42915: Move welcome screen installation from appliance hook
