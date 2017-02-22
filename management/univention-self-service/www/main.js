@@ -33,8 +33,6 @@ define([
 	"dojo/topic",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/xhr",
-	"dojo/json",
 	"put-selector/put",
 	"dojo/dom",
 	"dijit/layout/StackContainer",
@@ -42,8 +40,7 @@ define([
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
-	"./lib",
-], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword, lib){
+], function(hash, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword){
 	return {
 		content_container: null,
 		content_controller: null,
@@ -68,8 +65,6 @@ define([
 
 		_subscribeOnHashEvents: function() {
 			topic.subscribe("/dojo/hashchange", lang.hitch(this, function(changedHash) {
-				//window.location.reload();
-				lib._removeMessage();
 				this._loadSubpage(changedHash);
 			}));
 		},

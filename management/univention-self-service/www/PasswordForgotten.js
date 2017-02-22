@@ -34,9 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/keys",
-	"dojo/dom",
-	"dojo/json",
-	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
@@ -45,9 +42,8 @@ define([
 	"umc/widgets/LabelPane",
 	"./TextBox",
 	"umc/widgets/RadioButton",
-	"./lib",
 	"umc/i18n!."
-], function(hash, lang, array, on, keys, dom, json, xhr, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
+], function(hash, lang, array, on, keys, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
 
 	return {
 		title: _("Password forgotten"),

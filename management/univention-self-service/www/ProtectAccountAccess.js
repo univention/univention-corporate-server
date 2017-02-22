@@ -33,19 +33,14 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/keys",
-	"dojo/dom",
-	"dojo/json",
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
 	"umc/dialog",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/PasswordBox",
+	"./PasswordBox",
 	"./TextBox",
-	"umc/widgets/RadioButton",
-	"./lib",
 	"umc/i18n!."
-], function(lang, array, on, keys, dom, json, Button, put, tools, dialog, ContainerWidget, PasswordBox, TextBox, RadioButton, lib, _) {
+], function(lang, array, on, keys, Button, put, tools, dialog, PasswordBox, TextBox, _) {
 
 	return {
 		title: _('Protect Account Access'),
@@ -135,7 +130,6 @@ define([
 			this._password = new PasswordBox({
 				'class': 'soloLabelPane',
 				required: true,
-				missingMessage: this.invalidMessage
 			});
 			this._password.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
@@ -281,7 +275,6 @@ define([
 				}
 			});
 			
-			//var isValidMail = this._validateMail(data.email);
 			if (allOptionsAreValid) {
 				var data = this._getNewContactInformation();
 				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
@@ -320,21 +313,6 @@ define([
 				}
 			});
 			return contactInformation;
-		},
-
-		/**
-		 * Validates given email address.
-		 * */
-		_validateMail: function(email) {
-			var reg = /^([\w\-]+(?:\.[\w\-]+)*)@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-			var isValid = !email.length || reg.test(email);
-			if(!isValid) {
-				lib.showMessage({
-					content: _('Please enter a valid email address.'),
-					'class': '.error'
-				});
-			}
-			return isValid;
 		},
 
 		/**

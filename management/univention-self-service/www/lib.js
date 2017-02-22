@@ -26,101 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, window */
+/*global define */
 
 define([
 	"dojo/_base/lang",
-	"dojo/_base/fx",
-	"dojo/dom",
-	"dojo/dom-geometry",
 	"dojo/hash",
 	"dojo/io-query",
 	"dojox/html/entities",
-	"put-selector/put",
-	"dojo/request",
 	"umc/i18n!."
-], function(lang, fx, dom, domGeom, hash, ioQuery, htmlEntities, put, request, _) {
+], function(lang, hash, ioQuery, htmlEntities, _) {
 
 	return {
 		getCurrentLanguageQuery: function() {
 			return '?lang=' + (this.getQuery('lang') || 'en-US');
-		},
-
-		_getServerMsgNode: function() {
-			var serverMsgNode = dom.byId("server_msg");
-			if (serverMsgNode) {
-				return serverMsgNode;
-			}
-			serverMsgNode = put(dom.byId('contentContainer'), 'div[id=server_msg]');
-			return serverMsgNode;
-		},
-
-		/**
-		 * Displays given message.
-		 * @param {object} msg - Provides targetNode, class and content
-		 * for the message.
-		 */
-		showMessage: function(msg) {
-			var targetNode = msg.targetNode || this._getServerMsgNode();
-			var msgNode = dom.byId('msg');
-
-			if (msgNode) {
-				this._removeMessage();
-				setTimeout(lang.hitch(this, 'showMessage', msg), 500);
-			} else {
-				msgNode = put('div[id=msg]');
-				put(targetNode, 'div', msgNode);
-				if (msg['class']) {
-					put(msgNode, msg['class']);
-				}
-				// replace newlines with BR tags
-				// msg = msg.replace(/\n/g, '<br/>');
-				msgNode.innerHTML = msg.content;
-			}
-		},
-
-		showLastMessage: function(msg) {
-			var targetNode = msg.targetNode || this._getServerMsgNode();
-			var msgNode = dom.byId('msg');
-
-			if (msgNode) {
-				this._removeMessage();
-				setTimeout(lang.hitch(this, 'showLastMessage', msg), 500);
-			} else {
-				var message = this._prepareLastMessage(msg);
-
-				msgNode = put('div[id=msg]');
-				put(targetNode, 'div', msgNode);
-				if (msg['class']) {
-					put(msgNode, msg['class']);
-				}
-				msgNode.innerHTML = message;
-			}
-		},
-
-		_prepareLastMessage: function(msg) {
-			var message = msg.content;
-			var redirect = {
-				url: this._getUrlForRedirect(),
-				label: this._getUrlLabelForRedirect(),
-				timer: this.getQuery('timer')
-			};
-			if (redirect.url) {
-				var timer = redirect.timer || msg.timer || 5;
-				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirect.label, timer]));
-				var redirectInterval = setInterval(function() {
-					timer--;
-					if (timer === 0) {
-						clearInterval(redirectInterval);
-						window.location.href = redirect.url;
-					}
-					var redirectTimerNode = dom.byId("redirectTimer");
-					redirectTimerNode.innerHTML = timer;
-				}, 1000);
-			} else {
-				message += lang.replace(_("</br><a href='/{0}'>Back to the overview.</a>", [this.getCurrentLanguageQuery()]));
-			}
-			return message;
 		},
 
 		/**
@@ -171,45 +89,6 @@ define([
 			var queryString = hash().split('?', 2)[1];
 			var queryObject = ioQuery.queryToObject(queryString);
 			return queryObject[key];
-		},
-
-		_removeMessage: function() {
-			var msgNode = dom.byId('msg');
-			if (msgNode) {
-				put(msgNode, "!");
-			}
-		},
-
-		wipeInNode: function(conf) {
-			var endHeight = domGeom.getMarginBox(conf.node).h;
-			fx.animateProperty({
-				node: conf.node,
-				duration: conf.duration || 500,
-				properties: {
-					height: { start: conf.startHeight || 0, end: conf.endHeight , units: 'px'}
-				}
-			}).play();
-		},
-
-		wipeOutNode: function(conf) {
-			var currentHeight = domGeom.getMarginBox(conf.node).h;
-			fx.animateProperty({
-				node: conf.node,
-				duration: conf.duration || 500,
-				properties: {
-					height: { end: 0, units: 'px'}
-				},
-				onEnd: conf.callback
-			}).play();
-		},
-
-		getNodeHeight: function(node) {
-			put(node, '.offScreen');
-			put(document.body, node);
-			var height = domGeom.position(node).h;
-			put(node, '!offScreen');
-			put(node, '!');
-			return height;
 		}
 	};
 });

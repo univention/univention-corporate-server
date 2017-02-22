@@ -30,24 +30,17 @@
 
 define([
 	"dojo/_base/lang",
-	"dojo/_base/array",
 	"dojo/on",
 	"dojo/keys",
-	"dojo/dom",
-	"dojo/json",
-	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
 	"umc/dialog",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/LabelPane",
 	"./TextBox",
-	"umc/widgets/PasswordBox",
-	"umc/widgets/RadioButton",
+	"./PasswordBox",
 	"./lib",
 	"umc/i18n!."
-], function(lang, array, on, keys, dom, json, xhr, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, PasswordBox, RadioButton, lib, _) {
+], function(lang, on, keys, Button, put, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
 		title: _("Set new password"),

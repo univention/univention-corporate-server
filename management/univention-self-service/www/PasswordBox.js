@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Univention GmbH
+ * Copyright 2011-2017 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,24 +26,24 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global define*/
 
-/*global define require */
-
-// idea taken from: http://stackoverflow.com/a/16650916/3116268
 define([
-	"dojo/text",
-	"dojo/_base/lang",
-	"dojo/json"
-], function(text,lang,json) {
-	return lang.delegate(text, {
-		load: function(id, require, load){
-			text.load(id, require, function(data) {
-				// parse JSON data
-				if (id.split('.').pop() == 'json') {
-					data = json.parse(data);
-				}
-				load(data);
-			});
+	"dojo/_base/declare",
+	"umc/widgets/PasswordBox"
+], function(declare, PasswordBox) {
+	return declare("selfservice.password.PasswordBox", [PasswordBox], {
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.tooltipPosition = ['after', 'below'];
+		},
+
+		reset: function() {
+			this.set('value', '');
+			this.set('disabled', false);
 		}
 	});
 });
+
+
