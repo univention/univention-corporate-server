@@ -261,27 +261,13 @@ def verbose_http_error(exc):
 
 class HTTPSConnection(httplib.HTTPSConnection):
 
-	def verfiy_cert_host(self):
-		cert = self.sock.getpeercert()
-		cert_hosts = dict()
-		for i in cert.get('subject'):
-			if i[0][0] == 'commonName':
-				cert_hosts[i[0][1]] = True
-		for field, value in cert.get('subjectAltName'):
-			if field == 'DNS':
-				cert_hosts[value] = True
-		for name in cert_hosts:
-			if self.host.lower().endswith(name.lstrip('*').lower()):
-				return
-		raise ssl.SSLError("hostname '%s' doesn't match certificate host '%s'" % (self.host, "', '".join(cert_hosts.keys())))
-
 	def connect(self):
 		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
 		if self._tunnel_host:
 			self.sock = sock
 			self._tunnel()
 		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
-		self.verfiy_cert_host()
+		ssl.match_hostname(self.sock.getpeercert(), self.host)
 
 
 class HTTPSHandler(urllib2.HTTPSHandler):
