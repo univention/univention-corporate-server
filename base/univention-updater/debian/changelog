@@ -1,3 +1,9 @@
+univention-updater (12.0.3-7) unstable; urgency=medium
+
+  * Bug #42174: changed dependency from "umc/login" to "login" 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 18:24:10 +0100
+
 univention-updater (12.0.3-6) unstable; urgency=low
 
   * Bug #42433: clean package cache after successful update

@@ -35,7 +35,7 @@ define([
 	"dojo/on",
 	"dijit/Dialog",
 	"umc/dialog",
-	"umc/login",
+	"login",
 	"umc/app",
 	"umc/tools",
 	"umc/widgets/ConfirmDialog",
@@ -49,7 +49,7 @@ define([
 	app.registerOnStartup(function() {
 		var checkUpdateIsRunning = function() {
 			tools.umcpCommand('updater/installer/running', {}, false).then(function(data) {
-				if (data.result == 'release') {
+				if (data.result === 'release') {
 					app.openModule('updater');
 					dialog.alert(_('<p><b>Caution!</b> Currently a release update is performed!</p>') + ' ' +  _('<p>Leave the system up and running until the update is completed!</p>'), _('Release update'));
 				}
@@ -228,7 +228,7 @@ define([
 					}
 					if (rem.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (rem.length == 1) {
+						if (rem.length === 1) {
 							txt += lang.replace(_("1 package to be REMOVED"));
 						} else {
 							txt += lang.replace(_("{count} packages to be REMOVED"), {count:rem.length});
@@ -243,7 +243,7 @@ define([
 					}
 					if (upd.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (upd.length == 1) {
+						if (upd.length === 1) {
 							txt += lang.replace(_("1 package to be updated"));
 						} else {
 							txt += lang.replace(_("{count} packages to be updated"), {count:upd.length});
@@ -258,7 +258,7 @@ define([
 					}
 					if (ins.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (ins.length == 1) {
+						if (ins.length === 1) {
 							txt += lang.replace(_("1 package to be installed"));
 						} else {
 							txt += lang.replace(_("{count} packages to be installed"), {count:ins.length});
@@ -289,7 +289,7 @@ define([
 
 					dia.on('confirm', lang.hitch(this, function(answer) {
 						dia.close();
-						if (answer == 'start') {
+						if (answer === 'start') {
 							this._call_installer({
 								confirm: false,
 								job: 'distupgrade',
