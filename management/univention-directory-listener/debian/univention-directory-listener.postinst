@@ -85,7 +85,7 @@ convert_to_lmdb () {
 		/etc/init.d/univention-directory-listener stop
 	fi
 
-	su -s /bin/sh -c "univention-directory-listener-convert '$BDB'" listener
+	su -s /bin/sh -c "/usr/sbin/univention-directory-listener-convert '$BDB'" listener
 	rv=$?
 	if [ "$rv" -eq 0 ]; then
 		mv "$BDB" /var/backup/"udl-cache-db.$(date +%s)"

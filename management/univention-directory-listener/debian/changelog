@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-14) unstable; urgency=medium
+
+  * Bug #23367: Fix path
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Feb 2017 12:56:16 +0100
+
 univention-directory-listener (11.0.1-13) unstable; urgency=medium
 
   * Bug #23367 Feedback from QA:
