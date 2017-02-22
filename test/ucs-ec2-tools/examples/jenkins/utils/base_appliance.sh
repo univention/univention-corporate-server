@@ -452,7 +452,7 @@ download_system_setup_packages ()
 		packages="$packages ad-connector samba welcome-screen"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc"
+			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc"
 		fi
 
 		for package in $packages; do
