@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (2.0.2-1) unstable; urgency=medium
+
+  * Bug #42173: refactor passwordchange module as JavaScript hook
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 16:40:17 +0100
+
 univention-management-console-module-passwordchange (2.0.1-1) unstable; urgency=medium
 
   * Bug #42263: menu adjustments
