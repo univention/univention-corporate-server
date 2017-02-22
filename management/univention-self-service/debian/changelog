@@ -1,3 +1,9 @@
+univention-self-service (2.0.4-1) unstable; urgency=medium
+
+  * Bug #43565: proxy all requests to the UCR set self-service/backend-server
+
+ -- Florian Best <best@univention.de>  Wed, 22 Feb 2017 12:57:33 +0100
+
 univention-self-service (2.0.3-5) unstable; urgency=medium
 
   * Bug #42267: remove password change from frontend 

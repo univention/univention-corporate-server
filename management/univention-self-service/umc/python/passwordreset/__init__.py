@@ -41,6 +41,7 @@ from ldap.filter import filter_format
 import pylibmc
 
 from univention.lib.i18n import Translation
+from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
@@ -59,6 +60,26 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 TOKEN_VALIDITY_TIME = 3600
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 MEMCACHED_MAX_KEY = 250
+
+
+def forward_to_master(func):
+	@wraps(func)
+	def _decorator(self, request, *args, **kwargs):
+		selfservice_server = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+		if '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) != selfservice_server:
+			try:
+				language = str(self.locale).split('.')[0].replace('_', '-')
+				client = Client(selfservice_server, language=language)
+				client.authenticate_with_machine_account()
+				response = client.umc_command(request.arguments[0], request.options)
+			except (Unauthorized, ConnectionError) as exc:
+				raise UMC_Error(_('The connection to the server could not be established. Please try again later. Error message was: %s') % (exc,), status=503)
+			except HTTPError as exc:
+				response = exc.response
+			self.finished(request.id, response.result, message=response.message, status=response.status)
+			return
+		return func(self, request, *args, **kwargs)
+	return _decorator
 
 
 def prevent_denial_of_service(func):
@@ -215,6 +236,7 @@ class Instance(Base):
 			("t:c_day", 86400, limit_total_day)
 		]
 
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
@@ -240,6 +262,7 @@ class Instance(Base):
 			"value": user[p.udm_property]
 		} for p in self.send_plugins.values() if user[p.udm_property]]
 
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -256,6 +279,7 @@ class Instance(Base):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 		raise UMC_Error(_('Changing contact data failed.'), status=500)
 
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -307,6 +331,7 @@ class Instance(Base):
 		# no contact info
 		raise MissingContactInformation()
 
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
@@ -350,6 +375,7 @@ class Instance(Base):
 			raise UMC_Error(_("Successfully changed your password."), status=200)
 		raise UMC_Error(_('Failed to change password.'), status=500)
 
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(username=StringSanitizer(required=True, minimum=1))
 	@simple_response
