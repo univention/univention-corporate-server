@@ -1201,7 +1201,7 @@ class App(object):
 	def must_have_fitting_kernel_version(self):
 		if self.docker:
 			kernel = LooseVersion(os.uname()[2])
-			if kernel < LooseVersion('4.1'):
+			if kernel < LooseVersion('4.9'):
 				return False
 		return True
 

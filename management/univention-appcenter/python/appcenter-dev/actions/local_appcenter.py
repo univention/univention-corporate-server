@@ -96,15 +96,11 @@ class DevUseTestAppcenter(UniventionAppAction):
 		revert_group.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-use-test-appcenter')
 
 	def main(self, args):
-		appcenter_servers = ucr_get('appcenter/server', 'appcenter.software-univention.de').split(' ')
 		if args.revert:
 			appcenter_server = 'appcenter.software-univention.de'
 			ucr_save({'appcenter/server': appcenter_server, 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
 		else:
-			appcenter_server = args.appcenter_host
-			if appcenter_server not in appcenter_servers:
-				appcenter_servers.insert(0, appcenter_server)
-			ucr_save({'appcenter/server': ' '.join(appcenter_servers), 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
+			ucr_save({'appcenter/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
 

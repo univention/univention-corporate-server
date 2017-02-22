@@ -1,3 +1,10 @@
+univention-appcenter (6.0.1-33) unstable; urgency=medium
+
+  * Bug #43607: Check for kernel 4.9
+  * Bug #43496: Only use test-appcenter.software-univention.de
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Feb 2017 17:10:01 +0100
+
 univention-appcenter (6.0.1-32) unstable; urgency=low
 
   * Bug #41170: verfiy_cert_host in HTTPSConnection

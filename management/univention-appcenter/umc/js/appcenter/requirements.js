@@ -110,7 +110,7 @@ define([
 		}),
 		must_have_fitting_kernel_version: new Requirement({
 			reasonDescription: function(details) {
-				return _('The application requires a newer kernel than your system is currently using (at least kernel 4.1 is required).');
+				return _('The application requires a newer kernel than your system is currently using (at least kernel 4.9 is required).');
 			},
 			solutionDescription: function() {
 				return _('This is probably due to a missing reboot after an UCS upgrade. After a reboot, a newer kernel may be used.');
