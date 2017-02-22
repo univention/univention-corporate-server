@@ -1,4 +1,4 @@
-univention-management-console (9.0.37-1) unstable; urgency=medium
+univention-management-console (9.0.37-2) unstable; urgency=medium
 
   * Bug #42265: add the version number of UMC modules as querystring
   	(dojoConfig.cacheBust) to prevent wrong file to be cached.

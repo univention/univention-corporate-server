@@ -74,13 +74,13 @@ class Module(object):
 		dh_ucs.doIt('install', '-d', target)
 		dh_ucs.doIt('install', '-m', '644', self.module.xml_definition, target)
 		destination = os.path.join(target, os.path.basename(self.module.xml_definition))
-
-		# install XML file with added package version
-		version = subprocess.check_output('dpkg-parsechangelog | sed -ne "s/^Version: //p"', shell=True).strip()
-		with open(destination, 'rb') as fd:
-			content = fd.read().replace('</module>', '\t<version>%s</version>\n\t</module>' % (escape(version),))
-		with open(destination, 'wb') as fd:
-			fd.write(content)
+		if os.path.exists(destination):
+			# add paackage version to installed XML file
+			version = subprocess.check_output('dpkg-parsechangelog | sed -ne "s/^Version: //p"', shell=True).strip()
+			with open(destination, 'rb') as fd:
+				content = fd.read().replace('</module>', '\t<version>%s</version>\n\t</module>' % (escape(version),))
+			with open(destination, 'wb') as fd:
+				fd.write(content)
 
 		# copy translation files (xml)
 		target_i18n = os.path.join(self.destdir, 'usr/share/univention-management-console/i18n/%%s/%(Module)s.mo' % self.module)
