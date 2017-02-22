@@ -1,3 +1,9 @@
+univention-self-service (2.0.4-7) unstable; urgency=medium
+
+  * Bug #42263: updated links in email 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 14:38:18 +0100
+
 univention-self-service (2.0.4-6) unstable; urgency=medium
 
   * Bug #42263: show all possible renew options 
