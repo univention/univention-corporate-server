@@ -1,3 +1,9 @@
+univention-management-console (9.0.37-3) unstable; urgency=medium
+
+  * Bug #42263: use umc/widgets/Menu instead of umc/Menu
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:13:22 +0100
+
 univention-management-console (9.0.37-2) unstable; urgency=medium
 
   * Bug #42265: add the version number of UMC modules as querystring

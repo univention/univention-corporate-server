@@ -1,0 +1,21 @@
+@!@
+import json
+import re
+
+regHook = re.compile(r'^umc/web/hooks/(?P<package>[^/]+)$')
+
+hooks = []
+for iucr, ival in configRegistry.items():
+	# find all UCR variables starting with umc/web/hooks
+	match = regHook.match(iucr)
+	if not match or not ival:
+		continue
+
+	package = match.group('package')
+	hooks.append({
+		'path': ival,
+		'package': package,
+	})
+
+print(json.dumps(hooks))
+@!@

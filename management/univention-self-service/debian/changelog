@@ -1,3 +1,9 @@
+univention-self-service (2.0.4-2) unstable; urgency=medium
+
+  * Bug #42263: use umc/widgets/Menu instead of umc/Menu
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:19:34 +0100
+
 univention-self-service (2.0.4-1) unstable; urgency=medium
 
   * Bug #43565: proxy all requests to the UCR set self-service/backend-server

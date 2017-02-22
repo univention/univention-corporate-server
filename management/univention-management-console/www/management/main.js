@@ -72,7 +72,7 @@ define([
 	"dijit/Tooltip",
 	"dijit/form/DropDownButton",
 	"dijit/layout/StackContainer",
-	"umc/Menu",
+	"umc/widgets/Menu",
 	"umc/widgets/TabController",
 	"umc/widgets/LiveSearch",
 	"umc/widgets/GalleryPane",

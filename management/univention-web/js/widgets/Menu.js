@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/Deferred",
 	"dojo/mouse",
 	"dojo/touch",
 	"dojox/gesture/tap",
@@ -49,7 +50,10 @@ define([
 	"umc/widgets/Text",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, on, mouse, touch, tap, has, domClass, domConstruct, put, registry, tools, MenuItem, PopupMenuItem, MenuSeparator, ContainerWidget, Text, _) {
+], function(declare, lang, array, on, Deferred, mouse, touch, tap, has, domClass, domConstruct, put, registry, tools, MenuItem, PopupMenuItem, MenuSeparator, ContainerWidget, Text, _) {
+
+	var mobileMenuDeferred = new Deferred();
+
 	var MobileMenu = declare([ContainerWidget], {
 		_menuMap: null,
 		'class': 'mobileMenu hasPermaHeader',
@@ -66,6 +70,11 @@ define([
 			this.addPermaHeader();
 			this.addCloseOverlay();
 			dojo.body().appendChild(this.domNode);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			mobileMenuDeferred.resolve(this);
 		},
 
 		addMenuSlides: function() {
@@ -459,6 +468,8 @@ define([
 		}
 	});
 
+	var menuButtonDeferred = new Deferred();
+
 	var MenuButton = declare('umc.MenuButton', [ContainerWidget], {
 		'class': 'umcMobileMenuToggleButton',
 
@@ -490,6 +501,11 @@ define([
 				});
 			}
 			this.on(tap, lang.hitch(this, 'toggleButtonClicked'));
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			menuButtonDeferred.resolve(this);
 		},
 
 		toggleButtonClicked: function() {
@@ -525,20 +541,11 @@ define([
 			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
-		},
-
-		addSubMenu: function(/*Object*/ item) {
-			return this._mobileMenu.addSubMenu(item);
-		},
-
-		addMenuEntry: function(/*Object*/ item) {
-			this._mobileMenu.addMenuEntry(item);
-		},
-
-		addMenuSeparator: function(/*Object*/ item) {
-			this._mobileMenu.addMenuSeparator(item);
 		}
 	});
+
+	MenuButton.menuButtonDeferred = menuButtonDeferred;
+	MenuButton.mobileMenuDeferred = mobileMenuDeferred;
 
 	return MenuButton;
 });
