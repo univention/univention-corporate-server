@@ -1,3 +1,9 @@
+univention-firewall (9.0.0-6) unstable; urgency=medium
+
+  * Bug #43471: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Feb 2017 13:07:56 +0100
+
 univention-firewall (9.0.0-5) unstable; urgency=medium
 
   * Bug #43471: Fix firewall not executing 20_docker.sh
