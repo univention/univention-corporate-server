@@ -9,3 +9,5 @@ desc: |
  * If a user template defined a default value for mailHomeServer, the value
    has not been set. This has been fixed.
 bug: [42903]
+erratum: 402
+announced: 2017-02-22
