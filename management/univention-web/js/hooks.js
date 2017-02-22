@@ -41,7 +41,7 @@ define([
 
 	var hooks = new declare([Evented], {
 		// hooks to be defined...
-	});
+	})();
 
 	require(deps, function() {
 		hooks.emit('loaded');
