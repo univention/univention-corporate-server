@@ -42,7 +42,7 @@ way. Just let your module derive from
 classes.
 """
 from univention.lib.i18n import Translation
-from univention.management.console.errors import BadRequest
+from univention.management.console.error import BadRequest
 from univention.management.console.modules.decorators import simple_response
 
 _ = Translation('univention-management-console').translate
