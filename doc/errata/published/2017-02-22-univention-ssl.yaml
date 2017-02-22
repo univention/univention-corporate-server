@@ -9,3 +9,5 @@ desc: |
  * "renew" and "revoke" failed if the hostname was a substring of another
    hostname. This has been fixed.
 bug: [43576]
+erratum: 30
+announced: 2017-02-22
