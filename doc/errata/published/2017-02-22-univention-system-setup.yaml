@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Install univention-welcome-screen earlier in the setup process
 bug: [42915]
+erratum: 401
+announced: 2017-02-22
