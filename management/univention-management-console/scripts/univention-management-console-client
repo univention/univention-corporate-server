@@ -37,6 +37,7 @@ import datetime
 import os
 import ast
 import pprint
+import locale
 import sys
 
 import notifier
@@ -61,6 +62,7 @@ class CLI_Client(Client):
 		self._options = options
 		self.__started = None
 		self.__finished = None
+		self.language = (locale.getlocale()[0] or locale.getdefaultlocale()[0]).replace('_', '-')
 
 		try:
 			self.connect()
@@ -87,13 +89,14 @@ class CLI_Client(Client):
 				print >> sys.stderr, 'existing without waiting for response'
 			sys.exit(0)
 
-	def authenticate(self, username, password, new_password=None, locale=None):
+	def authenticate(self, username, password, new_password=None):
 		authRequest = umcp.Request('AUTH')
+		authRequest.http_method = 'POST'
 		authRequest.body['username'] = username
 		authRequest.body['password'] = password
 		authRequest.body['new_password'] = new_password
-		if locale:
-			authRequest.body['locale'] = locale
+		authRequest.headers['Accept-Language'] = self.language
+		authRequest.headers['X-Requested-With'] = 'XMLHttpRequest'
 		return super(CLI_Client, self).authenticate(authRequest)
 
 	def create(self, command, args=[], options=[], flavor=None):
@@ -101,6 +104,8 @@ class CLI_Client(Client):
 		msg.http_method = 'POST'
 		msg.cookies['Cookie'] = 'UMCSessionId=00000000-0000-0000-0000-000000000000'
 		msg.headers['X-XSRF-Protection'] = '00000000-0000-0000-0000-000000000000'
+		msg.headers['Accept-Language'] = self.language
+		msg.headers['X-Requested-With'] = 'XMLHttpRequest'
 		msg.arguments = args
 		if options.flavor is not None:
 			msg.flavor = options.flavor
@@ -253,6 +258,11 @@ if __name__ == '__main__':
 	parser.add_option_group(group)
 
 	(options, arguments) = parser.parse_args()
+
+	try:
+		locale.setlocale(locale.LC_ALL, os.environ['LC_ALL'])
+	except (locale.Error, KeyError):
+		pass
 
 	prog = os.path.basename(sys.argv[0])
 	if prog.startswith('umc-'):

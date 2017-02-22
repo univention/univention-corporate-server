@@ -1,3 +1,9 @@
+univention-management-console (9.0.38-1) unstable; urgency=medium
+
+  * Bug #38370: set current locale in univention-management-console-client
+
+ -- Florian Best <best@univention.de>  Wed, 22 Feb 2017 13:37:06 +0100
+
 univention-management-console (9.0.37-3) unstable; urgency=medium
 
   * Bug #42263: use umc/widgets/Menu instead of umc/Menu
