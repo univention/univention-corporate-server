@@ -65,6 +65,6 @@ define([
 		getMenuInstance: function() {
 			return Menu.mobileMenuDeferred;
 		}
-	});
+	})();
 	return menu;
 });

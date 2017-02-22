@@ -1,3 +1,9 @@
+univention-web (1.0.28-2) unstable; urgency=medium
+
+  * Bug #42263: fix typo + always load umc/hooks
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:57:33 +0100
+
 univention-web (1.0.28-1) unstable; urgency=medium
 
   Bug #42263:

@@ -64,6 +64,7 @@ define([
 	"login",
 	"umc/dialog",
 	"umc/store",
+	"umc/menu",
 	"dijit/_WidgetBase",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -87,7 +88,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store,
+		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store, menu,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, UMCMenu,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
 		i18nTools, _
@@ -647,18 +648,6 @@ define([
 			}));
 		},
 
-		addSubMenu: function(/*Object*/ item) {
-			return this._mobileMenu.addSubMenu(item);
-		},
-
-		addMenuEntry: function(/*Object*/ item) {
-			this._mobileMenu.addMenuEntry(item);
-		},
-
-		addMenuSeparator: function(/*Object*/ item) {
-			this._mobileMenu.addMenuSeparator(item);
-		},
-
 		setupBackToOverview: function() {
 			this._backToOverviewButton = new Button({
 				'class': 'umcBackToOverview',
@@ -677,7 +666,7 @@ define([
 
 		setupMenus: function() {
 			// the settings context menu
-			this.addMenuEntry(new PopupMenuItem({
+			menu.addEntry(new PopupMenuItem({
 				$parentMenu$: 'umcMenuMain',
 				$priority$: 60,
 				label: _('User settings'),
@@ -688,7 +677,7 @@ define([
 
 			// the language switch menu
 			if (i18nTools.availableLanguages.length > 1) {
-				this.addMenuEntry(new PopupMenuItem({
+				menu.addEntry(new PopupMenuItem({
 					$parentMenu$: 'umcMenuMain',
 					$priority$: 55,
 					label: _('Switch language'),
@@ -698,7 +687,7 @@ define([
 			}
 
 			// the help context menu
-			this.addMenuEntry(new PopupMenuItem({
+			menu.addEntry(new PopupMenuItem({
 				$parentMenu$: 'umcMenuMain',
 				$priority$: 50,
 				label: _('Help'),
@@ -707,7 +696,7 @@ define([
 			}));
 
 			// the logout button
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuMain',
 				$priority$: -1,
 				id: 'umcMenuLogout',
@@ -721,13 +710,13 @@ define([
 		},
 
 		_setupHelpMenu: function() {
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Help'),
 				onClick: lang.hitch(this, 'showPageDialog', 'HelpPage', 'help', null, null)
 			}));
 
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Feedback'),
 				onClick: lang.hitch(this, '_showFeedbackPage')
@@ -735,17 +724,17 @@ define([
 
 			this._insertPiwikMenuItem();
 
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('About UMC'),
 				onClick: lang.hitch(this, 'showPageDialog', 'AboutPage!', 'about', null, null)
 			}));
 
-			this.addMenuEntry(new MenuSeparator({
+			menu.addEntry(new MenuSeparator({
 				$parentMenu$: 'umcMenuHelp'
 			}));
 
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('UCS start site'),
 				onClick: function() {
@@ -755,7 +744,7 @@ define([
 				}
 			}));
 
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Univention Website'),
 				onClick: function() {
@@ -771,7 +760,7 @@ define([
 			if (!(tools.status('hasFreeLicense') && isUserAdmin)) {
 				return;
 			}
-			this.addMenuEntry(new MenuItem({
+			menu.addEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Usage statistics'),
 				onClick: lang.hitch(this, 'showPageDialog', 'FeedbackPage', 'feedback', null, null)
@@ -1781,24 +1770,6 @@ define([
 				// for any other category, add the module to the favorites
 				this._moduleStore.addFavoriteModule(module.id, module.flavor);
 				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'add');
-			}
-		},
-
-		addSubMenu: function(item) {
-			if (this._header) {
-				this._header.addSubMenu(item);
-			}
-		},
-
-		addMenuEntry: function(item) {
-			if (this._header) {
-				this._header.addMenuEntry(item);
-			}
-		},
-
-		addMenuSeparator: function(item) {
-			if (this._header) {
-				this._header.addMenuSeparator(item);
 			}
 		},
 

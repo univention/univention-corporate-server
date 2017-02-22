@@ -40,13 +40,13 @@ define([
 	"dijit/Menu",
 	"dijit/PopupMenuItem",
 	"dijit/MenuItem",
-	"umc/app",
+	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
 	"management/widgets/ActivationPage!",  // page needs to be loaded as plugin
 	"management/widgets/ActivationDialog",
 	"umc/i18n!umc/modules/udm"
-], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, ActivationPage, ActivationDialog, _) {
+], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, menu, tools, dialog, ActivationPage, ActivationDialog, _) {
 
 	var ucr = {};
 
@@ -109,7 +109,7 @@ define([
 			onClick : _showLicenseInformationDialog
 		}), 0);
 
-		app.addMenuEntry(new PopupMenuItem({
+		menu.addEntry(new PopupMenuItem({
 			$priority$: 80,
 			label: _('License'),
 			id: 'umcMenuLicense',

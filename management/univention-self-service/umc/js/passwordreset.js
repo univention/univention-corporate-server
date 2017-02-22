@@ -27,9 +27,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 /*global define*/
-define(['umc/app', 'dijit/MenuItem', 'umc/i18n!'], function(app, MenuItem, _) {
+define(['umc/menu', 'dijit/MenuItem', 'umc/i18n!'], function(menu, MenuItem, _) {
 	app.registerOnStartup(function() {
-		app.addMenuEntry(new MenuItem({
+		menu.addEntry(new MenuItem({
 			id: 'umcMenuProtectAccount',
 			$parentMenu$: 'umcMenuUserSettings',
 			iconClass: 'icon24-umc-menu-pwchange',

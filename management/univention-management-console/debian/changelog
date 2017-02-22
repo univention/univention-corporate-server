@@ -1,3 +1,9 @@
+univention-management-console (9.0.38-2) unstable; urgency=medium
+
+  * Bug #42263: adjust menu reference
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:59:15 +0100
+
 univention-management-console (9.0.38-1) unstable; urgency=medium
 
   * Bug #38370: set current locale in univention-management-console-client

@@ -1,7 +1,13 @@
+univention-self-service (2.0.4-4) unstable; urgency=medium
+
+  * Bug #42263: adjust menu reference
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:59:34 +0100
+
 univention-self-service (2.0.4-3) unstable; urgency=medium
 
   * Bug #42267: code cleanup
- 
+
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 13:45:39 +0100
 
 univention-self-service (2.0.4-2) unstable; urgency=medium

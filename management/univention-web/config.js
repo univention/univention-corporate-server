@@ -100,7 +100,7 @@ var dojoConfig = {
 	}],
 	map: {},
 	callback: function() {
-		require(["dojo/parser", "login", "umc/widgets/Menu", "dojo/domReady!"], function(parser) {
+		require(["dojo/parser", "login", "umc/hooks", "umc/widgets/Menu", "dojo/domReady!"], function(parser) {
 			parser.parse();
 			umcConfig.callback();
 		});

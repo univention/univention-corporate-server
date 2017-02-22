@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.5-2) unstable; urgency=medium
+
+  * Bug #42263: adjust menu reference
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:58:40 +0100
+
 univention-management-console-module-udm (7.0.5-1) unstable; urgency=medium
 
   * Bug #42903: fix setting of mailHomeServer via template
