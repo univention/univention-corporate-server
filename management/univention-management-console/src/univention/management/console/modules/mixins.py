@@ -42,7 +42,7 @@ way. Just let your module derive from
 classes.
 """
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError
+from univention.management.console.errors import BadRequest
 from univention.management.console.modules.decorators import simple_response
 
 _ = Translation('univention-management-console').translate
@@ -144,7 +144,7 @@ class ProgressMixin(object):
 		try:
 			progress_obj = self._progress_objs[progress_id]
 		except KeyError:
-			raise UMC_OptionTypeError(_('Invalid progress ID'))
+			raise BadRequest(_('Invalid progress ID'))
 		else:
 			ret = progress_obj.poll()
 			if ret['finished']:

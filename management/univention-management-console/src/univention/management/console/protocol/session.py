@@ -55,7 +55,7 @@ import univention.admin.uexceptions as udm_errors
 from .message import Response, Request, MIMETYPE_JSON
 from .client import Client, NoSocketError
 from .version import VERSION
-from .definitions import status_description, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, SERVER_ERR_MODULE_DIED
+from .definitions import status_description, SERVER_ERR_MODULE_FAILED, SERVER_ERR_MODULE_DIED
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
@@ -64,7 +64,8 @@ from ..acl import LDAP_ACLs, ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
-from ..base import Base, UMC_Error
+from ..base import Base
+from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
 from ..ldap import get_machine_connection
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, simple_response, allow_get_request
@@ -216,12 +217,12 @@ class ProcessorBase(Base):
 
 	@allow_get_request
 	def handle_request_unknown(self, msg):
-		"""Handles an unknown or invalid request that is answered with a
-		status code BAD_REQUEST_NOT_FOUND.
+		"""Handles an unknown or invalid request"""
+		raise NotFound()
 
-		:param Request msg: UMCP request
-		"""
-		raise UMC_Error(status=405)  # BAD_REQUEST_NOT_FOUND)
+	@allow_get_request
+	def handle_request_unauthorized(self, msg):
+		raise Unauthorized(self._('For using this request a login is required.'))
 
 	@allow_get_request
 	def handle_request_auth(self, request):
@@ -234,14 +235,14 @@ class ProcessorBase(Base):
 		response.result = result.result
 		self.finished(request.id, response)
 
-	handle_request_get_ucr = handle_request_unknown
-	handle_request_get_info = handle_request_unknown
-	handle_request_get_user_preferences = handle_request_unknown
-	handle_request_get_hosts = handle_request_unknown
-	handle_request_set_password = handle_request_unknown
-	handle_request_set_locale = handle_request_unknown
-	handle_request_set_user = handle_request_unknown
-	handle_request_version = handle_request_unknown
+	handle_request_get_ucr = handle_request_unauthorized
+	handle_request_get_info = handle_request_unauthorized
+	handle_request_get_user_preferences = handle_request_unauthorized
+	handle_request_get_hosts = handle_request_unauthorized
+	handle_request_set_password = handle_request_unauthorized
+	handle_request_set_locale = handle_request_unauthorized
+	handle_request_set_user = handle_request_unauthorized
+	handle_request_version = handle_request_unauthorized
 
 	@allow_get_request
 	def handle_request_get(self, msg):
@@ -262,7 +263,7 @@ class ProcessorBase(Base):
 			if method:
 				self.finished(msg.id, method(msg))
 				return
-		raise UMC_Error(status=BAD_REQUEST_NOT_FOUND)
+		raise NotFound()
 
 	def handle_request_set(self, msg):
 		for key, value in msg.options.items():
@@ -273,7 +274,7 @@ class ProcessorBase(Base):
 			}.get(key)
 			if method:
 				return method(msg)
-		raise UMC_Error(status=BAD_REQUEST_NOT_FOUND)
+		raise NotFound()
 
 	def handle_request_get_modules(self, request):
 		categoryManager.load()
@@ -398,18 +399,18 @@ class ProcessorBase(Base):
 
 			# limit files to tmpdir
 			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-				raise UMC_Error('invalid file: invalid path')
+				raise BadRequest('invalid file: invalid path')
 
 			# check if file exists
 			if not os.path.isfile(tmpfilename):
-				raise UMC_Error('invalid file: file does not exists')
+				raise BadRequest('invalid file: file does not exists')
 
 			# don't accept files bigger than umc/server/upload/max
 			st = os.stat(tmpfilename)
 			max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
 			if st.st_size > max_size:
 				os.remove(tmpfilename)
-				raise UMC_Error('filesize is too large, maximum allowed filesize is %d' % (max_size,))
+				raise BadRequest('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
 			if direct_response:
 				with open(tmpfilename) as buf:
@@ -456,7 +457,7 @@ class ProcessorBase(Base):
 			module_name = None
 
 		if not module_name:
-			raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
+			raise Forbidden()
 
 		if msg.arguments:
 			if msg.mimetype == MIMETYPE_JSON:
@@ -464,7 +465,7 @@ class ProcessorBase(Base):
 			else:
 				is_allowed = moduleManager.is_command_allowed(self.acls, msg.arguments[0])
 			if not is_allowed:
-				raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
+				raise Forbidden()
 			if module_name not in self.__processes:
 				CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
 				try:
@@ -476,7 +477,7 @@ class ProcessorBase(Base):
 						errno.ENFILE: self._('There are too many opened files on the server.'),
 						errno.ENOSPC: self._('There is not enough free space on the server.')
 					}.get(exc.errno, self._('An unknown operating system error occurred (%s).' % (exc,)))
-					raise UMC_Error(message, status=503)
+					raise ServiceUnavailable(message)
 				mod_proc.signal_connect('result', self.result)
 
 				cb = notifier.Callback(self._mod_error, module_name)
@@ -732,7 +733,7 @@ class Processor(ProcessorBase):
 			result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
 			result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
 		except IOError:
-			raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
+			raise Forbidden()
 		return result
 
 	def handle_request_get_hosts(self, request):

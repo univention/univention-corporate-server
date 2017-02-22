@@ -34,7 +34,9 @@
 import uuid
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
+from univention.management.console.base import Base
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.log import MODULE
 
 _ = Translation('PACKAGENAME').translate
@@ -94,6 +96,7 @@ class Instance(Base):
 		MODULE.info('MODULEID.query: results: %s' % str(result))
 		self.finished(request.id, result)
 
+	@sanitize(StringSanitizer())
 	def get(self, request):
 		"""Returns the objects for the given IDs
 
@@ -102,13 +105,7 @@ class Instance(Base):
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""
 		MODULE.info('MODULEID.get: options: %s' % str(request.options))
-		ids = request.options
-		result = []
-		if isinstance(ids, (list, tuple)):
-			ids = set(ids)
-			result = filter(lambda x: x['id'] in ids, Instance.entries)
-		else:
-			MODULE.warn('MODULEID.get: wrong parameter, expected list of strings, but got: %s' % str(ids))
-			raise UMC_OptionTypeError('Expected list of strings, but got: %s' % str(ids))
+		ids = set(request.options)
+		result = filter(lambda x: x['id'] in ids, Instance.entries)
 		MODULE.info('MODULEID.get: results: %s' % str(result))
 		self.finished(request.id, result)

@@ -63,10 +63,10 @@ from threading import Thread
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.base import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error, UMC_OptionSanitizeError
+from univention.management.console.error import UMC_Error, UnprocessableEntity
 from univention.management.console.log import MODULE
 
-from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
+from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, Sanitizer, DictSanitizer, ListSanitizer
 
 _ = Translation('univention.management.console').translate
 
@@ -188,7 +188,7 @@ def _sanitize(function, sanitizer):
 				multi_error.add_error(e, options_name)
 				raise multi_error
 		except MultiValidationError as e:
-			raise UMC_OptionSanitizeError(str(e), e.result())
+			raise UnprocessableEntity(str(e), result=e.result())
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
@@ -301,8 +301,6 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 		request.options = [request.options]
 
 		if with_progress:
-			if not isinstance(request.options[0], dict):
-				raise UMC_OptionTypeError(_('Not a "dict"'))
 			progress_obj = self.new_progress()
 			request.options[0][with_progress] = progress_obj
 
@@ -326,6 +324,8 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 
 				thread = notifier.threads.Simple('simple_response', notifier.Callback(result[0], self, request), notifier.Callback(self.thread_finished_callback, request))
 				thread.run()
+	if with_progress:
+		_response = sanitize_list(DictSanitizer({}))(_response)
 
 	copy_function_meta_data(function, _response)
 	return _response
@@ -387,41 +387,25 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 	if with_flavor is True:
 		with_flavor = 'flavor'
 
+	# argument names of the function, including 'self'
+	arguments, defaults = arginspect(function)
+	# remove self, remove iterator
+	arguments = arguments[2:]
+	# use defaults as dict
+	if defaults:
+		defaults = dict(zip(arguments[-len(defaults):], defaults))
+	else:
+		defaults = {}
+
+	@sanitize(DictSanitizer(dict((arg, Sanitizer(required=arg not in defaults, default=defaults.get(arg))) for arg in arguments)) if not single_values else None)
 	def _response(self, request):
-		if not isinstance(request.options, (list, tuple)):
-			raise UMC_OptionTypeError(_('Not a "list"'))
-
-		# argument names of the function, including 'self'
-		arguments, defaults = arginspect(function)
-		# remove self, remove iterator
-		arguments = arguments[2:]
-		# use defaults as dict
-		if defaults:
-			defaults = dict(zip(arguments[-len(defaults):], defaults))
-		else:
-			defaults = {}
-
 		# single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
 		if not single_values:
 			# normalize the whole request.options
 			for element in request.options:
-				if not isinstance(element, dict):
-					raise UMC_OptionTypeError(_('Not a "dict"'))
-
 				# add flavor before default checking
 				if with_flavor:
 					element[with_flavor] = request.flavor or defaults.get(with_flavor)
-
-				# safely iterate over arguments, dont merge the whole request.options at once
-				# who knows what else the user sent?
-				for arg in arguments:
-					# extract arguments from request or take from default
-					if arg not in element:
-						try:
-							element[arg] = defaults[arg]
-						except KeyError:
-							# check for required arguments (those without default)
-							raise UMC_OptionMissing(arg)
 
 		# checked for required arguments, set default... now run!
 		iterator = RequestOptionsIterator(request.options, arguments, single_values)

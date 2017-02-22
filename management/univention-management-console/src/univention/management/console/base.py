@@ -122,24 +122,14 @@ from univention.lib.i18n import Locale, Translation, I18N_Error
 import univention.admin.uexceptions as udm_errors
 
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
-from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
+from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE, CORE
-from univention.management.console.config import ucr
+from univention.management.console.error import UMC_Error, PasswordRequired, LDAP_ServerDown
 
 _ = Translation('univention.management.console').translate
 
-
-class UMC_Error(Exception):
-	status = BAD_REQUEST
-
-	def __init__(self, message=None, status=None, result=None, headers=None):
-		super(UMC_Error, self).__init__(message)
-		self.msg = message
-		self.result = result
-		self.headers = headers
-		if isinstance(status, int):
-			self.status = status
+__all__ = ('UMC_Error', 'Base', 'LDAP_ServerDown')
 
 
 class UMC_OptionTypeError(UMC_Error):
@@ -152,59 +142,6 @@ class UMC_OptionMissing(UMC_Error):
 
 class UMC_CommandError(UMC_Error):
 	pass  # deprecated, please use .sanitizers instead!
-
-
-class UMC_PasswordRequired(UMC_Error):
-
-	def __init__(self):
-		message = _('This action requires you to supply your password.')
-		super(UMC_PasswordRequired, self).__init__(message, 401, {'password_required': True})
-
-
-class UMC_OptionSanitizeError(UMC_OptionTypeError):
-
-	def __init__(self, message, body=None):
-		status = 422
-		super(UMC_OptionSanitizeError, self).__init__(message, status, body)
-
-
-class LDAP_ServerDown(UMC_Error):
-
-	def __init__(self):
-		ucr.load()
-		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
-		self._updates_available = ucr.is_true('update/available')
-		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		message = '\n'.join(self._error_msg())
-		super(LDAP_ServerDown, self).__init__(message, status=503)
-
-	def _error_msg(self):
-		yield _('Cannot connect to the LDAP service.')
-		yield _('The following steps can help to solve this problem:')
-		if self._is_master:
-			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
-		else:
-			yield ' * ' + _('Make sure the domain controller master is running and reachable from %s') % (self._fqdn,)
-			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domain controller master or free some resources')
-		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "service slapd restart" on command line or with the UMC module "System services"')
-		if self._updates_available:
-			yield ' * ' + _('Install the latest software updates')
-		# TODO: reuse but not in LDAP_ServerDown
-		# yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-		# yield ' * /var/log/univention/management-console-server.log'
-		# yield ' * /var/log/univention/management-console-module-*.log'
-
-
-def error_handling(function, method=None):
-	# deprecated, use Instance.error_handling(etype, exc, etraceback) instead
-	method = method or function.__name__
-
-	def _decorated(self, request, *args, **kwargs):
-		try:
-			return function(self, request, *args, **kwargs)
-		except:
-			self._Base__error_handling(request, method, *sys.exc_info())
-	return _decorated
 
 
 class Base(signals.Provider, Translation):
@@ -417,7 +354,7 @@ class Base(signals.Provider, Translation):
 
 	def require_password(self):
 		if self.auth_type is not None:
-			raise UMC_PasswordRequired()
+			raise PasswordRequired()
 
 	def required_options(self, request, *options):
 		"""Raises an UMC_OptionMissing exception if any of the given

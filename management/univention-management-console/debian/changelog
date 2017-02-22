@@ -1,3 +1,10 @@
+univention-management-console (9.0.39-1) unstable; urgency=medium
+
+   * Bug #42114: respond with 401 Unauthorized for known UMC commands
+     when not being logged in
+
+ -- Florian Best <best@univention.de>  Wed, 22 Feb 2017 16:13:24 +0100
+
 univention-management-console (9.0.38-3) unstable; urgency=medium
 
   Bug #42174:
