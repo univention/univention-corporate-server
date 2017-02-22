@@ -45,20 +45,9 @@ ucr_passwordreset = {
 	"ucs/web/overview/entries/service/passwordreset/port_http": "",
 	"ucs/web/overview/entries/service/passwordreset/port_https": "443"
 }
-ucr_passwordchange = {
-	"self-service/passwordchange/web/enabled": "yes",
-	"ucs/web/overview/entries/service/passwordchange/description": u"Change your (expired) password.",
-	"ucs/web/overview/entries/service/passwordchange/description/de": u"Ändern Sie Ihr (abgelaufenes) Passwort.",
-	"ucs/web/overview/entries/service/passwordchange/label": u"Change Password",
-	"ucs/web/overview/entries/service/passwordchange/label/de": u"Passwort ändern",
-	"ucs/web/overview/entries/service/passwordchange/link": "/univention-self-service/?lang=en-US#passwordchange",
-	"ucs/web/overview/entries/service/passwordchange/link/de": "/univention-self-service/?lang=de-DE#passwordchange",
-	"ucs/web/overview/entries/service/passwordchange/port_http": "",
-	"ucs/web/overview/entries/service/passwordchange/port_https": "443"
-}
 
 actions = ["enable", "disable"]
-modules = {"passwordchange": ucr_passwordchange, "passwordreset": ucr_passwordreset}
+modules = {"passwordreset": ucr_passwordreset}
 
 parser = argparse.ArgumentParser()
 parser.add_argument("action", help=" / ".join(actions))

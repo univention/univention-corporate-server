@@ -39,18 +39,16 @@ define([
 	"dojo/dom",
 	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
-	"./PasswordChange",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
 	"./lib",
-], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordChange, PasswordForgotten, ProtectAccountAccess, NewPassword, lib){
+], function(hash, topic, lang, array, xhr, JSON, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword, lib){
 	return {
 		content_container: null,
 		content_controller: null,
 		backend_info: null,
 		subpages: {
-			"password_change": PasswordChange,
 			"password_forgotten": PasswordForgotten,
 			"protect_account_access": ProtectAccountAccess,
 			"new_password": NewPassword

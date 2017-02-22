@@ -44,11 +44,10 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
 	"./TextBox",
-	"./PasswordBox",
 	"umc/widgets/RadioButton",
 	"./lib",
 	"umc/i18n!."
-], function(hash, lang, array, on, keys, dom, json, xhr, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, PasswordBox, RadioButton, lib, _) {
+], function(hash, lang, array, on, keys, dom, json, xhr, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, lib, _) {
 
 	return {
 		title: _("Password forgotten"),
