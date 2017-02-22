@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-4) unstable; urgency=medium
+
+  * Bug #42172: wait with initialization until login has been completed
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 15:22:35 +0100
+
 univention-system-setup (10.0.7-3) unstable; urgency=medium
 
   * Bug #42172: adjust another typo in apache config

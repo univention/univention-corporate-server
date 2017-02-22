@@ -53,8 +53,7 @@ define([
 		start: function(props) {
 			tools.status('username', props.username || tools.getCookies().username);
 			tools.status('password', props.password);
-			login.start();
-			this._initWizard();
+			login.start().then(lang.hitch(this, '_initWizard'));
 		},
 
 		umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
