@@ -13,3 +13,5 @@ desc: |
  * Certain temporary files in the container are now created from outside
    for increased robustness.
 bug: [43385, 43563, 43386, 43151]
+erratum: 403
+announced: 2017-02-22
