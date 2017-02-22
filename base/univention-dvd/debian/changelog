@@ -1,3 +1,10 @@
+univention-dvd (2.0.0-5) unstable; urgency=medium
+
+  * Bug #43588: Add univention-printquota
+  * Bug #42853: Add univention-l10n-fr
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Feb 2017 16:02:56 +0100
+
 univention-dvd (2.0.0-4) unstable; urgency=low
 
   * Bug #41305: Put USS onto DVD, not into InitRamFS

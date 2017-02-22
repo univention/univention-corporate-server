@@ -65,6 +65,9 @@ univention-saml
 univention-sudo
 screen
 
+/* Translation Packages */
+univention-l10n-fr
+
 univention-management-console-module-quota
 
 
@@ -76,6 +79,7 @@ univention-nagios-ad-connector
 univention-management-console-module-adtakeover
 
 univention-printserver
+univention-printquota
 univention-nagios-cups
 
 univention-dhcp
