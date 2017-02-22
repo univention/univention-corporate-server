@@ -913,18 +913,10 @@ define([
 				tools.status('autoStartFlavor', typeof props.flavor === "string" ? props.flavor : null);
 			}
 
-			topic.subscribe('/umc/authenticated', lang.hitch(this, '_authenticated'));
-			login.start();
+			login.start().then(lang.hitch(this, '_authenticated'));
 		},
 
 		_authenticated: function(username) {
-			// save the username internally and as cookie
-			tools.setUsernameCookie(username, { expires: 100, path: '/univention/' });
-			tools.status('username', username);
-
-			// start the timer for session checking
-			tools.checkSession(true);
-
 			// setup static GUI part
 			this.setupStaticGui();
 

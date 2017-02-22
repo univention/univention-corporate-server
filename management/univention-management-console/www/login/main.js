@@ -141,9 +141,10 @@ define([
 			return this.showLoginDialog(info);
 		},
 
-		start: function() {
+		start: function(username, password) {
 			//console.debug('starting auth');
-
+			tools.status('username', username);
+			tools.status('password', password);
 			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
@@ -155,6 +156,15 @@ define([
 					window.location = target;
 				}));
 			}));
+
+			// return a deferred upon the next authentication
+			var authenticatedDeferred = new Deferred();
+			var handle = topic.subscribe('/umc/authenticated', function(params) {
+				handle.remove();
+				var username = params[0];
+				authenticatedDeferred.resolve(username);
+			});
+			return authenticatedDeferred;
 		},
 
 		sessioninfo: function() {
@@ -179,6 +189,14 @@ define([
 		authenticated: function(username) {
 			topic.publish('/umc/actions', 'session', 'relogin');
 			//console.debug('authenticated');
+
+			// save the username internally and as cookie
+			tools.setUsernameCookie(username, { expires: 100, path: '/univention/' });
+			tools.status('username', username);
+
+			// start the timer for session checking
+			tools.checkSession(true);
+
 			topic.publish('/umc/authenticated', username);
 			return username;
 		},
