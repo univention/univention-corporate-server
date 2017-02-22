@@ -260,7 +260,7 @@ class Instance(Base):
 			"id": p.send_method(),
 			"label": p.send_method_label(),
 			"value": user[p.udm_property]
-		} for p in self.send_plugins.values() if user[p.udm_property]]
+		} for p in self.send_plugins.values() if p.udm_property in user]
 
 	@forward_to_master
 	@prevent_denial_of_service
