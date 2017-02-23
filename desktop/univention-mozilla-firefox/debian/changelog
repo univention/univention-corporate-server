@@ -1,3 +1,9 @@
+univention-mozilla-firefox (11.0.1-2) unstable; urgency=low
+
+  * Bug #42322: switch to firefox-esr 
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 15:37:10 +0100
+
 univention-mozilla-firefox (11.0.1-1) unstable; urgency=low
 
   * Bug #42322: switch to firefox-esr
