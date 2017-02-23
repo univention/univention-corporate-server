@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-61) unstable; urgency=low
+
+  * Bug #41801: ignore "host" objects without serverRole in  
+    Domain.get_appcenter_hosts()
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 14:53:31 +0100
+
 univention-appcenter (5.0.23-60) unstable; urgency=medium
 
   * Bug #43151: Do not show errors when python2.6 is installed
