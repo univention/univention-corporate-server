@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.13-2) unstable; urgency=medium
+
+  * Bug #43148: Add "docker" as an option of Syntax ObjectFlag
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Feb 2017 12:46:30 +0100
+
 univention-directory-manager-modules (12.0.13-1) unstable; urgency=medium
 
   * Bug #41637: remove python-univention-directory-manager-legacy-ucd-tcs

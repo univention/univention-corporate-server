@@ -3419,6 +3419,7 @@ class ObjectFlag(select):
 		('hidden', _('Mark this object as hidden')),
 		('temporary', _('Mark this object as temporary')),
 		('functional', _('Ignore this object in standard UDM modules')),
+		('docker', _('This object is related to a Docker App container')),
 	]
 
 

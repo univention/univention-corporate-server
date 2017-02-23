@@ -542,6 +542,10 @@ msgstr "Die IP-Adresse wird bereits verwendet."
 msgid "Ignore this object in standard UDM modules"
 msgstr "Dieses Objekt in Standard-UDM-Modulen ignorieren"
 
+#: modules/univention/admin/syntax.py:3421
+msgid "This object is related to a Docker App container"
+msgstr "Dieses Objekt gehört zu einem Docker App-Container"
+
 #: modules/univention/admin/syntax.py:1175
 #: modules/univention/admin/syntax.py:1179
 msgid "Illegal range"
