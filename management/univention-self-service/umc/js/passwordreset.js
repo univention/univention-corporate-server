@@ -27,15 +27,13 @@
  * <http://www.gnu.org/licenses/>.
  */
 /*global define*/
-define(['umc/menu', 'dijit/MenuItem', 'umc/i18n!'], function(menu, MenuItem, _) {
-	menu.addEntry(new MenuItem({
+define(['umc/menu', 'umc/i18n!'], function(menu, _) {
+	menu.addEntry({
 		id: 'umcMenuProtectAccount',
-		$parentMenu$: 'umcMenuUserSettings',
-		iconClass: 'icon24-umc-menu-pwchange',
+		parentMenuId: 'umcMenuUserSettings',
 		label: _('Protect account'),
 		onClick: function() {
 			window.open('/univention/self-service/#setcontactinformation');
 		}
-	}));
-	return null;
+	});
 });
