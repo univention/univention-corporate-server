@@ -129,8 +129,8 @@ univention-nagios-uvmmd
 libvirt-clients
 ebtables
 
-firefox-de
-firefox-en
+firefox-esr-l10n-de
+firefox-esr
 
 univention-appcenter-docker
 cgroupfs-mount
