@@ -1,3 +1,9 @@
+univention-management-console (9.0.39-4) unstable; urgency=medium
+
+  * Bug #42174: moved logout logic into login site
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 03:32:47 +0100
+
 univention-management-console (9.0.39-3) unstable; urgency=medium
 
   * Bug #42114: fix py-support in preinst

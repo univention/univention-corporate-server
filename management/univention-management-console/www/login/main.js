@@ -320,6 +320,43 @@ define([
 				this._password_required.reject();
 				this._password_required = null;
 			}));
+		},
+
+		logout: function() {
+			this._askLogout().then(lang.hitch(this, function() {
+				tools.checkSession(false);
+				window.location = '/univention/logout';
+			}));
+		},
+
+		relogin: function(username) {
+			if (username === undefined) {
+				return this.logout();
+			}
+			this._askLogout().then(function() {
+				// TODO: we should do a real logout here. maybe the UMCUsername cookie can be set
+				tools.checkSession(false);
+				tools.closeSession();
+				window.location.search = 'username=' + username;
+			});
+		},
+
+		_askLogout: function() {
+			var deferred = new Deferred();
+			dialog.confirm(_('Do you really want to logout?'), [{
+				label: _('Cancel'),
+				callback: function() {
+					deferred.cancel();
+				}
+			}, {
+				label: _('Logout'),
+				'default': true,
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'session', 'logout');
+					deferred.resolve();
+				})
+			}]);
+			return deferred;
 		}
 	};
 	lang.setObject('umc.login', login);
