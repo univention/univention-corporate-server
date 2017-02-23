@@ -73,7 +73,7 @@ define([
 			}],
 			title: _('Change password'),
 			submit: _('Change password'),
-		}).then(setPassword);
+		}).then(setPassword, function() {});
 	};
 
 	var entry = menu.addEntry({
