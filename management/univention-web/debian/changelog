@@ -1,3 +1,9 @@
+univention-web (1.0.28-11) unstable; urgency=medium
+
+  * Bug #32027: make initial status message configurable 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Feb 2017 18:22:25 +0100
+
 univention-web (1.0.28-10) unstable; urgency=medium
 
   * Bug #42263: make menu entries dependent on login state

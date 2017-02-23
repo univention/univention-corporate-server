@@ -160,6 +160,8 @@ define([
 		//
 		defaultActionColumn: '',
 
+		initialStatusMessage: _("Please perform a search"),
+
 		// gridOptions: options for the inner grid
 		gridOptions: null,
 
@@ -345,7 +347,7 @@ define([
 			this.own(this._contextMenu);
 			this._statusMessage = new _StatusText({
 				'class': 'umcGridStatus',
-				content: _("Please perform a search")
+				content: this.initialStatusMessage
 			});
 			this.own(this._statusMessage);
 
