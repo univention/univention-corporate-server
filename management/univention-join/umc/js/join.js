@@ -56,7 +56,7 @@ define([
 		var checkForUserRoot = function() {
 			tools.ucr(['system/setup/showloginmessage', 'server/role']).then(function(_ucr) {
 				if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
-					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'login\').relogin(\'Administrator\')">Administrator</a>';
 					if (_ucr['server/role'] == 'domaincontroller_slave') {
 						dialog.notify(_('As %(root)s you do not have access to the App Center. For this you need to log in as %(administrator)s.', {root: '<strong>root</strong>', administrator: login_as_admin_tag}));
 					} else { // master, backup
