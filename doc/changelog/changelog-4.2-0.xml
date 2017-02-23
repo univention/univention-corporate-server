@@ -259,6 +259,9 @@
 					The existence of objects is now checked before initializing it (<u:bug>38110</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+						The syntax class <function>ObjectFlag</function> now accepts the value <literal>docker</literal> (which is used to mark computer objects that are created specifically for Docker App Containers) (<u:bug>43148</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The UDM specific JavaScript widget <function>LinkList</function> has been moved to <package>univention-management-console-module-udm</package> from <package>univention-management-console-frontend</package> (<u:bug>42321</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
