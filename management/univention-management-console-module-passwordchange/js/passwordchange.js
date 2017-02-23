@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/topic",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
@@ -38,7 +39,7 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/PasswordInputBox",
 	"umc/i18n!umc/modules/passwordchange"
-], function(declare, lang, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
+], function(declare, lang, topic, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
 
 	var setPassword = function(values) {
 		tools.umcpCommand('set', {
@@ -75,7 +76,7 @@ define([
 		}).then(setPassword);
 	};
 
-	menu.addEntry({
+	var entry = menu.addEntry({
 		id: 'umcMenuChangePassword',
 		parentMenuId: 'umcMenuUserSettings',
 		label: _('Change password'),
@@ -83,6 +84,10 @@ define([
 			showPasswordChangeDialog();
 		}
 	});
+	menu.hideEntry(entry);
 
-
+	topic.subscribe('/umc/authenticated', function() {
+		// user has logged in -> show menu entry
+		menu.showEntry(entry);
+	});
 });
