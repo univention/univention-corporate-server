@@ -37,16 +37,13 @@ define([
 	"dojo/Deferred",
 	"dojo/topic",
 	"dijit/registry",
-	"dijit/Menu",
-	"dijit/PopupMenuItem",
-	"dijit/MenuItem",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
 	"management/widgets/ActivationPage!",  // page needs to be loaded as plugin
 	"management/widgets/ActivationDialog",
 	"umc/i18n!umc/modules/udm"
-], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, menu, tools, dialog, ActivationPage, ActivationDialog, _) {
+], function(declare, kernel, lang, array, query, Deferred, topic, registry, menu, tools, dialog, ActivationPage, ActivationDialog, _) {
 
 	var ucr = {};
 
@@ -91,30 +88,34 @@ define([
 	};
 
 	var addLicenseMenu = function() {
-		var licenseMenu = new Menu({});
-		if (!ActivationPage.hasLicense) {
-			// license has not been activated yet
-			licenseMenu.addChild(new MenuItem({
-				label: _('Activation of UCS'),
-				onClick: _showActivationDialog
-			}), 0);
-		}
-
-		licenseMenu.addChild(new MenuItem({
-			label: _('Import new license'),
-			onClick : _showLicenseImportDialog
-		}), 0);
-		licenseMenu.addChild(new MenuItem({
-			label: _('License information'),
-			onClick : _showLicenseInformationDialog
-		}), 0);
-
-		menu.addEntry(new PopupMenuItem({
-			$priority$: 80,
+		menu.addSubMenu({
+			priority: 80,
 			label: _('License'),
 			id: 'umcMenuLicense',
-			popup: licenseMenu
-		}));
+		});
+
+		if (!ActivationPage.hasLicense) {
+			// license has not been activated yet
+			menu.addEntry({
+				priority: 30,
+				label: _('Activation of UCS'),
+				onClick: _showActivationDialog,
+				parentMenuId: 'umcMenuLicense'
+			});
+		}
+
+		menu.addEntry({
+			priority: 20,
+			label: _('Import new license'),
+			onClick : _showLicenseImportDialog,
+			parentMenuId: 'umcMenuLicense'
+		});
+		menu.addEntry({
+			priority: 10,
+			label: _('License information'),
+			onClick : _showLicenseInformationDialog,
+			parentMenuId: 'umcMenuLicense'
+		});
 	};
 
 	topic.subscribe('/umc/license/activation', _showActivationDialog);

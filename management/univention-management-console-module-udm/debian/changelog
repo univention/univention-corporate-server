@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.5-3) unstable; urgency=medium
+
+  * Bug #42263: clean up menu entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 03:41:31 +0100
+
 univention-management-console-module-udm (7.0.5-2) unstable; urgency=medium
 
   * Bug #42263: adjust menu reference
