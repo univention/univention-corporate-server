@@ -1,3 +1,9 @@
+univention-bind (11.0.0-12) unstable; urgency=low
+
+  * Bug #43217: Improve fix-ucr-dns
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Feb 2017 14:59:43 +0100
+
 univention-bind (11.0.0-11) unstable; urgency=low
 
   * Bug #43217: Reload configuration after change
