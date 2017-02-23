@@ -1,3 +1,9 @@
+univention-web (1.0.28-6) unstable; urgency=medium
+
+  * Bug #42263: fix build error
+
+ -- Florian Best <best@univention.de>  Thu, 23 Feb 2017 10:48:40 +0100
+
 univention-web (1.0.28-5) unstable; urgency=medium
 
   * Bug #42263: add generic menu entries

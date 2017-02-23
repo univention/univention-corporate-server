@@ -141,7 +141,7 @@ $(BUILD_THEME_DIR)/umc.css: tmp-css
 
 $(TMP_DIR)/umc/_all.js:
 	# generate a pseudo module which contains references to all other JS modules
-	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
+	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" -a -not -wholename 'js/hooks/*' | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
 	echo "define([$$deps], function() { })" > $@
 
 $(TMP_DIR)/dijit/themes/umc/icons:

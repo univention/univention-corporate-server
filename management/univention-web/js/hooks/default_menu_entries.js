@@ -26,18 +26,20 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global require,define*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
+	"dojo/topic",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/passwordchange"
-], function(declare, lang, array, menu, tools, dialog, i18nTools, _) {
+], function(declare, lang, array, kernel, topic, menu, tools, dialog, i18nTools, _) {
 	var setupLanguageMenu = function() {
 		menu.addSubMenu({
 			priority: 55,
@@ -82,7 +84,7 @@ define([
 			label: _('UCS start site'),
 			onClick: function() {
 				topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
-				var w = window.open('/univention?lang=' + kernel.locale, 'ucs-start-site');
+				var w = window.open('/univention/?lang=' + kernel.locale, 'ucs-start-site');
 				w.focus();
 			}
 		});
