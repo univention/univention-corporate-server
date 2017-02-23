@@ -25,3 +25,9 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
+
+Except
+ * /usr/lib/univention-system-setup/addons/{e5bbc237-c99b-4ced-a061-0be27703295f}.xpi
+ * /usr/lib/univention-system-setup/addons/{e5bbc237-c99b-4ced-a061-0be27703295f}.json
+downloaded from https://addons.mozilla.org/en-Gb/firefox/addon/hide-tab-bar-with-one-tab .
+
