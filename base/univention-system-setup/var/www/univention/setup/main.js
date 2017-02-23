@@ -88,7 +88,6 @@ define([
 				values: this.umcpCommand('setup/load')
 			}).then(lang.hitch(this, function(data) {
 				this._progressBar = new ProgressBar();
-				//this.own(this._progressBar);
 				this._container.standbyOpacity = 1;
 				this._container.standby(true);
 
@@ -204,6 +203,12 @@ define([
 			}).then(function() {
 				return tools.defer(lang.hitch(self, 'standby', false), 200);
 			});
+		},
+
+		_showDummyProgressbar: function() {
+			this._progressBar.reset();
+			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
+			this._container.standby(true, this._progressBar);
 		},
 
 		_redirectBrowser: function(interfaces, primary_interface) {

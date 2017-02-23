@@ -9,17 +9,20 @@
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/setup/style.css">
 
-		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
-			umcConfig.callback = function() {
-				require(["setup"], function(setup) {
+			var umcConfig = {
+				loadHooks: false,
+				loadMenu: false,
+				deps: ["setup"],
+				callback: function(setup) {
 					setup.start({
 						username: getQuery('username'),
 						password: getQuery('password')
 					});
-				});
+				}
 			};
 		</script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc">

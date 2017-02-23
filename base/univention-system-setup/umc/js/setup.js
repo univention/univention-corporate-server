@@ -263,12 +263,6 @@ define([
 			return newIpAddress;
 		},
 
-		_showDummyProgressbar: function() {
-			this._progressBar.reset();
-			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
-			this.standby(true, this._progressBar);
-		},
-
 		save: function() {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'save');
 

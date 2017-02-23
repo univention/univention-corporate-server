@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-9) unstable; urgency=medium
+
+  * Bug #42172: move _showDummyProgressbar() to wizard + adjust index.html
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 12:52:19 +0100
+
 univention-system-setup (10.0.7-8) unstable; urgency=medium
 
   * Bug #42172: fix typo when checking the UCR variable system/setup/boot/start
