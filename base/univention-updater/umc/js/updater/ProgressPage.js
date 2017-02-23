@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window*/
+/*global define, window*/
 
 // Some thoughts about the programmatic page structure:
 //
@@ -136,7 +136,7 @@ define([
 			if (data !== null) {
 				// This is the response that tells us which job is running. As soon as we have this
 				// key we will ask for the full properties hash until the job is finished.
-				if (typeof(data.result) == 'string') {
+				if (typeof(data.result) === 'string') {
 					var txt = data.result;
 					if (txt !== '') {
 						if (this._job_key === '') {
@@ -231,16 +231,29 @@ define([
 					// set headers according to the outcome
 					var status = 'success';
 					var lstat = this._last_job._status_;
-					if ((lstat === undefined) || (lstat != 'DONE')) {
+					if ((lstat === undefined) || (lstat !== 'DONE')) {
 						status = 'failed';
 					}
 					this._switch_headings(status);
 					this._log.scrollToBottom(true); // jump to bottom a very last time
 					this._log.onStopWatching(); // now log is freely scrollable manually
+					this._alertUserOfStatusChange(status);
 
 					this._last_job = null; // can be deleted, but this._job_key should be retained!
 				}
 			}
+		},
+
+		_alertUserOfStatusChange: function(status) {
+			dialog.confirm(this.headerText, [{
+				label: _("Investigate log further"),
+				'default': status === 'failed'
+			},
+			{
+				label: _("Finish updates"),
+				'default': status === 'success',
+				callback: lang.hitch(this, '_closeLogView')
+			}], ' ');
 		},
 
 		// gives a means to restart polling after reauthentication
@@ -293,7 +306,7 @@ define([
 		_switch_headings: function(status) {
 
 			// avoid doing that repeatedly
-			if (status == this._last_heading_status) {
+			if (status === this._last_heading_status) {
 				return;
 			}
 

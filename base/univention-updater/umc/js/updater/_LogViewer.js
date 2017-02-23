@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window console*/
+/*global define, window*/
 
 // Class that provides a logfile viewer. Features are:
 //
@@ -45,12 +45,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom-geometry",
+	"dojo/_base/window",
+	"dojo/window",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, geometry, tools, Text, ContainerWidget, _) {
+], function(declare, lang, win, dojoWindow, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
 		_oldScrollPosition: 0,
@@ -83,7 +84,7 @@ define([
 
 				this.onQuerySuccess(this.query + " [count=-1]");
 				var stamp = data.result;
-				if (stamp != this._last_stamp) {
+				if (stamp !== this._last_stamp) {
 					this._last_stamp = stamp;
 					tools.umcpCommand(this.query,{job:this._current_job,count:this._log_position},false).then(lang.hitch(this, function(data) {
 
@@ -149,21 +150,21 @@ define([
 		// (2) someone tells us to do so --> forceScrollToBottom
 		// (3) the user scrolls to a defined position --> isAtBottom()
 		scrollToBottom: function(forceScrollToBottom) {
-			var text_node = this._text.domNode;
+			var body_node = win.doc.body;
 			if (forceScrollToBottom === true) {
 				this._goToBottom = true;
 			}
-			this.hasUserMovedScrollbar(this._oldScrollPosition, text_node.scrollTop);
-			this.isAtBottom(text_node);
+			this.hasUserMovedScrollbar(this._oldScrollPosition, body_node.scrollTop);
+			this.isAtBottom(body_node);
 			if (this._goToBottom){
-				text_node.scrollTop = text_node.scrollHeight;
+				body_node.scrollTop = body_node.scrollHeight;
 			}
-			this._oldScrollPosition = text_node.scrollTop;
+			this._oldScrollPosition = body_node.scrollTop;
 		},
 
 		// if the old scrollbar postion isn't the new one, the user has changed it
 		hasUserMovedScrollbar: function(oldPos, newPos){
-			if (oldPos != newPos){
+			if (oldPos !== newPos){
 				this._goToBottom = false;
 			}
 		},
@@ -171,11 +172,15 @@ define([
 		// if the user scrolls to a defined position of the scrollbar, we are guessing
 		// that the user wants the scrollbar to auto-scroll again
 		// this point is defined at a ratio of 75%
-		isAtBottom: function(text_node){
-			var view_height = geometry.position(text_node).h; // height of the box which display the text
-			var content_height = text_node.scrollHeight; // the overall height of the text inside the view
-			var scroll_position = text_node.scrollTop; //  current position auf the scrollbar
-			var ratio = scroll_position / (content_height - view_height); 
+		isAtBottom: function(body_node){
+			var viewPortHeight = dojoWindow.getBox().h;
+			var content_height = body_node.scrollHeight; // the overall height of the text inside the view
+			if (content_height === 0) {
+				return;
+			}
+
+			var scroll_position = body_node.scrollTop; //  current position auf the scrollbar
+			var ratio = (scroll_position + viewPortHeight) / content_height; 
 			if (ratio >= 0.75) {
 				this._goToBottom = true;
 			}
@@ -212,7 +217,7 @@ define([
 
 			this._check_interval = 0;
 
-			if ((typeof(clean) != 'undefined') && (clean)) {
+			if ((typeof(clean) !== 'undefined') && (clean)) {
 				this.set('content',_("... loading log file ..."));
 			}
 		},

@@ -1,3 +1,10 @@
+univention-updater (12.0.3-8) unstable; urgency=medium
+
+  * Bug #43508: fix scroll to bottom in the log view. Added a confirmation
+    dialog for status changes, e.g. the update is finished.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Feb 2017 13:22:16 +0100
+
 univention-updater (12.0.3-7) unstable; urgency=medium
 
   * Bug #42174: changed dependency from "umc/login" to "login" 
