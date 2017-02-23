@@ -414,7 +414,7 @@ class access:
 
 	@classmethod
 	def compare_dn(cls, a, b):
-		return univention.uldap.compare_dn(a, b)
+		return univention.uldap.access.compare_dn(a, b)
 
 	def get(self, dn, attr=[], required=False, exceptions=False):
 		return self.lo.get(dn, attr, required)
