@@ -1,3 +1,10 @@
+univention-directory-listener (11.0.1-15) unstable; urgency=medium
+
+  * Bug #23367: Fix /var/backups path and add diagnostics in case of
+    conversion error in postinst
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Feb 2017 13:55:12 +0100
+
 univention-directory-listener (11.0.1-14) unstable; urgency=medium
 
   * Bug #23367: Fix path

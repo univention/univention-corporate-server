@@ -88,9 +88,11 @@ convert_to_lmdb () {
 	su -s /bin/sh -c "/usr/sbin/univention-directory-listener-convert '$BDB'" listener
 	rv=$?
 	if [ "$rv" -eq 0 ]; then
-		mv "$BDB" /var/backup/"udl-cache-db.$(date +%s)"
+		mv "$BDB" /var/backups/"udl-cache-db.$(date +%s)"
 	else
 		echo "ERROR: univention-directory-listener-convert failed" >&2
+		ls -la "/var/lib/univention-directory-listener"
+		lsof /var/lib/univention-directory-listener/cache.*
 		rm -rf "$DIR"
 	fi
 
