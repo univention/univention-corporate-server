@@ -1053,7 +1053,7 @@ define([
 				// Administrator
 				var msg;
 				if (this.app.isMaster) {
-					var loginAsAdminTag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+					var loginAsAdminTag = '<a href="javascript:void(0)" onclick="require(\'login\').relogin(\'Administrator\')">Administrator</a>';
 					msg =
 						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
 						'<p>' + _('To do this please log in as %s and repeat the steps taken until this dialog. You will be guided through the installation.', loginAsAdminTag) + '</p>';
