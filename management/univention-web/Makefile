@@ -64,6 +64,8 @@ build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $
 	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "/usr/share/univention-web/js" ]; then \
 		dpkg-divert --package univention-web-make-build-dev --add --rename --divert $(WWW_JS_DIR).real $(WWW_JS_DIR) ;\
 		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
+		ln -s /usr/share/univention-web/js/umc/hooks.json $(TMP_DIR)/umc ;\
+		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
 	fi
 
 build-live: build-dev
