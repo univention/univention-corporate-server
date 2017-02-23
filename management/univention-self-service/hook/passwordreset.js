@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Univention GmbH
+ * Copyright 2015-2017 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -27,4 +27,45 @@
  * <http://www.gnu.org/licenses/>.
  */
 /*global define*/
-define([], function() {});
+define([
+	'dojo/topic',
+	'umc/menu',
+	'umc/tools',
+	'umc/i18n!'
+], function(topic, menu, tools, _) {
+	function isSelfServiceURL() {
+		return window.location.pathname.indexOf('/univention/self-service/') === 0;
+	}
+
+	function gotoPage(subPage) {
+		if (isSelfServiceURL()) {
+			window.location.hash = '#page=' + subPage;
+		} else {
+			// open a new tab
+			var win = window.open('/univention/self-service/' + window.location.search + '#page=' + subPage);
+		}
+	}
+
+	menu.addEntry({
+		parentMenuId: 'umcMenuUserSettings',
+		label: _('Protect your account'),
+		priority: -10,
+		onClick: function() {
+			gotoPage('setcontactinformation');
+		}
+	});
+	var passwordResetEntry = menu.addEntry({
+		parentMenuId: 'umcMenuUserSettings',
+		priority: -5,
+		label: _('Forgot your password?'),
+		onClick: function() {
+			gotoPage('passwordreset');
+		}
+	});
+
+	topic.subscribe('/umc/authenticated', function() {
+		// user has logged in -> hide menu entry
+		menu.hideEntry(passwordResetEntry);
+	});
+});
+

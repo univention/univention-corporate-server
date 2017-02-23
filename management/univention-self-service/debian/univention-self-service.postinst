@@ -62,8 +62,8 @@ univention-config-registry set "ucs/web/overview/entries/service/passwordchange/
 	"ucs/web/overview/entries/service/passwordchange/link/de=/univention-self-service/?lang=de-DE" \
 	"ucs/web/overview/entries/service/passwordchange/port_http=" \
 	"ucs/web/overview/entries/service/passwordchange/port_https=443" \
-	"ucs/web/overview/entries/service/passwordchange/icon=/icon/password.png"
-
+	"ucs/web/overview/entries/service/passwordchange/icon=/icon/password.png" \
+	"umc/web/hooks/univention-self-service?passwordreset"
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/65univention-self-service.uinst
