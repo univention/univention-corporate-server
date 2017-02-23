@@ -253,6 +253,7 @@ class DictSanitizer(Sanitizer):
 	'''
 
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
+		self._copy_value = kwargs.pop('_copy_value', True)
 		super(DictSanitizer, self).__init__(**kwargs)
 		self.sanitizers = sanitizers
 		self.allow_other_keys = allow_other_keys
@@ -264,7 +265,7 @@ class DictSanitizer(Sanitizer):
 		if not self.allow_other_keys and any(key not in self.sanitizers for key in value):
 			self.raise_validation_error(_('Has more than the allowed keys'))
 
-		altered_value = copy.deepcopy(value)
+		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
 		for attr, sanitizer in self.sanitizers.iteritems():

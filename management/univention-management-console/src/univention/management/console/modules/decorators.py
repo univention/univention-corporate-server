@@ -397,7 +397,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 	else:
 		defaults = {}
 
-	@sanitize(DictSanitizer(dict((arg, Sanitizer(required=arg not in defaults, default=defaults.get(arg))) for arg in arguments)) if not single_values else None)
+	@sanitize(DictSanitizer(dict((arg, Sanitizer(required=arg not in defaults, default=defaults.get(arg))) for arg in arguments), _copy_value=False) if not single_values else None)
 	def _response(self, request):
 		# single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
 		if not single_values:
