@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-10) unstable; urgency=low
+
+  * Bug #42322: switch to firefox-esr
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 17:08:30 +0100
+
 univention-system-setup (10.0.7-9) unstable; urgency=medium
 
   * Bug #42172: move _showDummyProgressbar() to wizard + adjust index.html
