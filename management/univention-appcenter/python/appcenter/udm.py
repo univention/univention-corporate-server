@@ -171,15 +171,12 @@ class ApplicationLDAPObject(object):
 		return 'univentionAppID=%s,%s' % (escape_dn_chars(self._rdn), self._container)
 
 	def _reload(self, app, create_if_not_exists=False):
-		self._udm_obj = None
 		try:
-			udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
+			self._udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
 		except udm_errors.noObject:
-			pass
-		else:
-			self._udm_obj = udm_obj
-		if not self._udm_obj and create_if_not_exists:
-			self._create_obj(app)
+			self._udm_obj = None
+			if create_if_not_exists:
+				self._create_obj(app)
 
 	def _create_obj(self, app):
 		create_recursive_container(self._container, self._lo, self._pos)
