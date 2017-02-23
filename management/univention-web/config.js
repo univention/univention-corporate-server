@@ -57,15 +57,15 @@ function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
 	return defaultVal;
 }
 
-var getLocale = function() {
+function getLocale() {
 	var locale = getQuery('lang') || getCookie('UMCLang');
 	if (locale) {
 		locale = locale.replace('_', '-');
 	}
 	return locale;
-};
+}
 
-var _getPackageName = function() {
+function _getPackageName() {
 	// return the name of the AMD package based on the current URI
 	var parts = location.pathname.split('/');
 	for (var i = parts.length - 1; i >= 0; --i) {
@@ -74,24 +74,34 @@ var _getPackageName = function() {
 		}
 	}
 	return 'unknown';
-};
-
-// pre-defined umcConfig, will be extende in the index.html of each webapp
-// make sure to mixin default values in an existing umcConfig
-if (typeof umcConfig === 'undefined') {
-	var umcConfig = {};
 }
-var _umcConfigDefaultValues = {
+
+function mixin(a, b) {
+	// mixin in all values from b into a
+	for (var ikey in b) {
+		if (b.hasOwnProperty(ikey)) {
+			a[ikey] = b[ikey];
+		}
+	}
+	return a;
+}
+
+// umcConfig can be extended in the index.html of each webapp
+// make sure to mixin default values into an already existing umcConfig
+if (typeof umcConfig === 'undefined') {
+	var _customUmcConfig = {};
+	var umcConfig = {};
+} else {
+	// save the user defined umcConfig
+	var _customUmcConfig = umcConfig;
+}
+umcConfig = mixin({
 	allowLanguageSwitch: true,
 	loadMenu: true,
 	loadHooks: true,
+	deps: [],
 	callback: function() {}
-};
-for (var i in _umcConfigDefaultValues) {
-	if (_umcConfigDefaultValues.hasOwnProperty(i) && !(i in umcConfig)) {
-		umcConfig[i] = _umcConfigDefaultValues[i];
-	}
-}
+}, _customUmcConfig);
 
 // prepare all needed dependencies and evaluate umcConfig settings
 var _deps = ["dojo/parser", "login"];
@@ -102,9 +112,20 @@ if (umcConfig.loadMenu) {
 	_deps.push("umc/widgets/Menu");
 }
 _deps.push("dojo/domReady!");
+_ndeps = _deps.length; // save current number of dependencies
 
-// define dojoConfig
-var dojoConfig = {
+// add the specified dependencies from umcConfig
+_deps = _deps.concat(umcConfig.deps);
+
+// define dojoConfig and make sure to mix user defined values into dojoConfig
+if (typeof dojoConfig === 'undefined') {
+	var _customDojoConfig = {};
+	var dojoConfig = {};
+} else {
+	// save the user defined dojoConfig
+	var _customDojoConfig = dojoConfig;
+}
+dojoConfig = mixin({
 	cacheBust: 'prevent-cache=%VERSION%',
 	has: {
 		'dojo-undef-api': true
@@ -122,7 +143,8 @@ var dojoConfig = {
 	map: {},
 	deps: _deps,
 	callback: function(parser) {
+		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
 		parser.parse();
-		umcConfig.callback();
+		umcConfig.callback.apply(umcConfig, customDeps);
 	}
-};
+}, _customDojoConfig);

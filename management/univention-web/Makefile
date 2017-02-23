@@ -66,6 +66,7 @@ build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $
 		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
 		ln -s /usr/share/univention-web/js/umc/hooks.json $(TMP_DIR)/umc ;\
 		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
+		ucr set umc/web/hooks/univention-web-js?default_menu_entries ;\
 	fi
 
 build-live: build-dev
@@ -90,7 +91,7 @@ $(TMP_DIR):
 	rm -rf $@/util
 	# copy univention JS files into the tmp dir
 	cp -rfs "$(CURDIR)/js" $@/umc
-	cp config.js $@
+	ln -s $(CURDIR)/config.js $@
 
 %/config.js: config.js
 	# copy the config.js to its appropriate directory
@@ -191,5 +192,6 @@ clean:
 	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "$(TMP_DIR)" ]; then \
 		rm $(WWW_JS_DIR) ;\
 		dpkg-divert --package univention-web-make-build-dev --remove --rename "$(WWW_JS_DIR)" ;\
+		ucr unset umc/web/hooks/univention-web-js ;\
 	fi
 

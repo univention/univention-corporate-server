@@ -1,3 +1,12 @@
+univention-web (1.0.28-8) unstable; urgency=medium
+
+  Bug #42263:
+  * Fix Makefile due to build problems
+  * Adjust config.js to allow more flexible configuration
+  * Add UCR variable umc/web/hooks/univention-web-js to postinst/prerm
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 12:45:41 +0100
+
 univention-web (1.0.28-7) unstable; urgency=medium
 
   * Bug #42263: fix fuzzy entry + allow to turn off hooks/menu in config.js

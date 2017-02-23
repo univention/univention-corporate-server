@@ -1,7 +1,7 @@
-#! /bin/bash
+#!/bin/sh
 #
 # Univention Web
-#  postinst file for the univention-web-js debian package
+#  prerm file for the univention-web-js debian package
 #
 # Copyright 2017 Univention GmbH
 #
@@ -30,15 +30,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+case "$1" in
+    remove|deconfigure)
+		# unregister JavaScript hook
+		univention-config-registry unset "umc/web/hooks/univention-web-js"
+		;;
+
+	upgrade)
+		;;
+
+    failed-upgrade)
+		;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+		;;
+esac
+
 #DEBHELPER#
-
-a2enconf univention-web
-
-ucr set "ucs/server/languages/en_US?English" \
-	"ucs/server/languages/de_DE?Deutsch" \
-	"ucs/server/languages/en_GB?English (United Kingdom)" \
-	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
-	"ucs/server/languages/de_CH?Deutsch (Schweiz)" \
-	"umc/web/hooks/univention-web-js?default_menu_entries"
 
 exit 0
