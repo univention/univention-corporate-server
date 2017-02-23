@@ -77,11 +77,33 @@ var _getPackageName = function() {
 };
 
 // pre-defined umcConfig, will be extende in the index.html of each webapp
-var umcConfig = {
+// make sure to mixin default values in an existing umcConfig
+if (typeof umcConfig === 'undefined') {
+	var umcConfig = {};
+}
+var _umcConfigDefaultValues = {
 	allowLanguageSwitch: true,
+	loadMenu: true,
+	loadHooks: true,
 	callback: function() {}
 };
+for (var i in _umcConfigDefaultValues) {
+	if (_umcConfigDefaultValues.hasOwnProperty(i) && !(i in umcConfig)) {
+		umcConfig[i] = _umcConfigDefaultValues[i];
+	}
+}
 
+// prepare all needed dependencies and evaluate umcConfig settings
+var _deps = ["dojo/parser", "login"];
+if (umcConfig.loadHooks) {
+	_deps.push("umc/hooks");
+}
+if (umcConfig.loadMenu) {
+	_deps.push("umc/widgets/Menu");
+}
+_deps.push("dojo/domReady!");
+
+// define dojoConfig
 var dojoConfig = {
 	cacheBust: 'prevent-cache=%VERSION%',
 	has: {
@@ -90,7 +112,6 @@ var dojoConfig = {
 	isDebug: getQuery('debug') === '1',
 	locale: getLocale(),
 	async: true,
-	deps: [],
 	packages: [{
 		name: _getPackageName(),
 		location: location.pathname.substring(0, location.pathname.length - 1)
@@ -99,10 +120,9 @@ var dojoConfig = {
 		location: '/univention/login'
 	}],
 	map: {},
-	callback: function() {
-		require(["dojo/parser", "login", "umc/hooks", "umc/widgets/Menu", "dojo/domReady!"], function(parser) {
-			parser.parse();
-			umcConfig.callback();
-		});
+	deps: _deps,
+	callback: function(parser) {
+		parser.parse();
+		umcConfig.callback();
 	}
 };

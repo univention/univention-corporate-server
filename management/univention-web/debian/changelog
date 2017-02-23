@@ -1,3 +1,9 @@
+univention-web (1.0.28-7) unstable; urgency=medium
+
+  * Bug #42263: fix fuzzy entry + allow to turn off hooks/menu in config.js
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 11:45:39 +0100
+
 univention-web (1.0.28-6) unstable; urgency=medium
 
   * Bug #42263: fix build error
