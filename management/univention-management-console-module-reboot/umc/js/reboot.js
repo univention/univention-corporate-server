@@ -34,37 +34,31 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/modules/lib/server",
-	"dijit/MenuItem",
-	"dijit/Menu",
-	"dijit/PopupMenuItem",
 	"umc/i18n!umc/modules/reboot"
-], function(app, menu, tools, dialog, libServer, MenuItem, Menu, PopupMenuItem, _) {
+], function(app, menu, tools, dialog, libServer, _) {
 
 	var addRebootMenu = function() {
-		menu.addEntry(new PopupMenuItem({
-			$priority$: 70,
+		menu.addSubMenu({
+			priority: 70,
 			label: _('Server'),
-			id: 'umcMenuServer',
-			popup: new Menu({})
-		}));
-		menu.addEntry(new MenuItem({
-			$parentMenu$: 'umcMenuServer',
+			id: 'umcMenuServer'
+		});
+		menu.addEntry({
+			parentMenuId: 'umcMenuServer',
 			id: 'umcMenuShutdown',
-			iconClass: 'icon24-umc-menu-shutdown',
 			label: _('Shutdown server'),
 			onClick: function() {
 				libServer.askShutdown();
 			}
-		}));
-		menu.addEntry(new MenuItem({
-			$parentMenu$: 'umcMenuServer',
+		});
+		menu.addEntry({
+			parentMenuId: 'umcMenuServer',
 			id: 'umcMenuReboot',
-			iconClass: 'icon24-umc-menu-reboot',
 			label: _('Reboot server'),
 			onClick: function() {
 				libServer.askReboot();
 			}
-		}));
+		});
 	};
 
 	var checkRebootRequired = function() {
