@@ -36,6 +36,19 @@ then
 	ln -s /etc/runit/univention /etc/service
 fi
 
+if grep -q '^SV:.*:respawn:/usr/sbin/runsvdir' /etc/inittab
+then
+	tmp='/etc/inittab_univention-runit_postinst'
+	(
+		sed '/^#-- runit begin/,/^#-- runit end/d' </etc/inittab &&
+		echo '#-- runit begin' &&
+		echo 'SV:123456:off:/usr/sbin/runsvdir-start' &&
+		echo '#-- runit end'
+	) >"$tmp" &&
+		mv "$tmp" /etc/inittab ||
+		rm -f "$tmp"
+fi
+
 #DEBHELPER#
 
 if [ -z "$2" ]
