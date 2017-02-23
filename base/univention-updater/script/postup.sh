@@ -42,17 +42,23 @@ reinstall ()
 }
 check_and_install ()
 {
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		install "$1"
 	fi
 }
 check_and_reinstall ()
 {
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		reinstall "$1"
 	fi
+}
+is_installed ()
+{
+	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	test "$state" = "install"
+	return $?
 }
 
 echo -n "Running postup.sh script:"
@@ -86,6 +92,16 @@ elif [ "$server_role" = "mobileclient" ]; then
 	install univention-mobile-client
 elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; then
 	install univention-managed-client
+fi
+
+# update to firefox-esr, can be removed after update to 4.2-0
+if is_installed firefox-en; then
+	install firefox-esr
+	dpkg -P firefox-en >>"$UPDATER_LOG" 2>&1
+fi
+if is_installed firefox-de; then
+	install firefox-esr-l10n-de
+	dpkg -P firefox-de >>"$UPDATER_LOG" 2>&1
 fi
 
 # Update to UCS 4.2 autoremove
