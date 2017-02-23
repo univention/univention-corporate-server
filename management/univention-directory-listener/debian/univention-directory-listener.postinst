@@ -69,12 +69,13 @@ call_joinscript 03univention-directory-listener.inst
 
 convert_to_lmdb () {
 	local rv
-	local DIR="/var/lib/univention-directory-listener/cache"
-	local BDB="$DIR.db"
-	local MDB="$DIR/data.mdb"
+	local CACHE_DIR="/var/lib/univention-directory-listener"
+	local BDB="$CACHE_DIR/cache.db"
+	local CACHE_MDB_DIR="$CACHE_DIR/cache"
+	local MDB="$CACHE_MDB_DIR/data.mdb"
 
 	[ -f "$BDB" ] || return 0
-	[ -d "$DIR" ] || install -d -o listener -m 0700 "$DIR"
+	[ -d "$CACHE_MDB_DIR" ] || install -d -o listener -m 0700 "$CACHE_MDB_DIR"
 	[ -f "$MDB" ] && return 0
 
 	local running=1
@@ -85,15 +86,16 @@ convert_to_lmdb () {
 		/etc/init.d/univention-directory-listener stop
 	fi
 
+	chown -R listener "$CACHE_DIR"
 	su -s /bin/sh -c "/usr/sbin/univention-directory-listener-convert '$BDB'" listener
 	rv=$?
 	if [ "$rv" -eq 0 ]; then
 		mv "$BDB" /var/backups/"udl-cache-db.$(date +%s)"
 	else
 		echo "ERROR: univention-directory-listener-convert failed" >&2
-		ls -la "/var/lib/univention-directory-listener"
-		lsof /var/lib/univention-directory-listener/cache.*
-		rm -rf "$DIR"
+		ls -la "$CACHE_DIR"
+		lsof "$CACHE_DIR/cache.*"
+		rm -rf "$CACHE_MDB_DIR"
 	fi
 
 	if [ "$running" -eq 1 ]; then
