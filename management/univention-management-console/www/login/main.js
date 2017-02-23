@@ -196,7 +196,11 @@ define([
 			// start the timer for session checking
 			tools.checkSession(true);
 
-			topic.publish('/umc/authenticated', username);
+			try {
+				topic.publish('/umc/authenticated', username);
+			} catch (e) {
+				// ignore all exceptions done here (e.g. by hooks) otherwise the login dialog is not closed anymore
+			}
 			return username;
 		},
 

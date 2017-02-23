@@ -124,25 +124,28 @@ define([
 			var result = info.result || {};
 			this._updateView(result);
 
+			var title = '';
 			if (message) {
 				if (message.slice(-1) !== '.') {
 					message += '.';
 				}
-				var title = info.title || _('Authentication failure');
-				if (result.password_expired) {
-					title = _('The password is expired');
-				} else if (result.missing_prompts) {
-					title = _('One time password required');
+				title = info.title || '';
+				if (result.missing_prompts) {
+					this._loginNotice = true;
 				}
-//				message = '<h1>' + title + '</h1><p>' + entities.encode(message) + '</p>';
-				message = '<p class="umcLoginWarning">' + entities.encode(message) + '</p>';
+				message = title + ' ' + message;
 			}
 			domClass.toggle(dom.byId('umcLoginForm'), 'umcLoginWarning', !!message);
 			this.set('LoginMessage', message);
 		},
 
 		_setLoginMessageAttr: function(content) {
-			this._text.set('content', entities.encode(content));
+			if (content) {
+				var css_class = this._loginNotice ? 'umcLoginNotice' : 'umcLoginWarning';
+				content = '<p class="' + css_class + '">' + entities.encode(content) + '</p>';
+			}
+			this._loginNotice = false;
+			this._text.set('content', content);
 			if (content) {
 				this._wipeInMessage();
 			} else {
@@ -257,7 +260,7 @@ define([
 
 			// validate new password form
 			if (name === 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
-				this.set('LoginMessage', '<h1>' + _('Changing password failed') + '</h1><p>' +  _('The passwords do not match, please retype again.') + '</p>');
+				this.set('LoginMessage', _('The passwords do not match, please retype again.'));
 				return;
 			}
 			// custom prompts
@@ -370,6 +373,7 @@ define([
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
 			if (standby) {
 				query('#umcLoginMessages').style('display', 'none');
+				query('#umcLoginLinks').style('display', 'none');
 //				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
 			} else if (!standby) {
 				// only non hidden input fields can be focused
