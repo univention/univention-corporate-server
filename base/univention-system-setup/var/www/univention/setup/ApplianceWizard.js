@@ -2506,7 +2506,7 @@ define([
 			// last page as system-setup-boot has been removed/disabled
 			// ... this avoids problems when page reloading (or a relogin)
 			// at the end of the wizard
-			if (this.ucr['system/setup/boot/start']) {
+			if (tools.isFalse(this.ucr['system/setup/boot/start'])) {
 				this._updateDonePage();
 				return this._forcePageTemporarily('done');
 			}

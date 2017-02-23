@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-8) unstable; urgency=medium
+
+  * Bug #42172: fix typo when checking the UCR variable system/setup/boot/start
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 11:23:20 +0100
+
 univention-system-setup (10.0.7-7) unstable; urgency=medium
 
   * Bug #43588: Add univention-printquota to download-packages
