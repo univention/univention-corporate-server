@@ -574,6 +574,10 @@ msgstr "Schritte, um den Fehler zu reproduzieren"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
+#: js/hooks/default_menu_entries.js:46 js/hooks/default_menu_entries.js:58
+msgid "Switch language"
+msgstr "Sprache ändern"
+
 #~ msgid "%s: %s"
 #~ msgstr "%s: %s"
 
