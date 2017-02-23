@@ -74,10 +74,7 @@ def init_object(module, lo, pos, dn='', attrs=None):
 		if 'policies' in attrs:
 			obj.policies = attrs.pop('policies')
 		for key, value in attrs.iteritems():
-			if key == 'objectFlag':  # Bug #43148; ignore syntax for the time being
-				obj.info[key] = value
-			else:
-				obj[key] = value
+			obj[key] = value
 	return obj
 
 
