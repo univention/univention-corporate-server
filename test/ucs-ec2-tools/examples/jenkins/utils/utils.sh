@@ -53,7 +53,7 @@ basic_setup ()
 	fi
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 	# wait until Univention System Setup is running and profile file has been moved
-	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f /opt/firefox/firefox ; do
+	while pgrep -f "/etc/init.d/rc 2" && ! pgrep firefox-esr ; do
 		sleep 1s
 	done
 	sleep 5s

@@ -315,7 +315,7 @@ download_system_setup_packages ()
 			apt-get update
 		done
 
-		for package in firefox-de; do
+		for package in firefox-esr-l10n-de; do
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
@@ -638,7 +638,7 @@ __EOF__
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
-	pkill -f /opt/firefox/firefox
+	killall -9 firefox-esr
 
 	# allow X11 login as normal user
 	ucr set "auth/gdm/group/Domain Users"=yes

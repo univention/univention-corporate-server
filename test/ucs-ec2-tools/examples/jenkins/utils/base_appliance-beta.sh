@@ -554,7 +554,7 @@ __EOF__
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
-	pkill -f /opt/firefox/firefox
+	killall -9 firefox-esr
 
 	# allow X11 login as normal user
 	ucr set "auth/gdm/group/Domain Users"=yes

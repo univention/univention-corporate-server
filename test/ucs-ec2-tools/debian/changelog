@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-2) unstable; urgency=low
+
+  * Bug #42322: switch to firefox-esr
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 17:48:09 +0100
+
 ucs-ec2-tools (3.0.2-1) unstable; urgency=medium
 
   * Bug #34498: use univention.lib.umc.Client
