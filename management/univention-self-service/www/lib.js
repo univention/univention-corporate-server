@@ -83,11 +83,7 @@ define([
 		 * Returns the value of the query string for a given key.
 		 * */
 		getQuery: function(key) {
-			if (hash().split('?', 2).length !== 2) {
-				return null;
-			}
-			var queryString = hash().split('?', 2)[1];
-			var queryObject = ioQuery.queryToObject(queryString);
+			var queryObject = ioQuery.queryToObject(hash());
 			return queryObject[key];
 		}
 	};

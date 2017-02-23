@@ -33,7 +33,7 @@ define(['umc/menu', 'umc/i18n!'], function(menu, _) {
 		parentMenuId: 'umcMenuUserSettings',
 		label: _('Protect account'),
 		onClick: function() {
-			window.open('/univention/self-service/#setcontactinformation');
+			window.open('/univention/self-service/#page=setcontactinformation');
 		}
 	});
 });

@@ -1,3 +1,10 @@
+univention-self-service (2.0.4-10) unstable; urgency=medium
+
+  * Bug #42263: set default page if no/invalid page is requested. Changed hash
+    query handling.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Feb 2017 16:15:15 +0100
+
 univention-self-service (2.0.4-9) unstable; urgency=medium
 
   * Bug #42263: cleanup menu entries

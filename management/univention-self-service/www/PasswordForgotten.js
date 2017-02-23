@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/keys",
+	"dojo/io-query",
 	"dijit/form/Button",
 	"put-selector/put",
 	"umc/tools",
@@ -43,7 +44,7 @@ define([
 	"./TextBox",
 	"umc/widgets/RadioButton",
 	"umc/i18n!."
-], function(hash, lang, array, on, keys, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
+], function(hash, lang, array, on, keys, ioQuery, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
 
 	return {
 		title: _("Password forgotten"),
@@ -53,7 +54,9 @@ define([
 		contentContainer: null,
 		steps: null,
 		selectedRenewOption: null,
-		startup: function() {return;},
+		startup: function() {
+			this._username.focus();
+		},
 
 		/**
 		 * Returns the title of the subpage.
@@ -225,7 +228,7 @@ define([
 					this._username.set('disabled', false);
 					put(this._usernameButton.domNode, '!.dijitHidden');
 					this._usernameButton.set('disabled', false);
-					hash('#newpassword?username=' + username);
+					hash(ioQuery.objectToQuery({page: "newpassword", username: username}));
 				}), lang.hitch(this, function() {
 					this._requestTokenButton.set('disabled', false);
 				}));

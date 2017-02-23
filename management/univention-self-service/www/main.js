@@ -30,6 +30,7 @@
 
 define([
 	"dojo/hash",
+	"dojo/io-query",
 	"dojo/topic",
 	"dojo/_base/lang",
 	"dojo/_base/array",
@@ -40,10 +41,9 @@ define([
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
-], function(hash, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword){
+], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword){
 	return {
 		content_container: null,
-		content_controller: null,
 		backend_info: null,
 		subpages: {
 			"password_forgotten": PasswordForgotten,
@@ -58,9 +58,8 @@ define([
 		 */
 		start: function() {
 			this._initContainer();
-			this._initController();
 			this._subscribeOnHashEvents();
-			this._addSubPages(["password_forgotten", "protect_account_access", "new_password"]);
+			this._addSubPages(Object.keys(this.subpages));
 		},
 
 		_subscribeOnHashEvents: function() {
@@ -74,13 +73,8 @@ define([
 				"class" : "PasswordServiceContent",
 				id: "contentContainer",
 				doLayout: false
-			}, "content");
+			});
 			this.content_container.startup();
-		},
-
-		_initController: function() {
-			var navContainer = dom.byId('navigation');
-			this.content_controller = put(navContainer, ".PasswordServiceController");
 		},
 
 		/**
@@ -102,14 +96,24 @@ define([
 		},
 
 		_loadSubpage: function(changedHash) {
-			var hashWithoutQuery = changedHash.split('?', 1)[0];
-			var subpage = this.site_hashes[hashWithoutQuery];
+			var page = ioQuery.queryToObject(changedHash).page;
+			var isValidPage = array.some(Object.keys(this.site_hashes), function(site_hash) {
+				return site_hash === page;
+			});
+			if (!isValidPage) {
+				hash(ioQuery.objectToQuery({page: "passwordreset"}));
+				return;
+			}
+			var subpage = this.site_hashes[page];
 			if (!subpage) {
 				subpage = this.content_container.getChildren()[0];
 			}
-			var page_name = this.site_hashes[hashWithoutQuery].page_name;
+			var page_name = this.site_hashes[page].page_name;
 			var module = this.subpages[page_name];
 			this.content_container.selectChild(subpage);
+			if (!dom.byId('content').hasChildNodes()) {
+				this.content_container.placeAt('content');
+			}
 			module.startup();
 		}
     };
