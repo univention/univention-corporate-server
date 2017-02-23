@@ -7,6 +7,8 @@ univention-appcenter (6.0.1-36) unstable; urgency=low
 
 univention-appcenter (6.0.1-35) unstable; urgency=medium
 
+  * Bug #43624: Cleanup code where the existence of LDAP objects was tested
+    with deprecated code
   * Bug #43148: No more exceptions for syntax checks of ObjectFlag
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Feb 2017 12:52:05 +0100

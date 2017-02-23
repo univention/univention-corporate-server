@@ -92,17 +92,19 @@ def create_object_if_not_exists(_module, _lo, _pos, **kwargs):
 	obj = init_object(_module, _lo, _pos, attrs=kwargs)
 	dn = obj._ldap_dn()
 	try:
-		existing_obj = init_object(_module, _lo, _pos, dn)
-		if not existing_obj.exists():  # workaround for Bug #38110, will be fixed in UCS 4.2
-			raise udm_errors.noObject(dn)
+		init_object(_module, _lo, _pos, dn)
 	except udm_errors.noObject:
 		obj.create()
 		return obj
+	else:
+		# dn already exists
+		return
 
 
 def modify_object(_module, _lo, _pos, _dn, **kwargs):
-	obj = init_object(_module, _lo, _pos, _dn, attrs=kwargs)
-	if not obj.exists():  # workaround for Bug #38110, will be fixed in UCS 4.2
+	try:
+		obj = init_object(_module, _lo, _pos, _dn, attrs=kwargs)
+	except udm_errors.noObject:
 		return
 	else:
 		obj.modify()
