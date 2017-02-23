@@ -129,8 +129,6 @@ from univention.management.console.error import UMC_Error, PasswordRequired, LDA
 
 _ = Translation('univention.management.console').translate
 
-__all__ = ('UMC_Error', 'Base', 'LDAP_ServerDown')
-
 
 class UMC_OptionTypeError(UMC_Error):
 	pass  # deprecated, please use .sanitizers instead!
