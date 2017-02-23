@@ -66,6 +66,8 @@ define([
 		_loginDeferred: null,
 
 		showLoginDialog: function(info) {
+			tools.checkReloadRequired();
+
 			if (this._loginDialog) {
 				this._loginDialog.updateForm(info || {});
 				return;
@@ -133,12 +135,9 @@ define([
 				return this._password_required.promise;
 			}
 
-			if (tools.status('authType') === 'SAML') {
-				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(this, function() {
-					return this.showLoginDialog(info);
-				}));
-			}
-			return this.showLoginDialog(info);
+			return this.autorelogin({ timeout: 15000 }).otherwise(lang.hitch(this, function() {
+				return this.showLoginDialog(info);
+			}));
 		},
 
 		start: function(username, password) {
@@ -201,6 +200,13 @@ define([
 			return username;
 		},
 
+		autorelogin: function(args) {
+			if (tools.status('authType') === 'SAML') {
+				return login.passiveSingleSignOn(args);
+			}
+			return this.autologin();
+		},
+
 		autologin: function() {
 			// if username and password are specified via the query string, try to authenticate directly
 			var username = tools.status('username');
@@ -247,6 +253,13 @@ define([
 					// which would never be resolved if we return a deferred here
 					// the authentication should also not be repeated after a successful authentication
 					this.handleAuthenticationError(info);
+				}),
+				display503: lang.hitch(this, function(info) {
+					// in case we login and Apache/UMC-Server/UMC-Webserver does not run
+					if (this.loginDialogOpened()) {
+						this._loginDialog.updateForm({message: info.title});
+					}
+					dialog.alert(entities.encode(info.message).replace(/\n/g, '<br>'), info.title);
 				})
 			};
 		},

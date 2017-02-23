@@ -156,6 +156,7 @@ define([
 			return tools.umcpCommand('get/newsession', {}, false).then(null, lang.hitch(this, function(err) {
 				console.error('WARNING: Could not renew session... forcing re-login again instead:', err);
 				this.closeSession();
+				tools.checkReloadRequired();
 				return login.showLoginDialog();
 			}));
 		},
@@ -208,18 +209,14 @@ define([
 							return;
 						}
 						topic.publish('/umc/actions', 'session', 'timeout');
-						// try to login
-						var def;
-						if (tools.status('authType') === 'SAML') {
-							def = login.passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
-						} else {
-							def = login.showLoginDialog();
-						}
-						def.then(lang.hitch(this, function() {
+						login.autorelogin().then(lang.hitch(this, function() {
 							if (!this._checkSessionTimer.isRunning) {
 								this._checkSessionTimer.start();
 							}
-						}));
+						}), function() {
+							tools.checkReloadRequired();
+							login.showLoginDialog();
+						});
 					}));
 					this._checkSessionRequest.always(lang.hitch(this, function() {
 						this._checkSessionRequest = null;
@@ -593,7 +590,6 @@ define([
 					topic.publish('/umc/actions', 'error', info.status || 'unknown');
 					var status = info.status;
 					var message = info.message;
-					var statusMessage = tools._statusMessages[status];
 
 					if (this['display' + status]) {
 						this['display' + status](info);
@@ -604,18 +600,11 @@ define([
 						return;
 					}
 
-					// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
-					if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
+					if (info.traceback) {
 						this.displayTraceback(info);
-					} else if (503 === status && login.loginDialogOpened()) {
-						// either the UMC-server or the UMC-Web-Server is not runnning
-						login._loginDialog.updateForm({message: statusMessage});
-						if (message) {
-							dialog.alert(entities.encode(message).replace(/\n/g, '<br>'), statusMessage);
-						}
-					} else if (statusMessage) {
+					} else if (info.title) {
 						// all other cases
-						dialog.alert('<p>' + entities.encode(statusMessage) + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>' : ''), _('An error occurred'));
+						dialog.alert('<p>' + entities.encode(info.title) + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>' : ''), _('An error occurred'));
 					} else if (status) {
 						// unknown status code .. should not happen
 						dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
@@ -627,7 +616,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(info.message, tools._statusMessages[info.status]);
+					tools.showTracebackDialog(info.traceback + ' ' + info.message, info.title);
 				}
 			}, custom);
 			return errorHandler;
@@ -750,8 +739,10 @@ define([
 
 		parseError: function(error) {
 			var status = error.status !== undefined ? error.status : -1;
-			var message = this._statusMessages[status] || '';
+			var statusMessage = this._statusMessages[status] || '';
+			var message = statusMessage;
 			var result = null;
+			var traceback = null;
 
 			var r = /<title>(.*)<\/title>/;
 
@@ -788,9 +779,22 @@ define([
 				result = error.result || null;
 			}
 
+			// TODO: move into the UMC-Server
+			// handle tracebacks: on 500 Internal Server Error they might not contain the word 'Traceback', because not all modules use the UMC-Server error handling yet
+			if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
+				var index = message.indexOf('Traceback');
+				if (index === -1) {
+					index = message.indexOf('File');
+				}
+				traceback = message.substring(index);
+				message = message.substring(0, index);
+			}
+
 			return {
 				status: this._parseStatus(status),
+				title: statusMessage,
 				message: _(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'}),
+				traceback: traceback,
 				result: result
 			};
 		},
