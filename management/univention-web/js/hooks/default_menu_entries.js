@@ -34,13 +34,14 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/topic",
+	"login",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/passwordchange"
-], function(declare, lang, array, kernel, topic, menu, tools, dialog, i18nTools, _) {
-	var setupLanguageMenu = function() {
+], function(declare, lang, array, kernel, topic, login, menu, tools, dialog, i18nTools, _) {
+	function setupLanguageMenu() {
 		menu.addSubMenu({
 			priority: 55,
 			label: _('Switch language'),
@@ -69,9 +70,9 @@ define([
 				}
 			});
 		});
-	};
+	}
 
-	var setupHelpMenu = function() {
+	function setupHelpMenu() {
 		// the help context menu
 		menu.addSubMenu({
 			priority: 50,
@@ -98,7 +99,7 @@ define([
 				w.focus();
 			}
 		});
-	};
+	}
 
 	var setupMenus = function() {
 		// the settings context menu
@@ -115,12 +116,24 @@ define([
 
 		setupHelpMenu();
 
-		// the logout button
-		menu.addEntry({
+		// the login button
+		var loginEntry = menu.addEntry({
 			priority: -1,
-			id: 'umcMenuLogout',
+			label: _('Login'),
+			onClick: function() { login.start(); }
+		});
+
+		// the logout button
+		var logoutEntry = menu.addEntry({
+			priority: -2,
 			label: _('Logout'),
-			onClick: function() { require('login').logout(); }
+			onClick: function() { login.logout(); }
+		});
+		menu.hideEntry(logoutEntry);
+
+		topic.subscribe('/umc/authenticated', function() {
+			menu.showEntry(logoutEntry);
+			menu.hideEntry(loginEntry);
 		});
 	};
 

@@ -36,20 +36,20 @@ define([
 ], function(declare, lang, Evented, Menu) {
 	var menu = new declare([Evented], {
 		addSubMenu: function(/*Object*/ item) {
-			this.getMenuInstance().then(function(menu) {
-				menu.addSubMenu(item);
+			return this.getMenuInstance().then(function(menu) {
+				return menu.addSubMenu(item);
 			});
 		},
 
 		addEntry: function(/*Object*/ item) {
-			this.getMenuInstance().then(function(menu) {
-				menu.addMenuEntry(item);
+			return this.getMenuInstance().then(function(menu) {
+				return menu.addMenuEntry(item);
 			});
 		},
 
 		addSeparator: function(/*Object*/ item) {
-			this.getMenuInstance().then(function(menu) {
-				menu.addMenuSeparator(item);
+			return this.getMenuInstance().then(function(menu) {
+				return menu.addMenuSeparator(item);
 			});
 		},
 
@@ -64,6 +64,18 @@ define([
 
 		getMenuInstance: function() {
 			return Menu.mobileMenuDeferred;
+		},
+
+		hideEntry: function(entryDeferred) {
+			entryDeferred.then(function(entry) {
+				entry.hide();
+			});
+		},
+
+		showEntry: function(entryDeferred) {
+			entryDeferred.then(function(entry) {
+				entry.show();
+			});
 		}
 	})();
 	return menu;

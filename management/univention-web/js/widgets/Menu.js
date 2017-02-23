@@ -74,14 +74,64 @@ define([
 		}
 	});
 
-	var SubMenuItem = declare([_WidgetBase, _TemplatedMixin], {
+	var _ShowHideMixin = declare([], {
+		hide: function() {
+			domClass.add(this.domNode, 'dijitDisplayNone');
+			this._set('visible', false);
+		},
+
+		show: function() {
+			domClass.remove(this.domNode, 'dijitDisplayNone');
+			this._set('visible', true);
+		},
+
+		_getVisibleAttr: function() {
+			return !domClass.contains(this.domNode, 'dijitDisplayNone');
+		},
+
+		_setVisibleAttr: function(visible) {
+			if (visible) {
+				this.show();
+			} else {
+				this.hide();
+			}
+		},
+
+		isSeparator: function() {
+			return domClass.contains(this.domNode, 'separator');
+		}
+	});
+
+	var MenuItem = declare([_WidgetBase, _TemplatedMixin, _ShowHideMixin], {
+		label: '',
+		priority: 0,
+		parentSlide: null,
+		onClick: null,
+
+		templateString: '' +
+			'<div data-dojo-attach-point="contentNode" class="menuItem fullWidthTile">' +
+				'${label}' +
+			'</div>',
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			if (!this.onClick && !this.label) {
+				domClass.add(this.domNode, 'separator');
+			}
+			if (typeof this.onClick == 'function')  {
+				this.domNode.onclick = lang.hitch(this, 'onClick');
+			}
+		}
+	});
+
+	var SubMenuItem = declare([_WidgetBase, _TemplatedMixin, _ShowHideMixin], {
 		label: '',
 		isSubMenu: true,
 		priority: 0,
 		parentSlide: null,
 
 		templateString: '' +
-			'<div data-dojo-attach-point="contentNode" class="dijitDisplayNone menuItem popupMenuItem fullWidthTile">' +
+			'<div data-dojo-attach-point="contentNode" class="menuItem popupMenuItem fullWidthTile">' +
 				'${label}' +
 				'<div data-dojo-attach-point="childItemsCounterNode" class="childItemsCounter"></div>' +
 				'<div class="popupMenuItemArrow"></div>' +
@@ -97,8 +147,19 @@ define([
 			});
 		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+			this.hide();
+		},
+
 		getMenuItems: function() {
 			return this.menuSlide.itemsContainer.getChildren();
+		},
+
+		getVisibleMenuItems: function() {
+			return array.filter(this.getMenuItems(), function(item) {
+				return item.get('visible') && !item.isSeparator();
+			});
 		},
 
 		addMenuItem: function(item) {
@@ -114,14 +175,16 @@ define([
 				}
 			}
 			this.menuSlide.itemsContainer.addChild(item, pos);
-			this._updateCounter();
+			this._updateState();
+
+			// update the counter if the 
+			item.watch('visible', lang.hitch(this, '_updateState'));
 		},
 
-		_updateCounter: function() {
-			var count = array.filter(this.getMenuItems(), function(item) {
-				return !domClass.contains(item.domNode, 'separator');
-			}).length;
+		_updateState: function() {
+			var count = this.getVisibleMenuItems().length;
 			this.childItemsCounterNode.innerHTML = count;
+			this.set('visible', count > 0);
 		},
 
 		open: function(subMenuItem) {
@@ -146,10 +209,6 @@ define([
 					domClass.remove(this.domNode, 'menuItemActiveTransition');
 				}), 400);
 			}), 250);
-		},
-
-		display: function() {
-			domClass.remove(this.domNode, 'dijitDisplayNone');
 		}
 	});
 
@@ -243,9 +302,10 @@ define([
 
 		_addOrphanedEntries: function(parentMenuId) {
 			if (parentMenuId in this._orphanedEntries) {
+				var parentMenuItem = this._menuMap[parentMenuId];
 				array.forEach(this._orphanedEntries[parentMenuId], function(ientry) {
-					this.addMenuEntry(ientry);
-				}, this);
+					parentMenuItem.addMenuItem(ientry);
+				});
 				delete this._orphanedEntries[parentMenuId];
 			}
 		},
@@ -305,6 +365,7 @@ define([
 			_addClickListeners(subMenuItem);
 			parentMenuItem.addMenuItem(subMenuItem);
 			this._addOrphanedEntries(item.id);
+			return subMenuItem;
 		},
 
 		_updateMobileMenuPermaHeaderForOpening: function(subMenuItem) {
@@ -336,45 +397,33 @@ define([
 					(item.isInstanceOf(DijitMenuItem) ||
 					item.isInstanceOf(PopupMenuItem) ||
 					item.isInstanceOf(MenuSeparator)) ) {
-				this._handleDeprecatedMenuInstances(item);
-				return;
+				return this._handleDeprecatedMenuInstances(item);
 			}
 
 			var _createMenuEntry = function() {
-				if (!item.onClick && !item.label) {
-					return new Text({
-						id: item.id,
-						'class': 'menuItem separator fullWidthTile'
-					});
-				}
-				var menuEntry = new Text({
+				return new MenuItem({
+					id: item.id || null,
 					priority: item.priority || 0,
-					content: item.label,
-					id: item.id,
-					'class': 'menuItem fullWidthTile'
-
+					label: item.label || '',
+					onClick: item.onClick
 				});
-				menuEntry.domNode.onclick = function() {
-					item.onClick();
-				};
-				return menuEntry;
 			};
 
 			// start: creating menu entry
 			var parentMenuId = item.parentMenuId || 'umcMenuMain';
 			var parentMenuItem = this._menuMap[parentMenuId];
+			var menuEntry = _createMenuEntry();
 
 			if (!parentMenuItem) {
 				// parent menu does not exist... save entry to be added later
-				var parentEntries = this._orphanedEntries[item.parentMenuId] || [];
-				parentEntries.push(item);
-				this._orphanedEntries[item.parentMenuId] = parentEntries;
-				return;
+				var parentEntries = this._orphanedEntries[parentMenuId] || [];
+				parentEntries.push(menuEntry);
+				this._orphanedEntries[parentMenuId] = parentEntries;
+				return menuEntry;
 			}
 
-			parentMenuItem.display();
-			var menuEntry = _createMenuEntry();
 			parentMenuItem.addMenuItem(menuEntry);
+			return menuEntry;
 		},
 
 		addMenuSeparator: function(/*Object*/ item) {
@@ -395,7 +444,7 @@ define([
 				parentMenuId: item ? item.parentMenuId : undefined,
 				id: item ? item.id : undefined
 			};
-			this.addMenuEntry(_item);
+			return this.addMenuEntry(_item);
 		},
 
 		_handleDeprecatedMenuInstances: function(item) {
@@ -423,8 +472,9 @@ define([
 				}
 				// destroy deprecated menu instance
 				item.destroyRecursive();
-				this.addSubMenu(newSubmenu);
-			} else if (item.isInstanceOf(DijitMenuItem)) {
+				return this.addSubMenu(newSubmenu);
+			}
+			if (item.isInstanceOf(DijitMenuItem)) {
 				var newEntry = {
 					parentMenuId: item.$parentMenu$ || "",
 					priority: item.$priority$ || 0,
@@ -433,15 +483,16 @@ define([
 					onClick: item.onClick
 				};
 				item.destroyRecursive();
-				this.addMenuEntry(newEntry);
-			} else if (item.isInstanceOf(MenuSeparator)) {
+				return this.addMenuEntry(newEntry);
+			}
+			if (item.isInstanceOf(MenuSeparator)) {
 				var newSeperator = {
 					parentMenuId: item.$parentMenu$,
 					priority: item.$priority$ || 0,
 					id: item.id
 				};
 				item.destroyRecursive();
-				this.addMenuEntry(newSeperator);
+				return this.addMenuEntry(newSeperator);
 			}
 		}
 	});
