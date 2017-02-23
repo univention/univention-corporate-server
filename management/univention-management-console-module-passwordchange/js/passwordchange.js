@@ -34,27 +34,23 @@ define([
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
-	"dijit/MenuItem",
-	"umc/widgets/Module",
-	"umc/widgets/Page",
-	"umc/widgets/Form",
+	"umc/widgets/Text",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/PasswordInputBox",
 	"umc/i18n!umc/modules/passwordchange"
-], function(declare, lang, menu, tools, dialog, MenuItem, Module, Page, Form, PasswordBox, PasswordInputBox, _) {
+], function(declare, lang, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
 
 	var setPassword = function(values) {
-		if (!this._form.validate()) {
-			this._form.getWidget('new_password').focus();
-			return;
-		}
-
 		tools.umcpCommand('set', {
 			password: values
-		}).then(lang.hitch(this, function() {
+		}, false).then(lang.hitch(this, function() {
 			dialog.alert(_('The password has been changed successfully.'));
-		}), lang.hitch(this, function() {
-			showPasswordChangeDialog();
+		}), lang.hitch(this, function(err) {
+			err = tools.parseError(err);
+			dialog.confirm(err.message, [{
+				label: _('OK'),
+				'default': true
+			}], _('Error changing password')).then(showPasswordChangeDialog);
 		}));
 	};
 
@@ -63,7 +59,7 @@ define([
 			widgets: [{
 				type: Text,
 				name: 'text',
-				content: _('Change the password of user "%s"', tools.status('username'))
+				content: _('Change the password of user "%s":', tools.status('username'))
 			}, {
 				name: 'password',
 				type: PasswordBox,
@@ -79,15 +75,14 @@ define([
 		}).then(setPassword);
 	};
 
-	menu.addEntry(new MenuItem({
+	menu.addEntry({
 		id: 'umcMenuChangePassword',
-		$parentMenu$: 'umcMenuUserSettings',
-		iconClass: 'icon24-umc-menu-pwchange',
+		parentMenuId: 'umcMenuUserSettings',
 		label: _('Change password'),
 		onClick: function() {
-			app.openModule('passwordchange');
+			showPasswordChangeDialog();
 		}
-	}));
+	});
 
 
 });
