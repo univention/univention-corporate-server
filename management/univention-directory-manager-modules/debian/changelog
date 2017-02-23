@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.14-2) unstable; urgency=medium
+
+  * Bug #43148: Extended attribute using ObjectFlag is now multivalue
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Feb 2017 21:55:30 +0100
+
 univention-directory-manager-modules (12.0.14-1) unstable; urgency=medium
 
   * Bug #43332: fix DN comparision

@@ -69,7 +69,12 @@ univention-directory-manager settings/extended_attribute create "$@" \
 	--set objectClass=univentionObject \
 	--set ldapMapping=univentionObjectFlag \
 	--set disableUDMWeb=1 \
+	--set multivalue=1 \
 	$mods || die
+
+if [ "$JS_LAST_EXECUTED_VERSION" = 1 ];
+	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" --set multivalue=1
+fi
 
 stop_udm_cli_server
 
