@@ -36,7 +36,7 @@ import os
 import base64
 
 from ldap.filter import escape_filter_chars
-from ldap.dn import explode_dn
+from ldap.dn import explode_dn, escape_dn_chars
 
 import univention.admin.objects as udm_objects
 import univention.admin.modules as udm_modules
@@ -158,7 +158,7 @@ class ApplicationLDAPObject(object):
 		self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		self._udm_obj = None
 		self._rdn = '%s_%s' % (app.id, app.version)
-		self._container = 'cn=%s,cn=apps,cn=univention,%s' % (app.id, ucr_get('ldap/base'))
+		self._container = 'cn=%s,cn=apps,cn=univention,%s' % (escape_dn_chars(app.id), ucr_get('ldap/base'))
 		self._lo = lo
 		self._pos = pos
 		self._reload(app, create_if_not_exists)
@@ -168,16 +168,16 @@ class ApplicationLDAPObject(object):
 
 	@property
 	def dn(self):
-		return 'univentionAppID=%s,%s' % (self._rdn, self._container)
+		return 'univentionAppID=%s,%s' % (escape_dn_chars(self._rdn), self._container)
 
 	def _reload(self, app, create_if_not_exists=False):
 		self._udm_obj = None
 		try:
 			udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
-			if udm_obj.exists():
-				self._udm_obj = udm_obj
 		except udm_errors.noObject:
 			pass
+		else:
+			self._udm_obj = udm_obj
 		if not self._udm_obj and create_if_not_exists:
 			self._create_obj(app)
 
@@ -231,7 +231,7 @@ class ApplicationLDAPObject(object):
 			self._udm_obj.info['server'].append(self._localhost)
 			self._udm_obj.modify()
 		for ldap_object in self.get_siblings():
-			if ldap_object.dn != self.dn:
+			if not self._lo.compare_dn(self.dn, ldap_object.dn):
 				app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos)
 				app_obj.remove_localhost()
 

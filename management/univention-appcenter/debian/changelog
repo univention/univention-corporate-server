@@ -1,3 +1,10 @@
+univention-appcenter (6.0.1-38) unstable; urgency=medium
+
+  * Bug #41905: Escape appcenter/app object DN, allowing, e.g., + in version
+  * Bug #43624: More cleanup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Feb 2017 16:17:55 +0100
+
 univention-appcenter (6.0.1-37) unstable; urgency=medium
 
   * Bug #43624: Cleanup code where the existence of LDAP objects was tested
