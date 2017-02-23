@@ -82,16 +82,13 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Button",
 	"umc/widgets/Text",
-	"./widgets/LanguageSwitch",
-	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store, menu,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, UMCMenu,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, LanguageSwitch,
-		i18nTools, _
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
@@ -504,7 +501,8 @@ define([
 		setupGui: function() {
 			// show the menu bar
 			this.setupHeader();
-			this.setupMenus();
+			this.setupHelpMenu();
+			this.setupPiwikMenu();
 
 			on(window, 'resize', lang.hitch(this, function() {
 				this._handleWindowResize();
@@ -664,142 +662,41 @@ define([
 			}
 		},
 
-		setupMenus: function() {
-			// the settings context menu
-			menu.addEntry(new PopupMenuItem({
-				$parentMenu$: 'umcMenuMain',
-				$priority$: 60,
-				label: _('User settings'),
-				id: 'umcMenuUserSettings',
-				popup: new Menu({}),
-				'class': 'dijitHidden'
-			}));
-
-			// the language switch menu
-			if (i18nTools.availableLanguages.length > 1) {
-				menu.addEntry(new PopupMenuItem({
-					$parentMenu$: 'umcMenuMain',
-					$priority$: 55,
-					label: _('Switch language'),
-					id: 'umcMenuLanguage',
-					popup: LanguageSwitch()._languageMenu
-				}));
-			}
-
+		setupHelpMenu: function() {
 			// the help context menu
-			menu.addEntry(new PopupMenuItem({
-				$parentMenu$: 'umcMenuMain',
-				$priority$: 50,
-				label: _('Help'),
-				id: 'umcMenuHelp',
-				popup: new Menu({})
-			}));
-
-			// the logout button
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuMain',
-				$priority$: -1,
-				id: 'umcMenuLogout',
-				label: _('Logout'),
-				onClick: function() { require('umc/app').logout(); }
-			}));
-
-			this._setupHelpMenu();
-			// TODO add into menu
-			// this._setupHostInfoMenu();
-		},
-
-		_setupHelpMenu: function() {
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
+			menu.addEntry({
+				parentMenuId: 'umcMenuHelp',
 				label: _('Help'),
 				onClick: lang.hitch(this, 'showPageDialog', 'HelpPage', 'help', null, null)
-			}));
+			});
 
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
+			menu.addEntry({
+				parentMenuId: 'umcMenuHelp',
 				label: _('Feedback'),
 				onClick: lang.hitch(this, '_showFeedbackPage')
-			}));
+			});
 
-			this._insertPiwikMenuItem();
-
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
+			menu.addEntry({
+				parentMenuId: 'umcMenuHelp',
 				label: _('About UMC'),
 				onClick: lang.hitch(this, 'showPageDialog', 'AboutPage!', 'about', null, null)
-			}));
+			});
 
-			menu.addEntry(new MenuSeparator({
-				$parentMenu$: 'umcMenuHelp'
-			}));
-
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
-				label: _('UCS start site'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
-					var w = window.open('/univention?lang=' + kernel.locale, 'ucs-start-site');
-					w.focus();
-				}
-			}));
-
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
-				label: _('Univention Website'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-help', 'website');
-					var w = window.open(_('umcUniventionUrl'), 'univention');
-					w.focus();
-				}
-			}));
+			menu.addSeparator({
+				parentMenuId: 'umcMenuHelp'
+			});
 		},
 
-		_insertPiwikMenuItem: function() {
+		setupPiwikMenu: function() {
 			var isUserAdmin = tools.status('username').toLowerCase() === 'administrator';
 			if (!(tools.status('hasFreeLicense') && isUserAdmin)) {
 				return;
 			}
-			menu.addEntry(new MenuItem({
-				$parentMenu$: 'umcMenuHelp',
+			menu.addEntry({
+				parentMenuId: 'umcMenuHelp',
 				label: _('Usage statistics'),
 				onClick: lang.hitch(this, 'showPageDialog', 'FeedbackPage', 'feedback', null, null)
-			}));
-		},
-
-		_setupHostInfoMenu: function() {
-			if (!this._hostInfo) {
-				return;
-			}
-			// update the host information in the header
-			var fqdn = tools.status('fqdn');
-			tools.umcpCommand('get/hosts').then(lang.hitch(this, function(data) {
-				var empty = data.result.length <= 1;
-				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
-				this._hostInfo.set('disabled', empty);
-
-				var isIE89 = (has('ie') === 8 || has('ie') === 9);
-				if (empty && isIE89) {
-					// prevent IE displaying a disabled button with a shadowed text
-					domAttr.set(this._hostInfo.focusNode, 'disabled', false);
-				}
-
-				if (empty) {
-					return;
-				}
-				array.forEach(data.result, function(hostname) {
-					this._hostMenu.addChild(new MenuItem({
-						label: hostname,
-						disabled: hostname === fqdn,
-						onClick: lang.hitch(this, '_switchUMC', hostname)
-					}));
-				}, this);
-			}));
-		},
-
-		_switchUMC: function(hostname) {
-			topic.publish('/umc/actions', 'host-switch');
-			tools.openRemoteSession(hostname);
+			});
 		},
 
 		showPageDialog: function(_PageRef, key, buttonsConf, additionCssClasses) {
