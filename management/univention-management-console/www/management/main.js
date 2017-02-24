@@ -1106,9 +1106,7 @@ define([
 			});
 			try {
 				var path = 'umc/modules/' + module.id;
-				require({
-					cacheBust: module.version ? lang.replace('version={0}', [module.version]) : null
-				}, [path], lang.hitch(this, function(baseClass) {
+				require([path], lang.hitch(this, function(baseClass) {
 					if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 						deferred.resolve(baseClass);
 					} else if (baseClass === null) {

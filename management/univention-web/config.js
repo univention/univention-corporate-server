@@ -26,7 +26,6 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global require*/
 function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 	// parse the URI query string
 	var query = window.location.search.substring(1);
@@ -112,7 +111,7 @@ if (umcConfig.loadMenu) {
 	_deps.push("umc/widgets/Menu");
 }
 _deps.push("dojo/domReady!");
-_ndeps = _deps.length; // save current number of dependencies
+var _ndeps = _deps.length; // save current number of dependencies
 
 // add the specified dependencies from umcConfig
 _deps = _deps.concat(umcConfig.deps);
@@ -126,7 +125,6 @@ if (typeof dojoConfig === 'undefined') {
 	var _customDojoConfig = dojoConfig;
 }
 dojoConfig = mixin({
-	cacheBust: 'prevent-cache=%VERSION%',
 	has: {
 		'dojo-undef-api': true
 	},

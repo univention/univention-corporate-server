@@ -1,5 +1,6 @@
 univention-management-console (9.0.42-1) unstable; urgency=medium
 
+  * Bug #42265: revert adding cacheBust
   * Bug #42114: prevent server crashes in the authentication finished
   	callback
 
