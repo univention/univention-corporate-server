@@ -122,9 +122,14 @@
 
 		<para>
 			In &ucsUCS; 4.2 verbietet der <emphasis>OpenLDAP</emphasis> Server standardmäßig den LDAP bind
-			falls Passwörter oder Accounts abgelaufen sind. Auf aktualisiereten Systemen ist diese nicht
+			falls Passwörter oder Accounts abgelaufen sind. Auf aktualisierten Systemen ist diese nicht
 			aktiviert, kann aber durch das Setzen der &ucsUCRV; <envar>ldap/shadowbind</envar> auf
-			<emphasis>true</emphasis> aktiviert werden.
+			<literal>true</literal> aktiviert werden.
+		</para>
+
+		<para>
+			Während dem Update der DNS-Server, die <package>univention-bind</package> installiert haben, werden die &ucsUCR; Einstellungen <envar>nameserver<replaceable>123</replaceable></envar> and <envar>dns/forwarder<replaceable>123</replaceable></envar> überprüft und automatisch korrigiert.
+			Dies geschieht einmalig durch Aufruf von <command>/usr/share/univention-bind/fix-ucr-dns</command>.
 		</para>
 
 		<para>

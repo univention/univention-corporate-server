@@ -128,6 +128,11 @@
 		</para>
 
 		<para>
+			During the update of DNS servers having <package>univention-bind</package> installed the &ucsUCR; settings <envar>nameserver<replaceable>123</replaceable></envar> and <envar>dns/forwarder<replaceable>123</replaceable></envar> are checked and fixed automatically.
+			This is done by running <command>/usr/share/univention-bind/fix-ucr-dns</command> once.
+		</para>
+
+		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>
 

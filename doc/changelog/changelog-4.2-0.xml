@@ -173,6 +173,10 @@
 					<listitem><simpara>
 						The timeout and retry handling of the BIND9 LDAP database plugin has been improved (<u:bug>42389</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						During the update of DNS servers having <package>univention-bind</package> installed the &ucsUCR; settings <envar>nameserver<replaceable>123</replaceable></envar> and <envar>dns/forwarder<replaceable>123</replaceable></envar> are checked and fixed automatically.
+						This is done by running <command>/usr/share/univention-bind/fix-ucr-dns</command> once (<u:bug>43217</u:bug>).
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 
@@ -526,7 +530,7 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The pacakge <package>python-pysaml2</package> 3.0.0-5 has been backported from debian stretch (<u:bug>43547</u:bug>).
+					The package <package>python-pysaml2</package> 3.0.0-5 has been ported back from Debian Stretch (<u:bug>43547</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -700,11 +704,11 @@
 					(<u:bug>31763</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <filename>samba4-idmap.py</filename> listener module has been improved to initialize the idmap during module resync
+					The <filename>samba4-idmap.py</filename> listener module has been improved to initialize the <wordasword>idmap</wordasword> during module resynchronization
 					(<u:bug>42819</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <filename>samba4-idmap.py</filename> listener module now flushes the samba gencache at the end of <option>--direct-resync</option>
+					The <filename>samba4-idmap.py</filename> listener module now flushes the samba <wordasword>gencache</wordasword> at the end of <option>--direct-resync</option>
 					(<u:bug>41319</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
