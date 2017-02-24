@@ -274,7 +274,7 @@
 						The syntax class <function>ObjectFlag</function> now accepts the
 						value <literal>docker</literal> (which is used to mark computer
 						objects that are created specifically for Docker App Containers);
-						the corresponding attribute is now a multivalue, making it possible
+						the corresponding attribute is now a multivalued, making it possible
 						to store more than one flag on an object (<u:bug>43148</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -826,6 +826,10 @@
 				During the upgrade to UCS 4.2, it could happened that a restart of the SpamAssassin daemon failed due to old Perl modules.
 				The updated <package>perl</package> package ensures now that the <package>spamassassin</package> package is previously 
 				updated (<u:bug>43534</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Some old packages like <package>emacs23</package> are no longer part of Debian Jessie.
+				Dependencies on such old packages have been updated to their replacements (<u:bug>43649</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

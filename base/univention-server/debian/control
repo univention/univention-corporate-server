@@ -172,7 +172,7 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Recommends: vim,
- emacs23,
+ emacs24,
  less,
  elinks,
  wget,
