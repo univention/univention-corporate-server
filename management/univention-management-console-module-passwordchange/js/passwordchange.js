@@ -90,4 +90,9 @@ define([
 		// user has logged in -> show menu entry
 		menu.showEntry(entry);
 	});
+
+	topic.subscribe('/umc/unauthenticated', function() {
+		// user has logged out -> hide menu entry
+		menu.hideEntry(entry);
+	});
 });

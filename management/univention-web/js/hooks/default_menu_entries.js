@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global require,define*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -134,6 +134,11 @@ define([
 		topic.subscribe('/umc/authenticated', function() {
 			menu.showEntry(logoutEntry);
 			menu.hideEntry(loginEntry);
+		});
+
+		topic.subscribe('/umc/unauthenticated', function() {
+			menu.hideEntry(logoutEntry);
+			menu.showEntry(loginEntry);
 		});
 	};
 

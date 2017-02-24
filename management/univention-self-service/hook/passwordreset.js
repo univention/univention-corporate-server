@@ -42,7 +42,7 @@ define([
 			window.location.hash = '#page=' + subPage;
 		} else {
 			// open a new tab
-			var win = window.open('/univention/self-service/' + window.location.search + '#page=' + subPage);
+			window.open('/univention/self-service/' + window.location.search + '#page=' + subPage);
 		}
 	}
 
@@ -66,6 +66,10 @@ define([
 	topic.subscribe('/umc/authenticated', function() {
 		// user has logged in -> hide menu entry
 		menu.hideEntry(passwordResetEntry);
+	});
+	topic.subscribe('/umc/unauthenticated', function() {
+		// user has logged out -> show menu entry
+		menu.showEntry(passwordResetEntry);
 	});
 });
 

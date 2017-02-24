@@ -172,7 +172,14 @@ define([
 				tools.status('authType', response.result.auth_type);
 				return response;
 			}, function(error) {
-				tools.status('loggedIn', false);
+				if (tools.status('loggedIn')) {
+					tools.status('loggedIn', false);
+					try {
+						topic.publish('/umc/unauthenticated');
+					} catch (e) {
+						// make sure the original error is propagated
+					}
+				}
 				throw error;
 			});
 		},
