@@ -85,7 +85,6 @@ define([
 			//		The callback receives the authorized username as parameter.
 
 			this._initLoginDialog();
-			this._loginDialog.standby(true);
 			this._loginDialog.show();
 			if (this._loginDeferred) {
 				// a login attempt is currently running

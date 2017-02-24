@@ -1,3 +1,9 @@
+univention-management-console (9.0.43-3) unstable; urgency=medium
+
+  * Bug #43528: fix login hanging after submitting + optimize code
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Feb 2017 23:06:39 +0100
+
 univention-management-console (9.0.43-2) unstable; urgency=medium
 
   * Bug #43528: adjust styling and structure of login page

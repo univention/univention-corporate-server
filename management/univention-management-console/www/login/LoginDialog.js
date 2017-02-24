@@ -288,10 +288,8 @@ define([
 			// make sure that we got data
 			this.onLogin(username);
 
-			// hide login dialog
-			this.hide().then(function() {
-				window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submitting e.g. ?location=mailto:foo
-			});
+			// redirection
+			window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submitting e.g. ?location=mailto:foo
 		},
 
 		_authentication_failed: function() {
@@ -304,10 +302,7 @@ define([
 
 		standby: function(standby) {
 			domClass.toggle(document.body, 'umcLoginLoading', standby);
-			//query('#umcLoginLinks').style('display', standby ? 'none' : 'block');
-			if (standby) {
-				//query('.umcLoginWarnings').style('display', 'none');
-			} else {
+			if (!standby) {
 				// only non hidden input fields can be focused
 				this._setFocus();
 			}
@@ -343,17 +338,12 @@ define([
 		},
 
 		_show: function() {
-			var deferred;
 			this._setFocus();
 			if (has('ie') < 10) {
 				// trigger IE9 workaround
 				// a saved password/username contains a placeholder if we don't run this again
 				this._replaceLabels();
 			}
-			if (this._warning.get('content')) {
-				deferred = this._wipeInMessage(this._warning);
-			}
-			return when(deferred);
 		},
 
 		_setFocus: function() {
@@ -365,23 +355,6 @@ define([
 			} else {
 				dom.byId('umcLoginPassword').focus();
 			}
-		},
-
-		hide: function() {
-			// only close the dialog if it has not been closed already
-			if (!this.get('open')) {
-				return;
-			}
-			this.set('open', false);
-
-			var deferred = new Deferred();
-			// hide the dialog
-			var hide = lang.hitch(this, function() {
-				this.standby(false);
-				deferred.resolve();
-			});
-			//baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: hide}).play();
-			return deferred;
 		},
 
 		focus: function() {
