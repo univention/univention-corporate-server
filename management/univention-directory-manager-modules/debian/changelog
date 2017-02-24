@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.14-3) unstable; urgency=medium
+
+  * Bug #43148: Increase joinscript version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Feb 2017 08:45:05 +0100
+
 univention-directory-manager-modules (12.0.14-2) unstable; urgency=medium
 
   * Bug #43148: Extended attribute using ObjectFlag is now multivalue
