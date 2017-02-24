@@ -30,7 +30,7 @@ Configure UCS-domain and forward DNS servers.
 # <http://www.gnu.org/licenses/>.
 
 from os import environ
-from sys import modules, stderr
+from sys import modules, stderr, exit
 from collections import OrderedDict
 from subprocess import check_output, check_call
 from optparse import OptionParser, SUPPRESS_HELP, Values
@@ -62,6 +62,9 @@ def main():
 
 	ucr = ConfigRegistry()
 	ucr.load()
+	if ucr.is_true('nameserver/external'):
+		log.fatal('Using external DNS - aborting')
+		exit(0)
 
 	nameservers, forwarders = OrderedDict(), OrderedDict()
 	need_fixing = get_forwarders(forwarders, ucr)
@@ -76,6 +79,10 @@ def main():
 		add_self(nameservers, ucr)
 	add_nameservers(nameservers, ucr['domainname'])
 	add_master(nameservers, ucr['ldap/master'])
+
+	if not nameservers:
+		log.fatal('No nameserver remains - aborting')
+		exit(1)
 
 	update_ucr(ucr, nameservers, forwarders)
 

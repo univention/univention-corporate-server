@@ -1,3 +1,9 @@
+univention-server (12.0.0-3) unstable; urgency=low
+
+  * Bug #43217: Move fix script for DNS settings to univention-server
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Feb 2017 12:19:59 +0100
+
 univention-server (12.0.0-2) unstable; urgency=medium
 
   * Make univention-portal a dependency of master and backup

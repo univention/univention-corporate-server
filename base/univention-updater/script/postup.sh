@@ -158,6 +158,11 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
 
+# Bug #43217: Fix DNS configuration in UCR
+[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
+	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) ||
+	: # better safe than sorry
+
 # make sure that UMC server is restarted (Bug #33426)
 echo "
 

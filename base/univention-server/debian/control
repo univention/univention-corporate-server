@@ -130,6 +130,7 @@ Depends: ${misc:Depends},
  ntp | ntp-server,
  rdate,
  ntpdate,
+ python-dns,
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
  .
