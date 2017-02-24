@@ -57,7 +57,6 @@ define([
 
 		renderLoginDialog: function() {
 			this.addLinks();
-			this.translateDOM();
 			this.addTooltips();
 			login.renderLoginDialog();
 			this.checkCookiesEnabled();
@@ -104,7 +103,7 @@ define([
 				// Chrome has no long term support version. Chromium 37 is supported through
 				// Ubuntu 12.04 LTS (2016-01-27).
 				// Apple has no long term support for safari. The latest version is 9 (2016-01-27)
-				return '<p class="umcLoginWarning">Your browser is outdated! You may experience performance issues and other problems when using Univention Services.</p>';
+				return '<p class="umcLoginWarning">' + entities.encode(_('Your browser is outdated! You may experience performance issues and other problems when using Univention Services.')) + '</p>';
 			}
 		},
 
@@ -115,7 +114,7 @@ define([
 			} else {
 				helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
 			}
-			return lang.replace('<a href="javascript:void(0);" data-i18n="How do I login?" title="{tooltip}"></a>', {tooltip: entities.encode(helpText)});
+			return lang.replace('<a href="javascript:void(0);" title="{tooltip}">{text}</a>', {tooltip: entities.encode(helpText), text: entities.encode(_('How do I login?'))});
 		},
 
 		_cookiesEnabled: function() {
@@ -147,15 +146,6 @@ define([
 					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node));
 				}
 			}));
-		},
-
-		translateDOM: function() {
-			query('*[data-i18n]').forEach(function(inode) {
-				var value = domAttr.get(inode, 'data-i18n');
-				var translation = _(value, meta.ucr);
-				domAttr.set(inode, 'innerHTML', translation);
-			
-			});
 		},
 
 		_fillUsernameField: function(username) {
