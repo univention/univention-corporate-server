@@ -31,8 +31,10 @@ define([
 	'dojo/topic',
 	'umc/menu',
 	'umc/tools',
+	"login/dialog",
+	"dojox/html/entities",
 	'umc/i18n!'
-], function(topic, menu, tools, _) {
+], function(topic, menu, tools, loginDialog, entities, _) {
 	function isSelfServiceURL() {
 		return window.location.pathname.indexOf('/univention/self-service/') === 0;
 	}
@@ -71,5 +73,7 @@ define([
 		// user has logged out -> show menu entry
 		menu.showEntry(passwordResetEntry);
 	});
+
+	loginDialog.addLink('<a target="_blank" href="/univention/self-service/">' + entities.encode(_('Forgot your password?')) + '</a>');
 });
 

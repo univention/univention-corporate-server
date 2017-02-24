@@ -49,6 +49,12 @@ define([
 ], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, Tooltip, entities, dialog, meta, _) {
 
 	return {
+		links: [],
+
+		addLink: function(link) {
+			this.links.push(link);
+		},
+
 		renderLoginDialog: function() {
 			this.addLinks();
 			this.translateDOM();
@@ -68,8 +74,7 @@ define([
 			links.push(this.warningBrowserOutdated());
 			links.push(this.insecureConnection());
 			links.push(this.howToLogin());
-			links.push(this.passwordForgotten());
-			return array.filter(links, function(link) { return link; });
+			return array.filter(links.concat(this.links), function(link) { return link; });
 		},
 
 		insecureConnection: function() {
@@ -111,11 +116,6 @@ define([
 				helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
 			}
 			return lang.replace('<a href="javascript:void(0);" data-i18n="How do I login?" title="{tooltip}"></a>', {tooltip: entities.encode(helpText)});
-		},
-
-		passwordForgotten: function() {
-			// FIXME: check if self-service is installed
-			return '<a target="_blank" href="/univention/self-service/" data-i18n="Forgot your password?"></a>';
 		},
 
 		_cookiesEnabled: function() {
