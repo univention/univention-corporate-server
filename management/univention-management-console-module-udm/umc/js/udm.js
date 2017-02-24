@@ -107,7 +107,7 @@ define([
 		}
 	});
 
-	return declare("umc.modules.udm", [ Module ], {
+	var udm = declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
 		// description:
@@ -1916,6 +1916,17 @@ define([
 			// event stub
 		}
 	});
+	return {
+		load: function (params, req, load, config) {
+			if (params == 'license') {
+				require(['umc/modules/udm/license'], function(license) {
+					load(license);
+				});
+				return;
+			}
+			load(udm);
+		}
+	}
 });
 
 // add pseudo translations for UDM tab names in order to enable

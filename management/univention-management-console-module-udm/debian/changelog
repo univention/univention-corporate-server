@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.6-1) unstable; urgency=medium
+
+  * Bug #42263: show license menu only if permissions exists for it
+
+ -- Florian Best <best@univention.de>  Fri, 24 Feb 2017 10:06:46 +0100
+
 univention-management-console-module-udm (7.0.5-3) unstable; urgency=medium
 
   * Bug #42263: clean up menu entries

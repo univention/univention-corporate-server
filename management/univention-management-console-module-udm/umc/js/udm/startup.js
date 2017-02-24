@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console setTimeout*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -47,10 +47,6 @@ define([
 
 	var ucr = {};
 
-	var _getLang = function() {
-		return kernel.locale.split('-')[0];
-	};
-
 	var checkLicense = function() {
 		tools.umcpCommand('udm/license', {}, false).then(function(data) {
 			var msg = data.result.message;
@@ -59,21 +55,6 @@ define([
 			}
 		}, function() {
 			console.warn('WARNING: An error occurred while verifying the license. Ignoring error.');
-		});
-	};
-
-	var _showLicenseImportDialog = function() {
-		topic.publish('/umc/actions', 'menu-settings', 'license-import');
-		require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
-			var dlg = new LicenseImportDialog();
-			dlg.show();
-		});
-	};
-
-	var _showLicenseInformationDialog = function() {
-		topic.publish('/umc/actions', 'menu-settings', 'license');
-		require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-			var dlg = new LicenseDialog();
 		});
 	};
 
@@ -87,13 +68,7 @@ define([
 		new ActivationDialog({});
 	};
 
-	var addLicenseMenu = function() {
-		menu.addSubMenu({
-			priority: 80,
-			label: _('License'),
-			id: 'umcMenuLicense',
-		});
-
+	var addActivationMenu = function() {
 		if (!ActivationPage.hasLicense) {
 			// license has not been activated yet
 			menu.addEntry({
@@ -103,19 +78,6 @@ define([
 				parentMenuId: 'umcMenuLicense'
 			});
 		}
-
-		menu.addEntry({
-			priority: 20,
-			label: _('Import new license'),
-			onClick : _showLicenseImportDialog,
-			parentMenuId: 'umcMenuLicense'
-		});
-		menu.addEntry({
-			priority: 10,
-			label: _('License information'),
-			onClick : _showLicenseInformationDialog,
-			parentMenuId: 'umcMenuLicense'
-		});
 	};
 
 	topic.subscribe('/umc/license/activation', _showActivationDialog);
@@ -124,7 +86,7 @@ define([
 		checkLicense();
 		tools.ucr(['uuid/license']).then(function(_ucr) {
 			lang.mixin(ucr, _ucr);
-			addLicenseMenu();
+			addActivationMenu();
 		});
 	};
 });

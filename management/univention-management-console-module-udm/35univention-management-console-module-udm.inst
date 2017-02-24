@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -63,7 +63,7 @@ umc_operation_create "udm-shares" "UDM - Shares" "shares/share" "udm/*:objectTyp
 umc_operation_create "udm-polcies" "UDM - Policies" "policies/policy" "udm/*:objectType=policies/*" "udm/*:!objectType" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
-umc_operation_create "udm-mail" "UDM - Policies" "mail/mail" "udm/*:objectType=mail/*" \
+umc_operation_create "udm-mail" "UDM - Mail" "mail/mail" "udm/*:objectType=mail/*" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-network" "UDM - Network" "networks/network" "udm/*:objectType=networks/network" \
@@ -72,21 +72,28 @@ umc_operation_create "udm-network" "UDM - Network" "networks/network" "udm/*:obj
 umc_operation_create "udm-dns" "UDM - DNS" "dns/dns" "udm/*:objectType=dns/*" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
-umc_operation_create "udm-dhcp" "UDM - DNS" "dhcp/dhcp" "udm/*:objectType=dhcp/*" \
+umc_operation_create "udm-dhcp" "UDM - DHCP" "dhcp/dhcp" "udm/*:objectType=dhcp/*" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-nagios" "UDM - Nagios" "nagios/nagios" "udm/*:objectType=nagios/*" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
-umc_operation_create "udm-navigation" "UDM - Policies" "navigation" "udm/nav/*"
+umc_operation_create "udm-navigation" "UDM - LDAP directory" "navigation" "udm/nav/*"
+
+umc_operation_create "udm-license" "UDM - License Import" "license" "udm/license/*"
 
 umc_policy_append "default-umc-all" "udm-all"
 
-# fix users/self umc operation set
-if [ "$JS_LAST_EXECUTED_VERSION" = 2 ]; then
+if [ "$JS_LAST_EXECUTED_VERSION" = 3 ]; then
 	univention-directory-manager settings/umc_operationset modify "$@" \
-		--dn "cn=udm-self,cn=operations,cn=UMC,cn=univention,$ldap_base" \
-		--set flavor="users/self" || die
+		--dn "cn=udm-mail,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--set description="UDM - Mail"
+	univention-directory-manager settings/umc_operationset modify "$@" \
+		--dn "cn=udm-dhcp,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--set description="UDM - DHCP"
+	univention-directory-manager settings/umc_operationset modify "$@" \
+		--dn "cn=udm-navigation,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--set description="UDM - LDAP directory"
 fi
 umc_operation_create "udm-self" "UDM - Personal account" "users/self" "udm/*:objectType=users/self"
 
