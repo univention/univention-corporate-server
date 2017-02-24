@@ -1,4 +1,4 @@
-univention-management-console-module-udm (7.0.6-1) unstable; urgency=medium
+univention-management-console-module-udm (7.0.6-2) unstable; urgency=medium
 
   * Bug #42263: show license menu only if permissions exists for it
 

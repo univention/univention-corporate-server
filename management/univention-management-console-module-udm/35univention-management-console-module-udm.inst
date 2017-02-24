@@ -80,7 +80,7 @@ umc_operation_create "udm-nagios" "UDM - Nagios" "nagios/nagios" "udm/*:objectTy
 
 umc_operation_create "udm-navigation" "UDM - LDAP directory" "navigation" "udm/nav/*"
 
-umc_operation_create "udm-license" "UDM - License Import" "license" "udm/license/*"
+umc_operation_create "udm-license" "UDM - License Import" "license-import" "udm/license/*"
 
 umc_policy_append "default-umc-all" "udm-all"
 

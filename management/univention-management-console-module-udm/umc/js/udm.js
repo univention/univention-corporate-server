@@ -1918,7 +1918,7 @@ define([
 	});
 	return {
 		load: function (params, req, load, config) {
-			if (params == 'license') {
+			if (params == 'license-import') {
 				require(['umc/modules/udm/license'], function(license) {
 					load(license);
 				});

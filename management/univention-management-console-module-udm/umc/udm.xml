@@ -87,9 +87,9 @@
 				<category name="users"/>
 			</categories>
 		</flavor> 
-		<flavor priority="50" id="license">
-			<name>License import</name>
-			<description>Import a license</description>
+		<flavor priority="50" id="license-import">
+			<name>UCS license import</name>
+			<description>Import new license</description>
 			<keywords></keywords>
 			<categories/>
 		</flavor>

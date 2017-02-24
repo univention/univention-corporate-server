@@ -95,3 +95,9 @@ msgstr "Benutzereinstellungen"
 
 msgid "Users"
 msgstr "Benutzer"
+
+msgid "UCS license import"
+msgstr "UCS-Lizenz-Import"
+
+msgid "Import new license"
+msgstr "Neue Lizenz importieren"
