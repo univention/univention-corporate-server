@@ -1,3 +1,9 @@
+univention-web (1.0.29-1) unstable; urgency=medium
+
+  * Bug #42174: login dialog
+
+ -- Florian Best <best@univention.de>  Fri, 24 Feb 2017 12:44:04 +0100
+
 univention-web (1.0.28-12) unstable; urgency=medium
 
   * Bug #42261: do not use standby animation in grid footer, it used a lot of

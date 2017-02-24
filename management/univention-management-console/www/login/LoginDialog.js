@@ -108,28 +108,7 @@ define([
 
 		},
 
-		updateForm: function(info) {
-			var message = info.message;
-			var result = info.result || {};
-			this._updateView(result);
-
-			var errorType = 'LoginMessage';
-			var title = '';
-			if (message) {
-				if (message.slice(-1) !== '.') {
-					message += '.';
-				}
-				title = info.title || '';
-				if (result.missing_prompts || result.password_expired) {
-					errorType = 'LoginNotice';
-				}
-				message = title + ' ' + message;
-			}
-//			domClass.toggle(dom.byId('umcLoginForm'), 'umcLoginWarning', !!message);
-			this.set(errorType, message);
-		},
-
-		_setLoginMessageAttr: function(content) {
+		_setLoginWarningAttr: function(content) {
 			if (content) {
 				content = '<p class="umcLoginWarning">' + entities.encode(content) + '</p>';
 			}
@@ -143,6 +122,26 @@ define([
 			}
 			this._notice.set('content', content);
 			query('.umcLoginNotices').style('display', content ? 'block' : 'none');
+		},
+
+		updateForm: function(info) {
+			var message = info.message;
+			var result = info.result || {};
+			this._updateView(result);
+
+			var errorType = 'LoginWarning';
+			var title = '';
+			if (message) {
+				if (message.slice(-1) !== '.') {
+					message += '.';
+				}
+				title = info.title || '';
+				if (result.missing_prompts || result.password_expired) {
+					errorType = 'LoginNotice';
+				}
+				message = title + ' ' + message;
+			}
+			this.set(errorType, message);
 		},
 
 		_updateView: function(result) {
@@ -194,8 +193,10 @@ define([
 				});
 				query('#' + name).style('display', 'none');
 			});
-			this.set('LoginMessage', message);
 			this.standby(true);
+			setTimeout(lang.hitch(this, function() {
+				this.set('LoginWarning', message);
+			}, 1000));
 		},
 
 		_watchFormSubmits: function() {
@@ -232,7 +233,7 @@ define([
 
 			// validate new password form
 			if (name === 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
-				this.set('LoginMessage', _('Changing password failed. The passwords do not match, please retype again.'));
+				this.set('LoginWarning', _('Changing password failed. The passwords do not match, please retype again.'));
 				return;
 			}
 			// custom prompts
@@ -344,7 +345,7 @@ define([
 				return when();
 			}
 			this.set('open', true);
-			this.set('LoginMessage', '');
+			this.set('LoginWarning', '');
 			this.set('LoginNotice', '');
 			return this._show();
 		},
@@ -387,7 +388,6 @@ define([
 			// hide the dialog
 			var hide = lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
-				window.scrollTo(0, this._scrollPosY);
 				this.standby(false);
 				deferred.resolve();
 			});

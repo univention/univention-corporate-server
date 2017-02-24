@@ -1,3 +1,9 @@
+univention-management-console (9.0.43-1) unstable; urgency=medium
+
+  * Bug #42174: login dialog
+
+ -- Florian Best <best@univention.de>  Fri, 24 Feb 2017 12:43:30 +0100
+
 univention-management-console (9.0.42-1) unstable; urgency=medium
 
   * Bug #42265: revert adding cacheBust
