@@ -226,11 +226,17 @@ def add_self(nameservers, ucr):
 	myself = mynet.ip
 	log.info('Default IP address configured in UCR: %s', myself)
 
-	if query_master_src_record(ucr['domainname'], myself):
-		old = nameservers.items()
-		nameservers.clear()
-		nameservers[myself] = None
-		nameservers.update(old)
+	domain = ucr['domainname']
+	if not query_master_src_record(domain, myself):
+		log.warn('Failed to query local server %s for %s', myself, domain)
+		if nameservers:
+			return
+		log.warn('Adding anyway as no other nameserer remains.')
+
+	old = nameservers.items()
+	nameservers.clear()
+	nameservers[myself] = None
+	nameservers.update(old)
 
 
 def add_nameservers(nameservers, domain):

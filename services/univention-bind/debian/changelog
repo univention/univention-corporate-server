@@ -1,3 +1,9 @@
+univention-bind (11.0.0-13) unstable; urgency=low
+
+  * Bug #43217: Handle install time in fix-ucr-dns
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Feb 2017 10:04:58 +0100
+
 univention-bind (11.0.0-12) unstable; urgency=low
 
   * Bug #43217: Improve fix-ucr-dns
