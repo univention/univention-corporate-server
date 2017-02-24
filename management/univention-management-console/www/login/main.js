@@ -46,7 +46,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
-	"umc/i18n!"
+	"umc/i18n!login/main"
 ], function(lang, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Private utilities for authentication. Authentication must handle:
@@ -224,7 +224,6 @@ define([
 			var password = tools.status('password');
 			if (username && password) {
 				//Remove language selection
-				query('#umcLoginHeaderRight').style('display', 'none');
 				//console.debug('auto login');
 				// try to authenticate via long polling... i.e., in case of an error try again until it works
 				return tools.umcpCommand('auth', {

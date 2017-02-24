@@ -8,11 +8,11 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
 		<link rel="stylesheet" href="/univention/management/style.css">
-		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript" src="/univention/login/config.js"></script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc">
+	<body class="umc umcLoginLoading">
 		<div class="umcHeader">
 			<div class="umcHeaderRight">
 				<div id="umcMenu" data-dojo-type="umc/widgets/Menu"></div>
@@ -20,26 +20,39 @@
 			</div>
 		</div>
 		<div id="umcLoginWrapper">
-			<h1 style="text-align: center;" data-i18n="Login at %(hostname)s.%(domainname)s">Login at</h1>
-			<h2 style="text-align: center;" data-i18n="Login with your domain account.">Login with your domain account.</h2>
-			<div id="umcLoginDialog" class="umcLoginDialog">
+			<h1>&nbsp;</h1>
+			<div id="umcLoginDialog" class="umcLoginDialog umcLoginLoading">
 				<div id="umcLoginLogo" class="umcLoginLogo">
-					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
+					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg">
 				</div>
-				<form id="umcLoginForm" name="umcLoginForm" method="post" class="umcLoginForm" autocomplete="on">
-					<input id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
-					<input id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
-					<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
-				</form>
-				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off"/>
-					<input id="umcLoginNewPasswordRetype" type="password" autocomplete="off"/>
-					<input type="submit" name="submit" value="Login"/>
-				</form>
-				<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<input id="umcLoginCustomPrompt" type="password" autocomplete="off"/>
-					<input type="submit" name="submit" value="Login"/>
-				</form>
+				<div class="umcLoginFormWrapper">
+					<div id="umcLoginNotices" class="umcLoginNotices"></div>
+					<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
+						<label for="umcLoginUsername">
+							<input id="umcLoginUsername" name="username" type="text" autocomplete="on">
+						</label>
+						<label for="umcLoginPassword">
+							<input id="umcLoginPassword" name="password" type="password" autocomplete="on">
+						</label>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="">
+					</form>
+					<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+						<label for="umcLoginNewPassword">
+							<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off">
+						</label>
+						<label for="umcLoginNewPasswordRetype">
+							<input id="umcLoginNewPasswordRetype" type="password" autocomplete="off">
+						</label>
+						<input id="umcNewPasswordSubmit" type="submit" name="submit" value="">
+					</form>
+					<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+						<label for="umcLoginCustomPrompt">
+							<input id="umcLoginCustomPrompt" type="password" autocomplete="off">
+						</label>
+						<input id="umcCustomPromptSubmit" type="submit" name="submit" value="">
+					</form>
+					<div id="umcLoginWarnings" class="umcLoginWarnings"></div>
+				</div>
 			</div>
 		</div>
 		<div id="umcLoginLinks"></div>

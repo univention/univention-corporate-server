@@ -44,7 +44,6 @@ define([
 	"dojo/dom-class",
 	"dojox/html/styles",
 	"dojo/fx",
-	"dojo/_base/fx",
 	"dojox/encoding/base64",
 	"dojo/Deferred",
 	"dijit/Dialog",
@@ -54,10 +53,10 @@ define([
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!",
+	"umc/i18n!login/main",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, _WidgetBase, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {
+], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, base64, Deferred, Dialog, _WidgetBase, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -93,19 +92,16 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// create the info text
+			// create the info text fields
 			this._notice = new Text({
 				class: 'umcLoginNotices',
 				content: ''
-			});
-			domConstruct.place(this._notice.domNode, 'umcLoginLogo', 'after');
+			}, 'umcLoginNotices');
 
 			this._warning = new Text({
 				class: 'umcLoginWarnings',
 				content: ''
-			});
-			this._warning.placeAt(this.containerNode, 'last');
-
+			}, 'umcLoginWarnings');
 		},
 
 		_setLoginWarningAttr: function(content) {
@@ -113,7 +109,6 @@ define([
 				content = '<p class="umcLoginWarning">' + entities.encode(content) + '</p>';
 			}
 			this._warning.set('content', content);
-			query('.umcLoginWarnings').style('display', content ? 'block' : 'none');
 		},
 
 		_setLoginNoticeAttr: function(content) {
@@ -121,7 +116,6 @@ define([
 				content = '<p class="umcLoginNotice">' + entities.encode(content) + '</p>';
 			}
 			this._notice.set('content', content);
-			query('.umcLoginNotices').style('display', content ? 'block' : 'none');
 		},
 
 		updateForm: function(info) {
@@ -157,12 +151,8 @@ define([
 				showCustomPrompt = true;
 			}
 
-			query('#umcLoginForm').style('display', showLogin ? 'block' : 'none');
-			query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
-			query('#umcCustomPromptForm').style('display', showCustomPrompt ? 'block' : 'none');
-
 			if (showLogin) {
-				this._resetForm();
+				//this._resetForm();
 			}
 			this._setFocus();
 			if (!has('touch')) {
@@ -245,7 +235,9 @@ define([
 		},
 
 		_replaceLabels: function() {
-			attr.set(dom.byId('umcLoginSubmit'), 'value', _('Login'));  // FIXME: also for the other forms
+			// all submit buttons
+			query('.umcLoginForm input[type=submit]').attr('value', _('Login'));
+
 			tools.forIn({
 				'umcLoginUsername': _('Username'),
 				'umcLoginPassword': _('Password'),
@@ -259,7 +251,7 @@ define([
 					this.fixIEPlaceholders(node);
 				}
 			});
-			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', false);
+			domClass.remove(document.body, 'umcLoginLoading', false);
 		},
 
 		fixIEPlaceholders: function(node) {
@@ -311,10 +303,10 @@ define([
 		},
 
 		standby: function(standby) {
-			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
-			query('#umcLoginLinks').style('display', standby ? 'none' : 'block');
+			domClass.toggle(document.body, 'umcLoginLoading', standby);
+			//query('#umcLoginLinks').style('display', standby ? 'none' : 'block');
 			if (standby) {
-				query('.umcLoginWarnings').style('display', 'none');
+				//query('.umcLoginWarnings').style('display', 'none');
 			} else {
 				// only non hidden input fields can be focused
 				this._setFocus();
@@ -352,8 +344,6 @@ define([
 
 		_show: function() {
 			var deferred;
-			query('#umcLoginWrapper').style('display', 'block');
-			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
 			this._setFocus();
 			if (has('ie') < 10) {
 				// trigger IE9 workaround
@@ -387,11 +377,10 @@ define([
 			var deferred = new Deferred();
 			// hide the dialog
 			var hide = lang.hitch(this, function() {
-				query('#umcLoginWrapper').style('display', 'none');
 				this.standby(false);
 				deferred.resolve();
 			});
-			baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: hide}).play();
+			//baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: hide}).play();
 			return deferred;
 		},
 

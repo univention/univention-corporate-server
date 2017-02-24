@@ -35,7 +35,7 @@ $container-background-color ?= #fff										// Backgrounds for various content 
 $minor-selected-color ?= $grey-medium						// Color for various arrows and buttons
 $base-border-color ?= #b4b4b4		// Augmented and used directly by variables to create border colors for various widgets
 $unfocused-clickable-color ?= spin(saturate(lighten($primary-color, 5), 10), 0)				// Background color for enabled buttons, text inputs
-$border-color ?= $text-color
+$border-color ?= $base-border-color
 $minor-border-color ?= $disabled-color									// Color of borders inside widgets: horizontal line in Calendar between weeks, around color swatches in ColorPalette, above Dialog action bar
 $popup-border-color ?= $secondary-color								// Border for Dialog, Menu, Tooltip.   Must also update tooltip.png (the arrow image file) to match
 $gallery-border-color ?= #dcdcdc
@@ -48,7 +48,7 @@ $disabled-text-color ?= $text-color-lightest											// Text color for disable
 $unselected-background-color ?= $secondary-color							// Background color for unselected/unopened tab button, accordion pane, TitlePane, Menu items
 $unselected-text-color ?= darken($secondary-color, 65)										// Text color for unselected/unopened tab button, accordion pane, TitlePane, Menu items
 
-$hovered-border-color ?= $base-border-color								// Hover of textbox, tab label, BorderContainer splitter, Calendar, etc.
+$hovered-border-color ?= #e0e0e0								// Hover of textbox, tab label, BorderContainer splitter, Calendar, etc.
 $hovered-background-color ?= #969696	// Background color for hover of Button, MenuBar, Accordion pane, Calendar... anything that has a (non-white) color to start with and gets darker on hover
 $hovered-text-color ?= $text-color-dark-background										// Used for title of select Accordion pane, label of select tab, hovered Menu item, etc.
 
@@ -66,7 +66,7 @@ $popup-background-color ?= $container-background-color					// Background for Dia
 
 
 // Buttons
-$button-border-color ?=  $base-border-color								// Border for (stand-alone) buttons in normal, hovered, or active state
+$button-border-color ?=  $focused-border-color								// Border for (stand-alone) buttons in normal, hovered, or active state
 $button-background-color ?= $unfocused-clickable-color					// Background color for (unhovered) buttons
 $button-hovered-background-color ?= rgba(0, 0, 0, 0.0784)	// Background color for hovered buttons
 $button-pressed-background-color ?= rgba(0, 0, 0, 0.16)				// Background color for active buttons

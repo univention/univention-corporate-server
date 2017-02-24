@@ -6,7 +6,7 @@
 
 /* 'dijitTextBox' refers to 'dijit(TextBox|DateTextBox|CurrencyTextBox|...)' */
 
-.umc .dijitTextBox
+.umc .dijitTextBox,
 //.umc .dijitInputInner
 	color: $text-color
 	width: 100%
@@ -76,7 +76,7 @@
 	/* color for (outer) border on *TextBox widgets, and border between input and buttons on ComboBox and Spinner */
 	border: 0 none
 	border-bottom: 1px solid
-	border-color: #e0e0e0
+	border-color: $base-border-color
 	transition-property: background-color, border
 	transition-duration(0.25s)
 
@@ -89,11 +89,11 @@
 .umc .dijitSelect,
 .umc .dijitTextBox
 	.dijitInputContainer
-		padding: 0 16px
+		padding: 0 10px
 
 		.dijitInputInner,
 		.umcInlineLabel
-			line-height: 32px
+			line-height: 1.75
 			text-overflow: ellipsis
 
 		.umcInlineLabel

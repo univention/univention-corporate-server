@@ -1,145 +1,134 @@
 @import "../variables"
 
-#umcLoginDialog, .umcLoginDialog
+#umcLoginDialog *
+	overflow: hidden
+
+.umc h1
+	text-align: center
+	margin-top: 1.5em
+	margin-bottom: 2.5em
+
+.umcLoginDialog
 	background-color: #ffffff
 	width: 313px
 	min-height: 313px
 	max-height: 450px
+	transition: max-height 0.75s
 	margin: 0 auto
 	padding: 3px
 	border: 0 none
 	position: relative !important
 	material-shadow(1)
+	background-size: 100% 100%
 
+	.umcLoginLogo img
+		height: 120px
+		margin: 53px auto 0
+		display: block
+		transition(margin-top 0.75s)
 
-#umcLoginDialog.umcLoginLoading
-	height: 313px
-	background-image: url("../images/login_bg.gif")
-
-#umcLoginDialog *
-	overflow: hidden
-
-
-#umcLoginDialog .umcLoginLogo img
-	height: 120px
-	margin: 53px auto 0
-	display: block
-	transition(margin-top 1s)
-
-
-#umcLoginDialog.umcLoginLoading .umcLoginLogo img
-	margin-top: 85px
-
-
-#umcLoginDialog .umcLoginForm
-	margin: 15px 15px 0 15px
-
-
-#umcLoginDialog.umcLoginLoading .umcLoginForm
-	display: none!important
-
-
-#umcLoginDialog .umcLoginForm label
-	width: 100%
-	height: 30px
-	display: block
-	padding: 0
-	margin: 20px 0
-	border-bottom: thin solid #969696
-	position: relative
-
-#umcLoginDialog .umcLoginForm.umcLoginWarning label[for=umcLoginPassword]
-	border-bottom: thin solid $error-color
-
-#umcLoginDialog .umcLoginForm.umcLoginWarning input#umcLoginPassword
-	color: $error-color
-
-#umcLoginDialog .umcLoginForm input
-	padding-right: 20px
-	margin: 0
-	border: 0 none
-	outline: none
-	background: transparent
-	font-size: 1.5em
-	color: #787878
-	width: 90%
-	height: 100%
-
-#umcLoginDialog .umcLoginForm label a,
-#umcLoginDialog .umcLoginForm input[type=submit]
-	position: absolute
-	right: 0
-	bottom: 5px
-
-#umcLoginDialog .umcLoginForm label a
-	span.umcHelpIcon
-		opacity: 0.6
-
-	&:hover span.umcHelpIcon
-		background-position: -60px -200px
-
-	&:active span.umcHelpIcon
-		background-position: -60px -200px
+	.umcLoginFormWrapper
+		max-height: 250px
+		transition: max-height 0.75s, opacity 0.75s
+		margin: 25px 15px
 		opacity: 1
 
+	.umcLoginForm
 
-#umcLoginDialog .umcLoginForm input[type=submit]
-	icon-image(0, -160, "../")
-	color: transparent
-	&:hover
-		background-position: -20px -160px
+		input
+			padding: 0 10px
+			margin: 0
+			border: none
+			outline: none
+			background: transparent
+			font-size: $font-size-title
+			color: $text-color
+			width: 100%
+			line-height: 1.75
 
-	&:active
-		icon-image(0, -160, "../", "-white")
+		input[type=submit]
+			font-size: 14px
+			color: $ucs-green
+			text-transform: uppercase
+			text-align: right
+			font-weight: 500
+			line-height: 36px
+			padding: 0 2px
+			margin: 10px 0
 
+		label
+			margin-bottom: 10px
+			position: relative
+			border-bottom: 1px solid $base-border-color
+			transition-property: background-color, border
+			transition-duration(0.75s)
+
+			&:focus,
+			&:focus:before,
+			&:focus:after
+				border-color: $focused-border-color
+				transition-duration: .1s
+
+			&:hover,
+			&:hover:before,
+			&:hover:after
+				border-color: $hovered-border-color
+				transition-duration: .1s
+
+			&:before,
+			&:after
+				content: ""
+				position: absolute
+				height: 5px
+				bottom: 0
+
+			&:before
+				border-left: thin solid $base-border-color
+				left: 0
+
+			&:after
+				right: 0
+				border-right: thin solid $base-border-color
+
+.umc.umcLoginLoading .umcLoginDialog
+	max-height: 313px
+	background-image: url("../images/login_bg.gif")
+
+	.umcLoginLogo img
+		margin-top: 85px
+
+	.umcLoginFormWrapper
+		max-height: 0
+		opacity: 0
+
+
+.umcLoginWarning,
+.umcLoginWarning a
+	color: $error-color
 
 #umcLoginLinks
+	transition: opacity .75s
+	opacity: 1
 	text-align: center
-	margin: 1em
+	margin: 3em 2em
 	a
 		margin: 0 1em
+	p
+		margin-bottom: 1.5em
 
+	.umc.umcLoginLoading &
+		opacity: 0
 
-.umcLoginWarnings, .umcLoginNotices
+.umcLoginMessages,
+.umcLoginNotices
 	margin: 0 auto
 	padding: 1.3em
 	width: 313px
 	font-size: 0.9em
 
-.umcLoginWarnings p, .umcLoginNotices p
-	margin: 0
-	padding: 0
-
-.umcLoginWarning, .umcLoginWarning a
-	color: $error-color
-
-#umcLoginHeaderRight
-	position: absolute
-	top: 0
-	right: 0
-
-
-#umcLanguageSwitch
-	float: left
-	.dijitButtonNode
-		border: 0 none
-		box-shadow: none
-		background: none
-		filter: none
-
-
-#umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner
-	icon-image(0, -220, "../", "", 20px, 25px)
-
-
-#umcLanguageSwitch .dijitHover .dijitArrowButtonInner
-	background-position: -20px -220px
-	opacity: 0.66
-
-#umcLanguageSwitch .dijitActive .dijitArrowButtonInner
-	background-position: -20px -220px
-	opacity: 1
-
+	p
+		margin: 0
+		padding: 0
 
 /* do not show the dark underlay during the login screen */
 .umc .dijitDialogUnderlayWrapper.umcBackground .dijitDialogUnderlay

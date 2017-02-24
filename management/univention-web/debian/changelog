@@ -1,3 +1,9 @@
+univention-web (1.0.29-2) unstable; urgency=medium
+
+  * Bug #43528: adjust styling of login page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Feb 2017 16:27:33 +0100
+
 univention-web (1.0.29-1) unstable; urgency=medium
 
   * Bug #42174: login dialog
