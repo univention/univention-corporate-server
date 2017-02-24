@@ -1,3 +1,10 @@
+univention-management-console (9.0.42-1) unstable; urgency=medium
+
+  * Bug #42114: prevent server crashes in the authentication finished
+  	callback
+
+ -- Florian Best <best@univention.de>  Fri, 24 Feb 2017 08:07:26 +0100
+
 univention-management-console (9.0.41-1) unstable; urgency=medium
 
   * Bug #42174: adjust visiblity of error message; prevent that exceptions in topic
