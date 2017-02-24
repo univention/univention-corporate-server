@@ -138,7 +138,7 @@ define([
 			if (this._cookiesEnabled()) {
 				return;
 			}
-			login._loginDialog.disableForm(_('Please enable your browser cookies which are necessary for Univention Services.'));
+			login._loginDialog.disableForm(_('Please enable your browser cookies which are necessary for using Univention Services.'));
 		},
 
 		addTooltips: function() {

@@ -26,33 +26,23 @@
 				<div id="umcLoginLogo" class="umcLoginLogo">
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
 				</div>
-				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
-					<label for="umcLoginUsername">
-						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
-					</label>
-					<label for="umcLoginPassword">
-						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
-						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
-					</label>
+				<form id="umcLoginForm" name="umcLoginForm" method="post" class="umcLoginForm" autocomplete="on">
+					<input id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
+					<input id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
+					<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
 				</form>
 				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<label for="umcLoginNewPassword">
-						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off"/>
-					</label>
-					<label for="umcLoginNewPasswordRetype">
-						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password" autocomplete="off"/>
-						<input type="submit" name="submit" value="Login"/>
-					</label>
+					<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off"/>
+					<input id="umcLoginNewPasswordRetype" type="password" autocomplete="off"/>
+					<input type="submit" name="submit" value="Login"/>
 				</form>
 				<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-					<label for="umcLoginCustomPrompt">
-						<input placeholder="One time password" id="umcLoginCustomPrompt" type="password" autocomplete="off"/>
-						<input type="submit" name="submit" value="Login"/>
-					</label>
+					<input id="umcLoginCustomPrompt" type="password" autocomplete="off"/>
+					<input type="submit" name="submit" value="Login"/>
 				</form>
 			</div>
 		</div>
-		<div id="umcLoginLinks"/>
+		<div id="umcLoginLinks"></div>
 
 		<!-- preload the image! -->
 		<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;">
