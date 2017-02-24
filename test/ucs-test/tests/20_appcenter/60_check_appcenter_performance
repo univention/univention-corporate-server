@@ -20,7 +20,7 @@ def main():
 	appcenter_update.call()
 
 	print("Appcenter update done")
-	max_time = 4.5
+	max_time = 5
 	account = utils.UCSTestDomainAdminCredentials()
 	request_query = ('appcenter/query', { 'quick': True }, )
 
