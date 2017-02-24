@@ -1,0 +1,27 @@
+#!/usr/share/ucs-test/runner bash
+## desc: check if the default policy is owned by Administrator
+## exposure: safe
+## tags:
+##  - apptest
+## packages:
+## - univention-samba4
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+eval "$(ucr shell)"
+
+administrator=${users_default_administrator:-Administrator}
+
+administrator_uid=$(univention-ldapsearch uid="$administrator" uidNumber | sed -ne 's|^uidNumber: ||p')
+
+for policy in /var/lib/samba/sysvol/$domainname/Policies/*; do
+	ownerid=$(stat -c "%u" "$policy")
+	if [ "$ownerid" != "$administrator_uid" ]; then
+		ls -la $policy
+		fail_test 110 "The owiner uid for $policy is not $ownerid"
+	fi
+done
+
+exit $RETVAL

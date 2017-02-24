@@ -1,3 +1,10 @@
+ucs-test (7.0.11-9) unstable; urgency=medium
+
+  * 00_checks/47_sysvol_ownership: Added a test case to check the
+    ownership of the default GPOs (Bug #41319)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Feb 2017 06:51:38 +0100
+
 ucs-test (7.0.11-8) unstable; urgency=low
 
   * Bug #43386: Add PortsRedirectionUDP
