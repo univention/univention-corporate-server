@@ -259,11 +259,9 @@ define([
 			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
 			if (gridIsFullyRendered) {
 				this._updateFooterContent();
-				this._statusMessage.standby(false);
 				this._scrollSignal.remove();
 			} else {
 				this._statusMessage.set('content', '');
-				this._statusMessage.standby(true);
 			}
 		},
 
@@ -847,7 +845,6 @@ define([
 		},
 
 		filter: function(query, options) {
-			this._statusMessage.standby(false);
 			style.set(this._grid.domNode, 'max-height', '1px');
 			this.standby(true);
 			this._filter(query, options).then(lang.hitch(this, function() {
@@ -866,7 +863,6 @@ define([
 			var onError = lang.hitch(this, function(error) {
 				error = tools.parseError(error);
 				this._statusMessage.set('content', entities.encode(error.message || _('Could not load search results')));
-				this._statusMessage.standby(false);
 				this._grid.set('collection', new Memory());
 				this._updateFooterContent();
 			});
