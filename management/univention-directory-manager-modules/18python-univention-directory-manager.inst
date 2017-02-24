@@ -72,7 +72,7 @@ univention-directory-manager settings/extended_attribute create "$@" \
 	--set multivalue=1 \
 	$mods || die
 
-if [ "$JS_LAST_EXECUTED_VERSION" = 1 ];
+if [ "$JS_LAST_EXECUTED_VERSION" = 1 ]; then
 	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" --set multivalue=1
 fi
 
