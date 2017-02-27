@@ -365,6 +365,12 @@ if master <= me:
 }
 check_master_version
 
+# Bug 43639, removed old sysklogd configs, can be removed after 4.2-0
+if [ "deinstall" = "$(dpkg --get-selections sysklogd 2>/dev/null | awk '{print $2}')" ]; then
+	dpkg -P sysklogd >>"$UPDATER_LOG" 2>&1
+	rm /etc/init.d/sysklogd* >>"$UPDATER_LOG" 2>&1
+fi
+
 # autoremove before the update
 if ! is_ucr_true update42/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
