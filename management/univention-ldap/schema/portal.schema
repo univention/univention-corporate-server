@@ -1,0 +1,167 @@
+# Univention Portal OID:  1.3.6.1.4.1.10176.4207
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionPortal univention:4207
+objectIdentifier univentionPortal 1.3.6.1.4.1.10176.4207
+objectIdentifier univentionPortalAttributeType univentionPortal:1
+objectIdentifier univentionPortalObjectClass univentionPortal:2
+
+objectIdentifier univentionPortalEntry 1.3.6.1.4.1.10176.4208
+objectIdentifier univentionPortalEntryAttributeType univentionPortalEntry:1
+objectIdentifier univentionPortalEntryObjectClass univentionPortalEntry:2
+
+objectIdentifier univentionPortalComputer 1.3.6.1.4.1.10176.4209
+objectIdentifier univentionPortalComputerAttributeType univentionPortalComputer:1
+objectIdentifier univentionPortalComputerObjectClass univentionPortalComputer:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+### Definition for univentionPortal
+
+attributetype ( univentionPortalAttributeType:1 NAME 'univentionPortalDisplayName'
+	DESC 'Portal display name'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalAttributeType:2 NAME 'univentionPortalShowMenu'
+	DESC 'Portal show menu'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalAttributeType:3 NAME 'univentionPortalShowSearch'
+	DESC 'Portal show search'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalAttributeType:4 NAME 'univentionPortalShowLogin'
+	DESC 'Portal show login'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalAttributeType:5 NAME 'univentionPortalShowApps'
+	DESC 'Portal show apps'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalAttributeType:6 NAME 'univentionPortalShowServers'
+	DESC 'Portal show servers'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalAttributeType:7 NAME 'univentionPortalBackground'
+	DESC 'Portal background'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
+	DESC 'Portal data'
+	SUP top
+	MUST ( cn )
+	MAY (	
+			  univentionPortalDisplayName
+			$ univentionPortalShowMenu
+			$ univentionPortalShowSearch
+			$ univentionPortalShowLogin
+			$ univentionPortalShowApps
+			$ univentionPortalShowServers
+			$ univentionPortalBackground
+		)
+	)
+
+### Definition for univentionPortalEntry
+
+attributetype ( univentionPortalEntryAttributeType:1 NAME 'univentionPortalEntryDisplayName'
+	DESC 'Portal entry display name'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalEntryAttributeType:2 NAME 'univentionPortalEntryDescription'
+	DESC 'Portal entry description'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalEntryAttributeType:3 NAME 'univentionPortalEntryFavorite'
+	DESC 'Portal entry favorite'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalEntryAttributeType:4 NAME 'univentionPortalEntryLink'
+	DESC 'Portal entry link'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalEntryAttributeType:5 NAME 'univentionPortalEntryPortal'
+	DESC 'Portal entry portal'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalEntryAttributeType:6 NAME 'univentionPortalEntryActivate'
+	DESC 'Portal entry activated'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionPortalEntryAttributeType:7 NAME 'univentionPortalEntryAuthRestriction'
+	DESC 'Portal entry shown for authrorized users'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionPortalEntryAttributeType:8 NAME 'univentionPortalEntryIcon'
+	DESC 'Portal entry icon'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionPortalEntryAttributeType:9 NAME 'univentionPortalEntryCategory'
+	DESC 'Portal entry category'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionPortalEntryObjectClass:1 NAME 'univentionPortalEntry'
+	DESC 'Portal Entry data'
+	SUP top
+	MUST ( cn )
+	MAY (	
+			  univentionPortalEntryDisplayName
+			$ univentionPortalEntryDescription
+			$ univentionPortalEntryFavorite
+			$ univentionPortalEntryLink
+			$ univentionPortalEntryPortal
+			$ univentionPortalEntryActivate
+			$ univentionPortalEntryAuthRestriction
+			$ univentionPortalEntryIcon
+			$ univentionPortalEntryCategory
+		)
+	)
+
+### Extended Attribute for computers
+
+attributetype ( univentionPortalComputerAttributeType:1 NAME 'univentionComputerPortal'
+	DESC 'Portal for computer'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionPortalComputerObjectClass:1 NAME 'univentionPortalComputer'
+	DESC 'Computer with Univention Portal'
+	SUP top
+	AUXILIARY
+	MAY (	
+			  univentionComputerPortal
+		)
+	)

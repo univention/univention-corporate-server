@@ -1,0 +1,4 @@
+access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
+	by dn.onelevel="cn=dc,cn=computers,@%@ldap/base@%@" write
+	by dn.onelevel="cn=memberserver,cn=computers,@%@ldap/base@%@" write
+	by * read break

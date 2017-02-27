@@ -19,6 +19,7 @@ if configRegistry['ldap/server/type'] == "master":
 	print 'include         /usr/share/univention-ldap/schema/custom-attribute.schema'
 	print 'include         /usr/share/univention-ldap/schema/krb5-kdc.schema'
 	print 'include         /usr/share/univention-ldap/schema/dhcp.schema'
+	print 'include         /usr/share/univention-ldap/schema/portal.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-dhcp.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-default.schema'
 	print 'include         /usr/share/univention-ldap/schema/license.schema'
