@@ -831,6 +831,10 @@
 				Some old packages like <package>emacs23</package> are no longer part of Debian Jessie.
 				Dependencies on such old packages have been updated to their replacements (<u:bug>43649</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Old custom firefox packages have been replaced with the debian upstream package (<package>firefox-esr</package>).
+				During the update to &ucsUCS; 4.2-0 the old package are automatically replaced (<u:bug>42322</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
