@@ -3362,6 +3362,19 @@ class policyName(string):
 		)
 
 
+class Portals(UDM_Objects):
+	udm_modules = ('settings/portal', )
+	label = '%(name)s'
+
+
+class AuthRestriction(select):
+	choices = [
+		('admin', _('Visible for Admins only')),
+		('authenticated', _('Visible for authenticated users')),
+		('anonymous', _('Visible for everyone')),
+	]
+
+
 class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
 
 	def __init__(self):
