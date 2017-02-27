@@ -66,7 +66,7 @@ define([
 		var checkOutOfMaintenance = function() {
 			tools.umcpCommand('updater/maintenance_information').then(function(data) {
 				var info = data.result;
-				if (!info || info.maintained || (info.maintenance_extended && info.has_extended_maintenance)) {
+				if (!info || !info.show_warning) {
 					return;
 				}
 
