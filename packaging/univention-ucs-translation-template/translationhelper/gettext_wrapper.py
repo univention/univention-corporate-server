@@ -59,6 +59,10 @@ def create_empty_po(binary_pkg_name, new_po_path):
 	_clean_header(new_po_path)
 
 
+def install_mo():
+
+
+
 def join_existing(language, output_file, input_files, cwd=None):
 	if not os.path.isfile(output_file):
 		raise POFileError("Can't join input files into {}. File does not exist.".format(output_file))

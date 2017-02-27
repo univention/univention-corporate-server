@@ -45,6 +45,8 @@ import traceback
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 
+from pdb import set_trace as dbg
+
 # Use this set to ignore whole subtrees of a given source tree
 DIR_BLACKLIST = set([
 	'./doc',
@@ -133,13 +135,19 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 class SpecialCase():
 
-	"""Consumes special case definition and computes resulting sets of source
+	"""Consumes special case definition and determines matching sets of source
 	files"""
 
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
+		# FIXME: this would circumvent custom getters and setter?
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
-		self.package_dir, self.binary_package_name = re.match(r'(.*)/debian/(.*).univention-l10n', def_relative).groups()
+		matches = re.match(r'(.*)/debian/(.*).univention-l10n', def_relative)
+		if matches:
+			self.package_dir, self.binary_package_name = matches.groups()
+		else:
+			self.binary_package_name = re.match(r'debian/(.*).univention-l10n', def_relative).groups()[0]
+			self.package_dir = os.getcwd()
 		self.source_dir = source_dir
 		self.po_subdir = self.po_subdir.format(lang=target_language)
 		self.destination = self.destination.format(lang=target_language)
@@ -147,15 +155,23 @@ class SpecialCase():
 		self.path_to_definition = path_to_definition
 
 	def _get_files_matching_patterns(self):
-		src_pkg_path = os.path.join(self.source_dir, self.package_dir)
+		try:
+			src_pkg_path = os.path.join(self.source_dir, self.package_dir)
+		except AttributeError:
+			src_pkg_path = os.path.join(os.getcwd())
+			pass
+		# if self.package_dir:
+		# 	src_pkg_path = os.path.join(self.source_dir, self.package_dir)
+		# else:
+		# 	pass
+		# 	#src_pkg_path = os.path.join(os.getcwd(), self.)
 		matched = list()
 		regexs = list()
 		for pattern in [os.path.join(src_pkg_path, pattern) for pattern in self.input_files]:
 			try:
 				regexs.append(re.compile(r'{}$'.format(pattern)))
 			except re.error:
-				sys.exit("""Invalid input_files statement in: {}
-Value must be valid regular expression.""".format(self.path_to_definition))
+				sys.exit("""Invalid input_files statement in: {}. Value must be valid regular expression.""".format(self.path_to_definition))
 		for parent, dirnames, fnames in os.walk(src_pkg_path):
 			paths = [os.path.join(parent, fn) for fn in fnames]
 			for rex in regexs:
@@ -170,7 +186,7 @@ Value must be valid regular expression.""".format(self.path_to_definition))
 		source_file_sets = list()
 		for mime, file_set in files_by_mime.iteritems():
 			try:
-				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), mime, file_set))
+				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), self.binary_package_name, mime, file_set))
 			except sourcefileprocessing.UnsupportedSourceType:
 				continue
 		return source_file_sets
@@ -266,35 +282,46 @@ def write_makefile(all_modules, special_cases, new_package_dir, target_language)
 def translate_special_case(special_case, source_dir, output_dir):
 	path_src_pkg = os.path.join(source_dir, special_case.package_dir)
 	if not os.path.isdir(path_src_pkg):
-		print("Warning: Path defined under 'package_dir' not found. Check specialcase.json definitions with package_name: {}".format(special_case.package_dir))
+		print("Warning: Path defined under 'package_dir' not found. Please check the definitions in the *.univention-l10n file in {}".format(special_case.package_dir))
 		return
 	new_po_path = os.path.join(output_dir, special_case.package_dir, special_case.new_po_path)
 	new_po_dir = os.path.dirname(new_po_path)
 	if not os.path.exists(new_po_dir):
 		os.makedirs(new_po_dir)
-	# new_po_path = os.path.join(new_po_path, '{}.po'.format(target_language))
-	pofile.create_empty_po(special_case.binary_package_name, new_po_path)
 	for source_file_set in special_case.get_source_file_sets():
 		source_file_set.process(new_po_path)
 
 
-def get_special_cases(source_tree_path, target_language):
-	# currently only svn checkouts on branch level are processed correctly.
-	# So the tree in source_tree_path must contain *.univention-l10n files on
-	# the third (UCS@school) or fourth (UCS) level
-	# FIXME: This should check for SVN metadata or the like
+def read_special_case_definition(definition_path, source_tree_path, target_language):
+	with open(definition_path) as fd:
+		try:
+			sc_definitions = json.load(fd)
+		except ValueError:
+			sys.exit('Error: Invalid syntax in {}. File must be valid JSON.'.format(definition_path))
+		for scdef in sc_definitions:
+			yield SpecialCase(scdef, source_tree_path, definition_path, target_language)
+
+
+def get_special_cases_from_srcpkg(source_tree_path, target_language):
+	special_case_files = glob('debian/*.univention-l10n')
+	special_cases = []
+	for sc_definitions in special_case_files:
+		for sc in read_special_case_definition(sc_definitions, os.getcwd(), target_language):
+			special_cases.append(sc)
+	return special_cases
+
+
+def get_special_cases_from_checkout(source_tree_path, target_language):
+	"""Process *.univention-l10n files in the whole SVN branch. Currently they
+	lay 3 (UCS@school) or 4(UCS) directory levels deep in the SVN repository.
+	"""
+	# FIXME: This should check for SVN metadata or the like to be more robust.
 	special_cases = []
 	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))
 	if not sc_files:
 		raise NoSpecialCaseDefintionsFound()
 	for definition_path in sc_files:
-		with open(definition_path) as fd:
-			try:
-				sc_definitions = json.load(fd)
-			except ValueError:
-				sys.exit('Error: Invalid syntax in {}. File must be valid JSON.'.format(definition_path))
-			for scdef in sc_definitions:
-				special_cases.append(SpecialCase(scdef, source_tree_path, definition_path, target_language))
+		special_cases.extend([sc for sc in read_special_case_definition(definition_path, source_tree_path, target_language)])
 	return special_cases
 
 

@@ -32,6 +32,8 @@ import os
 import pofile
 import polib
 
+from pdb import set_trace as dbg
+
 
 class UnsupportedSourceType(Exception):
 	pass
@@ -39,37 +41,39 @@ class UnsupportedSourceType(Exception):
 
 class SourceFileSet(object):
 
-	def __init__(self, src_pkg_path, files):
+	def __init__(self, src_pkg_path, binary_pkg_name, files):
 		self.files = files
 		self.src_pkg_path = src_pkg_path
+		self.binary_pkg_name = binary_pkg_name
 
 	def process(self, new_po_path):
-		raise NotImplementedError('abstract')
+		if not os.path.isfile(new_po_path):
+			pofile.create_empty_po(self.binary_pkg_name, new_po_path)
 
 
 class SourceFilesXgettext(SourceFileSet):
 
-	def process(self, gettext_lang, new_po_path, files):
-		pofile.join_existing(gettext_lang, new_po_path, files, cwd=self.src_pkg_path)
+	def process(self, gettext_lang, new_po_path):
+		super(SourceFilesXgettext, self).process(new_po_path)
+		pofile.join_existing(gettext_lang, new_po_path, self.files, cwd=self.src_pkg_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):
 
 	def process(self, new_po_path):
-		super(SourceFilesShell, self).process('Shell', new_po_path, self.files)
+		super(SourceFilesShell, self).process('Shell', new_po_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
 	def process(self, new_po_path):
-		super(SourceFilesPython, self).process('Python', new_po_path, self.files)
+		super(SourceFilesPython, self).process('Python', new_po_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
 	def process(self, new_po_path):
-		# xgettext in UCS 4.1 has no 'JavaScript' language option
-		super(SourceFilesJavaScript, self).process('JavaScript', new_po_path, self.files)
+		super(SourceFilesJavaScript, self).process('JavaScript', new_po_path)
 
 
 class SourceFilesHTML(SourceFileSet):
@@ -87,26 +91,25 @@ class SourceFilesHTML(SourceFileSet):
 						new_po.append(new_entry)
 				# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
 				if tree.xpath('//script'):
-					# xgettext in UCS 4.1 has no 'JavaScript' language option
-					pofile.join_existing('Python', new_po_path, html_path, cwd=self.src_pkg_path)
+					pofile.join_existing('JavaScript', new_po_path, html_path, cwd=self.src_pkg_path)
 		new_po.save(new_po_path)
 
 
 class SourceFileSetFactory(object):
-	_map = {'text/x-shellscript': SourceFilesShell,
+	process_by_type = {'text/x-shellscript': SourceFilesShell,
 			'text/x-python': SourceFilesPython,
 			'text/html': SourceFilesHTML,
 			'application/javascript': SourceFilesJavaScript}
 
 	@classmethod
-	def from_mimetype(cls, src_pkg_path, mimetype, files):
+	def from_mimetype(cls, src_pkg_path, binary_pkg_name, mimetype, files):
 		try:
-			obj = cls._map[mimetype](src_pkg_path, files)
+			obj = cls.process_by_type[mimetype](src_pkg_path, binary_pkg_name, files)
 		except KeyError:
 			raise UnsupportedSourceType(files)
 		else:
 			return obj
 
 
-def from_mimetype(src_pkg_path, mimetype, files):
-	return SourceFileSetFactory.from_mimetype(src_pkg_path, mimetype, files)
+def from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files):
+	return SourceFileSetFactory.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)

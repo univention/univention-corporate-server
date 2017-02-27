@@ -77,7 +77,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 
 	special_cases = []
 	try:
-		special_cases = tlh.get_special_cases(options.source_dir, options.target_language)
+		special_cases = tlh.get_special_cases_from_checkout(options.source_dir, options.target_language)
 	except tlh.NoSpecialCaseDefintionsFound:
 		print(NO_SC_WARNING)
 
