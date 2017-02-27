@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.0-4) unstable; urgency=medium
+
+  * Bug #35147: fix --fill-testdb
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 27 Feb 2017 14:22:25 +0100
+
 univention-pkgdb (10.0.0-3) unstable; urgency=low
 
   * Bug #39903: Ignore not existing referenced packages

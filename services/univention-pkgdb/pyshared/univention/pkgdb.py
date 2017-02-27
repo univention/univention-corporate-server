@@ -485,7 +485,7 @@ def action_fill_testdb(connection, cursor, config_registry):
 	sysrole = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()
-	architecture = apt_pkg.Config.find("APT::Architecture")
+	architecture = apt_pkg.config.find("APT::Architecture")
 	log('start fill of testdb ')
 	for sysname in ['testsystem%04d' % (i, ) for i in xrange(1, 1500)]:
 		try:
