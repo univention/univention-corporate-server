@@ -232,6 +232,12 @@ Description[en]=An integer value between 0 and 255, which configures whether the
 Type=int
 Categories=service-samba
 
+[samba/ntlm/auth]
+Description[de]=Über diese Variable lässt sich die Samba Option "ntlm auth" anpassen (siehe man smb.conf). UCS default ist "yes".
+Description[en]=This variable can be used to adjust the Samba option "ntlm auth" (see man smb.conf). UCS default is "yes".
+Type=str
+Categories=service-samba
+
 [samba/winbind/nested/groups]
 Description[de]=UCS unterstützt die Verschachtelung von Gruppen (Gruppen in Gruppen). Ist diese Variable auf 'yes' gesetzt, werden diese verschachtelten Gruppen in Winbind aufgelöst.
 Description[en]=UCS supports nested groups (groups as members of groups). If this variable is set to 'yes', Winbind resolves these nested groups.
