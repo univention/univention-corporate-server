@@ -207,7 +207,8 @@
 						JavaScript and CSS code has been moved from &ucsUMC; into a generic and separate web library that can be used by other web applications, as well (<u:bug>38824</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						JavaScript hook modules can be defined via the &ucsUCRV; <envar>umc/web/hooks/&lt;packageName&gt;=&lt;javaScriptModule&gt;</envar>(<u:bug>42263</u:bug>).
+						Global menu entries can now be defined via JavaScript hook modules.
+						A JavaScript hook module needs to be placed as module in the JavaScript directory <envar>umc/hook</envar> and it needs to be defined via the &ucsUCRV; <envar>umc/web/hooks/&lt;packageName&gt;=&lt;javaScriptModule&gt;</envar> (<u:bug>42263</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Improved internationalization for JavaScript files in UMC (<u:bug>42293</u:bug>).
