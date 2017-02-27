@@ -1,3 +1,10 @@
+univention-system-setup (10.0.7-11) unstable; urgency=medium
+
+  * Bug #43626: Add explicit apache2 restart after system certificate has been
+    created
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 27 Feb 2017 15:37:10 +0100
+
 univention-system-setup (10.0.7-10) unstable; urgency=low
 
   * Bug #42322: switch to firefox-esr

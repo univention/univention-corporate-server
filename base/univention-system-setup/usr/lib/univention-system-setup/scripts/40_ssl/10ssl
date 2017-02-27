@@ -138,6 +138,10 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 			if [ ! -e "$fqdn/cert.pem" ]; then
 				continue
 			fi
+			# Do not regenerate the certificate for default directory
+			if [ "$fqdn" = "unassigned-hostname.unassigned-domain" ]; then
+				continue
+			fi
 			# get the hostname
 			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
 			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')

@@ -208,6 +208,7 @@ fi
 
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+invoke-rc.d apache2 restart
 
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
