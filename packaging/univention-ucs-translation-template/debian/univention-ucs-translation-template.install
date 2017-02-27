@@ -1,4 +1,4 @@
-univention/translationhelper usr/share/pyshared/univention
+translationhelper usr/share/pyshared/univention
 base_makefile usr/share/univention-ucs-translation-template
 univention-ucs-translation-merge usr/bin
 univention-ucs-translation-build-package usr/bin
