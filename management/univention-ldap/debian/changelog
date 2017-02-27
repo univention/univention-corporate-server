@@ -1,3 +1,9 @@
+univention-ldap (13.0.3-7) unstable; urgency=medium
+
+  * Bug #42175: Schema for Portal / Portal Entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 Feb 2017 09:47:52 +0100
+
 univention-ldap (13.0.3-6) unstable; urgency=low
 
   * Bug #36215: disable ldap/shadowbind during update
