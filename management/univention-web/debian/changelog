@@ -1,3 +1,11 @@
+univention-web (1.0.29-3) unstable; urgency=medium
+
+  Bug #43528:
+  * Add username and hostname to umc/widgets/Menu
+  * Adjust styling of umc/widgets/Menu
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Feb 2017 19:27:00 +0100
+
 univention-web (1.0.29-2) unstable; urgency=medium
 
   * Bug #43528: adjust styling of login page

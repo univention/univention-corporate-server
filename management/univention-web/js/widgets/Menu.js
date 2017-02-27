@@ -32,14 +32,17 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/window",
 	"dojo/on",
 	"dojo/Deferred",
+	"dojo/topic",
 	"dojo/mouse",
 	"dojo/touch",
 	"dojox/gesture/tap",
 	"dojo/has",
 	"dojo/dom-class",
 	"dojo/dom-construct",
+	"dojo/window",
 	"put-selector/put",
 	"umc/tools",
 	"dijit/MenuItem",
@@ -51,9 +54,25 @@ define([
 	"umc/widgets/Text",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, on, Deferred, mouse, touch, tap, has, domClass, domConstruct, put, tools, DijitMenuItem, PopupMenuItem, MenuSeparator, _WidgetBase, _TemplatedMixin, ContainerWidget, Text, _) {
+], function(declare, lang, array, baseWin, on, Deferred, topic, mouse, touch, tap, has, domClass, domConstruct, win, put, tools, DijitMenuItem, PopupMenuItem, MenuSeparator, _WidgetBase, _TemplatedMixin, ContainerWidget, Text, _) {
 
 	var mobileMenuDeferred = new Deferred();
+
+	topic.subscribe('/umc/authenticated', function() {
+		// user has logged in -> set username and host in menu header
+		mobileMenuDeferred.then(function(menu) {
+			menu.informationHeader.username.set('content', tools.status('username'));
+			menu.informationHeader.host.set('content', lang.replace('@{0}', [tools.status('hostname')]));
+		});
+	});
+
+	topic.subscribe('/umc/unauthenticated', function() {
+		// user has logged out -> unset username and host in menu header
+		mobileMenuDeferred.then(function(menu) {
+			menu.informationHeader.username.set('content', '');
+			menu.informationHeader.host.set('content', '');
+		});
+	});
 
 	var MenuSlide = declare([ContainerWidget], {
 		isSubMenu: true,
@@ -214,7 +233,7 @@ define([
 
 	var MobileMenu = declare([ContainerWidget], {
 		_menuMap: null,
-		'class': 'mobileMenu hasPermaHeader',
+		'class': 'mobileMenu',
 		menuSlides: null,
 		permaHeader: null,
 		popupHistory: null,
@@ -232,6 +251,7 @@ define([
 			this.inherited(arguments);
 			this._menuMap = {};
 
+			this.addInformationHeader();
 			this.addMenuSlides();
 			this.addUserMenu();
 			this.addPermaHeader();
@@ -244,9 +264,26 @@ define([
 			mobileMenuDeferred.resolve(this);
 		},
 
+		addInformationHeader: function() {
+			var username = new Text({
+				'class': 'menuInformationHeaderUsername'
+			});
+			var host = new Text({
+				'class': 'menuInformationHeaderHostname'
+			});
+			this.informationHeader = new ContainerWidget({
+				'class': 'menuInformationHeader',
+				username: username,
+				host: host
+			});
+			this.informationHeader.addChild(username);
+			this.informationHeader.addChild(host);
+			this.addChild(this.informationHeader);
+		},
+
 		addMenuSlides: function() {
 			var menuSlides = new ContainerWidget({
-				'class': 'menuSlides popupSlideNormalTransition'
+				'class': 'menuSlides popupSlideNormalTransition overlappedSlidePushTransition'
 			});
 			this.menuSlides = menuSlides;
 			this.addChild(menuSlides);
@@ -260,6 +297,7 @@ define([
 			});
 			this._menuMap.umcMenuMain = userMenuItem;
 			domClass.replace(userMenuItem.menuSlide.domNode, 'visibleSlide', 'hiddenSlide');
+			domClass.add(userMenuItem.menuSlide.domNode, 'mainSlide');
 			this.menuSlides.addChild(userMenuItem.menuSlide);
 		},
 
@@ -557,6 +595,8 @@ define([
 
 		openMobileMenu: function() {
 			domClass.toggle(dojo.body(), 'mobileMenuActive');
+			var hasScrollbar = baseWin.body().scrollHeight > win.getBox().h;
+			domClass.toggle(dojo.body(), 'hasScrollbar', hasScrollbar);
 			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
@@ -567,6 +607,7 @@ define([
 				return;
 			}
 			domClass.remove(dojo.body(), 'mobileMenuActive');
+			domClass.remove(dojo.body(), 'hasScrollbar');
 			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
