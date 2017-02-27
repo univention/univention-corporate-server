@@ -1,3 +1,12 @@
+univention-updater (11.0.11-21) unstable; urgency=medium
+
+  Bug #43026:
+  * Add translation for warning notification
+  * Fix message for Base subscription not displaying correctly
+  * Fix detection of support and premiumsupport
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Feb 2017 13:11:46 +0100
+
 univention-updater (11.0.11-20) unstable; urgency=medium
 
   * Bug #43569: Fix for Apps without updates

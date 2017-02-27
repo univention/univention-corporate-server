@@ -635,7 +635,7 @@ define([
 			// load maintenance information and show message if current UCS version is out of maintenance
 			tools.umcpCommand('updater/maintenance_information').then(lang.hitch(this, function(data) {
 				var info = data.result;
-				if (!info || info.maintained || (info.maintenance_extended && info.has_extended_maintenance)) {
+				if (!info || !info.show_warning) {
 					return;
 				}
 
@@ -651,7 +651,7 @@ define([
 				} else if (info.base_dn === 'Free for personal use edition' || info.base_dn === 'UCS Core Edition') {
 					msg = lang.replace(msgBase, [_('Core Edition')]) + lang.replace(msgExpanded, [_('Enterprise Subscriptions')]);
 				} else if (!info.support && !info.premium_support) {
-					msg = lang.replace(msgBase, [_('Base Subscription')], lang.replace(msgExpanded, [_('Premium Subscriptions')]));
+					msg = lang.replace(msgBase, [_('Base Subscription')]) + lang.replace(msgExpanded, [_('Premium Subscriptions')]);
 				} else if (info.support && !info.premium_support) {
 					msg = lang.replace(msgBase, [_('Standard Subscription')]) + lang.replace(msgExpanded, [_('Premium Subscriptions')]);
 				} else if (info.premium_support) {

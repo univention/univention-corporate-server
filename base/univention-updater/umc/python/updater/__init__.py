@@ -225,12 +225,10 @@ class Instance(Base):
 			status = yaml.load(response.content)
 			# the yaml file contains for maintained either false, true or extended as value.
 			# yaml.load converts true and false into booleans but extended into string.
-			has_extended_maintenance = ucr.is_true('license/extended_maintenance/{}'.format(version))
-			maintained = status.get('maintained')
-			maintenance_extended = False
-			if maintained == 'extended':
-				maintained = False
-				maintenance_extended = True
+			_extended_maintenance_bought = ucr.is_true('license/extended_maintenance/{}'.format(version))
+			_maintained_status = status.get('maintained')
+			maintenance_extended = _maintained_status == 'extended'
+			show_warning = not _extended_maintenance_bought if maintenance_extended else not _maintained_status
 		except requests.exceptions.RequestException as exc:
 			MODULE.error("Querying maintenance information failed: %s" % (exc,))
 			return
@@ -249,14 +247,13 @@ class Instance(Base):
 				license_object = results[0]
 				license_object.open()
 				base_dn = license_object.get('base')
-				premiumsupport = bool(license_object.get('premiumsupport'))
-				support = bool(license_object.get('support'))
+				premiumsupport = ucr.is_true(value=license_object.get('premiumsupport'))
+				support = ucr.is_true(value=license_object.get('support'))
 
 		return {
 			'ucs_version': version,
-			'maintained': maintained,
+			'show_warning': show_warning,
 			'maintenance_extended': maintenance_extended,
-			'has_extended_maintenance': has_extended_maintenance,
 			'base_dn': base_dn,
 			'support': support,
 			'premium_support': premiumsupport

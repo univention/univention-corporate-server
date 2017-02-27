@@ -43,6 +43,8 @@ msgid ""
 "<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out "
 "of maintenance. Plase visit the %s for more information"
 msgstr ""
+"<b style='color: #ff7070'>Achtung:</b> Für die aktuelle UCS Version werden keine Sicherheitsupdates "
+"mehr veröffentlicht. Bitte rufen Sie das %s auf um mehr Informationen zu erhalten."
 
 #: umc/js/updater/ProgressPage.js:306 umc/js/updater.js:318
 #: umc/js/updater.js:450
@@ -72,7 +74,7 @@ msgstr ""
 "<b>Achtung</b>: Sie verwenden aktuell UCS {0}. Diese Version ist veraltet "
 "und es werden keine Sicherheitsupdates mehr dafür veröffentlicht. Bitte "
 "aktualisieren Sie dieses System auf eine neuere UCS Version!<br>Wir bieten "
-"für einige Versionen verlängerte Maintenance Zeiträume an. <a "
+"für diese UCS Versionen eine verlängerte Maintenance an. <a "
 "target='_blank' href='https://www.univention.de/kontakt/'>Nehmen Sie gerne "
 "Kontakt zu uns auf.</a>"
 
@@ -474,7 +476,7 @@ msgid ""
 "href='https://www.univention.com/contact/'>Feel free to contact us if you "
 "want to know more.</a>"
 msgstr ""
-"Wir bieten für einige Versionen verlängerte Maintenance Zeiträume an. <a "
+"Wir bieten für einige UCS Versionen verlängerte Maintenance Zeiträume an. <a "
 "target='_blank' href='https://www.univention.de/kontakt/'>Nehmen Sie gerne "
 "Kontakt zu uns auf.</a>"
 
