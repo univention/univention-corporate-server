@@ -1,3 +1,9 @@
+univention-bind (11.0.0-15) unstable; urgency=low
+
+  * Bug #43217: Move fix script for DNS settings to univention-server
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Feb 2017 09:07:48 +0100
+
 univention-bind (11.0.0-14) unstable; urgency=low
 
   * Bug #43217: Move fix script for DNS settings to univention-server

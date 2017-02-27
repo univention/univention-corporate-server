@@ -81,9 +81,9 @@ wait_for_dns () {
 
 univention-config-registry set dns/backend?ldap
 
-if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
-	/usr/share/univention-bind/fix-ucr-dns
-fi
+[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
+	/usr/share/univention-server/univention-fix-ucr-dns ||
+	: # better safe than sorry
 
 if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
 	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
