@@ -1,5 +1,6 @@
 univention-pkgdb (10.0.0-4) unstable; urgency=medium
 
+  * Bug #39903: Ignore packages from wrong architecture
   * Bug #35147: fix --fill-testdb
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 27 Feb 2017 14:22:25 +0100

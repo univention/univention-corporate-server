@@ -419,7 +419,7 @@ def action_remove_system(connection, cursor, sysname):
 	connection.commit()
 
 
-def scan_and_store_packages(cursor, sysname, fake_null=False):
+def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None):
 	'''updates the system <sysname> with the current package state
 	if <fake_null> is True put '' instead of None in the vername field'''
 	delete_packages = '''
@@ -454,6 +454,8 @@ def scan_and_store_packages(cursor, sysname, fake_null=False):
 	insert_values = []
 	for package in scan_and_store_packages.cache.packages:
 		if not package.has_versions:
+			continue
+		if architecture is not None and architecture != package.architecture:
 			continue
 		parameters = {
 			'sysname': sysname,
@@ -497,7 +499,7 @@ def action_fill_testdb(connection, cursor, config_registry):
 			# retry for old schema
 			sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
 			fake_null = True  # old schema has NOT NULL, thus we have to use '' instead of None
-		scan_and_store_packages(cursor, sysname, fake_null)
+		scan_and_store_packages(cursor, sysname, fake_null, architecture)
 		connection.commit()
 	log('end of fill testdb')
 	return 0
@@ -522,7 +524,7 @@ def action_scan(connection, cursor, config_registry):
 		# retry for old schema
 		sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn)
 		fake_null = True  # old schema has NOT NULL, thus we have to use '' instead of None
-	scan_and_store_packages(cursor, sysname, fake_null)
+	scan_and_store_packages(cursor, sysname, fake_null, architecture)
 	connection.commit()
 	log('end of scan for system %r' % (sysname, ))
 	return 0
