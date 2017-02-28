@@ -908,14 +908,16 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 	for cfilter in configRegistry.get('connector/s4/mapping/msprintconnectionpolicy/ignorelist', '').split(','):
 		if cfilter:
 			ignore_filter += '(cn=%s)' % (cfilter)
-	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
-	else:
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
+
+	sync_mode_default = configRegistry.get('connector/s4/mapping/syncmode')
+	sync_mode_ou = configRegistry.get('connector/s4/mapping/ou/syncmode', sync_mode_default)
+	sync_mode_gpo = configRegistry.get('connector/s4/mapping/gpo/syncmode', sync_mode_ou)
+	sync_mode_mpcp = configRegistry.get('connector/s4/mapping/msprintconnectionpolicy/syncmode', sync_mode_gpo)
+
 	print '''
 	'msPrintConnectionPolicy': univention.s4connector.property (
 			ucs_module='settings/msprintconnectionpolicy',
-			sync_mode='%(sync_mode_ou)s',
+			sync_mode='%(sync_mode_mpcp)s',
 			scope='sub',
 			con_search_filter='(objectClass=msPrint-ConnectionPolicy)',
 			ignore_filter='%(ignore_filter)s',
@@ -968,7 +970,7 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 						),
 				},
 		),
-''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+''' % {'ignore_filter': ignore_filter, 'sync_mode_mpcp': sync_mode_mpcp}
 
 @!@
 	'container': univention.s4connector.property (
