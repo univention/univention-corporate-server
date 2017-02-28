@@ -922,12 +922,12 @@ class s4(univention.s4connector.ucs):
 					continue
 
 				s4_group_dn, s4_group_attrs = s4_group
-				group = s4_group_dn.lower()
-				self.group_members_cache_con[group] = []
+				self.group_members_cache_con[s4_group_dn.lower()] = []
 				if s4_group_attrs:
 					s4_members = self.get_s4_members(s4_group_dn, s4_group_attrs)
-					for member in s4_members:
-						self.group_members_cache_con[group].append(member.lower())
+					group_cache = self.group_members_cache_con[s4_group_dn.lower()]
+					group_cache.extend(m.lower() for m in s4_members)
+
 			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
 			ucs_groups = self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember'])
@@ -1151,7 +1151,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap.get_object')
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
-				dn, s4_object=self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
+				dn, s4_object = self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 				try:
 					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 				except:  # FIXME: which exception is to be caught?
@@ -1501,16 +1501,12 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group is correct, no changes needed")
 			return True  # nothing left to do
 		else:
-			is_member = False
 			s4_members = self.get_s4_members(s4_group_object['dn'], ldap_object_s4_group)
 			s4_members = map(compatible_modstring, s4_members)
 			object_dn_modstring = compatible_modstring(object['dn'])
-			for member in s4_members:
-				if object_dn_modstring.lower() == member.lower():
-					is_member = True
-					break
 
-			if not is_member:  # add as member
+			s4_members_lower = map(str.lower, s4_members)
+			if object_dn_modstring.lower() not in s4_members_lower:  # add as member
 				s4_members.append(object_dn_modstring)
 				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needs change of membership in S4")
 				self.lo_s4.lo.modify_s(compatible_modstring(s4_group_object['dn']), [(ldap.MOD_REPLACE, 'member', s4_members)])
