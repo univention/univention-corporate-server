@@ -659,15 +659,16 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 	for gpo in configRegistry.get('connector/s4/mapping/gpo/ignorelist', '').split(','):
 		if gpo:
 			ignore_filter += '(cn=%s)' % (gpo)
-	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
-	else:
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
+
+	sync_mode_default = configRegistry.get('connector/s4/mapping/syncmode')
+	sync_mode_ou = configRegistry.get('connector/s4/mapping/ou/syncmode', sync_mode_default)
+	sync_mode_gpo = configRegistry.get('connector/s4/mapping/gpo/syncmode', sync_mode_ou)
+
 	section = '''
 	'msGPO': univention.s4connector.property (
 			ucs_module='container/msgpo',
 
-			sync_mode='%(sync_mode_ou)s',
+			sync_mode='%(sync_mode_gpo)s',
 
 			scope='sub',
 
@@ -749,7 +750,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							single_value=True,
 						),
 				},
-''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+''' % {'ignore_filter': ignore_filter, 'sync_mode_gpo': sync_mode_gpo}
 
 	if configRegistry.is_true('connector/s4/mapping/gpo/ntsd', False):
 		section = section + '''
