@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-62) unstable; urgency=medium
+
+  * Bug #43657: Disable HTTP link if PortHTTP==0
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Feb 2017 13:37:05 +0100
+
 univention-appcenter (5.0.23-61) unstable; urgency=low
 
   * Bug #41801: ignore "host" objects without serverRole in  

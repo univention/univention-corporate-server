@@ -465,8 +465,14 @@ class Register(CredentialsAction):
 			if app.auto_mod_proxy:
 				# the port in the ini is not the "public" port!
 				# the web interface lives behind our apache with its
-				# default ports
-				port_http = port_https = None
+				# default ports. but we need to respect disabled ports
+				port_http = 80
+				port_https = 443
+				if app.web_interface_port_http == 0:
+					port_http = None
+				if app.web_interface_port_https == 0:
+					port_https = None
+
 			label = app.get_localised('web_interface_name') or app.get_localised('name')
 			label_de = app.get_localised('web_interface_name', 'de') or app.get_localised('name', 'de')
 			variables = {

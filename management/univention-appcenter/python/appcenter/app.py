@@ -239,7 +239,7 @@ class AppComponentIDAttribute(AppAttribute):
 
 class AppUCSVersionAttribute(AppAttribute):
 	def get_value(self, component_id, ini_parser, meta_parser, locale):
-		return '4.1'
+		return ucr_get('version/version')
 
 
 class AppBooleanAttribute(AppAttribute):
