@@ -1,3 +1,15 @@
+univention-portal (1.0.6-6) unstable; urgency=medium
+
+  * Bug #42175: Use new portal.json format to render entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Feb 2017 12:20:07 +0100
+
+univention-portal (1.0.6-5) unstable; urgency=medium
+
+  * Bug #42175: Read portal entries from JSON
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Feb 2017 10:59:46 +0100
+
 univention-portal (1.0.6-4) unstable; urgency=medium
 
   * Bug #42263: use umc/widgets/Menu instead of umc/Menu

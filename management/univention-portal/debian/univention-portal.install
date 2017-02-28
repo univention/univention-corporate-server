@@ -1,2 +1,3 @@
 www/univention-management-console.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 www/* usr/share/univention-portal/
+listener/*.py usr/lib/univention-directory-listener/system

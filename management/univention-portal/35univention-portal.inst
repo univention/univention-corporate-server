@@ -31,15 +31,64 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
 
 joinscript_init
 
-umc_init
-umc_operation_create "portal-all" "portal" "" "portal/*"
+ldap_base="$(ucr get ldap/base)"
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=univention,$ldap_base" \
+	--set name=portal || die
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name=portal \
+	--set shortDescription="Portal" \
+	--set syntax=Portals \
+	--set ldapMapping=univentionComputerPortal \
+	--set objectClass=univentionPortalComputer \
+	--set tabAdvanced=1 \
+	--set tabName="Portal" \
+	--set mayChange=1 \
+	--append module=computers/domaincontroller_master \
+	--append module=computers/domaincontroller_backup \
+	--append module=computers/domaincontroller_slave \
+	--append module=computers/memberserver || die
+
+ldap_hostdn="$(ucr get ldap/hostdn)"
+role="$(ucr get server/role)"
+if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
+	univention-directory-manager settings/portal create "$@" --ignore_exists \
+		--position "cn=portal,cn=univention,$ldap_base" \
+		--set name=domain \
+		--append displayName='"en_US" "Univention Portal"' \
+		--append displayName='"fr_FR" "Univention Portal"' \
+		--append displayName='"de_DE" "Univention Portal"' \
+		--set showMenu=TRUE \
+		--set showSearch=TRUE \
+		--set showLogin=TRUE \
+		--set showApps=TRUE \
+		--set showServers=TRUE || die
+	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
+		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
+else
+	univention-directory-manager settings/portal create "$@" --ignore_exists \
+		--position "cn=portal,cn=univention,$ldap_base" \
+		--set name=local \
+		--append displayName='"en_US" "Univention Portal"' \
+		--append displayName='"fr_FR" "Univention Portal"' \
+		--append displayName='"de_DE" "Univention Portal"' \
+		--set showMenu=TRUE \
+		--set showSearch=TRUE \
+		--set showLogin=TRUE \
+		--set showApps=TRUE \
+		--set showServers=TRUE || die
+	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
+		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
+fi
 
 joinscript_save_current_version
 

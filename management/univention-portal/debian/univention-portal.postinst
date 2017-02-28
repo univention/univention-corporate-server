@@ -1,10 +1,9 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#! /bin/sh
 #
-# Univention Management Console
-#  module: portal
+# Univention Portal
+#  postinst script for the univention-portal debian package
 #
-# Copyright 2016-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,22 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.modules import Base
-from univention.appcenter import get_action
-from univention.management.console.modules.decorators import simple_response
+#DEBHELPER#
 
+if [ "$1" = "configure" ]; then
+	invoke-rc.d univention-directory-listener crestart
+fi
 
-class Instance(Base):
-
-	@simple_response
-	def get_installed_apps_in_domain(self):
-		apps = self.get_apps()
-		installed_apps = [app for app in apps if app.get('is_installed_anywhere')]
-		return installed_apps
-
-	def get_apps(self):
-		list_apps = get_action('list')
-		apps = list_apps.get_apps()
-
-		domain = get_action('domain')
-		return domain.to_dict(apps)
+exit 0

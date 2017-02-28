@@ -32,67 +32,91 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
 	"dijit/registry",
 	"dojo/on",
 	"dojo/dom",
-	"dojo/promise/all",
-	"umc/tools",
 	"./PortalCategory",
-	"put-selector/put",
-	"umc/json!/univention/meta.json"
-], function(declare, lang, array, registry, on, dom, all, tools, PortalCategory, put, meta) {
+	"umc/i18n/tools",
+	"umc/json!/univention/portal/portal.json",
+	"umc/json!/univention/meta.json",
+	"umc/i18n!/univention/i18n"
+], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, i18nTools, portalContent, meta, _) {
 	return {
 		portalCategories: null,
-
-		_getInstalledAppsInDomain: function() {
-			return tools.umcpCommand('portal/getInstalledAppsInDomain', {}).then(lang.hitch(this, function(data) {
-				return data.result;
-			}));
-		},
-
-		// return an individual app object for every
-		// individual installation on multiple servers
-		_getAppsPerDomain: function(installedApps) {
-			var apps = [];
-
-			array.forEach(installedApps, function(iApp) {
-				tools.forIn(iApp.installations, function(hostName, info) {
-					var isInstalledOnHost = info.version;
-					if (isInstalledOnHost) {
-						var app = {
-							name: iApp.name,
-							description: iApp.description,
-							web_interface: iApp.web_interface,
-							logo_name: iApp.logo_name,
-							id: iApp.id,
-							host_ips: info.ip,
-							host_name: hostName
-						};
-						apps.push(app);
-					}
-				});
-			});
-
-			return apps;
-		},
 
 		_createCategories: function() {
 			this.portalCategories = [];
 
-			var title = 'Management';
-			var apps = [{
-				name: 'Management',
-				description: 'Administrate the UCS domain and the local system',
-				web_interface: '/univention/management',
-				logo_name: 'univention-management-console',
-				host_name: meta.ucr.hostname
-			}];
-			this._addCategory(title, apps);
+			var portal = portalContent.portal;
+			var entries = portalContent.entries;
+			var locale = i18nTools.defaultLang().replace(/-/, '_');
+			var protocol = window.location.protocol;
+			var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
+			var _regIPv6 = /^\[?((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\]?$/;
+			var host = window.location.host;
+			var isIPv4 = false;
+			var isIPv6 = false;
+			if (_regIPv4.test(host)) {
+				isIPv4 = true;
+			}
+			if (_regIPv6.test(host)) {
+				isIPv6 = true;
+			}
 
-			this._getInstalledAppsInDomain().then(lang.hitch(this, function(installedApps) {
-				var title = 'Installed Apps';
-				var apps = this._getAppsPerDomain(installedApps);
-				this._addCategory(title, apps);
+			array.forEach(['admin', 'service'], lang.hitch(this, function(category) {
+				var categoryEntries = array.filter(entries, function(entry) {
+					// TODO: filter by entry.authRestriction (anonymous, authenticated, admin)
+					return entry.category == category && entry.activated && entry.portals.indexOf(portal.dn) !== -1;
+				});
+				if (categoryEntries.length) {
+					var apps = [];
+					array.forEach(categoryEntries, function(entry) {
+						var _entry = {
+							name: entry.name[locale] || entry.name.en_US,
+							description: entry.description[locale] || entry.description.en_US
+						};
+						var myProtocolSupported = array.some(entry.links, function(link) {
+							return link.indexOf(protocol) === 0;
+						});
+						array.forEach(entry.links, function(link) {
+							if (myProtocolSupported) {
+								if (link.indexOf(protocol) !== 0) {
+									return;
+								}
+							}
+							var _linkElement = document.createElement('a');
+							_linkElement.setAttribute('href', link);
+							var linkHost = _linkElement.hostname;
+							if (isIPv4) {
+								if (! _regIPv4.test(linkHost)) {
+									return;
+								}
+							} else if (isIPv6) {
+								if (! _regIPv6.test(linkHost)) {
+									return;
+								}
+							} else {
+								if (_regIPv4.test(linkHost) || _regIPv6.test(linkHost)) {
+									return;
+								}
+							}
+							apps.push(lang.mixin({web_interface: link, host_name: linkHost}, _entry));
+						});
+					});
+					var title;
+					if (category == 'admin') {
+						title = _('Administration');
+					} else {
+						title = _('Installed services');
+					}
+					if (apps.length) {
+						this._addCategory(title, apps);
+					}
+				}
+			}));
+			array.forEach(portal, lang.hitch(this, function(category) {
+				this._addCategory(category.title, category.apps);
 			}));
 		},
 
