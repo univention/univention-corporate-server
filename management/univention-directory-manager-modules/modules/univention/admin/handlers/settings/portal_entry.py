@@ -64,7 +64,7 @@ property_descriptions = {
 	'displayName': univention.admin.property(
 		short_description=_('Display Name'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.translationTuple,
 		multivalue=True,
 		options=[],
 		required=True,
@@ -74,7 +74,7 @@ property_descriptions = {
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.translationTuple,
 		multivalue=True,
 		options=[],
 		required=True,
@@ -176,10 +176,25 @@ layout = [
 	]),
 ]
 
+
+def mapTranslationValue(vals):
+	ret = []
+	for val in vals:
+		ret.append('%s %s' % (val[0], val[1]))
+	return ret
+
+
+def unmapTranslationValue(vals):
+	ret = []
+	for val in vals:
+		ret.append(val.split(' ', 1))
+	return ret
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'univentionPortalEntryDisplayName')
-mapping.register('description', 'univentionPortalEntryDescription')
+mapping.register('displayName', 'univentionPortalEntryDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('description', 'univentionPortalEntryDescription', mapTranslationValue, unmapTranslationValue)
 mapping.register('favorite', 'univentionPortalEntryFavorite', None, univention.admin.mapping.ListToString)
 mapping.register('category', 'univentionPortalEntryCategory', None, univention.admin.mapping.ListToString)
 mapping.register('link', 'univentionPortalEntryLink')

@@ -3375,6 +3375,13 @@ class AuthRestriction(select):
 	]
 
 
+class PortalCategory(select):
+	choices = [
+		('admin', _('Shown in category "Administration"')),
+		('service', _('Shown in category "Installed services"')),
+	]
+
+
 class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
 
 	def __init__(self):
