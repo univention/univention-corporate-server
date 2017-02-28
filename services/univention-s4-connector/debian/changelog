@@ -1,3 +1,12 @@
+univention-s4-connector (11.0.6-8) unstable; urgency=medium
+
+  * Bug #41764: s4connector: port range retrieval patches.
+    This commit ports the AD-connector range retrieval patches, commited by Arvid
+    in r71661, r71662 and r71677, to the s4-connector.
+  * Bug #41764: s4connector: slight cleanup in range retrieval
+
+ -- Lukas Oyen <oyen@univention.de>  Tue, 28 Feb 2017 17:01:22 +0100
+
 univention-s4-connector (11.0.6-7) unstable; urgency=medium
 
   * Bug #32086: s4connector: fix ldap.dn.dn2str() in dns.py
