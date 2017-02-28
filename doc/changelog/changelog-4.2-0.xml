@@ -24,6 +24,9 @@
 						Perl has been updated to 5.20.2.
 					</simpara></listitem>
 					<listitem><simpara>
+						The <package>sysvinit</package> system has been replaced by <package>systemd</package>.
+					</simpara></listitem>
+					<listitem><simpara>
 						...
 					</simpara></listitem>
 				</itemizedlist>
@@ -104,6 +107,7 @@
 			<title>Other system services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Several network start scripts have been adapted to work with <package>systemd</package> (<u:bug>42380</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -836,7 +840,7 @@
 				Dependencies on such old packages have been updated to their replacements (<u:bug>43649</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Old custom firefox packages have been replaced with the debian upstream package (<package>firefox-esr</package>).
+				Old custom <package>firefox</package> packages have been replaced with the Debian upstream package <package>firefox-esr</package>.
 				During the update to &ucsUCS; 4.2-0 the old package are automatically replaced (<u:bug>42322</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
