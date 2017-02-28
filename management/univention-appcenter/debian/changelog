@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-40) unstable; urgency=medium
+
+  * Bug #43657: Disable HTTP link if PortHTTP==0
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Feb 2017 13:46:31 +0100
+
 univention-appcenter (6.0.1-39) unstable; urgency=medium
 
   * Bug #43624: Cleanup of cleanup
