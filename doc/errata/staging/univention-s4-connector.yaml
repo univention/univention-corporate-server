@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-s4-connector
+fix: 10.0.4-9.634.201702281450
+desc: |
+ This update addresses the following issue(s):
+ * Add new UCR variables
+   `connector/s4/mapping/{gpo,wmifilter,msprintconnectionpolicy}/syncmode`.
+bug: [43629]
