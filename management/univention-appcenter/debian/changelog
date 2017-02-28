@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-41) unstable; urgency=medium
+
+  * Bug #42234: Support overview UCR variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 00:04:18 +0100
+
 univention-appcenter (6.0.1-40) unstable; urgency=medium
 
   * Bug #43657: Disable HTTP link if PortHTTP==0
