@@ -63,7 +63,7 @@ from univention.management.console.modules import UMC_Error
 # The try except can be removed as soon as the dependency is added in the
 # univention-lib package.
 try:
-	from univention.appcenter.app_cache import Apps
+	from univention.appcenter.app_cache import AppCache
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 
@@ -663,7 +663,7 @@ class Instance(Base, ProgressMixin):
 		_translation.set_language(str(self.locale))
 		i18nXKeyboard.set_language(str(self.locale))
 		network._translation.set_language(str(self.locale))
-		Apps().clear_cache()
+		AppCache().clear_cache()
 
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response

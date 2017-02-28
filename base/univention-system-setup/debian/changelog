@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-15) unstable; urgency=medium
+
+  * Bug #43506: Fix typos
+
+ -- Eduard Mai <mai@univention.de>  Tue, 28 Feb 2017 18:18:59 +0100
+
 univention-system-setup (10.0.7-14) unstable; urgency=medium
 
   * Bug #43506: Replace deprecated part of the appcenter API (AppManager)

@@ -67,7 +67,7 @@ from univention.lib.umc import Client, ConnectionError, HTTPError
 # univention-lib package.
 try:
 	from univention.appcenter.actions import get_action
-	from univention.appcenter.app_cache import Apps
+	from univention.appcenter.app_cache import AppCache, Apps
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 _ = Translation('univention-management-console-module-setup').translate
@@ -765,11 +765,10 @@ def dhclient(interface, timeout=None):
 
 
 def get_apps(no_cache=False):
-	apps = Apps()
 	if no_cache:
-		apps.clear_cache()
+		AppCache().clear_cache()
 	get = get_action('get')
-	return [get.to_dict(app) for app in apps.get_all_apps()]
+	return [get.to_dict(app) for app in Apps().get_all_apps()]
 
 
 def is_proxy(proxy):
