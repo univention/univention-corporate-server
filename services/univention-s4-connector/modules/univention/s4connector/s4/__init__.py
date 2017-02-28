@@ -36,6 +36,7 @@ import base64
 import copy
 import ldap
 import string
+import re
 import sys
 import time
 import types
@@ -824,6 +825,7 @@ def format_escaped(format_string, *args, **kwargs):
 
 
 class s4(univention.s4connector.ucs):
+	RANGE_RETRIEVAL_PATTERN = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
 
 	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
 
@@ -918,10 +920,13 @@ class s4(univention.s4connector.ucs):
 			for s4_group in s4_groups:
 				if not s4_group or not s4_group[0]:
 					continue
-				group = s4_group[0].lower()
+
+				s4_group_dn, s4_group_attrs = s4_group
+				group = s4_group_dn.lower()
 				self.group_members_cache_con[group] = []
-				if s4_group[1]:
-					for member in s4_group[1].get('member'):
+				if s4_group_attrs:
+					s4_members = self.get_s4_members(s4_group_dn, s4_group_attrs)
+					for member in s4_members:
 						self.group_members_cache_con[group].append(member.lower())
 			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
@@ -1092,11 +1097,61 @@ class s4(univention.s4connector.ucs):
 			except:  # FIXME: which exception is to be caught?
 				pass
 
-	def get_object(self, dn):
+	def parse_range_retrieval_attrs(self, s4_attrs, attr):
+		for k in s4_attrs:
+			m = self.RANGE_RETRIEVAL_PATTERN.match(k)
+			if not m or m.group(1) != attr:
+				continue
+
+			key = k
+			values = s4_attrs[key]
+			lower = int(m.group(2))
+			upper = m.group(3)
+			if upper != "*":
+				upper = int(upper)
+			break
+		else:
+			key = None
+			values = []
+			lower = 0
+			upper = "*"
+		return (key, values, lower, upper)
+
+	def value_range_retrieval(self, s4_dn, s4_attrs, attr):
+		(key, values, lower, upper) = self.parse_range_retrieval_attrs(s4_attrs, attr)
+		ud.debug(ud.LDAP, ud.INFO, "value_range_retrieval: response:  %s" % (key,))
+		if lower != 0:
+			ud.debug(ud.LDAP, ud.ERROR, "value_range_retrieval: invalid range retrieval response:  %s" % (key,))
+			raise ldap.PROTOCOL_ERROR
+		all_values = values
+
+		while upper != "*":
+			next_key = "%s;range=%d-*" % (attr, upper + 1)
+			s4_attrs = self.get_object(s4_dn, [next_key])
+			returned_before = upper
+			(key, values, lower, upper) = self.parse_range_retrieval_attrs(s4_attrs, attr)
+			if lower != returned_before + 1:
+				ud.debug(ud.LDAP, ud.ERROR, "value_range_retrieval: invalid range retrieval response: asked for %s but got %s" % (next_key, key))
+				raise ldap.PARTIAL_RESULTS
+			ud.debug(ud.LDAP, ud.INFO, "value_range_retrieval: response:  %s" % (key,))
+			all_values.extend(values)
+		return all_values
+
+	def get_s4_members(self, s4_dn, s4_attrs):
+		s4_members = s4_attrs.get('member')
+		if s4_members is None:
+			s4_members = []
+		elif s4_members == []:
+			del s4_attrs['member']
+			s4_members = self.value_range_retrieval(s4_dn, s4_attrs, 'member')
+			s4_attrs['member'] = s4_members
+		return s4_members
+
+	def get_object(self, dn, attrlist=None):
 		_d = ud.function('ldap.get_object')
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
-				dn, s4_object = self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)')[0]
+				dn, s4_object=self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 				try:
 					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 				except:  # FIXME: which exception is to be caught?
@@ -1447,24 +1502,22 @@ class s4(univention.s4connector.ucs):
 			return True  # nothing left to do
 		else:
 			is_member = False
-			if 'member' in ldap_object_s4_group:
-				for member in ldap_object_s4_group['member']:
-					if compatible_modstring(object['dn']).lower() == compatible_modstring(member).lower():
-						is_member = True  # FIXME: should left the for-loop here for better perfomance
-						break
+			s4_members = self.get_s4_members(s4_group_object['dn'], ldap_object_s4_group)
+			s4_members = map(compatible_modstring, s4_members)
+			object_dn_modstring = compatible_modstring(object['dn'])
+			for member in s4_members:
+				if object_dn_modstring.lower() == member.lower():
+					is_member = True
+					break
 
 			if not is_member:  # add as member
-				s4_members = []
-				if 'member' in ldap_object_s4_group:
-					for member in ldap_object_s4_group['member']:
-						s4_members.append(compatible_modstring(member))
-				s4_members.append(compatible_modstring(object['dn']))
+				s4_members.append(object_dn_modstring)
 				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needs change of membership in S4")
 				self.lo_s4.lo.modify_s(compatible_modstring(s4_group_object['dn']), [(ldap.MOD_REPLACE, 'member', s4_members)])
 
 			# set new primary group
 			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: changing primary Group in S4")
-			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
+			self.lo_s4.lo.modify_s(object_dn_modstring, [(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
 
 			# If the user is not member in UCS of the previous primary group, the user must
 			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26514
@@ -1482,7 +1535,7 @@ class s4(univention.s4connector.ucs):
 			if not is_member:
 				# remove S4 member from previous group
 				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: remove S4 member from previous group")
-				self.lo_s4.lo.modify_s(s4_group[0][0], [(ldap.MOD_DELETE, 'member', [compatible_modstring(object['dn'])])])
+				self.lo_s4.lo.modify_s(s4_group[0][0],[(ldap.MOD_DELETE, 'member', [object_dn_modstring])])
 
 			return True
 
@@ -1611,10 +1664,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The S4 object (%s) was not found. The object was removed.' % object['dn'])
 			return
 
-		if ldap_object_s4 and ldap_object_s4.get('member'):
-			s4_members = set(ldap_object_s4['member'])
-		else:
-			s4_members = set()
+		s4_members = set(self.get_s4_members(object['dn'], ldap_object_s4))
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: s4_members %s" % s4_members)
 
@@ -1875,17 +1925,13 @@ class s4(univention.s4connector.ucs):
 
 		# FIXME: does not use dn-mapping-function
 		ldap_object_s4 = self.get_object(s4_object['dn'])  # FIXME: may fail if object doesn't exist
-		if ldap_object_s4 and 'member' in ldap_object_s4:
-			s4_members = ldap_object_s4['member']
-		else:
-			s4_members = []
-
 		group_sid = ldap_object_s4['objectSid'][0]
 		group_rid = group_sid[string.rfind(group_sid, "-") + 1:]
+		s4_members = self.get_s4_members(object['dn'], ldap_object_s4)
 
 		# search for members who have this as their primaryGroup
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
-		prim_members_s4 = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter, timeout=-1, sizelimit=0))
+		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
 
 		for prim_dn, prim_object in prim_members_s4:
 			if prim_dn not in ['None', '', None]:  # filter referrals
