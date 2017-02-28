@@ -778,15 +778,16 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 	for wmifilter in configRegistry.get('connector/s4/mapping/wmifilter/ignorelist', '').split(','):
 		if wmifilter:
 			ignore_filter += '(cn=%s)' % (wmifilter)
-	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
-	else:
-		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
+
+	sync_mode_default = configRegistry.get('connector/s4/mapping/syncmode')
+	sync_mode_ou = configRegistry.get('connector/s4/mapping/ou/syncmode', sync_mode_default)
+	sync_mode_wmi = configRegistry.get('connector/s4/mapping/wmifilter/syncmode', sync_mode_ou)
+
 	print '''
 	'msWMIFilter': univention.s4connector.property (
 			ucs_module='settings/mswmifilter',
 
-			sync_mode='%(sync_mode_ou)s',
+			sync_mode='%(sync_mode_wmi)s',
 
 			scope='sub',
 
@@ -900,7 +901,7 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 				},
 
 		),
-''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+''' % {'ignore_filter': ignore_filter, 'sync_mode_wmi': sync_mode_wmi}
 
 if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False):
 	ignore_filter = ''
