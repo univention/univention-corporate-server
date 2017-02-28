@@ -42,9 +42,11 @@ DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
     start)
-        # Notice that only a proper "true" or "on" value switches firewall OFF.
-        # Everything else like "false" or "off" or "muell" will leave firewall ON.
-        if is_ucr_true security/packetfilter/disabled; then
+        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
+            log_warning_msg "$NAME: iptables seems to be unsupported."
+        elif is_ucr_true security/packetfilter/disabled; then
+            # Notice that only a proper "true" or "on" value switches firewall OFF.
+            # Everything else like "false" or "off" or "muell" will leave firewall ON.
             log_warning_msg "$DESC has been disabled."
         else
             log_action_begin_msg "Starting $DESC"
@@ -55,25 +57,33 @@ case "$1" in
         fi
         ;;
     stop)
-        log_daemon_msg "Stopping $DESC"
+        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
+            log_warning_msg "$NAME: iptables seems to be unsupported."
+        else
+            log_daemon_msg "Stopping $DESC"
 
-        rc=0
-        iptables --wait -P INPUT ACCEPT || rc=$?
-        iptables --wait -P OUTPUT ACCEPT || rc=$?
-        iptables --wait -F || rc=$?
-        iptables --wait -F -t nat || rc=$?
-        iptables --wait -F -t mangle || rc=$?
+            rc=0
+            iptables --wait -P INPUT ACCEPT || rc=$?
+            iptables --wait -P OUTPUT ACCEPT || rc=$?
+            iptables --wait -F || rc=$?
+            iptables --wait -F -t nat || rc=$?
+            iptables --wait -F -t mangle || rc=$?
 
-        ip6tables --wait -P INPUT ACCEPT || rc=$?
-        ip6tables --wait -P OUTPUT ACCEPT || rc=$?
-        ip6tables --wait -F || rc=$?
-        ip6tables --wait -F -t mangle || rc=$?
+            ip6tables --wait -P INPUT ACCEPT || rc=$?
+            ip6tables --wait -P OUTPUT ACCEPT || rc=$?
+            ip6tables --wait -F || rc=$?
+            ip6tables --wait -F -t mangle || rc=$?
 
-        log_action_end_msg $rc
+            log_action_end_msg $rc
+        fi
         ;;
     restart|force-reload)
-        "$0" stop
-        "$0" start
+        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
+            log_warning_msg "$NAME: iptables seems to be unsupported."
+        else
+            "$0" stop
+            "$0" start
+        fi
         ;;
     status)
         if is_ucr_true security/packetfilter/disabled

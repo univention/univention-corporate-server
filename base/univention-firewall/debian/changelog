@@ -1,3 +1,10 @@
+univention-firewall (9.0.0-7) unstable; urgency=low
+
+  * Bug #42351: do not start/stop/restart firewall if iptables is not
+    supported / working properly
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 28 Feb 2017 13:04:46 +0100
+
 univention-firewall (9.0.0-6) unstable; urgency=medium
 
   * Bug #43471: Revert
