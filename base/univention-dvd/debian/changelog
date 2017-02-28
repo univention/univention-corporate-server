@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-7) unstable; urgency=medium
+
+  * Bug #43495: added univention-portal do task list
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Feb 2017 15:20:00 +0100
+
 univention-dvd (2.0.0-6) unstable; urgency=low
 
   * Bug #42322: switch to firefox-esr
