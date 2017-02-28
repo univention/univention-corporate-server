@@ -1273,8 +1273,7 @@ define([
 				array.forEach(response.result, function(iitem) {
 					this._apps.put(iitem);
 				}, this);
-				//this._gallery.filter(this._getAppQuery());
-				this._gallery.filter();
+				this._gallery.filter(this._getAppQuery());
 			}));
 		},
 
@@ -1637,8 +1636,7 @@ define([
 		_updateAppGallery: function() {
 			if (!this._appGalleryUpdated) {
 				this._appGalleryUpdated = true;
-				//this._gallery.filter(this._getAppQuery());
-				this._gallery.filter();
+				this._gallery.filter(this._getAppQuery());
 			}
 		},
 
@@ -2852,7 +2850,7 @@ define([
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
-			var implicitMaster = this._isAdMemberMaster();
+			var implicitMaster = this._isAdMemberMaster() || _vals._preconfiguredDomain;
 			if (!showRoleSelection) {
 				return this.ucr['server/role'];
 			} else if (_vals._createDomain || implicitMaster) {
