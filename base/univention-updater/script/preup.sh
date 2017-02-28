@@ -371,6 +371,14 @@ if [ "deinstall" = "$(dpkg --get-selections sysklogd 2>/dev/null | awk '{print $
 	rm /etc/init.d/sysklogd* >>"$UPDATER_LOG" 2>&1
 fi
 
+# Bug 43639, remove old blas/lapack alternatives, can be removed after 4.2-0
+if [ -L /etc/alternatives/liblapack.so.3gf ]; then
+	update-alternatives --remove-all liblapack.so.3gf
+fi
+if [ -L /etc/alternatives/libblas.so.3gf ]; then
+	update-alternatives --remove-all libblas.so.3gf 
+fi
+
 # autoremove before the update
 if ! is_ucr_true update42/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
