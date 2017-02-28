@@ -1,3 +1,9 @@
+univention-updater (12.0.3-14) unstable; urgency=low
+
+  * Bug #43217: Redirct fix-ucr-dns output
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 Feb 2017 15:15:23 +0100
+
 univention-updater (12.0.3-13) unstable; urgency=low
 
   * Bug #43639: remove old lib...3gf alternatives

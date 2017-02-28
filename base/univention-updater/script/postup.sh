@@ -160,7 +160,7 @@ fi
 
 # Bug #43217: Fix DNS configuration in UCR
 [ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
-	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) ||
+	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) >>"$UPDATER_LOG" 2>&1 ||
 	: # better safe than sorry
 
 # make sure that UMC server is restarted (Bug #33426)
