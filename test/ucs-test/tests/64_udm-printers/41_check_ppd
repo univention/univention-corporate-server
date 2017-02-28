@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check PPD files
-## tags: [udm,SKIP]
+## tags: [udm]
 ## bugs: [43417]
 ## roles:
 ##   - domaincontroller_master
@@ -26,34 +26,30 @@ if __name__ == '__main__':
 	print 'searching for printer models'
 	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
-			print 'found', printerModel
 			try:
-				model = printerModel.split()[0].split('/')[-1].strip('"')
+				model = printerModel.split('"')[1].split('/')[-1]
+				desc = printerModel.split('"')[3]
+				if desc.startswith('deprecated (only available'):
+					continue
 				if model.endswith('.ppd') or model.endswith('.ppd.gz'):
 					ldap_printer.append(model)
 			except IndexError:
 				pass
-
-	print 'ldap printers'
-	pprint.pprint(ldap_printer)
 
 	for root, dirs, files in os.walk('/usr/share/ppd/'):
 		for file_ in files:
 			if file_.endswith('.ppd') or file_.endswith('ppd.gz'):
 				printer_files.append(file_)
 
-	print 'printer files'
-	pprint.pprint(printer_files)
-
 	missing_files = set(ldap_printer) - set(printer_files)
 	missing_printers = set(printer_files) - set(ldap_printer)
 
 	message = None
 	if missing_files:
-		message = 'No PPD file found for LDAP printers: %s' % '\n'.join(missing_files)
+		message = 'No PPD file found for LDAP printers:\n' + '\n\t'.join(missing_files)
 
 	if missing_printers:
-		message += '\n\n' + 'No LDAP printer found for PPD files: %s' % '\n'.join(missing_printers)
+		message += '\n\n' + 'No LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
 
 	if message:
 		print >> sys.stderr, message
