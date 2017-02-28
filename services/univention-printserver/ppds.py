@@ -34,6 +34,7 @@
 
 import os
 import gzip
+import univention.uldap
 
 
 def get_ppd_infos(filename):
@@ -47,17 +48,18 @@ def get_ppd_infos(filename):
 		if line.startswith('*NickName:'):
 			nickname = line.split('"')[1]
 		if line.startswith('*Manufacturer:'):
-			manufacturer = line.split('"')[1]
+			manufacturer = line.split('"')[1].replace('(', '').replace(')', '').replace(' ', '')
 		if manufacturer and nickname:
 			break
 	return (manufacturer, nickname)
 
 
 def get_udm_command(manufacturer, models):
-	first = 'univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
+	create = 'univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
+	modify = 'univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn "cn=%s,cn=cups,cn=univention,$ldap_base"' % manufacturer
 	rest = [r'--append printmodel="\"%s\" \"%s\""' % (path, name) for path, name in models]
-	rest.insert(0, first)
-	return '# Manufacturer: %s Printers: %d\n' % (manufacturer, len(models)) + ' \\\n\t'.join(rest)
+	rest.insert(0, modify)
+	return '# Manufacturer: %s Printers: %d\n' % (manufacturer, len(models)) + create + '\n' + ' \\\n\t'.join(rest)
 
 
 def __check_dir(commands, dirname, files):
@@ -69,6 +71,26 @@ def __check_dir(commands, dirname, files):
 			commands.setdefault(manu, []).append((rel_path, nick))
 	return files
 
+def check_obsolete():
+	# check old models
+	lo = univention.uldap.getMachineConnection()
+	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
+	print '# mark old ppd\'s as obsolete\n'
+	for dn, attr in res:
+		cn = attr.get('cn')[0]
+		obsolete = dict()
+		for i in attr.get('printerModel'):
+			if i in ['"None" "None"', '"smb" "smb"']:
+				continue
+			ppd = i.split('"')[1]
+			ppd_path = os.path.join('/usr', 'share', 'ppd', ppd)
+			if not os.path.isfile(ppd_path):
+				if not cn in obsolete:
+					obsolete[cn] = list()
+				obsolete[cn].append(i)
+		for cn in obsolete:
+			print '/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --name "%s" \\' % cn
+			print '\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\''
 
 if __name__ == '__main__':
 	printers = {}
@@ -77,3 +99,4 @@ if __name__ == '__main__':
 	for manu, models in printers.items():
 		cmds.append(get_udm_command(manu, models))
 	print '\n\n'.join(cmds)
+	check_obsolete()
