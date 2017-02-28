@@ -28,7 +28,6 @@ Depends: ${misc:Depends},
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
- univention-portal,
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
  .
@@ -58,7 +57,6 @@ Depends: ${misc:Depends},
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
- univention-portal,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
 Description: UCS - backup domain controller
@@ -131,6 +129,7 @@ Depends: ${misc:Depends},
  rdate,
  ntpdate,
  python-dns,
+Recommends: univention-portal
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
  .
