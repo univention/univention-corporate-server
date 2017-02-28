@@ -108,13 +108,13 @@ def parse_args():
 		action='store_true',
 		help='Do not add self as name-server')
 	parser.add_option(
-		'--no-master', '-M',
+		'--add-master', '-m',
 		action='store_true',
-		help='Do not add domaincontroller_master as name-server')
+		help='Add domaincontroller_master as name-server')
 	parser.add_option(
-		'--no-nameservers', '-N',
+		'--add-nameservers', '-n',
 		action='store_true',
-		help='Do not add other name-servers')
+		help='Add other name-servers')
 	parser.add_option(
 		'--no-validation', '-V',
 		action='store_true',
@@ -248,7 +248,7 @@ def add_self(nameservers, ucr):
 
 def add_nameservers(nameservers, domain):
 	log = getLogger(__name__).getChild('ns')
-	if options.no_nameservers:
+	if not options.add_nameservers:
 		log.info('Skip adding NS')
 		return
 
@@ -276,7 +276,7 @@ def add_nameservers(nameservers, domain):
 
 def add_master(nameservers, master):
 	log = getLogger(__name__).getChild('ldap')
-	if options.no_master:
+	if not options.add_master:
 		log.info('Skip adding master')
 		return
 
