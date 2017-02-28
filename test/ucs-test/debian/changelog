@@ -1,3 +1,9 @@
+ucs-test (7.0.11-10) unstable; urgency=medium
+
+  * Bug #43657: Add test case
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Feb 2017 13:44:35 +0100
+
 ucs-test (7.0.11-9) unstable; urgency=medium
 
   * 00_checks/47_sysvol_ownership: Added a test case to check the

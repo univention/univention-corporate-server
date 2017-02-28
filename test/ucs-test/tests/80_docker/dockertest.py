@@ -403,19 +403,39 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 /usr/share/univention-docker-container-mode/setup "$@"
 ''' % {'app_name': self.app_name})
 
-	def verify_basic_modproxy_settings(self):
+	def verify_basic_modproxy_settings(self, http=True, https=True):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		test_string = 'TEST-%s\n' % self.app_name
 
-		response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
-		html = response.read()
-		if html != test_string:
-			raise UCSTest_DockerApp_ModProxyFailed(Exception)
+		if http is not None:
+			try:
+				response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
+			except urllib2.HTTPError:
+				if http:
+					raise
+			else:
+				html = response.read()
+				if http:
+					correct = html == test_string
+				else:
+					correct = html != test_string
+				if not correct:
+					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, http))
 
-		response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name))
-		html = response.read()
-		if html != test_string:
-			raise UCSTest_DockerApp_ModProxyFailed(Exception)
+		if https is not None:
+			try:
+				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name))
+			except urllib2.HTTPError:
+				if https:
+					raise
+			else:
+				html = response.read()
+				if https:
+					correct = html == test_string
+				else:
+					correct = html != test_string
+				if not correct:
+					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, https))
 
 
 class Appcenter(object):
