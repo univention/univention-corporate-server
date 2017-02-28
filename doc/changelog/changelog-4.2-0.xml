@@ -735,6 +735,9 @@
 				<listitem><simpara>
 					The generation of filters from &ucsUCRV; <envar>connector/s4/mapping/dns/ignorelist</envar> has been fixed (<u:bug>43397</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The S4 Connector can now handle large groups if Samba returns ranged results (<u:bug>41764</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
