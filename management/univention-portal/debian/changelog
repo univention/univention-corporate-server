@@ -1,3 +1,9 @@
+univention-portal (1.0.6-7) unstable; urgency=medium
+
+  * Bug #42233: adjust package description
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Feb 2017 15:55:05 +0100
+
 univention-portal (1.0.6-6) unstable; urgency=medium
 
   * Bug #42175: Use new portal.json format to render entries
