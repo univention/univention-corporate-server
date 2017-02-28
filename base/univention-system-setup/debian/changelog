@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-14) unstable; urgency=medium
+
+  * Bug #43506: Replace deprecated part of the appcenter API (AppManager)
+
+ -- Eduard Mai <mai@univention.de>  Tue, 28 Feb 2017 17:33:57 +0100
+
 univention-system-setup (10.0.7-13) unstable; urgency=medium
 
   * Bug #43506: Adjust query for correct software components

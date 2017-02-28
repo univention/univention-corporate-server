@@ -66,8 +66,8 @@ from univention.lib.umc import Client, ConnectionError, HTTPError
 # The try except can be removed as soon as the dependency is added in the
 # univention-lib package.
 try:
-	from univention.appcenter.actions.get import Get
-	from univention.appcenter import AppManager
+	from univention.appcenter.actions import get_action
+	from univention.appcenter.app_cache import Apps
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 _ = Translation('univention-management-console-module-setup').translate
@@ -765,9 +765,11 @@ def dhclient(interface, timeout=None):
 
 
 def get_apps(no_cache=False):
+	apps = Apps()
 	if no_cache:
-		AppManager.clear_cache()
-	return [Get.to_dict(app) for app in AppManager.get_all_apps() if app.is_ucs_component()]
+		apps.clear_cache()
+	get = get_action('get')
+	return [get.to_dict(app) for app in apps.get_all_apps()]
 
 
 def is_proxy(proxy):
