@@ -372,10 +372,10 @@ if [ "deinstall" = "$(dpkg --get-selections sysklogd 2>/dev/null | awk '{print $
 fi
 
 # Bug 43639, remove old blas/lapack alternatives, can be removed after 4.2-0
-if [ -L /etc/alternatives/liblapack.so.3gf ]; then
+if update-alternatives --quiet --list liblapack.so.3gf >/dev/null 2>&1; then
 	update-alternatives --remove-all liblapack.so.3gf
 fi
-if [ -L /etc/alternatives/libblas.so.3gf ]; then
+if update-alternatives --quiet --list libblas.so.3gf >/dev/null 2>&1; then
 	update-alternatives --remove-all libblas.so.3gf 
 fi
 

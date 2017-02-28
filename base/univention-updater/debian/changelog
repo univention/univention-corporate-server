@@ -1,3 +1,9 @@
+univention-updater (12.0.3-14.1) unstable; urgency=low
+
+  * Bug #43639: remove old lib...3gf alternatives
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Feb 2017 16:44:49 +0100
+
 univention-updater (12.0.3-14) unstable; urgency=low
 
   * Bug #43217: Redirct fix-ucr-dns output
