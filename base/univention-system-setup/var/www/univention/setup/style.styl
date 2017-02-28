@@ -29,7 +29,7 @@
 
 $ucs-green ?= #7ab51d
 $text-color ?= #282828
-$header-color ?= #5a5a5a
+$header-color ?= #787878
 
 .umc
 	/* styling of headers and page */
@@ -39,7 +39,6 @@ $header-color ?= #5a5a5a
 
 	.umcHeader
 		background-color: $header-color
-		border-bottom: 2px solid $ucs-green
 
 		.umcHeaderRight
 			left: 0
@@ -75,11 +74,6 @@ $header-color ?= #5a5a5a
 
 	/* generic stylings for all setup pages */
 	.umc-setup-page
-		.umcIconInfo
-			background-image: url(info-icon.png)
-			width: 16px
-			height: 16px
-
 		.umcLiveSearch
 			.dijitArrowButtonInner
 				background-position: -260px -40px
@@ -136,17 +130,49 @@ $header-color ?= #5a5a5a
 			height: 180px
 			background-image: url(software.svg)
 
-		//TODO
-		.umcUCSSetupSoftwareGrid
-			.dojoxGrid
-				height: 350px !important
+		.umcGrid.umcUCSSetupSoftwareGrid .dgrid
+			.dgrid-scroller
+				margin-top: 0 !important
 
-			.dojoxGridCell
-				.umcAppDescription
-					color: #818181
+			//.dgrid-header
+			//	height: 0 !important
 
-				.dijitButtonContents
-					width: 17px
+			.dgrid-row
+				height: auto
+				line-height: 1.5em
+
+			.dgrid-cell
+				// make sure that lines can wrap inside the grid
+				white-space: normal
+
+				.umcAppEntry,
+				.umcAppName,
+				.umcAppDescription,
+				.umcInfoIcon
+					display: block
+
+			.umcAppEntry
+				position: relative
+				padding: 5px 0
+				padding: 5px 0
+
+			.umcAppDescription
+				color: #818181
+
+			.umcAppDescription,
+			.umcAppName
+				margin-right: 40px
+
+			.umcInfoIcon
+				background: url(info-icon.png) no-repeat center
+				width: 40px
+				height: 40px
+				position: absolute
+				right: 0
+				top: 50%
+				margin-top: -20px
+				cursor: pointer
+
 
 	//.umc-setup-page-role .umcLabelPane,
 	//.umc-setup-page-role-nonmaster-ad .umcLabelPane,

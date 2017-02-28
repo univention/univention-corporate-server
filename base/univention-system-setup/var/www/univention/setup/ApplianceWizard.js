@@ -35,6 +35,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/on",
 	"dojo/Evented",
 	"dojo/topic",
@@ -69,7 +70,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, domConstruct, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -1237,26 +1238,12 @@ define([
 				moduleStore: this._apps,
 				columns: [{
 					name: 'name',
-					width: 'auto',
+					width: '100%',
 					label: _('Software component'),
 					formatter: lang.hitch(this, function(value, idx) {
 						var item = this._gallery._grid.getItem(idx);
-						return lang.replace('<div>{name}</div><div class="umcAppDescription">{description}</div>', item);
+						return lang.replace('<div class="umcAppEntry"><div class="umcAppName">{name}</div><div class="umcAppDescription">{description}</div><div class="umcInfoIcon"></div></div>', item);
 					})
-				}, {
-					name: 'long_description',
-					label: ' ',
-					width: '45px',
-					formatter: function(description) {
-						var button = null;
-						button = new Button({
-							iconClass: 'umcIconInfo',
-							callback: function(evt) {
-								_showTooltip(button.domNode, entities.decode(description), evt);
-							}
-						});
-						return button;
-					}
 				}],
 				query: {id:"*"},
 				'class': 'umcUCSSetupSoftwareGrid',
@@ -1278,11 +1265,16 @@ define([
 					//this._gallery._grid.selection.addToSelection(idx);
 				}));
 			}));
+			this._gallery._grid.on('.umcInfoIcon:click', lang.hitch(this, function(evt) {
+				var row = this._gallery._grid.row(evt);
+				_showTooltip(evt.target, entities.decode(row.data.long_description), evt);
+			}));
 			this.umcpCommand('setup/apps/query').then(lang.hitch(this, function(response) {
 				array.forEach(response.result, function(iitem) {
 					this._apps.put(iitem);
 				}, this);
-				this._gallery.filter(this._getAppQuery());
+				//this._gallery.filter(this._getAppQuery());
+				this._gallery.filter();
 			}));
 		},
 
@@ -1645,7 +1637,8 @@ define([
 		_updateAppGallery: function() {
 			if (!this._appGalleryUpdated) {
 				this._appGalleryUpdated = true;
-				this._gallery.filter(this._getAppQuery());
+				//this._gallery.filter(this._getAppQuery());
+				this._gallery.filter();
 			}
 		},
 
