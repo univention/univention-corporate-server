@@ -9,3 +9,5 @@ desc: |
  * Add univention-printquota to download-packages, which is required
    for UCS appliances
 bug: [43588]
+erratum: 405
+announced: 2017-03-01
