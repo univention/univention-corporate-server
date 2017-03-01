@@ -726,6 +726,9 @@
 				<listitem><simpara>
 					<package>univention-samba</package> and <package>univention-samba4</package> now use the interfaces defined in &ucsUCR; (<u:bug>43073</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					<command>samba_dnsupdate</command> now avoids adding a <wordasword>_msdcs</wordasword> <wordasword>NS</wordasword> record if the corresponding <wordasword>SOA</wordasword> record is not present (<u:bug>43291</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
