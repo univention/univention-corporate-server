@@ -1,6 +1,12 @@
+univention-dvd (2.0.0-8) unstable; urgency=medium
+
+  * Bug #43595: added univention-server-overview to task list
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Mar 2017 04:42:20 +0100
+
 univention-dvd (2.0.0-7) unstable; urgency=medium
 
-  * Bug #43495: added univention-portal do task list
+  * Bug #43495: added univention-portal to task list
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Feb 2017 15:20:00 +0100
 

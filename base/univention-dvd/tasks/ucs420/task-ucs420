@@ -64,6 +64,7 @@ univention-nagios-client
 univention-saml
 univention-sudo
 univention-portal
+univention-server-overview
 screen
 
 /* Translation Packages */
