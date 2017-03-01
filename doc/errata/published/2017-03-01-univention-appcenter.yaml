@@ -10,3 +10,5 @@ desc: |
  * When an App sets it HTTP port to 0, disable the HTTP link for the App
    Center link and for the ucs-overview link.
 bug: [41801, 43657]
+erratum: 406
+announced: 2017-03-01
