@@ -185,12 +185,12 @@ define([
 					locale: locale
 				}, false));
 				deferreds.push(_.load());
-				return all(deferreds).then(lang.hitch(this, 'load'));
+				return all(deferreds);
 			});
 
 			// remove wizard and render it again
 			var _cleanup = lang.hitch(this, function() {
-				this.removeChild(this.wizard);
+				this._container.removeChild(this.wizard);
 				this.wizard.destroy();
 				this._renderWizard(this._orgValues, ucr);
 			});
@@ -201,7 +201,7 @@ define([
 			tools.defer(_setLocale, 200).then(function() {
 				return tools.defer(_cleanup, 200);
 			}).then(function() {
-				return tools.defer(lang.hitch(self, 'standby', false), 200);
+				return tools.defer(lang.hitch(self._container, 'standby', false), 200);
 			});
 		},
 

@@ -4,3 +4,4 @@ usr/share/pam-configs
 usr/lib/univention-system-setup/addons
 etc/xdg/openbox/rc_no_shortcuts.xml
 usr/sbin
+usr/share/univention-system-setup-boot/www

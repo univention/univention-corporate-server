@@ -29,14 +29,14 @@
 
 .PHONY: build install clean
 
-INITIALSETUP_DE_JSON := var/www/univention/js/initialsetup/de.json
-STYL_FILES := $(shell find var/www -name '*.styl')
+#INITIALSETUP_DE_JSON := usr/share/univention-system-setup-boot/www/i18n/de/initialsetup.json
+STYL_FILES := $(shell find usr/share -name '*.styl')
 CSS_FILES := $(STYL_FILES:.styl=.css)
 
-build: $(INITIALSETUP_DE_JSON) get-volume-set-identifier $(CSS_FILES)
+build: get-volume-set-identifier $(CSS_FILES)
 
 clean:
-	rm -f $(INITIALSETUP_DE_JSON) $(CSS_FILES)
+	rm -f $(CSS_FILES)
 
 install: build
 	@echo "Nothing to install"

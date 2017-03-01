@@ -1,10 +1,10 @@
 [
 	{
 		"input_files": [
-			"var/www/univention/initialsetup.html"
+			"usr/share/univention-system-setup-boot/www/index.html"
 		],
-		"po_subdir": "var/www/univention/js/initialsetup",
+		"po_subdir": "usr/share/univention-system-setup-boot/www/",
 		"target_type": "json",
-		"destination": "var/www/univention/js/initialsetup/{lang}.json"
+		"destination": "usr/share/univention-system-setup-boot/www/i18n/{lang}/main.json"
 	}
 ]
