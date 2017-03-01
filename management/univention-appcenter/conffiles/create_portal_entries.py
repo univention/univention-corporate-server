@@ -153,7 +153,7 @@ def handler(ucr, changes):
 						entry.setdefault('description', [])
 						entry['description'].append(('de_DE', value))
 					else:
-						portal_logger.warn('Don\'t know how to handle UCR key %s' % ucr_key)
+						portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
 		for cn, attrs in attr_entries.items():
 			dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
 			unprocessed_links = attrs.pop('_links', [])
@@ -169,15 +169,15 @@ def handler(ucr, changes):
 					if link:
 						my_links.add(str(link))
 			my_links = list(my_links)
-			portal_logger.info('Processing %s' % dn)
-			portal_logger.info('Attrs: %r' % attrs)
-			portal_logger.info('Links: %r' % my_links)
+			portal_logger.debug('Processing %s' % dn)
+			portal_logger.debug('Attrs: %r' % attrs)
+			portal_logger.debug('Links: %r' % my_links)
 			try:
 				obj = init_object('settings/portal_entry', lo, pos, dn)
 			except udm_errors.noObject:
-				portal_logger.info('DN not found...')
+				portal_logger.debug('DN not found...')
 				if my_links:
-					portal_logger.info('... creating')
+					portal_logger.debug('... creating')
 					attrs['link'] = my_links
 					portals = search_objects('settings/portal', lo, pos)
 					attrs['portal'] = [portal.dn for portal in portals]
@@ -186,20 +186,19 @@ def handler(ucr, changes):
 					try:
 						create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
 					except udm_errors.insufficientInformation as exc:
-						portal_logger.warn('Cannot create: %s' % exc)
+						portal_logger.info('Cannot create: %s' % exc)
 				continue
 			links = obj['link']
-			portal_logger.info('Existing links: %r' % links)
+			portal_logger.debug('Existing links: %r' % links)
 			links = [_link for _link in links if urlsplit(_link).hostname not in local_hosts]
 			links.extend(my_links)
-			portal_logger.info('New links: %r' % links)
+			portal_logger.debug('New links: %r' % links)
 			if not links:
-				portal_logger.info('Removing DN')
+				portal_logger.debug('Removing DN')
 				remove_object_if_exists('settings/portal_entry', lo, pos, dn)
 			else:
-				portal_logger.info('Modifying DN')
+				portal_logger.debug('Modifying DN')
 				attrs['link'] = links
 				modify_object('settings/portal_entry', lo, pos, dn, **attrs)
 	except Exception:
 		portal_logger.exception('Exception in UCR module create_portal_entries')
-		raise
