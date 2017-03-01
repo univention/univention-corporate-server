@@ -1507,10 +1507,10 @@ class App(object):
 		return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
 	def __cmp__(self, other):
-		return cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(LooseVersion(self.get_server()), LooseVersion(other.get_server()))
+		return cmp(self.id, other.id) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id) or cmp(LooseVersion(self.get_server()), LooseVersion(other.get_server()))
 
 
-# LEGACY; deprecated!
+# LEGACY; deprecated, use univention.appcenter.app_cache.Apps()!
 class AppManager(object):
 	_locale = None
 	_cache = []
