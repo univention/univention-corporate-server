@@ -1,3 +1,9 @@
+univention-squid (10.0.0-6) unstable; urgency=low
+
+  * Bug #43676: use STARTTLS to encrypt all LDAP connections
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 01 Mar 2017 11:26:33 +0100
+
 univention-squid (10.0.0-5) unstable; urgency=low
 
   * Bug #43580: adapt squid config template to upstream changes
