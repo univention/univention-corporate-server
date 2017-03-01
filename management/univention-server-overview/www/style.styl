@@ -1,0 +1,101 @@
+/*
+ * Copyright 2017 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3.
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+$theme-color = rgb(20, 110, 220)
+
+.umc
+	min-height: 100%
+
+	.umcHeader
+		background-color: $theme-color
+		box-sizing: content-box
+		overflow: visible
+
+		.umcHeaderLeft
+			float: left
+			height: 100%
+
+
+		.umcHeaderRight
+			float: right
+			height: 100%
+			margin-right: 0
+
+		.umcLiveSearch .dijitTextBox
+				&:before,
+				&:after,
+				&
+					border-color: #282828
+
+	.umcLiveSearch
+		padding: 10px
+
+	.umcGalleryPane
+		clear: both
+
+		.umcGalleryWrapperItem
+			@media (max-width: 549px)
+				padding: 10px
+
+		.umcGalleryItem
+			height: 60px
+			cursor: initial !important
+
+			&:hover
+				background-color: $theme-color
+
+				a
+					color: #ffffff
+
+			a:hover
+				text-decoration: underline
+
+			a
+				color: #5a5a5a
+				transition-property: color
+				transition-duration: inherit
+
+			.umcGalleryDescription
+				min-height: 50px
+
+	#content
+		opacity: 1
+		transition: opacity 0.75s
+
+		h1
+			text-align: left
+			padding: 10px
+			margin-bottom: 0.5em
+
+	&.standby
+		background: no-repeat center url('/univention/js/dijit/themes/umc/images/standbyAnimation.svg')
+
+		#content
+			opacity: 0
+
