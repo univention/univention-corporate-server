@@ -1,3 +1,9 @@
+univention-portal (1.0.6-8) unstable; urgency=medium
+
+  * Bug #42231: Support external links
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 01:59:02 +0100
+
 univention-portal (1.0.6-7) unstable; urgency=medium
 
   * Bug #42233: adjust package description

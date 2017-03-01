@@ -79,26 +79,40 @@ define([
 						var myProtocolSupported = array.some(entry.links, function(link) {
 							return link.indexOf(protocol) === 0;
 						});
-						array.forEach(entry.links, function(link) {
-							if (myProtocolSupported) {
-								if (link.indexOf(protocol) !== 0) {
-									return;
-								}
-							}
+						var onlyOneKind = array.every(entry.links, function(link) {
 							var _linkElement = document.createElement('a');
 							_linkElement.setAttribute('href', link);
 							var linkHost = _linkElement.hostname;
-							if (isIPv4) {
-								if (! _regIPv4.test(linkHost)) {
-									return;
+							return !_regIPv4.test(linkHost) && !_regIPv6.test(linkHost);
+						});
+						onlyOneKind = onlyOneKind || array.every(entry.links, function(link) {
+							var _linkElement = document.createElement('a');
+							_linkElement.setAttribute('href', link);
+							var linkHost = _linkElement.hostname;
+							return _regIPv4.test(linkHost) || _regIPv6.test(linkHost);
+						});
+						array.forEach(entry.links, function(link) {
+							var _linkElement = document.createElement('a');
+							_linkElement.setAttribute('href', link);
+							var linkHost = _linkElement.hostname;
+							if (! onlyOneKind) {
+								if (myProtocolSupported) {
+									if (link.indexOf(protocol) !== 0) {
+										return;
+									}
 								}
-							} else if (isIPv6) {
-								if (! _regIPv6.test(linkHost)) {
-									return;
-								}
-							} else {
-								if (_regIPv4.test(linkHost) || _regIPv6.test(linkHost)) {
-									return;
+								if (isIPv4) {
+									if (! _regIPv4.test(linkHost)) {
+										return;
+									}
+								} else if (isIPv6) {
+									if (! _regIPv6.test(linkHost)) {
+										return;
+									}
+								} else {
+									if (_regIPv4.test(linkHost) || _regIPv6.test(linkHost)) {
+										return;
+									}
 								}
 							}
 							apps.push(lang.mixin({web_interface: link, host_name: linkHost}, _entry));
