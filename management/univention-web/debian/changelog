@@ -1,3 +1,9 @@
+univention-web (1.0.29-4) unstable; urgency=medium
+
+  * Bug #42229: Allow grid view of users with photos being visible
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Mar 2017 18:42:59 +0100
+
 univention-web (1.0.29-3) unstable; urgency=medium
 
   Bug #43528:

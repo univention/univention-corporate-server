@@ -162,10 +162,14 @@ define([
 
 		initialStatusMessage: _("Please perform a search"),
 
+		_necessaryUdmValues: [],
+
 		// gridOptions: options for the inner grid
 		gridOptions: null,
 
 		baseClass: 'umcGrid',
+
+		additionalViews: null,
 
 		_widgetList: [],
 		own: function() {
@@ -178,6 +182,8 @@ define([
 		disabled: false,
 
 		_contextMenu: null,
+
+		_views: {},
 
 		// temporary div elements to estimate width of text for columns
 		_tmpCell: null,
@@ -320,7 +326,7 @@ define([
 				baseClass: 'umcGridHeader'
 			});
 			this.addChild(this._header);
-			
+
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
 				className: 'dgrid-autoheight',
@@ -336,6 +342,10 @@ define([
 					this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
 				}
 			}, this.gridOptions || {}));
+
+			if (this.additionalViews) {
+				this._addViewsToGrid();
+			}
 
 			this._updateGridSorting();
 
@@ -371,6 +381,30 @@ define([
 				this.filter(this.query);
 			}
 
+		},
+
+		_addViewsToGrid: function() {
+			array.forEach(Object.keys(this.additionalViews), lang.hitch(this, function(viewName) {
+				var view = this.additionalViews[viewName];
+				view.grid = this;
+				view.renderRow = lang.hitch(view, view.renderRow);
+				if (view.necessaryUdmValues) {
+					this._necessaryUdmValues = this._necessaryUdmValues.concat(array.filter(view.necessaryUdmValues, lang.hitch(function(value) {
+						return array.indexOf(this._necessaryUdmValues, value) === -1;
+					})));
+				}
+			}));
+			this._views.default = {renderRow: this._grid.renderRow, baseClass: this.baseClass};
+			lang.mixin(this._views, this.additionalViews);
+		},
+
+		changeView: function() {
+			var view = this.activeViewMode === 'tile' ? 'default' : 'tile';
+			var baseClass = this.activeViewMode === 'tile' ? 'umcGrid' : 'umcGridTile';
+			this._grid.renderRow = this._views[view].renderRow;
+			domClass.replace(this.domNode, baseClass, ['umcGrid', 'umcGridTile']);
+			this._grid.refresh();
+			this.activeViewMode = view;
 		},
 
 		_updateGlobalCanExecute: function() {
@@ -847,7 +881,15 @@ define([
 		filter: function(query, options) {
 			style.set(this._grid.domNode, 'max-height', '1px');
 			this.standby(true);
-			this._filter(query, options).then(lang.hitch(this, function() {
+			var addedFieldsQuery = query;
+			if (this._necessaryUdmValues.length > 0) {
+				array.forEach(this._necessaryUdmValues, function(value) {
+					if (array.indexOf(query.fields, value) === -1) {
+						addedFieldsQuery.fields.push(value);
+					}
+				});
+			}
+			this._filter(addedFieldsQuery, options).then(lang.hitch(this, function() {
 				this.standby(false);
 				this._setInitialGridHeight();
 			}));

@@ -1,0 +1,93 @@
+@import "variables"
+
+.umcGridTile .dgrid
+	border: none
+
+.umcGridTile .dgrid-scroller
+	max-height: inherit
+
+.umcGridTile .dgrid-header
+	display: none
+
+.umcGridTile .dgrid-preload
+	clear: both
+
+.umcGridTile
+
+	.umcGridTileWrapperItem
+		padding: 10px
+
+	
+	.umcGridTileItem
+		position: relative
+		outline: none
+		padding: 16px
+		background-color: #fff
+		box-sizing: content-box
+		material-shadow-common()
+		material-shadow(1)
+		border-radius: 2px
+
+		// definitions in px instead of em due to size of image in px
+		height: 80px
+		overflow: hidden
+
+		.umcGridTileName
+			font-size: $font-size-subheading
+			color: $text-color-lighter
+			font-weight: 500
+			word-break: break-word
+			margin-right: 24px
+			margin-left: 75px
+
+
+		.umcGridTileName:hover
+			cursor: pointer
+
+
+		.umcGridTileDescription
+			color: $text-color-lightest
+			padding-top: 5px
+			min-height: 70px
+			margin-left: 75px
+
+
+		.umcGridTileIcon
+			height: 70px
+			width: 70px
+			left: 5px
+			position: absolute
+			border-radius: 35px
+			overflow: hidden
+			line-height: 70px
+			text-align: center
+			color: white
+			font-size: 24px
+			font-weight: 500
+			background: #FFDB87
+			background-size:cover
+			background-position:center center
+			background-repeat:no-repeat
+
+
+		.umcGridTileContextIcon
+			icon-image(0, -40, "")
+			position: absolute
+			top: 11px
+			left: auto
+			right: 8px
+
+
+		.umcGridTileContextIcon:hover
+			cursor: pointer
+
+
+	.umcGridTileItem:hover
+		background-color: #EEEEEE
+
+
+// no left/right padding for full size item
+@media (max-width: $xxs-max)
+	.umcGridTile .umcGridTileWrapperItem
+		padding-left: 0
+		padding-right: 0
