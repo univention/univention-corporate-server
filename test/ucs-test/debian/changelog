@@ -1,3 +1,9 @@
+ucs-test (6.0.37-58) unstable; urgency=medium
+
+  * Bug #43657: Adjust other test case
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 11:48:47 +0100
+
 ucs-test (6.0.37-57) unstable; urgency=medium
 
   * Bug #43657: Add test case
