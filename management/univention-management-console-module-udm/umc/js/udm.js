@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window*/
+/*global define, require, console, window*/
 
 define([
 	"dojo/_base/declare",
@@ -66,6 +66,7 @@ define([
 	"umc/widgets/MixedInput",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/HiddenInput",
+	"umc/modules/udm/TileView",
 	"umc/modules/udm/TreeModel",
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
@@ -80,7 +81,7 @@ define([
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, entities, app, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
-	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, HiddenInput, TreeModel,
+	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, HiddenInput, TileView, TreeModel,
 	CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
 {
 	app.registerOnStartup(udmStartup);
@@ -736,6 +737,11 @@ define([
 				_store = store(this.idProperty, 'udm/nav/object', this.moduleFlavor);
 			}
 
+			var additionalGridViews = {};
+			if (this.moduleFlavor === 'users/user') {
+				additionalGridViews = {tile: new TileView()};
+			}
+
 			// generate the data grid
 			this._grid = new Grid({
 				region: 'main',
@@ -743,6 +749,7 @@ define([
 				columns: this._default_columns,
 				moduleStore: _store,
 				footerFormatter: _footerFormatter,
+				additionalViews: additionalGridViews,
 				defaultAction: lang.hitch(this, function(keys, items) {
 					if ('navigation' == this.moduleFlavor && (this._searchForm._widgets.objectType.get('value') == '$containers$' || items[0].$childs$ === true)) {
 						return 'workaround';
@@ -963,6 +970,16 @@ define([
 					})
 				});
 				layout[1].push('toggleSearch');
+				if (this.moduleFlavor === 'users/user') {
+					buttons.push({
+						name: 'toggleView',
+						label: _('Change View'),
+						callback: lang.hitch(this, function() {
+							this._grid.changeView();
+						})
+					});
+					layout[1].push('toggleView');
+				}
 			}
 
 			// generate the search widget

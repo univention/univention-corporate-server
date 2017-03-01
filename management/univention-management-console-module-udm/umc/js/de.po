@@ -626,6 +626,10 @@ msgstr "Gruppen-Vorlage"
 msgid "Groups"
 msgstr "Gruppen"
 
+#: umc/js/udm.js:976
+msgid "Change View"
+msgstr "Ansicht wechseln"
+
 #: umc/js/udm.js:391
 msgid ""
 "Groups managed here are used by the application \"%(name)s\" which is "

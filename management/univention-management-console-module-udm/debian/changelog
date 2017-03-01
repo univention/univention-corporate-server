@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.6-3) unstable; urgency=medium
+
+  * Bug #42229: Allow grid view of users with photos being visible 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Mar 2017 18:40:04 +0100
+
 univention-management-console-module-udm (7.0.6-2) unstable; urgency=medium
 
   * Bug #42263: show license menu only if permissions exists for it
