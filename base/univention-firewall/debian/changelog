@@ -1,3 +1,9 @@
+univention-firewall (9.0.0-8) unstable; urgency=medium
+
+  * Bug #43471: Doing it again
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 02:25:49 +0100
+
 univention-firewall (9.0.0-7) unstable; urgency=low
 
   * Bug #42351: do not start/stop/restart firewall if iptables is not
