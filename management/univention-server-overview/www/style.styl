@@ -70,6 +70,10 @@ $theme-color = rgb(20, 110, 220)
 			&:hover
 				background-color: $theme-color
 
+				.umcGalleryDescription,
+				.umcGalleryVersion
+					color: #ffffff
+
 				a
 					color: #ffffff
 
@@ -78,11 +82,17 @@ $theme-color = rgb(20, 110, 220)
 
 			a
 				color: #5a5a5a
+
+			.umcGalleryDescription,
+			.umcGalleryVersion
+				min-height: 25px
+				color: #787878
+
+			a,
+			.umcGalleryDescription,
+			.umcGalleryVersion
 				transition-property: color
 				transition-duration: inherit
-
-			.umcGalleryDescription
-				min-height: 50px
 
 	#content
 		opacity: 1

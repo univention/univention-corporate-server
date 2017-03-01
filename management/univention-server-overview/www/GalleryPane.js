@@ -34,16 +34,38 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-construct",
 	"umc/tools",
-	"umc/widgets/GalleryPane"
-], function(declare, lang, array, domConstruct, tools, GalleryPane) {
+	"umc/widgets/GalleryPane",
+	"umc/i18n!server-overview"
+], function(declare, lang, array, domConstruct, tools, GalleryPane, _) {
+	var roleLabels = {
+		'master': _('DC master'),
+		'backup': _('DC backup'),
+		'slave': _('DC slave'),
+		'member': _('Member server')
+	};
+
+	function getServerLabel(item) {
+		if (item.serverRole instanceof Array) {
+			return roleLabels[item.serverRole[0]];
+		}
+		return _('Unknown');
+	}
+
 	return declare([GalleryPane], {
 		useFqdn: true,
 
 		renderRow: function(item, options) {
 			return domConstruct.toDom(lang.replace(
-				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-3"><div class="umcGalleryItem"><div class="umcGalleryName"><a href="//{url}">{name}</a></div><div class="umcGalleryDescription">{description}</div></div></div>', {
+				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-3">' +
+					'<div class="umcGalleryItem">' +
+						'<div class="umcGalleryName"><a href="//{url}">{name}</a></div>' +
+						'<div class="umcGalleryDescription">{description}</div>' +
+						'<div class="umcGalleryVersion">{version}</div>' +
+					'</div>' +
+				'</div>', {
 				name: item.hostname,
-				description: item.serverRole && item.serverRole.length ? item.serverRole[0] : '',
+				description: getServerLabel(item),
+				version: lang.replace('UCS {version}', item),
 				url: this.useFqdn ? lang.replace('{hostname}.{domain}', item) : item.ip instanceof Array ? item.ip[0] : '#'
 			}));
 		},

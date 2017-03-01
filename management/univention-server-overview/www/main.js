@@ -60,10 +60,7 @@ define([
 		},
 
 		start: function() {
-			var title = entities.decode(_('Server overview for %s', meta.ucr.domainname));
-			dom.byId('title').innerHTML = title;
-			window.document.title = title;
-
+			this.initLabels();
 			login.start().then(lang.hitch(this, 'init'));
 		},
 
@@ -72,8 +69,18 @@ define([
 			this.initLiveSearch();
 		},
 
-		initLiveSearch: function() {
+		initLabels: function() {
+			var title = entities.decode(_('%s - Server overview', meta.ucr.domainname));
+			window.document.title = title;
+
+			title = entities.decode(_('Server overview for domain %s', meta.ucr.domainname));
+			dom.byId('title').innerHTML = title;
+
 			this.liveSearch = registry.byId('liveSearch');
+			this.liveSearch._searchTextBox.set('inlineLabel', _('Search servers'));
+		},
+
+		initLiveSearch: function() {
 			this.liveSearch.on('search', lang.hitch(this, function(pattern) {
 				this.gallery.updateQuery(this.liveSearch.get('value'));
 			}));
