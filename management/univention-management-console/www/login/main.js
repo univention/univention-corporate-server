@@ -75,6 +75,9 @@ define([
 
 			// FIXME: remove and show something else, e.g. a newly rendered login dialog
 			dialog.alert('Session timeout. <a href="/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href)) + '">Please login again.</a>');
+			var deferred = new Deferred();
+			deferred.reject();
+			return deferred;
 		},
 
 		renderLoginDialog: function() {
