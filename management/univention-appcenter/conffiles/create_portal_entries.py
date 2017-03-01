@@ -48,13 +48,16 @@ portal_logger = get_base_logger().getChild('portalentries')
 
 
 class _Link(object):
-	def __init__(self, protocol=None, host=None, port=None, path=None):
+	def __init__(self, protocol=None, host=None, port=None, path=None, full=None):
 		self.protocol = protocol
 		self.host = host
 		self.port = port
 		self.path = path
+		self.full = full
 
 	def __str__(self):
+		if self.full:
+			return self.full
 		if not self.protocol or not self.host or not self.path:
 			return ''
 		port = ':%s' % self.port
@@ -113,7 +116,10 @@ def handler(ucr, changes):
 						entry['_links'] = links
 					if key == 'link':
 						for link in entry['_links']:
-							link.path = value
+							if value.startswith('http'):
+								link.full = value
+							else:
+								link.path = value
 					elif key == 'port_http':
 						for link in entry['_links'][:]:
 							if link.protocol == 'https':
@@ -147,11 +153,22 @@ def handler(ucr, changes):
 						entry.setdefault('description', [])
 						entry['description'].append(('de_DE', value))
 					else:
-						portal_logger.warn('Dont know how to handle UCR key')
+						portal_logger.warn('Don\'t know how to handle UCR key %s' % ucr_key)
 		for cn, attrs in attr_entries.items():
 			dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
-			my_links = attrs.pop('_links')
-			my_links = [str(my_link) for my_link in my_links if my_link]
+			unprocessed_links = attrs.pop('_links', [])
+			my_links = set()
+			for link in unprocessed_links:
+				if link:
+					my_links.add(str(link))
+				if not link.protocol:
+					link.protocol = 'http'
+					if link:
+						my_links.add(str(link))
+					link.protocol = 'https'
+					if link:
+						my_links.add(str(link))
+			my_links = list(my_links)
 			portal_logger.info('Processing %s' % dn)
 			portal_logger.info('Attrs: %r' % attrs)
 			portal_logger.info('Links: %r' % my_links)
@@ -164,6 +181,8 @@ def handler(ucr, changes):
 					attrs['link'] = my_links
 					portals = search_objects('settings/portal', lo, pos)
 					attrs['portal'] = [portal.dn for portal in portals]
+					attrs['activated'] = True
+					attrs['authRestriction'] = 'anonymous'
 					try:
 						create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
 					except udm_errors.insufficientInformation as exc:

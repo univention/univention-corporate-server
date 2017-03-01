@@ -1,3 +1,15 @@
+univention-appcenter (6.0.1-43) unstable; urgency=medium
+
+  * Bug #42231: Migrate all ucs-overview variables; support external links
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 02:06:39 +0100
+
+univention-appcenter (6.0.1-42) unstable; urgency=medium
+
+  * Bug #42231: Migrate old overview variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 00:37:31 +0100
+
 univention-appcenter (6.0.1-41) unstable; urgency=medium
 
   * Bug #42234: Support overview UCR variables
