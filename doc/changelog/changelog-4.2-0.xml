@@ -24,7 +24,10 @@
 						Perl has been updated to 5.20.2.
 					</simpara></listitem>
 					<listitem><simpara>
-						The <package>sysvinit</package> system has been replaced by <package>systemd</package>.
+						UCS ships with <package>systemd-sysv</package> as default init system.
+						This package is installed automatically on upgrades.
+						All UCS init shell scripts have been made LSB compliant to be compatible with <package>systemd</package>.
+						If custom init scripts are used or standard UCS init scrips haven been modified, please be aware that these may now have been superseded by <package>systemd</package> unit files or <systemitem class="service">systemd</systemitem> itself (<u:bug>43330</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						...
