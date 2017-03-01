@@ -1,3 +1,9 @@
+univention-squid (10.0.0-5) unstable; urgency=low
+
+  * Bug #43580: adapt squid config template to upstream changes
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 01 Mar 2017 10:48:20 +0100
+
 univention-squid (10.0.0-4) unstable; urgency=low
 
   * Bug #34206: password cache lifetime can now be set by UCRV

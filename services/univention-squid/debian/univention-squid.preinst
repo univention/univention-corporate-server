@@ -1,9 +1,9 @@
 #! /bin/sh
 #
 # Univention Squid
-#  prerm script
+#  preinst script
 #
-# Copyright 2013-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,8 +32,13 @@
 
 #DEBHELPER#
 
-if [ "$1" = "remove" ]; then
-	cp /usr/lib/univention-uninstall/60univention-squid.uinst /usr/lib/univention-install/
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 10.0.0-1; then
+	# upgrade from UCS 4.1 to UCS 4.2
+	# prepare squids configuration for squids upgrade to 3.4, which happens
+	# before the installation of univention-squids updated template.
+	# without this squid will fail to restart in its postinst: Bug #43580
+	sed --in-place 's#/usr/lib/squid3/squid_ldap_auth#/usr/lib/squid3/basic_ldap_auth#g' /etc/squid3/squid.conf
+	sed --in-place 's#/usr/lib/squid3/squid_ldap_group#/usr/lib/squid3/ext_ldap_group_acl#g' /etc/squid3/squid.conf
 fi
 
 exit 0
