@@ -1,3 +1,9 @@
+univention-apache (9.0.2-4) unstable; urgency=medium
+
+  * Bug #42231: No need for certificate variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Mar 2017 19:48:29 +0100
+
 univention-apache (9.0.2-3) unstable; urgency=medium
 
   * Bug #42231: No relative links allowed
