@@ -45,7 +45,7 @@ default_containers = ['cn=portal,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Entry')
-long_description = 'One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal'
+long_description = _('One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal')
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(
