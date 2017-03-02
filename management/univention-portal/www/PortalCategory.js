@@ -35,10 +35,9 @@ define([
 	"dojo/query",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"./PortalGallery",
-], function(declare, domClass, domConstruct, domQuery, Memory, Observable, Text, ContainerWidget, PortalGallery) {
+], function(declare, domClass, domConstruct, domQuery, Memory, Observable, ContainerWidget, PortalGallery) {
 	return declare("PortalCategory", [ContainerWidget], {
 		baseClass: 'portalCategory',
 
@@ -51,7 +50,7 @@ define([
 		grid: null,
 
 		query: null,
-		
+
 		_setQueryAttr: function(query) {
 			this.grid.set('query', query);
 			this._updateVisibility();
@@ -74,7 +73,7 @@ define([
 				domainName: this.domainName
 			});
 
-			domConstruct.place(title, this.containerNode)
+			domConstruct.place(title, this.containerNode);
 			this.addChild(this.grid);
 		},
 

@@ -26,18 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define, window, location*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom-class",
-	"dojo/on",
-	"dojo/mouse",
-	"umc/tools",
-	"management/modules/appcenter/AppCenterGallery",
-	"put-selector/put"
-], function(declare, lang, domClass, on, mouse, tools, AppCenterGallery, put) {
+	"umc/widgets/AppGallery"
+], function(declare, lang, AppGallery) {
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
 	var _regIPv6 = /^\[?((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\]?$/;
 	var _regIPv6Brackets = /^\[.*\]$/;
@@ -64,39 +59,29 @@ define([
 		return fqdn;
 	};
 
-	return declare("PortalGallery", [AppCenterGallery], {
+	return declare("PortalGallery", [ AppGallery ], {
+		iconClassPrefix: 'umcPortal',
+
 		domainName: null,
 
-		getIconClass: function(iconName) {
-			return tools.getIconClass(iconName, 'scalable', 'portal');
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.baseClass += ' umcPortalGallery';
+			this.actions = [{
+				name: 'open',
+				isDefaultAction: true,
+				isContextAction: false,
+				callback: lang.hitch(this, function(id, item) {
+					location.href = this._getWebInterfaceUrl(item);
+				})
+			}];
 		},
 
-		renderRow: function(item) {
-			var div = this.inherited(arguments);
-
-			var innerDiv = put(div, 'a[href=$]', this._getWebInterfaceUrl(item));
-			put(innerDiv, 'div.boxShadow.bl div.hoverBackground << div.boxShadow.tr div.hoverBackground');
-
-			// clone the old node to remove eventListeners
-			var _appInnerWrapper = div.querySelector('.appInnerWrapper');
-			appInnerWrapper = dojo.clone(_appInnerWrapper);
-			dojo.destroy(_appInnerWrapper);
-
-			put(innerDiv, appInnerWrapper.querySelector('.appIcon'));
-			put(appInnerWrapper.querySelector('.border'), '!');
-			put(appInnerWrapper.querySelector('.umcGalleryVendor'), '!');
-			put(appInnerWrapper.querySelector('.umcGalleryName'), '+ div.umcGalleryHost', item.host_name);
-			put(appInnerWrapper, 'div.contentWrapper', appInnerWrapper.querySelector('.appContent'), '+', appInnerWrapper.querySelector('.appHover'));
-			put(innerDiv, appInnerWrapper);
-
-			on(div, mouse.enter, function() {
-				domClass.add(div, 'hover');
+		getRenderInfo: function(item) {
+			return lang.mixin(this.inherited(arguments), {
+				itemSubName: item.host_name
 			});
-			on(div, mouse.leave, function() {
-				domClass.remove(div, 'hover');
-			});
-
-			return div;
 		},
 
 		_getProtocolAndPort: function(app) {

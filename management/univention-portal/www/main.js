@@ -149,8 +149,17 @@ define([
 			this.search = registry.byId('umcLiveSearch');
 			this.search.on('search', lang.hitch(this, 'filterPortal'));
 			this._createCategories();
+			apps = [{
+				id: 'umc',
+				name: 'Management',
+				description: 'Administrate the UCS domain and the local system',
+				web_interface: '/univention/management',
+				logo_name: 'univention-management-console',
+				host_name: meta.ucr.hostname
+			}];
+			this._addCategory('Management', apps);
 		},
-		
+
 		filterPortal: function() {
 			var searchPattern = lang.trim(this.search.get('value'));
 			var searchQuery = this.search.getSearchQuery(searchPattern);
