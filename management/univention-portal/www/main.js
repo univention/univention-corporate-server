@@ -37,11 +37,12 @@ define([
 	"dojo/on",
 	"dojo/dom",
 	"./PortalCategory",
+	"umc/tools",
 	"umc/i18n/tools",
 	"umc/json!/univention/portal/portal.json",
 	"umc/json!/univention/meta.json",
 	"umc/i18n!/univention/i18n"
-], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, i18nTools, portalContent, meta, _) {
+], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, tools, i18nTools, portalContent, meta, _) {
 	return {
 		portalCategories: null,
 
@@ -52,17 +53,9 @@ define([
 			var entries = portalContent.entries;
 			var locale = i18nTools.defaultLang().replace(/-/, '_');
 			var protocol = window.location.protocol;
-			var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
-			var _regIPv6 = /^\[?((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\]?$/;
 			var host = window.location.host;
-			var isIPv4 = false;
-			var isIPv6 = false;
-			if (_regIPv4.test(host)) {
-				isIPv4 = true;
-			}
-			if (_regIPv6.test(host)) {
-				isIPv6 = true;
-			}
+			var isIPv4 = tools.isIPv4Address(host);
+			var isIPv6 = tools.isIPv6Address(host);
 
 			array.forEach(['admin', 'service'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
@@ -83,13 +76,13 @@ define([
 							var _linkElement = document.createElement('a');
 							_linkElement.setAttribute('href', link);
 							var linkHost = _linkElement.hostname;
-							return !_regIPv4.test(linkHost) && !_regIPv6.test(linkHost);
+							return !tools.isFQDN(linkHost);
 						});
 						onlyOneKind = onlyOneKind || array.every(entry.links, function(link) {
 							var _linkElement = document.createElement('a');
 							_linkElement.setAttribute('href', link);
 							var linkHost = _linkElement.hostname;
-							return _regIPv4.test(linkHost) || _regIPv6.test(linkHost);
+							return tools.isIPAddress(linkHost);
 						});
 						array.forEach(entry.links, function(link) {
 							var _linkElement = document.createElement('a');
@@ -102,15 +95,15 @@ define([
 									}
 								}
 								if (isIPv4) {
-									if (! _regIPv4.test(linkHost)) {
+									if (! tools.isIPv4Address(linkHost)) {
 										return;
 									}
 								} else if (isIPv6) {
-									if (! _regIPv6.test(linkHost)) {
+									if (! tools.isIPv6Address(linkHost)) {
 										return;
 									}
 								} else {
-									if (_regIPv4.test(linkHost) || _regIPv6.test(linkHost)) {
+									if (! tools.isFQDN(linkHost)) {
 										return;
 									}
 								}
@@ -149,15 +142,6 @@ define([
 			this.search = registry.byId('umcLiveSearch');
 			this.search.on('search', lang.hitch(this, 'filterPortal'));
 			this._createCategories();
-			apps = [{
-				id: 'umc',
-				name: 'Management',
-				description: 'Administrate the UCS domain and the local system',
-				web_interface: '/univention/management',
-				logo_name: 'univention-management-console',
-				host_name: meta.ucr.hostname
-			}];
-			this._addCategory('Management', apps);
 		},
 
 		filterPortal: function() {

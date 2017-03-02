@@ -1,3 +1,9 @@
+univention-portal (1.0.6-11) unstable; urgency=medium
+
+  * Bug #42231: Use lib functions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Mar 2017 20:47:17 +0100
+
 univention-portal (1.0.6-10) unstable; urgency=medium
 
   * Bug #42231: Add UMC portal entry
