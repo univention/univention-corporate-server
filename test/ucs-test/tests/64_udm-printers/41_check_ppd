@@ -20,9 +20,10 @@ import pprint
 import univention.testing.utils as utils
 
 if __name__ == '__main__':
+
+	# get local and ldap printer models
 	ldap_printer = []
 	printer_files = []
-
 	print 'searching for printer models'
 	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
@@ -35,22 +36,23 @@ if __name__ == '__main__':
 					ldap_printer.append(model)
 			except IndexError:
 				pass
-
 	for root, dirs, files in os.walk('/usr/share/ppd/'):
 		for file_ in files:
 			if file_.endswith('.ppd') or file_.endswith('ppd.gz'):
 				printer_files.append(file_)
 
+	# check if we found something
+	assert ldap_printer
+	assert printer_files
+
+	# check diff
 	missing_files = set(ldap_printer) - set(printer_files)
 	missing_printers = set(printer_files) - set(ldap_printer)
-
 	message = None
 	if missing_files:
 		message = 'No PPD file found for LDAP printers:\n' + '\n\t'.join(missing_files)
-
 	if missing_printers:
 		message += '\n\n' + 'No LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
-
 	if message:
 		print >> sys.stderr, message
 		sys.exit(1)
