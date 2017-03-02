@@ -76,7 +76,7 @@ define([
 							var _linkElement = document.createElement('a');
 							_linkElement.setAttribute('href', link);
 							var linkHost = _linkElement.hostname;
-							return tools.isFQDN(linkHost);
+							return !tools.isIPAddress(linkHost);
 						});
 						onlyOneKind = onlyOneKind || array.every(entry.links, function(link) {
 							var _linkElement = document.createElement('a');
