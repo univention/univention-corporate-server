@@ -192,6 +192,5 @@ clean:
 	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "$(TMP_DIR)" ]; then \
 		rm $(WWW_JS_DIR) ;\
 		dpkg-divert --package univention-web-make-build-dev --remove --rename "$(WWW_JS_DIR)" ;\
-		ucr unset umc/web/hooks/univention-web-js ;\
 	fi
 
