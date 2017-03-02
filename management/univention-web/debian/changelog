@@ -1,3 +1,9 @@
+univention-web (1.0.29-9) unstable; urgency=medium
+
+  * Bug #42229: cleanup changeView method 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 02 Mar 2017 15:15:56 +0100
+
 univention-web (1.0.29-8) unstable; urgency=medium
 
   * Bug #43528: Correct wrong color of left and right border of input fields

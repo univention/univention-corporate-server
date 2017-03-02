@@ -398,13 +398,18 @@ define([
 			lang.mixin(this._views, this.additionalViews);
 		},
 
-		changeView: function() {
-			var view = this.activeViewMode === 'tile' ? 'default' : 'tile';
-			var baseClass = this.activeViewMode === 'tile' ? 'umcGrid' : 'umcGridTile';
-			this._grid.renderRow = this._views[view].renderRow;
-			domClass.replace(this.domNode, baseClass, ['umcGrid', 'umcGridTile']);
+		changeView: function(newView) {
+			if (!this._views[newView]) {
+				console.warn("unknown grid view selected");
+				return;
+			}
+			this._grid.renderRow = this._views[newView].renderRow;
+			var allBaseClasses = array.map(Object.keys(this._views), function(view) {
+				return this._views[view].baseClass;
+			}, this);
+			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
 			this._grid.refresh();
-			this.activeViewMode = view;
+			this.activeViewMode = newView;
 		},
 
 		_updateGlobalCanExecute: function() {
