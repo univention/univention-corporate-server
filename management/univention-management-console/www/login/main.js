@@ -65,19 +65,33 @@ define([
 		_loginDialog: null, // internal reference to the login dialog
 		_loginDeferred: null,
 
-		showLoginDialog: function(info) {
-			tools.checkReloadRequired();
+		showLoginDialog: function() {
+			// deprecated! only updater.js and tools.js renewSession still uses it.
+			return this.sessionTimeout();
+		},
 
-			if (this._loginDialog) {
-				this._loginDialog.updateForm(info || {});
-				return;
+		sessionTimeout: function() {
+			// call when the session timed out, returns a deferred which resolves when the session is active again
+			if (this._loginDeferred) {
+				// a login attempt is currently running
+				return this._loginDeferred;
 			}
 
-			// FIXME: remove and show something else, e.g. a newly rendered login dialog
-			dialog.alert('Session timeout. <a href="/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href)) + '">Please login again.</a>');
-			var deferred = new Deferred();
-			deferred.reject();
-			return deferred;
+			topic.publish('/umc/actions', 'session', 'timeout');
+			this._loginDeferred = this.autorelogin({ timeout: 15000 }).then(undefined, lang.hitch(this, function() {
+
+				tools.checkReloadRequired();
+
+				// FIXME: remove and show something else, e.g. a newly rendered login dialog
+				//this._requirePassword(('The current session timed out. <a href="/univention/login/?location=%s">Please login again.</a>', entities.encode(encodeURIComponent(window.location.href))));
+				this._requirePassword(_('The current session timed out. Please login again.'));
+
+				return this._waitForNextAuthentication().then(lang.hitch(this, function() {
+					// remove the reference to the login deferred object
+					this._loginDeferred = null;
+				}));
+			}));
+			return this._loginDeferred;
 		},
 
 		renderLoginDialog: function() {
@@ -87,40 +101,18 @@ define([
 			//		A Deferred object that is called upon successful login.
 			//		The callback receives the authorized username as parameter.
 
-			this._initLoginDialog();
+			this._loginDialog = new LoginDialog({});
+			this._loginDialog.startup();
 			this._loginDialog.show();
-			if (this._loginDeferred) {
-				// a login attempt is currently running
-				return this._loginDeferred;
-			}
 
 			// check if a page reload is required
 			tools.checkReloadRequired();
 
-			this._loginDeferred = this.autologin().then(undefined, lang.hitch(this, function() {
+			this.autologin().then(undefined, lang.hitch(this, function() {
 				// auto authentication could not be executed or failed...
 				return this._loginDialog.ask();
 			}));
 
-			return this._loginDeferred;
-		},
-
-		_initLoginDialog: function() {
-			if (!this._loginDialog) {
-				this._loginDialog = new LoginDialog({});
-				this._loginDialog.startup();
-				topic.subscribe('/umc/authenticated', lang.hitch(this, function() {
-					// remove the reference to the login deferred object
-					this._loginDeferred = null;
-				}));
-			}
-		},
-
-		loginDialogOpened: function() {
-			// summary:
-			//		Returns whether the login dialog has been opened or not
-
-			return this._loginDialog && this._loginDialog.get('open'); // Boolean
 		},
 
 		handleAuthenticationError: function(info) {
@@ -137,9 +129,13 @@ define([
 				return this._password_required.promise;
 			}
 
-			return this.autorelogin({ timeout: 15000 }).otherwise(lang.hitch(this, function() {
-				return this.showLoginDialog(info);
-			}));
+			// if we are at the login dialog only update the form (e.g. authentication failure, expired password, ...)
+			if (this._loginDialog) {
+				this._loginDialog.updateForm(info || {});
+				return;
+			}
+
+			return this.sessionTimeout();
 		},
 
 		start: function(username, password) {
@@ -158,6 +154,10 @@ define([
 				}));
 			}));
 
+			return this._waitForNextAuthentication();
+		},
+
+		_waitForNextAuthentication: function() {
 			// return a deferred upon the next authentication
 			var authenticatedDeferred = new Deferred();
 			var handle = topic.subscribe('/umc/authenticated', function(params) {
@@ -170,8 +170,8 @@ define([
 
 		sessioninfo: function() {
 			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(function(response) {
-				tools.status('loggedIn', true);
 				tools.status('authType', response.result.auth_type);
+				tools.status('loggedIn', true);
 				return response;
 			}, function(error) {
 				if (tools.status('loggedIn')) {
@@ -215,7 +215,7 @@ define([
 
 		autorelogin: function(args) {
 			if (tools.status('authType') === 'SAML') {
-				return login.passiveSingleSignOn(args);
+				return this.passiveSingleSignOn(args);
 			}
 			return this.autologin();
 		},
@@ -268,7 +268,7 @@ define([
 				}),
 				display503: lang.hitch(this, function(info) {
 					// in case we login and Apache/UMC-Server/UMC-Webserver does not run
-					if (this.loginDialogOpened()) {
+					if (this._loginDialog) {
 						this._loginDialog.updateForm({message: info.title});
 					}
 					dialog.alert(entities.encode(info.message).replace(/\n/g, '<br>'), info.title);

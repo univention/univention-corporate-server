@@ -200,23 +200,14 @@ define([
 					// check whether session is still valid
 					this._checkSessionRequest = login.sessioninfo().otherwise(lang.hitch(this, function(error) {
 						if (tools.parseError(error).status !== 401) {
-							// ignore any other error than unauthenticated (e.g. not reachable, or UCS 4.0 webserver still running)
+							// ignore any other error than unauthenticated (e.g. not reachable)
 							return;
 						}
-						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
 							// login dialog is already running
 							return;
 						}
-						topic.publish('/umc/actions', 'session', 'timeout');
-						login.autorelogin().then(lang.hitch(this, function() {
-							if (!this._checkSessionTimer.isRunning) {
-								this._checkSessionTimer.start();
-							}
-						}), function() {
-							tools.checkReloadRequired();
-							login.showLoginDialog();
-						});
+						login.sessionTimeout();
 					}));
 					this._checkSessionRequest.always(lang.hitch(this, function() {
 						this._checkSessionRequest = null;
