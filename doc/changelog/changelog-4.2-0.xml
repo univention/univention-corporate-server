@@ -618,6 +618,9 @@
 				<listitem><simpara>
 					The Squid proxy server now uses STARTTLS to encrypt all LDAP connections (<u:bug>43676</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A bug fix for Squidguards update-squidguard script was backported from the 1.5-5 release (<u:bug>43581</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
