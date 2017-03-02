@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: appcenter
+fix: 5.0.23-63.287.201703021849
+desc: |
+ This update addresses the following issue(s):
+ * Support for (docker) App plugins has been added. 
+bug: [43499]
