@@ -325,7 +325,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 				thread = notifier.threads.Simple('simple_response', notifier.Callback(result[0], self, request), notifier.Callback(self.thread_finished_callback, request))
 				thread.run()
 	if with_progress:
-		_response = sanitize_list(DictSanitizer({}))(_response)
+		_response = sanitize_dict({})(_response)
 
 	copy_function_meta_data(function, _response)
 	return _response
