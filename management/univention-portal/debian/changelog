@@ -1,3 +1,9 @@
+univention-portal (1.0.6-12) unstable; urgency=medium
+
+  * Bug #43528: Fix display error of portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 20:52:27 +0100
+
 univention-portal (1.0.6-11) unstable; urgency=medium
 
   * Bug #42231: Use lib functions
