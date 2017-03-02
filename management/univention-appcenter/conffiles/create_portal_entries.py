@@ -71,134 +71,140 @@ class _Link(object):
 		return str(self) != ''
 
 
-def handler(ucr, changes):
-	try:
-		changed_entries = set()
-		for key in changes.keys():
-			match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key)
-			if match:
-				changed_entries.add(match.group(2))
-		portal_logger.debug('Changed: %r' % changed_entries)
-		if not changed_entries:
-			return
-		lo, pos = get_machine_connection()
-		pos.setDn('cn=portal,cn=univention,%s' % ucr.get('ldap/base'))
-		interfaces = Interfaces(ucr)
-		hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		default_ipv4_address = interfaces.get_default_ipv4_address()
-		if default_ipv4_address:
-			default_ipv4_address = str(default_ipv4_address.ip)
-		default_ipv6_address = interfaces.get_default_ipv6_address()
-		if default_ipv6_address:
-			default_ipv6_address = str(default_ipv6_address.ip)
-		local_hosts = [hostname, default_ipv4_address, default_ipv6_address]
-		portal_logger.debug('Local hosts are: %r' % local_hosts)
-		attr_entries = {}
-		for changed_entry in changed_entries:
-			attr_entries[changed_entry] = {}
-		for ucr_key in ucr.keys():
-			match = re.match('ucs/web/overview/entries/([^/]+)/([^/]+)/(.*)', ucr_key)
-			if match:
-				category = match.group(1)
-				cn = match.group(2)
-				key = match.group(3)
-				value = ucr.get(ucr_key)
-				if cn in attr_entries:
-					portal_logger.debug('Matched %r -> %r' % (ucr_key, value))
-					entry = attr_entries[cn]
-					entry['category'] = category
-					entry['name'] = cn
-					if '_links' not in entry:
-						links = []
-						for host in local_hosts:
-							if host:
-								links.append(_Link(host=host))
-						entry['_links'] = links
-					if key == 'link':
-						for link in entry['_links']:
-							if value.startswith('http'):
-								link.full = value
-							else:
-								link.path = value
-					elif key == 'port_http':
-						for link in entry['_links'][:]:
-							if link.protocol == 'https':
-								link = copy(link)
-								entry['_links'].append(link)
-							link.protocol = 'http'
-							link.port = value
-					elif key == 'port_https':
-						for link in entry['_links'][:]:
-							if link.protocol == 'http':
-								link = copy(link)
-								entry['_links'].append(link)
-							link.protocol = 'https'
-							link.port = value
-					elif key == 'icon':
-						try:
-							with open('/var/www/%s' % value) as fd:
-								entry['icon'] = b64encode(fd.read())
-						except EnvironmentError:
-							pass
-					elif key == 'label':
-						entry.setdefault('displayName', [])
-						entry['displayName'].append(('en_US', value))
-					elif key == 'label/de':
-						entry.setdefault('displayName', [])
-						entry['displayName'].append(('de_DE', value))
-					elif key == 'description':
-						entry.setdefault('description', [])
-						entry['description'].append(('en_US', value))
-					elif key == 'description/de':
-						entry.setdefault('description', [])
-						entry['description'].append(('de_DE', value))
+def _handler(ucr, changes):
+	changed_entries = set()
+	for key in changes.keys():
+		match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key)
+		if match:
+			changed_entries.add(match.group(2))
+	changed_entries -= set(['umc', 'invalid-certificate-list', 'root-certificate'])
+	portal_logger.debug('Changed: %r' % changed_entries)
+	if not changed_entries:
+		return
+	lo, pos = get_machine_connection()
+	pos.setDn('cn=portal,cn=univention,%s' % ucr.get('ldap/base'))
+	interfaces = Interfaces(ucr)
+	hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	default_ipv4_address = interfaces.get_default_ipv4_address()
+	if default_ipv4_address:
+		default_ipv4_address = str(default_ipv4_address.ip)
+	default_ipv6_address = interfaces.get_default_ipv6_address()
+	if default_ipv6_address:
+		default_ipv6_address = str(default_ipv6_address.ip)
+	local_hosts = [hostname, default_ipv4_address, default_ipv6_address]
+	portal_logger.debug('Local hosts are: %r' % local_hosts)
+	attr_entries = {}
+	for changed_entry in changed_entries:
+		attr_entries[changed_entry] = {}
+	for ucr_key in ucr.keys():
+		match = re.match('ucs/web/overview/entries/([^/]+)/([^/]+)/(.*)', ucr_key)
+		if not match:
+			continue
+		category = match.group(1)
+		cn = match.group(2)
+		key = match.group(3)
+		value = ucr.get(ucr_key)
+		if cn in attr_entries:
+			portal_logger.debug('Matched %r -> %r' % (ucr_key, value))
+			entry = attr_entries[cn]
+			entry['category'] = category
+			entry['name'] = cn
+			if '_links' not in entry:
+				links = []
+				for host in local_hosts:
+					if host:
+						links.append(_Link(host=host))
+				entry['_links'] = links
+			if key == 'link':
+				for link in entry['_links']:
+					if value.startswith('http'):
+						link.full = value
 					else:
-						portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
-		for cn, attrs in attr_entries.items():
-			dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
-			unprocessed_links = attrs.pop('_links', [])
-			my_links = set()
-			for link in unprocessed_links:
+						link.path = value
+			elif key == 'port_http':
+				for link in entry['_links'][:]:
+					if link.protocol == 'https':
+						link = copy(link)
+						entry['_links'].append(link)
+					link.protocol = 'http'
+					link.port = value
+			elif key == 'port_https':
+				for link in entry['_links'][:]:
+					if link.protocol == 'http':
+						link = copy(link)
+						entry['_links'].append(link)
+					link.protocol = 'https'
+					link.port = value
+			elif key == 'icon':
+				try:
+					with open('/var/www/%s' % value) as fd:
+						entry['icon'] = b64encode(fd.read())
+				except EnvironmentError:
+					pass
+			elif key == 'label':
+				entry.setdefault('displayName', [])
+				entry['displayName'].append(('en_US', value))
+			elif key == 'label/de':
+				entry.setdefault('displayName', [])
+				entry['displayName'].append(('de_DE', value))
+			elif key == 'description':
+				entry.setdefault('description', [])
+				entry['description'].append(('en_US', value))
+			elif key == 'description/de':
+				entry.setdefault('description', [])
+				entry['description'].append(('de_DE', value))
+			else:
+				portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
+	for cn, attrs in attr_entries.items():
+		dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
+		unprocessed_links = attrs.pop('_links', [])
+		my_links = set()
+		for link in unprocessed_links:
+			if link:
+				my_links.add(str(link))
+			if not link.protocol:
+				link.protocol = 'http'
 				if link:
 					my_links.add(str(link))
-				if not link.protocol:
-					link.protocol = 'http'
-					if link:
-						my_links.add(str(link))
-					link.protocol = 'https'
-					if link:
-						my_links.add(str(link))
-			my_links = list(my_links)
-			portal_logger.debug('Processing %s' % dn)
-			portal_logger.debug('Attrs: %r' % attrs)
-			portal_logger.debug('Links: %r' % my_links)
-			try:
-				obj = init_object('settings/portal_entry', lo, pos, dn)
-			except udm_errors.noObject:
-				portal_logger.debug('DN not found...')
-				if my_links:
-					portal_logger.debug('... creating')
-					attrs['link'] = my_links
-					portals = search_objects('settings/portal', lo, pos)
-					attrs['portal'] = [portal.dn for portal in portals]
-					attrs['activated'] = True
-					attrs['authRestriction'] = 'anonymous'
-					try:
-						create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
-					except udm_errors.insufficientInformation as exc:
-						portal_logger.info('Cannot create: %s' % exc)
-				continue
-			links = obj['link']
-			portal_logger.debug('Existing links: %r' % links)
-			links = [_link for _link in links if urlsplit(_link).hostname not in local_hosts]
-			links.extend(my_links)
-			portal_logger.debug('New links: %r' % links)
-			if not links:
-				portal_logger.debug('Removing DN')
-				remove_object_if_exists('settings/portal_entry', lo, pos, dn)
-			else:
-				portal_logger.debug('Modifying DN')
-				attrs['link'] = links
-				modify_object('settings/portal_entry', lo, pos, dn, **attrs)
+				link.protocol = 'https'
+				if link:
+					my_links.add(str(link))
+		my_links = list(my_links)
+		portal_logger.debug('Processing %s' % dn)
+		portal_logger.debug('Attrs: %r' % attrs)
+		portal_logger.debug('Links: %r' % my_links)
+		try:
+			obj = init_object('settings/portal_entry', lo, pos, dn)
+		except udm_errors.noObject:
+			portal_logger.debug('DN not found...')
+			if my_links:
+				portal_logger.debug('... creating')
+				attrs['link'] = my_links
+				portals = search_objects('settings/portal', lo, pos)
+				attrs['portal'] = [portal.dn for portal in portals]
+				attrs['activated'] = True
+				attrs['authRestriction'] = 'anonymous'
+				try:
+					create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
+				except udm_errors.insufficientInformation as exc:
+					portal_logger.info('Cannot create: %s' % exc)
+			continue
+		links = obj['link']
+		portal_logger.debug('Existing links: %r' % links)
+		links = [_link for _link in links if urlsplit(_link).hostname not in local_hosts]
+		links.extend(my_links)
+		portal_logger.debug('New links: %r' % links)
+		if not links:
+			portal_logger.debug('Removing DN')
+			remove_object_if_exists('settings/portal_entry', lo, pos, dn)
+		else:
+			portal_logger.debug('Modifying DN')
+			attrs['link'] = links
+			modify_object('settings/portal_entry', lo, pos, dn, **attrs)
+
+
+def handler(ucr, changes):
+	try:
+		_handler(ucr, changes)
 	except Exception:
 		portal_logger.exception('Exception in UCR module create_portal_entries')

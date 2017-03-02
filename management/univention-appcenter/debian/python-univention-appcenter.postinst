@@ -41,7 +41,7 @@ univention-config-registry set appcenter/server?"appcenter.software-univention.d
 
 #DEBHELPER#
 
-if dpkg --compare-versions "$2" lt-nl 6.0.1-43; then
+if dpkg --compare-versions "$2" lt-nl 6.0.1-48; then
 	python -c '
 import sys
 from univention.appcenter.ucr import ucr_keys, ucr_instance
