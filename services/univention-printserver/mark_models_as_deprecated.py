@@ -29,6 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import optparse
+import ldap.filter
 import univention.config_registry
 import univention.admin.modules
 import univention.admin.config
@@ -55,13 +56,13 @@ class obsoletePrinterModels(object):
 				base=self.ucr['ldap/base'],
 				binddn=self.options.binddn,
 				bindpw=self.options.bindpwd,
-				start_tls=1)
+				start_tls=2)
 			self.position = univention.admin.uldap.position(self.ucr['ldap/base'])
 		else:
 			self.lo, self.position = univention.admin.uldap.getAdminConnection()
- 
+
 	def mark_as_obsolete(self):
-		obj = self.models.lookup(self.co, self.lo, 'name=%s' % options.name)
+		obj = self.models.lookup(self.co, self.lo, ldap.filter.filter_format('name=%s', [options.name]))
 		if obj:
 			obj = obj[0]
 			obj.open()
@@ -84,7 +85,7 @@ class obsoletePrinterModels(object):
 					obj.modify()
 				if options.verbose:
 					print 'info: %s modified' % obj.dn
-			
+
 if __name__ == '__main__':
 	usage = '%prog [options] MODEL, MODEL, ...'
 	parser = optparse.OptionParser(usage=usage)

@@ -1,3 +1,9 @@
+univention-printserver (10.0.0-3) unstable; urgency=low
+
+  * Bug #43417: updated LDAP ppd's
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 Mar 2017 14:28:28 +0100
+
 univention-printserver (10.0.0-2) unstable; urgency=low
 
   * Bug #43417: updated LDAP ppd's
