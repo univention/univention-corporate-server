@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-17) unstable; urgency=medium
+
+  * Bug #42172: use umc/tools for isFQDN()/isIP*Address()
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Mar 2017 12:49:36 +0100
+
 univention-system-setup (10.0.7-16) unstable; urgency=medium
 
   * Bug #42172: Fix errors when changing the language + reorder files

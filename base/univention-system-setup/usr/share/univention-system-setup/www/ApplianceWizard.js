@@ -122,10 +122,6 @@ define([
 		}
 	});
 
-	// taken from: http://stackoverflow.com/a/9221063
-	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
-	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
-	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 	var _regNumber = /^[0-9]+$/;
 	var _regBitMask = /^1*0*$/;
 
@@ -141,10 +137,8 @@ define([
 	var _invalidIPAddressMessage = _('Invalid IP address!<br/>Expected format is IPv4 or IPv6.');
 	var _validateIPAddress = function(ip) {
 		ip = ip || '';
-		var isIPv4Address = _regIPv4.test(ip);
-		var isIPv6Address = _regIPv6.test(ip);
 		var acceptEmtpy = !ip && !this.required;
-		return acceptEmtpy || isIPv4Address || isIPv6Address;
+		return acceptEmtpy || tools.isIPv4Address(ip) || tools.isIPv6Address(ip);
 	};
 
 	var _isLinkLocalDHCPAddress = function(ip, mask) {
@@ -166,8 +160,7 @@ define([
 			return mask >= 0 && mask <= 128;
 		}
 
-		var isIPv4Address = _regIPv4.test(mask);
-		if (!isIPv4Address) {
+		if (!tools.isIPv4Address(mask)) {
 			return false;
 		}
 
@@ -191,28 +184,25 @@ define([
 
 	var _validateHostname = function(hostname) {
 		hostname = hostname || '';
-		var isFQDN = _regFQDN.test(hostname);
 		var hasNoDots = hostname.indexOf('.') < 0;
 		var acceptEmtpy = !hostname && !this.required;
-		return acceptEmtpy || (isFQDN && hasNoDots);
+		return acceptEmtpy || (tools.isFQDN(hostname) && hasNoDots);
 	};
 
 	var _invalidDomainNameMessage = _('Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>');
 	var _validateDomainName = function(domainName) {
 		domainName = domainName || '';
-		var isFQDN = _regFQDN.test(domainName);
 		var hasEnoughParts = domainName.split('.').length >= 2;
 		var acceptEmtpy = !domainName && !this.required;
-		return acceptEmtpy || (isFQDN && hasEnoughParts);
+		return acceptEmtpy || (tools.isFQDN(domainName) && hasEnoughParts);
 	};
 
 	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>');
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
-		var isFQDN = _regFQDN.test(fqdn);
 		var hasEnoughParts = fqdn.split('.').length >= 3;
 		var acceptEmtpy = !fqdn && !this.required;
-		return acceptEmtpy || (isFQDN && hasEnoughParts);
+		return acceptEmtpy || (tools.isFQDN(fqdn) && hasEnoughParts);
 	};
 
 	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br/>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
@@ -1615,8 +1605,7 @@ define([
 
 		_updateNetwork: function(idx, ip) {
 			ip = lang.trim(ip);
-			var isIPv4Address = _regIPv4.test(ip);
-			if (isIPv4Address) {
+			if (tools.isIPv4Address(ip)) {
 				var ipParts = ip.split('.');
 				var netmask = '255.255.255.0';
 				var netmaskWidget = this.getWidget('network', '_netmask' + idx);
@@ -2897,11 +2886,11 @@ define([
 					// set IP address and mask
 					iconf.ip4 = [];
 					iconf.ip6 = [];
-					if (ipIsSet && _regIPv4.test(iip)) {
+					if (ipIsSet && tools.isIPv4Address(iip)) {
 						// IPv4 address
 						iconf.ip4 = [[iip, imask]];
 					}
-					else if (ipIsSet && _regIPv6.test(iip)) {
+					else if (ipIsSet && tools.isIPv6Address(iip)) {
 						// IPv6 address
 						iconf.ip6 = [[iip, imask, 'default']];
 					}
@@ -2910,7 +2899,7 @@ define([
 			}
 
 			// handle ipv6 gateway
-			if (_regIPv6.test(_vals.gateway)) {
+			if (tools.isIPv6Address(_vals.gateway)) {
 				_vals['ipv6/gateway'] = _vals.gateway;
 				_vals.gateway = '';
 			}
