@@ -1,3 +1,9 @@
+univention-web (1.0.29-12) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of wide multi input fields
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 19:27:44 +0100
+
 univention-web (1.0.29-11) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of Grid header more button
