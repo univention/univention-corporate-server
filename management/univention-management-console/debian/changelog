@@ -1,3 +1,9 @@
+univention-management-console (9.0.44-1) unstable; urgency=medium
+
+  * Bug #43669: lower log level of ACLs
+
+ -- Florian Best <best@univention.de>  Thu, 02 Mar 2017 12:01:57 +0100
+
 univention-management-console (9.0.43-4) unstable; urgency=medium
 
   * Bug #42174: prevent umcpCommand loops during session timeout 

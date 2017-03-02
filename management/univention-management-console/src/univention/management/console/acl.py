@@ -291,12 +291,12 @@ class ACLs(object):
 
 	def _dump(self):
 		"""Dumps the ACLs for the user"""
-		ACL.process('Allowed UMC operations:')
-		ACL.process(' %-5s | %-20s | %-15s | %-20s | %-20s' % ('User', 'Host', 'Flavor', 'Command', 'Options'))
-		ACL.process('******************************************************************************')
+		ACL.info('Allowed UMC operations:')
+		ACL.info(' %-5s | %-20s | %-15s | %-20s | %-20s' % ('User', 'Host', 'Flavor', 'Command', 'Options'))
+		ACL.info('******************************************************************************')
 		for rule in self.acls:
-			ACL.process(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
-		ACL.process('')
+			ACL.info(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
+		ACL.info('')
 
 	def _read_from_file(self, username):
 		filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
