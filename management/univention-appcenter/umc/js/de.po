@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-02-01 12:15+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-06 14:04+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -28,7 +28,8 @@ msgstr ""
 msgid "%(name)s only supports %(supported)s as architecture. %(msg)s"
 msgstr "%(name)s unterstützt nur die Architektur %(supported)s. %(msg)s"
 
-#: umc/js/appcenter/requirements.js:286 umc/js/appcenter/AppDetailsPage.js:1173
+#: umc/js/appcenter/AppDetailsPage.js:1173
+#: umc/js/appcenter/requirements.js:291
 #, python-format
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
@@ -84,7 +85,7 @@ msgstr "%s kann nicht gleichzeitig mit den folgenden Paketen installiert sein."
 msgid "%s is already installed."
 msgstr "%s ist bereits installiert."
 
-#: umc/js/appcenter/requirements.js:254
+#: umc/js/appcenter/requirements.js:259
 #, python-format
 msgid "%s is required for the following applications to work."
 msgstr "%s wird benötigt, damit die folgenden Applikationen funktionieren."
@@ -186,7 +187,7 @@ msgstr ""
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 
-#: umc/js/appcenter/requirements.js:286
+#: umc/js/appcenter/requirements.js:291
 msgid "A version without a container technology is or was installed."
 msgstr "Eine Version ohne Container-Technologie ist oder war installiert."
 
@@ -239,7 +240,7 @@ msgstr "Alle"
 msgid "An unknown error with code %d occurred."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: umc/js/appcenter/requirements.js:85 umc/js/appcenter/AppDetailsPage.js:1089
+#: umc/js/appcenter/AppDetailsPage.js:1089 umc/js/appcenter/requirements.js:85
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
@@ -251,10 +252,11 @@ msgstr "App-Rating"
 msgid "App installation notes"
 msgstr "App-Installationshinweise"
 
-#: umc/js/appcenter/AppConfigDialog.js:53
-#: umc/js/appcenter/AppDetailsDialog.js:59 umc/js/appcenter/AppCenterPage.js:64
-#: umc/js/appcenter/AppChooseHostDialog.js:47
 #: umc/js/appcenter/AppDetailsPage.js:83
+#: umc/js/appcenter/AppConfigDialog.js:53
+#: umc/js/appcenter/AppDetailsDialog.js:59
+#: umc/js/appcenter/AppCenterPage.js:64
+#: umc/js/appcenter/AppChooseHostDialog.js:47
 msgid "App management"
 msgstr "App-Verwaltung"
 
@@ -267,8 +269,8 @@ msgstr "App-Anbieter"
 msgid "App settings"
 msgstr "App-Einstellungen"
 
-#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/AppConfigDialog.js:64
-#: umc/js/appcenter/SettingsPage.js:99
+#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/SettingsPage.js:99
+#: umc/js/appcenter/AppConfigDialog.js:64
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -281,7 +283,7 @@ msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 msgid "Attention!"
 msgstr "Achtung!"
 
-#: umc/js/appcenter/requirements.js:290
+#: umc/js/appcenter/requirements.js:295
 msgid ""
 "Automatically migrating the Application and data (where required) is not "
 "supported; however, a document exists, which guides through the manual steps "
@@ -323,10 +325,10 @@ msgstr ""
 msgid "Buy"
 msgstr "Kaufen"
 
-#: umc/js/appcenter/SettingsPage.js:315 umc/js/appcenter/PackagesPage.js:421
-#: umc/js/appcenter/PackagesPage.js:430 umc/js/appcenter/AppDetailsDialog.js:92
+#: umc/js/appcenter/PackagesPage.js:421 umc/js/appcenter/PackagesPage.js:430
+#: umc/js/appcenter/SettingsPage.js:315 umc/js/appcenter/AppDetailsPage.js:798
+#: umc/js/appcenter/AppDetailsDialog.js:92
 #: umc/js/appcenter/AppChooseHostDialog.js:80
-#: umc/js/appcenter/AppDetailsPage.js:798
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -378,8 +380,9 @@ msgstr "Konfiguriere %s"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/appcenter/AppCenterPage.js:131 umc/js/appcenter/AppDetailsPage.js:821
+#: umc/js/appcenter/AppDetailsPage.js:821
 #: umc/js/appcenter/AppDetailsPage.js:878
+#: umc/js/appcenter/AppCenterPage.js:131
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -434,7 +437,8 @@ msgstr "Diese Komponente deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: umc/js/appcenter/AppCenterPage.js:125 umc/js/appcenter/AppDetailsPage.js:872
+#: umc/js/appcenter/AppDetailsPage.js:872
+#: umc/js/appcenter/AppCenterPage.js:125
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeigen"
 
@@ -536,8 +540,8 @@ msgstr ""
 "Um mit der installation von %s fortfahren zu können, muss der Rechner für "
 "die Installation der Applikation ausgewählt werden."
 
-#: umc/js/appcenter/SettingsPage.js:175 umc/js/appcenter/PackagesPage.js:92
-#: umc/js/appcenter/PackagesPage.js:238 umc/js/appcenter/AppDetailsPage.js:189
+#: umc/js/appcenter/PackagesPage.js:92 umc/js/appcenter/PackagesPage.js:238
+#: umc/js/appcenter/SettingsPage.js:175 umc/js/appcenter/AppDetailsPage.js:189
 #: umc/js/appcenter/AppDetailsPage.js:250
 #: umc/js/appcenter/AppDetailsPage.js:733
 #: umc/js/appcenter/AppDetailsPage.js:907
@@ -563,8 +567,8 @@ msgstr "Die Standardpakete dieser Komponente installieren"
 msgid "Install them first."
 msgstr "Installieren Sie diese zuerst."
 
-#: umc/js/appcenter/AppChooseHostDialog.js:63
 #: umc/js/appcenter/AppDetailsPage.js:908
+#: umc/js/appcenter/AppChooseHostDialog.js:63
 #, python-format
 msgid "Installation of %s"
 msgstr "Installation von %s"
@@ -573,8 +577,8 @@ msgstr "Installation von %s"
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: umc/js/appcenter/SettingsPage.js:253 umc/js/appcenter/AppCenterPage.js:171
-#: umc/js/appcenter/AppDetailsPage.js:389
+#: umc/js/appcenter/SettingsPage.js:253 umc/js/appcenter/AppDetailsPage.js:389
+#: umc/js/appcenter/AppCenterPage.js:171
 msgid "Installed"
 msgstr "Installiert"
 
@@ -614,6 +618,13 @@ msgstr "Aktualisierbar"
 #: umc/js/appcenter/AppConfigDialog.js:88
 msgid "It can only be configured while it is running."
 msgstr "Die Konfiguration ist nur möglich, während die Applikation läuft."
+
+#: umc/js/appcenter/requirements.js:254
+#, python-format
+msgid ""
+"It is currently impossible to remove a plugin once it is installed. Remove "
+"%s instead."
+msgstr "Momentan ist es nicht möglich, ein Plugin zu deinstallieren. Entfernen Sie stattdessen %s."
 
 #: umc/js/appcenter/AppDetailsDialog.js:223
 msgid "It is not possible to continue"
@@ -733,16 +744,16 @@ msgid "Open \"Software update\" module"
 msgstr "Modul \"Software-Aktualisierung\" öffnen"
 
 #: umc/js/appcenter/requirements.js:218 umc/js/appcenter/requirements.js:245
-#: umc/js/appcenter/requirements.js:262
+#: umc/js/appcenter/requirements.js:267
 #, python-format
 msgid "Open %s"
 msgstr "%s öffnen"
 
-#: umc/js/appcenter/requirements.js:278
+#: umc/js/appcenter/requirements.js:283
 msgid "Open the documentation"
 msgstr "Dokumentation öffnen"
 
-#: umc/js/appcenter/requirements.js:295
+#: umc/js/appcenter/requirements.js:300
 msgid "Open the migration guide"
 msgstr "Migrationsleitfaden öffnen"
 
@@ -750,7 +761,7 @@ msgstr "Migrationsleitfaden öffnen"
 msgid "Package categories"
 msgstr "Kategorien"
 
-#: umc/js/appcenter/PackagesPage.js:143 umc/js/appcenter/SearchForm.js:71
+#: umc/js/appcenter/SearchForm.js:71 umc/js/appcenter/PackagesPage.js:143
 msgid "Package description"
 msgstr "Paketbeschreibung"
 
@@ -758,8 +769,8 @@ msgstr "Paketbeschreibung"
 msgid "Package details"
 msgstr "Paketdetails"
 
-#: umc/js/appcenter/PackagesPage.js:134 umc/js/appcenter/PackagesPage.js:316
-#: umc/js/appcenter/SearchForm.js:70
+#: umc/js/appcenter/SearchForm.js:70 umc/js/appcenter/PackagesPage.js:134
+#: umc/js/appcenter/PackagesPage.js:316
 msgid "Package name"
 msgstr "Paketname"
 
@@ -877,7 +888,8 @@ msgstr ""
 msgid "Removal of %s"
 msgstr "Deinstallation von %s"
 
-#: umc/js/appcenter/SettingsPage.js:56 umc/js/appcenter/AppDetailsDialog.js:236
+#: umc/js/appcenter/SettingsPage.js:56
+#: umc/js/appcenter/AppDetailsDialog.js:236
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
@@ -925,7 +937,7 @@ msgstr "Server"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: umc/js/appcenter/AppConfigDialog.js:191
+#: umc/js/appcenter/AppConfigDialog.js:193
 msgid "Settings (advanced)"
 msgstr "Einstellungen (erweitert)"
 
@@ -998,7 +1010,7 @@ msgstr "Die Applikation läuft momentan nicht."
 msgid "The application is currently running."
 msgstr "Die Applikation läuft momentan."
 
-#: umc/js/appcenter/requirements.js:304
+#: umc/js/appcenter/requirements.js:316
 #, python-format
 msgid ""
 "The application requires %(minimum)d MB of free RAM but only %(current)d MB "
@@ -1020,7 +1032,7 @@ msgstr ""
 "Die Applikation benötigt einen neueren Kernel als Ihr System momentan "
 "benutzt (mindestens Kernel 4.1 wird benötigt)."
 
-#: umc/js/appcenter/requirements.js:272
+#: umc/js/appcenter/requirements.js:277
 msgid ""
 "The application requires the password service to be set up on the Active "
 "Directory domain controller server."
@@ -1087,7 +1099,7 @@ msgid "The server tried to connect to the involved systems."
 msgstr ""
 "Der Server hat versucht, sich mit den beteiligten Systemen zu verbinden."
 
-#: umc/js/appcenter/requirements.js:275
+#: umc/js/appcenter/requirements.js:280
 msgid ""
 "The steps how to install the service on that machine are described in the "
 "online documentation."
@@ -1136,8 +1148,8 @@ msgstr ""
 "Diese App verwendet eine Container-Technologie. Container müssen einmalig "
 "heruntergeladen werden. Danach können sie beliebig oft genutzt werden."
 
-#: umc/js/appcenter/AppDetailsDialog.js:251
 #: umc/js/appcenter/requirements.js:180
+#: umc/js/appcenter/AppDetailsDialog.js:251
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
@@ -1153,8 +1165,8 @@ msgstr ""
 msgid "This application will not get any further updates."
 msgstr "Diese Applikation wird keine weiteren Aktualisierungen erhalten."
 
-#: umc/js/appcenter/AppCenterGallery.js:117
 #: umc/js/appcenter/AppDetailsPage.js:1289
+#: umc/js/appcenter/AppCenterGallery.js:117
 #, python-format
 msgid ""
 "This application will not get any further updates. We suggest to uninstall "
@@ -1222,7 +1234,7 @@ msgid "Uninstall Information"
 msgstr "Informationen zur Deinstallation"
 
 #: umc/js/appcenter/requirements.js:232 umc/js/appcenter/requirements.js:242
-#: umc/js/appcenter/requirements.js:259
+#: umc/js/appcenter/requirements.js:264
 msgid "Uninstall them first."
 msgstr "Deinstallieren Sie diese zuerst."
 
@@ -1240,6 +1252,11 @@ msgstr "Deinstalliere %(name)s von Rechner %(host)s"
 msgid "Uninstalling %s from this host"
 msgstr "Deinstalliere %s von diesem Rechner"
 
+#: umc/js/appcenter/requirements.js:309
+#, python-format
+msgid "Uninstalling %s will also remove the following plugins:"
+msgstr "Die Deinstallation von %s entfernt auch die folgenden Plugins:"
+
 #: umc/js/appcenter/AppCenterPage.js:115
 msgid "Univention App Center"
 msgstr "Univention App Center"
@@ -1249,12 +1266,13 @@ msgstr "Univention App Center"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/appcenter/AppCenterGallery.js:122 umc/js/appcenter/App.js:386
-#: umc/js/appcenter/App.js:400 umc/js/appcenter/AppDetailsPage.js:409
+#: umc/js/appcenter/AppDetailsPage.js:409 umc/js/appcenter/App.js:386
+#: umc/js/appcenter/App.js:400 umc/js/appcenter/AppCenterGallery.js:122
 msgid "Update available"
 msgstr "Aktualisierung verfügbar"
 
-#: umc/js/appcenter/PackagesPage.js:490 umc/js/appcenter/AppDetailsPage.js:1147
+#: umc/js/appcenter/PackagesPage.js:490
+#: umc/js/appcenter/AppDetailsPage.js:1147
 msgid "Updating session and module data..."
 msgstr "Aktualisiere Sitzungs- und Moduldaten..."
 
@@ -1373,7 +1391,7 @@ msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 msgid "an unknown amount of"
 msgstr "eine unbekannte Anzahl"
 
-#: umc/js/appcenter/requirements.js:281
+#: umc/js/appcenter/requirements.js:286
 msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 

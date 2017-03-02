@@ -34,6 +34,7 @@
 #
 
 from univention.appcenter.docker import rm as docker_rm
+from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
@@ -69,6 +70,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _docker_upgrade_mode(self, app):
 		mode = None
 		detail = None
+		if self.old_app.docker and app.plugin_of:
+			if app > self.old_app:
+				mode, detail = 'app', app.version
+			return mode, detail
 		if not self.old_app.docker:
 			return 'docker', None
 		if not Start.call(app=self.old_app):
@@ -166,8 +171,15 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		install = get_action('install')()
 		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
 		if install.call_with_namespace(action_args):
+			for _app in AppManager.get_all_apps():
+				if _app.plugin_of == app.id and _app.is_installed():
+					_app = AppManager.find(_app.id, latest=True)
+					if _app.docker:
+						_old_app = self.old_app
+						self._upgrade_docker(_app, args)
+						self.old_app = _old_app
 			remove = get_action('remove')()
-			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
+			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False, skip_checks=['must_not_be_depended_on'])
 			remove._remove_app(self.old_app, action_args)
 			if remove._unregister_component(self.old_app):
 				remove._apt_get_update()

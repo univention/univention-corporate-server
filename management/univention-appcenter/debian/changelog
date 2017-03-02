@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-63) unstable; urgency=low
+
+  * Bug #43499: re-reverted r76506, app plugins
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 Mar 2017 18:47:48 +0100
+
 univention-appcenter (5.0.23-62) unstable; urgency=medium
 
   * Bug #43657: Disable HTTP link if PortHTTP==0

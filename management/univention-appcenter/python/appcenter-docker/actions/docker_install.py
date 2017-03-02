@@ -54,6 +54,8 @@ class Install(Install, DockerActionMixin):
 		if not app.docker:
 			return super(Install, self)._install_app(app, args)
 		else:
+			if app.plugin_of:
+				return self._install_app_in_existing_container(app, args)
 			hostdn, password = self._register_host(app, args)
 			self.percentage = 30
 			self._start_docker_image(app, hostdn, password, args)
@@ -76,6 +78,11 @@ class Install(Install, DockerActionMixin):
 			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
+
+	def _install_app_in_existing_container(self, app, args):
+		self._setup_docker_image(app, args)
+		ucr_save({app.ucr_container_key: self._get_docker(app).container})
+		return True
 
 	def _setup_docker_image(self, app, args):
 		self._execute_container_script(app, 'restore_data_before_setup', _credentials=False)

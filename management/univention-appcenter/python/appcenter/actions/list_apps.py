@@ -98,7 +98,7 @@ class List(UniventionAppAction):
 				continue
 			if ucr_get('server/role') not in app.server_role:
 				continue
-			if app.docker and ucr_is_true('appcenter/prudence/docker/%s' % app.id):
+			if app._docker_prudence_is_true():
 				apps = [_app for _app in AppManager.get_all_apps_with_id(app.id) if _app.docker_migration_works or not _app.docker]
 				try:
 					app = sorted(apps)[-1]
