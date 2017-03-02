@@ -71,6 +71,7 @@ def __check_dir(commands, dirname, files):
 			commands.setdefault(manu, []).append((rel_path, nick))
 	return files
 
+
 def check_obsolete():
 	# check old models
 	lo = univention.uldap.getMachineConnection()
@@ -85,12 +86,13 @@ def check_obsolete():
 			ppd = i.split('"')[1]
 			ppd_path = os.path.join('/usr', 'share', 'ppd', ppd)
 			if not os.path.isfile(ppd_path):
-				if not cn in obsolete:
+				if cn not in obsolete:
 					obsolete[cn] = list()
 				obsolete[cn].append(i)
 		for cn in obsolete:
 			print '/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --name "%s" \\' % cn
 			print '\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\''
+
 
 if __name__ == '__main__':
 	printers = {}

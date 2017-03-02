@@ -35,6 +35,7 @@ import univention.admin.modules
 import univention.admin.config
 import univention.admin.uldap
 
+
 class obsoletePrinterModels(object):
 
 	def __init__(self, options, obsolete):
@@ -85,6 +86,7 @@ class obsoletePrinterModels(object):
 					obj.modify()
 				if options.verbose:
 					print 'info: %s modified' % obj.dn
+
 
 if __name__ == '__main__':
 	usage = '%prog [options] MODEL, MODEL, ...'
