@@ -1,3 +1,9 @@
+univention-management-console (9.0.42-2) unstable; urgency=medium
+
+  * Bug #42231: Remove UMC overview variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Mar 2017 19:50:28 +0100
+
 univention-management-console (9.0.44-1) unstable; urgency=medium
 
   * Bug #43669: lower log level of ACLs
