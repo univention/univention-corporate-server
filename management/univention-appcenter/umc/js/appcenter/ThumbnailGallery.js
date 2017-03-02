@@ -283,7 +283,7 @@ define([
 
 		renderScaleButton: function() {
 			this.scaleButton = domConstruct.create('div', {
-				'class': 'scaleButton dijitHidden',
+				'class': 'scaleButton dijitDisplayNone',
 				onclick: lang.hitch(this, function() {
 					this.toggleThumbSize(this.shownItemIndex);
 				})
@@ -359,7 +359,7 @@ define([
 
 			//this div gets replaced by the youtube iframe
 			var galleryVideo = domConstruct.create('div', {
-				'class': 'galleryVideo dijitHidden',
+				'class': 'galleryVideo dijitDisplayNone',
 				id: videoId
 			}, galleryVideoWrapper);
 
@@ -375,9 +375,9 @@ define([
 				if (window.YT && window.YT.loaded) {
 					this.showThumb(this.shownItemIndex);
 					domClass.add(galleryVideoWrapper, 'loaded');
-					domClass.remove(galleryVideo, 'dijitHidden');
-					domClass.add(playButtonImg, 'dijitHidden');
-					domClass.add(thumbNailWrapper, 'dijitHidden');
+					domClass.remove(galleryVideo, 'dijitDisplayNone');
+					domClass.add(playButtonImg, 'dijitDisplayNone');
+					domClass.add(thumbNailWrapper, 'dijitDisplayNone');
 					setTimeout(lang.hitch(this, function() {
 						this._renderYoutubeVideo(galleryVideo, index);
 					}), 0);
@@ -917,11 +917,11 @@ define([
 
 		_hideVideosTemporarily: function(duration) {
 			//hide loaded youtube iframes during resize for performance reasons
-			query('.galleryVideoThumb.loaded .galleryVideoThumbnailWrapper', this.contentSlider.domNode).removeClass('dijitHidden');
-			query('.galleryVideoThumb.loaded .galleryVideo', this.contentSlider.domNode).addClass('dijitHidden');
+			query('.galleryVideoThumb.loaded .galleryVideoThumbnailWrapper', this.contentSlider.domNode).removeClass('dijitDisplayNone');
+			query('.galleryVideoThumb.loaded .galleryVideo', this.contentSlider.domNode).addClass('dijitDisplayNone');
 			setTimeout(lang.hitch(this, function() {
-				query('.galleryVideoThumb.loaded .galleryVideo', this.contentSlider.domNode).removeClass('dijitHidden');
-				query('.galleryVideoThumb.loaded .galleryVideoThumbnailWrapper', this.contentSlider.domNode).addClass('dijitHidden');
+				query('.galleryVideoThumb.loaded .galleryVideo', this.contentSlider.domNode).removeClass('dijitDisplayNone');
+				query('.galleryVideoThumb.loaded .galleryVideoThumbnailWrapper', this.contentSlider.domNode).addClass('dijitDisplayNone');
 			}), duration);
 		},
 
@@ -1023,7 +1023,7 @@ define([
 
 				//hide the loading overlay after transition duration
 				tools.defer(lang.hitch(this, function() {
-					domClass.add(this.galleryLoadingOverlay, 'dijitHidden');
+					domClass.add(this.galleryLoadingOverlay, 'dijitDisplayNone');
 					domClass.remove(this.contentSlider.domNode, 'noTransition');
 				}), transitionDuration);
 
@@ -1031,7 +1031,7 @@ define([
 				domStyle.set(this.domNode, 'height', '');
 				domStyle.set(this.domNode, 'overflow', '');
 
-				domClass.remove(this.scaleButton, 'dijitHidden');
+				domClass.remove(this.scaleButton, 'dijitDisplayNone');
 				this.loaded = true;
 			}
 		},
