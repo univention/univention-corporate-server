@@ -59,6 +59,7 @@ define([
 			this.addLinks();
 			this.addTooltips();
 			login.renderLoginDialog();
+			login._loginDialog.autoFill();
 			this.checkCookiesEnabled();
 		},
 

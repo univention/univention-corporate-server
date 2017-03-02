@@ -109,6 +109,7 @@ define([
 				content = '<p class="umcLoginWarning">' + entities.encode(content) + '</p>';
 			}
 			this._warning.set('content', content);
+			query('.umcLoginWarnings').style('display', content ? 'block' : 'none');
 		},
 
 		_setLoginNoticeAttr: function(content) {
@@ -116,6 +117,7 @@ define([
 				content = '<p class="umcLoginNotice">' + entities.encode(content) + '</p>';
 			}
 			this._notice.set('content', content);
+			query('.umcLoginNotices').style('display', content ? 'block' : 'none');
 		},
 
 		updateForm: function(info) {
@@ -123,7 +125,7 @@ define([
 			var result = info.result || {};
 			this._updateView(result);
 
-			var errorType = 'LoginWarning';
+			var notice = false;
 			var title = '';
 			if (message) {
 				if (message.slice(-1) !== '.') {
@@ -131,11 +133,12 @@ define([
 				}
 				title = info.title || '';
 				if (result.missing_prompts || result.password_expired) {
-					errorType = 'LoginNotice';
+					notice = true;
 				}
 				message = title + ' ' + message;
 			}
-			this.set(errorType, message);
+			this.set('LoginWarning', notice ? '' : message);
+			this.set('LoginNotice', notice ? message : '');
 		},
 
 		_updateView: function(result) {
@@ -151,9 +154,10 @@ define([
 				showCustomPrompt = true;
 			}
 
-			if (showLogin) {
-				//this._resetForm();
-			}
+			query('#umcLoginForm').style('display', showLogin ? 'block' : 'none');
+			query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
+			query('#umcCustomPromptForm').style('display', showCustomPrompt ? 'block' : 'none');
+
 			this._setFocus();
 			if (!has('touch')) {
 				if (showNewPassword) {
@@ -170,6 +174,10 @@ define([
 					attr.set(node, 'value', '');
 				});
 			});
+			this.autoFill();
+		},
+
+		autoFill: function() {
 			// if username is specified, we need to auto fill the username
 			if (tools.status('username')) {
 				attr.set('umcLoginUsername', 'value', tools.status('username'));
@@ -237,6 +245,7 @@ define([
 		_replaceLabels: function() {
 			// all submit buttons
 			query('.umcLoginForm input[type=submit]').attr('value', _('Login'));
+			query('input#umcNewPasswordSubmit').attr('value', _('Set password'));
 
 			tools.forIn({
 				'umcLoginUsername': _('Username'),

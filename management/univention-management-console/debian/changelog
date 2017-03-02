@@ -1,3 +1,9 @@
+univention-management-console (9.0.43-2) unstable; urgency=medium
+
+  * Bug #43528: login dialog styling
+
+ -- Florian Best <best@univention.de>  Thu, 02 Mar 2017 21:10:55 +0100
+
 univention-management-console (9.0.43-1) unstable; urgency=medium
 
   * Bug #43653: fix error in sanitizing simple_response(with_progress=True)
