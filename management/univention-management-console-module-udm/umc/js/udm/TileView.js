@@ -74,7 +74,9 @@ define([
 
 		_getInitials: function(item) {
 			var initials = "";
-			// item.firstname[0] is not unicode save!
+			// FIXME: item.firstname[0] is not unicode save!
+			// eg: 𝐀 (\uD835\uDC00) is returned as \uD835
+			// That should only be a problem for characters from the supplementary planes
 			// https://github.com/mathiasbynens/String.prototype.at
 			if (item.firstname) {
 				initials += item.firstname[0];

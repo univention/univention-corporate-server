@@ -972,13 +972,13 @@ define([
 				layout[1].push('toggleSearch');
 				if (this.moduleFlavor === 'users/user') {
 					buttons.push({
-						name: 'toggleView',
+						name: 'changeView',
 						label: _('Change View'),
 						callback: lang.hitch(this, function() {
-							this._grid.changeView();
+							this._grid.changeView(this._grid.activeViewMode === 'tile' ? 'default' : 'tile');
 						})
 					});
-					layout[1].push('toggleView');
+					layout[1].push('changeView');
 				}
 			}
 
