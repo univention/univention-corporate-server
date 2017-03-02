@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.0-0) unstable; urgency=medium
+
+  * Bug #42260: add helpers for usage in debian/rules
+
+ -- Eduard Mai <mai@univention.de>  Thu, 02 Mar 2017 21:00:04 +0100
+
 univention-ucs-translation-template (4.1.0-6) unstable; urgency=medium
 
   * Bug #42260: remove obsolete debian/ucslint.overrides
