@@ -81,6 +81,7 @@ configure)
 	a2enmod headers
 	a2enmod actions
 	a2enmod suexec
+	a2enmod cgi
 	invoke-rc.d apache2 reload
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)
