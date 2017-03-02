@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/default.d/10univention-appcenter 6.0.1-49~

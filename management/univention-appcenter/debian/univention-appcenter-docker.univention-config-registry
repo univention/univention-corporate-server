@@ -5,5 +5,5 @@ Variables: appcenter/apps/.*/ports/.*
 
 Type: subfile
 Multifile: etc/apache2/sites-available/000-default.conf
-Subfile: etc/apache2/sites-available/default.d/10univention-appcenter
+Subfile: etc/apache2/sites-available/000-default.d/10univention-appcenter
 Variables: appcenter/apps/.*/ports/.*
