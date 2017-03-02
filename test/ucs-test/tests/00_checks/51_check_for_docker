@@ -8,9 +8,9 @@ RETVAL=0
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-echo "Trying to find 'docker' process:"
+echo "Trying to find 'dockerd' process:"
 
-if pgrep -f "/usr/bin/docker " >/dev/null
+if pgrep -f "/usr/bin/dockerd " >/dev/null
 then
     echo "OK. Process found."
 else
