@@ -1,3 +1,9 @@
+univention-web (1.0.29-8) unstable; urgency=medium
+
+  * Bug #43528: Correct wrong color of left and right border of input fields
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 13:49:17 +0100
+
 univention-web (1.0.29-7) unstable; urgency=medium
 
   * Bug #43528: Move styling and code for the gallery in the portal
@@ -52,7 +58,7 @@ univention-web (1.0.28-12) unstable; urgency=medium
 
 univention-web (1.0.28-11) unstable; urgency=medium
 
-  * Bug #32027: make initial status message configurable 
+  * Bug #32027: make initial status message configurable
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Feb 2017 18:22:25 +0100
 
@@ -65,7 +71,7 @@ univention-web (1.0.28-10) unstable; urgency=medium
 univention-web (1.0.28-9) unstable; urgency=medium
 
   * Bug #42174: fix autologin with query string and error appearance during
-  	login dialog
+    login dialog
 
  -- Florian Best <best@univention.de>  Thu, 23 Feb 2017 15:10:36 +0100
 
@@ -130,7 +136,7 @@ univention-web (1.0.27-1) unstable; urgency=medium
 
 univention-web (1.0.26-5) unstable; urgency=medium
 
-  * Bug #32027: Fix2: do not show checkboxes if no row should be selected 
+  * Bug #32027: Fix2: do not show checkboxes if no row should be selected
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 20 Feb 2017 16:32:57 +0100
 
@@ -210,7 +216,7 @@ univention-web (1.0.19-1) unstable; urgency=medium
 
 univention-web (1.0.18-2) unstable; urgency=medium
 
-  Bug #42261: 
+  Bug #42261:
   * add standbyAnimation to gridfooter when not all entries are loaded
   * removed unused code
 
@@ -446,13 +452,13 @@ univention-web (1.0.4-1) unstable; urgency=medium
 
 univention-web (1.0.3-3) unstable; urgency=medium
 
-  * Bug #32027: Remove fuzzy entry 
+  * Bug #32027: Remove fuzzy entry
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 15:41:33 +0100
 
 univention-web (1.0.3-2) unstable; urgency=medium
 
-  * Bug #32027: Tree and Grid updates for better compatibility 
+  * Bug #32027: Tree and Grid updates for better compatibility
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 15:19:50 +0100
 
@@ -476,13 +482,13 @@ univention-web (1.0.2-16) unstable; urgency=medium
 
 univention-web (1.0.2-15) unstable; urgency=medium
 
-  * Bug #43054: Use relative url for mobile menu background image 
+  * Bug #43054: Use relative url for mobile menu background image
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 30 Nov 2016 15:59:11 +0100
 
 univention-web (1.0.2-14) unstable; urgency=medium
 
-  * Bug #40492: Show session timeout dialog centered on the viewport 
+  * Bug #40492: Show session timeout dialog centered on the viewport
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Nov 2016 16:52:51 +0100
 
@@ -523,13 +529,13 @@ univention-web (1.0.2-8) unstable; urgency=medium
 
 univention-web (1.0.2-7) unstable; urgency=medium
 
-  * Bug #32027: Update canExecute on grid changes 
+  * Bug #32027: Update canExecute on grid changes
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Oct 2016 13:05:57 +0200
 
 univention-web (1.0.2-6) unstable; urgency=medium
 
-  * Bug #42291: Update grid and tree widget for dgrid 
+  * Bug #42291: Update grid and tree widget for dgrid
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Oct 2016 18:28:00 +0200
 
@@ -547,7 +553,7 @@ univention-web (1.0.2-4) unstable; urgency=medium
 
 univention-web (1.0.2-3) unstable; urgency=medium
 
-  * Bug #38824: Fix build-dev 
+  * Bug #38824: Fix build-dev
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 26 Sep 2016 14:50:12 +0200
 
