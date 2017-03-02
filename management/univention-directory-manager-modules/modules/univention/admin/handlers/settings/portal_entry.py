@@ -32,9 +32,6 @@
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
-import univention.admin.handlers
-import univention.admin.password
-import univention.admin.allocators
 import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -43,17 +40,18 @@ _ = translation.translate
 OC = "univentionPortalEntry"
 
 module = 'settings/portal_entry'
+superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=univention']
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Entry')
-long_description = ''
+long_description = 'One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal'
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Name'),
+		short_description=_('Internal name'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=False,
 		include_in_default_search=True,
 		options=[],
@@ -63,8 +61,8 @@ property_descriptions = {
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display Name'),
-		long_description='',
-		syntax=univention.admin.syntax.translationTuple,
+		long_description=_('Headline of the entry. At least one entry; strongly encouraged to have one for en_US'),
+		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		options=[],
 		required=True,
@@ -73,8 +71,8 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.translationTuple,
+		long_description=_('Description of the entry. At least one entry; strongly encouraged to have one for en_US'),
+		syntax=univention.admin.syntax.LocalizedDescription,
 		multivalue=True,
 		options=[],
 		required=True,
@@ -94,7 +92,7 @@ property_descriptions = {
 	'category': univention.admin.property(
 		short_description=_('Category'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.PortalCategory,
 		multivalue=False,
 		dontsearch=True,
 		options=[],

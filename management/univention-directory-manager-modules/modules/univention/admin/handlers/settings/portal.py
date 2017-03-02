@@ -32,9 +32,6 @@
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
-import univention.admin.handlers
-import univention.admin.password
-import univention.admin.allocators
 import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -43,17 +40,18 @@ _ = translation.translate
 OC = "univentionPortal"
 
 module = 'settings/portal'
+superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=univention']
-childs = 0
+childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Portal')
-long_description = ''
+long_description = 'Object that feeds everything in https://fqdn/univention/portal'
 options = {}
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Name'),
+		short_description=_('Internal name'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=False,
 		include_in_default_search=True,
 		options=[],
@@ -63,8 +61,8 @@ property_descriptions = {
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display Name'),
-		long_description='',
-		syntax=univention.admin.syntax.translationTuple,
+		long_description=_('Headline of the portal. At least one entry; strongly encouraged to have one for en_US'),
+		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		options=[],
 		required=True,

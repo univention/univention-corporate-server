@@ -3382,6 +3382,14 @@ class PortalCategory(select):
 	]
 
 
+class LocalizedDisplayName(translationTuple):
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Display Name'), string)]
+
+
+class LocalizedDescription(translationTuple):
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Description'), string)]
+
+
 class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
 
 	def __init__(self):
