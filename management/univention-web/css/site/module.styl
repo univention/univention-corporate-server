@@ -101,11 +101,14 @@
 		margin: 0 auto
 		padding: 0
 
+	$scrollToTopFloatingButton-diameter = 56px
+	$scrollToTopFloatingButton-bottom-padding = 40px
+
 	.scrollToTopFloatingButton
 		position: fixed
 		right: 40px
-		bottom: 40px
-		width: 56px
+		bottom: $scrollToTopFloatingButton-bottom-padding
+		width: $scrollToTopFloatingButton-diameter
 		height: @width
 		border-radius: 50%
 		material-shadow(3)
@@ -148,7 +151,7 @@
 		transition: height 0.2s
 
 		&.shown
-			height: 30px
+			height: $scrollToTopFloatingButton-diameter + $scrollToTopFloatingButton-bottom-padding + 10px
 
 .umc .umcPageHelpText
 	margin-bottom: 1.5em

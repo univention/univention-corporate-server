@@ -1,3 +1,9 @@
+univention-web (1.0.29-13) unstable; urgency=medium
+
+  * Bug #43528: Let floating scroll to top button not block module content
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 19:33:25 +0100
+
 univention-web (1.0.29-12) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of wide multi input fields
