@@ -1,3 +1,10 @@
+univention-web (1.0.29-7) unstable; urgency=medium
+
+  * Bug #43528: Move styling and code for the gallery in the portal
+    and appcenter into univention-web
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 13:17:13 +0100
+
 univention-web (1.0.29-6) unstable; urgency=medium
 
   * Bug #43528: add isFQDN() check into tools
