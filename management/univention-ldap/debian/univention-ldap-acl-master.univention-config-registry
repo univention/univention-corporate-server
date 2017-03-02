@@ -33,7 +33,7 @@ Variables: ldap/master
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/65univention-ldap-server_acl-portal
+Subfile: etc/ldap/slapd.conf.d/62univention-ldap-server_acl-portal
 Variables: ldap/base
 
 Type: subfile
