@@ -81,7 +81,7 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 		--append displayName='"de_DE" "System- und Domäneneinstellungen"' \
 		--append description='"en_US" "Univention Management Console for administrating the UCS domain and the local system"' \
 		--append description='"de_DE" "Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems"' \
-		--append link=/univention/management \
+		--append link=/univention/management/ \
 		--set category=admin \
 		--set authRestriction=anonymous \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
@@ -109,7 +109,7 @@ else
 		--append displayName='"de_DE" "Domäneneinstellungen"' \
 		--append description='"en_US" "Univention Management Console for administrating the local system"' \
 		--append description='"de_DE" "Univention Management Console zur Verwaltung des lokalen Systems"' \
-		--append link=/univention/management \
+		--append link=/univention/management/ \
 		--set category=admin \
 		--set authRestriction=anonymous \
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
