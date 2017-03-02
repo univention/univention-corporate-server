@@ -1186,7 +1186,7 @@ define([
 		},
 
 		isFQDN: function(fqdn) {
-			return tools._regIPv6.test(fqdn);
+			return tools._regFQDN.test(fqdn);
 		},
 
 		_existingIconClasses: {},

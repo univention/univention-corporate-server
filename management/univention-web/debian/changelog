@@ -1,3 +1,9 @@
+univention-web (1.0.29-14) unstable; urgency=medium
+
+  * Bug #43528: Fix typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Mar 2017 20:39:03 +0100
+
 univention-web (1.0.29-13) unstable; urgency=medium
 
   * Bug #43528: Let floating scroll to top button not block module content
