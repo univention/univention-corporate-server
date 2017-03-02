@@ -31,24 +31,18 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin.modules as udm_modules
-import univention.admin.uldap as udm_uldap
-import univention.config_registry as ucr
-import univention.management.console as umc
-from univention.management.console.log import MODULE
-from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.config import ucr
+from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response
+from univention.management.console.ldap import get_machine_connection
 
-_ = umc.Translation('univention-server-overview').translate
-
-ucr = ucr.ConfigRegistry()
-ucr.load()
 
 class Instance(Base):
 
 	@simple_response
 	def query(self):
 		udm_modules.update()
-		lo, po = udm_uldap.getMachineConnection()
+		lo, po = get_machine_connection()
 		servers = udm_modules.lookup('computers/computer', None, lo, filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))', base=ucr['ldap/base'], scope='sub')
 
 		result = [dict(
@@ -60,4 +54,3 @@ class Instance(Base):
 			serverRole=i.info.get('serverRole'),
 		) for i in servers]
 		return result
-

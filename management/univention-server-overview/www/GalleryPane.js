@@ -33,10 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-construct",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!server-overview"
-], function(declare, lang, array, domConstruct, tools, GalleryPane, _) {
+], function(declare, lang, array, domConstruct, entities, tools, GalleryPane, _) {
 	var roleLabels = {
 		'master': _('DC master'),
 		'backup': _('DC backup'),
@@ -63,10 +64,10 @@ define([
 						'<div class="umcGalleryVersion">{version}</div>' +
 					'</div>' +
 				'</div>', {
-				name: item.hostname,
-				description: getServerLabel(item),
-				version: lang.replace('UCS {version}', item),
-				url: this.useFqdn ? lang.replace('{hostname}.{domain}', item) : item.ip instanceof Array ? item.ip[0] : '#'
+				name: entities.encode(item.hostname),
+				description: entities.encode(getServerLabel(item)),
+				version: entities.encode(lang.replace('UCS {version}', item)),
+				url: entities.encode(this.useFqdn ? lang.replace('{hostname}.{domain}', item) : item.ip instanceof Array ? item.ip[0] : '#')
 			}));
 		},
 

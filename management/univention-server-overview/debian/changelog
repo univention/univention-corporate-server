@@ -1,3 +1,9 @@
+univention-server-overview (0.0.1-4) unstable; urgency=medium
+
+  * Bug #43595: fix coding style + references + entitites.encode()
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Mar 2017 12:40:53 +0100
+
 univention-server-overview (0.0.1-3) unstable; urgency=medium
 
   * Bug #43595: Use umc.tools.isIPAddress()

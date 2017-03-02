@@ -61,10 +61,10 @@ define([
 		},
 
 		initLabels: function() {
-			var title = entities.decode(_('%s - Server overview', meta.ucr.domainname));
+			var title = entities.encode(_('%s - Server overview', meta.ucr.domainname));
 			window.document.title = title;
 
-			title = entities.decode(_('Server overview for domain %s', meta.ucr.domainname));
+			title = entities.encode(_('Server overview for domain %s', meta.ucr.domainname));
 			dom.byId('title').innerHTML = title;
 
 			this.liveSearch = registry.byId('liveSearch');
