@@ -1,3 +1,9 @@
+univention-web (1.0.29-15) unstable; urgency=medium
+
+  * Bug #43528: Fix display error of portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 02 Mar 2017 20:50:00 +0100
+
 univention-web (1.0.29-14) unstable; urgency=medium
 
   * Bug #43528: Fix typo
@@ -30,7 +36,7 @@ univention-web (1.0.29-10) unstable; urgency=medium
 
 univention-web (1.0.29-9) unstable; urgency=medium
 
-  * Bug #42229: cleanup changeView method 
+  * Bug #42229: cleanup changeView method
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 02 Mar 2017 15:15:56 +0100
 
