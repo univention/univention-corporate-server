@@ -1,3 +1,9 @@
+univention-web (1.0.29-6) unstable; urgency=medium
+
+  * Bug #43528: add isFQDN() check into tools
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Mar 2017 12:50:34 +0100
+
 univention-web (1.0.29-5) unstable; urgency=medium
 
   * Bug #43528: add isIPAddress() checks into tools
