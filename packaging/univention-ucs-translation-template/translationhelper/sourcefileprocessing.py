@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Generate gettext Portable objects and message catalogs (gettext MO and a
+Univention specific JSON-based format) from multiple source files by file type.
+"""
 #
 # Copyright 2013-2017 Univention GmbH
 #
@@ -29,10 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 from lxml import etree
 import os
-import pofile
+import message_catalogs
 import polib
-
-from pdb import set_trace as dbg
 
 
 class UnsupportedSourceType(Exception):
@@ -46,39 +47,51 @@ class SourceFileSet(object):
 		self.src_pkg_path = src_pkg_path
 		self.binary_pkg_name = binary_pkg_name
 
-	def process(self, new_po_path):
+	def process_po(self, new_po_path):
 		if not os.path.isfile(new_po_path):
-			pofile.create_empty_po(self.binary_pkg_name, new_po_path)
+			message_catalogs.create_empty_po(self.binary_pkg_name, new_po_path)
 
 
 class SourceFilesXgettext(SourceFileSet):
 
-	def process(self, gettext_lang, new_po_path):
-		super(SourceFilesXgettext, self).process(new_po_path)
-		pofile.join_existing(gettext_lang, new_po_path, self.files, cwd=self.src_pkg_path)
+	def process_po(self, gettext_lang, new_po_path):
+		super(SourceFilesXgettext, self).process_po(new_po_path)
+		message_catalogs.join_existing(gettext_lang, new_po_path, self.files, cwd=self.src_pkg_path)
+
+	def process_target(self, po_path, mo_output_path):
+		if os.path.isabs(mo_output_path):
+			mo_output_path = os.path.relpath(mo_output_path, '/')
+		mo_output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, mo_output_path)
+		message_catalogs.compile_mo(po_path, mo_output_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):
 
-	def process(self, new_po_path):
-		super(SourceFilesShell, self).process('Shell', new_po_path)
+	def process_po(self, new_po_path):
+		super(SourceFilesShell, self).process_po('Shell', new_po_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
-	def process(self, new_po_path):
-		super(SourceFilesPython, self).process('Python', new_po_path)
+	def process_po(self, new_po_path):
+		super(SourceFilesPython, self).process_po('Python', new_po_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
-	def process(self, new_po_path):
-		super(SourceFilesJavaScript, self).process('JavaScript', new_po_path)
+	def process_po(self, new_po_path):
+		super(SourceFilesJavaScript, self).process_po('JavaScript', new_po_path)
+
+	def process_target(self, po_path, json_output_path):
+		"""With UMC and univention-web based applications a custom, JSON-based
+		message format is used."""
+		message_catalogs.po_to_json(po_path, json_output_path)
 
 
 class SourceFilesHTML(SourceFileSet):
 
-	def process(self, new_po_path):
+	def process_po(self, new_po_path):
+		super(SourceFilesHTML, self).process_po(new_po_path)
 		new_po = polib.pofile(new_po_path)
 		html_parser = etree.HTMLParser()
 		for html_path in self.files:
@@ -91,8 +104,11 @@ class SourceFilesHTML(SourceFileSet):
 						new_po.append(new_entry)
 				# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
 				if tree.xpath('//script'):
-					pofile.join_existing('JavaScript', new_po_path, html_path, cwd=self.src_pkg_path)
+					message_catalogs.join_existing('JavaScript', new_po_path, html_path, cwd=self.src_pkg_path)
 		new_po.save(new_po_path)
+
+	def process_target(self, po_path, json_output_path):
+		message_catalogs.po_to_json(po_path, json_output_path)
 
 
 class SourceFileSetFactory(object):

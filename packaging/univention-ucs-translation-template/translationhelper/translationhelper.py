@@ -35,7 +35,6 @@ import json
 import magic
 import mimetypes
 import os
-import pofile
 import re
 import shutil
 import socket
@@ -45,9 +44,7 @@ import traceback
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 
-from pdb import set_trace as dbg
-
-# Use this set to ignore whole subtrees of a given source tree
+# Use this set to ignore whole sub trees of a given source tree
 DIR_BLACKLIST = set([
 	'./doc',
 	'./test',
@@ -289,7 +286,7 @@ def translate_special_case(special_case, source_dir, output_dir):
 	if not os.path.exists(new_po_dir):
 		os.makedirs(new_po_dir)
 	for source_file_set in special_case.get_source_file_sets():
-		source_file_set.process(new_po_path)
+		source_file_set.process_po(new_po_path)
 
 
 def read_special_case_definition(definition_path, source_tree_path, target_language):

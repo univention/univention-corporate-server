@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""This module collects utilities for installing and building message catalogs
+while applying Univention specific options.
+
+Currently this is mostly a wrapper for gettext. In the future it might be
+useful to merge parts of dh_umc into it as the UMC uses a custom JSON based
+catalog format.
+"""
 #
-# Copyright 2013-2017 Univention GmbH
+# Copyright 2016-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,8 +38,10 @@ import polib
 import os
 import subprocess
 
+import univention.dh_umc as dh_umc
 
-class POFileError(Exception):
+
+class GettextError(Exception):
 	pass
 
 
@@ -47,44 +56,57 @@ def _clean_header(po_path):
 
 
 def create_empty_po(binary_pkg_name, new_po_path):
-	_call('--force-po',
-				'--sort-output',
-				'--package-name={}'.format(binary_pkg_name),
-				'--msgid-bugs-address=forge.univention.org',
-				'--copyright-holder=Univention GmbH',
-				# Supress warning about /dev/null being an unknown source type
-				'--language', 'C',
-				'-o', new_po_path,
-				'/dev/null')
+	make_parent_dir(new_po_path)
+	_call_gettext('xgettext',
+		'--from-code=UTF-8',
+		'--force-po',
+		'--sort-output',
+		'--package-name={}'.format(binary_pkg_name),
+		'--msgid-bugs-address=forge.univention.org',
+		'--copyright-holder=Univention GmbH',
+		# Supress warning about /dev/null being an unknown source type
+		'--language', 'C',
+		'-o', new_po_path,
+		'/dev/null')
 	_clean_header(new_po_path)
 
 
-def install_mo():
-
+def compile_mo(path_to_po, mo_output_path):
+	make_parent_dir(mo_output_path)
+	_call_gettext('msgfmt', '--check', '--output={}'.format(mo_output_path), path_to_po)
 
 
 def join_existing(language, output_file, input_files, cwd=None):
 	if not os.path.isfile(output_file):
-		raise POFileError("Can't join input files into {}. File does not exist.".format(output_file))
+		raise GettextError("Can't join input files into {}. File does not exist.".format(output_file))
 	if not isinstance(input_files, list):
 		input_files = [input_files]
 	# make input_files relative so the location lines in the resulting po
 	# will be relative to cwd
 	input_files = [os.path.relpath(p, start=cwd) for p in input_files]
-	_call('--join-existing',
-				# don't manipulate header, we do this in create_po
-				'--omit-header',
-				'--language', language,
-				'-o', output_file,
-				*input_files, cwd=cwd)
+	_call_gettext('xgettext', '--from-code=UTF-8', '--join-existing', '--omit-header', '--language', language, '-o', output_file, *input_files, cwd=cwd)
 
 
-def _call(*args, **kwargs):
-	call = ['xgettext', '--from-code=UTF-8']
-	call.extend([arg for arg in args])
+def po_to_json(po_path, json_output_path):
+	dh_umc.create_json_file(po_path)
+	make_parent_dir(json_output_path)
+	os.rename(po_path.replace('.po', '.json'), json_output_path)
+
+
+def _call_gettext(*args, **kwargs):
+	call = [arg for arg in args]
 	try:
 		subprocess.check_call(call, **kwargs)
 	except subprocess.CalledProcessError as exc:
-		raise POFileError("Error: xgettext exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
+		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
 	except AttributeError as exc:
-		raise POFileError("Operating System error during xgettext call:\n{}".format(exc.strerror))
+		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc.strerror))
+
+
+def make_parent_dir(file_path):
+	dir_path = os.path.dirname(file_path)
+	try:
+		os.makedirs(dir_path)
+	except OSError:
+		if not os.path.isdir(dir_path):
+			raise
