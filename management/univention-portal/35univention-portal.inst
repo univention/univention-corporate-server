@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -60,6 +60,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
+
 if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
 	univention-directory-manager settings/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
@@ -72,6 +73,20 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 		--set showLogin=TRUE \
 		--set showApps=TRUE \
 		--set showServers=TRUE || die
+
+	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
+		--position "cn=portal,cn=univention,$ldap_base" \
+		--set name=umc-domain \
+		--append displayName='"en_US" "System and domain settings"' \
+		--append displayName='"de_DE" "System- und Domäneneinstellungen"' \
+		--append description='"en_US" "Univention Management Console for administrating the UCS domain and the local system"' \
+		--append description='"de_DE" "Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems"' \
+		--append link=/univention/management \
+		--set category=admin \
+		--set authRestriction=anonymous \
+		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
+		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
+
 	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
 		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
 else
@@ -86,6 +101,20 @@ else
 		--set showLogin=TRUE \
 		--set showApps=TRUE \
 		--set showServers=TRUE || die
+
+	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
+		--position "cn=portal,cn=univention,$ldap_base" \
+		--set name=umc-local \
+		--append displayName='"en_US" "System settings"' \
+		--append displayName='"de_DE" "Domäneneinstellungen"' \
+		--append description='"en_US" "Univention Management Console for administrating the local system"' \
+		--append description='"de_DE" "Univention Management Console zur Verwaltung des lokalen Systems"' \
+		--append link=/univention/management \
+		--set category=admin \
+		--set authRestriction=anonymous \
+		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
+		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
+
 	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
 		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
 fi
