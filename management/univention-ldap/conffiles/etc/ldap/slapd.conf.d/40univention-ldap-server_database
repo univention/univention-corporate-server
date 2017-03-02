@@ -12,7 +12,7 @@ if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true(
 	print "moduleload\tppolicy.so"
 if configRegistry.is_true('ldap/shadowbind', True):
 	print 'moduleload\tshadowbind.so'
-print 'moduleload constraint.so'
+print 'moduleload\tconstraint.so'
 
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
