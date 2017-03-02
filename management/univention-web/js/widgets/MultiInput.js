@@ -439,9 +439,8 @@ define([
 				label: _('New entry'),
 				disabled: this.disabled,
 				visible: !this.disabled,
-				iconClass: 'umcPlusIcon',
 				onClick: lang.hitch(this, '_appendRows', 1),
-				'class': 'umcMultiInputAddButton'
+				'class': 'umcFlatButton umcMultiInputAddButton'
 			});
 			this.addChild(this._newEntryButton);
 
@@ -590,9 +589,9 @@ define([
 			var button = new Button({
 				disabled: this.disabled,
 				visible: !this.disabled,
-				iconClass: 'umcMinusIcon',
+				iconClass: 'multiInputTrashCanIcon',
 				onClick: lang.hitch(this, '_removeElement', irow),
-				'class': 'umcMultiInputRemoveButton'
+				'class': 'umcFlatButton umcMultiInputRemoveButton'
 			});
 			rowContainer.addChild(button);
 

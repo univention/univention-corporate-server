@@ -40,28 +40,36 @@
 	.umcMultiInputContainer .umcMultiInputLastRowEntry
 		padding-right: 45px
 
-
-	/* move the removal button over the last element of the row */
 	.umcMultiInputRemoveButton
-		margin: 0 0 0 -35px
+		/* move the removal button over the last element of the row */
+		margin: -6px 0 0 -35px
+		width: 40px
+		height: 40px
 
 		.dijitButtonNode
-			/* make sure the button width matches the margin to avoid a line break */
-			width: 27px
-			padding: 3px
+			width: 100%
+			height: 100%
 
+			.dijitButtonContents
+				width: 100%
+				height: 100%
 
-	
+				.multiInputTrashCanIcon
+					background-image: url('../images/multiInputTrashCan.svg')
+					background-size: 100% 100%
+					width: 24px
+					height: 24px
+					margin: 8px
+
 	/* Buttons were cut off a little to the left - this fixes it*/
 	.umcMultiInputAddButton
-		margin: 0 0 0 6px
+		margin: -8px 0 0 8px
 
-
+		.dijitButtonText
+			padding: 0
 
 .umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput
 	margin-bottom: 0
-
-
 
 .umc .umcLabelPane .umcTooltipIcon
 	span.umcHelpIcon
@@ -74,27 +82,20 @@
 		background-position: -60px -200px
 		opacity: 1
 
-
-
 .umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry
 	padding-right: 0
-
 
 .umc .umcLiveSearchSidebarRadioButtonGroup
 	margin-top: 1.5em
 
-
 .umc .umcMultiSelect
 	border: 1px solid $border-color
-
 
 .umc .umcProgressBar,
 .umc .umcProgressInfo
 	width: 400px
 	> *
 		width: 100%
-
-
 
 .umc .umcSearchBox .umcSearchIcon
 	position: absolute
@@ -108,9 +109,5 @@
 	&:hover
 		opacity: 0.66
 
-
 	&:active
 		opacity: 1
-
-
-

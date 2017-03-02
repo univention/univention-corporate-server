@@ -28,18 +28,26 @@
 
 @import "../variables"
 
+.umc .dijitButton.umcFlatButton
+	box-shadow: none
+	
+	.dijitButtonNode
+		background-color: transparent
+		^[-1].dijitButtonHover ^[-1..-1]
+			background-color: $button-hovered-background-color
+		^[-1].dijitButtonActive ^[-1..-1]
+			background-color: $button-pressed-background-color
+
 .umc .dijitButton
 	margin: 12px
 	material-shadow-common()
 	material-shadow(1)
 	border-radius: $button-border-radius
 
-
 .umc .dijitButtonNode
 	/* rules for dijit.form.*Button widgets and arrow nodes on ComboBox, Spinner etc. */
 	//transition-property: background-color
  	//transition-duration: .3s
-
 
 .umc .dijitButton .dijitButtonNode,
 .umc .dijitDropDownButton .dijitButtonNode,
@@ -65,7 +73,6 @@
 	//alpha-white-gradient((1 0px), (0 3px), (0.75 100%))
 	//_background-image: none	// IE6 can't handle background-color and background-image at once.
 
-
 .umc .dijitButton .dijitButtonNode .dijitButtonContents
 	line-height: 36px
 
@@ -74,13 +81,10 @@
 //	border-color: $default-button-border-color
 //	.dijitButtonText
 //		color: $text-color-dark-background
-//
-//
 
 .umc .dijitComboButton .dijitArrowButton
 	border-left-width: 0
 	padding: 4px 2px 4px 2px	/* TODO: still needed? */
-
 
 /*arrow styles for down/up/left/right directions*/
 .umc .dijitArrowButtonInner
@@ -113,13 +117,10 @@
 .umc .dijitDisabled .dijitUpArrowButton .dijitArrowButtonInner
 	//background-position: -160px 0
 
-
 .umc .dijitDisabled .dijitIcon,
 .umc .dijitDisabled .dijitArrowButtonInner,
 .umc .dijitDisabled .dijitButtonText
 	opacity: 0.5 !important
-
-
 
 .umc .dijitButtonText
 	padding: 0 16px
@@ -128,7 +129,6 @@
 	color: $text-color-lighter
 	font-weight: 500
 	text-transform: uppercase
-
 
 /* hover status */
 .umc .dijitButtonHover .dijitButtonNode,
@@ -142,8 +142,6 @@
 	.dijitArrowButtonInner
 		opacity: 0.66
 
-
-
 /* focused state */
 .umc .dijitButtonFocused .dijitButtonText,
 .umc .dijitDropDownButtonFocused .dijitButtonText,
@@ -151,7 +149,6 @@
 .umc .dijitToggleButtonFocused .dijitButtonText
 	//TODO: border around button for focused state
 	//text-decoration: underline
-
 
 /* active, checked status */
 .umc .dijitButtonActive .dijitButtonNode, 
@@ -164,8 +161,6 @@
 	//transition-duration: .1s
 	.dijitArrowButtonInner
 		opacity: 1
-
-
 
 .umc .dijitButtonActive,
 .umc .dijitDropDownButtonActive,
@@ -182,7 +177,6 @@
 	background-image: none
 	outline: none
 
-
 .umc .dijitButtonDisabled .dijitButtonNode,
 .umc .dijitDropDownButtonDisabled .dijitButtonNode,
 .umc .dijitComboButtonDisabled .dijitButtonNode,
@@ -198,7 +192,6 @@
 	alpha-white-gradient((1 0%), (0 40%))
 	_background-image: none	// IE6 can't handle background-color and background-image at once.
 
-
 .umc .dijitComboButtonDisabled .dijitArrowButton 
 	border-left-width: 0
 
@@ -206,10 +199,8 @@
 .umc table.dijitComboButton
 	border-collapse: separate	/* override dijit.css so that ComboBox rounded corners work */
 
-
 .umc .dijitComboButton .dijitStretch
 	border-radius: $button-border-radius 0 0 $button-border-radius
 
 .umc .dijitComboButton .dijitArrowButton
 	border-radius: 0 $button-border-radius $button-border-radius 0
-
