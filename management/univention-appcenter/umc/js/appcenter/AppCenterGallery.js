@@ -30,143 +30,50 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/array",
-	"dojo/_base/lang",
-	"dojo/_base/kernel",
-	"dojo/_base/event",
 	"dojox/html/entities",
-	"put-selector/put",
-	"dojo/dom-class",
-	"dojo/dom-construct",
-	"dojo/on",
 	"umc/tools",
-	"umc/widgets/GalleryPane",
-	"dijit/Tooltip",
-	"dojo/query",
-	"dojo/dom-geometry",
-	"dojo/dom-style",
+	"umc/widgets/AppGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, kernel, dojoEvent, entities, put, domClass, domConstruct, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
-	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
-		region: 'main',
+], function(declare, entities, tools, AppGallery, _) {
+	return declare("umc.modules.appcenter.AppCenterGallery", [ AppGallery ], {
+		iconClassPrefix: 'umcAppCenter',
 
-		baseClass: 'umcGalleryPane umcAppCenterGallery',
-
-		bootstrapClasses: "",
-
-		getIconClass: function(iconName) {
-			return tools.getIconClass(iconName, 'scalable', 'umcAppCenter');
-		},
-
-		getIconUrl: function(iconName) {
-			return lang.replace('{url}/umc/icons/scalable/{icon}', {
-				url: require.toUrl('dijit/themes'),
-				icon: iconName || ''
-			});
-		},
-
-		renderRow: function(item) {
-			var appWrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
-				moduleID: item.id,
-				bootstrapClasses: this.bootstrapClasses
-			}));
-			var innerWrapper = put(appWrapperDiv, lang.replace('div[id={0}].appInnerWrapper.umcGalleryItem', [item.id]));
-
-			put(innerWrapper, 'div.border');
-
-			var iconClass = this.getIconClass(item.logo_name);
-			if (iconClass) {
-				put(innerWrapper, 'div.appIcon.umcGalleryIcon.' + iconClass);
-
-				//IE specific
-				//on IE some svgs are not shown. this fixes the problem
-				if (navigator.userAgent.indexOf('Trident/') !== -1) {
-					var iconUrl = this.getIconUrl(item.logo_name);
-					domConstruct.create('img', {
-						src: iconUrl
-					});
-				}
-			}
-
-			var text = put(innerWrapper, 'div.appContent');
-			put(text, 'div.umcGalleryName', this.getItemName(item));
-			put(text, 'div.umcGalleryVendor', this.getMore(item));
-
-			var hover = put(innerWrapper, 'div.appHover');
-			var description = this.getItemDescription(item);
-			if (description) {
-				put(hover, 'div', description);
-			}
-
-			innerWrapper.onmouseover = function() {
-				domClass.toggle(innerWrapper, 'hover');
-			};
-			innerWrapper.onmouseout = function() {
-				domClass.toggle(innerWrapper, 'hover secondTouch');
-			};
-
-			var statusIconClass = this.getStatusIconClass(item);
-			if (statusIconClass) {
-				put(appWrapperDiv, lang.replace('div.appStatusIcon{0}', [statusIconClass]));
-
-				var statusIcon = put(lang.replace('div.appStatusIcon.appStatusHoverIcon{0}', [statusIconClass]));
-
-				var tooltipMessage;
-				if (statusIconClass.indexOf("EndOfLife") !== -1) {
-					if (item.is_installed) {
-						tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(item.name)});
-					} else {
-						tooltipMessage = _("This application will not get any further updates.");
-					}
-				} else if (statusIconClass.indexOf('Update') !== -1) {
-					tooltipMessage = _("Update available");
-				}
-				on(statusIcon, 'click', function(evt) {
-					Tooltip.show(tooltipMessage, statusIcon);
-					if (evt) {
-						dojoEvent.stop(evt);
-					}
-					on.once(kernel.body(), 'click', function(evt) {
-						Tooltip.hide(statusIcon);
-						dojoEvent.stop(evt);
-					});
-				});
-				put(appWrapperDiv, statusIcon);
-			}
-
-			return appWrapperDiv;
-		},
-
-		_resizeItemNames: function() {
-			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				var fontSize = 1.4;
-				while (domGeometry.position(inode).h > 40) {
-					domStyle.set(inode, 'font-size', fontSize + 'em');
-					fontSize *= 0.95;
-				}
-			}));
-		},
-
-		getMore: function(item) {
-			return item.vendor || item.maintainer || '';
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.baseClass += ' umcAppCenterGallery';
 		},
 
 		getStatusIconClass: function(item) {
-			var iconClass = '';
+			var iconClass;
 			if (item.end_of_life) {
-				iconClass = '.appEndOfLifeIcon';
+				iconClass = 'appEndOfLifeIcon';
 			} else if (item.update_available) {
-				iconClass = '.appUpdateIcon';
+				iconClass = 'appUpdateIcon';
 			}
 			if (item.installations) {
 				tools.forIn(item.installations, function(server, info) {
 					if (info.update_available) {
-						iconClass = '.appUpdateIcon';
+						iconClass = 'appUpdateIcon';
 						return false;
 					}
 				});
 			}
-			return iconClass;
+			return iconClass || this.inherited(arguments);
+		},
+
+		getItemStatusTooltipMessage: function(item) {
+			var tooltipMessage;
+			var statusIconClass = this.getStatusIconClass(item);
+			if (statusIconClass.indexOf("EndOfLife") !== -1) {
+				if (item.is_installed) {
+					tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(item.name)});
+				} else {
+					tooltipMessage = _("This application will not get any further updates.");
+				}
+			} else if (statusIconClass.indexOf('Update') !== -1) {
+				tooltipMessage = _("Update available");
+			}
+			return tooltipMessage || this.inherited(arguments);
 		}
 	});
 });
