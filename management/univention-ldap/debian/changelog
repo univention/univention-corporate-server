@@ -1,3 +1,9 @@
+univention-ldap (13.0.4-1) unstable; urgency=medium
+
+  * Bug #42175: ACLs for Portal Entries
+
+ -- Florian Best <best@univention.de>  Thu, 02 Mar 2017 14:59:54 +0100
+
 univention-ldap (13.0.3-9) unstable; urgency=medium
 
   * Bug #42175: ACLs for Portal Entries

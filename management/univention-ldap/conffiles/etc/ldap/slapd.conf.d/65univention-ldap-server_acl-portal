@@ -1,4 +1,9 @@
-access to dn.children="cn=portal,cn=univention,dc=dirk,dc=singlemaster,dc=intranet" filter="objectClass=univentionPortalEntry" attrs=entry,@univentionPortalEntry
+access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
+	by dn.onelevel="cn=dc,cn=computers,@%@ldap/base@%@" write
+	by dn.onelevel="cn=memberserver,cn=computers,@%@ldap/base@%@" write
+	by * read break
+
+access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionPortalEntry,@univentionPortal
 	by dn.onelevel="cn=dc,cn=computers,@%@ldap/base@%@" write
 	by dn.onelevel="cn=memberserver,cn=computers,@%@ldap/base@%@" write
 	by * read break
