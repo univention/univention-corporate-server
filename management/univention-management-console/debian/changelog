@@ -1,3 +1,9 @@
+univention-management-console (9.0.45-1) unstable; urgency=medium
+
+  * Bug #42231: version bump
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2017 15:09:20 +0100
+
 univention-management-console (9.0.43-5) unstable; urgency=medium
 
   * Bug #42174: Remove entities.encode() for text with '<br/>' entry
