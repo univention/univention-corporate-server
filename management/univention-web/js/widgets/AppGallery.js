@@ -107,7 +107,9 @@ define([
 					'<div class="appInnerWrapper umcGalleryItem">' +
 						'<div class="contentWrapper">' +
 							'<div class="appContent">' +
-								'<div class="umcGalleryName">{itemName}</div>' +
+								'<div class="umcGalleryName">' +
+									'<div class="umcGalleryNameContent">{itemName}</div>' +
+								'</div>' +
 								'<div class="umcGallerySubName">{itemSubName}</div>' +
 							'</div>' +
 							'<div class="appHover">' +
@@ -145,13 +147,38 @@ define([
 		},
 
 		_resizeItemNames: function() {
-			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				var fontSize = 1.4;
-				while (domGeometry.position(inode).h > 40) {
-					domStyle.set(inode, 'font-size', fontSize + 'em');
-					fontSize *= 0.95;
+			var defaultValues = this._getDefaultValuesForResize('.umcGalleryName');
+			var defaultHeight = defaultValues.height;
+			query('.umcGalleryNameContent', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				var fontSize = parseInt(defaultValues.fontSize, 10) || 16;
+				while (domGeometry.position(inode).h > defaultHeight) {
+					fontSize--;
+					domStyle.set(inode, 'font-size', fontSize + 'px');
 				}
 			}));
+		},
+
+		_getItemFontSize: function(node, cssClass) {
+			var queriedNode = query(cssClass, node)[0];
+			return domStyle.get(queriedNode, 'font-size');
+		},
+
+		_getDefaultValuesForResize: function(cssClass) {
+			// render empty gallery item
+			var node = this.renderRow({
+				name: '*',
+				description: '*'
+			});
+			domClass.add(node, 'dijitOffScreen');
+			domConstruct.place(node, this.contentNode);
+			var height = this._getItemHeight(node, cssClass);
+			var fontSize = this._getItemFontSize(node, cssClass);
+			domConstruct.destroy(node);
+			return {
+				height: height,
+				fontSize: fontSize
+			};
+
 		},
 
 		getMore: function(item) {
