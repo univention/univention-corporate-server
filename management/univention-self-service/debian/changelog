@@ -1,3 +1,9 @@
+univention-self-service (2.0.5-2) unstable; urgency=medium
+
+  * Bug #42174: Fix "Forgot your password?" link
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 10:09:14 +0100
+
 univention-self-service (2.0.5-1) unstable; urgency=medium
 
   * Bug #42267: move menu entries into JavaScript hook module
