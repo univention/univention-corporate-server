@@ -1,3 +1,9 @@
+univention-portal (1.0.6-17) unstable; urgency=medium
+
+  * Bug #43528: Use html 'a' tag in PortalGallery instead of actions
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 03 Mar 2017 17:48:50 +0100
+
 univention-portal (1.0.6-16) unstable; urgency=medium
 
   * Bug #43528: Fix item names of category entries not resizing initially

@@ -31,8 +31,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/query",
+	"dojo/dom-class",
+	"put-selector/put",
 	"umc/widgets/AppGallery"
-], function(declare, lang, AppGallery) {
+], function(declare, lang, query, domClass, put, AppGallery) {
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
 	var _regIPv6 = /^\[?((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\]?$/;
 	var _regIPv6Brackets = /^\[.*\]$/;
@@ -64,24 +67,35 @@ define([
 
 		domainName: null,
 
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.baseClass += ' umcPortalGallery';
-			this.actions = [{
-				name: 'open',
-				isDefaultAction: true,
-				isContextAction: false,
-				callback: lang.hitch(this, function(id, item) {
-					location.href = this._getWebInterfaceUrl(item);
-				})
-			}];
+		},
+
+		postCreate: function() {
+			// TODO: this changes with Dojo 2.0
+			this.domNode.setAttribute("widgetId", this.id);
+
+			// add specific DOM classes
+			if (this.baseClass) {
+				domClass.add(this.domNode, this.baseClass);
+			}
+
+			if (this.store) {
+				this.set('store', this.store);
+			}
 		},
 
 		getRenderInfo: function(item) {
 			return lang.mixin(this.inherited(arguments), {
 				itemSubName: item.host_name
 			});
+		},
+
+		renderRow: function(item) {
+			var domNode = this.inherited(arguments);
+			put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
+			return domNode;
 		},
 
 		_getProtocolAndPort: function(app) {
