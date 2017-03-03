@@ -1,3 +1,9 @@
+univention-management-console (9.0.45-2) unstable; urgency=medium
+
+  * Bug #43713: handle EBADF in client
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2017 16:28:13 +0100
+
 univention-management-console (9.0.45-1) unstable; urgency=medium
 
   * Bug #42231: version bump

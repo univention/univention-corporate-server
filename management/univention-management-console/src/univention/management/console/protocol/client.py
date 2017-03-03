@@ -200,11 +200,12 @@ class Client(signals.Provider, Translation):
 				else:
 					del self.__resend_queue[sock][0]
 			except socket.error as exc:
-				if exc.errno in (errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC, errno.EPIPE, errno.ECONNRESET):
+				if exc.errno in (errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC, errno.EBADF, errno.EPIPE, errno.ECONNRESET):
 					# Error may happen if module process died and server tries to send request at the same time
 					# ECONNABORTED: connection reset by peer
 					# EISCONN: socket not connected
-					# ENOEXEC: bad file descriptor
+					# ENOEXEC: bad file descriptor (?)
+					# EBADF: bad file descriptor
 					# EPIPE: broken pipe
 					# ECONNRESET: Connection reset by peer
 					CORE.info('Client: _resend: socket is damaged: %s' % str(exc))
