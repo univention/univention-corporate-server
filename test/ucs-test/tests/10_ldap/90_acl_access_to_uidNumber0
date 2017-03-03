@@ -112,7 +112,7 @@ _creations = [
 	]),
 ]
 _modifications = [
-	# try modify all existing objects
+	# try modify all existing objects and add a user account to existing object
 	HackingAttempt([
 		('objectClass', '', 'posixAccount'),
 		('uid', '', uts.random_username()),
