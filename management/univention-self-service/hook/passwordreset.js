@@ -31,10 +31,11 @@ define([
 	'dojo/topic',
 	'dojo/dom',
 	'dojox/html/entities',
+	'login/dialog',
 	'umc/menu',
 	'umc/tools',
 	'umc/i18n!'
-], function(topic, dom, entities, menu, tools, _) {
+], function(topic, dom, entities, dialog, menu, tools, _) {
 	function isSelfServiceURL() {
 		return window.location.pathname.indexOf('/univention/self-service/') === 0;
 	}
@@ -75,9 +76,8 @@ define([
 	});
  
 	var linksNode = dojo.byId('umcLoginLinks');
-	var dialog = require('login/dialog');
 	var isLoginPage = window.location.pathname == '/univention/login/';
-	if (isLoginPage && linksNode && dialog) {
+	if (isLoginPage && linksNode) {
 		// add "Forgot password?" link to login page
 		dialog.addLink('<a href="/univention/self-service/#page=passwordreset">' + entities.encode(_('Forgot your password?')) + '</a>');
 		linksNode.innerHTML = '';

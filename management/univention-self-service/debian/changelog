@@ -1,3 +1,9 @@
+univention-self-service (2.0.5-3) unstable; urgency=medium
+
+  * Bug #42174: adjust dependencies
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 16:22:58 +0100
+
 univention-self-service (2.0.5-2) unstable; urgency=medium
 
   * Bug #42174: Fix "Forgot your password?" link
