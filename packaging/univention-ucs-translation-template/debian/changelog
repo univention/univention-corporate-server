@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.0-1) unstable; urgency=medium
+
+  * Bug #42260: allow po_path property
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 14:55:40 +0100
+
 univention-ucs-translation-template (4.2.0-0) unstable; urgency=medium
 
   * Bug #42260: add helpers for usage in debian/rules

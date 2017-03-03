@@ -146,9 +146,12 @@ class SpecialCase():
 			self.binary_package_name = re.match(r'debian/(.*).univention-l10n', def_relative).groups()[0]
 			self.package_dir = os.getcwd()
 		self.source_dir = source_dir
-		self.po_subdir = self.po_subdir.format(lang=target_language)
+		if hasattr(self, 'po_path'):
+			self.new_po_path = self.po_path.format(lang=target_language)
+		else:
+			self.po_subdir = self.po_subdir.format(lang=target_language)
+			self.new_po_path = os.path.join(self.po_subdir, '{}.po'.format(target_language))
 		self.destination = self.destination.format(lang=target_language)
-		self.new_po_path = os.path.join(self.po_subdir, '{}.po'.format(target_language))
 		self.path_to_definition = path_to_definition
 
 	def _get_files_matching_patterns(self):
