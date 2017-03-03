@@ -19,6 +19,7 @@
 		$tile-hover-color-primary = #878787
 		$tile-hover-color-secondary = #6e6e6e
 
+		cursor: pointer
 		position: relative
 		float: left
 		width: 155px
@@ -41,7 +42,6 @@
 			right: -10px
 			z-index: 2
 			transition: opacity 0.5s
-			cursor: pointer
 
 			&.noStatus
 				display: none
@@ -118,6 +118,7 @@
 					text-align: center
 
 					.umcGalleryName
+						color: $text-color
 						height: 40px
 						margin-bottom: 0.2em
 						font-size: $font-size-subheading
@@ -125,7 +126,7 @@
 						word-wrap: break-word
 
 					.umcGallerySubName
-						color: #787878
+						color: $text-color-lightest
 						white-space: nowrap
 						text-overflow: ellipsis
 						overflow: hidden
