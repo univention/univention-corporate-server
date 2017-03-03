@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (6.0.1-2) unstable; urgency=medium
+
+  * Bug #43710: fix response of putting UCR variables
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2017 10:57:56 +0100
+
 univention-management-console-module-ucr (6.0.1-1) unstable; urgency=medium
 
   * Bug #39731: wrong HTTP status code lead to confusion during QA; fix error

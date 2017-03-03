@@ -110,7 +110,7 @@ class Instance(Base):
 			# handle descriptions, type, and categories
 			if 'descriptions' in var or 'type' in var or 'categories' in var:
 				self.__create_variable_info(var)
-		return True
+		self.finished(request.id, True)
 
 	def remove(self, request):
 		variables = filter(lambda x: x is not None, map(lambda x: x.get('object'), request.options))
