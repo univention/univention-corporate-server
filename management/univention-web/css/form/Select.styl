@@ -21,17 +21,25 @@
 
 .umc .dijitSelect
 	width: 100%
+	background-color: white
+
+	td
+		height: 32px
 
 	.dijitButtonText
-		font-size: $font-size-title
+		font-size: $font-size-subheading
 		color: $text-color
 		padding: 0
-
+		text-transform: none
+		font-weight: normal
 
 	.dijitButtonContents
 		border: none
+		padding-left: 10px
 
-
+.umc .dijitSelectMenu.dijitMenu .dijitMenuItem td
+	font-weight: normal
+	padding: 5px 10px
 
 /* normal status */
 .umc .dijitSelect .dijitArrowButtonContainer
@@ -41,7 +49,7 @@
 
 
 .umc .dijitSelect .dijitArrowButton
-	padding: 0
+	padding: 0 10px 0 0
 	//background-color: $arrowbutton-background-color
 	//standard-gradient("../")
 

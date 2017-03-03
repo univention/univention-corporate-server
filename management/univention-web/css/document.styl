@@ -86,3 +86,31 @@ body.umc.umcOverviewShown
 	background-color: $document-shadedsection-background-color 
 	border: 1px solid $document-border-color 
 
+/* classes for different shadow levels */
+for i in (1..5)
+	.umc .shadow-{i}
+		material-shadow(i)
+
+/* white cards as described by Google Material Design */
+.umc .umcCard
+	margin: 48px auto
+	background: #fff
+	padding: 14px
+	border: none
+	material-shadow(1)
+
+	h2,
+	h1
+		&:first-child
+			margin-top: 10px
+
+
+	.dijitTextBox,
+	.dijitSelect
+		background-color: $document-background-color
+
+	.dijitButton
+		box-shadow: none
+
+
+

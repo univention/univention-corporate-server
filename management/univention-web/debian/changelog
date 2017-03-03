@@ -1,3 +1,9 @@
+univention-web (1.0.29-17) unstable; urgency=medium
+
+  * Bug #43528: Add styling for cards + fix select box + buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 13:19:11 +0100
+
 univention-web (1.0.29-16) unstable; urgency=medium
 
   * Bug #43528: Fix h1 heading alignment
