@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-5) unstable; urgency=low
+
+  * Bug #43310: Adapt to firewall locking
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Mar 2017 17:20:22 +0100
+
 univention-base-files (6.0.0-4) unstable; urgency=low
 
   * Bug #15728: Enable remote syslog logging

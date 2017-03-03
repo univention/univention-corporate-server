@@ -33,5 +33,5 @@ for (typ, proto) in [('udp', 'udp'), ('tcp', 'tcp'), ('relp', 'tcp')]:
 	port = configRegistry.get('syslog/input/%s' % (typ,))
 	if port:
 		print "# rsyslog %s" % (typ,)
-		print "iptables -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)
+		print "iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)
 @!@

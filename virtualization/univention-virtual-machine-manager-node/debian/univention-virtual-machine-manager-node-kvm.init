@@ -209,9 +209,9 @@ link_exists()
 # Set the default forwarding policy for $dev to drop.
 # Allow forwarding to the bridge.
 antispoofing () {
-    iptables -P FORWARD DROP
-    iptables -F FORWARD
-    iptables -A FORWARD -m physdev --physdev-in ${pdev} -j ACCEPT
+    iptables --wait -P FORWARD DROP
+    iptables --wait -F FORWARD
+    iptables --wait -A FORWARD -m physdev --physdev-in ${pdev} -j ACCEPT
 }
 
 # Usage: show_status dev bridge

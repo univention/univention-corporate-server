@@ -29,4 +29,4 @@
 # <http://www.gnu.org/licenses/>.
 
 ## additional source port rule for netbios broadcast answers
-/sbin/iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT
+iptables --wait -I INPUT 1 -p udp --sport 137 -j ACCEPT
