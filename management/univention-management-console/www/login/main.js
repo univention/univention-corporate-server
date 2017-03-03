@@ -362,7 +362,7 @@ define([
 				// TODO: we should do a real logout here. maybe the UMCUsername cookie can be set
 				tools.checkSession(false);
 				tools.closeSession();
-				window.location.search = 'username=' + username;
+				window.location.search = 'username=' + encodeURIComponent(username);
 			});
 		},
 
