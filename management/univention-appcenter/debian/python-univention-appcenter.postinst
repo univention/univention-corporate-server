@@ -35,8 +35,9 @@
 update-python-modules python-univention-appcenter.public
 update-python-modules --post-install
 
+old_server="$(ucr get repository/app_center/server)"
 univention-config-registry unset repository/app_center/server
-univention-config-registry set appcenter/server?"appcenter.software-univention.de"\
+univention-config-registry set appcenter/server?"${old_server:-appcenter.software-univention.de}" \
 	appcenter/domainwide?true
 
 #DEBHELPER#

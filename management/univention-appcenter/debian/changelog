@@ -1,3 +1,9 @@
+univention-appcenter (6.0.1-50) unstable; urgency=medium
+
+  * Bug #43496: Use last configured App Center server in new UCRV
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 03 Mar 2017 04:32:06 +0100
+
 univention-appcenter (6.0.1-49) unstable; urgency=medium
 
   * Bug #42196: Remove old config file
