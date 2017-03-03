@@ -134,6 +134,7 @@ define([
 				domainName: meta.ucr.domainname
 			});
 			this.content.appendChild(portalCategory.domNode);
+			portalCategory.startup();
 			this.portalCategories.push(portalCategory);
 		},
 
