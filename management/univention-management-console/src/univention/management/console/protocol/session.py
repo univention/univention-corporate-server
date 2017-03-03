@@ -876,6 +876,7 @@ class SessionHandler(ProcessorBase):
 		# caution! this is not executed in the main loop and any exception will therefore crash the server!
 		self.execute('_authentication_finished2', request, result)
 
+	@allow_get_request
 	def _authentication_finished2(self, request, result):
 		self.authenticated = bool(result)
 		request.authentication_result = result
