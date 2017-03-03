@@ -1,3 +1,9 @@
+univention-ldap (13.0.5-1) unstable; urgency=medium
+
+  * Bug #43312: remove uidNumber=0 ACL's as they are covered by the constraint
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2017 16:52:43 +0100
+
 univention-ldap (13.0.4-2) unstable; urgency=medium
 
   * Bug #42175: Change filename
