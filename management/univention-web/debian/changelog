@@ -1,3 +1,9 @@
+univention-web (1.0.29-20) unstable; urgency=medium
+
+  * Bug #43528: Fix display error of progress bars
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 03 Mar 2017 14:55:42 +0100
+
 univention-web (1.0.29-19) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of multi input fields
