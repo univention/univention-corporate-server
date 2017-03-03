@@ -1,3 +1,9 @@
+univention-web (1.0.29-16) unstable; urgency=medium
+
+  * Bug #43528: Fix h1 heading alignment
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 09:17:51 +0100
+
 univention-web (1.0.29-15) unstable; urgency=medium
 
   * Bug #43528: Fix display error of portal categories
