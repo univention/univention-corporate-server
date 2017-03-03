@@ -101,7 +101,7 @@ class SourceFilesHTML(SourceFileSet):
 					if 'data-i18n' in element.keys():
 						new_entry = polib.POEntry(msgid=element.get('data-i18n'),
 							occurrences=[(os.path.basename(html_path), element.sourceline)])
-						if not new_entry in new_po:
+						if new_entry not in new_po:
 							new_po.append(new_entry)
 				# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
 				if tree.xpath('//script'):

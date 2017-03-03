@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.0-3) unstable; urgency=medium
+
+  * Bug #43594: change 'not x in y' to 'x not in y'
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 15:42:24 +0100
+
 univention-ucs-translation-template (4.2.0-2) unstable; urgency=medium
 
   * Bug #43594: fix double po entries for HTML files
