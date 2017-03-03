@@ -1,3 +1,9 @@
+univention-web (1.0.29-22) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of focused links in PortalGallery
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 03 Mar 2017 18:07:23 +0100
+
 univention-web (1.0.29-21) unstable; urgency=medium
 
   * Bug #43528: Adjust styling for links in PortalGallery
