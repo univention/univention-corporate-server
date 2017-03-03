@@ -34,6 +34,10 @@ $header-color ?= #787878
 .umc
 	min-height: 100%
 
+	@media (min-width: 768px)
+		.container:not(.umcCard)
+			width: 100%;
+
 	/* standby animation */
 	#content
 		opacity: 1

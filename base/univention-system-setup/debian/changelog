@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-19) unstable; urgency=medium
+
+  * Bug #42172: Keep selection when clicking on info icon + optimize width
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 14:06:53 +0100
+
 univention-system-setup (10.0.7-18) unstable; urgency=medium
 
   * Bug #42172: Adjust styling of wizard and elements

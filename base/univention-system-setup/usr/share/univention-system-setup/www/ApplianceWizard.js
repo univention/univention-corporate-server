@@ -1248,6 +1248,15 @@ define([
 				},
 				standby: function() {}
 			});
+
+			var _handleSelectDefault = this._gallery._grid._handleSelect;
+			this._gallery._grid._handleSelect = lang.hitch(this, function(evt) {
+				if (!domClass.contains(evt.target, 'umcInfoIcon')) {
+					// make sure the selection is not modified
+					// when clicking on the info icon
+					_handleSelectDefault.apply(this._gallery._grid, arguments);
+				}
+			});
 			this._addWidgetToPage('software', this._gallery);
 			this._gallery.on('filterDone', lang.hitch(this, function() {
 				this._apps.query({is_installed: true}).forEach(lang.hitch(this, function(iitem) {
@@ -1259,6 +1268,8 @@ define([
 			this._gallery._grid.on('.umcInfoIcon:click', lang.hitch(this, function(evt) {
 				var row = this._gallery._grid.row(evt);
 				_showTooltip(evt.target, entities.decode(row.data.long_description), evt);
+				evt.stopPropagation();
+				return false;
 			}));
 			this.umcpCommand('setup/apps/query').then(lang.hitch(this, function(response) {
 				array.forEach(response.result, function(iitem) {
