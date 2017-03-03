@@ -119,7 +119,9 @@ Package: ucs-test-ldap
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}, imagemagick
+ ${misc:Depends},
+ imagemagick,
+ python-pytest,
 Provides: ucs-test-module
 Description: Test scripts for LDAP and replication
  This package includes some scripts for testing the UCS LDAP and the

@@ -1,3 +1,9 @@
+ucs-test (7.0.11-15) unstable; urgency=low
+
+  * Bug #43312: add missing dependency to python-pytest in ucs-test-ldap
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 03 Mar 2017 11:15:50 +0100
+
 ucs-test (7.0.11-14) unstable; urgency=low
 
   * Bug #43417: updated tests/64_udm-printers/41_check_ppd
