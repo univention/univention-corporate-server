@@ -83,14 +83,14 @@ def _make_obj(obj):
 	icon = obj.get('univentionPortalBackground', [''])[0]
 	background = None
 	if icon:
-		cn = obj['cn'][0]
+		cn = os.path.basename(obj['cn'][0])
 		fname = os.path.join(os.path.dirname(_fname()), 'icons', 'backgrounds', cn)
 		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
 		try:
 			with open(fname, 'wb') as fd:
 				fd.write(b64decode(icon))
 		except (EnvironmentError, TypeError):
-			ud.debug(ud.LISTENER, ud.WARN, 'Failed to decode Icon')
+			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon' % fname)
 		else:
 			if what(fname) == 'png':
 				shutil.move(fname, '%s.png' % fname)
