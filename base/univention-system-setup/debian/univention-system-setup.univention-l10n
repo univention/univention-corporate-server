@@ -4,13 +4,13 @@
 			"usr/lib/univention-system-setup/scripts/.*",
 			"umc/python/setup/setup_script.py"
 		],
-		"po_subdir": "usr/share/locale/{lang}/LC_MESSAGES/",
+		"po_path": "usr/share/locale/{lang}/LC_MESSAGES/univention-system-setup-scripts.po",
 		"target_type": "mo",
-		"destination": "/usr/share/locale/{lang}/LC_MESSAGES/univention-system-setup-scripts.mo"
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-system-setup-scripts.mo"
 	},
 	{
 		"input_files": [
-			"usr/share/univention-system-setup/www/*.js"
+			"usr/share/univention-system-setup/www/.*\\.js"
 		],
 		"po_subdir": "usr/share/univention-system-setup/www/",
 		"target_type": "json",

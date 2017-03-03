@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-20) unstable; urgency=medium
+
+  * Bug #42172: Update l10n integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 15:50:40 +0100
+
 univention-system-setup (10.0.7-19) unstable; urgency=medium
 
   * Bug #42172: Keep selection when clicking on info icon + optimize width
