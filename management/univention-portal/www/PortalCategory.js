@@ -43,7 +43,7 @@ define([
 
 		apps: null,
 
-		title: null,
+		heading: null,
 
 		domainName: null,
 
@@ -60,8 +60,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var title = domConstruct.create("h2", {
-				innerHTML: this.title
+			var heading = domConstruct.create("h2", {
+				innerHTML: this.heading
 			});
 
 			var store = new Observable(new Memory({
@@ -73,7 +73,7 @@ define([
 				domainName: this.domainName
 			});
 
-			domConstruct.place(title, this.containerNode);
+			domConstruct.place(heading, this.containerNode);
 			this.addChild(this.grid);
 		},
 

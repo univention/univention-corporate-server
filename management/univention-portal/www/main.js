@@ -111,25 +111,25 @@ define([
 							apps.push(lang.mixin({web_interface: link, host_name: linkHost}, _entry));
 						});
 					});
-					var title;
+					var heading;
 					if (category == 'admin') {
-						title = _('Administration');
+						heading = _('Administration');
 					} else {
-						title = _('Installed services');
+						heading = _('Installed services');
 					}
 					if (apps.length) {
-						this._addCategory(title, apps);
+						this._addCategory(heading, apps);
 					}
 				}
 			}));
 			array.forEach(portal, lang.hitch(this, function(category) {
-				this._addCategory(category.title, category.apps);
+				this._addCategory(category.heading, category.apps);
 			}));
 		},
 
-		_addCategory: function(title, apps) {
+		_addCategory: function(heading, apps) {
 			var portalCategory = new PortalCategory({
-				title: title,
+				heading: heading,
 				apps: apps,
 				domainName: meta.ucr.domainname
 			});

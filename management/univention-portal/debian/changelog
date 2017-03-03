@@ -1,3 +1,9 @@
+univention-portal (1.0.6-15) unstable; urgency=medium
+
+  * Bug #43528: Remove title attribute from root dom node of portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 03 Mar 2017 11:44:59 +0100
+
 univention-portal (1.0.6-14) unstable; urgency=medium
 
   * Bug #42231: Fix os.path vulnerability
