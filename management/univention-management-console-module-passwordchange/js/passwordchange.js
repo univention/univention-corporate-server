@@ -38,7 +38,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/PasswordInputBox",
-	"umc/i18n!umc/modules/passwordchange"
+	"umc/i18n!umc/hooks/passwordchange"
 ], function(declare, lang, topic, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
 
 	var setPassword = function(values) {

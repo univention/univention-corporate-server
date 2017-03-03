@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (2.0.2-5) unstable; urgency=medium
+
+  * Bug #42173: add translations + l10n integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 16:06:37 +0100
+
 univention-management-console-module-passwordchange (2.0.2-4) unstable; urgency=medium
 
   * Bug #42173: avoid error on log when cancelling dialog
