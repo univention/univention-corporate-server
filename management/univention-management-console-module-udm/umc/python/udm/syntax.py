@@ -159,6 +159,7 @@ __widgets.extend([
 	Widget('UnixAccessRights', udm_syntax.UNIX_AccessRight, '000'),
 	Widget('UnixAccessRightsExtended', udm_syntax.UNIX_AccessRight_extended, '0000'),
 	Widget('MultiSelect', udm_syntax.MultiSelect, []),
+	Widget('ImageUploader', udm_syntax.Base64BaseUpload, ''),
 	Widget('umc/modules/udm/CertificateUploader', udm_syntax.Base64Upload, ''),
 	Widget('ImageUploader', udm_syntax.jpegPhoto, ''),
 	Widget('TextArea', udm_syntax.TextArea, ''),

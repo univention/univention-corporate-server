@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.6-5) unstable; urgency=medium
+
+  * Bug #42231: Widget for new syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 03 Mar 2017 11:15:24 +0100
+
 univention-management-console-module-udm (7.0.6-4) unstable; urgency=medium
 
   * Bug #42229: cleanup changeView method 
