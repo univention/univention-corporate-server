@@ -143,7 +143,7 @@ property_descriptions = {
 	'icon': univention.admin.property(
 		short_description=_('Icon'),
 		long_description='',
-		syntax=univention.admin.syntax.Base64Upload,
+		syntax=univention.admin.syntax.Base64BaseUpload,
 		multivalue=False,
 		dontsearch=True,
 		options=[],

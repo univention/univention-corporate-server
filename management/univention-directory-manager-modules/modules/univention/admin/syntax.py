@@ -461,6 +461,18 @@ class Base64Upload(Upload):
 			return text
 
 
+class Base64BaseUpload(Base64Upload):
+
+	@classmethod
+	def parse(self, text):
+		try:
+			base64.decodestring(text)
+		except:
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
+		else:
+			return text
+
+
 class jpegPhoto(Upload):
 
 	@classmethod

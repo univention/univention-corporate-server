@@ -122,7 +122,7 @@ property_descriptions = {
 	'background': univention.admin.property(
 		short_description=_('Background'),
 		long_description=_('Background image of the Portal'),
-		syntax=univention.admin.syntax.Base64Upload,
+		syntax=univention.admin.syntax.Base64BaseUpload,
 		multivalue=False,
 		dontsearch=True,
 		options=[],
