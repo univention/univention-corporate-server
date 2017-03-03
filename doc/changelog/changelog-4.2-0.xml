@@ -250,9 +250,10 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/server/autostart</envar> (<u:bug>42339</u:bug>).
+					The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/server/autostart</envar> (<u:bug>42339</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					A crash in the UMC-Server has been fixed which could occur during connecting to module processes under heavy load (<u:bug>43713</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
