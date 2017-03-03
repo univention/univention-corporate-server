@@ -1,3 +1,9 @@
+univention-management-console (9.0.43-3) unstable; urgency=medium
+
+  * Bug #42174: Add line break to HTTPS warning
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 10:10:33 +0100
+
 univention-management-console (9.0.43-2) unstable; urgency=medium
 
   * Bug #43528: login dialog styling
