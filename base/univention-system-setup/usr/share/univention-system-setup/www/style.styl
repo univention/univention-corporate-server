@@ -32,6 +32,19 @@ $text-color ?= #282828
 $header-color ?= #787878
 
 .umc
+	min-height: 100%
+
+	/* standby animation */
+	#content
+		opacity: 1
+		transition: opacity 0.75s
+
+	&.standby
+		background: no-repeat center url('/univention/js/dijit/themes/umc/images/standbyAnimation.svg')
+
+		#content
+			opacity: 0
+
 	/* styling of headers and page */
 	.umcHeader,
 	.umcHeader .umcHeaderLeft
@@ -48,7 +61,7 @@ $header-color ?= #787878
 				margin-left: 5px
 
 	.umcPage
-		margin-top: 75px
+		margin-top: 65px
 
 		.umcPageNav .umcPageHeader
 			position: absolute
@@ -59,6 +72,12 @@ $header-color ?= #787878
 				font-weight: normal
 				width: 600px
 
+	.umcCard
+		/* the content is displayed as a Google Material Card in an external browser */
+		max-width: 970px
+
+		.dijitDefaultButton .dijitButtonText
+			color: $ucs-green
 
 	/* stylings of live citz search */
 	.umc-ucssetup-wizard-livesearch
@@ -174,7 +193,16 @@ $header-color ?= #787878
 				cursor: pointer
 
 
-	//.umc-setup-page-role .umcLabelPane,
+	.umc-setup-page-role,
+	.umc-setup-page-role-nonmaster-ad
+		.umcLabelPane
+			padding-bottom: 0.75em
+
+			.umcLabelPaneLabelNode label
+				font-size: 14px
+				font-weight: 500
+				margin-bottom: 0.25em
+
 	//.umc-setup-page-role-nonmaster-ad .umcLabelPane,
 	//.umc-setup-page-summary .umcLabelPane
 	//	padding-bottom: 0
@@ -201,8 +229,12 @@ $header-color ?= #787878
 			.umcSize-One
 				width: 50%
 
-	.umc-setup-page-credentials-master .umcPageIcon
-		background-image: url(account.svg)
+	.umc-setup-page-credentials-master
+		.umcAccountInfoText
+			margin-top: 1em
+
+		.umcPageIcon
+			background-image: url(account.svg)
 
 	.umc-setup-page-credentials-nonmaster .umcPageIcon,
 	.umc-setup-page-credentials-ad .umcPageIcon
@@ -274,6 +306,8 @@ $header-color ?= #787878
 
 	.umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label
 		margin-top: 0
+
+	
 
 	.umc-ucssetup-wizard-indent
 		margin-left: 16px

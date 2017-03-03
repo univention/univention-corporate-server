@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/xhr",
 	"dojo/dom",
+	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/promise/all",
 	"dojox/html/styles",
@@ -44,16 +45,21 @@ define([
 	"umc/widgets/ContainerWidget",
 	"./ApplianceWizard",
 	"umc/i18n!setup"
-], function(declare, lang, array, xhr, dom, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
+], function(declare, lang, array, xhr, dom, domClass, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
 	return {
 		_container: null,
 		wizard: null,
 		moduleFlavor: 'wizard',
+		local_mode: false,
 
 		start: function(props) {
 			tools.status('username', props.username || tools.getCookies().username);
 			tools.status('password', props.password);
 			login.start().then(lang.hitch(this, '_initWizard'));
+		},
+
+		standby: function(standby) {
+			domClass.toggle(document.body, 'standby', standby);
 		},
 
 		umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
@@ -65,8 +71,11 @@ define([
 		},
 
 		_initWizard: function() {
+			this.local_mode = tools.status('username') == '__systemsetup__';
 			var _Container = declare([ContainerWidget, Standby]);
-			this._container = new _Container({}, 'content');
+			this._container = new _Container({
+				'class': this.local_mode ? '' : 'umcCard'
+			}, 'content');
 
 			// load some ucr variables
 			var deferred_ucr = tools.ucr([
@@ -88,9 +97,6 @@ define([
 				values: this.umcpCommand('setup/load')
 			}).then(lang.hitch(this, function(data) {
 				this._progressBar = new ProgressBar();
-				this._container.standbyOpacity = 1;
-				this._container.standby(true);
-
 				var values = data.values.result;
 
 				// save current values
@@ -98,8 +104,7 @@ define([
 
 				this._renderWizard(values, data.ucr);
 
-				this._container.standby(false);
-				this._container.standbyOpacity = 0.75;  // set back the opacity to 75%
+				tools.defer(lang.hitch(this, 'standby', false), 500);
 			}));
 		},
 
@@ -133,7 +138,7 @@ define([
 				moduleID: this.moduleID,
 				disabledPages: pageBlacklist,
 				disabledFields: fieldBlacklist,
-				local_mode: tools.status('username') == '__systemsetup__',
+				local_mode: this.local_mode,
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
 				partOfInstaller: partOfInstaller,
@@ -196,12 +201,12 @@ define([
 			});
 
 			// chain tasks with some time in between to allow a smooth standby animation
-			this._container.standby(true);
+			this.standby(true);
 			var self = this;
 			tools.defer(_setLocale, 200).then(function() {
 				return tools.defer(_cleanup, 200);
 			}).then(function() {
-				return tools.defer(lang.hitch(self._container, 'standby', false), 200);
+				return tools.defer(lang.hitch(self, 'standby', false), 200);
 			});
 		},
 

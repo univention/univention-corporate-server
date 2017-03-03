@@ -554,7 +554,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_preconfiguredDomain',
-					label: '<strong>' + _('Fast demo configuration') + '</strong>',
+					label: _('Fast demo configuration'),
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'},
 					visible: showPreconfiguredSetupOption,
@@ -569,7 +569,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_createDomain',
-					label: '<strong>' + creatDomainLabel + '</strong>',
+					label: creatDomainLabel,
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
@@ -581,7 +581,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_adDomain',
-					label: '<strong>' + _('Join into an existing Active Directory domain') + '</strong>',
+					label: _('Join into an existing Active Directory domain'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -592,7 +592,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_joinDomain',
-					label: '<strong>' + _('Join into an existing UCS domain') + '</strong>',
+					label: _('Join into an existing UCS domain'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -603,7 +603,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_noDomain',
-					label: '<strong>' + _('Do not use any domain') + '</strong>',
+					label: _('Do not use any domain'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -624,7 +624,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleBackup',
-					label: '<strong>' + _('Domain controller backup') + '</strong>',
+					label: _('Domain controller backup'),
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
@@ -636,7 +636,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleSlave',
-					label: '<strong>' + _('Domain controller slave') + '</strong>',
+					label: _('Domain controller slave'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -647,7 +647,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleMember',
-					label: '<strong>' + _('Member server') + '</strong>',
+					label: _('Member server'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -683,7 +683,7 @@ define([
 				}, {
 					type: Text,
 					name: '_user_account',
-					style: 'margin-top: 2em;',
+					'class': 'umcAccountInfoText',
 					content: _('Fill in the password for the system administrator user <b>root</b> and the domain administrative user account <b>Administrator</b>.')
 				}, {
 					type: PasswordInputBox,
@@ -1245,7 +1245,8 @@ define([
 						return _('Installation of one additional software component.', nItems);
 					}
 					return _('Installation of %d additional software components.', nItems);
-				}
+				},
+				standby: function() {}
 			});
 			this._addWidgetToPage('software', this._gallery);
 			this._gallery.on('filterDone', lang.hitch(this, function() {

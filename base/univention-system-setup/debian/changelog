@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-18) unstable; urgency=medium
+
+  * Bug #42172: Adjust styling of wizard and elements
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 03 Mar 2017 13:20:19 +0100
+
 univention-system-setup (10.0.7-17) unstable; urgency=medium
 
   * Bug #42172: use umc/tools for isFQDN()/isIP*Address()
