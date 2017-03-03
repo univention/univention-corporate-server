@@ -590,8 +590,9 @@ define([
 				disabled: this.disabled,
 				visible: !this.disabled,
 				iconClass: 'multiInputTrashCanIcon',
+				showLabel: false,
 				onClick: lang.hitch(this, '_removeElement', irow),
-				'class': 'umcFlatButton umcMultiInputRemoveButton'
+				'class': 'umcIconButton umcMultiInputRemoveButton'
 			});
 			rowContainer.addChild(button);
 

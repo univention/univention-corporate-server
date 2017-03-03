@@ -38,35 +38,36 @@
 
 	/* add a padding to the last element of a row */
 	.umcMultiInputContainer .umcMultiInputLastRowEntry
-		padding-right: 60px
+		padding-right: 45px
 
 	.umcMultiInputRemoveButton
 		/* move the removal button over the last element of the row */
-		margin: -6px 0 0 -50px
-		width: 40px
-		height: 40px
+		margin: 0 0 0 -35px
+		box-shadow: none
 
 		.dijitButtonNode
-			width: 100%
-			height: 100%
+			height: 32px
+			background-color: transparent
 
 			.dijitButtonContents
-				width: 100%
-				height: 100%
+				line-height: @height
 
 				.multiInputTrashCanIcon
 					background-image: url('../images/multiInputTrashCan.svg')
 					background-size: 100% 100%
-					width: 24px
-					height: 24px
-					margin: 8px
+					width: 16px
+					height: 16px
+					margin: 0 8px
+					transition: opacity 0.2s
+					opacity: 0.5
+					^[-3].dijitButtonHover ^[-3..-1]
+						opacity: 0.7
+					^[-3].dijitButtonActive ^[-3..-1]
+						opacity: 0.8
 
 	/* Buttons were cut off a little to the left - this fixes it*/
 	.umcMultiInputAddButton
 		margin: -8px 0 0 8px
-
-		.dijitButtonText
-			padding: 0
 
 .umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput
 	margin-bottom: 0
