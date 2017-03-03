@@ -606,6 +606,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
+					During <package>univention-system-setup</package>, the certificate for the initially configured <literal>undefined-hostname.unassigned-domain</literal> is not recreated (<u:bug>43626</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
