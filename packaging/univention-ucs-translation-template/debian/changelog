@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.0-5) unstable; urgency=medium
+
+  * Bug #43594: fix problems with mime type detection for JavaScript files
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 04 Mar 2017 18:04:01 +0100
+
 univention-ucs-translation-template (4.2.0-4) unstable; urgency=medium
 
   * Bug #43594: make sure to install mo/json files to debian/<packageName>

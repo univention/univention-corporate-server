@@ -194,6 +194,13 @@ class SpecialCase():
 
 class MIMEChecker():
 
+	suffixes = {
+		'.js': 'application/javascript',
+		'.py': 'text/x-python',
+		'.html': 'text/html',
+		'.sh': 'text/x-shellscript',
+	}
+
 	def __init__(self):
 		self._ms = magic.open(magic.MIME_TYPE)
 		self._ms.load()
@@ -205,6 +212,9 @@ class MIMEChecker():
 		self._ms.close()
 
 	def get(self, file_path):
+		_path, suffix = os.path.splitext(file_path)
+		if suffix in self.suffixes:
+			return self.suffixes[suffix]
 		with open(file_path, 'rb') as fd:
 			mime = self._ms.buffer(fd.read(4096))
 		if 'text/plain' in mime:
