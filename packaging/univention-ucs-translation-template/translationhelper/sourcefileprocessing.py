@@ -51,6 +51,15 @@ class SourceFileSet(object):
 		if not os.path.isfile(new_po_path):
 			message_catalogs.create_empty_po(self.binary_pkg_name, new_po_path)
 
+	def _compile(self, po_path, output_path):
+		pass
+
+	def process_target(self, po_path, output_path):
+		if os.path.isabs(output_path):
+			output_path = os.path.relpath(output_path, '/')
+		output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, output_path)
+		self._compile(po_path, output_path)
+
 
 class SourceFilesXgettext(SourceFileSet):
 
@@ -58,10 +67,7 @@ class SourceFilesXgettext(SourceFileSet):
 		super(SourceFilesXgettext, self).process_po(new_po_path)
 		message_catalogs.join_existing(gettext_lang, new_po_path, self.files, cwd=self.src_pkg_path)
 
-	def process_target(self, po_path, mo_output_path):
-		if os.path.isabs(mo_output_path):
-			mo_output_path = os.path.relpath(mo_output_path, '/')
-		mo_output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, mo_output_path)
+	def _compile(self, po_path, mo_output_path):
 		message_catalogs.compile_mo(po_path, mo_output_path)
 
 
@@ -82,7 +88,7 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 	def process_po(self, new_po_path):
 		super(SourceFilesJavaScript, self).process_po('JavaScript', new_po_path)
 
-	def process_target(self, po_path, json_output_path):
+	def _compile(self, po_path, json_output_path):
 		"""With UMC and univention-web based applications a custom, JSON-based
 		message format is used."""
 		message_catalogs.po_to_json(po_path, json_output_path)
@@ -108,7 +114,7 @@ class SourceFilesHTML(SourceFileSet):
 					message_catalogs.join_existing('JavaScript', new_po_path, html_path, cwd=self.src_pkg_path)
 		new_po.save(new_po_path)
 
-	def process_target(self, po_path, json_output_path):
+	def _compile(self, po_path, json_output_path):
 		message_catalogs.po_to_json(po_path, json_output_path)
 
 
