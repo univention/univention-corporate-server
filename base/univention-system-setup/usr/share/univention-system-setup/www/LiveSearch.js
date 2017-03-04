@@ -40,7 +40,7 @@ define([
 	"dojox/html/styles",
 	"dijit/form/ComboBox",
 	"umc/widgets/TextBox",
-	"umc/i18n!umc/modules/setup"
+	"umc/i18n!setup"
 ], function(declare, lang, dojoEvent, domConstruct, domClass, on, keys, topic, styles, DijitComboBox, TextBox, _) {
 	return declare('umc.modules.setup.LiveSearch', [DijitComboBox, TextBox], {
 		searchAttr: 'label',

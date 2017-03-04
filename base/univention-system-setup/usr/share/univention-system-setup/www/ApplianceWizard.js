@@ -68,7 +68,7 @@ define([
 	"./LiveSearch",
 	"./VirtualKeyboardBox",
 	"umc/i18n/tools",
-	"umc/i18n!umc/modules/setup",
+	"umc/i18n!setup",
 	"dojo/NodeList-manipulate"
 ], function(dojo, declare, lang, array, dojoEvent, domClass, domConstruct, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 

@@ -41,7 +41,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/TextBox",
-	"umc/i18n!umc/modules/setup"
+	"umc/i18n!setup"
 ], function(declare, lang, array, query, touch, domClass, put, TooltipDialog, popup, Container, Button, TextBox, _) {
 	return declare("umc.modules.setup.VirtualKeyboardBox", [ TextBox ], {
 
