@@ -2,6 +2,6 @@
 66univention-self-service.uinst usr/lib/univention-uninstall
 univention-self-service usr/lib/univention-server/server_password_change.d/
 univention-self-service-modules usr/sbin/
-www/* var/www/univention/self-service
+www/ usr/share/univention-self-service/
 hook/*js usr/share/univention-web/js/umc/hooks
-icons/*.png var/www/univention/self-service/icons
+icons/*.png usr/share/univention-self-service/www/icons

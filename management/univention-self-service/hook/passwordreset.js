@@ -34,7 +34,7 @@ define([
 	'login/dialog',
 	'umc/menu',
 	'umc/tools',
-	'umc/i18n!'
+	'umc/i18n!umc/hooks/passwordreset'
 ], function(topic, dom, entities, dialog, menu, tools, _) {
 	function isSelfServiceURL() {
 		return window.location.pathname.indexOf('/univention/self-service/') === 0;
