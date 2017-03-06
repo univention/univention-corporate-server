@@ -454,8 +454,7 @@ static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, Cac
 
 	rv = dntree_get_id4dn(*id2dn_cursor_pp, dn, &dnid, true);
 	if (rv != MDB_SUCCESS) {
-		signals_unblock();
-		return rv;
+		goto out;
 	}
 
 	key.mv_data = &dnid;
@@ -466,13 +465,14 @@ static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, Cac
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: storing entry in database failed: %s", dn);
 		cache_error_message(rv, "cache_update_entry: mdb_put");
-		signals_unblock();
-		return rv;
+		goto out;
 	}
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %zu bytes for %s", data.mv_size, dn);
 
+out:
 	signals_unblock();
 
+	free(data.mv_data);
 	return rv;
 }
 
