@@ -103,7 +103,7 @@ umcConfig = mixin({
 }, _customUmcConfig);
 
 // prepare all needed dependencies and evaluate umcConfig settings
-var _deps = ["dojo/parser", "login"];
+var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/meta.json"];
 if (umcConfig.loadHooks) {
 	_deps.push("umc/hooks");
 }
@@ -140,7 +140,8 @@ dojoConfig = mixin({
 	}],
 	map: {},
 	deps: _deps,
-	callback: function(parser) {
+	callback: function(parser, login, tools, meta) {
+		mixin(tools._status, meta.ucr);
 		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
 		parser.parse();
 		umcConfig.callback.apply(umcConfig, customDeps);

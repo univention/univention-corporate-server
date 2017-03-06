@@ -122,6 +122,9 @@ define([
 			label: _('Login'),
 			onClick: function() { login.start(); }
 		});
+		if (tools.status('loggedIn')) {
+			loginEntry.hide();
+		}
 
 		// the logout button
 		var logoutEntry = menu.addEntry({
@@ -129,7 +132,9 @@ define([
 			label: _('Logout'),
 			onClick: function() { login.logout(); }
 		});
-		menu.hideEntry(logoutEntry);
+		if (!tools.status('loggedIn')) {
+			menu.hideEntry(logoutEntry);
+		}
 
 		topic.subscribe('/umc/authenticated', function() {
 			menu.showEntry(logoutEntry);

@@ -1,3 +1,9 @@
+univention-web (1.0.29-25) unstable; urgency=medium
+
+  * Bug #42263: include meta data by default + check login status in hook
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Mar 2017 18:31:42 +0100
+
 univention-web (1.0.29-24) unstable; urgency=medium
 
   * Bug #43528: Adjust transition for background color of gallery items
