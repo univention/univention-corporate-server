@@ -80,7 +80,7 @@ void hex_dump(int level, void *data, u_int32_t start, u_int32_t size) {
 }
 
 /* assumption: enough memory as been allocated for us */
-static int append_buffer(void **data, u_int32_t *size, u_int32_t *pos, void *blob_data, u_int32_t blob_size) {
+static int append_buffer(void **data, u_int32_t *pos, void *blob_data, u_int32_t blob_size) {
 	if (blob_size > 0) {
 		memcpy((void *)(((char *)*data) + *pos), blob_data, blob_size);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "position was=%d is=%d", *pos, *pos + blob_size);
@@ -109,9 +109,9 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t 
 	h.key_size = key_size;
 	h.data_size = data_size;
 
-	append_buffer(data, size, pos, (void *)&h, sizeof(struct cache_entry_header));
-	append_buffer(data, size, pos, key_data, key_size);
-	append_buffer(data, size, pos, data_data, data_size);
+	append_buffer(data, pos, (void *)&h, sizeof(struct cache_entry_header));
+	append_buffer(data, pos, key_data, key_size);
+	append_buffer(data, pos, data_data, data_size);
 
 	return 0;
 }
