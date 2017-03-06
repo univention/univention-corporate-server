@@ -1,3 +1,9 @@
+univention-self-service (2.0.5-5) unstable; urgency=medium
+
+  * Bug #42132: fix dependency
+
+ -- Florian Best <best@univention.de>  Mon, 06 Mar 2017 15:02:11 +0100
+
 univention-self-service (2.0.5-4) unstable; urgency=medium
 
   * Bug #42267: Fix l10n integration
