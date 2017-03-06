@@ -395,10 +395,25 @@ int cache_get_master_entry(CacheMasterEntry *master_entry) {
 	return MDB_SUCCESS;
 }
 
+size_t mdb_env_get_mapsize(MDB_env *env)
+{
+	int rv;
+	MDB_envinfo info;
+
+	rv = mdb_env_info(env, &info);
+	if (rv != MDB_SUCCESS) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "mdb_env_get_mapsize: mdb_env_info failed: %s", mdb_strerror(rv));
+		return rv;
+	}
+	return info.me_mapsize;
+}
+
+
 int cache_update_master_entry(CacheMasterEntry *master_entry) {
 	int rv;
 	MDB_txn *write_txn;
 	MDB_val key, data;
+	size_t mapsize, new_mapsize;
 
 	memset(&key, 0, sizeof(MDB_val));
 	memset(&data, 0, sizeof(MDB_val));
@@ -415,6 +430,27 @@ int cache_update_master_entry(CacheMasterEntry *master_entry) {
 		return rv;
 	}
 	rv = mdb_put(write_txn, id2entry, &key, &data, 0);
+	if (rv == MDB_MAP_FULL) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "cache_update_master_entry: database full, resizing");
+		mdb_txn_abort(write_txn);
+		mapsize = mdb_env_get_mapsize(env);
+		new_mapsize = mapsize << 1;
+		if (new_mapsize < mapsize) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_master_entry: database resizing failed: would overflow");
+			return rv;
+		}
+		rv = mdb_env_set_mapsize(env, new_mapsize);
+		if (rv != MDB_SUCCESS) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_master_entry: database resizing failed");
+			return rv;
+		}
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_master_entry: Transaction begin");
+		if ((rv = mdb_txn_begin(env, NULL, 0, &write_txn)) != MDB_SUCCESS) {
+			cache_error_message(rv, "cache_update_master_entry: mdb_txn_begin");
+			return rv;
+		}
+		rv = mdb_put(write_txn, id2entry, &key, &data, 0);
+	}
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_master_entry: storing master entry in database failed");
 		cache_error_message(rv, "cache_update_master_entry: mdb_put");
@@ -454,8 +490,7 @@ static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, Cac
 
 	rv = dntree_get_id4dn(*id2dn_cursor_pp, dn, &dnid, true);
 	if (rv != MDB_SUCCESS) {
-		signals_unblock();
-		return rv;
+		goto out;
 	}
 
 	key.mv_data = &dnid;
@@ -466,13 +501,14 @@ static inline int cache_update_entry_in_transaction(NotifierID id, char *dn, Cac
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: storing entry in database failed: %s", dn);
 		cache_error_message(rv, "cache_update_entry: mdb_put");
-		signals_unblock();
-		return rv;
+		goto out;
 	}
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %zu bytes for %s", data.mv_size, dn);
 
+out:
 	signals_unblock();
 
+	free(data.mv_data);
 	return rv;
 }
 
@@ -480,6 +516,7 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry) {
 	int rv;
 	MDB_txn *write_txn;
 	MDB_cursor *id2dn_write_cursor_p;
+	size_t mapsize, new_mapsize;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction begin");
 	rv = mdb_txn_begin(env, NULL, 0, &write_txn);
@@ -495,6 +532,28 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry) {
 	}
 
 	rv = cache_update_entry_in_transaction(id, dn, entry, &id2dn_write_cursor_p);
+	if (rv == MDB_MAP_FULL) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "cache_update_entry: database full, resizing");
+		mdb_txn_abort(write_txn);
+		mapsize = mdb_env_get_mapsize(env);
+		new_mapsize = mapsize << 1;
+		if (new_mapsize < mapsize) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: database resizing failed: would overflow");
+			return rv;
+		}
+		rv = mdb_env_set_mapsize(env, new_mapsize);
+		if (rv != MDB_SUCCESS) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_update_entry: database resizing failed");
+			return rv;
+		}
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_update_entry: Transaction begin");
+		rv = mdb_txn_begin(env, NULL, 0, &write_txn);
+		if (rv != MDB_SUCCESS) {
+			cache_error_message(rv, "cache_update_entry: mdb_txn_begin");
+			return rv;
+		}
+		rv = cache_update_entry_in_transaction(id, dn, entry, &id2dn_write_cursor_p);
+	}
 
 	mdb_cursor_close(id2dn_write_cursor_p);
 

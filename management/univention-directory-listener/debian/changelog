@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-17) unstable; urgency=medium
+
+  * Bug #23367 Feedback from QA: Fix memory leak
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Mar 2017 14:22:14 +0100
+
 univention-directory-listener (11.0.1-16) unstable; urgency=medium
 
   * Bug #23367: Fix ownership of bdb cache.lock before conversion
