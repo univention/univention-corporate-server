@@ -347,6 +347,10 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid) {
 		}
 	}
 
+	if (rv == MDB_SUCCESS) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "%s: deleted id=%lu", __func__, dnid);
+	}
+
 	return rv;
 }
 
@@ -406,6 +410,7 @@ int dntree_get_id4dn(MDB_cursor *id2dn_cursor_p, char *dn, DNID *dnid, bool crea
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: failed for %s: %s (%d)", __func__, dn, mdb_strerror(rv), rv);
 			abort();
 		}
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "%s: stored id=%lu", __func__, id);
 
 	} else {
 		rv = dntree_lookup_id4ldapdn(id2dn_cursor_p, ldapdn, dnid, NULL);
