@@ -1,8 +1,5 @@
 {
 	"loginat": {
-		"en": "Anmelden an %s"
-	},
-	"serverwelcome": {
-		"de": "Melden Sie sich mit ihrem Domänen-Konto an."
+		"en": "Anmelden auf %s"
 	}
 }

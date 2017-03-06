@@ -1,3 +1,9 @@
+univention-saml (4.0.7-1) unstable; urgency=medium
+
+  * Bug #42174: adjust login dialog
+
+ -- Florian Best <best@univention.de>  Mon, 06 Mar 2017 19:25:14 +0100
+
 univention-saml (4.0.6-4) unstable; urgency=medium
 
   * Bug #43708: enable required cgi module in postinst

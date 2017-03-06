@@ -1,8 +1,5 @@
 {
 	"loginat": {
 		"en": "Login at %s"
-	},
-	"serverwelcome": {
-		"en": "Login with your domain account."
 	}
 }
