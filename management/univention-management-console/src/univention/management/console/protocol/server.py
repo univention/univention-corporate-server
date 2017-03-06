@@ -53,7 +53,7 @@ from .definitions import RECV_BUFFER_SIZE
 
 from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
-from ..config import ucr, SERVER_MAX_CONNECTIONS
+from ..config import ucr, SERVER_MAX_CONNECTIONS, SERVER_CONNECTION_TIMEOUT
 
 _ = Translation('univention.management.console').translate
 
@@ -62,8 +62,8 @@ class MagicBucket(object):
 
 	'''Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
-	accepted. After the user has authenticated the commands are passed
-	on to the SessionHandler.'''
+	accepted. All commands are passed to the SessionHandler. After the user
+	has authenticated the commands are passed on to the Processor.'''
 
 	def __init__(self):
 		self.__states = {}
@@ -72,7 +72,7 @@ class MagicBucket(object):
 		self.exit()
 
 	def new(self, client, socket):
-		"""Is called by the Server object to annouce a new incoming
+		"""Is called by the Server object to announce a new incoming
 		connection.
 
 		:param str client: IP address + port
@@ -83,6 +83,19 @@ class MagicBucket(object):
 		state.session.signal_connect('success', notifier.Callback(self._response, state))
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
+		self._timeout_connection(state)
+
+	def _timeout_connection(self, state):
+		"""Closes the connection after a specified timeout"""
+		state.time_remaining -= 1
+
+		if state.time_remaining <= 0 and not state.requests:
+			CORE.process('Connection timed out.')
+			self._cleanup(state.socket)
+		else:
+			# count down the timer second-wise (in order to avoid problems when
+			# changing the system time, e.g. via rdate)
+			notifier.timer_add(1000, lambda: self._timeout_connection(state))
 
 	def exit(self):
 		'''Closes all open connections.'''
@@ -123,6 +136,8 @@ class MagicBucket(object):
 		except KeyError:
 			return False
 		state.buffer += data
+
+		state.reset_connection_timeout()
 
 		try:
 			while state.buffer:
@@ -394,3 +409,7 @@ class State(object):
 		self.requests = {}
 		self.resend_queue = []
 		self.session = SessionHandler()
+		self.reset_connection_timeout()
+
+	def reset_connection_timeout(self):
+		self.time_remaining = SERVER_CONNECTION_TIMEOUT

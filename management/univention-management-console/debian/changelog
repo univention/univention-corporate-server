@@ -1,3 +1,10 @@
+univention-management-console (9.0.47-1) unstable; urgency=medium
+
+  * Bug #42174: move session timeout into UMC-Server by letting the connection
+  	timeout instead of the session
+
+ -- Florian Best <best@univention.de>  Mon, 06 Mar 2017 18:25:03 +0100
+
 univention-management-console (9.0.46-1) unstable; urgency=medium
 
   * Bug #42174: cache the session/password for 8 hours in the UMC-Webserver to

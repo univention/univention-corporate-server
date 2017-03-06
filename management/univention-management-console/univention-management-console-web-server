@@ -61,7 +61,7 @@ from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunn
 import univention.debug as ud
 from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
 from univention.management.console.log import CORE, log_init, log_reopen
-from univention.management.console.config import ucr
+from univention.management.console.config import ucr, get_int
 
 from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
@@ -73,11 +73,7 @@ from saml2.sigver import MissingKey, SignatureError
 from univention.lib.i18n import NullTranslation
 _ = NullTranslation('univention-management-console-frontend').translate
 
-try:
-	_session_timeout = int(ucr.get('umc/http/session/timeout', 300))
-except (TypeError, ValueError):
-	CORE.process('Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds')
-	_session_timeout = 300
+_session_timeout = get_int('umc/http/session/timeout', 300)
 
 
 def sessionidhash():
@@ -124,7 +120,7 @@ cherrypy.tools.fix_uri = cherrypy.Tool('before_request_body', _proxy_uri, priori
 
 class SessionClient(object):
 
-	def __init__(self, timeout=300, ip=None):
+	def __init__(self, ip=None):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.client = Client()
 		self.client.signal_connect('authenticated', self._authenticated)
@@ -139,43 +135,8 @@ class SessionClient(object):
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
-		self._timeout = timeout
-		self._time_remaining = timeout
-		self._timer()  # launch the timer
 		self._lock = threading.Lock()
 		self.ip = ip
-
-	def renew_timer(self):
-		"""Refresh the remaining time the session is will be held open."""
-		self._time_remaining = self._timeout
-
-	def _timer(self):
-		"""In order to avoid problems when the system time is changed (e.g.,
-		via rdate), we register a timer event that counts down the session
-		timeout second-wise."""
-		# count down the remaining time
-		self._time_remaining -= 1
-
-		if self._time_remaining <= 0:
-			# session has timed out
-			self._timed_out()
-		else:
-			# count down the timer second-wise (in order to avoid problems when
-			# changing the system time, e.g. via rdate)
-			notifier.timer_add(1000, self._timer)
-
-	def _timed_out(self):
-		"""Timer event: the session has expired and therefor the
-		connection to the UMC server is closed as long as there are no
-		open requests."""
-		CORE.info('SessionClient(0x%x): timed out!' % (id(self),))
-		if self._requestid2response_queue:
-			CORE.info('SessionClient(0x%x): There are open requests (%s). Postpone session shutdown' % (id(self), ','.join(self._requestid2response_queue.keys())))
-			self._timeout = 0  # wait until all requests are answered
-		else:
-			CORE.info('SessionClient(0x%x): Closing connection to UMC server' % (id(self),))
-			self.client.disconnect()
-		return False
 
 	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
@@ -209,10 +170,6 @@ class SessionClient(object):
 		finally:
 			self._lock.release()
 
-		# shutdown connection when the session is expired and there are no open requests
-		if self._timeout == 0 and not self._requestid2response_queue:
-			self.client.disconnect()
-
 	def send_request(self, request, response_queue):
 		"""Send request to UMC server."""
 		CORE.info('SessionClient(0x%x): sending request(%s)' % (id(self), request.id))
@@ -227,7 +184,6 @@ class SessionClient(object):
 			CORE.error(traceback.format_exc())
 			self.client.disconnect()
 			return
-		self.renew_timer()
 
 	def _closed(self):
 		message = '\n'.join((
@@ -290,8 +246,7 @@ class UMCP_Dispatcher(object):
 		client = cls.sessions.get(queuerequest.sessionid)
 		if client is None:
 			try:
-				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-				client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
+				client = SessionClient(ip=queuerequest.ip)
 			except NoSocketError as exc:
 				CORE.process('Failed to create UMC connection: %s' % (exc,))
 				response = Response(queuerequest.request)
@@ -379,25 +334,24 @@ class QueueRequest(object):
 	:param timeout: int
 	"""
 
-	def __init__(self, sessionid, request, response_queue, ip, timeout):
+	def __init__(self, sessionid, request, response_queue, ip):
 		self.sessionid = sessionid
 		self.request = request
 		self.response_queue = response_queue
 		self.ip = ip
-		self.timeout = timeout
 
 
 class User(object):
 
-	def __init__(self, sessionid, username, password, saml=None, session_created=None):
+	def __init__(self, sessionid, username, password, saml=None):
 		self.sessionid = sessionid
 		self.username = username
 		self.password = password
 		self.saml = saml
-		self.session_created = session_created
+		self.reset_timeout()
 
-	def get_client(self):
-		return UMCP_Dispatcher.sessions.get(self.sessionid)
+	def reset_timeout(self):
+		self._time_remaining = self.session_validity
 
 	@property
 	def session_validity(self):
@@ -410,9 +364,7 @@ class User(object):
 		remaining = []
 		if self.saml is not None:
 			remaining.append(self.saml.time_remaining)
-		client = self.get_client()
-		if client is not None:
-			remaining.append(client._time_remaining)
+		remaining.append(self._time_remaining)
 		try:
 			return min(remaining)
 		except ValueError:  # no SAML, no client
@@ -649,13 +601,6 @@ class Ressource(object):
 		if user and user.saml is not None and user.time_remaining < 1:
 			raise UMC_HTTPError(UNAUTHORIZED)
 
-	@property
-	def session_validity(self):
-		user = self.get_user()
-		if user:
-			return user.session_validity
-		return _session_timeout
-
 	def set_cookies(self, *cookies, **kwargs):
 		# TODO: use expiration from session timeout?
 		# set the cookie once during successful authentication
@@ -679,7 +624,8 @@ class Ressource(object):
 	def set_session(self, sessionid, username, password=None, saml=None):
 		olduser = self.get_user()
 
-		user = User(sessionid, username, password, saml or olduser and olduser.saml, time.time())
+		user = User(sessionid, username, password, saml or olduser and olduser.saml)
+		self._session_timeout_timer(user)
 
 		self.sessions[sessionid] = user
 		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
@@ -692,14 +638,32 @@ class Ressource(object):
 			UMCP_Dispatcher.cleanup_session(sessionid)
 			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
 
-	def get_user(self, force=False):
+	def get_user(self):
 		value = self.get_session_id()
 		if not value or value not in self.sessions:
 			return
 		user = self.sessions[value]
-		if not force and user.time_remaining <= 0:
+		if user.time_remaining <= 0:
 			return
 		return user
+
+	def _session_timeout_timer(self, user):
+		"""In order to avoid problems when the system time is changed (e.g.,
+		via rdate), we register a timer event that counts down the session
+		timeout second-wise."""
+
+		# count down the remaining time
+		user._time_remaining -= 1
+
+		session = UMCP_Dispatcher.sessions.get(user.sessionid)
+		if user._time_remaining <= 0 and (not session or not session._requestid2response_queue):
+			self._log('info', 'session timed out')
+			self.sessions.pop(user.sessionid)
+			return
+
+		# count down the timer second-wise (in order to avoid problems when
+		# changing the system time, e.g. via rdate)
+		notifier.timer_add(1000, lambda: self._session_timeout_timer(user))
 
 
 class CPgeneric(Ressource):
@@ -778,18 +742,22 @@ class CPgeneric(Ressource):
 		self.set_accept_language(request)
 
 		response_queue = Queue.Queue()
-		user = self.get_user(True)
-		if user and user.password and not UMCP_Dispatcher.sessions.get(sessionid) and user.session_created < time.time() + 28800:
+		user = self.get_user()
+
+		if user and user.password and not UMCP_Dispatcher.sessions.get(sessionid):
 			auth = Request('AUTH')
 			auth.body = {'username': user.username, 'password': user.password}
 			auth_response = Queue.Queue()
 			self._log(99, 'reauthenticating')
-			UMCP_Dispatcher._queue_send.put(QueueRequest(sessionid, auth, auth_response, get_ip_address(), self.session_validity))
+			UMCP_Dispatcher._queue_send.put(QueueRequest(sessionid, auth, auth_response, get_ip_address()))
 			if 200 <= auth_response.get().status < 300:
 				self.set_session(sessionid, user.username, password=user.password)
 				self._log(99, 'successfull reauthentication')
-		queue_request = QueueRequest(sessionid, request, response_queue, get_ip_address(), self.session_validity)
+
+		queue_request = QueueRequest(sessionid, request, response_queue, get_ip_address())
 		UMCP_Dispatcher._queue_send.put(queue_request)
+		if user:
+			user.reset_timeout()
 
 		self._log(99, 'queue(0x%x): sessionid=%r' % (id(response_queue), sessionid,))
 		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response' % (id(queue_request), id(response_queue)))
@@ -917,7 +885,7 @@ class CPCommand(CPgeneric):
 		body = {}
 
 		# check if enough free space is available
-		min_size = int(ucr.get('umc/server/upload/min_free_space', 51200))  # kilobyte
+		min_size = get_int('umc/server/upload/min_free_space', 51200)  # kilobyte
 		s = os.statvfs(TEMPUPLOADDIR)
 		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
 		if free_disk_space < min_size:
@@ -948,7 +916,7 @@ class CPCommand(CPgeneric):
 	def _sanitize_file(self, tmpfile, store):
 		# check if filesize is allowed
 		st = os.stat(tmpfile)
-		max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
+		max_size = get_int('umc/server/upload/max', 64) * 1024
 		if st.st_size > max_size:
 			self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
 			raise UMC_HTTPError(BAD_REQUEST, 'The size of the uploaded file is too large')
@@ -1375,12 +1343,12 @@ def run_cherrypy(options):
 	cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
 	cherrypy.config.update({
 		'log.screen': not options.daemon_mode,
-		'server.socket_port': int(ucr.get('umc/http/port', 8090)),
+		'server.socket_port': get_int('umc/http/port', 8090),
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
-		'server.request_queue_size': int(ucr.get('umc/http/requestqueuesize', 100)),
-		'server.thread_pool': int(ucr.get('umc/http/maxthreads', 35)),
-		'server.max_request_body_size': int(ucr.get('umc/http/max_request_body_size', 104857600)),
-		'response.timeout': _session_timeout,
+		'server.request_queue_size': get_int('umc/http/requestqueuesize', 100),
+		'server.thread_pool': get_int('umc/http/maxthreads', 35),
+		'server.max_request_body_size': get_int('umc/http/max_request_body_size', 104857600),
+		'response.timeout': get_int('umc/http/response-timeout', 310),
 		'engine.autoreload.on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [

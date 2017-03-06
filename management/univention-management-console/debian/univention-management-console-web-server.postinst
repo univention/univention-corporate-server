@@ -42,12 +42,14 @@ a2enmod headers
 a2ensite univention
 invoke-rc.d apache2 restart
 
-# UCR settings
-# remove old variables
-univention-config-registry unset umc/web/timeout umc/web/language umc/web/response/timeout umc/raw/debug/level umc/raw/response/timeout umc/module/watchdog/timeout >/dev/null || true
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.47-1; then
+	univention-config-registry unset umc/http/session/timeout
+fi
 
 # provide new settings
-univention-config-registry set "umc/http/session/timeout?600" \
+univention-config-registry set
+	umc/http/session/timeout?28800 \
+	umc/http/response-timeout?310 \
 	umc/http/autostart?yes \
 	umc/http/port?8090 \
 	umc/http/interface?127.0.0.1 \
