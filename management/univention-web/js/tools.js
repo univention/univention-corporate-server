@@ -730,7 +730,7 @@ define([
 
 		parseError: function(error) {
 			var status = error.status !== undefined ? error.status : -1;
-			var statusMessage = this._statusMessages[status] || '';
+			var statusMessage = tools._statusMessages[status] || '';
 			var message = statusMessage;
 			var result = null;
 			var traceback = null;
@@ -751,7 +751,7 @@ define([
 					result = error.response.data.result || null;
 				} else {
 					// no JSON was returned, probably proxy error
-					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || '');
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : statusMessage;
 				}
 			} else if (error.data) {
 				if (error.data.xhr) {
