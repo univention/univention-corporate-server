@@ -1,3 +1,9 @@
+univention-management-console (9.0.47-2) unstable; urgency=medium
+
+  * Bug #42174: ucslint
+
+ -- Florian Best <best@univention.de>  Mon, 06 Mar 2017 18:30:33 +0100
+
 univention-management-console (9.0.47-1) unstable; urgency=medium
 
   * Bug #42174: move session timeout into UMC-Server by letting the connection
