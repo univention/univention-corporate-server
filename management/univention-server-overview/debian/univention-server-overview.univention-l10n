@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"www/.*\\.js"
+		],
+		"po_subdir": "www/",
+		"target_type": "json",
+		"destination": "usr/share/univention-server-overview/i18n/{lang}/main.json"
+	}
+]

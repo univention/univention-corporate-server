@@ -56,6 +56,27 @@ define([
 		useFqdn: true,
 
 		renderRow: function(item, options) {
+			var getHostAddress = function() {
+				if (this.useFqdn) {
+					if (item.domain) {
+						return lang.replace('{hostname}.{domain}', item);
+					} else {
+						return item.hostname;
+					}
+				}
+				else if (item.ip instanceof Array) {
+					return item.ip[0];
+				}
+				return '#';
+			};
+
+			var getVersion = function() {
+				if (item.version) {
+					return lang.replace('UCS {version}', item);
+				}
+				return '';
+			};
+
 			return domConstruct.toDom(lang.replace(
 				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-3">' +
 					'<div class="umcGalleryItem">' +
@@ -66,8 +87,8 @@ define([
 				'</div>', {
 				name: entities.encode(item.hostname),
 				description: entities.encode(getServerLabel(item)),
-				version: entities.encode(lang.replace('UCS {version}', item)),
-				url: entities.encode(this.useFqdn ? lang.replace('{hostname}.{domain}', item) : item.ip instanceof Array ? item.ip[0] : '#')
+				version: entities.encode(getVersion()),
+				url: entities.encode(getHostAddress())
 			}));
 		},
 

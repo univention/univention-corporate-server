@@ -41,9 +41,9 @@ define([
 	"dojox/html/entities",
 	"login",
 	"umc/tools",
-	"umc/json!/univention/meta.json",
+	"umc/menu",
 	"umc/i18n!server-overview"
-], function(declare, lang, array, kernel, dom, domClass, Memory, Observable, registry, entities, login, tools, meta, _) {
+], function(declare, lang, array, kernel, dom, domClass, Memory, Observable, registry, entities, login, tools, menu, _) {
 
 	return {
 		standby: function(standby) {
@@ -61,14 +61,23 @@ define([
 		},
 
 		initLabels: function() {
-			var title = entities.encode(_('%s - Server overview', meta.ucr.domainname));
+			var title = entities.encode(_('%s - Server overview', tools.status('domainname')));
 			window.document.title = title;
 
-			title = entities.encode(_('Server overview for domain %s', meta.ucr.domainname));
+			title = entities.encode(_('Server overview for domain %s', tools.status('domainname')));
 			dom.byId('title').innerHTML = title;
 
 			this.liveSearch = registry.byId('liveSearch');
 			this.liveSearch._searchTextBox.set('inlineLabel', _('Search servers'));
+
+			menu.addEntry({
+				label: _('Back to portal'),
+				priority: 0,
+				onClick: function() {
+					window.location.pathname = '/univention/';
+				}
+			});
+
 		},
 
 		initLiveSearch: function() {

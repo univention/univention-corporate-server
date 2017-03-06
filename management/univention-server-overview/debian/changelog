@@ -1,3 +1,12 @@
+univention-server-overview (0.0.1-5) unstable; urgency=medium
+
+  Bug #43595:
+  * Adjust domainname and version usage
+  * Add portal link into menu
+  * Integrate l10n
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Mar 2017 18:33:29 +0100
+
 univention-server-overview (0.0.1-4) unstable; urgency=medium
 
   * Bug #43595: fix coding style + references + entitites.encode()

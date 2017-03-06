@@ -1,0 +1,51 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-server-overview\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-06 17:29+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: www/GalleryPane.js:42
+msgid "DC master"
+msgstr "DC Master"
+
+#: www/GalleryPane.js:43
+msgid "DC backup"
+msgstr "DC Backup"
+
+#: www/GalleryPane.js:44
+msgid "DC slave"
+msgstr "DC Slave"
+
+#: www/GalleryPane.js:45
+msgid "Member server"
+msgstr "Memberserver"
+
+#: www/GalleryPane.js:52
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: www/main.js:64
+#, javascript-format
+msgid "%s - Server overview"
+msgstr "%s - Serverübersicht"
+
+#: www/main.js:67
+#, javascript-format
+msgid "Server overview for domain %s"
+msgstr "Serverübersicht für Domäne %s"
+
+#: www/main.js:71
+msgid "Search servers"
+msgstr "Serversuche"
+
+#: www/main.js:71
+msgid "Back to portal"
+msgstr "Zurück zum Portal"
