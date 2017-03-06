@@ -454,10 +454,10 @@ def setdata(key, value): pass
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term><filename>cache.db</filename>, <filename>cache.db.lock</filename></term>
+					<term><filename>cache/cache.mdb</filename>, <filename>cache/lock.mdb</filename></term>
 					<listitem>
 						<para>
-							The cache file contains a copy of all objects and their attributes.
+							Starting with UCS 4.2 the LMDB cache database contains a copy of all objects and their attributes.
 							It is used to supply the old values supplied through the <varname>old</varname> parameter, when the function <function>handle()</function> is called.
 						</para>
 						<para>
@@ -468,6 +468,22 @@ def setdata(key, value): pass
 							On domain controllers the cache could be replaced by doing a query to the local LDAP server, before the new values are written into it.
 							But &ucsMember; do not have a local LDAP server, so there the cache is needed.
 							Also note that the cache keeps track of the associated listener modules, which is not available from the LDAP.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>cache.lock</filename></term>
+					<listitem>
+						<para>
+							Starting with UCS 4.2 this file is used to detect if a listener opened the cache database.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>cache.db</filename>, <filename>cache.db.lock</filename></term>
+					<listitem>
+						<para>
+							Before UCS 4.2 the BDB cache file contained a copy of all objects and their attributes. With the update to UCS 4.2 it gets converted into an LMDB database.
 						</para>
 					</listitem>
 				</varlistentry>
