@@ -389,10 +389,12 @@ class QueueRequest(object):
 
 class User(object):
 
-	def __init__(self, sessionid, username, saml=None):
+	def __init__(self, sessionid, username, password, saml=None, session_created=None):
 		self.sessionid = sessionid
 		self.username = username
+		self.password = password
 		self.saml = saml
+		self.session_created = session_created
 
 	def get_client(self):
 		return UMCP_Dispatcher.sessions.get(self.sessionid)
@@ -674,10 +676,10 @@ class Ressource(object):
 		if morsel:
 			return morsel.value
 
-	def set_session(self, sessionid, username, saml=None):
+	def set_session(self, sessionid, username, password=None, saml=None):
 		olduser = self.get_user()
 
-		user = User(sessionid, username, saml or olduser and olduser.saml)
+		user = User(sessionid, username, password, saml or olduser and olduser.saml, time.time())
 
 		self.sessions[sessionid] = user
 		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
@@ -690,12 +692,12 @@ class Ressource(object):
 			UMCP_Dispatcher.cleanup_session(sessionid)
 			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
 
-	def get_user(self):
+	def get_user(self, force=False):
 		value = self.get_session_id()
 		if not value or value not in self.sessions:
 			return
 		user = self.sessions[value]
-		if user.time_remaining <= 0:
+		if not force and user.time_remaining <= 0:
 			return
 		return user
 
@@ -776,6 +778,16 @@ class CPgeneric(Ressource):
 		self.set_accept_language(request)
 
 		response_queue = Queue.Queue()
+		user = self.get_user(True)
+		if user and user.password and not UMCP_Dispatcher.sessions.get(sessionid) and user.session_created < time.time() + 28800:
+			auth = Request('AUTH')
+			auth.body = {'username': user.username, 'password': user.password}
+			auth_response = Queue.Queue()
+			self._log(99, 'reauthenticating')
+			UMCP_Dispatcher._queue_send.put(QueueRequest(sessionid, auth, auth_response, get_ip_address(), self.session_validity))
+			if 200 <= auth_response.get().status < 300:
+				self.set_session(sessionid, user.username, password=user.password)
+				self._log(99, 'successfull reauthentication')
 		queue_request = QueueRequest(sessionid, request, response_queue, get_ip_address(), self.session_validity)
 		UMCP_Dispatcher._queue_send.put(queue_request)
 
@@ -1022,11 +1034,12 @@ class CPAuth(CPgeneric):
 		self._log(99, 'auth: creating session with sessionid=%r' % (sessionid,))
 
 		username = req.body.get('username')
+		password = req.body.get('password')
 		body = response.body
 		if response.mimetype == 'application/json':
 			username = response.body.get('username', username)
 			body = json.dumps(response.body)
-		self.set_session(sessionid, username)
+		self.set_session(sessionid, username, password=password)
 		return body
 
 	def basic(self):
@@ -1147,7 +1160,7 @@ class SAML(Ressource):
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		self.set_session(self.create_sessionid(), saml.username, saml)
+		self.set_session(self.create_sessionid(), saml.username, saml=saml)
 		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
@@ -1163,7 +1176,7 @@ class SAML(Ressource):
 		}
 		sessionid = self.create_sessionid()
 		auth_response = cherrypy.request.app.root.auth._auth_request(req, sessionid)
-		self.set_session(sessionid, saml.username, saml)
+		self.set_session(sessionid, saml.username, saml=saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
 
