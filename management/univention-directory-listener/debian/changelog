@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-20) unstable; urgency=medium
+
+  * Bug #23367 Fix postinst error handling
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Mar 2017 16:41:54 +0100
+
 univention-directory-listener (11.0.1-19) unstable; urgency=medium
 
   * Bug #23367 Feedback from QA: Abort when critical lmdb operations fail

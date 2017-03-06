@@ -94,7 +94,7 @@ convert_to_lmdb () {
 	else
 		echo "ERROR: univention-directory-listener-convert failed" >&2
 		ls -la "$CACHE_DIR"
-		lsof "$CACHE_DIR/cache.*"
+		lsof $CACHE_DIR/cache.*
 		rm -rf "$CACHE_MDB_DIR"
 	fi
 
