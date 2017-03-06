@@ -1,3 +1,9 @@
+univention-web (1.0.29-24) unstable; urgency=medium
+
+  * Bug #43528: Adjust transition for background color of gallery items
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Mar 2017 17:09:00 +0100
+
 univention-web (1.0.29-23) unstable; urgency=medium
 
   * Bug #43528: Adjust focussing behaviour in wizard

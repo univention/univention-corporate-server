@@ -53,7 +53,7 @@
 		padding: 16px
 		background-color: #fff
 		box-sizing: content-box
-		material-shadow-common()
+		transition: $material-shadow-transition-value, background-color 0.25s
 		material-shadow(1)
 		border-radius: 2px
 
@@ -61,12 +61,14 @@
 		height: 80px
 		overflow: hidden
 
+		.umcGalleryName,
+		.umcGalleryDescription
+			transition: color 0.25s, border 0.25s
+
 		.umcGalleryName
 			font-size: $font-size-subheading
 			color: $text-color-lighter
 			font-weight: 500
-			transition-duration: inherit
-			transition-property: color, border
 			word-break: break-word
 			margin-right: 24px
 
@@ -75,8 +77,6 @@
 			color: $text-color-lightest
 			padding-top: 5px
 			min-height: 70px
-			transition-duration: inherit
-			transition-property: color
 
 
 		.umcGalleryIcon
