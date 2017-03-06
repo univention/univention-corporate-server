@@ -18,7 +18,7 @@ Depends: ${misc:Depends},
  univention-runit (>= 8.0.0-3),
  shell-univention-lib (>= 1.0.23),
  univention-ipcalc,
- univention-role-server-common (>= 12.0.0-3) | univention-container-role-server-common,
+ univention-role-server-common (>= 12.0.0-8) | univention-container-role-server-common,
 Conflicts: univention-dns,
  univention-bind-proxy (<= 6.0.0)
 Replaces: univention-dns,

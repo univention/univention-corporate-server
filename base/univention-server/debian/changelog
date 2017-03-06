@@ -1,3 +1,9 @@
+univention-server (12.0.0-8) unstable; urgency=low
+
+  * Bug #43217: Add --force-self
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Mar 2017 14:45:33 +0100
+
 univention-server (12.0.0-7) unstable; urgency=medium
 
   * Bug #43595: Add recommendation to univention-server-overview

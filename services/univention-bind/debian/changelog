@@ -1,3 +1,9 @@
+univention-bind (11.0.0-16) unstable; urgency=low
+
+  * Bug #43217: Add --force-self
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Mar 2017 14:45:33 +0100
+
 univention-bind (11.0.0-15) unstable; urgency=low
 
   * Bug #43217: Move fix script for DNS settings to univention-server

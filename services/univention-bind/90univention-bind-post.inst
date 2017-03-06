@@ -82,7 +82,7 @@ wait_for_dns () {
 univention-config-registry set dns/backend?ldap
 
 [ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
-	/usr/share/univention-server/univention-fix-ucr-dns ||
+	/usr/share/univention-server/univention-fix-ucr-dns --force-self ||
 	: # better safe than sorry
 
 if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
