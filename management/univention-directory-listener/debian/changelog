@@ -1,3 +1,10 @@
+univention-directory-listener (11.0.1-18) unstable; urgency=medium
+
+  * Bug #23367 Feedback from QA: Fix wrong log messages
+  * Use ERROR_MDB and LOG macros to avoid this in the future
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Mar 2017 14:33:38 +0100
+
 univention-directory-listener (11.0.1-17) unstable; urgency=medium
 
   * Bug #23367 Feedback from QA: Fix memory leak
