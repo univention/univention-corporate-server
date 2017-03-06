@@ -273,10 +273,13 @@ static int dntree_add_id(MDB_cursor *write_cursor_p, DNID child, LDAPDN dn, DNID
 		rv = mdb_cursor_put(write_cursor_p, &key, &data, MDB_NODUPDATA);
 		if (rv != MDB_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_put failed for child %lu: %s (%d)", __func__, id, mdb_strerror(rv), rv);
+			abort();
 		}
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_put failed for parent %lu: %s (%d)", __func__, id, mdb_strerror(rv), rv);
+		abort();
 	}
+
 	ldap_memfree(dn_str);
 	free(subdn);
 
@@ -315,6 +318,7 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid) {
 	rv = mdb_cursor_open(txn, dbi, &local_read_cursor_p);
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_open: %s (%d)", __func__, ldap_err2string(rv), rv);
+		abort();
 		return rv;
 	}
 
@@ -326,6 +330,7 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid) {
 		return -1;
 	} else if (rv != MDB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: dntree_has_children failed: %s (%d)", __func__, mdb_strerror(rv), rv);
+		abort();
 		return -1;
 	}
 	mdb_cursor_close(local_read_cursor_p);
@@ -398,7 +403,8 @@ int dntree_get_id4dn(MDB_cursor *id2dn_cursor_p, char *dn, DNID *dnid, bool crea
 	if (create == true) {
 		rv = dntree_get_id4ldapdn(id2dn_cursor_p, ldapdn, dnid);
 		if (rv != MDB_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: failed for: %s", __func__, dn);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: failed for %s: %s (%d)", __func__, dn, mdb_strerror(rv), rv);
+			abort();
 		}
 
 	} else {
@@ -429,11 +435,13 @@ int dntree_init(MDB_dbi *dbi_p, MDB_txn *cache_init_txn_p, int mdb_flags) {
 	rv = mdb_dbi_open(cache_init_txn_p, "id2dn", mdb_dbi_flags, dbi_p);
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_dbi_open: %s (%d)", __func__, mdb_strerror(rv), rv);
+		abort();
 		return rv;
 	};
 	rv = mdb_set_dupsort(cache_init_txn_p, *dbi_p, mdb_dupsort);
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_set_dupsort: %s (%d)", __func__, mdb_strerror(rv), rv);
+		abort();
 		return rv;
 	};
 
@@ -444,6 +452,7 @@ int dntree_init(MDB_dbi *dbi_p, MDB_txn *cache_init_txn_p, int mdb_flags) {
 	rv = mdb_cursor_open(cache_init_txn_p, *dbi_p, &cur);
 	if (rv != MDB_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_open: %s (%d)", __func__, mdb_strerror(rv), rv);
+		abort();
 		return rv;
 	};
 
@@ -454,6 +463,10 @@ int dntree_init(MDB_dbi *dbi_p, MDB_txn *cache_init_txn_p, int mdb_flags) {
 	data.mv_data = &(subDN){0, SUBDN_TYPE_NODE, ""};
 	// ignore exists
 	mdb_cursor_put(cur, &key, &data, MDB_NODUPDATA);
+	if (rv != MDB_KEYEXIST && rv != MDB_SUCCESS) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_put: %s (%d)", __func__, mdb_strerror(rv), rv);
+		abort();
+	}
 	// not strictly required, mdb_txn_commit does it for write txn
 	mdb_cursor_close(cur);
 
