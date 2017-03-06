@@ -129,7 +129,7 @@ class TestDomain(TestXml):
 		super(TestDomain, self).__init__()
 		self.logger = getLogger('test.domain')
 		self.iname = iname
-		self.memory = 512
+		self.memory = 1024
 		self.disks = []
 
 	def add_disk(self, disk):
