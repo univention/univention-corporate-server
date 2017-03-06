@@ -1,3 +1,9 @@
+univention-ldap (13.0.5-2) unstable; urgency=low
+
+  * Bug #36215: updated ldap/shadowbind/ignorefilter
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Mar 2017 12:01:18 +0100
+
 univention-ldap (13.0.5-1) unstable; urgency=medium
 
   * Bug #43312: remove uidNumber=0 ACL's as they are covered by the constraint
