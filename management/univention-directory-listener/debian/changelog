@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-24) unstable; urgency=medium
+
+  * Bug #23367: Remove additional log message, duplicating dntree_add_id
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Mar 2017 21:41:27 +0100
+
 univention-directory-listener (11.0.1-23) unstable; urgency=medium
 
   * Bug #23367: dereference pointer

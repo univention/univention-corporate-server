@@ -410,8 +410,6 @@ int dntree_get_id4dn(MDB_cursor *id2dn_cursor_p, char *dn, DNID *dnid, bool crea
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: failed for %s: %s (%d)", __func__, dn, mdb_strerror(rv), rv);
 			abort();
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "%s: stored id=%lu", __func__, *dnid);
-
 	} else {
 		rv = dntree_lookup_id4ldapdn(id2dn_cursor_p, ldapdn, dnid, NULL);
 		if (rv == MDB_NOTFOUND) {
