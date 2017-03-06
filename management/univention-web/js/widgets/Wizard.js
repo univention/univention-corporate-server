@@ -40,13 +40,14 @@ define([
 	"dojo/json",
 	"dojox/html/styles",
 	"dijit/layout/StackContainer",
+	"dijit/focus",
 	"../tools",
 	"./Form",
 	"./Page",
 	"./StandbyMixin",
 	"./_RegisterOnShowMixin",
 	"../i18n!"
-], function(declare, lang, array, event, domClass, geometry, aspect, when, json, styles, StackContainer, tools, Form, Page, StandbyMixin, _RegisterOnShowMixin, _) {
+], function(declare, lang, array, event, domClass, geometry, aspect, when, json, styles, StackContainer, dijitFocus, tools, Form, Page, StandbyMixin, _RegisterOnShowMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This wizard class allows to specify a list of pages which will be
@@ -310,14 +311,23 @@ define([
 
 		focusFirstWidget: function(pageName) {
 			var page = this._pages[pageName];
+			var firstWidgetOnPage = null;
 			if (page && page._form) {
 				tools.forIn(page._form._widgets, function(iname, iwidget) {
 					if (iwidget.focus && iwidget.get('visible') && !iwidget.get('disabled')) {
-						iwidget.focus();
+						firstWidgetOnPage = iwidget;
 						return false; // stop
 					}
 					return true;
 				});
+				if (firstWidgetOnPage) {
+					firstWidgetOnPage.focus();
+				}
+			}
+			if (!firstWidgetOnPage && dijitFocus.curNode) {
+				// make sure no previous button has the focus...
+				// this might re-execute an action when pressing enter/space
+				dijitFocus.curNode.blur();
 			}
 		},
 

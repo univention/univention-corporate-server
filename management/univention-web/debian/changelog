@@ -1,3 +1,9 @@
+univention-web (1.0.29-23) unstable; urgency=medium
+
+  * Bug #43528: Adjust focussing behaviour in wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Mar 2017 15:03:11 +0100
+
 univention-web (1.0.29-22) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of focused links in PortalGallery
