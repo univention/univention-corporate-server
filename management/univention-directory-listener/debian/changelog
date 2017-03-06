@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-22) unstable; urgency=medium
+
+  * Bug #23367: copy&paste fix
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Mar 2017 21:17:13 +0100
+
 univention-directory-listener (11.0.1-21) unstable; urgency=medium
 
   * Bug #23367: Add info level log messages for dntree add and delete
