@@ -123,7 +123,7 @@ define([
 			onClick: function() { login.start(); }
 		});
 		if (tools.status('loggedIn')) {
-			loginEntry.hide();
+			menu.hideEntry(loginEntry);
 		}
 
 		// the logout button

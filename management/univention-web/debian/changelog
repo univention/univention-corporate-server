@@ -1,3 +1,9 @@
+univention-web (1.0.31-4) unstable; urgency=medium
+
+  * Bug #42263: Adjust typo in hooks/default_menu_entries.js
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Mar 2017 16:08:38 +0100
+
 univention-web (1.0.31-3) unstable; urgency=medium
 
   * Bug #42263: Correct menu structure + add close button to menu
