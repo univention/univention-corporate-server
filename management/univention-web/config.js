@@ -108,7 +108,7 @@ if (umcConfig.loadHooks) {
 	_deps.push("umc/hooks");
 }
 if (umcConfig.loadMenu) {
-	_deps.push("umc/widgets/Menu");
+	_deps.push("umc/menu/Button");
 }
 _deps.push("dojo/domReady!");
 var _ndeps = _deps.length; // save current number of dependencies

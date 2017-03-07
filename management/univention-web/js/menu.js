@@ -31,9 +31,14 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/window",
+	"dojo/window",
+	"dojo/dom-class",
 	"dojo/Evented",
-	"umc/widgets/Menu"
-], function(declare, lang, Evented, Menu) {
+	"umc/tools",
+	"umc/menu/Menu",
+	"umc/menu/Button"
+], function(declare, lang, baseWin, win, domClass, Evented, tools, Menu, Button) {
 	var menu = new declare([Evented], {
 		addSubMenu: function(/*Object*/ item) {
 			return this.getMenuInstance().then(function(menu) {
@@ -58,8 +63,28 @@ define([
 			return new Menu(props);
 		},
 
+		open: function() {
+			domClass.toggle(baseWin.body(), 'mobileMenuActive');
+			var hasScrollbar = baseWin.body().scrollHeight > win.getBox().h;
+			domClass.toggle(baseWin.body(), 'hasScrollbar', hasScrollbar);
+			tools.defer(function() {
+				domClass.toggle(baseWin.body(), 'mobileMenuToggleButtonActive');
+			}, 510);
+		},
+
+		close: function() {
+			if (!domClass.contains(baseWin.body(), 'mobileMenuActive')) {
+				return;
+			}
+			domClass.remove(baseWin.body(), 'mobileMenuActive');
+			domClass.remove(baseWin.body(), 'hasScrollbar');
+			tools.defer(function() {
+				domClass.toggle(baseWin.body(), 'mobileMenuToggleButtonActive');
+			}, 510);
+		},
+
 		getButtonInstance: function() {
-			return Menu.menuButtonDeferred;
+			return Button.menuButtonDeferred;
 		},
 
 		getMenuInstance: function() {

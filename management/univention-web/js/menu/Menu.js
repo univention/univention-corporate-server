@@ -32,29 +32,28 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/window",
 	"dojo/on",
 	"dojo/Deferred",
 	"dojo/topic",
-	"dojo/mouse",
-	"dojo/touch",
 	"dojox/gesture/tap",
-	"dojo/has",
 	"dojo/dom-class",
-	"dojo/dom-construct",
-	"dojo/window",
-	"put-selector/put",
-	"umc/tools",
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
 	"dijit/MenuSeparator",
-	"dijit/_WidgetBase",
-	"dijit/_TemplatedMixin",
+	"umc/tools",
+	"umc/menu/MenuItem",
+	"umc/menu/SubMenuItem",
+	"umc/menu/_Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/i18n!",
-	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, baseWin, on, Deferred, topic, mouse, touch, tap, has, domClass, domConstruct, win, put, tools, DijitMenuItem, PopupMenuItem, MenuSeparator, _WidgetBase, _TemplatedMixin, ContainerWidget, Text, _) {
+	"umc/i18n!"
+], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
+
+	// require umc/menu here in order to avoid circular dependencies
+	var menuDeferred = new Deferred();
+	require(["umc/menu"], function(_menu) {
+		menuDeferred.resolve(_menu);
+	});
 
 	var mobileMenuDeferred = new Deferred();
 
@@ -74,164 +73,7 @@ define([
 		});
 	});
 
-	var MenuSlide = declare([ContainerWidget], {
-		isSubMenu: true,
-		label: '',
-		'class': 'menuSlide hiddenSlide',
-		buildRendering: function() {
-			this.inherited(arguments);
-			var headerClass = this.isSubMenu ? 'menuSlideHeader subMenu fullWidthTile' : 'menuSlideHeader fullWidthTile';
-			this.header = new Text({
-				content: this.label,
-				'class': headerClass
-			});
-			this.itemsContainer = new ContainerWidget({
-				'class': 'menuSlideItemsContainer'
-			});
-			this.addChild(this.header);
-			this.addChild(this.itemsContainer);
-		}
-	});
-
-	var _ShowHideMixin = declare([], {
-		hide: function() {
-			domClass.add(this.domNode, 'dijitDisplayNone');
-			this._set('visible', false);
-		},
-
-		show: function() {
-			domClass.remove(this.domNode, 'dijitDisplayNone');
-			this._set('visible', true);
-		},
-
-		_getVisibleAttr: function() {
-			return !domClass.contains(this.domNode, 'dijitDisplayNone');
-		},
-
-		_setVisibleAttr: function(visible) {
-			if (visible) {
-				this.show();
-			} else {
-				this.hide();
-			}
-		},
-
-		isSeparator: function() {
-			return domClass.contains(this.domNode, 'separator');
-		}
-	});
-
-	var MenuItem = declare([_WidgetBase, _TemplatedMixin, _ShowHideMixin], {
-		label: '',
-		priority: 0,
-		parentSlide: null,
-		onClick: null,
-
-		templateString: '' +
-			'<div data-dojo-attach-point="contentNode" class="menuItem fullWidthTile">' +
-				'${label}' +
-			'</div>',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			if (!this.onClick && !this.label) {
-				domClass.add(this.domNode, 'separator');
-			}
-			if (typeof this.onClick == 'function')  {
-				this.domNode.onclick = lang.hitch(this, 'onClick');
-			}
-		}
-	});
-
-	var SubMenuItem = declare([_WidgetBase, _TemplatedMixin, _ShowHideMixin], {
-		label: '',
-		isSubMenu: true,
-		priority: 0,
-		parentSlide: null,
-
-		templateString: '' +
-			'<div data-dojo-attach-point="contentNode" class="menuItem popupMenuItem fullWidthTile">' +
-				'${label}' +
-				'<div data-dojo-attach-point="childItemsCounterNode" class="childItemsCounter"></div>' +
-				'<div class="popupMenuItemArrow"></div>' +
-				'<div class="popupMenuItemArrowActive"></div>' +
-			'</div>',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.menuSlide = new MenuSlide({
-				id: this.id + '__slide',
-				label: this.label,
-				isSubMenu: this.isSubMenu
-			});
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this.hide();
-		},
-
-		getMenuItems: function() {
-			return this.menuSlide.itemsContainer.getChildren();
-		},
-
-		getVisibleMenuItems: function() {
-			return array.filter(this.getMenuItems(), function(item) {
-				return item.get('visible') && !item.isSeparator();
-			});
-		},
-
-		addMenuItem: function(item) {
-			// find the correct position for the entry
-			var priorities = array.map(this.getMenuItems(), function(ichild) {
-				return ichild.priority || 0;
-			});
-			var itemPriority = item.priority || 0;
-			var pos = 0;
-			for (; pos < priorities.length; ++pos) {
-				if (itemPriority > priorities[pos]) {
-					break;
-				}
-			}
-			this.menuSlide.itemsContainer.addChild(item, pos);
-			this._updateState();
-
-			// update the counter if the 
-			item.watch('visible', lang.hitch(this, '_updateState'));
-		},
-
-		_updateState: function() {
-			var count = this.getVisibleMenuItems().length;
-			this.childItemsCounterNode.innerHTML = count;
-			this.set('visible', count > 0);
-		},
-
-		open: function(subMenuItem) {
-			domClass.remove(this.menuSlide.domNode, 'hiddenSlide');
-			domClass.add(this.domNode, 'menuItemActive menuItemActiveTransition');
-			tools.defer(lang.hitch(this, function() {
-				domClass.replace(this.parentSlide.domNode, 'overlappedSlide', 'topLevelSlide');
-				domClass.add(this.menuSlide.domNode, 'visibleSlide topLevelSlide');
-			}), 10);
-		},
-
-		close: function(subMenuItem) {
-			domClass.remove(this.menuSlide.domNode, 'visibleSlide');
-			domClass.remove(this.parentSlide.domNode, 'overlappedSlide');
-			tools.defer(lang.hitch(this, function() {
-				domClass.replace(this.menuSlide.domNode, 'hiddenSlide', 'topLevelSlide');
-				domClass.add(this.parentSlide.domNode, 'topLevelSlide');
-			}), 510);
-			tools.defer(lang.hitch(this, function() {
-				domClass.remove(this.domNode, 'menuItemActive');
-				tools.defer(lang.hitch(this, function() {
-					domClass.remove(this.domNode, 'menuItemActiveTransition');
-				}), 400);
-			}), 250);
-		}
-	});
-
-	var MobileMenu = declare([ContainerWidget], {
+	var MobileMenu = declare('umc.menu.Menu', [ContainerWidget], {
 		_menuMap: null,
 		'class': 'mobileMenu',
 		menuSlides: null,
@@ -251,6 +93,7 @@ define([
 			this.inherited(arguments);
 			this._menuMap = {};
 
+			this.addButton();
 			this.addInformationHeader();
 			this.addMenuSlides();
 			this.addUserMenu();
@@ -319,6 +162,10 @@ define([
 			}));
 		},
 
+		addButton: function() {
+			this.addChild(new _Button());
+		},
+
 		_updateMobileMenuPermaHeaderForClosing: function(subMenuItem) {
 			if (!subMenuItem) {
 				return;
@@ -333,7 +180,9 @@ define([
 				'class': 'mobileMenuCloseOverlay'
 			});
 			this._mobileMenuCloseOverlay.on(tap, lang.hitch(this, function() {
-				this._mobileButton.closeMobileMenu();
+				menuDeferred.then(function(menu) {
+					menu.close();
+				});
 			}));
 			dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
 		},
@@ -535,87 +384,6 @@ define([
 		}
 	});
 
-	var menuButtonDeferred = new Deferred();
-
-	var MenuButton = declare('umc.MenuButton', [ContainerWidget], {
-		'class': 'umcMobileMenuToggleButton',
-
-		mobileToggleMouseLeave: null,
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this._mobileMenu = new MobileMenu({_mobileButton: this});
-
-			// create hamburger stripes
-			put(this.domNode, 'div + div + div + div.umcMobileMenuToggleButtonTouchStyle');
-
-			// add listeners
-			if (has('touch')) {
-				this.on(touch.press, function() {
-					domClass.add(this, 'umcMobileMenuToggleButtonTouched');
-				});
-				this.on([touch.leave, touch.release], function() {
-					tools.defer(lang.hitch(this, function() {
-						domClass.remove(this, 'umcMobileMenuToggleButtonTouched');
-					}), 300);
-				});
-			} else {
-				this.on(mouse.enter, function() {
-					domClass.add(this, 'umcMobileMenuToggleButtonHover');
-				});
-				this.mobileToggleMouseLeave = on.pausable(this.domNode, mouse.leave, function() {
-					domClass.remove(this, 'umcMobileMenuToggleButtonHover');
-				});
-			}
-			this.on(tap, lang.hitch(this, 'toggleButtonClicked'));
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			menuButtonDeferred.resolve(this);
-		},
-
-		toggleButtonClicked: function() {
-			if (this.mobileToggleMouseLeave) {
-				this.mobileToggleMouseLeave.pause();
-			}
-			tools.defer(lang.hitch(this, function() {
-				domClass.remove(this.domNode, 'umcMobileMenuToggleButtonHover');
-			}, 510)).then(lang.hitch(this, function() {
-				if (this.mobileToggleMouseLeave) {
-					this.mobileToggleMouseLeave.resume();
-				}
-			}));
-			if (domClass.contains(dojo.body(), 'mobileMenuActive')) {
-				this.closeMobileMenu();
-			} else {
-				this.openMobileMenu();
-			}
-		},
-
-		openMobileMenu: function() {
-			domClass.toggle(dojo.body(), 'mobileMenuActive');
-			var hasScrollbar = baseWin.body().scrollHeight > win.getBox().h;
-			domClass.toggle(dojo.body(), 'hasScrollbar', hasScrollbar);
-			tools.defer(function() {
-				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
-			}, 510);
-		},
-
-		closeMobileMenu: function() {
-			if (!domClass.contains(dojo.body(), 'mobileMenuActive')) {
-				return;
-			}
-			domClass.remove(dojo.body(), 'mobileMenuActive');
-			domClass.remove(dojo.body(), 'hasScrollbar');
-			tools.defer(function() {
-				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
-			}, 510);
-		}
-	});
-
-	MenuButton.menuButtonDeferred = menuButtonDeferred;
-	MenuButton.mobileMenuDeferred = mobileMenuDeferred;
-
-	return MenuButton;
+	MobileMenu.mobileMenuDeferred = mobileMenuDeferred;
+	return MobileMenu;
 });
