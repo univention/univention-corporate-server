@@ -1,9 +1,5 @@
 Type: file
 File: etc/apache2/sites-available/univention.conf
-Variables: umc/http/port
-Variables: umc/http/interface
-Variables: umc/http/session/timeout
-Variables: umc/http/response-timeout
 Variables: umc/http/content-security-policy/default-src
 Variables: umc/http/content-security-policy/script-src
 Variables: umc/http/content-security-policy/object-src
@@ -16,6 +12,12 @@ Variables: umc/http/content-security-policy/font-src
 Variables: umc/http/content-security-policy/connect-src
 Variables: umc/http/content-security-policy/form-action
 Variables: umc/http/content-security-policy/frame-ancestors
+
+Type: file
+File: etc/apache2/sites-available/univention.conf
+Variables: umc/http/port
+Variables: umc/http/interface
+Variables: umc/http/response-timeout
 
 Type: module
 Module: setup_saml_sp.py
