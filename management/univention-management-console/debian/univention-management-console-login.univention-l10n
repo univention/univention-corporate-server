@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"www/login/.*\\.js"
+		],
+		"po_subdir": "www/login",
+		"target_type": "json",
+		"destination": "usr/share/univention-management-console-login/i18n/{lang}/main.json"
+	}
+]

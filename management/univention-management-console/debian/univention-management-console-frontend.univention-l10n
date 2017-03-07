@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"www/management/.*\\.js",
+			"www/management/.*\\.html"
+		],
+		"po_subdir": "www/management",
+		"target_type": "json",
+		"destination": "usr/share/univention-management-console-frontend/i18n/{lang}/main.json"
+	}
+]
