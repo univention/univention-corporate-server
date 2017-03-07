@@ -255,6 +255,9 @@
 				<listitem><simpara>
 					A crash in the UMC-Server has been fixed which could occur during connecting to module processes under heavy load (<u:bug>43713</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					UMC modules are able to serve requests for unauthenticated client now (<u:bug>42114</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -556,6 +559,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Self Service now communicates directly with the UMC-Server instead of being proxied through a WSGI process (<u:bug>42132</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
