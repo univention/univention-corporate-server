@@ -30,32 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from vminstall.installer import Installer
-from vminstall.vmconfig import Config as VmConfig
+# TODO: Use the pycountry library here.
 
 
-class GermanMasterInstaller(Installer):
-	def __init__(self, vm_config):
-		super(GermanMasterInstaller, self).__init__(vm_config)
+def iso_639_1_to_iso_639_2(language_code):
+	if language_code == "en":
+		return "eng"
+	if language_code == "de":
+		return "deu"
 
-	def install(self):
-		self.skip_boot_device_selection()
-		self.select_language()
-		self.set_country_and_keyboard_layout()
-		self.network_setup()
-		self.account_setup()
-		self.hdd_setup()
-		self.setup_ucs_master()
+	return None
 
 
-def main():
-	vm_config = VmConfig(
-		ip='10.200.36.60',
-		language="de",
-		update_ucs_after_install=False
-	)
-	with GermanMasterInstaller(vm_config) as installer:
-		installer.install()
-
-if __name__ == '__main__':
-	main()
+def iso_639_1_to_english_name(language_code):
+	if language_code == "en":
+		return "English"
+	elif language_code == "de":
+		return "German"
