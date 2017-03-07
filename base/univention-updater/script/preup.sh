@@ -365,6 +365,23 @@ if master <= me:
 }
 check_master_version
 
+# Bug 41868, fix old computer objects, can be removed after 4.2-0
+if ! is_ucr_true update42/skip/computerobjectcheck; then
+	if [ "domaincontroller_master" = "$server_role" -a -e /etc/ldap.secret -a -e /var/univention-join/joined ]; then
+		while read dn; do
+			echo "fixing objectclass (adding shadowAccount) on: $dn" >>"$UPDATER_LOG"
+			echo "dn: $dn
+changetype: modify
+add: objectClass
+objectClass: shadowAccount" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret 2>>"$UPDATER_LOG"
+		done < <( \
+			univention-ldapsearch -LLL \
+			'(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))' dn 2>>"$UPDATER_LOG" \
+			| ldapsearch-wrapper \
+			| sed -n 's/^dn: \(.*\)/\1/p')
+	fi
+fi
+
 # Bug 43639, removed old sysklogd configs, can be removed after 4.2-0
 if [ "deinstall" = "$(dpkg --get-selections sysklogd 2>/dev/null | awk '{print $2}')" ]; then
 	dpkg -P sysklogd >>"$UPDATER_LOG" 2>&1
