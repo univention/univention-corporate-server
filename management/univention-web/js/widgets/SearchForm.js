@@ -50,6 +50,8 @@ define([
 
 		_publishPrefix: null,
 
+		hideSubmitButton: false,
+
 		_isSubmitButtonSpecified: function() {
 			return array.some(this.buttons, function(ibutton) {
 				return ibutton.name == 'submit';
@@ -107,16 +109,22 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// add specific CSS classes for placing the default submit button
-			// next to its preceding widget
 			var button = this._buttons.submit;
-			if (button && !button.showLabel) {
+			if (button) {
 				var labelPaneNode = lang.getObject('$refLabel$.domNode', false, button);
 				var node = labelPaneNode || button.domNode;
-				domClass.add(node, 'umcSearchFormSubmitButton');
-				var previousWidget = node.previousSibling;
-				if (previousWidget) {
-					domClass.add(previousWidget, 'umcSearchFormElementBeforeSubmitButton');
+
+				if (this.hideSubmitButton) {
+					// hide the submit button
+					domClass.add(node, 'dijitDisplayNone');
+				} else if (!button.showLabel) {
+					// add specific CSS classes for placing the default submit button
+					// next to its preceding widget
+					domClass.add(node, 'umcSearchFormSubmitButton');
+					var previousWidget = node.previousSibling;
+					if (previousWidget) {
+						domClass.add(previousWidget, 'umcSearchFormElementBeforeSubmitButton');
+					}
 				}
 			}
 		},
