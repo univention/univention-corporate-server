@@ -82,7 +82,7 @@ define([
 					name: 'submit',
 					showLabel: false,
 					label: _('Search'),
-					iconClass: 'umcSearchIconWhite'
+					iconClass: 'umcSearchIcon'
 				});
 			}
 
@@ -95,7 +95,7 @@ define([
 				}
 				else if (lastLayoutRow instanceof Array) {
 					// last row is an array containing multiple elements
-					lastLayoutRow.push('submit')
+					lastLayoutRow.push('submit');
 				}
 				// put the last row back into the layout
 				this.layout.push(lastLayoutRow);
@@ -146,9 +146,3 @@ define([
 		}
 	});
 });
-
-
-
-
-
-

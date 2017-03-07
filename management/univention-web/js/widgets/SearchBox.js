@@ -40,7 +40,7 @@ define([
 
 		_createSearchIcon: function() {
 			this._searchIconNode = put(this.domNode.firstChild, '-div.umcSearchIcon');
-			this.own(on(this._inlineLabelNode, 'click', lang.hitch(this, 'onSearch')));
+			this.own(on(this._searchIconNode, 'click', lang.hitch(this, 'onSearch')));
 		},
 
 		buildRendering: function() {

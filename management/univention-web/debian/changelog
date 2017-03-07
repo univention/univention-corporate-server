@@ -1,3 +1,9 @@
+univention-web (1.0.29-26) unstable; urgency=medium
+
+  * Bug #43528: Fix onClick event for SearchBox + adjust grid view of users
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Mar 2017 11:19:48 +0100
+
 univention-web (1.0.29-25) unstable; urgency=medium
 
   * Bug #42263: include meta data by default + check login status in hook

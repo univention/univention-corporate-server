@@ -73,8 +73,8 @@ define([
 			// For legacy dojox grid compability
 			// e.g. formaters that expect to be working with a dojox grid
 			return item;
- 		}
- 	});
+		}
+	});
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
@@ -409,6 +409,7 @@ define([
 			}, this);
 			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
 			this._grid.refresh();
+			this._grid.resize();
 			this.activeViewMode = newView;
 		},
 

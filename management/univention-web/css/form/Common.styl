@@ -139,7 +139,7 @@
 .umc .dijitSelectFocused .dijitButtonContents,
 .umc .dijitTextBoxFocused,
 .umc .dijitTextBoxFocused .dijitButtonNode,
-.umc .dijitSelectFocused:before, 
+.umc .dijitSelectFocused:before,
 .umc .dijitTextBoxFocused:before,
 .umc .dijitSelectFocused:after,
 .umc .dijitTextBoxFocused:after
@@ -195,7 +195,7 @@
 .umc .dijitComboBox
 	.dijitArrowButtonContainer
 		margin: 6px 8px 0 0
-	
+
 		.dijitArrowButtonInner
 			icon-image(0, 0, "../")
 			height: 20px !important  // override dijit.css CSS rule
@@ -314,9 +314,15 @@ label
 
 		.dijitButton
 			margin-top: 0
+			box-shadow: none
 
 		.dijitButtonNode
-			padding: 3px
+			background-color: transparent
+			height: 32px
+
+			.dijitButtonContents
+				line-height: 32px
+				padding: 0 3px
 
 	.umcLabelPane.umcSearchFormElementBeforeSubmitButton
 		margin-right: -3.5em
