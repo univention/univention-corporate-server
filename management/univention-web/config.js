@@ -105,7 +105,7 @@ umcConfig = mixin({
 // prepare all needed dependencies and evaluate umcConfig settings
 var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/meta.json"];
 if (umcConfig.loadHooks) {
-	_deps.push("umc/hooks");
+	_deps.push("umc/hooks!");
 }
 if (umcConfig.loadMenu) {
 	_deps.push("umc/menu/Button");

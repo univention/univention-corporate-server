@@ -39,13 +39,11 @@ define([
 		return 'umc/hooks/' + idata.path;
 	});
 
-	var hooks = new declare([Evented], {
-		// hooks to be defined...
-	})();
-
-	require(deps, function() {
-		hooks.emit('loaded');
-	});
-
-	return hooks;
+	return {
+		load: function(params, req, load) {
+			require(deps, function() {
+				load(null);
+			});
+		}
+	};
 });

@@ -1,3 +1,9 @@
+univention-web (1.0.31-6) unstable; urgency=medium
+
+  * Bug #42174: load hooks before executing UMC config callback
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 16:47:55 +0100
+
 univention-web (1.0.31-5) unstable; urgency=medium
 
   * Bug #43528: fix tools.isFQDN() (used to accept IP addresses)
