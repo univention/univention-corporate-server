@@ -92,6 +92,9 @@
 			<description>Import new license</description>
 			<keywords></keywords>
 			<categories/>
+			<requiredCommands>
+				<requiredCommand name="udm/license/import"/>
+			</requiredCommands>
 		</flavor>
 		<categories>
 			<category name="domain"/>

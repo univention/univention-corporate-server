@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.7-1) unstable; urgency=medium
+
+  * Bug #43677: make sure the license import flavor is only active for users
+  	with correct permissions
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 14:38:51 +0100
+
 univention-management-console-module-udm (7.0.6-6) unstable; urgency=medium
 
   * Bug #43528: Show icon to toggle the grid view in users/user module +
