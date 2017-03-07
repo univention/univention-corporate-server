@@ -348,6 +348,7 @@ class User(object):
 		self.username = username
 		self.password = password
 		self.saml = saml
+		self._time_remaining = _session_timeout
 		self.reset_timeout()
 
 	def reset_timeout(self):
@@ -658,7 +659,7 @@ class Ressource(object):
 		session = UMCP_Dispatcher.sessions.get(user.sessionid)
 		if user._time_remaining <= 0 and (not session or not session._requestid2response_queue):
 			self._log('info', 'session timed out')
-			self.sessions.pop(user.sessionid)
+			self.sessions.pop(user.sessionid, None)
 			return
 
 		# count down the timer second-wise (in order to avoid problems when

@@ -1,3 +1,9 @@
+univention-management-console (9.0.47-4) unstable; urgency=medium
+
+  * Bug #42174: fix SAML login
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 12:01:33 +0100
+
 univention-management-console (9.0.47-3) unstable; urgency=medium
 
   * Bug #42174: Typo
