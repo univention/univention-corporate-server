@@ -121,6 +121,13 @@ define([
 			}
 		},
 
+		_setValueAttr: function(newVal) {
+			this.inherited(arguments);
+			if (this._inlineLabelNode) {
+				this._updateInlineLabelVisibility();
+			}
+		},
+
 		// this seems to be necessary for IE8:
 		// https://forge.univention.org/bugzilla/show_bug.cgi?id=28498
 		_getValueAttr: function() {
