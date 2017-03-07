@@ -1,3 +1,9 @@
+univention-management-console (9.0.47-3) unstable; urgency=medium
+
+  * Bug #42174: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Mar 2017 02:10:09 +0100
+
 univention-management-console (9.0.47-2) unstable; urgency=medium
 
   * Bug #42174: ucslint

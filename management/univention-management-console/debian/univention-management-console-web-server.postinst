@@ -47,7 +47,7 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.47-1; then
 fi
 
 # provide new settings
-univention-config-registry set
+univention-config-registry set \
 	umc/http/session/timeout?28800 \
 	umc/http/response-timeout?310 \
 	umc/http/autostart?yes \
