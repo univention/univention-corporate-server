@@ -932,10 +932,10 @@ define([
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getValues(options.objectType, options.objectProperty);
+					return moduleCache.getValues(this._searchForm.getWidget('objectType').get('value'), options.objectProperty);
 				}),
 				umcpCommand: umcpCmd,
-				depends: [ 'objectProperty', 'objectType' ]
+				depends: 'objectProperty'
 			}]);
 			layout[0].push('objectType');
 			if (hasSuperordinates) {
@@ -966,6 +966,15 @@ define([
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
+						// reset all widgets if the search is toggled back to simple
+						if (!this._isAdvancedSearch) {
+							array.forEach(this._searchForm.widgets, lang.hitch(this, function(iWidget) {
+								if (iWidget.name === 'objectPropertyValue') {
+									return;
+								}
+								this._searchForm.getWidget(iWidget.name).reset();
+							}));
+						}
 						domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
 
 						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
@@ -1028,7 +1037,7 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				this._navUpButton = this.own(new Button({
 					label: _('Parent container'),
-					iconClass: 'umcDoubleLeftIcon',
+					iconClass: 'umcDoubleUpIcon',
 					callback: lang.hitch(this, function() {
 						var path = this._tree.get('path');
 						var ldapDN = path[ path.length - 2 ].id;
@@ -1227,7 +1236,7 @@ define([
 					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('Simplified options'));
-					toggleButton.set('iconClass', 'umcDoubleUpIcon');
+					toggleButton.set('iconClass', 'umcDoubleLeftIcon');
 				} else {
 					widgets.objectType.set('visible', false);
 					if ('container' in widgets) {

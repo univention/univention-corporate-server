@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.7-2) unstable; urgency=medium
+
+  * Bug #43528: Reset udm search form values when toggling back to simple
+    search + fix dependency error between search form widgets
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Mar 2017 18:22:37 +0100
+
 univention-management-console-module-udm (7.0.7-1) unstable; urgency=medium
 
   * Bug #43677: make sure the license import flavor is only active for users
