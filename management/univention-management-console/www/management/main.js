@@ -64,7 +64,6 @@ define([
 	"login",
 	"umc/dialog",
 	"umc/store",
-	"umc/menu",
 	"dijit/_WidgetBase",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -83,11 +82,11 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Button",
 	"umc/widgets/Text",
-	"umc/i18n!",
+	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store, menu,
+		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {

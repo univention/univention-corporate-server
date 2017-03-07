@@ -34,7 +34,7 @@ define([
 	"dojo/date/locale",
 	"umc/tools",
 	"umc/widgets/Text",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(lang, array, locale, tools, Text, _) {
 	var pageConf = {
 		name: 'about',

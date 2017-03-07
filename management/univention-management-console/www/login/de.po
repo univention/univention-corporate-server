@@ -16,3 +16,128 @@ msgstr "Anmelden auf %(hostname)s.%(domainname)s"
 
 msgid "Login with your domain account."
 msgstr "Melden Sie sich mit ihrem Domänen-Konto an."
+
+#: www/login/LoginDialog.js:61 www/login/LoginDialog.js:251
+#: www/login/main.js:326
+msgid "Username"
+msgstr "Benutzername"
+
+#: www/login/LoginDialog.js:62 www/login/LoginDialog.js:252
+#: www/login/main.js:331
+msgid "Password"
+msgstr "Passwort"
+
+#: www/login/LoginDialog.js:63
+msgid "New Password"
+msgstr "Neues Passwort"
+
+#: www/login/LoginDialog.js:64 www/login/LoginDialog.js:254
+msgid "New Password (retype)"
+msgstr "Neues Passwort (wiederholen)"
+
+#: www/login/LoginDialog.js:65 www/login/LoginDialog.js:247
+#: www/login/main.js:335
+msgid "Login"
+msgstr "Anmelden"
+
+#: www/login/LoginDialog.js:66 www/login/LoginDialog.js:255
+msgid "One time password"
+msgstr "Einmalpasswort"
+
+#: www/login/LoginDialog.js:234
+msgid ""
+"Changing password failed. The passwords do not match, please retype again."
+msgstr ""
+"Passwortänderung fehlgeschlagen. Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
+
+#: www/login/LoginDialog.js:248
+msgid "Set password"
+msgstr "Passwort setzen"
+
+#: www/login/LoginDialog.js:253
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: www/login/dialog.js:86
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"such as passwords will be transmitted in plain text. Please follow this link "
+"to use a secure SSL connection."
+msgstr ""
+"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie diesen"
+" Link für eine verschlüsselte SSL-Verbindung."
+
+#: www/login/dialog.js:87
+msgid ""
+"This network connection is not encrypted.<br/>Click here for an HTTPS "
+"connection."
+msgstr ""
+"Diese Netzwerkverbindung ist nicht verschlüsselt.<br/>Klicken Sie hier für eine HTTPS-Verbindung."
+
+#: www/login/dialog.js:106
+msgid ""
+"Your browser is outdated! You may experience performance issues and other "
+"problems when using Univention Services."
+msgstr ""
+"Ihr Browser ist veraltet! Dadurch kann es zu Geschwindigkeits- "
+"und anderen Problemen kommen bei der Verwendung von Univention Diensten."
+
+#: www/login/dialog.js:111
+msgid "Please login with a valid username and password."
+msgstr "Bitte geben Sie einen gültigen Benutzernamen und Passwort ein."
+
+#: www/login/dialog.js:113
+#, javascript-format
+msgid "Use the %s user for the initial system configuration."
+msgstr "Verwenden Sie den Benutzer %s für die initiale Systemeinrichtung."
+
+#: www/login/dialog.js:115
+#, javascript-format
+msgid "The default username to manage the domain is %s."
+msgstr "Der Standardbenutzername zum Verwalten dieser Domäne ist %s."
+
+#: www/login/dialog.js:117
+msgid "How do I login?"
+msgstr "Wie melde ich mich an?"
+
+#: www/login/dialog.js:140
+msgid ""
+"Please enable your browser cookies which are necessary for using Univention "
+"Services."
+msgstr "Bitte aktivieren sie Cookies in Ihrem Browser. Diese sind notwendig "
+"für Univention Dienste."
+
+#: www/login/config.js:12
+msgid "Login at %(domainname)s"
+msgstr "Anmelden bei %(domainname)s"
+
+#: www/login/main.js:87
+msgid "The current session timed out. Please login again."
+msgstr "Die aktuelle Sitzung ist abgelaufen. Bitte melden Sie sich wieder an."
+
+#: www/login/main.js:235
+msgid "So far the authentification failed. Continuing nevertheless."
+msgstr ""
+"Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
+"probiert."
+
+#: www/login/main.js:312
+msgid "This action requires you to supply your password."
+msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
+
+#: www/login/main.js:317
+msgid "Authentication required"
+msgstr "Authentifizierung notwendig"
+
+#: www/login/main.js:371
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: www/login/main.js:372
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: www/login/main.js:377
+msgid "Logout"
+msgstr "Abmelden"

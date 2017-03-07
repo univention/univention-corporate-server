@@ -44,7 +44,7 @@ define([
 	"dijit/Tooltip",
 	"dojox/html/entities",
 	"umc/dialog",
-	"umc/i18n!login,umc/app"
+	"umc/i18n!login"
 ], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, Tooltip, entities, dialog, _) {
 
 	return {

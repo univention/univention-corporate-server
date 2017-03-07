@@ -1,3 +1,9 @@
+univention-management-console (9.0.51-3) unstable; urgency=medium
+
+  * Bug #42174: Integrate translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Mar 2017 17:38:31 +0100
+
 univention-management-console (9.0.51-2) unstable; urgency=medium
 
   * Bug #42174: outsource ProxyPass into own file because univention-saml.conf

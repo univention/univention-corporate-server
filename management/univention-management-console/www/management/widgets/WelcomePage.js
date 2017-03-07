@@ -35,7 +35,7 @@ define([
 	"dijit/registry",
 	"umc/widgets/Text",
 	"umc/widgets/RadioButton",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(declare, query, domClass, registry, Text, RadioButton, _) {
 	var _RadioButton = declare(RadioButton, {
 		_setCheckedAttr: function(value) {

@@ -33,7 +33,7 @@ define([
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(lang, tools, Text, TextBox, _) {
 	var pageConf = {
 		name: 'activation',

@@ -34,7 +34,7 @@ define([
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/Uploader",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(lang, Deferred, tools, Text, Uploader, _) {
 	var pageConf = {
 		name: 'licenseImport',

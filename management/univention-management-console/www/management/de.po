@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
@@ -6,10 +7,10 @@ msgstr ""
 "PO-Revision-Date: 2017-02-13 15:30+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 
 #: js/tools.js:1623
 msgid "\"${moduleName}\" module"
@@ -43,9 +44,9 @@ msgstr "1 Eintrag von %d ausgewählt"
 
 #: js/tools.js:241
 msgid ""
-"A reload of the Univention Management Console is required to use new modules."
-"<br>Currently opened modules may not work properly.<br>Do you want to reload "
-"the page?"
+"A reload of the Univention Management Console is required to use new "
+"modules.<br>Currently opened modules may not work properly.<br>Do you want "
+"to reload the page?"
 msgstr ""
 "Es ist notwendig, die Univention Management Console neu zu laden, um neue "
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
@@ -89,7 +90,8 @@ msgid ""
 "server, please try again later."
 msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
-"Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
+"Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch "
+"einmal."
 
 #: js/dialog/LoginDialog.js:136
 msgid "Authentication failure"
@@ -128,7 +130,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: js/widgets/Module.js:172 js/tools.js:846
+#: js/widgets/Module.js:172 js/tools.js:846 www/management/main.js:708
 msgid "Close"
 msgstr "Schließen"
 
@@ -189,7 +191,8 @@ msgid "Insecure Connection"
 msgstr "Unsichere Verbindung"
 
 #: js/tools.js:717
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
+msgid ""
+"Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
@@ -209,10 +212,11 @@ msgstr ""
 
 #: js/tools.js:721
 msgid ""
-"Internal module error: The initialization of the module caused a fatal error."
+"Internal module error: The initialization of the module caused a fatal "
+"error."
 msgstr ""
-"Interner Modul-Fehler: Die Initialisierung des Moduls erzeugte einen fatalen "
-"Fehler."
+"Interner Modul-Fehler: Die Initialisierung des Moduls erzeugte einen fatalen"
+" Fehler."
 
 #: js/tools.js:710
 msgid "Internal server error."
@@ -226,8 +230,8 @@ msgstr ""
 
 #: js/tools.js:714
 msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please "
-"check your SSL configurations."
+"Internal server error: The SSL server certificate is not trustworthy. Please"
+" check your SSL configurations."
 msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
@@ -364,7 +368,8 @@ msgstr "An den Hersteller senden"
 msgid "Sending the information to the vendor failed"
 msgstr "Das Versenden der Informationen zum Hersteller ist fehlgeschlagen"
 
-#: js/tools.js:609
+#: js/tools.js:609 www/management/widgets/ActivationDialog.js:149
+#: www/management/widgets/StartupDialog.js:134
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
@@ -398,7 +403,8 @@ msgid ""
 msgstr ""
 "Gegenwärtig konnte die Verbindung zum Server seit {time} Sekunden nicht "
 "aufgebaut werden. Dies kann ein vorhergesehenes Verhalten sein. In jedem "
-"Fall wird der Prozess weiterhin versuchen die Verbindung wieder herzustellen."
+"Fall wird der Prozess weiterhin versuchen die Verbindung wieder "
+"herzustellen."
 
 #: js/tools.js:708
 msgid "Specified locale is not available."
@@ -449,8 +455,8 @@ msgid ""
 "secure SSL connection."
 msgstr ""
 "Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
-"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen "
-"Link</a> für eine verschlüsselte SSL-Verbindung."
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen"
+" Link</a> für eine verschlüsselte SSL-Verbindung."
 
 #: js/tools.js:240
 msgid "UMC reload required"
@@ -569,501 +575,272 @@ msgstr "Schritte, um den Fehler zu reproduzieren"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
-#~ msgid "%s: %s"
-#~ msgstr "%s: %s"
-
-#~ msgid "<b>Host</b> "
-#~ msgstr "<b>Host</b> "
-
-#~ msgid ""
-#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!"
-#~ "</a></p>"
-#~ msgstr ""
-#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre "
-#~ "Meinung!</a></p>"
-
-#~ msgid ""
-#~ "<p><b>You have got mail!</b></p><p>A license file should have been sent "
-#~ "to your email address. Upload the license file from the email to activate "
-#~ "your UCS instance.</p>"
-#~ msgstr ""
-#~ "<p><b>Sie haben eine E-Mail erhalten!</b></p><p>Eine Lizenzdatei sollte "
-#~ "an Ihre E-Mail-Adresse geschickt worden sein. Laden Sie die Lizenzdatei "
-#~ "aus der E-Mail hier hoch, um Ihre UCS-Instanz zu aktivieren.</p>"
-
-#~ msgid ""
-#~ "<p>Congratulations, you have successfully completed the configuration of "
-#~ "your Univention Corporate Server (UCS), and you have logged into "
-#~ "Univention Management Console (UMC). UMC is the central web application "
-#~ "for a comfortable system administration and domain management.</p><p>Are "
-#~ "you satisfied with the system configuration?</p>"
-#~ msgstr ""
-#~ "<p>Herzlichen Glückwunsch, Sie haben die Einrichtung Ihres Univention "
-#~ "Corporate Servers (UCS) erfolgreich abgeschlossen und sind nun an der "
-#~ "Univention Management Console (UMC) angemeldet. UMC ist die zentrale "
-#~ "Webanwendung zur komfortablen Domänen- und Rechnerverwaltung in UCS.</"
-#~ "p><p>Waren Sie mit der Einrichtung des Systems zufrieden?</p>"
-
-#~ msgid ""
-#~ "<p>Detailed usage information on Univention Management Console can be "
-#~ "found in the UCS manual. The manual as well as further important "
-#~ "information are available via the following links:</p>"
-#~ msgstr ""
-#~ "<p>Detaillierte Informationen zur Verwendung der Univention Management "
-#~ "Console befinden sich im UCS-Handbuch. Das Handbuch und weitere wichtige "
-#~ "Informationen sind unter den folgenden Links abrufbar:</p>"
-
-#~ msgid ""
-#~ "<p>Details about the activation of a UCS license can be found in the <a "
-#~ "href=\"http://docs.univention.de/manual-%(version)s.html#central:license"
-#~ "\" target=\"_blank\">UCS manual</a>.</p>"
-#~ msgstr ""
-#~ "<p>Details zur Aktivierung der UCS-Lizenz werden im <a href=\"http://docs."
-#~ "univention.de/handbuch-%(version)s.html#central:license\" target=\"_blank"
-#~ "\">UCS-Handbuch</a> beschrieben.</p>"
-
-#~ msgid ""
-#~ "<p>Leave the field empty to perform the activation at a later point in "
-#~ "time via the user menu in top right corner.</p>"
-#~ msgstr ""
-#~ "<p>Lassen Sie das Feld frei, um die Aktivierung zu einem späteren "
-#~ "Zeitpunkt über das Benutzermenü oben rechts durchzuführen.</p>"
-
-#~ msgid ""
-#~ "<p>On UCS evaluation systems, anonymous usage statistics are created by "
-#~ "default and sent to Univention. This allows to continuously adapt UCS to "
-#~ "suit the practical needs of its users.</p><p>The information consists of "
-#~ "UMC usage statistics and a one-time statistic on the hardware "
-#~ "configuration. Details about the usage statistics and about its "
-#~ "deactivation can be found in the <a href=\"http://docs.univention.de/"
-#~ "manual-%(version)s.html#central-management-umc:piwik\" target=\"_blank"
-#~ "\">UCS manual</a>.</p><p>Usage statistics are automatically deactivated "
-#~ "when importing a commercial license.</p>"
-#~ msgstr ""
-#~ "<p>Auf UCS-Evaluationssystemen werden standardmäßig anonyme "
-#~ "Nutzungsstatistiken erzeugt und an Univention gesendet. Dies ermöglicht "
-#~ "es, UCS beständig an die konkreten Anwenderbedürfnisse anzupassen.</"
-#~ "p><p>Die Informationen umfassen zum einen UMC-Nutzungsstatistiken und zum "
-#~ "anderen einmalig grundlegende Informationen über die Hardware-"
-#~ "Konfiguration. Details zur Erfassung sowie zur Deaktivierung der "
-#~ "Statistiken werden im <a href=\"http://docs.univention.de/handbuch-"
-#~ "%(version)s.html#central-management-umc:piwik\" target=\"_blank\">UCS-"
-#~ "Handbuch</a> beschrieben.</p><p>Durch Einspielen einer Kauflizenz werden "
-#~ "die Nutzungsstatistiken automatisch deaktiviert.</p>"
-
-#~ msgid ""
-#~ "<p>The license has been updated successfully.</p><p>You can now continue "
-#~ "to use UMC, all applications in the Univention App Center are now "
-#~ "available for installation on this system.</p>"
-#~ msgstr ""
-#~ "<p>Die Lizenz wurde erfolgreich aktualisiert.</p><p>Sie können nun mit "
-#~ "dem Einsatz von UMC fortfahren, alle Anwendungen des Univention App "
-#~ "Centers stehen dem System nun zur Installation zur Verfügung.</p>"
-
-#~ msgid ""
-#~ "<p>The startup wizard has been completed now.</p><p>All listed "
-#~ "information can be accessed at any later point in time via the "
-#~ "application menu on the top right.</p>"
-#~ msgstr ""
-#~ "<p>Der Begrüßungsassistent ist nun beendet.</p><p>Die hier aufgeführten "
-#~ "Informationen können zu einem späteren Zeitpunkt in dem Hilfe- sowie "
-#~ "Einstellungsmenü oben rechts wieder aufgerufen werden.</p>"
-
-#~ msgid ""
-#~ "<p>You may now enter a valid e-mail address in order to activate the UCS "
-#~ "system to use the App Center. In the next step you can upload the license "
-#~ "file that has been sent to your email address.</p>"
-#~ msgstr ""
-#~ "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System "
-#~ "für die Verwendung des App Centers freizuschalten. Im nächsten Schritt "
-#~ "können Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet "
-#~ "wird.</p>"
-
-#~ msgid ""
-#~ "<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" target=\"_blank"
-#~ "\">Online documentation</a></li><li><a href=\"http://wiki.univention.de/"
-#~ "index.php?title=Hauptseite\" target=\"_blank\">Univention Wiki</a></"
-#~ "li><li><a href=\"https://www.univention.com/products/support/community-"
-#~ "support/\" target=\"_blank\">Community and support</a></li></ul>"
-#~ msgstr ""
-#~ "<ul><li><a href=\"http://docs.univention.de/de/ucs.html\" target=\"_blank"
-#~ "\">Online-Dokumentation</a></li><li><a href=\"http://wiki.univention.de\" "
-#~ "target=\"_blank\">Univention Wiki</a></li><li><a href=\"https://www."
-#~ "univention.de/produkte/support/community-support/\" target=\"_blank"
-#~ "\">Community und Support</a></li></ul>"
-
-#~ msgid "About UMC"
-#~ msgstr "Über UMC"
-
-#~ msgid "Activate"
-#~ msgstr "Aktivieren"
-
-#~ msgid ""
-#~ "Activation is not possible. Please login as Administrator on the DC "
-#~ "master."
-#~ msgstr ""
-#~ "Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master "
-#~ "einloggen."
-
-#~ msgid "Activation of UCS"
-#~ msgstr "Aktivierung von UCS"
-
-#~ msgid "Activation of Univention Corporate Server"
-#~ msgstr "Aktivierung von Univention Corporate Server"
-
-#~ msgid "Add to favorites"
-#~ msgstr "Zu Favoriten hinzufügen"
-
-#~ msgid "All"
-#~ msgstr "Alle"
-
-#~ msgid "Authentication failed, please login again."
-#~ msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
-
-#~ msgid "Automatic logon failed"
-#~ msgstr "Automatischer Login fehlgeschlagen"
-
-#~ msgid "Back to overview"
-#~ msgstr "Zurück zur Übersicht"
-
-#~ msgid "Completion of startup wizard"
-#~ msgstr "Ende des Begrüßungsassistenten"
-
-#~ msgid ""
-#~ "Could not pick an identity provider. You can specify one via the query "
-#~ "string parameter %(param)r from %(idps)r"
-#~ msgstr ""
-#~ "Konnte keinen Identity Provider auswählen. Sie können über den Query-"
-#~ "String-Parameter %(param)r einen der folgenden %(idps)r auswählen."
-
-#~ msgid "Could not reach Identity provider for automatic single sign on."
-#~ msgstr ""
-#~ "Konnte den Identity Provider zum automatisch Single Sign-On nicht "
-#~ "erreichen."
-
-#~ msgid "Could not renew single sign on session."
-#~ msgstr "Konnte die Single Sign-On-Session nicht erneuern."
-
-#~ msgid "Date of expiry of the SSL certificate for this system"
-#~ msgstr "Gültigkeitsdatum des SSL-Rechner-Zertifikats"
-
-#~ msgid "Date of expiry of the SSL root certificate"
-#~ msgstr "Gültigkeitsdatum des SSL-Wurzel-Zertifikats"
-
-#~ msgid "Do you really want to logout?"
-#~ msgstr "Möchten Sie sich wirklich abmelden?"
-
-#~ msgid "E-mail address"
-#~ msgstr "E-Mail-Adresse"
-
-#~ msgid "Enable one-time statistic on hardware configuration."
-#~ msgstr "Einmalige Erfassung von Hardware-Statistiken aktivieren."
-
-#~ msgid "Everything worked great."
-#~ msgstr "Alles hat super funktioniert."
-
-#~ msgid "Favorites"
-#~ msgstr "Favoriten"
-
-#~ msgid "Feedback"
-#~ msgstr "Feedback"
-
-#~ msgid "Feedback via usage statistics"
-#~ msgstr "Feedback durch Nutzungsstatistiken"
-
-#~ msgid "File cannot be uploaded, its maximum size may be %.1f MB."
-#~ msgstr ""
-#~ "Die Datei kann nicht hochgeladen werden, ihre Maximalgröße darf %.1f MB "
-#~ "nicht überschreiten."
-
-#~ msgid "Further Information"
-#~ msgstr "Weiterführende Informationen"
-
-#~ msgid "HTTP Error %s"
-#~ msgstr "HTTP Fehler %s"
-
-#~ msgid "Hello %(last)s, %(first)s!"
-#~ msgstr "Hello %(last)s, %(first)s!"
-
-#~ msgid "Hello %s!"
-#~ msgstr "Hello %s!"
-
-#~ msgid "Help"
-#~ msgstr "Hilfe"
-
-#~ msgid "I see potential for improvement."
-#~ msgstr "Ich sehe Verbesserungsmöglichkeiten."
-
-#~ msgid "Importing license data..."
-#~ msgstr "Importieren der Lizenzdaten..."
-
-#~ msgid "Language"
-#~ msgstr "Sprache"
-
-#~ msgid "License import"
-#~ msgstr "Lizenz-Import"
-
-#~ msgid "Loaded module %s"
-#~ msgstr "Modul %s wurde geladen"
-
-#~ msgid "Loading modules"
-#~ msgstr "Laden der Module"
-
-#~ msgid "Logout"
-#~ msgstr "Abmelden"
-
-#~ msgid "Module help description"
-#~ msgstr "Modul-Hilfetexte"
-
-#~ msgid "Module search"
-#~ msgstr "Modulsuche"
-
-#~ msgid "No valid e-mail address."
-#~ msgstr "Keine gültige E-Mail-Adresse."
-
-#~ msgid ""
-#~ "Not all installed components have been registered. Please visit the %s to "
-#~ "register the remaining components."
-#~ msgstr ""
-#~ "Nicht alle installierten Komponenten sind in der Domäne registriert. Dies "
-#~ "kann über das %s durchgeführt werden."
-
-#~ msgid "Note"
-#~ msgstr "Hinweis"
-
-#~ msgid "Notifications"
-#~ msgstr "Benachrichtigungen"
-
-#~ msgid "Open context menu"
-#~ msgstr "Kontextmenü öffnen"
-
-#~ msgid "Open module"
-#~ msgstr "Modul öffnen"
-
-#~ msgid "Please login with a valid username and password."
-#~ msgstr ""
-#~ "Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an."
-
-#~ msgid ""
-#~ "Received an unsolicited SAML response. Please try to single sign on again "
-#~ "by accessing /univention-management-console/saml/. Error message: %s"
-#~ msgstr ""
-#~ "Unaufgeforderte SAML-Antwort erhalten. Bitte versuchen Sie einen erneuten "
-#~ "Single Sign-On durch aufrufen von /univention-management-console/saml/. "
-#~ "Fehlernachricht: %s"
-
-#~ msgid "Received answer from identity provider."
-#~ msgstr "Antwort vom Identity Provider erhalten."
-
-#~ msgid "Remove from favorites"
-#~ msgstr "Aus Favoriten entfernen"
-
-#~ msgid "SSL host certificate"
-#~ msgstr "SSL Rechner-Zertifikat"
-
-#~ msgid "SSL root certificate"
-#~ msgstr "SSL Wurzel-Zertifikat"
-
-#~ msgid "Search query ›%s‹"
-#~ msgstr "Suchanfrage ›%s‹"
-
-#~ msgid "Send license"
-#~ msgstr "Lizenz senden"
-
-#~ msgid "Sending activation email..."
-#~ msgstr "Senden der Aktivierungs-E-Mail..."
-
-#~ msgid "Server"
-#~ msgstr "Server"
-
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#~ msgid "Single Sign On"
-#~ msgstr "Single Sign-On"
+#: www/management/main.js:430
+msgid "SSL root certificate"
+msgstr ""
 
-#~ msgid ""
-#~ "Single Sign On allows a user to login once and access multiple "
-#~ "applications seamlessly. For a safe implementation, it is necessary that "
-#~ "the names of the involved systems can be reached via DNS by the web "
-#~ "browser."
-#~ msgstr ""
-#~ "Single Sign On erlaubt es Benutzern eine Anmeldung durchzuführen und auf "
-#~ "verschiedene Applikationen nahtlos zuzugreifen. Für eine sichere "
-#~ "Umsetzung ist es erforderlich, dass die Namen der beteiligten Systeme via "
-#~ "DNS vom Webbrowser erreicht werden können."
+#: www/management/main.js:433
+msgid "SSL host certificate"
+msgstr ""
 
-#~ msgid "Successfully renewed single sign on session."
-#~ msgstr "Single Sign-On Sitzung erfolgreich erneuert."
+#: www/management/main.js:438
+msgid ""
+"The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgstr ""
 
-#~ msgid ""
-#~ "The %(certificate)s will expire in %(days)d days and should be renewed!"
-#~ msgstr ""
-#~ "Das %(certificate)s wird in %(days)d Tagen ablaufen und sollte erneuert "
-#~ "werden!"
+#: www/management/main.js:633
+msgid "Module search"
+msgstr ""
 
-#~ msgid "The SAML message is invalid for this service provider."
-#~ msgstr "Die SAML Nachricht ist ungültig für diesen Service Provider."
+#: www/management/main.js:668
+msgid "Help"
+msgstr ""
 
-#~ msgid "The SAML response contained a invalid signature: %s"
-#~ msgstr "Die SAML-Antwort enthält eine ungültige Signatur: %s"
+#: www/management/main.js:674
+msgid "Feedback"
+msgstr ""
 
-#~ msgid "The SAML response could not be verified: %s"
-#~ msgstr "Die SAML-Antwort konnte nicht verifiziert werden: %s"
+#: www/management/main.js:680
+msgid "About UMC"
+msgstr ""
 
-#~ msgid "The account as been disabled."
-#~ msgstr "Das Benutzerkonto wurde deaktiviert."
+#: www/management/main.js:696
+msgid "Usage statistics"
+msgstr ""
 
-#~ msgid "The account is expired and can not be used anymore."
-#~ msgstr ""
-#~ "Das Benutzerkonto kannt nicht verwendet werden. Seine Gültigkeit ist "
-#~ "abgelaufen."
+#: www/management/main.js:772 www/management/widgets/WelcomePage.js:78
+msgid "umcFeedbackUrl"
+msgstr ""
 
-#~ msgid ""
-#~ "The activation of UCS failed. Please re-try to perform the the activation "
-#~ "again via the user menu in the top right."
-#~ msgstr ""
-#~ "Die Aktivierung des UCS-Systems schlug fehl. Bitte wiederholen Sie den "
-#~ "Aktivierungsvorgang über das Benutzermenü oben rechts."
+#: www/management/main.js:1082
+#, javascript-format
+msgid "Could not load module \"%s\"."
+msgstr ""
 
-#~ msgid "The default username to manage the domain is %s."
-#~ msgstr "Der Standardbenutzername zur Administration der Domäne ist %s."
+#: www/management/main.js:1156
+#, javascript-format
+msgid "There is no module available for the authenticated user %s."
+msgstr ""
 
-#~ msgid "The identity provider reported a status error: %s"
-#~ msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
+#: www/management/main.js:1308
+msgid "Open module"
+msgstr ""
 
-#~ msgid ""
-#~ "The import of the license failed. Check the integrity of the original "
-#~ "file given to you."
-#~ msgstr ""
-#~ "Der Import der Lizenz schlug fehl. Überprüfen Sie die Integrität der "
-#~ "Originaldatei, die Ihnen zugestellt wurde."
+#: www/management/main.js:1318
+msgid "Remove from favorites"
+msgstr ""
 
-#~ msgid ""
-#~ "The issuer %r is now known to the SAML service provider. This is probably "
-#~ "a misconfiguration and might be resolved by restarting the univention-"
-#~ "management-console-web-server."
-#~ msgstr ""
-#~ "Der Aussteller %r ist diesem SAML Service Provider nicht bekannt. Dies "
-#~ "ist wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart "
-#~ "des univention-management-console-web-server behoben werden."
+#: www/management/main.js:1318
+msgid "Add to favorites"
+msgstr ""
 
-#~ msgid "The license has been imported successfully."
-#~ msgstr "Die Lizenz wurde erfolgreich importiert."
+#: www/management/main.js:1453
+#, javascript-format
+msgid "Search query ›%s‹"
+msgstr ""
 
-#~ msgid "The logout binding is not known."
-#~ msgstr "Das SAML-Logout Binding ist unbekannt."
+#: www/management/widgets/ActivationDialog.js:55
+#: www/management/widgets/ActivationPage.js:40
+msgid "Activation of Univention Corporate Server"
+msgstr ""
 
-#~ msgid "The principal is unknown: %s"
-#~ msgstr "Der SAML-Prinzipal ist unbekannt: %s"
+#: www/management/widgets/ActivationDialog.js:100
+#: www/management/widgets/StartupDialog.js:106
+msgid "Sending activation email..."
+msgstr ""
 
-#~ msgid "The requested SAML binding is not known: %s"
-#~ msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
+#: www/management/widgets/ActivationDialog.js:132
+msgid "Send license"
+msgstr ""
 
-#~ msgid "The system does not allow changing the password"
-#~ msgstr "Das System erlaubt das Ändern des Passwortes nicht"
+#: www/management/widgets/ActivationDialog.js:138
+#: www/management/widgets/StartupDialog.js:123
+#: www/management/widgets/LicenseImportPage.js:57
+msgid "Importing license data..."
+msgstr ""
 
-#~ msgid ""
-#~ "The system has not been joined into a domain so far. Please visit the %s "
-#~ "to join the system."
-#~ msgstr ""
-#~ "Dieses System ist noch keiner Domäne beigetreten. Dies kann über das %s "
-#~ "durchgeführt werden."
+#: www/management/widgets/ActivationDialog.js:147
+#: www/management/widgets/StartupDialog.js:132
+msgid ""
+"The import of the license failed. Check the integrity of the original file "
+"given to you."
+msgstr ""
 
-#~ msgid "The total cost was %.2f EUR!"
-#~ msgstr "The total cost was %.2f EUR!"
+#: www/management/widgets/ActivationDialog.js:187
+#: www/management/widgets/StartupDialog.js:231
+msgid ""
+"The activation of UCS failed. Please re-try to perform the the activation "
+"again via the user menu in the top right."
+msgstr ""
 
-#~ msgid ""
-#~ "There is a configuration error in the service provider: No identity "
-#~ "provider are set up for use."
-#~ msgstr ""
-#~ "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind "
-#~ "zur Benutzung eingerichtet."
+#: www/management/widgets/HelpPage.js:37
+msgid "Further Information"
+msgstr ""
 
-#~ msgid "There is no module available for the authenticated user %s."
-#~ msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
+#: www/management/widgets/HelpPage.js:44
+msgid ""
+"<p>Detailed usage information on Univention Management Console can be found "
+"in the UCS manual. The manual as well as further important information are "
+"available via the following links:</p>"
+msgstr ""
 
-#~ msgid "Tooltips"
-#~ msgstr "Tooltips"
+#: www/management/widgets/HelpPage.js:48
+msgid ""
+"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" "
+"target=\"_blank\">Online documentation</a></li><li><a "
+"href=\"http://wiki.univention.de/index.php?title=Hauptseite\" "
+"target=\"_blank\">Univention Wiki</a></li><li><a "
+"href=\"https://www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Community and support</a></li></ul>"
+msgstr ""
 
-#~ msgid "Translate me!"
-#~ msgstr "Translate me!"
+#: www/management/widgets/ActivationPage.js:47
+msgid ""
+"<p>You may now enter a valid e-mail address in order to activate the UCS "
+"system to use the App Center. In the next step you can upload the license "
+"file that has been sent to your email address.</p>"
+msgstr ""
 
-#~ msgid "UCS Version"
-#~ msgstr "UCS-Version"
+#: www/management/widgets/ActivationPage.js:51
+msgid "E-mail address"
+msgstr ""
 
-#~ msgid "UCS start site"
-#~ msgstr "UCS Startseite"
+#: www/management/widgets/ActivationPage.js:53
+msgid "No valid e-mail address."
+msgstr ""
 
-#~ msgid "UMC Version"
-#~ msgstr "UMC-Version"
+#: www/management/widgets/ActivationPage.js:61
+msgid ""
+"<p>Leave the field empty to perform the activation at a later point in time "
+"via the user menu in top right corner.</p>"
+msgstr ""
 
-#~ msgid "Univention Management Console"
-#~ msgstr "Univention Management Console"
+#: www/management/widgets/ActivationPage.js:65
+msgid ""
+"<p>Details about the activation of a UCS license can be found in the <a "
+"href=\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
+"target=\"_blank\">UCS manual</a>.</p>"
+msgstr ""
 
-#~ msgid "Univention Website"
-#~ msgstr "Univention Webseite"
+#: www/management/widgets/StartupDialog.js:57
+msgid "Welcome to UMC"
+msgstr ""
 
-#~ msgid "Unknown error during single sign on."
-#~ msgstr "Unbekannter Fehler während des Single Sign-On's."
+#: www/management/widgets/LicenseImportPage.js:41
+msgid "License import"
+msgstr ""
 
-#~ msgid "Unknown error while performing automatic login at host "
-#~ msgstr "Unbekannter Fehler während des automatischen Logins an Rechner "
+#: www/management/widgets/LicenseImportPage.js:48
+msgid ""
+"<p><b>You have got mail!</b></p><p>A license file should have been sent to "
+"your email address. Upload the license file from the email to activate your "
+"UCS instance.</p>"
+msgstr ""
 
-#~ msgid "Updating session data..."
-#~ msgstr "Aktualisieren der Sitzungsdaten..."
+#: www/management/widgets/LicenseImportPage.js:52
+msgid "Upload license file..."
+msgstr ""
 
-#~ msgid "Upload license file..."
-#~ msgstr "Lizenzdatei hochladen..."
+#: www/management/widgets/LicenseImportPage.js:62
+msgid "Updating session data..."
+msgstr ""
 
-#~ msgid "Usage statistics"
-#~ msgstr "Nutzungsstatistiken"
+#: www/management/widgets/LicenseImportPage.js:78
+msgid ""
+"You may as well import the license file at a later point in time via the "
+"user menu in the top right."
+msgstr ""
 
-#~ msgid "Use the %s user for the initial system configuration."
-#~ msgstr "Benutzen Sie den %s Benutzer für die initiale System-Konfiguration."
+#: www/management/widgets/FinishedPage.js:40
+msgid "Completion of startup wizard"
+msgstr ""
 
-#~ msgid "WARNING: Ignoring command \"%s\" since user is logging in"
-#~ msgstr "WARNING: Ignoring command \"%s\" since user is logging in"
+#: www/management/widgets/FinishedPage.js:44
+msgid ""
+"<p>The startup wizard has been completed now.</p><p>All listed information "
+"can be accessed at any later point in time via the application menu on the "
+"top right.</p>"
+msgstr ""
 
-#~ msgid "Welcome to UMC"
-#~ msgstr "Willkommen bei UMC"
+#: www/management/widgets/FeedbackPage.js:40
+msgid "Feedback via usage statistics"
+msgstr ""
 
-#~ msgid "Welcome to Univention Management Console"
-#~ msgstr "Willkommen bei Univention Management Console"
+#: www/management/widgets/FeedbackPage.js:47
+msgid ""
+"<p>On UCS evaluation systems, anonymous usage statistics are created by "
+"default and sent to Univention. This allows to continuously adapt UCS to "
+"suit the practical needs of its users.</p><p>The information consists of UMC"
+" usage statistics and a one-time statistic on the hardware configuration. "
+"Details about the usage statistics and about its deactivation can be found "
+"in the <a href=\"http://docs.univention.de/manual-%(version)s.html#central-"
+"management-umc:piwik\" target=\"_blank\">UCS manual</a>.</p><p>Usage "
+"statistics are automatically deactivated when importing a commercial "
+"license.</p>"
+msgstr ""
 
-#~ msgid ""
-#~ "Welcome to Univention Management Console. Please enter your domain "
-#~ "username and password for login."
-#~ msgstr ""
-#~ "Willkommen bei Univention Management Console. Bitte geben Sie "
-#~ "Benutzername und Passwort Ihres Domänen-Kontos ein."
+#: www/management/widgets/FeedbackPage.js:53
+msgid "Enable one-time statistic on hardware configuration."
+msgstr ""
 
-#~ msgid ""
-#~ "You may as well import the license file at a later point in time via the "
-#~ "user menu in the top right."
-#~ msgstr ""
-#~ "Sie können die Lizenzdatei auch zu einem späteren Zeitpunkt über das "
-#~ "Benutzermenü oben rechts importieren."
+#: www/management/widgets/WelcomePage.js:51
+msgid "Welcome to Univention Management Console"
+msgstr ""
 
-#~ msgid "umcFeedbackUrl"
-#~ msgstr "https://www.univention.de/produkt-feedback/"
+#: www/management/widgets/WelcomePage.js:58
+msgid ""
+"<p>Congratulations, you have successfully completed the configuration of "
+"your Univention Corporate Server (UCS), and you have logged into Univention "
+"Management Console (UMC). UMC is the central web application for a "
+"comfortable system administration and domain management.</p><p>Are you "
+"satisfied with the system configuration?</p>"
+msgstr ""
 
-#~ msgid "umcOverviewHeader"
-#~ msgstr "Übersicht"
+#: www/management/widgets/WelcomePage.js:62
+msgid "Everything worked great."
+msgstr ""
 
-#~ msgid "umcOverviewHelpText"
-#~ msgstr ""
-#~ "Univention Management Console (UMC) ist eine flexible Webanwendung für "
-#~ "die Administration von UCS-basierten Systemen und Domänen. Je nach "
-#~ "Systemrolle, Voreinstellungen und Berechtigungen, finden Sie hier "
-#~ "umfangreiche Funktionen zur UCS-Domänenadministration und für die "
-#~ "Konfiguration dieses Servers."
+#: www/management/widgets/WelcomePage.js:70
+msgid "I see potential for improvement."
+msgstr ""
 
-#~ msgid "umcOverviewTabTitle"
-#~ msgstr "Übersicht"
+#: www/management/widgets/WelcomePage.js:78
+#, javascript-format
+msgid ""
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you "
+"opinion!</a></p>"
+msgstr ""
 
-#~ msgid "umcUniventionUrl"
-#~ msgstr "http://www.univention.de"
+#: www/management/widgets/FinishedActivationPage.js:44
+msgid ""
+"<p>The license has been updated successfully.</p><p>You can now continue to "
+"use UMC, all applications in the Univention App Center are now available for"
+" installation on this system.</p>"
+msgstr ""
 
-#~ msgid "umcUserInfo"
-#~ msgstr "<b>Benutzer</b> %(username)s"
+#: www/management/widgets/AboutPage.js:44
+msgid "Univention Management Console"
+msgstr ""
+
+#: www/management/widgets/AboutPage.js:47
+msgid "Server"
+msgstr ""
+
+#: www/management/widgets/AboutPage.js:50
+msgid "UCS Version"
+msgstr ""
+
+#: www/management/widgets/AboutPage.js:53
+msgid "UMC Version"
+msgstr ""
+
+#: www/management/widgets/AboutPage.js:56
+msgid "Date of expiry of the SSL root certificate"
+msgstr ""
+
+#: www/management/widgets/AboutPage.js:59
+msgid "Date of expiry of the SSL certificate for this system"
+msgstr ""

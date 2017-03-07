@@ -30,7 +30,7 @@
 /*global define*/
 define([
 	"umc/widgets/Text",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(Text, _) {
 	return {
 		name: 'finished',

@@ -53,7 +53,7 @@ define([
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!login/main",
+	"umc/i18n!login",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
 ], function(declare, lang, array, win, aspect, when, has, on, dom, domConstruct, query, attr, domClass, styles, fx, base64, Deferred, Dialog, _WidgetBase, DialogUnderlay, entities, tools, Text, StandbyMixin, _) {

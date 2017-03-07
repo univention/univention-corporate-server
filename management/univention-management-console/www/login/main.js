@@ -46,7 +46,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
-	"umc/i18n!login/main"
+	"umc/i18n!login"
 ], function(lang, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Private utilities for authentication. Authentication must handle:

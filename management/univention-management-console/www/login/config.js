@@ -5,7 +5,7 @@ var umcConfig = {
 		"login/dialog",
 		"umc/tools",
 		"umc/json!/univention/meta.json",
-		"umc/i18n!login/main",
+		"umc/i18n!login",
 		"dojo/NodeList-html"
 	],
 	callback: function(query, dialog, tools, metaData, _) {

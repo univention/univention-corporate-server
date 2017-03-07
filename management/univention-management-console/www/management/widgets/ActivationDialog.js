@@ -44,7 +44,7 @@ define([
 	"./ActivationPage!",  // needs to be loaded as AMD plugin
 	"./LicenseImportPage!",  // needs to be loaded as AMD plugin
 	"./FinishedActivationPage",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(declare, lang, array, domClass, when, topic, Dialog, tools, dialog, Wizard, Text, ProgressBar,
 		ActivationPage, LicenseImportPage, FinishedActivationPage, _) {
 

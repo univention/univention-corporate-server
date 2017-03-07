@@ -46,7 +46,7 @@ define([
 	"./LicenseImportPage!",  // needs to be loaded as AMD plugin
 	"./HelpPage",
 	"./FinishedPage",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(declare, lang, array, when, topic, Dialog, tools, dialog, Wizard, Text, ProgressBar,
 		WelcomePage, FeedbackPage, ActivationPage, LicenseImportPage, HelpPage, FinishedPage, _) {
 

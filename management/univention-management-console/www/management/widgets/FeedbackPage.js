@@ -33,7 +33,7 @@ define([
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
-	"umc/i18n!"
+	"umc/i18n!management"
 ], function(lang, tools, Text, CheckBox, _) {
 	return {
 		name: 'feedback',
