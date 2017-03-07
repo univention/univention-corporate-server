@@ -1,3 +1,9 @@
+univention-web (1.0.31-8) unstable; urgency=medium
+
+  * Bug #43528: Adjust alignment of search icon in SearchBox widget
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Mar 2017 19:20:40 +0100
+
 univention-web (1.0.31-7) unstable; urgency=medium
 
   * Bug #43528: Update inline label of text boxes when the value
