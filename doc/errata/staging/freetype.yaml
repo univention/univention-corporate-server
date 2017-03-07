@@ -10,8 +10,8 @@ desc: |
    or possibly unspecified other impact via a crafted Mac font (CVE-2014-9674)
  * remote denial of service (infinite loop) via a "broken number-with-base"
    in a Postscript stream (CVE-2014-9745)
- * uninitialized memory access and application crash or possibly have
-   unspecified other impact via a crafted font (CVE-2014-9746)
+ * uninitialized memory access and application crash or possibly unspecified
+   other impact via a crafted font (CVE-2014-9746)
  * remote denial of service (infinite loop) via a Type42 font (CVE-2014-9747)
  * remote denial of service (heap-based buffer over-read) or possibly
    unspecified other impact via a crafted file (CVE-2016-10244)
