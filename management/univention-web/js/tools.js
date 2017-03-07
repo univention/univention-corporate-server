@@ -730,8 +730,8 @@ define([
 
 		parseError: function(error) {
 			var status = error.status !== undefined ? error.status : -1;
-			var statusMessage = tools._statusMessages[status] || '';
-			var message = statusMessage;
+			var message = null;
+			var title = null;
 			var result = null;
 			var traceback = null;
 
@@ -749,9 +749,10 @@ define([
 					status = error.response.data.status && this._parseStatus(error.response.data.status) || status;
 					message = error.response.data.message || '';
 					result = error.response.data.result || null;
+					title = error.response.data.title || null;
 				} else {
-					// no JSON was returned, probably proxy error
-					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : statusMessage;
+					// no JSON was returned, probably apache returned 502 proxy error
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : '';
 				}
 			} else if (error.data) {
 				if (error.data.xhr) {
@@ -761,6 +762,7 @@ define([
 				}
 				message = error.data.message || '';
 				result = error.data.result || null;
+				title = error.data.title || null;
 			} else if(error.text) {
 				message = r.test(error.text) ? r.exec(error.text)[1] : error.text;
 			} else if(error.message && error.status) {
@@ -768,7 +770,10 @@ define([
 				message = error.message;
 				status = error.status;
 				result = error.result || null;
+				title = error.title || null;
 			}
+
+			title = title || tools._statusMessages[status] || '';
 
 			// TODO: move into the UMC-Server
 			// handle tracebacks: on 500 Internal Server Error they might not contain the word 'Traceback', because not all modules use the UMC-Server error handling yet
@@ -783,7 +788,7 @@ define([
 
 			return {
 				status: this._parseStatus(status),
-				title: statusMessage,
+				title: title,
 				message: _(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'}),
 				traceback: traceback,
 				result: result
