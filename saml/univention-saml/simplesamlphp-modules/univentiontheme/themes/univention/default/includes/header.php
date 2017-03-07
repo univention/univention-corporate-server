@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<body class="umc">
 		<div class="umcHeader">
 			<div class="umcHeaderRight">
-				<div id="umcMenu" data-dojo-type="umc/widgets/Menu"></div>
+				<div data-dojo-type="umc/menu/Button"></div>
 				<div class="univentionLogo"></div>
 			</div>
 		</div>
