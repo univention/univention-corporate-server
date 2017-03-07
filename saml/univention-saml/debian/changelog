@@ -1,3 +1,9 @@
+univention-saml (4.0.8-1) unstable; urgency=medium
+
+  * Bug #42174: fix SAML login page rendering
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 17:00:42 +0100
+
 univention-saml (4.0.7-2) unstable; urgency=medium
 
   * Bug #42263: Adjust menu structure

@@ -68,6 +68,8 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>
+			<!-- preload the image! -->
+			<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;">
 <?php
 
 if (!empty($this->data['links'])) {
