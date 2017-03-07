@@ -54,6 +54,7 @@ define([
 	"umc/store",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
+	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Module",
@@ -80,7 +81,7 @@ define([
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, entities, app, tools, dialog,
-	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
+	store, ContainerWidget, Text, TextBox, CheckBox, ComboBox, Module, Page, Grid,
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, HiddenInput, TileView, TreeModel,
 	CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
 {
@@ -591,9 +592,10 @@ define([
 				return text;
 			});
 			var _footerFormatter = lang.hitch(this, function(nItems, nItemsTotal) {
+				var text = '';
 				// generate the caption for the grid footer
 				if (0 === nItemsTotal) {
-					var text = {
+					text = {
 						'users/user'        : _('No users could be found.'),
 						'groups/group'      : _('No groups could be found.'),
 						'computers/computer': _('No computers could be found.'),
@@ -609,9 +611,8 @@ define([
 					if (!text) {
 						text = _('No LDAP objects could be found.');
 					}
-					return text;
 				} else {
-					var text = {
+					text = {
 						'users/user'        : _.ngettext('One user of %d selected.', '%d users of %d selected.', nItems, nItemsTotal),
 						'groups/group'      : _.ngettext('One group of %d selected.', '%d groups of %d selected.', nItems, nItemsTotal),
 						'computers/computer': _.ngettext('One computer of %d selected.', '%d computers of %d selected.', nItems, nItemsTotal),
@@ -627,8 +628,9 @@ define([
 					if (!text) {
 						text = _.ngettext('One LDAP object of %d selected.', '%d LDAP objects of %d selected.', nItems, nItemsTotal);
 					}
-					return text;
 				}
+
+				return text;
 			});
 
 			// define actions
@@ -964,6 +966,8 @@ define([
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
+						domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
+
 						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, search);
 						this._updateSearch();
@@ -973,14 +977,19 @@ define([
 				if (this.moduleFlavor === 'users/user') {
 					buttons.push({
 						name: 'changeView',
-						label: _('Change View'),
+						showLabel: false,
+						label: _('Toggle visual presentation'),
+						iconClass: 'umcGridViewIcon-default',
+						'class': 'umcSearchFormChangeViewButton',
 						callback: lang.hitch(this, function() {
 							this._grid.changeView(this._grid.activeViewMode === 'tile' ? 'default' : 'tile');
+							this._searchForm._buttons.changeView.set('iconClass', lang.replace('umcGridViewIcon-{0}', [this._grid.activeViewMode]));
 						})
 					});
-					layout[1].push('changeView');
+					layout.push(['changeView']);
 				}
 			}
+
 
 			// generate the search widget
 			this._searchForm = new SearchForm({
@@ -992,6 +1001,7 @@ define([
 				_getValueAttr: lang.hitch(this, '_getValueAttr'),
 				onSearch: lang.hitch(this, 'filter')
 			});
+			domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
 		},
 
 		renderTree: function() {
@@ -1018,7 +1028,7 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				this._navUpButton = this.own(new Button({
 					label: _('Parent container'),
-					iconClass: 'umcDoubleUpIcon',
+					iconClass: 'umcDoubleLeftIcon',
 					callback: lang.hitch(this, function() {
 						var path = this._tree.get('path');
 						var ldapDN = path[ path.length - 2 ].id;
@@ -1226,7 +1236,7 @@ define([
 					widgets.objectProperty.set('visible', false);
 					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('Advanced options'));
-					toggleButton.set('iconClass', 'umcSimpleContextMenuIcon');
+					toggleButton.set('iconClass', 'umcDoubleRightIcon');
 				}
 				this.layout();
 			}
@@ -1417,7 +1427,7 @@ define([
 		// helper function that converts a path into a string
 		// store original path and reload tree
 		_path2str: function(path) {
-			if (!path instanceof Array) {
+			if (!(path instanceof Array)) {
 				return '';
 			}
 			return json.stringify(array.map(path, function(i) {
@@ -1943,7 +1953,7 @@ define([
 			}
 			load(udm);
 		}
-	}
+	};
 });
 
 // add pseudo translations for UDM tab names in order to enable

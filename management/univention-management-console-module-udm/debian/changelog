@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.6-6) unstable; urgency=medium
+
+  * Bug #43528: Show icon to toggle the grid view in users/user module +
+    move submit button into textbox in udm search forms (when applicable)
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Mar 2017 11:26:15 +0100
+
 univention-management-console-module-udm (7.0.6-5) unstable; urgency=medium
 
   * Bug #42231: Widget for new syntax
@@ -6,13 +13,13 @@ univention-management-console-module-udm (7.0.6-5) unstable; urgency=medium
 
 univention-management-console-module-udm (7.0.6-4) unstable; urgency=medium
 
-  * Bug #42229: cleanup changeView method 
+  * Bug #42229: cleanup changeView method
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 02 Mar 2017 15:25:58 +0100
 
 univention-management-console-module-udm (7.0.6-3) unstable; urgency=medium
 
-  * Bug #42229: Allow grid view of users with photos being visible 
+  * Bug #42229: Allow grid view of users with photos being visible
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Mar 2017 18:40:04 +0100
 
@@ -234,7 +241,7 @@ univention-management-console-module-udm (6.0.11-22) unstable; urgency=medium
 
 univention-management-console-module-udm (6.0.11-17) unstable; urgency=medium
 
-  * Bug #33344: code cleanup 
+  * Bug #33344: code cleanup
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 29 Apr 2016 11:49:41 +0200
 
@@ -1291,7 +1298,7 @@ univention-management-console-module-udm (5.0.3-1) unstable; urgency=low
 univention-management-console-module-udm (5.0.2-1) unstable; urgency=low
 
   * Bug #34093: show also Active Directory warning in edit mode (merge svn r52385)
-  * Bug #34093: fix displaying of warning in navigation flavor 
+  * Bug #34093: fix displaying of warning in navigation flavor
 
  -- Florian Best <best@univention.de>  Wed, 30 Jul 2014 15:34:21 +0200
 
@@ -1834,8 +1841,8 @@ univention-management-console-module-udm (4.0.52-1) unstable; urgency=low
 
 univention-management-console-module-udm (4.0.51-2) unstable; urgency=low
 
-  * Assign new Syntax UNIX_AccessRight_extended to new Widget 
-    UnixAccessRightsExtended (Bug #15087) 
+  * Assign new Syntax UNIX_AccessRight_extended to new Widget
+    UnixAccessRightsExtended (Bug #15087)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 18 Oct 2013 14:54:58 +0200
 
@@ -2900,7 +2907,7 @@ univention-management-console-module-udm (1.0.270-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.269-2) unstable; urgency=low
 
-  * fixed typo (Bug #25630) 
+  * fixed typo (Bug #25630)
 
  -- Florian Best <best@univention.de>  Mon, 23 Jan 2012 13:21:05 +0100
 
@@ -3349,7 +3356,7 @@ univention-management-console-module-udm (1.0.209-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.208-1) unstable; urgency=low
 
-  * added autofocus to the search form input field (Bug #22881) 
+  * added autofocus to the search form input field (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 16:53:05 +0100
 
@@ -3361,7 +3368,7 @@ univention-management-console-module-udm (1.0.207-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.206-1) unstable; urgency=low
 
-  * add simplified search view (Bug #22881) 
+  * add simplified search view (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 01:39:12 +0200
 
@@ -3384,13 +3391,13 @@ univention-management-console-module-udm (1.0.205-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.204-1) unstable; urgency=low
 
-  * fixed package description (Bug #23213) 
+  * fixed package description (Bug #23213)
 
  -- Alexander Kläser <klaeser@univention.de>  Sat, 29 Oct 2011 19:00:26 +0200
 
 univention-management-console-module-udm (1.0.203-1) unstable; urgency=low
 
-  * fixed error when using the free-for-personal-use license (Bug #23213) 
+  * fixed error when using the free-for-personal-use license (Bug #23213)
 
  -- Alexander Kläser <klaeser@univention.de>  Sat, 29 Oct 2011 18:08:55 +0200
 
@@ -3581,8 +3588,8 @@ univention-management-console-module-udm (1.0.176-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.175-1) unstable; urgency=low
 
-  * added missing icons (as symlink): 
-    - udm-computers-windows_domaincontroller 
+  * added missing icons (as symlink):
+    - udm-computers-windows_domaincontroller
     - udm-policies-umc
     - udm-dns-txt_record
   (Bug #23218)
@@ -3654,7 +3661,7 @@ univention-management-console-module-udm (1.0.165-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.164-1) unstable; urgency=low
 
-  * added callback functionality and fixed focus management when opening UDM 
+  * added callback functionality and fixed focus management when opening UDM
     objects in new tab (in the grid and policy settings) (Bug #23557)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 20:50:45 +0200
@@ -3908,7 +3915,7 @@ univention-management-console-module-udm (1.0.129-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.128-1) unstable; urgency=low
 
-  * added dynamic change of property value label in the search form 
+  * added dynamic change of property value label in the search form
     (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 16 Sep 2011 11:29:55 +0200
@@ -4213,7 +4220,7 @@ univention-management-console-module-udm (1.0.85-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.84-1) unstable; urgency=low
 
-  * changed action types for the search grid (Bug #22881) 
+  * changed action types for the search grid (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Aug 2011 15:56:32 +0200
 
@@ -4226,7 +4233,7 @@ univention-management-console-module-udm (1.0.83-1) unstable; urgency=low
 
 univention-management-console-module-udm (1.0.82-1) unstable; urgency=low
 
-  * Adaptations for new design (Bug #22881) 
+  * Adaptations for new design (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Aug 2011 10:28:00 +0200
 
