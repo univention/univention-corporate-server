@@ -18,6 +18,8 @@ Variables: umc/web/appliance/name
 Variables: server/amazon
 Variables: interfaces/
 Variables: ldap/master
+Variables: umc/web/feedback/mail
+Variables: umc/web/feedback/description
 
 Type: file
 File: usr/share/univention-web/js/umc/hooks.json
