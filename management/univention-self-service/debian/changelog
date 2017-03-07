@@ -1,3 +1,9 @@
+univention-self-service (2.0.7-1) unstable; urgency=medium
+
+  * Bug #42174: fix adding Forgot your password link
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 16:59:58 +0100
+
 univention-self-service (2.0.6-2) unstable; urgency=medium
 
   * Bug #42263: Adjust menu structure

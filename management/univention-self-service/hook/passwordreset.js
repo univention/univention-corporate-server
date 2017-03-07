@@ -75,14 +75,8 @@ define([
 		menu.showEntry(passwordResetEntry);
 	});
  
-	var linksNode = dojo.byId('umcLoginLinks');
-	var isLoginPage = window.location.pathname == '/univention/login/';
-	if (isLoginPage && linksNode) {
-		// add "Forgot password?" link to login page
-		dialog.addLink('<a href="/univention/self-service/#page=passwordreset">' + entities.encode(_('Forgot your password?')) + '</a>');
-		linksNode.innerHTML = '';
-		dialog.addLinks();
-	}
+	// add "Forgot password?" link to login page
+	dialog.addLink('<a href="/univention/self-service/#page=passwordreset">' + entities.encode(_('Forgot your password?')) + '</a>');
 
 });
 
