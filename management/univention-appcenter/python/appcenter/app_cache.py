@@ -156,6 +156,9 @@ class AppCache(_AppCache):
 			self._server = default_server()
 		return self._server
 
+	def get_server_netloc(self):
+		return urlsplit(self.get_server()).netloc
+
 	def get_ucs_version(self):
 		if self._ucs_version is None:
 			self._ucs_version = default_ucs_version()
@@ -168,7 +171,7 @@ class AppCache(_AppCache):
 
 	def get_cache_dir(self):
 		if self._cache_dir is None:
-			server = urlsplit(self.get_server()).netloc
+			server = self.get_server_netloc()
 			self._cache_dir = os.path.join(CACHE_DIR, server, self.get_ucs_version())
 			mkdir(self._cache_dir)
 		return self._cache_dir
@@ -354,6 +357,9 @@ class AppCenterCache(_AppCache):
 			self._server = default_server()
 		return self._server
 
+	def get_server_netloc(self):
+		return urlsplit(self.get_server()).netloc
+
 	def get_ucs_versions(self):
 		if self._ucs_versions is None:
 			cache_file = self.get_cache_file('.ucs.ini')
@@ -374,7 +380,7 @@ class AppCenterCache(_AppCache):
 
 	def get_cache_dir(self):
 		if self._cache_dir is None:
-			server = urlsplit(self.get_server()).netloc
+			server = self.get_server_netloc()
 			self._cache_dir = os.path.join(CACHE_DIR, server)
 			mkdir(self._cache_dir)
 		return self._cache_dir
@@ -443,7 +449,7 @@ class Apps(_AppCache):
 
 	def get_appcenter_caches(self):
 		ret = []
-		for appcenter_server in ucr_get('appcenter/server', 'appcenter.software-univention.de').split():
+		for appcenter_server in ucr_get('repository/app_center/server', 'appcenter.software-univention.de').split():
 			try:
 				ucs_version, server = appcenter_server.split('@')
 			except ValueError:
@@ -515,7 +521,7 @@ def default_locale():
 
 
 def default_server():
-	appcenter_servers = ucr_get('appcenter/server')
+	appcenter_servers = ucr_get('repository/app_center/server')
 	if appcenter_servers:
 		server = appcenter_servers.split(' ')[0]
 		try:

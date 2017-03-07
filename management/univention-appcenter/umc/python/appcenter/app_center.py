@@ -78,11 +78,11 @@ from univention.appcenter.utils import app_ports, gpg_verify, container_mode
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
-from univention.appcenter.app_cache import Apps
+from univention.appcenter.app_cache import AppCache, Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
-CACHE_DIR = '/var/cache/univention-appcenter'
+CACHE_DIR = AppCache().get_cache_dir()
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 UCR_VARIABLE_TOKEN = re.compile('@%@')

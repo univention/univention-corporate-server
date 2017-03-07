@@ -56,6 +56,7 @@ from univention.appcenter.ini_parser import read_ini_file
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'
+LOCAL_ARCHIVE_DIR = '/usr/share/univention-appcenter/archives/'
 SHARE_DIR = '/usr/share/univention-appcenter/apps'
 DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'

@@ -98,9 +98,9 @@ class DevUseTestAppcenter(UniventionAppAction):
 	def main(self, args):
 		if args.revert:
 			appcenter_server = 'appcenter.software-univention.de'
-			ucr_save({'appcenter/server': appcenter_server, 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
+			ucr_save({'repository/app_center/server': appcenter_server, 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
 		else:
-			ucr_save({'appcenter/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
+			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
 

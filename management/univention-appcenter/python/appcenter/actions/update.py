@@ -46,11 +46,11 @@ import tarfile
 from urlparse import urlsplit
 from urllib2 import quote, Request, HTTPError
 
-from univention.appcenter.app import LOCAL_ARCHIVE
+from univention.appcenter.app import LOCAL_ARCHIVE_DIR
 from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode, mkdir
-from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
+from univention.appcenter.ucr import ucr_save, ucr_is_false
 
 
 class Update(UniventionAppAction):
@@ -301,21 +301,24 @@ class Update(UniventionAppAction):
 						if file == 'inst':
 							os.chmod(dest, 0o755)
 
+	def _get_local_archive(self, app_cache):
+		fname = os.path.join(LOCAL_ARCHIVE_DIR, app_cache.get_server_netloc(), app_cache.get_ucs_version(), 'all.tar.gz')
+		if os.path.exists(fname):
+			return fname
+
 	def _extract_local_archive(self, app_cache):
-		if ucr_get('version/version') != app_cache.get_ucs_version():
-			# Not my LOCAL_ARCHIVE
+		local_archive = self._get_local_archive(app_cache)
+		if not local_archive:
+			# Not my local_archive
 			return False
 		if any(not fname.startswith('.') for fname in os.listdir(app_cache.get_cache_dir())):
 			# we already have a cache. our archive is just outdated...
 			return False
-		if not os.path.exists(LOCAL_ARCHIVE):
-			# for some reason the archive is not there. should only happen when deleted intentionally...
-			return False
-		self.log('Filling the App Center file cache from our local archive!')
+		self.log('Filling the App Center file cache from our local archive %s!' % local_archive)
 		try:
-			archive = tarfile.open(LOCAL_ARCHIVE, 'r:*')
+			archive = tarfile.open(local_archive, 'r:*')
 		except (tarfile.TarError, IOError) as e:
-			self.warn('Error while reading %s: %s' % (LOCAL_ARCHIVE, e))
+			self.warn('Error while reading %s: %s' % (local_archive, e))
 			return
 		try:
 			for member in archive.getmembers():
