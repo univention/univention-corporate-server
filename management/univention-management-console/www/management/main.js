@@ -73,7 +73,8 @@ define([
 	"dijit/Tooltip",
 	"dijit/form/DropDownButton",
 	"dijit/layout/StackContainer",
-	"umc/widgets/Menu",
+	"umc/menu",
+	"umc/menu/Button",
 	"umc/widgets/TabController",
 	"umc/widgets/LiveSearch",
 	"umc/widgets/GalleryPane",
@@ -87,7 +88,7 @@ define([
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store, menu,
-		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, UMCMenu,
+		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {
 	// cache UCR variables
@@ -475,7 +476,6 @@ define([
 		_tabContainer: null,
 
 		_headerRight: null,
-		_mobileMenu: null,
 		_hostInfo: null,
 		_hostMenu: null,
 
@@ -638,11 +638,11 @@ define([
 		},
 
 		_setupMenu: function() {
-			this._mobileMenu = new UMCMenu({});
-			this._headerRight.addChild(this._mobileMenu);
+			var menuButton = new MenuButton();
+			this._headerRight.addChild(menuButton);
 
 			this._tabController.on('selectChild', lang.hitch(this, function() {
-				this._mobileMenu.closeMobileMenu();
+				menu.close();
 			}));
 		},
 
