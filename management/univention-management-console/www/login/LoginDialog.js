@@ -200,6 +200,9 @@ define([
 		_watchFormSubmits: function() {
 			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], lang.hitch(this, function(name) {
 				var form = dom.byId(name);
+				if (!form) {
+					return;
+				}
 				on(form, 'submit', lang.hitch(this, function(evt) {
 					evt.preventDefault();
 					// FIXME: if custom prompts and(!) new password is required we should just switch the view
@@ -255,6 +258,9 @@ define([
 				'umcLoginCustomPrompt': _('One time password')
 			}, function(id, placeholder) {
 				var node = dom.byId(id);
+				if (!node) {
+					return;  // the SAML signle sign on page is shown
+				}
 				attr.set(node, 'placeholder', placeholder);
 				if (!('placeholder' in node)) {
 					this.fixIEPlaceholders(node);

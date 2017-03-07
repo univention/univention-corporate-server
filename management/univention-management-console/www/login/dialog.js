@@ -56,7 +56,6 @@ define([
 
 		renderLoginDialog: function() {
 			this.addLinks();
-			this.addTooltips();
 			login.renderLoginDialog();
 			login._loginDialog.autoFill();
 			this.checkCookiesEnabled();
@@ -66,6 +65,7 @@ define([
 			array.forEach(this.getLinks(), function(link) {
 				domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
 			});
+			this.addTooltips();
 		},
 
 		getLinks: function() {
