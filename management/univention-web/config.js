@@ -141,7 +141,7 @@ dojoConfig = mixin({
 	map: {},
 	deps: _deps,
 	callback: function(parser, login, tools, meta) {
-		mixin(tools._status, meta.ucr);
+		mixin(tools._status, meta);
 		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
 		parser.parse();
 		umcConfig.callback.apply(umcConfig, customDeps);

@@ -1,3 +1,9 @@
+univention-web (1.0.31-1) unstable; urgency=medium
+
+  * Bug #43528: add feedback address to meta.json
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 13:33:43 +0100
+
 univention-web (1.0.30-1) unstable; urgency=medium
 
   * Bug #43743: fixup error messages; svn r77051

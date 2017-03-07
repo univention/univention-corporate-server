@@ -1,3 +1,9 @@
+univention-management-console (9.0.48-1) unstable; urgency=medium
+
+  * Bug #43528: add feedback address to meta.json
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 13:34:49 +0100
+
 univention-management-console (9.0.47-4) unstable; urgency=medium
 
   * Bug #42174: fix SAML login

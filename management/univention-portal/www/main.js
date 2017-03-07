@@ -131,7 +131,7 @@ define([
 			var portalCategory = new PortalCategory({
 				heading: heading,
 				apps: apps,
-				domainName: meta.ucr.domainname
+				domainName: meta.domainname
 			});
 			this.content.appendChild(portalCategory.domNode);
 			portalCategory.startup();

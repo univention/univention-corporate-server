@@ -1,5 +1,4 @@
 @!@
-import re
 import json
 import socket
 import fcntl
@@ -8,76 +7,7 @@ import urllib2
 from univention.config_registry.interfaces import Interfaces
 
 
-regEntries = re.compile(r'^ucs/web/overview/entries/(?P<category>[^/]+)/(?P<id>[^/]+)/(?P<key>[^/]+)(/(?P<lang>\w+))?$')
 tracebacks = []
-
-class LocalizedString:
-	def __init__(self):
-		self._data = dict(C='')
-
-	def set(self, value, lang=None):
-		lang = lang or 'C'
-		self._data[lang] = value
-
-	def toDict(self):
-		if len(self._data.keys()) == 1 and 'C' in self._data:
-			return self._data['C']
-		return self._data
-
-	def __str__(self):
-		return str(self.toDict())
-
-class Entry:
-	def __init__(self):
-		self._data = dict(icon='', priority='~', port_http='', port_https='', link=LocalizedString(), label=LocalizedString(), description=LocalizedString())
-
-	def set(self, key, value, lang=None):
-		lang = lang or 'C'
-		if not key in self._data:
-			return
-		if isinstance(self._data[key], LocalizedString):
-			self._data[key].set(value, lang)
-		else:
-			self._data[key] = value
-
-	def toDict(self):
-		returnDict = dict()
-		for ikey, ival in self._data.iteritems():
-			if isinstance(self._data[ikey], LocalizedString):
-				returnDict[ikey] = ival.toDict()
-			else:
-				returnDict[ikey] = ival
-		return returnDict
-
-	def __str__(self):
-		return str(self.toDict())
-
-def getEntries(category):
-	entries = dict()
-	for iucr, ival in configRegistry.items():
-		m = regEntries.match(iucr)
-		if not m:
-			# no match
-			continue
-
-		cat = m.group('category')
-		if not cat == category:
-			continue
-
-		id = m.group('id')
-		if not id in entries:
-			entries[id] = Entry()
-
-		key = m.group('key')
-		lang = m.group('lang')
-		entries[id].set(key, ival, lang)
-
-	# sort entries by priority and label
-	entries = [ ival.toDict() for ival in entries.itervalues() ]
-	entries.sort(key = lambda x: x.get('label'))
-	entries.sort(key = lambda x: x.get('priority', float('inf')))
-	return entries
-
 
 def query_ec2(key):
 	url = 'http://169.254.169.254/latest/meta-data/' + key
@@ -147,15 +77,13 @@ def get_ec2_address():
 
 
 data = dict(
-	service=getEntries('service'),
-	admin=getEntries('admin'),
-	ucr=dict(
-		domainname=configRegistry['domainname'],
-		hostname=configRegistry['hostname'],
-		ldap_master=configRegistry.get('ldap/master'),
-		serveraddress=get_ec2_address(),
-		appliance_name=configRegistry['umc/web/appliance/name']
-	),
+	domainname=configRegistry['domainname'],
+	hostname=configRegistry['hostname'],
+	ldap_master=configRegistry.get('ldap/master'),
+	serveraddress=get_ec2_address(),
+	appliance_name=configRegistry['umc/web/appliance/name'],
+	feedbackAddress=configRegistry.get('umc/web/feedback/mail', 'feedback@univention.de'),
+	feedbackSubject=configRegistry.get('umc/web/feedback/description', '[UMC-Feedback] Traceback'),
 	tracebacks=tracebacks,
 )
 
