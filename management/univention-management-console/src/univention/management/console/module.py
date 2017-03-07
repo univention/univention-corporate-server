@@ -181,6 +181,9 @@ class Flavor(JSON_Object):
 		self.categories = list(set(self.categories + other.categories))
 		self.required_commands = list(set(self.required_commands + other.required_commands))
 
+	def __repr__(self):
+		return '<%s %r>' % (type(self).__name__, self.json())
+
 
 class Module(JSON_Object):
 
@@ -257,6 +260,9 @@ class Module(JSON_Object):
 		self.commands = JSON_List(set(self.commands + other.commands))
 		self.required_commands = JSON_List(set(self.required_commands + other.required_commands))
 
+	def __repr__(self):
+		return '<%s %r>' % (type(self).__name__, self.json())
+
 
 class Link(Module):
 	pass
@@ -328,6 +334,10 @@ class XML_Definition(ET.ElementTree):
 				priority = float(elem.get('priority', -1))
 			except ValueError:
 				RESOURCES.warn('No valid number type for property "priority": %s' % elem.get('priority'))
+			categories = [cat.get('name') for cat in elem.findall('categories/category')]
+			if not categories and elem.find('categories') is None:
+				# if no categories element exists use the one from the module, if exists the module has no categories and is "hidden"!
+				categories = self.categories
 			yield Flavor(
 				id=elem.get('id'),
 				icon=elem.get('icon'),
@@ -338,8 +348,8 @@ class XML_Definition(ET.ElementTree):
 				description=elem.findtext('description'),
 				keywords=re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [name],
 				priority=priority,
-				categories=[cat.get('name') for cat in elem.findall('categories/category')],
-				required_commands=[cat.get('name') for cat in elem.findall('requiredCommands/requiredCommand')],
+				categories=categories,
+				required_commands=[cmd.get('name') for cmd in elem.findall('requiredCommands/requiredCommand')],
 				version=self.version,
 			)
 
@@ -381,6 +391,9 @@ class XML_Definition(ET.ElementTree):
 	def __nonzero__(self):
 		module = self.find('module')
 		return module is not None and len(module) != 0
+
+	def __repr__(self):
+		return '<XML_Definition %s (%r)>' % (self.id, self.name)
 
 
 _manager = None
