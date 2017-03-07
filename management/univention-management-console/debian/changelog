@@ -1,4 +1,4 @@
-univention-management-console (9.0.51-1) unstable; urgency=medium
+univention-management-console (9.0.51-2) unstable; urgency=medium
 
   * Bug #42174: outsource ProxyPass into own file because univention-saml.conf
   	has problems otherwise

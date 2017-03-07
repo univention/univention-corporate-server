@@ -14,7 +14,7 @@ Variables: umc/http/content-security-policy/form-action
 Variables: umc/http/content-security-policy/frame-ancestors
 
 Type: file
-File: etc/apache2/sites-available/univention.conf
+File: etc/apache2/sites-available/univention-proxy.conf
 Variables: umc/http/port
 Variables: umc/http/interface
 Variables: umc/http/response-timeout
