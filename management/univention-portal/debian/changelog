@@ -1,3 +1,9 @@
+univention-portal (1.0.7-2) unstable; urgency=medium
+
+  * Bug #42263: Adjust menu structure
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Mar 2017 15:55:00 +0100
+
 univention-portal (1.0.7-1) unstable; urgency=medium
 
   * Bug #43528: add feedback address to meta.json
