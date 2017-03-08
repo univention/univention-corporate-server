@@ -34,9 +34,9 @@ define([
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/ComboBox",
-	"umc/widgets/TextBox",
+	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, tools, Form, ComboBox, TextBox, _) {
+], function(declare, lang, tools, Form, ComboBox, SearchBox, _) {
 	return declare("umc.modules.appcenter.SearchForm", [ Form ], {
 
 		postMixInProperties: function() {
@@ -77,26 +77,20 @@ define([
 						},
 						{
 							name: 'pattern',
-							label: _("Pattern"),
+							inlineLabel: _('Search...'),
 							size: 'TwoThirds',
-							type: TextBox,
+							type: SearchBox,
 							value: '*',
 							required: false,
 							onChange: lang.hitch(this, function() {
 								this._check_submit_allow();
-							})
-						}
-					],
-					buttons:
-					[
-						{
-							name: 'submit',
-							label: _("Search")
+							}),
+							onSearch: lang.hitch(this, 'submit')
 						}
 					],
 					layout:
 					[
-						['section', 'key', 'pattern', 'submit']
+						['section', 'key', 'pattern']
 					]
 				});
 			} catch(error) {
@@ -116,18 +110,19 @@ define([
 
 			this.allowSearchButton(allow);
 		},
-		//
+
 		// while a query is pending the search button should be disabled. This function
 		// is called from inside (onSubmit) and from outside (in the onFetchComplete
 		// callback of the grid)
 		allowSearchButton: function(yes) {
 			this._buttons.submit.set('disabled', !yes);
+			this._widgets.pattern.set('disabled', !yes);
+			this._widgets.pattern.focus();
 		},
 
 		onSubmit: function() {
 			this.allowSearchButton(false);
 			return this.inherited(arguments);
 		}
-
 	});
 });
