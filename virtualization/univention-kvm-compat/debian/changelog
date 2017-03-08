@@ -1,0 +1,5 @@
+univention-kvm-compat (1.0.0-1) unstable; urgency=medium
+
+  * Bug #38877: UCS-4.2 Historic ROM files
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Feb 2017 17:19:04 +0100
