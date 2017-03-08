@@ -1,6 +1,7 @@
 univention-management-console (9.0.52-1) unstable; urgency=medium
 
   * Bug #42174: don't watch form submits of SAML login dialog
+  * Bug #42174: fix apache configuration
 
  -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 18:02:06 +0100
 
