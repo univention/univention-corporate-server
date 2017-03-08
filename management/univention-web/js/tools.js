@@ -774,6 +774,7 @@ define([
 			}
 
 			title = title || tools._statusMessages[status] || '';
+			message = message || '';
 
 			// TODO: move into the UMC-Server
 			// handle tracebacks: on 500 Internal Server Error they might not contain the word 'Traceback', because not all modules use the UMC-Server error handling yet

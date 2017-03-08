@@ -1,3 +1,9 @@
+univention-web (1.0.31-15) unstable; urgency=medium
+
+  * Bug #43743: fix exception in tools.parseError()
+
+ -- Florian Best <best@univention.de>  Wed, 08 Mar 2017 15:26:40 +0100
+
 univention-web (1.0.31-14) unstable; urgency=medium
 
   * Bug #42173: Focus first field in dialog.confirmForm() + return references
