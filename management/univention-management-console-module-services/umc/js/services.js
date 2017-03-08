@@ -38,9 +38,9 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
 	"umc/widgets/SearchForm",
-	"umc/widgets/TextBox",
+	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/services"
-], function(declare, lang, array, dialog, tools, Module, Page, Grid, SearchForm, TextBox, _) {
+], function(declare, lang, array, dialog, tools, Module, Page, Grid, SearchForm, SearchBox, _) {
 	return declare("umc.modules.services", [ Module ], {
 
 		moduleStore: null,
@@ -188,16 +188,20 @@ define([
 			});
 
 			var widgets = [{
-				type: TextBox,
+				type: SearchBox,
 				name: 'pattern',
 				value: '',
-				label: _('Keyword')
+				inlineLabel: _('Search...'),
+				onSearch: lang.hitch(this, function() {
+					this._searchWidget.submit();
+				})
 			}];
 
 			this._searchWidget = new SearchForm({
 				region: 'nav',
+				hideSubmitButton: true,
 				widgets: widgets,
-				layout: [[ 'pattern', 'submit', 'reset' ]],
+				layout: ['pattern'],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 

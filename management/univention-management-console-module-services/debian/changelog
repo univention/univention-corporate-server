@@ -1,3 +1,9 @@
+univention-management-console-module-services (6.0.0-2) unstable; urgency=medium
+
+  * Bug #43528: Use SearchBox and hide extra search button
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 13:39:10 +0100
+
 univention-management-console-module-services (6.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
