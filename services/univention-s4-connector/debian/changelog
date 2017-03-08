@@ -1,3 +1,12 @@
+univention-s4-connector (11.0.6-10) unstable; urgency=medium
+
+  * Bug #42045: Samba changed the PIDL code generator for string_array,
+    (Samba Bug 12601) so the drsblobs.package_PackagesBlob.names now
+    expexts a talloc.GenericObject reference, but python-talloc currently
+    doesn't expose a constructor for that.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Mar 2017 19:09:37 +0100
+
 univention-s4-connector (11.0.6-9) unstable; urgency=medium
 
   * Bug #43629: s4c: introduce `connector/s4/mapping/gpo/syncmode`

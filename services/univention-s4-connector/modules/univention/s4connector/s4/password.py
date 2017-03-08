@@ -40,15 +40,11 @@ from univention.s4connector.s4 import compatible_modstring
 from univention.s4connector.s4 import format_escaped
 import binascii
 
-from samba.ndr import ndr_unpack, ndr_pack
+from samba.ndr import ndr_unpack, ndr_pack, ndr_print
 from samba.dcerpc import drsblobs
 import heimdal
 from ldap.controls import LDAPControl
-import ctypes
 import traceback
-_PyCObject_FromVoidPtr = ctypes.pythonapi.PyCObject_FromVoidPtr
-_PyCObject_FromVoidPtr.argtypes = [ctypes.POINTER(ctypes.c_char_p), ctypes.c_void_p]
-_PyCObject_FromVoidPtr.restype = ctypes.py_object
 
 
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
@@ -387,12 +383,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		package_names.append('Kerberos')
 
 	if package_names:
-		package_names_carray = (ctypes.c_char_p * len(package_names))(*package_names)
-		package_names_PyCObject = _PyCObject_FromVoidPtr(ctypes.cast(package_names_carray, ctypes.POINTER(ctypes.c_char_p)), None)
-		krb_Packages = drsblobs.package_PackagesBlob()
-		krb_Packages.names = package_names_PyCObject
-		krb_blob_Packages = ndr_pack(krb_Packages)
-		# krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')       # this pretty much simulates it
+		krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')
 		cred_PackagesBlob_data = binascii.hexlify(krb_blob_Packages).upper()
 		cred_PackagesBlob_name = "Packages"
 		cred_PackagesBlob = drsblobs.supplementalCredentialsPackage()
@@ -412,6 +403,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		sc = drsblobs.supplementalCredentialsBlob()
 		sc.sub = sub
 		sc_blob = ndr_pack(sc)
+		ud.debug(ud.LDAP, ud.ALL, "calculate_supplementalCredentials: sc:\n%s" % ndr_print(sc))
 
 	return sc_blob
 
