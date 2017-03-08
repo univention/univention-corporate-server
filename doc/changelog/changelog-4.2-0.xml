@@ -58,6 +58,10 @@
 				<listitem><simpara>
 					The Linux kernel has been updated to 4.9.2 (<u:bug>42048</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The kernel modules <package>openafs-modules-dkms</package>, <package>blktap-dkms</package>, <package>virtualbox-dkms</package>, <package>virtualbox-guest-dkms</package>, <package>open-vm-tools-dkms</package>, <package>backfire-dkms</package> and <package>oss4-dkms</package> have been updated to be compatible with the new Linux kernel 4.9.
+					The modules <package>iscsitarget-dkms</package> and <package>xtables-addons-dkms</package> are no longer supported <u:bug>42049</u:bug>.
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -253,7 +257,7 @@
 					The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/server/autostart</envar> (<u:bug>42339</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A crash in the UMC-Server has been fixed which could occur during connecting to module processes under heavy load (<u:bug>43713</u:bug>).
+					A crash in the UMC server has been fixed which could occur during connecting to module processes under heavy load (<u:bug>43713</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					UMC modules are able to serve requests for unauthenticated client now (<u:bug>42114</u:bug>).
@@ -615,7 +619,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					During <package>univention-system-setup</package>, the certificate for the initially configured <literal>undefined-hostname.unassigned-domain</literal> is not recreated (<u:bug>43626</u:bug>).
+					During <package>univention-system-setup</package>, the certificate for the initially configured <systemitem class="fqdomainname">undefined-hostname.unassigned-domain</systemitem> is not recreated (<u:bug>43626</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -630,7 +634,7 @@
 					The Squid proxy server now uses STARTTLS to encrypt all LDAP connections (<u:bug>43676</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A bug fix for Squidguards update-squidguard script was backported from the 1.5-5 release (<u:bug>43581</u:bug>).
+					For <package>squidguard</package> a fix for the script <filename>update-squidguard</filename> was ported back from the 1.5-5 release (<u:bug>43581</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
