@@ -56,6 +56,7 @@ define([
 	};
 
 	var showPasswordChangeDialog = function() {
+		menu.close();
 		dialog.confirmForm({
 			widgets: [{
 				type: Text,
