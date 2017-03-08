@@ -1,3 +1,9 @@
+univention-web (1.0.31-13) unstable; urgency=medium
+
+  * Bug #42172: adjust FQDN reg exp + add tools.isHostname() check
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Mar 2017 14:52:08 +0100
+
 univention-web (1.0.31-12) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of SearchBox + adjust styling of ComboBox
