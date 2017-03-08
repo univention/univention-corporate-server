@@ -184,17 +184,15 @@ define([
 
 	var _validateHostname = function(hostname) {
 		hostname = hostname || '';
-		var hasNoDots = hostname.indexOf('.') < 0;
 		var acceptEmtpy = !hostname && !this.required;
-		return acceptEmtpy || (tools.isFQDN(hostname) && hasNoDots);
+		return acceptEmtpy || (tools.isHostname(hostname));
 	};
 
 	var _invalidDomainNameMessage = _('Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>');
 	var _validateDomainName = function(domainName) {
 		domainName = domainName || '';
-		var hasEnoughParts = domainName.split('.').length >= 2;
 		var acceptEmtpy = !domainName && !this.required;
-		return acceptEmtpy || (tools.isFQDN(domainName) && hasEnoughParts);
+		return acceptEmtpy || (tools.isFQDN(domainName));
 	};
 
 	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>');

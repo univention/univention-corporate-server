@@ -1,3 +1,9 @@
+univention-system-setup (10.0.7-22) unstable; urgency=medium
+
+  * Bug #42172: Fix _validateHostname() check
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Mar 2017 14:57:38 +0100
+
 univention-system-setup (10.0.7-21) unstable; urgency=medium
 
   * Bug #42172: Adjust references to translation files
