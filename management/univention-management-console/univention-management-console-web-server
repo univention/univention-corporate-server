@@ -271,6 +271,7 @@ class UMCP_Dispatcher(object):
 			CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
 			response = Response(queuerequest.request)
 			response.status = UNAUTHORIZED
+			response.message = 'This session is not valid with this requesting IP address. Please relogin.'
 			queuerequest.response_queue.put(response)
 			return
 
@@ -729,6 +730,17 @@ class CPgeneric(Ressource):
 		# create new UMCP request
 		req = self.get_request('/'.join(path), args)
 
+		user = self.get_user()
+		if user and user.password and not UMCP_Dispatcher.sessions.get(sessionid):
+			auth = Request('AUTH')
+			auth.body = {'username': user.username, 'password': user.password}
+			try:
+				self.make_queue_request(sessionid, auth)
+				self.set_session(sessionid, user.username, password=user.password)
+			except UMC_HTTPError:
+				self.expire_session()
+				raise
+
 		response = self.make_queue_request(sessionid, req)
 		body = response.body
 		if response.mimetype == 'application/json':
@@ -744,16 +756,6 @@ class CPgeneric(Ressource):
 
 		response_queue = Queue.Queue()
 		user = self.get_user()
-
-		if user and user.password and not UMCP_Dispatcher.sessions.get(sessionid):
-			auth = Request('AUTH')
-			auth.body = {'username': user.username, 'password': user.password}
-			auth_response = Queue.Queue()
-			self._log(99, 'reauthenticating')
-			UMCP_Dispatcher._queue_send.put(QueueRequest(sessionid, auth, auth_response, get_ip_address()))
-			if 200 <= auth_response.get().status < 300:
-				self.set_session(sessionid, user.username, password=user.password)
-				self._log(99, 'successfull reauthentication')
 
 		queue_request = QueueRequest(sessionid, request, response_queue, get_ip_address())
 		UMCP_Dispatcher._queue_send.put(queue_request)
