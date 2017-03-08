@@ -9,6 +9,9 @@
 .umc .umcUDMSearchForm.umcUDMSearchFormSimpleTextBox .umcLabelPane.umcSearchFormElementBeforeSubmitButton {
 	padding-right: 2.9em;
 }
+.umc .umcUDMSearchForm.umcUDMSearchFormSimpleTextBox .umcLabelPane.umcSearchFormElementBeforeSubmitButton .dijitInputContainer {
+	margin-right: 30px;
+}
 .umc .umcUDMSearchForm .umcLabelPane.umcSearchFormSubmitButton {
 	padding-right: 0;
 	width: 3.2em;

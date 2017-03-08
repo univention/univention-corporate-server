@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.7-3) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of simple search form
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 18:44:16 +0100
+
 univention-management-console-module-udm (7.0.7-2) unstable; urgency=medium
 
   * Bug #43528: Reset udm search form values when toggling back to simple
