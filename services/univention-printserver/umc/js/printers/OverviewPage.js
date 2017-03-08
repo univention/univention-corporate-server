@@ -36,10 +36,10 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
 	"umc/widgets/SearchForm",
-	"umc/widgets/TextBox",
+	"umc/widgets/SearchBox",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, dialog, store, Page, Grid, SearchForm, TextBox, ComboBox, _) {
+], function(declare, lang, dialog, store, Page, Grid, SearchForm, SearchBox, ComboBox, _) {
 	return declare("umc.modules.printers.OverviewPage", [ Page ], {
 
 		_last_filter: { key: 'printer', pattern: '' },
@@ -58,10 +58,11 @@ define([
 
 			this._form = new SearchForm({
 				region: 'nav',
+				hideSubmitButton: true,
 				widgets: [{
 					name: 'key',
 					type: ComboBox,
-					label: _("Search key"),
+					label: _("Search for"),
 					staticValues: [
 					 	 { id: 'printer',		label: _("Printer name")},
 					 	 { id: 'description',	label: _("Description")},
@@ -70,11 +71,14 @@ define([
 					sortStaticValues: false
 				}, {
 					name: 'pattern',
-					type: TextBox,
-					label: _("Pattern"),
-					value: ''
+					type: SearchBox,
+					inlineLabel: _('Search...'),
+					value: '',
+					onSearch: lang.hitch(this, function() {
+						this._form.submit();
+					})
 				}],
-				layout: [['key', 'pattern', 'submit']],
+				layout: [['key', 'pattern']],
 				onSearch: lang.hitch(this, function(values) {
 					this._enable_search_button(false);
 					this._last_filter = values;			// save for easy refresh

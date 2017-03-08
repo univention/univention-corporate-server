@@ -1,3 +1,9 @@
+univention-printserver (10.0.0-4) unstable; urgency=medium
+
+  * Bug #43528: Use SearchBox and hide extra search button
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 13:05:41 +0100
+
 univention-printserver (10.0.0-3) unstable; urgency=low
 
   * Bug #43417: updated LDAP ppd's
