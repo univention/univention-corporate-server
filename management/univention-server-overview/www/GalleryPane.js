@@ -56,19 +56,15 @@ define([
 		useFqdn: true,
 
 		renderRow: function(item, options) {
-			var getHostAddress = function() {
-				if (this.useFqdn) {
-					if (item.domain) {
-						return lang.replace('{hostname}.{domain}', item);
-					} else {
-						return item.hostname;
-					}
-				}
-				else if (item.ip instanceof Array) {
+			var getHostAddress = lang.hitch(this, function() {
+				if (!this.useFqdn && item.ip instanceof Array && item.ip.length > 0) {
 					return item.ip[0];
 				}
-				return '#';
-			};
+				if (item.domain) {
+					return lang.replace('{hostname}.{domain}', item);
+				}
+				return item.hostname;
+			});
 
 			var getVersion = function() {
 				if (item.version) {

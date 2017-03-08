@@ -87,14 +87,45 @@ define([
 		},
 
 		initGallery: function() {
+			var serverPriorities = {
+				master: 1,
+				backup: 2,
+				slave: 3,
+				member: 4
+			};
+
 			this.gallery = registry.byId('gallery');
-			this.gallery.useFqdn = !tools.isIPAddress(window.location.hostname);
-			tools.umcpCommand('serveroverview/query').then(lang.hitch(this, function(data) {
+			this.gallery.useFqdn = tools.isFQDN(window.location.hostname);
+			tools.umcpCommand('serveroverview/query').then(lang.hitch(this, function(response) {
+				// create a field _priority for sorting w.r.t. to server type
+				var data = response.result;
+				array.forEach(data, function(item) {
+					if (item.serverRole instanceof Array) {
+						item._priority = serverPriorities[item.serverRole[0]];
+					}
+					if (!item._priority) {
+						// fallback
+						item._priority = 5;
+					}
+				});
+
+				// store object
 				var store = new Observable(new Memory({
-					data: data.result,
+					data: data,
 					idProperty: 'dn'
 				}));
 				this.gallery.set('store', store);
+
+				// sort w.r.t. to server type and hostname
+				this.gallery.set('queryOptions', {
+					sort: [{
+						attribute: '_priority',
+						descending: false
+					}, {
+						attribute: 'hostname',
+						descending: false
+					}]
+				});
 				this.standby(false);
 			}));
 		}
