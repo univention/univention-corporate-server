@@ -1,3 +1,10 @@
+univention-web (1.0.31-12) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of SearchBox + adjust styling of ComboBox
+    arrow
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 12:58:11 +0100
+
 univention-web (1.0.31-11) unstable; urgency=medium
 
   * Bug #43528: Make sure not to build again for "make install"
