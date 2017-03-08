@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,dojo,getQuery*/
+/*global define,dojo,getQuery,require*/
 
 
 define([
@@ -56,8 +56,6 @@ define([
 
 		renderLoginDialog: function() {
 			this.addLinks();
-			login.renderLoginDialog();
-			login._loginDialog.autoFill();
 			this.checkCookiesEnabled();
 		},
 
@@ -148,18 +146,6 @@ define([
 			}));
 		},
 
-		_fillUsernameField: function(username) {
-			dom.byId('umcLoginUsername').value = username;
-			dom.byId('umcLoginPassword').focus();
-
-			//fire change event manually for internet explorer
-			if (has('ie') < 10) {
-				var event = document.createEvent("HTMLEvents");
-				event.initEvent("change", true, false);
-				dom.byId('umcLoginUsername').dispatchEvent(event);
-			}
-		},
-
 		showTooltip: function(node) {
 			Tooltip.show(node.title, node);
 			on.once(dojo.body(), 'click', function(evt) {
@@ -169,3 +155,17 @@ define([
 		}
 	};
 });
+
+function _fillUsernameField(username) {
+	require(['dojo/dom', 'dojo/has'], function(dom, has) {
+	dom.byId('umcLoginUsername').value = username;
+	dom.byId('umcLoginPassword').focus();
+
+	//fire change event manually for internet explorer
+	if (has('ie') < 10) {
+		var event = document.createEvent("HTMLEvents");
+		event.initEvent("change", true, false);
+		dom.byId('umcLoginUsername').dispatchEvent(event);
+	}
+	});
+}

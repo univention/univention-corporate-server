@@ -103,6 +103,7 @@ define([
 
 			this._loginDialog = new LoginDialog({});
 			this._loginDialog.startup();
+			this._loginDialog.autoFill();
 			this._loginDialog.show();
 
 			// check if a page reload is required
