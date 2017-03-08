@@ -47,11 +47,11 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 
 ### MAIN RULES ###
 
-.PHONY: build install clean tmp tmp-umc-icons build-dev build-live i18n
+.PHONY: build install clean tmp-build tmp-umc-icons build-dev build-live i18n
 
 build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js
 
-$(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp
+$(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
 	# main dojo build process
 	mkdir -p $(BUILD_DIR)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)"
@@ -59,7 +59,7 @@ $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp
 JS_INSTALL_DIR := usr/share/univention-web/js
 THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
-install: build
+install:
 	# copy all files for univention-web-js
 	cd $(BUILD_DIR); find . -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
 	cd $(BUILD_DIR); find . -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
@@ -78,7 +78,7 @@ I18N_FILES := js/de.po js/en.po
 
 i18n: $(I18N_FILES)
 
-build-dev: tmp $(TMP_UMC_ICON_FILES)
+build-dev: tmp-build $(TMP_UMC_ICON_FILES)
 	# divert original js symlink and create symlink to temporary build dir "tmp"
 	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "/usr/share/univention-web/js" ]; then \
 		dpkg-divert --package univention-web-make-build-dev --add --rename --divert $(WWW_JS_DIR).real $(WWW_JS_DIR) ;\
@@ -114,7 +114,7 @@ PNG_IMG_FILES := $(filter-out css/images/login_logo.png,$(SVG_IMG_FILES:.svg=.pn
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
