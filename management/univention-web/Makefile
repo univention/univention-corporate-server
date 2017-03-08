@@ -30,152 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-DOJO_DIR:=/usr/share/univention-dojo
-VERSION:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-BUILD_DIR:=$(CURDIR)/build
-TESTS_DIR:=$(CURDIR)/tests
-WWW_JS_DIR:=/var/www/univention/js
-JS_FILES:=$(shell find js -name "*.js")
-I18N_FILES= $(addprefix js/, de.json en.json de.po en.po)
-TMP_I18N_FILES= $(addprefix $(TMP_DIR)/umc/i18n/, en/app.json de/app.json)
 
-TMP_DIR:=$(CURDIR)/tmp
-TMP_JS_FILES:=$(patsubst js/%, $(TMP_DIR)/umc/%, $(TMP_DIR))
-THEME_REPO=css
-TMP_THEME_DIR=$(TMP_DIR)/dijit/themes/umc
-STYL_FILES:=$(shell find $(THEME_REPO) -name "*.styl")
-TMP_STYL_FILES:=$(STYL_FILES:$(THEME_REPO):$(TMP_THEME_DIR))
-TMP_CSS_FILES:=$(TMP_STYL_FILES:.styl:.css)
+### META FILES AND DIRECTORIES ###
+
+DOJO_DIR := /usr/share/univention-dojo
+VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+WWW_JS_DIR := /var/www/univention/js
+
+TMP_DIR := $(CURDIR)/tmp
+TMP_THEME_DIR := $(TMP_DIR)/dijit/themes/umc
+TMP_I18N_DIR := $(TMP_DIR)/umc/i18n
+
+BUILD_DIR := $(CURDIR)/build
 BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
-BUILD_IMAGE_DIRS=$(addprefix $(BUILD_THEME_DIR)/, images form/images layout/images)
-TMP_THEME_CSS=$(TMP_THEME_DIR)/$(CSS_FILE_NAME)
-CSS_FILE_NAME=umc.css
-ICONS_DIR=/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons
-
-JS_INSTALL_DIR:=usr/share/univention-web/js
-THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
-
-.PHONY: build-dev install clean
-
-build: $(BUILD_DIR)/dojo/dojo.js build-css $(BUILD_DIR)/config.js
-
-build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css $(TMP_DIR)/dijit/themes/umc/icons $(TMP_DIR)/config.js
-	# divert original js symlink and create symlink to temporary build dir "tmp"
-	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "/usr/share/univention-web/js" ]; then \
-		dpkg-divert --package univention-web-make-build-dev --add --rename --divert $(WWW_JS_DIR).real $(WWW_JS_DIR) ;\
-		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
-		ln -s /usr/share/univention-web/js/umc/hooks.json $(TMP_DIR)/umc ;\
-		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
-		ucr set umc/web/hooks/univention-web-js?default_menu_entries ;\
-	fi
-
-build-live: build-dev
-	# generate source maps
-	for idir in . form layout site; do \
-		cd $(TMP_THEME_DIR)/$$idir; \
-		stylus --sourcemap --watch . & \
-	done
-
-build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
-
-# shortcut rule
-i18n: js/de.po js/en.po
-
-tmp-css: $(TMP_THEME_DIR) $(TMP_THEME_DIR)/bootstrap.css $(addprefix $(TMP_THEME_DIR)/images/,icons-white.svg icons-small-white.svg icons.png icons-small.png icons-white.png icons-small-white.png univention-white.svg home-white.svg) $(TMP_THEME_DIR)/fonts
 
 
-$(TMP_DIR):
-	# copy dojo and dijit files into tmp dir; remove util dir
-	mkdir -p $@
-	cp -rf $(DOJO_DIR)/* $@
-	rm -rf $@/util
-	# copy univention JS files into the tmp dir
-	cp -rfs "$(CURDIR)/js" $@/umc
-	ln -s $(CURDIR)/config.js $@
+### MAIN RULES ###
 
-%/config.js: config.js
-	# copy the config.js to its appropriate directory
-	sed 's/%VERSION%/$(VERSION)/' $< > $@
+.PHONY: build install clean tmp tmp-umc-icons build-dev build-live i18n
 
-$(TMP_THEME_DIR): $(TMP_DIR)
-	# link theme files into the tmp dir
-	cp -fsr $(PWD)/$(THEME_REPO) $@
+build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js
 
-# automatically create SVG files with white icons
-%-white.svg: %.svg
-	sed 's/\#282828/\#ffffff/g' $< > $@
-
-%.png: %.svg
-	convert -background transparent "$<" "$@"
-
-$(BUILD_THEME_DIR)/fonts $(TMP_THEME_DIR)/fonts: roboto.zip
-	mkdir -p $@
-	unzip -o $< -d $@
-
-%/bootstrap.css: bootstrap.zip
-	unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
-	sed -i '/font-size: 10px/d' $@;
-
-$(BUILD_IMAGE_DIRS)::
-	mkdir -p $(@D)
-	src=$@; \
-	src=$(TMP_THEME_DIR)$${src#$(BUILD_THEME_DIR)}; \
-	cp -rL $$src $@
-
-$(BUILD_THEME_DIR)/umc.css: tmp-css
-	# generate source maps
-	for idir in . form layout site; do \
-		cd $(TMP_THEME_DIR)/$$idir; \
-		stylus --sourcemap . ; \
-	done
-	# Workaround: mark several commands as comments (/*TMP ... */)
-	# to avoid parse errors with stylus
-	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $(TMP_DIR)/dojo $(TMP_DIR)/dijit -name "*.css")
-	# compile all .css files into one big file
-	mkdir -p $(@D)
-	cp $(TMP_THEME_CSS) $(TMP_THEME_CSS).bak
-	stylus --resolve-url --include-css $(TMP_THEME_CSS)
-	mv $(TMP_THEME_CSS) $(@D)
-	mv $(TMP_THEME_CSS).bak $(TMP_THEME_CSS)
-	# Workaround: remove the temporarily commented lines
-	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@
-
-$(TMP_DIR)/umc/_all.js:
-	# generate a pseudo module which contains references to all other JS modules
-	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" -a -not -wholename 'js/hooks/*' | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
-	echo "define([$$deps], function() { })" > $@
-
-$(TMP_DIR)/dijit/themes/umc/icons:
-	cp -rfs $(ICONS_DIR) $@
-
-$(TMP_DIR)/umc/package.json: debian/changelog
-	mkdir -p $(@D)
-	sed 's/%VERSION%/$(VERSION)/' package.json > $@
-
-# manually define dependencies between JSON translation files
-# and add a more generic rule for copying JSON translation file
-$(TMP_DIR)/umc/i18n/de/app.json: js/de.json
-$(TMP_DIR)/umc/i18n/en/app.json: js/en.json
-$(TMP_DIR)/umc/i18n/%/app.json:
-	# install JSON translation at correct position
-	mkdir -p $(@D)
-	cp $< $@
-
-$(I18N_FILES):: $(JS_FILES)
-	# update .po files and convert .po to .json files (in one go)
-	lang=$(@F); \
-	lang=$${lang%.*}; \
-	/usr/bin/dh-umc-translate -p univention-web-js -l $$lang -o $(@D) $^
-
-$(BUILD_DIR)/dojo/dojo.js: build_profile.js $(TMP_JS_FILES) $(TMP_DIR) $(TMP_I18N_FILES) $(TMP_DIR)/umc/_all.js $(TMP_DIR)/umc/i18n/en/branding.json $(TMP_DIR)/umc/package.json
+$(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp
 	# main dojo build process
 	mkdir -p $(BUILD_DIR)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)"
 
-$(TMP_DIR)/umc/i18n/en/branding.json:
-	# create empty branding localisation files to not cause 404 errors
-	mkdir -p $(@D)
-	touch "$@"
+JS_INSTALL_DIR := usr/share/univention-web/js
+THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
 install: build
 	# copy all files for univention-web-js
@@ -186,8 +68,138 @@ install: build
 	cd $(BUILD_DIR); find dijit/themes/umc -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
 	cd $(BUILD_DIR); find dijit/themes/umc -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
 
+
+### DEVELOPMENT RULES ###
+
+UMC_ICONS_DIR := /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons
+UMC_ICON_FILES := $(shell find $(UMC_ICONS_DIR) -type f)
+TMP_UMC_ICON_FILES := $(UMC_ICON_FILES:$(UMC_ICONS_DIR)/%=$(TMP_THEME_DIR)/icons/%)
+I18N_FILES := js/de.po js/en.po
+
+i18n: $(I18N_FILES)
+
+build-dev: tmp $(TMP_UMC_ICON_FILES)
+	# divert original js symlink and create symlink to temporary build dir "tmp"
+	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "/usr/share/univention-web/js" ]; then \
+		dpkg-divert --package univention-web-make-build-dev --add --rename --divert $(WWW_JS_DIR).real $(WWW_JS_DIR) ;\
+		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
+		ln -s /usr/share/univention-web/js/umc/hooks.json $(TMP_DIR)/umc ;\
+		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
+		ucr set umc/web/hooks/univention-web-js?default_menu_entries ;\
+	fi
+
+$(TMP_UMC_ICON_FILES): $(TMP_THEME_DIR)/icons/%: $(UMC_ICONS_DIR)/%
+	mkdir -p $(@D)
+	ln -fs $< $@
+
+
+### INTERMEDIATE LEVEL BUILD RULES ###
+
+# javascript files
+JS_FILES := $(shell find js -name "*.js")
+TMP_JS_FILES := $(JS_FILES:js/%=$(TMP_DIR)/umc/%)
+DOJO_PACKAGES := $(filter-out $(DOJO_DIR)/util, $(wildcard $(DOJO_DIR)/*))
+TMP_DOJO_PACKAGES := $(DOJO_PACKAGES:$(DOJO_DIR)/%=$(TMP_DIR)/%)
+TMP_I18N_FILES := $(addprefix $(TMP_I18N_DIR)/, en/app.json de/app.json en/branding.json de/branding.json)
+
+# font files
+FONT_FILES := $(shell unzip -l roboto.zip | sed -n 's/^.*\s*\(Roboto.*\.woff\).*$$/\1/p')
+TMP_FONT_FILES := $(addprefix $(TMP_THEME_DIR)/fonts/, $(FONT_FILES))
+
+# image files
+IMG_FILES := $(shell find css -name "*.svg" -o -name "*.png" -o -name "*.gif")
+WHITE_IMG_FILES := $(addprefix css/images/,icons-white.svg icons-small-white.svg univention-white.svg home-white.svg)
+SVG_IMG_FILES := $(shell find css -name "*.svg")
+PNG_IMG_FILES := $(filter-out css/images/login_logo.png,$(SVG_IMG_FILES:.svg=.png))
+ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
+TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
+
+tmp: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
+
+$(TMP_JS_FILES):
+	@# create symlinks for all JavaScript files
+	mkdir -p $(@D)
+	ln -fs $(patsubst $(TMP_DIR)/umc/%,$(CURDIR)/js/%,$@) $@
+
+$(TMP_DOJO_PACKAGES): $(TMP_DIR)/%: $(DOJO_DIR)/%
+	@# copy dojo and dijit files into tmp dir; remove util dir
+	mkdir -p $(TMP_DIR)
+	cp -rfs $< $@
+
+$(TMP_I18N_DIR)/%/branding.json:
+	@# create empty branding localisation files to not cause 404 errors
+	mkdir -p $(@D)
+	touch "$@"
+
+$(TMP_I18N_DIR)/%/app.json: js/%.po
+	@# create empty branding localisation files to not cause 404 errors
+	mkdir -p $(@D)
+	dh-umc-po2json $<
+	mv $(<D)/$*.json $@
+
+js/%.po: $(JS_FILES)
+	xgettext --force-po --add-comments=i18n --from-code=UTF-8 --sort-output --language JavaScript -o $@.temp $^
+	msgmerge $@ $@.temp > $@.new
+	mv $@.new $@
+	rm -f $@.temp
+
+$(TMP_DIR)/umc/package.json: debian/changelog
+	mkdir -p $(@D)
+	sed 's/%VERSION%/$(VERSION)/' package.json > $@
+
+$(TMP_DIR)/umc/_all.js:
+	# generate a pseudo module which contains references to all other JS modules
+	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" -a -not -wholename 'js/hooks/*' | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
+	echo "define([$$deps], function() { })" > $@
+
+%/config.js: config.js
+	# copy the config.js to its appropriate directory
+	mkdir -p $(@D)
+	sed 's/%VERSION%/$(VERSION)/' $< > $@
+
+$(TMP_THEME_DIR)/umc.css: css/umc.css
+	mkdir -p $(@D)
+	ln -fs $(CURDIR)/css/umc.css* $(@D)
+
+STYL_FILES := $(shell find css -name "*.styl")
+
+css/umc.css: css/umc.styl $(STYL_FILES) $(ALL_IMG_FILES)
+	cd $(@D); stylus --sourcemap --resolve-url --hoist-atrules $(<F)
+
+$(TMP_THEME_DIR): $(TMP_DIR)
+	# link theme files into the tmp dir
+	cp -fsr $(CURDIR)/css $@
+
+$(TMP_IMG_FILES): $(TMP_THEME_DIR)/%: css/%
+	@# create symlinks for all image files
+	mkdir -p $(@D)
+	cp $< $@
+
+%/bootstrap.css: bootstrap.zip
+	unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
+	sed -i '/font-size: 10px/d' $@
+
+$(TMP_FONT_FILES): roboto.zip
+	mkdir -p $(@F)
+	unzip -o $< $(@F) -d $(@D)
+	touch $@
+
+# automatically create SVG files with white icons
+%-white.svg: %.svg
+	sed 's/\#282828/\#ffffff/g' $< > $@
+
+%.png: %.svg
+	convert -background transparent "$<" "$@"
+
+
+### CLEAN RULE ###
+
+CREATED_IMG_FILES := $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
+
+.INTERMEDIATE: $(CREATED_IMG_FILES)
+
 clean:
-	rm -rf $(TMP_DIR) $(BUILD_DIR) js/de.json js/en.json
+	rm -rf $(TMP_DIR) $(BUILD_DIR) css/umc.css{,.map} $(CREATED_IMG_FILES)
 	# remove link to temporary build dir "tmp" and undivert original js directory
 	if [ -L $(WWW_JS_DIR) -a "$$(readlink -f $(WWW_JS_DIR))" = "$(TMP_DIR)" ]; then \
 		rm $(WWW_JS_DIR) ;\
