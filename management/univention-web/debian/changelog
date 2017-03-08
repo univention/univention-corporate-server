@@ -1,3 +1,10 @@
+univention-web (1.0.31-16) unstable; urgency=medium
+
+  * Bug #43528: Make SearchBox disableable and refocus when search icon is
+    clicked + styling of disabled TextBox
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 18:34:02 +0100
+
 univention-web (1.0.31-15) unstable; urgency=medium
 
   * Bug #43743: fix exception in tools.parseError()

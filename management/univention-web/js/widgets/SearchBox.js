@@ -38,14 +38,29 @@ define([
 	return declare("umc.widgets.SearchBox", TextBox, {
 		'class': 'umcSearchBox',
 
+		_searchIconEventHandler: null,
+
 		_createSearchIcon: function() {
 			this._searchIconNode = put(this.domNode.firstChild, '-div.umcSearchIcon');
-			this.own(on(this._searchIconNode, 'click', lang.hitch(this, 'onSearch')));
+			this._searchIconEventHandler = on.pausable(this._searchIconNode, 'click', lang.hitch(this, function() {
+				this.focus();
+				this.onSearch();
+			}));
+			this.own(this._searchIconEventHandler);
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._createSearchIcon();
+		},
+
+		_setDisabledAttr: function(disabled) {
+			if (disabled) {
+				this._searchIconEventHandler.pause();
+			} else {
+				this._searchIconEventHandler.resume();
+			}
+			this.inherited(arguments);
 		},
 
 		onSearch: function() {
