@@ -1,3 +1,9 @@
+univention-postgresql (9.0.0-2) unstable; urgency=medium
+
+  * Bug #43682: Add univention-postgresql-9.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 08 Mar 2017 13:28:28 +0100
+
 univention-postgresql (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

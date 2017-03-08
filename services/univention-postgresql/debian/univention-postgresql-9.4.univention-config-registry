@@ -1,0 +1,26 @@
+Type: multifile
+Multifile: etc/postgresql/9.4/main/pg_hba.conf
+User: postgres
+Group: postgres
+Mode: 0640
+
+Type: subfile
+Multifile: etc/postgresql/9.4/main/pg_hba.conf
+Subfile: etc/postgresql/9.4/main/pg_hba.conf.d/00-pg_hba.conf
+
+Type: subfile
+Multifile: etc/postgresql/9.4/main/pg_hba.conf
+Subfile: etc/postgresql/9.4/main/pg_hba.conf.d/99-pg_hba.conf
+
+Type: multifile
+Multifile: etc/postgresql/9.4/main/pg_ident.conf
+
+Type: subfile
+Multifile: etc/postgresql/9.4/main/pg_ident.conf
+Subfile: etc/postgresql/9.4/main/pg_ident.conf.d/00-pg_ident.conf
+
+Type: file
+File: etc/postgresql/9.4/main/postgresql.conf
+Variables: postgres9/maxconnections
+Variables: postgres9/listenaddress
+Variables: locale/default
