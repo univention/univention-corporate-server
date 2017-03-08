@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-25 09:48+0100\n"
+"POT-Creation-Date: 2017-03-08 13:43+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,105 +16,97 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/ucr.js:224
+#: umc/js/ucr.js:227
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/ucr.js:168
+#: umc/js/ucr.js:171
 msgid "Add UCR variable"
 msgstr "UCR-Variable hinzufügen"
 
-#: umc/js/ucr.js:225
+#: umc/js/ucr.js:228
 msgid "Adding a new UCR variable"
 msgstr "Hinzufügen einer UCR-Variable"
 
-#: umc/js/ucr.js:300 umc/js/ucr.js:310
+#: umc/js/ucr.js:303 umc/js/ucr.js:313
 msgid "All"
 msgstr "Alle"
 
-#: umc/js/ucr.js:252
-#, python-format
+#: umc/js/ucr.js:255
+#, javascript-format
 msgid "Are you sure to delete the %d selected UCR variable(s)?"
 msgstr ""
 "Sind Sie sicher, dass %d ausgewählte UCR-Variable(n) gelöscht werden sollen?"
 
-#: umc/js/ucr.js:112 umc/js/ucr.js:261
+#: umc/js/ucr.js:115 umc/js/ucr.js:264
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/ucr.js:97
-msgid "Categories"
-msgstr "Kategorien"
-
-#: umc/js/ucr.js:96
-msgid "Categories that the UCR variable is associated with"
-msgstr "Kategorien, die der UCR-Variable zugeordnet sind"
-
-#: umc/js/ucr.js:298
+#: umc/js/ucr.js:301
 msgid "Category"
 msgstr "Kategorie"
 
-#: umc/js/ucr.js:297
+#: umc/js/ucr.js:300
 msgid "Category the UCR variable should be associated with"
 msgstr "Kategorie, die der UCR-Variable zugeordnet sein soll"
 
-#: umc/js/ucr.js:246 umc/js/ucr.js:253
+#: umc/js/ucr.js:249 umc/js/ucr.js:256
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/ucr.js:247
+#: umc/js/ucr.js:250
 msgid "Deleting the selected UCR variables"
 msgstr "Löschen der ausgewählten UCR-Variablen"
 
-#: umc/js/ucr.js:313
+#: umc/js/ucr.js:316
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/ucr.js:87
+#: umc/js/ucr.js:90
 msgid "Description of the UCR variable"
 msgstr "Beschreibung der UCR-Variable"
 
-#: umc/js/ucr.js:88
+#: umc/js/ucr.js:91
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: umc/js/ucr.js:234
+#: umc/js/ucr.js:237
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/ucr.js:67 umc/js/ucr.js:176
+#: umc/js/ucr.js:70 umc/js/ucr.js:179
 msgid "Edit UCR variable"
 msgstr "UCR-Variable bearbeiten"
 
-#: umc/js/ucr.js:319
-msgid "Keyword"
-msgstr "Schlüsselwort"
-
-#: umc/js/ucr.js:77
+#: umc/js/ucr.js:80
 msgid "Name of UCR variable"
 msgstr "Name der UCR-Variable"
 
-#: umc/js/ucr.js:103
+#: umc/js/ucr.js:106
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/ucr.js:308
+#: umc/js/ucr.js:311
 msgid "Search attribute"
 msgstr "Suchattribut"
 
-#: umc/js/ucr.js:307
+#: umc/js/ucr.js:322
+msgid "Search..."
+msgstr "Suche..."
+
+#: umc/js/ucr.js:310
 msgid ""
 "Select the attribute of a UCR variable that should be searched for the given "
 "keyword"
 msgstr ""
 "Auswählen des Attributes einer UCR-Variable, das durchsucht werden soll"
 
-#: umc/js/ucr.js:235
+#: umc/js/ucr.js:238
 msgid "Setting the UCR variable, editing the categories and/or description"
 msgstr ""
 "Setzen einer UCR-Variable und Bearbeiten der Kategorien und Beschreibung"
 
-#: umc/js/ucr.js:218
+#: umc/js/ucr.js:221
 msgid ""
 "The Univention Configuration Registry (UCR) is the local database for the "
 "configuration of UCS systems to access and edit system-wide properties in a "
@@ -128,32 +120,41 @@ msgstr ""
 "führt direkt zur Veränderung der Systemkonfiguration. Falsche Werte können "
 "das System unbrauchbar machen!"
 
-#: umc/js/ucr.js:78 umc/js/ucr.js:271
+#: umc/js/ucr.js:81 umc/js/ucr.js:274
 msgid "UCR variable"
 msgstr "UCR-Variable"
 
-#: umc/js/ucr.js:272
+#: umc/js/ucr.js:275
 msgid "Unique name of the UCR variable"
 msgstr "Eindeutiger Name für die UCR-Variable"
 
-#: umc/js/ucr.js:217
+#: umc/js/ucr.js:220
 msgid "Univention Configuration Registry"
 msgstr ""
 
-#: umc/js/ucr.js:83 umc/js/ucr.js:276 umc/js/ucr.js:312
+#: umc/js/ucr.js:86 umc/js/ucr.js:279 umc/js/ucr.js:315
 msgid "Value"
 msgstr "Wert"
 
-#: umc/js/ucr.js:82 umc/js/ucr.js:277
+#: umc/js/ucr.js:85 umc/js/ucr.js:280
 msgid "Value of the UCR variable"
 msgstr "Wert der UCR-Variable"
 
-#: umc/js/ucr.js:311
+#: umc/js/ucr.js:314
 msgid "Variable"
 msgstr "Variable"
 
+#~ msgid "Categories"
+#~ msgstr "Kategorien"
+
+#~ msgid "Categories that the UCR variable is associated with"
+#~ msgstr "Kategorien, die der UCR-Variable zugeordnet sind"
+
 #~ msgid "Entries"
 #~ msgstr "Einträge"
+
+#~ msgid "Keyword"
+#~ msgstr "Schlüsselwort"
 
 #~ msgid "Keyword %(a)s %(b)04d"
 #~ msgstr "Schlüsselwort"
@@ -164,6 +165,3 @@ msgstr "Variable"
 
 #~ msgid "Reset"
 #~ msgstr "Zurücksetzen"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"

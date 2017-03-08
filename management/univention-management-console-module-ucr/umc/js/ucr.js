@@ -46,6 +46,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/SearchForm",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/SearchBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/HiddenInput",
@@ -53,7 +54,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr",
 	"xstyle/css!./ucr.css"
-], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
@@ -315,16 +316,20 @@ define([
 					{ id: 'description', label: _( 'Description' ) }
 				],
 			}, {
-				type: TextBox,
+				type: SearchBox,
 				name: 'pattern',
 				value: '*',
-				label: _( 'Keyword' ),
+				inlineLabel: _('Search...'),
+				onSearch: lang.hitch(this, function() {
+					this._searchForm.submit();
+				})
 			}];
 
 			this._searchForm = new SearchForm({
 				region: 'nav',
+				hideSubmitButton: true,
 				widgets: widgets,
-				layout: [[ 'category', 'key', 'pattern', 'submit' ]]
+				layout: [[ 'category', 'key', 'pattern' ]]
 			});
 			this._searchForm.on('search', lang.hitch(this._grid, 'filter'));
 
