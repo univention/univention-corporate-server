@@ -1,6 +1,7 @@
-univention-postgresql (9.0.0-2) unstable; urgency=medium
+univention-postgresql (9.0.0-3) unstable; urgency=medium
 
   * Bug #43682: Add univention-postgresql-9.4
+  * Bug #43682: make univention-postgresql-9.4 the default
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 08 Mar 2017 13:28:28 +0100
 
