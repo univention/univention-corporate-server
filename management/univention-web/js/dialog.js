@@ -237,6 +237,8 @@ define([
 			// 		String submit: the label for the default submit button (default: 'Submit')
 			// 		String cancel: the label for the default cancel button (default: 'Cancel')
 			// 		"submit"|"cancel" defaultAction: which default button should be the default? (default: 'submit')
+			// 		Object references: if set as empty object, it will be filled with references
+			// 		                   to the dialog and form
 
 			// create form
 			var form = options.form || new Form({
@@ -308,7 +310,25 @@ define([
 			});
 
 			// show the confirmation dialog
-			confirmDialog.show();
+			var showDeferred = confirmDialog.show().then(function() {
+				// focus the first widget in the form
+				var allWidgets = array.map(options.widgets || [], function(iconf) {
+					return form.getWidget(iconf.name);
+				});
+				var focusableWidgets = array.filter(allWidgets, function(iwidget) {
+					return iwidget.focus;
+				});
+				if (focusableWidgets.length) {
+					focusableWidgets[0].focus();
+				}
+			});
+
+			// return references to widgets if specified in the options
+			if ('references' in options) {
+				options.references.dialog = confirmDialog;
+				options.references.form = form;
+				options.references.showDeferred = showDeferred;
+			}
 
 			return deferred;
 		},

@@ -1,6 +1,12 @@
+univention-web (1.0.31-14) unstable; urgency=medium
+
+  * Bug #42173: Focus first field in dialog.confirmForm() + return references
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Mar 2017 15:14:37 +0100
+
 univention-web (1.0.31-13) unstable; urgency=medium
 
-  * Bug #42172: adjust FQDN reg exp + add tools.isHostname() check
+  * Bug #42172: Adjust FQDN reg exp + add tools.isHostname() check
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Mar 2017 14:52:08 +0100
 
