@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:27+0100\n"
+"POT-Creation-Date: 2017-03-08 13:24+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -36,10 +36,6 @@ msgstr "Befehl"
 msgid "Force termination"
 msgstr "Beenden erzwingen"
 
-#: umc/js/top.js:162
-msgid "Keyword"
-msgstr "Schlüsselwort"
-
 #: umc/js/top.js:124
 msgid "Memory (%)"
 msgstr "Speicher (%)"
@@ -53,14 +49,14 @@ msgid "PID"
 msgstr "PID"
 
 #: umc/js/top.js:64
-#, python-format
 msgid ""
 "Please confirm sending %(signal)s to the %(processid)s selected processes!"
 msgstr ""
-"Bitte bestätigen Sie %(signal)s an die %(processid)s ausgewählten Prozesse zu senden!"
+"Bitte bestätigen Sie %(signal)s an die %(processid)s ausgewählten Prozesse "
+"zu senden!"
 
 #: umc/js/top.js:61
-#, python-format
+#, javascript-format
 msgid "Please confirm sending %s to the selected process!"
 msgstr "Bitte bestätigen Sie %s an den ausgewählten Prozess zu senden!"
 
@@ -68,8 +64,12 @@ msgstr "Bitte bestätigen Sie %s an den ausgewählten Prozess zu senden!"
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
+#: umc/js/top.js:162
+msgid "Search..."
+msgstr "Suche..."
+
 #: umc/js/top.js:70
-#, python-format
+#, javascript-format
 msgid "Signal (%s) sent successfully"
 msgstr "Signal (%s) wurde erfolgreich gesendet"
 
@@ -96,6 +96,9 @@ msgstr "Benutzer"
 
 #~ msgid "Entries"
 #~ msgstr "Einträge"
+
+#~ msgid "Keyword"
+#~ msgstr "Schlüsselwort"
 
 #~ msgid "Kill"
 #~ msgstr "Beenden"

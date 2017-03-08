@@ -1,3 +1,9 @@
+univention-management-console-module-top (6.0.0-3) unstable; urgency=medium
+
+  * Bug #43528: Use SearchBox and hide extra search button
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Mar 2017 13:12:36 +0100
+
 univention-management-console-module-top (6.0.0-2) unstable; urgency=medium
 
   * Bug #23837: add ucslint to build process
