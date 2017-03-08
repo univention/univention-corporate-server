@@ -1,3 +1,10 @@
+ucs-test (7.0.11-16) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: Create UCS 4.1 App Center as well
+    (Bug #43757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Mar 2017 17:30:51 +0100
+
 ucs-test (7.0.11-15) unstable; urgency=low
 
   * Bug #43312: add missing dependency to python-pytest in ucs-test-ldap
