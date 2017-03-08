@@ -87,7 +87,7 @@ if(array_key_exists('head', $this->data)) {
 		<script type="text/javascript">
 			var availableLocales = <?php echo json_encode($langlinkarray); ?>;
 		</script>
-		<script type="text/javascript" src="/univention/login/config.js"></script>
+		<script type="text/javascript" src="/univention/login/saml-config.js"></script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
 <?php

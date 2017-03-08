@@ -1,3 +1,9 @@
+univention-saml (4.0.8-2) unstable; urgency=medium
+
+  * Bug #42174: fix SAML login page rendering
+
+ -- Florian Best <best@univention.de>  Wed, 08 Mar 2017 14:48:02 +0100
+
 univention-saml (4.0.8-1) unstable; urgency=medium
 
   * Bug #42174: fix SAML login page rendering
