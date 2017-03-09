@@ -463,9 +463,7 @@ if [ -x "/usr/bin/newaliases" ]; then
 	/usr/bin/newaliases
 fi
 
-if [ -x "/etc/init.d/postfix" ]; then
-	/etc/init.d/postfix reload
-fi
+service reload postfix
 
 eval "$(univention-config-registry shell samba/user ldap/hostdn)"
 

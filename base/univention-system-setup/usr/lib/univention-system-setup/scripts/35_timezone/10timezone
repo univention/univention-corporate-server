@@ -54,8 +54,8 @@ fi
 echo "$timezone" >/etc/timezone
 ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 
-test -x /etc/init.d/ntp && /etc/init.d/ntp stop
+service stop ntp
 test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian || true
-test -x /etc/init.d/ntp && /etc/init.d/ntp start
+service start ntp
 
 exit 0

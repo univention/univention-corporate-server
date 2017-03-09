@@ -341,9 +341,7 @@ univention-config-registry commit /etc/pam.d/httpd \
 service_stop slapd
 service_start slapd nscd heimdal-kdc
 
-if [ -x "/etc/init.d/slapd" ]; then
-	/etc/init.d/slapd restart
-fi
+service restart slapd
 
 if [ "$ldap_available" = 1 ]; then
 
@@ -587,9 +585,7 @@ if [ -x "/usr/bin/newaliases" ]; then
 	/usr/bin/newaliases
 fi
 
-if [ -x "/etc/init.d/postfix" ]; then
-	/etc/init.d/postfix reload
-fi
+service reload postfix
 
 # stop the dns server and remove the cache
 service stop bind9

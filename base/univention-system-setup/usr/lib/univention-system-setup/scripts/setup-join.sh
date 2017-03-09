@@ -297,10 +297,10 @@ ucr commit \
 	/var/www/univention/languages.json
 
 # Restart NSCD
-test -x /etc/init.d/nscd && invoke-rc.d nscd restart
+service restart nscd
 
 # Start atd as the appliance cleanup script is started as at job
-test -x /etc/init.d/atd && invoke-rc.d atd start
+service start atd
 
 # Commit PAM files, workaround for
 #   https://forge.univention.org/bugzilla/show_bug.cgi?id=26846
