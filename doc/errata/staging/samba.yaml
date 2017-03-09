@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: samba
+fix: 2:4.5.1-1.853.201703091629
+desc: |
+ This update addresses the following issue:
+ * Symlink race allows access outside share definition (CVE-2017-2619)
+bug: [43678]
+cve:
+ - CVE-2017-2619
