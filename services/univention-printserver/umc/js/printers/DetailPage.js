@@ -240,7 +240,7 @@ define([
 
 		_show_button: function(button,on) {
 			try {
-				domClass.toggle(this._head._buttons[button].domNode,'dijitHidden',!on);
+				domClass.toggle(this._head._buttons[button].domNode,'dijitDisplayNone',!on);
 			} catch(ex) {
 				console.error("show_button(" + button + "," + on + "): " + ex.message);
 			}
