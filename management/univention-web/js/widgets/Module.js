@@ -281,7 +281,7 @@ define([
 			var child = this.__container.get('selectedChildWidget');
 			array.forEach(this._top._right.getChildren(), lang.hitch(this, function(ctn) {
 				if (ctn.$child$) {
-					domClass.toggle(ctn.domNode, 'dijitHidden', ctn.$child$ !== child);
+					domClass.toggle(ctn.domNode, 'dijitDisplayNone', ctn.$child$ !== child);
 				}
 			}));
 		},

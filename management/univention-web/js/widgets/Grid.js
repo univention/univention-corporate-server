@@ -604,7 +604,7 @@ define([
 			this._setGlobalActions();
 			this._setContextActions();
 
-			domClass.toggle(this._header.domNode, 'dijitHidden', !this.actions.length);
+			domClass.toggle(this._header.domNode, 'dijitDisplayNone', !this.actions.length);
 			if (this._toolbar.getChildren().length) {
 				this._header.addChild(this._toolbar);
 			}

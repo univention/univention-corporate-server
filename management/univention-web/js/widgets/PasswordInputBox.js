@@ -136,7 +136,7 @@ define([
 			}));
 			container.addChild(new ContainerWidget({
 				style: 'height: 0;',
-				'class': this.twoRows ? 'umcSize-One' : 'umcSize-One dijitHidden'
+				'class': this.twoRows ? 'umcSize-One' : 'umcSize-One dijitDisplayNone'
 			}));
 			container.addChild(new LabelPane({
 				content: this._secondWidget

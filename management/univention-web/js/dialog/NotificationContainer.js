@@ -86,7 +86,7 @@ define([
 			}));
 
 			if(has('touch')) {
-				domClass.add(this.closeNode, 'dijitHidden');
+				domClass.add(this.closeNode, 'dijitDisplayNone');
 			}
 
 			if (!has('touch')) {

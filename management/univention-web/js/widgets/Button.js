@@ -91,7 +91,7 @@ define([
 
 		_setVisibleAttr: function(newVal) {
 			this._set('visible', newVal);
-			domClass.toggle(this.domNode, 'dijitHidden', !newVal);
+			domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 		},
 
 		_setDescriptionAttr: function(description) {

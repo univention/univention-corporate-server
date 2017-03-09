@@ -117,7 +117,7 @@ define([
 					this.addChild(this._helpTextPane);
 				}
 			}
-			domClass.toggle(this._helpTextPane.domNode, 'dijitHidden', !newVal);
+			domClass.toggle(this._helpTextPane.domNode, 'dijitDisplayNone', !newVal);
 			this._helpTextPane.set('content', this.helpTextAllowHTML ? newVal : entities.encode(newVal));
 			this._set('helpText', newVal);
 		},
@@ -134,7 +134,7 @@ define([
 				this.addChild(this._headerTextPane, 0);
 			}
 			// hide header if empty string
-			domClass.toggle(this._headerTextPane.domNode, 'dijitHidden', !newVal);
+			domClass.toggle(this._headerTextPane.domNode, 'dijitDisplayNone', !newVal);
 			this._headerTextPane.set('content', '<h1>' + (this.headerTextAllowHTML ? newVal : entities.encode(newVal)) + '</h1>');
 			this._set('headerText', newVal);
 		},
@@ -169,7 +169,7 @@ define([
 
 			this._nav = new ContainerWidget({
 				baseClass: 'umcPageNav',
-				'class': 'dijitHidden'
+				'class': 'dijitDisplayNone'
 			});
 			this._main = new ContainerWidget({
 				baseClass: 'umcPageMain',
@@ -264,7 +264,7 @@ define([
 
 			var hasNav = this._nav.getChildren().length;
 			if (hasNav) {
-				domClass.toggle(this._nav.domNode, 'dijitHidden', false);
+				domClass.toggle(this._nav.domNode, 'dijitDisplayNone', false);
 				domClass.remove(this._nav.domNode, this._initialBootstrapClasses);
 				domClass.add(this._nav.domNode, this.navBootstrapClasses);
 				domClass.remove(this._main.domNode, this._initialBootstrapClasses);

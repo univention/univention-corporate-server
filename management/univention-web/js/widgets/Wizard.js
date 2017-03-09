@@ -176,12 +176,12 @@ define([
 				var isVisible = ipage == this.selectedChildWidget;
 				if (!isVisible) {
 					// display page offscreen to determine the height
-					domClass.remove(iwrapper, 'dijitHidden');
+					domClass.remove(iwrapper, 'dijitDisplayNone');
 				}
 				var iheight = geometry.position(ipage._main.domNode).h;
 				if (!isVisible) {
 					// restore original state
-					domClass.add(iwrapper, 'dijitHidden');
+					domClass.add(iwrapper, 'dijitDisplayNone');
 				}
 				return iheight;
 			}));
@@ -258,16 +258,16 @@ define([
 		_updateButtons: function(/*String*/ pageName) {
 			var buttons = this._pages[pageName]._footerButtons;
 			if (buttons.cancel) {
-				domClass.toggle(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
+				domClass.toggle(buttons.cancel.domNode, 'dijitDisplayNone', !this.canCancel(pageName));
 			}
 			if (buttons.next) {
-				domClass.toggle(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
+				domClass.toggle(buttons.next.domNode, 'dijitDisplayNone', !this.hasNext(pageName));
 			}
 			if (buttons.finish) {
-				domClass.toggle(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
+				domClass.toggle(buttons.finish.domNode, 'dijitDisplayNone', this.hasNext(pageName));
 			}
 			if (buttons.previous) {
-				domClass.toggle(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
+				domClass.toggle(buttons.previous.domNode, 'dijitDisplayNone', !this.hasPrevious(pageName));
 			}
 		},
 

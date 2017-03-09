@@ -178,7 +178,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			domClass.toggle(this.domNode, 'dijitHidden', !this._isContentVisible());
+			domClass.toggle(this.domNode, 'dijitDisplayNone', !this._isContentVisible());
 		},
 
 		postCreate: function() {
@@ -198,7 +198,7 @@ define([
 					}
 				})));
 				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
-					domClass.toggle(this.domNode, 'dijitHidden', !newVal);
+					domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 				})));
 			}
 			else if (typeof this.label != "string") {
@@ -218,7 +218,7 @@ define([
 
 		_hideNodes: function(exceptOfThisNode) {
 			this._forEachLabeNode(function(inode) {
-				domClass.toggle(inode, 'dijitHidden', exceptOfThisNode != inode);
+				domClass.toggle(inode, 'dijitDisplayNone', exceptOfThisNode != inode);
 			});
 		},
 

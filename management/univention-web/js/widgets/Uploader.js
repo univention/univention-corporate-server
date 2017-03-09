@@ -289,7 +289,7 @@ define([
 				} else {
 					isVisible = newVal instanceof Array && newVal.length;
 				}
-				domClass.toggle(this._clearButton.domNode, 'dijitHidden', !isVisible);
+				domClass.toggle(this._clearButton.domNode, 'dijitDisplayNone', !isVisible);
 			}
 
 			// send events
