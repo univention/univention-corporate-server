@@ -105,14 +105,14 @@ progress_next_step () {
 }
 
 is_variable_set () {
-	if [ ! -e $profile_file ]; then
+	if [ ! -e "$profile_file" ]; then
 		return 0
 	fi
 
 	if [ -z "$1" ]; then
 		return 0
 	fi
-	value=`egrep "^$1=" $profile_file `
+	value="$(egrep "^$1=" "$profile_file")"
 	if [ -z "$value" ]; then
 		return 0
 	else
@@ -120,7 +120,7 @@ is_variable_set () {
 	fi
 }
 get_profile_var () {
-	if [ ! -e $profile_file ]; then
+	if [ ! -e "$profile_file" ]; then
 		return
 	fi
 
@@ -132,7 +132,7 @@ get_profile_var () {
 }
 
 is_profile_var_true () {
-	value=$(get_profile_var "$1")
+	local value="$(get_profile_var "$1")"
 	if [ -z "$value" ]; then
 		return 2
 	fi
