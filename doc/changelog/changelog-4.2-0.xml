@@ -26,8 +26,8 @@
 					<listitem><simpara>
 						UCS ships with <package>systemd-sysv</package> as default init system.
 						This package is installed automatically on upgrades.
-						All UCS init shell scripts have been made LSB compliant to be compatible with <package>systemd</package>.
-						If custom init scripts are used or standard UCS init scrips haven been modified, please be aware that these may now have been superseded by <package>systemd</package> unit files or <systemitem class="service">systemd</systemitem> itself (<u:bug>43330</u:bug>).
+						All UCS init shell scripts have been made LSB compliant to be compatible with <application>systemd</application>.
+						If custom init scripts are used or standard UCS init scrips haven been modified, please be aware that these may now have been superseded by <application>systemd</application> unit files or <systemitem class="service">systemd</systemitem> itself (<u:bug>43330</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						...
@@ -114,7 +114,7 @@
 			<title>Other system services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Several network start scripts have been adapted to work with <package>systemd</package> (<u:bug>42380</u:bug>).
+					Several network start scripts have been adapted to work with <application>systemd</application> (<u:bug>42380</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -188,6 +188,10 @@
 					<listitem><simpara>
 						During the update of DNS servers having <package>univention-bind</package> installed the &ucsUCR; settings <envar>nameserver<replaceable>123</replaceable></envar> and <envar>dns/forwarder<replaceable>123</replaceable></envar> are checked and fixed automatically.
 						This is done by running <command>/usr/share/univention-server/univention-fix-ucr-dns</command> once (<u:bug>43217</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The legacy System V init scripts <filename>univention-bind</filename> and <filename>univention</filename>-bind-proxy have been removed.
+						The services are now handles through the System V init script <filename>bind9</filename> and the <application>systemd</application> service unit file <filename>bind9</filename>.service (<u:bug>43690</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -690,7 +694,7 @@
 					Error handling has been improved (<u:bug>38634</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The start script for <command>libvirtd</command> has been updates to be compatible with <package>systemd</package> (<u:bug>43493</u:bug>).
+					The start script for <command>libvirtd</command> has been updates to be compatible with <application>systemd</application> (<u:bug>43493</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

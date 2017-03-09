@@ -90,6 +90,12 @@ if [ "$1" = "configure" ]; then
 		[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
 		/usr/share/univention-server/univention-fix-ucr-dns ||
 		: # better safe than sorry
+	if dpkg --compare-versions "$2" lt 11.0.0-17
+	then
+		rm -f /etc/init.d/univention-bind /etc/init.d/univention-bind-proxy
+		update-rc.d -f univention-bind remove
+		update-rc.d -f univention-bind-proxy remove
+	fi
 	invoke-rc.d univention-directory-listener crestart
 fi
 
