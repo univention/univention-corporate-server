@@ -1,3 +1,9 @@
+univention-server-overview (0.0.3-1) unstable; urgency=medium
+
+  * Bug #43680: add portal entry for server overview
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 13:38:31 +0100
+
 univention-server-overview (0.0.2-1) unstable; urgency=medium
 
   * Bug #42263: Sort by server type + fix linking issues
