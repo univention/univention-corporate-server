@@ -344,7 +344,6 @@ service_start slapd nscd heimdal-kdc
 service restart slapd
 
 if [ "$ldap_available" = 1 ]; then
-
 	univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" --filter "cn=$old_domainname" | DN1 | while read super; do
 		res=$(univention-directory-manager dhcp/server list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "(!(cn=$hostname))" | DN1)
 		if [ -z "$res" ]; then

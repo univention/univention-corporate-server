@@ -55,8 +55,7 @@ done
 # writes an info header
 # @param  script path
 # @param  description (optional)
-info_header()
-{
+info_header () {
 	_path=$1
 	script="${_path##*scripts/}"
 	echo "=== $script ($(date +'%Y-%m-%d %H:%M:%S')) ==="
@@ -70,37 +69,32 @@ info_header()
 
 # prints a message to the UMC module that is displayed in the progress bar
 # @param  message to print
-progress_msg()
-{
+progress_msg () {
 	echo "__MSG__:$1"
 }
 
 # prints a join error message to the UMC module that is displayed in the progress bar
 # @param  error message to print
-progress_join_error()
-{
+progress_join_error () {
 	echo "__JOINERR__:$1"
 }
 
 # prints an error message to the UMC module that is displayed in the progress bar
 # @param  error message to print
-progress_error()
-{
+progress_error () {
 	echo "__ERR__:$1"
 }
 
 # prints the number of total steps for the progress bar
 # @param  number of total steps
-progress_steps()
-{
+progress_steps () {
 	echo "__STEPS__:$1"
 	_STEP_=0
 }
 
 # prints the current step number and increases it
 # @param  the current number of executed steps (optional)
-progress_next_step()
-{
+progress_next_step () {
 	if [ -n "$1" ]; then
 		echo "__STEP__:$1"
 		_STEP_=$1
@@ -110,8 +104,7 @@ progress_next_step()
 	fi
 }
 
-is_variable_set()
-{
+is_variable_set () {
 	if [ ! -e $profile_file ]; then
 		return 0
 	fi
@@ -126,8 +119,7 @@ is_variable_set()
 		return 1
 	fi
 }
-get_profile_var ()
-{
+get_profile_var () {
 	if [ ! -e $profile_file ]; then
 		return
 	fi
@@ -139,8 +131,7 @@ get_profile_var ()
 	sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
 }
 
-is_profile_var_true ()
-{
+is_profile_var_true () {
 	value=$(get_profile_var "$1")
 	if [ -z "$value" ]; then
 		return 2
@@ -176,8 +167,7 @@ service () {
 service_start () { service start "$@"; }
 service_stop () { service stop "$@"; }
 
-ldap_binddn ()
-{
+ldap_binddn () {
 	eval "$(univention-config-registry shell server/role ldap/base ldap/master ldap/hostdn)"
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "cn=admin,$ldap_base"
@@ -190,8 +180,7 @@ ldap_binddn ()
 	fi
 }
 
-ldap_bindpwd ()
-{
+ldap_bindpwd () {
 	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "`cat /etc/ldap.secret`"
