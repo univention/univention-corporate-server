@@ -1,3 +1,10 @@
+univention-appcenter (6.0.2-3) unstable; urgency=medium
+
+  * Bug #42231: More blacklists, fr_FR support, links only for domain portal;
+    new UCR template for dumping installed apps used in the portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 09 Mar 2017 23:27:23 +0100
+
 univention-appcenter (6.0.2-2) unstable; urgency=medium
 
   * Bug #43528: remove button icons + adjust headings

@@ -40,7 +40,8 @@ from univention.config_registry.interfaces import Interfaces
 import univention.admin.uexceptions as udm_errors
 
 from univention.appcenter.log import log_to_logfile, get_base_logger
-from univention.appcenter.udm import create_object_if_not_exists, remove_object_if_exists, get_machine_connection, modify_object, init_object, search_objects
+from univention.appcenter.ucr import ucr_get
+from univention.appcenter.udm import create_object_if_not_exists, remove_object_if_exists, get_machine_connection, modify_object, init_object
 
 
 log_to_logfile()
@@ -77,7 +78,7 @@ def _handler(ucr, changes):
 		match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key)
 		if match:
 			changed_entries.add(match.group(2))
-	changed_entries -= set(['umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master'])
+	changed_entries -= set(['umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master', 'passwordreset', 'passwordchange'])
 	portal_logger.debug('Changed: %r' % changed_entries)
 	if not changed_entries:
 		return
@@ -147,12 +148,18 @@ def _handler(ucr, changes):
 			elif key == 'label/de':
 				entry.setdefault('displayName', [])
 				entry['displayName'].append(('de_DE', value))
+			elif key == 'label/fr':
+				entry.setdefault('displayName', [])
+				entry['displayName'].append(('fr_FR', value))
 			elif key == 'description':
 				entry.setdefault('description', [])
 				entry['description'].append(('en_US', value))
 			elif key == 'description/de':
 				entry.setdefault('description', [])
 				entry['description'].append(('de_DE', value))
+			elif key == 'description/fr':
+				entry.setdefault('description', [])
+				entry['description'].append(('fr_FR', value))
 			else:
 				portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
 	for cn, attrs in attr_entries.items():
@@ -180,8 +187,7 @@ def _handler(ucr, changes):
 			if my_links:
 				portal_logger.debug('... creating')
 				attrs['link'] = my_links
-				portals = search_objects('settings/portal', lo, pos)
-				attrs['portal'] = [portal.dn for portal in portals]
+				attrs['portal'] = ['cn=domain,cn=portal,cn=univention,%s' % ucr_get('ldap/base')]
 				attrs['activated'] = True
 				attrs['authRestriction'] = 'anonymous'
 				try:

@@ -55,10 +55,6 @@ class Update(Update):
 
 		self.debug('Updating app icon files in UMC directory...')
 
-		# some variables could change apps.xml
-		# e.g. Name, Description
-		self._update_conffiles()
-
 		# clear existing SVG logo files and re-copy them again
 		for isvg in glob(os.path.join(FRONTEND_ICONS_DIR, 'apps-*.svg')):
 			os.unlink(isvg)
@@ -69,6 +65,7 @@ class Update(Update):
 				self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
 
 	def _update_conffiles(self):
+		super(Update, self)._update_conffiles()
 		with catch_stdout(self.logger):
 			handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
 

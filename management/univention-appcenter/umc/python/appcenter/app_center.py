@@ -1860,4 +1860,4 @@ class Application(object):
 
 	@classmethod
 	def update_conffiles(cls):
-		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
+		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo', '/usr/share/univention-portal/apps.json'])

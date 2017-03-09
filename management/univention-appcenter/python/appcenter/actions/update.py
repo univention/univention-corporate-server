@@ -46,6 +46,9 @@ import tarfile
 from urlparse import urlsplit
 from urllib2 import quote, Request, HTTPError
 
+from univention.config_registry import handler_commit
+
+from univention.appcenter.log import catch_stdout
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR
 from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
@@ -268,6 +271,7 @@ class Update(UniventionAppAction):
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
+
 		if container_mode():
 			self.debug('do not update files in container mode...')
 			return
@@ -300,6 +304,14 @@ class Update(UniventionAppAction):
 						shutil.copy2(src, dest)
 						if file == 'inst':
 							os.chmod(dest, 0o755)
+
+		# some variables could change UCR templates
+		# e.g. Name, Description
+		self._update_conffiles()
+
+	def _update_conffiles(self):
+		with catch_stdout(self.logger):
+			handler_commit(['/usr/share/univention-portal/apps.json'])
 
 	def _get_local_archive(self, app_cache):
 		fname = os.path.join(LOCAL_ARCHIVE_DIR, app_cache.get_server_netloc(), app_cache.get_ucs_version(), 'all.tar.gz')
