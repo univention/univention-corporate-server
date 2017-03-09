@@ -62,7 +62,7 @@ define([
 	"./_RegisterOnShowMixin",
 	"../tools",
 	"../render",
-	"../i18n!",
+	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
 		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton, entities,
 		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, Text, ContainerWidget,
@@ -501,14 +501,14 @@ define([
 
 						if (value && value.domNode) {
 							container = new ContainerWidget({
-								baseClass: 'umcGridDefaultAction',
+								baseClass: 'umcGridDefaultAction'
 							});
 							container.addChild(value);
 							container.own(value);
 						} else {
 							container = new Text({
 								content: value,
-								baseClass: 'umcGridDefaultAction',
+								baseClass: 'umcGridDefaultAction'
 							});
 						}
 						this.own(container);

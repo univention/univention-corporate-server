@@ -1,3 +1,9 @@
+univention-web (1.0.33-5) unstable; urgency=medium
+
+  * Bug #43528: Fix errors during dojo build
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Mar 2017 23:04:17 +0100
+
 univention-web (1.0.33-4) unstable; urgency=medium
 
   * Bug #43528: Adjust gallerypane font weight + use optimize JavaScript build

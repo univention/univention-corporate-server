@@ -222,7 +222,7 @@ define([
 					id: item.id,
 					priority: item.priority || 0,
 					content: item.label,
-					parentSlide: lang.getObject('menuSlide', false, parentMenuItem),
+					parentSlide: lang.getObject('menuSlide', false, parentMenuItem)
 				});
 				this._menuMap[item.id] = subMenuItem;
 				this.menuSlides.addChild(subMenuItem.menuSlide);
