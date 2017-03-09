@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc">
+	<body class="umc umcLoginLoading">
 		<div class="umcHeader">
 			<div class="umcHeaderRight">
 				<div data-dojo-type="umc/menu/Button"></div>

@@ -64,7 +64,25 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 }
 ?>
 					</form>
-					<div id="umcLoginWarnings" class="umcLoginWarnings"></div>
+					<div id="umcLoginWarnings" class="umcLoginWarnings">
+<?php
+/*
+if ($this->data['errorcode'] !== NULL) {
+	echo('<span class="logintitle">' . $this->t('{login:help_header}') . '</span>');
+	echo('<span class="logintext">' . $this->t('{login:help_text}') . '</span>');
+}
+*/
+
+if ($this->data['errorcode'] !== NULL) {
+?>
+	<p class="umcLoginWarning" >
+		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></b>
+		<?php echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>
+	</p>
+<?php
+}
+?>
+					</div>
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>
@@ -79,24 +97,7 @@ if (!empty($this->data['links'])) {
 	}
 	echo '</ul>';
 }
-
-/*
-if ($this->data['errorcode'] !== NULL) {
-	echo('<span class="logintitle">' . $this->t('{login:help_header}') . '</span>');
-	echo('<span class="logintext">' . $this->t('{login:help_text}') . '</span>');
-}
-*/
-
-if ($this->data['errorcode'] !== NULL) {
 ?>
-	<div class="errorbox" id="umcLoginMessages" widgetid="umcLoginMessages">
-		<h1><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></h1>
-		<p><?php echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></p>
-	</div>
-<?php
-}
-?>
-
 		</div>
 <?php
 $this->includeAtTemplateBase('includes/footer.php');

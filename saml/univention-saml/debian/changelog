@@ -1,3 +1,9 @@
+univention-saml (4.0.9-1) unstable; urgency=medium
+
+  * Bug #42174: adjust visibility of error messages
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 17:30:06 +0100
+
 univention-saml (4.0.8-2) unstable; urgency=medium
 
   * Bug #42174: fix SAML login page rendering
