@@ -265,7 +265,7 @@ define([
 
 		_setHelpLinkAttr: function(helpLink) {
 			this._set('helpLink', helpLink);
-			domClass.toggle(this._headerButtons.help.domNode, 'dijitHidden', !helpLink);
+			domClass.toggle(this._headerButtons.help.domNode, 'dijitDisplayNone', !helpLink);
 		},
 
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
@@ -1231,7 +1231,7 @@ define([
 				name: 'help',
 				iconClass: 'umcHelpIconWhite',
 				label: _('Help'),
-				'class': 'dijitHidden',
+				'class': 'dijitDisplayNone',
 				callback: lang.hitch(this, function() {
 					window.open(this.helpLink);
 				})
@@ -1534,11 +1534,11 @@ define([
 					}
 				} else if ( typeof element == "object") {
 					if ( this._anyVisibleWidget( element)) {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false);
+						domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
 						visible = true;
 						return false;
 					} else {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true);
+						domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
 					}
 				}
 			}));
@@ -1557,10 +1557,10 @@ define([
 							return;
 						}
 						if ( this._anyVisibleWidget( element)) {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false);
+							domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
 							visible = true;
 						} else {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true);
+							domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
 						}
 					}));
 					this._setTabVisibility(tab.$refSubTab$, visible);
