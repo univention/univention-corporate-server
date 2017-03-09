@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Domain join"
-msgstr "Domänenbeitritt"
+msgid "Server overview"
+msgstr "Serverübersicht"
 
-msgid "Domain join of the local system"
-msgstr "Domänenbeitritt des lokalen Systems"
+msgid "Provide an overview of all UCS server in the domain"
+msgstr "Serübersicht über alle UCS Server in der Domäne"
