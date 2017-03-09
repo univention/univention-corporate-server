@@ -50,7 +50,7 @@ define([
 ], function(when, all, domClass, lang, store, topic, hash, ioQuery, request, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
 	var promiseUcrValues = tools.ucr(['umc/web/appliance/close_first_steps', 'umc/web/appliance/name']);
-	var readmePath = dojo.moduleUrl("umc/modules/appliance")
+	var readmePath = dojo.moduleUrl("umc/modules/appliance");
 	var promiseReadme = request(readmePath + _('appliance_first_steps.README'));
 	var ucrStore = store('key', 'ucr');
 	var firstSteps = null;
@@ -64,7 +64,7 @@ define([
 		var readmeHeader = _("Welcome to Univention Management Console (UMC), " + 
 							"the administration interface for your appliance. " + 
 							"UMC is provided by Univention Corporate Server, " + 
-							"the platform on which %s is running on.", result.ucrValues['umc/web/appliance/name'])
+							"the platform on which %s is running on.", result.ucrValues['umc/web/appliance/name']);
 		var readmeText = '<p>' + readmeHeader + '</p>' + result.readme;
 
 		var readme = new Text({
@@ -101,7 +101,7 @@ define([
 
 	var checkVisbilityOfFirstSteps = function(_hash) {
 		var isFirstStepsHidden = _hash.indexOf("category=_appliance_") === -1;
-		domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
+		domClass.toggle(firstSteps.domNode, 'dijitDisplayNone', isFirstStepsHidden);
 	};
 
 	var subscripeVisibilityCheckOnHashChange = function(callback) {
