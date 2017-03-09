@@ -36,7 +36,8 @@ def kill_ucstest():
 
 
 def restart_web_server():
-	subprocess.Popen(['/etc/init.d/univention-management-console-web-server', 'restart'])
+	subprocess.Popen(['service', 'univention-management-console-web-server', 'restart'])
+	subprocess.Popen(['service', 'univention-management-console-server', 'restart'])
 
 
 class AsyncClient(Client):
