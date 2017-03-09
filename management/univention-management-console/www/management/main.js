@@ -1332,7 +1332,7 @@ define([
 			});
 
 			this._searchText = new Text({
-				'class': 'dijitHidden umcGalleryCategoryHeader'
+				'class': 'dijitDisplayNone umcGalleryCategoryHeader'
 			});
 
 			this.renderCategories();
@@ -1449,7 +1449,7 @@ define([
 			this._grid.updateQuery(searchPattern, searchQuery, category);
 
 			// update the search label
-			domClass.toggle(this._searchText.domNode, 'dijitHidden', !!category);
+			domClass.toggle(this._searchText.domNode, 'dijitDisplayNone', !!category);
 			this._searchText.set('content', _('Search query ›%s‹', entities.encode(searchPattern)));
 
 			// update the hash

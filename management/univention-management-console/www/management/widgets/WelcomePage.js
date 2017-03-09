@@ -41,7 +41,7 @@ define([
 		_setCheckedAttr: function(value) {
 			this.inherited(arguments);
 			var result = query('.umcAppWelcomePageLink').forEach(function(inode) {
-				domClass.toggle(inode, 'dijitHidden', !value);
+				domClass.toggle(inode, 'dijitDisplayNone', !value);
 			});
 		}
 	});
@@ -77,7 +77,7 @@ define([
 			name: 'link',
 			content: _('<p><a href="%s?umc=StartupDialog" target="_blank">Tell us you opinion!</a></p>', _('umcFeedbackUrl')),
 			labelConf: {
-				'class': 'umcAppWelcomePageLink dijitHidden'
+				'class': 'umcAppWelcomePageLink dijitDisplayNone'
 			}
 		}]
 	};

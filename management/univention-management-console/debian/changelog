@@ -1,3 +1,9 @@
+univention-management-console (9.0.54-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:56:26 +0100
+
 univention-management-console (9.0.53-1) unstable; urgency=medium
 
   * Bug #43753: redirect old /ucs-overview/

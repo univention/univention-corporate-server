@@ -121,8 +121,8 @@ define([
 					// hide next button on license import page
 					var buttons = this._pages[pageName]._footerButtons;
 					if (pageName == 'licenseImport') {
-						domClass.add(buttons.next.domNode, 'dijitHidden');
-						domClass.add(buttons.previous.domNode, 'dijitHidden');
+						domClass.add(buttons.next.domNode, 'dijitDisplayNone');
+						domClass.add(buttons.previous.domNode, 'dijitDisplayNone');
 					}
 				}
 			});
