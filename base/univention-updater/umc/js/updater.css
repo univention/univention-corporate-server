@@ -38,7 +38,7 @@
 }
 
 .umc .umcUpdaterWarningText {
-	background-image: url("../../dijit/themes/umc/form/images/error.svg");
+	background-image: url("../../js/dijit/themes/umc/form/images/error.svg");
 	background-repeat: no-repeat;
 	background-position: left center;
 	background-size: 30px 30px;

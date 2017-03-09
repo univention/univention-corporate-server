@@ -44,11 +44,8 @@ import requests
 import univention.hooks
 import notifier.threads
 
-import univention.admin.modules as udm_modules
-import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Translation
 from univention.lib import atjobs
-from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base
@@ -215,7 +212,8 @@ class Instance(Base):
 	def query_maintenance_information(self):
 		ucr.load()
 		if ucr.is_true('license/extended_maintenance/disable_warning'):
-			return
+			return {'show_warning': False}
+
 		version = self.uu.get_ucs_version()
 		try:
 			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
@@ -225,38 +223,18 @@ class Instance(Base):
 			status = yaml.load(response.content)
 			# the yaml file contains for maintained either false, true or extended as value.
 			# yaml.load converts true and false into booleans but extended into string.
-			_extended_maintenance_bought = ucr.is_true('license/extended_maintenance/{}'.format(version))
 			_maintained_status = status.get('maintained')
 			maintenance_extended = _maintained_status == 'extended'
-			show_warning = not _extended_maintenance_bought if maintenance_extended else not _maintained_status
+			show_warning = maintenance_extended or not _maintained_status
 		except requests.exceptions.RequestException as exc:
 			MODULE.error("Querying maintenance information failed: %s" % (exc,))
 			return
-
-		udm_modules.update()
-		lo = get_machine_connection(write=False)[0]
-		base_dn = ucr.get('ldap/base')
-		support = False
-		premiumsupport = False
-		if lo:
-			try:
-				results = udm_modules.lookup('settings/license', None, lo, base=ucr['ldap/base'], scope='sub')
-			except udm_errors.base:
-				pass
-			else:
-				license_object = results[0]
-				license_object.open()
-				base_dn = license_object.get('base')
-				premiumsupport = ucr.is_true(value=license_object.get('premiumsupport'))
-				support = ucr.is_true(value=license_object.get('support'))
 
 		return {
 			'ucs_version': version,
 			'show_warning': show_warning,
 			'maintenance_extended': maintenance_extended,
-			'base_dn': base_dn,
-			'support': support,
-			'premium_support': premiumsupport
+			'base_dn': ucr.get('license/base')
 		}
 
 	@simple_response

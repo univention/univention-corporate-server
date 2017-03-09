@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-02-23 11:13+0100\n"
+"POT-Creation-Date: 2017-03-09 21:29+0100\n"
 "PO-Revision-Date: 2012-02-27 16:03+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -20,8 +20,8 @@ msgstr "%(name)s: Version %(old)s kann auf %(new)s aktualisiert werden"
 msgid "... loading data ..."
 msgstr "... Daten werden geladen ..."
 
-#: umc/js/updater/_LogViewer.js:76 umc/js/updater/_LogViewer.js:192
-#: umc/js/updater/_LogViewer.js:217
+#: umc/js/updater/_LogViewer.js:76 umc/js/updater/_LogViewer.js:196
+#: umc/js/updater/_LogViewer.js:221
 msgid "... loading log file ..."
 msgstr "... Protokolldatei wird geladen ..."
 
@@ -43,40 +43,53 @@ msgid ""
 "<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out "
 "of maintenance. Plase visit the %s for more information"
 msgstr ""
-"<b style='color: #ff7070'>Achtung:</b> Für die aktuelle UCS Version werden keine Sicherheitsupdates "
-"mehr veröffentlicht. Bitte rufen Sie das %s auf um mehr Informationen zu erhalten."
+"<b style='color: #ff7070'>Achtung:</b> Für die aktuelle UCS Version werden "
+"keine Sicherheitsupdates mehr veröffentlicht. Bitte rufen Sie das %s auf um "
+"mehr Informationen zu erhalten."
 
-#: umc/js/updater.js:322 umc/js/updater.js:454
-#: umc/js/updater/ProgressPage.js:319
+#: umc/js/updater/ProgressPage.js:319 umc/js/updater.js:322
+#: umc/js/updater.js:454
 msgid "<b>Leave the system up and running</b> at any moment during the update!"
 msgstr ""
 "<b>Lassen Sie das System eingeschaltet</b> während des gesamten "
 "Aktualisierungsvorganges!"
 
+#: umc/js/updater/UpdatesPage.js:644
+msgid ""
+"<b>Warning</b>: You are currently using UCS {0}. No more regular security "
+"updates will be released for this version!<br>Update the system to a newer "
+"UCS version or, alternatively, request an extended maintenance for this "
+"version. <a target='_blank' href='https://www.univention.com/contact/'>Feel "
+"free to contact us if you want to know more</a>."
+msgstr ""
+"<b>Achtung</b>: Sie verwenden aktuell UCS {0}. Für diese Version werden keine "
+"regulären Sicherheitsupdates mehr veröffentlicht!<br>Sie können das System auf "
+"eine neuere UCS Version aktualisieren oder alternativ eine verlängerte "
+"Maintenance für diese Version anfordern. <a target='_blank' "
+"href='https://www.univention.de/kontakt/'>Nehmen Sie dazu gerne Kontakt zu uns "
+"auf</a>."
+
+#: umc/js/updater/UpdatesPage.js:642
+msgid ""
+"<b>Warning</b>: You are currently using UCS {0}. No more security updates "
+"will be released for this version. Please update the system to a newer UCS "
+"version!"
+msgstr ""
+"<b>Achtung</b>: Sie verwenden aktuell UCS {0}. Für diese Version werden keine "
+"Sicherheitsupdates mehr veröffentlicht. Bitte aktualisieren Sie das System auf "
+"eine neuere UCS Version!"
+
 #: umc/js/updater/UpdatesPage.js:643
 msgid ""
-"<b>Warning</b>: You are currently using UCS {0} {1}. This version is "
-"outdated and no more security updates will be released for it. Please update "
-"your system to a newer UCS version!<br>"
+"<br>Enterprise subscriptions offer extended maintenance for some UCS "
+"versions. Detailed information can be found at the <a target='_blank' "
+"href='https://www.univention.com/products/prices-and-"
+"subscriptions/'>Univention Website</a>."
 msgstr ""
-"<b>Achtung</b>: Sie verwenden aktuell UCS {0} {1}. Diese Version ist "
-"veraltet und es werden keine Sicherheitsupdates mehr dafür veröffentlicht. "
-"Bitte aktualisieren Sie dieses System auf eine neuere UCS Version!<br>"
-
-#: umc/js/updater/UpdatesPage.js:646
-msgid ""
-"<b>Warning</b>: You are currently using UCS {0}. This version is outdated "
-"and no more security updates will be released for it. Please update your "
-"system to a newer UCS version!<br> We offer extended maintenance for this "
-"UCS versions. <a target='_blank' href='https://www.univention.com/"
-"contact/'>Feel free to contact us if you want to know more.</a>"
-msgstr ""
-"<b>Achtung</b>: Sie verwenden aktuell UCS {0}. Diese Version ist veraltet "
-"und es werden keine Sicherheitsupdates mehr dafür veröffentlicht. Bitte "
-"aktualisieren Sie dieses System auf eine neuere UCS Version!<br>Wir bieten "
-"für diese UCS Versionen eine verlängerte Maintenance an. <a "
-"target='_blank' href='https://www.univention.de/kontakt/'>Nehmen Sie gerne "
-"Kontakt zu uns auf.</a>"
+"<br>Enterprise Subskriptionen bieten für einige Versionen längere "
+"Aktualisierungszeiträume. Informationen dazu finden Sie auf der "
+"<a target='_blank' href='https://www.univention.de/produkte/preise/'>"
+"Univention Webseite</a>."
 
 #: umc/js/updater.js:54
 msgid "<p><b>Caution!</b> Currently a release update is performed!</p>"
@@ -120,10 +133,6 @@ msgstr "Verfügbare System-Updates"
 #: umc/js/updater/ProgressPage.js:73 umc/js/updater/ProgressPage.js:83
 msgid "Back"
 msgstr "Zurück"
-
-#: umc/js/updater/UpdatesPage.js:654
-msgid "Base Subscription"
-msgstr ""
 
 #: umc/js/updater.js:281 umc/js/updater.js:335
 msgid "Cancel"
@@ -169,10 +178,6 @@ msgstr ""
 "sowie Hinweise zu dem jeweiligen Update im <a href=\"http://forum.univention."
 "de/viewforum.php?f=26\" target=\"_blank\">Univention Forum</a>."
 
-#: umc/js/updater/UpdatesPage.js:652
-msgid "Core Edition"
-msgstr ""
-
 #: umc/js/updater.js:332
 msgid ""
 "Depending on the system performance, network connection and the installed "
@@ -192,10 +197,6 @@ msgid ""
 msgstr ""
 "Möchten Sie wirklich die genannten Pakete aktualisieren, installieren bzw. "
 "entfernen?"
-
-#: umc/js/updater/UpdatesPage.js:652
-msgid "Enterprise Subscriptions"
-msgstr "Enterprise Subscriptionen"
 
 #: umc/js/updater/ProgressPage.js:253
 msgid "Finish updates"
@@ -224,7 +225,7 @@ msgstr ""
 "Weitere Releaseupdates sind verfügbar, können jedoch nicht installiert "
 "werden."
 
-#: umc/js/updater/ProgressPage.js:113 umc/js/updater/UpdatesPage.js:113
+#: umc/js/updater/UpdatesPage.js:113 umc/js/updater/ProgressPage.js:113
 msgid ""
 "In order to complete the recently executed action, it is required to reboot "
 "the system."
@@ -248,8 +249,8 @@ msgstr "Release-Aktualisierungen installieren"
 msgid "Investigate log further"
 msgstr "Protokoll weiter prüfen"
 
-#: umc/js/updater.js:201 umc/js/updater.js:322 umc/js/updater.js:455
-#: umc/js/updater/ProgressPage.js:320
+#: umc/js/updater/ProgressPage.js:320 umc/js/updater.js:201
+#: umc/js/updater.js:322 umc/js/updater.js:455
 msgid ""
 "It is expected that the system may not respond (via web browser, SSH, etc.) "
 "during a period of up to several minutes during the update as services are "
@@ -288,14 +289,6 @@ msgstr "Es sind Paket-Aktualisierungen verfügbar. %(link)s"
 msgid "Please respect the following guidelines for UCS updates:"
 msgstr "Bitte beachten Sie die folgenden Leitlinien für UCS-Aktualisierungen:"
 
-#: umc/js/updater/UpdatesPage.js:658
-msgid "Premium Subscription"
-msgstr ""
-
-#: umc/js/updater/UpdatesPage.js:654 umc/js/updater/UpdatesPage.js:656
-msgid "Premium Subscriptions"
-msgstr "Premium Subscriptionen"
-
 #: umc/js/updater/UpdatesPage.js:352
 msgid "Reboot"
 msgstr "Neu starten"
@@ -315,10 +308,6 @@ msgstr "Release-Aktualisierung"
 #: umc/js/updater/UpdatesPage.js:385
 msgid "Release updates"
 msgstr "Release-Aktualisierungen"
-
-#: umc/js/updater/UpdatesPage.js:656
-msgid "Standard Subscription"
-msgstr ""
 
 #: umc/js/updater/UpdatesPage.js:361
 msgid "Start Upgrade"
@@ -390,7 +379,7 @@ msgstr ""
 "Die Aktualisierung wurde erfolgreich beendet. Betätigen Sie die Schaltfläche "
 "\"Zurück\", um diese Ansicht zu schließen."
 
-#: umc/js/updater.js:453 umc/js/updater/ProgressPage.js:318
+#: umc/js/updater/ProgressPage.js:318 umc/js/updater.js:453
 msgid "The update is being executed."
 msgstr "Die Aktualisierung wird durchgeführt."
 
@@ -478,16 +467,6 @@ msgstr ""
 "Sie können auch im %(app_center)s nach Alternativen suchen oder die "
 "Applikation deinstallieren."
 
-#: umc/js/updater/UpdatesPage.js:645
-msgid ""
-"We offer extended maintenance for some UCS versions. <a target='_blank' "
-"href='https://www.univention.com/contact/'>Feel free to contact us if you "
-"want to know more.</a>"
-msgstr ""
-"Wir bieten für einige UCS Versionen verlängerte Maintenance Zeiträume an. <a "
-"target='_blank' href='https://www.univention.de/kontakt/'>Nehmen Sie gerne "
-"Kontakt zu uns auf.</a>"
-
 #: umc/js/updater/UpdatesPage.js:211
 msgid "You may wait for the app to be released for the new UCS version."
 msgstr ""
@@ -500,16 +479,6 @@ msgstr "noch keine Aktualisierung verfügbar"
 #: umc/js/updater/UpdatesPage.js:219
 msgid "update available"
 msgstr "Aktualisierung verfügbar"
-
-#: umc/js/updater/UpdatesPage.js:644
-msgid ""
-"{0} offer extended maintenance for some UCS versions. Detailed information "
-"can be found at the <a target='_blank' href='https://www.univention.com/"
-"products/prices-and-subscriptions/'>Univention Website</a>."
-msgstr ""
-"{0} bieten für einige Versionen längere Aktualisierungszeiträume. "
-"Informationen zu {0} finden Sie auf der <a target='_blank' href='https://www."
-"univention.de/produkte/preise/'>Univention Webseite</a>."
 
 #: umc/js/updater.js:234
 msgid "{count} packages to be REMOVED"
@@ -592,6 +561,9 @@ msgstr "{count} Pakete werden aktualisiert"
 #~ "Während des Updates ist es möglich, dass die Verbindung zum Webserver "
 #~ "unterbrochen wird. "
 
+#~ msgid "Enterprise Subscriptions"
+#~ msgstr "Enterprise Subscriptionen"
+
 #~ msgid ""
 #~ "In normal case, trouble-free use by users is not possible during the "
 #~ "update, since system services may need to be restarted. "
@@ -632,6 +604,9 @@ msgstr "{count} Pakete werden aktualisiert"
 #~ msgstr ""
 #~ "Bitte öffnen Sie das <a %s>App Center Modul</a>, um diese "
 #~ "Aktualisierungen zu installieren."
+
+#~ msgid "Premium Subscriptions"
+#~ msgstr "Premium Subscriptionen"
 
 #~ msgid "Refresh"
 #~ msgstr "Aktualisieren"
@@ -714,6 +689,15 @@ msgstr "{count} Pakete werden aktualisiert"
 #~ "Version %(version)s der Applikation %(name)s ist für das neue Release "
 #~ "nicht verfügbar. Benutzen Sie das %(module)s, um die Applikation zu "
 #~ "aktualisieren, falls möglich."
+
+#~ msgid ""
+#~ "We offer extended maintenance for some UCS versions. <a target='_blank' "
+#~ "href='https://www.univention.com/contact/'>Feel free to contact us if you "
+#~ "want to know more.</a>"
+#~ msgstr ""
+#~ "Wir bieten für einige UCS Versionen verlängerte Maintenance Zeiträume an. "
+#~ "<a target='_blank' href='https://www.univention.de/kontakt/'>Nehmen Sie "
+#~ "gerne Kontakt zu uns auf.</a>"
 
 #~ msgid ""
 #~ "When the connection is back you will be prompted to authenticate yourself "

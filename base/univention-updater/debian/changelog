@@ -1,3 +1,10 @@
+univention-updater (12.0.4-2) unstable; urgency=medium
+
+  * Bug #43026: Only detect between UCS Core edition and 'other' edition
+    to determine warning message content + reworded warning message
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Mar 2017 22:59:25 +0100
+
 univention-updater (12.0.4-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone
