@@ -14,6 +14,7 @@ Variables: locale
 Variables: umc/server/languages/.*
 Variables: hostname
 Variables: domainname
+Variables: server/role
 Variables: umc/web/appliance/name
 Variables: server/amazon
 Variables: interfaces/
