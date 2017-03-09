@@ -1,3 +1,9 @@
+univention-bind (11.0.0-17) unstable; urgency=low
+
+  * Bug #43690: Stop calling univention-bind init script
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Mar 2017 09:03:25 +0100
+
 univention-bind (11.0.0-16) unstable; urgency=low
 
   * Bug #43217: Add --force-self
