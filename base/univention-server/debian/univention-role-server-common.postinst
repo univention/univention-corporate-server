@@ -30,10 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 7.0.15-2; then
-	update-inetd --remove time
-	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
-	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 12.0.0-7; then
+	update-inetd --multi --remove time
 	invoke-rc.d openbsd-inetd restart
 fi
 

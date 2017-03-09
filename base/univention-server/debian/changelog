@@ -1,3 +1,9 @@
+univention-server (12.0.0-9) unstable; urgency=medium
+
+  * Bug #42109: remove time protocol server from inetd.conf during update
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Mar 2017 15:28:49 +0100
+
 univention-server (12.0.0-8) unstable; urgency=low
 
   * Bug #43217: Add --force-self
