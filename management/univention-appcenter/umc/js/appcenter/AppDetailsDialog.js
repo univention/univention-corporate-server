@@ -81,7 +81,6 @@ define([
 
 			this.set('headerButtons', [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Cancel installation'),
 				callback: close
 			}]);

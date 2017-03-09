@@ -128,7 +128,6 @@ define([
 					name: 'add',
 					label: _('Add'),
 					description: _('Add a new component definition'),
-					iconClass: 'umcIconAdd',
 					isContextAction: false,
 					isStandardAction: true,
 					callback: lang.hitch(this, function() {
@@ -139,7 +138,6 @@ define([
 					name: 'refresh',
 					label: _('Refresh'),
 					description: _('Refresh display to see current values'),
-					iconClass: 'umcIconRefresh',
 					isContextAction: false,
 					isStandardAction: true,
 					callback: lang.hitch(this, function() {
@@ -150,7 +148,6 @@ define([
 					name: 'enable',
 					description: _("Enable this component"),
 					label: _("Enable"),
-					// iconClass: 'dijitIconFolderOpen',
 					isStandardAction: false,
 					isMultiAction: false,
 					isContextAction: true,
@@ -162,7 +159,6 @@ define([
 					name: 'disable',
 					description: _("Disable this component"),
 					label: _("Disable"),
-					//iconClass: 'dijitIconFolderClosed',
 					isStandardAction: false,
 					isMultiAction: false,
 					isContextAction: true,
@@ -174,7 +170,6 @@ define([
 					name: 'install',
 					label: _("Install"),
 					description: _("Install the component's default package(s)"),
-					// iconClass: 'umcIconRefresh',
 					isStandardAction: true,
 					isMultiAction: false,
 					isContextAction: true,
@@ -190,7 +185,6 @@ define([
 					name: 'edit',
 					label: _('Edit'),
 					description: _('Edit the detail information about this component'),
-					iconClass: 'umcIconEdit',
 					isStandardAction: true,
 					isMultiAction: false,
 					callback: lang.hitch(this, function(ids) {
@@ -201,7 +195,6 @@ define([
 					name: 'delete',
 					label: _('Delete'),
 					description: _('Delete the selected component definition'),
-					iconClass: 'umcIconDelete',
 					isStandardAction: true,
 					// FIXME Should we really allow multiple deletions here?
 					isMultiAction: true,

@@ -60,7 +60,6 @@ define([
 
 			this.set('headerButtons', [{
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
 				label: _('Apply changes'),
 				callback: lang.hitch(this, function() {
 					var getValues = function(form) {
@@ -77,7 +76,6 @@ define([
 				})
 			}, {
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Cancel configuration'),
 				callback: lang.hitch(this, 'onBack', false)
 			}]);

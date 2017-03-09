@@ -50,7 +50,6 @@ define([
 			this.inherited(arguments);
 			this.headerButtons = [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
 				label: _('Cancel installation'),
 				align: 'left',
 				callback: lang.hitch(this, 'onBack')

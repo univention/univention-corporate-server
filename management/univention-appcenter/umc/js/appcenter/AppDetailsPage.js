@@ -188,7 +188,6 @@ define([
 					name: 'install',
 					label: _('Install'),
 					'class': 'umcAppButton',
-					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
@@ -197,7 +196,6 @@ define([
 				buttons.push({
 					name: 'shop',
 					label: _('Buy'),
-					iconClass: 'umcShopIcon',
 					'class': 'umcAppButton',
 					callback: lang.hitch(this, 'openShop')
 				});
@@ -208,7 +206,6 @@ define([
 		getHeaderButtons: function() {
 			var buttons = [{
 				name: 'close',
-				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
 				label: this.backLabel,
 				align: 'left',
 				callback: lang.hitch(this, 'onBack')
@@ -224,7 +221,6 @@ define([
 				var nextApp = this.visibleApps[currentIndex + 1];
 				buttons.push({
 					name: 'prev',
-					iconClass: 'umcLeftIconWhite',
 					label: prevApp ? _('Previous app') : '',
 					align: 'left',
 					disabled: !prevApp,
@@ -232,7 +228,6 @@ define([
 				});
 				buttons.push({
 					name: 'next',
-					iconClass: 'umcRightIconWhite',
 					label: nextApp ? _('Next app') : '',
 					align: 'left',
 					disabled: !nextApp,
@@ -251,7 +246,6 @@ define([
 					'class': 'umcAppButton umcActionButton',
 					isStandardAction: true,
 					isContextAction: false,
-					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this.app, 'install')
 				});
 			}

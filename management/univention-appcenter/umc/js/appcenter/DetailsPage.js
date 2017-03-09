@@ -49,7 +49,6 @@ define([
 				title: _("Components"),
 				headerButtons: [{
 					name: 'close',
-					iconClass: 'umcCloseIconWhite',
 					label: _("Back to overview"),
 					callback: lang.hitch(this, function() {
 						try {
@@ -60,7 +59,6 @@ define([
 					})
 				}, {
 					name: 'submit',
-					iconClass: 'umcSaveIconWhite',
 					'default': true,
 					label: _("Apply changes"),
 					callback: lang.hitch(this, function() {
