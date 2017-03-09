@@ -187,12 +187,12 @@ define([
 				var isVisible = ipage == this.selectedChildWidget;
 				if (!isVisible) {
 					// display page offscreen to determine the height
-					domClass.remove(iwrapper, 'dijitDisplayNone');
+					domClass.remove(iwrapper, 'dijitHidden');
 				}
 				var iheight = geometry.position(ipage._main.domNode).h;
 				if (!isVisible) {
 					// restore original state
-					domClass.add(iwrapper, 'dijitDisplayNone');
+					domClass.add(iwrapper, 'dijitHidden');
 				}
 				return iheight;
 			}));

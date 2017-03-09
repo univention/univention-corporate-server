@@ -1,3 +1,9 @@
+univention-web (1.0.33-3) unstable; urgency=medium
+
+  * Bug #43509: Use dijitHidden instead of dijitDisplayNone in Wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Mar 2017 22:09:07 +0100
+
 univention-web (1.0.33-2) unstable; urgency=medium
 
   * Bug #43528: Remove paddings of buttons below a form
