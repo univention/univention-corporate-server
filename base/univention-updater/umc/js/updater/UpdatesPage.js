@@ -464,7 +464,7 @@ define([
 						element.set('content', _("There are no updates available."));
 					}
 					var ebu = this._form._buttons.easy_upgrade;
-					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
+					domClass.toggle(ebu.domNode, 'dijitDisplayNone', ! ava);
 
 					this._show_reboot_pane(tools.isTrue(values.reboot_required));
 
@@ -596,7 +596,7 @@ define([
 		// Other titlepanes (e.g. reboot) are not affected.
 		_show_updater_panes: function(yes) {
 			array.forEach(['easymode', 'release', 'packages'], function(iname) {
-				domClass.toggle(this._titlepanes[iname].domNode, 'dijitHidden', ! yes);
+				domClass.toggle(this._titlepanes[iname].domNode, 'dijitDisplayNone', ! yes);
 			}, this);
 		},
 
@@ -607,21 +607,21 @@ define([
 			if (this._update_prohibited) {
 				this._show_updater_panes(false);
 			} else {
-				domClass.toggle(this._titlepanes.easymode.domNode, 'dijitHidden', ! yes);
-				domClass.toggle(this._titlepanes.release.domNode, 'dijitHidden', yes);
-				domClass.toggle(this._titlepanes.packages.domNode, 'dijitHidden', yes);
+				domClass.toggle(this._titlepanes.easymode.domNode, 'dijitDisplayNone', ! yes);
+				domClass.toggle(this._titlepanes.release.domNode, 'dijitDisplayNone', yes);
+				domClass.toggle(this._titlepanes.packages.domNode, 'dijitDisplayNone', yes);
 			}
 		},
 
 		// Switches visibility of the reboot pane on or off
 		_show_reboot_pane: function(yes) {
-			domClass.toggle(this._titlepanes.reboot.domNode, 'dijitHidden', !yes);
+			domClass.toggle(this._titlepanes.reboot.domNode, 'dijitDisplayNone', !yes);
 
 			if (yes) {
 				this._form.showWidget('reboot_text', yes);
 
 				var but = this._form._buttons.reboot;
-				domClass.toggle(but.domNode, 'dijitHidden', false);
+				domClass.toggle(but.domNode, 'dijitDisplayNone', false);
 			}
 
 		},
