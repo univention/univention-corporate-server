@@ -1,3 +1,9 @@
+univention-web (1.0.33-6) unstable; urgency=medium
+
+  * Bug #43528: Remove gradient and border of disabled buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Mar 2017 23:42:46 +0100
+
 univention-web (1.0.33-5) unstable; urgency=medium
 
   * Bug #43528: Fix errors during dojo build
