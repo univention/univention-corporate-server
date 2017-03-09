@@ -192,6 +192,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'univention-config-registry-variables',  # univention-install-config-registry-info
 		'univention-service',  # univention-install-service-info
 		'wm',  # dh_installwm
+		'univention-l10n',  # univention-l10n-build / univention-l10n-install
 	))
 
 	NAMED_DH_FILES = set((
