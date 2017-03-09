@@ -169,7 +169,7 @@ define([
 					'password': this._password.get('value')
 				};
 				tools.umcpCommand('passwordreset/get_contact', data).then(lang.hitch(this, function(data) {
-					put(this._showContactInformationButton.domNode, '.dijitHidden');
+					put(this._showContactInformationButton.domNode, '.dijitDisplayNone');
 					this._createRenewOptions(data.result);
 				}), lang.hitch(this, function(){
 					this._showContactInformationButton.set('disabled', false);
@@ -320,7 +320,7 @@ define([
 		 * */
 		_deleteRenewOptions: function() {
 			put(this._renewOptions, '!');
-			put(this._showContactInformationButton.domNode, '!dijitHidden');
+			put(this._showContactInformationButton.domNode, '!dijitDisplayNone');
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();
 			this._password.reset();

@@ -1,3 +1,9 @@
+univention-self-service (2.0.9-2) unstable; urgency=medium
+
+  * Bug #43509: dijitDisplayNone → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:57:08 +0100
+
 univention-self-service (2.0.9-1) unstable; urgency=medium
 
   * Bug #43565: remove unused self-service things from UCS 4.1

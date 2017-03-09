@@ -144,7 +144,7 @@ define([
 					'username': this._username.get('value')
 				};
 				tools.umcpCommand('passwordreset/get_reset_methods', data).then(lang.hitch(this, function(data) {
-					put(this._usernameButton.domNode, '.dijitHidden');
+					put(this._usernameButton.domNode, '.dijitDisplayNone');
 					this._createRenewOptions(data.result);
 				}), lang.hitch(this, function(){
 					this._usernameButton.set('disabled', false);
@@ -226,7 +226,7 @@ define([
 					put(this.steps.children[1], "!");
 					this._username.set('value', '');
 					this._username.set('disabled', false);
-					put(this._usernameButton.domNode, '!.dijitHidden');
+					put(this._usernameButton.domNode, '!.dijitDisplayNone');
 					this._usernameButton.set('disabled', false);
 					hash(ioQuery.objectToQuery({page: "newpassword", username: username}));
 				}), lang.hitch(this, function() {
