@@ -172,7 +172,7 @@ define([
 		_createTitle: function() {
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', _('Activation of {appliance_name} Appliance', entries));
-			put(titleNode, '!.dijitHidden');
+			put(titleNode, '!.dijitDisplayNone');
 		},
 
 		_createNavButton: function(tabID) {

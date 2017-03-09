@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 13:59:40 +0100
+
 univention-system-activation (2.0.1-3) unstable; urgency=low
 
   * Bug #42296: use rm_conffile to remove template
