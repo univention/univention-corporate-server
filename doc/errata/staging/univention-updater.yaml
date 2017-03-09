@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-updater
-fix: 11.0.11-20.1507.201702221447
+fix: 11.0.11-22.1509.201703092255
 desc: |
  This update addresses the following issue(s):
  * A warning message is shown when the currently used UCS version
