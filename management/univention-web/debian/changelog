@@ -1,3 +1,9 @@
+univention-web (1.0.31-18) unstable; urgency=medium
+
+  * Bug #43528: Add server/role to meta.json
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Mar 2017 14:00:02 +0100
+
 univention-web (1.0.31-17) unstable; urgency=medium
 
   * Bug #43528: Adjust styling of PasswordBox placeholders

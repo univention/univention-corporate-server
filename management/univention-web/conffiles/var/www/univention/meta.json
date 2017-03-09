@@ -79,6 +79,7 @@ def get_ec2_address():
 data = dict(
 	domainname=configRegistry['domainname'],
 	hostname=configRegistry['hostname'],
+	server_role=configRegistry.get('server/role'),
 	ldap_master=configRegistry.get('ldap/master'),
 	serveraddress=get_ec2_address(),
 	appliance_name=configRegistry['umc/web/appliance/name'],
