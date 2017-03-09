@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-8) unstable; urgency=medium
+
+  * Bug #42109: Remove firewall accept rule for time service (37 tcp)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Mar 2017 15:36:56 +0100
+
 univention-base-files (6.0.0-7) unstable; urgency=low
 
   * Bug #43310: Adapt to firewall locking
