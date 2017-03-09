@@ -1,3 +1,10 @@
+univention-portal (1.0.8-2) unstable; urgency=medium
+
+  * Bug #42231: New category Installed Apps, adjustments to portal objects,
+    set title to portal title
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 09 Mar 2017 23:35:56 +0100
+
 univention-portal (1.0.8-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone

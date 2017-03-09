@@ -94,10 +94,10 @@ def _make_obj(obj):
 		else:
 			if what(fname) == 'png':
 				shutil.move(fname, '%s.png' % fname)
-				background = '/portal/icons/backgrounds/%s.png' % cn
+				background = '/univention/portal/icons/backgrounds/%s.png' % cn
 			else:
 				shutil.move(fname, '%s.svg' % fname)
-				background = '/portal/icons/backgrounds/%s.svg' % cn
+				background = '/univention/portal/icons/backgrounds/%s.svg' % cn
 	return {
 		'name': _split_translation(obj.get('univentionPortalDisplayName')),
 		'showMenu': obj.get('univentionPortalShowMenu', [''])[0] == 'TRUE',
@@ -118,10 +118,10 @@ def _save_external_portal(dn=None):
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LISTENER, ud.WARN, 'DN %s not found! Falling back to hard coded values' % dn)
 		attrs = {
-			'univentionPortalDisplayName': ['Univention Portal'],
+			'univentionPortalDisplayName': ['en_US Startsite for {hostname}', 'de_DE Startseite für {hostname}', 'fr_FR page d\'accueil pour {hostname}'],
 			'univentionPortalShowMenu': ['TRUE'],
 			'univentionPortalShowSearch': ['TRUE'],
-			'univentionPortalShowLogin': ['TRUE'],
+			'univentionPortalShowLogin': ['FALSE'],
 			'univentionPortalShowApps': ['TRUE'],
 			'univentionPortalShowServers': ['TRUE'],
 		}

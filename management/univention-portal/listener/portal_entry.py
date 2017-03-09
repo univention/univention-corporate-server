@@ -84,10 +84,10 @@ def _make_obj(obj):
 		else:
 			if what(fname) == 'png':
 				shutil.move(fname, '%s.png' % fname)
-				logo_name = '/portal/icons/entries/%s.png' % cn
+				logo_name = '/univention/portal/icons/entries/%s.png' % cn
 			else:
 				shutil.move(fname, '%s.svg' % fname)
-				logo_name = '/portal/icons/entries/%s.svg' % cn
+				logo_name = '/univention/portal/icons/entries/%s.svg' % cn
 	return {
 		'id': obj['entryUUID'][0],
 		'name': _split_translation(obj.get('univentionPortalEntryDisplayName')),

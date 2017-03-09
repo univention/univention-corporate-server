@@ -61,19 +61,31 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
 
-if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
-	univention-directory-manager settings/portal create "$@" --ignore_exists \
-		--position "cn=portal,cn=univention,$ldap_base" \
-		--set name=domain \
-		--append displayName='"en_US" "Univention Portal"' \
-		--append displayName='"fr_FR" "Univention Portal"' \
-		--append displayName='"de_DE" "Univention Portal"' \
-		--set showMenu=TRUE \
-		--set showSearch=TRUE \
-		--set showLogin=TRUE \
-		--set showApps=TRUE \
-		--set showServers=TRUE || die
+univention-directory-manager settings/portal create "$@" --ignore_exists \
+	--position "cn=portal,cn=univention,$ldap_base" \
+	--set name=domain \
+	--append displayName='"en_US" "Univention Portal"' \
+	--append displayName='"de_DE" "Univention Portal"' \
+	--append displayName='"fr_FR" "Univention Portal"' \
+	--set showMenu=TRUE \
+	--set showSearch=TRUE \
+	--set showLogin=TRUE \
+	--set showApps=FALSE \
+	--set showServers=TRUE || die
 
+univention-directory-manager settings/portal create "$@" --ignore_exists \
+	--position "cn=portal,cn=univention,$ldap_base" \
+	--set name=local \
+	--append displayName='"en_US" "Startsite for {hostname}"' \
+	--append displayName='"de_DE" "Startseite für {hostname}"' \
+	--append displayName=$'"fr_FR" "page d\'accueil pour {hostname}"' \
+	--set showMenu=TRUE \
+	--set showSearch=TRUE \
+	--set showLogin=FALSE \
+	--set showApps=TRUE \
+	--set showServers=TRUE || die
+
+if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
 	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
 		--set name=umc-domain \
@@ -89,24 +101,25 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 
 	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
 		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
-else
-	univention-directory-manager settings/portal create "$@" --ignore_exists \
-		--position "cn=portal,cn=univention,$ldap_base" \
-		--set name=local \
-		--append displayName='"en_US" "Univention Portal"' \
-		--append displayName='"fr_FR" "Univention Portal"' \
-		--append displayName='"de_DE" "Univention Portal"' \
-		--set showMenu=TRUE \
-		--set showSearch=TRUE \
-		--set showLogin=TRUE \
-		--set showApps=TRUE \
-		--set showServers=TRUE || die
 
+	if [ "$role" = "domaincontroller_master" ]; then
+		# set link to master umc on all other system roles
+		ucr set \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label="System and domain settings" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label/de="System- und Domäneneinstellungen" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description="Univention Management Console for administrating the UCS domain and the local system" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de="Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/icon=/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/link=/univention/management/
+		univention-directory-manager "settings/portal_entry" modify "$@" --dn="cn=ucs-local-to-domain,cn=portal,cn=univention,$ldap_base" \
+			--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
+	fi
+else
 	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
 		--set name=umc-local \
 		--append displayName='"en_US" "System settings"' \
-		--append displayName='"de_DE" "Domäneneinstellungen"' \
+		--append displayName='"de_DE" "Systemeinstellungen"' \
 		--append description='"en_US" "Univention Management Console for administrating the local system"' \
 		--append description='"de_DE" "Univention Management Console zur Verwaltung des lokalen Systems"' \
 		--append link=/univention/management/ \
