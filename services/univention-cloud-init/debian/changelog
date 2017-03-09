@@ -1,3 +1,9 @@
+univention-cloud-init (4.0.2-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:50:24 +0100
+
 univention-cloud-init (4.0.1-1) unstable; urgency=medium
 
   * Bug #42228: ucs-overview → univention
