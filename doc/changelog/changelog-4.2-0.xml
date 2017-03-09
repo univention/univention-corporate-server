@@ -881,6 +881,10 @@
 				Old custom <package>firefox</package> packages have been replaced with the Debian upstream package <package>firefox-esr</package>.
 				During the update to &ucsUCS; 4.2-0 the old package are automatically replaced (<u:bug>42322</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The time service (TCP port 37) has been disabled and the corresponding UCR variables for the firewall accept rule are not set by default any longer.
+				During update, the UCR variables for the firewall accept rule are unset (<u:bug>42109</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
