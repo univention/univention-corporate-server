@@ -635,27 +635,26 @@ define([
 			// load maintenance information and show message if current UCS version is out of maintenance
 			tools.umcpCommand('updater/maintenance_information').then(lang.hitch(this, function(data) {
 				var info = data.result;
-				if (!info || !info.show_warning) {
+				if (!info.show_warning) {
 					return;
 				}
-
-				var msg = '';
-				var msgBase = lang.replace(_("<b>Warning</b>: You are currently using UCS {0} {1}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br>"), [info.ucs_version, '{0}']);
-				var msgExpanded = _("{0} offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
-				var msgContact = _("We offer extended maintenance for some UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>");
-				var msgExtended = _("<b>Warning</b>: You are currently using UCS {0}. This version is outdated and no more security updates will be released for it. Please update your system to a newer UCS version!<br> We offer extended maintenance for this UCS versions. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more.</a>");
+				
+				var baseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more security updates will be released for this version. Please update the system to a newer UCS version!"), [info.ucs_version]);
+				var enterpriseSubscriptionAd = _("<br>Enterprise subscriptions offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
+				var extendedEnterpriseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more regular security updates will be released for this version!<br>Update the system to a newer UCS version or, alternatively, request an extended maintenance for this version. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more</a>."), [info.ucs_version]);
 
 				// construct the correct message
-				if (info.maintenance_extended) {
-					msg = lang.replace(msgExtended, [info.ucs_version]);
-				} else if (info.base_dn === 'Free for personal use edition' || info.base_dn === 'UCS Core Edition') {
-					msg = lang.replace(msgBase, [_('Core Edition')]) + lang.replace(msgExpanded, [_('Enterprise Subscriptions')]);
-				} else if (!info.support && !info.premium_support) {
-					msg = lang.replace(msgBase, [_('Base Subscription')]) + lang.replace(msgExpanded, [_('Premium Subscriptions')]);
-				} else if (info.support && !info.premium_support) {
-					msg = lang.replace(msgBase, [_('Standard Subscription')]) + lang.replace(msgExpanded, [_('Premium Subscriptions')]);
-				} else if (info.premium_support) {
-					msg = lang.replace(msgBase, [_('Premium Subscription')]) + msgContact;
+				var msg = '';
+				if (tools.isFreeLicense(info.base_dn)) {
+					// UCS core edition
+					msg = baseMsg + enterpriseSubscriptionAd;
+				} else {
+					// UCS Base/Standard/Premium subscription
+					if (info.maintenance_extended) {
+						msg = extendedEnterpriseMsg;
+					} else {
+						msg = baseMsg;
+					}
 				}
 
 				// display out of maintenance message

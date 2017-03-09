@@ -1,3 +1,10 @@
+univention-updater (11.0.11-22) unstable; urgency=medium
+
+  * Bug #43026: Only detect between UCS Core edition and 'other' edition
+    to determine warning message content + reworded warning message
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Mar 2017 22:51:08 +0100
+
 univention-updater (11.0.11-21) unstable; urgency=medium
 
   Bug #43026:
