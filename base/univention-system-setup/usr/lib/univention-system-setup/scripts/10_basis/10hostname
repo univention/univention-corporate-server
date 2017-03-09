@@ -447,10 +447,10 @@ if [ $? = 0 ]; then
 fi
 
 # stop the dns server and remove the cache
-service_stop univention-bind univention-bind-proxy heimdal-kdc
+service stop bind9 heimdal-kdc
 sleep 1
 rm -f /var/cache/bind/*
-service_start univention-bind univention-bind-proxy heimdal-kdc
+service start bind9 heimdal-kdc
 
 #invalidate the hosts cache
 nscd -i hosts

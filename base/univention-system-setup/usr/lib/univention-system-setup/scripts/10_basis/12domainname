@@ -592,10 +592,10 @@ if [ -x "/etc/init.d/postfix" ]; then
 fi
 
 # stop the dns server and remove the cache
-service_stop univention-bind univention-bind-proxy
+service stop bind9
 sleep 1
 rm -f /var/cache/bind/*
-service_start univention-bind univention-bind-proxy
+service start bind9
 
 #invalidate the hosts cache
 nscd -i hosts

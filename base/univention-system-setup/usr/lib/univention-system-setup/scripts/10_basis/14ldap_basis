@@ -124,7 +124,7 @@ elif [ -e "/etc/machine.secret" ]; then
 	passfile="/etc/machine.secret"
 fi
 
-service_stop univention-bind univention-bind-proxy
+service stop bind9
 
 # set value in /etc files
 if [ -d "/etc/bind/univention.conf.d" ]; then
@@ -133,7 +133,7 @@ if [ -d "/etc/bind/univention.conf.d" ]; then
 	done
 fi
 
-service_start univention-bind univention-bind-proxy
+service start bind9
 
 if [ -n "$passfile" ]; then
 	if [ -x "/usr/bin/smbpasswd" ]; then

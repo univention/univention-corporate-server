@@ -154,22 +154,27 @@ is_profile_var_true ()
 	return 0
 }
 
-service_stop ()
-{
-	for service in $@; do
-		if [ -x /etc/init.d/$service ]; then
-			/etc/init.d/$service stop
+service () {
+	local service script unit state action="$1"
+	shift
+	for service in "$@"
+	do
+		unit="${service%.sh}.service" script="/etc/init.d/$service"
+		if [ -d /run/systemd/system ] && state="$(systemctl -p LoadState show "$unit")" && [ "$state" = 'LoadState=loaded' ]
+		then
+			case "$action" in
+			crestart) systemctl try-restart "$unit" ; continue ;;
+			start|stop|reload|force-reload|restart|status) systemctl "$action" "$unit" ; continue ;;
+			esac
+		fi
+		if [ -x "$script" ]
+		then
+			"$script" "$action"
 		fi
 	done
 }
-service_start ()
-{
-	for service in $@; do
-		if [ -x /etc/init.d/$service ]; then
-			/etc/init.d/$service start
-		fi
-	done
-}
+service_start () { service start "$@"; }
+service_stop () { service stop "$@"; }
 
 ldap_binddn ()
 {

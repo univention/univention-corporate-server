@@ -7,7 +7,7 @@ class PhaseRestartBind(RestartService, NotNetworkOnly):
 	"""
 	Stop the DNS server, remove the cache, restart.
 	"""
-	service = "univention-bind"
+	service = "bind9"
 	priority = 24
 
 	def post(self):
