@@ -87,6 +87,8 @@ define([
 
 		_cssRule: null,
 
+		headerButtons: null,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -95,6 +97,7 @@ define([
 			array.forEach(this.pages, function(ipage) {
 				// setup the footer buttons
 				var footerButtons = this.getFooterButtons(ipage.name);
+				var headerButtons = this.getHeaderButtons(ipage.name);
 
 				// render the page
 				var pageConf = lang.clone(ipage);
@@ -103,6 +106,7 @@ define([
 				delete pageConf.layout;
 				pageConf = lang.mixin({
 					footerButtons: footerButtons,
+					headerButtons: headerButtons,
 					navBootstrapClasses: this.pageNavBootstrapClasses || Page.prototype.navBootstrapClasses,
 					mainBootstrapClasses: this.pageMainBootstrapClasses || Page.prototype.mainBootstrapClasses
 				}, pageConf);
@@ -140,6 +144,13 @@ define([
 				}
 				this._pages[ipage.name] = page;
 			}, this);
+			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, page) {
+				this.set('headerButtons', page.headerButtons);
+			}));
+		},
+
+		getHeaderButtons: function(pageName) {
+			return this.headerButtons || [];
 		},
 
 		getFooterButtons: function(pageName) {
