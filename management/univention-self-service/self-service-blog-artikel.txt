@@ -2,9 +2,7 @@ Mit der Version 4.1 von Univention Corporate Server führt Univention einen Dien
 
 Zwei Module werden gibt es bisher: "Passwort ändern" und "Passwort zurücksetzen". Bei "Passwort ändern" handelt es sich um eine Webseite, auf der Benutzer ihr (abgelaufenes) Passwort ändern können, solange sie sich noch an ihr bestehendes erinnern. Bei "Passwort zurücksetzen" können Benutzer, die ihr Passwort vergessen haben, auf einer Webseite veranlassen, dass ihnen ein Schlüssel (Token) an eine zuvor hinterlegte Adresse geschickt wird. Beide Module sind über die Übersichtsseite des UCS Servers erreichbar.
 
-Die Univention Self-Service-Module sind über das AppCenter auf Servern in den Rollen Domänencontroller Master und Domänencontroller Backup installierbar. Nach der Installation können die Module einzeln aktiviert oder deaktiviert werden. Um z.B. das Modul "Passwort zurücksetzen" zu deaktivieren, wird an der Kommandozeile folgendes ausgeführt:
-<code>univention-self-service-modules disable passwordreset</code>
-Wie gewohnt, gibt die Option "--help" eine Auskunft über weitere Optionen.
+Die Univention Self-Service-Module sind über das AppCenter auf Servern in den Rollen Domänencontroller Master und Domänencontroller Backup installierbar.
 
 = App-Hersteller =
 
