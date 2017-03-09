@@ -2,7 +2,7 @@
 #: www/NewPassword.js:48
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-apache\n"
+"Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2016-04-01 13:30+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"

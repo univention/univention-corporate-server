@@ -57,5 +57,3 @@ if args.action == "enable":
 else:
 	ucrs = modules[args.module].keys()
 	univention.config_registry.handler_unset(ucrs)
-
-subprocess.Popen(["invoke-rc.d", "apache2", "reload"])
