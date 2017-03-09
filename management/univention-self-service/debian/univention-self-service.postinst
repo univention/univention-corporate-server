@@ -34,36 +34,20 @@
 
 eval "$(univention-config-registry shell)"
 
-if ! [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	echo "ERROR: This package must be installed on a DC master or DC backup!"
-	echo "ERROR: Please uninstall and install on a DC master or DC backup!"
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 2.0.9-1; then
+	univention-config-registry unset \
+		ucs/web/overview/entries/service/passwordchange/description \
+		ucs/web/overview/entries/service/passwordchange/description/de \
+		ucs/web/overview/entries/service/passwordchange/icon \
+		ucs/web/overview/entries/service/passwordchange/label \
+		ucs/web/overview/entries/service/passwordchange/label/de \
+		ucs/web/overview/entries/service/passwordchange/link \
+		ucs/web/overview/entries/service/passwordchange/link/de \
+		ucs/web/overview/entries/service/passwordchange/port_http \
+		ucs/web/overview/entries/service/passwordchange/port_https \
+		ucs/web/overview/entries/service/passwordchange/icon
+	deluser --system --remove-home --remove-all-files self-service
 fi
-
-# web site logging
-ACCESS_LOG=/var/log/univention/self-service-access.log
-ERROR_LOG=/var/log/univention/self-service-error.log
-
-if [ "$1" = "configure" -a -z "$2" ] ; then
-	echo "Fresh installation..."
-	adduser --system --no-create-home --group self-service
-fi
-
-touch $ACCESS_LOG $ERROR_LOG
-chown self-service:adm $ACCESS_LOG $ERROR_LOG
-chmod 640 $ACCESS_LOG $ERROR_LOG
-
-# Link für Passwort Service
-# Informationen für den Link zum Passwort Service
-univention-config-registry set "ucs/web/overview/entries/service/passwordchange/label=Password settings" \
-	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort-Einstellungen" \
-	"ucs/web/overview/entries/service/passwordchange/description=Password change and protection." \
-	"ucs/web/overview/entries/service/passwordchange/description/de=Passwort ändern und Kontozugang schützen." \
-	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/?lang=en-US" \
-	"ucs/web/overview/entries/service/passwordchange/link/de=/univention-self-service/?lang=de-DE" \
-	"ucs/web/overview/entries/service/passwordchange/port_http=" \
-	"ucs/web/overview/entries/service/passwordchange/port_https=443" \
-	"ucs/web/overview/entries/service/passwordchange/icon=/icon/password.png" \
-	"umc/web/hooks/univention-self-service?passwordreset"
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/65univention-self-service.uinst

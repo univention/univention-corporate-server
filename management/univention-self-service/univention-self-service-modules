@@ -36,14 +36,6 @@ import univention.config_registry
 
 ucr_passwordreset = {
 	"self-service/passwordreset/web/enabled": "yes",
-	"ucs/web/overview/entries/service/passwordreset/description": u"Reset your password or provide contact information",
-	"ucs/web/overview/entries/service/passwordreset/description/de": u"Setzen Sie Ihr Passwort zurück oder hinterlegen Sie Kontaktinformationen.",
-	"ucs/web/overview/entries/service/passwordreset/label": u"Password Reset",
-	"ucs/web/overview/entries/service/passwordreset/label/de": u"Passwort zurücksetzen",
-	"ucs/web/overview/entries/service/passwordreset/link": "/univention-self-service/?lang=en-US#passwordreset",
-	"ucs/web/overview/entries/service/passwordreset/link/de": "/univention-self-service/?lang=de-DE#passwordreset",
-	"ucs/web/overview/entries/service/passwordreset/port_http": "",
-	"ucs/web/overview/entries/service/passwordreset/port_https": "443"
 }
 
 actions = ["enable", "disable"]

@@ -38,32 +38,6 @@ case "$1" in
 	;;
 esac
 
-# UCR Variablen bei Deinstallation löschen
-if [ "$1" = "remove" -o "$1" = "purge" ]; then
-	# Informationen für den Link zum Passwort Service löschen
-	univention-config-registry unset \
-		ucs/web/overview/entries/service/passwordchange/description \
-		ucs/web/overview/entries/service/passwordchange/description/de \
-		ucs/web/overview/entries/service/passwordchange/icon \
-		ucs/web/overview/entries/service/passwordchange/label \
-		ucs/web/overview/entries/service/passwordchange/label/de \
-		ucs/web/overview/entries/service/passwordchange/link \
-		ucs/web/overview/entries/service/passwordchange/link/de \
-		ucs/web/overview/entries/service/passwordchange/port_http \
-		ucs/web/overview/entries/service/passwordchange/port_https \
-		ucs/web/overview/entries/service/passwordchange/icon
-
-	# UCR Variablen für die Unterseiten des Passwort Services löschen
-	univention-config-registry unset \
-		umc/self-service/passwordservice/subpage/password_change \
-		umc/self-service/passwordservice/subpage/password_forgotten \
-		umc/self-service/passwordservice/subpage/protect_account_access
-
-	# restart, so apache unloads WSGI and deactivats plugin in its config
-	# retry if fail because of to quick successive restarts (from other frontend packages)
-	invoke-rc.d apache2 restart
-fi
-
 if [ "$1" = "remove" ]
 then
 	. /usr/share/univention-lib/all.sh
