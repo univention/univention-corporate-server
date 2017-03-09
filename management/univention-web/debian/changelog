@@ -1,3 +1,9 @@
+univention-web (1.0.31-17) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of PasswordBox placeholders
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Mar 2017 12:21:35 +0100
+
 univention-web (1.0.31-16) unstable; urgency=medium
 
   * Bug #43528: Make SearchBox disableable and refocus when search icon is

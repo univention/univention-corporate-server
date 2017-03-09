@@ -24,9 +24,8 @@
 	height: 20px
 	margin: 6px 8px 0 0
 
-//.umc .dijitTextBoxError .dijitValidationContainer
-//	border-left-width: 1px
-//
+// .umc .dijitTextBoxError .dijitValidationContainer
+// 	border-left-width: 1px
 
 .umc .dijitValidationTextBoxError .dijitValidationIcon
 	width: 0
@@ -92,20 +91,25 @@
 		padding: 0 10px
 
 		.dijitInputInner,
-		.umcInlineLabel
+		.umcInlineLabel,
+		.dijitPlaceHolder
 			line-height: 32px
 			text-overflow: ellipsis
 
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			width: 100%
+			position: absolute
+			left: 0
+			top: 0
+			padding: @padding
+
 		.umcInlineLabel
 			visibility: hidden
-			position: absolute
-			left: 10px
-			top: 0
 			color: $text-color-lightest
 
 			&.umcEmptyValue
 				visibility: visible
-
 
 /* hover */
 .umc .dijitSelectHover,
@@ -211,7 +215,6 @@
 //.umc .dijitTextBox .dijitInputInner,
 //.umc .dijitValidationTextBox .dijitValidationContainer
 //	padding: 1px 0
-//
 
 .umc .dijitComboBox .dijitButtonNode
 	//background-color: $arrowbutton-background-color
@@ -228,7 +231,6 @@
 .umc .dijitComboBoxFocused .dijitArrowButton
 	//background-color:$arrowbutton-hovered-background-color
 
-
 .umc
 	.dijitComboBoxOpenOnClickHover,
 	.dijitComboBox .dijitDownArrowButtonHover
@@ -236,13 +238,9 @@
 			background-position: -20px 0
 			opacity: 0.66
 
-
-
-
 .umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner,
 .umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner
 	//background-position:-70px 53%
-
 
 .umc .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner
 	background-position: -20px 0
@@ -255,15 +253,12 @@
 	//active-gradient("../")
 	//padding: 1px		// Since no border on arrow button (see rule below)
 
-
 .dj_iequirks .umc .dijitComboBox .dijitHasDropDownOpen
 	padding: 1px 0
-
 
 .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
 	//background-position:-70px 53%
 	border: 0 none
-
 
 /* disabled state */
 .umc div.dijitComboBoxDisabled .dijitArrowButtonInner
@@ -272,13 +267,10 @@
 	//background-position:0 50%
 	//background-color:$disabled-background-color
 
-
-
 /* labels for form elements */
 label
 	/* overwrite bootstrap bold font weight */
 	font-weight: normal
-
 
 .umc .umcLabelPane
 	display: inline-block
