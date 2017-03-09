@@ -316,6 +316,9 @@
 				<listitem><simpara>
 					The package <package>dbus-x11</package> is installed by default to silence <package>firefox</package> (<u:bug>36168</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The file <filename>/etc/localtime</filename> no longer is a symbolic link, but contains a copy of the time zone data (<u:bug>24090</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -519,7 +522,7 @@
 				during the upgrade. In this case the upgrade process is stopped previously (<u:bug>39092</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The pre-check of the UCS 4.2 upgrade now ensures that all computer objects have valid objectclass
+				The pre-check of the UCS 4.2 upgrade now ensures that all computer objects have valid LDAP object classes
 				(<u:bug>41868</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
@@ -567,7 +570,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Self Service now communicates directly with the UMC-Server instead of being proxied through a WSGI process (<u:bug>42132</u:bug>).
+					The Self Service now communicates directly with the UMC server instead of being proxied through a WSGI process (<u:bug>42132</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

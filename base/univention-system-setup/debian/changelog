@@ -1,6 +1,7 @@
 univention-system-setup (10.0.7-23) unstable; urgency=low
 
   * Bug #43690: Fix restarting BIND
+  * Bug #24090: Fix /etc/localtime
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 09 Mar 2017 08:34:57 +0100
 

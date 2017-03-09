@@ -51,8 +51,9 @@ if [ -e /etc/timezone ]; then
 	fi
 fi
 
+rm -f /etc/localtime /etc/timezone
 echo "$timezone" >/etc/timezone
-ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+install -m644 "/usr/share/zoneinfo/$timezone" /etc/localtime
 
 service stop ntp
 test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian || true
