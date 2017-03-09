@@ -187,7 +187,7 @@ define([
 
 		_updateButtonVisibility: function() {
 			//make sure the domNode is not hidden
-			domClass.remove(this.domNode, 'dijitHidden');
+			domClass.remove(this.domNode, 'dijitDisplayNone');
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);
 			if (appsDisplayed.length) {
 				var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
@@ -207,7 +207,7 @@ define([
 		_centerApps: function() {
 			this.grid._resizeItemNames();
 			//make sure the domNode is not hidden
-			domClass.remove(this.domNode, 'dijitHidden');
+			domClass.remove(this.domNode, 'dijitDisplayNone');
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);
 			var gridContentNodes = domQuery('div[class="dgrid-content ui-widget-content"]', this.id);
 			if (appsDisplayed.length && gridContentNodes.length) {
@@ -224,7 +224,7 @@ define([
 		_updateVisibility: function(apps) {
 			var appsDisplayed = apps || domQuery('div[class*="dgrid-row"]', this.id);
 			var isMetaCategoryEmpty = appsDisplayed.length === 0;
-			domClass.toggle(this.domNode, 'dijitHidden', isMetaCategoryEmpty);
+			domClass.toggle(this.domNode, 'dijitDisplayNone', isMetaCategoryEmpty);
 		},
 
 		onShowApp: function(app) {
