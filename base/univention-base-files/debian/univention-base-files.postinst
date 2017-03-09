@@ -137,6 +137,16 @@ univention-config-registry set \
 	security/packetfilter/package/univention-base-files/tcp/22/all/en="SSH" \
 	security/packetfilter/package/univention-base-files/udp/123/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/udp/123/all/en="ntp"
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 6.0.0-7; then
+	eval "$(univention-config-registry shell \
+		security/packetfilter/package/univention-base-files/tcp/37/all)"
+	if [ "$security_packetfilter_package_univention_base_files_tcp_37_all" = "ACCEPT" ]; then
+		univention-config-registry unset \
+			security/packetfilter/package/univention-base-files/tcp/37/all \
+			security/packetfilter/package/univention-base-files/tcp/37/all/en
+	fi
+fi
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 # The nouveau driver from Linux 3.10 is incompatible with the UCS xorg userland (Bug #31701)

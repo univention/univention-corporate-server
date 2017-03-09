@@ -1,3 +1,11 @@
+univention-base-files (6.0.0-9) unstable; urgency=medium
+
+  * Bug #42109: During updates:
+    unset security/packetfilter/package/univention-base-files/tcp/37/all
+    if it is still set to the default value of ACCEPT.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Mar 2017 15:53:45 +0100
+
 univention-base-files (6.0.0-8) unstable; urgency=medium
 
   * Bug #42109: Remove firewall accept rule for time service (37 tcp)
