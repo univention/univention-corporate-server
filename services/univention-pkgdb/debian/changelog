@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.1-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:08:18 +0100
+
 univention-pkgdb (10.0.0-4) unstable; urgency=medium
 
   * Bug #39903: Ignore packages from wrong architecture

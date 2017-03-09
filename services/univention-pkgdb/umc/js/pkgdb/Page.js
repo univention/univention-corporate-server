@@ -171,7 +171,7 @@ define([
 				}));
 			}
 
-			domClass.toggle(this._grid.domNode,'dijitHidden',false);
+			domClass.toggle(this._grid.domNode, 'dijitDisplayNone', false);
 
 			var deferred = new Deferred();
 			deferred.resolve(true);
