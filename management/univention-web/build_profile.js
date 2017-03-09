@@ -49,8 +49,8 @@ var profile = (function() {
 			"xstyle"
 		],
 
-		layerOptimize : false, //"closure",
-		optimize : false, //"closure",
+		layerOptimize : "closure",
+		optimize : "closure",
 		cssOptimize: false, //"comments.keepLines",
 		copyTests: false,
 
