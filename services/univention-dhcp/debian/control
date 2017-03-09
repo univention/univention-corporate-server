@@ -20,8 +20,6 @@ Depends: ${misc:Depends},
  univention-join (>= 4.0.13-3),
  shell-univention-lib (>= 1.0.3-1),
  python-univention-lib (>= 1.0.25-1)
-Conflicts: univention-dns
-Replaces: univention-dns
 Breaks: dhcp3-server (<< 4),
  univention-bind (<< 11.0.0-4),
 Description: UCS - DHCP server

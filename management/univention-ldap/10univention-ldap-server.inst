@@ -148,7 +148,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=univention-x-core  \
 			--append packageList=univention-kde  \
 			--append packageList=univention-bind  \
-			--append packageList=univention-bind-proxy  \
 			--append packageList=univention-samba  \
 			--append packageList=univention-nagios-server \
 			--append packageList=univention-mail-dovecot || die

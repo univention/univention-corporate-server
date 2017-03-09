@@ -1,3 +1,9 @@
+univention-ldap (13.0.5-3) unstable; urgency=low
+
+  * Bug #43689: Drop legacy univention-bind packages
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Mar 2017 09:16:57 +0100
+
 univention-ldap (13.0.5-2) unstable; urgency=low
 
   * Bug #36215: updated ldap/shadowbind/ignorefilter
