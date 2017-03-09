@@ -84,7 +84,7 @@ define([
 		_updateVisibility: function() {
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.grid.contentNode);
 			var hideCategory = appsDisplayed.length === 0;
-			domClass.toggle(this.domNode, 'dijitHidden', hideCategory);
+			domClass.toggle(this.domNode, 'dijitDisplayNone', hideCategory);
 		}
 	});
 });

@@ -1,3 +1,9 @@
+univention-portal (1.0.8-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:58:21 +0100
+
 univention-portal (1.0.7-2) unstable; urgency=medium
 
   * Bug #42263: Adjust menu structure
