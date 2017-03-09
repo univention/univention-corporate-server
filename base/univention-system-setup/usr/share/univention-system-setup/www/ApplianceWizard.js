@@ -2480,7 +2480,7 @@ define([
 			this.inherited(arguments);
 			var buttons = this._pages[pageName]._footerButtons;
 			if (pageName == 'validation') {
-				domClass.add(buttons.next.domNode, 'dijitHidden');
+				domClass.add(buttons.next.domNode, 'dijitDisplayNone');
 				domClass.add(buttons.previous.domNode, 'umcSubmitButton');
 			}
 		},

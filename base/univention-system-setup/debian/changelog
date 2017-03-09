@@ -1,3 +1,9 @@
+univention-system-setup (10.0.8-1) unstable; urgency=medium
+
+  * Bug #43509: dijitHidden → dijitDisplayNone
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 14:01:49 +0100
+
 univention-system-setup (10.0.7-23) unstable; urgency=low
 
   * Bug #43690: Fix restarting BIND
