@@ -285,6 +285,11 @@
 					Code cleanup where deprecated functions of Univention Directory
 					Manager were used (<u:bug>43624</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Before UCS 4.2, the Docker init scripts are created as link. Since the new init scripts needs unique identifiers, the
+					init scripts are now copied from a default init script. All existing init scripts are migrated during the upgrade to UCS
+					4.2 (<u:bug>43674</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
