@@ -41,12 +41,29 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/passwordchange"
 ], function(declare, lang, array, kernel, topic, login, menu, tools, dialog, i18nTools, _) {
-	function setupLanguageMenu() {
+	setupMenus();
+
+	function setupMenus() {
+		setupSettingsContextMenu();
+		setupLanguageMenu();
+		setupHelpMenu();
+		setupLoginAndLogoutButton();
+	}
+
+	function setupSettingsContextMenu() {
 		menu.addSubMenu({
+			priority: 60,
+			label: _('User settings'),
+			id: 'umcMenuUserSettings'
+		});
+	}
+
+	function setupLanguageMenu() {
+		var languageMenu = {
 			priority: 55,
 			label: _('Switch language'),
 			id: 'umcMenuLanguage',
-		});
+		};
 		array.forEach(i18nTools.availableLanguages, function(language) {
 			menu.addEntry({
 				parentMenuId: 'umcMenuLanguage',
@@ -70,6 +87,10 @@ define([
 				}
 			});
 		});
+
+		if (i18nTools.availableLanguages.length > 1) {
+			menu.addSubMenu(languageMenu);
+		}
 	}
 
 	function setupHelpMenu() {
@@ -101,22 +122,7 @@ define([
 		});
 	}
 
-	var setupMenus = function() {
-		// the settings context menu
-		menu.addSubMenu({
-			priority: 60,
-			label: _('User settings'),
-			id: 'umcMenuUserSettings'
-		});
-
-		// the language switch menu
-		if (i18nTools.availableLanguages.length > 1) {
-			setupLanguageMenu();
-		}
-
-		setupHelpMenu();
-
-		// the login button
+	function setupLoginAndLogoutButton() {
 		var loginEntry = menu.addEntry({
 			priority: -1,
 			label: _('Login'),
@@ -126,7 +132,6 @@ define([
 			menu.hideEntry(loginEntry);
 		}
 
-		// the logout button
 		var logoutEntry = menu.addEntry({
 			priority: -2,
 			label: _('Logout'),
@@ -145,7 +150,5 @@ define([
 			menu.hideEntry(logoutEntry);
 			menu.showEntry(loginEntry);
 		});
-	};
-
-	setupMenus();
+	}
 });
