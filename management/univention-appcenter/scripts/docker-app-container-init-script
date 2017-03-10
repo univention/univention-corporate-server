@@ -28,14 +28,14 @@
 # <http://www.gnu.org/licenses/>.
 
 ### BEGIN INIT INFO
-# Provides:          App1_Container
+# Provides:          @%@APPID@%@_Container
 # Required-Start:    $remote_fs $syslog docker
 # Required-Stop:     $remote_fs $syslog docker
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start the Container for App1
+# Short-Description: Start the Container for @%@APPID@%@
 # Description:       Start the Docker container
-#                    for App1
+#                    for @%@APPID@%@
 ### END INIT INFO
 
 set -e

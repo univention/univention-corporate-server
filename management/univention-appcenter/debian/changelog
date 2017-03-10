@@ -1,3 +1,14 @@
+univention-appcenter (6.0.2-4) unstable; urgency=medium
+
+  * The provided service in the docker init scripts needs to be unique.
+    Previously, the init script was just a link to a generic init script
+    and all init scripts provide the same service. The generic init
+    script is now copied during the installation of an app and the
+    string @%@APPID@%@ is replaced with the app id. This is also done
+    during the upgrade (Bug #43674)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Mar 2017 07:34:42 +0100
+
 univention-appcenter (6.0.2-3) unstable; urgency=medium
 
   * Bug #42231: More blacklists, fr_FR support, links only for domain portal;
