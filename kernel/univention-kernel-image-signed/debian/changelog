@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-2) unstable; urgency=medium
+
+  * Bug #42047: Update to ucs103
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Mar 2017 12:59:07 +0100
+
 univention-kernel-image-signed (3.0.2-1) unstable; urgency=medium
 
   * Bug #42048: Update to ucs102
