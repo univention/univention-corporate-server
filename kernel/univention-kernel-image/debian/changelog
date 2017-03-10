@@ -1,3 +1,9 @@
+univention-kernel-image (10.0.0-6) unstable; urgency=medium
+
+  * Bug #42047: Update to 4.9-ucs103
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Mar 2017 11:29:55 +0100
+
 univention-kernel-image (10.0.0-5) unstable; urgency=medium
 
   * Use the signed version again (Bug #42048)
