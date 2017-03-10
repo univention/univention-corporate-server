@@ -1,0 +1,107 @@
+product: ucs
+release: "3.3"
+version: [0,1]
+scope: ucs_3.3-0-errata3.3-1
+src: linux
+fix: 3.16.39-1~bpo70+1~ucs3.3.223.201703091448
+desc: |
+ This update of the Linux kernel to 3.16.39 addresses the following issues:
+ * perf: Fix event->ctx locking (CVE-2016-6786 CVE-2016-6787)
+ * perf/core: Fix concurrent sys_perf_event_open() vs. 'move_group' race
+   (CVE-2017-6001)
+ * dccp: fix freeing skb too early for IPV6_RECVPKTINFO (CVE-2017-6074)
+ * sctp: avoid BUG_ON on sctp_wait_for_sndbuf (CVE-2017-5986)
+ * perf: Do not double free (dependency of fix for CVE-2017-6001)
+ * fbdev: color map copying bounds checking (CVE-2016-8405)
+ * sysctl: Drop reference added by grab_header in proc_sys_readdir
+   (CVE-2016-9191)
+ * [x86] KVM: fix emulation of "MOV SS, null selector" (CVE-2017-2583)
+ * [x86] KVM: Introduce segmented_write_std (CVE-2017-2584)
+ * selinux: fix off-by-one in setprocattr (CVE-2017-2618)
+ * USB: serial: kl5kusb105: fix line-state error handling (CVE-2017-5549)
+ * tmpfs: clear S_ISGID when setting posix ACLs (CVE-2017-5551)
+ * ip6_gre: fix ip6gre_err() invalid reads (CVE-2017-5897)
+ * netlink: Fix dump skb leak/double free (CVE-2016-9806)
+ * block: fix use-after-free in sys_ioprio_get() (CVE-2016-7911)
+ * block: fix use-after-free in seq file (CVE-2016-7910)
+ * [arm64] perf: reject groups spanning multiple HW PMUs (CVE-2015-8955)
+ * firewire: net: guard against rx buffer overflows (CVE-2016-8633)
+ * brcmfmac: avoid potential stack overflow in brcmf_cfg80211_start_ap()
+   (CVE-2016-8658)
+ * vfio/pci: Fix integer overflows, bitmask check (CVE-2016-9083,
+   CVE-2016-9084)
+ * fs: Give dentry to inode_change_ok() instead of inode
+ * fs: Avoid premature clearing of capabilities (CVE-2015-1350)
+ * posix_acl: Clear SGID bit when setting file permissions (CVE-2016-7097)
+ * sg: Fix double-free when drives detach during SG_IO (CVE-2015-8962)
+ * perf: Fix race in swevent hash (CVE-2015-8963)
+ * tty: Prevent ldisc drivers from re-using stale tty fields (CVE-2015-8964)
+ * usb: gadget: f_fs: Fix use-after-free (CVE-2016-7912)
+ * HID: core: prevent out-of-bound readings (CVE-2016-7915)
+ * netfilter: nfnetlink: correctly validate length of batch messages
+   (CVE-2016-7917)
+ * net: ping: check minimum size on ICMP header length (CVE-2016-8399)
+ * net: Add __sock_queue_rcv_skb()
+ * rose,dccp: limit sk_filter trim to payload
+ * tcp: take care of truncations done by sk_filter() (CVE-2016-8645)
+ * mpi: Fix NULL ptr dereference in mpi_powm() [ver #3] (CVE-2016-8650)
+ * packet: fix race condition in packet_set_ring (CVE-2016-8655)
+ * [x86] Fix potential infoleak in older kernels (CVE-2016-9178)
+ * sctp: validate chunk len before actually using it (CVE-2016-9555)
+ * sg_write()/bsg_write() is not fit to be called under KERNEL_DS
+   (CVE-2016-9576, CVE-2016-10088)
+ * [x86] KVM: drop error recovery in em_jmp_far and em_ret_far (CVE-2016-9756)
+ * net: avoid signed overflows for SO_{SND|RCV}BUFFORCE (CVE-2016-9793)
+ * ALSA: pcm : Call kill_fasync() in stream lock (CVE-2016-9794)
+ * KVM leaks page references when emulating a VMON for a nested hypervisor.
+   This can be used by a privileged user in a guest VM for denial of service
+   or possibly to gain privileges in the host (CVE-2017-2596)
+ * Denial-of-service flaw in the IPv4 networking code.  This can be triggered
+   by a local or remote attacker if a local UDP or raw socket has the
+   IP_RETOPTS option (CVE-2017-5970)
+note: This is the first part of the update.
+bug: [43596]
+cve:
+ - CVE-2016-6786
+ - CVE-2016-6787
+ - CVE-2017-6001
+ - CVE-2017-6074
+ - CVE-2017-5986
+ - CVE-2017-6001
+ - CVE-2016-8405
+ - CVE-2016-9191
+ - CVE-2017-2583
+ - CVE-2017-2584
+ - CVE-2017-2618
+ - CVE-2017-5549
+ - CVE-2017-5551
+ - CVE-2017-5897
+ - CVE-2016-9806
+ - CVE-2016-7911
+ - CVE-2016-7910
+ - CVE-2015-8955
+ - CVE-2016-8633
+ - CVE-2016-8658
+ - CVE-2016-9083
+ - CVE-2016-9084
+ - CVE-2015-1350
+ - CVE-2016-7097
+ - CVE-2015-8962
+ - CVE-2015-8963
+ - CVE-2015-8964
+ - CVE-2016-7912
+ - CVE-2016-7915
+ - CVE-2016-7917
+ - CVE-2016-8399
+ - CVE-2016-8645
+ - CVE-2016-8650
+ - CVE-2016-8655
+ - CVE-2016-9178
+ - CVE-2016-9555
+ - CVE-2016-9576
+ - CVE-2016-10088
+ - CVE-2016-9756
+ - CVE-2016-9793
+ - CVE-2016-9794
+ - CVE-2017-2596
+ - CVE-2017-5970
