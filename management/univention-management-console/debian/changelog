@@ -1,3 +1,9 @@
+univention-management-console (9.0.59-1) unstable; urgency=medium
+
+  * Bug #43751: make some things work better in IE 11
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 16:46:11 +0100
+
 univention-management-console (9.0.58-1) unstable; urgency=medium
 
   * Bug #42174: fix SAML session renewal

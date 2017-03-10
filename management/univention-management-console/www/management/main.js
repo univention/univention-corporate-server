@@ -543,9 +543,9 @@ define([
 					this._updateMoreTabsVisibility();
 
 					aspectHandlesMap[module.id] = aspect.after(module, '_setTitleAttr', lang.hitch(this, function(label) {
-						var menuItemToUpdate = this._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
+						var menuItemToUpdate = array.filter(this._moreTabsDropDownButton.dropDown.getChildren(), function(menuItem) {
 							return menuItem.correspondingModuleID === module.id;
-						});
+						})[0];
 						menuItemToUpdate.set('label', label);
 						this._updateMoreTabsVisibility();
 					}), true);
@@ -555,9 +555,9 @@ define([
 				aspectHandlesMap[module.id].remove();
 				delete aspectHandlesMap[module.id];
 
-				var menuItemToRemove = this._moreTabsDropDownButton.dropDown.getChildren().find(function(menuItem) {
+				var menuItemToRemove = array.filter(this._moreTabsDropDownButton.dropDown.getChildren(), function(menuItem) {
 					return menuItem.correspondingModuleID === module.id;
-				});
+				})[0];
 				this._moreTabsDropDownButton.dropDown.removeChild(menuItemToRemove);
 				this._updateMoreTabsVisibility();
 			}));
@@ -1541,13 +1541,13 @@ define([
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
 			var moreTabsDropDown = lang.getObject('_header._moreTabsDropDownButton.dropDown', false, this);
 			if (moreTabsDropDown) {
-				var menuTab = moreTabsDropDown.getChildren().find(function(menuItem) {
+				var menuTab = array.filter(moreTabsDropDown.getChildren(), function(menuItem) {
 					return menuItem.correspondingModuleID === tab.id;
-				});
+				})[0];
 				domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
 			}
 
-			if (this._insertedTabStyles.includes(module_flavor_css)) {
+			if (array.some(this._insertedTabStyles, function(id) { return id === module_flavor_css; })) {
 				// do not insert the same styles more than once
 				return;
 			}
