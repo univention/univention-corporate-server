@@ -1,3 +1,9 @@
+univention-portal (1.0.8-3) unstable; urgency=medium
+
+  * Bug #42231: Fixed quoting in 35univention-portal.inst
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Mar 2017 14:06:07 +0100
+
 univention-portal (1.0.8-2) unstable; urgency=medium
 
   * Bug #42231: New category Installed Apps, adjustments to portal objects,

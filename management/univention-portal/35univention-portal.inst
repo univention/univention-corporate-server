@@ -78,7 +78,7 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set name=local \
 	--append displayName='"en_US" "Startsite for {hostname}"' \
 	--append displayName='"de_DE" "Startseite für {hostname}"' \
-	--append displayName=$'"fr_FR" "page d\'accueil pour {hostname}"' \
+	--append displayName='"fr_FR" "page d'\''accueil pour {hostname}"' \
 	--set showMenu=TRUE \
 	--set showSearch=TRUE \
 	--set showLogin=FALSE \
