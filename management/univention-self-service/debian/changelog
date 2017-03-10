@@ -1,3 +1,9 @@
+univention-self-service (2.0.9-3) unstable; urgency=medium
+
+  * Bug #43528: Adjust styling of elements + fix typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Mar 2017 13:22:01 +0100
+
 univention-self-service (2.0.9-2) unstable; urgency=medium
 
   * Bug #43509: dijitDisplayNone → dijitDisplayNone

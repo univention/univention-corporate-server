@@ -43,6 +43,7 @@ define([
 	function gotoPage(subPage) {
 		if (isSelfServiceURL()) {
 			window.location.hash = '#page=' + subPage;
+			menu.close();
 		} else {
 			// open a new tab
 			window.open('/univention/self-service/' + window.location.search + '#page=' + subPage);

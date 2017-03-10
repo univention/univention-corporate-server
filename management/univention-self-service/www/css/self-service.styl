@@ -13,16 +13,11 @@
 
 div.PasswordServiceContent {
 	max-width: 500px;
-	margin: 3.5em auto;
-	background: #ffffff
-	padding: 1.3em;
-	border: 0px solid #000000;
-	border-radius: 3px 3px 3px 3px;
-	-moz-border-radius: 3px 3px 3px 3px;
-	-webkit-border-radius: 3px 3px 3px 3px;
-	box-shadow: 0 1px 6px rgba(1,0,0,0.118), 0 1px 4px rgba(0,1,0,0.118);
-	-webkit-box-shadow: 0 1px 6px rgba(1,0,0,0.118), 0 1px 4px rgba(0,1,0,0.118);
-	-moz-box-shadow: 0 1px 6px rgba(1,0,0,0.118), 0 1px 4px rgba(0,1,0,0.118);
+}
+
+.stepLabel {
+	display: inline-block;
+	margin-bottom: 0.5em;
 }
 
 ol.PasswordOl {
@@ -33,15 +28,6 @@ ol.PasswordOl {
 
 	li.step {
 		counter-increment: step-counter;
-		margin-bottom: 1em;
-
-		div {
-			margin-top: 0.1em;
-		}
-
-		.dijitButton {
-			margin: 0.6em 0.6em 0 0;
-		}
 	}
 
 	li.step::before {
@@ -55,9 +41,18 @@ ol.PasswordOl {
 		border-radius: 3px;
 	}
 
-	div.stepLabel {
-		display: inline;
+	.buttonRow {
+		text-align: right;
+
+		.dijitButton {
+			margin: 0.6em 0 0 0.6em;
+		}
 	}
+
+	.dijitTextBox {
+		margin-bottom: 1.5em;
+	}
+
 }
 
 ol#PasswordForgottenSteps li.step::before {

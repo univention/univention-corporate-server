@@ -127,7 +127,8 @@ define([
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getResetMethods')
 			});
-			put(step, this._usernameButton.domNode);
+			var buttonRow = put(step, 'div.buttonRow');
+			put(buttonRow, this._usernameButton.domNode);
 			put(this.steps, step);
 		},
 
@@ -172,7 +173,8 @@ define([
 				label: _('Next'),
 				onClick: lang.hitch(this, '_requestToken')
 			});
-			put(step, this._requestTokenButton.domNode);
+			var buttonRow = put(step, 'div.buttonRow');
+			put(buttonRow, this._requestTokenButton.domNode);
 			put(this.steps, step);
 			var firstRenewOptions = renewOptions.firstChild.children[2].firstChild;
 			firstRenewOptions.focus();

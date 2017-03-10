@@ -70,7 +70,7 @@ define([
 
 		_initContainer : function() {
 			this.content_container = new StackContainer({
-				"class" : "PasswordServiceContent",
+				"class" : "PasswordServiceContent umcCard",
 				id: "contentContainer",
 				doLayout: false
 			});

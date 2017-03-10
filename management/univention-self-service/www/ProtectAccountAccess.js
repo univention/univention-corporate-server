@@ -44,7 +44,7 @@ define([
 
 	return {
 		title: _('Protect Account Access'),
-		desc: _('Everyone forgets their password now and then. Protect yourself and activate the opportunity to set a new password.'),
+		desc: _('Everyone forgets his password now and then. Protect yourself and activate the opportunity to set a new password.'),
 		hash: 'setcontactinformation',
 		contentContainer: null,
 		steps: null,
@@ -145,7 +145,7 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmit: function() {
-			var step = put('div');
+			var step = put('div.buttonRow');
 			this._showContactInformationButton = new Button({
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getContactInformation')
@@ -247,13 +247,14 @@ define([
 				label: _('Save'),
 				onClick: lang.hitch(this, '_setContactInformation')
 			});
-			put(step, this._saveButton.domNode);
 
 			this._cancelButton = new Button({
 				label: _('Cancel'),
 				onClick: lang.hitch(this, '_deleteRenewOptions')
 			});
-			put(step, this._cancelButton.domNode);
+			var buttonRow = put(step, 'div.buttonRow');
+			put(buttonRow, this._saveButton.domNode);
+			put(buttonRow, this._cancelButton.domNode);
 			put(this.steps, step);
 			this._renewInputs[0].focusInput();
 		},

@@ -47,7 +47,7 @@ msgstr "Ändern Sie Ihr (abgelaufenes) Passwort."
 
 #: ProtectAccountAccess.js:50 www/ProtectAccountAccess.js:47
 msgid ""
-"Everyone forgets their password now and then. Protect yourself and activate "
+"Everyone forgets his password now and then. Protect yourself and activate "
 "the opportunity to set a new password."
 msgstr ""
 "Jeder vergißt mal das Passwort. Schützen Sie sich und aktivieren Sie die "
