@@ -1115,7 +1115,7 @@ define([
 							if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 								deferred.resolve(baseClass);
 							} else {
-								deferred.cancel(lang.replace('{0} is not a umc.widgets._ModuleMixin! (1}', [module.id, baseClass]));
+								deferred.cancel(lang.replace('{0}:{1} is not a umc.widgets._ModuleMixin! (2}', [module.id, module.flavor, baseClass]));
 							}
 						}));
 					} else {
