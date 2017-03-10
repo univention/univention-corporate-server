@@ -1,3 +1,9 @@
+univention-management-console (9.0.58-1) unstable; urgency=medium
+
+  * Bug #42174: fix SAML session renewal
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 16:19:32 +0100
+
 univention-management-console (9.0.57-1) unstable; urgency=medium
 
   * Bug #42174: fix redirection location after single sign on login

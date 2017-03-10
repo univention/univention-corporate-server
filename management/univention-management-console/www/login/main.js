@@ -77,8 +77,13 @@ define([
 				return this._loginDeferred;
 			}
 
+			this._loginDeferred = this._waitForNextAuthentication().then(lang.hitch(this, function() {
+				// remove the reference to the login deferred object
+				this._loginDeferred = null;
+			}));
+
 			topic.publish('/umc/actions', 'session', 'timeout');
-			this._loginDeferred = this.autorelogin({ timeout: 15000 }).then(undefined, lang.hitch(this, function() {
+			this.autorelogin({ timeout: 15000 }).then(undefined, lang.hitch(this, function() {
 
 				tools.checkReloadRequired();
 
@@ -86,10 +91,6 @@ define([
 				//this._requirePassword(('The current session timed out. <a href="/univention/login/?location=%s">Please login again.</a>', entities.encode(encodeURIComponent(window.location.href))));
 				this._requirePassword(_('The current session timed out. Please login again.'));
 
-				return this._waitForNextAuthentication().then(lang.hitch(this, function() {
-					// remove the reference to the login deferred object
-					this._loginDeferred = null;
-				}));
 			}));
 			return this._loginDeferred;
 		},
