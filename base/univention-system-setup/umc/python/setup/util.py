@@ -62,9 +62,8 @@ from univention.lib.umc import Client, ConnectionError, HTTPError
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for
-# univention-lib as of writing.
-# The try except can be removed as soon as the dependency is added in the
-# univention-lib package.
+# univention-lib as of writing. (Bug #43388)
+# The try except can be removed as soon as the dependency problem ist resolved.
 try:
 	from univention.appcenter.actions import get_action
 	from univention.appcenter.app_cache import AppCache, Apps
@@ -768,7 +767,7 @@ def get_apps(no_cache=False):
 	if no_cache:
 		AppCache().clear_cache()
 	get = get_action('get')
-	return [get.to_dict(app) for app in Apps().get_all_apps()]
+	return [get.to_dict(app) for app in Apps().get_all_apps() if app.is_ucs_component()]
 
 
 def is_proxy(proxy):
