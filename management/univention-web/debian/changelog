@@ -1,3 +1,9 @@
+univention-web (1.0.36-3) unstable; urgency=medium
+
+  * Bug #43528: Remove menu entry "Help / UCS start site"
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Mar 2017 15:15:43 +0100
+
 univention-web (1.0.36-2) unstable; urgency=medium
 
   * Bug #43528: Move 'back to start site' menu entry into univention-web-js

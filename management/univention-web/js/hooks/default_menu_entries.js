@@ -104,16 +104,6 @@ define([
 
 		menu.addEntry({
 			parentMenuId: 'umcMenuHelp',
-			label: _('UCS start site'),
-			onClick: function() {
-				topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
-				var w = window.open('/univention/?lang=' + kernel.locale, 'ucs-start-site');
-				w.focus();
-			}
-		});
-
-		menu.addEntry({
-			parentMenuId: 'umcMenuHelp',
 			label: _('Univention Website'),
 			onClick: function() {
 				topic.publish('/umc/actions', 'menu-help', 'website');
