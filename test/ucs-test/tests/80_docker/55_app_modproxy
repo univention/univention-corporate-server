@@ -17,7 +17,7 @@ if __name__ == '__main__':
 		app_version = get_app_version()
 		ucr = UCSTestConfigRegistry()
 
-		app = App(name=app_name, version=app_version)
+		app = App(name=app_name, version=app_version, container_version='4.1')
 
 		try:
 			app.set_ini_parameter(
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		# special mod proxy with disabled HTTP
 		app_version = get_app_version()
 
-		app = App(name=app_name, version=app_version)
+		app = App(name=app_name, version=app_version, container_version='4.1')
 
 		try:
 			app.set_ini_parameter(

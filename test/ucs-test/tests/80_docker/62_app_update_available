@@ -20,7 +20,7 @@ if __name__ == '__main__':
 		app_name = get_app_name()
 		package_name = get_app_name()
 
-		app = App(name=app_name, version='1', package_name=package_name)
+		app = App(name=app_name, version='1', container_version='4.1', package_name=package_name)
 		app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
 
 		app.add_to_local_appcenter()

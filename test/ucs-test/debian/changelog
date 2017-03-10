@@ -1,3 +1,10 @@
+ucs-test (7.0.13-1) unstable; urgency=medium
+
+  * 80_docker: In UCS 4.2 we are able to install UCS 4.1 docker apps.
+    This requires some basic test case changes (Bug #43757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Mar 2017 20:56:35 +0100
+
 ucs-test (7.0.12-1) unstable; urgency=medium
 
   * Bug #42174: adjust SAML tests for styling changes in login dialog

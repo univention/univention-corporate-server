@@ -27,7 +27,7 @@ if __name__ == '__main__':
 		app_directory_suffix = app.app_directory_suffix
 
 		# Since we are installing on a 4.1, a 4.1 ini entry is needed
-		app = App(name=app_name, version='1', package_name=package_name, build_package=False)
+		app = App(name=app_name, version='1', container_version='4.1', package_name=package_name, build_package=False)
 		app.set_ini_parameter(
 			DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.0-3',
 			WebInterface='/%s' % app_name,
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 			container_uuid = ucr.get('appcenter/apps/%s/container' % app_name)
 			print 'Container UUID: %s' % container_uuid
 
-			app = App(name=app_name, version='2', package_name=package_name, app_directory_suffix=app_directory_suffix)
+			app = App(name=app_name, version='2', container_version='4.1', package_name=package_name, app_directory_suffix=app_directory_suffix)
 			app.set_ini_parameter(
 				DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
 				DockerAllowedImages='docker.software-univention.de/nonexisting-image1,docker.software-univention.de/ucs-appbox-amd64:4.0-3,docker.software-univention.de/nonexisting-image1',

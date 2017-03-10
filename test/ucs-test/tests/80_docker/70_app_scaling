@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
 		try:
 			for i in range(0, DOCKER_APP_COUNT):
-				app = App(name=get_app_name(), version=get_app_version())
+				app = App(name=get_app_name(), version=get_app_version(), container_version='4.1')
 				app.set_ini_parameter(
 					DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
 					WebInterface='/%s' % app.app_name,

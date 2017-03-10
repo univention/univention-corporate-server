@@ -16,9 +16,9 @@ if __name__ == '__main__':
 		version = get_app_version()
 		image = 'docker.software-univention.de/ucs-appbox-amd64:4.1-0'
 
-		exclusive = App(name='exclusive', version=version, build_package=False)
-		redirect = App(name='redirect', version=version, build_package=False)
-		dummy = App(name='dummy', version=version, build_package=False)
+		exclusive = App(name='exclusive', version=version, container_version='4.1', build_package=False)
+		redirect = App(name='redirect', version=version, container_version='4.1', build_package=False)
+		dummy = App(name='dummy', version=version, container_version='4.1', build_package=False)
 
 		for port in [21, 23, 40021, 40023]:
 			assert not is_port_open(port)

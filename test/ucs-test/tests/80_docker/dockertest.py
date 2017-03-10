@@ -34,6 +34,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.config_registry import handler_set, ConfigRegistry
 from univention.testing import umc
+from univention.testing.internal import UCSVersion
 import os
 import shutil
 import subprocess
@@ -157,7 +158,7 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 
 class App(object):
 
-	def __init__(self, name, version, app_directory_suffix=None, package_name=None, build_package=True):
+	def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True):
 		self.app_name = name
 		self.app_version = version
 
@@ -199,7 +200,11 @@ class App(object):
 
 		self.scripts = {}
 
-		self.ucs_version = self.ucr.get('version/version')
+		if not container_version:
+			self.ucs_version = self.ucr.get('version/version')
+		else:
+			self.ucs_version = container_version
+			self.ini['SupportedUCSVersions'] = '%s-0,%s-0' % (container_version,self.ucr.get('version/version'))
 
 		self.installed = False
 
@@ -354,11 +359,6 @@ class App(object):
 		if self.ucs_version == '4.2':
 			if not os.path.exists('/var/www/meta-inf/4.1'):
 				os.makedirs('/var/www/meta-inf/4.1')
-			f = open('/var/www/meta-inf/ucs.ini', 'w')
-			f.write('''[4.2]
-SupportedUCSVersions=4.2, 4.1
-''')
-			f.close()
 
 		target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
 		f = open(target, 'w')
@@ -464,11 +464,21 @@ class Appcenter(object):
 			raise AppcenterRepositoryAlreadyExists()
 
 		if not version:
-			version = self.ucr.get('version/version')
-
-		self.add_ucs_version_to_appcenter(version)
+			self.add_ucs_version_to_appcenter('4.1')
+			self.add_ucs_version_to_appcenter('4.2')
+			self.versions = ['4.1', '4.2']
+			self._write_ucs_ini('[4.2]\nSupportedUCSVersions=4.2, 4.1\n')
+		else:
+			self.add_ucs_version_to_appcenter(version)
+			self.versions = [version]
+			self.__write_ucs_ini('[%s]\nSupportedUCSVersions=%s\n' % (version, version))
 
 		print repr(self)
+
+	def _write_ucs_ini(self, content):
+			f = open('/var/www/meta-inf/ucs.ini', 'w')
+			f.write(content)
+			f.close()
 
 	def add_ucs_version_to_appcenter(self, version):
 
