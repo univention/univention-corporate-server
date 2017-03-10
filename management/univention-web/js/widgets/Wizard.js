@@ -221,6 +221,7 @@ define([
 				this._adjustWizardHeight();
 				this._registerAtParentOnShowEvents(lang.hitch(this, '_adjustWizardHeight'));
 			}
+			this.set('headerButtons', this.get('selectedChildWidget').headerButtons);
 		},
 
 		destroy: function() {
