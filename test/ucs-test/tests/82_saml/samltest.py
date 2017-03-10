@@ -28,11 +28,11 @@ class SamlLoginError(SamlError):
 		self._error_evaluation()
 
 	def _error_evaluation(self):
-			if re.search('<h1>Password change required</h1>', bytes(self.page.text)):
+			if re.search('<b>Password change required.</b>', bytes(self.page.text)):
 				self.message = "Got password expired notice"
-			elif re.search('<h1>Account expired</h1>', bytes(self.page.text)):
+			elif re.search('<b>Account expired.</b>', bytes(self.page.text)):
 				self.message = "Got account expired notice"
-			elif re.search('<h1>Incorrect username or password</h1>', bytes(self.page.text)):
+			elif re.search('<b>Incorrect username or password.</b>', bytes(self.page.text)):
 				self.message = "Got incorrect username or password notice"
 			else:
 				self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
