@@ -1,3 +1,9 @@
+univention-web (1.0.33-7) unstable; urgency=medium
+
+  * Bug #43528: Adjust margins for button icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Mar 2017 09:25:25 +0100
+
 univention-web (1.0.33-6) unstable; urgency=medium
 
   * Bug #43528: Remove gradient and border of disabled buttons
