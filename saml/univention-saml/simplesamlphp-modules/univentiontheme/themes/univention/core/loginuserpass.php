@@ -26,7 +26,25 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 						<label for="umcLoginPassword">
 							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}')); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="on"/>
 						</label>
-						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
+						<div id="umcLoginWarnings" class="umcLoginWarnings">
+<?php
+/*
+if ($this->data['errorcode'] !== NULL) {
+	echo('<span class="logintitle">' . $this->t('{login:help_header}') . '</span>');
+	echo('<span class="logintext">' . $this->t('{login:help_text}') . '</span>');
+}
+*/
+
+if ($this->data['errorcode'] !== NULL) {
+?>
+	<p class="umcLoginWarning" >
+		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b>
+		<?php echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>
+	</p>
+<?php
+}
+?>
+						</div>
 <?php
 foreach ($this->data['stateparams'] as $name => $value) {
 	echo '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />';
@@ -63,26 +81,8 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 <?php
 }
 ?>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
 					</form>
-					<div id="umcLoginWarnings" class="umcLoginWarnings">
-<?php
-/*
-if ($this->data['errorcode'] !== NULL) {
-	echo('<span class="logintitle">' . $this->t('{login:help_header}') . '</span>');
-	echo('<span class="logintext">' . $this->t('{login:help_text}') . '</span>');
-}
-*/
-
-if ($this->data['errorcode'] !== NULL) {
-?>
-	<p class="umcLoginWarning" >
-		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></b>
-		<?php echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>
-	</p>
-<?php
-}
-?>
-					</div>
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>
