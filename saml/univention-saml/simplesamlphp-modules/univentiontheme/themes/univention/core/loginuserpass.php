@@ -13,12 +13,12 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!
 ?>
-			<div id="umcLoginDialog" class="dijitDialog dojoxDialog umcLoginDialog">
+			<div id="umcLoginDialog" class="umcLoginDialog">
 				<div id="umcLoginLogo" class="umcLoginLogo">
-					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.png"/>
+					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
 				</div>
 				<div class="umcLoginFormWrapper">
-					<div id="umcLoginNotices" class="umcLoginNotices"></div>
+					<div id="umcLoginNotices" class="umcLoginNotices" style="display: none;"></div>
 					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on">
 						<label for="umcLoginUsername">
 							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}')); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="on"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username']); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
@@ -49,8 +49,6 @@ if ($this->data['errorcode'] !== NULL) {
 foreach ($this->data['stateparams'] as $name => $value) {
 	echo '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />';
 }
-?>
-<?php
 if ($this->data['rememberUsernameEnabled']) {
 	printf('<input type="checkbox" id="remember_username" tabindex="4" name="remember_username" value="Yes" %s />', $this->data['rememberUsernameChecked'] ? 'checked="checked"' : '');
 	echo htmlspecialchars($this->t('{login:remember_username}'));
