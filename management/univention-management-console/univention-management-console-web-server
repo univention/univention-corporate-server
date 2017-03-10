@@ -344,13 +344,14 @@ class QueueRequest(object):
 
 class User(object):
 
-	def __init__(self, sessionid, username, password, saml=None):
+	def __init__(self, sessionid, username, password, saml=None, data=None):
 		self.sessionid = sessionid
 		self.username = username
 		self.password = password
 		self.saml = saml
 		self._time_remaining = _session_timeout
 		self.reset_timeout()
+		self.data = data or {}
 
 	def reset_timeout(self):
 		self._time_remaining = self.session_validity
@@ -623,10 +624,10 @@ class Ressource(object):
 		if morsel:
 			return morsel.value
 
-	def set_session(self, sessionid, username, password=None, saml=None):
+	def set_session(self, sessionid, username, password=None, saml=None, **kwargs):
 		olduser = self.get_user()
 
-		user = User(sessionid, username, password, saml or olduser and olduser.saml)
+		user = User(sessionid, username, password, saml or olduser and olduser.saml, kwargs)
 		self._session_timeout_timer(user)
 
 		self.sessions[sessionid] = user
@@ -965,7 +966,7 @@ class CPAuth(CPgeneric):
 			raise
 
 		cherrypy.response.status = 303
-		cherrypy.response.headers['Location'] = '/univention/management/'
+		cherrypy.response.headers['Location'] = user.data.get('relay_state', {}).get('referer', '/univention/management/')
 
 	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
@@ -1064,7 +1065,7 @@ class Root(Ressource):
 		if user and user.saml is not None:
 			raise HTTPRedirect('/univention/saml/logout')
 		self.expire_session()
-		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention/management/')
+		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention/')
 
 
 def get_ip_address():
@@ -1113,10 +1114,7 @@ class SAML(Ressource):
 		binding, message, relay_state = self._get_saml_message()
 
 		if message is None:
-			# user = self.get_user()
-			# if user and user.saml is not None and not user.timed_out():
-			# raise HTTPRedirect('/univention/auth/sso')
-			return self.do_single_sign_on()
+			return self.do_single_sign_on(relay_state=rndstr())
 
 		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
 		return acs(binding, message, relay_state)
@@ -1131,7 +1129,7 @@ class SAML(Ressource):
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
 		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
@@ -1271,7 +1269,10 @@ class SAML(Ressource):
 		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
 
 		if relay_state:
-			self.relay_state[relay_state] = cherrypy.request.uri
+			self.relay_state[relay_state] = {
+				'uri': cherrypy.request.uri,
+				'referer': cherrypy.request.headers.get('Referer'),
+			}
 
 		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
 		self.outstanding_queries[sid] = service_provider_url  # cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?

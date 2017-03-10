@@ -1,3 +1,9 @@
+univention-management-console (9.0.57-1) unstable; urgency=medium
+
+  * Bug #42174: fix redirection location after single sign on login
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 15:24:44 +0100
+
 univention-management-console (9.0.56-1) unstable; urgency=medium
 
   * Bug #42174: make it possible to switch language in simplesamlphp login
