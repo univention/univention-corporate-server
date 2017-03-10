@@ -14,11 +14,8 @@
 		position: relative
 		overflow: visible
 
-
 	.dgrid-selected
 		background-color: inherit
-
-
 
 /* gallery header may be outside of gallerypane */
 .umcGalleryCategoryHeader
@@ -32,10 +29,8 @@
 	//   http://stackoverflow.com/a/13550951
 	background-image: url(../images/blank.png)
 
-
 .umcGalleryCategoryHeader:first-child
 	margin-top: 0
-
 
 .umcGalleryPane
 	// disable selection on touch devices
@@ -45,7 +40,6 @@
 
 	.umcGalleryWrapperItem
 		padding: 10px
-
 
 	.umcGalleryItem
 		position: relative
@@ -71,13 +65,14 @@
 			font-weight: 500
 			word-break: break-word
 			margin-right: 24px
-
+			max-height: 26px
+			overflow: hidden
 
 		.umcGalleryDescription
 			color: $text-color-lightest
-			padding-top: 5px
-			min-height: 70px
-
+			padding-top: 8px
+			max-height: 64px
+			line-height: 1.25
 
 		.umcGalleryIcon
 			height: 78px
@@ -87,12 +82,10 @@
 			/* make sure to have some spacing for SVG images with the property background-size=contain */
 			border: 5px transparent solid
 
-
 		/* if an icon is present, set a margin to the text elements */
 		.umcGalleryIcon + .umcGalleryName,
 		.umcGalleryIcon + .umcGalleryName + .umcGalleryDescription
 			margin-left: 85px
-
 
 		.umcGalleryStatusIcon
 			position: absolute
@@ -101,7 +94,6 @@
 			top: 5px
 			left: auto
 			right: 5px
-
 
 		.umcFavoriteIconDefault,
 		.umcFavoriteIconInverted
@@ -112,15 +104,12 @@
 			height: 10px
 			line-height: 0
 
-
 		.umcGalleryContextIcon
 			icon-image(0, -40, "../")
 			position: absolute
 			top: 11px
 			left: auto
 			right: 8px
-
-
 
 	.umcGalleryItem.touched,
 	.umcGalleryItemActive
@@ -145,8 +134,6 @@
 			background-position: -20px -40px
 			opacity: 0.67
 
-
-
 body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover
 	cursor: pointer
 	.umcGalleryCategoryFavorite
@@ -169,8 +156,6 @@ body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover
 		background-position: -20px -40px
 		opacity: 0.67
 
-
-
 .umcGalleryPane .umcGalleryItem:active
 	material-shadow(2)
 
@@ -179,7 +164,3 @@ body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover
 	.umcGalleryPane .umcGalleryWrapperItem
 		padding-left: 0
 		padding-right: 0
-
-
-
-

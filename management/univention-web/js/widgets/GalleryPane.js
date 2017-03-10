@@ -342,7 +342,12 @@ define([
 			return domGeometry.position(queriedNode).h;
 		},
 
-		_getDefaultItemHeight: function(cssClass) {
+		_getItemMaxHeight: function(node, cssClass) {
+			var queriedNode = query(cssClass, node)[0];
+			return domStyle.get(queriedNode, 'max-height');
+		},
+
+		_getDefaultItemMaxHeight: function(cssClass) {
 			// render empty gallery item
 			var node = this.renderRow({
 				name: '*',
@@ -350,42 +355,77 @@ define([
 			});
 			domClass.add(node, 'dijitOffScreen');
 			domConstruct.place(node, this.contentNode);
-			var height = this._getItemHeight(node, cssClass);
+			var maxHeight = this._getItemMaxHeight(node, cssClass);
 			domConstruct.destroy(node);
-			return height;
-		},
-
-		_getDefaultItemNameHeight: function() {
-			return this._getDefaultItemHeight('.umcGalleryName');
-		},
-
-		_getDefaultItemDescriptionHeight: function() {
-			return this._getDefaultItemHeight('.umcGalleryDescription');
+			return maxHeight;
 		},
 
 		_resizeItemNames: function() {
-			var defaultHeight = this._getDefaultItemNameHeight();
+			// resize item name
+			var nameMaxHeight = this._getDefaultItemMaxHeight('.umcGalleryName');
+			// this method is called before the dom is ready
+			// prevent endlessloop
+			if (!nameMaxHeight) {
+				return;
+			}
 			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				domStyle.set(inode, 'fontSize', '');
-				var iheight = domGeometry.position(inode).h;
-				var fontSize = 1.5;
-				while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
-					domStyle.set(inode, 'fontSize', fontSize + 'em');
-					iheight = domGeometry.position(inode).h;
-					fontSize *= 0.9;
-				}
-			}));
-			defaultHeight = this._getDefaultItemDescriptionHeight();
-			query('.umcGalleryDescription', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				// reset node
+				domStyle.set(inode, {
+					fontSize: '',
+					lineHeight: '',
+					maxHeight: 'none'
+				});
+				inode.removeAttribute('title');
 				var originalText = inode._originalTextContent;
 				if (originalText === undefined) {
 					originalText = inode._originalTextContent = inode.textContent;
 				}
 				inode.textContent = originalText;
-				while (domGeometry.position(inode).h > defaultHeight + 3.5) {
-					inode.textContent = inode.textContent.slice(0, inode.textContent.length - 10) + '...';
+
+				// if the text overflows the max height first put the name on 2 lines
+				if (domGeometry.position(inode).h > nameMaxHeight) {
+					domStyle.set(inode, {
+						fontSize: (nameMaxHeight / 2) + 'px',
+						lineHeight: '1'
+					});
 				}
+				// if the name still overflows the max height show ellipsis and
+				// and show full name on hover
+				if (domGeometry.position(inode).h > nameMaxHeight) {
+					inode.setAttribute('title', originalText);
+					while (inode.textContent.length > 3 && domGeometry.position(inode).h > nameMaxHeight) {
+						inode.textContent = inode.textContent.slice(0, Math.max(0, inode.textContent.length - 6)) + '...';
+					}
+				}
+				domStyle.set(inode, 'max-height', '');
 			}));
+
+			// resize item description
+			var descriptionMaxHeight = this._getDefaultItemMaxHeight('.umcGalleryDescription');
+			// prevent endlessloop
+			if (!descriptionMaxHeight) {
+				return;
+			}
+			query('.umcGalleryDescription', this.contentNode).forEach(function(inode) {
+				// reset node
+				inode.removeAttribute('title');
+				domStyle.set(inode, 'max-height', 'none');
+				var originalText = inode._originalTextContent;
+				if (originalText === undefined) {
+					originalText = inode._originalTextContent = inode.textContent;
+				}
+				inode.textContent = originalText;
+				
+				// if the description overflows max height show ellipsis and
+				// show full description on hover
+				if (domGeometry.position(inode).h > descriptionMaxHeight) {
+					inode.setAttribute('title', originalText);
+				}
+				while (inode.textContent.length > 3 && domGeometry.position(inode).h > descriptionMaxHeight) {
+					inode.textContent = inode.textContent.slice(0, Math.max(0, inode.textContent.length - 6)) + '...';
+				}
+				domStyle.set(inode, 'max-height', '');
+			});
 		},
 
 		_handleResize: function() {

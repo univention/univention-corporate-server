@@ -1,3 +1,9 @@
+univention-web (1.0.36-4) unstable; urgency=medium
+
+  * Bug #43528: Adjust _resizeItemNames method in GalleryPane
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 10 Mar 2017 17:01:10 +0100
+
 univention-web (1.0.36-3) unstable; urgency=medium
 
   * Bug #43528: Remove menu entry "Help / UCS start site"
