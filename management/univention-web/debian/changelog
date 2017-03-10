@@ -1,3 +1,9 @@
+univention-web (1.0.35-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of login error messages
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 11:42:32 +0100
+
 univention-web (1.0.34-1) unstable; urgency=medium
 
   * Bug #43528: make header buttons of widgets shown as child of modules
