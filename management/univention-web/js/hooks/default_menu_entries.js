@@ -39,7 +39,7 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/i18n/tools",
-	"umc/i18n!umc/modules/passwordchange"
+	"umc/i18n!"
 ], function(declare, lang, array, kernel, topic, login, menu, tools, dialog, i18nTools, _) {
 	setupMenus();
 
@@ -47,6 +47,7 @@ define([
 		setupSettingsContextMenu();
 		setupLanguageMenu();
 		setupHelpMenu();
+		setupStartSiteLink();
 		setupLoginAndLogoutButton();
 	}
 
@@ -118,6 +119,16 @@ define([
 				topic.publish('/umc/actions', 'menu-help', 'website');
 				var w = window.open(_('umcUniventionUrl'), 'univention');
 				w.focus();
+			}
+		});
+	}
+
+	function setupStartSiteLink() {
+		menu.addEntry({
+			label: _('Back to start site'),
+			priority: 0,
+			onClick: function() {
+				window.location.pathname = '/univention/';
 			}
 		});
 	}

@@ -69,15 +69,6 @@ define([
 
 			this.liveSearch = registry.byId('liveSearch');
 			this.liveSearch._searchTextBox.set('inlineLabel', _('Search servers'));
-
-			menu.addEntry({
-				label: _('Back to portal'),
-				priority: 0,
-				onClick: function() {
-					window.location.pathname = '/univention/';
-				}
-			});
-
 		},
 
 		initLiveSearch: function() {

@@ -1,3 +1,9 @@
+univention-web (1.0.36-2) unstable; urgency=medium
+
+  * Bug #43528: Move 'back to start site' menu entry into univention-web-js
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Mar 2017 15:08:45 +0100
+
 univention-web (1.0.36-1) unstable; urgency=medium
 
   * Bug #42174: adjust styling of login error messages

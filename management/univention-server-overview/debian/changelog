@@ -1,3 +1,9 @@
+univention-server-overview (0.0.3-3) unstable; urgency=medium
+
+  * Bug #43528: Move 'back to start site' menu entry into univention-web-js
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Mar 2017 15:09:33 +0100
+
 univention-server-overview (0.0.3-2) unstable; urgency=medium
 
   * Bug #42263: Fix entries in umc/de.po

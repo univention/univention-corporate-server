@@ -500,6 +500,10 @@ msgstr "Schritte, um den Fehler zu reproduzieren"
 msgid "umcUniventionUrl"
 msgstr "http://www.univention.de"
 
+#: js/hooks/default_menu_entries.js:122
+msgid "Back to start site"
+msgstr "Zurück zur Startseite"
+
 #: js/widgets/ProgressBar.js:177
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
