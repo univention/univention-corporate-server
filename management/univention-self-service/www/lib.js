@@ -57,7 +57,7 @@ define([
 					this.showMessage(msg);
 				}
 			}
-			return;
+			return "/univention";
 		},
 
 		/** Returns boolean if given url is relative.
@@ -69,21 +69,12 @@ define([
 				return isUrlRelative;
 		},
 
-		_getUrlLabelForRedirect: function() {
-			var label = this.getQuery('urlLabel');
-			if (label) {
-				label = htmlEntities.encode(label);
-				return lang.replace(_("to '{0}'", [label]));
-			} else {
-				return '';
-			}
-		},
-
 		/**
 		 * Returns the value of the query string for a given key.
 		 * */
 		getQuery: function(key) {
-			var queryObject = ioQuery.queryToObject(hash());
+			var queryObject = ioQuery.queryToObject(window.location.search.slice(1));
+			lang.mixin(queryObject, ioQuery.queryToObject(hash()));
 			return queryObject[key];
 		}
 	};

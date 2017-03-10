@@ -258,9 +258,11 @@ define([
 					'password': credentials.password,
 					'token' : credentials.token
 				};
-				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function(data) {
-					dialog.alert(data.message);
-					this._resetInputs();
+				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function() {
+					var redirectUrl = lib._getUrlForRedirect();
+					if (redirectUrl) {
+						window.open(redirectUrl, "_self");
+					}
 				}), lang.hitch(this, function(){
 					this._disableInputs(false);
 				}));

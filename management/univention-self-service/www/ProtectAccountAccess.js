@@ -37,10 +37,11 @@ define([
 	"put-selector/put",
 	"umc/tools",
 	"umc/dialog",
+	"./lib",
 	"./PasswordBox",
 	"./TextBox",
 	"umc/i18n!."
-], function(lang, array, on, keys, Button, put, tools, dialog, PasswordBox, TextBox, _) {
+], function(lang, array, on, keys, Button, put, tools, dialog, lib, PasswordBox, TextBox, _) {
 
 	return {
 		title: _('Protect Account Access'),
@@ -278,9 +279,11 @@ define([
 			
 			if (allOptionsAreValid) {
 				var data = this._getNewContactInformation();
-				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function(data) {
-						dialog.alert(data.message);
-						this._deleteRenewOptions();
+				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function() {
+						var redirectUrl = lib._getUrlForRedirect();
+						if (redirectUrl) {
+							window.open(redirectUrl, "_self");
+						}
 					}), lang.hitch(this, function(){
 						array.forEach(this._renewInputs, function(input){
 							input.reset();
