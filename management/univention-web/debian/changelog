@@ -1,3 +1,9 @@
+univention-web (1.0.36-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of login error messages
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 13:16:38 +0100
+
 univention-web (1.0.35-1) unstable; urgency=medium
 
   * Bug #42174: adjust styling of login error messages
