@@ -142,8 +142,12 @@ define([
 
 		start: function(username, password) {
 			//console.debug('starting auth');
-			tools.status('username', username);
-			tools.status('password', password);
+			if (username) {
+				tools.status('username', username);
+			}
+			if (password) {
+				tools.status('password', password);
+			}
 			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });

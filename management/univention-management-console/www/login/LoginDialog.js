@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, window, require, getQuery*/
+/*global dojo, define, window, require, getQuery*/
 
 define([
 	"dojo/_base/declare",
@@ -303,8 +303,14 @@ define([
 			// make sure that we got data
 			this.onLogin(username);
 
-			// redirection
-			window.location = getQuery('location') || '/univention/management/';  // FIXME: allows XSS attacks by submitting e.g. ?location=mailto:foo
+			// redirect the user back to the location where he came from.
+			// CAUTION !!!: we must properly make sure that this is a valid url on the same origin. otherwise we would allow
+			// XSS attacks by submitting e.g. ?location=javascript:alert('XSS') or mailto: links, etc.
+			var path = new dojo._Url(getQuery('location')).path;
+			if (/\/\//.test(path)) {
+				path = null;
+			}
+			window.location.pathname = path || '/univention/management/';
 		},
 
 		_authentication_failed: function() {

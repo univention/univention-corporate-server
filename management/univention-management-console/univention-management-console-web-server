@@ -984,11 +984,7 @@ class CPAuth(CPgeneric):
 			if content_length <= max_length:  # prevent some DoS
 				raise UMC_HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 
-		if cherrypy.request.method in cherrypy.request.methods_with_bodies and not cherrypy.request.headers.get('Content-Type'):
-			# TODO: remove... backwards compatibility for broken UMCConnection lib in UCS 4.0
-			data = self.load_json(cherrypy.request.body.read())
-		else:
-			data = self.get_arguments(kwargs)
+		data = self.get_arguments(kwargs)
 
 		CORE.info('auth: request: command=%s' % cherrypy.request.path_info)
 
