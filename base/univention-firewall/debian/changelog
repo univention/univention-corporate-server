@@ -1,3 +1,9 @@
+univention-firewall (9.0.0-9) unstable; urgency=low
+
+  * Bug #43707: create missing docker chains and rules
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 10 Mar 2017 15:34:25 +0100
+
 univention-firewall (9.0.0-8) unstable; urgency=medium
 
   * Bug #43471: Doing it again

@@ -890,6 +890,9 @@
 				The time service (TCP port 37) has been disabled and the corresponding UCR variables for the firewall accept rule are not set by default any longer.
 				During update, the UCR variables for the firewall accept rule are unset (<u:bug>42109</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-firewall</package> has been adapted to new iptables rules created by the upgraded docker service (<u:bug>43707</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>

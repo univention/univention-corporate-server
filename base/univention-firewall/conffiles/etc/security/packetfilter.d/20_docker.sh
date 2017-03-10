@@ -29,7 +29,11 @@
 # <http://www.gnu.org/licenses/>.
 
 nat_core_rules() {
-	iptables --wait -L DOCKER > /dev/null 2> /dev/null || iptables -N DOCKER  # create docker queue if missing
+	# create docker chains if missing
+	iptables --wait -L DOCKER > /dev/null 2> /dev/null || iptables --wait -N DOCKER
+	iptables --wait -L DOCKER -t nat > /dev/null 2> /dev/null || iptables --wait -N DOCKER -t nat
+	iptables --wait -L DOCKER-ISOLATION -t filter > /dev/null 2> /dev/null || iptables --wait -N DOCKER-ISOLATION -t filter
+
 	iptables --wait -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 	iptables --wait -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
 @!@
@@ -43,6 +47,9 @@ print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow 
 	iptables --wait -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	iptables --wait -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
 	iptables --wait -A FORWARD -i docker0 -o docker0 -j ACCEPT
+	iptables --wait -I DOCKER-ISOLATION -j RETURN
+	iptables --wait -I DOCKER -t nat -i docker0 -j RETURN
+	iptables --wait -I FORWARD -j DOCKER-ISOLATION
 }
 
 nat_container_rule() {
