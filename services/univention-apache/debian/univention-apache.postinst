@@ -75,11 +75,9 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 	/usr/lib/univention-install/08univention-apache.inst || true
 fi
 
-#remove old ucr variables for icons
-ucr unset \
-	ucs/web/overview/entries/admin/root-certificate/icon \
-	ucs/web/overview/entries/admin/invalid-certificate-list/icon \
-	ucs/web/overview/entries/admin/ldap-master/icon
+#remove old ucr variables
+keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|root-certificate|ldap-master).*')
+ucr unset $keys
 
 #Check, whether we can safely enable ssl
 #The private key could also be included inside the certificate file, so we don't require it here

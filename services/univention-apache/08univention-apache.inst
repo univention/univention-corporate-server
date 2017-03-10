@@ -47,35 +47,5 @@ if [ -z "$UMC_MODE" ]; then
 fi
 
 
-# configure default entries for UCS overview site
-if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
-	ucr unset \
-		ucs/web/overview/entries/admin/root-certificate/label \
-		ucs/web/overview/entries/admin/root-certificate/label/de \
-		ucs/web/overview/entries/admin/root-certificate/description \
-		ucs/web/overview/entries/admin/root-certificate/description/de \
-		ucs/web/overview/entries/admin/root-certificate/link \
-		ucs/web/overview/entries/admin/root-certificate/priority \
-		ucs/web/overview/entries/admin/invalid-certificate-list/label \
-		ucs/web/overview/entries/admin/invalid-certificate-list/label/de \
-		ucs/web/overview/entries/admin/invalid-certificate-list/description \
-		ucs/web/overview/entries/admin/invalid-certificate-list/description/de \
-		ucs/web/overview/entries/admin/invalid-certificate-list/link \
-		ucs/web/overview/entries/admin/invalid-certificate-list/priority
-fi
-
-if [ $server_role != "domaincontroller_master" ]; then
-	ucr unset \
-		ucs/web/overview/entries/admin/ldap-master/label \
-		ucs/web/overview/entries/admin/ldap-master/label/de \
-		ucs/web/overview/entries/admin/ldap-master/description \
-		ucs/web/overview/entries/admin/ldap-master/description/de \
-		ucs/web/overview/entries/admin/ldap-master/link \
-		ucs/web/overview/entries/admin/ldap-master/link/de \
-		ucs/web/overview/entries/admin/ldap-master/priority
-fi
-
-
-
 joinscript_save_current_version
 exit 0
