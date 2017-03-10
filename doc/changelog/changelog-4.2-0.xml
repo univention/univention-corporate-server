@@ -303,7 +303,7 @@
 						The syntax class <function>ObjectFlag</function> now accepts the
 						value <literal>docker</literal> (which is used to mark computer
 						objects that are created specifically for Docker App Containers);
-						the corresponding attribute is now a multivalued, making it possible
+						the corresponding attribute is now multivalued, making it possible
 						to store more than one flag on an object (<u:bug>43148</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
