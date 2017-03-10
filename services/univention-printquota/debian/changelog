@@ -1,3 +1,9 @@
+univention-printquota (9.0.0-3) unstable; urgency=medium
+
+  * Bug #43682: Add support for univention-postgresql-9.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 10 Mar 2017 18:28:07 +0100
+
 univention-printquota (9.0.0-2) unstable; urgency=medium
 
   * PostgreSQL 9.1 supports host names in pg_hba.conf:
