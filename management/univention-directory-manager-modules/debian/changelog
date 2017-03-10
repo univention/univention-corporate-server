@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.14-10) unstable; urgency=medium
+
+  * Bug #42234: Hide "favorites" in UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Mar 2017 03:04:23 +0100
+
 univention-directory-manager-modules (12.0.14-9) unstable; urgency=medium
 
   * Bug #42231: Add default values
