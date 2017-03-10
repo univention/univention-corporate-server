@@ -56,7 +56,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Linux kernel has been updated to 4.9.2 (<u:bug>42048</u:bug>).
+					The Linux kernel has been updated to 4.9.13 (<u:bug>42048</u:bug>, <u:bug>42047</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The kernel modules <package>openafs-modules-dkms</package>, <package>blktap-dkms</package>, <package>virtualbox-dkms</package>, <package>virtualbox-guest-dkms</package>, <package>open-vm-tools-dkms</package>, <package>backfire-dkms</package> and <package>oss4-dkms</package> have been updated to be compatible with the new Linux kernel 4.9.
