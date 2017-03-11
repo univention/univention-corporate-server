@@ -16,7 +16,7 @@ if __name__ == '__main__':
 		app_name = get_app_name()
 		package_name = get_app_name()
 		app1 = App(name=app_name, version='1', container_version='4.1', package_name=package_name)
-		app1.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+		app1.set_ini_parameter(DockerImage=get_docker_appbox_image())
 		app1.add_script(inst='''#!/bin/bash
 VERSION=1
 . /usr/share/univention-appcenter/joinscripthelper.sh
@@ -27,7 +27,7 @@ joinscript_save_current_version
 		app1.add_to_local_appcenter()
 
 		app2 = App(name=app_name, version='2', container_version='4.1', package_name=package_name)
-		app2.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+		app2.set_ini_parameter(DockerImage=get_docker_appbox_image())
 		app2.add_script(inst='''#!/bin/bash
 VERSION=2
 . /usr/share/univention-appcenter/joinscripthelper.sh

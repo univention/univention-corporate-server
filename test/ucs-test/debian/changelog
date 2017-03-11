@@ -1,3 +1,11 @@
+ucs-test (7.0.13-3) unstable; urgency=medium
+
+  * Merged from UCS 4.1
+    * Bug #42817: Switch to 4.1-4 docker appbox image
+    [Dirk Wiesenthal <wiesenthal@univention.de>]
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Mar 2017 19:49:37 +0100
+
 ucs-test (7.0.13-2) unstable; urgency=medium
 
   * 80_docker/dockertest.py: Add cafile to urllib2.urlopen (Bug #43757)
