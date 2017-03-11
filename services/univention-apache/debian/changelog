@@ -1,3 +1,11 @@
+univention-apache (9.0.3-1) unstable; urgency=medium
+
+  * The SSL proxy check peer cn and peer name need to be disabled since
+    the docker container web interfaces are available via 127.0.0.1 and
+    not via FQDN (Bug #43813)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Mar 2017 13:33:14 +0100
+
 univention-apache (9.0.2-4) unstable; urgency=medium
 
   * Bug #42231: No need for certificate variables

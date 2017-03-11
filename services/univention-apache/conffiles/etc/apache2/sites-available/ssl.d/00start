@@ -6,6 +6,8 @@
 	Include /etc/apache2/ucs-sites.conf.d
 	SSLEngine on
 	SSLProxyEngine on
+	SSLProxyCheckPeerCN off
+	SSLProxyCheckPeerName off
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
 	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
