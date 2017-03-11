@@ -42,9 +42,13 @@ class SyncedAppcenter(Appcenter):
 
 	def download_index_json(self):
 		self.download('meta-inf/%s/index.json.gz' % self.vv)
+		if self.vv == '4.2':
+			self.download('meta-inf/4.1/index.json.gz')
 
 	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
+		if self.vv == '4.2':
+			self.download('meta-inf/4.1/index.json.gz.gpg')
 
 	def remove_from_cache(self, f):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
