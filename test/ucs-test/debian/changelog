@@ -1,3 +1,10 @@
+ucs-test (7.0.13-5) unstable; urgency=medium
+
+  * 80_docker/62_app_update_available: Copy the packages to the
+    container version and not to the host version (Bug #43757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Mar 2017 20:32:53 +0100
+
 ucs-test (7.0.13-4) unstable; urgency=medium
 
   * 80_docker/59_app_center_signature: The UCS 4.2 App Center client
