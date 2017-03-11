@@ -1,3 +1,9 @@
+ucs-test (7.0.13-2) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: Add cafile to urllib2.urlopen (Bug #43757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Mar 2017 18:47:51 +0100
+
 ucs-test (7.0.13-1) unstable; urgency=medium
 
   * 80_docker: In UCS 4.2 we are able to install UCS 4.1 docker apps.

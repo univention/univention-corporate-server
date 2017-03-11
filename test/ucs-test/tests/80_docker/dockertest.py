@@ -433,7 +433,7 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 
 		if https is not None:
 			try:
-				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name))
+				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), cafile='/etc/univention/ssl/ucsCA/CAcert.pem')
 			except urllib2.HTTPError:
 				if https:
 					raise
