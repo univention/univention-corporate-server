@@ -1,3 +1,10 @@
+ucs-test (7.0.13-6) unstable; urgency=medium
+
+  * 80_docker/30_installed: Use 4.2 as target for the Non-Docker App
+    (Bug #43757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Mar 2017 21:08:41 +0100
+
 ucs-test (7.0.13-5) unstable; urgency=medium
 
   * 80_docker/62_app_update_available: Copy the packages to the
