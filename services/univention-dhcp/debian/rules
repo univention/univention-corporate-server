@@ -44,5 +44,8 @@ override_dh_auto_test:
 	dh_auto_test
 	[ -x /usr/bin/ucslint ] && ucslint
 
+override_dh_installinit:
+	dh_installinit --error-handler=true
+
 %:
 	dh $@
