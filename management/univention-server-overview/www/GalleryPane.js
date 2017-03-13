@@ -76,7 +76,7 @@ define([
 			return domConstruct.toDom(lang.replace(
 				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-3">' +
 					'<div class="umcGalleryItem">' +
-						'<div class="umcGalleryName"><a href="//{url}">{name}</a></div>' +
+						'<a href="//{url}"><div class="umcGalleryName">{name}</div></a>' +
 						'<div class="umcGalleryDescription">{description}</div>' +
 						'<div class="umcGalleryVersion">{version}</div>' +
 					'</div>' +
