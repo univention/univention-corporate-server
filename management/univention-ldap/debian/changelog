@@ -1,3 +1,9 @@
+univention-ldap (13.0.5-4) unstable; urgency=low
+
+  * Bug #43645: db5.3
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Mar 2017 18:09:39 +0100
+
 univention-ldap (13.0.5-3) unstable; urgency=low
 
   * Bug #43689: Drop legacy univention-bind packages
