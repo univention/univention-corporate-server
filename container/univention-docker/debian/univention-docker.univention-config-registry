@@ -5,3 +5,6 @@ Variables: docker/daemon/default/opts/.*
 
 Type: file
 File: etc/init.d/docker
+
+Type: file
+File: etc/docker/seccomp-systemd.json
