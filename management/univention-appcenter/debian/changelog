@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-2) unstable; urgency=medium
+
+  * Bug #43455: Fix path for seccomp profile
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Mar 2017 14:25:32 +0100
+
 univention-appcenter (6.0.3-1) unstable; urgency=medium
 
   * Bug #43455: docker run options for systemd

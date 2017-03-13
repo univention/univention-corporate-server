@@ -352,7 +352,7 @@ class Docker(object):
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                     # systemd
 			args.extend(["--tmpfs", tmpfs])
-		args.extend(["--security-opt", "seccomp:systemd.json"]) # systemd
+		args.extend(["--security-opt", "seccomp:/etc/docker/systemd.json"]) # systemd
 		args.extend(["-e", "container=docker"])                 # systemd
 		container = create(self.image, command, hostname, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
