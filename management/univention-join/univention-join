@@ -144,7 +144,7 @@ setup_ssl () {
 	chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
 
 	ln -snf /etc/univention/ssl/ucsCA/CAcert.pem /usr/local/share/ca-certificates/ucsCA.crt
-	update-ca-certificates >>/var/log/univention/join.log 2>&1
+	update-ca-certificates --fresh >>/var/log/univention/join.log 2>&1
 
 	check_ldap_tls_connection
 
