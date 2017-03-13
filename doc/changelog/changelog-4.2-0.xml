@@ -669,8 +669,9 @@
 					have been adapted to apache version 2.4 (<u:bug>42196</u:bug>, <u:bug>42296</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The SSL proxy peer checks for CN and for hostname have been disabled since newer Apache versions check this by
-					default and the Docker container web interfaces are available via localhost (<u:bug>43813</u:bug>)
+					The SSL proxy peer checks for <wordasword>CN</wordasword> and for hostname have been disabled since newer Apache
+					versions check this by default and the Docker container web interfaces are available via localhost
+					(<u:bug>43813</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
