@@ -687,6 +687,21 @@
 				<listitem><simpara>
 						<package>univention-tftp</package> has been updated due to a newer <package>syslinux</package> version, this fixes the path to the <filename>pxelinux.0</filename> binary.
 				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-postgresql</package> has been updated to support the newer <package>postgresql-9.4</package> by adding a new <package>univention-postgresql-9.4</package> and changing <package>univention-postgresql</package> to install that on new installations (<u:bug>43682</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-appcenter</package> has been updated to support the newer <package>univention-postgresql-9.4</package> (<u:bug>43682</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-printquota</package> has been updated to support the newer <package>univention-postgresql-9.4</package> (<u:bug>43682</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-pkgdb</package> has been updated to support the newer <package>univention-postgresql-9.4</package> (<u:bug>43682</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-bacula</package> has been updated to support the newer <package>univention-postgresql-9.4</package> (<u:bug>43682</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
