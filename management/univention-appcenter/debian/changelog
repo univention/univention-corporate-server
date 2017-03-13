@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-1) unstable; urgency=medium
+
+  * Bug #43455: docker run options for systemd
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Mar 2017 13:48:03 +0100
+
 univention-appcenter (6.0.2-6) unstable; urgency=medium
 
   * Bug #43662: Archives for Test App Center

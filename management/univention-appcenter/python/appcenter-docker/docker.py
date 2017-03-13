@@ -345,9 +345,15 @@ class Docker(object):
 			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.add(cert_volume)
+		volumes.add('/sys/fs/cgroup:/sys/fs/cgroup:ro')         # systemd
+		volumes.add('/dev/hugepages:/dev/hugepages')            # systemd
 		env_file = self.ucr_filter_env_file(env)
 		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
+		for tmpfs in ("/run", "/run/lock"):                     # systemd
+			args.extend(["--tmpfs", tmpfs])
+		args.extend(["--security-opt", "seccomp:systemd.json"]) # systemd
+		args.extend(["-e", "container=docker"])                 # systemd
 		container = create(self.image, command, hostname, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
