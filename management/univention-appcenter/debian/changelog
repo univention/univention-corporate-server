@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-64) unstable; urgency=low
+
+  *  Bug #43499: reverted r77284, app plugins
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Mar 2017 13:26:48 +0100
+
 univention-appcenter (5.0.23-63) unstable; urgency=low
 
   * Bug #43499: re-reverted r76506, app plugins
@@ -12,7 +18,7 @@ univention-appcenter (5.0.23-62) unstable; urgency=medium
 
 univention-appcenter (5.0.23-61) unstable; urgency=low
 
-  * Bug #41801: ignore "host" objects without serverRole in  
+  * Bug #41801: ignore "host" objects without serverRole in
     Domain.get_appcenter_hosts()
 
  -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 14:53:31 +0100

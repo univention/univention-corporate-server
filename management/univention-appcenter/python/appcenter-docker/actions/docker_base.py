@@ -39,7 +39,6 @@ from time import time
 
 from ldap.dn import explode_dn
 
-from univention.appcenter.app import AppManager
 from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import Abort, get_action
@@ -57,9 +56,6 @@ class DockerActionMixin(object):
 	def _get_docker(cls, app):
 		if not app.docker:
 			return
-		if app.plugin_of:
-			app = AppManager.find(app.plugin_of)
-			return cls._get_docker(app)
 		return Docker(app, cls.logger)
 
 	def _store_data(self, app):
