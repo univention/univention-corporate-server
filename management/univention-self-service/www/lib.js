@@ -57,7 +57,7 @@ define([
 					this.showMessage(msg);
 				}
 			}
-			return "/univention";
+			return "/univention/";
 		},
 
 		/** Returns boolean if given url is relative.
