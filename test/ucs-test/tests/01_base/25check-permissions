@@ -50,22 +50,17 @@ find / \
 		-o -path "/run/umc-web-server.pid.lock" \
 		-o -path "/run/umc-server.pid.lock" \
 		-o -path "/run/*.MainThread-*" \
-		-o -path "/run/shm" \
 		-o -path "/var/lib/php5" \
 		-o -path "/lock" \
-		-o -path "/var/run/avahi-daemon/socket" \
 		-o -path "/var/run/clamav/clamd.ctl" \
 		-o -path "/var/run/cyrus/socket/lmtp" \
-		-o -path "/var/run/dbus/system_bus_socket" \
 		-o -path "/var/run/gdm_socket" \
 		-o -path "/var/run/libvirt/libvirt-sock-ro" \
-		-o -path "/var/run/nscd/socket" \
 		-o -path "/var/run/samba/winbindd_privileged/pipe" \
 		-o -path "/var/run/saslauthd/mux" \
 		-o -path "/var/spool/hylafax/dev/null" \
 		-o -path "/var/spool/hylafax/FIFO.faxCAPI" \
 		-o -path "/var/spool/hylafax/tmp" \
-		-o -path "/var/spool/postfix/dev/log" \
 		-o -path "/var/spool/samba" \
 	\) -print0 > "$tmpfile"
 if [ -s "$tmpfile" ]
