@@ -1,3 +1,9 @@
+univention-web (1.0.36-6) unstable; urgency=medium
+
+  * Bug #42263: Allow submenus to be added if parent menu does not exist
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 13 Mar 2017 11:55:45 +0100
+
 univention-web (1.0.36-5) unstable; urgency=medium
 
   * Bug #43695: Added the certificates-menu to the side menu

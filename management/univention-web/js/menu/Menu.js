@@ -187,7 +187,14 @@ define([
 			dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
 		},
 
-		_addOrphanedEntries: function(parentMenuId) {
+		_registerOrphanedEntry: function(menuEntry, parentMenuId) {
+			// parent menu does not exist... save entry to be added later
+			var parentEntries = this._orphanedEntries[parentMenuId] || [];
+			parentEntries.push(menuEntry);
+			this._orphanedEntries[parentMenuId] = parentEntries;
+		},
+
+		_mergeOrphanedEntries: function(parentMenuId) {
 			if (parentMenuId in this._orphanedEntries) {
 				var parentMenuItem = this._menuMap[parentMenuId];
 				array.forEach(this._orphanedEntries[parentMenuId], function(ientry) {
@@ -249,9 +256,15 @@ define([
 			var parentMenuId = item.parentMenuId || 'umcMenuMain';
 			var parentMenuItem = this._menuMap[parentMenuId];
 			var subMenuItem = _createSubMenuItem();
+			this._mergeOrphanedEntries(item.id);
 			_addClickListeners(subMenuItem);
+
+			if (!parentMenuItem) {
+				this._registerOrphanedEntry(subMenuItem, parentMenuId);
+				return subMenuItem;
+			}
+
 			parentMenuItem.addMenuItem(subMenuItem);
-			this._addOrphanedEntries(item.id);
 			return subMenuItem;
 		},
 
@@ -302,10 +315,7 @@ define([
 			var menuEntry = _createMenuEntry();
 
 			if (!parentMenuItem) {
-				// parent menu does not exist... save entry to be added later
-				var parentEntries = this._orphanedEntries[parentMenuId] || [];
-				parentEntries.push(menuEntry);
-				this._orphanedEntries[parentMenuId] = parentEntries;
+				this._registerOrphanedEntry(menuEntry, parentMenuId);
 				return menuEntry;
 			}
 
