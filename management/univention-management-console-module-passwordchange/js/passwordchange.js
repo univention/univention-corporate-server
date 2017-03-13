@@ -31,7 +31,6 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/topic",
 	"login",
 	"umc/menu",
 	"umc/tools",
