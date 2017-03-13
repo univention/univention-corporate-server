@@ -45,6 +45,7 @@ define([
 
 	function setupMenus() {
 		setupSettingsContextMenu();
+		setupCertificateMenu();
 		setupLanguageMenu();
 		setupHelpMenu();
 		setupStartSiteLink();
@@ -56,6 +57,39 @@ define([
 			priority: 60,
 			label: _('User settings'),
 			id: 'umcMenuUserSettings'
+		});
+	}
+	
+	function setupCertificateMenu() {
+		menu.addSubMenu({
+			priority: 57,
+			label: _('Certificates'),
+			id: 'umcMenuCertificates'
+		});
+
+		var masterURL = '//' + tools.status('ldap_master');
+		var linkRootCa = masterURL + '/' + 'ucs-root-ca.crt';
+		var linkRevocList = masterURL + '/' + 'ucsCA.crl';
+		var currentRole = tools.status('server_role');
+		if (currentRole == "domaincontroller_master" || currentRole == "domaincontroller_backup") {
+			linkRootCa = '/ucs-root-ca.crt';
+			linkRevocList = '/ucsCA.crl';
+		}
+
+		menu.addEntry({
+			parentMenuId: 'umcMenuCertificates',
+			label: _('Root certificate'),
+			onClick: function() {
+				window.location.href = linkRootCa;
+			}
+		});
+
+		menu.addEntry({
+			parentMenuId: 'umcMenuCertificates',
+			label: _('Certificate revocation list'),
+			onClick: function() {
+				window.location.href = linkRevocList;
+			}
 		});
 	}
 

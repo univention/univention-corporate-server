@@ -16,6 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: js/hooks/default_menu_entries.js:66
+msgid "Certificates"
+msgstr "Zertifikate"
+
+#: js/hooks/default_menu_entries.js:81
+msgid "Root certificate"
+msgstr "Wurzelzertifikat"
+
+#: js/hooks/default_menu_entries.js:89
+msgid "Certificate revocation list"
+msgstr "Zertifikat-Sperrliste"
+
 #: js/tools.js:1643
 msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""

@@ -1,3 +1,9 @@
+univention-web (1.0.36-5) unstable; urgency=medium
+
+  * Bug #43695: Added the certificates-menu to the side menu
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 13 Mar 2017 11:33:23 +0100
+
 univention-web (1.0.36-4) unstable; urgency=medium
 
   * Bug #43528: Adjust _resizeItemNames method in GalleryPane
