@@ -159,15 +159,18 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Entry options'), layout=[
 		Group(_('General'), layout=[
-			["name"],
-			["displayName"],
+			["name", "category"],
 			["portal"],
 			["icon"],
 		]),
+		Group(_('Display name'), layout=[
+			["displayName"],
+		]),
+		Group(_('Description'), layout=[
+			["description"],
+		]),
 		Group(_('Link'), layout=[
 			["link"],
-			["description"],
-			["category"],
 		]),
 		Group(_('Advanced'), layout=[
 			["activated"],
