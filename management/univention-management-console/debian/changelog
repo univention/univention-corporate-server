@@ -1,3 +1,9 @@
+univention-management-console (9.0.60-3) unstable; urgency=medium
+
+  * Bug #42174: Improve event handling for consecutive login/logout requests
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 13 Mar 2017 17:50:58 +0100
+
 univention-management-console (9.0.60-2) unstable; urgency=medium
 
   * Bug #42263: adjust login/dialog::addLink() to work more robustly

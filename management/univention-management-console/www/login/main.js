@@ -30,6 +30,7 @@
 
 define([
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/dom",
 	"dojo/topic",
@@ -47,7 +48,7 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!login"
-], function(lang, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
+], function(lang, array, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Private utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -63,7 +64,86 @@ define([
 
 		_password_required: null,
 		_loginDialog: null, // internal reference to the login dialog
-		_loginDeferred: null,
+		_nextLoginDeferred: null,
+
+		init: function() {
+			this._initEventHandlers();
+		},
+
+		// We may have multiple login/logout events via a session (e.g., when
+		// handling different tabs and logging in/out in one of them).
+		// In the code, we differ between the following states:
+		// * initial login state: from beginning until first logout
+		// * logout state: from logout until next login
+		// * login state: from 2nd (and consecutive) login until next logout
+		// Note that we need to handle the initial login state separately to ensure
+		// (via deferreds) that the initially published topic '/umc/authenticated'
+		// is not missed by any observer.
+		_initialLoginDeferred: null,
+
+		_initEventHandlers: function() {
+			// initiate deferred for initial login
+			this._initialLoginDeferred = new Deferred();
+
+			topic.subscribe('/umc/authenticated', lang.hitch(this, function(params) {
+				var username = params[0];
+				if (this._initialLoginDeferred) {
+					// -> initial login state -> resolve the deferred
+					this._initialLoginDeferred.resolve(username);
+				} else {
+					// -> login state -> call all registered callbacks
+					this._notifyObservers('login', username);
+				}
+			}));
+
+			topic.subscribe('/umc/unauthenticated', lang.hitch(this, function() {
+				// -> logout state -> clear deferred and call all registered callbacks
+				if (this._initialLoginDeferred && this._initialLoginDeferred.isFulfilled()) {
+					this._initialLoginDeferred = null;
+				}
+				this._notifyObservers('logout');
+			}));
+		},
+
+		onLogin: function(callback) {
+			// until the _initialLoginDeferred is set we
+			if (this._initialLoginDeferred) {
+				this._initialLoginDeferred.then(function() {
+					callback(tools.status('username'));
+				});
+			}
+			this._registerObserver('login', callback);
+		},
+
+		onLogout: function(callback) {
+			this._registerObserver('logout', callback);
+		},
+
+		_observers: null,
+		_getObservers: function(what) {
+			// make sure the array is set for the specified event
+			if (!this._observers) {
+				this._observers = {};
+			}
+			if (!(what in this._observers)) {
+				this._observers[what] = [];
+			}
+			return this._observers[what];
+		},
+
+		_registerObserver: function(what, callback) {
+			this._getObservers(what).push(callback);
+		},
+
+		_notifyObservers: function(what /*, arg1, arg2, ...*/) {
+			// get the arguments to be handed over to the callback
+			var args = Array.prototype.slice.call(arguments, 1);
+
+			// iterate over all callbacks
+			array.forEach(this._getObservers(what), function(callback) {
+				callback.apply(window, args);
+			});
+		},
 
 		showLoginDialog: function() {
 			// deprecated! only updater.js and tools.js renewSession still uses it.
@@ -72,14 +152,14 @@ define([
 
 		sessionTimeout: function() {
 			// call when the session timed out, returns a deferred which resolves when the session is active again
-			if (this._loginDeferred) {
+			if (this._nextLoginDeferred) {
 				// a login attempt is currently running
-				return this._loginDeferred;
+				return this._nextLoginDeferred;
 			}
 
-			this._loginDeferred = this._waitForNextAuthentication().then(lang.hitch(this, function() {
+			this._nextLoginDeferred = this._waitForNextAuthentication().then(lang.hitch(this, function() {
 				// remove the reference to the login deferred object
-				this._loginDeferred = null;
+				this._nextLoginDeferred = null;
 			}));
 
 			topic.publish('/umc/actions', 'session', 'timeout');
@@ -92,7 +172,7 @@ define([
 				this._requirePassword(_('The current session timed out. Please login again.'));
 
 			}));
-			return this._loginDeferred;
+			return this._nextLoginDeferred;
 		},
 
 		renderLoginDialog: function() {
@@ -148,10 +228,10 @@ define([
 			if (password) {
 				tools.status('password', password);
 			}
-			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
+			this.autologin().otherwise(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
-				return passiveLogin.then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
+				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 					var target = '/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href));
 					if (!passiveLogin.isCanceled()) {
 						target = '/univention/saml/';
@@ -175,11 +255,11 @@ define([
 		},
 
 		sessioninfo: function() {
-			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(function(response) {
+			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
 				tools.status('authType', response.result.auth_type);
 				tools.status('loggedIn', true);
-				return response;
-			}, function(error) {
+				return this.authenticated(response.result.username);
+			}), function(error) {
 				if (tools.status('loggedIn')) {
 					tools.status('loggedIn', false);
 					try {
@@ -190,14 +270,6 @@ define([
 				}
 				throw error;
 			});
-		},
-
-		sessionlogin: function() {
-			// login with a currently existing session (if exists)
-			return this.sessioninfo().then(lang.hitch(this, function(response) {
-				//console.debug('using existing session');
-				return this.authenticated(response.result.username);
-			}));
 		},
 
 		authenticated: function(username) {
@@ -390,6 +462,9 @@ define([
 			return deferred;
 		}
 	};
+
+	login.init();
+
 	lang.setObject('umc.login', login);
 	return login;
 });
