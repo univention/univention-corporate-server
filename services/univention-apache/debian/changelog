@@ -1,3 +1,9 @@
+univention-apache (9.0.3-2) unstable; urgency=medium
+
+  *  Bug #43695: Unsetting old ucr variables in univention-apache.postinst
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 13 Mar 2017 09:43:30 +0100
+
 univention-apache (9.0.3-1) unstable; urgency=medium
 
   * The SSL proxy check peer cn and peer name need to be disabled since

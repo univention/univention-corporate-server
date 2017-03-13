@@ -76,8 +76,10 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 fi
 
 #remove old ucr variables
-keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|root-certificate|ldap-master).*')
-ucr unset $keys
+keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|root-certificate|ldap-master)/.*')
+if [ ! -z $keys ]; then
+	ucr unset $keys
+fi
 
 #Check, whether we can safely enable ssl
 #The private key could also be included inside the certificate file, so we don't require it here
