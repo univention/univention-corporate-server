@@ -207,9 +207,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	invoke-rc.d apache2 restart
 fi
 
-univention-certificate new -name "$hostname.$domainname"
-ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
-
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
 # Re-create sources.list files
