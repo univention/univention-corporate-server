@@ -70,7 +70,7 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set showMenu=TRUE \
 	--set showSearch=TRUE \
 	--set showLogin=TRUE \
-	--set showApps=FALSE \
+	--set showApps=TRUE \
 	--set showServers=TRUE || die
 
 univention-directory-manager settings/portal create "$@" --ignore_exists \
@@ -81,7 +81,7 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--append displayName='"fr_FR" "page d'\''accueil pour {hostname}"' \
 	--set showMenu=TRUE \
 	--set showSearch=TRUE \
-	--set showLogin=FALSE \
+	--set showLogin=TRUE \
 	--set showApps=TRUE \
 	--set showServers=TRUE || die
 

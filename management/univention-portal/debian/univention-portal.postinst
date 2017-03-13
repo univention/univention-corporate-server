@@ -33,7 +33,8 @@
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then
-	invoke-rc.d univention-directory-listener crestart
+	systemctl reload apache2
+	systemctl restart univention-directory-listener
 fi
 
 exit 0
