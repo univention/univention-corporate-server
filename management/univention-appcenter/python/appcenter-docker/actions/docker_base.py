@@ -172,7 +172,6 @@ class DockerActionMixin(object):
 			for key in ucr_keys_list:
 				if re.match(var, key):
 					set_vars[key] = ucr_get(key)
-		set_vars['repository/app_center/server'] = ucr_get(app.ucr_server_key) or set_vars.get('repository/app_center/server')
 		set_vars['updater/identify'] = 'Docker App'
 		database_connector = DatabaseConnector.get_connector(app)
 		database_password_file = None

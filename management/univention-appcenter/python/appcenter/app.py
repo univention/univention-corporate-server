@@ -974,10 +974,6 @@ class App(object):
 		return 'appcenter/apps/%s/ucs' % self.id
 
 	@property
-	def ucr_server_key(self):
-		return 'appcenter/apps/%s/server' % self.id
-
-	@property
 	def ucr_upgrade_key(self):
 		return 'appcenter/apps/%s/update/available' % self.id
 
@@ -1039,12 +1035,12 @@ class App(object):
 
 	def is_installed(self):
 		if self.docker and not container_mode():
-			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key) == self.get_ucs_version() and ucr_get(self.ucr_server_key) == self.get_server()
+			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) == self.get_ucs_version()
 		else:
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
 					return False
-			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version() or ucr_get(self.ucr_server_key, self.get_server()) != self.get_server():
+			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version():
 				return False
 			return packages_are_installed(self.default_packages)
 
@@ -1508,7 +1504,7 @@ class App(object):
 		return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
 	def __cmp__(self, other):
-		return cmp(self.id, other.id) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id) or cmp(LooseVersion(self.get_server()), LooseVersion(other.get_server()))
+		return cmp(self.id, other.id) or cmp(LooseVersion(self.get_ucs_version()), LooseVersion(other.get_ucs_version())) or cmp(LooseVersion(self.version), LooseVersion(other.version)) or cmp(self.component_id, other.component_id)
 
 
 # LEGACY; deprecated, use univention.appcenter.app_cache.Apps()!

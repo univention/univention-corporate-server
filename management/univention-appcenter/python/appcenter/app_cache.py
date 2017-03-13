@@ -448,19 +448,9 @@ class Apps(_AppCache):
 		return self._locale
 
 	def get_appcenter_caches(self):
-		ret = []
-		for appcenter_server in ucr_get('repository/app_center/server', 'appcenter.software-univention.de').split():
-			try:
-				ucs_version, server = appcenter_server.split('@')
-			except ValueError:
-				ucs_version, server = None, appcenter_server
-			if ucs_version:
-				ucs_version = [ucs_version]
-			if not server.startswith('http'):
-				server = 'https://%s' % server
-			cache = self._build_appcenter_cache(server, ucs_version)
-			ret.append(cache)
-		return ret
+		server = default_server()
+		cache = self._build_appcenter_cache(server, None)
+		return [cache]
 
 	def _build_appcenter_cache(self, server, ucs_versions):
 		return self.get_appcenter_cache_class()(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
@@ -521,17 +511,10 @@ def default_locale():
 
 
 def default_server():
-	appcenter_servers = ucr_get('repository/app_center/server')
-	if appcenter_servers:
-		server = appcenter_servers.split(' ')[0]
-		try:
-			ucs_version, server = server.split('@')
-		except ValueError:
-			pass
-		if not server.startswith('http'):
-			server = 'https://%s' % server
-		return server
-	return 'https://appcenter.software-univention.de'
+	server = ucr_get('repository/app_center/server', 'https://appcenter.software-univention.de')
+	if not server.startswith('http'):
+		server = 'https://%s' % server
+	return server
 
 
 def default_ucs_version():

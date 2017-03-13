@@ -98,10 +98,9 @@ class StoreAppAction(Action):
 			apps = []
 			for appcenter_cache in apps_cache.get_appcenter_caches():
 				for cache in appcenter_cache.get_app_caches():
-					print cache
 					if ucs_version and ucs_version != cache.get_ucs_version():
 						continue
-					if server and server != urlsplit(cache.get_server()).netloc:
+					if server and server != cache.get_server_netloc():
 						continue
 					app = cache.find(app_id, app_version=app_version)
 					if app:

@@ -1,3 +1,10 @@
+univention-appcenter (6.0.3-6) unstable; urgency=medium
+
+  * Bug #43496: Remove support for multiple App Center servers; only one
+    server may be specified in repository/app_center/server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Mar 2017 00:30:47 +0100
+
 univention-appcenter (6.0.3-5) unstable; urgency=low
 
   * Bug #41170: catch ssl.CertificateError

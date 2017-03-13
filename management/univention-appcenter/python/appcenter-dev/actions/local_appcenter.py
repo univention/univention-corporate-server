@@ -50,8 +50,9 @@ from distutils.version import LooseVersion
 
 
 from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
+from univention.appcenter.app_cache import default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, get_server
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase
 from univention.appcenter.ucr import ucr_save, ucr_get
 from univention.appcenter.ini_parser import read_ini_file
 
@@ -274,7 +275,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 
 	def setup_parser(self, parser):
 		super(DevRegenerateMetaInf, self).setup_parser(parser)
-		parser.add_argument('--appcenter-host', default=get_server(), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=default_server(), help='The hostname of the new App Center. Default: %(default)s')
 
 	@classmethod
 	def generate_index_json(cls, meta_inf_dir, repo_dir, ucs_version, appcenter_host):
@@ -348,7 +349,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('-p', '--packages', nargs='+', help='Path to debian packages files for the app', metavar='PACKAGE')
 		parser.add_argument('-u', '--unmaintained', nargs='+', help='Package names that exist in the unmaintained repository for UCS. ATTENTION: Only works for --ucs-version=%s; takes some time, but it is only needed once, so for further package updates of this very app version this is not need to be done again. ATTENTION: Only works for architecture %s.' % (version, arch), metavar='PACKAGE')
 		parser.add_argument('-d', '--do-not-delete-duplicates', action='store_true', help=' If any PACKAGE already exist in the repository (e.g. another version), they are removed. Unless this option is set.')
-		parser.add_argument('--appcenter-host', default=get_server(), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=default_server(), help='The hostname of the new App Center. Default: %(default)s')
 
 	def main(self, args):
 		component_id = args.component_id
@@ -636,7 +637,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
 			for supra_file in ['categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini']:
 				with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
-					categories = urlopen('%s/meta-inf/%s' % (get_server(), supra_file)).read()
+					categories = urlopen('%s/meta-inf/%s' % (default_server(), supra_file)).read()
 					f.write(categories)
 			server = 'http://%s' % args.appcenter_host
 			use_test_appcenter = get_action('dev-use-test-appcenter')
