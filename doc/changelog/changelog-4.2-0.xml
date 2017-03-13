@@ -429,6 +429,10 @@
 				<listitem><simpara>
 					DHCP options and DHCP statements can now be configured via &ucsUMC; (<u:bug>32557</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <filename>univention-dhcp</filename> package update script has been adjusted to tollerate temporary
+					systemd related service restart failure (<u:bug>43651</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
