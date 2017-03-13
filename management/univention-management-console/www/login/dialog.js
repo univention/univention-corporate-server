@@ -41,37 +41,46 @@ define([
 	"dojo/has",
 	"dojo/_base/event",
 	"dojo/cookie",
+	"dojo/Deferred",
 	"dijit/Tooltip",
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/i18n!login"
-], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, Tooltip, entities, dialog, _) {
+], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, Deferred, Tooltip, entities, dialog, _) {
 
 	return {
-		links: [],
+		_loginDialogRenderedDeferred: new Deferred(),
 
+		// add custom info link to login dialog
 		addLink: function(link) {
-			this.links.push(link);
+			this._loginDialogRenderedDeferred.then(lang.hitch(this, '_renderLink', link));
 		},
 
 		renderLoginDialog: function() {
-			this.addLinks();
+			this._addDefaultLinks();
 			this.checkCookiesEnabled();
+			this._loginDialogRenderedDeferred.resolve();
 		},
 
-		addLinks: function() {
-			array.forEach(this.getLinks(), function(link) {
-				domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
-			});
-			this.addTooltips();
+		_addDefaultLinks: function() {
+			array.forEach(this._getDefaultLinks(), lang.hitch(this, '_renderLink'));
 		},
 
-		getLinks: function() {
+		_getDefaultLinks: function() {
 			var links = [];
 			links.push(this.warningBrowserOutdated());
 			links.push(this.insecureConnection());
 			links.push(this.howToLogin());
-			return array.filter(links.concat(this.links), function(link) { return link; });
+			return links;
+		},
+
+		_renderLink: function(link) {
+			if (link) {
+				var node = domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
+				if (node.title) {
+					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node));
+				}
+			}
 		},
 
 		insecureConnection: function() {
@@ -136,14 +145,6 @@ define([
 				return;
 			}
 			login._loginDialog.disableForm(_('Please enable your browser cookies which are necessary for using Univention Services.'));
-		},
-
-		addTooltips: function() {
-			dojo.query('#umcLoginLinks a').forEach(lang.hitch(this, function(node) {
-				if (node.title) {
-					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node));
-				}
-			}));
 		},
 
 		showTooltip: function(node) {
