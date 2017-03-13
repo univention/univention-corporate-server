@@ -163,6 +163,9 @@ fi
 	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) >>"$UPDATER_LOG" 2>&1 ||
 	: # better safe than sorry
 
+# Bug #43835: update app cache
+test -e /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
+
 # make sure that UMC server is restarted (Bug #33426)
 echo "
 
