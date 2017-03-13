@@ -256,6 +256,8 @@ def verbose_http_error(exc):
 			strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
 	if not strerror.strip():
 		strerror = str(exc)
+	if  isinstance(exc, ssl.CertificateError):
+		strerror = _('There is a problem with the certificate of the App Center server.') + ' (' + strerror + ')'
 	return strerror
 
 
@@ -266,7 +268,8 @@ class HTTPSConnection(httplib.HTTPSConnection):
 		if self._tunnel_host:
 			self.sock = sock
 			self._tunnel()
-		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
+		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED,
+			ca_certs="/etc/ssl/certs/ca-certificates.crt")
 		ssl.match_hostname(self.sock.getpeercert(), self.host)
 
 

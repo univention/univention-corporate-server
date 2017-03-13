@@ -227,7 +227,12 @@ define([
 							lang.hitch(this, function() {
 								this.updateApplications(false);
 							}),
-							lang.hitch(this, function() {
+							lang.hitch(this, function(err) {
+								err = tools.parseError(err);
+								if (err.status === 400) {
+									this.addWarning(err.message);
+									return;
+								}
 								this.addWarning(_('Registration of the applications in the domain failed. It will be retried when opening this module again. This may also cause problems when installing applications.'));
 							})
 						);

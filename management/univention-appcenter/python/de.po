@@ -65,3 +65,7 @@ msgid ""
 msgstr ""
 "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
 "läuft mit einem %(has)s-Bit-Betriebssystem."
+
+#, python-format
+msgid "There is a problem with the certificate of the App Center server."
+msgstr "Es gibt ein Problem mit dem Zertifikat des App Center Servers."
