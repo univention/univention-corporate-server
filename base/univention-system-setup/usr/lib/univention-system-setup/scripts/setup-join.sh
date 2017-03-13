@@ -204,11 +204,11 @@ run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 if [ "$server_role" = "domaincontroller_master" ]; then
 	echo "Starting re-configuration of SSL"
 	/usr/lib/univention-system-setup/scripts/40_ssl/10ssl --force-recreate
+	invoke-rc.d apache2 restart
 fi
 
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
-invoke-rc.d apache2 restart
 
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
