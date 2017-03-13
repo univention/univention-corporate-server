@@ -41,20 +41,17 @@ find / \
 		-o -path /var/spool/postfix/public \
 		-o -path /var/spool/postfix/dev \
 		-o -path /var/run/postgresql \
-		-o -path /tmp/.X11-unix \
 	\) -prune \
 	-o -perm /o+w \
+	! \( -type d -perm /+t \) \
 	! \( \
-		-path "/tmp" \
-		-o -path "/tmp/.gdm_socket" \
-		-o -path "/tmp/.ICE-unix" \
+		-path "/tmp/.gdm_socket" \
 		-o -path "/tmp/.winbindd/pipe" \
 		-o -path "/run/umc-web-server.pid.lock" \
 		-o -path "/run/umc-server.pid.lock" \
 		-o -path "/run/*.MainThread-*" \
 		-o -path "/run/shm" \
 		-o -path "/var/lib/php5" \
-		-o -path "/run/lock" \
 		-o -path "/lock" \
 		-o -path "/var/run/avahi-daemon/socket" \
 		-o -path "/var/run/clamav/clamd.ctl" \
@@ -70,7 +67,6 @@ find / \
 		-o -path "/var/spool/hylafax/tmp" \
 		-o -path "/var/spool/postfix/dev/log" \
 		-o -path "/var/spool/samba" \
-		-o -path "/var/tmp" \
 	\) -print0 > "$tmpfile"
 if [ -s "$tmpfile" ]
 then

@@ -1,3 +1,10 @@
+ucs-test (7.0.14-1) unstable; urgency=medium
+
+  * Bug #43815: 01_base/25check-permissions: Ignore /tmp-like directories
+    by their attributes instead of by their names
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 13 Mar 2017 15:09:37 +0100
+
 ucs-test (7.0.13-6) unstable; urgency=medium
 
   * 80_docker/30_installed: Use 4.2 as target for the Non-Docker App
