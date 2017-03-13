@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-3) unstable; urgency=medium
+
+  * Bug #43455: Mount /sys/fs/fuse/connections into containers
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Mar 2017 16:00:33 +0100
+
 univention-appcenter (6.0.3-2) unstable; urgency=medium
 
   * Bug #43455: Fix path for seccomp profile
