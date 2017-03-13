@@ -1,3 +1,9 @@
+univention-dhcp (11.0.0-6) unstable; urgency=medium
+
+  * Bug #43651: Allow crestart in postinst upgrade to fail
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Mar 2017 20:27:45 +0100
+
 univention-dhcp (11.0.0-5) unstable; urgency=low
 
   * Bug #43689: Drop legacy univention-bind packages
