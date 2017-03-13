@@ -215,7 +215,7 @@ class Instance(umcm.Base, ProgressMixin):
 			try:
 				update.call()
 			except NetworkError as err:
-				raise umcm.UMC_Error(err)
+				raise umcm.UMC_Error(str(err))
 			except Abort:
 				pass
 			Application._all_applications = None
