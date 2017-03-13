@@ -68,8 +68,8 @@ define([
 		});
 
 		var masterURL = '//' + tools.status('ldap_master');
-		var linkRootCa = masterURL + '/' + 'ucs-root-ca.crt';
-		var linkRevocList = masterURL + '/' + 'ucsCA.crl';
+		var linkRootCa = masterURL + '/ucs-root-ca.crt';
+		var linkRevocList = masterURL + '/ucsCA.crl';
 		var currentRole = tools.status('server_role');
 		if (currentRole == "domaincontroller_master" || currentRole == "domaincontroller_backup") {
 			linkRootCa = '/ucs-root-ca.crt';
