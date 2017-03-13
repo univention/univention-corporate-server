@@ -274,7 +274,7 @@ init () {
 	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
 	ln -snf "${SSLBASE}/${CA}/CAcert.pem" "/usr/local/share/ca-certificates/${CA}.crt" || return $?
-	update-ca-certificates || return $?
+	update-ca-certificates --fresh || return $?
 
 	# copy the public key to a place, from where browsers can access it
 	if [ -w /var/www ]; then

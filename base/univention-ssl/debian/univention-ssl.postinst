@@ -103,7 +103,7 @@ then
 	if [ ! -e "$SSL" ]
 	then
 		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
-		update-ca-certificates || return $?
+		update-ca-certificates --fresh || return $?
 	fi
 	if test -f /etc/init.d/univention-directory-listener
 	then
