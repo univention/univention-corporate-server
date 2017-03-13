@@ -40,6 +40,7 @@ define([
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
 	"dijit/MenuSeparator",
+	"login",
 	"umc/tools",
 	"umc/menu/MenuItem",
 	"umc/menu/SubMenuItem",
@@ -47,7 +48,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!"
-], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
+], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, login, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
 
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -57,7 +58,7 @@ define([
 
 	var mobileMenuDeferred = new Deferred();
 
-	topic.subscribe('/umc/authenticated', function() {
+	login.onLogin(function() {
 		// user has logged in -> set username and host in menu header
 		mobileMenuDeferred.then(function(menu) {
 			menu.informationHeader.username.set('content', tools.status('username'));
@@ -65,7 +66,7 @@ define([
 		});
 	});
 
-	topic.subscribe('/umc/unauthenticated', function() {
+	login.onLogout(function() {
 		// user has logged out -> unset username and host in menu header
 		mobileMenuDeferred.then(function(menu) {
 			menu.informationHeader.username.set('content', '');

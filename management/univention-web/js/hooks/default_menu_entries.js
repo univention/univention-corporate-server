@@ -176,12 +176,12 @@ define([
 			menu.hideEntry(logoutEntry);
 		}
 
-		topic.subscribe('/umc/authenticated', function() {
+		login.onLogin(function() {
 			menu.showEntry(logoutEntry);
 			menu.hideEntry(loginEntry);
 		});
 
-		topic.subscribe('/umc/unauthenticated', function() {
+		login.onLogout(function() {
 			menu.hideEntry(logoutEntry);
 			menu.showEntry(loginEntry);
 		});
