@@ -1,3 +1,9 @@
+ucs-test (7.0.14-2) unstable; urgency=medium
+
+  * Bug #42174: adjust SAML tests to use RelayState and Referer
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 13 Mar 2017 19:21:09 +0100
+
 ucs-test (7.0.14-1) unstable; urgency=medium
 
   * Bug #43815: 01_base/25check-permissions: Ignore /tmp-like directories
