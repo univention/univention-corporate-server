@@ -2,4 +2,4 @@ udm/handlers/appcenter/*.py usr/share/univention-appcenter
 ldap/*.schema usr/share/univention-appcenter
 ldap/*.acl usr/share/univention-appcenter
 scripts/univention-app usr/bin
-archives/* usr/share/univention-appcenter/archives/
+archives/appcenter.software-univention.de/* usr/share/univention-appcenter/archives/appcenter.software-univention.de/
