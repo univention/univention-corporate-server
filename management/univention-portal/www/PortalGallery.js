@@ -31,33 +31,36 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/query",
 	"dojo/dom-class",
 	"put-selector/put",
+	"umc/tools",
 	"umc/widgets/AppGallery"
-], function(declare, lang, query, domClass, put, AppGallery) {
-	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
-	var _regIPv6 = /^\[?((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\]?$/;
+], function(declare, lang, array, query, domClass, put, tools, AppGallery) {
 	var _regIPv6Brackets = /^\[.*\]$/;
-	var findIPv6 = function(ip) {
-		return _regIPv6.test(ip);
-	};
-	var findIPv4 = function(ip) {
-		return _regIPv4.test(ip);
+
+	var find = function(list, testFunc) {
+		var results = array.filter(list, testFunc);
+		return results.length ? results[0] : null;
 	};
 
 	var getHost = function(/*Array*/ ips, /*string*/ fqdn) {
 		var host = window.location.host;
 
-		if (_regIPv6.test(host)) {
-			var ipv6 = ips.find(findIPv6);
+		if (tools.isIPv6Address(host)) {
+			var ipv6 = find(ips, tools.isIPv6Address);
 			if (ipv6 && !_regIPv6Brackets.test(ipv6)) {
-				ipv6 = '[' + ipv6 + ']';
+					return '[' + ipv6 + ']';
 			}
-			return ipv6 || ips.find(findIPv4);
+			if (ipv6) {
+				return ipv6;
+			}
+			// use IPv4 as fallback
+			return find(ips, tools.isIPv4Address);
 		}
-		if (_regIPv4.test(host)) {
-			return ips.find(findIPv4);
+		if (tools.isIPv4Address(host)) {
+			return find(ips, tools.isIPv4Address);
 		}
 		return fqdn;
 	};

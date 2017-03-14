@@ -66,7 +66,7 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set name=domain \
 	--append displayName='"en_US" "Univention Portal"' \
 	--append displayName='"de_DE" "Univention Portal"' \
-	--append displayName='"fr_FR" "Univention Portal"' \
+	--append displayName='"fr_FR" "Portail Univention"' \
 	--set showMenu=TRUE \
 	--set showSearch=TRUE \
 	--set showLogin=TRUE \
@@ -86,13 +86,21 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set showServers=TRUE || die
 
 if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
+	umc_label_en="System and domain settings"
+	umc_label_de="System- und Domäneneinstellungen"
+	umc_label_fr="Réglages du système et du domaine"
+	umc_description_en="Univention Management Console for admin&shy;is&shy;tra&shy;ting the UCS domain and the local system"
+	umc_description_de="Univention Management Console zur Ver&shy;wal&shy;tung der UCS-Domäne und des lokalen Systems"
+	umc_description_fr="Console de gestion Univention pour admin&shy;is&shy;trer le domaine UCS et le système local"
 	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
 		--set name=umc-domain \
-		--append displayName='"en_US" "System and domain settings"' \
-		--append displayName='"de_DE" "System- und Domäneneinstellungen"' \
-		--append description='"en_US" "Univention Management Console for administrating the UCS domain and the local system"' \
-		--append description='"de_DE" "Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems"' \
+		--append displayName='"en_US" "$umc_label_en"' \
+		--append displayName='"de_DE" "$umc_label_de"' \
+		--append displayName='"fr_FR" "$umc_label_fr"' \
+		--append description='"en_US" "$umc_description_en"' \
+		--append description='"de_DE" "$umc_description_de"' \
+		--append description='"fr_FR" "$umc_description_fr"' \
 		--append link=/univention/management/ \
 		--set category=admin \
 		--set authRestriction=anonymous \
@@ -105,23 +113,33 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 	if [ "$role" = "domaincontroller_master" ]; then
 		# set link to master umc on all other system roles
 		ucr set \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/label="System and domain settings" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/label/de="System- und Domäneneinstellungen" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/description="Univention Management Console for administrating the UCS domain and the local system" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de="Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label="$umc_label_en" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label/de="$umc_label_de" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label/fr="$umc_label_fr" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description="$umc_description_en" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de="$umc_description_de" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description/fr="$umc_description_fr" \
 			ucs/web/overview/entries/admin/ucs-local-to-domain/icon=/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg \
 			ucs/web/overview/entries/admin/ucs-local-to-domain/link=/univention/management/
 		univention-directory-manager "settings/portal_entry" modify "$@" --dn="cn=ucs-local-to-domain,cn=portal,cn=univention,$ldap_base" \
 			--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
 	fi
 else
+	umc_label_en="System settings"
+	umc_label_de="Systemeinstellungen"
+	umc_label_fr="Réglages du système"
+	umc_description_en="Univention Management Console for admin&shy;is&shy;tra&shy;ting the local system"
+	umc_description_de="Univention Management Console zur Ver&shy;wal&shy;tung des lokalen Systems"
+	umc_description_fr="Console de gestion Univention pour admin&shy;is&shy;trer le système local"
 	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
 		--set name=umc-local \
-		--append displayName='"en_US" "System settings"' \
-		--append displayName='"de_DE" "Systemeinstellungen"' \
-		--append description='"en_US" "Univention Management Console for administrating the local system"' \
-		--append description='"de_DE" "Univention Management Console zur Verwaltung des lokalen Systems"' \
+		--append displayName='"en_US" "$umc_label_en"' \
+		--append displayName='"de_DE" "$umc_label_de"' \
+		--append displayName='"fr_FR" "$umc_label_fr"' \
+		--append description='"en_US" "$umc_description_en"' \
+		--append description='"de_DE" "$umc_description_de"' \
+		--append description='"fr_FR" "$umc_description_fr"' \
 		--append link=/univention/management/ \
 		--set category=admin \
 		--set authRestriction=anonymous \

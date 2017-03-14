@@ -30,11 +30,11 @@
 .umc
 	min-height: 100%
 	/* Chrome,Safari4+ */
-	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
+	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
 	/* Chrome10+,Safari5.1+ */
-	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)
+	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)
 	/* W3C */
-	background: url(../js/dijit/themes/umc/images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
+	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
 
 	padding-left: 50px
 	padding-right: 30px
@@ -42,6 +42,7 @@
 	.umcHeader
 		box-sizing: content-box
 		overflow: visible
+		margin-right: -(@padding-right)
 
 		.umcHeaderLeft
 			float: left
@@ -53,7 +54,6 @@
 		.umcHeaderRight
 			float: right
 			height: 100%
-			margin-right: 0
 
 		.umcLiveSearch .dijitTextBox
 				&:before,

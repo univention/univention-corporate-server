@@ -39,11 +39,22 @@ define([
 	"./PortalCategory",
 	"umc/tools",
 	"umc/i18n/tools",
+	// portal.json -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/portal.json",
+	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
-	"umc/json!/univention/meta.json",
 	"umc/i18n!/univention/i18n"
-], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, tools, i18nTools, portalContent, installedApps, meta, _) {
+], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
+
+	var _regEndsWithSVG = /\.svg$/;
+	var hasSVGSuffix = function(path) {
+		return path && _regEndsWithSVG.test(path);
+	};
+
+	var hasAbsolutePath = function(path) {
+		return path && path.indexOf('/') === 0;
+	};
+
 	return {
 		portalCategories: null,
 
@@ -59,7 +70,7 @@ define([
 			var isIPv6 = tools.isIPv6Address(host);
 
 			var title = dom.byId('portalTitle');
-			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, meta);
+			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
 			title.innerHTML = portalName;
 			document.title = portalName;
 			array.forEach(['admin', 'service'], lang.hitch(this, function(category) {
@@ -87,10 +98,28 @@ define([
 		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {
 			var apps = [];
 			array.forEach(categoryEntries, function(entry) {
+				var _getLogoName = function(logo) {
+					if (logo) {
+						if (hasAbsolutePath(logo)) {
+							// make sure that the path starts with http[s]:// ...
+							// just to make tools.getIconClass() leaving the URL untouched
+							logo = window.location.origin + logo;
+
+							if (!hasSVGSuffix(logo)) {
+								// an URL starting with http[s]:// needs also to have a .svg suffix
+								logo = logo + '.svg';
+							}
+						}
+					}
+					return logo;
+				};
+
 				var _entry = {
 					name: entry.name[locale] || entry.name.en_US,
-					description: entry.description[locale] || entry.description.en_US
+					description: entry.description[locale] || entry.description.en_US,
+					logo_name: _getLogoName(entry.logo_name)
 				};
+
 				var myProtocolSupported = array.some(entry.links, function(link) {
 					return link.indexOf(protocol) === 0;
 				});
@@ -130,7 +159,10 @@ define([
 							}
 						}
 					}
-					apps.push(lang.mixin({web_interface: link, host_name: linkHost}, _entry));
+					apps.push(lang.mixin({
+						web_interface: link,
+						host_name: linkHost
+					}, _entry));
 				});
 			});
 			return apps;
@@ -143,7 +175,7 @@ define([
 			var portalCategory = new PortalCategory({
 				heading: heading,
 				apps: apps,
-				domainName: meta.domainname
+				domainName: tools.status('domainname')
 			});
 			this.content.appendChild(portalCategory.domNode);
 			portalCategory.startup();
