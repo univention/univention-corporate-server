@@ -1,3 +1,10 @@
+univention-system-setup (10.0.9-2) unstable; urgency=medium
+
+  * Bug #43626: Create certificate only on master, other roles will copy their
+    certificate on domain join
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 14 Mar 2017 10:34:05 +0100
+
 univention-system-setup (10.0.9-1) unstable; urgency=medium
 
   * Re-added the duplicated certificate renewal (Bug #43626)

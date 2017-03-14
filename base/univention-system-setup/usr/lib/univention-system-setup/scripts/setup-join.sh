@@ -203,12 +203,15 @@ run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 # otherwise a lot of appliances will have the same SSL certificate secret
 if [ "$server_role" = "domaincontroller_master" ]; then
 	echo "Starting re-configuration of SSL"
+	# Recreate SSL CA
 	/usr/lib/univention-system-setup/scripts/40_ssl/10ssl --force-recreate
+
+	# Create initial certificate for master
+	univention-certificate new -name "$hostname.$domainname"
+	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+	
 	invoke-rc.d apache2 restart
 fi
-
-univention-certificate new -name "$hostname.$domainname"
-ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
