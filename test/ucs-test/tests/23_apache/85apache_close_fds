@@ -17,7 +17,7 @@ do
 	sleep 1
 	/etc/init.d/apache2 status >"$tmp" && break
 done
-pid=$(sed -ne 's/.*(pid \([0-9]\+\)).*/\1/p' "$tmp")
+pid=$(cat /run/apache2/apache2.pid)
 
 ! lsof -a -p "$pid" -d 42 | grep -F "$tmp"
 # vim: set ft=sh :
