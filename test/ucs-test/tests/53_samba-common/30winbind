@@ -108,6 +108,7 @@ fi
 echo "##  checking user groups"
 for group_sid in $(wbinfo --user-domgroups="$user_sid");
 do
+	test "$group_sid" = "$user_sid" && continue
 	printf "##  wbinfo --user-domgroups:\t$group_sid\n"
 	printf "##  wbinfo --sid-to-gid:\t"
 	group_gid=$(wbinfo -Y "$group_sid")

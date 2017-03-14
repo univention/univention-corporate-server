@@ -1,3 +1,11 @@
+ucs-test (7.0.16-2) unstable; urgency=medium
+
+  * 53_samba-common/30winbind: In UCS 4.2, wbinfo --user-domgroups
+    returns the user sid too. The test case no longer tries to convert
+    this sid into group information (Bug #43853)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Mar 2017 21:27:36 +0100
+
 ucs-test (7.0.16-1) unstable; urgency=medium
 
   * 51_samba4/40password-policies: Samba 4 changed the LDAP return value
