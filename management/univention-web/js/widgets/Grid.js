@@ -527,11 +527,11 @@ define([
 					col.width = (this._getHeaderWidth(col.label) + 10) + 'px';
 				}
 
-				if (icol.formatter) {
-					col.formatter = function(name, columnValue) {
-						var colContent = icol.formatter(name, columnValue, col);
+				if (icol.formatter && !col.renderCell) {
+					col.renderCell = function(item, value) {
+						var colContent = icol.formatter(value, item, col);
 						if (colContent && colContent.domNode) {
-							return colContent.domNode.outerHTML;
+							return colContent.domNode;
 						} else {
 							return colContent;
 						}
@@ -644,7 +644,7 @@ define([
 									return typeof iaction.canExecute === "function" ? iaction.canExecute(iitem) : true;
 								});
 								ids = array.map(items, function(iitem) {
-									return this._dataStore.getValue(iitem, this.moduleStore.idProperty);
+									return iitem[this.moduleStore.idProperty];
 								}, this);
 							}
 							iaction.callback(ids, items);
@@ -867,11 +867,15 @@ define([
 			this.filter(this.query);
 		},
 
-		update: function() {
+		update: function(force) {
 			var updateNotPaused = false;
-			if (this.getSelectedIDs().length === 0) {
+			if (this.getSelectedIDs().length === 0 || force) {
 				updateNotPaused = true;
+				var selectedIDs = this.getSelectedIDs();
 				this._filter(this.query);
+				array.forEach(selectedIDs, function(selectedID) {
+					this._grid.select(this._grid.row(selectedID));
+				}, this);
 			}
 			return updateNotPaused;
 		},

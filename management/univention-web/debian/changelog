@@ -1,3 +1,9 @@
+univention-web (1.0.36-10) unstable; urgency=medium
+
+  * Bug #32027: Fix grid update and formatter 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 14 Mar 2017 18:03:47 +0100
+
 univention-web (1.0.36-9) unstable; urgency=medium
 
   * Bug #32027: Fix grid for appDetailsPage in app center 
