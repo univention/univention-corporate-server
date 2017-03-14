@@ -1,3 +1,9 @@
+univention-web (1.0.36-9) unstable; urgency=medium
+
+  * Bug #32027: Fix grid for appDetailsPage in app center 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 14 Mar 2017 15:06:05 +0100
+
 univention-web (1.0.36-8) unstable; urgency=medium
 
   * Bug #42174: Fix build error due to dependency to require 

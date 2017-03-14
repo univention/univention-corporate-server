@@ -379,6 +379,8 @@ define([
 
 			if (this.query) {
 				this.filter(this.query);
+			} else if (!this._store.isUmcpCommandStore) {
+				this.filter();
 			}
 
 		},
