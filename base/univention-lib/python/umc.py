@@ -92,6 +92,26 @@ class HTTPError(Exception):
 		return '%s on %s (%s): %s' % (self.status, self.hostname, self.request.path, self.response.body)
 
 
+class HTTPRedirect(HTTPError):
+	code = 300
+
+
+class MovedPermanently(HTTPRedirect):
+	code = 301
+
+
+class Found(HTTPRedirect):
+	code = 302
+
+
+class SeeOther(HTTPRedirect):
+	code = 303
+
+
+class NotModified(HTTPRedirect):
+	code = 304
+
+
 class BadRequest(HTTPError):
 	code = 400
 
@@ -266,7 +286,10 @@ class Client(object):
 		return self.request('POST', 'auth', data)
 
 	def umc_logout(self):
-		return self.request('GET', 'logout')
+		try:
+			return self.request('GET', 'logout')
+		except (SeeOther, Found, MovedPermanently) as exc:
+			return exc.response
 
 	def request(self, method, path, data=None, headers=None):
 		request = Request(method, path, data, headers)
@@ -281,7 +304,8 @@ class Client(object):
 	def send(self, request):
 		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
 		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
-		request.headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
+		if 'UMCSessionId' in self.cookies:
+			request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
 		try:
 			response = self.__request(request)
 		except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:

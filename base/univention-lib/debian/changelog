@@ -1,3 +1,9 @@
+univention-lib (6.0.8-1) unstable; urgency=medium
+
+  * Bug #34498: fix requests for anonymous commands; fix logout
+
+ -- Florian Best <best@univention.de>  Tue, 14 Mar 2017 13:01:54 +0100
+
 univention-lib (6.0.7-1) unstable; urgency=medium
 
   * Bug #34498: add User-Agent header
