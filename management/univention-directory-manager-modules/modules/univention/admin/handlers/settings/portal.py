@@ -147,11 +147,11 @@ layout = [
 			["background"],
 		]),
 		Group(_('General Content'), layout=[
-			#["showMenu"],
-			#["showSearch"],
-			#["showLogin"],
+			# ["showMenu"],
+			# ["showSearch"],
+			# ["showLogin"],
 			["showApps"],
-			#["showServers"],
+			# ["showServers"],
 		]),
 	]),
 ]
