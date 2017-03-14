@@ -1,3 +1,9 @@
+univention-web (1.0.37-3) unstable; urgency=medium
+
+  * Bug #43528: Align user images in tile view of users module
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Mar 2017 22:13:57 +0100
+
 univention-web (1.0.37-2) unstable; urgency=medium
 
   * Bug #43528: Align header icons + adjust gallery tile styling
