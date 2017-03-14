@@ -35,17 +35,10 @@
 eval "$(univention-config-registry shell)"
 
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 2.0.9-1; then
-	univention-config-registry unset \
-		ucs/web/overview/entries/service/passwordchange/description \
-		ucs/web/overview/entries/service/passwordchange/description/de \
-		ucs/web/overview/entries/service/passwordchange/icon \
-		ucs/web/overview/entries/service/passwordchange/label \
-		ucs/web/overview/entries/service/passwordchange/label/de \
-		ucs/web/overview/entries/service/passwordchange/link \
-		ucs/web/overview/entries/service/passwordchange/link/de \
-		ucs/web/overview/entries/service/passwordchange/port_http \
-		ucs/web/overview/entries/service/passwordchange/port_https \
-		ucs/web/overview/entries/service/passwordchange/icon
+	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(passwordreset|passwordchange)/.*')
+	if [ -n "$keys" ]; then
+		univention-config-registry unset $keys
+	fi
 	deluser --system --remove-home --remove-all-files self-service
 fi
 
