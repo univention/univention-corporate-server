@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Generate gettext Portable objects and message catalogs (gettext MO and a
+"""Generate gettext Portable Objects and message catalogs (gettext MO and a
 Univention specific JSON-based format) from multiple source files by file type.
 """
 #
@@ -47,12 +47,10 @@ class SourceFileSet(object):
 		self.src_pkg_path = src_pkg_path
 		self.binary_pkg_name = binary_pkg_name
 
-	def process_po(self, new_po_path):
-		if not os.path.isfile(new_po_path):
-			message_catalogs.create_empty_po(self.binary_pkg_name, new_po_path)
-
-	def _compile(self, po_path, output_path):
-		pass
+	def process_po(self, pot_path):
+		if os.path.isfile(pot_path):
+			os.unlink(pot_path)
+		self._create_po_template(pot_path)
 
 	def process_target(self, po_path, output_path):
 		if os.path.isabs(output_path):
@@ -63,9 +61,9 @@ class SourceFileSet(object):
 
 class SourceFilesXgettext(SourceFileSet):
 
-	def process_po(self, gettext_lang, new_po_path):
-		super(SourceFilesXgettext, self).process_po(new_po_path)
-		message_catalogs.join_existing(gettext_lang, new_po_path, self.files, cwd=self.src_pkg_path)
+	def _create_po_template(self, gettext_lang, pot_path):
+		message_catalogs.create_empty_po(self.binary_pkg_name, pot_path)
+		message_catalogs.join_existing(gettext_lang, pot_path, self.files, cwd=self.src_pkg_path)
 
 	def _compile(self, po_path, mo_output_path):
 		message_catalogs.compile_mo(po_path, mo_output_path)
@@ -73,20 +71,20 @@ class SourceFilesXgettext(SourceFileSet):
 
 class SourceFilesShell(SourceFilesXgettext):
 
-	def process_po(self, new_po_path):
-		super(SourceFilesShell, self).process_po('Shell', new_po_path)
+	def _create_po_template(self, pot_path):
+		super(SourceFilesShell, self)._create_po_template('Shell', pot_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
-	def process_po(self, new_po_path):
-		super(SourceFilesPython, self).process_po('Python', new_po_path)
+	def _create_po_template(self, pot_path):
+		super(SourceFilesPython, self)._create_po_template('Python', pot_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
-	def process_po(self, new_po_path):
-		super(SourceFilesJavaScript, self).process_po('JavaScript', new_po_path)
+	def _create_po_template(self, pot_path):
+		super(SourceFilesJavaScript, self)._create_po_template('JavaScript', pot_path)
 
 	def _compile(self, po_path, json_output_path):
 		"""With UMC and univention-web based applications a custom, JSON-based
@@ -96,9 +94,8 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 
 class SourceFilesHTML(SourceFileSet):
 
-	def process_po(self, new_po_path):
-		super(SourceFilesHTML, self).process_po(new_po_path)
-		new_po = polib.pofile(new_po_path)
+	def _create_po_template(self, pot_path):
+		po_template = polib.POFile()
 		html_parser = etree.HTMLParser()
 		for html_path in self.files:
 			with open(html_path, 'rb') as html_file:
@@ -107,22 +104,24 @@ class SourceFilesHTML(SourceFileSet):
 					if 'data-i18n' in element.keys():
 						new_entry = polib.POEntry(msgid=element.get('data-i18n'),
 							occurrences=[(os.path.basename(html_path), element.sourceline)])
-						if new_entry not in new_po:
-							new_po.append(new_entry)
-				# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
-				if tree.xpath('//script'):
-					message_catalogs.join_existing('JavaScript', new_po_path, html_path, cwd=self.src_pkg_path)
-		new_po.save(new_po_path)
+						if new_entry not in po_template:
+							po_template.append(new_entry)
+				po_template.save(pot_path)
+		po_template.save(pot_path)
+		for html_path in self.files:
+			# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
+			if tree.xpath('//script'):
+				message_catalogs.join_existing('JavaScript', pot_path, html_path, cwd=self.src_pkg_path)
 
 	def _compile(self, po_path, json_output_path):
 		message_catalogs.po_to_json(po_path, json_output_path)
 
 
-class SourceFileSetFactory(object):
+class SourceFileSetCreator(object):
 	process_by_type = {'text/x-shellscript': SourceFilesShell,
-			'text/x-python': SourceFilesPython,
-			'text/html': SourceFilesHTML,
-			'application/javascript': SourceFilesJavaScript}
+		'text/x-python': SourceFilesPython,
+		'text/html': SourceFilesHTML,
+		'application/javascript': SourceFilesJavaScript}
 
 	@classmethod
 	def from_mimetype(cls, src_pkg_path, binary_pkg_name, mimetype, files):
@@ -135,4 +134,4 @@ class SourceFileSetFactory(object):
 
 
 def from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files):
-	return SourceFileSetFactory.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)
+	return SourceFileSetCreator.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)

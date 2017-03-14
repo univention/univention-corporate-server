@@ -55,6 +55,10 @@ def _clean_header(po_path):
 	pof.save(po_path)
 
 
+def concatenate_po(src_po_path, dest_po_path):
+	_call_gettext('msgcat', src_po_path, '-o', dest_po_path)
+
+
 def create_empty_po(binary_pkg_name, new_po_path):
 	make_parent_dir(new_po_path)
 	_call_gettext('xgettext',
@@ -74,6 +78,11 @@ def create_empty_po(binary_pkg_name, new_po_path):
 def compile_mo(path_to_po, mo_output_path):
 	make_parent_dir(mo_output_path)
 	_call_gettext('msgfmt', '--check', '--output={}'.format(mo_output_path), path_to_po)
+
+
+def merge_po(source_po_path, dest_po_path):
+	_call_gettext('msgmerge', '--update', '--sort-output', dest_po_path, source_po_path)
+	os.unlink('{}~'.format(dest_po_path))
 
 
 def join_existing(language, output_file, input_files, cwd=None):

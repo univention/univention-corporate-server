@@ -38,11 +38,13 @@ import os
 import re
 import shutil
 import socket
-import sourcefileprocessing
 import sys
 import traceback
+
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
+import sourcefileprocessing
+import message_catalogs
 
 # Use this set to ignore whole sub trees of a given source tree
 DIR_BLACKLIST = set([
@@ -160,18 +162,13 @@ class SpecialCase():
 		except AttributeError:
 			src_pkg_path = os.path.join(os.getcwd())
 			pass
-		# if self.package_dir:
-		# 	src_pkg_path = os.path.join(self.source_dir, self.package_dir)
-		# else:
-		# 	pass
-		# 	#src_pkg_path = os.path.join(os.getcwd(), self.)
 		matched = list()
 		regexs = list()
 		for pattern in [os.path.join(src_pkg_path, pattern) for pattern in self.input_files]:
 			try:
 				regexs.append(re.compile(r'{}$'.format(pattern)))
 			except re.error:
-				sys.exit("""Invalid input_files statement in: {}. Value must be valid regular expression.""".format(self.path_to_definition))
+				sys.exit("Invalid input_files statement in: {}. Value must be valid regular expression.".format(self.path_to_definition))
 		for parent, dirnames, fnames in os.walk(src_pkg_path):
 			paths = [os.path.join(parent, fn) for fn in fnames]
 			for rex in regexs:
@@ -191,9 +188,26 @@ class SpecialCase():
 				continue
 		return source_file_sets
 
+	def create_po_template(self):
+		base, ext = os.path.splitext(self.new_po_path)
+		pot_path = '{}.pot'.format(base)
+		message_catalogs.create_empty_po(self.binary_package_name, pot_path)
+		# GNU gettext will not process mixed source types so every set of JS,
+		# HTML and other type of source files will yield its own template which
+		# will in turn be concatenated.
+		for sfs in self.get_source_file_sets():
+			partial_pot_path = '{}.pot.partial'.format(base)
+			sfs.process_po(partial_pot_path)
+			message_catalogs.concatenate_po(partial_pot_path, pot_path)
+			os.unlink(partial_pot_path)
+		return pot_path
+
 
 class MIMEChecker():
 
+	# FIXME: this is not need as mimetypes implements it already. The get()
+	# method should be adjusted to first use mimetypes.guess_type() and then
+	# resort to libmagic
 	suffixes = {
 		'.js': 'application/javascript',
 		'.py': 'text/x-python',
@@ -298,8 +312,8 @@ def translate_special_case(special_case, source_dir, output_dir):
 	new_po_dir = os.path.dirname(new_po_path)
 	if not os.path.exists(new_po_dir):
 		os.makedirs(new_po_dir)
-	for source_file_set in special_case.get_source_file_sets():
-		source_file_set.process_po(new_po_path)
+	pot_path = special_case.create_po_template()
+	os.rename(pot_path, new_po_path)
 
 
 def read_special_case_definition(definition_path, source_tree_path, target_language):

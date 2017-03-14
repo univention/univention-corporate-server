@@ -1,3 +1,10 @@
+univention-ucs-translation-template (4.2.0-6) unstable; urgency=medium
+
+  * Bug #43594: join and merge targets built from multiple source types
+    correctly
+
+ -- Eduard Mai <mai@univention.de>  Tue, 14 Mar 2017 12:42:51 +0100
+
 univention-ucs-translation-template (4.2.0-5) unstable; urgency=medium
 
   * Bug #43594: fix problems with mime type detection for JavaScript files
