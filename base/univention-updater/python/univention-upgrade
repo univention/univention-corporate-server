@@ -403,10 +403,10 @@ def main():
 
     dprint(silent, '\nStarting univention-upgrade. Current UCS version is %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s\n' % configRegistry)
 
-    if options.check:
-        return do_update(options)
-
     with UpdaterLock():
+        if options.check:
+            return do_update(options)
+
         update_local_repository(options)
         do_update(options)
 
