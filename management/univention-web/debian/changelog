@@ -1,3 +1,9 @@
+univention-web (1.0.37-2) unstable; urgency=medium
+
+  * Bug #43528: Align header icons + adjust gallery tile styling
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Mar 2017 22:01:08 +0100
+
 univention-web (1.0.37-1) unstable; urgency=medium
 
   * Bug #42265: Add default Expires and Cache-Control: max-age values

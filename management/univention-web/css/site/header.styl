@@ -67,6 +67,7 @@ insertBorder()
 		width: 60px
 		height: @height
 		margin: 0
+		padding-top: 2px
 		transition: background-color 0.35s
 		box-shadow: none
 		border-radius: 0
@@ -152,7 +153,7 @@ insertBorder()
 			transition: width 0.3s
 
 			.umcSearchBox
-				margin-top: 5px
+				margin-top: 9px
 
 			.dijitInputField
 				transition: opacity 0.25s, width 0.25s
@@ -191,6 +192,10 @@ insertBorder()
 			height: 100%
 			width: 160px
 			margin-left: 15px
+
+			@media (max-width: 650px)
+				background-image: url(../images/univention_u.svg)
+				width: 30px
 
 	.dijitButtonNode
 		height: auto !important
@@ -290,6 +295,9 @@ insertBorder()
 			.univentionLogo
 				background-image: url(../images/univention-white.svg)
 
+				@media (max-width: 650px)
+					background-image: url(../images/univention_u-white.svg)
+
 		.dijitSelect, .dijitTextBox
 			.dijitInputContainer .umcInlineLabel
 				color: rgba(255, 255, 255, 1)
@@ -346,6 +354,7 @@ insertBorder()
 .umc
 	.umcMobileMenuToggleButton
 		position: relative
+		margin-top: 1px
 		width: parentWidth = 60px
 		height: parentHeight = 48px
 		$stripeWidth = 20px
