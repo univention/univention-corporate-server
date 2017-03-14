@@ -32,8 +32,11 @@
 
 #DEBHELPER#
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.39-2; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.0-1; then
+	# Upgrade from UCS 4.1 to UCS 4.2
 	ln -s /usr/share/pyshared/univention/management/console/error.py /usr/lib/pymodules/python2.7/univention/management/console/error.py
+
+	ucr set umc/server/disable-security-restrictions?true
 fi
 
 exit 0

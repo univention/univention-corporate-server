@@ -124,6 +124,7 @@ import univention.admin.uexceptions as udm_errors
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
 from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
 from univention.management.console.ldap import get_user_connection
+from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
 from univention.management.console.error import UMC_Error, PasswordRequired, LDAP_ServerDown
 
@@ -243,7 +244,8 @@ class Base(signals.Provider, Translation):
 		try:
 			MODULE.info('Executing %s' % (request.arguments,))
 			self._parse_accept_language(request)
-			self.security_checks(request, function)
+			if ucr.is_true('umc/server/disable-security-restrictions', False):
+				self.security_checks(request, function)
 			function.__func__(self, request, *args, **kwargs)
 		except (KeyboardInterrupt, SystemExit):
 			self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
