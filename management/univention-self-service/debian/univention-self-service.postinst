@@ -35,7 +35,7 @@
 eval "$(univention-config-registry shell)"
 
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 2.0.9-1; then
-	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(passwordreset|passwordchange)/.*')
+	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/service/(passwordreset|passwordchange)/.*')
 	if [ -n "$keys" ]; then
 		univention-config-registry unset $keys
 	fi
