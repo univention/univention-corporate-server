@@ -293,8 +293,7 @@
 				<listitem><simpara>
 					To support <command>systemd</command> based containers, <package>univention-appcenter-docker</package> now
 					asks docker to mount <filename class="directory">/run</filename> and <filename class="directory">/run/lock</filename>
-					as <literal>tmpfs</literal> in newly created containers and pre-mounts <filename class="directory">/sys/fs/cgroup</filename>,
-					<filename class="directory">/dev/hugepages</filename> and <filename class="directory">/sys/fs/fuse/connections</filename>.
+					as <literal>tmpfs</literal> in newly created containers and pre-mounts <filename class="directory">/sys/fs/cgroup</filename>.
 					Additionally it uses an adjusted seccomp profile, which allows the system call <literal>name_to_handle_at</literal>, which
 					avoids granting <literal>SYS_ADMIN</literal> capabilities to containers (<u:bug>43455</u:bug>).
 				</simpara></listitem>
