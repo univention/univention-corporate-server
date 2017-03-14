@@ -1,3 +1,9 @@
+univention-portal (1.0.8-5) unstable; urgency=medium
+
+  * Bug #42175: Do not show Apps on DC Master portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Mar 2017 11:49:52 +0100
+
 univention-portal (1.0.8-4) unstable; urgency=medium
 
   * Bug #42175: Reasonable caching behaviour for portal.json

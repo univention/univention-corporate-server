@@ -70,7 +70,7 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set showMenu=TRUE \
 	--set showSearch=TRUE \
 	--set showLogin=TRUE \
-	--set showApps=TRUE \
+	--set showApps=FALSE \
 	--set showServers=TRUE || die
 
 univention-directory-manager settings/portal create "$@" --ignore_exists \
