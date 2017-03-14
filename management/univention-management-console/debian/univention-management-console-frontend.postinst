@@ -43,7 +43,9 @@ univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/sso/newwindow=true"
 
 # Upgrade to UCS 4.2
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.18-2; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.0-1; then
+	univention-config-registry set umc/server/disable-security-restrictions?true
+
 	if [ "$(univention-config-registry get ucs/web/overview/entries/admin/umc/icon)" = "/univention-management-console/js/dijit/themes/umc/icons/scalable/univention-management-console.svg" ]; then
 		univention-config-registry unset ucs/web/overview/entries/admin/umc/icon
 	fi
