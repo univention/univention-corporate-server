@@ -1,3 +1,10 @@
+univention-appcenter (6.0.3-7) unstable; urgency=medium
+
+  * Bug #43455: Fix path of seccomp profile and don't pre-mount hugepages
+    and fuse/connections.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Mar 2017 11:44:03 +0100
+
 univention-appcenter (6.0.3-6) unstable; urgency=medium
 
   * Bug #43496: Remove support for multiple App Center servers; only one
