@@ -1,3 +1,9 @@
+univention-web (1.0.37-1) unstable; urgency=medium
+
+  * Bug #42265: Add default Expires and Cache-Control: max-age values
+
+ -- Florian Best <best@univention.de>  Tue, 14 Mar 2017 19:41:06 +0100
+
 univention-web (1.0.36-14) unstable; urgency=medium
 
   * Bug #43528: Adjust buttons which are inline in a grid
