@@ -1,3 +1,9 @@
+univention-web (1.0.36-13) unstable; urgency=medium
+
+  * Bug #42263: Fix missing reference to parent menu slide for sub menus
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Mar 2017 18:51:39 +0100
+
 univention-web (1.0.36-12) unstable; urgency=medium
 
   * Bug #43528: Adjust styling for icons in buttons
@@ -6,25 +12,25 @@ univention-web (1.0.36-12) unstable; urgency=medium
 
 univention-web (1.0.36-11) unstable; urgency=medium
 
-  * Bug #32027: Fix grid filter 
+  * Bug #32027: Fix grid filter
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 14 Mar 2017 18:12:32 +0100
 
 univention-web (1.0.36-10) unstable; urgency=medium
 
-  * Bug #32027: Fix grid update and formatter 
+  * Bug #32027: Fix grid update and formatter
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 14 Mar 2017 18:03:47 +0100
 
 univention-web (1.0.36-9) unstable; urgency=medium
 
-  * Bug #32027: Fix grid for appDetailsPage in app center 
+  * Bug #32027: Fix grid for appDetailsPage in app center
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 14 Mar 2017 15:06:05 +0100
 
 univention-web (1.0.36-8) unstable; urgency=medium
 
-  * Bug #42174: Fix build error due to dependency to require 
+  * Bug #42174: Fix build error due to dependency to require
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 13 Mar 2017 18:09:02 +0100
 

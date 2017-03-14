@@ -201,6 +201,9 @@ define([
 			if (parentMenuId in this._orphanedEntries) {
 				var parentMenuItem = this._menuMap[parentMenuId];
 				array.forEach(this._orphanedEntries[parentMenuId], function(ientry) {
+					if (ientry instanceof SubMenuItem) {
+						ientry.set('parentSlide', lang.getObject('menuSlide', false, parentMenuItem));
+					}
 					parentMenuItem.addMenuItem(ientry);
 				});
 				delete this._orphanedEntries[parentMenuId];
