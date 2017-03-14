@@ -1,3 +1,9 @@
+univention-web (1.0.36-14) unstable; urgency=medium
+
+  * Bug #43528: Adjust buttons which are inline in a grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Mar 2017 19:28:12 +0100
+
 univention-web (1.0.36-13) unstable; urgency=medium
 
   * Bug #42263: Fix missing reference to parent menu slide for sub menus

@@ -114,6 +114,17 @@
 			&.dgrid-selected
 				background-color: #f5f5f5
 
+			// adapt inline buttons
+			.dijitButton
+				box-shadow: none
+				margin-top: 0
+				margin-bottom: 0
+				background-color: rgba(255, 255, 255, 0)
+
+			// make sure that buttons hover from transparent background to light translucent black
+			.dijitButton:not(.dijitButtonHover) .dijitButtonNode
+				background-color: rgba(0, 0, 0, 0);
+
 	.umcGridStatus
 		height: 54px
 		line-height: @height
