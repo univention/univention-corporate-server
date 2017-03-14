@@ -893,6 +893,13 @@ define([
 		filter: function(query, options) {
 			style.set(this._grid.domNode, 'max-height', '1px');
 			this.standby(true);
+			this._filter(query, options).then(lang.hitch(this, function() {
+				this.standby(false);
+				this._setInitialGridHeight();
+			}));
+		},
+
+		_filter: function(query, options) {
 			var addedFieldsQuery = query;
 			if (this._necessaryUdmValues.length > 0) {
 				array.forEach(this._necessaryUdmValues, function(value) {
@@ -901,13 +908,6 @@ define([
 					}
 				});
 			}
-			this._filter(addedFieldsQuery, options).then(lang.hitch(this, function() {
-				this.standby(false);
-				this._setInitialGridHeight();
-			}));
-		},
-
-		_filter: function(query, options) {
 			var onSuccess = lang.hitch(this, function(result) {
 				this.collection.setData(result);
 				this._grid.refresh();
@@ -924,7 +924,7 @@ define([
 			this.query = query;
 			// umcpCommand doesn't know a range option -> need to cache
 			// StoreAdapter doesn't work with fetchSync -> need to cache
-			return this._store.filter(query, options).fetch().then(onSuccess, onError);
+			return this._store.filter(addedFieldsQuery, options).fetch().then(onSuccess, onError);
 		},
 
 		getAllItems: function() {
