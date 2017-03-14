@@ -1,3 +1,10 @@
+ucs-test (7.0.16-1) unstable; urgency=medium
+
+  * 51_samba4/40password-policies: Samba 4 changed the LDAP return value
+    for an expired password (Bug #43852)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Mar 2017 20:57:29 +0100
+
 ucs-test (7.0.15-1) unstable; urgency=medium
 
   * Bug #43839: fix pid detection in 23_apache/85apache_close_fds
