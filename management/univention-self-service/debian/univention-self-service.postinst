@@ -34,6 +34,8 @@
 
 eval "$(univention-config-registry shell)"
 
+univention-config-registry set "umc/web/hooks/univention-self-service?passwordreset"
+
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 2.0.9-1; then
 	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/service/(passwordreset|passwordchange)/.*')
 	if [ -n "$keys" ]; then
