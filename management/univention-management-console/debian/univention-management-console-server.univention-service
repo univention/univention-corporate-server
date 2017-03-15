@@ -4,4 +4,4 @@ Description[en]=Univention Management Console Server
 programs=/usr/sbin/univention-management-console-server
 icon=service/umc-server
 start_type=umc/server/autostart
-
+systemd=univention-management-console-server.service
