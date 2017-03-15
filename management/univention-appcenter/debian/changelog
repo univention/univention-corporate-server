@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-9) unstable; urgency=low
+
+  * Bug #41170: catch ssl.SSLError
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Mar 2017 11:54:34 +0100
+
 univention-appcenter (6.0.3-8) unstable; urgency=low
 
   * Bug #41170: catch ssl.SSLError

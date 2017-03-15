@@ -261,8 +261,7 @@ def verbose_http_error(exc):
 	if not strerror.strip():
 		strerror = str(exc)
 	if isinstance(exc, ssl.CertificateError):
-		strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
-		strerror += ' (' + strerror + ')'
+		strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (' + strerror + ')'
 	return strerror
 
 
