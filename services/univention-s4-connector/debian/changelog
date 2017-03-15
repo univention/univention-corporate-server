@@ -1,3 +1,10 @@
+univention-s4-connector (11.0.6-11) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+  * Bug #43874: help systemd track pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-s4-connector (11.0.6-10) unstable; urgency=medium
 
   * Bug #42045: Samba changed the PIDL code generator for string_array,
