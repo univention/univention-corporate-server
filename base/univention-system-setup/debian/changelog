@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-4) unstable; urgency=low
+
+  * Bug #43656: start welcome screen after setup
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Mar 2017 16:46:47 +0100
+
 univention-system-setup (10.0.9-3) unstable; urgency=medium
 
   * Bug #42172: Adjust logo + add padding to wizard for external browsers
