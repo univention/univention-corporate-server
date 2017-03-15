@@ -39,6 +39,7 @@ define([
 	"dojo/request/iframe",
 	"dojo/Deferred",
 	"dojo/json",
+	"dojo/io-query",
 	"dojox/html/entities",
 	"umc/dialog",
 	"login/LoginDialog",
@@ -48,7 +49,7 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!login"
-], function(lang, array, win, dom, topic, query, xhr, iframe, Deferred, json, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
+], function(lang, array, win, dom, topic, query, xhr, iframe, Deferred, json, ioQuery, entities, dialog, LoginDialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Private utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -232,7 +233,7 @@ define([
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var target = '/univention/login/?location=' + entities.encode(encodeURIComponent(window.location.href));
+					var target = '/univention/login/?' + ioQuery.objectToQuery({ 'location': window.location.href, username: tools.status('username') });
 					if (!passiveLogin.isCanceled()) {
 						target = '/univention/saml/';
 					}
