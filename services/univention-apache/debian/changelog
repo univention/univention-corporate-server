@@ -1,3 +1,9 @@
+univention-apache (9.0.3-3) unstable; urgency=medium
+
+  * Bug #43695: Fixing previously unescaped bash-test.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 15 Mar 2017 14:58:20 +0100
+
 univention-apache (9.0.3-2) unstable; urgency=medium
 
   *  Bug #43695: Unsetting old ucr variables in univention-apache.postinst

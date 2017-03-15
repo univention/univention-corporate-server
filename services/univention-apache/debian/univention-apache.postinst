@@ -77,7 +77,7 @@ fi
 
 #remove old ucr variables
 keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|root-certificate|ldap-master)/.*')
-if [ ! -z $keys ]; then
+if [ -n "$keys" ]; then
 	ucr unset $keys
 fi
 
