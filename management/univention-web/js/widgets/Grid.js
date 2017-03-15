@@ -533,7 +533,10 @@ define([
 						if (colContent && colContent.domNode) {
 							return colContent.domNode;
 						} else {
-							return colContent;
+							var container = construct.create("div", {
+								innerHTML: colContent
+							});
+							return container;
 						}
 					};
 				}

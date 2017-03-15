@@ -1,3 +1,9 @@
+univention-web (1.0.37-5) unstable; urgency=medium
+
+  * Bug #43864: fix formatter for system/setup software selection 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 13:11:57 +0100
+
 univention-web (1.0.37-4) unstable; urgency=medium
 
   * Bug #43528: Slight adjustment of user tile styling
