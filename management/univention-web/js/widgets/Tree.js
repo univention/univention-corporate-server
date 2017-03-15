@@ -45,7 +45,7 @@ define([
 	"dstore/Trackable",
 	"dstore/Tree",
 	"./ContainerWidget",
-	"./_RegisterOnShowMixin",
+	"./_RegisterOnShowMixin"
 ], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
 	
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
