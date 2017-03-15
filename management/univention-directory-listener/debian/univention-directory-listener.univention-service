@@ -4,4 +4,4 @@ Description[en]=Univention Directory Listener
 programs=/usr/sbin/univention-directory-listener
 icon=service/ldap-listener
 start_type=listener/autostart
-
+systemd=univention-directory-listener.service

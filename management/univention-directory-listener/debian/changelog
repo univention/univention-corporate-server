@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-25) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-directory-listener (11.0.1-24) unstable; urgency=medium
 
   * Bug #23367: Remove additional log message, duplicating dntree_add_id
