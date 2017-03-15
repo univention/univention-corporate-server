@@ -1,3 +1,9 @@
+univention-printserver (10.0.1-2) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-printserver (10.0.1-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone
