@@ -138,6 +138,8 @@ def _handler(ucr, changes):
 					link.port = value
 			elif key == 'icon':
 				try:
+					if value.startswith('/univention-management-console'):
+						value = '/univention%s' % value[30:]
 					with open('/var/www/%s' % value) as fd:
 						entry['icon'] = b64encode(fd.read())
 				except EnvironmentError:

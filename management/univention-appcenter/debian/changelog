@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-10) unstable; urgency=medium
+
+  * Bug #43670: Adjust new URL paths
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Mar 2017 13:30:47 +0100
+
 univention-appcenter (6.0.3-9) unstable; urgency=low
 
   * Bug #41170: catch ssl.SSLError

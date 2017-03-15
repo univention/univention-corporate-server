@@ -486,7 +486,7 @@ class Register(CredentialsAction):
 			label = app.get_localised('web_interface_name') or app.get_localised('name')
 			label_de = app.get_localised('web_interface_name', 'de') or app.get_localised('name', 'de')
 			variables = {
-				'icon': os.path.join('/univention-management-console/js/dijit/themes/umc/icons/scalable', app.logo_name),
+				'icon': os.path.join('/univention/js/dijit/themes/umc/icons/scalable', app.logo_name),
 				'port_http': str(port_http or ''),
 				'port_https': str(port_https or ''),
 				'label': label,
