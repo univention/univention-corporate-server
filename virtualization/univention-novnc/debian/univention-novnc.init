@@ -8,6 +8,7 @@
 # Short-Description: Proxy VNC via websocket
 # Description:       Provide access to VNC via websocket.
 ### END INIT INFO
+# pidfile: /var/run/univention-novnc.pid
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin

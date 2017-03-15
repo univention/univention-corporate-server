@@ -4,3 +4,4 @@ Description[en]=UVMM noVNC Service
 icon=service/uvmm/novnc
 programs=/usr/bin/python2.7 /usr/share/novnc/utils/websockify
 start_type=uvmm/novnc/autostart
+systemd=univention-novnc.service
