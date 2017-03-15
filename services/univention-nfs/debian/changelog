@@ -1,3 +1,9 @@
+univention-nfs (9.0.0-2) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-nfs (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

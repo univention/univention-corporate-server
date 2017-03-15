@@ -4,3 +4,4 @@ description[en]=Network Filesystem Daemon
 start_type=nfs/autostart
 icon=service/nfs
 programs=/usr/sbin/rpc.mountd
+systemd=nfs-kernel-server.service
