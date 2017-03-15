@@ -66,12 +66,6 @@ def HTTPError():
 
 
 @pytest.fixture
-def umc_get_request(path, Client):
-	client = Client()
-	return client.request('GET', path)
-
-
-@pytest.fixture
 def random_string():
 	return strings.random_string
 
