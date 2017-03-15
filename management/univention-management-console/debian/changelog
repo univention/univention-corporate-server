@@ -5089,26 +5089,26 @@ univention-management-console (0.9.21-1) unstable; urgency=low
   * fixed logic error in frontend: if the referrer auf a dialog is not cache
     the commands of a button were ignored
 
- -- Andreas B�sching <buesching@univention.de>  Sat,  8 Dec 2007 14:53:41 +0100
+ -- Andreas Büsching <buesching@univention.de>  Sat,  8 Dec 2007 14:53:41 +0100
 
 univention-management-console (0.9.20-1) unstable; urgency=low
 
   * fixed wording bug
   * fixed encoding bug in german translation
 
- -- Andreas B�sching <buesching@univention.de>  Thu, 29 Nov 2007 15:07:54 +0100
+ -- Andreas Büsching <buesching@univention.de>  Thu, 29 Nov 2007 15:07:54 +0100
 
 univention-management-console (0.9.19-1) unstable; urgency=low
 
   * VNC module: check if VNC server could be started
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 26 Nov 2007 13:35:30 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Nov 2007 13:35:30 +0100
 
 univention-management-console (0.9.18-1) unstable; urgency=low
 
   * fix minor bugs in VNC module
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 26 Nov 2007 11:06:53 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Nov 2007 11:06:53 +0100
 
 univention-management-console (0.9.17-1) unstable; urgency=low
 

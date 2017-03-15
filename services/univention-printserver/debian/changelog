@@ -1378,28 +1378,28 @@ univention-printserver (1.0.9-1) unstable; urgency=low
   * split up creation of HP printmodel object to avoid problems with to long
     commannd line
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 10 Dec 2007 18:32:57 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 18:32:57 +0100
 
 univention-printserver (1.0.8-1) unstable; urgency=low
 
   * use univention-admin instead of univention-directory-manager in join
     script
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 10 Dec 2007 16:53:06 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 16:53:06 +0100
 
 univention-printserver (1.0.7-1) unstable; urgency=low
 
   * update univention-ppds to be able to read _all_ printer driver information
   * update join script with new printer driver information
 
- -- Andreas B�sching <buesching@univention.de>  Sun,  9 Dec 2007 14:07:27 +0100
+ -- Andreas Büsching <buesching@univention.de>  Sun,  9 Dec 2007 14:07:27 +0100
 
 univention-printserver (1.0.6-2) unstable; urgency=low
 
   * replace calls to univention-config-registry with
     univention-baseconfig
 
- -- Andreas B�sching <buesching@univention.de>  Mon,  3 Dec 2007 17:51:30 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon,  3 Dec 2007 17:51:30 +0100
 
 univention-printserver (1.0.6-1) unstable; urgency=low
 

@@ -339,13 +339,13 @@ univention-dhcp (3.0.4-1) unstable; urgency=low
 
   * fixed minor syntax errors in dhcpd configuration
 
- -- Andreas B�sching <buesching@univention.de>  Wed, 16 Jan 2008 17:35:16 +0100
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Jan 2008 17:35:16 +0100
 
 univention-dhcp (3.0.3-1) unstable; urgency=low
 
   * add default value for option 'ddns-hostname'
 
- -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 11:30:07 +0100
+ -- Andreas Büsching <buesching@univention.de>  Sun, 13 Jan 2008 11:30:07 +0100
 
 univention-dhcp (3.0.2-1) unstable; urgency=low
 

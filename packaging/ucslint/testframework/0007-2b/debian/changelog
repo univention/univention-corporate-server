@@ -227,7 +227,7 @@ ucs-tools (1.1.1-1) unstable; urgency=low
   * minor fixes
   * better support for keyboard control
 
- -- Andreas B�sching <buesching@univention.de>  Sun, 27 Apr 2008 17:36:27 +0200
+ -- Andreas Büsching <buesching@univention.de>  Sun, 27 Apr 2008 17:36:27 +0200
 
 ucs-tools (1.0-10) unstable; urgency=low
 

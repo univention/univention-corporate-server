@@ -1173,7 +1173,7 @@ univention-apache (2.0.11-6) unstable; urgency=low
   * replace calls to univention-config-registry with
     univention-baseconfig 
 
- -- Andreas B�sching <buesching@univention.de>  Mon,  3 Dec 2007 17:34:50 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon,  3 Dec 2007 17:34:50 +0100
 
 univention-apache (2.0.11-5) unstable; urgency=low
 
