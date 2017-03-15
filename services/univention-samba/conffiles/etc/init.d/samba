@@ -14,6 +14,7 @@
 # Should-Stop:       slapd
 # Short-Description: start Samba daemons (nmbd and smbd)
 ### END INIT INFO
+# pidfile: /var/run/samba/smbd.pid
 
 # Defaults
 RUN_MODE="daemons"

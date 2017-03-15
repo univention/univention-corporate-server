@@ -1,11 +1,23 @@
-[samba]
-description[de]=Stellt Dienste für Windows Systeme zur Verfügung
-description[en]=Provides Services for Windows
+[smbd]
+description[de]=Stellt SMB/CIFS Dienste für Windows Systeme zur Verfügung
+description[en]=Provides SMB/CIFS services for Windows
 icon=service/samba
-programs=/usr/sbin/smbd,/usr/sbin/nmbd
+programs=/usr/sbin/smbd
+start_type=samba/autostart
+systemd=smbd.service
+
+[nmbd]
+description[de]=Stellt NetBIOS Dienste für Windows Systeme zur Verfügung
+description[en]=Provides NetBIOS services for Windows
+icon=service/samba
+programs=/usr/sbin/nmbd
+start_type=nmbd/autostart
+systemd=nmbd.service
 
 [winbind]
-description[de]=Winbind Dämon
-description[en]=Winbind daemon
+description[de]=Winbind Dämon stellt Dienste für Linux Systeme zur Verfügung
+description[en]=Winbind daemon provides services for Linux systems
 icon=service/winbind
 programs=/usr/sbin/winbindd
+start_type=winbind/autostart
+systemd=winbind.service
