@@ -210,7 +210,7 @@ class App(object):
 			self.ucs_version = self.ucr.get('version/version')
 		else:
 			self.ucs_version = container_version
-			self.ini['SupportedUCSVersions'] = '%s-0,%s-0' % (container_version,self.ucr.get('version/version'))
+			self.ini['SupportedUCSVersions'] = '%s-0,%s-0' % (container_version, self.ucr.get('version/version'))
 
 		self.installed = False
 
@@ -278,7 +278,7 @@ class App(object):
 		threading.Thread(target=_thread, args=(event, options)).start()
 		while not (event.wait(3) and finished):
 			options = dict(progress_id=progress_id)
-			progress = client.umc_comamand('appcenter/docker/progress', options, print_request_data=False, print_response=False).result
+			progress = client.umc_command('appcenter/docker/progress', options, print_request_data=False, print_response=False).result
 			progress.get('info', None)
 			for i in progress.get('intermediate', []):
 				if i['level'] in ['ERROR', 'CRITICAL']:
