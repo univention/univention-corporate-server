@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-11) unstable; urgency=medium
+
+  * Bug #43863: Do not seduce Docker Container to remove its host during join
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Mar 2017 14:30:29 +0100
+
 univention-appcenter (6.0.3-10) unstable; urgency=medium
 
   * Bug #43670: Adjust new URL paths
