@@ -1,3 +1,9 @@
+univention-postgresql (9.0.0-4) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-postgresql (9.0.0-3) unstable; urgency=medium
 
   * Bug #43682: Add univention-postgresql-9.4

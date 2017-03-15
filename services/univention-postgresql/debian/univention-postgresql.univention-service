@@ -1,6 +1,7 @@
 [postgresql]
-Description[de]=PostgreSQL 9.1 Server
-Description[en]=PostgreSQL 9.1 Server
+Description[de]=PostgreSQL 9.4 Server
+Description[en]=PostgreSQL 9.4 Server
 icon=service/postgres
-programs=/usr/lib/postgresql/9.1/bin/postgres
+programs=/usr/lib/postgresql/9.4/bin/postgres
 start_type=postgres8/autostart
+systemd=postgresql.service
