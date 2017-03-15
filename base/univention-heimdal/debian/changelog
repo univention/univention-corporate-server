@@ -1,3 +1,9 @@
+univention-heimdal (10.0.0-6) unstable; urgency=medium
+
+  * Bug #43850: Adjust enctypes list to work with Samba 4.6 get_enctypes
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Mar 2017 19:25:28 +0100
+
 univention-heimdal (10.0.0-5) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

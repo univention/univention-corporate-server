@@ -36,20 +36,20 @@ Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tgs]
-Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
-Description[en]=This variable configures the available encryption methods for service tickets. If the variable is unset, 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=This variable configures the available encryption methods for service tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tkt]
-Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
-Description[en]=This variable configures the available encryption methods for ticket granting tickets. If the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=This variable configures the available encryption methods for ticket granting tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/permitted]
-Description[de]=Die unterstützten Verschlüsselungsverfahren: Bei der Aushandlung eines Session-Keys werden die vom Client unterstützten Verschlüsselungsverfahren mit den hier konfigurierten Verfahren abgeglichen. Ist die Variable nicht gesetzt, wird 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
-Description[en]=The supported encryption methods. During negotiation of a session the methods supported by the client are matched with the methods configured in this variable. If the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
+Description[de]=Die unterstützten Verschlüsselungsverfahren: Bei der Aushandlung eines Session-Keys werden die vom Client unterstützten Verschlüsselungsverfahren mit den hier konfigurierten Verfahren abgeglichen. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=The supported encryption methods. During negotiation of a session the methods supported by the client are matched with the methods configured in this variable. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
