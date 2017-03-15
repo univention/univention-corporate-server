@@ -148,10 +148,10 @@ define([
 
 		showLoginDialog: function() {
 			// deprecated! only updater.js and tools.js renewSession still uses it.
-			return this.sessionTimeout();
+			return this.sessionTimeout({});
 		},
 
-		sessionTimeout: function() {
+		sessionTimeout: function(info) {
 			// call when the session timed out, returns a deferred which resolves when the session is active again
 			if (this._nextLoginDeferred) {
 				// a login attempt is currently running
@@ -168,9 +168,9 @@ define([
 
 				tools.checkReloadRequired();
 
-				var confirm = dialog.confirm(_('The current session timed out. Please login again.'), [{label: _('Login'), callback: lang.hitch(this, function() {
+				var confirm = dialog.confirm(entities.encode(info.message || _('The current session timed out. Please login again.')), [{label: _('Login'), callback: lang.hitch(this, function() {
 					this.start();
-				})}], tools._statusMessages[401]);
+				})}], entities.encode(info.title || tools._statusMessages[401]));
 				this._waitForNextAuthentication().then(function() {
 					confirm.dialog.close();
 				});
@@ -221,7 +221,7 @@ define([
 				return;
 			}
 
-			return this.sessionTimeout();
+			return this.sessionTimeout(info);
 		},
 
 		start: function(username, password) {
