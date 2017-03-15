@@ -60,12 +60,14 @@ $theme-color = rgb(20, 110, 220)
 		clear: both
 
 		.umcGalleryWrapperItem
+			a
+				text-decoration: none
+
 			@media (max-width: 549px)
 				padding: 10px
 
 		.umcGalleryItem
 			height: 60px
-			cursor: initial !important
 
 			&:hover
 				background-color: $theme-color
@@ -74,21 +76,11 @@ $theme-color = rgb(20, 110, 220)
 				.umcGalleryVersion
 					color: #ffffff
 
-				a
-					color: #ffffff
-
-			a:hover
-				text-decoration: underline
-
-			a
-				color: #5a5a5a
-
 			.umcGalleryDescription,
 			.umcGalleryVersion
 				min-height: 25px
 				color: #787878
 
-			a,
 			.umcGalleryDescription,
 			.umcGalleryVersion
 				transition-property: color

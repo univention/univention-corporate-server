@@ -1,3 +1,9 @@
+univention-server-overview (0.0.3-6) unstable; urgency=medium
+
+  * Bug #43595: Make while gallery tile clickable
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Mar 2017 09:23:36 +0100
+
 univention-server-overview (0.0.3-5) unstable; urgency=medium
 
   * Bug #43595: Make sure that the a-tag is not removed via _resizeItemNames()
