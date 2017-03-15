@@ -746,6 +746,7 @@ icon=<file-name>]]></programlisting>
 [<service-name>]
 description[<language>]=<description>
 start_type=<service-name>/autostart
+systemd=<service-name>.service
 icon=<service/icon_name>
 programs=<executable>]]></programlisting>
 			<variablelist>
@@ -775,6 +776,15 @@ programs=<executable>]]></programlisting>
 							It is recommended to use the shell library <filename>/usr/share/univention-config-registry/init-autostart.lib</filename> to evaluate the setting from the init-script of the service.
 							If the variable is set to <literal>false</literal> or <literal>no</literal>, the service should never be started.
 							If the variable is set to <literal>manually</literal>, the service should not be started automatically, but invoking the init-script directly with <option>start</option> should still start the service.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>systemd</literal> (optional)</term>
+					<listitem>
+						<simpara>
+							A comma separated list of <package>systemd</package> service names, which are enabled/disabled/masked when <literal>start_type</literal> is used.
+							This defaults to the name of the service plus the suffix <literal>.service</literal>.
 						</simpara>
 					</listitem>
 				</varlistentry>

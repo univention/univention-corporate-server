@@ -303,3 +303,7 @@ Variables: ucr/backup/enabled
 Type: file
 File: etc/e2fsck.conf
 Variables: e2fsck/.*/.*
+
+Type: module
+Module: autostart.py
+Variables: .*/autostart$

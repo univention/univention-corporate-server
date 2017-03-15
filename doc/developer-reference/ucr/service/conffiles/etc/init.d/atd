@@ -10,6 +10,7 @@
 # Description:       Debian init script for the atd deferred executions
 #                    scheduler
 ### END INIT INFO
+# pidfile: /var/run/atd.pid
 #
 # Author:	Ryan Murray <rmurray@debian.org>
 #

@@ -97,6 +97,8 @@
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The <envar>*/autostart</envar> &ucsUCRV;s are now handled by a generic &ucsUCR; module.
+						The variables are still used in the individual init-scripts for backward compatibility with the classic System V init system, but are shadowed by the corresponding <application>systemd</application> mechanisms to enable/disable and mask/unmask services (<u:bug>43470</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -291,7 +293,7 @@
 					4.2 (<u:bug>43674</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					To support <command>systemd</command> based containers, <package>univention-appcenter-docker</package> now
+					To support <application>systemd</application> based containers, <package>univention-appcenter-docker</package> now
 					asks docker to mount <filename class="directory">/run</filename> and <filename class="directory">/run/lock</filename>
 					as <literal>tmpfs</literal> in newly created containers and pre-mounts <filename class="directory">/sys/fs/cgroup</filename>.
 					Additionally it uses an adjusted <application>seccomp</application> profile, which allows the system call <literal>name_to_handle_at</literal>, which
