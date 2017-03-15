@@ -4,3 +4,4 @@ Description[en]=e-mail greylisting service
 programs=/usr/sbin/postgrey
 icon=service/postgrey
 start_type=postgrey/autostart
+systemd=postgrey.service
