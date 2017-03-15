@@ -86,7 +86,7 @@ define([
 		}
 	});
 
-	var _StatusText = declare([Text, StandbyMixin]);
+	var _StatusText = declare([Text]);
 
 	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
@@ -326,6 +326,12 @@ define([
 				baseClass: 'umcGridHeader'
 			});
 			this.addChild(this._header);
+			this._statusMessage = new _StatusText({
+				'class': 'umcGridStatus',
+				content: this.initialStatusMessage
+			});
+			this.own(this._statusMessage);
+			this.addChild(this._statusMessage);
 
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
@@ -353,16 +359,10 @@ define([
 				targetNodeIds: [this._grid.domNode]
 			});
 			this.own(this._contextMenu);
-			this._statusMessage = new _StatusText({
-				'class': 'umcGridStatus',
-				content: this.initialStatusMessage
-			});
-			this.own(this._statusMessage);
 
 			this.setColumnsAndActions(this.columns, this.actions);
 
 			this.addChild(this._grid);
-			this.addChild(this._statusMessage);
 
 			//
 			// register event handler

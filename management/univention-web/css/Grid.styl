@@ -26,8 +26,8 @@
 	material-shadow(1)
 
 	.umcGridHeader
-		width: 100%
 		padding: 0
+		float: left
 
 		.dijitDropDownButton
 			margin: 12px
@@ -45,6 +45,8 @@
 				display: none
 
 	.dgrid
+
+		clear: both
 		border: none
 
 		.dgrid-cell
@@ -126,14 +128,18 @@
 				background-color: rgba(0, 0, 0, 0);
 
 	.umcGridStatus
-		height: 54px
+		height: 60px
 		line-height: @height
 		text-align: center
-		border-top: 1px solid #e0e0e0
+		float: right
+		font-size: 12px
+		color: rgba(0, 0, 0, 0.54)
+		padding-right: 23px
 
 .umc .umcGridHeader
 	padding-bottom: 0.5em
 	display: inline-block
+	float: left
 
 .umc .umcGridHeader > *:after
 	content: " "
