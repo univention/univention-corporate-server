@@ -38,7 +38,6 @@ override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
-	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
 	dh_auto_install
 
 override_dh_auto_clean:

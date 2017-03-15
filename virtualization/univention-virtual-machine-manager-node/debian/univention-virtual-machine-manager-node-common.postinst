@@ -54,11 +54,11 @@ configure)
 		;;
 	esac
 
-	# Setup runit
-	[ -x /etc/init.d/libvirtd.debian ] && invoke-rc.d libvirtd.debian stop
-	test -e /etc/runit/univention/univention-libvirt ||
-		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
-	invoke-rc.d libvirtd restart
+	if dpkg --compare-versions "$2" lt-nl 5.0.0-5
+	then
+		rm -f /etc/runit/univention-libvirt/finish
+		rm -f /etc/runit/univention/univention-libvirt
+	fi
 	;;
 
 abort-upgrade|abort-remove|abort-deconfigure)

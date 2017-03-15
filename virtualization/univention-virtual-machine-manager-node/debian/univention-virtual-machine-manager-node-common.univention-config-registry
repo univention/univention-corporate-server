@@ -12,10 +12,6 @@ Variables: libvirt/log/outputs
 Type: file
 File: etc/default/libvirtd
 
-Type: file
-File: etc/init.d/libvirtd
-Mode: 755
-
 Type: module
 Module: uvmm_restore.py
 Variables: uvmm/backup/directory

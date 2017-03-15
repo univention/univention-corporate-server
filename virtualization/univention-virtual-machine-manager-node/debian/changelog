@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (5.0.0-5) unstable; urgency=low
+
+  * Bug #43875: Remove legacy System V init script
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-virtual-machine-manager-node (5.0.0-4) unstable; urgency=low
 
   * Bug #43310: Adapt to firewall locking

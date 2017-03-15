@@ -54,8 +54,6 @@ purge)
 		uvmm/backup/directory \
 		uvmm/managers 
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-	rm -f /etc/runit/univention/univention-libvirt
-	rm -rf /etc/runit/univention-libvirt
 	rm -f /var/lib/univention-directory-listener/handlers/libvirtd-acl
 	find /etc/univention/templates -name univention-virtual-machine-manager-node-common.\* -delete
 	invoke-rc.d univention-directory-listener crestart

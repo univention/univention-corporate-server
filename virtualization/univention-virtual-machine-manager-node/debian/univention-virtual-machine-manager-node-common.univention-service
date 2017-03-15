@@ -1,6 +1,6 @@
-[univention-libvirt]
-description[de]=Virtualisierungsdienst
-description[en]=virtualization daemon
+[libvirtd]
+description[de]=Verwaltungsdienst für Virtualisierung
+description[en]=Management service for virtualization
 icon=service/libvirt
 programs=/usr/sbin/libvirtd
 start_type=libvirt/autostart
