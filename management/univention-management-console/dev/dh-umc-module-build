@@ -36,6 +36,7 @@ into the correct directories.
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import os.path
 from optparse import OptionParser
 
 import univention.debhelper as dh_ucs
@@ -54,20 +55,23 @@ def do_package(package, core):
 		# build python PO files
 		for module in modules:
 			for po_file in module.python_po_files:
-				dh_umc.create_po_file(po_file, package, module.python_files)
-				dh_umc.create_mo_file(po_file)
+				if os.path.exists(po_file):
+					dh_umc.create_po_file(po_file, package, module.python_files)
+					dh_umc.create_mo_file(po_file)
 
 		# build javascript PO files
 		for module in modules:
 			for po_file in module.js_po_files:
-				dh_umc.create_po_file(po_file, package, module.js_files, 'Javascript')
-				dh_umc.create_json_file(po_file)
+				if os.path.exists(po_file):
+					dh_umc.create_po_file(po_file, package, module.js_files, 'Javascript')
+					dh_umc.create_json_file(po_file)
 
 	# build xml PO files
 	for module in modules:
 		for lang, po_file in module.xml_po_files:
-			dh_umc.module_xml2po(module, po_file, lang)
-			dh_umc.create_mo_file(po_file)
+			if os.path.exists(po_file):
+				dh_umc.module_xml2po(module, po_file, lang)
+				dh_umc.create_mo_file(po_file)
 
 
 def main():

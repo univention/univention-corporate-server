@@ -184,9 +184,7 @@ class UMC_Module(dict):
 		except KeyError:
 			return
 		for lang in LANGUAGES:
-			path = os.path.join(path, '%s.po' % lang)
-			if os.path.exists(path):
-				yield path
+			yield os.path.join(path, '%s.po' % lang)
 
 	@property
 	def js_po_files(self):
@@ -196,9 +194,7 @@ class UMC_Module(dict):
 		except KeyError:
 			return
 		for lang in LANGUAGES:
-			path = os.path.join(path, '%s.po' % lang)
-			if os.path.exists(path):
-				yield path
+			yield os.path.join(path, '%s.po' % lang)
 
 	@property
 	def xml_po_files(self):
@@ -208,8 +204,7 @@ class UMC_Module(dict):
 		dirpath = os.path.dirname(self.xml_definition)
 		for lang in LANGUAGES:
 			path = os.path.join(dirpath, '%s.po' % lang)
-			if os.path.exists(path):
-				yield (lang, path)
+			yield (lang, path)
 
 	@property
 	def icons(self):
