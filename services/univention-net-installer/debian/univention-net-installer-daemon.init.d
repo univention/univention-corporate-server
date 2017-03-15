@@ -40,6 +40,7 @@
 # Short-Description: Univention Net Installer Daemon
 # Description:       Service to reset the reinstall flag
 ### END INIT INFO
+# pidfile: /var/run/univention-net-installer-daemon.pid
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 

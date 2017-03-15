@@ -1,3 +1,9 @@
+univention-net-installer (10.0.0-3) unstable; urgency=low
+
+  * Bug #43874: help systemd track pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 17:32:13 +0100
+
 univention-net-installer (10.0.0-2) unstable; urgency=medium
 
   * Bug #42326: add French translation of debconf template
