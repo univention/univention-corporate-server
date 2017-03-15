@@ -1,3 +1,9 @@
+univention-mysql (4.0.0-3) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-mysql (4.0.0-2) unstable; urgency=medium
 
   * Bug #42307: Set bind address to 0.0.0.0
