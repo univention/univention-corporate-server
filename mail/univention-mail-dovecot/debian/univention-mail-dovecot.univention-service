@@ -4,3 +4,4 @@ Description[en]=IMAP and POP3 Server
 icon=service/dovecot
 programs=/usr/sbin/dovecot
 start_type=dovecot/autostart
+systemd=dovecot.service

@@ -12,6 +12,7 @@
 # Short-Description: Dovecot init script
 # Description:       Init script for dovecot services
 ### END INIT INFO
+# pidfile: /var/run/dovecot/master.pid
 
 # Copyright 2015-2017 Univention GmbH
 #
