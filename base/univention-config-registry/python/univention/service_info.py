@@ -40,6 +40,10 @@ import univention.info_tools as uit
 
 class Service(uit.LocalizedDictionary):
 
+	REQUIRED = frozenset(('description', 'programs'))
+	OPTIONAL = frozenset(('start_type', 'systemd', 'icon'))
+	KNOWN = REQUIRED | OPTIONAL
+
 	def __init__(self, *args, **kwargs):
 		uit.LocalizedDictionary.__init__(self, *args, **kwargs)
 		self.running = False
@@ -52,15 +56,14 @@ class Service(uit.LocalizedDictionary):
 
 	def check(self):
 		"""Check service entry for validity, returning list of incomplete entries."""
-		incomplete = []
-		for key in ('description', 'programs'):
-			if not self.get(key, None):
-				incomplete.append(key)
-		return incomplete
+		incomplete = [key for key in self.REQUIRED if not self.get(key, None)]
+		unknown = [key for key in self.keys() if key.lower() not in self.KNOWN]
+		return incomplete + unknown
 
 	def _update_status(self):
 		for prog in self['programs'].split(','):
-			if prog and not pidof(prog.strip()):
+			prog = prog.strip()
+			if prog and not pidof(prog):
 				self.running = False
 				break
 		else:
