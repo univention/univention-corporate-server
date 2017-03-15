@@ -1,3 +1,9 @@
+univention-portal (1.0.8-7) unstable; urgency=medium
+
+  * Bug #43670: adjust quoting of labels
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Mar 2017 10:50:54 +0100
+
 univention-portal (1.0.8-6) unstable; urgency=medium
 
   * Bug #43670: Adjust icons + French labels + styling
