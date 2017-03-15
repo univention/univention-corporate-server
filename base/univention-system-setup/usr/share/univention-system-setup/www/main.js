@@ -74,7 +74,6 @@ define([
 			this.local_mode = tools.status('username') == '__systemsetup__';
 			var _Container = declare([ContainerWidget, Standby]);
 			this._container = new _Container({
-				'class': this.local_mode ? '' : 'umcCard'
 			}, 'content');
 
 			// load some ucr variables
@@ -135,6 +134,7 @@ define([
 
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
+				'class': this.local_mode ? '' : 'umcCard',
 				moduleID: this.moduleID,
 				disabledPages: pageBlacklist,
 				disabledFields: fieldBlacklist,

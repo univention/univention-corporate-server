@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-3) unstable; urgency=medium
+
+  * Bug #42172: Adjust logo + add padding to wizard for external browsers
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Mar 2017 09:39:42 +0100
+
 univention-system-setup (10.0.9-2) unstable; urgency=medium
 
   * Bug #43626: Create certificate only on master, other roles will copy their
