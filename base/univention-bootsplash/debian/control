@@ -6,7 +6,8 @@ Standards-Version: 3.8.2
 Build-Depends: debhelper,
  univention-config-dev,
  ucslint-univention,
- gettext
+ gettext,
+ dh-systemd
 
 Package: univention-bootsplash
 Architecture: all
@@ -26,7 +27,9 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-bootsplash (= ${binary:Version}),
  gettext-base,
- bsdmainutils
+ bsdmainutils,
+ fbcat,
+ fbi
 Description: UCS - welcome screen
  This package provides a welcome screen to the UCS system
  which is shown after the system startup.

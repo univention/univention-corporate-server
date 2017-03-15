@@ -31,100 +31,96 @@
 # <http://www.gnu.org/licenses/>.
 
 eval "$(ucr shell)"
+
 . /usr/share/univention-lib/base.sh
+. /usr/share/univention-lib/ucr.sh
 
-vt="7"
-
-# no running plymouth, go away
-if ! plymouth --ping; then
-	echo "plymouth not running, exiting"
-	exit 0
-fi
-
-# if no keyboards, go away
-keyboards="$(ls /dev/input/by-path/*-kbd*)"
-if [ -z "$keyboards" ]; then
-	echo "no keyboard found, stopping plymouth and exiting"
-	plymouth quit
-	exit 0
-fi
-
-# no framebuffer device
-if [ ! -e /dev/fb0 ]; then
-	echo "no framebuffer found, stopping plymouth and exiting"
-	plymouth quit
-	exit 0
-fi
+image="/tmp/.univention-welcome-screen.png"
 
 echo "starting $0 ($(date))"
 
-# check appliance logo
-appliance=false
-if [ -n "$umc_web_appliance_logo" ]; then
-	if [ -e "/var/www/$umc_web_appliance_logo" -a ! -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
-		cp "/var/www/$umc_web_appliance_logo" /usr/share/plymouth/themes/ucs/appliance.logo
-		if [ -x "$(which convert)" ]; then
-			convert -background None /usr/share/plymouth/themes/ucs/appliance.logo /usr/share/plymouth/themes/ucs/appliance.png
+# some tests
+quit=false
+keyboards="$(ls /dev/input/by-path/*-kbd*)"
+test -z "$keyboards" && quit=true && msg="no keyboard found, exiting"
+test ! -e /dev/fb0 && quit=true && msg="no framebuffer found, exiting"
+test -e /etc/X11/default-display-manager && quit=true && msg="a display-manager is installed/configured"
+if is_ucr_false welcome-screen/autostart; then 
+	quit=true
+	msg="welcome screen disabled"
+fi
+if [ "ucs" != "$bootsplash_theme" -a "ucs-appliance-dark" != "$bootsplash_theme" -a "ucs-appliance-light" != "$bootsplash_theme" ]; then
+	quit=true
+	msg="theme does not support welcome screen"
+fi
+
+if $quit; then
+	echo $msg
+	exit 0
+fi
+
+# activate welcome screen
+if plymouth --ping; then
+	echo "going to plymouth welcome screen mode..."
+	# check appliance logo
+	appliance=false
+	if [ -n "$umc_web_appliance_logo" ]; then
+		if [ -e "/var/www/$umc_web_appliance_logo" -a ! -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
+			cp "/var/www/$umc_web_appliance_logo" /usr/share/plymouth/themes/ucs/appliance.logo
+			if [ -x "$(which convert)" ]; then
+				convert -background None /usr/share/plymouth/themes/ucs/appliance.logo /usr/share/plymouth/themes/ucs/appliance.png
+			fi
+		fi
+		if [ -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
+			appliance=true
 		fi
 	fi
-	if [ -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
-		appliance=true
+	lang="${locale_default%%:*}"
+	if [ -n "$lang" ]; then
+		export LC_ALL="$lang"
 	fi
+	export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
+	if [ -n "$umc_web_appliance_name" ]; then
+		header="$(gettext -d univention-welcome-screen "Welcome to ")$umc_web_appliance_name"
+	else
+		header="$(gettext -d univention-welcome-screen "Welcome to ")Univention Corporate Server"
+	fi
+	console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
+	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
+	message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
+	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
+	hostname="$hostname.$domainname"
+	address="https://$(get_default_ip_address)"
+	addresses="$address https://$hostname"
+	# show welcome screen
+	plymouth update --status=univention-welcome
+	plymouth display-message --text="$console"
+	if $appliance; then
+		plymouth update --status="univention-welcome:appliance"
+	fi
+	plymouth update --status="univention-welcome:header:$header"
+	plymouth update --status="univention-welcome:message1:$message1"
+	plymouth update --status="univention-welcome:message2:$message2"
+	plymouth update --status="univention-welcome:message3:$message3"
+	plymouth update --status="univention-welcome:hostname:$hostname"
+	plymouth update --status="univention-welcome:address:$address"
+	plymouth update --status="univention-welcome:addresses:$addresses"
+	plymouth update --status="univention-welcome:console:$console"
+	plymouth update --status="univention-welcome:console:$console" # this is not a typo, second call flushes screen
+	plymouth update --status=""
+	echo "grab image and quit plymout"
+	fbgrab "$image"
+	plymouth quit
 fi
 
-lang="${locale_default%%:*}"
-if [ -n "$lang" ]; then
-	export LC_ALL="$lang"
-fi
-export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
-
-if [ -n "$umc_web_appliance_name" ]; then
-	header="$(gettext -d univention-welcome-screen "Welcome to ")$umc_web_appliance_name"
-else
-	header="$(gettext -d univention-welcome-screen "Welcome to ")Univention Corporate Server"
-fi
-console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
-message1="$(gettext -d univention-welcome-screen "Open a browser window")"
-message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
-message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
-hostname="$hostname.$domainname"
-address="https://$(get_default_ip_address)"
-addresses="$address https://$hostname"
-
-# show welcome screen
-plymouth update --status=univention-welcome
-plymouth display-message --text="$console"
-if $appliance; then
-	plymouth update --status="univention-welcome:appliance"
-fi
-plymouth update --status="univention-welcome:header:$header"
-plymouth update --status="univention-welcome:message1:$message1"
-plymouth update --status="univention-welcome:message2:$message2"
-plymouth update --status="univention-welcome:message3:$message3"
-plymouth update --status="univention-welcome:hostname:$hostname"
-plymouth update --status="univention-welcome:address:$address"
-plymouth update --status="univention-welcome:addresses:$addresses"
-plymouth update --status="univention-welcome:console:$console"
-plymouth update --status="univention-welcome:console:$console" # this is not a typo, second call flushes screen
-plymouth update --status=""
-
-# copy framebuffer image, quit plymouth and show framebuffer image
-# on virtual terminal
-data=$(mktemp)
-cp /dev/fb0 "$data"
-plymouth quit
-chvt "$vt"
-echo -e '\033[?17;0;0c' > "/dev/tty$vt"
-dd if="$data" of=/dev/fb0
-
-# grab the ANY key, this blocks
-hexdump -n 96 $keyboards &
-echo $! > /var/run/univention-welcome-screen.pid
-wait
-
-if [ "N 2" = "$(runlevel)" ]; then
-	rm "$data"
-	chvt 1
+# do no show welcome screen if system setup 
+if ! is_ucr_true system/setup/boot/start; then
+	if [ -e "$image" ]; then
+		echo "display welcome screen and wait..."
+		fbi -T 1 --noverbose --noedit "$image" 1>/dev/null 2>&1
+		hexdump -n 96 $keyboards >/dev/null
+		echo "key pressed, good bye"
+	fi
 fi
 
 exit 0

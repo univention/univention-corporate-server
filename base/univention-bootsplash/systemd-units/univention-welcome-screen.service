@@ -1,0 +1,12 @@
+[Unit]
+Description=Starting univention-welcome screen
+After=plymouth-start.service systemd-user-sessions.service
+Before=plymouth-quit.service getty@tty1.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/univention-welcome-screen
+Type=oneshot
+TimeoutSec=0

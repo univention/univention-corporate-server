@@ -1,3 +1,9 @@
+univention-bootsplash (8.0.0-4) unstable; urgency=low
+
+  * Bug #43656: use systemd
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Mar 2017 15:36:44 +0100
+
 univention-bootsplash (8.0.0-3) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
