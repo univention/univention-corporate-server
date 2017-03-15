@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-node (5.0.0-5) unstable; urgency=low
 
   * Bug #43875: Remove legacy System V init script
+  * Bug #43470: Handle UCRV */autostart through systemd
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
 

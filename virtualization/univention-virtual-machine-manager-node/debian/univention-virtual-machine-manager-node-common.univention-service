@@ -4,3 +4,4 @@ description[en]=Management service for virtualization
 icon=service/libvirt
 programs=/usr/sbin/libvirtd
 start_type=libvirt/autostart
+systemd=libvirtd.service

@@ -1,0 +1,7 @@
+[univention-virtual-machine-manager-node-kvm]
+Description[de]=UCS Virtual Machine Manager KVM Netzwerk-Bridge
+Description[en]=UCS Virtual Machine Manager KVM network bridge
+start_type=uvmm/kvm/bridge/autostart
+programs=,
+icon=service/uvmm-node-kvm
+systemd=univention-virtual-machine-manager-node-kvm.service
