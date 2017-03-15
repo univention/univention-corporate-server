@@ -4,4 +4,4 @@ Description[en]=Univention Directory Notifier
 programs=/usr/sbin/univention-directory-notifier
 icon=service/ldap-notifier
 start_type=notifier/autostart
-
+systemd=univention-directory-notifier.service
