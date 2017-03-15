@@ -46,7 +46,6 @@ define([
 	"dstore/Tree",
 	"./ContainerWidget",
 	"./_RegisterOnShowMixin",
-	"xstyle/css!../../dgrid/css/dgrid.css"
 ], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
 	
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);

@@ -1,3 +1,9 @@
+univention-web (1.0.37-6) unstable; urgency=medium
+
+  * Bug #32027: fix grid css loading
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 17:51:32 +0100
+
 univention-web (1.0.37-5) unstable; urgency=medium
 
   * Bug #43864: fix formatter for system/setup software selection 
