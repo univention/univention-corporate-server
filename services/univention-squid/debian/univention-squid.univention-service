@@ -3,3 +3,5 @@ description[de]=Squid Proxyserver
 description[en]=Squid Proxyserver
 icon=service/squid3
 programs=/usr/sbin/squid3
+start_type=squid3/autostart
+systemd=squid3.service
