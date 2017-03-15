@@ -254,8 +254,8 @@ define([
 				onClick: lang.hitch(this, '_deleteRenewOptions')
 			});
 			var buttonRow = put(step, 'div.buttonRow');
-			put(buttonRow, this._saveButton.domNode);
 			put(buttonRow, this._cancelButton.domNode);
+			put(buttonRow, this._saveButton.domNode);
 			put(this.steps, step);
 			this._renewInputs[0].focusInput();
 		},
@@ -267,7 +267,7 @@ define([
 			this._cancelButton.set('disabled', true);
 			this._saveButton.set('disabled', true);
 
-			var allOptionsAreValid = array.some(this._renewInputs, function(input){
+			var allOptionsAreValid = array.every(this._renewInputs, function(input){
 				if (input.isValid()) {
 					return true;
 				} else {

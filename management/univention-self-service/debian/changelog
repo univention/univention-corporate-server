@@ -1,3 +1,9 @@
+univention-self-service (2.0.10-2) unstable; urgency=medium
+
+  * Bug #42267: switch save/cancel button; fix input validation 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 15:22:23 +0100
+
 univention-self-service (2.0.10-1) unstable; urgency=medium
 
   * Bug #43565: fix module initialization on DC Slave
