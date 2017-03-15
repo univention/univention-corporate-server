@@ -19,6 +19,7 @@
 # Short-Description: nagios host/service/network monitoring and management system
 # Description:       nagios is a monitoring and management system for hosts, services and networks.
 ### END INIT INFO
+# pidfile: /var/run/nagios3/nagios3.pid
 
 set -e
 

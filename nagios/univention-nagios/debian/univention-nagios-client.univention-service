@@ -4,3 +4,4 @@ Description[en]=Nagios RPE Server
 icon=service/nrpe
 programs=/usr/sbin/nrpe
 start_type=nagios/client/autostart
+systemd=nagios-nrpe-server.service
