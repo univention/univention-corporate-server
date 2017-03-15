@@ -773,7 +773,7 @@ define([
 				title = error.title || null;
 			}
 
-			title = title || tools._statusMessages[status] || '';
+			title = title || (status !== 401 ? tools._statusMessages[status] : '') || '';
 			message = message || '';
 
 			// TODO: move into the UMC-Server
