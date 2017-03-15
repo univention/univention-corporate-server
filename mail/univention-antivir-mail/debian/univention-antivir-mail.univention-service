@@ -4,6 +4,7 @@ Description[en]=Interface between MTA and Virus Scanner/Content Filters
 icon=service/amavis
 programs=/usr/sbin/amavisd-new (master)
 start_type=mail/antivir/amavis/autostart
+systemd=amavis.service
 
 [clamav-daemon]
 Description[de]=Anti-Virus Dienst (E-Mail)
@@ -11,6 +12,7 @@ Description[en]=Anti Virus Daemon (Email)
 icon=service/clamav-daemon
 programs=/usr/sbin/clamd
 start_type=clamav/daemon/autostart
+systemd=clamav-daemon.service
 
 [clamav-freshclam]
 Description[de]=Update Dienst für die Virus-Datenbank
@@ -18,3 +20,4 @@ Description[en]=Update Daemon for the Virus Database
 icon=service/clamav-freshclam
 programs=/usr/bin/freshclam
 start_type=clamav/freshclam/autostart
+systemd=clamav-freshclam.service
