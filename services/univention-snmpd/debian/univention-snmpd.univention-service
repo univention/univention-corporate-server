@@ -1,0 +1,15 @@
+[snmpd]
+Description[de]=SNMP Dämon für die Überwachung und das Verwalten vernetzter Systeme
+Description[en]=SNMP daemon for monitoring and managing networked systems
+start_type=snmpd/autostart
+programs=/usr/sbin/snmpd
+icon=service/snmpt
+systemd=snmpd.service
+
+[snmptrapd]
+Description[de]=SNMP Dämon für den Empfang von Benachrichtigungen von vernetzten Systemen
+Description[en]=SNMP notification receiver daemon for networked systems
+start_type=snmptrapd/autostart
+programs=/usr/sbin/snmptrapd
+icon=service/snmptrapd
+systemd=snmptrapd.service
