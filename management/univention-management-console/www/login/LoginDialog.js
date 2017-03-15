@@ -310,7 +310,7 @@ define([
 			if (/\/\//.test(path)) {
 				path = null;
 			}
-			window.location.pathname = path || '/univention/management/';
+			window.location = path || '/univention/management/';
 		},
 
 		_authentication_failed: function() {

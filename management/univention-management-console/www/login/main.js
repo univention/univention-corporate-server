@@ -168,9 +168,12 @@ define([
 
 				tools.checkReloadRequired();
 
-				// FIXME: remove and show something else, e.g. a newly rendered login dialog
-				//this._requirePassword(('The current session timed out. <a href="/univention/login/?location=%s">Please login again.</a>', entities.encode(encodeURIComponent(window.location.href))));
-				this._requirePassword(_('The current session timed out. Please login again.'));
+				var confirm = dialog.confirm(_('The current session timed out. Please login again.'), [{label: _('Login'), callback: lang.hitch(this, function() {
+					this.start();
+				})}], tools._statusMessages[401]);
+				this._waitForNextAuthentication().then(function() {
+					confirm.dialog.close();
+				});
 
 			}));
 			return this._nextLoginDeferred;
@@ -233,11 +236,11 @@ define([
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var target = '/univention/login/?' + ioQuery.objectToQuery({ 'location': window.location.href, username: tools.status('username') });
+					var target = '/univention/login/';
 					if (!passiveLogin.isCanceled()) {
 						target = '/univention/saml/';
 					}
-					window.location = target;
+					window.location = target + '?' + ioQuery.objectToQuery({ 'location': window.location.pathname + window.location.hash, username: tools.status('username') });
 				}));
 			}));
 
@@ -441,7 +444,7 @@ define([
 				// TODO: we should do a real logout here. maybe the UMCUsername cookie can be set
 				tools.checkSession(false);
 				tools.closeSession();
-				window.location.search = 'username=' + encodeURIComponent(username);
+				window.location.search = ioQuery.objectToQuery({username: username});
 			});
 		},
 

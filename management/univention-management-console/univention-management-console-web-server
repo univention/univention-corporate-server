@@ -79,7 +79,8 @@ _session_timeout = get_int('umc/http/session/timeout', 300)
 def sessionidhash():
 	session = '%s%s%s%s' % (cherrypy.request.headers.get('Authorization', ''), cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)
 	return hashlib.sha256(session).hexdigest()[:36]
-	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', session), sessionidhash.salt, 100000)[:36]  # FIXME: python 2.7.7 required
+	# TODO: the following is more secure (real random) but also much slower
+	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', session, sessionidhash.salt, 100000))[:36]
 
 
 sessionidhash.salt = rndstr()
