@@ -840,7 +840,12 @@ class ConfigHandlers:
 		pending_handlers = set()
 
 		for reg_var, handlers in self._handlers.items():
-			_re = re.compile(reg_var)
+			try:
+				_re = re.compile(reg_var)
+			except re.error as ex:
+				print >> sys.stderr, 'Failed to compile regular expression %s: %s' % (reg_var, ex)
+				continue
+
 			for variable in variables:
 				if _re.match(variable):
 					pending_handlers |= handlers
