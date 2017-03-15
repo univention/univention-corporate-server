@@ -1,3 +1,9 @@
+univention-self-service (2.0.10-1) unstable; urgency=medium
+
+  * Bug #43565: fix module initialization on DC Slave
+
+ -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 13:35:04 +0100
+
 univention-self-service (2.0.9-8) unstable; urgency=medium
 
   * Bug #43565: readd removed hook registration

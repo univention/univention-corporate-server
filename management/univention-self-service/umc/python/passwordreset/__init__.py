@@ -61,15 +61,17 @@ TOKEN_VALIDITY_TIME = 3600
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 MEMCACHED_MAX_KEY = 250
 
+SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
+
 
 def forward_to_master(func):
 	@wraps(func)
 	def _decorator(self, request, *args, **kwargs):
-		selfservice_server = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
-		if '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) != selfservice_server:
+		if not IS_SELFSERVICE_MASTER:
 			try:
 				language = str(self.locale).split('.')[0].replace('_', '-')
-				client = Client(selfservice_server, language=language)
+				client = Client(SELFSERVICE_MASTER, language=language)
 				client.authenticate_with_machine_account()
 				response = client.umc_command(request.arguments[0], request.options)
 			except (Unauthorized, ConnectionError) as exc:
@@ -199,9 +201,10 @@ class Instance(Base):
 
 	def init(self):
 		if not ucr.is_true("umc/self-service/passwordreset/enabled"):
-			err = "Module is disabled by UCR."
-			MODULE.error(err)
-			raise UMC_Error(err, status=500)
+			raise UMC_Error(_('The password reset service is disabled via configuration registry.'), status=503)
+
+		if not IS_SELFSERVICE_MASTER:
+			return
 
 		self.usersmod = None
 		self.groupmod = None
