@@ -1,3 +1,9 @@
+univention-web (1.0.38-1) unstable; urgency=medium
+
+  * Bug #42174: adjustments for login dialog
+
+ -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 18:36:56 +0100
+
 univention-web (1.0.37-7) unstable; urgency=medium
 
   * Bug #43630: grid status information is now shown in the header

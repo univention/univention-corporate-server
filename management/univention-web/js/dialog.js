@@ -220,6 +220,7 @@ define([
 			// show the confirmation dialog
 			confirmDialog.show();
 
+			deferred.dialog = confirmDialog;
 			return deferred;
 		},
 
