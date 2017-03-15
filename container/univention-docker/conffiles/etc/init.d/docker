@@ -16,6 +16,7 @@
 #  developer builds and tests on a laptop can run at scale, in production, on
 #  VMs, bare metal, OpenStack clusters, public clouds and more.
 ### END INIT INFO
+# pidfile: /var/run/docker.pid
 
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 

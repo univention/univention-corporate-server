@@ -1,0 +1,7 @@
+[docker]
+description[de]=Docker container Dienst
+description[en]=Docker container service
+icon=service/docker
+programs=/usr/bin/dockerd
+start_type=docker/autostart
+systemd=docker.service
