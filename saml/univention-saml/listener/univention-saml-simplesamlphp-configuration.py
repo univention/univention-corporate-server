@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 
 import os
@@ -46,20 +46,21 @@ name = 'univention-saml-simplesamlphp-configuration'
 description = 'Manage simpleSAMLphp service providers'
 filter = '(objectClass=univentionSAMLServiceProvider)'
 
-raw_metadata_generator = '''<?php
+# based on /usr/share/simplesamlphp/www/admin/metadata-converter.php
+raw_metadata_generator = r'''<?php
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
 
-$entityid = $argv[1];
-$_SERVER['REQUEST_URI'] = $entityid;
-$_SERVER['REQUEST_METHOD'] = 'POST';
-$_POST['xmldata'] = file_get_contents("php://stdin");
-chdir('/usr/share/simplesamlphp/www/admin');
-ob_start();
-require_once('./metadata-converter.php');
-ob_end_clean();
-print($output["saml20-sp-remote"]);
+$xmldata = file_get_contents("php://stdin");
+require_once('/usr/share/simplesamlphp/lib/_autoload.php');
+\SimpleSAML\Utils\XML::checkSAMLMessage($xmldata, 'saml-meta');
+$entities = SimpleSAML_Metadata_SAMLParser::parseDescriptorsString($xmldata);
+foreach ($entities as $entityId => &$entity) {
+	$entityMetadata = $entity->getMetadata20SP();
+	unset($entityMetadata['entityDescriptor']);
+	print('$metadata['.var_export($entityId, true).'] = ' . var_export($entityMetadata, true).";\n");
+}
 '''
 sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
@@ -141,7 +142,7 @@ def write_configuration_file(dn, new, filename):
 			temp.write(raw_metadata_generator)
 			temp.flush()
 
-			process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
+			process = Popen(['/usr/bin/php5', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
 			stdout, stderr = process.communicate(metadata)
 			if process.returncode != 0:
 				ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr,))
@@ -189,7 +190,7 @@ def write_configuration_file(dn, new, filename):
 		fd.write("$metadata[%s] = array_merge($metadata[%s], $further);" % (php_string(entityid), php_string(entityid)))
 
 	fd.close()
-	process = Popen(['/usr/bin/php', '-lf', filename], stderr=PIPE, stdout=PIPE)
+	process = Popen(['/usr/bin/php5', '-lf', filename], stderr=PIPE, stdout=PIPE)
 	stdout, stderr = process.communicate()
 	if process.returncode:
 		ud.debug(ud.LISTENER, ud.ERROR, 'broken PHP syntax(%d) in %s: %s%s' % (process.returncode, filename, stderr, stdout))
