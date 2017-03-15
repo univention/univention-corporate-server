@@ -1,3 +1,9 @@
+univention-portal (1.0.8-9) unstable; urgency=medium
+
+  * Bug #42175: Portal link instead of UMC link
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Mar 2017 15:03:52 +0100
+
 univention-portal (1.0.8-8) unstable; urgency=medium
 
   * Bug #42175: Fix path to domain UMC

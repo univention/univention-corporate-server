@@ -113,14 +113,14 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 	if [ "$role" = "domaincontroller_master" ]; then
 		# set link to master umc on all other system roles
 		ucr set \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/label="$umc_label_en" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/label/de="$umc_label_de" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/label/fr="$umc_label_fr" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/description="$umc_description_en" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de="$umc_description_de" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/description/fr="$umc_description_fr" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/icon=/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/link=/univention/management/
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label?"Univention Portal" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label/de?"Univention Portal" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/label/fr?"Portail Univention" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description?"Central portal web page for the UCS domain" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de?"Zentrale Portal-Webseite für die UCS-Domäne" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/description/fr?"Page web du portail central du domaine UCS" \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/icon?/univention/portal/portal-logo.svg \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/link?/univention/portal/
 		univention-directory-manager "settings/portal_entry" modify "$@" --dn="cn=ucs-local-to-domain,cn=portal,cn=univention,$ldap_base" \
 			--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
 	fi
