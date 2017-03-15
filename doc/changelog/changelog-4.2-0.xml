@@ -640,6 +640,9 @@
 				<listitem><simpara>
 					The Listener scripts for creating Kerberos keys were updated to use the new location of <command>ktutil</command> and <command>kadmin</command> (<u:bug>43492</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The list of supported encryption types in <filename>/etc/krb5.conf</filename> has been adjusted to make e.g. <command>nsupdate</command> work with the new Samba version (<u:bug>43850</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
