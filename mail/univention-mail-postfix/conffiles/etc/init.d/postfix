@@ -18,6 +18,7 @@
 # Short-Description: start and stop the Postfix Mail Transport Agent
 # Description:       postfix is a Mail Transport agent
 ### END INIT INFO
+# pidfile: /var/spool/postfix/pid/master.pid
 
 #
 # Copyright 2001-2017 Univention GmbH

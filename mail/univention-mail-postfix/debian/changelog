@@ -1,3 +1,10 @@
+univention-mail-postfix (11.0.0-4) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+  * Bug #43874: help systemd track pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-mail-postfix (11.0.0-3) unstable; urgency=low
 
   * Bug #41055: escape LDAP queries
