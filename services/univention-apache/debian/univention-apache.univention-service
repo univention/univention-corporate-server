@@ -3,3 +3,5 @@ description[de]=Web-Server
 description[en]=Web Server
 icon=service/apache2
 programs=/usr/sbin/apache2
+start_type=apache2/autostart
+systemd=apache2.service
