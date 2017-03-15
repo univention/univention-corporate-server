@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.6-7) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+  * Bug #43874: help systemd track pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-ad-connector (11.0.6-6) unstable; urgency=low
 
   * Bug #42296: no need to restart apache
