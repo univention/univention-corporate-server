@@ -3,3 +3,4 @@ Description[de]=Willkommensbildschirm
 Description[en]=welcome screen
 programs=/usr/bin/univention-welcome-screen
 start_type=welcome-screen/autostart
+systemd=univention-welcome-screen.service
