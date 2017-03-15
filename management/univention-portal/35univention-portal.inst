@@ -119,7 +119,7 @@ if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" 
 			ucs/web/overview/entries/admin/ucs-local-to-domain/description="$umc_description_en" \
 			ucs/web/overview/entries/admin/ucs-local-to-domain/description/de="$umc_description_de" \
 			ucs/web/overview/entries/admin/ucs-local-to-domain/description/fr="$umc_description_fr" \
-			ucs/web/overview/entries/admin/ucs-local-to-domain/icon=/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg \
+			ucs/web/overview/entries/admin/ucs-local-to-domain/icon=/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg \
 			ucs/web/overview/entries/admin/ucs-local-to-domain/link=/univention/management/
 		univention-directory-manager "settings/portal_entry" modify "$@" --dn="cn=ucs-local-to-domain,cn=portal,cn=univention,$ldap_base" \
 			--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die

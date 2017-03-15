@@ -1,3 +1,9 @@
+univention-portal (1.0.8-8) unstable; urgency=medium
+
+  * Bug #42175: Fix path to domain UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Mar 2017 13:27:33 +0100
+
 univention-portal (1.0.8-7) unstable; urgency=medium
 
   * Bug #43670: adjust quoting of labels
