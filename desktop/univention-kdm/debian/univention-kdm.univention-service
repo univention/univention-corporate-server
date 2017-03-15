@@ -4,3 +4,4 @@ Description[en]=KDE Display Manager
 start_type=kdm/autostart
 programs=/usr/bin/kdm
 icon=service/kdm
+systemd=kdm.service
