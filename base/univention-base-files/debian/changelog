@@ -1,6 +1,7 @@
 univention-base-files (6.0.0-10) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
+  * Bug #43874: Remove System V init scripts shadows by systemd unit file
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
 

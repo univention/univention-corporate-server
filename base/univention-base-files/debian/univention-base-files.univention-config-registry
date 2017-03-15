@@ -48,26 +48,6 @@ File: etc/init.d/rdate
 Mode: 0755
 
 Type: file
-File: etc/init.d/ntp
-Mode: 0755
-
-Type: file
-File: etc/init.d/openbsd-inetd
-Mode: 0755
-
-Type: file
-File: etc/init.d/cron
-Mode: 0755
-
-Type: file
-File: etc/init.d/rpcbind
-Mode: 0755
-
-Type: file
-File: etc/init.d/nscd
-Mode: 0755
-
-Type: file
 File: etc/networks
 
 Type: file
