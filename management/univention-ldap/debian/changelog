@@ -1,3 +1,9 @@
+univention-ldap (13.0.5-5) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
 univention-ldap (13.0.5-4) unstable; urgency=low
 
   * Bug #43645: db5.3

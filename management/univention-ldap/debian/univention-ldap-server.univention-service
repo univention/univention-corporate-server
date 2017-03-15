@@ -4,3 +4,4 @@ Description[en]=LDAP Server
 programs=/usr/sbin/slapd
 start_type=ldap/autostart
 icon=service/ldap
+systemd=slapd.service
