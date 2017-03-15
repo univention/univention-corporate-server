@@ -199,7 +199,8 @@ define([
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
 					// check whether session is still valid
 					this._checkSessionRequest = login.sessioninfo().otherwise(lang.hitch(this, function(error) {
-						if (tools.parseError(error).status !== 401) {
+						error = tools.parseError(error);
+						if (error.status !== 401) {
 							// ignore any other error than unauthenticated (e.g. not reachable)
 							return;
 						}
@@ -207,7 +208,7 @@ define([
 							// login dialog is already running
 							return;
 						}
-						login.sessionTimeout();
+						login.sessionTimeout(error);
 					}));
 					this._checkSessionRequest.always(lang.hitch(this, function() {
 						this._checkSessionRequest = null;
@@ -529,7 +530,7 @@ define([
 				displayErrors: true,
 
 				401: function() {
-					return login.handleAuthenticationError.call(login, arguments);
+					return login.handleAuthenticationError.apply(login, arguments);
 				},
 
 				display422: function(info) {

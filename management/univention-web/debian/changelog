@@ -1,6 +1,13 @@
+univention-web (1.0.39-1) unstable; urgency=medium
+
+  * Bug #42174: fix handling of 401 error
+
+ -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 19:40:32 +0100
+
 univention-web (1.0.38-2) unstable; urgency=medium
 
   * Bug #32027: fix comma
+
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 18:56:47 +0100
 
 univention-web (1.0.38-1) unstable; urgency=medium
