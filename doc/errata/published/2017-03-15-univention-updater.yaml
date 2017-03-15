@@ -16,3 +16,5 @@ desc: |
    though. The upgrade was run with the correct App version.
  * The updater cleans the package cache now after a successful update.
 bug: [43026, 43257, 42935, 43569, 42433]
+erratum: 407
+announced: 2017-03-15
