@@ -4,3 +4,4 @@ description[en]=Fetchmail Daemon
 start_type=fetchmail/autostart
 icon=mail/fetchmail
 programs=/usr/bin/fetchmail
+systemd=fetchmail.service
