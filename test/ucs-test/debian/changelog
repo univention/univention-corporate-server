@@ -1,3 +1,10 @@
+ucs-test (7.0.19-1) unstable; urgency=medium
+
+  * 09_updater/*mirror*: Temporarily skip the tests and add set -x to
+    70mirror (Bug #43914)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Mar 2017 19:49:29 +0100
+
 ucs-test (7.0.18-2) unstable; urgency=medium
 
   * Bug #43913: try to stabilize 53_samba-common/05domain-join-ntlm-auth
