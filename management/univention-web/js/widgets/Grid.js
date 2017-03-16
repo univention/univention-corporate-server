@@ -377,6 +377,9 @@ define([
 
 			this._grid.on('dgrid-refresh-complete', lang.hitch(this, '_cleanupWidgets'));
 
+			aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
+			aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
+
 			if (this.query) {
 				this.filter(this.query);
 			} else if (!this._store.isUmcpCommandStore) {
@@ -864,6 +867,35 @@ define([
 				}
 				this._statusMessage.set('content', msg);
 			}));
+		},
+
+		_updateHeaderSelectClass: function() {
+			if (!this._grid._selectorColumns[0]) {
+				return;
+			}
+			var selectorColumn = this._grid._selectorColumns[0];
+			var checkbox = selectorColumn._selectorHeaderCheckbox;
+			var selectNode = selectorColumn.headerNode;
+			if (checkbox.checked) {
+				domClass.remove(selectNode, "dgrid-indeterminate");
+				domClass.add(selectNode, "dgrid-allSelected");
+				return;
+			} else if (checkbox.indeterminate) {
+				domClass.remove(selectNode, "dgrid-allSelected");
+				domClass.add(selectNode, "dgrid-indeterminate");
+				return;
+			} else {
+				domClass.remove(selectNode, "dgrid-indeterminate");
+				domClass.remove(selectNode, "dgrid-allSelected");
+				return;
+			}
+		},
+
+		_updateAllSelectedStatus: function() {
+			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
+			this._grid.allSelected = array.every(this.getAllItems(), function(item) {
+				return this._grid.isSelected(item);
+			}, this);
 		},
 
 		_refresh: function() {

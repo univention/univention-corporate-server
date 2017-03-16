@@ -1,3 +1,9 @@
+univention-web (1.0.39-2) unstable; urgency=medium
+
+  * Bug #32027: fix select all checkbox in grids
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 16 Mar 2017 16:03:27 +0100
+
 univention-web (1.0.39-1) unstable; urgency=medium
 
   * Bug #42174: fix handling of 401 error
