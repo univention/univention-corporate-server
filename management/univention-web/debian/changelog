@@ -1,3 +1,9 @@
+univention-web (1.0.39-3) unstable; urgency=medium
+
+  * Bug #32027: fix window length after tab change
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 16 Mar 2017 17:06:42 +0100
+
 univention-web (1.0.39-2) unstable; urgency=medium
 
   * Bug #32027: fix select all checkbox in grids
