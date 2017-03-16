@@ -1,3 +1,9 @@
+univention-web (1.0.39-4) unstable; urgency=medium
+
+  * Bug #32027: fix grid lazy rendering
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 16 Mar 2017 17:19:55 +0100
+
 univention-web (1.0.39-3) unstable; urgency=medium
 
   * Bug #32027: fix window length after tab change

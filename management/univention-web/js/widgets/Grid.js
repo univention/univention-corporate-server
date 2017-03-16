@@ -250,8 +250,8 @@ define([
 				return;
 			}
 			var viewPortHeight = dojoWindow.getBox().h;
-			var statusMessagePosition = geometry.position(this._statusMessage.domNode);
-			var atBottom = (statusMessagePosition.y + statusMessagePosition.h) < viewPortHeight;
+			var scrollBottom = win.body().scrollTop + viewPortHeight;
+			var atBottom = scrollBottom > (win.body().scrollHeight - 10);
 			if (atBottom) {
 				this._heightenGrid(2 * viewPortHeight);
 			}
