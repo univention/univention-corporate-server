@@ -48,6 +48,18 @@ File: etc/init.d/rdate
 Mode: 0755
 
 Type: file
+File: etc/init.d/ntp
+Mode: 0755
+
+Type: file
+File: etc/init.d/rpcbind
+Mode: 0755
+
+Type: file
+File: etc/init.d/nscd
+Mode: 0755
+
+Type: file
 File: etc/networks
 
 Type: file

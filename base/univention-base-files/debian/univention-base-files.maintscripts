@@ -1,7 +1,4 @@
 rm_conffile /etc/univention/templates/files/etc/init.d/portmap 6.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/init.d/klogd 6.0.0-4~
 rm_conffile /etc/univention/templates/files/etc/init.d/cron 6.0.0-10~
-rm_conffile /etc/univention/templates/files/etc/init.d/nscd 6.0.0-10~
-rm_conffile /etc/univention/templates/files/etc/init.d/ntp 6.0.0-10~
 rm_conffile /etc/univention/templates/files/etc/init.d/openbsd-inetd 6.0.0-10~
-rm_conffile /etc/univention/templates/files/etc/init.d/rpcbind 6.0.0-10~
