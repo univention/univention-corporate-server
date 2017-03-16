@@ -1,4 +1,10 @@
-univention-bootsplash (8.0.0-4) unstable; urgency=low
+univention-bootsplash (8.0.0-8) unstable; urgency=low
+
+  * Bug #43656: use systemd
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Mar 2017 12:04:22 +0100
+
+univention-bootsplash (8.0.0-7) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
   * Bug #43874: help systemd track pidfile

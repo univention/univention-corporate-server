@@ -44,7 +44,6 @@ override_dh_auto_test:
 
 override_dh_systemd_start:
 	dh_systemd_start -punivention-welcome-screen --no-start univention-welcome-screen.service
-	dh_systemd_start -punivention-welcome-screen --no-start univention-welcome-screen-daemon.service
 
 %:
 	dh $@ --with systemd
