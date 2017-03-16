@@ -13,8 +13,6 @@ from umc import UMCBase
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.testing.umc import Client
-from univention.lib.umc import Unauthorized
 
 
 class TestUMCUserAuthentication(UMCBase):
@@ -61,19 +59,6 @@ class TestUMCUserAuthentication(UMCBase):
 		"""
 		return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}}], 'users/user')
 
-	def authenticate_to_umc(self, username, password):
-		"""
-		Authenticates to UMC using 'self.client' and given
-		'password' with 'username'. Updates the cookie.
-		Returns 'True' on success and 'False' in any other case.
-		"""
-		try:
-			response = self.client.authenticate(username, password)
-			assert response.status == 200
-			return True
-		except Unauthorized:
-			return False
-
 	def main(self):
 		"""
 		Tests the UMC user authentication and various password change cases.
@@ -83,8 +68,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 		with UCSTestUDM() as self.UDM:
 			self.create_user()
-			self.client = Client()
-			self.authenticate_to_umc(self.test_username, self.test_password)
+			self.create_connection_authenticate()
 
 			prior_testval = utils.get_ldap_connection().get(self.test_user_dn)
 			self.set_userexpiry_testval()
