@@ -1,3 +1,9 @@
+univention-samba4 (6.0.9-9) unstable; urgency=low
+
+  * Bug #43874: Work-around diverted univention-service needed by systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Mar 2017 11:33:28 +0100
+
 univention-samba4 (6.0.9-8) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

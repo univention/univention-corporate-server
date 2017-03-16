@@ -1,3 +1,9 @@
+univention-heimdal (10.0.0-7) unstable; urgency=low
+
+  * Bug #43874: Update init script from Debian-Jessie file
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Mar 2017 11:35:23 +0100
+
 univention-heimdal (10.0.0-6) unstable; urgency=medium
 
   * Bug #43850: Adjust enctypes list to work with Samba 4.6 get_enctypes

@@ -107,6 +107,9 @@ stop_conflicting_services() {
 
 	tmp_ucr_key_value_list=()
 	if [ "$samba_autostart" != "no" ]; then
+		# Bug #43874: samba4 has that idea to divert the univention-service file to "not confuse the admin with a stopped heimdal-kdc", but now we're confusing systemd
+		[ -d /run/systemd ] && systemctl disable heimdal-kdc.service || :
+		[ -d /run/systemd ] && systemctl mask heimdal-kdc.service || :
 			tmp_ucr_key_value_list[0]="samba/autostart=no"
 	fi
 	if [ "$winbind_autostart" != "no" ]; then
