@@ -16,6 +16,7 @@
 #                    order to make RPC calls. Services that use
 #                    RPC include NFS and NIS.
 ### END INIT INFO
+# pidfile: /run/rpcbind.pid
 
 test -f /sbin/rpcbind || exit 0
 

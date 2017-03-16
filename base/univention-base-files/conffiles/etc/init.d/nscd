@@ -8,6 +8,7 @@
 # Default-Stop:      0 1 6
 # Short-Description: Starts the Name Service Cache Daemon
 ### END INIT INFO
+# pidfile: /var/run/nscd/nscd.pid
 
 #
 # nscd:		Starts the Name Service Cache Daemon

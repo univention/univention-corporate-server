@@ -9,6 +9,7 @@
 # Default-Stop: 
 # Short-Description: Start NTP daemon
 ### END INIT INFO
+# pidfile: /var/run/ntpd.pid
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
