@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-6) unstable; urgency=low
+
+  * Bug #43656: start welcome screen after setup
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Mar 2017 12:51:41 +0100
+
 univention-system-setup (10.0.9-5) unstable; urgency=medium
 
   * Bug #43864: Remove dgrid autoheight for software selection
