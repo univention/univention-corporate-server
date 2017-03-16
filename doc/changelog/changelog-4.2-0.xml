@@ -21,16 +21,25 @@
 						Apache has been updated to 2.4.10.
 					</simpara></listitem>
 					<listitem><simpara>
+						The BIND DNS server has been updated to 9.9.5.
+					</simpara></listitem>
+					<listitem><simpara>
+						OpenSSH has been updated to 6.7.
+					</simpara></listitem>
+					<listitem><simpara>
 						Perl has been updated to 5.20.2.
+					</simpara></listitem>
+					<listitem><simpara>
+						PHP has been updated to 5.6.30.
+					</simpara></listitem>
+					<listitem><simpara>
+						Postfix has been updated to 2.11.3.
 					</simpara></listitem>
 					<listitem><simpara>
 						UCS ships with <package>systemd-sysv</package> as default init system.
 						This package is installed automatically on upgrades.
 						All UCS init shell scripts have been made LSB compliant to be compatible with <application>systemd</application>.
 						If custom init scripts are used or standard UCS init scrips haven been modified, please be aware that these may now have been superseded by <application>systemd</application> unit files or <systemitem class="service">systemd</systemitem> itself (<u:bug>43330</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						...
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -918,7 +927,7 @@
 				The packages <package>univention-log-collector-server</package> and <package>univention-log-collector-client</package> have been removed from UCS (<u:bug>41638</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				During the upgrade to UCS 4.2, it could happened that a restart of the SpamAssassin daemon failed due to old Perl modules.
+				During the upgrade to UCS 4.2, it could happen that a restart of the SpamAssassin daemon failed due to old Perl modules.
 				The updated <package>perl</package> package ensures now that the <package>spamassassin</package> package is previously 
 				updated (<u:bug>43534</u:bug>).
 			</simpara></listitem>
