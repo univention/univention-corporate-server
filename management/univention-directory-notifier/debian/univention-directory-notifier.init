@@ -7,7 +7,6 @@
 # Default-Stop:      0 1 6
 # Short-Description: Univention Directory Notifier Daemon
 ### END INIT INFO
-# pidfile: /var/run/univention-welcome-screen.pid
 #
 # Copyright 2004-2017 Univention GmbH
 #
