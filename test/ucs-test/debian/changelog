@@ -1,3 +1,9 @@
+ucs-test (6.0.37-60) unstable; urgency=medium
+
+  * Bug #43859: backport test fixes
+
+ -- Florian Best <best@univention.de>  Thu, 16 Mar 2017 18:45:53 +0100
+
 ucs-test (6.0.37-59) unstable; urgency=medium
 
   * Bug #39382: reenable ucs-test-umc
