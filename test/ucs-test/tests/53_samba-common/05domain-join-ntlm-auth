@@ -36,7 +36,7 @@ fi
 
 group_adduser "$username" "Domain Admins"
 
-winbind_separator=$(wbinfo --separator)
+winbind_separator=$(testparm -sv --parameter-name="winbind separator" 2>/dev/null)
 FQUSERNAME="$windows_domain$winbind_separator$username"
 if [ "$samba_domain_security" = ads ]; then
 	net_mode=ads

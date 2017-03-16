@@ -1,3 +1,9 @@
+ucs-test (7.0.18-2) unstable; urgency=medium
+
+  * Bug #43913: try to stabilize 53_samba-common/05domain-join-ntlm-auth
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Mar 2017 16:33:45 +0100
+
 ucs-test (7.0.18-1) unstable; urgency=medium
 
   * Bug #43855: fix 31_udm_user_authentication
