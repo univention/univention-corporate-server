@@ -36,6 +36,7 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ucr.sh
 
 image="/tmp/.univention-welcome-screen.png"
+start_plymouth="/tmp/.univention-welcome-screen.start-plymouth"
 
 echo "starting $0 ($(date)) with $@"
 
@@ -58,6 +59,13 @@ if [ -n "$mode" ]; then
 		display=true
 		ply=true
 	fi
+fi
+
+if [ -e "$start_plymouth" ];then
+	grab=true
+	display=true
+	ply=true
+	rm -f "$start_plymouth"
 fi
 
 # some tests

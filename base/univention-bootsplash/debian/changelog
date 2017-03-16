@@ -1,3 +1,9 @@
+univention-bootsplash (8.0.0-9) unstable; urgency=low
+
+  * Bug #43656: system setup support
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Mar 2017 12:50:34 +0100
+
 univention-bootsplash (8.0.0-8) unstable; urgency=low
 
   * Bug #43656: use systemd
