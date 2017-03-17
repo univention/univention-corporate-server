@@ -30,6 +30,7 @@
 
 from optparse import OptionParser
 from sys import exit
+from ldap.dn import escape_dn_chars
 
 from univention.lib.umc import Client
 
@@ -39,20 +40,13 @@ ucr = ConfigRegistry()
 client = None
 
 parser = OptionParser()
-parser.add_option('-H', '--host', dest='host', default='localhost',
-	help='host to connect to', metavar='HOST')
-parser.add_option('-u', '--user', dest='username',
-	help='username', metavar='UID', default='administrator')
-parser.add_option('-p', '--password', dest='password', default='univention',
-	help='password', metavar='PASSWORD')
-parser.add_option('-D', '--domain_host', dest='domain_host', default=None,
-	help='domain controller to connect to', metavar='DOMAIN_HOST')
-parser.add_option('-A', '--domain_admin', dest='domain_admin',
-	help='domain admin username', metavar='DOMAIN_UID', default='administrator')
-parser.add_option('-P', '--domain_password', dest='domain_password', default='Univention@99',
-	help='domain admin password', metavar='DOMAIN_PASSWORD')
-parser.add_option('-S', '--sync_mode', dest='sync_mode', action="store_true", default=False,
-	help='join in synchronization mode (instead of read by default)', metavar='SYNC_MODE')
+parser.add_option('-H', '--host', dest='host', default='localhost', help='host to connect to', metavar='HOST')
+parser.add_option('-u', '--user', dest='username', help='username', metavar='UID', default='administrator')
+parser.add_option('-p', '--password', dest='password', default='univention', help='password', metavar='PASSWORD')
+parser.add_option('-D', '--domain_host', dest='domain_host', default=None, help='domain controller to connect to', metavar='DOMAIN_HOST')
+parser.add_option('-A', '--domain_admin', dest='domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
+parser.add_option('-P', '--domain_password', dest='domain_password', default='Univention@99', help='domain admin password', metavar='DOMAIN_PASSWORD')
+parser.add_option('-S', '--sync_mode', dest='sync_mode', action="store_true", default=False, help='join in synchronization mode (instead of read by default)', metavar='SYNC_MODE')
 
 (options, args) = parser.parse_args()
 
@@ -65,10 +59,12 @@ def join_sync_mode():
 
 	# check domain / get configuration:
 	print '=== AD-JOIN STARTED ==='
-	request_options = {"ad_server_address": options.domain_host,
+	request_options = {
+		"ad_server_address": options.domain_host,
 		"username": options.domain_admin,
 		"password": options.domain_password,
-		"mode": "adconnector"}
+		"mode": "adconnector"
+	}
 	result = client.umc_command("adconnector/check_domain", request_options).result
 
 	# configure / save options:
@@ -81,13 +77,15 @@ def join_sync_mode():
 		print "\nAn Error while reading the AD Domain configuration: %r" % exc
 		exit(1)
 
-	request_options = {'Host_IP': options.domain_host,
+	request_options = {
+		'Host_IP': options.domain_host,
 		'KerberosDomain': kerberos_domain,
 		'LDAP_Base': ad_ldap_base,
-		'LDAP_BindDN': "cn=" + options.domain_admin + ",cn=users," + ad_ldap_base,
+		'LDAP_BindDN': "cn=" + escape_dn_chars(options.domain_admin) + ",cn=users," + ad_ldap_base,
 		'LDAP_Host': ad_dc_name,
 		'LDAP_Password': options.domain_password,
-		'MappingSyncMode': "sync"}
+		'MappingSyncMode': "sync"
+	}
 
 	conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
 	if not conf_result['success']:
@@ -143,7 +141,7 @@ def join_ad():
 	""" Function for joining an AD domain, mimicking a join from umc"""
 
 	global client
-	client = Client(options.host, options.username, options.password)
+	client = Client(options.host, options.username, options.password, language='en-US')
 
 	if options.sync_mode:
 		# join in sync mode:
@@ -184,6 +182,7 @@ def check_correct_domain_admin():
 	ucr.load()
 	ucr_domain_admin = ucr['tests/domainadmin/account']
 	if ucr_domain_admin:
+		# FIXME: https://hutten.knut.univention.de/mediawiki/index.php/Sicherheits-Richtlinien#LDAP_DN.27s_Escapen
 		ucr_domain_admin_parts = ucr_domain_admin.split(',')
 		if ucr_domain_admin_parts[0].split('=')[1] != options.domain_admin:
 			ucr_domain_admin_parts[0] = 'uid=%s' % options.domain_admin
