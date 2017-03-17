@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-7) unstable; urgency=medium
+
+  * Bug #42232: Migrated EC2 start site
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 17 Mar 2017 13:17:32 +0100
+
 univention-system-setup (10.0.9-6) unstable; urgency=low
 
   * Bug #43656: start welcome screen after setup

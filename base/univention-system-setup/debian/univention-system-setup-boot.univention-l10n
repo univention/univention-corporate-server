@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			"usr/share/univention-system-setup-boot/www/index.html"
+			"usr/share/univention-system-setup-boot/www/main.js"
 		],
 		"po_subdir": "usr/share/univention-system-setup-boot/www/",
 		"target_type": "json",
