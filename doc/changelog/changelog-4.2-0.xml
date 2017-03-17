@@ -254,6 +254,9 @@
 					A menu entry for changing the language has been added (<u:bug>40612</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					A menu entry for downloading the root certificate and certificate revocation list has been added (<u:bug>43695</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					In certain situations it was possible that the translations were mixed. This has been fixed (<u:bug>38370</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
