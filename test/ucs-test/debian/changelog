@@ -1,3 +1,9 @@
+ucs-test (7.0.20-5) unstable; urgency=medium
+
+  * 53_samba-common/50quota: temporary skip test case (Bug #43911)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Mar 2017 15:19:19 +0100
+
 ucs-test (7.0.20-4) unstable; urgency=medium
 
   * 53_samba-common/36_printer: temporary skip test case (Bug #43912)

@@ -11,6 +11,7 @@
 ##  - memberserver
 ## tags: 
 ##  - skip_admember
+##  - SKIP
 ## exposure: dangerous
 
 eval "$(ucr shell)"
