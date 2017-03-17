@@ -43,6 +43,8 @@ class Junit(TestFormatInterface):
         else:
             errors = 1
         classname = encode(result.case.uid.replace("/", "."))
+        if classname.endswith('.py'):
+            classname = classname[:-3]
 
         filename = os.path.join(self.outdir, '%s.xml' % (result.case.uid,))
         dirname = os.path.dirname(filename)
