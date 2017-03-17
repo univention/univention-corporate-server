@@ -163,8 +163,22 @@ fi
 	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) >>"$UPDATER_LOG" 2>&1 ||
 	: # better safe than sorry
 
-# Bug #43835: update app cache
-test -e /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
+# Bug #43835: update app cache and portal entries
+test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
+python -c '
+import sys
+from univention.appcenter.ucr import ucr_keys, ucr_instance
+sys.path.append("/etc/univention/templates/modules")
+import create_portal_entries
+import re
+ids = set()
+for key in ucr_keys():
+    match = re.match("ucs/web/overview/entries/(admin|service)/([^/]+)/.*", key)
+    if match:
+        ids.add(key)
+changes = dict((id, (None, None)) for id in ids)
+create_portal_entries.handler(ucr_instance(), changes)
+' >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
 echo "
