@@ -1245,7 +1245,10 @@ define([
 					return _('Installation of %d additional software components.', nItems);
 				},
 				standby: function() {},
-				gridOptions: {className: ''}
+				gridOptions: {
+					className: '',
+					selectionMode: 'multiple'
+				}
 			});
 
 			var _handleSelectDefault = this._gallery._grid._handleSelect;

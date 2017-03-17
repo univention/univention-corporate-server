@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-8) unstable; urgency=medium
+
+  * Bug #43864: Change selection mode and height for software selection
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 17 Mar 2017 15:27:29 +0100
+
 univention-system-setup (10.0.9-7) unstable; urgency=medium
 
   * Bug #42232: Migrated EC2 start site

@@ -153,8 +153,12 @@ $header-color ?= #787878
 		.umcPageIcon
 			height: 180px
 			background-image: url(software.svg)
+			@media (max-height: 799px)
+				height: 120px
 
 		.umcGrid.umcUCSSetupSoftwareGrid .dgrid
+			@media (max-height: 799px)
+				height: 25em
 
 			.dgrid-row
 				height: auto
