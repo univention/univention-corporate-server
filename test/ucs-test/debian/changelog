@@ -1,4 +1,10 @@
-ucs-test (7.0.20-8) UNRELEASED; urgency=medium
+ucs-test (7.0.20-9) unstable; urgency=medium
+
+  * 20_appcenter/75_umc_query_app_data: Skip test case (Bug #43971)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Mar 2017 20:07:38 +0100
+
+ucs-test (7.0.20-8) unstable; urgency=medium
 
   * 49_nfs/11mount-home: Skip test case (Bug #43970)
 

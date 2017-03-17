@@ -5,7 +5,7 @@
 
 ## packages:
 ##   - univention-management-console-module-appcenter
-## tags: [appcenter]
+## tags: [appcenter,SKIP]
 ## exposure: safe
 
 import os
