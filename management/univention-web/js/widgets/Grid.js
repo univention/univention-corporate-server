@@ -266,8 +266,6 @@ define([
 			if (gridIsFullyRendered) {
 				this._updateFooterContent();
 				this._scrollSignal.remove();
-			} else {
-				this._statusMessage.set('content', '');
 			}
 		},
 
@@ -863,7 +861,6 @@ define([
 					else if (1 === nItems) {
 						msg = _('1 entry of %d selected', nItemsTotal);
 					}
-					msg = _('All entries loaded');
 				}
 				this._statusMessage.set('content', msg);
 			}));
@@ -951,7 +948,7 @@ define([
 			});
 			var onError = lang.hitch(this, function(error) {
 				error = tools.parseError(error);
-				this._statusMessage.set('content', entities.encode(error.message || _('Could not load search results')));
+				this._statusMessage.set('content', _('Could not load search results'));
 				this._grid.set('collection', new Memory());
 				this._updateFooterContent();
 			});
