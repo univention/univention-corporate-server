@@ -1,3 +1,9 @@
+ucs-test (7.0.20-7) unstable; urgency=medium
+
+  * Bug #43862: fix error message strings
+
+ -- Florian Best <best@univention.de>  Fri, 17 Mar 2017 16:43:59 +0100
+
 ucs-test (7.0.20-6) unstable; urgency=medium
 
   * 60_umc/04_udm_policies: temporary skip test case (Bug #43858)
