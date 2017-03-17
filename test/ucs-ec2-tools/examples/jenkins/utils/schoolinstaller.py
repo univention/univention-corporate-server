@@ -41,7 +41,7 @@ ucr.load()
 
 parser = OptionParser()
 parser.add_option(
-	'-H', '--host', dest='host', default='localhost',
+	'-H', '--host', dest='host', default='%s.%s' % (ucr.get('hostname'), ucr.get('domainname')),
 	help='host to connect to', metavar='HOST')
 parser.add_option(
 	'-u', '--user', dest='username',
