@@ -262,6 +262,9 @@
 				<listitem><simpara>
 					Plural forms for translations are now supported in the JavaScript code (<u:bug>42220</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The JavaScript libraries dojo (1.12.1), xstyle (3.2.0) and dgrid (1.1.0) are updated(<u:bug>42291</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
