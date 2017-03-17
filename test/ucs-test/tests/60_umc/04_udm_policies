@@ -2,6 +2,8 @@
 ## desc: Test UMC policy result
 ## roles:
 ##  - domaincontroller_master
+## tags:
+##  - SKIP
 ## packages:
 ##  - univention-management-console-module-udm
 ## exposure: safe

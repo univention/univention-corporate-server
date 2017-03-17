@@ -1,3 +1,9 @@
+ucs-test (7.0.20-6) unstable; urgency=medium
+
+  * 60_umc/04_udm_policies: temporary skip test case (Bug #43858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Mar 2017 16:25:07 +0100
+
 ucs-test (7.0.20-5) unstable; urgency=medium
 
   * 53_samba-common/50quota: temporary skip test case (Bug #43911)
