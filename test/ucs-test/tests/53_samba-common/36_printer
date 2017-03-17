@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Creating a shared printer and printing from smbclient"
 ## exposure: safe
+## tags: [SKIP]
 ## packages:
 ##  - univention-samba | univention-samba4
 ##  - univention-printserver

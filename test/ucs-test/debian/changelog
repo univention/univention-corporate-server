@@ -1,3 +1,9 @@
+ucs-test (7.0.20-4) unstable; urgency=medium
+
+  * 53_samba-common/36_printer: temporary skip test case (Bug #43912)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Mar 2017 15:17:34 +0100
+
 ucs-test (7.0.20-3) unstable; urgency=medium
 
   * Bug #43862: Bug #40709: allow .py suffix for pytest-tests
