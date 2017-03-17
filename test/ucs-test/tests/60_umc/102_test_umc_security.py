@@ -18,14 +18,15 @@ class TestSecurityHeaders(object):
 		client = Client()
 		response = client.request('GET', path)
 		assert response.get_header("X-Frame-Options") == "SAMEORIGIN"
-		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline';"
+		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval';"
 
 		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
 		assert response.get_header("X-Content-Type-Options") == "nosniff"
 
 	@pytest.mark.parametrize('path', [
-		'/',
+		'/languages.json',
+		'/portal/',
 		'/management/',
 	])
 	def test_univention(self, path, Client):
