@@ -129,7 +129,7 @@ $(TMP_DOJO_PACKAGES): $(TMP_DIR)/%: $(DOJO_DIR)/%
 $(TMP_I18N_DIR)/%/branding.json:
 	@# create empty branding localisation files to not cause 404 errors
 	mkdir -p $(@D)
-	touch "$@"
+	echo '{}' > "$@"
 
 $(TMP_I18N_DIR)/%/app.json: js/%.po
 	@# create empty branding localisation files to not cause 404 errors

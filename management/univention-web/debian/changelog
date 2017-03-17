@@ -1,3 +1,9 @@
+univention-web (1.0.39-6) unstable; urgency=medium
+
+  * Bug #43528: create valid branding.json file
+
+ -- Florian Best <best@univention.de>  Fri, 17 Mar 2017 16:00:29 +0100
+
 univention-web (1.0.39-5) unstable; urgency=medium
 
   * Bug #32027: remove wrong status messages in grid
