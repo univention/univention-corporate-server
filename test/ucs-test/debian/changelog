@@ -1,4 +1,4 @@
-ucs-test (7.0.20-1) unstable; urgency=medium
+ucs-test (7.0.20-2) unstable; urgency=medium
 
   * Bug #43862: Bug #40709: allow .py suffix for pytest-tests
 

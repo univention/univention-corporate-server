@@ -52,7 +52,7 @@ tests = get_tests(sections)
 for tests in tests.itervalues():
     for fname in tests:
         name, ext = splitext(basename(fname))
-        if "." in name and not ext:
+        if "." not in name and not ext:
             continue
         line = open(fname).readline()
         if ext != ".py" or "py.test" not in line or "pytest" not in line:
