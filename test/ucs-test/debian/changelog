@@ -1,3 +1,10 @@
+ucs-test (7.0.20-13) unstable; urgency=medium
+
+  * 01_base/101_install_all_packages_from_a_release: Increase timeout to
+    2 hours (Bug #77932)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Mar 2017 19:17:31 +0100
+
 ucs-test (7.0.20-12) unstable; urgency=medium
 
   * 10_ldap/25reconnect_uldap: Wait for some seconds after the test case

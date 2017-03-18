@@ -2,6 +2,7 @@
 ## desc: install all packages from a release
 ## roles: [domaincontroller_backup]
 ## tags: [apptest]
+## timeout: 7200
 ## exposure: careful
 ## packages: []
 
