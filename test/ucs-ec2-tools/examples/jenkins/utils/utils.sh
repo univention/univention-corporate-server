@@ -187,6 +187,8 @@ wait_for_reboot ()
 	if [ $i = 900 ]; then
 		echo "WARNING: wait_for_reboot: Did not find running apache after 900 seconds"
 	fi
+	# Wait a little bit more otherwise other services are not available
+	sleep 30
 }
 
 wait_for_replication ()
