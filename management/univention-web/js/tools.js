@@ -35,6 +35,7 @@ define([
 	"dojo/request/xhr",
 	"dojo/_base/xhr",
 	"dojo/Deferred",
+	"dojo/promise/all",
 	"dojo/json",
 	"dojo/string",
 	"dojo/topic",
@@ -49,10 +50,11 @@ define([
 	"umc/widgets/Text",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, _window, xhr, basexhr, Deferred, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, all, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
+	var tools = {};
 	var login = {}, TextBox = {}, TextArea = {};
 	var dialog = {
 		login: function() {
@@ -62,16 +64,25 @@ define([
 		alert: function() {},
 		centerAlertDialog: function() {}
 	};
+
+	tools.loadLicenseDataDeferred = new Deferred();
+
 	require(['umc/dialog', 'login', 'umc/widgets/TextBox', 'umc/widgets/TextArea'], function(_dialog, _login, _TextBox, _TextArea) {
 		// register the real umc/dialog module in the local scope
 		dialog = _dialog;
 		login = _login;
 		TextArea = _TextArea;
 		TextBox = _TextBox;
+
+		// automatically read in license information upon first login
+		login.onInitialLogin(function() {
+			tools.loadLicenseData().then(function() {
+				tools.loadLicenseDataDeferred.resolve();
+			});
+		});
 	});
 
 	// define umc/tools
-	var tools = {};
 	lang.mixin(tools, {
 		_status: {
 			username: null,
@@ -90,6 +101,45 @@ define([
 			autoStartModule: null,
 			autoStartFlavor: null,
 			numOfTabs: 0
+		},
+
+		loadMetaData: function() {
+			// loading the meta data is done by default via config.js...
+			// calling this function is only necessary for reloading data,
+			// e.g., if you know that it must have changed
+			var deferred = new Deferred();
+
+			// use a time stamp as query string to make sure that we reload the file
+			var timestamp = (new Date()).getTime();
+			require(['umc/json!/univention/meta.json?' + timestamp], lang.hitch(this, function(meta) {
+				lang.mixin(this._status, meta);
+				deferred.resolve(meta);
+			}));
+			return deferred.promise;
+		},
+
+		loadLicenseData: function() {
+			// loading the license data is done automatically on the initial login...
+			// calling this function is only necessary for reloading data,
+			// e.g., if you know that it must have changed
+			return tools.ucr([
+				'license/base',
+				'uuid/license',
+				'uuid/system'
+			]).then(lang.hitch(this, function(ucr) {
+				// save the ucr variables in a local variable
+				lang.mixin(this._status, ucr);
+				return this._status;
+			}));
+		},
+
+		loadAllStatusData: function() {
+			// loading all data is done automatically via config.js and on the initial login...
+			// calling this function is only necessary for reloading data,
+			// e.g., if you know that it must have changed
+			return all([this._loadMetaData(), this._loadLicenseData()], lang.hitch(this, function() {
+				return this._status;
+			}));
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -121,6 +171,12 @@ define([
 				this._status[key] = value;
 			}
 			return undefined;
+		},
+
+		_regUUID: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
+		_fakeUUID: '00000000-0000-0000-0000-000000000000',
+		isUUID: function(uuid) {
+			return this._regUUID.test(uuid) && uuid != this._fakeUUID;
 		},
 
 		getCookies: function() {

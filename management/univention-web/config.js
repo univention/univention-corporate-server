@@ -140,7 +140,7 @@ dojoConfig = mixin({
 	callback: function(parser, login, tools, meta) {
 		mixin(tools._status, meta);
 		if (umcConfig.loadHooks) {
-			require(["umc/hooks!"]);
+			require(["umc/hooks!", "umc/piwik"]);
 		}
 		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
 		parser.parse();

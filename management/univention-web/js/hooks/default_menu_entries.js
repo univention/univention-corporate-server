@@ -80,6 +80,7 @@ define([
 			parentMenuId: 'umcMenuCertificates',
 			label: _('Root certificate'),
 			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'certificates', 'root');
 				window.location.href = linkRootCa;
 			}
 		});
@@ -88,6 +89,7 @@ define([
 			parentMenuId: 'umcMenuCertificates',
 			label: _('Certificate revocation list'),
 			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'certificates', 'revocation-list');
 				window.location.href = linkRevocList;
 			}
 		});
@@ -105,6 +107,7 @@ define([
 				label: language.label,
 				disabled: language.id === i18nTools.defaultLang(),
 				onClick: function() {
+					topic.publish('/umc/actions', 'menu', 'switch-language', language);
 					if (tools.status('loggedIn')) {
 						dialog.confirm(_('<b>Warning</b>: The current session with all opened modules and unsaved settings gets lost and a page reload is done when switching the language.'), [{
 							name: 'change',
@@ -140,7 +143,7 @@ define([
 			parentMenuId: 'umcMenuHelp',
 			label: _('Univention Website'),
 			onClick: function() {
-				topic.publish('/umc/actions', 'menu-help', 'website');
+				topic.publish('/umc/actions', 'menu', 'help', 'website');
 				var w = window.open(_('umcUniventionUrl'), 'univention');
 				w.focus();
 			}
@@ -152,6 +155,7 @@ define([
 			label: _('Back to start site'),
 			priority: 0,
 			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'back-to-startsite');
 				window.location.pathname = '/univention/';
 			}
 		});
@@ -161,7 +165,10 @@ define([
 		var loginEntry = menu.addEntry({
 			priority: -1,
 			label: _('Login'),
-			onClick: function() { login.start(); }
+			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'login');
+				login.start();
+			}
 		});
 		if (tools.status('loggedIn')) {
 			menu.hideEntry(loginEntry);
@@ -170,7 +177,10 @@ define([
 		var logoutEntry = menu.addEntry({
 			priority: -2,
 			label: _('Logout'),
-			onClick: function() { login.logout(); }
+			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'logout');
+				login.logout();
+			}
 		});
 		if (!tools.status('loggedIn')) {
 			menu.hideEntry(logoutEntry);

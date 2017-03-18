@@ -29,13 +29,15 @@
 /*global define require window Piwik*/
 
 define([
-	"dojo/topic",
+	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
+	"dojo/topic",
 	"dojo/store/Memory",
 	"dojox/timing",
 	"umc/store",
 	"umc/tools"
-], function(topic, array, Memory, timing, store, tools) {
+], function(lang, array, kernel, topic, Memory, timing, store, tools) {
 	var actionStore = new Memory({data: []});
 	var storeId = 0;
 	var maxStoreItems = 1000;
@@ -65,7 +67,7 @@ define([
 		lastTimestamp = timestamp;
 		var action =  {
 			siteTitle: _buildSiteTitle(parts),
-			url: window.location.protocol + "//" + window.location.host,
+			url: lang.replace('{origin}{pathname}', window.location),
 			numOfTabs: tools.status('numOfTabs'),
 			timestamp: timestamp
 		};
@@ -109,11 +111,7 @@ define([
 			piwikTracker.enableLinkTracking();
 			piwikSendTimer.onTick = sendOldestAction;
 			piwikSendTimer.start();
-			// send login action
-			topic.publish('/umc/actions', 'session', 'login');
 		});
-
-
 	};
 
 	loadPiwik();
@@ -123,4 +121,7 @@ define([
 
 	// subscribe to load piwik
 	topic.subscribe('/umc/piwik/load', loadPiwik);
+
+	// send initial action that page was loaded
+	topic.publish('/umc/actions', 'page', 'loaded', kernel.locale);
 });

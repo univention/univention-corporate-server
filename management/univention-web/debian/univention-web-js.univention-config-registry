@@ -9,18 +9,20 @@ File: etc/apache2/conf-available/univention-web.conf
 
 Type: file
 File: var/www/univention/meta.json
-Variables: ucs/web/overview/entries/.*
-Variables: locale
-Variables: umc/server/languages/.*
-Variables: hostname
 Variables: domainname
-Variables: server/role
-Variables: umc/web/appliance/name
-Variables: server/amazon
+Variables: hostname
 Variables: interfaces/
 Variables: ldap/master
-Variables: umc/web/feedback/mail
-Variables: umc/web/feedback/description
+Variables: locale
+Variables: server/amazon
+Variables: server/role
+Variables: ssl/validity/.*
+Variables: system/setup/showloginmessage
+Variables: umc/http/session/timeout
+Variables: umc/web/.*
+Variables: update/available
+Variables: update/reboot/required
+Variables: version/.*
 
 Type: file
 File: usr/share/univention-web/js/umc/hooks.json
