@@ -1,3 +1,11 @@
+univention-management-console (9.0.65-2) unstable; urgency=medium
+
+  Bug #43604:
+  * Adjust piwik integration for login events + UMC events
+  * Remove obsolete UCR requests (data has been moved to meta.json)
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 18 Mar 2017 23:38:12 +0100
+
 univention-management-console (9.0.65-1) unstable; urgency=medium
 
   * Bug #39733: adjust security header for all login sites

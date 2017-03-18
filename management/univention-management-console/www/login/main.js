@@ -76,44 +76,62 @@ define([
 		// In the code, we differ between the following states:
 		// * initial login state: from beginning until first logout
 		// * logout state: from logout until next login
-		// * login state: from 2nd (and consecutive) login until next logout
+		// * re-login state: from 2nd (and consecutive) login until next logout
 		// Note that we need to handle the initial login state separately to ensure
 		// (via deferreds) that the initially published topic '/umc/authenticated'
 		// is not missed by any observer.
 		_initialLoginDeferred: null,
+		_wasAlreadyLoggedIn: false,
 
 		_initEventHandlers: function() {
 			// initiate deferred for initial login
 			this._initialLoginDeferred = new Deferred();
 
+			this._initialLoginDeferred.then(lang.hitch(this, function(username) {
+				// initial login -> notify all registered callbacks
+				this._notifyObservers('initialLogin', username);
+				topic.publish('/umc/actions', 'session', 'login');
+			}));
+
 			topic.subscribe('/umc/authenticated', lang.hitch(this, function(params) {
+				// /umc/authenticated is published if session check shows a valid
+				// session, i.e., every 30sec or so; however this relogin event
+				// will only be triggered if the user was logged out before
 				var username = params[0];
 				if (this._initialLoginDeferred) {
 					// -> initial login state -> resolve the deferred
 					this._initialLoginDeferred.resolve(username);
-				} else {
-					// -> login state -> call all registered callbacks
-					this._notifyObservers('login', username);
+				}
+				else if (!this._wasAlreadyLoggedIn) {
+					// -> re-login state -> call all registered callbacks
+					this._wasAlreadyLoggedIn = true;
+					this._notifyObservers('relogin', username);
+					topic.publish('/umc/actions', 'session', 'relogin');
 				}
 			}));
 
 			topic.subscribe('/umc/unauthenticated', lang.hitch(this, function() {
 				// -> logout state -> clear deferred and call all registered callbacks
+				this._wasAlreadyLoggedIn = false;
 				if (this._initialLoginDeferred && this._initialLoginDeferred.isFulfilled()) {
 					this._initialLoginDeferred = null;
 				}
 				this._notifyObservers('logout');
+				topic.publish('/umc/actions', 'session', 'logout');
 			}));
 		},
 
 		onLogin: function(callback) {
-			// until the _initialLoginDeferred is set we
-			if (this._initialLoginDeferred) {
-				this._initialLoginDeferred.then(function() {
-					callback(tools.status('username'));
-				});
-			}
-			this._registerObserver('login', callback);
+			this._registerObserver('initialLogin', callback);
+			this._registerObserver('relogin', callback);
+		},
+
+		onRelogin: function(callback) {
+			this._registerObserver('relogin', callback);
+		},
+
+		onInitialLogin: function(callback) {
+			this._registerObserver('initialLogin', callback);
 		},
 
 		onLogout: function(callback) {
@@ -277,7 +295,6 @@ define([
 		},
 
 		authenticated: function(username) {
-			topic.publish('/umc/actions', 'session', 'relogin');
 			//console.debug('authenticated');
 
 			// save the username internally and as cookie

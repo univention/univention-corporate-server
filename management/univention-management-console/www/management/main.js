@@ -91,7 +91,6 @@ define([
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {
 	// cache UCR variables
-	var _ucr = {};
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(hash());
 
@@ -423,9 +422,9 @@ define([
 	topic.subscribe('/umc/started', function() {
 
 		var checkCertificateValidity = function() {
-			var hostCert = parseInt(_ucr['ssl/validity/host'], 10);
-			var rootCert = parseInt(_ucr['ssl/validity/root'], 10);
-			var warning = parseInt(_ucr['ssl/validity/warning'], 10);
+			var hostCert = parseInt(tools.status('ssl/validity/host'), 10);
+			var rootCert = parseInt(tools.status('ssl/validity/root'), 10);
+			var warning = parseInt(tools.status('ssl/validity/warning'), 10);
 			var certExp = rootCert;
 			var certType = _('SSL root certificate');
 			if (rootCert >= hostCert) {
@@ -441,9 +440,9 @@ define([
 
 		var checkShowStartupDialog = function() {
 			var isUserAdmin = tools.status('username').toLowerCase() === 'administrator';
-			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
-			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
-			var isDCMaster = _ucr['server/role'] === 'domaincontroller_master';
+			var isUCRVariableEmpty = !Boolean(tools.status('umc/web/startupdialog'));
+			var showStartupDialog = tools.isTrue(tools.status('umc/web/startupdialog'));
+			var isDCMaster = tools.status('server/role') === 'domaincontroller_master';
 			if (!isDCMaster || !((isUCRVariableEmpty && tools.status('hasFreeLicense') && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
 				return;
 			}
@@ -700,7 +699,7 @@ define([
 
 		showPageDialog: function(_PageRef, key, buttonsConf, additionCssClasses) {
 			// publish action + set default values
-			topic.publish('/umc/actions', 'menu-help', key);
+			topic.publish('/umc/actions', 'menu', 'help',  key);
 			additionCssClasses = additionCssClasses || '';
 			buttonsConf = buttonsConf || [{
 				name: 'submit',
@@ -768,7 +767,7 @@ define([
 		},
 
 		_showFeedbackPage: function() {
-			topic.publish('/umc/actions', 'menu-help', 'feedback');
+			topic.publish('/umc/actions', 'menu', 'help', 'feedback');
 			var url = _('umcFeedbackUrl') + '?umc=' + require('umc/app')._tabContainer.get('selectedChildWidget').title;
 			var w = window.open(url, 'umcFeedback');
 			w.focus();
@@ -800,7 +799,6 @@ define([
 			// check for mobile view
 			if (win.getBox().w <= 550 || has('touch')) {
 				tools.status('mobileView', true);
-				domClass.add(dojo.body(), 'umcMobileView');
 			}
 
 			if (typeof props.module === "string") {
@@ -970,77 +968,19 @@ define([
 				return;
 			}
 
-			// load data dynamically
-			var ucrDeferred = this._loadUcrVariables();
-			var modulesDeferred = this._loadModules().then(lang.hitch(this, '_initModuleStore'));
-
-			// wait for modules and the UCR variables to load
-			return all([modulesDeferred, ucrDeferred]).then(lang.hitch(this, function() {
+			// load module data
+			this._loadModules().then(lang.hitch(this, function(args) {
+				this._initModuleStore(args.modules, args.categories);
 				this._loaded = true;
 				this.onLoaded();
 			}));
 		},
 
-		_loadUcrVariables: function() {
-			return tools.ucr([
-				'server/role',
-				'system/setup/showloginmessage', // set to true when not joined
-				'domainname',
-				'hostname',
-				'umc/web/feedback/mail',
-				'umc/web/feedback/description',
-				'umc/web/favorites/default',
-				'umc/web/startupdialog',
-				'umc/web/host_referrallimit',
-				'umc/web/sso/newwindow',
-				'umc/http/session/timeout',
-				'ssl/validity/host',
-				'ssl/validity/root',
-				'ssl/validity/warning',
-				'update/available',
-				'update/reboot/required',
-				'umc/web/piwik',
-				'license/base',
-				'uuid/license',
-				'uuid/system',
-				'version/releasename',
-				'version/erratalevel',
-				'version/patchlevel',
-				'version/version'
-			]).then(lang.hitch(this, function(res) {
-				// save the ucr variables in a local variable
-				lang.mixin(_ucr, res);
-				tools.status('hasFreeLicense', tools.isFreeLicense(_ucr['license/base']));
-				tools.status('uuidSystem', _ucr['uuid/system']);
-				this._loadPiwik();
-				this._saveVersionStatus();
-				tools.status('umcWebSsoNewwindow', _ucr['umc/web/sso/newwindow']);
-			}));
-		},
-
-		_loadPiwik: function() {
-			var fakeUuid = '00000000-0000-0000-0000-000000000000';
-			var isRealUuid = tools.status('uuidSystem') !== fakeUuid;
-			var piwikUcrv = _ucr['umc/web/piwik'];
-			var piwikUcrvIsSet = typeof piwikUcrv === 'string' && piwikUcrv !== '';
-			var piwikAllowed = tools.isTrue(piwikUcrv) || (!piwikUcrvIsSet && tools.status('hasFreeLicense'));
-			// use piwik for user action feedback if it is not switched off explicitely
-			tools.status('piwikDisabled', !(piwikAllowed && isRealUuid));
-			require(["umc/piwik"], function() {});
-		},
-
-		_saveVersionStatus: function() {
-			tools.status('ucsVersion', lang.replace('{version/version}-{version/patchlevel} errata{version/erratalevel} ({version/releasename})', _ucr));
-		},
-
 		reloadModules: function() {
 			tools.resetModules();
 			return this._loadModules(true).then(lang.hitch(this, function(args) {
-				var modules = args[0];
-				var categories = args[1];
-
-				this._grid.set('categories', categories);
-				this._moduleStore.constructor(modules, categories);
+				this._grid.set('categories', args.categories);
+				this._moduleStore.constructor(args.modules, args.categories);
 
 				this._overviewPage.removeChild(this._categoryButtons);
 				this.renderCategories();
@@ -1055,19 +995,16 @@ define([
 				modules: tools.umcpCommand('get/modules', options),
 				categories: tools.umcpCommand('get/categories')
 			}).then(lang.hitch(this, function(data) {
-				// update progress
-				var _modules = lang.getObject('modules.modules', false, data) || [];
-				var _categories = lang.getObject('categories.categories', false, data) || [];
-
-				this._loadJavascriptModules(_modules);
-
-				return [_modules, _categories];
+				var result = {
+					modules: lang.getObject('modules.modules', false, data) || [],
+					categories: lang.getObject('categories.categories', false, data) || []
+				};
+				this._loadJavascriptModules(result.modules);
+				return result;
 			}));
 		},
 
-		_initModuleStore: function(args) {
-			var modules = args[0];
-			var categories = args[1];
+		_initModuleStore: function(modules, categories) {
 			this._moduleStore = this._createModuleStore(modules, categories);
 		},
 
@@ -1130,9 +1067,9 @@ define([
 
 		onLoaded: function() {
 			// updated status information from ucr variables
-			tools.status('sessionTimeout', parseInt(_ucr['umc/http/session/timeout'], 10) || tools.status('sessionTimeout'));
-			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
-			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
+			tools.status('sessionTimeout', parseInt(tools.status('umc/http/session/timeout'), 10) || tools.status('sessionTimeout'));
+			tools.status('feedbackAddress', tools.status('umc/web/feedback/mail') || tools.status('feedbackAddress'));
+			tools.status('feedbackSubject', tools.status('umc/web/feedback/description') || tools.status('feedbackSubject'));
 
 			var launchableModules = this._getLaunchableModules();
 			tools.status('singleModule', launchableModules.length < 2);
@@ -1170,11 +1107,7 @@ define([
 				return;
 			}
 
-			// save hostname and domainname as status information
-			tools.status('domainname', _ucr.domainname);
-			tools.status('hostname', _ucr.hostname);
-			tools.status('fqdn', _ucr.hostname + '.' + _ucr.domainname);
-
+			// set window title
 			window.document.title = lang.replace('{0} - {1}', [tools.status('fqdn'), window.document.title]);
 
 			// setup menus
@@ -1368,6 +1301,7 @@ define([
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
 					onClick: lang.hitch(this, function() {
+						topic.publish('/umc/actions', 'overview', 'category', category.id);
 						this._lastCategory = category;
 						this._updateQuery(category);
 
@@ -1420,6 +1354,7 @@ define([
 			}));
 		},
 
+		_lastSearchPattern: null,
 		_updateQuery: function(category) {
 			this.category = category;
 			var searchPattern = '';
@@ -1429,9 +1364,15 @@ define([
 				searchPattern = lang.trim(this._header._search.get('value'));
 				searchQuery = this._header._search.getSearchQuery(searchPattern);
 			} else {
+				this._lastSearchPattern = null;
 				if (this._header._search) {
 					this._header._search.set('value', null);
 				}
+			}
+
+			if (searchPattern && searchPattern !== this._lastSearchPattern) {
+				topic.publish('/umc/actions', 'overview', 'search', searchPattern);
+				this._lastSearchPattern = searchPattern;
 			}
 
 			if (!category && !searchPattern) {
