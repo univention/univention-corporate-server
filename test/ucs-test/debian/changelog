@@ -1,3 +1,9 @@
+ucs-test (7.0.20-11) unstable; urgency=medium
+
+  * 10_ldap/25reconnect_uldap: Add more debug (Bug #43927)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Mar 2017 15:49:23 +0100
+
 ucs-test (7.0.20-10) unstable; urgency=medium
 
   * 20_appcenter/20_can_apps_be_installed: temporary skip test case
