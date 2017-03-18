@@ -1,3 +1,10 @@
+univention-portal (1.0.9-1) unstable; urgency=medium
+
+  * 35univention-portal.inst: Reset old UCR variables otherwise the UCR
+    handler is not executed (Bug #43887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Mar 2017 21:53:12 +0100
+
 univention-portal (1.0.8-9) unstable; urgency=medium
 
   * Bug #42175: Portal link instead of UMC link

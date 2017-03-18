@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # -*- coding: utf-8 -*-
 #
 # Univention Portal
@@ -84,6 +84,17 @@ univention-directory-manager settings/portal create "$@" --ignore_exists \
 	--set showLogin=TRUE \
 	--set showApps=TRUE \
 	--set showServers=TRUE || die
+
+# Ret old UCR variables otherwise the UCR handler is not executed
+if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
+	ucr search --brief "ucs/web/overview/entries/(admin|service)/.*/link" | awk '{print $1}' | while read k; do
+		key="${k%:}"
+		value="$(ucr get $key)"
+		if [ -n "$value" ]; then
+			ucr set "$key"="$value"
+		fi
+	done
+fi
 
 if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
 	umc_label_en="System and domain settings"
