@@ -1,3 +1,11 @@
+ucs-test (7.0.20-12) unstable; urgency=medium
+
+  * 10_ldap/25reconnect_uldap: Wait for some seconds after the test case
+    finished. Otherwise the following test case might be fail
+    (Bug #43927)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Mar 2017 19:03:23 +0100
+
 ucs-test (7.0.20-11) unstable; urgency=medium
 
   * 10_ldap/25reconnect_uldap: Add more debug (Bug #43927)

@@ -26,6 +26,8 @@ def _cleanup(old_retry_count):
 	print 'CLEANUP'
 	_set_retry_count(old_retry_count)
 	_start_slapd()
+	# Give the system a few seconds otherwise the following test case might be fail
+	sleep(15)
 
 
 def _get_connection():
