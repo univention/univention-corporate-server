@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (6.0.0-4) unstable; urgency=medium
+
+  * Bug #43604: Adjust piwik integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 18 Mar 2017 23:46:04 +0100
+
 univention-management-console-module-reboot (6.0.0-3) unstable; urgency=medium
 
   * Bug #42263: cleanup menu entries

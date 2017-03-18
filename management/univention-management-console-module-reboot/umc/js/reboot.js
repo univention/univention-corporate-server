@@ -29,13 +29,14 @@
 /*global define*/
 
 define([
+	"dojo/topic",
 	"umc/app",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/reboot"
-], function(app, menu, tools, dialog, libServer, _) {
+], function(topic, app, menu, tools, dialog, libServer, _) {
 
 	var addRebootMenu = function() {
 		menu.addSubMenu({
@@ -48,6 +49,7 @@ define([
 			id: 'umcMenuShutdown',
 			label: _('Shutdown server'),
 			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'server', 'shutdown');
 				libServer.askShutdown();
 			}
 		});
@@ -56,6 +58,7 @@ define([
 			id: 'umcMenuReboot',
 			label: _('Reboot server'),
 			onClick: function() {
+				topic.publish('/umc/actions', 'menu', 'server', 'reboot');
 				libServer.askReboot();
 			}
 		});
