@@ -1368,26 +1368,25 @@ define([
 		_initStatusCheck: function() {
 			// timer to check the join status via existence of status file
 			var piwikLoadTriggered = false;
-			var fakeUuid = '00000000-0000-0000-0000-000000000000';
 			var checkLicenseAndLoadPiwik = lang.hitch(this, function() {
 				if (piwikLoadTriggered || !this._joinTriggered) {
 					return;
 				}
-				tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
-					var ucr = data.result;
-					var hasLicenseBase = ucr['license/base'] || this._isRoleBaseSystem();
-					var hasUUID = ucr['uuid/system'] !== fakeUuid;
-					var isReady = hasLicenseBase && hasUUID;
+				tools.loadMetaData().then(lang.hitch(this, function(data) {
+					// verify whether a valid system UUID has been generated for the system
+					var hasLicenseBase = data.has_license_base || this._isRoleBaseSystem();
+					var isReady = hasLicenseBase && data.has_system_uuid;
 					if (!isReady) {
 						return;
 					}
-					tools.status('hasFreeLicense', tools.isFreeLicense(ucr['license/base']));
-					tools.status('uuidSystem', ucr['uuid/system']);
-					tools.status('piwikDisabled', !tools.status('hasFreeLicense'));
+
+					// the system UUID has been generated, reload status data and trigger piwik
 					piwikLoadTriggered = true;
-					if (!tools.status('piwikDisabled')) {
-						topic.publish('/umc/piwik/load', true);
-					}
+					tools.loadAllStatusData().then(function(data) {
+						if (!data.piwikDisabled) {
+							topic.publish('/umc/piwik/load', true);
+						}
+					});
 				}));
 			});
 			this._checkStatusFileTimer = new timing.Timer(1000 * 10);

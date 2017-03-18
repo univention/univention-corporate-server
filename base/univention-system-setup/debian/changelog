@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-9) unstable; urgency=medium
+
+  * Bug #43604: Adjust piwik integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 18 Mar 2017 23:43:40 +0100
+
 univention-system-setup (10.0.9-8) unstable; urgency=medium
 
   * Bug #43864: Change selection mode and height for software selection
