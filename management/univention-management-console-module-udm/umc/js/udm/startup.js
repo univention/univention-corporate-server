@@ -65,6 +65,7 @@ define([
 			return;
 		}
 
+		topic.publish('/umc/actions', 'menu', 'license', 'activation');
 		new ActivationDialog({});
 	};
 

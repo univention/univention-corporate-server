@@ -34,7 +34,7 @@ define([
 	"umc/i18n!umc/modules/udm"
 ], function(topic, menu, _) {
 	var _showLicenseImportDialog = function() {
-		topic.publish('/umc/actions', 'menu-settings', 'license-import');
+		topic.publish('/umc/actions', 'menu', 'license', 'import');
 		require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
 			var dlg = new LicenseImportDialog();
 			dlg.show();
@@ -42,7 +42,7 @@ define([
 	};
 
 	var _showLicenseInformationDialog = function() {
-		topic.publish('/umc/actions', 'menu-settings', 'license');
+		topic.publish('/umc/actions', 'menu', 'license', 'info');
 		require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
 			new LicenseDialog();
 		});

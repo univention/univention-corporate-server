@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.8-2) unstable; urgency=medium
+
+  * Bug #43604: Adjust piwik integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 18 Mar 2017 23:45:25 +0100
+
 univention-management-console-module-udm (7.0.8-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone
