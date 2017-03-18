@@ -42,6 +42,7 @@ define([
 	}
 
 	function gotoPage(subPage) {
+		topic.publish('/umc/actions', 'menu', 'user-settings', subPage);
 		if (isSelfServiceURL()) {
 			window.location.hash = '#page=' + subPage;
 			menu.close();

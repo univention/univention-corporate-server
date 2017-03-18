@@ -1,3 +1,9 @@
+univention-self-service (2.0.10-3) unstable; urgency=medium
+
+  * Bug #43604: Adjust piwik integration
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 18 Mar 2017 23:44:49 +0100
+
 univention-self-service (2.0.10-2) unstable; urgency=medium
 
   * Bug #42267: switch save/cancel button; fix input validation 
