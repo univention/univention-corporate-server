@@ -1,3 +1,12 @@
+ucs-test (7.0.20-14) unstable; urgency=medium
+
+  * 10_ldap/25reconnect_uldap: systemd logged something like this
+    'slapd.service start request repeated too quickly, refusing to
+    start.'. Try to give some more time between the test cases
+    (Bug #43927)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 19 Mar 2017 19:51:05 +0100
+
 ucs-test (7.0.20-13) unstable; urgency=medium
 
   * 01_base/101_install_all_packages_from_a_release: Increase timeout to

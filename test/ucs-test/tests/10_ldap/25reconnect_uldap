@@ -74,12 +74,15 @@ def _print_test_header(header):
 	print header
 	print '************************************************************************'
 
+def _give_systemd_some_time():
+	sleep(5)
 
 old_retry_count = ucr.get('ldap/client/retry/count')
 
 _set_retry_count(10)
 
 try:
+	_give_systemd_some_time()
 	_print_test_header('Test: connect, search, stop, start, search')
 	lo = _get_connection()
 	_search(lo)
@@ -88,6 +91,7 @@ try:
 	_search(lo)
 	_wait_for_slapd_to_be_started()
 
+	_give_systemd_some_time()
 	_print_test_header('Test: stop, connect - start after 9 seconds, search')
 	_stop_slapd()
 	_start_delyed(delay=8)
@@ -95,6 +99,7 @@ try:
 	_search(lo)
 	_wait_for_slapd_to_be_started()
 
+	_give_systemd_some_time()
 	_print_test_header('Test: connect, stop,  - start after 9 seconds, search')
 	lo = _get_connection()
 	_stop_slapd()
@@ -102,6 +107,7 @@ try:
 	_search(lo)
 	_wait_for_slapd_to_be_started()
 
+	_give_systemd_some_time()
 	_print_test_header('Test: stop, connect - start after 11 seconds (which is too late), search')
 	_stop_slapd()
 	_start_delyed(delay=11)
@@ -114,6 +120,7 @@ try:
 		fail('Search was successful')
 	_wait_for_slapd_to_be_started()
 
+	_give_systemd_some_time()
 	_print_test_header('Test: connect, stop - start after 11 seconds (which is too late), search')
 	lo = _get_connection()
 	_stop_slapd()
