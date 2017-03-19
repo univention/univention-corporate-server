@@ -23,6 +23,8 @@ Variables: umc/web/.*
 Variables: update/available
 Variables: update/reboot/required
 Variables: version/.*
+Variables: license/base
+Variables: uuid/system
 
 Type: file
 File: usr/share/univention-web/js/umc/hooks.json
