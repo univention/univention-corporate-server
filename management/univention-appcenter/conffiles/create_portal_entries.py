@@ -32,6 +32,7 @@
 
 import re
 from ldap.dn import escape_dn_chars
+from ldap import SERVER_DOWN
 from base64 import b64encode
 from copy import copy
 from urlparse import urlsplit
@@ -214,5 +215,7 @@ def _handler(ucr, changes):
 def handler(ucr, changes):
 	try:
 		_handler(ucr, changes)
+	except SERVER_DOWN:
+		portal_logger.error('LDAP server is not available.')
 	except Exception:
 		portal_logger.exception('Exception in UCR module create_portal_entries')

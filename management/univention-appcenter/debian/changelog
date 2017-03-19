@@ -1,3 +1,10 @@
+univention-appcenter (6.0.3-12) unstable; urgency=medium
+
+  * create_portal_entries.py: Write an error message if the LDAP server
+    is not available (Bug #43932)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 19 Mar 2017 19:32:09 +0100
+
 univention-appcenter (6.0.3-11) unstable; urgency=medium
 
   * Bug #43863: Do not seduce Docker Container to remove its host during join
