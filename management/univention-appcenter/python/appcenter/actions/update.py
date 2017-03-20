@@ -95,6 +95,10 @@ class Update(UniventionAppAction):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
+	def get_app_info(self, app):
+		json_apps = self._load_index_json(app.get_app_cache_obj())
+		return json_apps.get(app.component_id)
+
 	def _appcenter_caches(self, args):
 		if args.appcenter_server:
 			return [AppCenterCache(server=args.appcenter_server)]
@@ -309,9 +313,14 @@ class Update(UniventionAppAction):
 		# e.g. Name, Description
 		self._update_conffiles()
 
+	def _get_conffiles(self):
+		return ['/usr/share/univention-portal/apps.json']
+
 	def _update_conffiles(self):
-		with catch_stdout(self.logger):
-			handler_commit(['/usr/share/univention-portal/apps.json'])
+		conffiles = self._get_conffiles()
+		if conffiles:
+			with catch_stdout(self.logger):
+				handler_commit(conffiles)
 
 	def _get_local_archive(self, app_cache):
 		fname = os.path.join(LOCAL_ARCHIVE_DIR, app_cache.get_server_netloc(), app_cache.get_ucs_version(), 'all.tar.gz')

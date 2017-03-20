@@ -39,10 +39,12 @@ from glob import glob
 import shutil
 import stat
 
-from univention.config_registry import handler_commit
-
-from univention.appcenter.actions.update import Update
-from univention.appcenter.log import catch_stdout
+try:
+	# try to derive from docker's update
+	from univention.appcenter.actions.docker_update import Update
+except ImportError:
+	# otherwise take the normal one
+	from univention.appcenter.actions.update import Update
 from univention.appcenter.app_cache import Apps
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
@@ -64,10 +66,9 @@ class Update(Update):
 				self._update_svg_file(_app.logo_name, _app.get_cache_file('logo'))
 				self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
 
-	def _update_conffiles(self):
-		super(Update, self)._update_conffiles()
-		with catch_stdout(self.logger):
-			handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
+	def _get_conffiles(self):
+		conffiles = super(Update, self)._get_conffiles()
+		return conffiles + ['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo']
 
 	def _update_svg_file(self, _dest_file, src_file):
 		if not _dest_file:

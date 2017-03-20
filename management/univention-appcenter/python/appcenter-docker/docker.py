@@ -39,17 +39,12 @@ import os
 import os.path
 import shlex
 from json import loads
-from StringIO import StringIO
-from gzip import GzipFile
 import requests
-from hashlib import sha256
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
-from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, _
+from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, get_sha256, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.app import CACHE_DIR
-from univention.appcenter.actions.update import Update
 from univention.appcenter.actions import Abort
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter
 
@@ -105,32 +100,11 @@ def pull(image):
 
 
 def verify(app, image):
-	index_json_gz_filename = '.index.json.gz'
-	index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
+	from univention.appcenter.actions import get_action
+	update = get_action('update')()
+	appinfo = update.get_app_info(app)
 
-	if os.path.exists(index_json_gz_path):
-		with open(index_json_gz_path, 'rb') as f:
-			index_json_gz = f.read()
-		try:
-			zipped = StringIO(index_json_gz)
-			content = GzipFile(mode='rb', fileobj=zipped).read()
-		except:
-			_logger.error('Could not read "%s"' % index_json_gz_filename)
-			raise
-		try:
-			json_apps = loads(content)
-		except:
-			_logger.error('JSON malformatted: %r' % content)
-			raise
-	else:
-		upd = Update()
-		upd._appcenter_server = None
-		upd._get_server()
-		json_apps = upd._load_index_json()
-
-	try:
-		appinfo = json_apps[app.component_id]
-	except KeyError as exc:
+	if not appinfo:
 		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.id)
 		return  # Nothing we can do here, this is mainly for ucs-test apps
 
@@ -139,23 +113,20 @@ def verify(app, image):
 		dockerimageinfo = appfileinfo['DockerImageManifestV2S1']
 		appcenter_sha256sum = dockerimageinfo['sha256']
 		docker_image_manifest_url = dockerimageinfo['url']
-	except KeyError as exc:
+	except KeyError:
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.id)
 		return  # Nothing we can do here, this is the case of ISV Docker repos
 
 	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
 	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
 	if not https_request_answer.ok:
-		exc = DockerImageVerificationFailedRegistryContact(app.id, docker_image_manifest_url)
-		raise exc
+		raise DockerImageVerificationFailedRegistryContact(app.id, docker_image_manifest_url)
 
-	docker_image_manifest = https_request_answer.content
-	docker_image_manifest_hash = sha256(docker_image_manifest).hexdigest()
+	docker_image_manifest_hash = get_sha256(https_request_answer.content)
 
 	# compare with docker registry
 	if appcenter_sha256sum != docker_image_manifest_hash:
-		exc = DockerImageVerificationFailedChecksum(app.id, docker_image_manifest_url)
-		raise exc
+		raise DockerImageVerificationFailedChecksum(app.id, docker_image_manifest_url)
 
 
 def ps(only_running=True):
