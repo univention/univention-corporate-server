@@ -1,3 +1,9 @@
+univention-self-service (2.0.10-4) unstable; urgency=medium
+
+  * Bug #42231: fix update code
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 14:05:07 +0100
+
 univention-self-service (2.0.10-3) unstable; urgency=medium
 
   * Bug #43604: Adjust piwik integration
