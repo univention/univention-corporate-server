@@ -56,18 +56,18 @@ conffile_is_unmodified () {
 
 readcontinue ()
 {
-    while true ; do
-        echo -n "Do you want to continue [Y/n]? "
-        read var
-        if [ -z "$var" -o "$var" = "y" -o "$var" = 'Y' ]; then
-            return 0
-        elif [ "$var" = "n" -o "$var" = 'N' ]; then
-            return 1
-        else
-            echo ""
-            continue
-        fi
-    done
+	while true ; do
+		echo -n "Do you want to continue [Y/n]? "
+		read var
+		if [ -z "$var" -o "$var" = "y" -o "$var" = 'Y' ]; then
+			return 0
+		elif [ "$var" = "n" -o "$var" = 'N' ]; then
+			return 1
+		else
+			echo ""
+			continue
+		fi
+	done
 }
 
 ###########################################################################
@@ -115,13 +115,13 @@ fi
 
 # shell-univention-lib is proberly not installed, so use a local function
 is_ucr_true () {
-    local value
-    value="$(/usr/sbin/univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
-        1|yes|on|true|enable|enabled) return 0 ;;
-        0|no|off|false|disable|disabled) return 1 ;;
-        *) return 2 ;;
-    esac
+	local value
+	value="$(/usr/sbin/univention-config-registry get "$1")"
+	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
+		1|yes|on|true|enable|enabled) return 0 ;;
+		0|no|off|false|disable|disabled) return 1 ;;
+		*) return 2 ;;
+	esac
 }
 
 # save ucr settings
@@ -239,13 +239,13 @@ fail_if_role_package_will_be_removed ()
 {
 	local role_package
 
-	case "$server_role" in 
-    	domaincontroller_master) role_package="univention-server-master" ;;
-    	domaincontroller_backup) role_package="univention-server-backup" ;;
-    	domaincontroller_slave) role_package="univention-server-slave" ;;
-    	memberserver) role_package="univention-server-member" ;;
-    	basesystem) role_package="univention-basesystem" ;;
-    esac
+	case "$server_role" in
+		domaincontroller_master) role_package="univention-server-master" ;;
+		domaincontroller_backup) role_package="univention-server-backup" ;;
+		domaincontroller_slave) role_package="univention-server-slave" ;;
+		memberserver) role_package="univention-server-member" ;;
+		basesystem) role_package="univention-basesystem" ;;
+	esac
 
 	test -z "$role_package" && return
 
@@ -259,7 +259,7 @@ fail_if_role_package_will_be_removed ()
 		# If you really know what you are doing, you can skip this check by
 		# setting the UCR variable update/commands/distupgrade/simulate to /bin/true.
 		# But you have been warned!
-		# In this case, you have to set the UCR variable after the update back 
+		# In this case, you have to set the UCR variable after the update back
 		# to the old value which can be get from /var/log/univention/config-registry.replog
 		echo "       Please contact the Univention Support in case you have an Enterprise"
 		echo "       Subscription. Otherwise please try the Univention Forum"
@@ -351,7 +351,7 @@ if master <= me:
 				echo "WARNING: Your domain controller master is still on version $master_version-$master_patchlevel."
 				echo "         It is strongly recommended that the domain controller master is"
 				echo "         always the first system to be updated during a release update."
-				
+
 				if is_ucr_true update42/ignore_version; then
 					echo "WARNING: update42/ignore_version is set to true. Skipped as requested."
 				else
@@ -393,12 +393,12 @@ if update-alternatives --quiet --list liblapack.so.3gf >/dev/null 2>&1; then
 	update-alternatives --remove-all liblapack.so.3gf
 fi
 if update-alternatives --quiet --list libblas.so.3gf >/dev/null 2>&1; then
-	update-alternatives --remove-all libblas.so.3gf 
+	update-alternatives --remove-all libblas.so.3gf
 fi
 
 # autoremove before the update
 if ! is_ucr_true update42/skip/autoremove; then
-    DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
 # Pre-upgrade
