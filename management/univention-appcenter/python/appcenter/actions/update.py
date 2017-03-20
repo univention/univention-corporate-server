@@ -75,17 +75,25 @@ class Update(UniventionAppAction):
 
 	def main(self, args):
 		something_changed = False
+		for app_cache in self._app_caches(args):
+			# first of all, set up local cache
+			mkdir(app_cache.get_cache_dir())
+			if self._extract_local_archive(app_cache):
+				something_changed = True
 		for appcenter_cache in self._appcenter_caches(args):
+			# download meta files like index.json
 			mkdir(appcenter_cache.get_cache_dir())
 			if self._download_supra_files(appcenter_cache):
 				appcenter_cache.clear_cache()
 				something_changed = True
 		for app_cache in self._app_caches(args):
+			# try it one more time (ucs.ini may have changed)
 			mkdir(app_cache.get_cache_dir())
 			if self._extract_local_archive(app_cache):
 				something_changed = True
+			# download apps based on meta files
 			if self._download_apps(app_cache):
-				appcenter_cache.clear_cache()
+				app_cache.clear_cache()
 				something_changed = True
 		if something_changed:
 			apps_cache = Apps()

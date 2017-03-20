@@ -1,3 +1,10 @@
+univention-appcenter (6.0.3-14) unstable; urgency=medium
+
+  * Bug #43866: Fix issues with univention-app update not copying all logo
+    files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Mar 2017 12:11:29 +0100
+
 univention-appcenter (6.0.3-13) unstable; urgency=medium
 
   * Bug #43922: Fix verify Docker by using new functions
