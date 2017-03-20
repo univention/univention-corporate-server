@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" translationId="udm-saml" icon="udm-saml-serviceprovider" version="1.0">
+		<name/>
+		<description/>
+		<keywords/>
+		<flavor id="saml/serviceprovider">
+			<name>SAML identity provider</name>
+			<description>Management of service provider configurations for the single sign-on functionality of the SAML identity provider</description>
+			<keywords>SAML</keywords>
+		</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
+	</module>
+</umc>

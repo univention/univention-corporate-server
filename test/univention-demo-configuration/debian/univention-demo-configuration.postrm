@@ -48,14 +48,8 @@ _list_diverted_files() {
 case "$1" in
 	remove|disappear|failed-upgrade|abort-install)
 		# umc overview
-		univention-config-registry unset \
-			ucs/web/overview/entries/admin/demo-configuration/description/de \
-			ucs/web/overview/entries/admin/demo-configuration/description \
-			ucs/web/overview/entries/admin/demo-configuration/icon \
-			ucs/web/overview/entries/admin/demo-configuration/label \
-			ucs/web/overview/entries/admin/demo-configuration/label/de \
-			ucs/web/overview/entries/admin/demo-configuration/link \
-			ucs/web/overview/entries/admin/demo-configuration/priority
+		univention-config-registry unset $(ucr --keys-only search --key 'ucs/web/overview/entries/service/(demo-configuration|demo-configuration-forum)/.*')
+		univention-config-registry unset umc/web/hooks/univention-demo-configuration
 
 		# enable update checks again
 		ucr set update/check/cron/enabled=yes
@@ -70,16 +64,16 @@ case "$1" in
 		done
 
 		# show the Administrator account by default
-		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=""
+		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --remove objectFlag="hidden"
+		udm "computers/$server_role" modify --dn "$ldap_hostdn" --remove objectFlag="hidden"
 
 		# disallow anonymous access to nagios
 		ucr set nagios/server/authenticate=yes
 
 		# reload services
-		umc_frontend_new_hash
-		invoke-rc.d apache2 reload
-		invoke-rc.d slapd restart
-		invoke-rc.d univention-management-console-server reload
+		deb-systemd-invoke apache2 reload
+		deb-systemd-invoke slapd restart
+		deb-systemd-invoke univention-management-console-server reload
 		;;
 	purge)
 		;;

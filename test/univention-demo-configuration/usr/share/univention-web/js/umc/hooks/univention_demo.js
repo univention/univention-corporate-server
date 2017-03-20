@@ -1,5 +1,5 @@
 /*global define*/
-define(["dojo/dom", "dojo/dom-attr", "login/LoginDialog", "dojo/_base/lang"], function (dom,  attr, LoginDialog, lang) {
+define(["dojo/dom", "dojo/dom-attr", "login/LoginDialog", "dojo/_base/lang"], function(dom,  attr, LoginDialog, lang) {
 	var _fillLoginForm = function () {
 		var node = dom.byId("umcLoginPassword");
 		attr.set(node, 'value', 'univention');
@@ -14,4 +14,5 @@ define(["dojo/dom", "dojo/dom-attr", "login/LoginDialog", "dojo/_base/lang"], fu
 			_fillLoginForm();
 		}
 	});
+	_fillLoginForm();
 });

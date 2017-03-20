@@ -24,6 +24,7 @@
 		<command name="updater/updates/available" function="updates_available"/>
 		<!-- CHECK: return a list of packages eligible for update/install/remove -->
 		<command name="updater/updates/check" function="updates_check"/>
+		<command name="updater/maintenance_information" function="query_maintenance_information"/>
 
 		<!--
 		ONLINE/INSTALLER namespace:

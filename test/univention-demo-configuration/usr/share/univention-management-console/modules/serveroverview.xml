@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="serveroverview" version="1.0">
+		<name>Server overview</name>
+		<description>Provide an overview of all UCS server in the domain</description>
+		<keywords></keywords>
+		<command name="serveroverview/query" function="query" />
+	</module>
+</umc>

@@ -7,6 +7,9 @@
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="sysinfo/traceback" function="upload_traceback" />
+		<requiredCommands>
+			<requiredCommand name="sysinfo/general"/>
+		</requiredCommands>
+		<command name="sysinfo/traceback" function="upload_traceback" allow_anonymous="true"/>
 	</module>
 </umc>

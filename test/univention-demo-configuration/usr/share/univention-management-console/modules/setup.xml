@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="setup" version="1.0">
-		<flavor priority="50" id="wizard">
-			<name>UCS setup wizard</name>
-			<description>Configuration of the UCS system</description>
-		</flavor>
 		<flavor priority="50" id="languages">
 			<name>Language settings</name>
-			<description>All language relevant configurations</description>
+			<description>All language-related settings</description>
 			<keywords>timezone,locale,keyboard</keywords>
 		</flavor>
 		<flavor priority="50" id="network">
