@@ -266,7 +266,7 @@
 					Plural forms for translations are now supported in the JavaScript code (<u:bug>42220</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The JavaScript libraries dojo (1.12.1), xstyle (3.2.0) and dgrid (1.1.0) have been updated (<u:bug>42291</u:bug>).
+					The JavaScript libraries <package>dojo</package> (1.12.1), <package>xstyle</package> (3.2.0) and <package>dgrid</package> (1.1.0) have been updated (<u:bug>42291</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -775,6 +775,14 @@
 				<listitem><simpara>
 					The start script for <command>libvirtd</command> has been updates to be compatible with <application>systemd</application> (<u:bug>43493</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					<application>libvirtd</application> is no longer started through <application>runit</application> but through <application>systemd</application> (<u:bug>43875</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>qemu</package> and <package>libvirt</package> have been updates to newer versions.
+					Live-migration and snapshots from previous versions might not work in all cases due to large changes in the code base.
+					In such cases it is recommended to cleanly shutdown the virtual machines before the upgrade and to cold-boot the virtual machines after the upgrade (<u:bug>38877</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -782,7 +790,6 @@
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<application>libvirtd</application> is no longer started through <application>runit</application> but through <application>systemd</application> (<u:bug>43875</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
