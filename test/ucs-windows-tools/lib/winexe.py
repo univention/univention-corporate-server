@@ -128,6 +128,7 @@ class WinExe:
 		return cmd
 
 	def __log(self, msg, log_at_level=0):
+		sys.stdout.write("%s\n" % msg)
 		if self.loglevel >= log_at_level:
 			sys.stdout.write("%s\n" % msg)
 
@@ -441,6 +442,10 @@ class WinExe:
 
 		self.set_local_user_password(self.domain_admin, self.domain_password)
 		self.winexec("firewall-turn-off", domain_mode=False)
+		self.winexec("univention-install-ad-ps-features", domain_mode=False)
+		self.winexec("reboot", domain_mode=False)
+		self.wait_until_client_is_gone(timeout=120)
+		self.wait_for_client(timeout=600)
 		self.winexec("univention-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)

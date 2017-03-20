@@ -1,3 +1,9 @@
+ucs-windows-tools (4.0.1-8) unstable; urgency=low
+
+  * Bug #12345: separate feature install and promo
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Mar 2017 18:16:24 +0100
+
 ucs-windows-tools (4.0.1-7) unstable; urgency=medium
 
   * Bug #41571: add __copy_scripts as an alternative to using certutil

@@ -26,18 +26,6 @@ function error ($msg) {
 	Exit(1)
 }
 
-function installFeature ($feature) {
-	Try {
-		$result = Add-WindowsFeature "$feature"
-		If (! $Result.Success) {
-			error("$feature could not be installed!")
-		}
-	}
-	Catch {
-		error("Exception occurred while installing ${feature}: $_")
-	}
-}
-
 function mapMode ($mode) {
 	# forest/domain level
 	# 0 -> 2000
@@ -131,10 +119,6 @@ Catch {
 if ((gwmi win32_computersystem).partofdomain -eq $true) {
 	error("i am already joined")
 }
-
-installFeature("AD-Domain-Services")
-installFeature("RSAT-DNS-Server")
-installFeature("RSAT-ADDS")
 
 if (Get-Module -ListAvailable | Where-Object { $_.name -eq "ADDSDeployment" }) {
 	promoWithADDSDeployment `
