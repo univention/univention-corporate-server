@@ -219,20 +219,22 @@ define([
 				}));
 				var prevApp = this.visibleApps[currentIndex - 1];
 				var nextApp = this.visibleApps[currentIndex + 1];
-				buttons.push({
-					name: 'prev',
-					label: prevApp ? _('Previous app') : '',
-					align: 'left',
-					disabled: !prevApp,
-					callback: lang.hitch(this, 'set', 'app', prevApp)
-				});
-				buttons.push({
-					name: 'next',
-					label: nextApp ? _('Next app') : '',
-					align: 'left',
-					disabled: !nextApp,
-					callback: lang.hitch(this, 'set', 'app', nextApp)
-				});
+				if (nextApp || prevApp) {
+					buttons.push({
+						name: 'prev',
+						label: _('Previous app'),
+						align: 'left',
+						disabled: !prevApp,
+						callback: lang.hitch(this, 'set', 'app', prevApp)
+					});
+					buttons.push({
+						name: 'next',
+						label: _('Next app'),
+						align: 'left',
+						disabled: !nextApp,
+						callback: lang.hitch(this, 'set', 'app', nextApp)
+					});
+				}
 			}
 			return buttons;
 		},
