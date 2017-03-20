@@ -202,7 +202,7 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						The legacy System V init scripts <filename>univention-bind</filename> and <filename>univention-bind-proxy</filename> have been removed.
-						The services are now handled through the System V init script <filename>bind9</filename> and the <application>systemd</application> service unit file <filename>bind9</filename>.service (<u:bug>43690</u:bug>).
+						The services are now handled through the System V init script <filename>bind9</filename> and the <application>systemd</application> service unit file <filename>bind9.service</filename> (<u:bug>43690</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
