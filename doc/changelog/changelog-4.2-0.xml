@@ -611,6 +611,9 @@
 				<listitem><simpara>
 					The package <package>simplesamlphp</package> 1.14.11-1 has been ported back from Debian Stretch (<u:bug>43783</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Apache configuration has been adjusted (<u:bug>43708</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
