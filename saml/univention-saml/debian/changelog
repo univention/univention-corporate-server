@@ -1,3 +1,9 @@
+univention-saml (4.0.13-1) unstable; urgency=medium
+
+  * Bug #43918: add link to regular login
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 17:40:42 +0100
+
 univention-saml (4.0.12-1) unstable; urgency=medium
 
   * Bug #43873: Bug #43783: fix API change of simplesamlphp
