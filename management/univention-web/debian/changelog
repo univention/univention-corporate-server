@@ -1,3 +1,9 @@
+univention-web (1.0.39-9) unstable; urgency=medium
+
+  * Bug #43528: Fix margins of app icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 12:27:18 +0100
+
 univention-web (1.0.39-8) unstable; urgency=medium
 
   * Bug #43604: Fix UCR variable dependencies for meta.json
