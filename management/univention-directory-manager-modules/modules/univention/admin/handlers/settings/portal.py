@@ -200,7 +200,7 @@ class object(univention.admin.handlers.simpleLdap):
 				obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
 				obj.modify()
 			except univention.admin.uexceptions.valueRequired:
-				# no portal is references anymore. remove the complete entry
+				# no portal is referenced anymore. remove the complete entry
 				obj.remove()
 
 	def _ldap_post_move(self, olddn):
