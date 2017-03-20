@@ -47,11 +47,12 @@ define([
 	"./ContainerWidget",
 	"./_RegisterOnShowMixin"
 ], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
-	
+
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
-	
+
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
+		'class': 'umcGridTree',
 		showRoot: true,
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -60,11 +61,13 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._gridTree = new GridTree(lang.mixin({
+				className: 'dgrid-autoheight',
 				collection: null,
 				selectionMode: 'single',
 				collapseOnRefresh: true,
 				shouldExpand: lang.hitch(this, 'shouldExpandAndSelect'),
 				showHeader: false,
+				treeIndentWidth: 26,
 				columns: {
 					label: {
 						renderExpando: true,

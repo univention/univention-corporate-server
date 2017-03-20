@@ -1,36 +1,81 @@
-/* Tree 
- * 
+/* Tree
+ *
  * Styling Tree mostly means styling the TreeRow (dijitTreeRow)
  * There are 4 basic states to style:
- * 
+ *
  * Tree Row:
- * 1. tree row (default styling): 
+ * 1. tree row (default styling):
  * 		.dijitTreeRow - styles for each row of the tree
  *
  * 2. hovered tree row (mouse hover on a tree row)
  * 		.dijitTreeRowHover - styles when mouse over on one row
- * 
+ *
  * 3. active tree row (mouse down on a tree row)
  * 		.dijitTreeRowActive - styles when mouse down on one row
- * 
+ *
  * 4. selected tree row
  * 		dijitTreeRowSelected - style when the row has been selected
- * 
+ *
  * Tree Expando:
  * 	    dijitTreeExpando - the expando at the left of the text of each tree row
- * 
+ *
  * Drag and Drop on TreeNodes: (insert line on dijitTreeContent node so it'll aligned w/ target element)
  * 		.dijitTreeNode .dojoDndItemBefore/.dojoDndItemAfter - use border style simulate a separate line
  */
 
 @import "variables"
 
+.umc .umcPageNav .umcGridTree
+	margin-bottom: 30px
+
+.umc .umcGridTree
+	background-color: #fff
+	material-shadow(1)
+
+	.dgrid
+		border: none
+
+		.dgrid-cell
+			border: none
+			padding: 0
+
+		.dgrid-row
+			color: rgba(0, 0, 0, 0.87)
+			height: 36px
+			line-height: @height
+			box-sizing: content-box
+			transition: background-color 0.2s
+
+			&:hover
+				background-color: #eeeeee
+
+			&.dgrid-selected
+				background-color: #f5f5f5
+
+			.ui-icon
+				background: none
+
+			.dgrid-expando-icon
+				padding: ((@height - 20px)/2) // icon-image height and width is 20px
+				height: @height
+				width: @height
+				position: relative
+
+				&:after
+					content: ''
+					display: block
+					position: absolute
+					top: @padding
+					left: @padding
+					icon-image(-160, -40)
+					^[-2].dgrid-row-expanded ^[-2..-1]
+						icon-image(-180, -40)
+
 .umc .dijitTreeNode
     zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */
 
 .umc .dijitTreeIsRoot
     background-image: none
-
 
 /* Styling for basic tree node (unhovered, unselected)
  * Also use this styling when dropping between items on the tree (in other words, don't
@@ -55,7 +100,6 @@
 	transition-property: background-color, border-color
 	transition-duration: .25s
 	transition-timing-function: ease-out
-
 
 .umc .dijitTreeRowSelected
 	background-color: $selected-background-color
@@ -85,9 +129,7 @@
 .umc .dijitTreeRowFocused
 	background-repeat: repeat
 
-
 /* expando (open/closed) icon */
-
 .umc .dijitTreeExpando
 	background-image: url($image-tree-expand)
 	width: 16px
@@ -113,7 +155,6 @@
 .umc .dijitTreeExpandoLoading
 	background-image: url($image-loading-animation)
 
-
 /* Drag and Drop on TreeNodes
  * Put insert line on dijitTreeContent node so it's aligned w/
  * (ie, indented equally with) target element, even
@@ -127,4 +168,3 @@
 
 .umc .dgrid-row-table .dgrid-tree-icon
 	margin-right: 5px
-

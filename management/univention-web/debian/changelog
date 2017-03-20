@@ -1,3 +1,9 @@
+univention-web (1.0.39-13) unstable; urgency=medium
+
+  * Bug #43531: Adjust styling for trees
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 20 Mar 2017 16:47:46 +0100
+
 univention-web (1.0.39-12) unstable; urgency=medium
 
   * Bug #43733: Fix AppCenterGallery for touch devices
