@@ -2,6 +2,9 @@
 define(["dojo/dom", "dojo/dom-attr", "login/LoginDialog", "dojo/_base/lang"], function(dom,  attr, LoginDialog, lang) {
 	var _fillLoginForm = function () {
 		var node = dom.byId("umcLoginPassword");
+		if (!node) {
+			return;  // not on the login page
+		}
 		attr.set(node, 'value', 'univention');
 		node = dom.byId('umcLoginUsername');
 		attr.set(node, 'value', 'Administrator');
