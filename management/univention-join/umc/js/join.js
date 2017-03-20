@@ -104,8 +104,8 @@ define([
 		_form: null,
 		_joining: null, // flag for the last executed action
 
-		headerText: _("Initial system join"),
 		helpText: _("Please enter credentials of a user account with administrator rights to join the system."),
+		fullWidth: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -118,8 +118,8 @@ define([
 	var StatusPage = declare("umc.modules.join.StatusPage", [Page], {
 		_grid: null,
 
-		headerText: _("Join status"),
 		helpText: _("This page shows the status of all available join scripts on this system, along with all join-related actions."),
+		fullWidth: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -135,6 +135,7 @@ define([
 		_logtext: null, // text widget that holds log
 
 		headerText: _("Join log"),
+		fullWidth: true,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);

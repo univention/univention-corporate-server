@@ -1,3 +1,9 @@
+univention-join (9.0.3-2) unstable; urgency=medium
+
+  * Bug #43528: Use full width for grids by default
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:18:44 +0100
+
 univention-join (9.0.3-1) unstable; urgency=medium
 
   * Bug #43811: make sure SSL certificate cache is rewritten
