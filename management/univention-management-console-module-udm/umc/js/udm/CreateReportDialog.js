@@ -214,9 +214,7 @@ define([
 				if (!obj) {
 					obj = _('LDAP object report');
 				}
-				var text = lang.replace(_('The {type} can be downloaded at<br><br><a target="_blank" href="{href}">{obj}</a>'),
-				                        {type, href, obj});
-				return text;
+				return lang.replace(_('The {type} can be downloaded at<br><br><a target="_blank" href="{href}">{obj}</a>'), {type: type, href: href, obj: obj});
 			});
 
 			var waiting = new Text({
