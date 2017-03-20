@@ -1,3 +1,9 @@
+univention-updater (12.0.4-7) unstable; urgency=low
+
+  * Bug #43937: Block upgrade with separate /usr
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Mar 2017 15:04:42 +0100
+
 univention-updater (12.0.4-6) unstable; urgency=low
 
   * Bug #41868: fix computer objects with missing objectclass shadowaccount

@@ -210,6 +210,21 @@ fi
 
 #####################
 
+if mountpoint -q /usr
+then
+	echo "failed"
+	echo "ERROR:   /usr/ seems to be a separate file system, which is no longer supported."
+	echo "         Mounting file systems nowadays requires many helpers, which use libraries"
+	echo "         and other resources from /usr/ by default. With a separate /usr/ they"
+	echo "         often break in subtle ways or lead to hard to debug boot problems."
+	echo "         As such the content of /usr/ must be moved to the root file system before"
+	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
+	echo "         manually and might require resizing the file systems. It is described at"
+	echo "         <https://help.univention.com/t/upgrade-to-ucs-4-2-blocked-due-to-separate-usr-file-system/5321>"
+	echo ""
+	exit 1
+fi
+
 check_space () {
 	partition=$1
 	size=$2
@@ -221,7 +236,7 @@ check_space () {
 		echo "failed"
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
-		echo "         If neccessary you can skip this check by setting the value of the"
+		echo "         If necessary you can skip this check by setting the value of the"
 		echo "         config registry variable update42/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		if [ "$partition" = "/boot" -a ! "$update42_pruneoldkernel" = "yes" ] ; then
