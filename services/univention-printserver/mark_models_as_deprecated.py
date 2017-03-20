@@ -100,10 +100,11 @@ class UpdatePrinterModels(object):
 					new_ldap_models.append('"%s" "%s"' % (ppd, new_description))
 				else:
 					new_ldap_models.append(ppds[ppd][0])
-			if set(ldap_models).difference(new_ldap_models):
+			model_diff = set(ldap_models).difference(new_ldap_models)
+			if model_diff:
 				if self.options.verbose:
 					print 'removing duplicate models for %s:' % dn
-					print '\t' + '\n\t'.join(set(ldap_models).difference(new_ldap_models))
+					print '\t' + '\n\t'.join(model_diff)
 				if not options.dry_run:
 					changes = [('printerModel', ldap_models, new_ldap_models)]
 					self.lo.modify(dn, changes)
@@ -153,4 +154,3 @@ if __name__ == '__main__':
 	else:
 		if options.verbose:
 			print 'info: do nothing, no model and/or name given'
-		
