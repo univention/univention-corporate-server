@@ -10,7 +10,6 @@
 # Default-Stop:      0 1 6
 # Short-Description: Start KDC server
 ### END INIT INFO
-# pidfile: /var/run/heimdal-kdc.pid
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 KDC_DAEMON=/usr/lib/heimdal-servers/kdc
