@@ -54,8 +54,8 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				headerText: _('System services'),
-				helpText: _('This module shows the system services and their current status. Specified services can be configured, started and stopped.')
+				helpText: _('This module shows the system services and their current status. Specified services can be configured, started and stopped.'),
+				fullWidth: true
 			});
 			this.addChild(this._page);
 
