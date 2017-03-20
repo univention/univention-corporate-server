@@ -12,5 +12,5 @@ WantedBy=multi-user.target
 [Service]
 ExecStart=/usr/bin/univention-welcome-screen --only-show-welcome
 #Type=oneshot
-#TimeoutSec=0
+TimeoutSec=20
 

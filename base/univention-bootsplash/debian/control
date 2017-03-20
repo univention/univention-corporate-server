@@ -29,6 +29,7 @@ Depends: ${misc:Depends},
  gettext-base,
  bsdmainutils,
  fbcat,
+ netpbm,
  fbi
 Description: UCS - welcome screen
  This package provides a welcome screen to the UCS system
