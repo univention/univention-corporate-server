@@ -1,3 +1,9 @@
+univention-portal (1.0.9-4) unstable; urgency=medium
+
+  * Bug #43892: Move admin category below services
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 13:42:57 +0100
+
 univention-portal (1.0.9-3) unstable; urgency=medium
 
   * Bug #43933: make sure that service entries are ordered

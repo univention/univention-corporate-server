@@ -73,7 +73,7 @@ define([
 			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
 			title.innerHTML = portalName;
 			document.title = portalName;
-			array.forEach(['admin', 'service'], lang.hitch(this, function(category) {
+			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
 					// TODO: filter by entry.authRestriction (anonymous, authenticated, admin)
 					return entry.category == category && entry.activated && entry.portals.indexOf(portal.dn) !== -1;
