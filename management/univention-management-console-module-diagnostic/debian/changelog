@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.0-3) unstable; urgency=medium
+
+  * Bug #43528: Use full width for module
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:40:52 +0100
+
 univention-management-console-module-diagnostic (3.0.0-2) unstable; urgency=low
 
   * Bug #42161: Corrected some typos.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Univention GmbH
+ * Copyright 2014-2016 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -180,7 +180,6 @@ define([
 			this.inherited(arguments);
 
 			this._overviewPage = new Page({
-				headerText: this.description,
 				helpText: _('Within this module the system can be analyzed for various known problems. ') +
 				_('If the system is able to automatically repair found problems it offers the function as additional buttons. ') +
 				_('Otherwise the problems can be solved manually with help of the displayed links to articles by using the linked UMC modules. '),
@@ -188,7 +187,8 @@ define([
 					name: 'start_diagnose',
 					label: _('Run system diagnosis'),
 					callback: lang.hitch(this, '_runFullDiagnose')
-				}]
+				}],
+				fullWidth: true
 			});
 			this.addChild(this._overviewPage);
 
