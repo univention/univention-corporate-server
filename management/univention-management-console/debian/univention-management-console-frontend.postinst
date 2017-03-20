@@ -43,7 +43,7 @@ univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/sso/newwindow=true"
 
 # Upgrade to UCS 4.2
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 9.0.0-1; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.0-1; then
 	univention-config-registry set umc/server/disable-security-restrictions?true
 
 	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/umc/.*')
