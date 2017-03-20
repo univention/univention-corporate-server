@@ -9803,6 +9803,9 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/Samsung-ML-2570-pxlmono.ppd" "Samsung ML-2570 Foomatic/pxlmono"' \
 	'"foomatic-rip/Samsung-ML-4550-pxlmono.ppd" "Samsung ML-4550 Foomatic/pxlmono"'
 
+# check for duplicates
+/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" -c
+
 # add CUPS to nagios' UNIVENTION_CUPS service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
