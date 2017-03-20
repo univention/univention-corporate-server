@@ -87,7 +87,7 @@ define([
 				} else if (category == 'apps') {
 					heading = _('Installed Apps');
 				}
-				this._addCategory(heading, apps);
+				this._addCategory(heading, apps, category == 'service');
 			}));
 			if (portal.showApps) {
 				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
@@ -168,14 +168,15 @@ define([
 			return apps;
 		},
 
-		_addCategory: function(heading, apps) {
+		_addCategory: function(heading, apps, sorting) {
 			if (!heading || !apps.length) {
 				return;
 			}
 			var portalCategory = new PortalCategory({
 				heading: heading,
 				apps: apps,
-				domainName: tools.status('domainname')
+				domainName: tools.status('domainname'),
+				sorting: sorting || false
 			});
 			this.content.appendChild(portalCategory.domNode);
 			portalCategory.startup();

@@ -27,7 +27,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+.PRECIOUS: build build-dev
+
 build: www/style.css
+
+build-dev: build
+	ln -s /usr/share/univention-portal/icons/ /usr/share/univention-portal/apps.json /usr/share/univention-portal/portal.json www
 
 %.css: %.styl
 	stylus "$<"

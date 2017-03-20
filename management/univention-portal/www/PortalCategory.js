@@ -51,6 +51,8 @@ define([
 
 		query: null,
 
+		sorting: false,
+
 		_setQueryAttr: function(query) {
 			this.grid.set('query', query);
 			this._updateVisibility();
@@ -68,9 +70,17 @@ define([
 				data: this.apps
 			}));
 
+			var queryOptions = null;
+			if (this.sorting) {
+				queryOptions = {
+					sort: [{ attribute: 'name' }]
+				};
+			}
+
 			this.grid = new PortalGallery({
 				store: store,
-				domainName: this.domainName
+				domainName: this.domainName,
+				queryOptions: queryOptions
 			});
 
 			domConstruct.place(heading, this.containerNode);
