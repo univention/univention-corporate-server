@@ -373,7 +373,7 @@ if ! is_ucr_true update42/skip/computerobjectcheck; then
 			echo "dn: $dn
 changetype: modify
 add: objectClass
-objectClass: shadowAccount" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret 2>>"$UPDATER_LOG"
+objectClass: shadowAccount" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret >>"$UPDATER_LOG" 2>&1
 		done < <( \
 			univention-ldapsearch -LLL \
 			'(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))' dn 2>>"$UPDATER_LOG" \
