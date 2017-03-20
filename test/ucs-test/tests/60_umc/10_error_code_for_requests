@@ -36,9 +36,9 @@ def kill_ucstest():
 
 
 def restart_web_server():
-	subprocess.Popen(['service', 'univention-management-console-web-server', 'restart'])
-	subprocess.Popen(['service', 'univention-management-console-server', 'restart'])
-	subprocess.Popen(['service', 'apache2', 'restart'])
+	subprocess.call(['service', 'univention-management-console-web-server', 'restart'])
+	subprocess.call(['service', 'univention-management-console-server', 'restart'])
+	subprocess.call(['service', 'apache2', 'restart'])
 
 
 class AsyncClient(Client):
@@ -77,7 +77,6 @@ def main():
 		except ssl.SSLError:
 			print 'ERROR: request timed out'
 
-	restart_web_server()
 	if not success:
 		utils.fail('ERROR: Requests are not answered with an error code')
 
@@ -87,4 +86,5 @@ if __name__ == '__main__':
 	try:
 		main()
 	finally:
+		restart_web_server()
 		unjoinscript()
