@@ -1,3 +1,10 @@
+univention-web (1.0.39-11) unstable; urgency=medium
+
+  * Bug #43849: Fix AppGallery links beeing clickable only after animation
+    has finished
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 20 Mar 2017 14:03:42 +0100
+
 univention-web (1.0.39-10) unstable; urgency=medium
 
   * Bug #43604: Fix JS typos
@@ -84,7 +91,7 @@ univention-web (1.0.37-6) unstable; urgency=medium
 
 univention-web (1.0.37-5) unstable; urgency=medium
 
-  * Bug #43864: fix formatter for system/setup software selection 
+  * Bug #43864: fix formatter for system/setup software selection
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 13:11:57 +0100
 
