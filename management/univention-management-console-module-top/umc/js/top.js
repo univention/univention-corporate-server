@@ -85,8 +85,8 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				headerText: _('Process overview'),
-				helpText: _('This module generates an overview of all running processes. The search function can reduce the number of results. Specified processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).')
+				helpText: _('This module generates an overview of all running processes. The search function can reduce the number of results. Specified processes can be selected and terminated. If a process can\'t be normally terminated (using SIGTERM signal), the termination can be forced (using SIGKILL signal).'),
+				fullWidth: true
 			});
 			this.addChild(this._page);
 

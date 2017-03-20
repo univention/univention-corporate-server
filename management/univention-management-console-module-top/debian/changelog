@@ -1,3 +1,9 @@
+univention-management-console-module-top (6.0.1-1) unstable; urgency=medium
+
+  * Bug #43528: Use full width for grids by default
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:17:58 +0100
+
 univention-management-console-module-top (6.0.0-3) unstable; urgency=medium
 
   * Bug #43528: Use SearchBox and hide extra search button
