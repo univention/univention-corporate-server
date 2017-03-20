@@ -144,37 +144,40 @@ class Update(UniventionAppAction):
 			pass
 		return ret
 
+	def _save_etags(self, cache, etags):
+		etags_file = os.path.join(cache.get_cache_dir(), '.etags')
+		with open(etags_file, 'wb') as f:
+			for fname, etag in etags.iteritems():
+				f.write('%s\t%s\n' % (fname, etag))
+
 	def _download_supra_files(self, appcenter_cache):
+		return self._download_files(appcenter_cache, ['categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini'])
+
+	def _download_files(self, cache, filenames):
 		updated = False
-		etags_file = os.path.join(appcenter_cache.get_cache_dir(), '.etags')
+		server = cache.get_server()
+		cache_dir = cache.get_cache_dir()
+		etags_file = os.path.join(cache_dir, '.etags')
 		present_etags = self._get_etags(etags_file)
-		server = appcenter_cache.get_server()
-		cache_dir = appcenter_cache.get_cache_dir()
-		for filename in ['categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini']:
+		ucs_version = None
+		if hasattr(cache, 'get_ucs_version'):
+			ucs_version = cache.get_ucs_version()
+		for filename in filenames:
 			etag = present_etags.get(filename)
-			new_etag = self._download_file(server, filename, cache_dir, etag)
+			new_etag = self._download_file(server, filename, cache_dir, etag, ucs_version)
 			if new_etag:
 				present_etags[filename] = new_etag
 				updated = True
-		with open(etags_file, 'wb') as f:
-			for fname, etag in present_etags.iteritems():
-				f.write('%s\t%s\n' % (fname, etag))
+		self._save_etags(cache, present_etags)
 		return updated
 
 	def _download_apps(self, app_cache):
-		etags_file = os.path.join(app_cache.get_cache_dir(), '.etags')
-		present_etags = self._get_etags(etags_file)
-		server = app_cache.get_server()
-		cache_dir = app_cache.get_cache_dir()
-		ucs_version = app_cache.get_ucs_version()
 		filenames = ['index.json.gz']
 		if not ucr_is_false('appcenter/index/verify'):
 			filenames.append('index.json.gz.gpg')
-		for filename in filenames:
-			etag = present_etags.get(filename)
-			self._download_file(server, filename, cache_dir, etag, ucs_version)
+		self._download_files(app_cache, filenames)
 		json_apps = self._load_index_json(app_cache)
-		files_to_download, something_changed_remotely = self._read_index_json(cache_dir, json_apps)
+		files_to_download, something_changed_remotely = self._read_index_json(app_cache.get_cache_dir(), json_apps)
 		num_files_to_be_downloaded = len(files_to_download)
 		self.log('%d file(s) are new' % num_files_to_be_downloaded)
 		num_files_threshold = 5
@@ -196,6 +199,7 @@ class Update(UniventionAppAction):
 			time.sleep(0.1)  # wait 100 milliseconds so that not all threads start at the same time
 		for thread in threads:
 			thread.join()
+		return something_changed_remotely
 
 	@possible_network_error
 	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):

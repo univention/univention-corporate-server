@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-16) unstable; urgency=medium
+
+  * Bug #43866: Improved detection of files changed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Mar 2017 16:55:47 +0100
+
 univention-appcenter (6.0.3-15) unstable; urgency=medium
 
   * Bug #43733: Fix AppCenterGallery for touch devices
