@@ -188,15 +188,12 @@ class SpecialCase():
 				continue
 		return source_file_sets
 
-	def create_po_template(self):
-		base, ext = os.path.splitext(self.new_po_path)
+	def create_po_template(self, output_path=os.path.curdir):
+		base, ext = os.path.splitext(os.path.join(output_path, self.new_po_path))
 		pot_path = '{}.pot'.format(base)
 		message_catalogs.create_empty_po(self.binary_package_name, pot_path)
-		# GNU gettext will not process mixed source types so every set of JS,
-		# HTML and other type of source files will yield its own template which
-		# will in turn be concatenated.
+		partial_pot_path = '{}.pot.partial'.format(base)
 		for sfs in self.get_source_file_sets():
-			partial_pot_path = '{}.pot.partial'.format(base)
 			sfs.process_po(partial_pot_path)
 			message_catalogs.concatenate_po(partial_pot_path, pot_path)
 			os.unlink(partial_pot_path)
@@ -240,20 +237,14 @@ def update_package_translation_files(module, output_dir):
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
 	try:
-		# create directories for package translation
-		abs_path_translated_src_pkg = os.path.abspath("{}/{relative_path_src_pkg}".format(output_dir, **module))
-		if not os.path.exists(abs_path_translated_src_pkg):
-			os.makedirs(abs_path_translated_src_pkg)
-
 		os.chdir(module.get('abs_path_to_src_pkg'))
 		if not module.get('core'):
 			def _create_po_files(po_files, src_files, language):
 				for po_file in po_files:
-					new_po_file_abs_path = os.path.join(abs_path_translated_src_pkg, po_file)
-					if not os.path.exists(os.path.dirname(new_po_file_abs_path)):
-						os.makedirs(os.path.dirname(new_po_file_abs_path))
+					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
+					make_parent_dir(po_path)
 					try:
-						dh_umc.create_po_file(new_po_file_abs_path, module['module_name'], src_files, language)
+						dh_umc.create_po_file(po_path, module['module_name'], src_files, language)
 					except dh_umc.Error as exc:
 						print(str(exc))
 
@@ -263,11 +254,10 @@ def update_package_translation_files(module, output_dir):
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
-			po_file_full_path = os.path.join(abs_path_translated_src_pkg, po_file)
-			if not os.path.exists(os.path.dirname(po_file_full_path)):
-				os.makedirs(os.path.dirname(po_file_full_path))
+			po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
+			make_parent_dir(po_path)
 			try:
-				dh_umc.module_xml2po(module, po_file_full_path, lang)
+				dh_umc.module_xml2po(module, po_path, lang)
 			except dh_umc.Error as exc:
 				print(str(exc))
 
@@ -276,7 +266,6 @@ def update_package_translation_files(module, output_dir):
 		print("error in update_package_translation_files: %s" % (exc,))
 	finally:
 		os.chdir(start_dir)
-	return abs_path_translated_src_pkg
 
 
 def write_makefile(all_modules, special_cases, new_package_dir, target_language):
@@ -309,10 +298,9 @@ def translate_special_case(special_case, source_dir, output_dir):
 		print("Warning: Path defined under 'package_dir' not found. Please check the definitions in the *.univention-l10n file in {}".format(special_case.package_dir))
 		return
 	new_po_path = os.path.join(output_dir, special_case.package_dir, special_case.new_po_path)
-	new_po_dir = os.path.dirname(new_po_path)
-	if not os.path.exists(new_po_dir):
-		os.makedirs(new_po_dir)
-	pot_path = special_case.create_po_template()
+	make_parent_dir(new_po_path)
+	pot_path = special_case.create_po_template(output_path=os.path.join(os.getcwd(), output_dir, special_case.package_dir))
+	message_catalogs.univention_location_lines(pot_path, os.path.join(source_dir, special_case.package_dir))
 	os.rename(pot_path, new_po_path)
 
 
@@ -386,6 +374,16 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 	os.chdir(startdir)
 	return base_translation_modules
+
+
+def make_parent_dir(path):
+	"""If path is a directory path the directory and its parents will be created, if path is a file create its parents will be created."""
+	dir_path = os.path.dirname(path)
+	try:
+		os.makedirs(dir_path)
+	except OSError:
+		if not os.path.isdir(dir_path):
+			raise
 
 
 def write_debian_rules(debian_dir_path):

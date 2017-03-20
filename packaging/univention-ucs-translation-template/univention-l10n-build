@@ -56,3 +56,4 @@ if __name__ == '__main__':
 		pot_path = scase.create_po_template()
 		tlh.message_catalogs.merge_po(pot_path, scase.new_po_path)
 		os.unlink(pot_path)
+		tlh.message_catalogs.univention_location_lines(scase.new_po_path, scase.package_dir)

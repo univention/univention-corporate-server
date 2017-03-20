@@ -56,7 +56,15 @@ def _clean_header(po_path):
 
 
 def concatenate_po(src_po_path, dest_po_path):
-	_call_gettext('msgcat', src_po_path, '-o', dest_po_path)
+	_call_gettext('msgcat',
+		'--unique',
+		src_po_path,
+		dest_po_path,
+		'-o', dest_po_path)
+	backup_file = '{}~'.format(dest_po_path)
+	if os.path.isfile(backup_file):
+		os.unlink(backup_file)
+	_clean_header(dest_po_path)
 
 
 def create_empty_po(binary_pkg_name, new_po_path):
@@ -81,11 +89,17 @@ def compile_mo(path_to_po, mo_output_path):
 
 
 def merge_po(source_po_path, dest_po_path):
-	_call_gettext('msgmerge', '--update', '--sort-output', dest_po_path, source_po_path)
-	os.unlink('{}~'.format(dest_po_path))
+	_call_gettext('msgmerge',
+		'--update',
+		'--sort-output',
+		dest_po_path,
+		source_po_path)
+	backup_file = '{}~'.format(dest_po_path)
+	if os.path.isfile(backup_file):
+		os.unlink(backup_file)
 
 
-def join_existing(language, output_file, input_files, cwd=None):
+def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 	if not os.path.isfile(output_file):
 		raise GettextError("Can't join input files into {}. File does not exist.".format(output_file))
 	if not isinstance(input_files, list):
@@ -110,6 +124,16 @@ def _call_gettext(*args, **kwargs):
 		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
 	except AttributeError as exc:
 		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc.strerror))
+
+
+def univention_location_lines(pot_path, abs_path_source_pkg):
+	po_file = polib.pofile(pot_path)
+	for entry in po_file:
+		modified_occ = []
+		for path, linenum in entry.occurrences:
+			modified_occ.append((os.path.relpath(path, start=abs_path_source_pkg), linenum))
+		entry.occurrences = modified_occ
+	po_file.save(pot_path)
 
 
 def make_parent_dir(file_path):

@@ -35,6 +35,8 @@ import os
 import message_catalogs
 import polib
 
+import univention.dh_umc as dh_umc
+
 
 class UnsupportedSourceType(Exception):
 	pass
@@ -48,8 +50,6 @@ class SourceFileSet(object):
 		self.binary_pkg_name = binary_pkg_name
 
 	def process_po(self, pot_path):
-		if os.path.isfile(pot_path):
-			os.unlink(pot_path)
 		self._create_po_template(pot_path)
 
 	def process_target(self, po_path, output_path):
@@ -62,8 +62,7 @@ class SourceFileSet(object):
 class SourceFilesXgettext(SourceFileSet):
 
 	def _create_po_template(self, gettext_lang, pot_path):
-		message_catalogs.create_empty_po(self.binary_pkg_name, pot_path)
-		message_catalogs.join_existing(gettext_lang, pot_path, self.files, cwd=self.src_pkg_path)
+		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files)
 
 	def _compile(self, po_path, mo_output_path):
 		message_catalogs.compile_mo(po_path, mo_output_path)
@@ -102,7 +101,8 @@ class SourceFilesHTML(SourceFileSet):
 				tree = etree.parse(html_file, html_parser)
 				for element in tree.iter():
 					if 'data-i18n' in element.keys():
-						new_entry = polib.POEntry(msgid=element.get('data-i18n'),
+						new_entry = polib.POEntry(
+							msgid=element.get('data-i18n'),
 							occurrences=[(os.path.basename(html_path), element.sourceline)])
 						if new_entry not in po_template:
 							po_template.append(new_entry)
@@ -111,14 +111,16 @@ class SourceFilesHTML(SourceFileSet):
 		for html_path in self.files:
 			# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
 			if tree.xpath('//script'):
-				message_catalogs.join_existing('JavaScript', pot_path, html_path, cwd=self.src_pkg_path)
+				message_catalogs.join_existing('JavaScript', pot_path, html_path)
 
 	def _compile(self, po_path, json_output_path):
 		message_catalogs.po_to_json(po_path, json_output_path)
 
 
 class SourceFileSetCreator(object):
-	process_by_type = {'text/x-shellscript': SourceFilesShell,
+
+	process_by_type = {
+		'text/x-shellscript': SourceFilesShell,
 		'text/x-python': SourceFilesPython,
 		'text/html': SourceFilesHTML,
 		'application/javascript': SourceFilesJavaScript}
