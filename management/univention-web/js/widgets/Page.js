@@ -73,6 +73,11 @@ define([
 		//		Disable the page footer.
 		noFooter: false,
 
+		// fullWidth: Boolean
+		//		Let the page take the full width, the navigation element will always be
+		//		displayed above the content element.
+		fullWidth: false,
+
 		addNotification: lang.hitch(dialog, 'notify'),
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-4 col-lg-4',
@@ -159,6 +164,11 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			if (this.fullWidth) {
+				this.navBootstrapClasses = this._initialBootstrapClasses;
+				this.mainBootstrapClasses = this._initialBootstrapClasses;
+			}
 
 			// remove title from the attributeMap
 			delete this.attributeMap.title;

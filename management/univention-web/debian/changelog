@@ -1,3 +1,9 @@
+univention-web (1.0.39-14) unstable; urgency=medium
+
+  * Bug #43528: Add flag fullWidth to Page + adjust styling of tiles
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:15:39 +0100
+
 univention-web (1.0.39-13) unstable; urgency=medium
 
   * Bug #43531: Adjust styling for trees
