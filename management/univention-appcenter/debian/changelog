@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-15) unstable; urgency=medium
+
+  * Bug #43733: Fix AppCenterGallery for touch devices
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 20 Mar 2017 14:37:43 +0100
+
 univention-appcenter (6.0.3-14) unstable; urgency=medium
 
   * Bug #43866: Fix issues with univention-app update not copying all logo

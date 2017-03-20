@@ -109,7 +109,7 @@ define([
 						// on the first touch show hover with long desc
 						// on second touch open app
 						if (has('touch')) {
-							var appNode = dom.byId(app.id);
+							var appNode = domQuery(lang.replace('[moduleid="{id}"]', app), this.grid.contentNode)[0];
 							var isSecondTouch = domClass.contains(appNode, 'secondTouch');
 							if (isSecondTouch) {
 								this.onShowApp(app);

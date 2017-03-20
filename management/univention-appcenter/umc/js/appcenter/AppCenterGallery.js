@@ -30,17 +30,35 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/AppGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, entities, tools, AppGallery, _) {
+], function(declare, domClass, entities, tools, AppGallery, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ AppGallery ], {
 		iconClassPrefix: 'umcAppCenter',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.baseClass += ' umcAppCenterGallery';
+		},
+
+		postCreate: function() {
+			// TODO: this changes with Dojo 2.0
+			this.domNode.setAttribute("widgetId", this.id);
+
+			// add specific DOM classes
+			if (this.baseClass) {
+				domClass.add(this.domNode, this.baseClass);
+			}
+
+			if (this.actions) {
+				this._setActions(this.actions);
+			}
+			if (this.store) {
+				this.set('store', this.store);
+			}
 		},
 
 		getStatusIconClass: function(item) {
