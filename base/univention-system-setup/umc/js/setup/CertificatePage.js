@@ -51,14 +51,14 @@ define([
 
 		_noteShowed: false,
 
+		fullWidth: true,
+
 		_orgVals: null,
 		_old_vals: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			this.title = _('Certificate');
-			this.headerText = _('Certificate settings');
 			this.helpText = _('Following the <i>certificate settings</i>, a new root certificate will be created for the domain.');
 			this._orgVals = {};
 		},

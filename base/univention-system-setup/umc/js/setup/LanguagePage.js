@@ -55,9 +55,9 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			this.title = _('Language');
-			this.headerText = _('Language settings');
-			this.helpText = _('<i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system locales.');
+			//this.title = _('Language');
+			//this.headerText = _('Language settings');
+			//this.helpText = _('<i>Language settings</i> incorporate all language relevant configurations, such as time zone, keyboard layout, and system locales.');
 		},
 
 		buildRendering: function() {

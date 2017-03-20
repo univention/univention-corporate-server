@@ -69,9 +69,9 @@ define([
 		physical_interfaces: [],
 
 		postMixInProperties: function() {
-			this.title = _('Network');
-			this.headerText = _('Network settings');
-			this.helpText = _('In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.');
+			//this.title = _('Network');
+			//this.headerText = _('Network settings');
+			//this.helpText = _('In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name servers, gateways, and HTTP proxies may be specified.');
 
 			this.inherited(arguments);
 		},

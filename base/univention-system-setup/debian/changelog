@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-10) unstable; urgency=medium
+
+  * Bug #43528: Use full width for * settings modules
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:19:46 +0100
+
 univention-system-setup (10.0.9-9) unstable; urgency=medium
 
   * Bug #43604: Adjust piwik integration
