@@ -1397,6 +1397,12 @@ msgstr "{0} Pakete werden installiert / aktualisiert"
 msgid "{0} packages will be removed"
 msgstr "{0} Pakete werden deinstalliert"
 
+msgid "This module shows all repositories settings defined for this system."
+msgstr "Diese Modul zeigt alle Repository-Einstellungen, die für dieses System definiert sind."
+
+msgid "Additional repositories"
+msgstr "Zusätzliche Repositories"
+
 #~ msgid ""
 #~ "Depending on the guideline of the respective application vendor an "
 #~ "updated UCS license key with so-called key identification (Key ID) is "
@@ -1431,15 +1437,6 @@ msgstr "{0} Pakete werden deinstalliert"
 
 #~ msgid "Name of the installed application"
 #~ msgstr "Name der soeben installierten Applikation"
-
-#~ msgid ""
-#~ "On this page, you find all additional components defined for this system. "
-#~ "You can enable/disable/edit/delete them, and you can add new ones here."
-#~ msgstr ""
-#~ "Auf dieser Seite sehen Sie alle Komponenten, die für dieses System "
-#~ "definiert sind, Die Komponenten können aktiviert oder deaktiviert werden, "
-#~ "Details einer Komponente können geändert, Komponenten gelöscht oder unter "
-#~ "bestimmten Umständen installiert werden."
 
 #~ msgid "Pattern"
 #~ msgstr "Suchbegriff"

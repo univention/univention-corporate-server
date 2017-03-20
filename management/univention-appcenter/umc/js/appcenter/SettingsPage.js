@@ -48,16 +48,8 @@ define([
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null,
 		_query: { table: 'components' },
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-
-			lang.mixin(this, {
-				title: _("Repository Settings"),
-				headerText: _("Repository settings")
-				//helpText: _("On this page, you find all additional components defined for this system. You can enable/disable/edit/delete them, and you can add new ones here.")
-			});
-		},
+		helpText: _("This module shows all repositories settings defined for this system."),
+		fullWidth: true,
 
 		buildRendering: function() {
 
@@ -114,9 +106,7 @@ define([
 			this._form.load({}); // ID does not matter here but must be dict
 
 			var titlePaneForm = new TitlePane({
-				title: _("General repository settings"),
-				region: 'nav',
-				toggleable: false
+				title: _("General repository settings")
 			});
 
 			titlePaneForm.addChild(this._form);
@@ -257,7 +247,11 @@ define([
 				actions: actions,
 				columns: columns
 			});
-			this.addChild(this._grid);
+			var titlePaneGrid = new TitlePane({
+				title: _("Additional repositories")
+			});
+			titlePaneGrid.addChild(this._grid);
+			this.addChild(titlePaneGrid);
 		},
 
 		// switch over to the detail edit form, along with this id (empty if 'add')

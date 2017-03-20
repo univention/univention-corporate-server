@@ -50,16 +50,8 @@ define([
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null,
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-
-			lang.mixin(this, {
-				headerText: _("Extended software management"),
-				helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
-				title: _("Extended software management")
-			});
-		},
+		helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
+		fullWidth: true,
 
 		buildRendering: function() {
 
@@ -131,7 +123,8 @@ define([
 			var columns = [
 				{
 					name: 'package',
-					label: _("Package name")
+					label: _("Package name"),
+					width: '30%'
 				},
 				//{
 				//	name: 'section',
@@ -140,12 +133,13 @@ define([
 				//},
 				{
 					name: 'summary',
-					label: _("Package description")
+					label: _("Package description"),
+					width: '50%'
 				},
 				{
 					name: 'status',
 					label: _("Installation status"), // notinstalled/installed/upgradable
-					width: 'adjust'
+					width: '20%'
 				}
 			];
 
