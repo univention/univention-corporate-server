@@ -479,6 +479,14 @@ assert_join () {
 	fi
 }
 
+assert_adconnector_configuration () {
+	if [ -z "$(ucr get connector/ad/ldap/host)" ]; then
+		echo "Creating /DONT_START_UCS_TEST"
+		touch /DONT_START_UCS_TEST
+		exit 1
+	fi
+}
+
 assert_packages () {
 	local packages="$@"
 	for package in $packages; do
