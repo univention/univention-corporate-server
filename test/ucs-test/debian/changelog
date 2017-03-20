@@ -1,3 +1,9 @@
+ucs-test (7.0.20-15) unstable; urgency=medium
+
+  * Bug #43862: 101_test_umc_frontend_i18n.py: check branding.json as empty file
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 17:51:32 +0100
+
 ucs-test (7.0.20-14) unstable; urgency=medium
 
   * 10_ldap/25reconnect_uldap: systemd logged something like this

@@ -11,7 +11,6 @@ class TestI18N(object):
 	@pytest.mark.parametrize('path', [
 		'management/modules/i18n/de/udm.json',
 		'js/umc/i18n/de/app.json',
-		'js/umc/i18n/en/branding.json',
 		'js/umc/i18n/en/app.json',
 		# 'js_$20170106132942$/umc/i18n/en/app.json',
 	])
@@ -24,6 +23,7 @@ class TestI18N(object):
 		'management/modules/i18n/en/udm.json',
 		'js/umc/modules/i18n/en/udm.json',
 		'js/umc/i18n/de/branding.json',
+		'js/umc/i18n/en/branding.json',
 	])
 	def test_empty(self, path, Client):
 		"""Test apache redirect rule which rewrites not existing files to empty.json"""
