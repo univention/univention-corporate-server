@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.localization
@@ -56,7 +58,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		options=[],
 		required=True,
-		may_change=True,
+		may_change=False,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
@@ -191,6 +193,20 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ocs),
 		]
+
+	def _ldap_post_remove(self):
+		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
+			try:
+				obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
+				obj.modify()
+			except univention.admin.uexceptions.valueRequired:
+				# no portal is references anymore. remove the complete entry
+				obj.remove()
+
+	def _ldap_post_move(self, olddn):
+		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [olddn])):
+			obj['portal'] = [x for x in obj.info.get('portal', []) + [self.dn] if not self.lo.compare_dn(x, olddn)]
+			obj.modify()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

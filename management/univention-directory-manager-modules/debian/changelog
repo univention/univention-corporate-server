@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.15-1) unstable; urgency=medium
+
+  * Bug #43928: make it possible to move and remove portal's entries; disallow
+  	renaming of portal
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 19:12:43 +0100
+
 univention-directory-manager-modules (12.0.14-12) unstable; urgency=medium
 
   * Bug #42231: Show showApps attributes for portal
