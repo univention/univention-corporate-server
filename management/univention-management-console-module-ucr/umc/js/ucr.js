@@ -217,8 +217,8 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				headerText: _('Univention Configuration Registry'),
-				helpText: _('The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an unusable system!')
+				helpText: _('The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an unusable system!'),
+				fullWidth: true
 			});
 			this.addChild(this._page);
 
@@ -303,6 +303,7 @@ define([
 					{ id: 'all', label: _('All') }
 				],
 				dynamicValues: 'ucr/categories',
+				size: 'Half'
 			}, {
 				type: ComboBox,
 				name: 'key',
@@ -315,6 +316,7 @@ define([
 					{ id: 'value', label: _( 'Value' ) },
 					{ id: 'description', label: _( 'Description' ) }
 				],
+				size: 'Half'
 			}, {
 				type: SearchBox,
 				name: 'pattern',
