@@ -1,3 +1,9 @@
+univention-apache (9.0.4-2) unstable; urgency=medium
+
+  * Bug #43695: remove unneeded ucr variables
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 14:17:48 +0100
+
 univention-apache (9.0.4-1) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

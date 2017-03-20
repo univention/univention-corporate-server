@@ -76,7 +76,7 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 fi
 
 #remove old ucr variables
-keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|root-certificate|ldap-master)/.*')
+keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/admin/(invalid-certificate|invalid-certificate-list|root-certificate|ldap-master)/.*')
 if [ -n "$keys" ]; then
 	ucr unset $keys
 fi
