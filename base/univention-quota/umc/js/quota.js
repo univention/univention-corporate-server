@@ -66,8 +66,8 @@ define([
 			this._overviewPage = new Page({
 				title: _('Partitions'),
 				moduleStore: this.moduleStore,
-				headerText: _('List partitions'),
-				helpText: _('Set, unset and modify filesystem quota')
+				helpText: _('Set, unset and modify filesystem quota'),
+				fullWidth: true
 			});
 			this.addChild(this._overviewPage);
 			this.selectChild(this._overviewPage);
@@ -237,7 +237,7 @@ define([
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				moduleStore: store('id', this.moduleID + '/users'),
 				headerText: _('Partition: %s', partitionDevice),
-				helpText: _('Set, unset and modify filesystem quota')
+				fullWidth: true
 			});
 			this.addChild(this._partitionPage);
 			this._partitionPage.on('ShowDetailPage', lang.hitch(this, function(userQuota) {
@@ -251,7 +251,8 @@ define([
 			this._detailPage = new DetailPage({
 				partitionDevice: partitionDevice,
 				standby: lang.hitch(this, 'standby'),
-				standbyDuring: lang.hitch(this, 'standbyDuring')
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
+				fullWidth: true
 			});
 			this.addChild(this._detailPage);
 			this._detailPage.on('ClosePage', lang.hitch(this, function() {

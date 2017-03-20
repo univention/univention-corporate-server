@@ -1,3 +1,9 @@
+univention-quota (11.0.0-4) unstable; urgency=medium
+
+  * Bug #43528: Use full width for grids + adjust search box
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:21:59 +0100
+
 univention-quota (11.0.0-3) unstable; urgency=low
 
   * Bug #42368: unify search for users with all other UMC modules

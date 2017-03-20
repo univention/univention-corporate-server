@@ -39,9 +39,9 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/SearchForm",
 	"umc/widgets/Text",
-	"umc/widgets/TextBox",
+	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, sprintf, dialog, tools, Grid, Page, SearchForm, Text, TextBox, _) {
+], function(declare, lang, array, sprintf, dialog, tools, Grid, Page, SearchForm, Text, SearchBox, _) {
 	return declare("umc.modules.quota.PartitionPage", [ Page ], {
 
 		moduleStore: null,
@@ -54,7 +54,12 @@ define([
 
 		_getPartitionInfo: function() {
 			this.standbyDuring(tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice})).then(lang.hitch(this, function(data) {
-				this._partitionInfo.set('content', lang.replace('<p>' + _('Mount point: ') + '{mountPoint} ' + _('Filesystem: ') + '{filesystem} ' + _('Options: ') + ' {options}' + '</p>', data.result));
+				this._partitionInfo.set('content', lang.replace('<p>' +
+						_('Mount point: ') + '{mountPoint} ' +
+						_('Filesystem: ') + '{filesystem} ' +
+						_('Options: ') + ' {options}' +
+					'</p>', data.result
+				));
 			}));
 		},
 
@@ -88,15 +93,20 @@ define([
 
 		renderGrid: function() {
 			var widgets = [{
-				type: TextBox,
+				type: SearchBox,
 				name: 'filter',
-				value: ''
+				value: '',
+				inlineLabel: _('Search...'),
+				onSearch: lang.hitch(this, function() {
+					this._searchForm.submit();
+				})
 			}];
 
 			this._searchForm = new SearchForm({
 				region: 'nav',
 				widgets: widgets,
-				layout: [['filter', 'submit', 'reset']],
+				layout: ['filter'],
+				hideSubmitButton: true,
 				onSearch: lang.hitch(this, function(data) {
 					data.partitionDevice = this.partitionDevice;
 					this._grid.filter(data);
