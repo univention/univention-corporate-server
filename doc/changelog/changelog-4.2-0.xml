@@ -201,8 +201,8 @@
 						This is done by running <command>/usr/share/univention-server/univention-fix-ucr-dns</command> once (<u:bug>43217</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						The legacy System V init scripts <filename>univention-bind</filename> and <filename>univention</filename>-bind-proxy have been removed.
-						The services are now handles through the System V init script <filename>bind9</filename> and the <application>systemd</application> service unit file <filename>bind9</filename>.service (<u:bug>43690</u:bug>).
+						The legacy System V init scripts <filename>univention-bind</filename> and <filename>univention-bind-proxy</filename> have been removed.
+						The services are now handled through the System V init script <filename>bind9</filename> and the <application>systemd</application> service unit file <filename>bind9</filename>.service (<u:bug>43690</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
