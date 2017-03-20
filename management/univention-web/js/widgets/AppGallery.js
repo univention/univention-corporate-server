@@ -128,7 +128,8 @@ define([
 			});
 
 			on(domNode, mouse.leave, function() {
-				domClass.remove(this, 'hover');
+				// secondTouch is used in AppCenterMetaCategory
+				domClass.remove(this, 'hover secondTouch');
 			});
 
 			var statusIcon = query('.appStatusHoverIcon', domNode)[0];

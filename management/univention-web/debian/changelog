@@ -1,3 +1,9 @@
+univention-web (1.0.39-12) unstable; urgency=medium
+
+  * Bug #43733: Fix AppCenterGallery for touch devices
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 20 Mar 2017 14:35:25 +0100
+
 univention-web (1.0.39-11) unstable; urgency=medium
 
   * Bug #43849: Fix AppGallery links beeing clickable only after animation
