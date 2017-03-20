@@ -439,6 +439,8 @@ define([
 			//		for the LDAP-directory and objects with superordinates.
 
 			// show help icon if help_link is given for the module
+			var hasSuperordinates = this.moduleFlavor === 'dhcp/dhcp' || this.moduleFlavor === 'dns/dns' || this.moduleFlavor === 'asterisk/asterisk';
+			var hasTree = 'navigation' == this.moduleFlavor || hasSuperordinates;
 			metaInfo = metaInfo || {};
 			var buttons = [];
 			if (metaInfo.help_link) {
@@ -455,7 +457,8 @@ define([
 			this._searchPage = new Page({
 				headerText: this.description,
 				helpText: metaInfo.help_text || '',
-				headerButtons: buttons
+				headerButtons: buttons,
+				fullWidth: !hasTree
 			});
 
 			// get the license information
@@ -471,11 +474,10 @@ define([
 				});
 			}
 
-			var hasSuperordinates = this.moduleFlavor === 'dhcp/dhcp' || this.moduleFlavor === 'dns/dns' || this.moduleFlavor === 'asterisk/asterisk';
 			this.renderGrid();
 			this.renderSearchForm(containers, hasSuperordinates);
 
-			if ('navigation' == this.moduleFlavor || hasSuperordinates) {
+			if (hasTree) {
 				this.renderTree();
 			}
 

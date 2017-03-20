@@ -21,6 +21,7 @@
 	float: right;
 	padding: 0 !important;
 	box-shadow: none;
+	margin-top: -2em;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton .dijitButtonNode {
 	background-color: transparent;

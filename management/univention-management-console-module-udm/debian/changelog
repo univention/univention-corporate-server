@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-2) unstable; urgency=medium
+
+  * Bug #43528: Use full width for grids by default
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:16:40 +0100
+
 univention-management-console-module-udm (7.0.9-1) unstable; urgency=medium
 
   * Bug #43751: fix syntax error from svn r73006 / Bug #42220
