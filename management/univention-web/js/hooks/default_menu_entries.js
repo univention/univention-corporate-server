@@ -107,7 +107,7 @@ define([
 				label: language.label,
 				disabled: language.id === i18nTools.defaultLang(),
 				onClick: function() {
-					topic.publish('/umc/actions', 'menu', 'switch-language', language);
+					topic.publish('/umc/actions', 'menu', 'switch-language', language.id);
 					if (tools.status('loggedIn')) {
 						dialog.confirm(_('<b>Warning</b>: The current session with all opened modules and unsaved settings gets lost and a page reload is done when switching the language.'), [{
 							name: 'change',

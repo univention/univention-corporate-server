@@ -65,9 +65,11 @@ define([
 			timestamp = lastTimestamp + 1;
 		}
 		lastTimestamp = timestamp;
+		var loc = lang.mixin({}, window.location);
+		loc.port = loc.port ? ':' + loc.port : '';
 		var action =  {
 			siteTitle: _buildSiteTitle(parts),
-			url: lang.replace('{origin}{pathname}', window.location),
+			url: lang.replace('{protocol}//{hostname}{port}{pathname}', loc),
 			numOfTabs: tools.status('numOfTabs'),
 			timestamp: timestamp
 		};
