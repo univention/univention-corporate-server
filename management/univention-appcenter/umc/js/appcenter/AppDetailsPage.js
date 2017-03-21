@@ -521,10 +521,7 @@ define([
 				'class': 'appDetailsPageActions',
 				actions: actions,
 				columns: columns,
-				moduleStore: myStore,
-				gridOptions: {
-					'class': 'appDetailsPageActionsContent'
-				}
+				moduleStore: myStore
 			});
 			this._mainRegionContainer.addChild(this._installedAppsGrid);
 			this._mainRegionContainer.own(this._installedAppsGrid);

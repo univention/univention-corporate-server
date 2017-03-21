@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-19) unstable; urgency=medium
+
+  * Bug #43906: Use autoheight for installedAppsGrid
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 12:01:44 +0100
+
 univention-appcenter (6.0.3-18) unstable; urgency=medium
 
   * Bug #43291: Adjust 'previous' and 'next' app buttons in AppDetailsPage
