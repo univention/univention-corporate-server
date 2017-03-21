@@ -71,9 +71,9 @@ case "$1" in
 		ucr set nagios/server/authenticate=yes
 
 		# reload services
-		deb-systemd-invoke apache2 reload
-		deb-systemd-invoke slapd restart
-		deb-systemd-invoke univention-management-console-server reload
+		deb-systemd-invoke reload apache2.service
+		deb-systemd-invoke restart slapd.service
+		deb-systemd-invoke reload univention-management-console-server.service
 		;;
 	purge)
 		;;
