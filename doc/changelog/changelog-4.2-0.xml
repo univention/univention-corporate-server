@@ -973,6 +973,9 @@
 				During update, the UCR variables for the firewall accept rule are unset (<u:bug>42109</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				<package>univention-join</package> now uses SNTP for initial time sync (<u:bug>43987</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				<package>univention-firewall</package> has been adapted to new iptables rules created by the upgraded docker service (<u:bug>43707</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
