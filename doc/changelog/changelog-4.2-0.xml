@@ -225,7 +225,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The general design of the web interface has been improved. Several aspects of the design are borrowed from the Google Material Design guidelines (<u:bug>42261</u:bug>, <u:bug>42264</u:bug>, <u:bug>43451</u:bug>, <u:bug>42266</u:bug>).
+						The general design of the web interface has been improved. Several aspects of the design are borrowed from the Google Material Design guidelines (<u:bug>42261</u:bug>, <u:bug>42264</u:bug>, <u:bug>43451</u:bug>, <u:bug>42266</u:bug>, <u:bug>43528</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						A central portal site has been added to UCS. It allows to have a central site which shows all installed Apps in a UCS domain. Furthermore, the portal page can be configured and customized (<u:bug>42233</u:bug>, <u:bug>42175</u:bug>, <u:bug>42231</u:bug>, <u:bug>43495</u:bug>, <u:bug>43670</u:bug>, <u:bug>43887</u:bug>, <u:bug>43932</u:bug>).
