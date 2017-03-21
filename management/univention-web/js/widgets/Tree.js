@@ -32,10 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/Evented",
-	"dojo/Deferred",
 	"dijit/Destroyable",
 	"dgrid/OnDemandGrid",
 	"dgrid/Tree",
@@ -46,7 +46,7 @@ define([
 	"dstore/Tree",
 	"./ContainerWidget",
 	"./_RegisterOnShowMixin"
-], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
+], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
 
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
@@ -54,20 +54,19 @@ define([
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
 		'class': 'umcGridTree',
 		showRoot: true,
-		postMixInProperties: function() {
-			this.inherited(arguments);
-		},
+		// let the Tree be as hight as the content
+		useAutoHeight: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._gridTree = new GridTree(lang.mixin({
-				className: 'dgrid-autoheight',
+				className: this.useAutoHeight ? 'dgrid-autoheight' : '',
 				collection: null,
 				selectionMode: 'single',
 				collapseOnRefresh: true,
 				shouldExpand: lang.hitch(this, 'shouldExpandAndSelect'),
 				showHeader: false,
-				treeIndentWidth: 26,
+				treeIndentWidth: 24,
 				columns: {
 					label: {
 						renderExpando: true,
@@ -92,7 +91,14 @@ define([
 			var store = new MemoryTree({
 				getChildren: lang.hitch(this, function(parentItem) {
 					var childrenStore = new MemoryTree();
+					var rowElement = this._gridTree.row(parentItem).element;
+					if (rowElement) {
+						domClass.add(rowElement, 'childrenUnknown');
+					}
 					this.model.getChildren(parentItem, lang.hitch(this, function(items){
+						if (rowElement) {
+							domClass.replace(rowElement, (items.length ? 'hasChildren' : 'noChildren'), 'childrenUnknown');
+						}
 						items.forEach(lang.hitch(this, function(item) {
 							item.parentId = parentItem.id;
 							childrenStore.put(item);

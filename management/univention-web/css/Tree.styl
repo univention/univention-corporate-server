@@ -33,6 +33,9 @@
 	material-shadow(1)
 
 	.dgrid
+		&:not(.dgrid-autoheight)
+			height: 100%
+
 		border: none
 
 		.dgrid-cell
@@ -41,7 +44,7 @@
 
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)
-			height: 36px
+			height: 32px
 			line-height: @height
 			box-sizing: content-box
 			transition: background-color 0.2s
@@ -67,9 +70,18 @@
 					position: absolute
 					top: @padding
 					left: @padding
-					icon-image(-160, -40)
+					// styling of expando icons
+					// default
+					icon-image(-220, -20)
+					// expanded row
 					^[-2].dgrid-row-expanded ^[-2..-1]
-						icon-image(-180, -40)
+						icon-image(-160, -20)
+					// loading
+					^[-2].childrenUnknown ^[-2..-1]
+						background: url($image-loading-animation)
+					// empty container
+					^[-2].noChildren ^[-2..-1]
+						background: none
 
 .umc .dijitTreeNode
     zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */
