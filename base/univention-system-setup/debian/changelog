@@ -1,3 +1,10 @@
+univention-system-setup (10.0.9-10.1) unstable; urgency=medium
+
+  * Don't install univention-welcome-screen until Bug #43656 has been
+    fixed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Mar 2017 06:43:52 +0100
+
 univention-system-setup (10.0.9-10) unstable; urgency=medium
 
   * Bug #43528: Use full width for * settings modules
