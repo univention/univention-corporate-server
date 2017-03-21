@@ -1,3 +1,9 @@
+univention-web (1.0.39-21) unstable; urgency=medium
+
+  * Bug #44003: Fix UCS logo on login page for IE
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 21 Mar 2017 18:21:00 +0100
+
 univention-web (1.0.39-20) unstable; urgency=medium
 
   * Bug #43531: Select root element in trees by default
@@ -6,7 +12,7 @@ univention-web (1.0.39-20) unstable; urgency=medium
 
 univention-web (1.0.39-19) unstable; urgency=medium
 
-  * Bug #44008: use dom-geometry to get scroll postion in grid 
+  * Bug #44008: use dom-geometry to get scroll postion in grid
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 17:58:09 +0100
 
