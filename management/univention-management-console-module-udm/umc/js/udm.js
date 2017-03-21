@@ -1112,14 +1112,6 @@ define([
 				// don't indent superordinates
 				domStyle.set(this._tree.indentDetector, 'width', '1px');
 			}
-			// at the first onLoad event, select the LDAP base (i.e., root) as current node
-			on.once(this._tree, 'load', lang.hitch(this, function() {
-				// if the tree has been loaded successfully, model.root
-				// is set and we can select the root as active node
-				if (this._tree.model.root) {
-					this._tree.set('path', [this._tree.model.root]);
-				}
-			}));
 			this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
 				this._searchForm.getWidget('objectType').reloadDynamicValues();
 				// register for changes of the selected item (= path)
