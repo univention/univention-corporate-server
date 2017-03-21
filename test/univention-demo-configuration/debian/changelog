@@ -1,4 +1,4 @@
-univention-demo-configuration (5.0.2-1) unstable; urgency=medium
+univention-demo-configuration (5.0.2-2) unstable; urgency=medium
 
   * Bug #43601: prevent exception
 
