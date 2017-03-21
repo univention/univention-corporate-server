@@ -1099,7 +1099,6 @@ define([
 			});
 
 			this._tree = new Tree({
-				//style: 'width: auto; height: auto;',
 				model: model,
 				persist: false,
 				region: 'nav',
@@ -1390,7 +1389,8 @@ define([
 			var tree = new Tree({
 				model: model,
 				persist: false,
-				style: 'width: 300px; height: 350px',
+				useAutoHeight: false,
+				style: 'width: 300px; height: 350px; margin-bottom: 20px;',
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
