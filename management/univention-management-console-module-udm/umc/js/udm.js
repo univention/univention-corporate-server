@@ -557,9 +557,11 @@ define([
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
 			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
-			_loadGridViewPreference().then(lang.hitch(this, function(view) {
-				this._setGridView(view);
-			}));
+			if (this.moduleFlavor === 'users/user') {
+				_loadGridViewPreference().then(lang.hitch(this, function(view) {
+					this._setGridView(view);
+				}));
+			}
 		},
 
 		renderGrid: function() {
