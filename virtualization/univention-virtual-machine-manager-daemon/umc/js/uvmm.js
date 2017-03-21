@@ -68,12 +68,11 @@ define([
 	"umc/modules/uvmm/InstancePage",
 	"umc/modules/uvmm/InstanceWizard",
 	"umc/modules/uvmm/CreatePage",
-	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, kernel, win, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, _) {
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances

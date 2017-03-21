@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.2-4) unstable; urgency=medium
+
+  * Bug #43531: Remove unused references
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 21 Mar 2017 16:59:22 +0100
+
 univention-virtual-machine-manager-daemon (6.0.2-3) unstable; urgency=medium
 
   * Bug #43531: Adjust styling for trees

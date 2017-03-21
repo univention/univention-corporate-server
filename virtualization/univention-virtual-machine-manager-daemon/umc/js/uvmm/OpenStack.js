@@ -1,40 +1,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/string",
-	"dojo/query",
-	"dojo/Deferred",
-	"dojo/on",
-	"dojo/aspect",
-	"dojox/html/entities",
-	"dijit/Menu",
-	"dijit/MenuItem",
-	"dijit/ProgressBar",
-	"dijit/Dialog",
-	"dijit/form/_TextBoxMixin",
-	"umc/tools",
-	"umc/dialog",
-	"umc/widgets/Module",
-	"umc/widgets/Page",
-	"umc/widgets/Form",
-	"umc/widgets/Grid",
-	"umc/widgets/SearchForm",
-	"umc/widgets/Tree",
-	"umc/widgets/Tooltip",
-	"umc/widgets/Text",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
-	"umc/widgets/Button",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/PasswordBox",
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, aspect, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
-	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, HiddenInput, PasswordBox, CloudConnectionWizard, _) {
+], function(declare, lang, ComboBox, TextBox, HiddenInput, PasswordBox, CloudConnectionWizard, _) {
 	var _invalidUrlMessage = _('The url is invalid!<br/>Expected format is: <i>http(s)://</i>');
 	var _validateUrl = function(url) {
 		url = url || '';

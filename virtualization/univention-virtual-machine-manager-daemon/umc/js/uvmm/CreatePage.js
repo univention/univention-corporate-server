@@ -32,23 +32,13 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/promise/all",
-	"dijit/layout/ContentPane",
 	"umc/tools",
-	"umc/dialog",
 	"umc/widgets/Wizard",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/LabelPane",
-	"umc/widgets/Form",
 	"umc/widgets/ComboBox",
-	"umc/widgets/Text",
-	"umc/widgets/TextBox",
-	"umc/widgets/HiddenInput",
-	"umc/widgets/Tree",
 	"umc/widgets/RadioButton",
-	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, all, ContentPane, tools, dialog, Wizard, ContainerWidget, LabelPane, Form, ComboBox, Text, TextBox, HiddenInput, Tree, RadioButton, TreeModel, types, _) {
+], function(declare, lang, array, all, tools, Wizard, ComboBox, RadioButton, types, _) {
 
 	return declare("umc.modules.uvmm.CreatePage", [ Wizard ], {
 		umcpCommand: null,
