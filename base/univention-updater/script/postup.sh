@@ -109,6 +109,12 @@ if ! is_ucr_true update42/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
+# This HAS to be done after the UCS 4.2 apt-get autoremove (Bug #43782#c2)
+if is_installed kopano-webmeetings; then
+	a2enmod proxy_wstunnel >>"$UPDATER_LOG" 2>&1
+	service apache2 restart >>"$UPDATER_LOG" 2>&1
+fi
+
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list

@@ -1,3 +1,10 @@
+univention-updater (12.0.4-8) unstable; urgency=medium
+
+  * Bug #43782: Reactivate apache2 module proxy_wstunnel if
+    kopano-webmeetings is installed 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 21 Mar 2017 14:59:19 +0100
+
 univention-updater (12.0.4-7) unstable; urgency=low
 
   * Bug #43937: Block upgrade with separate /usr
