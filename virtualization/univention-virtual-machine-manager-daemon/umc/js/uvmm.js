@@ -256,8 +256,6 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			this._tree = new Tree({
-				//style: 'width: auto; height: auto;',
-				style: 'height: auto; min-height: 0;',
 				region: 'nav',
 				model: model,
 				persist: false,
