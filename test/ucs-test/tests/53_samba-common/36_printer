@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Creating a shared printer and printing from smbclient"
 ## exposure: safe
-## tags: [SKIP]
 ## packages:
 ##  - univention-samba | univention-samba4
 ##  - univention-printserver
@@ -29,6 +28,10 @@ eval "$(ucr shell)"
 
 printsharebasedn="cn=shares,$ldap_base"
 
+if ! [ -x /bin/nc.openbsd ]; then
+	apt-get install -y netcat-openbsd
+fi
+
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
@@ -44,7 +47,7 @@ udm-test shares/printer create \
 	--position "$printsharebasedn" \
 	--set "name=$printername" \
 	--set "spoolHost=$hostname.$domainname" \
-	--set "uri=file:/ tmp/$printername" \
+	--set "uri=socket:// 127.0.0.1:12345" \
 	--set "model=None"
 
 wait_for_replication_and_postrun
@@ -72,6 +75,10 @@ echo "----Creating input file"
 tmp_filename=$(mktemp)
 echo "$(uname -a)" > "$tmp_filename"
 
+#create output socket
+nc -l 12345 > "/tmp/$printername" &
+nc_pid=$!
+
 ## initiate print
 echo "initiate print"
 i=0
@@ -96,5 +103,7 @@ do
 	fi
 	sleep 1
 done
+
+kill "$nc_pid" >/dev/null 2>&1
 
 exit $RETVAL
