@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,dojo*/
+/*global define,require,dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -311,6 +311,7 @@ define([
 					id: item.id || null,
 					priority: item.priority || 0,
 					label: item.label || '',
+					disabled: item.disabled,
 					onClick: item.onClick
 				});
 			};
