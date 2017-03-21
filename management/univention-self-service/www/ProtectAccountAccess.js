@@ -208,8 +208,8 @@ define([
 			put(step, label);
 			this._renewInputs = array.map(options, lang.hitch(this, function(option) {
 				var optionNode = put('div');
-				put(optionNode, 'div', option.label + _(' (retype)'));
 				var input = new TextBox({
+					id: option.id + '_check',
 					value: option.value
 				});
 				var inputRetype = new TextBox({
@@ -231,7 +231,9 @@ define([
 					}
 				}));
 				inputRetype.startup();
+				put(optionNode, 'label[for=' + option.id + '_check]', option.label);
 				put(optionNode, input.domNode);
+				put(optionNode, 'label[for=' + option.id + ']', option.label + _(' (retype)'));
 				put(optionNode, inputRetype.domNode);
 				put(step, optionNode);
 				return {
