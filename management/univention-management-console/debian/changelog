@@ -1,3 +1,10 @@
+univention-management-console (9.0.68-1) unstable; urgency=medium
+
+  * Bug #44013: prevent hanging or crashing UMC-Server if the ldap connection
+  	somehow gets damaged
+
+ -- Florian Best <best@univention.de>  Tue, 21 Mar 2017 19:16:31 +0100
+
 univention-management-console (9.0.67-1) unstable; urgency=medium
 
   * Bug #39733: Allow piwik on login site

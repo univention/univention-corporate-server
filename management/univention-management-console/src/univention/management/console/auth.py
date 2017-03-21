@@ -42,8 +42,10 @@ import notifier
 import notifier.signals as signals
 import notifier.threads as threads
 
+import univention.admin.uexceptions as udm_errors
+
 from univention.management.console.log import AUTH
-from univention.management.console.ldap import get_machine_connection
+from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 
@@ -128,14 +130,17 @@ class AuthHandler(signals.Provider):
 	def __canonicalize_username(self, username):
 		try:
 			lo, po = get_machine_connection(write=False)
-			attr = 'mailPrimaryAddress' if '@' in username else 'uid'
-			result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
+			result = None
+			if lo:
+				attr = 'mailPrimaryAddress' if '@' in username else 'uid'
+				result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
 			if result and result[0][1].get('uid'):
 				username = result[0][1]['uid'][0]
 				AUTH.info('Canonicalized username: %r' % (username,))
-		except (ldap.LDAPError, IOError, AttributeError) as exc:
+		except (ldap.LDAPError, udm_errors.ldapError) as exc:
 			# /etc/machine.secret missing or LDAP server not reachable
 			AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
+			reset_cache()
 		except:
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
 		finally:  # ignore all exceptions, even in except blocks
