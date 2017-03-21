@@ -56,6 +56,7 @@ define([
 		showRoot: true,
 		// let the Tree be as hight as the content
 		useAutoHeight: true,
+		selectRootOnLoad: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -128,6 +129,19 @@ define([
 				}));
 			}
 			return store;
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			if (this.selectRootOnLoad) {
+				on.once(this, 'load', lang.hitch(this, function() {
+					// if the tree has been loaded successfully, model.root
+					// is set and we can select the root as active node
+					if (this.model.root) {
+						this.set('path', [this.model.root]);
+					}
+				}));
+			}
 		},
 
 		startup: function() {
