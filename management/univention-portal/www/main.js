@@ -73,6 +73,10 @@ define([
 			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
 			title.innerHTML = portalName;
 			document.title = portalName;
+			if (portal.showApps) {
+				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
+				this._addCategory(_('Installed Apps'), apps);
+			}
 			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
 					// TODO: filter by entry.authRestriction (anonymous, authenticated, admin)
@@ -89,10 +93,6 @@ define([
 				}
 				this._addCategory(heading, apps, category == 'service');
 			}));
-			if (portal.showApps) {
-				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
-				this._addCategory(_('Installed Apps'), apps);
-			}
 		},
 
 		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {

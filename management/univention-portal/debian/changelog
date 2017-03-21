@@ -1,3 +1,9 @@
+univention-portal (1.0.9-5) unstable; urgency=medium
+
+  * Bug #43892: Move locally installed apps to the top
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Mar 2017 12:29:07 +0100
+
 univention-portal (1.0.9-4) unstable; urgency=medium
 
   * Bug #43892: Move admin category below services
