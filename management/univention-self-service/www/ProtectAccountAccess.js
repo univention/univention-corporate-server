@@ -335,6 +335,8 @@ define([
 			array.forEach(this._renewInputs, function(renewInput) {
 				var Input = dijit.byId(renewInput.id);
 				Input.destroy();
+				var inputCheck = dijit.byId(renewInput.id + '_check');
+				inputCheck.destroy();
 			});
 			//this._username.focus();
 		}

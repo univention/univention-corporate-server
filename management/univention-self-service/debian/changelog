@@ -1,3 +1,9 @@
+univention-self-service (2.0.10-6) unstable; urgency=medium
+
+  * Bug #42267: destroy all renew options widgets 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 13:25:41 +0100
+
 univention-self-service (2.0.10-5) unstable; urgency=medium
 
   * Bug #42267: separate labels for first input and retype input 
