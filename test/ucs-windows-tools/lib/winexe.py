@@ -6,12 +6,14 @@ import time
 import glob
 import os
 import ConfigParser
+import logging
 
 if os.path.exists('./windows-scripts'):
 	COMMAND_DIR = './windows-scripts/'
 else:
 	COMMAND_DIR = '/usr/share/ucs-windows-tools/windows-scripts/'
 
+LOG_FILE = '/var/log/univention/ucs-windows-tools.log'
 
 def default_options():
 	usage = "usage: %prog [OPTIONS]"
@@ -24,7 +26,8 @@ def default_options():
 	group.add_option("--local-password", dest="local_password", help="the local administrator password")
 	group.add_option("--port", dest="port", type="int", default=445, help="winexe port (445)")
 	group.add_option("--client", dest="client", help="the windows client")
-	group.add_option("--loglevel", dest="loglevel", action="int", default=0, help="log level")
+	group.add_option("--logfile", dest="logfile", default=LOG_FILE, help="log file")
+	group.add_option("--loglevel", dest="loglevel", type='int', default=4, help="log level (1,2,3,4)")
 	parser.add_option_group(group)
 
 	# get default options from config
@@ -62,8 +65,8 @@ class WinExe:
 		local_password=None,
 		port=445,
 		client=None,
-		loglevel=0,
-              ):
+		loglevel=4,
+		logfile=LOG_FILE):
 
 		self.command_dir = COMMAND_DIR
 		self.domain = domain
@@ -73,10 +76,29 @@ class WinExe:
 		self.local_password = local_password
 		self.port = port
 		self.client = client
-		self.loglevel = loglevel
 		self.scripts_copied = False
-
 		self.__check_default_options()
+		# logging
+		self.logger = logging.getLogger('winexe')
+		formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+		if logfile == '-':
+			handler = logging.StreamHandler()
+		else:
+			handler = logging.FileHandler(logfile)
+		handler.setFormatter(formatter)
+		self.logger.addHandler(handler)
+		if loglevel == 1:
+			self.logger.setLevel(logging.ERROR)
+		elif loglevel == 2:
+			self.logger.setLevel(logging.WARN)
+		elif loglevel == 3:
+			self.logger.setLevel(logging.INFO)
+		elif loglevel == 4:
+			self.logger.setLevel(logging.DEBUG)
+		else:
+			raise ValueError('--loglevel must be one of 1, 2, 3 or 4!')
+
+		self.logger.info('start')
 
 		return
 
@@ -108,7 +130,7 @@ class WinExe:
 				return True
 			except socket.error:
 				time.sleep(1)
-				self.__log("checking if client %s:%s is reachable" % (self.client, self.port))
+				self.logger.info("checking if client %s:%s is reachable" % (self.client, self.port))
 		return False
 
 	def __build_winexe_cmd(self, domain_mode=True, runas_user=None, runas_password=None):
@@ -127,11 +149,6 @@ class WinExe:
 		cmd.append("//" + self.client)
 		return cmd
 
-	def __log(self, msg, log_at_level=0):
-		sys.stdout.write("%s\n" % msg)
-		if self.loglevel >= log_at_level:
-			sys.stdout.write("%s\n" % msg)
-
 	def __trim_windows_stdout(self, msg):
 		new_msg = []
 		for i in msg.split("\r"):
@@ -144,16 +161,15 @@ class WinExe:
 				new_msg.append(i)
 		return "\n".join(new_msg)
 
-	def __run_command(self, cmd, dont_fail=False, log_at_level=1):
-		self.__log("running %s" % " ".join(cmd), log_at_level)
+	def __run_command(self, cmd, dont_fail=False):
+		self.logger.info("running %s" % " ".join(cmd))
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
 		stdout, stderr = p.communicate()
 		if stderr:
-			log_at_level = 0
-			self.__log("Error running %s" % " ".join(cmd), log_at_level)
+			self.logger.warn("Error running %s" % " ".join(cmd))
 		for stream in (stdout, stderr):
 			if stream:
-				self.__log(stream, log_at_level)
+				self.logger.warn(stream)
 		if p.returncode and not dont_fail:
 			raise WinExeFailed("command '%s' failed with: %s %s" % (" ".join(cmd), stdout, stderr))
 		stdout = self.__trim_windows_stdout(stdout)
@@ -184,7 +200,7 @@ class WinExe:
 		# certutil is required on the client as we need it to decode the
 		# base64 encoded scripts, is there a better way?
 		certutil = cmd + ['certutil']
-		ret, stdout, stderr = self.__run_command(certutil, dont_fail=True, log_at_level=2)
+		ret, stdout, stderr = self.__run_command(certutil, dont_fail=True)
 		if ret:
 			raise WinExeFailed("certutil not found on client %s! (%s %s)" % (self.client, stderr, stdout))
 
@@ -195,13 +211,13 @@ class WinExe:
 		for i in range(0, len(base64), 4000):
 			copy = cmd + ["cmd /C echo %s %s c:\\%s.tmp" % (base64[i:i + 4000], overwrite, command)]
 			overwrite = ">>"
-			ret, stdout, stderr = self.__run_command(copy, dont_fail=True, log_at_level=2)
+			ret, stdout, stderr = self.__run_command(copy, dont_fail=True)
 			if ret:
 				raise WinExeFailed("failed to copy %s.%s (%s, %s, %s)" % (command, extension, ret, stdout, stderr))
 
 		# decode script
 		decode = cmd + ["certutil -f -decode c:\\%s.tmp c:\\%s.%s" % (command, command, extension)]
-		ret, stdout, stderr = self.__run_command(decode, dont_fail=True, log_at_level=2)
+		ret, stdout, stderr = self.__run_command(decode, dont_fail=True)
 		if ret:
 			raise WinExeFailed("failed to decode %s.%s (%s, %s, %s)" % (command, extension, ret, stdout, stderr))
 
@@ -261,7 +277,7 @@ class WinExe:
 			if retval == 0:
 				return 0
 			time.sleep(1)
-			self.__log("waiting for client %s" % self.client, 1)
+			self.logger.info("waiting for client %s" % self.client)
 		# failed to connect
 		raise WinExeFailed("waiting for client (%s) failed with timeout %s (can't run winexe)" % (self.client, timeout))
 
@@ -274,7 +290,7 @@ class WinExe:
 			if not self.__client_reachable(timeout=1):
 				return 0
 			time.sleep(1)
-			self.__log("waiting for client %s to disappear" % self.client, 1)
+			self.logger.info("waiting for client %s to disappear" % self.client)
 		raise WinExeFailed("waiting until client (%s) is gone failed with timeout %s" % (self.client, timeout))
 
 		return True
@@ -441,11 +457,13 @@ class WinExe:
 		''' create AD domain on windows server '''
 
 		self.set_local_user_password(self.domain_admin, self.domain_password)
+		# TODO, why change to password here?
+		self.wait_for_client(timeout=120, domain_mode=False)
 		self.winexec("firewall-turn-off", domain_mode=False)
-		self.winexec("univention-install-ad-ps-features", domain_mode=False)
+		self.winexec("univention-install-ad-ps-features", domain_mode=False, dont_fail=True)
 		self.winexec("reboot", domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
-		self.wait_for_client(timeout=600)
+		self.wait_for_client(timeout=600, domain_mode=False)
 		self.winexec("univention-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)

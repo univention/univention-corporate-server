@@ -1,3 +1,9 @@
+ucs-windows-tools (4.0.1-9) unstable; urgency=low
+
+  * Bug #43974: new log file
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Mar 2017 13:12:50 +0100
+
 ucs-windows-tools (4.0.1-8) unstable; urgency=low
 
   * Bug #12345: separate feature install and promo

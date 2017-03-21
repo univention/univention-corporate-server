@@ -51,25 +51,19 @@ options.add_option("--groups", dest="groups", type="int", help="number of users 
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-wexe = winexe.WinExe(
-	domain=opts.domain,
-	domain_admin=opts.domain_admin,
-	domain_password=opts.domain_password,
-	local_admin=opts.local_admin,
-	local_password=opts.local_password,
-	port=opts.port,
-	client=opts.client,
-	debug=opts.debug,
-)
-
+wopts = vars(opts).copy()
+del wopts['username']
+del wopts['users']
+del wopts['groupname']
+del wopts['groups']
+del wopts['password']
+wexe = winexe.WinExe(**wopts)
 if opts.users > 0:
 	retval, out, err = wexe.create_ad_users(opts.username, opts.password, opts.users)
 	print out
-
 if opts.groups > 0:
 	retval, out, err = wexe.create_ad_groups(opts.groupname, opts.groups)
 	print out
-
 if opts.groups > 0 and opts.users > 0:
 	retval, out, err = wexe.add_users_to_group(opts.username, opts.users, opts.groupname, opts.groups)
 	print out

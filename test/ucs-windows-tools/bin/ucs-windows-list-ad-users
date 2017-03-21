@@ -42,18 +42,7 @@ else:
 
 parser = winexe.default_options()
 opts, args = parser.parse_args()
-
-wexe = winexe.WinExe(
-	domain=opts.domain,
-	domain_admin=opts.domain_admin,
-	domain_password=opts.domain_password,
-	local_admin=opts.local_admin,
-	local_password=opts.local_password,
-	port=opts.port,
-	client=opts.client,
-	debug=opts.debug,
-)
-
+wexe = winexe.WinExe(**vars(opts))
 retval, out, err = wexe.list_domain_users()
 print out
 

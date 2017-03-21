@@ -48,17 +48,10 @@ options.add_option("--forest-mode", dest="forest_mode", default="Win2008R2", hel
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-wexe = winexe.WinExe(
-	domain=opts.domain,
-	domain_admin=opts.domain_admin,
-	domain_password=opts.domain_password,
-	local_admin=opts.local_admin,
-	local_password=opts.local_password,
-	port=opts.port,
-	client=opts.client,
-	debug=opts.debug,
-)
-
+wopts = vars(opts).copy()
+del wopts['domain_mode']
+del wopts['forest_mode']
+wexe = winexe.WinExe(**wopts)
 wexe.promote_ad(opts.domain_mode, opts.forest_mode)
 
 sys.exit(0)

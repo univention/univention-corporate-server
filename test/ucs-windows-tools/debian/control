@@ -14,7 +14,8 @@ Package: ucs-windows-tools
 Architecture: all
 Depends: ${python:Depends},
  ${misc:Depends},
- winexe
+ winexe,
+ smbclient
 Provides: ${python:Provides}
 Description: windows tool collection for UCS development - DEPRECATED
  This package contains tools to test UCS installations.
