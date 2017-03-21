@@ -103,7 +103,7 @@ if not options.ou:
 		parser.error('Please specify a school OU (-o)!')
 	options.ou = ''
 
-client = Client(options.host, options.username, options.password)
+client = Client(options.host, options.username, options.password, language='en-US')
 
 params = {
 	'setup': options.setup,

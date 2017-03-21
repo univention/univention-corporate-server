@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-3) unstable; urgency=low
+
+  * Bug #43544: force english locale
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 21 Mar 2017 17:46:08 +0100
+
 ucs-ec2-tools (3.0.2-2) unstable; urgency=low
 
   * Bug #42322: switch to firefox-esr
