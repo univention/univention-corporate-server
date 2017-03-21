@@ -547,7 +547,7 @@ fi
 
 if [ -x /usr/bin/rdate ]; then
 	echo -n "Sync time: "
-	if timeout -k 20 15 /usr/bin/rdate "$DCNAME" >>/var/log/univention/join.log 2>&1
+	if timeout -k 20 15 /usr/bin/rdate -n "$DCNAME" >>/var/log/univention/join.log 2>&1
 	then
 		echo -e "\033[60Gdone"
 	else

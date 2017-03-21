@@ -1,3 +1,9 @@
+univention-join (9.0.3-3) unstable; urgency=medium
+
+  * Bug #43987: Use SNTP for initial time sync
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Mar 2017 13:43:02 +0100
+
 univention-join (9.0.3-2) unstable; urgency=medium
 
   * Bug #43528: Use full width for grids by default
