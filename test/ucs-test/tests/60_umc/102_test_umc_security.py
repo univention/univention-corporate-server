@@ -18,7 +18,7 @@ class TestSecurityHeaders(object):
 		client = Client()
 		response = client.request('GET', path)
 		assert response.get_header("X-Frame-Options") == "SAMEORIGIN"
-		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval';"
+		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.piwik.univention.de/;"
 
 		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
