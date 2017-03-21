@@ -1,3 +1,9 @@
+univention-web (1.0.39-15) unstable; urgency=medium
+
+  * Bug #43986: fix getItem in grid 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 10:21:50 +0100
+
 univention-web (1.0.39-14) unstable; urgency=medium
 
   * Bug #43528: Add flag fullWidth to Page + adjust styling of tiles

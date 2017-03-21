@@ -1009,13 +1009,16 @@ define([
 		getItem: function(id) {
 			// summary:
 			//		Returns the item for a given ID.
-			// id: String
+			// id: String|String[]
 
-			var item = array.filter(this._grid._lastCollection || [], function(iitem) {
-				return iitem[this.moduleStore.idProperty] === id;
-			}, this);
-			if (item.length) {
-				return item[0];
+			var row;
+			if (typeof(id) === "string") {
+				row = this._grid.row(id);
+			} else {
+				row = this._grid.row(id[0]);
+			}
+			if (row.id) {
+				return row.data;
 			}
 			return null;
 		},
