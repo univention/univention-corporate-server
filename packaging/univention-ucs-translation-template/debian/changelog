@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.1-1) unstable; urgency=medium
+
+  * Bug #43594: use absolute path to output generated PO
+
+ -- Eduard Mai <mai@univention.de>  Tue, 21 Mar 2017 18:46:24 +0100
+
 univention-ucs-translation-template (4.2.1-0) unstable; urgency=medium
 
   * Bug #43594: fix concatenation and merge issues

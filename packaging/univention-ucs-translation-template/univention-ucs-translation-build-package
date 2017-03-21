@@ -69,7 +69,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
 	dh_umc.LANGUAGES = (options.target_language, )
 	all_modules = list()
-	output_dir = os.path.join(os.path.curdir, options.target_language)
+	output_dir = os.path.join(os.getcwd(), options.target_language)
 	for module_attrs in base_translation_modules:
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, options.target_language)
 		all_modules.append(module)
