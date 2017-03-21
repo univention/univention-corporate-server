@@ -1,3 +1,9 @@
+ucs-test (7.0.20-18) unstable; urgency=medium
+
+  * Bug #43911: Adjust 53_samba-common/50quota to work in UCS 4.2
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Mar 2017 22:48:06 +0100
+
 ucs-test (7.0.20-17) unstable; urgency=medium
 
   * Bug #43912: Workaround for cups ignoring FileDevice

@@ -11,7 +11,6 @@
 ##  - memberserver
 ## tags: 
 ##  - skip_admember
-##  - SKIP
 ## exposure: dangerous
 
 eval "$(ucr shell)"
@@ -95,15 +94,15 @@ for FS in xfs ext2 ext3 ext4; do
 
 	# wait until the share is ready
 	for((i=0;i<60;i++)); do
-		if smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share; then
+		if smbclient -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" -c quit; then
 			break
 		fi
 	done
 
 	if [ "${FS}" != "xfs" ]; then
-		quotacheck -u "$mountpoint" || fail_test 110
-
-		/etc/init.d/quota restart || fail_test 110
+		/usr/share/quota/quotaoff.sh || fail_test 110
+		quotacheck -uc "$mountpoint" || fail_test 110
+		/usr/share/quota/quotaon.sh || fail_test 110
 	fi
 
 	su - "$user" -c /bin/true || fail_test 110
@@ -118,14 +117,14 @@ for FS in xfs ext2 ext3 ext4; do
 		sync
 
  		echo "Running: smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share"
- 		result=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share)
+ 		result=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share")
 		echo "result: $result"
- 		res_smbcquota=$(echo $result | awk '{print $3 $4 $5}')
+ 		res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		echo "smbcquotas result: $res_smbcquota"
 		if [ -z "$res_smbcquota" ]; then
 			echo "Warning: The login failed for some reason. Wait 10 seconds and try again."
 			sleep 10
-			res_smbcquota=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share | awk '{print $3 $4 $5}')
+			res_smbcquota=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" | awk '{print $3 $4 $5}')
 		fi
 	
 		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
@@ -133,10 +132,10 @@ for FS in xfs ext2 ext3 ext4; do
 		echo "Result repquota  : $res_repquota"
 		test "$res_smbcquota" != "$res_repquota" && fail_test 110
 
-		used=$(echo $res_smbcquota | awk -F '/' '{print $1}')
+		used=$(echo "$res_smbcquota" | awk -F '/' '{print $1}')
 		used=$((used-(metadata*(i+1))))
-		softlimit=$(echo $res_smbcquota | awk -F '/' '{print $2}')
-		hardlimit=$(echo $res_smbcquota | awk -F '/' '{print $3}')
+		softlimit=$(echo "$res_smbcquota" | awk -F '/' '{print $2}')
+		hardlimit=$(echo "$res_smbcquota" | awk -F '/' '{print $3}')
 
 		echo "Quota info: used: $used, expected: $(((i+1)*1024*1024))"
 		test $used != $(((i+1)*1024*1024)) && fail_test 110
