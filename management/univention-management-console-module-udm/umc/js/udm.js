@@ -92,6 +92,28 @@ define([
 		});
 	}
 
+	var _gridViewPreferenceDeferred = null;
+	var _loadGridViewPreference = function() {
+		// fetch grid view only once
+		if (!_gridViewPreferenceDeferred) {
+			_gridViewPreferenceDeferred = tools.getUserPreferences().then(function(prefs) {
+				return prefs.udmUserGridView || 'default';
+			});
+		}
+		return _gridViewPreferenceDeferred;
+	};
+
+	var _saveGridViewPreference = function(view) {
+		// save grid view at LDAP user object
+		tools.setUserPreference({
+			udmUserGridView: view
+		});
+
+		// overwrite initially fetched result with the current view
+		_gridViewPreferenceDeferred = new Deferred();
+		_gridViewPreferenceDeferred.resolve(view);
+	};
+
 	// virtual widget which always returns the selected superordinate in the tree
 	var SuperordinateWidget = declare("umc.modules.udm.SuperordinateWidget", HiddenInput, {
 		udm: null,
@@ -189,6 +211,8 @@ define([
 		_menuMove: null,
 
 		_newObjectDialog: null,
+
+		_gridView: null,
 
 		// set the opacity for the standby to 100%
 		standbyOpacity: 1,
@@ -533,6 +557,9 @@ define([
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
 			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
+			_loadGridViewPreference().then(lang.hitch(this, function(view) {
+				this._setGridView(view);
+			}));
 		},
 
 		renderGrid: function() {
@@ -761,6 +788,20 @@ define([
 					return 'edit';
 				})
 			});
+		},
+
+		_toggleGridView: function() {
+			var view = this._grid.activeViewMode === 'tile' ? 'default' : 'tile';
+			this._setGridView(view);
+		},
+
+		_setGridView: function(view) {
+			view = view == 'tile' ? 'tile' : 'default';
+			if (view != this._grid.activeViewMode) {
+				_saveGridViewPreference(view);
+				this._grid.changeView(view);
+				this._searchForm._buttons.changeView.set('iconClass', lang.replace('umcGridViewIcon-{activeViewMode}', this._grid));
+			}
 		},
 
 		renderSearchForm: function(containers, hasSuperordinates) {
@@ -992,10 +1033,7 @@ define([
 						label: _('Toggle visual presentation'),
 						iconClass: 'umcGridViewIcon-default',
 						'class': 'umcSearchFormChangeViewButton',
-						callback: lang.hitch(this, function() {
-							this._grid.changeView(this._grid.activeViewMode === 'tile' ? 'default' : 'tile');
-							this._searchForm._buttons.changeView.set('iconClass', lang.replace('umcGridViewIcon-{0}', [this._grid.activeViewMode]));
-						})
+						callback: lang.hitch(this, '_toggleGridView')
 					});
 					layout.push(['changeView']);
 				}

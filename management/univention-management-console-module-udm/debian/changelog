@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-3) unstable; urgency=medium
+
+  * Bug #43868: Remember the last view type of the user grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Mar 2017 15:56:20 +0100
+
 univention-management-console-module-udm (7.0.9-2) unstable; urgency=medium
 
   * Bug #43528: Use full width for grids by default

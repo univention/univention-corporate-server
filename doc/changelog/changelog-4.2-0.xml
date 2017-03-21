@@ -388,6 +388,9 @@
 			<title>Users module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					An alternative tile view has been added to the user list which displays the users' profile pictures (<u:bug>42229</u:bug>, <u:bug>43868</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Templates used when creating new users now work for all properties regardless (<u:bug>43428</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
