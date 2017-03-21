@@ -269,6 +269,9 @@
 					The JavaScript libraries <package>dojo</package> (1.12.1), <package>xstyle</package> (3.2.0) and <package>dgrid</package> (1.1.0) have been updated (<u:bug>42291</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+						Data grids now have a dynamic height depending on the number of items in it, instead of a fixed height. (<u:bug>32027</u:bug>, <u:bug>43630</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The design of the login dialog has been restructured and moved into a single login page. By default the login to Univention Management Console now uses the SAML Single Sign On login mechanism.
 					The session timeout has been increased to 8 hours of inactivity (<u:bug>42174</u:bug>, <u:bug>43918</u:bug>). 
 				</simpara></listitem>
