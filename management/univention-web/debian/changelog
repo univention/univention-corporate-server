@@ -1,3 +1,9 @@
+univention-web (1.0.39-16) unstable; urgency=medium
+
+  * Bug #43528: Add icon for grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Mar 2017 11:56:21 +0100
+
 univention-web (1.0.39-15) unstable; urgency=medium
 
   * Bug #43986: fix getItem in grid 
