@@ -36,7 +36,7 @@
 		opacity: 1
 
 	.umcLoginForm
-
+		$line-height = 1.75
 		input
 			padding: 0 10px
 			margin: 0
@@ -46,7 +46,8 @@
 			font-size: $font-size-title
 			color: $text-color
 			width: 100%
-			line-height: 1.75
+			line-height: $line-height
+			height: 100%
 
 		input[type=submit]
 			font-size: 14px
@@ -64,6 +65,8 @@
 			border-bottom: 1px solid $base-border-color
 			transition-property: background-color, border
 			transition-duration(0.75s)
+			box-sizing: content-box
+			height: $font-size-title * $line-height
 
 			&:focus,
 			&:focus:before,
