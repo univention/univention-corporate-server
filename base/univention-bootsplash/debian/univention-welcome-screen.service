@@ -10,7 +10,6 @@ After=plymouth-quit.service
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=/usr/bin/univention-welcome-screen --only-show-welcome
+ExecStart=-/usr/bin/univention-welcome-screen --only-show-welcome
 #Type=oneshot
-TimeoutSec=20
-
+TimeoutSec=10
