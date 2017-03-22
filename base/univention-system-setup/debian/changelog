@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-3) unstable; urgency=medium
+
+  * Bug #43983: Partly revert changes from bug #43626, and create
+    certificates for all roles again.
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Mar 2017 17:09:14 +0100
+
 univention-system-setup (10.0.10-2) unstable; urgency=medium
 
   * Bug #43985: automatic detection if login state
