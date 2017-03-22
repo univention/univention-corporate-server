@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-10) unstable; urgency=medium
+
+  * Bug #44030: Add missing packages recommended by "univention-role-common"
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 22 Mar 2017 16:37:56 +0100
+
 univention-dvd (2.0.0-9) unstable; urgency=low
 
   * Bug #38877: Add "univention-kvm-compat"

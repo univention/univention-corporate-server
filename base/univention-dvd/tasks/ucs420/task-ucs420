@@ -38,10 +38,12 @@ grub-efi-amd64-signed
 /* Recommended base packages */
 eject
 elinks
+emacs24
 less
 locate
 nmap
 univention-network-common
+unzip
 vim
 wget
 zip
