@@ -124,19 +124,21 @@ def _handler(ucr, changes):
 					else:
 						link.path = value
 			elif key == 'port_http':
-				for link in entry['_links'][:]:
-					if link.protocol == 'https':
-						link = copy(link)
-						entry['_links'].append(link)
-					link.protocol = 'http'
-					link.port = value
+				if value:
+					for link in entry['_links'][:]:
+						if link.protocol == 'https':
+							link = copy(link)
+							entry['_links'].append(link)
+						link.protocol = 'http'
+						link.port = value
 			elif key == 'port_https':
-				for link in entry['_links'][:]:
-					if link.protocol == 'http':
-						link = copy(link)
-						entry['_links'].append(link)
-					link.protocol = 'https'
-					link.port = value
+				if value:
+					for link in entry['_links'][:]:
+						if link.protocol == 'http':
+							link = copy(link)
+							entry['_links'].append(link)
+						link.protocol = 'https'
+						link.port = value
 			elif key == 'icon':
 				try:
 					if value.startswith('/univention-management-console'):
@@ -169,7 +171,13 @@ def _handler(ucr, changes):
 		dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
 		unprocessed_links = attrs.pop('_links', [])
 		my_links = set()
+		no_ports = all(not link.port for link in unprocessed_links)
 		for link in unprocessed_links:
+			if no_ports:
+				if link.protocol == 'http':
+					link.port = '80'
+				elif link.protocol == 'https':
+					link.port = '443'
 			if link:
 				my_links.add(str(link))
 			if not link.protocol:
