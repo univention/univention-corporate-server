@@ -827,7 +827,7 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Docker has been updated to 1.12 (<u:bug>42282</u:bug>, <u:bug>43449</u:bug>).
+					Docker has been updated to 1.12 (<u:bug>42282</u:bug>, <u:bug>43449</u:bug>, <u:bug>44006</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
