@@ -25,6 +25,12 @@ class Coverage(object):
 		self.branch_coverage = options.branch_coverage
 		self.coverage = options.coverage
 		self.coverage_sources = options.coverage_sources or ['univention']
+		self.services = options.coverage_restart_services or [
+			'univention-management-console-server',
+			'univention-management-console-web-server',
+			'univention-s4-connector'
+		]
+
 		if self.coverage:
 			try:
 				__import__('coverage')
@@ -60,9 +66,9 @@ class Coverage(object):
 
 	def restart_python_services(self):
 		"""Restart currently running python services, so that they start/stop measuring code"""
-		for service in ['/etc/init.d/univention-management-console-server', '/etc/init.d/univention-management-console-web-server']:
+		for service in self.services:
 			try:
-				subprocess.call([service, 'restart'])
+				subprocess.call(['/usr/sbin/service', service, 'restart'])
 			except EnvironmentError:
 				pass
 		try:
@@ -96,6 +102,7 @@ class Coverage(object):
 		coverage_group.add_option("--branch-coverage", dest="branch_coverage", action='store_true', default=False)
 		coverage_group.add_option('--coverage-sources', dest='coverage_sources', action='append', default=[])
 		coverage_group.add_option("--coverage-debug", dest="coverage_debug", action='store_true', default=False)
+		coverage_group.add_option('--coverage-restart-service', dest='coverage_restart_services', action='append', default=[])
 		return coverage_group
 
 	@classmethod
