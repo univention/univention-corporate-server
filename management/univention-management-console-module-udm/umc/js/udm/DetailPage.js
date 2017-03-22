@@ -358,8 +358,8 @@ define([
 				submitButton.set('disabled', false);
 			}), null, lang.hitch(this, function(progress) {
 				// output loading progress as button label
-				var label = _('Loading %s...', progress.message);
-				submitButton.set('label', label);
+				//var label = _('Loading %s...', progress.message);
+				//submitButton.set('label', label);
 			}));
 		},
 
