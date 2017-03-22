@@ -11,13 +11,15 @@ import subprocess
 
 import univention.testing.utils as utils
 from appcentertest import get_requested_apps
-
-from univention.appcenter.app import App, AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 
 import requests
 import lxml.html
 
+# Suppress InsecureRequestWarning: Unverified HTTPS request
+import urllib3
+urllib3.disable_warnings()
 
 def check_status(app):
 	if app.docker:
@@ -50,23 +52,15 @@ def check_status(app):
 					utils.fail('ERROR: A package is not installed!')
 
 
-def check_ldap(app):
+def check_ldap(app, apps):
 	dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
-	try:
-		english_name = App.from_ini(app.get_ini_file(), locale=False).name
-		utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
-		utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % english_name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
-
-		for app_version in AppManager.get_all_apps_with_id(app.id):
-			if app_version == app:
-				continue
-			dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
-			utils.verify_ldap_object(dn, should_exist=False)
-
-	except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
-			utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
-			utils.fail('FAIL: An error occured while verifying %s: %s' % (dn, exc))
-
+	utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
+	utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % app.name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
+	for app_version in apps.get_all_apps_with_id(app.id):
+		if app_version == app:
+			continue
+		dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
+		utils.verify_ldap_object(dn, should_exist=False)
 
 def check_webinterface(app):
 	if not app.web_interface:
@@ -121,12 +115,12 @@ def _check_url(url):
 					refresh_url = '%s%s' % (url, refresh_url)
 				_check_url(refresh_url)
 
-
+apps = Apps()
 for app in get_requested_apps():
 	print 'Checking', app
 	if not app._allowed_on_local_server():
 		print '    Not allowed ... skipping'
 		continue
 	check_status(app)
-	check_ldap(app)
+	check_ldap(app, apps)
 	check_webinterface(app)

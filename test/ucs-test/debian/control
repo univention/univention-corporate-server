@@ -458,7 +458,8 @@ Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  univention-appcenter-dev,
  python-lxml,
- python-requests
+ python-requests,
+ python-cssselect
 Provides: ucs-test-module
 Description: Test scripts to test the app center
  This package includes test-cases for the app center.
@@ -473,6 +474,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  ucs-test-ldap,
  ucs-test-base,
  ucs-test-apache,
+ python-cssselect
 Provides: ucs-test-module
 Description: Test scripts to test the app removal
  This package includes test-cases for the app removal.

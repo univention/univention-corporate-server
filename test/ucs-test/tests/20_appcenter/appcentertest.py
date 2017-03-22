@@ -42,7 +42,7 @@ import lxml.html
 import subprocess
 import contextlib
 
-from univention.appcenter import AppManager
+from univention.appcenter.app_cache import Apps
 import univention.appcenter.log as app_logger
 from univention.appcenter.actions import get_action
 from univention.config_registry import ConfigRegistry
@@ -55,12 +55,11 @@ APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 
 
 def get_requested_apps():
-	AppManager.clear_cache()
 	ret = []
 	try:
 		with open(APPCENTER_FILE) as f:
 			for line in f:
-				app = AppManager.find(line.strip())
+				app = Apps().find(line.strip())
 				if app:
 					ret.append(app)
 				else:
