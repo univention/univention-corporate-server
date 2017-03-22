@@ -29,8 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-SOURCE := virtio-win-0.1.105.iso
-TARGET := KVM_Windows_drivers_(virtio_1.1.105).iso
+SOURCE := virtio-win-0.1.126.iso
+TARGET := KVM_Windows_drivers_(virtio_1.1.126).iso
 
 empty :=
 space := $(empty) $(empty)
