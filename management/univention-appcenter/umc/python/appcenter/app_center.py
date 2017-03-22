@@ -356,7 +356,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'additionalpackagesmaster', 'additionalpackagesbackup', 'additionalpackagesslave', 'additionalpackagesmember', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
+		for ikey in ('categories', 'defaultpackages', 'additionalpackagesmaster', 'additionalpackagesbackup', 'additionalpackagesslave', 'additionalpackagesmember', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection', 'supporteducsversions'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1034,21 +1034,25 @@ class Application(object):
 
 	@HardRequirement('install', 'update')
 	def must_have_fitting_ucs_version(self):
-		required_version = self.get('requireducsversion')
-		if not required_version:
-			return True
-		try:
-			version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_version).groups()
-		except AttributeError:
-			MODULE.warn('Incorrect RequiredUCSVersion: %r' % required_version)
-			return True
+		required_ucs_version = None
+		for supported_version in self.get('supporteducsversions'):
+			if supported_version.startswith('%s-' % ucr.get('version/version')):
+				required_ucs_version = supported_version
+				break
+		else:
+			required_ucs_version = self.get('requireducsversion')
+			if required_ucs_version is None:
+				return True
 		major, minor = ucr.get('version/version').split('.', 1)
 		patchlevel = ucr.get('version/patchlevel')
 		errata = ucr.get('version/erratalevel')
+		version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version).groups()
 		comparisons = zip(version_bits, [major, minor, patchlevel, errata])
 		for required, present in comparisons:
 			if int(required or 0) > int(present):
-				return {'required_version': required_version}
+				return {'required_version': required_ucs_version}
+			if int(required or 0) < int(present):
+				return True
 		return True
 
 	@HardRequirement('install', 'update')

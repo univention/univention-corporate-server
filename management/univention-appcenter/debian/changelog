@@ -1,3 +1,10 @@
+univention-appcenter (6.0.3-21) unstable; urgency=medium
+
+  * Bug #43901: Fix version comparison for RequiredUCSVersion and
+    SupportedUCSVersions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Mar 2017 13:59:32 +0100
+
 univention-appcenter (6.0.3-20) unstable; urgency=medium
 
   * Bug #43993: Fix create_portal_entries to honor links without HTTP / HTTPS
