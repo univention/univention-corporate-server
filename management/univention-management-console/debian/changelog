@@ -1,3 +1,9 @@
+univention-management-console (9.0.68-2) unstable; urgency=medium
+
+  * Bug #42235: Increase the upload maximum default to 2MB
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 03:43:19 +0100
+
 univention-management-console (9.0.68-1) unstable; urgency=medium
 
   * Bug #44013: prevent hanging or crashing UMC-Server if the ldap connection
