@@ -451,7 +451,10 @@ class access:
 			elif oldvalue and not newvalue:
 				op = ldap.MOD_DELETE
 				val = oldvalue
-				if key == "jpegPhoto":  # TODO: move into users/user
+				# These attributes don't have a matching rule:
+				#   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
+				#   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
+				if key in ['jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon']:
 					val = None
 			else:
 				continue
