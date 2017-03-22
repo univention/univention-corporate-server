@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.3-2) unstable; urgency=medium
+
+  * Bug #44007: fix getting the viewport width on reload 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 17:56:26 +0100
+
 univention-virtual-machine-manager-daemon (6.0.3-1) unstable; urgency=medium
 
   * Bug #38634: fix error handling when regular error message from UVMMd comes

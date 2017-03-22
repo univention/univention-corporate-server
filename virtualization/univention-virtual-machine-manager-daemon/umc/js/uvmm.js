@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/_base/window",
+	"dojo/window",
 	"dojo/string",
 	"dojo/query",
 	"dojo/Deferred",
@@ -70,7 +71,7 @@ define([
 	"umc/modules/uvmm/CreatePage",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, kernel, win, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, _) {
 
@@ -360,7 +361,7 @@ define([
 
 			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
-			this._currentWidth = win.global.window.getViewport().w;
+			this._currentWidth = dojoWindow.getBox().w;
 
 			on.once(this._tree, 'load', lang.hitch(this, function() {
 				if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
@@ -398,7 +399,7 @@ define([
 			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
 				var type = this._searchForm.get('value').type;
 				if (type === 'domain') {
-					this._currentWidth = win.global.window.getViewport().w;
+					this._currentWidth = dojoWindow.getBox().w;
 					this.updateGrid(type);
 				}
 			}), 200);
