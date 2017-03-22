@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.2.1-2) unstable; urgency=medium
+
+  * Bug #43594: handle UMC modules without Python or JS files
+
+ -- Eduard Mai <mai@univention.de>  Wed, 22 Mar 2017 16:32:25 +0100
+
 univention-ucs-translation-template (4.2.1-1) unstable; urgency=medium
 
   * Bug #43594: use absolute path to output generated PO

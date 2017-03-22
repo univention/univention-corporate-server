@@ -46,6 +46,7 @@ import univention.dh_umc as dh_umc
 import sourcefileprocessing
 import message_catalogs
 
+REFERENCE_LANG = 'de'
 # Use this set to ignore whole sub trees of a given source tree
 DIR_BLACKLIST = set([
 	'./doc',
@@ -62,11 +63,29 @@ class NoSpecialCaseDefintionsFound(Exception):
 	pass
 
 
-class UMCModuleTranslation(dh_umc.UMC_Module):
+class UMCModuleTranslation(dh_umc.UMC_Module, object):
 
 	def __init__(self, attrs, target_language):
 		attrs['target_language'] = target_language
 		return super(UMCModuleTranslation, self).__init__(attrs)
+
+	@property
+	def python_po_files(self):
+		for path in super(UMCModuleTranslation, self).python_po_files:
+			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+				yield path
+
+	@property
+	def js_po_files(self):
+		for path in super(UMCModuleTranslation, self).js_po_files:
+			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+				yield path
+
+	@property
+	def xml_po_files(self):
+		for lang, path in super(UMCModuleTranslation, self).xml_po_files:
+			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+				yield lang, path
 
 	def python_mo_destinations(self):
 		for po_file in self.python_po_files:
