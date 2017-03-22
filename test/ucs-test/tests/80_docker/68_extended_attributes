@@ -1,0 +1,143 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test Extended Attributes integration
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from contextlib import contextmanager
+
+from univention.config_registry import ConfigRegistry
+
+import univention.testing.udm as udm_test
+from univention.testing.utils import verify_ldap_object
+
+from dockertest import *
+
+ucr = ConfigRegistry()
+ucr.load()
+
+@contextmanager
+def build_app(app_name, generic_user_activation):
+	app_version = get_app_version()
+	app = App(name=app_name, version=app_version, build_package=False)
+	try:
+		app.set_ini_parameter(DockerImage=get_docker_appbox_image(), GenericUserActivation=generic_user_activation, DockerScriptSetup='/bin/true')
+		yield app
+	finally:
+		app.uninstall()
+		app.remove()
+
+def test_app(appcenter, app, udm, activation_name, attribute_dn=None, attribute_description=None, attrs=None):
+	attribute_dn = attribute_dn or 'cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (activation_name, app.app_name, ucr.get('ldap/base'))
+	attribute_description = attribute_description or 'Activate user for %s' % app.app_name
+	app.add_to_local_appcenter()
+	appcenter.update()
+	app.install()
+	app.verify(joined=False)
+	schema_file = '/usr/share/univention-appcenter/apps/%s/%s.schema' % (app.app_name, app.app_name)
+	assert os.path.exists(schema_file)
+	subprocess.call(['univention-ldapsearch', '-b', attribute_dn])
+	verify_ldap_object(attribute_dn, {'univentionUDMPropertyShortDescription': [attribute_description], 'univentionUDMPropertySyntax': ['TrueFalseUp']})
+	attrs = (attrs or {}).copy()
+	attrs['username'] = get_app_name()
+	attrs['lastname'] = get_app_name()
+	attrs['password'] = get_app_name()
+	attrs[activation_name] = 'TRUE'
+	user = udm.create_object('users/user', **attrs)
+	subprocess.call(['univention-ldapsearch', '-b', user])
+	verify_ldap_object(user, {activation_name: ['TRUE']})
+	return user
+
+def generate_schema():
+	app_name = get_app_name()
+	activation_name = '%sActivated' % app_name
+	generic_user_activation = True
+	with Appcenter() as appcenter:
+		with udm_test.UCSTestUDM() as udm:
+			with build_app(app_name, generic_user_activation) as app:
+				test_app(appcenter, app, udm, activation_name)
+
+def own_schema():
+	app_name = 'extattrownschemaconstname'
+	activation_name = '%s-active' % app_name
+	generic_user_activation = activation_name
+	with Appcenter() as appcenter:
+		with udm_test.UCSTestUDM() as udm:
+			with build_app(app_name, generic_user_activation) as app:
+				schema_content = """attributetype ( 1.3.6.1.4.1.10176.5000.7.7.7.1.1
+    NAME '%s-active'
+    DESC 'Attribute created MANUALLY'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 EQUALITY booleanMatch
+    SINGLE-VALUE
+    )
+
+objectclass ( 1.3.6.1.4.1.10176.5000.7.7.7.2.1
+    NAME '%s-user'
+    DESC 'Class created MANUALLY'
+    AUXILIARY
+    MAY ( %s-active )
+    SUP top
+    )""" % (app.app_name, app.app_name, app.app_name)
+				app.add_script(schema=schema_content)
+				attributes_content = """[%s]
+Syntax=Boolean
+Description=This is my custom activation
+BelongsTo=%s-user""" % (activation_name, app.app_name)
+				app.add_script(attributes=attributes_content)
+				test_app(appcenter, app, udm, activation_name, attribute_description='This is my custom activation')
+
+def attributes_file_without_attribute():
+	app_name = get_app_name()
+	activation_name = '%sActivated' % app_name
+	additional_name = '%s-myAttr' % app_name
+	generic_user_activation = True
+	with Appcenter() as appcenter:
+		with udm_test.UCSTestUDM() as udm:
+			with build_app(app_name, generic_user_activation) as app:
+				attributes_content = """[%s]
+Syntax=String
+Description=This is my attribute
+DescriptionDe=Das ist mein Attribut
+Description=This is my attribute. And it rocks!
+DescriptionDe=Das ist mein Attribut. Und es ist dufte!
+""" % (additional_name)
+				app.add_script(attributes=attributes_content)
+				user = test_app(appcenter, app, udm, activation_name, attrs={additional_name: 'Hello'})
+				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), {'univentionUDMPropertyShortDescription': ['This is my attribute'], 'univentionUDMPropertyShortDescription': ['This is my attribute. And it rocks!'], 'univentionUDMPropertySyntax': ['string']})
+				verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
+			verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), should_exist=False)
+
+def attributes_file_with_attribute():
+	app_name = get_app_name()
+	activation_name = '%sActivated' % app_name
+	additional_name = '%s-myAttr' % app_name
+	generic_user_activation = True
+	with Appcenter() as appcenter:
+		with udm_test.UCSTestUDM() as udm:
+			with build_app(app_name, generic_user_activation) as app:
+				attributes_content = """[%s]
+Syntax=Boolean
+Description=This is my custom activation
+Position=cn=custom attributes,cn=univention
+[%s]
+Syntax=String
+Description=This is my attribute
+DescriptionDe=Das ist mein Attribut
+Description=This is my attribute. And it rocks!
+DescriptionDe=Das ist mein Attribut. Und es ist dufte!
+""" % (activation_name, additional_name)
+				app.add_script(attributes=attributes_content)
+				attribute_dn = 'cn=%s,cn=custom attributes,cn=univention,%s' % (activation_name, ucr.get('ldap/base'))
+				user = test_app(appcenter, app, udm, activation_name, attribute_dn, 'This is my custom activation', {additional_name: 'Hello'})
+				verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
+
+if __name__ == '__main__':
+	print 'GENERATE SCHEMA'
+	generate_schema()
+	print 'OWN SCHEMA'
+	own_schema()
+	print 'ATTRS W/O'
+	attributes_file_without_attribute()
+	print 'ATTRS W/'
+	attributes_file_with_attribute()
