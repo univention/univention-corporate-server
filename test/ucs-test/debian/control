@@ -456,6 +456,7 @@ Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
+ univention-appcenter-dev,
  python-lxml,
  python-requests
 Provides: ucs-test-module
