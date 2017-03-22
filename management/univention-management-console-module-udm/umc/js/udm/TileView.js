@@ -105,21 +105,24 @@ define([
 			var wrapperDiv = put(lang.replace('div.umcGridTileWrapperItem.{bootstrapClasses}', {
 				bootstrapClasses: bootstrapClasses
 			}));
-			var div = put(wrapperDiv, lang.replace('div.umcGridTileItem', item));
+			var itemDiv = put(wrapperDiv, lang.replace('div.umcGridTileItem', item));
 			if (this.grid._contextMenu) {
-				var contextMenu = put(div, 'div.umcGridTileContextIcon');
+				var contextMenu = put(itemDiv, 'div.umcGridTileContextIcon');
 				on(contextMenu, "click", lang.hitch(this, function(evt) {
 					evt.stopImmediatePropagation();
 					this.grid._contextMenu._openMyself(evt);
 				}));
 			}
-			this._userImageNodes[item.$dn$] = put(div, "div.umcGridTileIcon", this._getInitials(item));
-			var nameNode = put(div, 'div.umcGridTileName', item.name);
+			this._userImageNodes[item.$dn$] = put(itemDiv, "div.umcGridTileIcon", this._getInitials(item));
+			put(itemDiv, 'div.umcGridTileName', item.name);
 			this.setPicture(item);
-			put(div, this._getDescription(item));
+			put(itemDiv, this._getDescription(item));
 			var defaultAction = this.grid._getDefaultActionForItem(item);
 			var idProperty = this.grid.moduleStore.idProperty;
-			on(nameNode, 'click', lang.hitch(this, function() {
+			on(itemDiv, 'click', lang.hitch(this, function(evt) {
+				if (evt.ctrlKey) {
+					return;
+				}
 				defaultAction.callback([item[idProperty]], [item]);
 			}));
 			return wrapperDiv;
