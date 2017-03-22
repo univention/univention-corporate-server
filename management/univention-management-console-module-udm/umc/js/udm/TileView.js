@@ -124,6 +124,8 @@ define([
 					return;
 				}
 				defaultAction.callback([item[idProperty]], [item]);
+				var row = this.grid._grid.row(evt);
+				this.grid._grid.deselect(row);
 			}));
 			return wrapperDiv;
 		},

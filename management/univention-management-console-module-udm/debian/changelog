@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-10) unstable; urgency=medium
+
+  * Bug #43990: User tile view: Deselect user after opening user detail page 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 15:41:29 +0100
+
 univention-management-console-module-udm (7.0.9-9) unstable; urgency=medium
 
   * Bug #43528: Do not display loading progress info on save button
