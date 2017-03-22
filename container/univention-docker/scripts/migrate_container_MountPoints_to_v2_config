@@ -49,20 +49,24 @@ def main():
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	migrate_all_app_containers()
+	rc = migrate_all_app_containers()
+	sys.exit(rc)
 
 
 def migrate_all_app_containers():
 	log = getLogger(__name__).getChild('migrate_all_app_containers')
 	p = re.compile('^appcenter/apps/(.*)/container$')
 
+	rc = 0
 	for ucr_key, container_id in ucr.items():
 		m = p.match(ucr_key)
 		if not m:
 			continue
 		app_name = m.group(1)
 		log.info('Migrating app container %s (%s)' % (container_id, app_name))
-		migrate_app_container(container_id)
+		rc |= migrate_app_container(container_id)
+
+	return rc
 
 
 def migrate_app_container(container_id):
@@ -72,16 +76,30 @@ def migrate_app_container(container_id):
 	old_cfg = os.path.join(container_path, 'config.json')
 	if not os.path.exists(old_cfg):
 		log.warn('Ignoring %s (no config.json found)' % (container_id,))
-		return
+		return 2
 
 	with open(old_cfg, 'r') as f:
-	    old_data = json.load(f, object_pairs_hook=OrderedDict)
+		old_data = json.load(f, object_pairs_hook=OrderedDict)
 
 	new_cfg = os.path.join(container_path, 'config.v2.json')
+	if not os.path.exists(new_cfg):
+		log.error('Cannot migrate %s (no config.v2.json found)' % (container_id,))
+		return 1
+
 	with open(new_cfg, 'r') as f:
-	    new_data = json.load(f, object_pairs_hook=OrderedDict)
+		new_data = json.load(f, object_pairs_hook=OrderedDict)
 
 	for src, dst in old_data["Volumes"].items():
+		if src not in new_data["MountPoints"]:
+			break
+	else:
+		log.info('Nothing to do for %s' % (container_id,))
+		return 0
+
+	for src, dst in old_data["Volumes"].items():
+		if src in new_data["MountPoints"]:
+			continue
+
 		rw = old_data["VolumesRW"][src]
 		new_data["MountPoints"][src] = OrderedDict([
 			("Source", src),
@@ -94,13 +112,15 @@ def migrate_app_container(container_id):
 			("Named", False),
 			("ID", "")
 		])
-	
+
 	if options.dry_run:
-		return
+		return 0
 
 	with open(new_cfg, 'w') as f:
 		json.dump(new_data, f, separators=(',', ':'))
 		f.write('\n')
+
+	return 0
 
 
 def parse_args():
