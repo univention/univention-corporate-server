@@ -1,3 +1,9 @@
+univention-web (1.0.40-1) unstable; urgency=medium
+
+  * Bug #42265: adjust caching time, cache also fonts
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 16:11:41 +0100
+
 univention-web (1.0.39-29) unstable; urgency=medium
 
   * Bug #43985: automatic detection if login state
