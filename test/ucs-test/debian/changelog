@@ -1,3 +1,9 @@
+ucs-test (7.0.21-1) unstable; urgency=low
+
+  * Bug #43812: Merge ucs-test changes from 4.1-4
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Mar 2017 09:08:22 +0100
+
 ucs-test (7.0.20-18) unstable; urgency=medium
 
   * Bug #43911: Adjust 53_samba-common/50quota to work in UCS 4.2
