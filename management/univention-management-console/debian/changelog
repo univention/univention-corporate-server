@@ -1,3 +1,11 @@
+univention-management-console (9.0.70-1) unstable; urgency=medium
+
+  * Bug #39731: fixup svn r76192: Internet Explorer sends 'Accept: text/html,
+  	*/*' causing JSON to be displayed instead of HTML when accessing pages
+  	 with GET request.
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 19:24:09 +0100
+
 univention-management-console (9.0.69-2) unstable; urgency=medium
 
   * Bug #43888: fix memory leak in the UMC-Server

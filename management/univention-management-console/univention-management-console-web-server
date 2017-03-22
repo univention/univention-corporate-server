@@ -414,9 +414,9 @@ def default_error_page(status, message, traceback, version, result=None):
 	accept_json, accept_html = 0, 0
 	for accept in cherrypy.request.headers.elements('Accept'):
 		mimetype = accept.value
-		if mimetype in ('*/*', 'text/*', 'text/html'):
+		if mimetype in ('text/*', 'text/html'):
 			accept_html = max(accept_html, accept.qvalue)
-		if mimetype in ('*/*', 'application/*', 'application/json'):
+		if mimetype in ('application/*', 'application/json'):
 			accept_json = max(accept_json, accept.qvalue)
 	if accept_json < accept_html:
 		return default_error_page_html(status, message, traceback, version, result)

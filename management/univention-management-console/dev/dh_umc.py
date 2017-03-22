@@ -4,24 +4,24 @@
 # Univention Management Console
 """Each module definition contains the following entries:
 
- Module: The internal name of the module
- Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
- Definition: The XML definition of the module
- Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
- Category: The XML definition of additional categories
- Icons: A directory containing the icons used by the module. The
-   directory structure must follow the following pattern
-   <weight>x<height>/<icon>.(png|svg)
+	Module: The internal name of the module
+	Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
+	Definition: The XML definition of the module
+	Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
+	Category: The XML definition of additional categories
+	Icons: A directory containing the icons used by the module. The
+		directory structure must follow the following pattern
+		<weight>x<height>/<icon>.(png|svg)
 
 The entries Module and Definition are required.
 
 Example:
- Module: ucr
- Python: umc/module
- Definition: umc/ucr.xml
- Javascript: umc/js
- Category: umc/categories/ucr.xml
- Icons: umc/icons
+	Module: ucr
+	Python: umc/module
+	Definition: umc/ucr.xml
+	Javascript: umc/js
+	Category: umc/categories/ucr.xml
+	Icons: umc/icons
 """
 #
 # Copyright 2011-2017 Univention GmbH
