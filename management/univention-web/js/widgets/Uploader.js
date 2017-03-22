@@ -91,6 +91,8 @@ define([
 		//toggle mutliple files selectable
 		multiFile: false,
 
+		labelPosition: 'top',
+
 		// make sure that no sizeClass is being set
 		sizeClass: null,
 
@@ -117,6 +119,12 @@ define([
 		constructor: function() {
 			this.buttonLabel = _('Upload');
 			this.clearButtonLabel = _('Clear data');
+
+			// default to value given by UCR variable
+			var maxSize = parseInt(tools.status('umc/server/upload/max'), 10);
+			if (!isNaN(maxSize)) {
+				this.maxSize = maxSize * 1024;
+			}
 		},
 
 		postMixInProperties: function() {
@@ -147,14 +155,12 @@ define([
 				}
 			});
 			domClass.add(this._uploader.domNode, 'umcButton');
-			this._uploader.set('iconClass', 'umcIconAdd');
 			style.set(this._uploader.domNode, 'display', 'inline-block');
 			this.addChild(this._uploader);
 
 			if ( this.showClearButton ) {
 				this._clearButton = new Button({
 					label: this.clearButtonLabel,
-					iconClass: 'umcIconDelete',
 					callback: lang.hitch(this, function() {
 						this.set('data', null);
 					})
@@ -170,7 +176,7 @@ define([
 			this._uploader.on('change', lang.hitch(this, function(_data) {
 				var _tooLargeFiles = [];
 				array.forEach(_data, function(ifile) {
-					if (!(ifile.size <= this.maxSize)) {
+					if (ifile.size > this.maxSize) {
 						_tooLargeFiles.push(ifile.name);
 					}
 				}, this);

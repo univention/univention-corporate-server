@@ -39,8 +39,8 @@ define([
 		baseClass: 'umcImage',
 
 		// imageType: String
-		//		Image type: 'jpeg', 'png'
-		imageType: 'jpeg',
+		//		Image type: '*', 'jpeg', 'png', 'svg+xml'
+		imageType: '*',
 
 		// value: String
 		//		base64 encoded string that contains image data.
@@ -52,6 +52,26 @@ define([
 			this.inherited(arguments);
 
 			this.sizeClass = null;
+		},
+
+		// expects value to be base64 encoded image
+		_getImageType: function() {
+			// check the signature of the first bytes...
+			// for jpeg it is (in hex): hex pattern: FF D8 FF
+			if (this.value.indexOf('/9j/4') === 0) {
+				return 'jpeg';
+			}
+			// the first 8 bytes (in hex) should be matched: 89 50 4E 47 0D 0A 1A 0A
+			// note that base64 encodes 6 bits per character...
+			if (this.value.indexOf('iVBORw0KGg') === 0) {
+				return 'png';
+			}
+			// check whether file starts with '<svg', '<SVG', '<xml', or '<XML'...
+			// as simple check that should work for most cases
+			if (this.value.indexOf('PHN2Z') === 0 || this.value.indexOf('PFNWR') === 0 || this.value.indexOf('PFhNT') || this.value.indexOf('PHhtb')) {
+				return 'svg+xml';
+			}
+			return 'unknown';
 		},
 
 		_setValueAttr: function(newVal) {
@@ -69,7 +89,14 @@ define([
 				this.set('content', '');
 			}
 			else {
-				this.set('content', lang.replace('<img src="data:image/{imageType};base64,{value}"/>', this));
+				var imageType = this.imageType;
+				if (imageType == '*') {
+					imageType = this._getImageType();
+				}
+				this.set('content', lang.replace('<img src="data:image/{imageType};base64,{value}"/>', {
+					imageType: imageType,
+					value: this.value
+				}));
 			}
 		}
 	});

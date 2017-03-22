@@ -147,6 +147,7 @@ ucr_vars = [
 	('umc/web/sso/newwindow', ),
 	('umc/web/sso/newwindow', 'umcWebSsoNewwindow', ),
 	('umc/web/startupdialog', ),
+	('umc/server/upload/max', ),
 	('update/available', ),
 	('update/reboot/required', ),
 	('version/erratalevel', ),

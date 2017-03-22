@@ -32,14 +32,17 @@ define([
 	"dojo/_base/declare",
 	"umc/widgets/Uploader",
 	"umc/widgets/Image",
+	"umc/tools",
 	"umc/i18n!"
-], function(declare, Uploader, Image, _) {
+], function(declare, Uploader, Image, tools, _) {
 	return declare("umc.widgets.ImageUploader", Uploader, {
 		// imageType: String
-		//		Image type: 'jpeg', 'png'
-		imageType: 'jpeg',
+		//		Image type: '*', 'jpeg', 'png', 'svg+xml'
+		imageType: '*',
 
 		maxSize: 262400,
+
+		size: 'Two',
 
 		_image: null,
 

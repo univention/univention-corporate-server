@@ -317,6 +317,38 @@ label
 		margin-right: -3.5em
 		padding-right: 3.5em
 
+.umc .umcImage
+	background: url(images/checkerboard-pattern.png)
+	width: 100%
+	padding: 10px
+
+	img
+		width: auto
+		max-width: 100%
+		height: auto
+		max-height: 300px
+		display: block
+		margin: 0 auto
+
+/* flat buttons for some elements */
+.umc
+	.umcUploader,
+	.umcMultiObjectSelect
+		.dijitButton
+			box-shadow: none
+			margin-left: 0
+			margin-right: 24px
+			margin-bottom: 0
+
+			&:last-child
+				margin-right: 0
+
+		.dijitButton:not(.dijitButtonHover)
+			.dijitButtonNode
+				background-color: transparent
+
+
+
 /*========================= hacks for browsers =========================*/
 /* it seems the input[type="hidden"] has a height (16px) too... this may cause the widget's height calculate error */
 .dj_ff3 .umc .dijitInputField input[type="hidden"]

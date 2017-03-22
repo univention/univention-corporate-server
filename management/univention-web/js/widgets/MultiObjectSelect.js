@@ -118,7 +118,6 @@ define([
 				// add the final buttons to close the dialog
 				this._container.addChild(new Button({
 					label: _('Add'),
-					iconClass: 'umcIconAdd',
 					style: 'float: right;',
 					onClick: lang.hitch(this, function() {
 						// get all elements an trigger onAdd event
@@ -297,7 +296,6 @@ define([
 			container = new ContainerWidget({});
 			this._addButton = new Button({
 				label: _('Add'),
-				iconClass: 'umcIconAdd',
 				onClick: lang.hitch(this, function() {
 					if (!this._detailDialog) {
 						// dialog does not exist, create a new one
@@ -321,7 +319,6 @@ define([
 			container.addChild(this._addButton);
 			this._removeButton = new Button({
 				label: _('Remove'),
-				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, '_removeSelectedElements'),
 				style: 'float: right;'
 			});

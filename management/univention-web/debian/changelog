@@ -1,3 +1,15 @@
+univention-web (1.0.39-23) unstable; urgency=medium
+
+  Bug #42235:
+  * Auto detect image type for image widget
+  * Read maximum size for image uploads from UCR variable
+  * Improve display of image uploader
+
+  Bug #44010:
+  * Remove +/- icons from MultiObjectSelect and Uploader widgets
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 03:44:57 +0100
+
 univention-web (1.0.39-22) unstable; urgency=medium
 
   * Bug #44003: Adjust input fields on login page for IE

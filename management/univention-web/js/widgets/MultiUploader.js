@@ -109,6 +109,12 @@ define([
 			this.buttonLabel = _('Upload');
 			this._uploadingFiles = [];
 			this.value = [];
+
+			// default to value given by UCR variable
+			var maxSize = parseInt(tools.status('umc/server/upload/max'), 10);
+			if (!isNaN(maxSize)) {
+				this.maxSize = maxSize * 1024;
+			}
 		},
 
 		buildRendering: function() {
@@ -126,7 +132,6 @@ define([
 			this._container = new ContainerWidget({});
 			this._container.addChild(new Button({
 				label: _('Remove'),
-				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, '_removeFiles'),
 				style: 'float: right;'
 			}));
