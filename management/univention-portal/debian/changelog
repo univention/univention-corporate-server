@@ -1,3 +1,10 @@
+univention-portal (1.0.10-1) unstable; urgency=medium
+
+  * Bug #42175: make sure it doesn't crash if a portal entry doesn't have any
+  	referenced portal
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 13:27:36 +0100
+
 univention-portal (1.0.9-6) unstable; urgency=medium
 
   * Bug #42235: Integrate custom background image and logo into portal

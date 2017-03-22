@@ -92,7 +92,7 @@ define([
 			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
 					// TODO: filter by entry.authRestriction (anonymous, authenticated, admin)
-					return entry.category == category && entry.activated && entry.portals.indexOf(portal.dn) !== -1;
+					return entry.category == category && entry.activated && entry.portals && entry.portals.indexOf(portal.dn) !== -1;
 				});
 				var apps = this._getApps(categoryEntries, locale, protocol, isIPv4, isIPv6);
 				var heading;
