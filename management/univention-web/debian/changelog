@@ -1,3 +1,9 @@
+univention-web (1.0.39-26) unstable; urgency=medium
+
+  * Bug #44004: Fix scroll issue in modules with multiple pages
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 22 Mar 2017 13:34:01 +0100
+
 univention-web (1.0.39-25) unstable; urgency=medium
 
   * Bug #43528: Add default icon in AppGallery + adjust icon margin
@@ -6,7 +12,7 @@ univention-web (1.0.39-25) unstable; urgency=medium
 
 univention-web (1.0.39-24) unstable; urgency=medium
 
-  * Bug #43990: User tile view: Whole tile opens user detail page 
+  * Bug #43990: User tile view: Whole tile opens user detail page
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 11:35:27 +0100
 
