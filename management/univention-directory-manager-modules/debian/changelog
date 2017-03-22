@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.15-2) unstable; urgency=medium
+
+  * Bug #42235: Integrate portal logo and CSS background into UDM object
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 03:42:17 +0100
+
 univention-directory-manager-modules (12.0.15-1) unstable; urgency=medium
 
   * Bug #43928: make it possible to move and remove portal's entries; disallow

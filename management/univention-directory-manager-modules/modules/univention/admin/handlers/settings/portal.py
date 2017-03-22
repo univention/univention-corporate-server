@@ -137,6 +137,28 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'logo': univention.admin.property(
+		short_description=_('Portal logo'),
+		long_description=_('Logo image for the portal.'),
+		syntax=univention.admin.syntax.Base64BaseUpload,
+		multivalue=False,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'cssBackground': univention.admin.property(
+		short_description=_('CSS background'),
+		long_description='Style definition for CSS background property which will be applied to the portal page.',
+		syntax=univention.admin.syntax.TwoString,
+		multivalue=False,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
@@ -146,7 +168,9 @@ layout = [
 			["displayName"],
 		]),
 		Group(_('Appearance'), layout=[
+			["logo"],
 			["background"],
+			["cssBackground"],
 		]),
 		Group(_('General Content'), layout=[
 			# ["showMenu"],
@@ -182,6 +206,8 @@ mapping.register('showLogin', 'univentionPortalShowLogin', None, univention.admi
 mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.mapping.ListToString)
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
+mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
+mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

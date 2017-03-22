@@ -369,6 +369,10 @@ class FiveThirdsString(string):
 	size = 'FiveThirds'
 
 
+class TwoString(string):
+	size = 'Two'
+
+
 class TextArea(string):
 	pass
 
