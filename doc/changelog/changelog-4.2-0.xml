@@ -302,6 +302,11 @@
 					(<u:bug>41905</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The version comparison for supported UCS Version has been fixed so
+					that it does not fail on testing minor versions that are lower than
+					the current version (<u:bug>43901</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Adjustments have been made to work with the new Docker version or
 					other software components (<u:bug>43338</u:bug>, <u:bug>43607</u:bug>,
 					<u:bug>43458</u:bug>).
