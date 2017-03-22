@@ -58,6 +58,9 @@
 		height: 80px
 		overflow: hidden
 
+		&:hover
+			cursor: pointer
+
 		.umcGridTileName
 			font-size: $font-size-subheading
 			color: $text-color-lighter
@@ -65,13 +68,6 @@
 			word-break: break-word
 			margin-right: 24px
 			margin-left: 75px
-
-			&:hover
-				text-decoration: underline
-
-		.umcGridTileName:hover
-			cursor: pointer
-
 
 		.umcGridTileDescription
 			color: $text-color-lightest
@@ -110,10 +106,9 @@
 			top: 11px
 			left: auto
 			right: 8px
-
-
-		.umcGridTileContextIcon:hover
-			cursor: pointer
+			
+			&:hover
+				icon-image(-20, -40, "")
 
 
 	.umcGridTileItem:hover
