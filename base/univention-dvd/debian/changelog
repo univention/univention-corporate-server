@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-9) unstable; urgency=low
+
+  * Bug #38877: Add "univention-kvm-compat"
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Mar 2017 10:14:07 +0100
+
 univention-dvd (2.0.0-8) unstable; urgency=medium
 
   * Bug #43595: added univention-server-overview to task list
