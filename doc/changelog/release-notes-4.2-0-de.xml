@@ -128,7 +128,7 @@
 		</para>
 
 		<para>
-			Während des Updates werden die &ucsUCR; Einstellungen <envar>nameserver*</envar> und <envar>dns/forwarder*</envar> überprüft und automatisch korrigiert, um sicherzustellen, dass die <envar>nameserver*</envar> Variablen nur auf DNS server verweisen, die die UCS-Domäne auflösen können.
+			Während des Updates werden die &ucsUCR; Einstellungen <envar>nameserver*</envar> und <envar>dns/forwarder*</envar> überprüft und automatisch korrigiert, um sicherzustellen, dass die <envar>nameserver*</envar> Variablen nur auf DNS Server verweisen, die die UCS-Domäne auflösen können.
 			Die automatisierte Korrektur geschieht einmalig durch Aufruf von <command>/usr/share/univention-server/univention-fix-ucr-dns</command>.
 			Wir empfehlen die Werte dieser &ucsUCRV;n zu prüfen.
 		</para>

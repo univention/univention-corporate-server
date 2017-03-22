@@ -326,7 +326,7 @@
 					avoids granting <literal>SYS_ADMIN</literal> capabilities to containers (<u:bug>43455</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The appcenter now validates the remote server certificate hostname
+					The App Center now validates the remote server certificate hostname
 					(<u:bug>41170</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -796,7 +796,7 @@
 					<application>libvirtd</application> is no longer started through <application>runit</application> but through <application>systemd</application> (<u:bug>43875</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<package>qemu</package> and <package>libvirt</package> have been updates to newer versions.
+					<package>qemu</package>, <package>libvirt</package>, <package>VirtIO</package> and related packages have been updates to newer versions.
 					Live-migration and snapshots from previous versions might not work in all cases due to large changes in the code base.
 					In such cases it is recommended to cleanly shutdown the virtual machines before the upgrade and to cold-boot the virtual machines after the upgrade (<u:bug>38877</u:bug>).
 				</simpara></listitem>
@@ -987,7 +987,7 @@
 				During update, the UCR variables for the firewall accept rule are unset (<u:bug>42109</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				<package>univention-join</package> now uses SNTP for initial time sync (<u:bug>43987</u:bug>).
+				<package>univention-join</package> now uses <acronym>SNTP</acronym> for initial time sync (<u:bug>43987</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				<package>univention-firewall</package> has been adapted to new iptables rules created by the upgraded docker service (<u:bug>43707</u:bug>).
