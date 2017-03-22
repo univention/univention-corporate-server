@@ -1,3 +1,9 @@
+univention-appcenter (6.0.3-22) unstable; urgency=medium
+
+  * Bug #43905: Improved status message
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Mar 2017 15:39:39 +0100
+
 univention-appcenter (6.0.3-21) unstable; urgency=medium
 
   * Bug #43901: Fix version comparison for RequiredUCSVersion and

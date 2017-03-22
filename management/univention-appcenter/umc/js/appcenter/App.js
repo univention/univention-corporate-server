@@ -380,11 +380,18 @@ define([
 			if (!!this.installationData) {
 				array.forEach(this.installationData, lang.hitch(this, function(item) {
 					if (item.isInstalled) {
+						var appStatus = '';
+						if (item.version) {
+							appStatus = _('%s installed', item.version);
+							if (item.canUpgrade()) {
+								appStatus += '. ' + _('Upgrade to %s available', item.candidateVersion);
+							}
+						}
 						var ihost = {
 							server: item.displayName,
 							id: item.hostName,
 							data: item,
-							appStatus: item.canUpgrade() ? _('Update available') : ''
+							appStatus: appStatus
 						};
 						if (!item.isLocal() && item.ucsVersion != this.ucsVersion) {
 							ihost.appStatus = _('Different UCS Version. Limited manageability');
@@ -394,11 +401,18 @@ define([
 				}));
 			} else {
 				if (this.isInstalled) {
+					var appStatus = '';
+					if (this.version) {
+						appStatus = _('%s installed', this.version);
+						if (this.canUpgrade()) {
+							appStatus += '. ' + _('Upgrade to %s available', this.candidateVersion);
+						}
+					}
 					hosts.push({
 						server: this.displayName,
 						id: this.hostName,
 						data: this,
-						appStatus: this.canUpgrade() ? _('Update available') : ''
+						appStatus: appStatus
 					});
 				}
 			}
