@@ -1,3 +1,9 @@
+univention-updater (12.0.4-9) unstable; urgency=medium
+
+  * Bug #44012: Fix autoscrolling in firefox and IE 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 09:50:12 +0100
+
 univention-updater (12.0.4-8) unstable; urgency=medium
 
   * Bug #43782: Reactivate apache2 module proxy_wstunnel if

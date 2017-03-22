@@ -46,12 +46,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/window",
+	"dojo/dom-geometry",
 	"dojo/window",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, win, dojoWindow, tools, Text, ContainerWidget, _) {
+], function(declare, lang, win, geometry, dojoWindow, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
 		_oldScrollPosition: 0,
@@ -150,16 +151,16 @@ define([
 		// (2) someone tells us to do so --> forceScrollToBottom
 		// (3) the user scrolls to a defined position --> isAtBottom()
 		scrollToBottom: function(forceScrollToBottom) {
-			var body_node = win.doc.body;
+			var body_node = win.body();
 			if (forceScrollToBottom === true) {
 				this._goToBottom = true;
 			}
-			this.hasUserMovedScrollbar(this._oldScrollPosition, body_node.scrollTop);
+			this.hasUserMovedScrollbar(this._oldScrollPosition, geometry.docScroll().y);
 			this.isAtBottom(body_node);
 			if (this._goToBottom){
-				body_node.scrollTop = body_node.scrollHeight;
+				window.scrollTo(0, geometry.position(body_node).h);
 			}
-			this._oldScrollPosition = body_node.scrollTop;
+			this._oldScrollPosition = geometry.docScroll().y;
 		},
 
 		// if the old scrollbar postion isn't the new one, the user has changed it
@@ -174,12 +175,12 @@ define([
 		// this point is defined at a ratio of 75%
 		isAtBottom: function(body_node){
 			var viewPortHeight = dojoWindow.getBox().h;
-			var content_height = body_node.scrollHeight; // the overall height of the text inside the view
+			var content_height = geometry.position(body_node).h; // the overall height of the text inside the view
 			if (content_height === 0) {
 				return;
 			}
 
-			var scroll_position = body_node.scrollTop; //  current position auf the scrollbar
+			var scroll_position = geometry.docScroll().y; //  current position auf the scrollbar
 			var ratio = (scroll_position + viewPortHeight) / content_height; 
 			if (ratio >= 0.75) {
 				this._goToBottom = true;
