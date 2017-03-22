@@ -1,3 +1,9 @@
+univention-system-setup (10.0.9-11) unstable; urgency=medium
+
+  * Bug #43973: use toggle selection mode for software selection 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 10:44:41 +0100
+
 univention-system-setup (10.0.9-10.1) unstable; urgency=medium
 
   * Don't install univention-welcome-screen until Bug #43656 has been

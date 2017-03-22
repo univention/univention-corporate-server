@@ -1247,7 +1247,7 @@ define([
 				standby: function() {},
 				gridOptions: {
 					className: '',
-					selectionMode: 'multiple'
+					selectionMode: 'toggle'
 				}
 			});
 
