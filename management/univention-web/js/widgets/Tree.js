@@ -54,6 +54,7 @@ define([
 	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
 		'class': 'umcGridTree',
 		showRoot: true,
+		autoExpand: false,
 		// let the Tree be as hight as the content
 		useAutoHeight: true,
 		selectRootOnLoad: true,
@@ -65,7 +66,7 @@ define([
 				collection: null,
 				selectionMode: 'single',
 				collapseOnRefresh: true,
-				shouldExpand: lang.hitch(this, 'shouldExpandAndSelect'),
+				shouldExpand: lang.hitch(this, 'shouldExpand'),
 				showHeader: false,
 				treeIndentWidth: 24,
 				columns: {
@@ -166,6 +167,13 @@ define([
 				this._gridTree.select(row.id);
 			}
 			return isItemOnPath;
+		},
+
+		shouldExpand: function(row) {
+			if (this.autoExpand) {
+				return true;
+			}
+			return this.shouldExpandAndSelect(row);
 		},
 
 		getRowIconHTML: function(icon) {
