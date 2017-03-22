@@ -950,15 +950,20 @@ define([
 					helpText: idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''
 				});
 
-				// add user photo into 'nav' area
-				if (widgets.jpegPhoto && array.some(ilayout.layout, function(l) {
+				// add user photo into 'nav' area and adjust some properties
+				var hasPhotoInLayout = array.some(ilayout.layout, function(l) {
 					var hasPhoto = array.indexOf(l.layout, 'jpegPhoto') !== -1;
 					if (hasPhoto) {
 						l.layout.pop('jpegPhoto');
 					}
 					return hasPhoto;
-				})) {
-					widgets.jpegPhoto.region = 'nav';
+				});
+				if (widgets.jpegPhoto && hasPhotoInLayout) {
+					lang.mixin(widgets.jpegPhoto, {
+						region: 'nav',
+						maxSize: 262144, // make sure that user pictures are not too large
+						imageType: 'jpeg' // type must be jpeg to match the LDAP type specification
+					});
 					subTab.addChild(widgets.jpegPhoto);
 				}
 

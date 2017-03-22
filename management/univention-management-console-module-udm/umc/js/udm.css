@@ -52,6 +52,15 @@
 	background-position-y: -130px ;
 }
 
+.umc .umcUDMUsersModule .umcImage {
+	background: none;
+	padding: 0;
+}
+
+.umc .umcUDMUsersModule .umcImage img {
+	margin: 0;
+}
+
 .umc .umcUDMLicenseIcon,
 .umc .umcUDMLicenseImportIcon {
 	height: 150px;
