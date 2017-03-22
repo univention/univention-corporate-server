@@ -36,7 +36,7 @@ import univention.debug as ud  # pylint: disable-msg=E0611
 from json import load, dump
 from base64 import b64decode
 from imghdr import what
-import shutil
+from StringIO import StringIO
 
 name = 'portal_entry'
 description = 'Dump portal entry information'
@@ -69,25 +69,26 @@ def _split_translation(value):
 	return dict(val.split(' ', 1) for val in value)
 
 
-def _make_obj(obj):
-	icon = obj.get('univentionPortalEntryIcon', [''])[0]
-	logo_name = None
-	if icon:
+def _save_image(obj, ldap_attr, dir_name):
+	img = obj.get(ldap_attr, [''])[0]
+	if img:
 		cn = os.path.basename(obj['cn'][0])
-		fname = os.path.join(os.path.dirname(_fname()), 'icons', 'entries', cn)
-		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
+		fname = os.path.join(os.path.dirname(_fname()), 'icons', dir_name, cn)
 		try:
+			img = b64decode(img)
+			string_buffer = StringIO(img)
+			suffix = what(string_buffer) or 'svg'
+			fname = '%s.%s' % (fname, suffix)
+			ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
 			with open(fname, 'wb') as fd:
-				fd.write(b64decode(icon))
-		except (EnvironmentError, TypeError):
-			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon' % fname)
+				fd.write(img)
+		except (EnvironmentError, TypeError, IOError) as err:
+			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon: %s' % (fname, err))
 		else:
-			if what(fname) == 'png':
-				shutil.move(fname, '%s.png' % fname)
-				logo_name = '/univention/portal/icons/entries/%s.png' % cn
-			else:
-				shutil.move(fname, '%s.svg' % fname)
-				logo_name = '/univention/portal/icons/entries/%s.svg' % cn
+			return '/univention/portal/icons/%s/%s.%s' % (dir_name, cn, suffix)
+
+
+def _make_obj(obj):
 	return {
 		'id': obj['entryUUID'][0],
 		'name': _split_translation(obj.get('univentionPortalEntryDisplayName')),
@@ -98,7 +99,7 @@ def _make_obj(obj):
 		'activated': obj.get('univentionPortalEntryActivate', [''])[0] != 'FALSE',
 		'favorite': obj.get('univentionPortalEntryFavorite', [''])[0] == 'TRUE',
 		'authRestriction': obj.get('univentionPortalEntryAuthRestriction', [''])[0] or 'anonymous',
-		'logo_name': logo_name,
+		'logo_name': _save_image(obj, 'univentionPortalEntryIcon', 'entries'),
 	}
 
 

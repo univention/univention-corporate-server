@@ -36,6 +36,7 @@ define([
 	"dijit/registry",
 	"dojo/on",
 	"dojo/dom",
+	"dojo/dom-construct",
 	"./PortalCategory",
 	"umc/tools",
 	"umc/i18n/tools",
@@ -44,7 +45,7 @@ define([
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!/univention/i18n"
-], function(declare, lang, array, kernel, registry, on, dom, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, kernel, registry, on, dom, domConstruct, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
 
 	var _regEndsWithSVG = /\.svg$/;
 	var hasSVGSuffix = function(path) {
@@ -55,24 +56,35 @@ define([
 		return path && path.indexOf('/') === 0;
 	};
 
+	var locale = i18nTools.defaultLang().replace(/-/, '_');
 	return {
 		portalCategories: null,
+
+		_initStyling: function() {
+			// set title
+			var portal = portalContent.portal;
+			var title = dom.byId('portalTitle');
+			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
+			title.innerHTML = portalName;
+			document.title = portalName;
+
+			// custom logo
+			if (portal.logo) {
+				var img = domConstruct.toDom(lang.replace('<img src="{logo}" class="umcCustomLogo" />', portal));
+				domConstruct.place(img, title, 'before');
+			}
+		},
 
 		_createCategories: function() {
 			this.portalCategories = [];
 
 			var portal = portalContent.portal;
 			var entries = portalContent.entries;
-			var locale = i18nTools.defaultLang().replace(/-/, '_');
 			var protocol = window.location.protocol;
 			var host = window.location.host;
 			var isIPv4 = tools.isIPv4Address(host);
 			var isIPv6 = tools.isIPv6Address(host);
 
-			var title = dom.byId('portalTitle');
-			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
-			title.innerHTML = portalName;
-			document.title = portalName;
 			if (portal.showApps) {
 				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
 				this._addCategory(_('Installed Apps'), apps);
@@ -187,6 +199,7 @@ define([
 			this.content = dom.byId('content');
 			this.search = registry.byId('umcLiveSearch');
 			this.search.on('search', lang.hitch(this, 'filterPortal'));
+			this._initStyling();
 			this._createCategories();
 		},
 

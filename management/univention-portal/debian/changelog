@@ -1,3 +1,9 @@
+univention-portal (1.0.9-6) unstable; urgency=medium
+
+  * Bug #42235: Integrate custom background image and logo into portal
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 03:50:14 +0100
+
 univention-portal (1.0.9-5) unstable; urgency=medium
 
   * Bug #43892: Move locally installed apps to the top

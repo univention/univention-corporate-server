@@ -36,7 +36,7 @@ import univention.debug as ud  # pylint: disable-msg=E0611
 from json import load, dump
 from base64 import b64decode
 from imghdr import what
-import shutil
+from StringIO import StringIO
 
 import ldap
 
@@ -79,25 +79,48 @@ def _split_translation(value):
 	return dict(val.split(' ', 1) for val in value)
 
 
-def _make_obj(obj):
-	icon = obj.get('univentionPortalBackground', [''])[0]
-	background = None
-	if icon:
+def _save_image(obj, ldap_attr, dir_name):
+	img = obj.get(ldap_attr, [''])[0]
+	if img:
 		cn = os.path.basename(obj['cn'][0])
-		fname = os.path.join(os.path.dirname(_fname()), 'icons', 'backgrounds', cn)
-		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
+		fname = os.path.join(os.path.dirname(_fname()), 'icons', dir_name, cn)
 		try:
+			img = b64decode(img)
+			string_buffer = StringIO(img)
+			suffix = what(string_buffer) or 'svg'
+			fname = '%s.%s' % (fname, suffix)
+			ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
 			with open(fname, 'wb') as fd:
-				fd.write(b64decode(icon))
-		except (EnvironmentError, TypeError):
-			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon' % fname)
+				fd.write(img)
+		except (EnvironmentError, TypeError, IOError) as err:
+			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon: %s' % (fname, err))
 		else:
-			if what(fname) == 'png':
-				shutil.move(fname, '%s.png' % fname)
-				background = '/univention/portal/icons/backgrounds/%s.png' % cn
-			else:
-				shutil.move(fname, '%s.svg' % fname)
-				background = '/univention/portal/icons/backgrounds/%s.svg' % cn
+			return '/univention/portal/icons/%s/%s.%s' % (dir_name, cn, suffix)
+
+
+def _write_css(obj):
+	# get CSS rule for body background
+	background = []
+	bg_img = _save_image(obj, 'univentionPortalBackground', 'backgrounds'),
+	if bg_img:
+		background.append('url("%s") no-repeat top center / cover' % bg_img)
+	css = obj.get('univentionPortalCSSBackground', [''])[0]
+	if css:
+		background.append(css)
+	background = ', '.join(background)
+
+	# write CSS file
+	fname = os.path.join(os.path.dirname(_fname()), 'portal.css')
+	ud.debug(ud.LISTENER, ud.PROCESS, 'Writing CSS file %s' % fname)
+	try:
+		with open(fname, 'wb') as fd:
+			if background:
+				fd.write('body.umc {\n  background: %s;\n}\n' % background)
+	except (EnvironmentError, IOError) as err:
+		ud.debug(ud.LISTENER, ud.WARN, 'Failed to write CSS file %s: %s' % (fname, err))
+
+
+def _make_obj(obj):
 	return {
 		'name': _split_translation(obj.get('univentionPortalDisplayName')),
 		'showMenu': obj.get('univentionPortalShowMenu', [''])[0] == 'TRUE',
@@ -105,7 +128,7 @@ def _make_obj(obj):
 		'showLogin': obj.get('univentionPortalShowLogin', [''])[0] == 'TRUE',
 		'showApps': obj.get('univentionPortalShowApps', [''])[0] == 'TRUE',
 		'showServers': obj.get('univentionPortalShowServers', [''])[0] == 'TRUE',
-		'background': background,
+		'logo': _save_image(obj, 'univentionPortalLogo', 'logos'),
 	}
 
 
@@ -127,6 +150,7 @@ def _save_external_portal(dn=None):
 		}
 	obj = _make_obj(attrs)
 	_save(dn, obj)
+	_write_css(attrs)
 
 
 def handler(dn, new, old):
@@ -157,5 +181,6 @@ def handler(dn, new, old):
 					ud.debug(ud.LISTENER, ud.PROCESS, 'Add / change obj')
 					obj = _make_obj(new)
 					_save(dn, obj)
+					_write_css(new)
 	finally:
 		listener.unsetuid()
