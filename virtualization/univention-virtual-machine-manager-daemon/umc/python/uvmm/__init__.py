@@ -80,8 +80,11 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 		success, data = result
 		MODULE.info('Got result from UVMMd: success: %s, data: %r' % (success, data))
 		if not success:
-			result = UMC_Error(str(data), status=500)
-			self.thread_finished_callback(thread, result, request)
+			try:
+				raise UMC_Error(str(data), status=500)
+			except UMC_Error as result:
+				thread._exc_info = sys.exc_info()
+				self.thread_finished_callback(thread, result, request)
 			return
 
 		if callback:

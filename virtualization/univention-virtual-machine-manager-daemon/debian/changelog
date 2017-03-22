@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.3-1) unstable; urgency=medium
+
+  * Bug #38634: fix error handling when regular error message from UVMMd comes
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 17:11:36 +0100
+
 univention-virtual-machine-manager-daemon (6.0.2-6) unstable; urgency=medium
 
   * Bug #44007: prevent chrome from autofilling vnc_password with umc
