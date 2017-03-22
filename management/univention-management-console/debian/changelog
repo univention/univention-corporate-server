@@ -1,5 +1,6 @@
 univention-management-console (9.0.69-2) unstable; urgency=medium
 
+  * Bug #43888: fix memory leak in the UMC-Server
   * Bug #43985: automatic detection if login state
 
  -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 14:53:03 +0100

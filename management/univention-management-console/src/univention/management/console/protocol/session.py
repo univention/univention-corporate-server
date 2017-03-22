@@ -891,7 +891,11 @@ class SessionHandler(ProcessorBase):
 				# only set the credentials in 1. a new session 2. if password changed or 3. if logged in via plain authentication
 				# to prevent a downgrade of the regular login to a SAML login
 				self.__credentials = result.credentials
-			self.initalize_processor(request)
+			if self.processor:
+				# set the (new) password (also on re-authentication in the same session)
+				self.processor.set_credentials(**self.__credentials)
+			else:
+				self.initalize_processor(request)
 			self.processor.request(request)
 		else:
 			self.request(request)
@@ -928,9 +932,7 @@ class SessionHandler(ProcessorBase):
 			self.processor.signal_connect('success', self._response)
 			if self.__locale:
 				self.processor.update_language([self.__locale])
-
-		# set the (new) password (also on re-authentication in the same session)
-		self.processor.set_credentials(**self.__credentials)
+			self.processor.set_credentials(**self.__credentials)
 
 	def _response(self, response):
 		self.signal_emit('success', response)
