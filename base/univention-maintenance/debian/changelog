@@ -1,3 +1,9 @@
+univention-maintenance (9.0.0-4) unstable; urgency=medium
+
+  * Bug #43988: merge postinst
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 13:33:04 +0100
+
 univention-maintenance (9.0.0-3) unstable; urgency=medium
 
   * Bug #43988: enable required apache module authz_groupfile

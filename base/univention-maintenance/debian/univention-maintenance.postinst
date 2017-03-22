@@ -30,9 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 case "$1" in
-    configure)
+	configure)
 		if [ ! -e /var/www/statistik/index.htm ]; then
 			echo "<HTML>"												>>/var/www/statistik/index.htm
 			echo "<HEAD>"												>>/var/www/statistik/index.htm
@@ -52,20 +51,20 @@ case "$1" in
 								system/stats?yes \
 								system/stats/cron?'0,30 * * * * '
 		fi
-    ;;
+	;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
+	abort-upgrade|abort-remove|abort-deconfigure)
 
-    ;;
+	;;
 
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+	;;
 esac
 
 #DEBHELPER#
 
+a2enmod authz_groupfile
+
 exit 0
-
-
