@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (6.0.2-6) unstable; urgency=medium
+
+  * Bug #44007: prevent chrome from autofilling vnc_password with umc
+    credentials 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 16:27:03 +0100
+
 univention-virtual-machine-manager-daemon (6.0.2-5) unstable; urgency=medium
 
   * Bug #44007: Adjust grid height and footerFormater 
