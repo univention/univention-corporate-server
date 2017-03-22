@@ -1,3 +1,9 @@
+ucs-test (7.0.21-3) unstable; urgency=medium
+
+  * Bug #43898: Use the correct way of querying Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Mar 2017 14:08:10 +0100
+
 ucs-test (7.0.21-2) unstable; urgency=low
 
   * fix tag (Bug #43970)

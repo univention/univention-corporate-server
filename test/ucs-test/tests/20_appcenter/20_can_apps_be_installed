@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if apps are installable (except for apps/packages conflicting with installed apps)
-## tags: [basic, apptest,SKIP]
+## tags: [basic, apptest]
 ## roles-not: [basesystem]
 ## timeout: 7200
 ## exposure: safe
@@ -14,7 +14,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 
 from appcentertest import get_requested_apps
 
-from univention.appcenter.app import AppManager
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_stream
@@ -46,10 +46,10 @@ with UCSTestConfigRegistry():
 		register.call(apps=[app], register_task=['component'])
 		return retcode == 0
 
-	print 'Installed apps: %s' % [app for app in AppManager.get_all_locally_installed_apps()]
+	print 'Installed apps: %s' % [app for app in Apps().get_all_locally_installed_apps()]
 
 	failed = []
-	for app in AppManager.get_all_apps():
+	for app in Apps().get_all_apps():
 		if app.docker:
 			print 'Ignoring app %r: Docker App' % app
 			continue
