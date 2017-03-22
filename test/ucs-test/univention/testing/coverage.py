@@ -80,7 +80,7 @@ class Coverage(object):
 
 		subprocess.call(['coverage', '--version'])
 		subprocess.call(['coverage', 'combine'])
-		subprocess.call(['coverage', 'html'])
+		subprocess.call(['coverage', 'html', '-i', '--omit=handlers/ucstest,syntax.d/*,hooks.d/*'])
 		subprocess.call(['coverage', 'report'])
 		if os.path.exists(self.COVERAGE_PTH):
 			os.remove(self.COVERAGE_PTH)
