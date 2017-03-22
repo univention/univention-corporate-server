@@ -18,6 +18,7 @@
 					'umc/modules': 'management/modules'
 				}
 			};
+			umcConfig.forceLogin = true;
 			umcConfig.callback = function() {
 				require(["management", "umc/tools"], function(management, tools) {
 					management.start({

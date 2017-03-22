@@ -131,7 +131,11 @@ define([
 		},
 
 		onInitialLogin: function(callback) {
-			this._registerObserver('initialLogin', callback);
+			if (this._initialLoginDeferred && this._initialLoginDeferred.isFulfilled()) {
+				setTimeout(function() { callback(tools.status('username')); }, 0);
+			} else {
+				this._registerObserver('initialLogin', callback);
+			}
 		},
 
 		onLogout: function(callback) {
@@ -242,7 +246,7 @@ define([
 			return this.sessionTimeout(info);
 		},
 
-		start: function(username, password) {
+		start: function(username, password, withoutRedirect) {
 			//console.debug('starting auth');
 			if (username) {
 				tools.status('username', username);
@@ -254,15 +258,22 @@ define([
 				//console.debug('no active session found');
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var target = '/univention/login/';
-					if (!passiveLogin.isCanceled()) {
-						target = '/univention/saml/';
+					if (!withoutRedirect) {
+						this.redirectToLogin(!passiveLogin.isCanceled());
 					}
-					window.location = target + '?' + ioQuery.objectToQuery({ 'location': window.location.pathname + window.location.hash, username: tools.status('username') });
 				}));
 			}));
 
 			return this._waitForNextAuthentication();
+		},
+
+		redirectToLogin: function(saml) {
+			var target = saml ? '/univention/saml/' : '/univention/login/';
+			window.location = target + '?' + ioQuery.objectToQuery({
+				'location': window.location.pathname + window.location.hash,
+				username: tools.status('username'),
+				lang: i18nTools.defaultLang()
+			});
 		},
 
 		_waitForNextAuthentication: function() {

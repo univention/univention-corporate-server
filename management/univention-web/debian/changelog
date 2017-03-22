@@ -1,3 +1,9 @@
+univention-web (1.0.39-29) unstable; urgency=medium
+
+  * Bug #43985: automatic detection if login state
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 14:52:55 +0100
+
 univention-web (1.0.39-28) unstable; urgency=medium
 
   * Bug #43528: Add missing icon

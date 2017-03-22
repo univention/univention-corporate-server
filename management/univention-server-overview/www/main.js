@@ -52,7 +52,7 @@ define([
 
 		start: function() {
 			this.initLabels();
-			login.start().then(lang.hitch(this, 'init'));
+			login.onInitialLogin(lang.hitch(this, 'init'));
 		},
 
 		init: function() {

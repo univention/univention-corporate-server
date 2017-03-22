@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,dojo,*/
 
 define([
 	"dojo/_base/declare",
@@ -53,9 +53,8 @@ define([
 		local_mode: false,
 
 		start: function(props) {
-			tools.status('username', props.username || tools.getCookies().username);
-			tools.status('password', props.password);
-			login.start().then(lang.hitch(this, '_initWizard'));
+			login.onInitialLogin(lang.hitch(this, '_initWizard'));
+			login.start(props.username || tools.getCookies().username, props.password);
 		},
 
 		standby: function(standby) {
@@ -71,7 +70,7 @@ define([
 		},
 
 		_initWizard: function() {
-			this.local_mode = tools.status('username') == '__systemsetup__';
+			this.local_mode = tools.status('username') === '__systemsetup__';
 			var _Container = declare([ContainerWidget, Standby]);
 			this._container = new _Container({
 			}, 'content');
@@ -165,7 +164,7 @@ define([
 						if (!data.result) {
 							window.close();
 						}
-					}, function(error) {
+					}, function() {
 						window.close();
 					});
 				} else {
@@ -267,7 +266,7 @@ define([
 					newIpAddress = newIp6 || primIp6 || newIp4 || primIp4;
 				}
 			});
-			if (newIpAddress == currentIP) {
+			if (newIpAddress === currentIP) {
 				newIpAddress = null;
 			}
 			if (newIpAddress && !(/[.]/).test(newIpAddress)) {

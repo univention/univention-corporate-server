@@ -785,10 +785,6 @@ define([
 			//		* module, flavor: if module is given, the module is started immediately,
 			//		  flavor is optional.
 
-			// remove cookie from UCS 4.0 to prevent login problems
-			cookie('UMCSessionId', null, {path: '/', expires: -1});
-			cookie('UMCUsername', null, {path: '/', expires: -1});
-
 			// set 'overview' to true for backwards compatibility
 			tools.status('overview', true);
 			// username will be overriden by final authenticated username
@@ -807,15 +803,12 @@ define([
 				tools.status('autoStartFlavor', typeof props.flavor === "string" ? props.flavor : null);
 			}
 
-			login.start().then(lang.hitch(this, '_authenticated'));
+			login.onInitialLogin(lang.hitch(this, '_authenticated'));
 		},
 
-		_authenticated: function(username) {
-			// setup static GUI part
+		_authenticated: function() {
 			this.setupStaticGui();
-
-			// load the modules
-			return this.load();
+			this.load();
 		},
 
 		_tabContainer: null,

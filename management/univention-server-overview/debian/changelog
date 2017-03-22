@@ -1,3 +1,9 @@
+univention-server-overview (0.0.3-7) unstable; urgency=medium
+
+  * Bug #43985: automatic detection if login state
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 14:53:10 +0100
+
 univention-server-overview (0.0.3-6) unstable; urgency=medium
 
   * Bug #43595: Make while gallery tile clickable

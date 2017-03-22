@@ -1,5 +1,6 @@
 /*global availableLocales*/
 var umcConfig = {
+	autoLogin: false,
 	deps: [
 		"login/dialog",
 		"dojo/_base/array",

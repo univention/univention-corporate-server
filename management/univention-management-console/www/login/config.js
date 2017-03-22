@@ -1,5 +1,6 @@
 /* global getQuery*/
 var umcConfig = {
+	autoLogin: false,
 	deps: [
 		"dojo/query",
 		"login",

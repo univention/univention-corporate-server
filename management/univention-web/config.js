@@ -26,6 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/* global require */
 function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
 	// parse the URI query string
 	var query = window.location.search.substring(1);
@@ -96,6 +97,8 @@ if (typeof umcConfig === 'undefined') {
 }
 umcConfig = mixin({
 	allowLanguageSwitch: true,
+	forceLogin: false,
+	autoLogin: true,
 	loadMenu: true,
 	loadHooks: true,
 	deps: [],
@@ -144,6 +147,9 @@ dojoConfig = mixin({
 		}
 		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
 		parser.parse();
+		if (umcConfig.autoLogin) {
+			login.start(undefined, undefined, !umcConfig.forceLogin);
+		}
 		umcConfig.callback.apply(umcConfig, customDeps);
 	}
 }, _customDojoConfig);
