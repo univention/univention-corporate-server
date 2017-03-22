@@ -50,7 +50,7 @@ define([
 
 		sortIndex: null,
 
-		style: 'width: 100%; height: 200px;',
+		style: 'width: 100%;',
 
 		postMixInProperties: function() {
 			lang.mixin(this, {
@@ -113,6 +113,10 @@ define([
 				}]
 			});
 			this.inherited(arguments);
+		},
+
+		footerFormatter: function() {
+			return '';
 		},
 
 		_macAddressFormatter: function(mac) {
