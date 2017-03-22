@@ -117,7 +117,7 @@ property_descriptions = {
 		syntax=univention.admin.syntax.Portals,
 		multivalue=True,
 		options=[],
-		required=True,
+		required=False,
 		may_change=True,
 		identifies=False
 	),

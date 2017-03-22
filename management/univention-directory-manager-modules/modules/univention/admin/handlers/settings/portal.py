@@ -222,12 +222,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_remove(self):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
-			try:
-				obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
-				obj.modify()
-			except univention.admin.uexceptions.valueRequired:
-				# no portal is referenced anymore. remove the complete entry
-				obj.remove()
+			obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
+			obj.modify()
 
 	def _ldap_post_move(self, olddn):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [olddn])):

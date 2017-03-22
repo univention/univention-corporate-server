@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.16-1) unstable; urgency=medium
+
+  * Bug #43928: don't remove portal_entry, only dereference when removing
+  	portal
+
+ -- Florian Best <best@univention.de>  Wed, 22 Mar 2017 13:15:13 +0100
+
 univention-directory-manager-modules (12.0.15-2) unstable; urgency=medium
 
   * Bug #42235: Integrate portal logo and CSS background into UDM object
