@@ -1,3 +1,12 @@
+univention-system-setup (10.0.10-1) unstable; urgency=medium
+
+  * Bug #43915: Create /dev/shm if it is missing:
+    POSIX shared memory objects are created (via shm_open) under /dev/shm or /run
+    but /run is only writeable by root, therefore create /dev/shm as tmpfs with
+    world-writeable permissions if it is missing
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 22 Mar 2017 14:40:58 +0100
+
 univention-system-setup (10.0.9-11) unstable; urgency=medium
 
   * Bug #43973: use toggle selection mode for software selection 
