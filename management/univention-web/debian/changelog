@@ -1,3 +1,9 @@
+univention-web (1.0.39-27) unstable; urgency=medium
+
+  * Bug #43528: Fix small gallery names beeing slightly cut off at the bottom
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 22 Mar 2017 14:14:15 +0100
+
 univention-web (1.0.39-26) unstable; urgency=medium
 
   * Bug #44004: Fix scroll issue in modules with multiple pages
