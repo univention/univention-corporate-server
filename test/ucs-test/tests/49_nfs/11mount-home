@@ -2,7 +2,7 @@
 ## desc: Login user with $HOME on NFS share
 ## roles: [domaincontroller_backup, domaincontroller_slave, memberserver]
 ## exposure: dangerous
-## tags: SKIP
+## tags: [SKIP]
 ## packages:
 ##   - univention-home-mounter
 

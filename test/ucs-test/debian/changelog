@@ -1,3 +1,9 @@
+ucs-test (7.0.21-2) unstable; urgency=low
+
+  * fix tag (Bug #43970)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 22 Mar 2017 13:39:25 +0100
+
 ucs-test (7.0.21-1) unstable; urgency=low
 
   * Bug #43812: Merge ucs-test changes from 4.1-4
