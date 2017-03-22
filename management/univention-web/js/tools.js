@@ -1315,7 +1315,7 @@ define([
 					var css = lang.replace(
 						'background: no-repeat;' +
 						(size === 'scalable' ? '' : 'width: {s}px; height: {s}px;') +
-						'background-image: url("{url}");' +
+						'background-image: url("{url}") !important;' +
 						cssStyle,
 						values);
 					styles.insertCssRule('.' + iconClass, css);

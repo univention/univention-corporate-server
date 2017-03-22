@@ -75,16 +75,17 @@ define([
 				icon: iconName || ''
 			});
 		},
-		
+
 		renderRow: function(item) {
 			var renderInfo = this.getRenderInfo(item);
 			return this.getDomForRenderRow(renderInfo);
 		},
 
 		getRenderInfo: function(item) {
+			var iconClass = item.logo_name ? this.getIconClass(item.logo_name) : '';
 			return {
 				itemId: item.id,
-				iconClass: this.getIconClass(item.logo_name),
+				iconClass: iconClass,
 				itemName: this.getItemName(item),
 				itemSubName: this.getMore(item),
 				itemHoverContent: this.getItemDescription(item),

@@ -1,3 +1,9 @@
+univention-web (1.0.39-25) unstable; urgency=medium
+
+  * Bug #43528: Add default icon in AppGallery + adjust icon margin
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 12:56:18 +0100
+
 univention-web (1.0.39-24) unstable; urgency=medium
 
   * Bug #43990: User tile view: Whole tile opens user detail page 
