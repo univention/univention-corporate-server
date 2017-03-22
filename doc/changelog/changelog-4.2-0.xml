@@ -312,6 +312,10 @@
 					<u:bug>43458</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The status message in the App details Page has been improved and
+					shows the installed and candidate version (<u:bug>43905</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The App Center can now install certain Docker Apps from other UCS
 					versions (<u:bug>43496</u:bug>, <u:bug>43662</u:bug>).
 				</simpara></listitem>
