@@ -150,11 +150,20 @@ define([
 				}
 			}];
 
+			var defaultAction = function(partitionName, partitionInfos) {
+				if (partitionInfos[0].inUse) {
+					return "edit";
+				} else {
+					return "activate";
+				}
+			};
+
 			this._grid = new Grid({
 				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
+				defaultAction: defaultAction,
 				query: {
 					dummy: 'dummy'
 				}

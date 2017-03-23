@@ -129,9 +129,8 @@ define([
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
 				isMultiAction: false,
-				callback: lang.hitch(this, function(data) {
-					var item = this._grid.getItem(data);
-					this.onShowDetailPage(item);
+				callback: lang.hitch(this, function(ids, items) {
+					this.onShowDetailPage(items[0]);
 				})
 			}, {
 				name: 'remove',
