@@ -59,28 +59,6 @@ if [ "$1" = "configure" ]; then
 				ucr set appcenter/docker=enabled
 			fi
 		fi
-		if dpkg --compare-versions "$2" lt 2.0.0-9; then
-			if pgrep -F /var/run/docker.pid >/dev/null 2>&1; then
-				restart=1
-			fi
-			service docker stop || true
-
-			## start docker daemon (manually w/o systemd)
-			## to make it generate config.v2.json
-			. /etc/default/docker	## load DOCKER_OPTS
-			/usr/bin/dockerd -H unix:///var/run/docker.sock $DOCKER_OPTS &
-			while ! docker ps >/dev/null 2>&1; do
-				sleep 1;
-			done;
-			pkill -F /var/run/docker.pid
-
-			## Now migrate volumes to config.v2.json
-			/usr/lib/univention-docker/scripts/migrate_container_MountPoints_to_v2_config
-
-			if [ "$restart" = 1 ]; then
-				service docker start || true
-			fi
-		fi
 	fi
 fi
 

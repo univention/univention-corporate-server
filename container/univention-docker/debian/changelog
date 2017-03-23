@@ -1,3 +1,9 @@
+univention-docker (2.0.1-3) unstable; urgency=medium
+
+  * Bug #44006: upgrade code moved to postup
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Mar 2017 16:02:36 +0100
+
 univention-docker (2.0.1-2) unstable; urgency=medium
 
   * Fixed docker opts UCR description from last commit (Bug #44033)
