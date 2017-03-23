@@ -1,7 +1,7 @@
 univention-quota (11.0.0-5) unstable; urgency=medium
 
   * Bug #43986: fix js error
-  * Bug #43507: fix default action for partitions wit active quota
+  * Bug #43507: fix default action for partitions with active quota
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 10:10:53 +0100
 
