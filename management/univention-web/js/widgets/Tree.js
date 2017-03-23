@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, require*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -44,9 +44,10 @@ define([
 	"dstore/Memory",
 	"dstore/Trackable",
 	"dstore/Tree",
+	"umc/tools",
 	"./ContainerWidget",
 	"./_RegisterOnShowMixin"
-], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
+], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, tools, ContainerWidget, _RegisterOnShowMixin) {
 
 	var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
 	var MemoryTree = declare([Memory, Trackable, TreeDstore]);
@@ -72,9 +73,7 @@ define([
 				columns: {
 					label: {
 						renderExpando: true,
-						formatter: lang.hitch(this, function(value, object) {
-							return this.getRowIconHTML(object.icon) + value;
-						})
+						formatter: lang.hitch(this, 'columnsFormatter')
 					}
 				}
 			}, {}));
@@ -87,6 +86,14 @@ define([
 				};
 				this._onNodeMouseEnter(legacyObject);
 			}));
+		},
+
+		columnsFormatter: function(value, object) {
+			return this.getRowIconHTML(object) + value;
+		},
+
+		getIconClass: function(object) {
+			return tools.getIconClass(object.icon);
 		},
 
 		_getStore: function() {
@@ -176,10 +183,9 @@ define([
 			return this.shouldExpandAndSelect(row);
 		},
 
-		getRowIconHTML: function(icon) {
-			var html = lang.replace('<img src="{url}/umc/icons/16x16/{icon}.png" role="presentation" class="dgrid-tree-icon"/>', {
-				icon: icon,
-				url: require.toUrl('dijit/themes')
+		getRowIconHTML: function(object) {
+			var html = lang.replace('<span role="presentation" class="dgrid-tree-icon dijitInline {iconClass}"></span>', {
+				iconClass: this.getIconClass(object)
 			});
 			return html;
 		},

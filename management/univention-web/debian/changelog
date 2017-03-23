@@ -1,3 +1,9 @@
+univention-web (1.0.40-5) unstable; urgency=medium
+
+  * Bug #44007: fix tree icons 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 11:48:35 +0100
+
 univention-web (1.0.40-4) unstable; urgency=medium
 
   * Bug #43986: fix getItem in grid (2)
