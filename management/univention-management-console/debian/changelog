@@ -1,3 +1,9 @@
+univention-management-console (9.0.72-1) unstable; urgency=medium
+
+  * Bug #44046: fix check of join script version number on new installations
+
+ -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 15:47:13 +0100
+
 univention-management-console (9.0.71-1) unstable; urgency=medium
 
   * Bug #42228: don't proxy pass /univention/management/modules/ to prevent
