@@ -57,20 +57,25 @@ def write_po_file(ucrv_assingments, file_name):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-s',
-						'--source',
-						type=str,
-						help="SVN checkout to search for overview page translations")
-	parser.add_argument('-l',
-						'--language_code',
-						type=str,
-						help="two char language code, e.g. 'fr'")
+	parser.add_argument(
+		'-s',
+		'--source',
+		type=str,
+		help="SVN checkout to search for overview page translations",
+		required=True)
+	parser.add_argument(
+		'-l',
+		'--language_code',
+		type=str,
+		help="two char language code, e.g. 'fr'",
+		required=True)
 	args = parser.parse_args()
-	cmd = ['grep',
-			'--recursive',
-			'--no-filename',
-			'overview/.*\(link\|description\|label\)\(=\|\?\)',
-			args.source]
+	cmd = [
+		'grep',
+		'--recursive',
+		'--no-filename',
+		'overview/.*\(link\|description\|label\)\(=\|\?\)',
+		args.source]
 	cmd.extend(['--exclude-dir={}'.format(dname) for dname in DIR_BLACKLIST])
 	try:
 		out = subprocess.check_output(cmd)
