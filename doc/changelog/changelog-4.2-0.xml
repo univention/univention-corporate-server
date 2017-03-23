@@ -830,6 +830,16 @@
 				<listitem><simpara>
 					Docker has been updated to 1.12 (<u:bug>42282</u:bug>, <u:bug>43449</u:bug>, <u:bug>44006</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>docker/daemon/default/parameter/.*</envar> has been added to configure additional
+					parameter for the Docker daemon (<u:bug>44033</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The parameter <option>live-restore</option> is now used by default (<u:bug>44033</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Docker daemon is now started through <application>systemd</application> (<u:bug>44033</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
