@@ -1,3 +1,9 @@
+univention-web (1.0.40-11) unstable; urgency=medium
+
+  * Bug #43462: Catch argument errors for translation to avoid UMC errors
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Mar 2017 00:30:39 +0100
+
 univention-web (1.0.40-10) unstable; urgency=medium
 
   * Bug #44050: Close menu when a menu item is clicked and

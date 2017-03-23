@@ -172,7 +172,13 @@ define([
 				}
 
 				// call sprintf
-				return sprintf.apply(null, args);
+				var result = msg;
+				try {
+					result = sprintf.apply(null, args);
+				} catch(err) {
+					console.warn(err);
+				}
+				return result;
 			};
 
 			// Arguments: translate.ngettext(String, String, number, mixed)
