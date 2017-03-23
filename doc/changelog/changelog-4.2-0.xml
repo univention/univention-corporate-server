@@ -842,7 +842,7 @@
 					The &ucsUDL; is restarted after the &ucsUCRV; <envar>samba4/role</envar> gets set in the joinscript (<u:bug>43501</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Samba has been updated to version <literal>4.6.0</literal> (<u:bug>40661</u:bug>, <u:bug>42045</u:bug>).
+					Samba has been updated to version <literal>4.6.1</literal> (<u:bug>40661</u:bug>, <u:bug>42045</u:bug>, <u:bug>43681</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<package>univention-samba4</package> has been adjusted
