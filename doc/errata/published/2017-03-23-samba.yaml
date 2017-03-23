@@ -10,3 +10,5 @@ desc: |
 bug: [43679]
 cve:
  - CVE-2017-2619
+erratum: 31
+announced: 2017-03-23
