@@ -1041,7 +1041,7 @@ class Application(object):
 				break
 		else:
 			required_ucs_version = self.get('requireducsversion')
-			if required_ucs_version is None:
+			if not required_ucs_version:
 				return True
 		major, minor = ucr.get('version/version').split('.', 1)
 		patchlevel = ucr.get('version/patchlevel')
