@@ -1,3 +1,9 @@
+univention-portal (1.0.10-9) unstable; urgency=medium
+
+  * Bug #44048: Create all portal objects at once on DC master
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 22:58:44 +0100
+
 univention-portal (1.0.10-8) unstable; urgency=medium
 
   * Bug #42235: Make sure title does not wrap below logo
