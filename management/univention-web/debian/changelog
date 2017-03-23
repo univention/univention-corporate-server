@@ -1,3 +1,9 @@
+univention-web (1.0.40-9) unstable; urgency=medium
+
+  * Bug #43977: Simplify meta data handling for tools.status()
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 19:09:26 +0100
+
 univention-web (1.0.40-8) unstable; urgency=medium
 
   * Bug #43977: Move meta.json into UMC server + adjust handling

@@ -109,7 +109,7 @@ define([
 			// create a new tracker instance
 			piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
 			piwikTracker.setCustomVariable(1, 'ucsVersion', tools.status('ucsVersion'), 'visit');
-			piwikTracker.setCustomVariable(2, 'systemUUID', tools.status('uuidSystem'), 'visit');
+			piwikTracker.setCustomVariable(2, 'systemUUID', tools.status('uuid/system') || 'unknown', 'visit');
 			piwikTracker.enableLinkTracking();
 			piwikSendTimer.onTick = sendOldestAction;
 			piwikSendTimer.start();

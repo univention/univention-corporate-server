@@ -76,7 +76,8 @@ define([
 
 		// automatically read in license information and re-read meta data upon first login
 		login.onInitialLogin(function() {
-			tools.loadAllStatusData().then(function() {
+			// after login, the meta data contains additional information
+			tools.loadMetaData().then(function() {
 				tools.loadLicenseDataDeferred.resolve();
 			});
 		});
@@ -116,30 +117,6 @@ define([
 				deferred.resolve(meta);
 			}));
 			return deferred.promise;
-		},
-
-		loadLicenseData: function() {
-			// loading the license data is done automatically on the initial login...
-			// calling this function is only necessary for reloading data,
-			// e.g., if you know that it must have changed
-			return tools.ucr([
-				'license/base',
-				'uuid/license',
-				'uuid/system'
-			]).then(lang.hitch(this, function(ucr) {
-				// save the ucr variables in a local variable
-				lang.mixin(this._status, ucr);
-				return this._status;
-			}));
-		},
-
-		loadAllStatusData: function() {
-			// loading all data is done automatically via config.js and on the initial login...
-			// calling this function is only necessary for reloading data,
-			// e.g., if you know that it must have changed
-			return all([this._loadMetaData(), this._loadLicenseData()], lang.hitch(this, function() {
-				return this._status;
-			}));
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
