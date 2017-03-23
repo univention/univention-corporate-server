@@ -43,7 +43,9 @@ def get_requested_apps():
 				if app:
 					ret.append(app)
 				else:
-					utils.fail('Error finding %s' % (line,))
+					pass
+					#utils.fail('Error finding %s' % (line,))
 	except EnvironmentError:
-		utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
+		pass
+		#utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
 	return ret
