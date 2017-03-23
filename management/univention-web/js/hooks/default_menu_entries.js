@@ -67,10 +67,10 @@ define([
 			id: 'umcMenuCertificates'
 		});
 
-		var masterURL = '//' + tools.status('ldap_master');
+		var masterURL = '//' + tools.status('ldap/master');
 		var linkRootCa = masterURL + '/ucs-root-ca.crt';
 		var linkRevocList = masterURL + '/ucsCA.crl';
-		var currentRole = tools.status('server_role');
+		var currentRole = tools.status('server/role');
 		if (currentRole == "domaincontroller_master" || currentRole == "domaincontroller_backup") {
 			linkRootCa = '/ucs-root-ca.crt';
 			linkRevocList = '/ucsCA.crl';

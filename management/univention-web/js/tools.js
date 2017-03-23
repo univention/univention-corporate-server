@@ -74,9 +74,9 @@ define([
 		TextArea = _TextArea;
 		TextBox = _TextBox;
 
-		// automatically read in license information upon first login
+		// automatically read in license information and re-read meta data upon first login
 		login.onInitialLogin(function() {
-			tools.loadLicenseData().then(function() {
+			tools.loadAllStatusData().then(function() {
 				tools.loadLicenseDataDeferred.resolve();
 			});
 		});
@@ -111,8 +111,8 @@ define([
 
 			// use a time stamp as query string to make sure that we reload the file
 			var timestamp = (new Date()).getTime();
-			require(['umc/json!/univention/meta.json?' + timestamp], lang.hitch(this, function(meta) {
-				lang.mixin(this._status, meta);
+			require(['umc/json!/univention/get/meta?' + timestamp], lang.hitch(this, function(meta) {
+				lang.mixin(this._status, meta.result);
 				deferred.resolve(meta);
 			}));
 			return deferred.promise;

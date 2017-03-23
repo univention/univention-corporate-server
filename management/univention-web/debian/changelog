@@ -1,3 +1,9 @@
+univention-web (1.0.40-8) unstable; urgency=medium
+
+  * Bug #43977: Move meta.json into UMC server + adjust handling
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 18:51:04 +0100
+
 univention-web (1.0.40-7) unstable; urgency=medium
 
   * Bug #44007: remember grid scroll position on grid update 
