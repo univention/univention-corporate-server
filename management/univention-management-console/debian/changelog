@@ -1,3 +1,9 @@
+univention-management-console (9.0.72-4) unstable; urgency=medium
+
+  * Bug #43977: Fix syntax error
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 19:39:19 +0100
+
 univention-management-console (9.0.72-3) unstable; urgency=medium
 
   * Bug #43977: Move UUID and license base into get/meta command

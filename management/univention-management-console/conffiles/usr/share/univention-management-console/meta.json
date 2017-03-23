@@ -94,7 +94,7 @@ def is_piwik_disabled():
 	return not piwik_allowed
 
 def get_session_timeout():
-	try
+	try:
 		return int(configRegistry.get('umc/http/session/timeout', '300'))
 	except ValueError:
 		return 300
