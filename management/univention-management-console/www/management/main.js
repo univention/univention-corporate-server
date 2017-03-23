@@ -1059,11 +1059,6 @@ define([
 		},
 
 		onLoaded: function() {
-			// updated status information from ucr variables
-			tools.status('sessionTimeout', parseInt(tools.status('umc/http/session/timeout'), 10) || tools.status('sessionTimeout'));
-			tools.status('feedbackAddress', tools.status('umc/web/feedback/mail') || tools.status('feedbackAddress'));
-			tools.status('feedbackSubject', tools.status('umc/web/feedback/description') || tools.status('feedbackSubject'));
-
 			var launchableModules = this._getLaunchableModules();
 			tools.status('singleModule', launchableModules.length < 2);
 

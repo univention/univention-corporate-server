@@ -122,7 +122,7 @@ define([
 		},
 
 		onLogin: function(callback) {
-			this._registerObserver('initialLogin', callback);
+			this.onInitialLogin(callback);
 			this._registerObserver('relogin', callback);
 		},
 

@@ -1,3 +1,9 @@
+univention-management-console (9.0.72-2) unstable; urgency=medium
+
+  * Bug #43977: Handle meta info via UMC server + correct login.onLogin()
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 18:52:54 +0100
+
 univention-management-console (9.0.72-1) unstable; urgency=medium
 
   * Bug #44046: fix check of join script version number on new installations

@@ -256,6 +256,7 @@ class ProcessorBase(Base):
 		for arg in msg.arguments:
 			method = {
 				'ucr': self.handle_request_get_ucr,
+				'meta': self.handle_request_get_meta,
 				'info': self.handle_request_get_info,
 				'modules/list': self.handle_request_get_modules,
 				'modules': self.handle_request_get_modules,
@@ -269,6 +270,16 @@ class ProcessorBase(Base):
 				self.finished(msg.id, method(msg))
 				return
 		raise NotFound()
+
+	META_JSON_PATH = '/usr/share/univention-management-console/meta.json'
+
+	def handle_request_get_meta(self, request):
+		try:
+			with open(self.META_JSON_PATH) as fd:
+				return json.load(fd)
+		except (EnvironmentError, ValueError) as exc:
+			CORE.error('meta.json is not available: %s' % (exc,))
+			return {}
 
 	def handle_request_set(self, msg):
 		for key, value in msg.options.items():
@@ -720,6 +731,57 @@ class Processor(ProcessorBase):
 			else:
 				result[value] = ucr.get(value)
 		return result
+
+	META_UCR_VARS = [
+		'domainname',
+		'hostname',
+		'ldap/master',
+		'server/role',
+		'ssl/validity/host',
+		'ssl/validity/root',
+		'ssl/validity/warning',
+		'umc/web/favorites/default',
+		'umc/web/piwik',
+		'update/available',
+		'update/reboot/required',
+		'version/erratalevel',
+		'version/patchlevel',
+		'version/releasename',
+		'version/version',
+	]
+
+	def handle_request_get_meta(self, request):
+		def _get_ucs_version():
+			try:
+				return '{version/version}-{version/patchlevel} errata{version/erratalevel} ({version/releasename})'.format(**ucr)
+			except KeyError:
+				pass
+
+		def _has_system_uuid():
+			fake_uuid = '00000000-0000-0000-0000-000000000000'
+			return ucr.get('uuid/system', fake_uuid) != fake_uuid
+
+		def _has_free_license():
+			return ucr.get('license/base') in ('UCS Core Edition', 'Free for personal use edition')
+
+		def _get_fqdn():
+			return '{hostname}.{domainname}'.format(**ucr)
+
+		meta_data = super(Processor, self).handle_request_get_meta(request)
+
+		ucr.load()
+		meta_data.update(dict(
+			ucsVersion=_get_ucs_version(),
+			ucs_version=_get_ucs_version(),
+			has_system_uuid=_has_system_uuid(),
+			has_free_license=_has_free_license(),
+			hasFreeLicense=_has_free_license(),
+			has_license_base=bool(ucr.get('license/base')),
+			fqdn=_get_fqdn(),
+			appliance_name=ucr.get('umc/web/appliance/name'),
+		))
+		meta_data.update([(i, ucr.get(i)) for i in self.META_UCR_VARS])
+		return meta_data
 
 	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
 

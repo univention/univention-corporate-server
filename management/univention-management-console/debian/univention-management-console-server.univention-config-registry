@@ -46,3 +46,16 @@ Type: file
 File: etc/ldap/sasl2/slapd.conf
 Variables: umc/saml/grace_time
 Variables: umc/saml/trusted/sp/.*
+
+Type: file
+File: usr/share/univention-management-console/meta.json
+Variables: domainname
+Variables: interfaces/
+Variables: locale
+Variables: server/amazon
+Variables: system/setup/showloginmessage
+Variables: umc/http/session/timeout
+Variables: umc/web/.*
+Variables: umc/server/upload/max
+Variables: license/base
+Variables: uuid/system

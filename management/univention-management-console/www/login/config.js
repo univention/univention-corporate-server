@@ -6,12 +6,11 @@ var umcConfig = {
 		"login",
 		"login/dialog",
 		"umc/tools",
-		"umc/json!/univention/meta.json",
 		"umc/i18n!login",
 		"dojo/NodeList-html"
 	],
-	callback: function(query, login, dialog, tools, metaData, _) {
-		query('h1').html(_('Login at %(domainname)s', metaData));
+	callback: function(query, login, dialog, tools, _) {
+		query('h1').html(_('Login at %(domainname)s', tools.status()));
 		tools.status('username', getQuery('username') || tools.getCookies().username);
 		tools.status('password', getQuery('password'));
 		login.renderLoginDialog();
