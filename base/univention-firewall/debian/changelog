@@ -1,3 +1,10 @@
+univention-firewall (9.0.1-1) unstable; urgency=medium
+
+  * 20_docker.sh: Use 'pidof dockerd' instead of systemctl since the
+    script is executed through systemd (Bug #44033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Mar 2017 17:44:32 +0100
+
 univention-firewall (9.0.0-11) unstable; urgency=low
 
   * Bug #42351: add additional ucslint overrides

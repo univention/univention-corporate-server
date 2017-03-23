@@ -64,7 +64,7 @@ nat_container_rule() {
 		done
 }
 
-if [ -x /usr/bin/docker ] && [ -z "$(ucr get docker/container/uuid)" ] && systemctl -q is-active docker.service; then
+if [ -x /usr/bin/docker ] && [ -z "$(ucr get docker/container/uuid)" ] && pidof dockerd >/dev/null; then
 	# this is a docker host
 	nat_core_rules
 
