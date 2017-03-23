@@ -32,9 +32,9 @@ define([
 	"dojo/_base/declare",
 	"dojo/dom",
 	"dojox/html/entities",
-	"umc/json!/univention/meta.json",
+	"umc/tools",
 	"umc/i18n!initialsetup"
-], function(declare, dom, entities, meta, _) {
+], function(declare, dom, entities, tools, _) {
 	return {
 		start: function() {
 			this.initLabels();
@@ -53,7 +53,7 @@ define([
 				_("Set a password with <i>passwd</i>, e.g., by issuing the following command:") +
 				"<pre>" +
 					_("ssh -ti &lt;path/to/privatekey&gt; root@%(serveraddress)s passwd", {
-						serveraddress: meta.serveraddress
+						serveraddress: tools.status('serveraddress')
 					}) +
 				"</pre></p>";
 			var contentP3 = "<p>" + _("If a password for <i>root</i> has been set, <a href='/univention/setup/?username=root'>start the setup wizard</a>.") + "</p>";
