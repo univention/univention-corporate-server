@@ -1,3 +1,9 @@
+univention-portal (1.0.10-5) unstable; urgency=medium
+
+  * Bug #42235: Make sure that portal background/logo images are not cached
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 12:48:30 +0100
+
 univention-portal (1.0.10-4) unstable; urgency=medium
 
   * Bug #43670: Added missing call to u-install-config-registry in debian/rules
