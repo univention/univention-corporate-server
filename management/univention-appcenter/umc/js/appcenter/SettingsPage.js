@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -48,6 +48,8 @@ define([
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null,
 		_query: { table: 'components' },
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 		helpText: _("This module shows all repositories settings defined for this system."),
 		fullWidth: true,
 
@@ -206,7 +208,7 @@ define([
 						lang.hitch(this, function(key, rowIndex) {
 							var grid = this._grid;
 							var tmp = grid.getRowValues(rowIndex);
-							if ((typeof(tmp.description) == 'string') && (tmp.description !== ''))
+							if ((typeof(tmp.description) === 'string') && (tmp.description !== ''))
 							{
 								return lang.replace('{name} ({description})', tmp);
 							}

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define,require*/
 
 define([
 	"dojo/_base/declare",
@@ -73,9 +73,9 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			if (this.moduleFlavor == 'components') {
+			if (this.moduleFlavor === 'components') {
 				this._renderComponents();
-			} else if (this.moduleFlavor == 'packages') {
+			} else if (this.moduleFlavor === 'packages') {
 				this._renderPackages();
 			} else {
 				this._renderAppcenter();
@@ -99,7 +99,7 @@ define([
 
 		_setModuleStateAttr: function(_state) {
 			var currentState = this.get('moduleState');
-			if (this._created && _state == this.moduleState || currentState == _state) {
+			if (this._created && _state === this.moduleState || currentState === _state) {
 				this._set('moduleState', _state);
 				return;
 			}
@@ -109,7 +109,7 @@ define([
 				}
 			}
 			else {
-				state = _state.split(':');
+				var state = _state.split(':');
 				if (state[0] === 'id' ) {
 					var app = {id: state[1]};
 					if (this._appCenterPage._applications && this._appCenterPage._applications.length) {
@@ -137,9 +137,9 @@ define([
 		_getModuleStateAttr: function() {
 			var state = [];
 			var _selectedWidget = lang.getObject('selectedChildWidget', false, this);
-			if (this.moduleFlavor == 'appcenter') {
+			if (this.moduleFlavor === 'appcenter') {
 				var _app = lang.getObject('selectedChildWidget.app', false, this);
-				if (_selectedWidget == this._appCenterPage) {
+				if (_selectedWidget === this._appCenterPage) {
 					state = ['category', this._appCenterPage._searchSidebar.get('category')];
 				} else if (_app) {
 					state = ['id', _app.id];
@@ -347,7 +347,7 @@ define([
 							if (values.installable) {
 								pkgs = pkgs.concat(values.defaultpackages);
 							}
-							if (id == last_id) {
+							if (id === last_id) {
 								deferred.resolve();
 							}
 						});

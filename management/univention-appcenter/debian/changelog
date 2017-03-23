@@ -1,3 +1,9 @@
+univention-appcenter (6.0.4-1) unstable; urgency=medium
+
+  * Bug #43991: fix and siplify the encoding of HTML entities
+
+ -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 15:02:46 +0100
+
 univention-appcenter (6.0.3-24) unstable; urgency=medium
 
   * Bug #43901: Fix version comparison for empty RequiredUCSVersion

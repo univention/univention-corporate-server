@@ -62,6 +62,8 @@ define([
 		_sendSearchStringDeferred: null,
 
 		title: _("App management"),
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 		//helpText: _("Install or remove applications on this or another UCS system."),
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
@@ -107,7 +109,7 @@ define([
 					return this.updateApplications();
 				} else {
 					var msg = this.appCenterInformation;
-					if (appcenterSeen == 1) {
+					if (appcenterSeen === 1) {
 						// show an additional hint that the user should read this information again
 						msg = this.appCenterInformationReadAgain + this.appCenterInformation;
 					}
@@ -279,16 +281,16 @@ define([
 
 			var _sendSearchString = function(searchString) {
 				tools.umcpCommand('appcenter/track', {action: 'search', value: searchString});
-			}
+			};
 
 			if (this._sendSearchStringDeferred && !this._sendSearchStringDeferred.isFulfilled()) {
 				// cancel Deferred as a new keypress event has been send before the timeout
-				this._sendSearchStringDeferred.cancel()
+				this._sendSearchStringDeferred.cancel();
 			}
 
 			// start new timeout after which the search string is send to the backend
 			var searchPattern = lang.trim(this._searchSidebar.get('value'));
-			this._sendSearchStringDeferred = tools.defer(lang.hitch(this, _sendSearchString, searchPattern), 1000).then(null, function() {})
+			this._sendSearchStringDeferred = tools.defer(lang.hitch(this, _sendSearchString, searchPattern), 1000).then(null, function() {});
 		},
 
 		filterApplications: function() {
@@ -344,7 +346,7 @@ define([
 			});
 		},
 
-		onShowApp: function(app) {
+		onShowApp: function(/*app*/) {
 		}
 	});
 });

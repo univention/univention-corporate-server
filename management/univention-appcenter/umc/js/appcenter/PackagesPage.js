@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
@@ -50,6 +50,8 @@ define([
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null,
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 		helpText: _("On this page, you see all software packages available on your system, and you can install, uninstall or update them."),
 		fullWidth: true,
 
@@ -200,7 +202,7 @@ define([
 					txt += '<table>\n';
 					var width = 550;	// mimic the default of dialog.confirm
 					array.forEach(this._detail_field_order(), lang.hitch(this, function(f) {
-						if (typeof(data.result[f]) != 'undefined') {
+						if (typeof(data.result[f]) !== 'undefined') {
 							var fl = this._detail_field_label(f);
 							if (fl) {
 								txt += "<tr>\n";
@@ -214,7 +216,7 @@ define([
 									// cut text at 'maxlen' chars, optionally adding a hint.
 									dfv = dfv.substr(0, maxlen) + _("...<br>[%d more chars]", dfv.length-maxlen);
 								}
-								if (f == 'description') {
+								if (f === 'description') {
 									// adjust width according to the length of the 'description' field.
 									width = 500 + (dfv.length / 10);
 								}

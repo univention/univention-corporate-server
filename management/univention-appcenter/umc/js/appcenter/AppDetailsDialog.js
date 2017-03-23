@@ -55,6 +55,8 @@ define([
 		_continueDeferred: null,
 		_configForm: null,
 		_confirmForm: null,
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 
 		title: _('App management'),
 
@@ -128,7 +130,7 @@ define([
 
 		showConfiguration: function(funcName) {
 			var widgets = [];
-			if (funcName == 'install') {
+			if (funcName === 'install') {
 				var addWidgets = function(conf, disabled, _widgets) {
 					array.forEach(conf, function(variable) {
 						var type = TextBox;
@@ -137,7 +139,7 @@ define([
 						if (variable.type === 'bool') {
 							type = CheckBox;
 							value = tools.isTrue(value);
-						} else if (variable.type == 'list') {
+						} else if (variable.type === 'list') {
 							type = ComboBox;
 							additionalParams.staticValues = [];
 							array.forEach(variable.values, function(val, i) {
@@ -315,7 +317,7 @@ define([
 			}));
 		},
 
-		onBack: function(continued) {
+		onBack: function(/*continued*/) {
 			// make sure that the user does not want to continue
 			//   (could be called by a requirement.solution(), not by the buttons)
 			// if this is called by "Continue" button, it is resolved() anyway

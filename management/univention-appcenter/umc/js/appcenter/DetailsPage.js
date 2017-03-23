@@ -41,6 +41,8 @@ define([
 	return declare("umc.modules.appcenter.DetailsPage", [ Page ], {
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);

@@ -80,6 +80,9 @@ define([
 		'class': 'umcAppDetailsPage',
 		standby: null,
 
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
+
 		title: _("App management"),
 		moduleTitle: null,
 		noFooter: true,
@@ -898,32 +901,32 @@ define([
 				switch(func) {
 				case 'install':
 					actionLabel = _('Install');
-					title = _('Installation of %s', entities.encode(this.app.name));
-					text = _('Please confirm to install the application %s on this host.', entities.encode(this.app.name));
-					progressMessage = _('Installing %s on this host', entities.encode(this.app.name));
+					title = _('Installation of %s', this.app.name);
+					text = _('Please confirm to install the application %s on this host.', this.app.name);
+					progressMessage = _('Installing %s on this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
-						progressMessage = _('Installing %(name)s on host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				case 'uninstall':
 					actionLabel = _('Uninstall');
-					title = _('Removal of %s', entities.encode(this.app.name));
-					text = _('Please confirm to uninstall the application %s on this host.', entities.encode(this.app.name));
-					progressMessage = _('Uninstalling %s from this host', entities.encode(this.app.name));
+					title = _('Removal of %s', this.app.name);
+					text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
+					progressMessage = _('Uninstalling %s from this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
-						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				case 'update':
 					actionLabel = _('Upgrade');
-					title = _('Upgrade of %s', entities.encode(this.app.name));
-					text = _('Please confirm to upgrade the application %s on this host.', entities.encode(this.app.name));
-					progressMessage = _('Upgrading %s on this host', entities.encode(this.app.name));
+					title = _('Upgrade of %s', this.app.name);
+					text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
+					progressMessage = _('Upgrading %s on this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
-						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				default:
@@ -1079,7 +1082,7 @@ define([
 			if (keepAlive !== false) {
 				tools.umcpCommand('appcenter/keep_alive', {}, false);
 			}
-			msg = msg || _('Another package operation is in progress.');
+			msg = entities.encode(msg || _('Another package operation is in progress.'));
 			var callback = lang.hitch(this, function() {
 				if (this._progressBar.getErrors().errors.length) {
 					deferred.reject();

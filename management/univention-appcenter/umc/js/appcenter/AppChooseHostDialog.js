@@ -45,6 +45,8 @@ define([
 		_form: null,
 		_continueDeferred: null,
 		title: _('App management'),
+		headerTextAllowHTML: false,
+		helpTextAllowHTML: false,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -60,14 +62,14 @@ define([
 			this._clearWidget('_form', true);
 
 			this.set('headerText', _('Installation of %s', this.app.name));
-			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', entities.encode(this.app.name)));
+			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.app.name));
 
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();
 			}
 			this._continueDeferred = new Deferred();
 
-			if (hosts.length == 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
+			if (hosts.length === 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
 				// safely resolve the deferred object of the dialog if there is
 				// only a single choice to be made
 				this._continueDeferred.resolve(hosts[0].id);
