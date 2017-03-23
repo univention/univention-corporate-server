@@ -1009,14 +1009,9 @@ define([
 		getItem: function(id) {
 			// summary:
 			//		Returns the item for a given ID.
-			// id: String|String[]
+			// id: String
 
-			var row;
-			if (typeof(id) === "string") {
-				row = this._grid.row(id);
-			} else {
-				row = this._grid.row(id[0]);
-			}
+			var row = this._grid.row(id);
 			if (row.id) {
 				return row.data;
 			}
