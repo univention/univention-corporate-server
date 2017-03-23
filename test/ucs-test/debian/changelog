@@ -1,3 +1,9 @@
+ucs-test (7.0.21-8) unstable; urgency=medium
+
+  * Bug #43681: Fix 00_checks/47_sysvol_ownership for MixedCase domains
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Mar 2017 20:54:16 +0100
+
 ucs-test (7.0.21-7) unstable; urgency=low
 
   * Bug #44023: replace AppManager in 20_appcenter and

@@ -16,7 +16,9 @@ administrator=${users_default_administrator:-Administrator}
 
 administrator_uid=$(univention-ldapsearch uid="$administrator" uidNumber | sed -ne 's|^uidNumber: ||p')
 
-for policy in /var/lib/samba/sysvol/$domainname/Policies/*; do
+sysvol_domain_dir=$(find /var/lib/samba/sysvol -mindepth 1 -maxdepth 1 -iname "$domainname")
+
+for policy in "$sysvol_domain_dir"/*; do
 	ownerid=$(stat -c "%u" "$policy")
 	if [ "$ownerid" != "$administrator_uid" ]; then
 		ls -la $policy
