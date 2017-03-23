@@ -1,3 +1,10 @@
+univention-web (1.0.40-10) unstable; urgency=medium
+
+  * Bug #44050: Close menu when a menu item is clicked and
+    close all open sub menus when menu is closed
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 23 Mar 2017 19:25:47 +0100
+
 univention-web (1.0.40-9) unstable; urgency=medium
 
   * Bug #43977: Simplify meta data handling for tools.status()
@@ -12,19 +19,19 @@ univention-web (1.0.40-8) unstable; urgency=medium
 
 univention-web (1.0.40-7) unstable; urgency=medium
 
-  * Bug #44007: remember grid scroll position on grid update 
+  * Bug #44007: remember grid scroll position on grid update
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 16:29:49 +0100
 
 univention-web (1.0.40-6) unstable; urgency=medium
 
-  * Bug #44007: fix uvmm grid icons 
+  * Bug #44007: fix uvmm grid icons
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 15:34:38 +0100
 
 univention-web (1.0.40-5) unstable; urgency=medium
 
-  * Bug #44007: fix tree icons 
+  * Bug #44007: fix tree icons
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 11:48:35 +0100
 
@@ -42,7 +49,7 @@ univention-web (1.0.40-3) unstable; urgency=medium
 
 univention-web (1.0.40-2) unstable; urgency=medium
 
-  * Bug #44007: add autoExpand option to tree widget 
+  * Bug #44007: add autoExpand option to tree widget
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 18:49:53 +0100
 

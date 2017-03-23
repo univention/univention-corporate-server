@@ -78,9 +78,13 @@ define([
 			}
 			domClass.remove(baseWin.body(), 'mobileMenuActive');
 			domClass.remove(baseWin.body(), 'hasScrollbar');
-			tools.defer(function() {
+			tools.defer(lang.hitch(this, function() {
 				domClass.toggle(baseWin.body(), 'mobileMenuToggleButtonActive');
-			}, 510);
+
+				this.getMenuInstance().then(function(menuInstance) {
+					menuInstance.closeOpenedSubMenus();
+				});
+			}), 510);
 		},
 
 		getButtonInstance: function() {

@@ -190,6 +190,19 @@ define([
 			dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
 		},
 
+		closeOpenedSubMenus: function() {
+			// resets the menu to the first slide
+			var firstClickedSubMenuItem = this.popupHistory[0];
+			if (!firstClickedSubMenuItem) {
+				return;
+			}
+
+			do {
+				this.popupHistory.pop().close();
+			} while (this.popupHistory.length);
+			this._updateMobileMenuPermaHeaderForClosing(firstClickedSubMenuItem);
+		},
+
 		_registerOrphanedEntry: function(menuEntry, parentMenuId) {
 			// parent menu does not exist... save entry to be added later
 			var parentEntries = this._orphanedEntries[parentMenuId] || [];
@@ -320,6 +333,11 @@ define([
 			var parentMenuId = item.parentMenuId || 'umcMenuMain';
 			var parentMenuItem = this._menuMap[parentMenuId];
 			var menuEntry = _createMenuEntry();
+			menuEntry.on('click', function() {
+				menuDeferred.then(function(menu) {
+					menu.close();
+				});
+			});
 
 			if (!parentMenuItem) {
 				this._registerOrphanedEntry(menuEntry, parentMenuId);
