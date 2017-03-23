@@ -213,9 +213,20 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	invoke-rc.d apache2 restart
 else
 	# Other system roles require the certificate creation here only if they to not join
-	# Create them in any case
-	univention-certificate new -name "$hostname.$domainname"
-	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+	# Create them in any case, as apache2 will not start otherwise
+	# These should be treated as dummy certificates,
+	# as a new certificate will be created and downloaded when joining a UCS domain
+	. /usr/share/univention-ssl/make-certificates.sh
+	cd "$SSLBASE"
+	echo "Creating base ssl certificate"
+	fqdn="$hostname.$domainname"
+	gencert "$SSLBASE/$fqdn" "$fqdn" "$days"
+	if getent group "DC Backup Hosts" 2>&1 >/dev/null
+	then
+		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+		chmod -R g+rX "$SSLBASE/$name"
+	fi
+	ln -sf "/etc/univention/ssl/$fqdn" "/etc/univention/ssl/$hostname"
 fi
 
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
