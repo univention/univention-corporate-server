@@ -1,3 +1,13 @@
+univention-docker (2.0.1-1) unstable; urgency=medium
+
+  * Remove UCR template for /etc/init.d/docker. The systemd service will
+    be used (Bug #44033)
+  * Added a new UCR variable docker/daemon/default/parameter/.* to add
+    additional parameter for the Docker daemon (Bug #44033)
+  * Activate live-restore by default (Bug #44033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Mar 2017 12:32:53 +0100
+
 univention-docker (2.0.0-9) unstable; urgency=medium
 
   * Bug #44006: Depend on cgroupfs-mount (>= 1.1)

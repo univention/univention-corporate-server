@@ -2,9 +2,7 @@ Type: file
 File: etc/default/docker
 Variables: proxy/http
 Variables: docker/daemon/default/opts/.*
-
-Type: file
-File: etc/init.d/docker
+Variables: docker/daemon/default/parameter/.*
 
 Type: file
 File: etc/docker/seccomp-systemd.json
