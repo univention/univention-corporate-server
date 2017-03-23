@@ -1,7 +1,7 @@
 Source: univention-l10n-fr
 Section: univention
 Priority: optional
-Maintainer: root <root@dc0.univention.intranet>
+Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  univention-config-dev,
