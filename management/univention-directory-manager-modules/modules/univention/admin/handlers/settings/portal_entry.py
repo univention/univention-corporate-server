@@ -174,7 +174,7 @@ layout = [
 		]),
 		Group(_('Advanced'), layout=[
 			["activated"],
-			["authRestriction"],
+			#["authRestriction"],
 			#["favorite"],
 		]),
 	]),

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.16-2) unstable; urgency=medium
+
+  * Bug #42175: Hide authRestriction
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Mar 2017 12:56:34 +0100
+
 univention-directory-manager-modules (12.0.16-1) unstable; urgency=medium
 
   * Bug #43928: don't remove portal_entry, only dereference when removing
