@@ -1380,13 +1380,11 @@ define([
 						return;
 					}
 
-					// the system UUID has been generated, reload status data and trigger piwik
+					// the system UUID has been generated -> trigger piwik
 					piwikLoadTriggered = true;
-					tools.loadAllStatusData().then(function(data) {
-						if (!data.piwikDisabled) {
-							topic.publish('/umc/piwik/load', true);
-						}
-					});
+					if (!data.piwikDisabled) {
+						topic.publish('/umc/piwik/load', true);
+					}
 				}));
 			});
 			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
