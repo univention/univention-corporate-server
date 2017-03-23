@@ -1,3 +1,10 @@
+ucs-test (7.0.21-6) unstable; urgency=medium
+
+  * 01_base/27check_logfiles_univention: Ignore ucs-windows-tools.log
+    (Bug #43974)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Mar 2017 07:44:31 +0100
+
 ucs-test (7.0.21-5) unstable; urgency=medium
 
   * 20_appcenter/7*umc*: Temporary skip test case (Bug #44037)
