@@ -1,44 +1,44 @@
 # Copyright 2010-2017 Univention GmbH
-#
+# 
 # http://www.univention.de/
-#
+# 
 # All rights reserved.
-#
+# 
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
+# 
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
+# 
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
+# 
 # Sandrine Burriel <sandrine@bureau-cornavin.com>, 2016.
 # eric <zzz>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 21:04+0100\n"
 "Last-Translator: eric <zzz>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -98,7 +98,7 @@ msgid "Add to standard user containers"
 msgstr "Ajouter aux conteneurs d'utilisateurs standard"
 
 #: modules/univention/admin/handlers/container/ou.py:191
-#: modules/univention/admin/handlers/container/dc.py:156
+#: modules/univention/admin/handlers/container/dc.py:158
 #: modules/univention/admin/handlers/container/cn.py:189
 msgid "Basic settings"
 msgstr "Réglages de base"
@@ -116,7 +116,7 @@ msgstr "Réglages des conteneurs"
 msgid "Container: Container"
 msgstr "Conteneur : conteneur"
 
-#: modules/univention/admin/handlers/container/dc.py:57
+#: modules/univention/admin/handlers/container/dc.py:59
 msgid "Container: Domain"
 msgstr "Conteneur : domaine"
 
@@ -124,19 +124,19 @@ msgstr "Conteneur : domaine"
 msgid "Container: Organisational Unit"
 msgstr "Conteneur : Unité d'Organisation"
 
-#: modules/univention/admin/handlers/container/dc.py:161
+#: modules/univention/admin/handlers/container/dc.py:163
 msgid "DNS"
 msgstr "DNS"
 
-#: modules/univention/admin/handlers/container/dc.py:161
+#: modules/univention/admin/handlers/container/dc.py:163
 msgid "DNS Zones"
 msgstr "Zones DNS"
 
-#: modules/univention/admin/handlers/container/dc.py:79
+#: modules/univention/admin/handlers/container/dc.py:81
 msgid "DNS forward lookup zone"
 msgstr "Zone de recherche DNS directe"
 
-#: modules/univention/admin/handlers/container/dc.py:90
+#: modules/univention/admin/handlers/container/dc.py:92
 msgid "DNS reverse lookup zone"
 msgstr "Zone de recherche DNS inversée"
 
@@ -150,38 +150,39 @@ msgstr "Position par défaut lors de l'ajout d'objets"
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/handlers/container/dc.py:157
+#: modules/univention/admin/handlers/container/dc.py:159
 msgid "Domain container description"
 msgstr "Description du conteneur de domaine"
 
 #: modules/univention/admin/handlers/container/ou.py:191
-#: modules/univention/admin/handlers/container/dc.py:156
+#: modules/univention/admin/handlers/container/dc.py:158
 #: modules/univention/admin/handlers/container/cn.py:189
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/container/ou.py:245
+#: modules/univention/admin/handlers/container/ou.py:246
 msgid ""
-"It is not allowed to create a container/ou as child object of a container/cn."
+"It is not allowed to create a container/ou as child object of a "
+"container/cn."
 msgstr ""
 "Il n'est pas permis de créer un conteneur/UO en tant qu'objet enfant d'un "
 "conteneur/CN."
 
-#: modules/univention/admin/handlers/container/dc.py:168
+#: modules/univention/admin/handlers/container/dc.py:170
 msgid "Kerberos"
 msgstr "Kerberos"
 
-#: modules/univention/admin/handlers/container/dc.py:168
+#: modules/univention/admin/handlers/container/dc.py:170
 msgid "Kerberos Settings"
 msgstr "Réglages Kerberos"
 
-#: modules/univention/admin/handlers/container/dc.py:61
-#: modules/univention/admin/handlers/container/dc.py:143
+#: modules/univention/admin/handlers/container/dc.py:63
+#: modules/univention/admin/handlers/container/dc.py:145
 msgid "Kerberos realm"
 msgstr "Royaume Kerberos"
 
 #: modules/univention/admin/handlers/container/ou.py:55
-#: modules/univention/admin/handlers/container/dc.py:68
+#: modules/univention/admin/handlers/container/dc.py:70
 #: modules/univention/admin/handlers/container/cn.py:53
 msgid "Name"
 msgstr "Nom"
@@ -190,27 +191,27 @@ msgstr "Nom"
 msgid "Organisational unit description"
 msgstr "Description de l'Unité d'Organisation"
 
-#: modules/univention/admin/handlers/container/dc.py:164
+#: modules/univention/admin/handlers/container/dc.py:166
 msgid "Samba"
 msgstr "Samba"
 
-#: modules/univention/admin/handlers/container/dc.py:132
+#: modules/univention/admin/handlers/container/dc.py:134
 msgid "Samba Next Group RID"
 msgstr "RID groupe suivant dans Samba"
 
-#: modules/univention/admin/handlers/container/dc.py:121
+#: modules/univention/admin/handlers/container/dc.py:123
 msgid "Samba Next User RID"
 msgstr "RID utilisateur suivant dans Samba"
 
-#: modules/univention/admin/handlers/container/dc.py:111
+#: modules/univention/admin/handlers/container/dc.py:113
 msgid "Samba SID"
 msgstr "SID Samba"
 
-#: modules/univention/admin/handlers/container/dc.py:164
+#: modules/univention/admin/handlers/container/dc.py:166
 msgid "Samba Settings"
 msgstr "Réglages Samba"
 
-#: modules/univention/admin/handlers/container/dc.py:100
+#: modules/univention/admin/handlers/container/dc.py:102
 msgid "Samba domain name"
 msgstr "Nom de domaine Samba"
 

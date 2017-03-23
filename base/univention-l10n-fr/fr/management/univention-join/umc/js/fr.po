@@ -4,68 +4,69 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:34+0100\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 10:46+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/js/join/Grid.js:174
-#, python-format
+#: umc/js/join/Grid.js:172
+#, fuzzy, javascript-format
 msgid "%d scripts are pending to be run."
 msgstr "%s scripts sont en attente d'exécution."
 
-#: umc/js/join/Grid.js:166
-#, python-format
+#: umc/js/join/Grid.js:164
+#, fuzzy, javascript-format
 msgid "%d scripts selected"
 msgstr "%s scripts sélectionnés"
 
-#: umc/js/join.js:153
+#: umc/js/join.js:156
 msgid "... loading log ..."
 msgstr "... journal en cours de chargement ..."
 
-#: umc/js/join/Grid.js:166
+#: umc/js/join/Grid.js:164
 msgid "1 script selected"
 msgstr "1 script sélectionné"
 
-#: umc/js/join.js:430
+#: umc/js/join.js:434
 msgid ""
 "<p>Please enter credentials of a user account with administrator rights to "
 "run the selected join scripts.</p>"
 msgstr ""
-"<p>Veuillez saisir les preuves d'identité d'un compte utilisateur qui a les droits "
-"d'administrateur permettant d'exécuter les scripts de jonction sélectionnés.</p>"
+"<p>Veuillez saisir les preuves d'identité d'un compte utilisateur qui a les "
+"droits d'administrateur permettant d'exécuter les scripts de jonction "
+"sélectionnés.</p>"
 
-#: umc/js/join.js:298
-#, python-format
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:302
+#, javascript-format
 msgid "A DC master should be joined by the %s."
 msgstr "Un contrôleur de domaine maître doit rejoint par le %s."
 
-#: umc/js/join.js:294
+#: umc/js/join.js:297
 msgid "A join process is already running..."
 msgstr "Un processus de jonction est déjà en cours d'exécution..."
 
-#: umc/js/join.js:393
+#: umc/js/join.js:397
 msgid "A reboot of the server is recommended after joining the system."
 msgstr ""
-"Il est recommandé de redémarrer le serveur après avoir fait rejoindre le"
-" système."
+"Il est recommandé de redémarrer le serveur après avoir fait rejoindre le "
+"système."
 
-#: umc/js/join.js:395
+#: umc/js/join.js:399
 msgid ""
 "A restart of the UMC server components may be necessary for changes to take "
 "effect."
 msgstr ""
-"Un redémarrage des composants du serveur UMC peut être nécessaire "
-"pour que les modifications prennent effet."
+"Un redémarrage des composants du serveur UMC peut être nécessaire pour que "
+"les modifications prennent effet."
 
 #: umc/js/join.js:61
-#, python-format
 msgid ""
 "As %(root)s you do not have access to the App Center. For this you need to "
 "log in as %(administrator)s."
@@ -74,20 +75,20 @@ msgstr ""
 "devez vous connecter en tant qu' %(administrator)s."
 
 #: umc/js/join.js:63
-#, python-format
 msgid ""
 "As %(root)s you have neither access to the domain administration nor to the "
 "App Center. For this you need to log in as %(administrator)s."
 msgstr ""
-"En tant que %(root)s, vous n'avez accès ni à l'administration du domaine, ni "
-"à l'App Center. Pour cela, vous devez vous connecter en tant qu' %"
-"(administrator)s."
+"En tant que %(root)s, vous n'avez accès ni à l'administration du domaine, ni"
+" à l'App Center. Pour cela, vous devez vous connecter en tant qu' "
+"%(administrator)s."
 
-#: umc/js/join.js:298
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:302
 msgid "Basic settings module"
 msgstr "Module de réglages de base"
 
-#: umc/js/join.js:259
+#: umc/js/join.js:262
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
@@ -124,23 +125,15 @@ msgstr "Force l'exécution des scripts de jonction sélectionnés"
 msgid "Hostname of domain controller master"
 msgstr "Nom d'hôte du contrôleur de domaine maître"
 
-#: umc/js/join.js:105
-msgid "Initial system join"
-msgstr "Jonction initiale de système"
-
-#: umc/js/join.js:358 umc/js/join.js:361
+#: umc/js/join.js:362 umc/js/join.js:365
 msgid "Join error"
 msgstr "Erreur de jonction"
 
-#: umc/js/join.js:135
+#: umc/js/join.js:137
 msgid "Join log"
 msgstr "Journal de jonction"
 
-#: umc/js/join.js:119
-msgid "Join status"
-msgstr "État de jonction"
-
-#: umc/js/join/Grid.js:171
+#: umc/js/join/Grid.js:169
 msgid "Join status ok, nothing to do."
 msgstr "État de jonction OK, rien à faire."
 
@@ -148,8 +141,9 @@ msgstr "État de jonction OK, rien à faire."
 msgid "Join system"
 msgstr "Joindre un système"
 
-#: umc/js/join.js:86
-#, python-format
+#. i18n: %s is the "Domain join module".
+#: umc/js/join.js:88
+#, javascript-format
 msgid ""
 "Not all installed components have been registered. Please visit the %s to "
 "register the remaining components."
@@ -157,7 +151,7 @@ msgstr ""
 "Certains composants installés n'ont pas été enregistrés. Veuillez consulter "
 "la page %s pour enregistrer tous les composants restants."
 
-#: umc/js/join/Grid.js:174
+#: umc/js/join/Grid.js:172
 msgid "One script is pending to be run."
 msgstr "Un script attend d'être exécuté."
 
@@ -167,15 +161,15 @@ msgid ""
 "execute the selected scripts anyway the force execution option have to be "
 "used."
 msgstr ""
-"Seuls les scripts de jonction qui ne sont pas configurés avec succès peuvent "
-"être exécutés. Pour exécuter les scripts sélectionnés malgré tout, il faut "
+"Seuls les scripts de jonction qui ne sont pas configurés avec succès peuvent"
+" être exécutés. Pour exécuter les scripts sélectionnés malgré tout, il faut "
 "utiliser l'option d'exécution forcée."
 
-#: umc/js/join.js:444 umc/js/join/Form.js:59
+#: umc/js/join.js:448 umc/js/join/Form.js:59
 msgid "Password"
 msgstr "Mot de passe"
 
-#: umc/js/join.js:452
+#: umc/js/join.js:456
 msgid "Password invalid"
 msgstr "Mot de passe non valide"
 
@@ -183,68 +177,69 @@ msgstr "Mot de passe non valide"
 msgid "Password of the domain administrator"
 msgstr "Mot de passe de l'administrateur du domaine"
 
-#: umc/js/join.js:106
+#: umc/js/join.js:107
 msgid ""
-"Please enter credentials of a user account with administrator rights to join "
-"the system."
+"Please enter credentials of a user account with administrator rights to join"
+" the system."
 msgstr ""
-"Veuillez saisir les peuves d'identité d'un compte utilisateur qui a les droits "
-"d'administrateur permettant que le système rejoigne le domaine."
+"Veuillez saisir les peuves d'identité d'un compte utilisateur qui a les "
+"droits d'administrateur permettant que le système rejoigne le domaine."
 
-#: umc/js/join/Grid.js:93
+#: umc/js/join/Grid.js:91
 msgid "Rejoin"
 msgstr "Rejoindre"
 
-#: umc/js/join.js:271
+#: umc/js/join.js:274
 msgid "Rejoin system"
 msgstr "Faire rejoindre le système"
 
-#: umc/js/join/Grid.js:94
+#: umc/js/join/Grid.js:92
 msgid "Rejoins the system"
 msgstr "Fait rejoindre le système"
 
-#: umc/js/join.js:448
+#: umc/js/join.js:452
 msgid "Run"
 msgstr "Exécuter"
 
-#: umc/js/join.js:241 umc/js/join.js:447
+#: umc/js/join.js:244 umc/js/join.js:451
 msgid "Run join scripts"
 msgstr "Exécuter les scripts de jonction"
 
-#: umc/js/join/Grid.js:115
+#: umc/js/join/Grid.js:113
 msgid "Script (package)"
 msgstr "Script (paquetage)"
 
-#: umc/js/join/Grid.js:116
+#: umc/js/join/Grid.js:114
 msgid "Script name (the same as the package it belongs to)"
 msgstr "Nom du script (identique au paquetage auquel il appartient)"
 
-#: umc/js/join.js:142
+#: umc/js/join.js:145
 msgid "Show Join status"
 msgstr "Afficher l'état de jonction"
 
-#: umc/js/join/Grid.js:100
+#: umc/js/join/Grid.js:98
 msgid "Shows the join log"
 msgstr "Afficher le journal de jonction"
 
-#: umc/js/join.js:349
+#: umc/js/join.js:353
 msgid "Starting the join process..."
 msgstr "Démarrage du processus de jonction..."
 
-#: umc/js/join/Grid.js:121
+#: umc/js/join/Grid.js:119
 msgid "State"
 msgstr "État"
 
-#: umc/js/join/Grid.js:122
+#: umc/js/join/Grid.js:120
 msgid "Status of this package"
 msgstr "État de ce paquetage"
 
-#: umc/js/join/Form.js:89
-#, python-format
+#. i18n: %s is the "Network settings module".
+#: umc/js/join/Form.js:90
+#, javascript-format
 msgid "The DNS settings can be adjusted in the %s."
 msgstr "Les réglages DNS peuvent être ajustés dans les %s."
 
-#: umc/js/join.js:239
+#: umc/js/join.js:242
 msgid "The following join scripts will be executed: "
 msgstr "Les scripts de jonction suivants vont être exécutés :"
 
@@ -252,28 +247,19 @@ msgstr "Les scripts de jonction suivants vont être exécutés :"
 msgid "The hostname of the domain controller master of the domain"
 msgstr "Le nom d'hôte du contrôleur maître du domaine"
 
-#: umc/js/join.js:366
+#: umc/js/join.js:370
 msgid "The join process was successful."
 msgstr "Le processus de jonction a réussi."
 
-#: umc/js/join.js:294
+#: umc/js/join.js:297
 msgid "The join scripts have successfully been executed."
 msgstr "Les scripts de jonction ont été exécutés avec succès."
 
-#: umc/js/join.js:452
+#: umc/js/join.js:456
 msgid "The password may not be empty."
 msgstr "Le mot de passe ne peut pas être vide."
 
-#: umc/js/join.js:84
-#, python-format
-msgid ""
-"The system has not been joined into a domain so far. Please visit the %s to "
-"join the system."
-msgstr ""
-"Le système n'a pas encore rejoint un domaine. Veuillez consulter le %s "
-"pour faire rejoindre le système."
-
-#: umc/js/join.js:456
+#: umc/js/join.js:460
 msgid "The username may not be empty."
 msgstr "Le nom d'utilisateur ne peut pas être vide."
 
@@ -281,27 +267,23 @@ msgstr "Le nom d'utilisateur ne peut pas être vide."
 msgid "The username of the domain administrator"
 msgstr "Le nom d'utilisateur de l'administrateur du domaine"
 
-#: umc/js/join/Grid.js:86
-msgid "There are no pending join scripts to execute."
-msgstr "Aucun script de jonction n'est en attente d'exécution."
-
-#: umc/js/join.js:120
+#: umc/js/join.js:121
 msgid ""
 "This page shows the status of all available join scripts on this system, "
 "along with all join-related actions."
 msgstr ""
-"Cette page affiche l'état de tous les scripts de jonction disponibles "
-"sur ce système, ainsi que toutes les actions relatives aux jonctions."
+"Cette page affiche l'état de tous les scripts de jonction disponibles sur ce"
+" système, ainsi que toutes les actions relatives aux jonctions."
 
-#: umc/js/join.js:439 umc/js/join/Form.js:53
+#: umc/js/join.js:443 umc/js/join/Form.js:53
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: umc/js/join.js:456
+#: umc/js/join.js:460
 msgid "Username invalid"
 msgstr "Nom d'utilisateur non valide"
 
-#: umc/js/join/Grid.js:99
+#: umc/js/join/Grid.js:97
 msgid "View join log"
 msgstr "Afficher le journal de jonction"
 
@@ -309,12 +291,26 @@ msgstr "Afficher le journal de jonction"
 msgid "Warning: "
 msgstr "Avertissement : "
 
-#: umc/js/join/Grid.js:125
+#: umc/js/join/Grid.js:123
 msgid "pending"
 msgstr "en attente"
 
-#: umc/js/join/Grid.js:125
+#: umc/js/join/Grid.js:123
 msgid "successful"
 msgstr "réussi"
 
+#~ msgid "Initial system join"
+#~ msgstr "Jonction initiale de système"
 
+#~ msgid "Join status"
+#~ msgstr "État de jonction"
+
+#~ msgid ""
+#~ "The system has not been joined into a domain so far. Please visit the %s to "
+#~ "join the system."
+#~ msgstr ""
+#~ "Le système n'a pas encore rejoint un domaine. Veuillez consulter le %s pour "
+#~ "faire rejoindre le système."
+
+#~ msgid "There are no pending join scripts to execute."
+#~ msgstr "Aucun script de jonction n'est en attente d'exécution."

@@ -1,0 +1,45 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-cloud-init\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: ../../../cloud-init-setup.html:63
+msgid ""
+"After the setup has finished, you will be redirected. Alternatively, after "
+"setup is finished, you can <a href='/univention/'>use this link to reach the"
+" overview page</a>."
+msgstr ""
+
+#: ../../../cloud-init-setup.html:60
+msgid ""
+"The configuration you selected is applied and the Univention Corporate "
+"Server installation is finished."
+msgstr ""
+"La configuration que vous avez définie est appliquée et l'installation de "
+"Univention Corporate Server est terminée."
+
+#: ../../../cloud-init-setup.html:59
+msgid "This machine is currently being configured by cloud-init."
+msgstr "La machine est en cours de configuration par « cloud-init »."
+
+#: ../../../cloud-init-setup.html:58
+msgid "Welcome to UCS initial configuration"
+msgstr "Bienvenue dans la configuration initiale d'UCS"
+
+#: ../../../cloud-init-setup.html:38
+msgid "Welcome to Univention Corporate Server"
+msgstr "Bienvenue dans Univention Corporate Server"
+
+#: ../../../cloud-init-setup.html:62
+msgid "ssh -i &lt;path/to/privatekey&gt; root@{serveraddress} passwd"
+msgstr ""
+"ssh -i &lt;emplacement/dela/cleprivee&gt; root@{adresseserveur} motdepasse"

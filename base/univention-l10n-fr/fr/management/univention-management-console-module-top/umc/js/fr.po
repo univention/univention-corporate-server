@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:27+0100\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-03 18:16+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -40,10 +40,6 @@ msgstr "Commande"
 msgid "Force termination"
 msgstr "Forcer l'arrêt"
 
-#: umc/js/top.js:162
-msgid "Keyword"
-msgstr "Mot-clé"
-
 #: umc/js/top.js:124
 msgid "Memory (%)"
 msgstr "Mémoire (%)"
@@ -57,24 +53,23 @@ msgid "PID"
 msgstr "PID"
 
 #: umc/js/top.js:64
-#, python-format
 msgid ""
 "Please confirm sending %(signal)s to the %(processid)s selected processes!"
 msgstr ""
-"Veuillez confirmer l'envoi du signal %(signal)s aux processus "
-"d'identifiants %(processid)s sélectionnés."
+"Veuillez confirmer l'envoi du signal %(signal)s aux processus d'identifiants"
+" %(processid)s sélectionnés."
 
 #: umc/js/top.js:61
-#, python-format
+#, javascript-format
 msgid "Please confirm sending %s to the selected process!"
 msgstr "Veuillez confirmer l'envoi de %s au processus sélectionné."
 
-#: umc/js/top.js:88
-msgid "Process overview"
-msgstr "Vue d'ensemble des processus"
+#: umc/js/top.js:162
+msgid "Search..."
+msgstr ""
 
 #: umc/js/top.js:70
-#, python-format
+#, javascript-format
 msgid "Signal (%s) sent successfully"
 msgstr "Signal (%s) envoyé avec succès"
 
@@ -82,7 +77,7 @@ msgstr "Signal (%s) envoyé avec succès"
 msgid "Terminate"
 msgstr "Arrêter"
 
-#: umc/js/top.js:89
+#: umc/js/top.js:88
 msgid ""
 "This module generates an overview of all running processes. The search "
 "function can reduce the number of results. Specified processes can be "
@@ -91,13 +86,16 @@ msgid ""
 msgstr ""
 "Ce module génère une vue d'ensemble de tous les processus en cours "
 "d'exécution. La fonction de recherche permet de réduire le nombre de "
-"résultats. Vous pouvez sélectionner et arrêter des processus donnés. "
-"S'il n'est pas possible de mettre fin à un processus normalement (au "
-"moyen d'un signal SIGTERM), l'arrêt peut être forcé (au moyen du signal "
-"SIGKILL)."
+"résultats. Vous pouvez sélectionner et arrêter des processus donnés. S'il "
+"n'est pas possible de mettre fin à un processus normalement (au moyen d'un "
+"signal SIGTERM), l'arrêt peut être forcé (au moyen du signal SIGKILL)."
 
 #: umc/js/top.js:109 umc/js/top.js:154
 msgid "User"
 msgstr "Utilisateur"
 
+#~ msgid "Keyword"
+#~ msgstr "Mot-clé"
 
+#~ msgid "Process overview"
+#~ msgstr "Vue d'ensemble des processus"

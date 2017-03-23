@@ -1,7 +1,7 @@
 # univention-saml
 # Copyright (C) 2013
 # This file is distributed under the same license as the univention-saml package.
-#
+# 
 # <packages@univention.de>, 2013.
 # Sandrine Burriel <sandrine@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-06-20 19:05+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -28,7 +28,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:114
 msgid "A list of ldap attributes that are transmitted to the service provider"
-msgstr "Une liste d'attributs LDAP qui sont transmis au fournisseur de service"
+msgstr ""
+"Une liste d'attributs LDAP qui sont transmis au fournisseur de service"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:198
 msgid "Additional configuration options"
@@ -81,7 +82,8 @@ msgstr "Liste des attributs LDAP à transmettre"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:41
 msgid ""
-"Management of service provider configurations for the SAML identity provider."
+"Management of service provider configurations for the SAML identity "
+"provider."
 msgstr ""
 "Gestion des configurations de fournisseur de service pour le fournisseur "
 "d'identité SAML."
@@ -127,12 +129,12 @@ msgstr "URL de déconnexion unique pour ce fournisseur de service"
 #: modules/univention/admin/handlers/saml/serviceprovider.py:82
 msgid ""
 "The NameIDFormat the service provider receives. The service provider "
-"documentation should mention expected formats. Example: urn:oasis:names:tc:"
-"SAML:2.0:nameid-format:transient"
+"documentation should mention expected formats. Example: "
+"urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
 msgstr ""
 "Le NameIDFormat que reçoit le fournisseur de service. La documentation du "
-"fournisseur de service doit mentionner les formats attendus. Exemple : urn:"
-"oasis:names:tc:SAML:2.0:nameid-format:transient"
+"fournisseur de service doit mentionner les formats attendus. Exemple : "
+"urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:164
 msgid "The URL of the SingleLogoutService endpoint for this service provider"
@@ -141,9 +143,9 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:72
 msgid ""
-"The URL(s) of the AssertionConsumerService endpoints for this SP. Users will "
-"be redirected to the URL upon successful authentication. Example: https://sp."
-"example.com/login"
+"The URL(s) of the AssertionConsumerService endpoints for this SP. Users will"
+" be redirected to the URL upon successful authentication. Example: "
+"https://sp.example.com/login"
 msgstr ""
 "URL(s) des points d'accès AssertionConsumerService pour ce fournisseur de "
 "service (SP). Les utilisateurs seront redirigés vers l'URL après une "
@@ -151,8 +153,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:92
 msgid ""
-"The name of the attribute which should be used as the value of the NameID, e."
-"g. uid"
+"The name of the attribute which should be used as the value of the NameID, "
+"e.g. uid"
 msgstr ""
 "Le nom de l'attribut qui doit être utilisé comme valeur pour le NameID, par "
 "exemple uid."
@@ -162,8 +164,8 @@ msgid ""
 "The name of the organization responsible for the service provider that can "
 "be shown to users"
 msgstr ""
-"Le nom de l'organisation responsable du fournisseur de service, pouvant être "
-"montré aux utilisateurs"
+"Le nom de l'organisation responsable du fournisseur de service, pouvant être"
+" montré aux utilisateurs"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:143
 msgid "URL to the service provider's privacy policy"

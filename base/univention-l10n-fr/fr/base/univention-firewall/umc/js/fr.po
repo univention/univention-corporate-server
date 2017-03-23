@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-firewall\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-06-21 20:51+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -46,7 +46,7 @@ msgid "All addresses"
 msgstr "Toutes les adresses"
 
 #: umc/js/firewall.js:222
-#, python-format
+#, javascript-format
 msgid "Are you sure to delete the %d selected firewall rule(s)?"
 msgstr ""
 "Êtes-vous sûr(e) de vouloir supprimer les %d règles de pare-feu "
@@ -106,7 +106,7 @@ msgid "Local address"
 msgstr "Adresse locale"
 
 #: umc/js/firewall.js:246
-#, python-format
+#, javascript-format
 msgid "Local address: %s"
 msgstr "Adresse locale : %s"
 
@@ -127,7 +127,7 @@ msgid "Port start"
 msgstr "Port : début"
 
 #: umc/js/firewall.js:247
-#, python-format
+#, javascript-format
 msgid "Port: %s"
 msgstr "Port : %s"
 
@@ -137,7 +137,7 @@ msgid "Protocol"
 msgstr "Protocole"
 
 #: umc/js/firewall.js:248
-#, python-format
+#, javascript-format
 msgid "Protocol: %s"
 msgstr "Protocole : %s"
 

@@ -1,190 +1,184 @@
 # Copyright 2010-2017 Univention GmbH
-#
+# 
 # http://www.univention.de/
-#
+# 
 # All rights reserved.
-#
+# 
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
+# 
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
+# 
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
+# 
 # Sandrine Burriel <sandrine@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 12:52+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: modules/univention/admin/handlers/groups/group.py:134
+#: modules/univention/admin/handlers/groups/group.py:130
 msgid "AD group type"
 msgstr "Type de groupe AD"
 
-#: modules/univention/admin/handlers/groups/group.py:135
+#: modules/univention/admin/handlers/groups/group.py:131
 msgid "Active Directory group type"
 msgstr "Type de groupe Active Directory"
 
-#: modules/univention/admin/handlers/groups/group.py:56
-msgid "Add"
-msgstr "Ajouter"
-
-#: modules/univention/admin/handlers/groups/group.py:56
-msgid "Add group object"
-msgstr "Ajouter un objet de groupe"
-
-#: modules/univention/admin/handlers/groups/group.py:55
-msgid "Add, edit and delete groups"
-msgstr "Ajouter, modifier et supprimer des groupes"
-
-#: modules/univention/admin/handlers/groups/group.py:245
+#: modules/univention/admin/handlers/groups/group.py:241
 msgid "Basic settings"
 msgstr "Réglages de base"
 
-#: modules/univention/admin/handlers/groups/group.py:147
+#: modules/univention/admin/handlers/groups/group.py:143
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/handlers/groups/group.py:245
+#: modules/univention/admin/handlers/groups/group.py:241
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/groups/group.py:59
+#: modules/univention/admin/handlers/groups/group.py:55
 msgid "Group"
 msgstr "Groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:91
-#: modules/univention/admin/handlers/groups/group.py:265
+#: modules/univention/admin/handlers/groups/group.py:87
+#: modules/univention/admin/handlers/groups/group.py:261
 msgid "Group ID"
 msgstr "Identifiant de groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:246
+#: modules/univention/admin/handlers/groups/group.py:242
 msgid "Group account"
 msgstr "Compte de groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:54
-#: modules/univention/admin/handlers/groups/group.py:209
+#: modules/univention/admin/handlers/groups/group.py:205
 msgid "Groups"
 msgstr "Groupes"
 
-#: modules/univention/admin/handlers/groups/group.py:232
+#: modules/univention/admin/handlers/groups/group.py:228
 msgid "Groups that are allowed to send e-mails to the group"
 msgstr "Groupes autorisés à envoyer des courriels au groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:259
+#: modules/univention/admin/handlers/groups/group.py:255
 msgid "Host members"
 msgstr "Hôtes membres"
 
-#: modules/univention/admin/handlers/groups/group.py:259
+#: modules/univention/admin/handlers/groups/group.py:255
 msgid "Host members of this group"
 msgstr "Hôtes membres de ce groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:171
+#: modules/univention/admin/handlers/groups/group.py:167
 msgid "Hosts"
 msgstr "Hôtes"
 
-#: modules/univention/admin/handlers/groups/group.py:265
+#: modules/univention/admin/handlers/groups/group.py:261
 msgid "ID of this group"
 msgstr "Identifiant de ce groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:254
+#: modules/univention/admin/handlers/groups/group.py:250
 msgid "Mail"
 msgstr "Courrier"
 
-#: modules/univention/admin/handlers/groups/group.py:184
+#: modules/univention/admin/handlers/groups/group.py:180
 msgid "Mail address"
 msgstr "Adresse électronique"
 
-#: modules/univention/admin/handlers/groups/group.py:254
+#: modules/univention/admin/handlers/groups/group.py:250
 msgid "Mail settings of this group"
 msgstr "Réglages de courrier de ce groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:124
+#: modules/univention/admin/handlers/groups/group.py:120
 msgid "Manage samba privileges"
 msgstr "Gérer les privilèges Samba"
 
-#: modules/univention/admin/handlers/groups/group.py:197
-#: modules/univention/admin/handlers/groups/group.py:262
+#: modules/univention/admin/handlers/groups/group.py:193
+#: modules/univention/admin/handlers/groups/group.py:258
 msgid "Member of"
 msgstr "Membre de"
 
-#: modules/univention/admin/handlers/groups/group.py:249
+#: modules/univention/admin/handlers/groups/group.py:245
 msgid "Members of this group"
 msgstr "Membres de ce groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:262
+#: modules/univention/admin/handlers/groups/group.py:258
 msgid "Membership in other groups"
 msgstr "Appartenance à d'autres groupes"
 
-#: modules/univention/admin/handlers/groups/group.py:112
+#: modules/univention/admin/handlers/groups/group.py:108
 msgid "NT group type"
 msgstr "Type de groupe NT"
 
-#: modules/univention/admin/handlers/groups/group.py:80
+#: modules/univention/admin/handlers/groups/group.py:76
 msgid "Name"
 msgstr "Nom"
 
-#: modules/univention/admin/handlers/groups/group.py:63
+#: modules/univention/admin/handlers/groups/group.py:59
 msgid "Posix group"
 msgstr "Groupe POSIX"
 
-#: modules/univention/admin/handlers/groups/group.py:101
+#: modules/univention/admin/handlers/groups/group.py:97
 msgid "Relative ID"
 msgstr "Identifiant relatif"
 
-#: modules/univention/admin/handlers/groups/group.py:68
+#: modules/univention/admin/handlers/groups/group.py:64
 msgid "Samba group"
 msgstr "Groupe Samba"
 
-#: modules/univention/admin/handlers/groups/group.py:123
+#: modules/univention/admin/handlers/groups/group.py:119
 msgid "Samba privilege"
 msgstr "Privilèges Samba"
 
-#: modules/univention/admin/handlers/groups/group.py:56
-msgid "Search"
-msgstr "Rechercher"
-
-#: modules/univention/admin/handlers/groups/group.py:56
-msgid "Search group object(s)"
-msgstr "Chercher un ou plusieurs objets de groupe"
-
-#: modules/univention/admin/handlers/groups/group.py:159
+#: modules/univention/admin/handlers/groups/group.py:155
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: modules/univention/admin/handlers/groups/group.py:221
+#: modules/univention/admin/handlers/groups/group.py:217
 msgid "Users that are allowed to send e-mails to the group"
 msgstr "Utilisateurs autorisés à envoyer des courriels au groupe"
 
-#: modules/univention/admin/handlers/groups/group.py:268
+#: modules/univention/admin/handlers/groups/group.py:264
 msgid "Windows"
 msgstr "Windows"
 
-#: modules/univention/admin/handlers/groups/group.py:268
+#: modules/univention/admin/handlers/groups/group.py:264
 msgid "Windows account settings"
 msgstr "Réglages de compte Windows"
+
+#~ msgid "Add"
+#~ msgstr "Ajouter"
+
+#~ msgid "Add group object"
+#~ msgstr "Ajouter un objet de groupe"
+
+#~ msgid "Add, edit and delete groups"
+#~ msgstr "Ajouter, modifier et supprimer des groupes"
+
+#~ msgid "Search"
+#~ msgstr "Rechercher"
+
+#~ msgid "Search group object(s)"
+#~ msgstr "Chercher un ou plusieurs objets de groupe"

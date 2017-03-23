@@ -4,38 +4,40 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-06 22:04+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
 #: js/ucs/app.js:360
+#, python-brace-format
 msgid ""
 "A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
 "This file is necessary to activate the system. For this, please carry out "
 "the following steps: <ol><li>Open the email.</li><li>Save the attachement "
 "(ucs.license) on your computer.</li><li>Click the button 'Upload license "
-"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm "
-"the selection.</li></ol>Once the activation has been finished your email "
+"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm"
+" the selection.</li></ol>Once the activation has been finished your email "
 "address will be sent to the app provider. The app provider may contact you."
 msgstr ""
-"Un fichier de licence a été envoyé à <strong id=\"email-address\">{0}</"
-"strong>. Ce fichier est nécessaire pour activer le système. Pour cela, "
-"veuillez effectuer les actions suivantes :<ol><li>Ouvrez le courriel.</li> "
-"<li>Enregistrez la pièce jointe (ucs.license) sur votre ordinateur.</li> "
-"<li>Cliquez sur le bouton « Envoyer un fichier de licence ».</li> "
-"<li>Choisissez le fichier que vous venez d'enregistrer (ucs.license).</li> "
-"<li>Confirmez l'envoi.</li></ol> Une fois l'activation terminée, votre "
-"adresse électronique sera transmise au fournisseur d'apps. Le fournisseur "
-"d'apps pourra être amené à vous contacter."
+"Un fichier de licence a été envoyé à <strong id=\"email-"
+"address\">{0}</strong>. Ce fichier est nécessaire pour activer le système. "
+"Pour cela, veuillez effectuer les actions suivantes :<ol><li>Ouvrez le "
+"courriel.</li> <li>Enregistrez la pièce jointe (ucs.license) sur votre "
+"ordinateur.</li> <li>Cliquez sur le bouton « Envoyer un fichier de licence "
+"».</li> <li>Choisissez le fichier que vous venez d'enregistrer "
+"(ucs.license).</li> <li>Confirmez l'envoi.</li></ol> Une fois l'activation "
+"terminée, votre adresse électronique sera transmise au fournisseur d'apps. "
+"Le fournisseur d'apps pourra être amené à vous contacter."
 
 #: js/ucs/app.js:174
+#, python-brace-format
 msgid "Activation of {appliance_name} Appliance"
 msgstr "Activation de l'appareil {appliance_name}"
 
@@ -49,7 +51,8 @@ msgstr "Une erreur inconnue s'est produite."
 
 #: js/ucs/app.js:258
 msgid "An unknown error occured. Please try it again later!"
-msgstr "Une erreur inconnue s'est produite. Veuillez réessayer ultérieurement."
+msgstr ""
+"Une erreur inconnue s'est produite. Veuillez réessayer ultérieurement."
 
 #: js/ucs/app.js:374
 msgid "Continue"
@@ -78,13 +81,13 @@ msgid ""
 "If you already have a license file you can <a href=\"#upload\">skip this "
 "step and upload the license</a>."
 msgstr ""
-"Si vous disposez déjà d'un fichier de licence, vous pouvez <a href=\"#upload"
-"\">sauter cette étape et transférer la licence</a>."
+"Si vous disposez déjà d'un fichier de licence, vous pouvez <a "
+"href=\"#upload\">sauter cette étape et transférer la licence</a>."
 
 #: js/ucs/app.js:363
 msgid ""
-"If you did not receive an email, please check your SPAM directory or <a href="
-"\"#register\"> request the email again</a>."
+"If you did not receive an email, please check your SPAM directory or <a "
+"href=\"#register\"> request the email again</a>."
 msgstr ""
 "Si vous n'avez pas reçu le courriel, veuillez vérifier votre dossier de "
 "pourriels ou <a href=\"#register\">demander à renvoyer le courriel</a>."
@@ -92,12 +95,12 @@ msgstr ""
 #: js/ucs/app.js:302
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
-"<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-"#000\">feedback@univention.de</a></strong>"
+"<strong><a href=\"mailto:feedback@univention.de\" "
+"style=\"color:#000\">feedback@univention.de</a></strong>"
 msgstr ""
 "Si vous rencontrez des problèmes pendant l'activation, veuillez envoyer un "
-"courriel à : <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-"#000\">feedback@univention.de</a></strong>"
+"courriel à : <strong><a href=\"mailto:feedback@univention.de\" "
+"style=\"color:#000\">feedback@univention.de</a></strong>"
 
 #: js/ucs/app.js:164
 msgid "Language"
@@ -109,18 +112,20 @@ msgstr "Demande de licence."
 
 #: js/ucs/app.js:209
 msgid ""
-"More details about the activation can be found in the <a href=\"http://docs."
-"univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
+"More details about the activation can be found in the <a "
+"href=\"http://docs.univention.de/manual.html#central:license\" "
+"target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Vous pouvez trouver davantage d'informations sur l'activation dans le <a "
-"href=\"http://docs.univention.de/manual.html#central:license\" target="
-"\"_blank\">Manuel UCS</a>."
+"href=\"http://docs.univention.de/manual.html#central:license\" "
+"target=\"_blank\">Manuel UCS</a>."
 
 #: js/ucs/app.js:197
 msgid "No valid email address."
 msgstr "Pas une adresse électronique valide."
 
 #: js/ucs/app.js:191
+#, python-brace-format
 msgid ""
 "Please enter a valid email address in order to activate {appliance_name} "
 "Appliance. The activation is mandatory to deploy the system. In the next "
@@ -129,8 +134,8 @@ msgid ""
 msgstr ""
 "Veuillez saisir une adresse électronique valide pour activer l'appareil "
 "{appliance_name}. L'activation est obligatoire pour déployer le système. À "
-"l'étape suivante, vous pourrez transférer le fichier de licence qui aura été "
-"envoyé à votre adresse électronique."
+"l'étape suivante, vous pourrez transférer le fichier de licence qui aura été"
+" envoyé à votre adresse électronique."
 
 #: js/ucs/app.js:214
 msgid "Request activation"
@@ -166,6 +171,7 @@ msgid "your email address"
 msgstr "votre adresse électronique"
 
 #: js/ucs/app.js:380
+#, python-brace-format
 msgid ""
 "{appliance_name} Appliance is now activated. Click \"Continue\" to access "
 "the management interface (which may take a while)."

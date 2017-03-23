@@ -1,0 +1,47 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup-boot\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: usr/share/univention-system-setup-boot/www/main.js:50
+msgid ""
+"Before starting the setup wizard, an initial password for the <i>root</i> "
+"user must be set."
+msgstr ""
+"Avant de commencer à utiliser l'assistant de configuration, un mot de passe "
+"initial doit être défini pour l'utilisateur <i>root</i>."
+
+#: usr/share/univention-system-setup-boot/www/main.js:52
+msgid ""
+"Connect to this server instance as <i>root</i> via ssh and your selected "
+"private ssh key. "
+msgstr ""
+
+#: usr/share/univention-system-setup-boot/www/main.js:59
+msgid ""
+"If a password for <i>root</i> has been set, <a "
+"href='/univention/setup/?username=root'>start the setup wizard</a>."
+msgstr ""
+
+#: usr/share/univention-system-setup-boot/www/main.js:53
+msgid ""
+"Set a password with <i>passwd</i>, e.g., by issuing the following command:"
+msgstr ""
+
+#: usr/share/univention-system-setup-boot/www/main.js:44
+msgid "Welcome to UCS initial configuration"
+msgstr "Bienvenue dans la configuration initiale d'UCS"
+
+#: usr/share/univention-system-setup-boot/www/main.js:55
+#, python-format
+msgid "ssh -ti &lt;path/to/privatekey&gt; root@%(serveraddress)s passwd"
+msgstr ""

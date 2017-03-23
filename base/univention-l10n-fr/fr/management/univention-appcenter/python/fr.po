@@ -4,18 +4,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 13:43+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: German\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: python/appcenter/utils.py:205
+#: python/appcenter/utils.py:242
 #, python-format
 msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
@@ -24,20 +24,20 @@ msgstr ""
 "Impossible de télécharger %s. Il semble que le problème soit lié au serveur "
 "d'App Center. Veuillez réessayer ultérieurement."
 
-#: python/appcenter-docker/docker.py:66
+#: python/appcenter-docker/docker.py:63
 #, python-format
 msgid "Error while contacting Docker registry server %s"
 msgstr "Erreur lors du contact du service d'enregistrement Docker %s"
 
-#: python/appcenter-docker/docker.py:75
+#: python/appcenter-docker/docker.py:73
 msgid "Manifest checksum mismatch"
 msgstr "Différences dans la somme de contrôle du manifeste"
 
-#: python/appcenter-docker/actions/docker_install.py:84
+#: python/appcenter-docker/actions/docker_install.py:92
 msgid "Setup script failed!"
 msgstr ""
 
-#: python/appcenter/app.py:1142
+#: python/appcenter/app.py:1266
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -46,13 +46,20 @@ msgstr ""
 "L'application a besoin d'un système d'exploitation %(needs)s bits. Le "
 "serveur est exécuté sur un système d'exploitation %(has)s bits."
 
-#: python/appcenter/utils.py:207
+#: python/appcenter/utils.py:247 python/appcenter/utils.py:264
+#, fuzzy, python-format
+msgid "There is a problem with the certificate of the App Center server %s."
+msgstr ""
+"Ce problème provient du serveur d'App Center. Veuillez réessayer "
+"ultérieurement."
+
+#: python/appcenter/utils.py:244
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
 "Ce problème provient du serveur d'App Center. Veuillez réessayer "
 "ultérieurement."
 
-#: python/appcenter/utils.py:219
+#: python/appcenter/utils.py:260
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -61,25 +68,25 @@ msgstr ""
 "Ceci est probablement lié aux réglages DNS de votre serveur. Vous pouvez "
 "trouver de l'aide à l'adresse %s."
 
-#: python/appcenter/utils.py:216
+#: python/appcenter/utils.py:257
 #, python-format
 msgid ""
 "This may be a problem with the firewall or proxy of your system. You may "
 "find help at %s."
 msgstr ""
-"Le problème provient peut-être du pare-feu ou du serveur mandataire de votre "
-"système. Vous pouvez trouver de l'aide à l'adresse %s."
+"Le problème provient peut-être du pare-feu ou du serveur mandataire de votre"
+" système. Vous pouvez trouver de l'aide à l'adresse %s."
 
-#: python/appcenter/utils.py:215
+#: python/appcenter/utils.py:256
 #, python-format
 msgid ""
-"https://docs.software-univention.de/manual-%s.html#ip-config:"
-"Web_proxy_for_caching_and_policy_management__virus_scan"
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
 msgstr ""
-"https://docs.software-univention.de/manual-%s.html#ip-config:"
-"Web_proxy_for_caching_and_policy_management__virus_scan"
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
 
-#: python/appcenter/utils.py:218
+#: python/appcenter/utils.py:259
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"

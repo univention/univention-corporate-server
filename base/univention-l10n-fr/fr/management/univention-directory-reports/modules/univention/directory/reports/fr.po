@@ -1,41 +1,41 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-06 20:05+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: modules/univention/directory/reports/filter.py:74
+#: modules/univention/directory/reports/filter.py:80
 msgid "Domain Group"
 msgstr "Groupe du domaine"
 
-#: modules/univention/directory/reports/filter.py:75
+#: modules/univention/directory/reports/filter.py:81
 msgid "Local Group"
 msgstr "Groupe local"
 
-#: modules/univention/directory/reports/filter.py:58
-#: modules/univention/directory/reports/interpreter.py:155
+#: modules/univention/directory/reports/filter.py:61
+#: modules/univention/directory/reports/interpreter.py:154
 msgid "No"
 msgstr "Non"
 
-#: modules/univention/directory/reports/filter.py:76
+#: modules/univention/directory/reports/filter.py:82
 msgid "Well-Known Group"
 msgstr "Group connu"
 
-#: modules/univention/directory/reports/filter.py:55
-#: modules/univention/directory/reports/interpreter.py:157
-#: modules/univention/directory/reports/interpreter.py:159
+#: modules/univention/directory/reports/filter.py:58
+#: modules/univention/directory/reports/interpreter.py:156
+#: modules/univention/directory/reports/interpreter.py:158
 msgid "Yes"
 msgstr "Oui"

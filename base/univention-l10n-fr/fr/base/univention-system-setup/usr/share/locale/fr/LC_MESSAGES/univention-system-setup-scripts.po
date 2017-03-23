@@ -1,0 +1,153 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:106
+msgid "An error occurred while installing necessary software components."
+msgstr ""
+"Une erreur s'est produite lors de l'installation de composants logiciels "
+"requis."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:42
+msgid "Configuring Active Directory connection"
+msgstr "Configuration de la connexion Active Directory"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:115
+msgid "Configuring Administrator account..."
+msgstr "Configuration du compte Administrateur..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:121
+msgid "Configuring DNS entries..."
+msgstr "Configuration des enregistrements DNS..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:82
+msgid "Configuring DNS server..."
+msgstr "Configuration du serveur DNS..."
+
+#: usr/lib/univention-system-setup/scripts/30_net/10interfaces:47
+msgid "Configuring IPvX network interfaces"
+msgstr "Configuration des interfaces réseau IPvX"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:86
+msgid "Configuring Kerberos settings..."
+msgstr "Configuration des réglages Kerberos..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:90
+msgid "Configuring reverse DNS settings..."
+msgstr "Configuration des réglages DNS inversé..."
+
+#: usr/lib/univention-system-setup/scripts/05_role/10role:41
+msgid "Configuring server role"
+msgstr "Configuration du rôle du serveur"
+
+#: usr/lib/univention-system-setup/scripts/50_software/10software:38
+msgid "Configuring software components"
+msgstr "Configuration des composants logiciels"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:93
+msgid "Configuring software components..."
+msgstr "Configuration des composants logiciels..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:108
+msgid "Configuring synchronization from AD..."
+msgstr "Configuration de la synchronisation depuis AD..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:75
+msgid "Configuring time synchronization..."
+msgstr "Configuration de la synchronisation du temps..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:139
+#, python-format
+msgid ""
+"Could not connect to AD Server %s. Please verify that the specified address "
+"is correct."
+msgstr ""
+"Impossible de se connecter au serveur AD %s. Veuillez vérifier que l'adresse"
+" indiquée est correcte."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:143
+#, python-format
+msgid ""
+"Could not connect to AD Server %s. Please verify that username and password "
+"are correct."
+msgstr ""
+"Impossible de se connecter au serveur AD %s. Veuillez vérifier que le nom "
+"d'utilisateur et le mot de passe sont corrects."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:147
+#, python-format
+msgid ""
+"Could not synchronize the time between the UCS system and the Active "
+"Directory domain controller: %s"
+msgstr ""
+"Impossible de synchroniser l'heure entre le système UCS et le contrôleur de "
+"domaine Active Directory : %s"
+
+#: umc/python/setup/setup_script.py:438
+#, python-format
+msgid "Failed to get package for Role %s"
+msgstr "Échec de la récupération du paquetage pour le rôle %s"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:145
+msgid ""
+"Failed to set the password of the UCS Administrator to the Active Directory "
+"Administrator password."
+msgstr ""
+"La définition du mot de passe administrateur UCS à partir du mot de passe "
+"administrateur Active Directory a échoué."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/15_install_univention_welcome_screen:37
+msgid "Installing univention-welcome-screen"
+msgstr ""
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:134
+msgid "Join has been finished successfully."
+msgstr "La jonction au domaine s'est terminé avec succès."
+
+#: usr/lib/univention-system-setup/scripts/05_role/10role:47
+msgid "Preparing package lists..."
+msgstr "Préparation de la liste des paquetages..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:131
+msgid "Registering LDAP service entry..."
+msgstr "Enregistrement de l'entrée du service LDAP..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:112
+msgid "Renaming well known SID objects..."
+msgstr "Renommage des objets SID bien connus..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:118
+msgid "Running Samba join script..."
+msgstr "Exécution du script de jonction Samba..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:128
+msgid "Starting Active Directory connection service..."
+msgstr "Démarrage du service de connexion Active Directory..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:137
+msgid "The AD member mode can only be configured on a DC master server."
+msgstr ""
+"Le mode membre AD ne peut être configuré que sur un serveur DC(contrôleur de"
+" domaine) maître."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:141
+#, python-format
+msgid ""
+"The domain name of the AD Server (%(ad_domain)s) does not match the local "
+"UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to"
+" setup a UCS system with the same domain name as the AD Server."
+msgstr ""
+"Le nom de domaine du serveur AD (%(ad_domain)s) ne correspond pas au nom de "
+"domaine UCS local (%(ucs_domain)s). Pour le mode membre AD, il est "
+"nécessaire de configurer un système UCS avec le même nom de domaine que le "
+"serveur AD."

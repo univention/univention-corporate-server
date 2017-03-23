@@ -4,106 +4,107 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-09 18:23+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/python/quota/tools.py:75
+#: umc/python/quota/tools.py:74
 #, python-format
 msgid "%s Days"
 msgstr "%s jours"
 
-#: umc/python/quota/tools.py:134 umc/python/quota/tools.py:182
-#: umc/python/quota/partition.py:56 umc/python/quota/partition.py:84
-#: umc/python/quota/user.py:154
+#: umc/python/quota/tools.py:131 umc/python/quota/tools.py:180
+#: umc/python/quota/partition.py:58 umc/python/quota/partition.py:86
+#: umc/python/quota/user.py:151
 #, python-format
 msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
-#: umc/python/quota/tools.py:187
+#: umc/python/quota/tools.py:185
 msgid "Device could not be found"
 msgstr "Le périphérique n'a pas pu être trouvé"
 
-#: umc/python/quota/tools.py:138
+#: umc/python/quota/tools.py:135
 msgid "Device is not mounted"
 msgstr "Le périphérique n'est pas monté"
 
-#: umc/python/quota/tools.py:73
+#: umc/python/quota/tools.py:72
 msgid "Expired"
 msgstr "Expiré"
 
-#: umc/python/quota/user.py:115
-#, python-format
+#: umc/python/quota/user.py:111
+#, fuzzy, python-format
 msgid ""
-"Failed to modify quota settings for user %(user)s on partition %(partition)s"
+"Failed to modify quota settings for user %(user)s on partition "
+"%(partition)s."
 msgstr ""
 "La modification des réglages de quotas pour l'utilisateur %(user)s sur la "
 "partition %(partition)s a échoué."
 
-#: umc/python/quota/tools.py:297
+#: umc/python/quota/tools.py:295
 msgid "Generating the quota information file failed"
 msgstr "La génération du fichier d'informations sur les quotas a échoué"
 
-#: umc/python/quota/tools.py:241
+#: umc/python/quota/tools.py:239
 msgid "Mounting the partition has failed"
 msgstr "Le montage de la partition a échoué"
 
-#: umc/python/quota/partition.py:100
+#: umc/python/quota/partition.py:102
 msgid "No partition found"
 msgstr "Pas de partition trouvée"
 
-#: umc/python/quota/user.py:171
+#: umc/python/quota/user.py:162
 #, python-format
 msgid "No partition found (%s)"
 msgstr "Pas de partition trouvée (%s)"
 
-#: umc/python/quota/tools.py:232
+#: umc/python/quota/tools.py:230
 msgid "Operation was successful"
 msgstr "L'opération a réussi"
 
-#: umc/python/quota/tools.py:209
+#: umc/python/quota/tools.py:207
 msgid "Quota already en/disabled"
 msgstr "Quotas déjà activés / désactivés"
 
-#: umc/python/quota/partition.py:115
+#: umc/python/quota/partition.py:117
 msgid "Quota support successfully activated"
 msgstr "Prise en charge des quotas activée avec succès"
 
-#: umc/python/quota/partition.py:131
+#: umc/python/quota/partition.py:133
 msgid "Quota support successfully deactivated"
 msgstr "Prise en charge des quotas désactivée avec succès"
 
-#: umc/python/quota/tools.py:284
+#: umc/python/quota/tools.py:282
 msgid "Remounting the partition has failed"
 msgstr "Le remontage de la partition a échoué"
 
-#: umc/python/quota/tools.py:244 umc/python/quota/tools.py:288
-#: umc/python/quota/tools.py:301 umc/python/quota/tools.py:305
+#: umc/python/quota/tools.py:242 umc/python/quota/tools.py:286
+#: umc/python/quota/tools.py:299 umc/python/quota/tools.py:303
 msgid "Restarting the quota services has failed"
 msgstr "Le redémarrage des services de quotas a échoué"
 
-#: umc/python/quota/user.py:167
+#: umc/python/quota/user.py:160
 #, python-format
 msgid "The following partition is currently not mounted: %s"
 msgstr "La partition suivante n'est pas montée actuellement : %s"
 
-#: umc/python/quota/user.py:163
+#: umc/python/quota/user.py:158
 #, python-format
 msgid "The following partition is mounted without quota support: %s"
 msgstr "La partition suivante est montée sans prise en charge des quotas : %s"
 
-#: umc/python/quota/partition.py:97
+#: umc/python/quota/partition.py:99
 msgid "This partition is currently not mounted"
 msgstr "Cette partition n'est pas montée actuellement"
 
-#: umc/python/quota/tools.py:275
+#: umc/python/quota/tools.py:273
 #, python-format
 msgid ""
 "To %s quota support for the root filesystem the system has to be rebooted."
@@ -111,18 +112,18 @@ msgstr ""
 "Pour %s la prise en charge des quotas pour le système de fichiers root, le "
 "système doit être redémarré."
 
-#: umc/python/quota/tools.py:225
+#: umc/python/quota/tools.py:223
 msgid "Unknown filesystem"
 msgstr "Système de fichiers inconnu"
 
-#: umc/python/quota/tools.py:238
+#: umc/python/quota/tools.py:236
 msgid "Unmounting the partition has failed"
 msgstr "Le démontage de la partition a échoué"
 
-#: umc/python/quota/tools.py:274
+#: umc/python/quota/tools.py:272
 msgid "disable"
 msgstr "désactiver"
 
-#: umc/python/quota/tools.py:274
+#: umc/python/quota/tools.py:272
 msgid "enable"
 msgstr "activer"

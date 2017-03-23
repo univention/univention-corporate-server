@@ -5,22 +5,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-welcome-screen\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-06-21 21:12+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
-
-#: univention-welcome-screen:82 univention-welcome-screen:84
-#: univention-welcome-screen:86 univention-welcome-screen:87
-#: univention-welcome-screen:88 univention-welcome-screen:89
-msgid "-d"
-msgstr ""
 
 #~ msgid "Navigate to one of the following addresses:"
 #~ msgstr "Naviguer vers l'une des adresses suivantes :"
@@ -35,5 +29,4 @@ msgstr ""
 #~ msgstr "Bienvenue dans Univention Corporate Server"
 
 #~ msgid "[ Press any key to open text console ]"
-#~ msgstr ""
-#~ "[ Appuyez sur une touche du clavier pour ouvrir la console de texte ]"
+#~ msgstr "[ Appuyez sur une touche du clavier pour ouvrir la console de texte ]"

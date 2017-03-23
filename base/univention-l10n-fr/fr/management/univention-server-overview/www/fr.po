@@ -1,0 +1,47 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-server-overview\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: www/main.js:64
+#, python-format
+msgid "%s - Server overview"
+msgstr ""
+
+#: www/GalleryPane.js:43
+msgid "DC backup"
+msgstr ""
+
+#: www/GalleryPane.js:42
+msgid "DC master"
+msgstr ""
+
+#: www/GalleryPane.js:44
+msgid "DC slave"
+msgstr ""
+
+#: www/GalleryPane.js:45
+msgid "Member server"
+msgstr "Serveur membre"
+
+#: www/main.js:71
+msgid "Search servers"
+msgstr ""
+
+#: www/main.js:67
+#, python-format
+msgid "Server overview for domain %s"
+msgstr ""
+
+#: www/GalleryPane.js:52
+msgid "Unknown"
+msgstr "Inconnue"

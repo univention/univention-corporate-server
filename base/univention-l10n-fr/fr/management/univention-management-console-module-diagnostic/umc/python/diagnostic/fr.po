@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 14:04+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -33,26 +33,28 @@ msgstr "Ajuster aux limites suggérées"
 msgid "Gateway is not reachable"
 msgstr "La passerelle n'est pas accessible"
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:51
+#: umc/python/diagnostic/plugins/ssh_connection.py:54
 msgid "Host key for server does not match"
 msgstr "La clé d'hôte pour ce serveur ne correspond pas"
 
 #: umc/python/diagnostic/plugins/nameserver.py:17
 msgid ""
-"If the problem persists make sure the nameserver is connected to the network "
-"and the forwarders are able to reach the internet (www.univention.de)."
+"If the problem persists make sure the nameserver is connected to the network"
+" and the forwarders are able to reach the internet (www.univention.de)."
 msgstr ""
 "Si le problème persiste, veuillez vous assurer que le serveur de noms est "
 "connecté au réseau et que les transmetteurs (forwarders) peuvent accéder à "
 "Internet (www.univention.de)."
 
 #: umc/python/diagnostic/plugins/gateway.py:14
-msgid "If these settings are correct the problem relies in the gateway itself:"
+msgid ""
+"If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
 "Si ces réglages sont corrects, le problème provient de la passerelle elle-"
 "même :"
 
 #: umc/python/diagnostic/plugins/security_limits.py:19
+#, python-brace-format
 msgid ""
 "It is suggested to increase the security limits either manually by using "
 "{ucr} or to automatically adjust them to the suggested limits:"
@@ -60,25 +62,25 @@ msgstr ""
 "Il est conseillé d'augmenter les limites de sécurité manuellement en "
 "utilisant {ucr} ou de les ajuster automatiquement aux limites proposées :"
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:56
+#: umc/python/diagnostic/plugins/ssh_connection.py:59
 #, python-format
 msgid ""
-"Login to the remote server with the uid %(uid)s and the password from /etc/"
-"machine.secret failed. "
+"Login to the remote server with the uid %(uid)s and the password from "
+"/etc/machine.secret failed. "
 msgstr ""
 "Échec de la connexion au serveur distant avec l'UID %(uid)s et le mot de "
 "passe issu de « /etc/machine.secret ». "
 
 #: umc/python/diagnostic/plugins/package_status.py:14
 msgid ""
-"Login to the system as root via ssh and run the command \"dpkg --configure -a"
-"\" in order to correct the packages status."
+"Login to the system as root via ssh and run the command \"dpkg --configure "
+"-a\" in order to correct the packages status."
 msgstr ""
 "Connectez-vous au système en tant que super utilisateur par le biais de SSH "
 "et exécutez la commande « dpkg --configure -a » afin de corriger l'état des "
 "paquetages."
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:55
+#: umc/python/diagnostic/plugins/ssh_connection.py:58
 msgid "Machine authentication failed"
 msgstr "Échec de l'authentification à la machine"
 
@@ -90,7 +92,8 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/package_status.py:15
 msgid ""
-"More information about the cause can be gained by executing \"dpkg --audit\"."
+"More information about the cause can be gained by executing \"dpkg "
+"--audit\"."
 msgstr ""
 "Des informations complémentaires sur l'origine du problème peuvent être "
 "obtenues en exécutant « dpkg --audit »."
@@ -103,7 +106,7 @@ msgstr "Le ou les serveurs de noms ne sont pas réactifs"
 msgid "Package status corrupt"
 msgstr "Corruption de l'état du paquetage"
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:57
+#: umc/python/diagnostic/plugins/ssh_connection.py:60
 msgid ""
 "Please check /var/log/auth.log on the remote server for further information."
 msgstr ""
@@ -118,14 +121,14 @@ msgstr ""
 "Veuillez vous assurer que les réglages DNS dans {setup:network} sont "
 "correctement définis."
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:53
+#: umc/python/diagnostic/plugins/ssh_connection.py:56
 #, python-format
 msgid ""
-"Please repair the host key of the remote server in /root/.ssh/known_hosts on "
-"%(fqdn)s."
+"Please repair the host key of the remote server in /root/.ssh/known_hosts on"
+" %(fqdn)s."
 msgstr ""
-"Veuillez réparer la clé d'hôte du serveur distant dans « /root/.ssh/"
-"known_hosts » pour %(fqdn)s."
+"Veuillez réparer la clé d'hôte du serveur distant dans « "
+"/root/.ssh/known_hosts » pour %(fqdn)s."
 
 #: umc/python/diagnostic/plugins/proxy.py:15
 msgid "Proxy server failure"
@@ -139,11 +142,11 @@ msgstr "Échec de la connexion SSH au serveur UCS !"
 msgid "Security limits exceeded"
 msgstr "Limites de sécurité atteintes"
 
-#: umc/python/diagnostic/__init__.py:262
+#: umc/python/diagnostic/__init__.py:279
 msgid "Test again"
 msgstr "Tester à nouveau"
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:49
+#: umc/python/diagnostic/plugins/ssh_connection.py:52
 msgid ""
 "The following list shows the affected remote servers and the reason for the "
 "failed ssh connection:"
@@ -155,8 +158,8 @@ msgstr ""
 #, python-format
 msgid ""
 "The gateway %r could not be reached. Please make sure the gateway and "
-"related network settings are correctly configured by using the {setup:"
-"network}."
+"related network settings are correctly configured by using the "
+"{setup:network}."
 msgstr ""
 "Impossible d'atteindre la passerelle %r. Veuillez vous assurer que la "
 "passerelle et les réglages réseaux associés soient configurés correctement "
@@ -176,7 +179,8 @@ msgstr "Les limites ont été adaptées à la valeur suggérée."
 
 #: umc/python/diagnostic/plugins/nameserver.py:43
 #, python-format
-msgid "The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
+msgid ""
+"The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
 msgstr ""
 "Le serveur de noms %(nameserver)s (variable UCR %(var)r) n'est pas réactif :"
 
@@ -200,8 +204,8 @@ msgid ""
 "The proxy server is reachable but the HTTP response status code (%d) does "
 "not indicate success."
 msgstr ""
-"Le serveur mandataire est accessible, mais le code d'état de la réponse HTTP "
-"(%d) n'indique pas une réussite."
+"Le serveur mandataire est accessible, mais le code d'état de la réponse HTTP"
+" (%d) n'indique pas une réussite."
 
 #: umc/python/diagnostic/plugins/security_limits.py:17
 msgid ""
@@ -220,11 +224,11 @@ msgstr ""
 "Le serveur n'a pas répondu dans les %d secondes. Veuillez vérifier votre "
 "configuration réseau."
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:48
+#: umc/python/diagnostic/plugins/ssh_connection.py:51
 msgid "The ssh connection to at least one other UCS server failed. "
 msgstr "Échec de la connexion SSH à au moins un autre serveur UCS."
 
-#: umc/python/diagnostic/plugins/ssh_connection.py:52
+#: umc/python/diagnostic/plugins/ssh_connection.py:55
 msgid ""
 "The ssh host key of the remote server has changed (maybe the host was "
 "reinstalled). "
@@ -257,8 +261,8 @@ msgid ""
 "credentials (if any) are correct and the proxy server ACLs do not forbid "
 "requests to %s."
 msgstr ""
-"Cet avertissement est peut-être sans danger. Veuillez cependant vous assurer "
-"que les preuves d'identité (s'il y en a) sont correctes et que les ACL du "
+"Cet avertissement est peut-être sans danger. Veuillez cependant vous assurer"
+" que les preuves d'identité (s'il y en a) sont correctes et que les ACL du "
 "serveur mandataire n'interdisent pas les requêtes vers %s."
 
 #: umc/python/diagnostic/plugins/package_status.py:28

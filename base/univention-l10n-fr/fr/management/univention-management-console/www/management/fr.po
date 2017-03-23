@@ -1,0 +1,354 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-frontend\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: www/management/widgets/WelcomePage.js:78
+#, python-format
+msgid ""
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you "
+"opinion!</a></p>"
+msgstr ""
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Donnez-nous votre avis"
+" !</a></p>"
+
+#: www/management/widgets/LicenseImportPage.js:48
+msgid ""
+"<p><b>You have got mail!</b></p><p>A license file should have been sent to "
+"your email address. Upload the license file from the email to activate your "
+"UCS instance.</p>"
+msgstr ""
+"<p><b>Vous avez reçu un message !</b></p><p>Un fichier de licence vous a été"
+" envoyé à votre adresse électronique. Envoyez ce fichier de licence par "
+"courrier électronique pour activer votre instance UCS.</p>"
+
+#: www/management/widgets/WelcomePage.js:58
+msgid ""
+"<p>Congratulations, you have successfully completed the configuration of "
+"your Univention Corporate Server (UCS), and you have logged into Univention "
+"Management Console (UMC). UMC is the central web application for a "
+"comfortable system administration and domain management.</p><p>Are you "
+"satisfied with the system configuration?</p>"
+msgstr ""
+"<p>Félicitations, vous avez terminé la configuration de Univention Corporate"
+" Server (UCS), et vous êtes authentifié sur Univention Management Console "
+"(UMC). UMC est l'application Web centrale permettant une administration "
+"conviviale des systèmes et la gestion des domaines.</p><p>La configuration "
+"du système vous convient-elle ?</p>"
+
+#: www/management/widgets/HelpPage.js:44
+msgid ""
+"<p>Detailed usage information on Univention Management Console can be found "
+"in the UCS manual. The manual as well as further important information are "
+"available via the following links:</p>"
+msgstr ""
+"<p>Les informations détaillées sur l'utilisation de Univention Management "
+"Console se trouvent dans le manuel d'UCS. Le manuel ainsi que d'autres "
+"informations importantes sont disponibles au travers des liens suivants "
+":</p>"
+
+#: www/management/widgets/ActivationPage.js:65
+#, python-format
+msgid ""
+"<p>Details about the activation of a UCS license can be found in the <a "
+"href=\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
+"target=\"_blank\">UCS manual</a>.</p>"
+msgstr ""
+"<p>Les détails sur l'activation d'une licence UCS se trouvent dans le <a "
+"href=\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
+"target=\"_blank\">manuel d'UCS</a>.</p>"
+
+#: www/management/widgets/ActivationPage.js:61
+msgid ""
+"<p>Leave the field empty to perform the activation at a later point in time "
+"via the user menu in top right corner.</p>"
+msgstr ""
+"<p>Laissez ce champ vide pour activer ultérieurement par le biais du menu "
+"utilisateur dans le coin en haut à droite.</p>"
+
+#: www/management/widgets/FeedbackPage.js:47
+#, python-format
+msgid ""
+"<p>On UCS evaluation systems, anonymous usage statistics are created by "
+"default and sent to Univention. This allows to continuously adapt UCS to "
+"suit the practical needs of its users.</p><p>The information consists of UMC"
+" usage statistics and a one-time statistic on the hardware configuration. "
+"Details about the usage statistics and about its deactivation can be found "
+"in the <a href=\"http://docs.univention.de/manual-%(version)s.html#central-"
+"management-umc:piwik\" target=\"_blank\">UCS manual</a>.</p><p>Usage "
+"statistics are automatically deactivated when importing a commercial "
+"license.</p>"
+msgstr ""
+"<p>Sur les systèmes d'évaluation d'UCS, des statistiques d'utilisation "
+"anonymes sont créées par défaut et envoyées à Univention. Ceci permet "
+"d'adapter de manière continue UCS aux besoins de ses utilisateurs.</p><p>Ces"
+" informations comportent des statistiques d'utilisation d'UMC et une "
+"statistique unique sur la configuration du matériel. Les détails des "
+"statistiques d'utilisation et leur possible désactivation sont décrits dans "
+"le <a href=\"http://docs.univention.de/manual-%(version)s.html#central-"
+"management-umc:piwik\" target=\"_blank\">manuel d'UCS</a>.</p><p>Les "
+"statistiques d'utilisation sont désactivées automatiquement lorsque vous "
+"importez une licence commerciale.</p>"
+
+#: www/management/widgets/FinishedActivationPage.js:44
+msgid ""
+"<p>The license has been updated successfully.</p><p>You can now continue to "
+"use UMC, all applications in the Univention App Center are now available for"
+" installation on this system.</p>"
+msgstr ""
+"<p>La licence a été correctement mise à jour.</p><p>Vous pouvez maintenant "
+"continuer à utiliser UMC, toutes les applications de Univention App Center "
+"peuvent être installées sur ce système.</p>"
+
+#: www/management/widgets/FinishedPage.js:44
+msgid ""
+"<p>The startup wizard has been completed now.</p><p>All listed information "
+"can be accessed at any later point in time via the application menu on the "
+"top right.</p>"
+msgstr ""
+"<p>L'assistant de démarrage est maintenant terminé.</p><p>Toutes les "
+"informations listées sont accessibles à tout moment par le biais du menu "
+"d'application en haut à droite.</p>"
+
+#: www/management/widgets/ActivationPage.js:47
+msgid ""
+"<p>You may now enter a valid e-mail address in order to activate the UCS "
+"system to use the App Center. In the next step you can upload the license "
+"file that has been sent to your email address.</p>"
+msgstr ""
+"<p>Vous pouvez maintenant saisir une adresse électronique valide afin "
+"d'activer le système UCS et d'utiliser App Center. Vous pourrez envoyer le "
+"fichier de licence qui vous a été transmis au cours de l'étape suivante.</p>"
+
+#: www/management/widgets/HelpPage.js:48
+msgid ""
+"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" "
+"target=\"_blank\">Online documentation</a></li><li><a "
+"href=\"http://wiki.univention.de/index.php?title=Hauptseite\" "
+"target=\"_blank\">Univention Wiki</a></li><li><a "
+"href=\"https://www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Community and support</a></li></ul>"
+msgstr ""
+"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" "
+"target=\"_blank\">Documentation en ligne</a></li><li><a "
+"href=\"http://wiki.univention.de/index.php?title=Hauptseite\" "
+"target=\"_blank\">Wiki Univention</a></li><li><a "
+"href=\"https://www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Communauté et assistance</a></li></ul>"
+
+#: www/management/main.js:679
+msgid "About UMC"
+msgstr "À propos de UMC"
+
+#: www/management/widgets/ActivationPage.js:40
+#: www/management/widgets/ActivationDialog.js:55
+msgid "Activation of Univention Corporate Server"
+msgstr "Activation de Univention Corporate Server"
+
+#: www/management/main.js:1244
+msgid "Add to favorites"
+msgstr "Ajouter aux favoris"
+
+#: www/management/main.js:707
+msgid "Close"
+msgstr "Fermer"
+
+#: www/management/widgets/FinishedPage.js:40
+msgid "Completion of startup wizard"
+msgstr "Fin de l'assistant de démarrage"
+
+#: www/management/main.js:1012
+#, python-format
+msgid "Could not load module \"%s\"."
+msgstr "Impossible de charger le module « %s »."
+
+#: www/management/widgets/AboutPage.js:59
+msgid "Date of expiry of the SSL certificate for this system"
+msgstr "Date d'expiration du certificat SSL de ce système"
+
+#: www/management/widgets/AboutPage.js:56
+msgid "Date of expiry of the SSL root certificate"
+msgstr "Date d'expiration du certificat SSL racine"
+
+#: www/management/widgets/ActivationPage.js:51
+msgid "E-mail address"
+msgstr "Adresse électronique"
+
+#: www/management/widgets/FeedbackPage.js:53
+msgid "Enable one-time statistic on hardware configuration."
+msgstr ""
+"Activer les statistiques collectées une seule fois sur la configuration du "
+"matériel."
+
+#: www/management/widgets/WelcomePage.js:62
+msgid "Everything worked great."
+msgstr "Tout a fonctionné parfaitement."
+
+#: www/management/main.js:673
+msgid "Feedback"
+msgstr "Avis"
+
+#: www/management/widgets/FeedbackPage.js:40
+msgid "Feedback via usage statistics"
+msgstr "Retour par le biais des statistiques d'utilisation"
+
+#: www/management/widgets/HelpPage.js:37
+msgid "Further Information"
+msgstr "Informations supplémentaires"
+
+#: www/management/error.html:26
+#, javascript-format
+msgid "HTTP Error %s"
+msgstr "Erreur HTTP %s"
+
+#: www/management/main.js:667
+msgid "Help"
+msgstr "Aide"
+
+#: www/management/widgets/WelcomePage.js:70
+msgid "I see potential for improvement."
+msgstr "Je vois des possibilités d'améliorations."
+
+#: www/management/widgets/LicenseImportPage.js:57
+#: www/management/widgets/StartupDialog.js:123
+#: www/management/widgets/ActivationDialog.js:138
+msgid "Importing license data..."
+msgstr "Importation des données de la licence..."
+
+#: www/management/widgets/LicenseImportPage.js:41
+msgid "License import"
+msgstr "Importation de licence"
+
+#: www/management/main.js:632
+msgid "Module search"
+msgstr "Recherche de module"
+
+#: www/management/widgets/ActivationPage.js:53
+msgid "No valid e-mail address."
+msgstr "Pas d'adresse électronique valide."
+
+#: www/management/main.js:1234
+msgid "Open module"
+msgstr "Ouvrir le module"
+
+#: www/management/main.js:1244
+msgid "Remove from favorites"
+msgstr "Supprimer des favoris"
+
+#: www/management/main.js:432
+msgid "SSL host certificate"
+msgstr "Certificat SSL de l'hôte"
+
+#: www/management/main.js:429
+msgid "SSL root certificate"
+msgstr "Certificat SSL racine"
+
+#: www/management/main.js:1387
+#, python-format
+msgid "Search query ›%s‹"
+msgstr "Requête de recherche ›%s‹"
+
+#: www/management/widgets/ActivationDialog.js:132
+msgid "Send license"
+msgstr "Envoyer la licence"
+
+#: www/management/widgets/StartupDialog.js:106
+#: www/management/widgets/ActivationDialog.js:100
+msgid "Sending activation email..."
+msgstr "Envoi du message d'activation..."
+
+#: www/management/widgets/AboutPage.js:47
+msgid "Server"
+msgstr "Serveur"
+
+#: www/management/widgets/StartupDialog.js:134
+#: www/management/widgets/ActivationDialog.js:149
+msgid "Server error message:"
+msgstr "Message d'erreur du serveur :"
+
+#: www/management/main.js:437
+#, python-format
+msgid ""
+"The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgstr ""
+"Le %(certificate)s expirera dans %(days)d jours et doit être renouvelé !"
+
+#: www/management/widgets/StartupDialog.js:231
+#: www/management/widgets/ActivationDialog.js:187
+msgid ""
+"The activation of UCS failed. Please re-try to perform the the activation "
+"again via the user menu in the top right."
+msgstr ""
+"Échec en activant UCS. Veuillez essayer à nouveau d'effectuer l'activation "
+"par le biais du menu utilisateur en haut à droite."
+
+#: www/management/widgets/StartupDialog.js:132
+#: www/management/widgets/ActivationDialog.js:147
+msgid ""
+"The import of the license failed. Check the integrity of the original file "
+"given to you."
+msgstr ""
+"Échec d'importation de la licence. Veuillez vérifier l'intégrité du fichier "
+"original qui vous a été transmis."
+
+#: www/management/widgets/LicenseImportPage.js:65
+msgid "The license has been imported successfully."
+msgstr "La licence a été importée avec succès."
+
+#: www/management/main.js:1086
+#, python-format
+msgid "There is no module available for the authenticated user %s."
+msgstr "Aucun module disponible pour l'utilisateur authentifié %s."
+
+#: www/management/widgets/AboutPage.js:50
+msgid "UCS Version"
+msgstr "Version d'UCS"
+
+#: www/management/widgets/AboutPage.js:53
+msgid "UMC Version"
+msgstr "Version d'UMC"
+
+#: www/management/widgets/AboutPage.js:44
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
+
+#: www/management/widgets/LicenseImportPage.js:62
+msgid "Updating session data..."
+msgstr "Actualisation des données de session..."
+
+#: www/management/widgets/LicenseImportPage.js:52
+msgid "Upload license file..."
+msgstr "Envoyer un fichier de licence..."
+
+#: www/management/main.js:695
+msgid "Usage statistics"
+msgstr "Statistiques d'utilisation"
+
+#: www/management/widgets/StartupDialog.js:57
+msgid "Welcome to UMC"
+msgstr "Bienvenue sur UMC"
+
+#: www/management/widgets/WelcomePage.js:51
+msgid "Welcome to Univention Management Console"
+msgstr "Bienvenue sur Univention Management Console"
+
+#: www/management/widgets/LicenseImportPage.js:78
+msgid ""
+"You may as well import the license file at a later point in time via the "
+"user menu in the top right."
+msgstr ""
+"Vous pouvez importer ultérieurement le fichier de licence par le biais du "
+"menu utilisateur en haut à droite."
+
+#: www/management/main.js:771 www/management/widgets/WelcomePage.js:78
+msgid "umcFeedbackUrl"
+msgstr "umcFeedbackUrl"

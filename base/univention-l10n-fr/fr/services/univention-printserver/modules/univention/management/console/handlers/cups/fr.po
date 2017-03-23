@@ -1,24 +1,24 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"POT-Creation-Date: 2017-03-21 20:54+0100\n"
 "PO-Revision-Date: 2016-07-10 13:00+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:85
+#: modules/univention/management/console/handlers/cups/_revamp.py:87
 msgid "Activate printers"
 msgstr "Activer les imprimantes"
 
@@ -26,16 +26,16 @@ msgstr "Activer les imprimantes"
 msgid "Activates printers"
 msgstr "Active des imprimantes"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:225
+#: modules/univention/management/console/handlers/cups/_revamp.py:226
 #, python-format
 msgid "Add print quota entry on printer %(printer)s"
 msgstr "Ajouter une entrée de quota d'impression sur l'imprimante %(printer)s"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:211
+#: modules/univention/management/console/handlers/cups/_revamp.py:212
 msgid "Add quota entry"
 msgstr "Ajouter une entrée de quota"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:131
+#: modules/univention/management/console/handlers/cups/_revamp.py:133
 msgid "Cancel print job"
 msgstr "Annuler la tâche d'impression"
 
@@ -47,11 +47,11 @@ msgstr "Annuler les tâches d'impression"
 msgid "Cancels all given print jobs."
 msgstr "Annule les tâches d'impression données."
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:120
+#: modules/univention/management/console/handlers/cups/_revamp.py:122
 msgid "Date"
 msgstr "Date"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:86
+#: modules/univention/management/console/handlers/cups/_revamp.py:88
 msgid "Deactivate printers"
 msgstr "Désactiver les imprimantes"
 
@@ -59,52 +59,52 @@ msgstr "Désactiver les imprimantes"
 msgid "Deactivates printers"
 msgstr "Désactive des imprimantes"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:58
-#: modules/univention/management/console/handlers/cups/_revamp.py:115
-#: modules/univention/management/console/handlers/cups/_revamp.py:153
-#: modules/univention/management/console/handlers/cups/_types.py:44
+#: modules/univention/management/console/handlers/cups/_revamp.py:60
+#: modules/univention/management/console/handlers/cups/_revamp.py:117
+#: modules/univention/management/console/handlers/cups/_revamp.py:154
+#: modules/univention/management/console/handlers/cups/_types.py:46
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:188
+#: modules/univention/management/console/handlers/cups/_revamp.py:189
 #, python-format
 msgid "Edit print quota for %(user)s"
 msgstr "Modifier le quota d'impression de %(user)s"
 
-#: modules/univention/management/console/handlers/cups/_printer.py:161
+#: modules/univention/management/console/handlers/cups/_printer.py:160
 #, python-format
 msgid ""
 "Failed to modify print quota settings for user %(user)s on printer "
 "%(printer)s"
 msgstr ""
-"Échec de la modification des réglages du quota d'impression de l'utilisateur "
-"%(user)s pour l'imprimante %(printer)s"
+"Échec de la modification des réglages du quota d'impression de l'utilisateur"
+" %(user)s pour l'imprimante %(printer)s"
 
-#: modules/univention/management/console/handlers/cups/_printer.py:177
+#: modules/univention/management/console/handlers/cups/_printer.py:175
 #, python-format
 msgid "Failed to reset print quota for user %(user)s on printer %(printer)s"
 msgstr ""
-"Échec de la réinitialisation du quota d'impression de l'utilisateur %(user)s "
-"pour l'imprimante %(printer)s"
+"Échec de la réinitialisation du quota d'impression de l'utilisateur %(user)s"
+" pour l'imprimante %(printer)s"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:164
+#: modules/univention/management/console/handlers/cups/_revamp.py:165
 msgid "Hard limit"
 msgstr "Limite dure"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:137
-#: modules/univention/management/console/handlers/cups/_revamp.py:213
+#: modules/univention/management/console/handlers/cups/_revamp.py:139
+#: modules/univention/management/console/handlers/cups/_revamp.py:214
 msgid "Information"
 msgstr "Informations"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:120
+#: modules/univention/management/console/handlers/cups/_revamp.py:122
 msgid "Job ID"
 msgstr "Id. de la tâche"
 
-#: modules/univention/management/console/handlers/cups/_types.py:53
+#: modules/univention/management/console/handlers/cups/_types.py:55
 msgid "Job list"
 msgstr "Liste des tâches"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:165
+#: modules/univention/management/console/handlers/cups/_revamp.py:166
 msgid "Lifetime page counter"
 msgstr "Compteur global des pages"
 
@@ -116,10 +116,10 @@ msgstr "Lister les imprimantes"
 msgid "Lists all available printers"
 msgstr "Énumère les imprimantes disponibles"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:58
-#: modules/univention/management/console/handlers/cups/_revamp.py:114
-#: modules/univention/management/console/handlers/cups/_revamp.py:152
-#: modules/univention/management/console/handlers/cups/_types.py:45
+#: modules/univention/management/console/handlers/cups/_revamp.py:60
+#: modules/univention/management/console/handlers/cups/_revamp.py:116
+#: modules/univention/management/console/handlers/cups/_revamp.py:153
+#: modules/univention/management/console/handlers/cups/_types.py:47
 msgid "Location"
 msgstr "Emplacement"
 
@@ -127,7 +127,7 @@ msgstr "Emplacement"
 msgid "Manages printers controlled by the CUPS server"
 msgstr "Gère les imprimantes contrôlées par le serveur CUPS"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:223
+#: modules/univention/management/console/handlers/cups/_revamp.py:224
 #, python-format
 msgid "Modify print quota setting for user '%(user)s' on printer %(printer)s"
 msgstr ""
@@ -147,44 +147,44 @@ msgid "Moves a list of print jobs from one printer to another."
 msgstr ""
 "Déplace une liste de tâches d'impression d'une imprimante vers une autre."
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:135
+#: modules/univention/management/console/handlers/cups/_revamp.py:137
 msgid "No jobs in the queue"
 msgstr "Pas de tâche dans la file"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:91
+#: modules/univention/management/console/handlers/cups/_revamp.py:93
 msgid "No printers could be found."
 msgstr "Pas d'imprimante trouvée."
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:203
+#: modules/univention/management/console/handlers/cups/_revamp.py:204
 msgid "No quota settings available"
 msgstr "Pas de réglage de quota disponible"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:120
+#: modules/univention/management/console/handlers/cups/_revamp.py:122
 msgid "Owner"
 msgstr "Propriétaire"
 
-#: modules/univention/management/console/handlers/cups/_types.py:56
+#: modules/univention/management/console/handlers/cups/_types.py:58
 msgid "Page quota hard limit"
 msgstr "Limite dure du quota de pages"
 
-#: modules/univention/management/console/handlers/cups/_types.py:55
+#: modules/univention/management/console/handlers/cups/_types.py:57
 msgid "Page quota soft limit"
 msgstr "Limite douce du quota de pages"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:164
+#: modules/univention/management/console/handlers/cups/_revamp.py:165
 msgid "Pages used"
 msgstr "Pages utilisées"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:138
+#: modules/univention/management/console/handlers/cups/_revamp.py:140
 msgid "Print job list"
 msgstr "Liste des tâches d'impression"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:214
+#: modules/univention/management/console/handlers/cups/_revamp.py:215
 msgid "Print quota"
 msgstr "Quota d'impression"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:57
-#: modules/univention/management/console/handlers/cups/_types.py:49
+#: modules/univention/management/console/handlers/cups/_revamp.py:59
+#: modules/univention/management/console/handlers/cups/_types.py:51
 msgid "Printer"
 msgstr "Imprimante"
 
@@ -192,11 +192,11 @@ msgstr "Imprimante"
 msgid "Printer administration"
 msgstr "Administration des imprimantes"
 
-#: modules/univention/management/console/handlers/cups/_types.py:52
+#: modules/univention/management/console/handlers/cups/_types.py:54
 msgid "Printer list"
 msgstr "Liste des imprimantes"
 
-#: modules/univention/management/console/handlers/cups/_types.py:44
+#: modules/univention/management/console/handlers/cups/_types.py:46
 msgid "Printer name"
 msgstr "Nom de l'imprimante"
 
@@ -204,13 +204,13 @@ msgstr "Nom de l'imprimante"
 msgid "Printer quotas"
 msgstr "Quotas de l'imprimante"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:111
-#: modules/univention/management/console/handlers/cups/_revamp.py:149
+#: modules/univention/management/console/handlers/cups/_revamp.py:113
+#: modules/univention/management/console/handlers/cups/_revamp.py:150
 #, python-format
 msgid "Printer: %s"
 msgstr "Imprimante : %s"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:57
+#: modules/univention/management/console/handlers/cups/_revamp.py:59
 msgid "Quota"
 msgstr "Quota"
 
@@ -222,27 +222,27 @@ msgstr "Réinitialiser le quota d'impression d'un utilisateur"
 msgid "Reset user print quota"
 msgstr "Réinitialiser le quota d'impression d'un utilisateur"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:199
+#: modules/univention/management/console/handlers/cups/_revamp.py:200
 msgid "Reset user quota"
 msgstr "Réinitialiser le quota d'utilisateur"
 
-#: modules/univention/management/console/handlers/cups/_types.py:41
+#: modules/univention/management/console/handlers/cups/_types.py:43
 msgid "Search key"
 msgstr "Chercher la clé"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:94
+#: modules/univention/management/console/handlers/cups/_revamp.py:96
 msgid "Search result"
 msgstr "Résultats de la recherche"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:87
-#: modules/univention/management/console/handlers/cups/_revamp.py:132
-#: modules/univention/management/console/handlers/cups/_revamp.py:200
+#: modules/univention/management/console/handlers/cups/_revamp.py:89
+#: modules/univention/management/console/handlers/cups/_revamp.py:134
+#: modules/univention/management/console/handlers/cups/_revamp.py:201
 msgid "Select the operation"
 msgstr "Sélectionner l'opération"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:57
-#: modules/univention/management/console/handlers/cups/_revamp.py:112
-#: modules/univention/management/console/handlers/cups/_revamp.py:150
+#: modules/univention/management/console/handlers/cups/_revamp.py:59
+#: modules/univention/management/console/handlers/cups/_revamp.py:114
+#: modules/univention/management/console/handlers/cups/_revamp.py:151
 msgid "Server"
 msgstr "Serveur"
 
@@ -266,30 +266,30 @@ msgstr "Afficher les quotas de l'imprimante"
 msgid "Show quota"
 msgstr "Afficher le quota"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:120
+#: modules/univention/management/console/handlers/cups/_revamp.py:122
 msgid "Size"
 msgstr "Taille"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:164
+#: modules/univention/management/console/handlers/cups/_revamp.py:165
 msgid "Soft limit"
 msgstr "Limite douce"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:57
-#: modules/univention/management/console/handlers/cups/_revamp.py:113
-#: modules/univention/management/console/handlers/cups/_revamp.py:151
+#: modules/univention/management/console/handlers/cups/_revamp.py:59
+#: modules/univention/management/console/handlers/cups/_revamp.py:115
+#: modules/univention/management/console/handlers/cups/_revamp.py:152
 msgid "Status"
 msgstr "État"
 
-#: modules/univention/management/console/handlers/cups/_printer.py:174
+#: modules/univention/management/console/handlers/cups/_printer.py:172
 msgid "Successfully reset print quota"
 msgstr "Quota d'impression réinitialisé avec succès"
 
-#: modules/univention/management/console/handlers/cups/_printer.py:158
+#: modules/univention/management/console/handlers/cups/_printer.py:157
 msgid "Successfully set print quota settings"
 msgstr "Réglages du quota d'impression définis avec succès"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:164
-#: modules/univention/management/console/handlers/cups/_types.py:54
+#: modules/univention/management/console/handlers/cups/_revamp.py:165
+#: modules/univention/management/console/handlers/cups/_types.py:56
 msgid "User"
 msgstr "Utilisateur"
 
@@ -297,18 +297,18 @@ msgstr "Utilisateur"
 msgid "User print quota settings"
 msgstr "Réglages du quota d'impression de l'utilisateur"
 
-#: modules/univention/management/console/handlers/cups/_revamp.py:210
+#: modules/univention/management/console/handlers/cups/_revamp.py:211
 #, python-format
 msgid "User quota on %(printer)s"
 msgstr "Quota de l'utilisateur sur %(printer)s"
 
-#: modules/univention/management/console/handlers/cups/tools.py:71
-#: modules/univention/management/console/handlers/cups/_revamp.py:73
+#: modules/univention/management/console/handlers/cups/tools.py:73
+#: modules/univention/management/console/handlers/cups/_revamp.py:75
 msgid "active"
 msgstr "active"
 
-#: modules/univention/management/console/handlers/cups/tools.py:56
-#: modules/univention/management/console/handlers/cups/tools.py:73
-#: modules/univention/management/console/handlers/cups/_revamp.py:67
+#: modules/univention/management/console/handlers/cups/tools.py:57
+#: modules/univention/management/console/handlers/cups/tools.py:75
+#: modules/univention/management/console/handlers/cups/_revamp.py:69
 msgid "inactive"
 msgstr "inactive"
