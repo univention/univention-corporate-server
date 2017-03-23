@@ -1,3 +1,9 @@
+univention-web (1.0.40-6) unstable; urgency=medium
+
+  * Bug #44007: fix uvmm grid icons 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 15:34:38 +0100
+
 univention-web (1.0.40-5) unstable; urgency=medium
 
   * Bug #44007: fix tree icons 
