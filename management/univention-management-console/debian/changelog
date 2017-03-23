@@ -1,3 +1,9 @@
+univention-management-console (9.0.72-3) unstable; urgency=medium
+
+  * Bug #43977: Move UUID and license base into get/meta command
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 19:09:04 +0100
+
 univention-management-console (9.0.72-2) unstable; urgency=medium
 
   * Bug #43977: Handle meta info via UMC server + correct login.onLogin()
