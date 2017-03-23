@@ -63,7 +63,7 @@ class NoSpecialCaseDefintionsFound(Exception):
 	pass
 
 
-class UMCModuleTranslation(dh_umc.UMC_Module, object):
+class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	def __init__(self, attrs, target_language):
 		attrs['target_language'] = target_language
