@@ -222,10 +222,6 @@ define([
 
 			// this deferred is resolved when everything has been loaded
 			this._finishedDeferred = new Deferred();
-			this._finishedDeferred.then(lang.hitch(this, function() {
-				// finish standby
-				this.standby(false);
-			}));
 			this._pageRenderedDeferred = new Deferred();
 
 			this._wizardStandby = new Deferred();
@@ -295,22 +291,19 @@ define([
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
 
-			this.standby(true);
 			if ('navigation' == this.moduleFlavor) {
 				// for the UDM navigation, we only query the UCR variables
-				this.standby(true);
 				all({
 					variables: this._loadUCRVariables(),
 					columns: this.getDefaultColumns()
 				}).then(lang.hitch(this, function(results) {
 					this._default_columns = results.columns;
 					this.renderSearchPage();
-				}), lang.hitch(this, 'standby', false));
+				}));
 			} else {
 				// render search page, we first need to query lists of containers/superordinates
 				// in order to correctly render the search form...
 				// query also necessary UCR variables for the UDM module
-				this.standby(true);
 				var moduleCache = cache.get(this.moduleFlavor);
 				moduleCache.preloadModuleInformation();
 				all({
@@ -325,7 +318,6 @@ define([
 					this.renderSearchPage(results.containers, results.metaInfo);
 					this._pageRenderedDeferred.resolve();
 				}), lang.hitch(this, function() {
-					this.standby(false);
 					this._pageRenderedDeferred.reject();
 				}));
 			}
