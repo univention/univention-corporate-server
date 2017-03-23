@@ -17,11 +17,6 @@ Variables: docker/daemon/default/opts/bip
 Variables: appcenter/apps/.*/version
 Variables: appcenter/apps/.*/status
 
-Type: file
-File: usr/share/univention-portal/apps.json
-Variables: appcenter/apps/.*/status
-Variables: appcenter/apps/.*/version
-
 Type: module
 Module: create_portal_entries.py
 Variables: ucs/web/overview/entries/.*
