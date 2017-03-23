@@ -169,6 +169,36 @@ fi
 	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || --no-self) >>"$UPDATER_LOG" 2>&1 ||
 	: # better safe than sorry
 
+# Bug #44006: 
+(
+	if [ -x /usr/lib/univention-docker/scripts/migrate_container_MountPoints_to_v2_config ]; then
+		restart=0
+		if pgrep -F /var/run/docker.pid >/dev/null 2>&1; then
+			restart=1
+		fi
+		service docker stop || true
+
+		## start docker daemon (manually w/o systemd)
+		## to make it generate config.v2.json
+		. /etc/default/docker	## load DOCKER_OPTS
+		/usr/bin/dockerd -H unix:///var/run/docker.sock $DOCKER_OPTS &
+		i=0; while [ "$((i++))" -lt 300 ]; do 
+			if docker ps >/dev/null 2>&1; then
+				break
+			fi
+			sleep 1;
+		done
+		pkill -F /var/run/docker.pid
+
+		## Now migrate volumes to config.v2.json
+		/usr/lib/univention-docker/scripts/migrate_container_MountPoints_to_v2_config
+
+		if [ "$restart" = 1 ]; then
+			service docker start || true
+		fi
+	fi
+)
+
 # Bug #43835: update app cache and portal entries
 test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
 python -c '
