@@ -134,7 +134,7 @@ def _make_obj(obj):
 
 def _save_external_portal(dn=None):
 	if dn is None:
-		dn = 'cn=domain,cn=portal,cn=univention,%s' % ucr.get('ldap/base')
+		dn = 'cn=local,cn=portal,cn=univention,%s' % ucr.get('ldap/base')
 	lo = uldap.getMachineConnection()
 	try:
 		dn, attrs = lo.search(base=dn)[0]

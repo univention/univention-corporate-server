@@ -1,3 +1,9 @@
+univention-portal (1.0.10-6) unstable; urgency=medium
+
+  * Bug #44048: Use the local portal as fallback
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 16:18:40 +0100
+
 univention-portal (1.0.10-5) unstable; urgency=medium
 
   * Bug #42235: Make sure that portal background/logo images are not cached
