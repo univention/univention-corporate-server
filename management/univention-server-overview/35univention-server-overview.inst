@@ -44,18 +44,25 @@ umc_operation_create "server-overview-all" "UCS server overview" "" "serveroverv
 
 umc_policy_append "default-umc-all" "server-overview-all" || die
 
-univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
-	--position "cn=portal,cn=univention,$ldap_base" \
-	--set name=server-overview \
-	--append displayName='"en_US" "Server overview"' \
-	--append displayName='"de_DE" "Serverübersicht"' \
-	--append description='"en_US" "Provide an overview of all UCS server in the domain"' \
-	--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
-	--append link=/univention/server-overview/ \
-	--set category=admin \
-	--set authRestriction=authenticated \
-	--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" \
-	--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
+role="$(ucr get server/role)"
+if [ "$role" != "domaincontroller_master" ]; then
+	# make sure that entry for server overview does not exist on a single server domain
+	# (i.e., which only contains a DC master instance)
+	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
+		--position "cn=portal,cn=univention,$ldap_base" \
+		--set name=server-overview \
+		--append displayName='"en_US" "Server overview"' \
+		--append displayName='"de_DE" "Serverübersicht"' \
+		--append displayName='"fr_FR" "Vue d'"'"'ensemble de serveurs"' \
+		--append description='"en_US" "Provide an overview of all UCS server in the domain"' \
+		--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
+		--append description='"fr_FR" "Vue d'"'"'ensemble de tous les serveurs UCS du domaine"' \
+		--append link=/univention/server-overview/ \
+		--set category=admin \
+		--set authRestriction=authenticated \
+		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" \
+		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
+fi
 
 joinscript_save_current_version
 
