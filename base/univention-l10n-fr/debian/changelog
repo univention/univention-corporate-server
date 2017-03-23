@@ -1,3 +1,9 @@
+univention-l10n-fr (1.2.0-0) unstable; urgency=medium
+
+  * Bug #43462: update translations for 4.2
+
+ -- Eduard Mai <mai@univention.de>  Thu, 23 Mar 2017 11:56:58 +0100
+
 univention-l10n-fr (1.1.0-4) unstable; urgency=medium
 
   * Bug #41776: add UCR variable translation
