@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (3.0.1-1) unstable; urgency=medium
+
+  * Bug #44038: fix rerunning checks; regression in grid causes the success
+  	element to be returned. ignoring it now.
+
+ -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 14:24:58 +0100
+
 univention-management-console-module-diagnostic (3.0.0-3) unstable; urgency=medium
 
   * Bug #43528: Use full width for module

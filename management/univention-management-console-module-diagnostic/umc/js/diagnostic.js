@@ -155,7 +155,7 @@ define([
 			var titlePane = new TitlePane({
 				title: item.title,
 				'class': 'diagnostic-' + item.type,
-				open: item.status == 'reloading',
+				open: item.status === 'reloading',
 				toggleable: item.plugin !== '_success_',
 				content: div
 			});
@@ -227,7 +227,7 @@ define([
 			};
 			var atype = priority[a.type] || 0;
 			var btype = priority[b.type] || 0;
-			if (atype == btype) {
+			if (atype === btype) {
 				return 0;
 			} else if (atype > btype) {
 				return -1;
@@ -269,6 +269,9 @@ define([
 			this._progressBar.feedFromDeferred(deferred);
 
 			return this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
+				if (!plugin.id) {
+					return;  // this is the success message
+				}
 				return this._runDiagnose(plugin).then(lang.hitch(this, function() {
 					var percentage = this._progressBar._progressBar.get('value') + this._stepInc;
 					deferred.progress({
