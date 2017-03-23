@@ -1,3 +1,9 @@
+univention-docker (2.0.1-2) unstable; urgency=medium
+
+  * Fixed docker opts UCR description from last commit (Bug #44033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Mar 2017 15:03:40 +0100
+
 univention-docker (2.0.1-1) unstable; urgency=medium
 
   * Remove UCR template for /etc/init.d/docker. The systemd service will

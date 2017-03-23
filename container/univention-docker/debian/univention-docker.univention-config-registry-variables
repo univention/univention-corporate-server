@@ -5,7 +5,7 @@ Type=bool
 Categories=service-container
 
 [docker/daemon/default/opts/.*]
-Description[de]=Optionen für den Docker Daemon. Der 
+Description[de]=Optionen für den Docker Daemon.
 Description[en]=Options for the docker daemon.
 Type=str
 Categories=service-container
