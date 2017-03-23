@@ -2,6 +2,7 @@
 ## desc: |
 ##  Check App-Center Operation failures with broken apps (exit 1 in {pre,post}{inst,rm}) via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]
+## tags: [SKIP]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev

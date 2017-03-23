@@ -2,7 +2,7 @@
 ## desc: |
 ##  Check the UMC query command with a custom INI file.
 ## roles-not: [basesystem]
-
+## tags: [SKIP]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ## tags: [appcenter,SKIP]

@@ -2,6 +2,7 @@
 ## desc: |
 ##  Check basic App-Center Operation failures (non existent apps) via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]
+## tags: [SKIP]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
