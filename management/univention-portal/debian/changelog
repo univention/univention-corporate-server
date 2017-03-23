@@ -1,3 +1,9 @@
+univention-portal (1.0.10-4) unstable; urgency=medium
+
+  * Bug #43670: Added missing call to u-install-config-registry in debian/rules
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 10:14:15 +0100
+
 univention-portal (1.0.10-3) unstable; urgency=medium
 
   * Bug #44018: Adjust category titles + fix l10n integration
