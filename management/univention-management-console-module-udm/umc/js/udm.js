@@ -973,7 +973,7 @@ define([
 			}, {
 				type: MixedInput,
 				name: 'objectPropertyValue',
-				label: _('Property value'),
+				label: '&nbsp;',
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
@@ -1007,7 +1007,7 @@ define([
 					labelConf: {
 						'class': 'umcSearchFormSubmitButton'
 					},
-					iconClass: '', // label will be set in toggleSearch
+					iconClass: 'umcDoubleRightIcon',
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
@@ -1053,6 +1053,26 @@ define([
 				onSearch: lang.hitch(this, 'filter')
 			});
 			domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
+			// only allow _updateVisibility calls on ComboBoxes if search is advanced.
+			// prevents ComboBoxes from beeing shown when the values are loaded and then
+			// immediately hidden again because the search form is in simple mode.
+			var comboBoxWidgets = ['container', 'objectProperty'];
+			if ('navigation' != this.moduleFlavor) {
+				comboBoxWidgets.push('objectType');
+			}
+			array.forEach(comboBoxWidgets, lang.hitch(this, function(widgetName) {
+				if (!this._searchForm._widgets[widgetName]) {
+					return;
+				}
+
+				aspect.around(this._searchForm._widgets[widgetName], '_updateVisibility', lang.hitch(this, function(origFunction) {
+					return lang.hitch(this, function() {
+						if (this._isAdvancedSearch) {
+							origFunction.apply(this._searchForm._widgets[widgetName]);
+						}
+					});
+				}));
+			}));
 		},
 
 		renderTree: function() {
@@ -1079,7 +1099,6 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				this._navUpButton = this.own(new Button({
 					label: _('Parent container'),
-					iconClass: 'umcDoubleUpIcon',
 					callback: lang.hitch(this, function() {
 						var path = this._tree.get('path');
 						var ldapDN = path[ path.length - 2 ].id;

@@ -1,6 +1,12 @@
+univention-management-console-module-udm (7.0.9-11) unstable; urgency=medium
+
+  * Bug #43871: Prevent flickering from ComboBox widgets in SearchForm
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 23 Mar 2017 18:08:37 +0100
+
 univention-management-console-module-udm (7.0.9-10) unstable; urgency=medium
 
-  * Bug #43990: User tile view: Deselect user after opening user detail page 
+  * Bug #43990: User tile view: Deselect user after opening user detail page
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 15:41:29 +0100
 
@@ -12,7 +18,7 @@ univention-management-console-module-udm (7.0.9-9) unstable; urgency=medium
 
 univention-management-console-module-udm (7.0.9-8) unstable; urgency=medium
 
-  * Bug #43990: User tile view: Whole tile opens user detail page 
+  * Bug #43990: User tile view: Whole tile opens user detail page
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 11:40:10 +0100
 
