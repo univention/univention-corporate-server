@@ -216,7 +216,10 @@ changes = dict((id, (None, None)) for id in ids)
 create_portal_entries.handler(ucr_instance(), changes)
 ' >>"$UPDATER_LOG" 2>&1
 
-# make sure that UMC server is restarted (Bug #33426)
+# make sure that UMC server is restarted (Bug #43520, Bug #33426)
+service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
+service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
+service apache2 restart >>"$UPDATER_LOG" 2>&1
 echo "
 
 

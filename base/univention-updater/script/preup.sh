@@ -380,6 +380,23 @@ if master <= me:
 }
 check_master_version
 
+# check that no apache configuration files are manually adjusted; Bug #43520
+check_overwritten_umc_templates () {
+	univention-check-templates 2>/dev/null | grep /etc/univention/templates/files/etc/apache2/sites-available/ >>"$UPDATER_LOG" 2>&1
+	if [ $? = 0 ]; then
+		echo "WARNING: There are modified Apache configuration files in /etc/univention/templates/files/etc/apache2/sites-available/."
+		echo "Please restore the original configuration files before upgrading and apply the manual changes again after the upgrade succeeded."
+		if is_ucr_true update42/ignore_apache_template_checks; then
+			echo "WARNING: update42/ignore_apache_template_checks is set to true. Skipped as requested."
+		else
+			echo "This check can be skipped by setting the UCR"
+			echo "variable update42/ignore_apache_template_checks to yes."
+			exit 1
+		fi
+	fi
+}
+check_overwritten_umc_templates
+
 # Bug 41868, fix old computer objects, can be removed after 4.2-0
 if ! is_ucr_true update42/skip/computerobjectcheck; then
 	if [ "domaincontroller_master" = "$server_role" -a -e /etc/ldap.secret -a -e /var/univention-join/joined ]; then

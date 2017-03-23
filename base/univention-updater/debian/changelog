@@ -1,3 +1,10 @@
+univention-updater (12.0.4-13) unstable; urgency=medium
+
+  * Bug #43520: adjust postup to restart UMC-Server, UMC-Webserver and Apache2
+  * Bug #43520: don't upgrade with manually adjusted apache2 sites
+
+ -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 19:23:06 +0100
+
 univention-updater (12.0.4-12) unstable; urgency=medium
 
   * Bug #44006: Due to popular demand wait for 30 min
