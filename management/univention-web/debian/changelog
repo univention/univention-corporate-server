@@ -1,3 +1,9 @@
+univention-web (1.0.40-7) unstable; urgency=medium
+
+  * Bug #44007: remember grid scroll position on grid update 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Mar 2017 16:29:49 +0100
+
 univention-web (1.0.40-6) unstable; urgency=medium
 
   * Bug #44007: fix uvmm grid icons 
