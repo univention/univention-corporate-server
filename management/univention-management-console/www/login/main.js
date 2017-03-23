@@ -414,7 +414,7 @@ define([
 					deferred.cancel();
 				}, args.timeout);
 			}
-			// deferred.promise.always(function() { TODO: howto remove the _iframe? });
+			deferred.promise.always(function() { _iframe.remove(); });
 			return deferred.promise;
 		},
 
