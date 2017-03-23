@@ -44,7 +44,7 @@ define([
 	"umc/json!/univention/portal/portal.json",
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
-	"umc/i18n!/univention/i18n"
+	"umc/i18n!portal"
 ], function(declare, lang, array, kernel, registry, on, dom, domConstruct, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
 
 	var _regEndsWithSVG = /\.svg$/;
@@ -87,7 +87,7 @@ define([
 
 			if (portal.showApps) {
 				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
-				this._addCategory(_('Installed Apps'), apps);
+				this._addCategory(_('Local Apps'), apps);
 			}
 			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
@@ -99,9 +99,7 @@ define([
 				if (category == 'admin') {
 					heading = _('Administration');
 				} else if (category == 'service') {
-					heading = _('Installed services');
-				} else if (category == 'apps') {
-					heading = _('Installed Apps');
+					heading = _('Applications');
 				}
 				this._addCategory(heading, apps, category == 'service');
 			}));
