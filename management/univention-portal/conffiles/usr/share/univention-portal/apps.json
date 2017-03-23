@@ -1,0 +1,77 @@
+@!@
+from json import dumps
+import shutil
+
+from univention.config_registry.interfaces import Interfaces
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.ucr import ucr_instance, ucr_get
+
+objs = []
+
+interfaces = Interfaces(ucr_instance())
+hosts = ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]
+default_ipv4_address = interfaces.get_default_ipv4_address()
+if default_ipv4_address:
+	hosts.append(str(default_ipv4_address.ip))
+default_ipv6_address = interfaces.get_default_ipv6_address()
+if default_ipv6_address:
+	hosts.append(str(default_ipv6_address.ip))
+
+
+def _get_links(app):
+	if not app.web_interface:
+		return
+	if not app.has_local_web_interface():
+		return [app.web_interface]
+	ret = []
+	schemes = []
+	if app.web_interface_port_http:
+		schemes.append('http')
+	if app.web_interface_port_https:
+		schemes.append('https')
+	for scheme in ['http', 'https']:
+		if scheme == 'http':
+			port = app.web_interface_port_http
+		else:
+			port = app.web_interface_port_https
+		if not port:
+			continue
+		if app.auto_mod_proxy:
+			port = ''
+		else:
+			port = ':%s' % port
+		for host in hosts:
+			link = '%s://%s%s%s' % (scheme, host, port, app.web_interface)
+			ret.append(link)
+	return ret
+
+
+def _get_translations(app, attr):
+	ret = {}
+	for locale in ['en_US', 'de_DE']:
+		ret[locale] = app.get_localised(attr, locale[:2])
+	return ret
+
+
+for app in Apps().get_all_locally_installed_apps():
+	links = _get_links(app)
+	if not links:
+		continue
+	logo_name = '/univention/portal/icons/entries/%s' % app.id
+	shutil.copy2(app.get_cache_file('logo'), '/usr/share/univention-portal/icons/entries/%s.svg' % app.id)
+	entry = {
+		'id': app.id,
+		'name': _get_translations(app, 'name'),
+		'description': _get_translations(app, 'description'),
+		'category': 'service',
+		'links': links,
+		'portals': [],
+		'activated': True,
+		'favorite': False,
+		'authRestriction': 'anonymous',
+		'logo_name': logo_name,
+	}
+	objs.append(entry)
+
+print dumps(objs, indent=2)
+@!@

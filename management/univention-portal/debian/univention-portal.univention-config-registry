@@ -1,0 +1,4 @@
+Type: file
+File: usr/share/univention-portal/apps.json
+Variables: appcenter/apps/.*/status
+Variables: appcenter/apps/.*/version
