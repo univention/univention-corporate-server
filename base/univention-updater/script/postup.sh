@@ -182,7 +182,7 @@ fi
 		## to make it generate config.v2.json
 		. /etc/default/docker	## load DOCKER_OPTS
 		/usr/bin/dockerd -H unix:///var/run/docker.sock $DOCKER_OPTS &
-		i=0; while [ "$((i++))" -lt 300 ]; do 
+		i=0; while [ "$((i++))" -lt 600 ]; do 
 			if docker ps >/dev/null 2>&1; then
 				break
 			fi
@@ -197,7 +197,7 @@ fi
 			service docker start || true
 		fi
 	fi
-)
+) >>"$UPDATER_LOG" 2>&1
 
 # Bug #43835: update app cache and portal entries
 test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
