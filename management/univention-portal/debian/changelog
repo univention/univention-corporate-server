@@ -1,3 +1,9 @@
+univention-portal (1.0.10-8) unstable; urgency=medium
+
+  * Bug #42235: Make sure title does not wrap below logo
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Mar 2017 19:43:17 +0100
+
 univention-portal (1.0.10-7) unstable; urgency=medium
 
   * Bug #42235: Make sure the portal.css file is not cached
