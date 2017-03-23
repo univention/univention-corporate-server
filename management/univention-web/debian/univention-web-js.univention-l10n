@@ -1,0 +1,12 @@
+[
+	{
+		"input_files": [
+			"js/.*\\.js",
+			"js/.*\\.html"
+		],
+		"po_subdir": "js",
+		"target_type": "json",
+		"destination": "usr/share/univention-web/js/umc/i18n/{lang}/app.json"
+	}
+]
+
