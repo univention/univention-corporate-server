@@ -11,6 +11,7 @@ Package: univention-docker
 Architecture: all
 Depends: ${misc:Depends},
  docker.io (>= 1.12),
+ cgroupfs-mount (>= 1.1),
  univention-base-files,
  shell-univention-lib
 Description: UCS settings for Docker

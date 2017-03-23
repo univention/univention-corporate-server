@@ -58,8 +58,8 @@ if [ "$1" = "configure" ]; then
 				ucr set appcenter/docker=enabled
 			fi
 		fi
-		if dpkg --compare-versions "$2" lt 2.0.0-6; then
-			if pgrep -F /var/run/docker.pid 2>/dev/null; then
+		if dpkg --compare-versions "$2" lt 2.0.0-9; then
+			if pgrep -F /var/run/docker.pid >/dev/null 2>&1; then
 				restart=1
 			fi
 			service docker stop || true

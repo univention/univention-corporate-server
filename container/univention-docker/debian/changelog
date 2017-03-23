@@ -1,3 +1,9 @@
+univention-docker (2.0.0-9) unstable; urgency=medium
+
+  * Bug #44006: Depend on cgroupfs-mount (>= 1.1)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Mar 2017 11:47:06 +0100
+
 univention-docker (2.0.0-8) unstable; urgency=medium
 
   * Bug #44006: Depend on docker.io >= 1.12 and check if config.v2.json
