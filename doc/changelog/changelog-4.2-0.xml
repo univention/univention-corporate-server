@@ -533,6 +533,7 @@
 			<title>Filesystem quota module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Clicking on an activated partition opens the quota settings for that partition (<u:bug>43507</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
