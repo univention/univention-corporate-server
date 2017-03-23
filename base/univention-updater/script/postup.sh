@@ -182,7 +182,7 @@ fi
 		## to make it generate config.v2.json
 		. /etc/default/docker	## load DOCKER_OPTS
 		/usr/bin/dockerd -H unix:///var/run/docker.sock $DOCKER_OPTS &
-		i=0; while [ "$((i++))" -lt 600 ]; do 
+		i=0; while [ "$((i++))" -lt 1800 ]; do 
 			if docker ps >/dev/null 2>&1; then
 				break
 			fi

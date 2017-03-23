@@ -1,3 +1,9 @@
+univention-updater (12.0.4-12) unstable; urgency=medium
+
+  * Bug #44006: Due to popular demand wait for 30 min
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Mar 2017 17:38:54 +0100
+
 univention-updater (12.0.4-11) unstable; urgency=medium
 
   * Bug #44006: Wait 10 min and redirect output to updater.log
