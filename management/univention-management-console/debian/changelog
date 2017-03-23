@@ -1,3 +1,10 @@
+univention-management-console (9.0.71-1) unstable; urgency=medium
+
+  * Bug #42228: don't proxy pass /univention/management/modules/ to prevent
+  	404 Tracebacks
+
+ -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 15:09:43 +0100
+
 univention-management-console (9.0.70-1) unstable; urgency=medium
 
   * Bug #39731: fixup svn r76192: Internet Explorer sends 'Accept: text/html,
