@@ -1,3 +1,9 @@
+univention-appcenter (6.0.4-2) unstable; urgency=low
+
+  * Bug #41170: do not ssl.match_hostname
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Mar 2017 11:32:04 +0100
+
 univention-appcenter (6.0.4-1) unstable; urgency=medium
 
   * Bug #43991: fix and siplify the encoding of HTML entities

@@ -274,7 +274,6 @@ class HTTPSConnection(httplib.HTTPSConnection):
 			self._tunnel()
 		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED,
 			ca_certs="/etc/ssl/certs/ca-certificates.crt")
-		ssl.match_hostname(self.sock.getpeercert(), self.host)
 
 
 class HTTPSHandler(urllib2.HTTPSHandler):
