@@ -298,14 +298,18 @@ material-shadow(level)
 		box-shadow: none
 
 
-material-flat-button(hoverClasses=".dijitButtonHover")
+material-flat-button(buttonClasses=dijitButton)
 	box-shadow: none
 	margin-left: 4px
 	margin-right: @margin-left
 
-	// make sure that buttons hover from transparent background to light translucent black
-	&:not({hoverClasses}) .dijitButtonNode
-		background-color: rgba(255, 255, 255, 0);
+	for ibuttonClass in buttonClasses
+		// make sure that buttons hover from transparent background to light translucent black
+		&:not(.{ibuttonClass}Hover) .dijitButtonNode
+			background-color: rgba(255, 255, 255, 0);
+
+		&.{ibuttonClass}Focused .dijitButtonNode
+			background-color: $button-hovered-background-color
 
 	.dijitButtonText
 		padding: 0 12px
