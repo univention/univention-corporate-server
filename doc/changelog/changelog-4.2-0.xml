@@ -797,6 +797,9 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Profiles for UCS 4.2 and Windows Server 2016 have been added (<u:bug>44067</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Error handling has been improved (<u:bug>38634</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
