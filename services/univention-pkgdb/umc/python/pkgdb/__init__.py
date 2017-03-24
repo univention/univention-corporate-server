@@ -34,7 +34,7 @@
 import pgdb
 
 from univention.management.console import Translation
-from univention.management.console.modules import Base, UMC_CommandError
+from univention.management.console.modules import Base, UMC_Error
 import univention.config_registry
 import univention.pkgdb as updb
 
@@ -45,14 +45,14 @@ from univention.management.console.modules.sanitizers import ChoicesSanitizer
 
 _ = Translation('univention-management-console-module-pkgdb').translate
 
-RECORD_LIMIT = 100000			# never return more than this many records
+RECORD_LIMIT = 100000  # never return more than this many records
 
 CRITERIA = {
 	'systems': [
 		'all_properties', 'sysname', 'sysrole', 'sysversion', 'sysversion_greater', 'sysversion_lower'
 	],
 	'packages': [
-		'pkgname', 'currentstate',		# head fields
+		'pkgname', 'currentstate',  # head fields
 		'selectedstate', 'inststate',  # state fields
 	]
 }
@@ -231,7 +231,7 @@ class Instance(Base):
 			self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
 		except pgdb.InternalError as ex:
 			MODULE.error('Could not establish connection to the PostgreSQL server: %s' % (ex,))
-			raise UMC_CommandError(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
+			raise UMC_Error(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
 		else:
 			self.cursor = self.dbConnection.cursor()
 
@@ -244,8 +244,8 @@ class Instance(Base):
 			self.dbConnection = None
 			try:
 				self.connect()
-			except UMC_CommandError:
-				raise UMC_CommandError(_('Connection to the dabase lost.\n\n%s') % (_server_not_running_msg(),))
+			except UMC_Error:
+				raise UMC_Error(_('Connection to the dabase lost.\n\n%s') % (_server_not_running_msg(),))
 
 	@simple_response
 	def reinit(self):
@@ -409,13 +409,13 @@ def _convert_to_grid(data, names):
 		the field names. This function converts one record.
 	"""
 	# find smaller length
-	l = min(len(data), len(names))
+	length = min(len(data), len(names))
 
 	# This expression does the main work:
 	#	(1)	assigns the field name to a value
 	#	(2)	converts database representation into keyed values (_decoded_value)
 	#	(3)	translates keyed values for display (_id_to_label)
-	return dict((names[i], _id_to_label(_decoded_value(names[i], data[i]))) for i in range(l))
+	return dict((names[i], _id_to_label(_decoded_value(names[i], data[i]))) for i in range(length))
 
 
 def _id_to_label(identifier):

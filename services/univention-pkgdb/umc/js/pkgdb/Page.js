@@ -53,24 +53,23 @@ define([
 	// Which page ('flavor') to show is determined by the 'pageKey'
 	// attribute being set by the constructor call.
 	//
-	return declare("umc.modules.pkgdb.Page", [ Page, StandbyMixin, KeyTranslator], {
+	return declare("umc.modules.pkgdb.Page", [Page, StandbyMixin, KeyTranslator], {
 
-		_grid:						null,			// holds the results grid if query was invoked at least once
-		_last_table_structure:		null,			// remember last table structure
-		_current_query:				null,			// what is being executed right now
+		_grid: null,  // holds the results grid if query was invoked at least once
+		_last_table_structure: null,  // remember last table structure
+		_current_query: null,  // what is being executed right now
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
 			this._searchform = new SearchForm({
-				region:			'main',
-				pageKey:		this.pageKey
+				region: 'main',
+				pageKey: this.pageKey
 			});
 			this.addChild(this._searchform);
 
 			// Listen to the submit event
-			this._searchform.on('ExecuteQuery',lang.hitch(this, function(query) {
+			this._searchform.on('ExecuteQuery', lang.hitch(this, function(query) {
 				this._execute_query(query);
 			}));
 		},
@@ -83,20 +82,19 @@ define([
 		},
 
 		_execute_query: function(query) {
-			this._build_columns(query).then(lang.hitch(this, function() {
+			this.standbyDuring(this._build_columns(query).then(lang.hitch(this, function() {
 				// Execute the given query (a.k.a. filter) on the grid
 				this._grid.filter(lang.mixin({page: this.pageKey }, this._current_query));
-			}));
+			})));
 
 			topic.publish('/umc/actions', 'pkgdb', this.pageKey, query.key, 'search');
 		},
 
 		// fetches the structure of the result grid.
 		_build_columns: function(query) {
-
 			this._current_query = query;
 
-			return tools.umcpCommand('pkgdb/columns',{
+			return tools.umcpCommand('pkgdb/columns', {
 				page: this.pageKey,
 				key: this._current_query.key
 			}).then(lang.hitch(this, function(data) {
@@ -107,47 +105,39 @@ define([
 		// Creates the given result table. 'fields' is an array of column names.
 		// The corresponding query is already stored in this._current_query.
 		_create_table: function(fields) {
-
 			// determine if we have already a grid structured like that
 			var grid_usable = false;
 			var sig = fields.join(':');
-			if (this._grid)
-			{
-				if (this._last_table_structure && (this._last_table_structure == sig))
-				{
+			if (this._grid) {
+				if (this._last_table_structure && (this._last_table_structure === sig)) {
 					grid_usable = true;
 				}
 			}
 			this._last_table_structure = sig;
 
-			if (! grid_usable)
-			{
+			if (!grid_usable) {
 				var columns = [];
-
-				for (var f in fields)
-				{
+				tools.forIn(fields, lang.hitch(this, function(f) {
 					var fname = fields[f];
 					var entry = {
-							name:	fname,
-							label:	fname
-						};
+						name: fname,
+						label: fname
+					};
 					var props = this._field_options(fname);
-					if (props)
-					{
-						lang.mixin(entry,props);
+					if (props) {
+						lang.mixin(entry, props);
 					}
 					columns.push(entry);
-				}
+				}));
 
 				var newgrid = new Grid({
-					region:			'main',
-					actions:		[],
-					columns:		columns,
-					moduleStore:	store(fields[0],'pkgdb')
+					region: 'main',
+					actions: [],
+					columns: columns,
+					moduleStore: store(fields[0], 'pkgdb')
 				});
 
-				if (this._grid)
-				{
+				if (this._grid) {
 					// detach and free old grid instance
 					this.removeChild(this._grid);
 					this._grid.uninitialize();
@@ -155,20 +145,6 @@ define([
 				}
 				this._grid = newgrid;
 				this.addChild(this._grid);
-
-				// No time to debug why this Grid does not call 'onFilterDone()'
-				this._grid.on('FilterDone', lang.hitch(this, function(success) {
-					this._searchform.enableSearchButton(true);
-					this._searchform.enableEntryElements(true);
-				}));
-				aspect.after(this._grid._grid, '_onFetchComplete', lang.hitch(this, function() {
-					this._searchform.enableSearchButton(true);
-					this._searchform.enableEntryElements(true);
-				}));
-				aspect.after(this._grid._grid, '_onFetchError',lang.hitch(this, function() {
-					this._searchform.enableSearchButton(true);
-					this._searchform.enableEntryElements(true);
-				}));
 			}
 
 			domClass.toggle(this._grid.domNode, 'dijitDisplayNone', false);
@@ -176,7 +152,6 @@ define([
 			var deferred = new Deferred();
 			deferred.resolve(true);
 			return deferred;
-
 		}
 	});
 });

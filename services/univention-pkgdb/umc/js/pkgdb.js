@@ -40,7 +40,7 @@ define([
 			this.inherited(arguments);
 
 			// trigger a reload of initial values on every module opening, even if the modul process already exists
-			this.umcpCommand('/pkgdb/reinit');
+			this.umcpCommand('pkgdb/reinit');
 
 			var syspage = new Page({
 				title: _("Search UCS systems"),

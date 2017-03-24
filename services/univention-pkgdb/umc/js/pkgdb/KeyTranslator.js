@@ -44,34 +44,34 @@ define([
 
 			var t = {
 				'inststate': {
-					label:		_("Installation<br/>state"),
-					width:		'adjust'
+					label: _("Installation state"),
+					width: 'adjust'
 				},
 				'inventory_date': {
-					label:		_("Inventory date")
+					label: _("Inventory date")
 				},
 				'pkgname': {
-					label:		_("Package name")
+					label: _("Package name")
 				},
 				'vername': {
-					label:		_("Package version")
+					label: _("Package version")
 				},
 				'currentstate': {
-					label:		_("Package<br/>state"),
-					width:		'adjust'
+					label: _("Package state"),
+					width: 'adjust'
 				},
 				'selectedstate': {
-					label:		_("Selection<br/>state"),
-					width:		'adjust'
+					label: _("Selection state"),
+					width: 'adjust'
 				},
 				'sysname': {
-					label:		_("Hostname")
+					label: _("Hostname")
 				},
 				'sysrole': {
-					label:		_("System role")
+					label: _("System role")
 				},
 				'sysversion': {
-					label:		_("UCS version")
+					label: _("UCS version")
 				}
 			};
 
