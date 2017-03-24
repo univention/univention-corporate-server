@@ -139,13 +139,38 @@ define([
 			id: 'umcMenuHelp'
 		});
 
+		var _openPage = function(url, key, query) {
+			query = typeof query == 'string' ? query : '';
+			topic.publish('/umc/actions', 'menu', 'help', key);
+			var w = window.open(url + query);
+			w.focus();
+		};
+
 		menu.addEntry({
 			parentMenuId: 'umcMenuHelp',
 			label: _('Univention Website'),
+			priority: 120,
+			onClick: lang.hitch(this, _openPage, _('http://www.univention.com'), 'website')
+		});
+		menu.addEntry({
+			parentMenuId: 'umcMenuHelp',
+			label: _('Univention Help'),
+			priority: 110,
+			onClick: lang.hitch(this, _openPage, _('http://help.univention.com'), 'discourse')
+		});
+		menu.addEntry({
+			parentMenuId: 'umcMenuHelp',
+			label: _('Feedback'),
+			priority: 100,
 			onClick: function() {
-				topic.publish('/umc/actions', 'menu', 'help', 'website');
-				var w = window.open(_('umcUniventionUrl'), 'univention');
-				w.focus();
+				var page = location.pathname.replace(/^\/univention\/|\/[^/]*$/g, '');
+				var query = '?umc=' + page;
+				if ('umc/app' in require.modules) {
+					try {
+						query = '?umc=management/' + require('umc/app')._tabContainer.get('selectedChildWidget').title.toLowerCase();
+					} catch(err) { }
+				}
+				_openPage(_('https://www.univention.com/feedback/'), 'feedback', query);
 			}
 		});
 	}
