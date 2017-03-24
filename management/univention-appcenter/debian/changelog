@@ -1,3 +1,9 @@
+univention-appcenter (6.0.4-4) unstable; urgency=low
+
+  * Bug #44062: non-interactive univention-app shell app by default
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Mar 2017 15:11:52 +0100
+
 univention-appcenter (6.0.4-3) unstable; urgency=medium
 
   * Bug #44065: Use new functions in old lib

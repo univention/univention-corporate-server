@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import sys
 import subprocess
 import shlex
 from argparse import REMAINDER
@@ -50,19 +49,24 @@ class Shell(UniventionAppAction, DockerActionMixin):
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app in whose environments COMMANDS shall be executed')
 		parser.add_argument('commands', nargs=REMAINDER, help='Command to be run. Defaults to an interactive shell')
+		parser.add_argument('-i', '--interactive', action='store_true', default=False, help='Keep STDIN open even if not attached')
+		parser.add_argument('-t', '--tty', action='store_true', default=False, help='Allocate a pseudo-TTY')
 
 	def main(self, args):
 		docker = self._get_docker(args.app)
+		docker_exec = ['docker', 'exec']
 		commands = args.commands[:]
 		if not commands:
 			commands = shlex.split(args.app.docker_shell_command)
+			args.interactive = True
+			args.tty = True
+		if args.interactive:
+			docker_exec.append('-i')
+		if args.tty:
+			docker_exec.append('-t')
 		if not commands:
 			raise Abort('Cannot run command: No command specified')
 		if not app_is_running(args.app):
 			raise Abort('Cannot run command: %s is not running in a container' % args.app.id)
 		self.debug('Calling %s' % commands[0])
-		docker_exec = ['docker', 'exec']
-		tty = sys.stdin.isatty()
-		if tty:
-			docker_exec.append('-it')
 		return subprocess.call(docker_exec + [docker.container] + commands)
