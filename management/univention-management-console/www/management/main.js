@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global umc,define,require,console,window,setTimeout,dojo*/
+/*global umc,define,require,console,window,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -1339,14 +1339,16 @@ define([
 			var searchPattern = '';
 			var searchQuery = new RegExp('.*');
 
+			if (!this._header._search) {
+				return;
+			}
+
 			if (!category) {
 				searchPattern = lang.trim(this._header._search.get('value'));
 				searchQuery = this._header._search.getSearchQuery(searchPattern);
 			} else {
 				this._lastSearchPattern = null;
-				if (this._header._search) {
-					this._header._search.set('value', null);
-				}
+				this._header._search.set('value', null);
 			}
 
 			if (searchPattern && searchPattern !== this._lastSearchPattern) {
