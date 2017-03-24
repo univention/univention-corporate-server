@@ -288,7 +288,13 @@ define([
 		},
 
 		sessioninfo: function() {
-			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
+			return xhr.post('/univention/get/session-info', {
+				handleAs: 'json',
+				headers: {
+					'Accept-Language': i18nTools.defaultLang(),
+					'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1'
+				}
+			}).then(lang.hitch(this, function(response) {
 				tools.status('authType', response.result.auth_type);
 				tools.status('loggedIn', true);
 				return this.authenticated(response.result.username);
