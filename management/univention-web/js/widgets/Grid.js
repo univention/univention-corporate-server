@@ -162,7 +162,7 @@ define([
 
 		initialStatusMessage: _("Please perform a search"),
 
-		_necessaryUdmValues: [],
+		_necessaryUdmValues: null,
 
 		// gridOptions: options for the inner grid
 		gridOptions: null,
@@ -171,7 +171,7 @@ define([
 
 		additionalViews: null,
 
-		_widgetList: [],
+		_widgetList: null,
 		own: function() {
 			array.forEach(arguments, function(iarg) {
 				this._widgetList.push(iarg);
@@ -183,7 +183,7 @@ define([
 
 		_contextMenu: null,
 
-		_views: {},
+		_views: null,
 
 		// temporary div elements to estimate width of text for columns
 		_tmpCell: null,
@@ -297,7 +297,10 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			this._necessaryUdmValues = [];
+			this._widgetList = [];
 			this._disabledIDs = {};
+			this._views = {};
 			this._store = new StoreAdapter({
 				objectStore: this.moduleStore,
 				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function",
