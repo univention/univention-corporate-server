@@ -2,11 +2,10 @@
 ## desc: |
 ##  Check basic App-Center Operations via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]
-## tags: [SKIP]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
-## tags: [appcenter]
+## tags: [appcenter,SKIP]
 from __future__ import print_function
 
 import logging
