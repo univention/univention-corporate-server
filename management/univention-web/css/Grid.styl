@@ -26,8 +26,17 @@
 	material-shadow(1)
 
 	.umcGridHeader
+		display: inline-block
 		padding: 0
 		float: left
+		margin: 6px 0
+
+		& > *:after
+			content: " "
+			display: block
+			clear: both
+			height: 0px
+			visibility: hidden
 
 		.dijitDropDownButton
 			margin: 12px
@@ -41,13 +50,27 @@
 		.dijitButton
 			box-shadow: none
 
+			&:first-child
+				margin-left: 8px
+
 			.dijitIcon
 				display: none
 
-	.dgrid
+	.umcGridStatus
+		margin: 6px 0
+		height: 60px
+		line-height: @height
+		text-align: center
+		float: right
+		font-size: 12px
+		color: rgba(0, 0, 0, 0.54)
+		padding-right: 23px
 
+
+	.dgrid
 		clear: both
 		border: none
+		border-top: 1px solid #e0e0e0
 
 		.dgrid-cell
 			border: none
@@ -96,7 +119,6 @@
 
 				.umcIconPlay,.umcIconView
 					margin 0 16px
-				
 
 		.dgrid-header
 			height: 56px
@@ -148,27 +170,6 @@
 			// make sure that buttons hover from transparent background to light translucent black
 			.dijitButton:not(.dijitButtonHover) .dijitButtonNode
 				background-color: rgba(0, 0, 0, 0);
-
-	.umcGridStatus
-		height: 60px
-		line-height: @height
-		text-align: center
-		float: right
-		font-size: 12px
-		color: rgba(0, 0, 0, 0.54)
-		padding-right: 23px
-
-.umc .umcGridHeader
-	padding-bottom: 0.5em
-	display: inline-block
-	float: left
-
-.umc .umcGridHeader > *:after
-	content: " "
-	display: block
-	clear: both
-	height: 0px
-	visibility: hidden
 
 .umc .dojoxGridHeader
 	background-color: $text-color
