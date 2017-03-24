@@ -220,6 +220,7 @@ create_portal_entries.handler(ucr_instance(), changes)
 /usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
 service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
 service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
+cp /var/run/apache2.pid /var/run/apache2/apache2.pid  # the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
 service apache2 restart >>"$UPDATER_LOG" 2>&1
 echo "
 

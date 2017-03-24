@@ -1,3 +1,9 @@
+univention-updater (12.0.4-15) unstable; urgency=medium
+
+  * Bug #43520: copy pidfile so that apache restart after upgrade works
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 17:23:47 +0100
+
 univention-updater (12.0.4-14) unstable; urgency=medium
 
   * Bug #43520: enable apache and UMC after postup
