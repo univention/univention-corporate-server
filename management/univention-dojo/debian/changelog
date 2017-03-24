@@ -1,3 +1,10 @@
+univention-dojo (10.0.0-4) unstable; urgency=medium
+
+  * Bug #44059: Center standby animation relative to viewport
+  	for widgets that exceed the viewport
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 24 Mar 2017 15:17:32 +0100
+
 univention-dojo (10.0.0-3) unstable; urgency=medium
 
   * Bug #42291: Updated dojo 1.12.1 and xstyle 0.3.2 

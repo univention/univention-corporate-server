@@ -1,0 +1,31 @@
+--- dojo/dojox/widget/Standby.js.orig	2016-12-20 22:06:43.000000000 +0100
++++ dojo/dojox/widget/Standby.js	2017-03-24 15:08:30.674713330 +0100
+@@ -501,7 +501,27 @@
+ 					];
+ 					this._cloneStyles(styles, this);
+ 				}
+-				var cntrIndicatorTop = (box.h/2) - (cntrIndicator.h/2);
++				// var cntrIndicatorTop = (box.h/2) - (cntrIndicator.h/2);
++				var cntrIndicatorTop;
++				var windowBox = window.getBox();
++				if (box.y > windowBox.t && (box.y + box.h) < (windowBox.t + windowBox.h)) { 
++					// if the widget fits into the viewport use the default behaviour of
++					// centering the standby animation in the widget size
++					cntrIndicatorTop = (box.h/2);
++				} else if (box.y < windowBox.t && (box.y + box.h) > (windowBox.t + windowBox.h)) {
++					// if the widget exceeds the viewport on the top and bottom center the standby animation
++					// to the viewport
++					cntrIndicatorTop = (windowBox.t - box.y) + (windowBox.h / 2);
++				} else { 
++					// if the widget is only partially in the viewport center the standby animation
++					// to the space of the widget that is in the viewport
++					if (box.y > windowBox.t) {
++						cntrIndicatorTop = Math.max(cntrIndicator.h, (windowBox.t + windowBox.h - box.y)) / 2;
++					} else {
++						cntrIndicatorTop = Math.min((box.h - (cntrIndicator.h/2)), (windowBox.t - box.y) + ((box.h - (windowBox.t - box.y)) / 2));
++					}
++				}
++				cntrIndicatorTop = cntrIndicatorTop - (cntrIndicator.h/2);
+ 				var cntrIndicatorLeft = (box.w/2) - (cntrIndicator.w/2);
+ 				//Only show the image if there is height and width room.
+ 				if(box.h >= cntrIndicator.h && box.w >= cntrIndicator.w){
