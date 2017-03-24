@@ -36,12 +36,12 @@ define([
 	"dojo/_base/array",
 	"put-selector/put",
 	"dojo/dom",
+	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
-	"umc/widgets/ContainerWidget",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
-], function(hash, ioQuery, topic, lang, array, put, dom, ContentPane, ContainerWidget, PasswordForgotten, ProtectAccountAccess, NewPassword){
+], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword){
 	return {
 		content_container: null,
 		backend_info: null,
@@ -69,7 +69,7 @@ define([
 		},
 
 		_initContainer : function() {
-			this.content_container = new ContainerWidget({
+			this.content_container = new StackContainer({
 				"class" : "PasswordServiceContent umcCard",
 				id: "contentContainer",
 				doLayout: false
@@ -83,7 +83,14 @@ define([
 		_addSubPages: function(page_list) {
 			array.forEach(page_list, lang.hitch(this, function(page_name){
 				var module = this.subpages[page_name];
-				this.site_hashes[module.hash] = page_name;
+				if (module) {
+					var subpage = new ContentPane({
+						content: module.getContent(),
+						page_name: page_name
+					});
+					this.site_hashes[module.hash] = subpage;
+					this.content_container.addChild(subpage);
+				}
 			}));
 			this._loadSubpage(hash());
 		},
@@ -97,16 +104,13 @@ define([
 				hash(ioQuery.objectToQuery({page: "passwordreset"}));
 				return;
 			}
-			if (this.content_container.hasChildren()) {
-				this.content_container.getChildren()[0].destroyRecursive();
+			var subpage = this.site_hashes[page];
+			if (!subpage) {
+				subpage = this.content_container.getChildren()[0];
 			}
-			var page_name = this.site_hashes[page];
+			var page_name = this.site_hashes[page].page_name;
 			var module = this.subpages[page_name];
-			var subpage = new ContentPane({
-				content: module.getContent(),
-				page_name: page_name
-			});
-			this.content_container.addChild(subpage);
+			this.content_container.selectChild(subpage);
 			if (!dom.byId('content').hasChildNodes()) {
 				this.content_container.placeAt('content');
 			}
