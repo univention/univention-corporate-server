@@ -1,3 +1,9 @@
+univention-web (1.0.40-16) unstable; urgency=medium
+
+  * Bug #44059: Style dialog buttons as flat buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Mar 2017 13:31:44 +0100
+
 univention-web (1.0.40-15) unstable; urgency=medium
 
   * Bug #44059: Adjust alignment of flat buttons + generalize styling
