@@ -338,10 +338,6 @@
 					Additionally it uses an adjusted <application>seccomp</application> profile, which allows the system call <literal>name_to_handle_at</literal>, which
 					avoids granting <literal>SYS_ADMIN</literal> capabilities to containers (<u:bug>43455</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara>
-					The App Center now validates the remote server certificate hostname
-					(<u:bug>41170</u:bug>).
-				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
