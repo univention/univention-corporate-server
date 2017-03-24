@@ -810,6 +810,9 @@
 					Live-migration and snapshots from previous versions might not work in all cases due to large changes in the code base.
 					In such cases it is recommended to cleanly shutdown the virtual machines before the upgrade and to cold-boot the virtual machines after the upgrade (<u:bug>38877</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-novnc</package> was adapted, the start of the service is moved to a later point in the installation. (<u:bug>44067</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
