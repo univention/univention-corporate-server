@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="11"
+VERSION="12"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -224,12 +224,19 @@ create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "kvm" "x86_64" "20
 create_hvm_profile "Microsoft Windows 10" "win10-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 10 (64 Bit)" "win10-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
+# https://technet.microsoft.com/en-us/windows-server-docs/get-started/system-requirements
+#   2 GB RAM
+#   32 GB available hard disk space
+create_hvm_profile "Microsoft Windows 2016 (64 Bit)" "win2016-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
+
 create_hvm_profile "UCS 3.2" "ucs32-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "UCS 4.0 (64 Bit)" "ucs40-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "UCS 4.1 (64 Bit)" "ucs41-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+
+create_hvm_profile "UCS 4.2 (64 Bit)" "ucs42-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 
