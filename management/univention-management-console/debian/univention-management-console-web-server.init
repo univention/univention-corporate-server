@@ -9,7 +9,6 @@
 # Default-Stop:      0 1 6
 # Short-Description: Univention Management Console Web Server
 ### END INIT INFO
-# pidfile: /var/run/umc-web-server.pid
 #
 # Copyright 2011-2017 Univention GmbH
 #
