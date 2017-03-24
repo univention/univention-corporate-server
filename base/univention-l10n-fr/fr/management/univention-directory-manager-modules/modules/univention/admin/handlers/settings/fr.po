@@ -73,16 +73,14 @@ msgid "ACL name"
 msgstr "Nom de l'ACL"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:381
-#, fuzzy
 msgid "Account"
-msgstr "Compte utilisateur"
+msgstr "Compte"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:112
 msgid "Account deactivation"
 msgstr "Désactivation du compte"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:381
-#, fuzzy
 msgid "Account settings"
 msgstr "Réglages du compte"
 
@@ -230,9 +228,8 @@ msgid "Connection"
 msgstr "Connexion"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:394
-#, fuzzy
 msgid "Contact"
-msgstr "Contact utilisateur"
+msgstr "Contact"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:394
 msgid "Contact Information"
@@ -378,7 +375,6 @@ msgstr "Affichage"
 
 #: modules/univention/admin/handlers/settings/portal.py:65
 #: modules/univention/admin/handlers/settings/portal_entry.py:63
-#, fuzzy
 msgid "Display Name"
 msgstr "Nom de l'affichage"
 
@@ -416,9 +412,8 @@ msgid "Editable after creation"
 msgstr "Modifiable après création"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:252
-#, fuzzy
 msgid "Employee number"
-msgstr "Type d'employé"
+msgstr "Numéro d'employé"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:288
 msgid "Employee type"
@@ -429,9 +424,8 @@ msgid "Enable option by default."
 msgstr "Activer l'option par défaut."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:160
-#, fuzzy
 msgid "Entry options"
-msgstr "Options"
+msgstr "Options d'entrée"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:361
 msgid "Exclude from UMC search"
@@ -454,9 +448,8 @@ msgstr ""
 " par défaut pour les valeurs requises."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:83
-#, fuzzy
 msgid "Favorite"
-msgstr "Variété"
+msgstr "Favorit"
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:90
 msgid "Flavor"
@@ -497,9 +490,8 @@ msgid "General"
 msgstr "Général"
 
 #: modules/univention/admin/handlers/settings/portal.py:175
-#, fuzzy
 msgid "General Content"
-msgstr "Réglages généraux"
+msgstr "Contenu général"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:151
 msgid "General LDAP ACL extension settings"
@@ -764,9 +756,8 @@ msgstr "Informations de licence"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:105
 #: modules/univention/admin/handlers/settings/portal_entry.py:172
-#, fuzzy
 msgid "Link"
-msgstr "Lien DNS"
+msgstr "Lien"
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:51
 msgid "List of Operations for UMC"
@@ -809,9 +800,8 @@ msgid "Locked until"
 msgstr "Verrouillé jusqu'à"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:382
-#, fuzzy
 msgid "Locking and deactivation"
-msgstr "Désactivation du compte"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:144
 msgid "Lockout Duration Minutes"
@@ -1117,9 +1107,8 @@ msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:389
-#, fuzzy
 msgid "POSIX (Linux/UNIX) account settings"
-msgstr "Réglages de compte UNIX"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/packages.py:66
 #: modules/univention/admin/handlers/settings/packages.py:67
@@ -1161,9 +1150,8 @@ msgstr ""
 "Chemin vers le répertoire personnel sur le répertoire personnel partagé"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:366
-#, fuzzy
 msgid "Personal information"
-msgstr "Informations sur la licence version 1"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/directory.py:71
 msgid "Policy Link"
@@ -1174,9 +1162,8 @@ msgid "Policy Links"
 msgstr "Liens stratégies"
 
 #: modules/univention/admin/handlers/settings/portal.py:141
-#, fuzzy
 msgid "Portal logo"
-msgstr "Code postal"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:165
 msgid "Portal options"
@@ -1478,23 +1465,20 @@ msgid "Show apps"
 msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:97
-#, fuzzy
 msgid "Show login"
-msgstr "Afficher uniquement"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:75
-#, fuzzy
 msgid "Show menu"
-msgstr "Afficher uniquement"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:86
 msgid "Show search"
 msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:119
-#, fuzzy
 msgid "Show servers"
-msgstr "Serveurs"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:84
 msgid "Shown in the favorite section"
@@ -1843,7 +1827,6 @@ msgid "User Links"
 msgstr "Liens utilisateurs"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:360
-#, fuzzy
 msgid "User account"
 msgstr "Compte utilisateur"
 

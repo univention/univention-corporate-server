@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-03-21 20:54+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-03-22 23:30+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+"Language: fr\n"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:311
 #, python-format
@@ -76,6 +76,8 @@ msgid ""
 "<p>Click on <i>Finish</i> to conclude the installation. The system will be "
 "prepared for the first boot procedure and will be rebooted afterwards.</p>"
 msgstr ""
+"<p>Cliquez sur <i>Terminer</i> pour conclure l'installation. Le system va "
+"être préparé pour le premier amorçage a il va être redémarré après.</p>"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:949
 msgid ""
@@ -567,7 +569,7 @@ msgstr "Serveur mandataire HTTP"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1867
 msgid "Help us improve UCS by sending the occurred errors as feedback."
-msgstr ""
+msgstr "Aidez nous à améliorer UCS par envoyer les erreurs apparus comme feedback."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:761
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:806
@@ -865,6 +867,8 @@ msgid ""
 "Quick setup of a system for testing purposes. Several system configurations "
 "are predefined and cannot be changed at a later point."
 msgstr ""
+"Mise en place rapide d'un système pour des buts de test. Quelquese configurations "
+"de système sont pré-définiées et non-modifiables plus tard."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1321
 msgid "Reconfigure"
@@ -884,7 +888,7 @@ msgstr "Rechercher le contrôleur de domaine maître dans le DNS"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1912
 msgid "Send feedback"
-msgstr ""
+msgstr "Envoyer feedback"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1919
 msgid "Send to vendor"

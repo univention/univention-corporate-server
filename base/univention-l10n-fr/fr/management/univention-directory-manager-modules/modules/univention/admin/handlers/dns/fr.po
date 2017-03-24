@@ -102,7 +102,6 @@ msgid "Expiry interval"
 msgstr "Intervalle d'expiration"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:78
-#, fuzzy
 msgid "FQDNs must end with a dot."
 msgstr "Les FQDNs doivent se terminer par '.'"
 
@@ -150,7 +149,6 @@ msgid "Hostname"
 msgstr "Nom d'hôte"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:67
-#, fuzzy
 msgid "IP Address"
 msgstr "Adresse IP"
 
@@ -197,9 +195,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:51
 #: modules/univention/admin/handlers/dns/reverse_zone.py:50
-#, fuzzy
 msgid "Map IP addresses back to hostnames."
-msgstr "Adresses IP de la zone"
+msgstr ""
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:52
 msgid "Map names to IP addresses (and other data)."
@@ -218,15 +215,13 @@ msgstr "Serveur de noms"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:132
 #: modules/univention/admin/handlers/dns/forward_zone.py:134
-#, fuzzy
 msgid "Negative time to live"
-msgstr "Durée de vie (TTL) de la zone"
+msgstr "Durée de vie (TTL) negative"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:228
 #: modules/univention/admin/handlers/dns/forward_zone.py:249
-#, fuzzy
 msgid "Neither DN nor position given."
-msgstr "ni nom de domaine, ni emplacement fourni"
+msgstr "Ni nom de domaine, ni emplacement fourni."
 
 #: modules/univention/admin/handlers/dns/host_record.py:78
 #: modules/univention/admin/handlers/dns/forward_zone.py:174
@@ -275,9 +270,8 @@ msgid "Retry interval"
 msgstr "Intervalle entre deux essais"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:56
-#, fuzzy
 msgid "Reverse address"
-msgstr "Adresse IP"
+msgstr "Adresse IP reverse"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:186
 msgid "Reverse zone and IP address are incompatible."
@@ -362,7 +356,6 @@ msgid "The name of the host relative to the domain."
 msgstr ""
 
 #: modules/univention/admin/handlers/dns/alias.py:81
-#, fuzzy
 msgid "The name this alias points to. A FQDN must end with a dot."
 msgstr "Alias pour cet hôte. Les FQDNs doivent se terminer par '.'"
 
@@ -412,9 +405,8 @@ msgstr ""
 #: modules/univention/admin/handlers/dns/alias.py:69
 #: modules/univention/admin/handlers/dns/txt_record.py:63
 #: modules/univention/admin/handlers/dns/host_record.py:66
-#, fuzzy
 msgid "Time to live"
-msgstr "Durée de vie (TTL) de la zone"
+msgstr "Durée de vie (TTL)"
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:57
 msgid "Zone name"

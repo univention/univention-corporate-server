@@ -43,9 +43,8 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:52
-#, fuzzy
 msgid "A pool of dynamic addresses assignable to hosts."
-msgstr "Assignation dynamique des adresses"
+msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/shared.py:50
 msgid "A shared physical network, where multiple IP address ranges are used."
@@ -120,9 +119,8 @@ msgid "Allow adding custom DHCP options. Experts only!"
 msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/__common.py:66
-#, fuzzy
 msgid "Allow custom DHCP options"
-msgstr "Options DHCP"
+msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/pool.py:108
 msgid "Allow dynamic BOOTP clients"
@@ -141,7 +139,6 @@ msgid "An IP address range used in a shared network."
 msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/host.py:77
-#, fuzzy
 msgid ""
 "Assign one or more fixed IP addresses. Each address should be either an IP "
 "address or a domain name that resolves to one or more IP addresses."
@@ -183,9 +180,8 @@ msgstr ""
 "nombres de 0 à ff), séparés par des doubles-points."
 
 #: modules/univention/admin/handlers/dhcp/__common.py:103
-#, fuzzy
 msgid "Custom DHCP options"
-msgstr "Options DHCP"
+msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/__common.py:54
 msgid "DHCP Statements"
@@ -304,9 +300,8 @@ msgid "IP range for dynamic assignment"
 msgstr "Plage d'IP pour l'assignation dynamique"
 
 #: modules/univention/admin/handlers/dhcp/__common.py:102
-#, fuzzy
 msgid "Low-level DHCP configuration"
-msgstr "Pair de secours"
+msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/dhcp.py:56
 msgid "Manage the Domain Host Configuration Protocol service."
@@ -349,9 +344,8 @@ msgid "The IP addresses used to send data to all hosts inside the network."
 msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/pool.py:79
-#, fuzzy
 msgid "The name of the \"failover peer\" configuration to use."
-msgstr "Pair de secours"
+msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/server.py:57
 msgid "The name of the server, which should handle this DHCP service."
@@ -359,9 +353,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/sharedsubnet.py:56
 #: modules/univention/admin/handlers/dhcp/subnet.py:56
-#, fuzzy
 msgid "The network address."
-msgstr "Nom du réseau partagé"
+msgstr "L'adresse de réseau."
 
 #: modules/univention/admin/handlers/dhcp/sharedsubnet.py:67
 #: modules/univention/admin/handlers/dhcp/subnet.py:67

@@ -22,4 +22,4 @@ msgstr "Applications"
 
 #: www/main.js:90
 msgid "Local Apps"
-msgstr ""
+msgstr "Apps locals"

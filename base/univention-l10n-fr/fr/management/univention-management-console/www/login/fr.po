@@ -31,7 +31,7 @@ msgstr "Voulez-vous vraiment vous déconnecter ?"
 
 #: www/login/dialog.js:124
 msgid "How do I login?"
-msgstr ""
+msgstr "Comment s'authentifier?"
 
 #: www/login/main.js:193 www/login/main.js:445 www/login/LoginDialog.js:65
 #: www/login/LoginDialog.js:250
@@ -41,7 +41,7 @@ msgstr "Connexion"
 #: www/login/config.js:14
 #, python-format
 msgid "Login at %(domainname)s"
-msgstr ""
+msgstr "Authentification à %(domainname)s"
 
 #: www/login/main.js:487
 msgid "Logout"
@@ -92,7 +92,7 @@ msgstr ""
 
 #: www/login/main.js:193
 msgid "The current session timed out. Please login again."
-msgstr ""
+msgstr "La session actuelle a expiré. Veuillez vous authentifier à nouveau."
 
 #: www/login/dialog.js:122
 #, python-format
@@ -109,12 +109,17 @@ msgid ""
 "such as passwords will be transmitted in plain text. Please follow this link"
 " to use a secure SSL connection."
 msgstr ""
+"Cette connexion réseau n'est pas chiffrée. Toutes les données sensibles ou "
+"personnelles seront transmises en clair. Veuillez suivre ce lien pour "
+"utiliser une connexion SSL sécurisée."
 
 #: www/login/dialog.js:94
 msgid ""
 "This network connection is not encrypted.<br/>Click here for an HTTPS "
 "connection."
 msgstr ""
+"Cette connexion réseau n'est pas chiffrée.<br/>Veuillez suivre ce lien "
+"pour une connexion HTTPS."
 
 #: www/login/dialog.js:120
 #, python-format

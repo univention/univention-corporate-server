@@ -256,14 +256,13 @@ msgid "Please wait for operation to finish"
 msgstr "Veuillez patienter le temps que l'opération se termine"
 
 #: src/univention/management/console/error.py:127
-#, fuzzy
 msgid ""
 "Restart the LDAP service on the domain controller master either via "
 "\"service slapd restart\" on command line or with the UMC module \"System "
 "services\""
 msgstr ""
 "Redémarrer le serveur LDAP sur le contrôleur de domaine maître par le biais "
-"de la ligne de commande « invoke-rc.d slapd restart » ou avec le module UMC "
+"de la ligne de commande « service slapd restart » ou avec le module UMC "
 "« Services du système »"
 
 #: src/univention/management/console/modules/sanitizers.py:383

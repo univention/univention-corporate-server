@@ -104,7 +104,7 @@ msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:144
 msgid "Could not recreate SSL certificate for %s."
-msgstr ""
+msgstr "Impossible à recréer des certificats SSL pour %s."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:145
 #, python-format

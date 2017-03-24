@@ -16,14 +16,14 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 
 #: umc/js/join/Grid.js:172
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d scripts are pending to be run."
-msgstr "%s scripts sont en attente d'exécution."
+msgstr "%d scripts sont en attente d'exécution."
 
 #: umc/js/join/Grid.js:164
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d scripts selected"
-msgstr "%s scripts sélectionnés"
+msgstr "%d scripts sélectionnés"
 
 #: umc/js/join.js:156
 msgid "... loading log ..."

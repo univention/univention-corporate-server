@@ -194,9 +194,8 @@ msgstr ""
 " ci-dessus ?"
 
 #: umc/js/updater/ProgressPage.js:253
-#, fuzzy
 msgid "Finish updates"
-msgstr "Mises à niveau de version"
+msgstr "Terminer mises à jour"
 
 #: umc/js/updater/ProgressPage.js:117
 msgid ""

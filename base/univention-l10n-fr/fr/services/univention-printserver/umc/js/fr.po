@@ -158,14 +158,12 @@ msgid "Save changes"
 msgstr "Enregistrer les modifications"
 
 #: umc/js/printers/OverviewPage.js:65
-#, fuzzy
 msgid "Search for"
 msgstr "Chercher la clé"
 
 #: umc/js/printers/OverviewPage.js:75
-#, fuzzy
 msgid "Search..."
-msgstr "Chercher la clé"
+msgstr "Chercher..."
 
 #: umc/js/printers/DetailPage.js:216 umc/js/printers/OverviewPage.js:93
 msgid "Server"

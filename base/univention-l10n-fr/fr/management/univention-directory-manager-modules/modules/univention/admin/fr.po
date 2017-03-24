@@ -57,17 +57,12 @@ msgid "A path must begin with \"/\"!"
 msgstr "Un chemin doit commencer par un « / » !"
 
 #: modules/univention/admin/syntax.py:1379
-#, fuzzy
 msgid ""
 "A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 "
 "address (example: \"192.168.0\") or of the first 1 to 31 nibbles of an "
 "expanded (with leading zeroes and without ::-substitution) IPv6 address "
 "(example: \"2001:0db8:010\" for \"2001:db8:100::/24\")"
 msgstr ""
-"Un sous-réseau pour des résolutions inversées se compose des une à trois "
-"premières parties d'une adresse IPv4 (exemple : « 192.168.0 ») ou des 1 à 31"
-" premiers chiffres d'une adresse IPv6 avec des zéros devant et sans "
-"substitution de « :: » (exemple : « 2001:0db8:010 »)"
 
 #: modules/univention/admin/syntax.py:1858
 msgid "Above primary display"
@@ -491,9 +486,8 @@ msgid "Full domain name must be between 1 and 253 characters long!"
 msgstr ""
 
 #: modules/univention/admin/syntax.py:1469
-#, fuzzy
 msgid "Full name must not be all numeric!"
-msgstr "La valeur doit être un nombre !"
+msgstr ""
 
 #: modules/univention/admin/syntax.py:571
 msgid "GNU message catalog"
@@ -758,9 +752,8 @@ msgid "Memberserver"
 msgstr "Serveur membre"
 
 #: modules/univention/admin/syntax.py:241
-#, fuzzy
 msgid "Missing argument"
-msgstr "Valeur manquante !"
+msgstr "Valeur manquante"
 
 #: modules/univention/admin/syntax.py:1420
 msgid "Missing value!"
@@ -1405,16 +1398,11 @@ msgid "The requested group not be found."
 msgstr "Groupe demandé non trouvé."
 
 #: modules/univention/admin/syntax.py:1535
-#, fuzzy
 msgid ""
 "The reversed host name for IPv4 consists of the reversed host address "
 "(example: \"4.3\") or for IPv6 in nibble format (example: "
 "\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
 msgstr ""
-"Le nom de la zone inversée pour IPv4 se compose d'une adresse de sous-réseau"
-" inversée suivie par « .in-addr.arpa » (exemple : « 0.168.192.in-addr.arpa "
-"») ou pour IPv6 en sections suivies par « .ip6.arpa » (exemple : « "
-"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa »)"
 
 #: modules/univention/admin/uexceptions.py:69
 msgid "The specified size limit for the LDAP search has been exceeded."

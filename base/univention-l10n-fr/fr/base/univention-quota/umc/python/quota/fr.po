@@ -40,7 +40,7 @@ msgid "Expired"
 msgstr "Expiré"
 
 #: umc/python/quota/user.py:111
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Failed to modify quota settings for user %(user)s on partition "
 "%(partition)s."

@@ -47,11 +47,9 @@ msgstr ""
 "serveur est exécuté sur un système d'exploitation %(has)s bits."
 
 #: python/appcenter/utils.py:247 python/appcenter/utils.py:264
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the certificate of the App Center server %s."
-msgstr ""
-"Ce problème provient du serveur d'App Center. Veuillez réessayer "
-"ultérieurement."
+msgstr "Il y a un problème avec le certificat du serveur d'App Center %s."
 
 #: python/appcenter/utils.py:244
 msgid "This is a problem with the App Center server. Please try again later."

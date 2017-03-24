@@ -80,9 +80,9 @@ msgid "%s conflicts with the following packages."
 msgstr "%s entre en conflit avec les paquetages suivants."
 
 #: umc/js/appcenter/App.js:385 umc/js/appcenter/App.js:406
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s installed"
-msgstr "Est installé"
+msgstr "%s installé"
 
 #: umc/js/appcenter/requirements.js:165
 #, javascript-format
@@ -210,9 +210,8 @@ msgid "Add a new component definition"
 msgstr "Ajouter une nouvelle définition de composant"
 
 #: umc/js/appcenter/SettingsPage.js:251
-#, fuzzy
 msgid "Additional repositories"
-msgstr "Utiliser des dépôts non maintenus"
+msgstr "Dépôts supplémentaires"
 
 #: umc/js/appcenter/DetailsPage.js:136
 msgid "Advanced settings"
@@ -718,9 +717,8 @@ msgid "Open the documentation"
 msgstr "Ouvrir la documentation"
 
 #: umc/js/appcenter/requirements.js:300
-#, fuzzy
 msgid "Open the migration guide"
-msgstr "Ouvrir la documentation"
+msgstr "Ouvrir le guide de migration"
 
 #: umc/js/appcenter/SearchForm.js:50
 msgid "Package categories"
@@ -868,9 +866,8 @@ msgid "Search term"
 msgstr "Chercher un terme"
 
 #: umc/js/appcenter/SearchForm.js:80
-#, fuzzy
 msgid "Search..."
-msgstr "Chercher"
+msgstr "Chercher..."
 
 #: umc/js/appcenter/PackagesPage.js:311
 msgid "Section"
@@ -972,13 +969,12 @@ msgstr ""
 "."
 
 #: umc/js/appcenter/requirements.js:113
-#, fuzzy
 msgid ""
 "The application requires a newer kernel than your system is currently using "
 "(at least kernel 4.9 is required)."
 msgstr ""
 "Cette application nécessite une version plus récente du noyau que celle qui "
-"est actuellement utilisée par votre système (noyau 4.1 au minimum)."
+"est actuellement utilisée par votre système (noyau 4.9 au minimum)."
 
 #: umc/js/appcenter/requirements.js:277
 msgid ""
@@ -1243,9 +1239,9 @@ msgid "Upgrade of %s"
 msgstr "Mise à jour de %s"
 
 #: umc/js/appcenter/App.js:387 umc/js/appcenter/App.js:408
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Upgrade to %s available"
-msgstr "Mise à jour disponible"
+msgstr "Mise à jour de %s est disponible"
 
 #: umc/js/appcenter/PackagesPage.js:382
 msgid "Upgrading"

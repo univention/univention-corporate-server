@@ -99,7 +99,6 @@ msgstr ""
 "peut être utilisée pour forcer l'arrêt d'une machine virtuelle.</p>"
 
 #: umc/js/uvmm.js:390
-#, fuzzy
 msgid ""
 "A connection to a virtualization infrastructure could not be established. "
 "You can either connect to a public or private cloud. Alternatively you can "
@@ -114,7 +113,7 @@ msgstr ""
 "possible d'installer un hyperviseur sur ce serveur sur n'importe quel autre "
 "serveur UCS de ce domaine. Des informations supplémentaires sur la "
 "virtualisation sont disponibles dans <a target=\"_blank\" "
-"href=\"http://docs.univention.de/manual-4.0.html#uvmm:chapter\">le "
+"href=\"http://docs.univention.de/manual-4.2.html#uvmm:chapter\">le "
 "manuel</a>."
 
 #: umc/js/uvmm/InstanceWizard.js:114
@@ -1397,7 +1396,6 @@ msgid "Turkish"
 msgstr "Turc"
 
 #: umc/js/uvmm/InterfaceWizard.js:57
-#, fuzzy
 msgid ""
 "Two types of network interfaces are supported. The first one is "
 "<i>Bridge</i> that requires a static network connection on the physical "
@@ -1430,7 +1428,7 @@ msgstr ""
 "automatiquement par le service UVMM au démarrage de la machine virtuelle. "
 "Des informations supplémentaires sur la configuration du réseau peuvent être"
 " trouvées dans <a target=\"_blank\" "
-"href=\"http://docs.univention.de/manual-4.0.html#uvmm:networkinterfaces\">le"
+"href=\"http://docs.univention.de/manual-4.2.html#uvmm:networkinterfaces\">le"
 " manuel</a>."
 
 #: umc/js/uvmm/DriveGrid.js:68 umc/js/uvmm/InterfaceGrid.js:59

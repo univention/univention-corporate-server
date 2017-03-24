@@ -264,9 +264,8 @@ msgid "Default quota for each user on a share"
 msgstr "Quota par défaut pour chaque utilisateur sur un partage"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:139
-#, fuzzy
 msgid "Define the name of the DHCP server"
-msgstr "Définir l'adresse IP du serveur d'amorçage"
+msgstr ""
 
 #: modules/univention/admin/handlers/policies/umc.py:68
 msgid "Defines a set of allowed UMC operations"
@@ -1083,14 +1082,11 @@ msgid "Specify the DDNS Update Style to use for a DHCP Service"
 msgstr "Définit le type de mise à jour DDNS à utiliser pour un service DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:129
-#, fuzzy
 msgid ""
 "The IP address identifying the DHCP server that should be used by the "
 "clients. Use this only if auto-detection fails for servers with multiple IP "
 "addresses."
 msgstr ""
-"Une adresse IP identifiant le serveur à utiliser pour toute requête "
-"ultérieure par les clients. Il n'est pas recommandé d'utiliser cette option."
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:106
 msgid "The node type of clients for NetBIOS over TCP/IP"

@@ -49,7 +49,7 @@ msgstr ""
 
 #: initialsetup.html:31
 msgid "Welcome to "
-msgstr ""
+msgstr "Bienvenu à "
 
 #: initialsetup.html:51
 msgid "Welcome to UCS initial configuration"

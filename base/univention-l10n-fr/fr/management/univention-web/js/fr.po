@@ -110,7 +110,7 @@ msgstr "Retour"
 
 #: js/hooks/default_menu_entries.js:155
 msgid "Back to start site"
-msgstr ""
+msgstr "Retour vers page d'accueil"
 
 #: js/dialog.js:254 js/tools.js:293 js/widgets/Wizard.js:174
 #: js/widgets/MultiObjectSelect.js:138 js/hooks/default_menu_entries.js:120
@@ -123,11 +123,11 @@ msgstr "Liste de révocation de certificats"
 
 #: js/hooks/default_menu_entries.js:66
 msgid "Certificates"
-msgstr ""
+msgstr "Certificats"
 
 #: js/hooks/default_menu_entries.js:121
 msgid "Changing language"
-msgstr ""
+msgstr "Changer langue"
 
 #: js/widgets/Uploader.js:121
 msgid "Clear data"
@@ -276,7 +276,7 @@ msgstr "Se déconnecter"
 
 #: js/menu/Menu.js:141
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: js/widgets/MultiInput.js:439
 msgid "New entry"
@@ -417,7 +417,7 @@ msgstr "Soumettre"
 
 #: js/hooks/default_menu_entries.js:101 js/hooks/default_menu_entries.js:114
 msgid "Switch language"
-msgstr ""
+msgstr "Changer langue"
 
 #: js/tools.js:969
 msgid "Thank you for your help"

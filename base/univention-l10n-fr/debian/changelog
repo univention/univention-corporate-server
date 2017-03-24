@@ -1,3 +1,9 @@
+univention-l10n-fr (1.2.0-1) unstable; urgency=medium
+
+  * Bug #43462: Fix fuzzy targets + add some directly visible translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Mar 2017 01:11:41 +0100
+
 univention-l10n-fr (1.2.0-0) unstable; urgency=medium
 
   * Bug #43462: update translations for 4.2
