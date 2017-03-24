@@ -754,8 +754,8 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The default configuration now denies search engines and similar webservices from indexing the content delivered
-					by Apache via robots.txt. New UCR variables to control access were introduced. Existing robots.txt in /var/www will
-					be backed up to robots.txt.orig on upgrade to UCS 4.2(<u:bug>32521</u:bug>)
+					by Apache via robots.txt. New UCR variables to control access were introduced. An existing robots.txt in /var/www will
+					be backed up to robots.txt.orig on upgrade to UCS 4.2.(<u:bug>32521</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
