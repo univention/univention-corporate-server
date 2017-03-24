@@ -244,7 +244,7 @@ class Base(signals.Provider, Translation):
 		try:
 			MODULE.info('Executing %s' % (request.arguments,))
 			self._parse_accept_language(request)
-			if ucr.is_true('umc/server/disable-security-restrictions', False):
+			if ucr.is_false('umc/server/disable-security-restrictions', True):
 				self.security_checks(request, function)
 			function.__func__(self, request, *args, **kwargs)
 		except (KeyboardInterrupt, SystemExit):

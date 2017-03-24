@@ -1,3 +1,9 @@
+univention-management-console (9.0.75-1) unstable; urgency=medium
+
+  * Bug #43845: fix interted boolean logic
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 17:38:31 +0100
+
 univention-management-console (9.0.74-1) unstable; urgency=medium
 
   * Bug #44059: fix displaying of dialog of no modules are available for the
