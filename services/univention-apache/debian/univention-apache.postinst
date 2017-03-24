@@ -61,6 +61,7 @@ univention-config-registry set apache2/documentroot?"/var/www/"
 univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root
 univention-config-registry set apache2/startsite?"univention/"
+univention-config-registry set ucs/server/robots/disallow?"/"
 
 # configure firewall
 ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \

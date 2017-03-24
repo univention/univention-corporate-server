@@ -1,0 +1,10 @@
+@%@UCRWARNING=#@%@
+@!@
+print('Useragent: *')
+
+for denied_path in configRegistry.get('ucs/server/robots/disallow', '/').split():
+	print('Disallow: {}'.format(denied_path))
+
+for allowed_path in configRegistry.get('ucs/server/robots/allow', '').split():
+	print('Allow: {}'.format(allowed_path))
+@!@

@@ -1,3 +1,9 @@
+univention-apache (9.0.5-0) unstable; urgency=medium
+
+  * Bug #32521: add UCR template for robots.txt
+
+ -- Eduard Mai <mai@univention.de>  Fri, 24 Mar 2017 15:57:47 +0100
+
 univention-apache (9.0.4-2) unstable; urgency=medium
 
   * Bug #43695: remove unneeded ucr variables

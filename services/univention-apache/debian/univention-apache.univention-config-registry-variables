@@ -207,3 +207,15 @@ Description[en]=Defines the (lexicographical) sort priority for the correspondin
 Description[de]=Gibt die (lexikografische) Sortierungsreihenfolge des entsprechenden Eintrags der UCS-Startseite an. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/priority.
 Type=int
 Categories=service-apache
+
+[ucs/server/robots/allow]
+Description[de]=Die in dieser Variable aufgelisteten Pfade werden in die robots.txt aufgenommen und zur Indizierung durch Suchmaschinen freigegeben. Mehrere Pfade können durch Leerzeichen getrennt angegeben werden.
+Description[en]=The paths listed in this variable will be indexed by search engines and similar services that evaluate robots.txt. Multiple paths are separated by a whitespace character.
+Type=str
+Categories=service-apache
+
+[ucs/server/robots/disallow]
+Description[de]=Die in dieser Variable aufgelisteten Pfade werden in die robots.txt aufgenommen und dadurch von der Indizierung durch Suchmaschinen ausgenommen. Mehrere Pfade können durch Leerzeichen getrennt angegeben werde.
+Description[en]=The paths listed in this variable will be excluded from being indexed by search engines and similar services that evaluate robots.txt. Multiple paths are separated by a whitespace character.
+Type=str
+Categories=service-apache

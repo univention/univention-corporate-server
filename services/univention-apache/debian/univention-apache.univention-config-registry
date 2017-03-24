@@ -77,3 +77,8 @@ Variables: apache2/proxy/access/deny
 
 Type: file
 File: etc/apache2/ports.conf
+
+Type: file
+File: var/www/robots.txt
+Variables: ucs/server/robots/allow
+Variables: ucs/server/robots/disallow
