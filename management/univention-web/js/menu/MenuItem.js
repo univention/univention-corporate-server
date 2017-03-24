@@ -52,9 +52,6 @@ define([
 			if (!this.onClick && !this.label) {
 				domClass.add(this.domNode, 'separator');
 			}
-			if (typeof this.onClick == 'function')  {
-				this.domNode.onclick = lang.hitch(this, 'onClick');
-			}
 		}
 	});
 });

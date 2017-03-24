@@ -324,7 +324,7 @@ define([
 					id: item.id || null,
 					priority: item.priority || 0,
 					label: item.label || '',
-					disabled: item.disabled,
+					disabled: item.disabled || false,
 					onClick: item.onClick
 				});
 			};
@@ -333,11 +333,16 @@ define([
 			var parentMenuId = item.parentMenuId || 'umcMenuMain';
 			var parentMenuItem = this._menuMap[parentMenuId];
 			var menuEntry = _createMenuEntry();
-			menuEntry.on('click', function() {
-				menuDeferred.then(function(menu) {
-					menu.close();
+
+			// add listeners if entry is not a seperator
+			if (typeof menuEntry.onClick === 'function') {
+				menuEntry.on(tap, function() {
+					menuEntry.onClick();
+					menuDeferred.then(function(menu) {
+						menu.close();
+					});
 				});
-			});
+			}
 
 			if (!parentMenuItem) {
 				this._registerOrphanedEntry(menuEntry, parentMenuId);
