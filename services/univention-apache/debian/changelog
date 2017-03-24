@@ -1,3 +1,9 @@
+univention-apache (9.0.5-2) unstable; urgency=medium
+
+  * Bug #42296: require the new apache 2.4 .conf suffix for includes
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 18:28:08 +0100
+
 univention-apache (9.0.5-1) unstable; urgency=medium
 
   * Bug #32521: fix type Useragent/User-agent

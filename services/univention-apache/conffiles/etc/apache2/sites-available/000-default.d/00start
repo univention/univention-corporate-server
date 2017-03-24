@@ -1,5 +1,5 @@
 @%@UCRWARNING=# @%@
 
 <VirtualHost *:80>
-	Include /etc/apache2/ucs-sites.conf.d
+	IncludeOptional /etc/apache2/ucs-sites.conf.d/*.conf
 
