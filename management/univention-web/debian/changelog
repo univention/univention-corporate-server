@@ -1,3 +1,9 @@
+univention-web (1.0.40-14) unstable; urgency=medium
+
+  * Bug #44007: move uvmm specific css rules into uvmm module
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 24 Mar 2017 12:13:30 +0100
+
 univention-web (1.0.40-13) unstable; urgency=medium
 
   * Bug #32027: Grid: cleanup initialization of internal variables 
