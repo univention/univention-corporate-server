@@ -276,6 +276,9 @@
 					The design of the login dialog has been restructured and moved into a single login page. By default the login to Univention Management Console now uses the SAML Single Sign On login mechanism.
 					The session timeout has been increased to 8 hours of inactivity (<u:bug>42174</u:bug>, <u:bug>43918</u:bug>). 
 				</simpara></listitem>
+				<listitem><simpara>
+					The French translation has been updated w.r.t. the new structure of the web packages (<u:bug>43462</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
