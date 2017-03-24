@@ -362,6 +362,7 @@ class Register(CredentialsAction):
 							target.write(re.sub(r'@%@APPID@%@', app.id, line))
 					os.chmod(init_script, 0755)
 					self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
+					self._call_script('/bin/systemctl', 'daemon-reload')
 				except OSError as exc:
 					msg = str(exc)
 					if exc.errno == 17:
