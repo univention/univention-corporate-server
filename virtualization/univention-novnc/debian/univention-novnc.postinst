@@ -29,8 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 case "$1" in
     configure)
 		adduser --system --no-create-home --disabled-password --disabled-login novnc
@@ -53,5 +51,6 @@ case "$1" in
     ;;
 esac
 
+#DEBHELPER#
 
 exit 0

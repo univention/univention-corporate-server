@@ -1,3 +1,9 @@
+univention-novnc (1.0.0-6) unstable; urgency=medium
+
+  * Bug #44067: Move debhelper section to a later part of postinst
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 24 Mar 2017 14:00:59 +0100
+
 univention-novnc (1.0.0-5) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
