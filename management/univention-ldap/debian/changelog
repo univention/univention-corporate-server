@@ -1,3 +1,9 @@
+univention-ldap (13.0.6-1) unstable; urgency=medium
+
+  * Bug #44032: add missing "$@" for univention-ldapsearch in joinscript
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 11:29:15 +0100
+
 univention-ldap (13.0.5-6) unstable; urgency=medium
 
   * Bug #42235: Add schema extensions for portal logo and CSS background

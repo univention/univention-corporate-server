@@ -76,7 +76,7 @@ wait_named () {
 }
 
 if ! local_is_ucr_false dns/register/srv_records/ldap; then
-	S4_DCS="$(univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
+	S4_DCS="$(univention-ldapsearch "$@" "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 	if [ -z "$S4_DCS" ]; then
 		wait_named
 		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
