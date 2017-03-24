@@ -32,12 +32,12 @@
 
 #DEBHELPER#
 
-case "$1" in
-	install|upgrade)
-		if [ -f /var/www/robots.txt ]; then
-			mv /var/www/robots.txt /var/www/robots.txt.orig
-		fi
-		;;
-esac
+# UCS 4.2 introduces an UCR template for robots.txt. Backup user created robots.txt
+# on upgrade to 4.2.
+if [ "$1" = 'upgrade' ] && dpkg --compare-versions "$2" lt 9.0.0.1; then
+	if [ -e /var/www/robots.txt ]; then
+		mv /var/www/robots.txt /var/www/robots.txt.orig
+	fi
+fi
 
 exit 0

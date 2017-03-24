@@ -1,3 +1,9 @@
+univention-apache (9.0.5-3) unstable; urgency=medium
+
+  * Bug #32521: backup robots.txt only on upgrade to 4.2
+
+ -- Eduard Mai <mai@univention.de>  Fri, 24 Mar 2017 18:14:09 +0100
+
 univention-apache (9.0.5-2) unstable; urgency=medium
 
   * Bug #42296: require the new apache 2.4 .conf suffix for includes
