@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.2-2) unstable; urgency=medium
+
+  * Bug #43889: fix fuzzy entries
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 14:16:14 +0100
+
 univention-pkgdb (10.0.2-1) unstable; urgency=medium
 
   * Bug #43889: adjust UMC module to UCS 4.2 layout changes

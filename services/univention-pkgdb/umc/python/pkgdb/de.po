@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-29 00:13+0100\n"
+"POT-Creation-Date: 2017-03-24 14:15+0100\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/pkgdb/__init__.py:172
+#: umc/python/pkgdb/__init__.py:171
 msgid "All properties"
 msgstr "Alle Eigenschaften"
 
-#: umc/python/pkgdb/__init__.py:195
+#: umc/python/pkgdb/__init__.py:194
 msgid "Config files only"
 msgstr "Nur Konfigurationsdateien"
 
-#: umc/python/pkgdb/__init__.py:246
+#: umc/python/pkgdb/__init__.py:248
 #, python-format
 msgid ""
 "Connection to the dabase lost.\n"
@@ -31,7 +31,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: umc/python/pkgdb/__init__.py:232
+#: umc/python/pkgdb/__init__.py:234
 #, python-format
 msgid ""
 "Could not establish connection to the database.\n"
@@ -42,59 +42,59 @@ msgstr ""
 "\n"
 "%s"
 
-#: umc/python/pkgdb/__init__.py:181
+#: umc/python/pkgdb/__init__.py:180
 msgid "Deinstall"
 msgstr "Deinstall"
 
-#: umc/python/pkgdb/__init__.py:175
+#: umc/python/pkgdb/__init__.py:174
 msgid "Domain controller Backup"
 msgstr "Domaincontroller Backup"
 
-#: umc/python/pkgdb/__init__.py:174
+#: umc/python/pkgdb/__init__.py:173
 msgid "Domain controller Master"
 msgstr "Domaincontroller Master"
 
-#: umc/python/pkgdb/__init__.py:176
+#: umc/python/pkgdb/__init__.py:175
 msgid "Domain controller Slave"
 msgstr "Domaincontroller Slave"
 
-#: umc/python/pkgdb/__init__.py:192
+#: umc/python/pkgdb/__init__.py:191
 msgid "Half-configured"
 msgstr "Halb-konfiguriert"
 
-#: umc/python/pkgdb/__init__.py:194
+#: umc/python/pkgdb/__init__.py:193
 msgid "Half-installed"
 msgstr "Halb-installiert"
 
-#: umc/python/pkgdb/__init__.py:180
+#: umc/python/pkgdb/__init__.py:179
 msgid "Hold"
 msgstr "Hold"
 
-#: umc/python/pkgdb/__init__.py:188
+#: umc/python/pkgdb/__init__.py:187
 msgid "Hold + Reinstall required"
 msgstr "Hold + Reinstall required"
 
-#: umc/python/pkgdb/__init__.py:167
+#: umc/python/pkgdb/__init__.py:166
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: umc/python/pkgdb/__init__.py:197
+#: umc/python/pkgdb/__init__.py:196
 msgid "Incomplete"
 msgstr "Unvollständig"
 
-#: umc/python/pkgdb/__init__.py:179
+#: umc/python/pkgdb/__init__.py:178
 msgid "Install"
 msgstr "Install"
 
-#: umc/python/pkgdb/__init__.py:160
+#: umc/python/pkgdb/__init__.py:159
 msgid "Installation state"
 msgstr "Installationsstatus"
 
-#: umc/python/pkgdb/__init__.py:196
+#: umc/python/pkgdb/__init__.py:195
 msgid "Installed"
 msgstr "Installiert"
 
-#: umc/python/pkgdb/__init__.py:161
+#: umc/python/pkgdb/__init__.py:160
 msgid "Inventory date"
 msgstr "Erfassungsdatum"
 
@@ -106,66 +106,66 @@ msgstr ""
 "Vielleicht läuft der PostgreSQL Server nicht.\n"
 "Er kann mithilfe des UMC-Moduls \"Systemdienste\" gestartet werden."
 
-#: umc/python/pkgdb/__init__.py:177
+#: umc/python/pkgdb/__init__.py:176
 msgid "Member Server"
 msgstr "Memberserver"
 
-#: umc/python/pkgdb/__init__.py:183 umc/python/pkgdb/__init__.py:190
+#: umc/python/pkgdb/__init__.py:182 umc/python/pkgdb/__init__.py:189
 msgid "Not installed"
 msgstr "Nicht installiert"
 
-#: umc/python/pkgdb/__init__.py:185
+#: umc/python/pkgdb/__init__.py:184
 msgid "OK"
 msgstr "OK"
 
-#: umc/python/pkgdb/__init__.py:163
+#: umc/python/pkgdb/__init__.py:162
 msgid "Package name"
 msgstr "Paketname"
 
-#: umc/python/pkgdb/__init__.py:165
+#: umc/python/pkgdb/__init__.py:164
 msgid "Package state"
 msgstr "Paketstatus"
 
-#: umc/python/pkgdb/__init__.py:182
+#: umc/python/pkgdb/__init__.py:181
 msgid "Purge"
 msgstr "Purge"
 
-#: umc/python/pkgdb/__init__.py:186
+#: umc/python/pkgdb/__init__.py:185
 msgid "Reinstall required"
 msgstr "Neuinstallation erforderlich"
 
-#: umc/python/pkgdb/__init__.py:166
+#: umc/python/pkgdb/__init__.py:165
 msgid "Selection state"
 msgstr "Selektionsstatus"
 
-#: umc/python/pkgdb/__init__.py:168
+#: umc/python/pkgdb/__init__.py:167
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/python/pkgdb/__init__.py:199
+#: umc/python/pkgdb/__init__.py:198
 msgid "Triggers awaited"
 msgstr "Trigger erwartet"
 
-#: umc/python/pkgdb/__init__.py:198
+#: umc/python/pkgdb/__init__.py:197
 msgid "Triggers pending"
 msgstr "Trigger ausstehend"
 
-#: umc/python/pkgdb/__init__.py:169
+#: umc/python/pkgdb/__init__.py:168
 msgid "UCS Version"
 msgstr "UCS-Version"
 
-#: umc/python/pkgdb/__init__.py:170
+#: umc/python/pkgdb/__init__.py:169
 msgid "UCS Version is greater than"
 msgstr "UCS-Version ist größer als"
 
-#: umc/python/pkgdb/__init__.py:171
+#: umc/python/pkgdb/__init__.py:170
 msgid "UCS Version is lower than"
 msgstr "UCS-Version ist kleiner als"
 
-#: umc/python/pkgdb/__init__.py:193
+#: umc/python/pkgdb/__init__.py:192
 msgid "Uninstalled"
 msgstr "Deinstalliert"
 
-#: umc/python/pkgdb/__init__.py:191
+#: umc/python/pkgdb/__init__.py:190
 msgid "Unpacked"
 msgstr "Ausgepackt"

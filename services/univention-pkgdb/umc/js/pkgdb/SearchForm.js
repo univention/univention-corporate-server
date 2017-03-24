@@ -57,7 +57,7 @@ define([
 				widgets:  [{
 					type: ComboBox,
 					name: 'key',
-					label: _("Search for: "),
+					label: _("Search for:"),
 					size: 'TwoThirds',
 					sortDynamicValues: false,
 					dynamicValues: 'pkgdb/keys',
