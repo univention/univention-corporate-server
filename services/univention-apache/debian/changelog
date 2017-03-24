@@ -1,3 +1,9 @@
+univention-apache (9.0.5-1) unstable; urgency=medium
+
+  * Bug #32521: fix type Useragent/User-agent
+
+ -- Eduard Mai <mai@univention.de>  Fri, 24 Mar 2017 17:13:50 +0100
+
 univention-apache (9.0.5-0) unstable; urgency=medium
 
   * Bug #32521: add UCR template for robots.txt
