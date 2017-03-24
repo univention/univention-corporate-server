@@ -151,9 +151,6 @@
 					If the <command>slapd</command> is already running when trying to start, the init-script does not signal failure anymore.
 					A 5 second delay when starting <command>slapd</command> was removed (<u:bug>43450</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara>
-					The user credentials are now used in the joinscript for univention-ldapsearch calls which prevents errors on new installations when the machine password is not created yet (<u:bug>44032</u:bug>).
-				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
