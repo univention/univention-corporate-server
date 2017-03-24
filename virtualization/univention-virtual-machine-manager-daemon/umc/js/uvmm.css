@@ -7,14 +7,12 @@
 	display: block;
 }
 
-.umc .umcGrid .dgrid .dgrid-cell.field-start,.field-vnc .dijitButtonText {
+.umc .umcGrid .dgrid .dgrid-cell.field-start .dijitButtonText,
+.umc .umcGrid .dgrid .dgrid-cell.field-vnc .dijitButtonText {
 	padding: 0px;
 }
 
+.umc .umcGrid .dgrid .dgrid-cell.field-vnc .umcIconView,
 .umc .umcGrid .dgrid .dgrid-cell.field-start .umcIconPlay {
-	margin: 0 16px;
-}
-
-.umc .umcGrid .dgrid .dgrid-cell.field-vnc .umcIconView {
 	margin: 0 16px;
 }

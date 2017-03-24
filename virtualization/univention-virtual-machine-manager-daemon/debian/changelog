@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.3-5) unstable; urgency=medium
+
+  * Bug #44007: improved css
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 24 Mar 2017 15:42:15 +0100
+
 univention-virtual-machine-manager-daemon (6.0.3-4) unstable; urgency=medium
 
   * Bug #44067: Add profiles for UCS 4.2 and Windows Server 2016
