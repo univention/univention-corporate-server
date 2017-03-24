@@ -28,8 +28,9 @@
 	.umcGridHeader
 		display: inline-block
 		padding: 0
+		padding-left: 8px
 		float: left
-		margin: 6px 0
+		margin: 10px 0
 
 		& > *:after
 			content: " "
@@ -39,26 +40,21 @@
 			visibility: hidden
 
 		.dijitDropDownButton
-			margin: 12px
-
 			.dijitButtonContents
 				line-height: inherit
 
 				.dijitArrowButtonInner
 					display: none
 
-		.dijitButton
-			box-shadow: none
-
-			&:first-child
-				margin-left: 8px
-
+		.dijitButton,
+		.dijitDropDownButton
+			material-flat-button('.dijitButtonHover\, .dijitDropDownButtonHover')
 			.dijitIcon
 				display: none
 
 	.umcGridStatus
-		margin: 6px 0
-		height: 60px
+		margin: 10px 0
+		height: 52px
 		line-height: @height
 		text-align: center
 		float: right
@@ -147,14 +143,10 @@
 
 			// adapt inline buttons
 			.dijitButton
-				box-shadow: none
+				material-flat-button()
 				margin-top: 0
 				margin-bottom: 0
-				background-color: rgba(255, 255, 255, 0)
 
-			// make sure that buttons hover from transparent background to light translucent black
-			.dijitButton:not(.dijitButtonHover) .dijitButtonNode
-				background-color: rgba(0, 0, 0, 0);
 
 .umc .dojoxGridHeader
 	background-color: $text-color

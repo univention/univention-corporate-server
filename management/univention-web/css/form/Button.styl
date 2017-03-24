@@ -29,17 +29,11 @@
 @import "../variables"
 
 .umc .dijitButton.umcFlatButton
-	box-shadow: none
-	
-	.dijitButtonNode
-		background-color: transparent
-		^[-1].dijitButtonHover ^[-1..-1]
-			background-color: $button-hovered-background-color
-		^[-1].dijitButtonActive ^[-1..-1]
-			background-color: $button-pressed-background-color
+	material-flat-button()
 
-.umc .dijitButton
-	margin: 12px
+.umc .dijitButton,
+.umc .dijitDropDownButton
+	margin: 8px
 	material-shadow-common()
 	material-shadow(1)
 	border-radius: $button-border-radius

@@ -297,6 +297,21 @@ material-shadow(level)
 	else
 		box-shadow: none
 
+
+material-flat-button(hoverClasses=".dijitButtonHover")
+	box-shadow: none
+	margin-left: 4px
+	margin-right: @margin-left
+
+	// make sure that buttons hover from transparent background to light translucent black
+	&:not({hoverClasses}) .dijitButtonNode
+		background-color: rgba(255, 255, 255, 0);
+
+	.dijitButtonText
+		padding: 0 12px
+
+
+
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)
 	_iconImage = replace("^(.*)(\.\w*)", "$1" + filesuffix + "$2", $image-icons)
 	_url = dirprefix + _iconImage
