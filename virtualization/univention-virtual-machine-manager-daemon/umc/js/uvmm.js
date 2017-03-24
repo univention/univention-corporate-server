@@ -70,7 +70,8 @@ define([
 	"umc/modules/uvmm/InstanceWizard",
 	"umc/modules/uvmm/CreatePage",
 	"umc/modules/uvmm/types",
-	"umc/i18n!umc/modules/uvmm"
+	"umc/i18n!umc/modules/uvmm",
+	"xstyle/css!./uvmm.css"
 ], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, _) {

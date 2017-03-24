@@ -1,0 +1,20 @@
+.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBar {
+	display: block;
+	line-height: 20px;
+}
+
+.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBarLabel {
+	display: block;
+}
+
+.umc .umcGrid .dgrid .dgrid-cell.field-start,.field-vnc .dijitButtonText {
+	padding: 0px;
+}
+
+.umc .umcGrid .dgrid .dgrid-cell.field-start .umcIconPlay {
+	margin: 0 16px;
+}
+
+.umc .umcGrid .dgrid .dgrid-cell.field-vnc .umcIconView {
+	margin: 0 16px;
+}

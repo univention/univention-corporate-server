@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.3-3) unstable; urgency=medium
+
+  * Bug #4407: add css rules for grid 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 24 Mar 2017 12:17:39 +0100
+
 univention-virtual-machine-manager-daemon (6.0.3-2) unstable; urgency=medium
 
   * Bug #44007: fix getting the viewport width on reload 
