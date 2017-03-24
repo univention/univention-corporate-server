@@ -1,3 +1,9 @@
+univention-self-service (2.0.11-2) unstable; urgency=medium
+
+  * Bug #44059: Add CSS class to button row to ensure flat styling
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Mar 2017 12:51:47 +0100
+
 univention-self-service (2.0.11-1) unstable; urgency=medium
 
   * Bug #42231: Bug #43899: fix shell comparision

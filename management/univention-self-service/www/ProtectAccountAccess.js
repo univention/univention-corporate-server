@@ -146,7 +146,7 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmit: function() {
-			var step = put('div.buttonRow');
+			var step = put('div.buttonRow.umcPageFooter');
 			this._showContactInformationButton = new Button({
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getContactInformation')
@@ -255,7 +255,7 @@ define([
 				label: _('Cancel'),
 				onClick: lang.hitch(this, '_deleteRenewOptions')
 			});
-			var buttonRow = put(step, 'div.buttonRow');
+			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
 			put(buttonRow, this._cancelButton.domNode);
 			put(buttonRow, this._saveButton.domNode);
 			put(this.steps, step);

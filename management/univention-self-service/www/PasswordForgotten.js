@@ -127,7 +127,7 @@ define([
 				label: _('Next'),
 				onClick: lang.hitch(this, '_getResetMethods')
 			});
-			var buttonRow = put(step, 'div.buttonRow');
+			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
 			put(buttonRow, this._usernameButton.domNode);
 			put(this.steps, step);
 		},

@@ -235,7 +235,7 @@ define([
 		 * Creates submit button.
 		 * */
 		_createSubmitNewPassword: function() {
-			var step = put('div.buttonRow');
+			var step = put('div.buttonRow.umcPageFooter');
 			this._setPasswordButton = new Button({
 				label: _('Change password'),
 				onClick: lang.hitch(this, '_setPassword')
