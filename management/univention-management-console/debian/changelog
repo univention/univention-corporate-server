@@ -1,4 +1,4 @@
-univention-management-console (9.0.73-2) unstable; urgency=medium
+univention-management-console (9.0.73-3) unstable; urgency=medium
 
   * Bug #44052: repair "removing the executable bit" for systemd
 
