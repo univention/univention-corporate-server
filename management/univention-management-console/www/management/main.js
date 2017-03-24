@@ -662,26 +662,23 @@ define([
 
 		setupHelpMenu: function() {
 			// the help context menu
+			menu.addSeparator({
+				parentMenuId: 'umcMenuHelp',
+				priority: 50
+			});
+
 			menu.addEntry({
 				parentMenuId: 'umcMenuHelp',
 				label: _('Help'),
+				priority: 40,
 				onClick: lang.hitch(this, 'showPageDialog', 'HelpPage', 'help', null, null)
 			});
 
 			menu.addEntry({
 				parentMenuId: 'umcMenuHelp',
-				label: _('Feedback'),
-				onClick: lang.hitch(this, '_showFeedbackPage')
-			});
-
-			menu.addEntry({
-				parentMenuId: 'umcMenuHelp',
 				label: _('About UMC'),
+				priority: 30,
 				onClick: lang.hitch(this, 'showPageDialog', 'AboutPage!', 'about', null, null)
-			});
-
-			menu.addSeparator({
-				parentMenuId: 'umcMenuHelp'
 			});
 		},
 
@@ -693,6 +690,7 @@ define([
 			menu.addEntry({
 				parentMenuId: 'umcMenuHelp',
 				label: _('Usage statistics'),
+				priority: 20,
 				onClick: lang.hitch(this, 'showPageDialog', 'FeedbackPage', 'feedback', null, null)
 			});
 		},
@@ -764,13 +762,6 @@ define([
 				});
 			}));
 			return deferred;
-		},
-
-		_showFeedbackPage: function() {
-			topic.publish('/umc/actions', 'menu', 'help', 'feedback');
-			var url = _('umcFeedbackUrl') + '?umc=' + require('umc/app')._tabContainer.get('selectedChildWidget').title;
-			var w = window.open(url, 'umcFeedback');
-			w.focus();
 		}
 	});
 

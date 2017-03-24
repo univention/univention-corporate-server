@@ -1,3 +1,9 @@
+univention-management-console (9.0.73-4) unstable; urgency=medium
+
+  * Bug #44059: Move websites to univention-web-js + adjust help menu order
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Mar 2017 15:23:01 +0100
+
 univention-management-console (9.0.73-3) unstable; urgency=medium
 
   * Bug #44052: repair "removing the executable bit" for systemd
