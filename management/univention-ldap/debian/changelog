@@ -1,3 +1,9 @@
+univention-ldap (13.0.6-2) unstable; urgency=medium
+
+  * Bug #44032: revert
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 11:58:48 +0100
+
 univention-ldap (13.0.6-1) unstable; urgency=medium
 
   * Bug #44032: add missing "$@" for univention-ldapsearch in joinscript
