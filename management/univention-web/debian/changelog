@@ -1,3 +1,9 @@
+univention-web (1.0.40-21) unstable; urgency=medium
+
+  * Bug #44059: Fix height of input fields in IE
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 24 Mar 2017 19:23:08 +0100
+
 univention-web (1.0.40-20) unstable; urgency=medium
 
   * Bug #44059: Fix menu entries not beeing clickable on IE 11
