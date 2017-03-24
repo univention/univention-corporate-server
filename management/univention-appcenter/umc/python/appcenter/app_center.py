@@ -51,7 +51,6 @@ import stat
 import re
 from threading import Thread
 import traceback
-import urllib
 import urllib2
 from glob import glob
 from urlparse import urlsplit, urljoin
@@ -64,8 +63,6 @@ from json import loads
 
 # univention
 from univention.management.console.log import MODULE
-from univention.config_registry import handler_commit
-from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
@@ -74,7 +71,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from univention.appcenter.utils import app_ports, gpg_verify, container_mode
+from univention.appcenter.utils import app_ports, gpg_verify, container_mode, send_information
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
@@ -1831,37 +1828,19 @@ class Application(object):
 				time.sleep(1)
 			run_join_scripts.join()
 
+	def _get_new_lib_app(self):
+		return AppCache().find_by_component_id(self.component_id)
+
 	def _send_information(self, action, status):
-		ucr.load()
-		server = self.get_server(with_scheme=True)
-		url = '%s/postinst' % (server, )
-		uuid = '00000000-0000-0000-0000-000000000000'
-		if self.get('notifyvendor'):
-			uuid = LICENSE.uuid or uuid
-		try:
-			values = {
-				'uuid': uuid,
-				'app': self.id,
-				'version': self.version,
-				'action': action,
-				'status': status,
-				'role': ucr.get('server/role'),
-			}
-			request_data = urllib.urlencode(values)
-			request = urllib2.Request(url, request_data)
-			urlopen(request)
-		except:
-			MODULE.warn(traceback.format_exc())
+		app = self._get_new_lib_app()
+		send_information(action, app=app, status=status)
 
 	@classmethod
 	def _set_ucr_codes_variable(cls, ucr, package_manager):
-		installed_codes = []
-		for app in cls.all_installed(package_manager):
-			if app.code:
-				installed_codes.append(app.code)
-		codes_variable = '-'.join(sorted(installed_codes))
-		ucr_update(ucr, {'repository/app_center/installed': codes_variable})
+		register = get_action('register')()
+		register._register_installed_apps_in_ucr()
 
 	@classmethod
 	def update_conffiles(cls):
-		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo', '/usr/share/univention-portal/apps.json'])
+		update = get_action('update')()
+		update._update_conffiles()
