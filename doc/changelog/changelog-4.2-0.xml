@@ -53,9 +53,7 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
-				<listitem><simpara>
-					The installer now supports POSIX shared memory objects for non-priviliged processes during the installation in the chroot (<u:bug>43915</u:bug>).
-				</simpara></listitem>
+				The installer now supports POSIX shared memory objects for non-priviliged processes during the installation in the chroot (<u:bug>43915</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
