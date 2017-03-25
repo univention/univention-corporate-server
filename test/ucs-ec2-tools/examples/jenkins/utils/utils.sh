@@ -175,6 +175,22 @@ run_setup_join_on_non_master ()
 	return $rv
 }
 
+wait_until_update_server_is_resolvable ()
+{
+	local i=0
+	while [ $i -lt 900 ]
+	do
+		host updates.software-univention.de >/dev/null && break
+		sleep 1
+		i=$((i + 1))
+	done
+	if [ $i = 900 ]; then
+		echo "WARNING: host updates.software-univention.de did not succeed after 900 seconds"
+	else
+		echo "host updates.software-univention.de succeeded after $i seconds"
+	fi
+}
+
 wait_for_reboot ()
 {
 	local i=0
