@@ -705,7 +705,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					During <package>univention-system-setup</package>, the certificate for the initially configured <systemitem class="fqdomainname">undefined-hostname.unassigned-domain</systemitem> is not recreated (<u:bug>43626</u:bug>).
+					During <package>univention-system-setup</package>, the certificate for the initially configured <systemitem class="fqdomainname">undefined-hostname.unassigned-domain</systemitem> is not recreated (<u:bug>43626</u:bug>, <u:bug>43983</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The root SSL certificate used for the UCS domain is now registered as a trusted
