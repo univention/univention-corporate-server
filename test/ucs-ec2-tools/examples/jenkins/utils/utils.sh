@@ -351,12 +351,14 @@ install_ucsschool ()
 			install_apps ucsschool
 			;;
 		scope|*)
+			ucr set update/secure_apt=no appcenter/index/verify=no
 			local component="repository/online/component/ucsschool_DEVEL"
 			ucr set "$component"/description="Development version of UCS@school packages" \
 				"$component"/version="$(ucr get version/version)" \
 				"$component"/server=updates-test.software-univention.de \
 				"$component"=enabled
 			echo "install_ucsschool - DEBUG1"
+			ucr search repository/online/component/
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			univention-install --yes ucs-school-umc-installer
 			# Ensure ucsschool is a registered app
