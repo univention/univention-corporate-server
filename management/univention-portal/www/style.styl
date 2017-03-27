@@ -45,11 +45,13 @@
 		margin-right: -(@padding-right)
 
 		.umcHeaderLeft
-			position: absolut
+			position: relative
 			left: 0
 			top: 0
 			width: 100%
-			height: 100%
+
+			@media (max-width: 550px)
+				padding-top: 40px
 
 			.umcCustomLogo
 				width: auto
@@ -65,7 +67,7 @@
 
 		.umcHeaderRight
 			float: right
-			height: 100%
+
 
 		.umcLiveSearch .dijitTextBox
 				&:before,

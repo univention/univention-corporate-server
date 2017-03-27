@@ -104,7 +104,7 @@ def _write_css(obj):
 	bg_img = _save_image(obj, 'univentionPortalBackground', 'backgrounds'),
 	if bg_img:
 		background.append('url("%s") no-repeat top center / cover' % bg_img)
-	css = obj.get('univentionPortalCSSBackground', [''])[0]
+	css = obj.get('univentionPortalCSSBackground', [''])[0].strip()
 	if css:
 		background.append(css)
 	background = ', '.join(background)
