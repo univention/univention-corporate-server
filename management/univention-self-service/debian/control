@@ -20,7 +20,6 @@ Depends: ${misc:Depends},
  univention-config,
  univention-join,
  shell-univention-lib,
- univention-management-console-module-passwordchange,
  univention-self-service-passwordreset-umc
 Description: Univention Self Service
  This package contains the password self service module that
@@ -32,20 +31,33 @@ Description: Univention Self Service
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-self-service-passwordreset-umc
+Package: univention-self-service-master
 Architecture: all
 Depends: ${misc:Depends},
- univention-config,
+ univention-self-service-passwordreset-umc,
  univention-postgresql,
- univention-join,
- shell-univention-lib,
  python-psycopg2,
  univention-mail-postfix | mail-transport-agent,
  memcached,
  python-pylibmc
+Description: Univention Self Service
+ This package contains the required dependencies for the domaincontroller
+ master where the self service runs on.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-self-service-passwordreset-umc
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config,
+ univention-join,
+ shell-univention-lib,
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
- univention-self-service-passwordreset-frontend package. It that must be
+ univention-self-service-passwordreset-frontend package. It must be
  installed on a DC master or DC backup.
  .
  This package is part of Univention Corporate Server (UCS),
