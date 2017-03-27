@@ -1,3 +1,9 @@
+univention-self-service (2.0.11-4) unstable; urgency=medium
+
+  * Bug #44059: Add login button
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Mar 2017 18:46:51 +0200
+
 univention-self-service (2.0.11-3) unstable; urgency=medium
 
   * Bug #42267: fix whitelist check; prefill username; allow unset sms secret 
