@@ -1,3 +1,9 @@
+univention-web (1.0.41-3) unstable; urgency=medium
+
+  * Bug #42235: Fix undefined reference "tools" in MultiUploader
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Mar 2017 16:51:26 +0200
+
 univention-web (1.0.41-2) unstable; urgency=medium
 
   * Bug #44059: Fix wrong selection of parent element in tree

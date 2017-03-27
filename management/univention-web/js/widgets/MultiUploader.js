@@ -35,6 +35,7 @@ define([
 	"dojo/when",
 	"dojo/on",
 	"dojo/dom-style",
+	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/Button",
@@ -42,7 +43,7 @@ define([
 	"umc/widgets/MultiSelect",
 	"umc/widgets/ProgressInfo",
 	"umc/i18n!"
-], function(declare, lang, array, when, on, domStyle, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
+], function(declare, lang, array, when, on, domStyle, tools, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
 		baseClass: 'umcMultiUploader',
 
@@ -229,7 +230,7 @@ define([
 				if (this._uploadingFiles && this._progress) {
 					currentMaxSize += ifile.size;
 					if (this._progress.bytesLoaded >= currentMaxSize){
-						nDone = ifile.index
+						nDone = ifile.index;
 						ifile.done = true;
 					}
 				}
@@ -277,7 +278,7 @@ define([
 					file = [ file ];
 				}
 				array.forEach(file, lang.hitch(this, function(ifile) {
-					ifile['done'] = false;
+					ifile.done = false;
 					this._uploadingFiles.push(ifile);
 				}));
 				this._updateProgress();
