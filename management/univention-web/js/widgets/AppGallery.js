@@ -41,9 +41,10 @@ define([
 	"dojo/query",
 	"dojo/mouse",
 	"dijit/Tooltip",
+	"dojox/html/entities",
 	"./GalleryPane",
 	"../tools"
-], function(declare, lang, dojoEvent, kernel, on, domClass, domConstruct, domGeometry, domStyle, query, mouse, Tooltip, GalleryPane, tools) {
+], function(declare, lang, dojoEvent, kernel, on, domClass, domConstruct, domGeometry, domStyle, query, mouse, Tooltip, entities, GalleryPane, tools) {
 	return declare("umc.widgets.AppGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -122,7 +123,11 @@ define([
 					'<div class="appStatusIcon appStatusHoverIcon {itemStatusIcon}"></div>' +
 				'</div>';
 
-			var domNode = domConstruct.toDom(lang.replace(domString, item));
+			var item2 = {};
+			tools.forIn(item, function(key, value) {
+				item2[key] = entities.encode(value);
+			});
+			var domNode = domConstruct.toDom(lang.replace(domString, item2));
 
 			on(domNode, mouse.enter, function() {
 				domClass.add(this, 'hover');
@@ -135,7 +140,7 @@ define([
 
 			var statusIcon = query('.appStatusHoverIcon', domNode)[0];
 			on(statusIcon, 'click', function(evt) {
-				Tooltip.show(item.itemStatusTooltipMessage, statusIcon);
+				Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
 				if (evt) {
 					dojoEvent.stop(evt);
 				}

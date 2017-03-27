@@ -1,3 +1,9 @@
+univention-web (1.0.41-1) unstable; urgency=medium
+
+  * Bug #43991: correctly html escape all gallery item contents
+
+ -- Florian Best <best@univention.de>  Mon, 27 Mar 2017 13:45:10 +0200
+
 univention-web (1.0.40-22) unstable; urgency=medium
 
   * Bug #44059: Fix most dialogs not beeing standby-able

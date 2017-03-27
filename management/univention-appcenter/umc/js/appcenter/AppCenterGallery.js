@@ -84,7 +84,7 @@ define([
 			var statusIconClass = this.getStatusIconClass(item);
 			if (statusIconClass.indexOf("EndOfLife") !== -1) {
 				if (item.is_installed) {
-					tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(item.name)});
+					tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: item.name});
 				} else {
 					tooltipMessage = _("This application will not get any further updates.");
 				}

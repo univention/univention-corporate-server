@@ -1,3 +1,9 @@
+univention-appcenter (6.0.6-1) unstable; urgency=medium
+
+  * Bug #43991: correctly html escape all gallery item contents
+
+ -- Florian Best <best@univention.de>  Mon, 27 Mar 2017 13:47:11 +0200
+
 univention-appcenter (6.0.5-1) unstable; urgency=medium
 
   * Call 'systemctl daemon-reload' after adding a new init script
