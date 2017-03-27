@@ -114,7 +114,7 @@ PNG_IMG_FILES := $(filter-out css/images/login_logo.png,$(SVG_IMG_FILES:.svg=.pn
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES)
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
@@ -152,6 +152,11 @@ $(TMP_DIR)/umc/_all.js:
 	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" -a -not -wholename 'js/hooks/*' | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
 	echo "define([$$deps], function() { })" > $@
 
+$(TMP_DIR)/login/main.js:
+	# generate empty pseudo modules
+	mkdir -p $(@D)
+	echo "define([], function() { })" > $@
+
 %/config.js: config.js
 	# copy the config.js to its appropriate directory
 	mkdir -p $(@D)
@@ -180,7 +185,7 @@ $(TMP_IMG_FILES): $(TMP_THEME_DIR)/%: css/%
 	sed -i '/font-size: 10px/d' $@
 
 $(TMP_FONT_FILES): roboto.zip
-	mkdir -p $(@F)
+	mkdir -p $(@D)
 	unzip -o $< $(@F) -d $(@D)
 	touch $@
 

@@ -57,8 +57,13 @@ var profile = (function() {
 		layers: {
 			"dojo/dojo": {
 				include: [ "dojo/dojo", "umc/_all", "dgrid"],
+				exclude: [ "login/main" ],
 				customBase: true,
 				boot: true
+			},
+			"login/main": {
+				include: [ "login/main" ],
+				discard: true
 			}
 		}
 	};

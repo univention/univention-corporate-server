@@ -34,7 +34,7 @@ define([
 	"dojo/dom-class",
 	"dijit/form/Button",
 	"dijit/Tooltip",
-	"login",
+	"login/main",
 	"umc/tools",
 	"umc/i18n!"
 ], function(declare, lang, domClass, Button, Tooltip, login, tools, _) {
