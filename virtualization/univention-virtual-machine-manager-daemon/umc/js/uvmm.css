@@ -1,9 +1,12 @@
-.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBar {
+.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBar,
+.umc .umcGrid .dgrid .dgrid-cell.field-memUsed .dijitProgressBar {
 	display: block;
 	line-height: 20px;
+	font-size: 12px;
 }
 
-.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBarLabel {
+.umc .umcGrid .dgrid .dgrid-cell.field-cpuUsage .dijitProgressBarLabel,
+.umc .umcGrid .dgrid .dgrid-cell.field-memUsed .dijitProgressBarLabel {
 	display: block;
 }
 

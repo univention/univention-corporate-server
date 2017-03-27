@@ -227,9 +227,6 @@ define([
 
 				this._searchPage.addChild(this._grid);
 
-				// register event
-				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
-
 				this._grid._grid.on('StyleRow', lang.hitch(this, '_adjustIconColumns'));
 				this._grid.on('FilterDone', lang.hitch(this, function() {
 					if (!this._tree._getFirst()) {
@@ -1530,18 +1527,22 @@ define([
 			if (undefined === item.cpuUsage) {
 				return '';
 			}
-			var percentage = Math.round(item.cpuUsage);
-
-			if (isRunning(item)) {
-				// only show CPU info, if the machine is running
-				var progressBar = new ProgressBar({
-					value: percentage + '%'
-				});
-				this._grid.own(progressBar);
-				return progressBar;
+			if (item.type === 'domain') {
+				if (!isRunning(item)) {
+					// only show CPU info, if the machine is running
+					return '';
+				}
+			} else if (item.type === 'node') {
+				if (!item.available) {
+					return '';
+				}
 			}
-
-			return '';
+			var percentage = Math.round(item.cpuUsage);
+			var progressBar = new ProgressBar({
+				value: percentage + '%'
+			});
+			this._grid.own(progressBar);
+			return progressBar;
 		},
 
 		memoryUsageFormatter: function(id, item) {

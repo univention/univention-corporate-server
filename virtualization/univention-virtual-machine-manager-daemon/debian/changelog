@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (6.0.3-6) unstable; urgency=medium
+
+  * Bug #44007: fix memory usage css; fix scroll issue; fix cpu usage for
+    physical servers
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Mar 2017 13:37:25 +0200
+
 univention-virtual-machine-manager-daemon (6.0.3-5) unstable; urgency=medium
 
   * Bug #44007: improved css
