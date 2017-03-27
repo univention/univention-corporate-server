@@ -197,12 +197,12 @@ define([
 			var path = [];
 			var objectOnPath = selectedObject;
 			var parentObject = null;
+			path.unshift(objectOnPath);
 			while (objectOnPath.parentId) {
 				parentObject = this._getObject(objectOnPath.parentId);
-				path.push(parentObject);
+				path.unshift(parentObject);
 				objectOnPath = parentObject;
 			}
-			path.push(selectedObject);
 			this._set('path', path);
 		},
 
@@ -254,7 +254,7 @@ define([
 				pathChanged = true;
 			}
 			if (pathChanged) {
-				this.path = path;
+				this._set('path', path);
 				this._gridTree.refresh();
 			}
 		},

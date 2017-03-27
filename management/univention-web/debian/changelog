@@ -1,3 +1,9 @@
+univention-web (1.0.41-2) unstable; urgency=medium
+
+  * Bug #44059: Fix wrong selection of parent element in tree
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Mar 2017 14:44:01 +0200
+
 univention-web (1.0.41-1) unstable; urgency=medium
 
   * Bug #43991: correctly html escape all gallery item contents
