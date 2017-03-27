@@ -1,3 +1,9 @@
+univention-portal (1.0.10-12) unstable; urgency=medium
+
+  * Bug #42235: Remove trailing ',' and correct creation of portal.css
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Mar 2017 19:57:00 +0200
+
 univention-portal (1.0.10-11) unstable; urgency=medium
 
   * Bug #44059: Add login button to header + adjust mobile styling of header

@@ -101,9 +101,9 @@ def _save_image(obj, ldap_attr, dir_name):
 def _write_css(obj):
 	# get CSS rule for body background
 	background = []
-	bg_img = _save_image(obj, 'univentionPortalBackground', 'backgrounds'),
+	bg_img = _save_image(obj, 'univentionPortalBackground', 'backgrounds')
 	if bg_img:
-		background.append('url("%s") no-repeat top center / cover' % bg_img)
+		background.append('url("%s") no-repeat top center / cover' % (bg_img, ))
 	css = obj.get('univentionPortalCSSBackground', [''])[0].strip()
 	if css:
 		background.append(css)
@@ -116,6 +116,9 @@ def _write_css(obj):
 		with open(fname, 'wb') as fd:
 			if background:
 				fd.write('body.umc {\n  background: %s;\n}\n' % background)
+			else:
+				fd.write('/* no styling defined via UDM portal object */\n' % background)
+
 	except (EnvironmentError, IOError) as err:
 		ud.debug(ud.LISTENER, ud.WARN, 'Failed to write CSS file %s: %s' % (fname, err))
 
