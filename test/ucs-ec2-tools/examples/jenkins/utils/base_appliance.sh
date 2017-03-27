@@ -682,22 +682,6 @@ setup_appliance ()
 
 appliance_cleanup ()
 {
-	# fix appcenter icons
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/commit-apps-xml <<__EOF__
-#!/bin/sh
-python -c "import univention.management.console.modules.appcenter as ac; ac.Application._update_local_files()"
-ucr commit /usr/share/univention-management-console/modules/apps.xml
-__EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/commit-apps-xml
-	 
-	# Ensure dbus will be restated after the configuration
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/dbus <<__EOF__
-#!/bin/sh
-test -x /etc/init.d/dbus && /etc/init.d/dbus restart
-__EOF__
-	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/dbus
-	 
-	## UCS4: 
 	# after system setup is finished, boot in 1024x768 (not 800x600)
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/screenresolution <<__EOF__
 #!/bin/sh
@@ -708,99 +692,6 @@ __EOF__
 
 	# deactivate kernel module; prevents bootsplash from freezing in vmware
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
-	 
-	# Show an info that the domain setup might take a while (Bug #38833)
-	sed -i 's|info_header "domain-join" "$(gettext "Domain join")"|info_header "domain-join" "$(gettext "Domain setup (this might take a while)")"|' \
-			/usr/lib/univention-system-setup/scripts/setup-join.sh
-	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
-	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
-	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
-
-	# Hotfix for Bug #41392
-	echo 'Index: univention-system-activation
-===================================================================
---- univention-system-activation        (Revision 69737)
-+++ univention-system-activation        (Arbeitskopie)
-@@ -53,6 +53,21 @@
-        fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
-                || dpkg -l univention-pam > /dev/null 2>&1 \
-                && dpkg-reconfigure univention-pam
-+
-+       # Copied from the univention-pam join script
-+       # 11univention-pam.inst
-+       . /usr/share/univention-lib/base.sh
-+       if is_domain_controller; then
-+               univention-config-registry set \
-+                       auth/sshd/restrict?"yes" \
-+                       "auth/sshd/group/Domain Admins?yes" \
-+                       auth/sshd/group/Computers?"yes" \
-+                       "auth/sshd/group/DC Slave Hosts?yes" \
-+                       "auth/sshd/group/DC Backup Hosts?yes" \
-+                       auth/sshd/group/Administrators?"yes" \
-+                       auth/sshd/user/root?"yes"
-+       fi
-+
- }
- 
- function restrict_root_login() {' | patch -p0 -l -d /usr/sbin/
-
-	# re-create dh parameter as background job (Bug #37459)
-	cat >/root/dh-parameter-background.patch <<'__EOF__'
---- /usr/lib/univention-system-setup/scripts/setup-join.sh	(Revision 61517)
-+++ /usr/lib/univention-system-setup/scripts/setup-join.sh	(Arbeitskopie)
-@@ -157,20 +157,10 @@
- 	fi
- 	progress_next_step 3
- 
--	(
- 	test -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh && \
--		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
--	) | (
--		nsteps=3
--		while read line; do
--			if [ "This is going to take a long time" == "$line" ]; then
--				# one of 2 SSH keys is generated
--				progress_next_step $nsteps
--				nsteps+=2
--			fi
--		done
--	)
--	progress_next_step 10
-+		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log 2>&1 &
-+
-+	progress_next_step 15
- fi
-__EOF__
-	patch -d/ -p0 </root/dh-parameter-background.patch
-	rm /root/dh-parameter-background.patch
-
-	# Set repository/online=yes in any case. Remove when #40710 is released
-	cat >/root/set_online_repository.patch <<'__EOF__'
---- /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade.o    2016-06-15 10:14:52.292000000 -0400
-+++ /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade      2016-06-15 10:15:30.892000000 -0400
-@@ -34,6 +34,9 @@
-
- info_header "$0" "$(gettext "Upgrading the system")"
-
-+# Activate the online repository
-+/usr/sbin/ucr set repository/online=yes
-+
- is_profile_var_true "update/system/after/setup"
-
- if [ $? -ne 0 ]; then
-@@ -44,9 +47,6 @@
-
- eval "$(ucr shell)"
-
--# Activate the online repository
--/usr/sbin/ucr set repository/online=yes
--
- if [ "$server_role" = "domaincontroller_master" ]; then
- 	# Update to latest patchlevel
- 	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
-__EOF__
-	patch -d/ -p0 </root/set_online_repository.patch
-	rm /root/set_online_repository.patch
 
  # Do network stuff
 
