@@ -1,3 +1,9 @@
+univention-printserver (10.0.1-8) unstable; urgency=low
+
+  * Bug #44094: do not return stdout _enable_printer()
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Mar 2017 17:48:29 +0200
+
 univention-printserver (10.0.1-7) unstable; urgency=low
 
   * Bug #44088: added univention-cups-init
@@ -12,7 +18,7 @@ univention-printserver (10.0.1-6) unstable; urgency=low
 
 univention-printserver (10.0.1-5) unstable; urgency=low
 
-  * Bug #43417: updated LDAP ppd's 
+  * Bug #43417: updated LDAP ppd's
 
  -- Felix Botner <botner@univention.de>  Mon, 20 Mar 2017 15:25:17 +0100
 

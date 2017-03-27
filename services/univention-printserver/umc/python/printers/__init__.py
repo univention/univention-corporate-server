@@ -280,17 +280,6 @@ class Instance(Base):
 		if status:
 			return stderr
 
-		# Q: What do these tools return if the cups command being called returns with error?
-		# A: They return zero, the exit code meant for success.
-		#
-		# Q: Which is the channel where these tools print the ERROR message?
-		# A: On STDOUT, as the name suggests.
-		#
-		# Q: What do these tools print on success?
-		# A: Two newlines, instead of nothing.
-		if re.search('\S', stdout):
-			return stdout
-
 		return ''
 
 	def _set_quota(self, printer, user, soft, hard):
