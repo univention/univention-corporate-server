@@ -519,7 +519,7 @@ class Instance(Base):
 
 		# not on either black or white list -> not allowed if whitelist exists, else OK
 		MODULE.info("is_blacklisted({}): neither black nor white listed".format(username))
-		return not (wh_users or wh_groups)
+		return bool(wh_users or wh_groups)
 
 	def get_groups(self, userdn):
 		user = self.get_udm_user_dn(userdn=userdn)

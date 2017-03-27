@@ -1,3 +1,9 @@
+univention-self-service (2.0.11-3) unstable; urgency=medium
+
+  * Bug #42267: fix whitelist check; prefill username; allow unset sms secret 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Mar 2017 18:31:09 +0200
+
 univention-self-service (2.0.11-2) unstable; urgency=medium
 
   * Bug #44059: Add CSS class to button row to ensure flat styling

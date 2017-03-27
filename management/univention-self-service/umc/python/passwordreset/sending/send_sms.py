@@ -66,8 +66,16 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
 		if not unicode(self.country_code).isnumeric():
 			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
+		self.read_sms_secret()
 
+	def read_sms_secret(self):
 		self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
+		if self.password_file is None:
+			self.log("SendSMS: No sms secret file set")
+			self.sms_username = ""
+			self.sms_password = ""
+			return
+
 		try:
 			with open(self.password_file) as pw_file:
 				self.sms_username, self.sms_password = pw_file.readline().strip().split(":")

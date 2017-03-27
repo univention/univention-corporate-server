@@ -51,7 +51,11 @@ define([
 		steps: null,
 
 		startup: function() {
-			this._username.focus();
+			if (this._username.value !== '') {
+				this._password.focus();
+			} else {
+				this._username.focus();
+			}
 		},
 
 		/**
@@ -111,6 +115,9 @@ define([
 				},
 				required: true
 			});
+			if (tools.getCookies().username) {
+				this._username.set('value', tools.getCookies().username);
+			}
 			this._username.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
 					this._getContactInformation();
