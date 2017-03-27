@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-14) unstable; urgency=medium
+
+  * Bug #44077: Fix german translation for creating groups
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Mar 2017 15:36:05 +0200
+
 univention-management-console-module-udm (7.0.9-13) unstable; urgency=medium
 
   * Bug #44059: Fix wrong selection of parent element in tree

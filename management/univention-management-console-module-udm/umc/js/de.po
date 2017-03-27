@@ -319,7 +319,7 @@ msgstr "Rechner erzeugen"
 
 #: umc/js/udm/DetailPage.js:1194
 msgid "Create group"
-msgstr "Report erstellen erzeugen"
+msgstr "Gruppe erstellen"
 
 #: umc/js/udm/DetailPage.js:1201
 msgid "Create mail object"
