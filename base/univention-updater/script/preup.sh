@@ -449,6 +449,22 @@ for pkg in $preups; do
 	fi
 done
 
+python -c '
+from univention.appcenter.app import AppManager
+from univention.appcenter.ucr import ucr_save, ucr_get
+
+for app in AppManager.get_all_locally_installed_apps():
+	if app.docker:
+		key = "appcenter/apps/%s/ucs" % app.id
+		if not ucr_get(key):
+			ucr_save({key: ucr_get("version/version")})
+'
+if [ $? != 0 ]; then
+	echo "WARNING: Something went wrong while registering current Apps."
+	echo "         This may lead to Apps not being recognized as installed"
+	echo "         after the update."
+fi
+
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
