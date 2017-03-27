@@ -47,10 +47,9 @@ univention-updater (12.0.4-10) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Thu, 23 Mar 2017 16:02:26 +0100
 
->>>>>>> .r78357
 univention-updater (12.0.4-9) unstable; urgency=medium
 
-  * Bug #44012: Fix autoscrolling in firefox and IE 
+  * Bug #44012: Fix autoscrolling in firefox and IE
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 09:50:12 +0100
 
