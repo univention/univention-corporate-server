@@ -47,6 +47,7 @@ if ! nc -w 10 "$ldap_master" "${ldap_master_port:-7389}"; then
 fi
 
 ldap_base="$(ucr get ldap/base)"
+hostname="$(ucr get hostname)"
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=univention,$ldap_base" \
 	--set name=portal || die
@@ -101,6 +102,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
 		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
 
+
 	# create portal object which acts as local start site on systems which are no DC master or backup
 	univention-directory-manager settings/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
@@ -144,13 +146,16 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
 fi
 
-# link current computer object to corresponding portal
-if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
+set_portal="$(univention-directory-manager "computers/$role" list "$@" --filter cn="$hostname" | sed -n -e "s/^  portal: \(.*\)$/\1/p")"
+if [ -z "$set_portal" ]; then
+	# link current computer object to corresponding portal
+	if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
+		default_portal="cn=domain,cn=portal,cn=univention,$ldap_base"
+	else
+		default_portal="cn=local,cn=portal,cn=univention,$ldap_base"
+	fi
 	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
-		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
-else
-	univention-directory-manager "computers/$role" modify "$@" --dn="$ldap_hostdn" \
-		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
+		--set portal="$default_portal" || die
 fi
 
 # Reset old UCR variables otherwise the UCR handler is not executed

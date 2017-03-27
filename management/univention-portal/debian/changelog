@@ -1,3 +1,9 @@
+univention-portal (1.0.10-10) unstable; urgency=medium
+
+  * Bug #42175: Only set default portal if no other portal has been set
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 Mar 2017 16:49:57 +0200
+
 univention-portal (1.0.10-9) unstable; urgency=medium
 
   * Bug #44048: Create all portal objects at once on DC master
