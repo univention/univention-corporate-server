@@ -126,7 +126,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR, MODUL
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
-from univention.management.console.error import UMC_Error, PasswordRequired, LDAP_ServerDown
+from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown
 
 _ = Translation('univention.management.console').translate
 
@@ -171,10 +171,10 @@ class Base(signals.Provider, Translation):
 				return
 			except (locale.Error, I18N_Error) as exc:
 				CORE.warn("Locale %r is not available: %s" % (str(_locale), exc))
-		CORE.warn('Could not set language. Reseting locale.')
+		CORE.warn('Could not set language. Resetting locale.')
 		self.set_locale('C')
 		self.__current_language = None
-		raise UMC_Error(self._('Specified locale is not available'), status=406)
+		raise NotAcceptable(self._('Specified locale is not available'))
 
 	def set_locale(self, _locale):
 		self.set_language(_locale)

@@ -92,7 +92,7 @@ class ModuleServer(Server):
 
 	def _load_module(self):
 		modname = self.__module
-		from ..base import UMC_Error
+		from ..error import UMC_Error
 		try:
 			try:
 				file_ = 'univention.management.console.modules.%s' % (modname,)
@@ -184,7 +184,7 @@ class ModuleServer(Server):
 				if not msg.id:
 					msg.id = -1
 				status, message = exc.args
-				from ..base import UMC_Error
+				from ..error import UMC_Error
 				raise UMC_Error(message, status=status)
 			except (KeyboardInterrupt, SystemExit, GeneratorExit):
 				raise
@@ -195,12 +195,13 @@ class ModuleServer(Server):
 
 	def error_handling(self, request, method, etype, exc, etraceback):
 		if self.__handler:
+			self.__handler._Base__requests[request.id] = (request, method)
 			self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
 			return
 
 		trace = ''.join(traceback.format_exception(etype, exc, etraceback))
 		MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
-		from ..base import UMC_Error
+		from ..error import UMC_Error
 		if not isinstance(exc, UMC_Error):
 			error = _('The initialization of the module failed: %s') % (trace,)
 			exc = UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
@@ -228,7 +229,7 @@ class ModuleServer(Server):
 		* SET (acls|username|credentials)
 		* EXIT
 		"""
-		from ..base import UMC_Error
+		from ..error import UMC_Error, NotAcceptable
 		self.__time_remaining = self.__timeout
 		PROTOCOL.info('Received UMCP %s REQUEST %s' % (msg.command, msg.id))
 
@@ -274,7 +275,10 @@ class ModuleServer(Server):
 					self.__handler.password = self.__password
 					self.__handler.auth_type = self.__auth_type
 				elif key == 'locale' and value is not None:
-					self.__handler.update_language([value])
+					try:
+						self.__handler.update_language([value])
+					except NotAcceptable:
+						pass  # ignore if the locale doesn't exists, it continues with locale C
 				else:
 					raise UMC_Error(status=422)
 
