@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-24 08:39+0100\n"
+"POT-Creation-Date: 2017-03-27 18:07+0200\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -128,6 +128,14 @@ msgstr ""
 msgid "Clear image data"
 msgstr ""
 
+#: js/menu/Button.js:55
+msgid "Click for menu options"
+msgstr ""
+
+#: js/widgets/LoginButton.js:52 js/widgets/LoginButton.js:63
+msgid "Click to login"
+msgstr ""
+
 #: js/widgets/Module.js:230 js/tools.js:891
 msgid "Close"
 msgstr ""
@@ -226,6 +234,10 @@ msgstr ""
 msgid "Internal server error: The service is temporarily not available."
 msgstr ""
 
+#: js/widgets/LoginButton.js:60
+msgid "Logged in as <i>%(username)s</i>"
+msgstr ""
+
 #: js/hooks/default_menu_entries.js:192
 msgid "Login"
 msgstr ""
@@ -254,7 +266,7 @@ msgstr ""
 msgid "No message"
 msgstr ""
 
-#: js/widgets/MultiUploader.js:217
+#: js/widgets/MultiUploader.js:218
 msgid "No upload in progress"
 msgstr ""
 
@@ -296,7 +308,7 @@ msgstr ""
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr ""
 
-#: js/widgets/MultiUploader.js:134 js/widgets/MultiObjectSelect.js:321
+#: js/widgets/MultiUploader.js:135 js/widgets/MultiObjectSelect.js:321
 msgid "Remove"
 msgstr ""
 
@@ -398,7 +410,7 @@ msgstr ""
 msgid "Univention Website"
 msgstr ""
 
-#: js/widgets/Uploader.js:120 js/widgets/MultiUploader.js:109
+#: js/widgets/Uploader.js:120 js/widgets/MultiUploader.js:110
 #: js/widgets/InfoUploader.js:43
 msgid "Upload"
 msgstr ""
@@ -411,11 +423,11 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:243
+#: js/widgets/MultiUploader.js:244
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:240
+#: js/widgets/MultiUploader.js:241
 msgid "Uploads finished"
 msgstr ""
 

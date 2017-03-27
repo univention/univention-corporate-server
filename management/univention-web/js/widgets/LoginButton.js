@@ -26,44 +26,61 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,dojo*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
-	"dojo/Deferred",
+	"dojo/_base/lang",
+	"dojo/dom-class",
+	"dijit/form/Button",
 	"dijit/Tooltip",
-	"umc/menu/_Button",
+	"login",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, Deferred, Tooltip, _Button, tools, _) {
+], function(declare, lang, domClass, Button, Tooltip, login, tools, _) {
+	return declare("umc.widgets.Button", [ Button ], {
+		type: 'button',
 
-	// require umc/menu here in order to avoid circular dependencies
-	var menuDeferred = new Deferred();
-	require(["umc/menu"], function(_menu) {
-		menuDeferred.resolve(_menu);
-	});
+		'class': 'umcLoginButton umcFlatButton',
 
-	var menuButtonDeferred = new Deferred();
+		loggedIn: false,
 
-	var MenuButton = declare('umc.menu.Button', [_Button], {
 		buildRendering: function() {
 			this.inherited(arguments);
-			menuDeferred.then(function(menu) {
-				menu.createMenu();
-			});
+			this.set('iconClass', 'umcLoggedOutIcon');
 			this._tooltip = new Tooltip({
-				label: _('Click for menu options'),
+				label: _('Click to login'),
 				connectId: [ this.domNode ]
 			});
 			this.own(this._tooltip);
 		},
 
+		_setLoggedInAttr: function(value) {
+			if (value) {
+				this._tooltip.set('label', _('Logged in as <i>%(username)s</i>', tools.status()));
+				this.set('iconClass', 'umcLoggedInIcon');
+			} else {
+				this._tooltip.set('label', _('Click to login'));
+				this.set('iconClass', 'umcLoggedOutIcon');
+			}
+			this._set('loggedIn', value);
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
-			menuButtonDeferred.resolve(this);
+
+			login.onLogin(lang.hitch(this, 'set', 'loggedIn', true));
+			login.onLogout(lang.hitch(this, 'set', 'loggedIn', false));
+
+			this.on('click', lang.hitch(this, function() {
+				if (this.loggedIn) {
+					login.logout();
+				} else {
+					login.start();
+				}
+			}));
 		}
 	});
-
-	MenuButton.menuButtonDeferred = menuButtonDeferred;
-	return MenuButton;
 });
+
+

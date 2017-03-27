@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-24 07:59+0100\n"
+"POT-Creation-Date: 2017-03-27 18:07+0200\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Back"
 msgstr "Zurück"
 
-#: js/hooks/default_menu_entries.js:178
+#: js/hooks/default_menu_entries.js:180
 msgid "Back to start site"
 msgstr "Zurück zur Startseite"
 
@@ -137,6 +137,14 @@ msgstr "Daten leeren"
 #: js/widgets/ImageUploader.js:51
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
+
+#: js/menu/Button.js:55
+msgid "Click for menu options"
+msgstr "Klicken Sie für mehr Optionen"
+
+#: js/widgets/LoginButton.js:52 js/widgets/LoginButton.js:63
+msgid "Click to login"
+msgstr "Klicken Sie um sich anzumelden"
 
 #: js/widgets/Module.js:230 js/tools.js:891
 msgid "Close"
@@ -250,11 +258,15 @@ msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 
-#: js/hooks/default_menu_entries.js:190
+#: js/widgets/LoginButton.js:60
+msgid "Logged in as <i>%(username)s</i>"
+msgstr "Angemeldet als <i>%(username)s</i>"
+
+#: js/hooks/default_menu_entries.js:192
 msgid "Login"
 msgstr "Anmelden"
 
-#: js/hooks/default_menu_entries.js:202
+#: js/hooks/default_menu_entries.js:204
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -278,7 +290,7 @@ msgstr "Es konnten keine Einträge gefunden werden"
 msgid "No message"
 msgstr "Keine Nachricht"
 
-#: js/widgets/MultiUploader.js:217
+#: js/widgets/MultiUploader.js:218
 msgid "No upload in progress"
 msgstr "Keine laufende Dateiübertragung"
 
@@ -322,7 +334,7 @@ msgstr "Neu laden"
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr "Bemerkungen (z.B. Schritte, den Fehler nachzustellen) (optional)"
 
-#: js/widgets/MultiUploader.js:134 js/widgets/MultiObjectSelect.js:321
+#: js/widgets/MultiUploader.js:135 js/widgets/MultiObjectSelect.js:321
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -429,7 +441,7 @@ msgstr "Univention Hilfe"
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: js/widgets/Uploader.js:120 js/widgets/MultiUploader.js:109
+#: js/widgets/Uploader.js:120 js/widgets/MultiUploader.js:110
 #: js/widgets/InfoUploader.js:43
 msgid "Upload"
 msgstr "Hochladen"
@@ -442,11 +454,11 @@ msgstr "Neues Bild hochladen"
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: js/widgets/MultiUploader.js:243
+#: js/widgets/MultiUploader.js:244
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr "Dateiübertragung... %(current)d von %(total)d Dateien verbleiben."
 
-#: js/widgets/MultiUploader.js:240
+#: js/widgets/MultiUploader.js:241
 msgid "Uploads finished"
 msgstr "Dateiübertragung beendet"
 
@@ -518,7 +530,7 @@ msgstr "http://help.univention.com"
 msgid "http://www.univention.com"
 msgstr "http://www.univention.de"
 
-#: js/hooks/default_menu_entries.js:171
+#: js/hooks/default_menu_entries.js:173
 msgid "https://www.univention.com/feedback/"
 msgstr "https://www.univention.de/produkt-feedback/"
 

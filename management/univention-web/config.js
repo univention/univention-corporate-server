@@ -99,17 +99,13 @@ umcConfig = mixin({
 	allowLanguageSwitch: true,
 	forceLogin: false,
 	autoLogin: true,
-	loadMenu: true,
 	loadHooks: true,
 	deps: [],
 	callback: function() {}
 }, _customUmcConfig);
 
 // prepare all needed dependencies and evaluate umcConfig settings
-var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/get/meta"];
-if (umcConfig.loadMenu) {
-	_deps.push("umc/menu/Button");
-}
+var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/get/meta", "umc/menu/Button", "umc/widgets/LoginButton"];
 _deps.push("dojo/domReady!");
 var _ndeps = _deps.length; // save current number of dependencies
 

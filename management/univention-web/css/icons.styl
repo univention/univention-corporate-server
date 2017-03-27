@@ -87,6 +87,20 @@ icon-rule(Help, -40, -200)
 icon-rule(ExtendedAttr, -80, -200)
 icon-rule(Lang, 0, -220, height=25px)
 
+icon-rule(LoggedIn, -60, -140, expandRule: false)
+icon-rule(LoggedOut, -40, -140, expandRule: false)
+
+.umcLoggedInIcon,
+.umcLoggedOutIcon
+	opacity: 1
+
+	&:hover
+		opacity: 0.66
+
+	&:active
+		opacity: 1
+
+
 .umcIconLoading,  // old name
 .umcLoadingIcon
 	background-image: url("images/loadingAnimation.gif")
@@ -104,6 +118,18 @@ icon-rule(Lang, 0, -220, height=25px)
 	width: 20px
 	height: 20px
 
+
+.umcHelpIconSmall
+	icon-image(-24, 0, "", "-small", 12px, 12px)
+	opacity: 1
+
+	&:hover
+		background-position: -36px 0px
+		opacity: 0.66
+
+	&:active
+		background-position: -36px 0px
+		opacity: 1
 
 .umcHelpIconSmall
 	icon-image(-24, 0, "", "-small", 12px, 12px)

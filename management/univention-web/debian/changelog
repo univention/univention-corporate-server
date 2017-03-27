@@ -1,3 +1,9 @@
+univention-web (1.0.41-4) unstable; urgency=medium
+
+  * Bug #44059: Add extra login button to the header + adjust styling
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Mar 2017 18:27:57 +0200
+
 univention-web (1.0.41-3) unstable; urgency=medium
 
   * Bug #42235: Fix undefined reference "tools" in MultiUploader
