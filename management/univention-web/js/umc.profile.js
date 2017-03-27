@@ -36,7 +36,9 @@ var profile = (function() {
 					// ignore the profile file
 					mid == 'umc/umc.profile.js' ||
 					// ignore all provided hooks
-					(/^umc\/hooks\/.*/).test(mid);
+					(/^umc\/hooks\/.*/).test(mid) ||
+					// ignore login package
+					(/^login\/.*/).test(mid);
 			},
 
 			amd: function(filename, mid) {
