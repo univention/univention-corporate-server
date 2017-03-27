@@ -32,12 +32,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/window",
 	"dojo/has",
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
 	"dojox/widget/Standby"
-], function(declare, lang, array, has, Deferred, construct, _WidgetBase, Standby) {
+], function(declare, lang, array, baseWindow, has, Deferred, construct, _WidgetBase, Standby) {
 	var animImage = Standby.prototype.image;
 	if (!has('ie')) {
 		// for browser != Internet Explorer, we can use an SVG animation
@@ -140,6 +141,10 @@ define([
 				if (doStandby) {
 					// update the content of the standby widget
 					this._updateContent(content);
+
+					// place the standby widget last in the body
+					// to ensure correct z-indexing
+					construct.place(this._standbyWidget.domNode, baseWindow.body(), 'last');
 
 					// show standby widget
 					this._standbyWidget.show();
