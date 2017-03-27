@@ -616,9 +616,9 @@
 		<itemizedlist>
 			<listitem><simpara>
 				The basic Univention LDAP Python library <wordasword>uldap.py</wordasword> allows now the deletion
-				of the following LDAP attributes <property>univentionPortalBackground</property>,
-				<property>univentionPortalLogo</property> and <property>univentionPortalEntryIcon</property>
-				(<u:bug>44019</u:bug>).
+				of the following LDAP attributes: <property>univentionPortalBackground</property>,
+				<property>univentionPortalLogo</property>, <property>univentionPortalEntryIcon</property> and
+				 <property>univentionUMCIcon</property> (<u:bug>44019</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

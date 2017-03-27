@@ -1,3 +1,10 @@
+univention-python (10.0.3-2) unstable; urgency=low
+
+  * Bug #44040: add special handling for attribute 'univentionUMCIcon',
+    which doesn't have a matching rule.
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 27 Mar 2017 10:36:25 +0200
+
 univention-python (10.0.3-1) unstable; urgency=medium
 
   * Add a special handling while removing the attributes
