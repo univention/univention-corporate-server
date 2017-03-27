@@ -1,3 +1,9 @@
+univention-printserver (10.0.1-6) unstable; urgency=low
+
+  * Bug #44088: added univention-cups-init
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Mar 2017 16:50:33 +0200
+
 univention-printserver (10.0.1-5) unstable; urgency=low
 
   * Bug #43417: updated LDAP ppd's 

@@ -6,6 +6,7 @@ cups-printers.py usr/lib/univention-directory-listener/system/
 21univention-printserver.uinst usr/lib/univention-uninstall/
 ppds.py usr/lib/univention-printserver/univention-ppds/
 mark_models_as_deprecated.py usr/lib/univention-printserver/univention-ppds/
+univention-cups-init usr/lib/univention-printserver/
 modules/univention/management/console/handlers/cups/*.py usr/share/pyshared/univention/management/console/handlers/cups/
 images/default/24x24/cups/*.gif usr/share/univention-management-console/www/themes/images/default/24x24/cups/
 images/default/64x64/cups/*.gif usr/share/univention-management-console/www/themes/images/default/64x64/cups/
