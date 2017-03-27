@@ -145,14 +145,14 @@
 		<section id="relnotes:qemu">
 			<title>QEMU issues</title>
 			<para>
-				For UCS-4.2 wurde die Version von <package>qemu</package> von Version 1.1 auf Version 2.8 aktualisiert.
-				Dies führt derzeit zu Problemen mit
+				For UCS-4.2 the package <package>qemu</package> has been updated from version 1.1 to version 2.8.
+				Currently this leads to problems with
 				<itemizedlist spacing="compact">
-					<listitem><simpara>der Live-Migration zwischen alten und neuen Versionen von QEMU.</simpara></listitem>
-					<listitem><simpara>dem Wiederherstellen von Snapshots von laufenden virtuellen Maschinen, die mit einer alten Versionen von QEMU erstellt wurden.</simpara></listitem>
-					<listitem><simpara>dem Wiederherstellen des Zustands einer laufenden virtuellen Maschine, die noch mit einer alten Version von QEMU in den Zustand <foreignphrase>suspended to disk</foreignphrase> versetzt wurde.</simpara></listitem>
+					<listitem><simpara>live migrating virtual machines from old to new versions of QEMU.</simpara></listitem>
+					<listitem><simpara>restoring of snapshots of running virtual machines, which have been created with an older version of QEMU.</simpara></listitem>
+					<listitem><simpara>restoring the state of old running virtual machines, which haven been put into the state of <phrase>suspended to disk</phrase> with an older version of QEMU.</simpara></listitem>
 				</itemizedlist>
-				Univention works on a solution and delegated to <u:sdb>1384</u:sdb> until then.
+				Univention is working on a solution and delegates to article <u:sdb>1384</u:sdb> for known temporary workarounds until then.
 			</para>
 		</section>
 
