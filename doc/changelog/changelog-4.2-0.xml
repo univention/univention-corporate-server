@@ -321,7 +321,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The App Center can now install certain Docker Apps from other UCS
-					versions (<u:bug>43496</u:bug>, <u:bug>43662</u:bug>).
+					versions (<u:bug>43496</u:bug>, <u:bug>43662</u:bug>, <u:bug>43709</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Code cleanup where deprecated functions of Univention Directory
