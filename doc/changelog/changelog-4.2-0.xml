@@ -53,7 +53,7 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The installer now supports POSIX shared memory objects for non-priviliged processes during the installation in the chroot (<u:bug>43915</u:bug>).
+				The installer now supports POSIX shared memory objects for non-privileged processes during the installation in the <command>chroot</command> (<u:bug>43915</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -753,7 +753,7 @@
 					(<u:bug>43813</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A <filename>robots.txt</filename> file has been added to the default server configuration which prevents search engines and similar webservices from indexing the content delivered
+					A <filename>robots.txt</filename> file has been added to the default server configuration which prevents search engines and similar web services from indexing the content delivered
 					by Apache. During the upgrade to UCS 4.2 any existing <filename>robots.txt</filename> in <filename class="directory">/var/www/</filename> will be backed up to <filename>robots.txt.orig</filename> (<u:bug>32521</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>

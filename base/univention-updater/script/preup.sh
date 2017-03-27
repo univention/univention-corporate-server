@@ -220,7 +220,7 @@ then
 	echo "         As such the content of /usr/ must be moved to the root file system before"
 	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
 	echo "         manually and might require resizing the file systems. It is described at"
-	echo "         <https://help.univention.com/t/upgrade-to-ucs-4-2-blocked-due-to-separate-usr-file-system/5321>"
+	echo "         <https://help.univention.com/t/5321>"
 	echo ""
 	exit 1
 fi
@@ -427,6 +427,54 @@ fi
 if update-alternatives --quiet --list libblas.so.3gf >/dev/null 2>&1; then
 	update-alternatives --remove-all libblas.so.3gf
 fi
+
+check_qemu () {
+	local f issues=false
+
+	for f in /var/lib/libvirt/qemu/save/*.save
+	do
+		[ -f "$f" ] && break
+	done
+	if [ -f "$f" ]
+	then
+		echo "ERROR: Found QEMU virtual machines suspended to disk"
+		echo "       There are known issues with restoring the runtime state of virtual machines."
+		echo ""
+		issues=true
+	fi
+
+	if pidof kvm qemu-system-i386 qemu-system-x86_64 >/dev/null
+	then
+		echo "ERROR: Found running QEMU virtual machines"
+		echo "       Upgrading the host system while virtual machines are still running is not"
+		echo "       recommended. They should be migrated to other hosts or shut down cleanly."
+		echo ""
+		issues=true
+	fi
+
+	if grep -q -s machine=\[\"\'\]pc-\[01\]\[.\] /etc/libvirt/qemu/*.xml
+	then
+		echo "ERROR: Found QEMU virtual machines using old machines"
+		echo "       Virtual machines using old QEMU virtual machine configurations may experience"
+		echo "       reboot problems and should be upgraded."
+		echo ""
+		issues=true
+	fi
+
+	if "$issues"
+	then
+		echo "      See <http://sdb.univention.de/solution_id_1384.html> for more information."
+		echo "      This check can be disabled by setting the UCR variable 'update42/qemu' to 'yes'."
+		if is_ucr_true update42/qemu
+		then
+			echo "WARNING: 'update42/qemu' is set, skipping as requested."
+		else
+			exit 1
+		fi
+	fi
+	return 0
+}
+check_qemu
 
 # autoremove before the update
 if ! is_ucr_true update42/skip/autoremove; then

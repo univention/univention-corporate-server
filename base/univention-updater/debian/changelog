@@ -1,3 +1,9 @@
+univention-updater (12.0.5-1) unstable; urgency=low
+
+  * Bug #44083: Document QEMU issued
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Mar 2017 16:12:22 +0200
+
 univention-updater (12.0.4-17) unstable; urgency=medium
 
   * Bug #43709: Register 4.1 Docker Apps as such in preup.sh
