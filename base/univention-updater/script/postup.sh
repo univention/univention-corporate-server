@@ -216,12 +216,6 @@ changes = dict((id, (None, None)) for id in ids)
 create_portal_entries.handler(ucr_instance(), changes)
 ' >>"$UPDATER_LOG" 2>&1
 
-# make sure that UMC server is restarted (Bug #43520, Bug #33426)
-/usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
-service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
-service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
-cp /var/run/apache2.pid /var/run/apache2/apache2.pid  # the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
-service apache2 restart >>"$UPDATER_LOG" 2>&1
 echo "
 
 
@@ -235,5 +229,16 @@ echo "
 
 echo "done."
 date >>"$UPDATER_LOG"
+
+# make sure that UMC server is restarted (Bug #43520, Bug #33426)
+at now >>"$UPDATER_LOG" 2>&1 <<EOF
+sleep 30
+/usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
+service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
+service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
+# the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
+cp /var/run/apache2.pid /var/run/apache2/apache2.pid
+service apache2 restart >>"$UPDATER_LOG" 2>&1
+EOF
 
 exit 0
