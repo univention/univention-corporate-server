@@ -321,7 +321,7 @@ class Base(signals.Provider, Translation):
 			message = self._("Execution of command '%(command)s' has failed:\n\n%(text)s")
 			message = message % {
 				'command': ('%s %s' % (' '.join(request.arguments), request.flavor or '')).strip().decode('utf-8', 'replace'),
-				'text': unicode(traceback.format_exc())
+				'text': traceback.format_exc().decode('utf-8', 'replace')
 			}
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status, headers=headers)
