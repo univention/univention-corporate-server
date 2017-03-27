@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-13) unstable; urgency=medium
+
+  * Bug #44059: Fix wrong selection of parent element in tree
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Mar 2017 14:46:38 +0200
+
 univention-management-console-module-udm (7.0.9-12) unstable; urgency=medium
 
   * Bug #43871: Remove standby animation when opening UDM module

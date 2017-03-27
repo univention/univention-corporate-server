@@ -1095,11 +1095,6 @@ define([
 						var path = this._tree.get('path');
 						var ldapDN = path[ path.length - 2 ].id;
 						this._tree.set('path', this._ldapDN2TreePath(ldapDN));
-						// we can relaunch the search after all search form values
-						// have been updated
-						on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
-							this.filter();
-						}));
 					})
 				}))[0];
 			}
