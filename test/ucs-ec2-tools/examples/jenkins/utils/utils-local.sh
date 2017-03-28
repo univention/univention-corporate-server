@@ -66,6 +66,7 @@ fetch-results () {
 	done
 	fetch-files root@${ADDR} /var/log/univention/config-registry.replog "$TARGETDIR/config-registry.replog.log"
 	fetch-files root@${ADDR} /var/log/apache2/error.log "$TARGETDIR/apache2-error.log"
+	return 0
 }
 
 fetch-coverage () {
