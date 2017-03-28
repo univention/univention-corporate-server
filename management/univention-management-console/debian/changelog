@@ -1,3 +1,10 @@
+univention-management-console (9.0.77-2) unstable; urgency=medium
+
+  * Bug #44105: fix merging of categories for flavors which are merged into
+  	another XML module definition
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 12:47:24 +0200
+
 univention-management-console (9.0.77-1) unstable; urgency=medium
 
   * Bug #42114: fix UTF-8 encoding of errors

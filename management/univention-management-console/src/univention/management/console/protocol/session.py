@@ -320,7 +320,7 @@ class ProcessorBase(Base):
 						'url': self.i18n._(module.url, translationId),
 						'description': self.i18n._(flavor.description, translationId),
 						'icon': flavor.icon,
-						'categories': flavor.categories + favcat,
+						'categories': (flavor.categories or (module.categories if not flavor.hidden else [])) + favcat,
 						'priority': flavor.priority,
 						'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords])),
 						'version': flavor.version,

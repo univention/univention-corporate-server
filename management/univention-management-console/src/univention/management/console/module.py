@@ -153,7 +153,7 @@ class Flavor(JSON_Object):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
 
-	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None):
+	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None, hidden=False):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -166,6 +166,7 @@ class Flavor(JSON_Object):
 		self.categories = categories or []
 		self.required_commands = required_commands or []
 		self.version = version
+		self.hidden = hidden
 
 	def merge(self, other):
 		self.id = self.id or other.id
@@ -180,6 +181,7 @@ class Flavor(JSON_Object):
 		self.translationId = self.translationId or other.translationId
 		self.categories = list(set(self.categories + other.categories))
 		self.required_commands = list(set(self.required_commands + other.required_commands))
+		self.hidden = self.hidden or other.hidden
 
 	def __repr__(self):
 		return '<%s %r>' % (type(self).__name__, self.json())
@@ -335,9 +337,8 @@ class XML_Definition(ET.ElementTree):
 			except ValueError:
 				RESOURCES.warn('No valid number type for property "priority": %s' % elem.get('priority'))
 			categories = [cat.get('name') for cat in elem.findall('categories/category')]
-			if not categories and elem.find('categories') is None:
-				# if no categories element exists use the one from the module, if exists the module has no categories and is "hidden"!
-				categories = self.categories
+			# a empty <categories/> causes the module to be hidden! while a not existing <category> element causes that the categories from the module are used
+			hidden = elem.find('categories') is not None and not categories
 			yield Flavor(
 				id=elem.get('id'),
 				icon=elem.get('icon'),
@@ -351,6 +352,7 @@ class XML_Definition(ET.ElementTree):
 				categories=categories,
 				required_commands=[cmd.get('name') for cmd in elem.findall('requiredCommands/requiredCommand')],
 				version=self.version,
+				hidden=hidden,
 			)
 
 	@property
@@ -483,7 +485,7 @@ class Manager(dict):
 					# flavor is deactivated by UCR variable
 					flavor.deactivated = True
 
-				RESOURCES.info('mod=%s  flavor=%s  deactivated=%s' % (module_id, flavor.id, flavor.deactivated))
+				RESOURCES.info('mod=%r flavor=%r deactivated=%r hidden=%r' % (module_id, flavor.id, flavor.deactivated, flavor.hidden))
 				if flavor.deactivated:
 					deactivated_flavors.add(flavor.id)
 					continue
