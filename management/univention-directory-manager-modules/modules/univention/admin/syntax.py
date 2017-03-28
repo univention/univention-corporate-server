@@ -3381,6 +3381,7 @@ class policyName(string):
 class Portals(UDM_Objects):
 	udm_modules = ('settings/portal', )
 	label = '%(name)s'
+	empty_value = True
 
 
 class AuthRestriction(select):
