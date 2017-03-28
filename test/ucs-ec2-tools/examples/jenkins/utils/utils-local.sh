@@ -27,8 +27,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+fetch-files () {
+	# fetch-files <IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARGS]
+	#
+	# Enclose globs in <REMOTE-FILE(S)> in single ticks to prevent shell
+	# expansion on the client side.
+	local ADDR="$1"
+	local FILES="$2"
+	local TARGET="$3"
+	local SCP_ARGS=${4:-'-i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'}
+
+	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET"
+	scp "$SCP_ARGS" "$ADDR:$FILES" "$TARGET"
+}
+
 fetch-results () {
-	# fetch-results <IP-ADDRESS>
+	# fetch-results <IP-ADDRESS> [TARGET-DIR]
 	local ADDR="$1"
 	local TARGETDIR="$2"
 	if [ -n "$TARGETDIR" ] ; then
@@ -36,19 +50,22 @@ fetch-results () {
 	else
 		TARGETDIR="."
 	fi
-	scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:ucs-test.log "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:test-reports "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/management* "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater}.log" "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{syslog,auth.log}" "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/connector* "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/samba/* "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{mail,dovecot,daemon}.log" "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/mail.log" "$TARGETDIR"
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/config-registry.replog" config-registry.replog.log
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/apache2/error.log apache2-error.log .
-	scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/ucs-windows-tools.log" "$TARGETDIR"
-	#scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/apache2/access.log apache2-access.log .
+	declare -a FILES=(
+		ucs-test.log
+		test-reports
+		'/var/log/univention/management*'
+		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater}.log'
+		'/var/log/{syslog,auth.log}'
+		'/var/log/univention/connector*'
+		'/var/log/samba/*'
+		'/var/log/{mail,dovecot,daemon}.log'
+		'/var/log/univention/ucs-windows-tools.log'
+	)
+	for FILE in "${FILES[@]}"; do
+		fetch-files root@${ADDR} "$FILE" "$TARGETDIR"
+	done
+	fetch-files root@${ADDR} /var/log/univention/config-registry.replog "$TARGETDIR/config-registry.replog.log"
+	fetch-files root@${ADDR} /var/log/apache2/error.log "$TARGETDIR/apache2-error.log"
 }
 
 fetch-coverage () {
@@ -59,7 +76,7 @@ fetch-coverage () {
 	else
 		TARGETDIR="."
 	fi
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"htmlcov/" "$TARGETDIR"
+	fetch-files root@${ADDR} "htmlcov/" "$TARGETDIR"
 }
 
 ec2-start-job-async () {
