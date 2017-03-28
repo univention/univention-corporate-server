@@ -1,3 +1,9 @@
+univention-portal (1.0.11-2) unstable; urgency=medium
+
+  * Bug #44096: fix type error
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 14:58:02 +0200
+
 univention-portal (1.0.11-1) unstable; urgency=medium
 
   * Bug #44097: fix html content of portal entry
