@@ -1,3 +1,9 @@
+univention-web (1.0.42-1) unstable; urgency=medium
+
+  * Bug #42265: make caching for access time instead of last-modified time
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 13:44:03 +0200
+
 univention-web (1.0.41-6) unstable; urgency=medium
 
   * Bug #44059: Fix build errors for include of "login/*"
