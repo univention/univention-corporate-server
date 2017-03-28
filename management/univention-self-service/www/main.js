@@ -41,14 +41,16 @@ define([
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
-], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword){
+	"./PasswordChange"
+], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange){
 	return {
 		content_container: null,
 		backend_info: null,
 		subpages: {
 			"password_forgotten": PasswordForgotten,
 			"protect_account_access": ProtectAccountAccess,
-			"new_password": NewPassword
+			"new_password": NewPassword,
+			"password_change": PasswordChange
 		},
 		site_hashes: {},
 
@@ -84,8 +86,25 @@ define([
 			array.forEach(page_list, lang.hitch(this, function(page_name){
 				var module = this.subpages[page_name];
 				if (module) {
+					var content = module.getContent();
+
+					// insert navigation bar before first child of the returned page content
+					var navHeader = put(content.firstChild, '- div.umcHeaderPage');
+					array.forEach(page_list, function(ipage){
+						var imodule = this.subpages[ipage];
+						if (!imodule || ipage === 'new_password') {
+							return;
+						}
+						if  (ipage === page_name) {
+							put(navHeader, 'span', imodule.getTitle());
+						} else {
+							put(navHeader, 'a[href=$]', '#' + imodule.hash, imodule.getTitle());
+						}
+					}, this);
+
+					// create page object
 					var subpage = new ContentPane({
-						content: module.getContent(),
+						content: content,
 						page_name: page_name
 					});
 					this.site_hashes[module.hash] = subpage;
@@ -97,6 +116,10 @@ define([
 
 		_loadSubpage: function(changedHash) {
 			var page = ioQuery.queryToObject(changedHash).page;
+			if (!page) {
+				// Old style hash (prior 4.2)
+				page = changedHash;
+			}
 			var isValidPage = array.some(Object.keys(this.site_hashes), function(site_hash) {
 				return site_hash === page;
 			});

@@ -1,3 +1,9 @@
+univention-self-service (2.0.13-2) unstable; urgency=medium
+
+  * Bug #44111: Readded change password page and page navigation
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Mar 2017 17:42:19 +0200
+
 univention-self-service (2.0.13-1) unstable; urgency=medium
 
   * Show password change and password reset entires in portal again
