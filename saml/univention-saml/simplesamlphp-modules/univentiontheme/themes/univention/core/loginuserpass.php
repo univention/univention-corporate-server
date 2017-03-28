@@ -8,7 +8,7 @@ $this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'u
 			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('hostfqdn', ''))); ?></h1>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
-	printf('<h3><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy']), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
+	printf('<h3 style="text-align: center;"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy']), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
 }
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!

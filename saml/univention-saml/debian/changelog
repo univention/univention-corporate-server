@@ -1,3 +1,9 @@
+univention-saml (4.0.14-1) unstable; urgency=medium
+
+  * Bug #44106: display privacy policy centered
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 13:15:17 +0200
+
 univention-saml (4.0.13-1) unstable; urgency=medium
 
   * Bug #43918: add link to regular login
