@@ -59,40 +59,52 @@ define([
 			id: 'umcMenuUserSettings'
 		});
 	}
-	
+
 	function setupCertificateMenu() {
-		menu.addSubMenu({
-			priority: 57,
-			label: _('Certificates'),
-			id: 'umcMenuCertificates'
-		});
+		var _addEntries = function(masterURL) {
+			var linkRootCa = masterURL + '/ucs-root-ca.crt';
+			var linkRevocList = masterURL + '/ucsCA.crl';
+			var currentRole = tools.status('server/role');
+			if (currentRole == "domaincontroller_master" || currentRole == "domaincontroller_backup") {
+				linkRootCa = '/ucs-root-ca.crt';
+				linkRevocList = '/ucsCA.crl';
+			}
 
-		var masterURL = '//' + tools.status('ldap/master');
-		var linkRootCa = masterURL + '/ucs-root-ca.crt';
-		var linkRevocList = masterURL + '/ucsCA.crl';
-		var currentRole = tools.status('server/role');
-		if (currentRole == "domaincontroller_master" || currentRole == "domaincontroller_backup") {
-			linkRootCa = '/ucs-root-ca.crt';
-			linkRevocList = '/ucsCA.crl';
+			menu.addSubMenu({
+				priority: 57,
+				label: _('Certificates'),
+				id: 'umcMenuCertificates'
+			});
+
+			menu.addEntry({
+				parentMenuId: 'umcMenuCertificates',
+				label: _('Root certificate'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu', 'certificates', 'root');
+					window.location.href = linkRootCa;
+				}
+			});
+
+			menu.addEntry({
+				parentMenuId: 'umcMenuCertificates',
+				label: _('Certificate revocation list'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu', 'certificates', 'revocation-list');
+					window.location.href = linkRevocList;
+				}
+			});
+		};
+
+		if (tools.status('has_certificates')) {
+			// we are on a DC master or backup system
+			_addEntries('');
 		}
-
-		menu.addEntry({
-			parentMenuId: 'umcMenuCertificates',
-			label: _('Root certificate'),
-			onClick: function() {
-				topic.publish('/umc/actions', 'menu', 'certificates', 'root');
-				window.location.href = linkRootCa;
-			}
-		});
-
-		menu.addEntry({
-			parentMenuId: 'umcMenuCertificates',
-			label: _('Certificate revocation list'),
-			onClick: function() {
-				topic.publish('/umc/actions', 'menu', 'certificates', 'revocation-list');
-				window.location.href = linkRevocList;
-			}
-		});
+		else {
+			login.onInitialLogin(function() {
+				// refer to the DC master
+				_addEntries('//' + tools.status('ldap/master'));
+			});
+		}
 	}
 
 	function setupLanguageMenu() {

@@ -1,3 +1,9 @@
+univention-web (1.0.42-3) unstable; urgency=medium
+
+  * Bug #43977: Only show links to certificates if URI can be deferred
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 14:26:51 +0200
+
 univention-web (1.0.42-2) unstable; urgency=medium
 
   * Bug #43977: Use dojo/request/xhr in umc/json to handle errors gracefully
