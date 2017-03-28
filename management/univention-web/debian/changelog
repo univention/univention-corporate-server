@@ -1,3 +1,9 @@
+univention-web (1.0.42-4) unstable; urgency=medium
+
+  * Bug #43604: Fix return value of umc/tools:loadMetaData()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 18:17:33 +0200
+
 univention-web (1.0.42-3) unstable; urgency=medium
 
   * Bug #43977: Only show links to certificates if URI can be deferred

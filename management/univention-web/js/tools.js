@@ -114,7 +114,7 @@ define([
 			var timestamp = (new Date()).getTime();
 			require(['umc/json!/univention/get/meta?' + timestamp], lang.hitch(this, function(meta) {
 				lang.mixin(this._status, meta.result);
-				deferred.resolve(meta);
+				deferred.resolve(tools.status());
 			}));
 			return deferred.promise;
 		},
