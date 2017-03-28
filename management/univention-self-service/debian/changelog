@@ -1,3 +1,10 @@
+univention-self-service (2.0.13-1) unstable; urgency=medium
+
+  * Show password change and password reset entires in portal again
+    (Bug #44102)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Mar 2017 14:12:19 +0200
+
 univention-self-service (2.0.12-1) unstable; urgency=medium
 
   * Bug #43899: Add univention-self-service-master package for the
