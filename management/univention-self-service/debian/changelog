@@ -1,5 +1,6 @@
 univention-self-service (2.0.13-5) unstable; urgency=medium
 
+  * Bug #43899: move dependencies to package
   * Bug #44112: add backwards compatible redirections
 
  -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 19:15:04 +0200

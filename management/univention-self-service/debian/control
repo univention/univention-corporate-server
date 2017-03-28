@@ -36,10 +36,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-self-service-passwordreset-umc,
  univention-postgresql,
- python-psycopg2,
  univention-mail-postfix | mail-transport-agent,
- memcached,
- python-pylibmc
 Description: Univention Self Service
  This package contains the required dependencies for the domaincontroller
  master where the self service runs on.
@@ -55,6 +52,9 @@ Depends: ${misc:Depends},
  univention-config,
  univention-join,
  shell-univention-lib,
+ python-psycopg2,
+ memcached,
+ python-pylibmc,
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
  univention-self-service-passwordreset-frontend package. It must be
