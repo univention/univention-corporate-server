@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-9) unstable; urgency=medium
+
+  * Bug #42232: Adapted design of ec2 start page
+
+ -- Richard Ulmer <ulmer@univention.de>  Tue, 28 Mar 2017 11:58:48 +0200
+
 univention-system-setup (10.0.10-8) unstable; urgency=medium
 
   * Bug #43604: Make sure that piwik is required

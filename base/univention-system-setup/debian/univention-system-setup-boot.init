@@ -54,10 +54,12 @@ case "$1" in
 		done |
 		xargs -r ucr unset
 
-		# Show correct IP in motd
-		if [ -e /etc/motd.setup ]; then
-			ucr commit /etc/motd.setup >/dev/null 2>&1
-		fi
+		# Show correct EC2 server address in motd and meta.json
+		for i in /etc/motd.setup /usr/share/univention-management-console/meta.json; do
+			if [ -e "$i" ]; then
+				ucr commit "$i" >/dev/null 2>&1
+			fi
+		done
 
 		# Add public ssh key if the system was started in EC2:
 		if is_ucr_true server/amazon; then
