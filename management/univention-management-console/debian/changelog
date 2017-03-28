@@ -1,3 +1,9 @@
+univention-management-console (9.0.77-4) unstable; urgency=medium
+
+  * Bug #43977: Add has_certificates to meta.json and adjust UCR dependencies
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 14:28:05 +0200
+
 univention-management-console (9.0.77-3) unstable; urgency=medium
 
   * Bug #43977: Move hostname into meta.json + adjust logging output

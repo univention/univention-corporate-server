@@ -1,5 +1,6 @@
 @!@
 import json
+import os
 import socket
 import fcntl
 import struct
@@ -99,18 +100,22 @@ def get_session_timeout():
 	except ValueError:
 		return 300
 
-def _get_fqdn():
+def get_fqdn():
 	try:
 		return '{hostname}.{domainname}'.format(**configRegistry)
 	except KeyError as err:
 		logging.error('%s', err)
 	return 'unknown'
 
+def has_certificates():
+	return configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
+
 data = dict(
 	serveraddress=get_ec2_address(),
 	piwikDisabled=is_piwik_disabled(),
 	sessionTimeout=get_session_timeout(),
-	fqdn=_get_fqdn(),
+	fqdn=get_fqdn(),
+	has_certificates=has_certificates(),
 )
 
 def get_ucr_entry(ucrKey, key=None, defaultValue=None):

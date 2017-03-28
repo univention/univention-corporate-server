@@ -59,3 +59,4 @@ Variables: umc/web/.*
 Variables: umc/server/upload/max
 Variables: license/base
 Variables: uuid/system
+Variables: server/role
