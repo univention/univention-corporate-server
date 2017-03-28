@@ -1,3 +1,10 @@
+univention-portal (1.0.10-13) unstable; urgency=medium
+
+  * Bug #42175: Only set default portal if no other portal has been set (which
+    may result in the value "None")
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Mar 2017 09:43:06 +0200
+
 univention-portal (1.0.10-12) unstable; urgency=medium
 
   * Bug #42235: Remove trailing ',' and correct creation of portal.css

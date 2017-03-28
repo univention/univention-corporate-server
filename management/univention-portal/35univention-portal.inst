@@ -147,7 +147,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 fi
 
 set_portal="$(univention-directory-manager "computers/$role" list "$@" --filter cn="$hostname" | sed -n -e "s/^  portal: \(.*\)$/\1/p")"
-if [ -z "$set_portal" ]; then
+if [ -z "$set_portal" -o "$set_portal" = "None" ]; then
 	# link current computer object to corresponding portal
 	if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
 		default_portal="cn=domain,cn=portal,cn=univention,$ldap_base"
