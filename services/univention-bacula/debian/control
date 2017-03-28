@@ -9,8 +9,8 @@ Standards-Version: 3.8.2
 
 Package: univention-bacula
 Architecture: all
-Depends: univention-postgresql,
- bacula,
+Pre-Depends: univention-postgresql
+Depends: bacula,
  bacula-client,
  bacula-server,
  bacula-common,
