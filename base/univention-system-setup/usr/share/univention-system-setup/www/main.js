@@ -40,13 +40,12 @@ define([
 	"dojox/html/styles",
 	"login",
 	"umc/tools",
-	"umc/piwik",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/ContainerWidget",
 	"./ApplianceWizard",
 	"umc/i18n!setup"
-], function(declare, lang, array, xhr, dom, domClass, topic, all, styles, login, tools, piwik, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
+], function(declare, lang, array, xhr, dom, domClass, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
 	return {
 		_container: null,
 		wizard: null,

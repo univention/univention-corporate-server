@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-11) unstable; urgency=medium
+
+  * Bug #43604: Trigger piwik load after meta data has been fetched
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 13:11:30 +0200
+
 univention-system-setup (10.0.10-10) unstable; urgency=medium
 
   * Bug #42232: meta.json is now updated at every boot

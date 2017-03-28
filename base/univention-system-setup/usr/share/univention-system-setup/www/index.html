@@ -20,6 +20,9 @@
 						username: getQuery('username'),
 						password: getQuery('password')
 					});
+
+					// trigger piwik load as meta information is now available
+					require(["umc/piwik"]);
 				}
 			};
 		</script>
