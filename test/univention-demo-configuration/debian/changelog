@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-6) unstable; urgency=medium
+
+  * Bug #43601: move branding.json to new location
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 14:19:19 +0200
+
 univention-demo-configuration (5.0.2-5) unstable; urgency=medium
 
   * Bug #43601: more typos if package is not upgraded but freshly installed
