@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console */
+/*global define,require,console */
 
 define([
 	"./i18n/tools",
@@ -158,7 +158,7 @@ define([
 				for (i = 0; i < scopes.length; ++i) {
 					_data = _get(language, scopes[i]);
 					_msg = _data[msg];
-					if (_msg && typeof _msg == "string") {
+					if (_msg && typeof _msg === "string") {
 						// we found a translation... break the loop
 						msg = _msg;
 						break;
@@ -199,8 +199,9 @@ define([
 						plural = eval(_data["$plural$"]);
 						// Catch the special case, where the expression in
 						// eval() is "n>1" (or similar) and returns a bool.
-						if (typeof plural == "boolean")
+						if (typeof plural === "boolean") {
 							plural = plural ? 1 : 0;
+						}
 						
 						msg = _msg[plural];
 						break;
@@ -209,10 +210,11 @@ define([
 
 				// When no translation was found just build the english plural.
 				if (!msg) {
-					if (n == 1)
+					if (n === 1) {
 						msg = id;
-					else
+					} else {
 						msg = id_plural;
+					}
 				}
 
 				// Check if the "%d" for n was omitted in the translation
@@ -226,7 +228,7 @@ define([
 				var vars_in_msg = msg.match(/(^|[^%])%[^%]/g);
 				var var_cnt_in_msg = vars_in_msg ? vars_in_msg.length : 0;
 				var args = [msg];
-				if (id_plural.search(/(^|[^%])\%1\$/) == -1 && arguments.length-2 > var_cnt_in_msg) {
+				if (id_plural.search(/(^|[^%])\%1\$/) === -1 && arguments.length-2 > var_cnt_in_msg) {
 					// get arguments for sprintf (leaving out n)
 					for (i = 3; i < arguments.length; ++i) {
 						args.push(arguments[i]);
@@ -241,7 +243,7 @@ define([
 
 				// call sprintf
 				return sprintf.apply(null, args);
-			}
+			};
 
 			translate.inverse = function(/*String*/ _msg /*, String scope, ...*/) {
 				// try to get the original message given the localized message
@@ -260,7 +262,7 @@ define([
 					for (ikey in _data) {
 						if (_data.hasOwnProperty(ikey)) {
 							ival = _data[ikey];
-							if (ival == _msg) {
+							if (ival === _msg) {
 								// we found the original
 								msg = ikey;
 								break;
