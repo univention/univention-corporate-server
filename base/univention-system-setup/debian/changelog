@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-10) unstable; urgency=medium
+
+  * Bug #42232: meta.json is now updated at every boot
+
+ -- Richard Ulmer <ulmer@univention.de>  Tue, 28 Mar 2017 12:00:08 +0200
+
 univention-system-setup (10.0.10-9) unstable; urgency=medium
 
   * Bug #42232: Adapted design of ec2 start page
