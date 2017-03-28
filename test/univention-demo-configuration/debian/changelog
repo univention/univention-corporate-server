@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-5) unstable; urgency=medium
+
+  * Bug #43601: more typos if package is not upgraded but freshly installed
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 13:10:06 +0200
+
 univention-demo-configuration (5.0.2-4) unstable; urgency=medium
 
   * Bug #43601: fix typo in preinst

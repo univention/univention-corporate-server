@@ -48,7 +48,10 @@ _list_diverted_files() {
 case "$1" in
 	remove|disappear|failed-upgrade|abort-install)
 		# umc overview
-		univention-config-registry unset $(ucr --keys-only search --key 'ucs/web/overview/entries/service/(demo-configuration|demo-configuration-forum)/.*')
+		keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/service/(demo-configuration|demo-configuration-forum)/.*')
+		if [ -n "$keys" ]; then
+			univention-config-registry unset $keys
+		fi
 		univention-config-registry unset umc/web/hooks/univention-demo-configuration
 
 		# enable update checks again
