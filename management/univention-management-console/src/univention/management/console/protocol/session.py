@@ -767,9 +767,6 @@ class Processor(ProcessorBase):
 		def _has_free_license():
 			return ucr.get('license/base') in ('UCS Core Edition', 'Free for personal use edition')
 
-		def _get_fqdn():
-			return '{hostname}.{domainname}'.format(**ucr)
-
 		meta_data = super(Processor, self).handle_request_get_meta(request)
 
 		ucr.load()
@@ -780,7 +777,6 @@ class Processor(ProcessorBase):
 			has_free_license=_has_free_license(),
 			hasFreeLicense=_has_free_license(),
 			has_license_base=bool(ucr.get('license/base')),
-			fqdn=_get_fqdn(),
 			appliance_name=ucr.get('umc/web/appliance/name'),
 		))
 		meta_data.update([(i, ucr.get(i)) for i in self.META_UCR_VARS])

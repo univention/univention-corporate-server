@@ -10,7 +10,7 @@ from univention.config_registry.interfaces import Interfaces
 logging.basicConfig(
 	filename='/var/log/univention/ec2.log',
 	filemode='a',
-	format='%(asctime)s.%(msecs)03d %(levelname)s [%(pathname)s:%(funcName)s]: %(message)s',
+	format='%(asctime)s.%(msecs)03d %(levelname)s [UCR template:meta.json:%(funcName)s]: %(message)s',
 	datefmt='%Y-%m-%d %H:%M:%S',
 	level=logging.DEBUG
 )
@@ -99,10 +99,18 @@ def get_session_timeout():
 	except ValueError:
 		return 300
 
+def _get_fqdn():
+	try:
+		return '{hostname}.{domainname}'.format(**configRegistry)
+	except KeyError as err:
+		logging.error('%s', err)
+	return 'unknown'
+
 data = dict(
 	serveraddress=get_ec2_address(),
 	piwikDisabled=is_piwik_disabled(),
 	sessionTimeout=get_session_timeout(),
+	fqdn=_get_fqdn(),
 )
 
 def get_ucr_entry(ucrKey, key=None, defaultValue=None):
@@ -113,6 +121,7 @@ def get_ucr_entry(ucrKey, key=None, defaultValue=None):
 # list of all UCR variables + mappings
 ucr_vars = [
 	('domainname', ),
+	('hostname', ),
 	('system/setup/showloginmessage', ),
 	('umc/web/feedback/description', 'feedbackSubject', '[UMC-Feedback] Traceback', ),
 	('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de', ),
