@@ -34,6 +34,7 @@
 
 eval "$(univention-config-registry shell)"
 
+a2ensite univention-self-service.conf
 univention-config-registry set "umc/web/hooks/univention-self-service?passwordreset"
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
