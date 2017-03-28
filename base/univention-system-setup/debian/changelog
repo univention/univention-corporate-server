@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-8) unstable; urgency=medium
+
+  * Bug #43604: Make sure that piwik is required
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Mar 2017 11:14:15 +0200
+
 univention-system-setup (10.0.10-7) unstable; urgency=medium
 
   * Bug #43977: Simplify meta data reloading
