@@ -1,3 +1,9 @@
+univention-apache (9.0.5-4) unstable; urgency=medium
+
+  * Bug #44124: add .conf suffix to files in /etc/apache2/ucs-sites.conf.d/
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 12:36:27 +0200
+
 univention-apache (9.0.5-3) unstable; urgency=medium
 
   * Bug #32521: backup robots.txt only on upgrade to 4.2

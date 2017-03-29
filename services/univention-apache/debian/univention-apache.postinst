@@ -39,6 +39,11 @@ if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 	if [ "$(ucr get apache2/startsite)" = "ucs-overview/" ]; then
 		univention-config-registry unset "apache2/startsite"
 	fi
+	for file in /etc/apache2/ucs-sites.conf.d/*; do
+		if [ "$file" = "${file%.conf}" ]; then
+			mv "$file" "${file}.conf"
+		fi
+	done
 fi
 
 a2enmod authnz_pam || true
