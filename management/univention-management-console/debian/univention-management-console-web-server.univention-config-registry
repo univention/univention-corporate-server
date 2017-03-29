@@ -21,6 +21,7 @@ File: etc/apache2/sites-available/univention-proxy.conf
 Variables: ucs/server/sso/fqdn
 Variables: hostname
 Variables: domainname
+Variables: ucs/server/sso/virtualhost
 
 Type: module
 Module: setup_saml_sp.py
