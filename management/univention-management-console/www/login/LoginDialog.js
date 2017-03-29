@@ -306,11 +306,12 @@ define([
 			// redirect the user back to the location where he came from.
 			// CAUTION !!!: we must properly make sure that this is a valid url on the same origin. otherwise we would allow
 			// XSS attacks by submitting e.g. ?location=javascript:alert('XSS') or mailto: links, etc.
-			var path = new dojo._Url(getQuery('location')).path;
+			var uri = new dojo._Url(getQuery('location'));
+			var path = uri.path;
 			if (/\/\//.test(path)) {
 				path = null;
 			}
-			window.location = path || '/univention/management/';
+			window.location = (path || '/univention/management/') + (uri.fragment ? '#' + uri.fragment : window.location.hash);
 		},
 
 		_authentication_failed: function() {
