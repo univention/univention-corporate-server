@@ -443,7 +443,7 @@ def reload_smbd():
 	try:
 		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		if os.path.exists('/etc/init.d/samba'):
-			subprocess.call(('invoke-rc.d', 'samba', 'reload'))
+			subprocess.call(('/etc/init.d/samba', 'reload'))
 		elif os.path.exists('/usr/bin/pkill'):
 			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: pkill -HUP smbd")
 			subprocess.call(('/usr/bin/pkill', '-HUP', 'smbd'))
