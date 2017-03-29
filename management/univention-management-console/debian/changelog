@@ -1,3 +1,9 @@
+univention-management-console (9.0.78-1) unstable; urgency=medium
+
+  * Bug #44112: stay backwards compatible for all URI's
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 12:50:52 +0200
+
 univention-management-console (9.0.77-4) unstable; urgency=medium
 
   * Bug #43977: Add has_certificates to meta.json and adjust UCR dependencies
