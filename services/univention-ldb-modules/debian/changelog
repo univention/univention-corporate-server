@@ -1,3 +1,9 @@
+univention-ldb-modules (5.0.9-3) unstable; urgency=medium
+
+  * Bug #44118: invoke-rc.d doesn't work with the one-shot samba.service
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Mar 2017 20:12:26 +0200
+
 univention-ldb-modules (5.0.9-2) unstable; urgency=medium
 
   * Bug #34498: use univention.lib.umc.Client

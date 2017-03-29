@@ -76,7 +76,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 			fi
 
 			if [ -x /etc/init.d/samba ]; then
-				invoke-rc.d samba restart
+				/etc/init.d/samba restart
 			fi
 		fi
 	fi

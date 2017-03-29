@@ -70,7 +70,7 @@ if [ -n "$unregister_opts" ]; then
 	fi
 
 	if [ -x /etc/init.d/samba ]; then
-		invoke-rc.d samba restart
+		/etc/init.d/samba restart
 	fi
 fi
 

@@ -63,7 +63,13 @@ case "$1" in
 					fi
 				fi
 			fi
-			test -x /etc/init.d/samba && invoke-rc.d samba restart
+			if test -x /etc/init.d/samba; then
+				invoke-rc.d --query samba ## check policy-rc.d
+				rc=$?
+				if [ "$rc" -eq 104 ] || [ "$rc" -eq 100 ]; then
+					/etc/init.d/samba restart
+				fi
+			fi
 		fi
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
