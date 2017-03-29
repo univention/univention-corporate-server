@@ -63,7 +63,7 @@ basic_setup ()
 	# some functions here (e.g. install_apps) need tests/domainadmin/* set
 	ucr set tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
 	set_administrator_dn_for_ucs_test
-	set_administrator_password_for_ucs_test
+	set_administrator_password_for_ucs_test univention
 }
 
 rotate_logfiles () {
