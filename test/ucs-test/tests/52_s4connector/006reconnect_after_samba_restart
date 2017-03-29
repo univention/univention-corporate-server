@@ -37,7 +37,7 @@ test_groupdn=$(group_dn "$test_groupname")
 group_dns+=("$test_groupdn")
 
 sleep 1
-invoke-rc.d samba stop
+/etc/init.d/samba stop
 
 # create test group2 while samba is stopped
 test_groupname=$(group_randomname)
@@ -51,7 +51,7 @@ test_groupdn=$(group_dn "$test_groupname")
 group_dns+=("$test_groupdn")
 
 sleep 1
-invoke-rc.d samba start
+/etc/init.d/samba start
 ad_wait_for_synchronization; fail_bool 0 110
 
 for group_dn in "${group_dns[@]}"; do
