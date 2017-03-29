@@ -38,7 +38,7 @@ fetch-files () {
 	local SCP_ARGS=${4:-'-i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'}
 
 	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET"
-	scp "$SCP_ARGS" "$ADDR:$FILES" "$TARGET"
+	scp $(echo $SCP_ARGS | tr " " "\n") "$ADDR:$FILES" "$TARGET"
 }
 
 fetch-results () {
