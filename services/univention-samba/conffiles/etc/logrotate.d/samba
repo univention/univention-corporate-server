@@ -12,7 +12,7 @@ for setting in settings.keys():
 	print "\t%s" % settings[setting]
 @!@
 	postrotate
-		invoke-rc.d --quiet samba reload > /dev/null
+		/etc/init.d/samba reload > /dev/null
 	endscript
 }
 

@@ -144,7 +144,7 @@ def run_postchange():
 		if os.path.isfile(initscript) and os.access(initscript, os.X_OK):
 			if service == 'winbind':
 				time.sleep(3)
-			process = subprocess.Popen(['invoke-rc.d', service, 'restart'])
+			process = subprocess.Popen([initscript, 'restart'])
 			process.wait()
 
 	return 0
