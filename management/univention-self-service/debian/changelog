@@ -1,3 +1,9 @@
+univention-self-service (2.0.13-7) unstable; urgency=medium
+
+  * Bug #44102: Adapt French translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Mar 2017 10:10:24 +0200
+
 univention-self-service (2.0.13-6) unstable; urgency=medium
 
   * Move the creation of the portal entry into the join script and
