@@ -1,3 +1,10 @@
+univention-self-service (2.0.13-6) unstable; urgency=medium
+
+  * Move the creation of the portal entry into the join script and
+    create the entry via UDM (Bug #44102)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Mar 2017 06:30:43 +0200
+
 univention-self-service (2.0.13-5) unstable; urgency=medium
 
   * Bug #43899: move dependencies to package
