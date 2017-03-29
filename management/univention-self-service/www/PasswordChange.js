@@ -34,15 +34,18 @@ define([
 	"dojo/keys",
 	"dojo/dom",
 	"dojo/json",
+	"dojo/Deferred",
 	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
+	"login",
 	"umc/tools",
+	"umc/dialog",
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n!."
-], function(lang, on, keys, dom, json, xhr, Button, put, tools, TextBox, PasswordBox, lib, _) {
+], function(lang, on, keys, dom, json, Deferred, xhr, Button, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
 		title: _('Password change'),
@@ -117,9 +120,10 @@ define([
 				required: true
 			});
 			this._username.startup();
-			if (tools.getCookies().username) {
-				this._username.set('value', tools.getCookies().username);
-			}
+			login.onInitialLogin(lang.hitch(this, function(username) {
+				this._username.set('value', tools.status('username'));
+				this._username.set('disabled', true);
+			}));
 			put(step, this._username.domNode);
 			put(this.steps, step);
 		},
@@ -200,35 +204,83 @@ define([
 		 * Changes the current password if all input fields are valid.
 		 * */
 		_setPassword: function() {
-			this._submitButton.set('disabled', true);
 			var allInputFieldsAreValid = this._username.isValid() &&
 				this._oldPassword.isValid() &&
 				this._newPassword.isValid() &&
 				this._verifyPassword.isValid();
 
-			if (allInputFieldsAreValid) {
-				var data = {
-					password: {
-						'username': this._username.get('value'),
-						'password': this._oldPassword.get('value'),
-						'new_password': this._newPassword.get('value')
-					}
-				};
-
-				tools.umcpCommand('set', data).then(lang.hitch(this, function() {
-					var redirectUrl = lib._getUrlForRedirect();
-					if (redirectUrl) {
-						window.open(redirectUrl, "_self");
-					}
-				}), lang.hitch(this, function() {
-					this._oldPassword.reset();
-					this._newPassword.reset();
-					this._verifyPassword.reset();
-					this._submitButton.set('disabled', false);
-				}));
-			} else {
-				this._submitButton.set('disabled', false);
+			if (!allInputFieldsAreValid) {
+				return;
 			}
+			this._submitButton.set('disabled', true);
+
+			var authData = {
+				'username': this._username.get('value'),
+				'password': this._oldPassword.get('value')
+			};
+
+			var _login = lang.hitch(this, function() {
+				if (!tools.status('loggedIn')) {
+					// not logged in -> issue an authentication request
+					return tools.umcpCommand('auth', authData, {
+						// make sure to ignore all kinds of errors (including 401)
+						401: function() {}
+					});
+				}
+
+				// already logged in -> return a resolved deferred
+				var deferred = new Deferred();
+				deferred.resolve();
+				return deferred;
+			});
+
+			var _changePassword = lang.hitch(this, function() {
+				var data = {
+					password: lang.mixin(authData, {
+						'new_password': this._newPassword.get('value')
+					})
+				};
+				return tools.umcpCommand('set', data).then(function() {
+					// return 'true' to indicate success
+					return true;
+				});
+			});
+
+			var _handleError = lang.hitch(this, function(err) {
+				var info = tools.parseError(err);
+				if (info.status === 401) {
+					// wrong credentials -> display custom error message
+					dialog.alert(_('Invalid credentials. Password change failed.'));
+
+				} else {
+					// display received error message
+					dialog.alert(info.message);
+				}
+
+				// return 'false' to indicate failure
+				return false;
+			});
+
+			var _resetForm = lang.hitch(this, function(success) {
+				this._oldPassword.reset();
+				this._newPassword.reset();
+				this._verifyPassword.reset();
+				this._submitButton.set('disabled', false);
+				return success;
+			});
+
+			var _handleRedirect = lang.hitch(this, function(success) {
+				var redirectUrl = lib._getUrlForRedirect();
+				if (redirectUrl && success) {
+					window.open(redirectUrl, "_self");
+				}
+			});
+
+			// trigger chain of asynchronous actions
+			_login().then(_changePassword)
+				.then(null, _handleError)
+				.then(_resetForm)
+				.then(_handleRedirect);
 		},
 
 		/**

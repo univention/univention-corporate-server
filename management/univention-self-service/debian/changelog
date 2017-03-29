@@ -1,3 +1,9 @@
+univention-self-service (2.0.13-8) unstable; urgency=medium
+
+  * Bug #44111: Handle login status for password change
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Mar 2017 12:11:41 +0200
+
 univention-self-service (2.0.13-7) unstable; urgency=medium
 
   * Bug #44102: Adapt French translation
@@ -20,7 +26,7 @@ univention-self-service (2.0.13-5) unstable; urgency=medium
 
 univention-self-service (2.0.13-4) unstable; urgency=medium
 
-  * Bug #44111: fix indentation 
+  * Bug #44111: fix indentation
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Mar 2017 18:03:41 +0200
 

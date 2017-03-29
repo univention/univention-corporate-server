@@ -35,13 +35,14 @@ define([
 	"dojo/keys",
 	"dijit/form/Button",
 	"put-selector/put",
+	"login",
 	"umc/tools",
 	"umc/dialog",
 	"./lib",
 	"./PasswordBox",
 	"./TextBox",
 	"umc/i18n!."
-], function(lang, array, on, keys, Button, put, tools, dialog, lib, PasswordBox, TextBox, _) {
+], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, _) {
 
 	return {
 		title: _('Protect account'),
@@ -115,9 +116,10 @@ define([
 				},
 				required: true
 			});
-			if (tools.getCookies().username) {
-				this._username.set('value', tools.getCookies().username);
-			}
+			login.onInitialLogin(lang.hitch(this, function(username) {
+				this._username.set('value', tools.status('username'));
+				this._username.set('disabled', true);
+			}));
 			this._username.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
 					this._getContactInformation();
@@ -285,7 +287,7 @@ define([
 					return false;
 				}
 			});
-			
+
 			if (allOptionsAreValid) {
 				var data = this._getNewContactInformation();
 				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function() {
