@@ -1,3 +1,9 @@
+univention-management-console (9.0.79-1) unstable; urgency=medium
+
+  * Bug #44124: fix redirection when ucs/server/sso/virtualhost is false
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 13:17:36 +0200
+
 univention-management-console (9.0.78-1) unstable; urgency=medium
 
   * Bug #44112: stay backwards compatible for all URI's
