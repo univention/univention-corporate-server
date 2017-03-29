@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-15) unstable; urgency=medium
+
+  * Bug #32027: Fix css for firefox 31 - firefox 48
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Mar 2017 15:03:14 +0200
+
 univention-management-console-module-udm (7.0.9-14) unstable; urgency=medium
 
   * Bug #44077: Fix german translation for creating groups

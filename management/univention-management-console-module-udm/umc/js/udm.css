@@ -15,7 +15,7 @@
 .umc .umcUDMSearchForm .umcLabelPane.umcSearchFormSubmitButton {
 	padding-right: 0;
 	width: 3.2em;
-	position: relative
+	position: relative;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton {
 	float: right;
@@ -29,27 +29,27 @@
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton .dijitIcon {
 	background: url('../../js/dijit/themes/umc/images/udmGridViewIcons.svg');
 	background-size: 46px 150px;
-	background-position-x: 0px;
+	background-position: 0px 0px;
 	width: 46px;
 	height: 20px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton .umcGridViewIcon-default {
-	background-position-y: 0px ;
+	background-position: 0px 0px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton.dijitButtonHover .umcGridViewIcon-default {
-	background-position-y: -26px ;
+	background-position: 0px -26px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton.dijitButtonActive .umcGridViewIcon-default {
-	background-position-y: -52px ;
+	background-position: 0px -52px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton .umcGridViewIcon-tile {
-	background-position-y: -78px ;
+	background-position: 0px -78px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton.dijitButtonHover .umcGridViewIcon-tile {
-	background-position-y: -104px ;
+	background-position: 0px -104px;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton.dijitButtonActive .umcGridViewIcon-tile {
-	background-position-y: -130px ;
+	background-position: 0px -130px;
 }
 
 .umc .umcUDMUsersModule .umcImage {
