@@ -250,8 +250,8 @@ define([
 				return;
 			}
 			var viewPortHeight = dojoWindow.getBox().h;
-			var scrollBottom = geometry.docScroll().y + viewPortHeight;
-			var atBottom = scrollBottom > (geometry.position(win.body()).h - 10);
+			var gridPosition = geometry.position(this.domNode);
+			var atBottom = (gridPosition.y + gridPosition.h) <= viewPortHeight;
 			if (atBottom) {
 				this._heightenGrid(2 * viewPortHeight);
 			}
