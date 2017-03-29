@@ -1,3 +1,9 @@
+univention-self-service (2.0.14-1) unstable; urgency=medium
+
+  * Bug #43899: fixup removal
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 14:35:18 +0200
+
 univention-self-service (2.0.13-9) unstable; urgency=medium
 
   * Bug #43899: remove obsolete password file and machine account rotation

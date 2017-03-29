@@ -83,8 +83,6 @@ udm settings/portal_entry create --ignore_exists "$@" \
 	--append description="\"en_US\" \"Self Service modules (change and recover passwords)\"" \
 	--append description="\"fr_FR\" \"Module de libre-service (changer et réinitialiser des mots de passe)\"" || die
 
-/usr/lib/univention-server/server_password_change.d/univention-self-service postchange || die
-
 joinscript_save_current_version
 
 exit 0
