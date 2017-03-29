@@ -60,6 +60,10 @@ basic_setup ()
 	if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
 		mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
 	fi
+	# some functions here (e.g. install_apps) need tests/domainadmin/* set
+	ucr set tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
+	set_administrator_dn_for_ucs_test
+	set_administrator_password_for_ucs_test
 }
 
 rotate_logfiles () {
