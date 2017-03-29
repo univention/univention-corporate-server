@@ -1,3 +1,10 @@
+univention-management-console (9.0.79-3) unstable; urgency=medium
+
+  * Bug #42174: fixup svn r77798: make sure relogin is possible after
+    switching networks
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 14:23:08 +0200
+
 univention-management-console (9.0.79-2) unstable; urgency=medium
 
   * Bug #44124: fix ucslint

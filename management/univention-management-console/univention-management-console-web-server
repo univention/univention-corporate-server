@@ -273,12 +273,15 @@ class UMCP_Dispatcher(object):
 			response = Response(queuerequest.request)
 			response.status = UNAUTHORIZED
 			response.message = 'The current session is not valid with your IP address for security reasons. This might happen after switching the network. Please login again.'
-			# very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address
-			response.cookies['UMCSessionId'] = {
-				'expires': datetime.datetime.fromtimestamp(0),
-				'path': '/univention/',
-				'version': 1,
-			}
+			# very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
+			for name in queuerequest.request.cookies.keys():
+				if name.startswith('UMCSessionId'):
+					response.cookies[name] = {
+						'expires': datetime.datetime.fromtimestamp(0),
+						'path': '/univention/',
+						'version': 1,
+						'value': '',
+					}
 			queuerequest.response_queue.put(response)
 			return
 
@@ -691,6 +694,8 @@ class CPgeneric(Ressource):
 		if response.headers:
 			cherrypy.response.headers.update(response.headers)
 		for key, item in response.cookies.iteritems():
+			if isinstance(key, unicode):
+				key = key.encode('utf-8')  # bug in python Cookie!
 			if isinstance(item, dict):
 				cherrypy.response.cookie[key] = item.pop('value', '')
 				cherrypy.response.cookie[key].update(item)
