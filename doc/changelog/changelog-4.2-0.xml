@@ -382,6 +382,9 @@
 				<listitem><simpara>
 					Illegal characters don't cause a crash when viewing the logfile anymore (<u:bug>41539</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					During an update, the view is scrolling automatically with the last line of the log file (<u:bug>43508</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
