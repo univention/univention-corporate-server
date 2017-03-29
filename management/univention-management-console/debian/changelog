@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-1) unstable; urgency=medium
+
+  * Bug #38370: don't force locale to be set in umc-command
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 16:37:54 +0200
+
 univention-management-console (9.0.79-3) unstable; urgency=medium
 
   * Bug #42174: fixup svn r77798: make sure relogin is possible after
