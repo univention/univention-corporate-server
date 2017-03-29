@@ -78,10 +78,10 @@
 						icon-image(-160, -20)
 					// loading
 					^[-2].childrenUnknown ^[-2..-1]
-						background: url($image-loading-animation)
+						background: url($image-loading-animation) !important
 					// empty container
 					^[-2].noChildren ^[-2..-1]
-						background: none
+						background: none !important
 
 .umc .dijitTreeNode
     zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */

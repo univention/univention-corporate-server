@@ -1,3 +1,9 @@
+univention-web (1.0.42-5) unstable; urgency=medium
+
+  * Bug #43531: Fix wrong tree icons in IE 11
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Mar 2017 12:00:29 +0200
+
 univention-web (1.0.42-4) unstable; urgency=medium
 
   * Bug #43604: Fix return value of umc/tools:loadMetaData()
