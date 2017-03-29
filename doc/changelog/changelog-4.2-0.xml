@@ -646,7 +646,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The usability of the password self service module has been imporoved. In addition, the module has been updated
+					The usability of the password self service module has been improved. In addition, the module has been updated
 					to the UCS 4.2 web structure (<u:bug>42267</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
