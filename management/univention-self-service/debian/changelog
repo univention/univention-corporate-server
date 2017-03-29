@@ -1,3 +1,10 @@
+univention-self-service (2.0.13-9) unstable; urgency=medium
+
+  * Bug #43899: remove obsolete password file and machine account rotation
+  	script
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2017 13:31:42 +0200
+
 univention-self-service (2.0.13-8) unstable; urgency=medium
 
   * Bug #44111: Handle login status for password change

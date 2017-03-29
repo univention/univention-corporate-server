@@ -32,12 +32,6 @@
 
 #DEBHELPER#
 
-case "$1" in
-	purge)
-		rm -f /etc/self-service-ldap.secret
-	;;
-esac
-
 if [ "$1" = "remove" ]
 then
 	. /usr/share/univention-lib/all.sh
