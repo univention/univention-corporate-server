@@ -302,6 +302,11 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Docker Apps now send notifications after an App update. This fix was
+					cherry picked from an an upcoming 4.1-4 update
+					(<u:bug>44148</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					More characters in the version of an App are allowed
 					(<u:bug>41905</u:bug>).
 				</simpara></listitem>
