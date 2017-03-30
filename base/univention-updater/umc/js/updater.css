@@ -46,3 +46,15 @@
 	margin-bottom: 20px;
 	min-height: 30px;
 }
+
+.umc .umcUpdaterLogViewer {
+	border: 1px solid #d0d0d0;
+	background-color: #f8f8f8;
+	padding: 0.3em;
+}
+
+.umc .umcUpdaterLogViewer .umcText {
+	font-family: monospace;
+	overflow: auto;
+	white-space: pre-wrap;
+}
