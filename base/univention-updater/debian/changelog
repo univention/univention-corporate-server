@@ -1,3 +1,9 @@
+univention-updater (12.0.5-3) unstable; urgency=low
+
+  * Bug #43937: Block upgrade with separate /usr
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 30 Mar 2017 10:35:43 +0200
+
 univention-updater (12.0.5-2) unstable; urgency=low
 
   * Bug #44142: adjust preup check_space

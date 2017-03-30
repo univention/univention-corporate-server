@@ -220,7 +220,7 @@ then
 	echo "         As such the content of /usr/ must be moved to the root file system before"
 	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
 	echo "         manually and might require resizing the file systems. It is described at"
-	echo "         <https://help.univention.com/t/5321>"
+	echo "         <http://sdb.univention.de/1386>."
 	echo ""
 	exit 1
 fi
