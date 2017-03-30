@@ -476,6 +476,14 @@ check_qemu () {
 }
 check_qemu
 
+# ensure that en_US is included in list of available locales (Bug #44150)
+available_locales="$(/usr/sbin/univention-config-registry get locale)"
+case "$available_locales" in
+	*en_US*) ;;
+	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
+esac
+
+
 # autoremove before the update
 if ! is_ucr_true update42/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1

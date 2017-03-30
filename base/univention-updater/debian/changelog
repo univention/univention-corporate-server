@@ -1,3 +1,9 @@
+univention-updater (12.0.5-4) unstable; urgency=medium
+
+  * Bug #44150: ensure that en_US is specified in UCR variable "locale"
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Mar 2017 15:32:06 +0200
+
 univention-updater (12.0.5-3) unstable; urgency=low
 
   * Bug #43937: Block upgrade with separate /usr
