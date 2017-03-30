@@ -1,3 +1,9 @@
+univention-updater (12.0.5-5) unstable; urgency=medium
+
+  * Bug #43520: Make sure that log output is encoded correctly
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Mar 2017 18:43:33 +0200
+
 univention-updater (12.0.5-4) unstable; urgency=medium
 
   * Bug #44150: ensure that en_US is specified in UCR variable "locale"

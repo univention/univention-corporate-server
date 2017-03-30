@@ -48,12 +48,14 @@ define([
 	"dojo/_base/window",
 	"dojo/dom-geometry",
 	"dojo/window",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, win, geometry, dojoWindow, tools, Text, ContainerWidget, _) {
+], function(declare, lang, win, geometry, dojoWindow, entities, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
+		'class': 'umcUpdaterLogViewer',
 
 		_oldScrollPosition: 0,
 		_goToBottom: true,
@@ -64,15 +66,11 @@ define([
 		_max_number_of_lines: 2500, // ~ 200kB if one line ^= 80 chars
 		_all_lines: [], // hold all past _max_number_of_lines lines
 
-		// FIXME which class should I take here?
-		style: 'border: 1px solid #d0d0d0; background-color: #f8f8f8; padding: 0.3em;',
-
 		buildRendering: function() {
 
 			this.inherited(arguments);
 
 			this._text = new Text({
-				style: 'font-family: monospace; overflow: auto;',
 				'class': 'umcDynamicMaxHeight',
 				content: _("... loading log file ...")
 			});
@@ -141,7 +139,7 @@ define([
 				);
 				printable_lines = [logfile_exceeded].concat(this._all_lines);
 			}
-			var content = printable_lines.join('<br />\n');
+			var content = entities.encode(printable_lines.join('\n'));
 			this._text.set('content', content);
 			this.scrollToBottom();
 		},
