@@ -476,6 +476,18 @@ check_qemu () {
 }
 check_qemu
 
+check_latest_updater_installed () {
+	local updater_version=$(dpkg -s univention-updater 2>/dev/null | sed -n 's/Version: //p')
+	if dpkg --compare-versions "$updater_version" lt "11.0.11-23"; then
+		echo
+		echo "ERROR: Please install the latest errata updates on this machine before "
+		echo "       upgrading this system to UCS 4.2-0."
+		echo
+		exit 1
+	fi
+}
+check_latest_updater_installed
+
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
 case "$available_locales" in
