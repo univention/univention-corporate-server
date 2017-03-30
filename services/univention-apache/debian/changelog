@@ -1,3 +1,9 @@
+univention-apache (9.0.5-6) unstable; urgency=medium
+
+  * Bug #44146: remove dead symlinks on upgrade to UCS 4.2
+
+ -- Florian Best <best@univention.de>  Thu, 30 Mar 2017 18:29:17 +0200
+
 univention-apache (9.0.5-5) unstable; urgency=medium
 
   * Bug #44146: remove dead symlinks on upgrade to UCS 4.2

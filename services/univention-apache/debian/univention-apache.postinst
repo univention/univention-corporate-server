@@ -44,7 +44,7 @@ if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 			mv "$file" "${file}.conf"
 		fi
 	done
-	find /etc/apache2/sites-enabled/ -type l ! -exec test -e {} \; -delete
+	find /etc/apache2/sites-enabled/ -xtype l -delete
 fi
 
 a2enmod authnz_pam || true
