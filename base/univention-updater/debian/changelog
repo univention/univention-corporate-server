@@ -1,3 +1,9 @@
+univention-updater (12.0.5-2) unstable; urgency=low
+
+  * Bug #44142: adjust preup check_space
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Mar 2017 09:34:52 +0200
+
 univention-updater (12.0.5-1) unstable; urgency=low
 
   * Bug #44083: Document QEMU issued
