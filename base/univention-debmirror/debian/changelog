@@ -1,3 +1,9 @@
+univention-debmirror (8.0.0-3) unstable; urgency=low
+
+  * Bug #42296: fix apache config
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Mar 2017 12:46:16 +0200
+
 univention-debmirror (8.0.0-2) unstable; urgency=low
 
   * Bug #42296: rename apache conf
