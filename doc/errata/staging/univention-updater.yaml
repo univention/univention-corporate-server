@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-updater
-fix: 
+fix: 11.0.11-23.1510.201703301835
 desc: |
  This update addresses the following issue(s):
  * When executing an updater to UCS 4.2, the updater log view hangs after
