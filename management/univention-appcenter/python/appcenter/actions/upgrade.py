@@ -47,7 +47,12 @@ class Upgrade(Install):
 
 	def __init__(self):
 		super(Upgrade, self).__init__()
-		self.old_app = None
+		# original_app: The App installed when the whole action started
+		# old_app: The current App installed when trying to upgrade
+		#   - should be the same most of the time. But Docker Apps may upgrade
+		#   themselves multiple times during one run and old_app will be set
+		#   after each iteration
+		self.original_app = self.old_app = None
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
@@ -61,7 +66,7 @@ class Upgrade(Install):
 
 	def main(self, args):
 		app = args.app
-		self.old_app = AppManager.find(app)
+		self.original_app = self.old_app = AppManager.find(app)
 		if app == self.old_app:
 			app = AppManager.find_candidate(app) or app
 		if self._app_too_old(self.old_app, app):
@@ -87,7 +92,7 @@ class Upgrade(Install):
 		return super(Upgrade, self)._call_prescript(app, old_version=self.old_app.version)
 
 	def _send_information(self, app, status):
-		if app > self.old_app:
+		if app > self.original_app:
 			super(Upgrade, self)._send_information(app, status)
 
 	def _install_packages(self, packages, percentage_end, update=True):

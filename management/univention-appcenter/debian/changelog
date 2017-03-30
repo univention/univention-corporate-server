@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-65) unstable; urgency=medium
+
+  * Bug #44148: Fix sending notifications about upgraded Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 30 Mar 2017 17:39:11 +0200
+
 univention-appcenter (5.0.23-64) unstable; urgency=low
 
   *  Bug #43499: reverted r77284, app plugins
