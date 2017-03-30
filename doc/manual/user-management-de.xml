@@ -1091,10 +1091,10 @@
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
-				Die <wordasword>Self Service-App</wordasword> registriert zwei Web-Dienste auf der <wordasword>UCS-Startseite</wordasword>,
-				auf die über eine eigene Webseite zugegriffen werden kann:
-				<guimenu>Passwort ändern</guimenu> und <guimenu>Passwort zurücksetzen</guimenu>.
-				Sie erlauben es Benutzern, unter Angabe ihres alten	Passwortes ein neues Passwort
+				Die <wordasword>Self Service-App</wordasword> registriert einen Web-Dienst in dem <wordasword>Portal</wordasword>,
+				auf den über eine eigene Webseite zugegriffen werden kann:
+				<guimenu>Passwort ändern</guimenu>.
+				Sie erlaubt es Benutzern, unter Angabe ihres altenPasswortes ein neues Passwort
 				zu setzen, oder aber ihr vergessenes Passwort zurückzusetzen. Für das Zurücksetzen
 				des Passworts wird ein <wordasword>Token</wordasword> an eine vorher dafür registrierte
 				Kontakt-E-Mail-Adresse gesendet, das dann auf der Webseite vom Benutzer einzugeben ist.
