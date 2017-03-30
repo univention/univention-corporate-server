@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-12) unstable; urgency=medium
+
+  * Bug #42853: Ensure to use correct initial locale + support en_US as locale
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Mar 2017 14:28:36 +0200
+
 univention-system-setup (10.0.10-11) unstable; urgency=medium
 
   * Bug #43604: Trigger piwik load after meta data has been fetched

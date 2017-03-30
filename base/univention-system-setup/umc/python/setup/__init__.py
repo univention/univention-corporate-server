@@ -93,7 +93,6 @@ class Instance(Base, ProgressMixin):
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
-		self._very_first_locale = None
 		self.__keep_alive_request = None
 		# reset umask to default
 		os.umask(0o022)
@@ -101,8 +100,6 @@ class Instance(Base, ProgressMixin):
 	def init(self):
 		os.putenv('LANG', str(self.locale))
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
-		self._very_first_locale = copy.deepcopy(self.locale)
-		MODULE.process('Very first locale is %s. Will be added if this is very first system setup' % self._very_first_locale)
 		if not util.is_system_joined():
 			self._preload_city_data()
 
@@ -275,10 +272,7 @@ class Instance(Base, ProgressMixin):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				# use the _very_first_locale not the current one
-				# otherwise some strange python exceptions occur telling us
-				# about unsupported locale strings...
-				util.auto_complete_values_for_join(values, self._very_first_locale)
+				util.auto_complete_values_for_join(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
 				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):

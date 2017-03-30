@@ -231,12 +231,12 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join(installComponents)
 
+	current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8'))
 	if newValues['server/role'] == 'domaincontroller_master':
 		# add newValues for SSL UCR variables
+		default_locale = current_locale
 		if 'locale/default' in newValues:
 			default_locale = Locale(newValues['locale/default'])
-		else:
-			default_locale = current_locale or Locale('en_US.UTF-8:UTF-8')
 		newValues['ssl/state'] = default_locale.territory
 		newValues['ssl/locality'] = default_locale.territory
 		newValues['ssl/organization'] = newValues.get('organization', default_locale.territory)
@@ -245,7 +245,8 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 	# make sure that the locale of the current session is also supported
 	# ... otherwise the setup scripts will fail after regenerating the
-	# locale data (in 20_language/10language)
+	# locale data (in 20_language/10language) with some strange python
+	# exceptions about unsupported locale strings...
 	if 'locale' not in newValues:
 		newValues['locale'] = newValues.get('locale/default', '')
 	forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
