@@ -142,3 +142,4 @@ cgroupfs-mount
 
 univention-self-service
 univention-self-service-passwordreset-umc
+univention-self-service-master

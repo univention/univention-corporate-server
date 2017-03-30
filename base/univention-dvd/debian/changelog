@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-11) unstable; urgency=medium
+
+  * Bug #43899: Add new package univention-self-service-master to DVD
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 30 Mar 2017 09:27:46 +0200
+
 univention-dvd (2.0.0-10) unstable; urgency=medium
 
   * Bug #44030: Add missing packages recommended by "univention-role-common"
