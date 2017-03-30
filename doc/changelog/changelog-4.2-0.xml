@@ -591,6 +591,10 @@
 				(<u:bug>41868</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				To avoid errors in the UMC when choosing English as language, the pre-check of the UCS 4.2 upgrade now ensures that <property>en_US</property> is specified as available locale
+				(<u:bug>44150</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The program <command>univention-updater</command> checks now also the locking status if the option
 				<option>--check</option> is used (<u:bug>43625</u:bug>).
 			</simpara></listitem>
