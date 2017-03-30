@@ -322,11 +322,11 @@ secret: $machine_secret
 				if [ -d "$backup_dir" ]; then
 					rm -rf "$backup_dir"
  				fi
-				service samba stop
+				/etc/init.d/samba stop
 				mkdir "$backup_dir" && \
 				cp -a /var/lib/samba/private "$backup_dir" && \
 				samba-tool dbcheck --cross-ncs --fix --yes
-				service samba start
+				/etc/init.d/samba start
  			fi
 		fi
 	fi

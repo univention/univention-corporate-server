@@ -1,3 +1,9 @@
+univention-samba4 (6.0.9-10) unstable; urgency=medium
+
+  * Bug #44118: service command doesn't work with the one-shot samba.service
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Mar 2017 11:28:25 +0200
+
 univention-samba4 (6.0.9-9) unstable; urgency=low
 
   * Bug #43874: Work-around diverted univention-service needed by systemd
