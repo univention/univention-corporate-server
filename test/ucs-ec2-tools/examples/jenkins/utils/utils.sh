@@ -60,10 +60,6 @@ basic_setup ()
 	if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
 		mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
 	fi
-	# some functions here (e.g. install_apps) need tests/domainadmin/* set
-	ucr set tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
-	set_administrator_dn_for_ucs_test
-	set_administrator_password_for_ucs_test univention
 }
 
 rotate_logfiles () {
@@ -672,7 +668,7 @@ set_administrator_password_for_ucs_test ()
 {
 	local password="$1"
 
-	ucr set tests/domainadmin/pwd="$password"
+	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
 	mkdir -p /var/lib/ucs-test/
 	echo -n "$password" >/var/lib/ucs-test/pwdfile
 }
