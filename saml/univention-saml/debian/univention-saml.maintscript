@@ -1,3 +1,1 @@
 mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-saml /etc/univention/templates/files/etc/apache2/sites-available/univention-saml.conf 4.0.0~
-rm_conffile /etc/univention/templates/files/etc/apache2/sites-enabled/univention-saml 4.0.0~
-rm_conffile /etc/apache2/sites-enabled/univention-saml 4.0.0~
