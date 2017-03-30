@@ -41,17 +41,11 @@
 extern char *bdb_cache_dir;
 extern char *bdb_ldap_dir;
 
-typedef struct _BdbCacheMasterEntry {
-	NotifierID id;
-	NotifierID schema_id;
-} BdbCacheMasterEntry;
-extern BdbCacheMasterEntry bdb_cache_master_entry;
-
 int bdb_cache_lock(void);
 int bdb_cache_init(void);
 void bdb_cache_sync(void);
-int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry);
-int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dptxnp);
+int bdb_cache_get_master_entry(CacheMasterEntry *master_entry);
+int bdb_cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dptxnp);
 int bdb_cache_update_entry(NotifierID id, char *dn, CacheEntry *entry);
 int bdb_cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry);
 int bdb_cache_delete_entry(NotifierID id, char *dn);

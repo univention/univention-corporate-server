@@ -89,7 +89,7 @@
 char *bdb_cache_dir = "/var/lib/univention-directory-listener";
 char *bdb_ldap_dir = "/var/lib/univention-ldap";
 
-BdbCacheMasterEntry bdb_cache_master_entry;
+CacheMasterEntry cache_master_entry;
 
 DB *dbp;
 #ifdef WITH_DB42
@@ -278,7 +278,7 @@ int bdb_cache_get_int(char *key, NotifierID *value, const long def) {
 	return fclose(fp) || (rv != 1);
 }
 
-int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry) {
+int bdb_cache_get_master_entry(CacheMasterEntry *master_entry) {
 	DBT key, data;
 	int rv;
 
@@ -297,18 +297,18 @@ int bdb_cache_get_master_entry(BdbCacheMasterEntry *master_entry) {
 		return rv;
 	}
 
-	if (data.size != sizeof(BdbCacheMasterEntry)) {
+	if (data.size != sizeof(CacheMasterEntry)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "master entry has unexpected length");
 		return 1;
 	}
 
-	memcpy(master_entry, data.data, sizeof(BdbCacheMasterEntry));
+	memcpy(master_entry, data.data, sizeof(CacheMasterEntry));
 	free(data.data);
 
 	return 0;
 }
 
-int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbtxnp) {
+int bdb_cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp) {
 	DBT key, data;
 	int rv;
 	int flags;
@@ -320,7 +320,7 @@ int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbt
 	key.size = MASTER_KEY_SIZE;
 
 	data.data = (void *)master_entry;
-	data.size = sizeof(BdbCacheMasterEntry);
+	data.size = sizeof(CacheMasterEntry);
 
 #ifdef WITH_DB42
 	if (dbtxnp == NULL)
@@ -343,7 +343,7 @@ int bdb_cache_update_master_entry(BdbCacheMasterEntry *master_entry, DB_TXN *dbt
 DB_TXN *bdb_cache_new_transaction(NotifierID id, char *dn) {
 #ifdef WITH_DB42
 	DB_TXN *dbtxnp;
-	BdbCacheMasterEntry master_entry;
+	CacheMasterEntry master_entry;
 	NotifierID *old_id;
 
 	dbenvp->txn_begin(dbenvp, NULL, &dbtxnp, 0);

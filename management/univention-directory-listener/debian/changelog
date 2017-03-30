@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-26) unstable; urgency=medium
+
+  * Bug #44166: Copy cache_master_entry data from BDB to LMDB
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Mar 2017 16:41:30 +0200
+
 univention-directory-listener (11.0.1-25) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

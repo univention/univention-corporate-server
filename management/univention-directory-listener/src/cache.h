@@ -42,12 +42,6 @@ extern int INIT_ONLY;
 extern char *cache_dir;
 extern char *ldap_dir;
 
-typedef struct _CacheMasterEntry {
-	NotifierID id;
-	NotifierID schema_id;
-} CacheMasterEntry;
-extern CacheMasterEntry cache_master_entry;
-
 int cache_lock(void);
 int cache_init(char *cache_mdb_dir, int mdb_flags);
 void cache_sync(void);

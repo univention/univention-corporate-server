@@ -40,6 +40,12 @@
 
 #include "network.h"
 
+typedef struct _CacheMasterEntry {
+	NotifierID id;
+	NotifierID schema_id;
+} CacheMasterEntry;
+extern CacheMasterEntry cache_master_entry;
+
 struct _CacheEntryAttribute {
 	char *name;
 	char **values;

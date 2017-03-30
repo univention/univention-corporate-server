@@ -120,13 +120,28 @@ int main(int argc, char *argv[]) {
 	if (bdb_cache_init() != 0)
 		exit(1);
 
+	printf("Converting listener cache to LMDB\n");
 	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 	if (cache_init(cache_mdb_dir, 0) != 0)
 		exit(1);
 
-	bdb_cache_get_master_entry(&bdb_cache_master_entry);
+	rv = bdb_cache_get_master_entry(&cache_master_entry);
+	if (rv) {
+		printf("notifier_id not found in BDB cache, falling back to notifier_id file\n");
+		cache_get_int("notifier_id", &cache_master_entry.id, -1);
+		if (cache_master_entry.id == -1) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cannot determine current ID");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Aborting conversion");
+			return 1;
+		}
+
+		printf("schema_id not found in BDB cache, falling back to schema/id/id file\n");
+		cache_get_schema_id(&cache_master_entry.schema_id, 0);
+	}
+	printf("cached notifier_id:\t%ld\n", cache_master_entry.id);
+	printf("cached schema_id:\t%ld\n", cache_master_entry.schema_id);
 	rv = cache_update_master_entry(&cache_master_entry);
 
 	for (rv = bdb_cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND; rv = bdb_cache_next_entry(&cur, &dn, &entry)) {
