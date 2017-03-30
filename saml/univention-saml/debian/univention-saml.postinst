@@ -38,6 +38,11 @@ configure)
 		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
 	fi
 
+	# update to UCS 4.2
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
+		a2dissite univention-saml
+	fi
+
 	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.0-1; then
 		ucr unset saml/idp/certificate/privatekey \
 			saml/idp/certificate/certificate
