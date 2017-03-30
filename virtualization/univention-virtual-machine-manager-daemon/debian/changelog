@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (6.0.4-1) unstable; urgency=medium
+
+  * Bug #44128: fix error when unpickling / parsing messages from UVMMd in
+  	certain situations like parallel threads.
+
+ -- Florian Best <best@univention.de>  Thu, 30 Mar 2017 12:57:44 +0200
+
 univention-virtual-machine-manager-daemon (6.0.3-6) unstable; urgency=medium
 
   * Bug #44007: fix memory usage css; fix scroll issue; fix cpu usage for

@@ -81,6 +81,10 @@ class Packet(object):
 	@staticmethod
 	def parse(buffer, offset=0):
 		"""Unpack packet from data."""
+		# important! Bug #44128: As we unpickle files this would lead to a AttributeError
+		# in certain situations (e.g. two parallel threads) if the module isn't yet imported
+		import univention.uvmm.node  # noqa: F401
+
 		FORMAT = '!HHI'
 		SIZE = struct.calcsize(FORMAT)
 		if len(buffer) < offset + SIZE:
