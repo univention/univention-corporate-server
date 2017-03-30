@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-appcenter
+fix: 5.0.23-65.289.201703301743
+desc: |
+ This update addresses the following issue(s):
+ * Notifications about App updates of Docker Apps were not sent. This has been
+   corrected.
+bug: [44148]
