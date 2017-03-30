@@ -1,3 +1,9 @@
+univention-self-service (2.0.15-1) unstable; urgency=medium
+
+  * Don't create en_US links only (Bug #44102)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Mar 2017 20:59:49 +0200
+
 univention-self-service (2.0.14-1) unstable; urgency=medium
 
   * Bug #43899: fixup removal
