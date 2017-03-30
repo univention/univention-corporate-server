@@ -42,8 +42,10 @@ a2enmod headers
 a2ensite univention
 invoke-rc.d apache2 restart
 
+# update to UCS 4.2
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.47-1; then
 	univention-config-registry unset umc/http/session/timeout
+	a2dissite univention-management-console
 fi
 
 # provide new settings
