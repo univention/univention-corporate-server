@@ -79,7 +79,7 @@ Package: univention-ldap-acl-master
 Architecture: all
 Pre-Depends: slapd
 Depends: ${misc:Depends},
- univention-ldap-config (= ${source:Version}),
+ univention-ldap-server (= ${binary:Version}),
 Conflicts: univention-ldap-acl-slave
 Description: UCS - LDAP server ACLs for master servers
  This package contains the OpenLDAP server ACLs for master
@@ -93,7 +93,7 @@ Description: UCS - LDAP server ACLs for master servers
 Package: univention-ldap-acl-slave
 Architecture: all
 Depends: ${misc:Depends},
- univention-ldap-config (= ${source:Version}),
+ univention-ldap-server (= ${binary:Version}),
 Conflicts: univention-ldap-acl-master
 Description: UCS - LDAP server ACLs for slave servers
  This package contains the OpenLDAP server ACLs for slave

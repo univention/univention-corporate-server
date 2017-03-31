@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-4) unstable; urgency=medium
+
+  * Bug #43520: Make ACLs depend on univention-ldap-server instead
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 14:38:08 +0200
+
 univention-ldap (13.0.7-3) unstable; urgency=medium
 
   * Bug #43520: Adjust dependencies for LDAP schema data and ACLs
