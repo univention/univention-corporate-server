@@ -1,3 +1,9 @@
+univention-portal (1.0.11-3) unstable; urgency=medium
+
+  * Bug #44070: Fix representation of other image types than SVG
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 01:47:51 +0200
+
 univention-portal (1.0.11-2) unstable; urgency=medium
 
   * Bug #44096: fix type error

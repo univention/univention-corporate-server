@@ -47,9 +47,9 @@ define([
 	"umc/i18n!portal"
 ], function(declare, lang, array, kernel, registry, on, dom, domConstruct, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
 
-	var _regEndsWithSVG = /\.svg$/;
-	var hasSVGSuffix = function(path) {
-		return path && _regEndsWithSVG.test(path);
+	var _regHasImageSuffix = /\.(svg|jpg|jpeg|png|gif)$/i;
+	var hasImageSuffix = function(path) {
+		return path && _regHasImageSuffix.test(path);
 	};
 
 	var hasAbsolutePath = function(path) {
@@ -115,7 +115,7 @@ define([
 							// just to make tools.getIconClass() leaving the URL untouched
 							logo = window.location.origin + logo;
 
-							if (!hasSVGSuffix(logo)) {
+							if (!hasImageSuffix(logo)) {
 								// an URL starting with http[s]:// needs also to have a .svg suffix
 								logo = logo + '.svg';
 							}
