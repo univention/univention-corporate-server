@@ -1,3 +1,9 @@
+univention-self-service (2.0.15-2) unstable; urgency=medium
+
+  * Bug #44146: remove old conffile during update
+
+ -- Florian Best <best@univention.de>  Fri, 31 Mar 2017 13:50:00 +0200
+
 univention-self-service (2.0.15-1) unstable; urgency=medium
 
   * Don't create en_US links only (Bug #44102)
