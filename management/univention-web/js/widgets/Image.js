@@ -66,6 +66,9 @@ define([
 			if (this.value.indexOf('iVBORw0KGg') === 0) {
 				return 'png';
 			}
+			if (this.value.indexOf('R0lGODdh') === 0 || this.value.indexOf('R0lGODlh') === 0) {
+				return 'gif';
+			}
 			// check whether file starts with '<svg', '<SVG', '<xml', or '<XML'...
 			// as simple check that should work for most cases
 			if (this.value.indexOf('PHN2Z') === 0 || this.value.indexOf('PFNWR') === 0 || this.value.indexOf('PFhNT') || this.value.indexOf('PHhtb')) {

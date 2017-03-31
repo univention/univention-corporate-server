@@ -1,3 +1,9 @@
+univention-web (1.0.42-7) unstable; urgency=medium
+
+  * Bug #44070: Recognize GIF as image type
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 01:46:22 +0200
+
 univention-web (1.0.42-6) unstable; urgency=medium
 
   * Bug #32037: Fix alignment of grid buttons in tile view and
