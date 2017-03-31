@@ -955,7 +955,8 @@ define([
 			var onError = lang.hitch(this, function(error) {
 				error = tools.parseError(error);
 				this._statusMessage.set('content', _('Could not load search results'));
-				this._grid.set('collection', new Memory());
+				this.collection.setData([]);
+				this._grid.refresh();
 				this._updateFooterContent();
 			});
 			// store the last query
