@@ -1,3 +1,12 @@
+univention-updater (12.0.6-1) unstable; urgency=medium
+
+  * preup.sh: Introduce a new UCR variable to skip the check if the
+    latest UMC updater module is installed. Until we don't have released
+    the UCS 4.1-4 erratum, we need this check for our Jenkins
+    environments (Bug #43520)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Mar 2017 06:41:21 +0200
+
 univention-updater (12.0.5-6) unstable; urgency=medium
 
   * Bug #43520: Make sure that the latest UMC updater module is installed
