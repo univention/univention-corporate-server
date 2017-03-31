@@ -211,6 +211,9 @@ fi
 	fi
 ) >>"$UPDATER_LOG" 2>&1
 
+# Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
+service univention-firewall restart >>"$UPDATER_LOG" 2>&1
+
 # Bug #43835: update app cache and portal entries
 test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
 python -c '
