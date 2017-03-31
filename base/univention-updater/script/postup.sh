@@ -109,17 +109,15 @@ if is_installed firefox-de; then
 	dpkg -P firefox-de >>"$UPDATER_LOG" 2>&1
 fi
 
-# after update to apache 2.4 (UCS 4.2), old apache 2.2 config files
-# can be purged as they conflict with new naming schema (package has
-# already been removed)
-if is_deinstalled apache2.2-common; then
-	dpkg -P apache2.2-common >>"$UPDATER_LOG" 2>&1
-fi
-
 # Update to UCS 4.2 autoremove
 if ! is_ucr_true update42/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
+
+# after update to apache 2.4 (UCS 4.2), old apache 2.2 config files
+# can be purged as they conflict with new naming schema (package has
+# already been removed)
+dpkg -P apache2.2-common >>"$UPDATER_LOG" 2>&1
 
 # This HAS to be done after the UCS 4.2 apt-get autoremove (Bug #43782#c2)
 if is_installed kopano-webmeetings; then
