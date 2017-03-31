@@ -40,7 +40,7 @@ if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 		univention-config-registry unset "apache2/startsite"
 	fi
 	for file in /etc/apache2/ucs-sites.conf.d/*; do
-		if [ "$file" = "${file%.conf}" ]; then
+		if [ "$file" = "${file%.conf}" ] && ! dpkg -S "$file" > /dev/null 2>&1; then
 			mv "$file" "${file}.conf"
 		fi
 	done

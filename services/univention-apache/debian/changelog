@@ -1,3 +1,9 @@
+univention-apache (9.0.5-8) unstable; urgency=medium
+
+  * Bug #44146: only move non-conffiles
+
+ -- Florian Best <best@univention.de>  Fri, 31 Mar 2017 13:12:11 +0200
+
 univention-apache (9.0.5-7) unstable; urgency=medium
 
   * Bug #44146: Correct path of moved conffiles in 000-default.d
