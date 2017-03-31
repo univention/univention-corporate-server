@@ -197,6 +197,7 @@ define([
 			this._lines_exceeded = 0;
 			this._goToBottom = true;
 			this._last_stamp = 0;
+			this._log_position = 0;
 
 			this._fetch_log();		// first call, will reschedule itself as long
 									// as _check_interval is not zero
