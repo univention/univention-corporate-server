@@ -1,3 +1,9 @@
+univention-updater (12.0.6-3) unstable; urgency=medium
+
+  * Bug #43520: Remove block for latest erratum of univention-updater
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 11:41:55 +0200
+
 univention-updater (12.0.6-2) unstable; urgency=medium
 
   * Bug #44146: Purge conffiles of deinstalled package apache2.2-common
