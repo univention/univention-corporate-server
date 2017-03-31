@@ -230,7 +230,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						A central portal site has been added to UCS. It allows to have a central site which shows all installed Apps in a UCS domain. Furthermore, the portal page can be configured and customized
-						(<u:bug>42233</u:bug>, <u:bug>42175</u:bug>, <u:bug>42231</u:bug>, <u:bug>43495</u:bug>, <u:bug>43670</u:bug>, <u:bug>43887</u:bug>, <u:bug>43932</u:bug>, <u:bug>43933</u:bug>, <u:bug>42235</u:bug>, <u:bug>43928</u:bug>, <u:bug>44018</u:bug>, <u:bug>44048</u:bug>).
+						(<u:bug>42233</u:bug>, <u:bug>42175</u:bug>, <u:bug>42231</u:bug>, <u:bug>43495</u:bug>, <u:bug>43670</u:bug>, <u:bug>43887</u:bug>, <u:bug>43932</u:bug>, <u:bug>43933</u:bug>, <u:bug>42235</u:bug>, <u:bug>43928</u:bug>, <u:bug>44018</u:bug>, <u:bug>44048</u:bug>, <u:bug>44070</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						A server overview site has been added to UCS. It allows to search for and navigate to particular server instances in the UCS domain (<u:bug>43595</u:bug>, <u:bug>43680</u:bug>).
