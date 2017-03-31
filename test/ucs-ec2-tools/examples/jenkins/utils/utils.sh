@@ -358,12 +358,11 @@ install_ucsschool ()
 				"$component"/server=updates-test.software-univention.de \
 				"$component"=enabled
 			echo "install_ucsschool - DEBUG1"
-			cat /etc/apt/sources.list.d/20_ucs-online-component.list
-			univention-install --yes ucs-school-umc-installer
-			# Ensure the new UMC ACLs are used
-			/etc/init.d/univention-management-console-server restart
 			# Ensure ucsschool is a registered app
 			univention-app install ucsschool
+			cat /etc/apt/sources.list.d/20_ucs-online-component.list
+			univention-install --yes ucs-school-umc-installer
+			upgrade_to_latest_errata
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
