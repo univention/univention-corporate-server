@@ -199,7 +199,7 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						During the update of DNS servers having <package>univention-bind</package> installed the &ucsUCR; settings <envar>nameserver<replaceable>123</replaceable></envar> and <envar>dns/forwarder<replaceable>123</replaceable></envar> are checked and fixed automatically.
-						This is done by running <command>/usr/share/univention-server/univention-fix-ucr-dns</command> once (<u:bug>43217</u:bug>).
+						This is done by running <command>/usr/share/univention-server/univention-fix-ucr-dns</command> once (<u:bug>43217</u:bug>, <u:bug>44208</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						The legacy System V init scripts <filename>univention-bind</filename> and <filename>univention-bind-proxy</filename> have been removed.
