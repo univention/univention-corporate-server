@@ -1,3 +1,9 @@
+univention-apache (9.0.5-7) unstable; urgency=medium
+
+  * Bug #44146: Correct path of moved conffiles in 000-default.d
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 09:24:51 +0200
+
 univention-apache (9.0.5-6) unstable; urgency=medium
 
   * Bug #44146: remove dead symlinks on upgrade to UCS 4.2
