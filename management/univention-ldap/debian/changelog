@@ -1,3 +1,10 @@
+univention-ldap (13.0.7-5) unstable; urgency=medium
+
+  * Bug #43520: Remove incorrect ACL dependencies from univention-ldap-server
+    (in fact, univention-server-* have these dependencies)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 15:22:22 +0200
+
 univention-ldap (13.0.7-4) unstable; urgency=medium
 
   * Bug #43520: Make ACLs depend on univention-ldap-server instead
