@@ -298,10 +298,14 @@ download_system_setup_packages ()
 		packages="server-master server-backup server-slave server-member basesystem"
 
 		# ad member mode
-		packages="$packages ad-connector samba welcome-screen"
+		packages="$packages ad-connector samba"
+
+		# welcome-screen + dependencies for all roles
+		# libgif4 is removed upon uninstalling X, so put it in package cache
+		packages="$packages welcome-screen libgif4"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc"
+			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc self-service-master"
 		fi
 
 		for package in $packages; do
