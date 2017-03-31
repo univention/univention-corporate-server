@@ -1,3 +1,10 @@
+univention-updater (12.0.9-1) unstable; urgency=medium
+
+  * postup.sh: fix call of univention-fix-ucr-dns on member server
+    (Bug #44208)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Mar 2017 22:01:54 +0200
+
 univention-updater (12.0.8-1) unstable; urgency=medium
 
   * Bug #43520: fix a bug where the log view didn't show any content because
