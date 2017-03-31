@@ -122,6 +122,7 @@ upgrade_to_latest_test_errata () {
 
 upgrade_to_testing () {
 
+	ucr set update42/skip/updater/check=yes
 	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest "$@"
 }
