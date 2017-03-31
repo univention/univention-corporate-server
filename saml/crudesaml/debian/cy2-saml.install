@@ -1,2 +1,2 @@
-usr/lib/*/sasl2/libsaml.so.*
+usr/lib/*/sasl2/libsaml.so*
 usr/share/man/man?/cy2_saml.*
