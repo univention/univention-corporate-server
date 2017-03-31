@@ -32,6 +32,7 @@
 
 if [ -d /var/cache/univention-printserver ]; then
 	for file in /var/cache/univention-printserver/*.sh; do
+		[ -x "$file" ] || continue
 		echo "execute $file"
 		${file}
 		if [ $? = 0 ]; then
