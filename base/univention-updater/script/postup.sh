@@ -231,6 +231,16 @@ changes = dict((id, (None, None)) for id in ids)
 create_portal_entries.handler(ucr_instance(), changes)
 ' >>"$UPDATER_LOG" 2>&1
 
+# Bug #44146: fix apache sites
+# add .conf suffix (we have some unpackaged files from SDB articles)
+for file in /etc/apache2/ucs-sites.conf.d/*; do
+	if [ "$file" = "${file%.conf}" ] && ! dpkg -S "$file" > /dev/null 2>&1; then
+		mv "$file" "${file}.conf" >>"$UPDATER_LOG" 2>&1
+	fi
+done
+# remove broken symlinks e.g. univention-management-console, univention-saml
+find /etc/apache2/sites-enabled/ -xtype l -delete >>"$UPDATER_LOG" 2>&1
+
 echo "
 
 
