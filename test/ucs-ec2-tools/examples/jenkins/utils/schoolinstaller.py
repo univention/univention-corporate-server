@@ -158,4 +158,8 @@ if not result:
 	print 'output: %s' % result
 	sys.exit(1)
 
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=42305
+print 'UMC will be restarted on the system. Waiting for 20 seconds.'
+time.sleep(20)
+
 sys.exit(0)
