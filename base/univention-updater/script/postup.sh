@@ -60,6 +60,11 @@ is_installed ()
 	test "$state" = "install"
 	return $?
 }
+is_deinstalled() {
+	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	test "$state" = "deinstall"
+	return $?
+}
 
 echo -n "Running postup.sh script:"
 echo >> "$UPDATER_LOG"
@@ -102,6 +107,13 @@ fi
 if is_installed firefox-de; then
 	install firefox-esr-l10n-de
 	dpkg -P firefox-de >>"$UPDATER_LOG" 2>&1
+fi
+
+# after update to apache 2.4 (UCS 4.2), old apache 2.2 config files
+# can be purged as they conflict with new naming schema (package has
+# already been removed)
+if is_deinstalled apache2.2-common; then
+	dpkg -P apache2.2-common >>"$UPDATER_LOG" 2>&1
 fi
 
 # Update to UCS 4.2 autoremove
