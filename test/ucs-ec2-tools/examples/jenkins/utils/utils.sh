@@ -359,10 +359,8 @@ install_ucsschool ()
 				"$component"=enabled
 			echo "install_ucsschool - DEBUG1"
 			# Ensure ucsschool is a registered app
-			univention-app install ucsschool
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
-			univention-install --yes ucs-school-umc-installer
-			upgrade_to_latest_errata
+			univention-app install --noninteractive ucsschool
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
