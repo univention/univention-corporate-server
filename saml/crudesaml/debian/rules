@@ -1,8 +1,23 @@
 #!/usr/bin/make -f
 
+TAR := crudesaml-1.5.tar.gz
+export DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+export DH_VERBOSE=1
+
+override_dh_auto_clean:
+	$(RM) -r src
+	install -d src
+	tar -x -f $(TAR) -C src --strip-components 1
+	cd src && QUILT_PATCHES=$(CURDIR)/patches quilt push -a
+	dh_auto_clean
+
+override_dh_auto_configure:
+	cd src && autoreconf --install --force
+	dh_auto_configure -- --with-pamlibdir=/lib/$(DEB_HOST_MULTIARCH)/security/
+
 override_dh_strip:
 	dh_strip -p pam-saml --dbg-package=pam-saml-dbg
 	dh_strip -p cy2-saml --dbg-package=cy2-saml-dbg
 
 %:
-	dh $@
+	dh $@ --sourcedirectory=src

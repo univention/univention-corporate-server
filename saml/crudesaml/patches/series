@@ -1,0 +1,10 @@
+01fix_destdir.patch
+02fix_manpage_typos.patch
+03_fix_information_leak_and_missing_break.patch
+04_reduce_segfault_risk.patch
+05_no-pam-versioning.patch
+06_strictness-foreign.patch
+07_fix-pam-dir.patch
+08_hide-symbols.patch
+09_pkgconfig.patch
+10_fix-varargs.patch

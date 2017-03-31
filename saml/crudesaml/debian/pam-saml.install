@@ -1,2 +1,2 @@
-lib/security
-usr/share/man/man*/pam_saml.*
+lib/*/security/pam_saml.so
+usr/share/man/man?/pam_saml.*

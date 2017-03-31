@@ -1,3 +1,6 @@
+Abort if registration of name-space fails
+Print minimum length instead of current length
+
 diff --git a/pam_saml.c b/pam_saml.c
 --- a/pam_saml.c
 +++ b/pam_saml.c

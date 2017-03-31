@@ -3,22 +3,18 @@ Section: libs
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
+ dh-autoreconf,
+ quilt,
  tar,
- libxml2-dev,
- libxmlsec1-dev,
- libpam-dev,
+ libpam0g-dev,
  libsasl2-dev,
- liblasso-dev,
+ liblasso3-dev,
 Standards-Version: 3.7.2
 
 Package: pam-saml
 Architecture: any
 Depends: ${misc:Depends},
- libxml2,
- libxmlsec1-openssl,
- libxmlsec1,
- xmlsec1,
- liblasso3,
+ ${shlibs:Depends},
 Description: PAM module for SAML authentication
  This package contains a PAM module that performs a crude
  check on a SAML authentication assertion. The assertion signature and date
@@ -33,11 +29,7 @@ Description: PAM module for SAML authentication
 Package: cy2-saml
 Architecture: any
 Depends: ${misc:Depends},
- libxml2,
- libxmlsec1-openssl,
- libxmlsec1,
- xmlsec1,
- liblasso3,
+ ${shlibs:Depends},
 Description: SASL plugin for SAML authentication
  This package contains a SASL plugin that performs a crude
  check on a SAML authentication assertion. The assertion signature and date

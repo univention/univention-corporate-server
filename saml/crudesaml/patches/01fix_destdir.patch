@@ -1,3 +1,6 @@
+$(DESTDIR) is inserted by auto* itself.
+Remove it here as otherwise it is inserted twice.
+
 diff --git a/Makefile.am b/Makefile.am
 index 15f4c2c..b400292 100644
 --- a/Makefile.am

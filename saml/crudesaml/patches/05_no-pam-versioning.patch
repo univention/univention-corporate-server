@@ -1,0 +1,12 @@
+PAM modules don't use SONAME versioning
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -11,7 +11,7 @@ libsaml_la_CFLAGS = -I/usr/include/sasl
+ securitylib_LTLIBRARIES = pam_saml.la
+ pam_saml_la_SOURCES = pam_saml.c saml.c saml.h
+ pam_saml_la_CFLAGS = -DNO_STATIC_MODULES
+-pam_saml_la_LDFLAGS = -lsasl2 -module -version-info 2:0:2
++pam_saml_la_LDFLAGS = -lsasl2 -module -avoid-version -shared
+ 
+ man_MANS = pam_saml.5 cy2_saml.5
+ EXTRA_DIST = $(man_MANS)

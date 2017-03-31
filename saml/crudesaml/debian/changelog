@@ -1,8 +1,8 @@
-crudesaml (2.0.0-1) unstable; urgency=medium
+crudesaml (1.5.0-5) unstable; urgency=high
 
-  * Bug #41963: UCS-4.2 version bump
+  * Bug #44164: Fix SEGV on i386
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:55:56 +0200
+ -- Philipp Hahn <hahn@univention.de>  Fri, 31 Mar 2017 14:01:53 +0200
 
 crudesaml (1.5.0-4) unstable; urgency=medium
 

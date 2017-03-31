@@ -1,0 +1,73 @@
+there is no portable way to pass the arguments of one "varadic function" to
+another. For exactly that reason there exists the v*-functions like vprintf() and
+vsyslog(), which accept a "va_list" argument instead of the variable arguments.
+But libsaml does not provide such a function and only implements the varadic
+functions log() and seterror(). Because of that we use a fixed size buffer
+allocated on the stack to format the string ourself and pass that to the SASL
+functions.
+If the buffer is too small, we switch to dynamic allocation.
+
+Some more background: <http://c-faq.com/varargs/handoff.html>
+
+On amd64 the implementation worked by accident, as the C calling convention
+<https://en.wikipedia.org/wiki/X86_calling_conventions> on x86_64 has more
+registers and uses them to pass arguments around. The saml wrapper functions
+were small enough to not clobber them, so the additional arguments were passed
+correctly there.
+ia32 on the other hand is very register constrained and arguments are passed on
+stack much more often and/or the registers are clobbered. As such all other
+arguments expect the explicitly passed format argument and its first argument
+were lost. Further more the arguments was always considered to be a "char *",
+even when arguments were "%ld".
+--- a/cy2_saml.c
++++ b/cy2_saml.c
+@@ -70,6 +70,8 @@ void
+ saml_log(void *params, int pri, const char *fmt, ...)
+ {      
+ 	sasl_server_params_t *sasl_params;
++	char buf[1024], *tmp;
++	int n;
+ 	va_list ap;
+ 
+ 	sasl_params = (sasl_server_params_t *)params;
+@@ -86,8 +88,14 @@ saml_log(void *params, int pri, const ch
+ 	}
+ 
+ 	va_start(ap, fmt);
+-	sasl_params->utils->log(sasl_params->utils->conn, 
+-				pri, fmt, va_arg(ap, char *));
++	n = vsnprintf(buf, sizeof buf, fmt, ap);
++	if ((n >= sizeof buf) && (tmp = sasl_params->utils->malloc(n + 1))) {
++		vsnprintf(tmp, n + 1, fmt, ap);
++		sasl_params->utils->log(sasl_params->utils->conn, pri, "%s", tmp);
++		sasl_params->utils->free(tmp);
++	} else {
++		sasl_params->utils->log(sasl_params->utils->conn, pri, "%s", buf);
++	}
+ 	va_end(ap);
+ }      
+ 
+@@ -95,13 +103,21 @@ void
+ saml_error(void *params, int pri, const char *fmt, ...)
+ {      
+ 	sasl_server_params_t *sasl_params;
++	char buf[1024], *tmp;
++	int n;
+ 	va_list ap;
+ 
+ 	sasl_params = (sasl_server_params_t *)params;
+ 
+ 	va_start(ap, fmt);
+-	sasl_params->utils->seterror(sasl_params->utils->conn, 
+-				     0, fmt, va_arg(ap, char *));
++	n = vsnprintf(buf, sizeof buf, fmt, ap);
++	if ((n >= sizeof buf) && (tmp = sasl_params->utils->malloc(n + 1))) {
++		vsnprintf(tmp, n + 1, fmt, ap);
++		sasl_params->utils->seterror(sasl_params->utils->conn, 0, "%s", tmp);
++		sasl_params->utils->free(tmp);
++	} else {
++		sasl_params->utils->seterror(sasl_params->utils->conn, 0, "%s", buf);
++	}
+ 	va_end(ap);
+ }      
+ 

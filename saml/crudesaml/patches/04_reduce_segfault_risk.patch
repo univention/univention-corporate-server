@@ -1,3 +1,5 @@
+Allow registration of multiple providers and only abort, if none succeeded.
+
 diff --git a/pam_saml.c b/pam_saml.c
 index a91ddb9..a2025bd 100644
 --- a/pam_saml.c
