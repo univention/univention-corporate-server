@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-3) unstable; urgency=medium
+
+  * Bug #43520: Adjust dependencies for LDAP schema data and ACLs
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 11:38:32 +0200
+
 univention-ldap (13.0.7-2) unstable; urgency=medium
 
   * Bug #44118: invoke-rc.d doesn't work with the one-shot samba.service
