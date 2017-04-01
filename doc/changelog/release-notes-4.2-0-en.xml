@@ -54,6 +54,7 @@
 				UCS 4.2 is based on Debian GNU/Linux 8 (Jessie). More than 16,000 source packages have been updated and
 				adapted to the needs of UCS administrators. Selected core components, e.g. Linux Kernel (4.9), Docker
 				(1.12) or QEMU (2.8) are more recent in UCS compared to Debian GNU/Linux 8.
+            </para></listitem>
             <listitem><para>
 				From UCS 4.2, the management system offers a central portal for quick access to all applications in the
 				environment, as well as the management of the various UCS instances. This allows users to more easily
@@ -69,7 +70,6 @@
 				replication, the Active Directory compatibility, the file services and the printer handling. In
 				addition, the performance has been improved in environments with many users.
             </para></listitem>
-			<listitem><para>
 		</itemizedlist>
 	</chapter>
 
