@@ -114,6 +114,7 @@
 			</section>
 		</section>
 
+<!--
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
 			<itemizedlist>
@@ -121,6 +122,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:basis:other">
 			<title>Other system services</title>
@@ -424,6 +426,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:umc:reports">
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
@@ -431,7 +434,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
+<!--
 		<section id="changelog:umc:computers">
 			<title>Computers module</title>
 			<itemizedlist>
@@ -439,6 +444,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:umc:dns">
 			<title>DNS module</title>
@@ -488,6 +494,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:umc:license">
 			<title>License module</title>
 			<itemizedlist>
@@ -511,6 +518,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:umc:policy">
 			<title>Policies</title>
@@ -521,6 +529,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:umc:printer">
 			<title>Printers module</title>
 			<itemizedlist>
@@ -536,6 +545,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
@@ -546,6 +556,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:umc:ucr">
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
@@ -577,6 +588,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 	</section>
 
 
@@ -605,6 +617,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 
+<!--
 		<section id="changelog:deployment:pkgdb">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -620,6 +633,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 	</section>
 
 
@@ -672,6 +686,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -703,6 +718,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:service:kerberos">
 			<title>Kerberos</title>
@@ -751,6 +767,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -758,6 +775,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -845,6 +863,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
@@ -852,6 +871,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 	</section>
 
 
@@ -913,6 +933,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
@@ -920,6 +941,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
@@ -936,6 +958,7 @@
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
@@ -943,6 +966,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 	</section>
 
 
