@@ -65,7 +65,7 @@
 			<listitem><para>
 				Das Design und die Benutzerführung wurde mit UCS 4.2 weiter verbessert. So bietet bspw. der <application>Passwort Self
 				Service</application> eine vereinfachte Nutzung. Das Managementsystem verwendet nun per Default SAML (Web
-				Single-Sign-On), sofern die Voraussetzungen, wie eine funktionierende Namensauflösung, gegeben sind.
+				Single Sign-on), sofern die Voraussetzungen, wie eine funktionierende Namensauflösung, gegeben sind.
 			</para></listitem>
 			<listitem><para>
 				Samba wurde auf Version 4.6.1 aktualisiert. Dies umfasst diverse Verbesserungen, u.a. im Bereich der

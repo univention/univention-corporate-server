@@ -62,7 +62,7 @@
             </para></listitem>
             <listitem><para>
 				The design and user experience has been further improved with UCS 4.2. For example, the password self
-				service provides a simplified use. The management system now uses SAML (Web Single-Sign-On) by default,
+				service provides a simplified use. The management system now uses SAML (Web Single sign-on) by default,
 				provided that the prerequisites, such as a working name resolution, are given.
             </para></listitem>
             <listitem><para>
