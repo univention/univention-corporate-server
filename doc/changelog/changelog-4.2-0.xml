@@ -662,7 +662,7 @@
 					to the UCS 4.2 web structure (<u:bug>42267</u:bug>, <u:bug>44111</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The self service links for the password reset and password change have been cosolidated into one portal entry.
+					The self service links for the password reset and password change have been consolidated into one portal entry.
 					If a password reset entry should be added to the portal, it can be created through the LDAP browse module
 					(<u:bug>44102</u:bug>).
 				</simpara></listitem>
