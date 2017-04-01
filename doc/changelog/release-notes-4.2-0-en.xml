@@ -44,12 +44,32 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.2
+			With Univention Corporate Server 4.2, the second minor release of Univention Corporate Server (UCS) is now
+			available. It provides several substantial feature improvements and extensions, new properties as well as
+			various improvements and bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-			</para></listitem>
+				UCS 4.2 is based on Debian GNU/Linux 8 (Jessie). More than 16,000 source packages have been updated and
+				adapted to the needs of UCS administrators. Selected core components, e.g. Linux Kernel (4.9), Docker
+				(1.12) or QEMU (2.8) are more recent in UCS compared to Debian GNU/Linux 8.
+            <listitem><para>
+				From UCS 4.2, the management system offers a central portal for quick access to all applications in the
+				environment, as well as the management of the various UCS instances. This allows users to more easily
+				access their applications. The portal is configurable and can be adapted to individual needs.
+            </para></listitem>
+            <listitem><para>
+				The design and user experience has been further improved with UCS 4.2. For example, the password self
+				service provides a simplified use. The management system now uses SAML (Web Single-Sign-On) by default,
+				provided that the prerequisites, such as a working name resolution, are given.
+            </para></listitem>
+            <listitem><para>
+				Samba has been updated to version 4.6.1. This includes various improvements, among other things the DRS
+				replication, the Active Directory compatibility, the file services and the printer handling. In
+				addition, the performance has been improved in environments with many users.
+            </para></listitem>
+			<listitem><para>
 		</itemizedlist>
 	</chapter>
 
