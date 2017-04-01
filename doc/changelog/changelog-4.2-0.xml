@@ -740,7 +740,7 @@
 			<title>Proxy services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Squid proxy server was upgraded to version 3.4.8 and its configuration adapted (<u:bug>43580</u:bug>).
+					The Squid proxy server was upgraded to version 3.4.8 and its configuration adapted (<u:bug>43580</u:bug>, <u:bug>43717</u:bug>, <u:bug>44210</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The Squid proxy server now uses STARTTLS to encrypt all LDAP connections (<u:bug>43676</u:bug>).
