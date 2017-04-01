@@ -170,6 +170,7 @@
 				</itemizedlist>
 			</section>
 
+<!--
 			<section id="changelog:domain:openldap:schema">
 				<title>LDAP schema changes</title>
 				<itemizedlist>
@@ -177,6 +178,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+-->
 
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
