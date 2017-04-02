@@ -1,3 +1,11 @@
+univention-bind (11.0.1-1) unstable; urgency=medium
+
+  * Execute univention-fix-ucr-dns in univention-bind postinst only if
+    the system is joined. Otherwise the local unkonfigured DNS server is
+    configures as nameserver (Bug #44154)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 02 Apr 2017 13:10:13 +0200
+
 univention-bind (11.0.0-18) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

@@ -87,6 +87,7 @@ if [ "$1" = "configure" ]; then
 		invoke-rc.d bind9 start
 	fi
 	dpkg --compare-versions "$2" lt 11.0.0-11 &&
+		[ -e /var/univention-join/joined ] &&
 		[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
 		/usr/share/univention-server/univention-fix-ucr-dns ||
 		: # better safe than sorry
