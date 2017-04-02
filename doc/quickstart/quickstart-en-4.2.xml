@@ -124,30 +124,37 @@
 </chapter>
 
 <chapter id="quickstart:administration">
-  <title>Administration (Univention Management Console)</title>
+  <title>UCS web interface</title>
 
-	<para>
-		The installed UCS system is configured via the web-based &ucsUMC; (reachable at <uri>https://<replaceable>server_ip</replaceable></uri> or
-		<uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended) which can be reached under <guimenu>System and domain settings</guimenu>.
-	  The login to the &ucsUMC; is performed as the  <systemitem class="username">Administrator</systemitem> with the
-	  password specified for the user <systemitem class="username">root</systemitem> during the installation.
-	</para>
+  <para>
+	The web interface of a installed UCS system is diretcly available via its IP address
+	(<uri>https://<replaceable>server_ip</replaceable></uri> or <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended).
+	By default, a portal page is configured on the &ucsMaster; on which all applications are listed that are installed in the domain.
+	For all other system roles, the startsite contains an overview of all locally installed applications.
+	(View as well as the partitioning of entries can be customized in a very flexible manner, see also <biblioref linkend="ucs-portal"/>.)
+  </para>
 
-	<para>
-	  &ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
-	  There are different modules available on the UCS system depending on the installation and
-	  system role selected. The LDAP directory is a central component of the UCS domain. This is
-	  where domain information such as the users, groups and computer accounts is saved.
-	  Depending on the settings, this information is replicated to the other domain controllers
-	  in the domain either completely or selectively. The UMC modules, which edit the LDAP
-	  directory directly, can also be controlled using a command line interface: the &ucsUDM;
-	  <biblioref linkend="ucs-udm"/>.
-	</para>
+  <para>
+	On each start site of a UCS system in the section <guimenu>Administration</guimenu>, there is a link <guimenu>System and domain settings</guimenu> for the &ucsUMC; (UMC) instance of the local system.
+	&ucsUMC; is the central tool for web-based administration of a UCS domain.
+	There are different modules available on the UCS system depending on the installation and system role selected.
+	The login to &ucsUMC; is performed as user <systemitem class="username">Administrator</systemitem> with the
+	password specified for the user <systemitem class="username">root</systemitem> during the installation.
+  </para>
 
-	<figure id="quick-umclogin">
-	  <title>Modules in the UMC</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations42/umc-modules-en.png"/>
-	</figure>
+  <para>
+	For administrating UCS, the LDAP directory is the central component of a UCS domain.
+	In the LDAP, domain wide information such as the users, groups and computer accounts is saved.
+	Depending on the settings, this information is replicated to the other domain controllers in the domain either completely or selectively.
+	The UMC modules which edit the LDAP directory directly can be accessed only on the &ucsMaster; via &ucsUMC;.
+	Furthermore, they can also be controlled using the command line interface &ucsUDM;
+	<biblioref linkend="ucs-udm"/>.
+  </para>
+
+  <figure id="quick-umclogin">
+	<title>Modules in the UMC</title>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/umc-modules-en.png"/>
+  </figure>
 
 </chapter>
 
