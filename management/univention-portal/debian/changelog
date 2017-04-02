@@ -1,3 +1,11 @@
+univention-portal (1.0.12-1) unstable; urgency=medium
+
+  * Rename join script from 35univention-portal.inst to 33univention-
+    portal.inst otherwise the self service portal entry can't be created
+    (Bug #44212)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 02 Apr 2017 20:22:53 +0200
+
 univention-portal (1.0.11-3) unstable; urgency=medium
 
   * Bug #44070: Fix representation of other image types than SVG
