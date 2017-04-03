@@ -46,4 +46,4 @@ override_dh_auto_test:
 	dh_auto_test
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with python_support --with systemd
