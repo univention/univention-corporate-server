@@ -127,7 +127,7 @@
   <title>UCS web interface</title>
 
   <para>
-	The web interface of an installed UCS system is diretcly available via its IP address
+	The web interface of an installed UCS system is directly available via its IP address
 	(<uri>https://<replaceable>server_ip</replaceable></uri> or <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended).
 	By default, a portal page is configured on the &ucsMaster; where all applications are listed that are installed in the domain.
 	For all other system roles, the startsite consists of an overview of all locally installed applications.
@@ -135,12 +135,12 @@
   </para>
 
   <figure id="quick-ucs-portal">
-	<title>Illustration of the portal page on the &ucsMaster; with all domain wide available applications.</title>
+	<title>Illustration of the portal page on the &ucsMaster; with all domain wide available applications</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/ucs-portal-en.png"/>
   </figure>
 
   <para>
-	On each start site of a UCS system, there is an entry <guimenu>System and domain settings</guimenu> in the section <guimenu>Administration</guimenu> (or <guimenu>System settings</guimenu>, respectively) that points to the &ucsUMC; (UMC) instance of the local system.
+	On each start site of a UCS system, there is an entry <guimenu>System and domain settings</guimenu> in the section <guimenu>Administration</guimenu> (or <guimenu>System settings</guimenu>, respectively) that points to the &ucsUMC; (UMC) of the local system.
 	&ucsUMC; is the central tool for web-based administration of a UCS domain.
 	There are different modules available on the UCS system depending on the installation and system role selected.
 	The login to &ucsUMC; is performed as user <systemitem class="username">Administrator</systemitem> with the

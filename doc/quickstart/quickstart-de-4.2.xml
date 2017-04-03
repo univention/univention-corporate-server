@@ -142,8 +142,7 @@
   </figure>
 
   <para>
-	Auf jeder Startseite eines UCS-Systems befindet sich im Bereich <guimenu>Verwaltung</guimenu> ein Eintrag <guimenu>System- und Domäneneinstellungen</guimenu> (bzw. <guimenu>Systemeinstellungen</guimenu>), der auf die &ucsUMC; (UMC) Instanz des lokalen Systems verweist
-	(als Verweis ).
+	Auf jeder Startseite eines UCS-Systems befindet sich im Bereich <guimenu>Verwaltung</guimenu> ein Eintrag <guimenu>System- und Domäneneinstellungen</guimenu> (bzw. <guimenu>Systemeinstellungen</guimenu>), der auf die &ucsUMC; (UMC) des lokalen Systems verweist.
 	&ucsUMC; ist das zentrale Werkzeug zur webbasierten Administration einer UCS-Domäne.
 	Je nach Installations- und Systemrollenauswahl sind auf einem UCS-System unterschiedliche Module verfügbar.
 	Die Anmeldung erfolgt als Benutzer <systemitem class="username">Administrator</systemitem> mit dem während der
