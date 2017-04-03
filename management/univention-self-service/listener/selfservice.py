@@ -32,10 +32,7 @@
 
 __package__ = ''  # workaround for PEP 366
 import listener
-import univention.debug as ud
 import univention.config_registry
-import os
-import subprocess
 
 name = 'selfservice'
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
@@ -44,8 +41,9 @@ attributes = []
 
 UCRV = 'umc/self-service/passwordreset/email/webserver_address'
 
+
 def handler(dn, new, old):
-	if new and not old:
+	if new:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 		if not ucr.get(UCRV):
