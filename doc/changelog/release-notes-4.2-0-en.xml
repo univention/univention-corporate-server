@@ -57,17 +57,17 @@
             </para></listitem>
             <listitem><para>
 				From UCS 4.2, the management system offers a central portal for quick access to all applications in the
-				environment, as well as the management of the various UCS instances. This allows users to more easily
-				access their applications. The portal is configurable and can be adapted to individual needs.
+				environment, as well as the management of the various UCS instances. This allows users to
+				access their applications more easily. The portal is configurable and can be adapted to individual needs.
             </para></listitem>
             <listitem><para>
-				The design and user experience has been further improved with UCS 4.2. For example, the password self
-				service provides a simplified use. The management system now uses SAML (Web Single sign-on) by default,
-				provided that the prerequisites, such as a working name resolution, are given.
+				The design and user experience has been improved further with UCS 4.2. For example, the password self
+				service provides a simplified usage. The management system now uses SAML (Web Single Sign-On) by default,
+				provided that the prerequisites, such as working name resolution, are given.
             </para></listitem>
             <listitem><para>
-				Samba has been updated to version 4.6.1. This includes various improvements, among other things the DRS
-				replication, the Active Directory compatibility, the file services and the printer handling. In
+				Samba has been updated to version 4.6.1. This includes various improvements in the areas of DRS
+				replication, Active Directory compatibility, file services and printer handling, among other things. In
 				addition, the performance has been improved in environments with many users.
             </para></listitem>
 		</itemizedlist>
