@@ -40,7 +40,7 @@ univention-config-registry set "umc/web/hooks/univention-self-service?passwordre
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
 	# Update to UCS 4.2
 	rm -f /etc/self-service-ldap.secret
-	deluser --system --remove-home --remove-all-files self-service
+	deluser --system --remove-home self-service
 	keys=$(ucr --keys-only search --key 'ucs/web/overview/entries/service/(passwordreset|passwordchange)/.*')
 	if [ -n "$keys" ]; then
 		univention-config-registry unset $keys
