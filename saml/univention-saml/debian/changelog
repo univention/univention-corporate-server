@@ -1,3 +1,9 @@
+univention-saml (4.0.14-4) unstable; urgency=low
+
+  * Bug #44216: start and stop only own memcache instance
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 03 Apr 2017 09:42:29 +0200
+
 univention-saml (4.0.14-3) unstable; urgency=medium
 
   * Bug #44146: revert dead code

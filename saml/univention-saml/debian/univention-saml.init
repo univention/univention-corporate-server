@@ -1,8 +1,8 @@
 #!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          univention-saml
-# Required-Start:    $network $remote_fs memcached stunnel4
-# Required-Stop:     $network $remote_fs memcached stunnel4
+# Required-Start:    $network $remote_fs stunnel4
+# Required-Stop:     $network $remote_fs stunnel4
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Univention Security Assertion Markup Language integration
@@ -45,7 +45,7 @@ case "$1" in
 		# TODO: runit
 		log_daemon_msg "Starting $DESC" "$NAME"
 		install -m 770 -o samlcgi -g root -d /var/run/univention-saml
-		/etc/init.d/memcached start
+		/etc/init.d/memcached start univention_saml
 		/etc/init.d/stunnel4 start
 		sleep 1
 		chmod 0600 /var/run/univention-saml/*.socket
@@ -54,7 +54,7 @@ case "$1" in
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		/etc/init.d/memcached stop
+		/etc/init.d/memcached stop univention_saml
 		/etc/init.d/stunnel4 stop
 		rm -f -- /var/run/univention-saml/*.socket
 		log_end_msg 0
