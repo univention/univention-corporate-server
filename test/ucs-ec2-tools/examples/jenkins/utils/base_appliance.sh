@@ -574,6 +574,7 @@ appliance_preinstall_non_univention_packages ()
 			gettext
 			patch
 			libgif4
+			libegl1-mesa
 		"
 	for p in $packages; do
 		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
