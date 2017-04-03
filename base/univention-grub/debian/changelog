@@ -1,3 +1,9 @@
+univention-grub (10.0.0-2) unstable; urgency=low
+
+  * Bug #44214: Depends directly on correct GRUB EFI package
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 03 Apr 2017 14:26:18 +0200
+
 univention-grub (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
