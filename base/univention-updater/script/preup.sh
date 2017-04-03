@@ -476,18 +476,6 @@ check_qemu () {
 }
 check_qemu
 
-# Bug #43899: master package of self-service changed, install new master
-# package now, or dependencies will be uninstalled
-pck_is_installed () {
-	dpkg-query -s "$1" &> /dev/null
-}
-self_service_upgrade () {
-	if [ "$server_role" = domaincontroller_master ] && pck_is_installed univention-self-service-passwordreset-umc
-	then
-		echo "univention-self-service-master"
-	fi
-}
-
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
 case "$available_locales" in
@@ -503,7 +491,6 @@ fi
 
 # Pre-upgrade
 preups=""
-preups="$preups $(self_service_upgrade)"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then

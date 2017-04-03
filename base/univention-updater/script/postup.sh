@@ -108,6 +108,12 @@ if is_installed firefox-de; then
 	install firefox-esr-l10n-de
 	dpkg -P firefox-de >>"$UPDATER_LOG" 2>&1
 fi
+# Bug #43899: master package of self-service changed, install new master
+# package now, or dependencies will be uninstalled
+if [ "$server_role" = "domaincontroller_master" ] && is_installed univention-self-service-passwordreset-umc
+then
+	install univention-self-service-master
+fi
 
 # Update to UCS 4.2 autoremove
 if ! is_ucr_true update42/skip/autoremove; then
