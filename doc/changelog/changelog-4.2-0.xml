@@ -13,7 +13,7 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					The Debian basis has been updated from Debian 7 (Wheezy) to Debian 8 (Jessie) (<u:bug>43560</u:bug>, <u:bug>41930</u:bug>, <u:bug>41929</u:bug>).
+					The Debian basis has been updated from Debian 7 (Wheezy) to Debian 8 (Jessie) (<u:bug>43560</u:bug>, <u:bug>41930</u:bug>, <u:bug>41929</u:bug>, <u:bug>44146</u:bug>).
 					This means, among other things, the following upgrades:
 				</para>
 				<itemizedlist>
