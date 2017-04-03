@@ -302,7 +302,7 @@ download_system_setup_packages ()
 
 		# welcome-screen + dependencies for all roles
 		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages="$packages welcome-screen libgif4"
+		packages="$packages welcome-screen"
 
 		if ! app_appliance_is_software_blacklisted $app; then
 			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc self-service-master"
@@ -573,6 +573,7 @@ appliance_preinstall_non_univention_packages ()
 			heimdal-servers
 			gettext
 			patch
+			libgif4
 		"
 	for p in $packages; do
 		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
