@@ -348,6 +348,11 @@
 					Additionally it uses an adjusted <application>seccomp</application> profile, which allows the system call <literal>name_to_handle_at</literal>, which
 					avoids granting <literal>SYS_ADMIN</literal> capabilities to containers (<u:bug>43455</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The command <command>univention-app shell</command> no longer implicitly sets the docker exec options
+					<command>-it</command>. Instead, <command>univention-app shell</command> provides these options as 
+					parameters for interactive usage (<u:bug>44062</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
