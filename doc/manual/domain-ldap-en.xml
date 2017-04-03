@@ -1259,7 +1259,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<figure id="domain:saml:samllogin">
 		<title>The <foreignphrase>single sign-on</foreignphrase> login page</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_SAML_login_page_en.png"/>
+		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_login_en.png"/>
 	</figure>
 
 	<para>
@@ -1281,9 +1281,9 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Login via <foreignphrase>single sign-on</foreignphrase></title>
 	<para>
-		The <foreignphrase>single sign-on</foreignphrase> for &ucsUMC; is enabled by default and can be accessed at the top right of the login page.
-		By clicking the link, the UCS identity provider login page will be shown.
-		Here, the same login credentials as on the standard &ucsUMC; login page must be provided.
+		The <foreignphrase>single sign-on</foreignphrase> is the default login for &ucsUMC;, as long as <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
+		To login the domain credentials must be provided.
+		For the login directly at the UCS system (i.e., without <foreignphrase>single sign-on</foreignphrase>), follow the link <guimenu>Login without Single Sign On</guimenu>.
 	</para>
 	<para>
 		Other web services will redirect to the UCS identity provider login page in a similar fashion in order to carry out a <foreignphrase>single sign-on</foreignphrase>.
@@ -1295,10 +1295,6 @@ univention-directory-listener-ctrl resync cups-printers
 		This saves an extra visit at the external web service which redirects to the authentication site.
 		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
 	</para>
-	<figure id="domain:saml:umclogin">
-		<title>The <foreignphrase>single sign-on</foreignphrase> link on the &ucsUMC; login page</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_umc_login_page_en.png"/>
-	</figure>
 	</section>
 
 	<section id="domain:saml:additionalserviceprovider">

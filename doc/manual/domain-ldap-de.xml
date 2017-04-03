@@ -1298,7 +1298,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<figure id="domain:saml:samllogin">
 		<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_SAML_login_page.png"/>
+		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_login_de.png"/>
 	</figure>
 	<para>
 		Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration von <package>simplesamlphp</package> bereitgestellt.
@@ -1319,9 +1319,9 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> für &ucsUMC; ist standardmäßig aktiviert und kann auf der <wordasword>UMC-Anmeldeseite</wordasword> oben rechts initiiert werden.
-		Nach einem Klick auf den Link erscheint die Anmeldemaske des UCS Identity Providers.
-		Hier werden die gleichen Anmeldedaten wie beim normalen &ucsUMC; Login verwendet.
+		Der <foreignphrase>Single Sign-On</foreignphrase> ist der Standard-Login für &ucsUMC;, sofern <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreicht werden kann.
+		Zum Login werden die Anmeldedaten des Domänenkontos verwendet.
+		Für den Login direkt am UCS-System (also ohne <foreignphrase>Single Sign-On</foreignphrase>) gelangt man über den Link <guimenu>Ohne Single Sign-On anmelden</guimenu>.
 	</para>
 	<para>
 		Andere Webdienste leiten ebenfalls auf die Anmeldeseite des UCS Identity Providers weiter, wenn ein <foreignphrase>Single Sign-On</foreignphrase> durchgeführt wird.
@@ -1333,10 +1333,6 @@ univention-directory-listener-ctrl resync cups-printers
 		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
 		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
 	</para>
-	<figure id="domain:saml:umclogin">
-		<title>Der <foreignphrase>Single Sign-On</foreignphrase> Link auf der &ucsUMC; Anmeldeseite</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_umc_login_page.png"/>
-	</figure>
 	</section>
 
 	<section id="domain:saml:additionalserviceprovider">
