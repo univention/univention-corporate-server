@@ -134,6 +134,11 @@
 	(View as well as the partitioning of entries can be customized in a very flexible manner, see also <biblioref linkend="ucs-portal"/>.)
   </para>
 
+  <figure id="quick-ucs-portal">
+	<title>Illustration of the portal page on the &ucsMaster; with all domain wide available applications.</title>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/ucs-portal-en.png"/>
+  </figure>
+
   <para>
 	On each start site of a UCS system, there is an entry <guimenu>System and domain settings</guimenu> in the section <guimenu>Administration</guimenu> (or <guimenu>System settings</guimenu>, respectively) that points to the &ucsUMC; (UMC) instance of the local system.
 	&ucsUMC; is the central tool for web-based administration of a UCS domain.
@@ -151,7 +156,7 @@
 	<biblioref linkend="ucs-udm"/>.
   </para>
 
-  <figure id="quick-umclogin">
+  <figure id="quick-umc-overview">
 	<title>Modules in the UMC</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/umc-modules-en.png"/>
   </figure>

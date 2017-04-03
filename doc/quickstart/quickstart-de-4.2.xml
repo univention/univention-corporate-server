@@ -136,6 +136,11 @@
 	(Darstellung und genaue Aufteilung der Einträge können nachträglich sehr flexibel angepasst werden, siehe auch <biblioref linkend="ucs-portal"/>.)
   </para>
 
+  <figure id="quick-ucs-portal">
+	<title>Ansicht der Portalseite des &ucsMaster; mit den in der Domäne verfügbaren Applikationen</title>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/ucs-portal-de.png"/>
+  </figure>
+
   <para>
 	Auf jeder Startseite eines UCS-Systems befindet sich im Bereich <guimenu>Verwaltung</guimenu> ein Eintrag <guimenu>System- und Domäneneinstellungen</guimenu> (bzw. <guimenu>Systemeinstellungen</guimenu>), der auf die &ucsUMC; (UMC) Instanz des lokalen Systems verweist
 	(als Verweis ).
@@ -153,7 +158,7 @@
 	Sie lassen sich darüber hinause auch mit dem Kommandozeilen-Interface &ucsUDM; bedienen <biblioref linkend="ucs-udm"/>.
   </para>
 
-  <figure id="quick-umclogin">
+  <figure id="quick-umc-overview">
 	<title>Module in der UMC</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/umc-modules-de.png"/>
   </figure>
