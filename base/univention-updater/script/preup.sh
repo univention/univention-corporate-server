@@ -397,6 +397,18 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
+# Bug 44281, block update for univention App appliances until appliance
+# package has been updated...
+check_app_appliance () {
+	if dpkg -l univention-app-appliance >/dev/null 2>&1
+	then
+		echo "ERROR: The UCS 4.2 update is not yet available for UCS app appliances."
+		echo "       Please try to update your system to UCS 4.2 at a later point."
+		exit 1
+	fi
+}
+check_app_appliance
+
 # Bug 41868, fix old computer objects, can be removed after 4.2-0
 if ! is_ucr_true update42/skip/computerobjectcheck; then
 	if [ "domaincontroller_master" = "$server_role" -a -e /etc/ldap.secret -a -e /var/univention-join/joined ]; then
