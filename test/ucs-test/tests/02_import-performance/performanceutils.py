@@ -1,5 +1,9 @@
 import subprocess
 import time
+import re
+import json
+import os.path
+from ucsschool.importer.mass_import import user_import
 
 import sqlite3
 
@@ -13,10 +17,25 @@ CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
 CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL
 
+lo = None
+
 
 def import_users(file):
 	subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-import %s' % file, shell=True)
 	return 0
+
+
+def import_users_new(args):
+	print('*** import_users_new({!r})'.format(args))
+	subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-testuser-import {}'.format(args), shell=True)
+	return 0
+
+
+def create_ous(names_of_ous):
+	res = 0
+	for school_name in names_of_ous:
+		res += subprocess.call('/usr/share/ucs-school-import/scripts/create_ou {}'.format(school_name), shell=True)
+	return res
 
 
 def _start_time():
@@ -100,18 +119,50 @@ def reset_passwords(user_dns):
 	return 0
 
 
+def get_user_dn(username):
+	global lo
+	if not lo:
+		lo = univention.uldap.getMachineConnection()
+	dn = lo.searchDn('(&(uid=%s)(objectClass=sambaSamAccount))' % username)
+	return dn[0]
+
+
 def get_user_dn_list(CSV_IMPORT_FILE):
 	user_dns = []
-
-	lo = univention.uldap.getMachineConnection()
 
 	for line in open(CSV_IMPORT_FILE).readlines():
 		if len(user_dns) >= 40:
 			break
 		username = line.split('\t')[1]
-		dn = lo.searchDn('(&(uid=%s)(objectClass=sambaSamAccount))' % username)
-		user_dns.append(dn[0])
+		user_dns.append(get_user_dn(username))
 
+	return user_dns
+
+
+def get_user_dn_list_new(CSV_IMPORT_FILE):
+	# must import ucsschool.importer.utils.shell *after* creating ~/.import_shell_config
+	with open('/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json', 'rb') as fp:
+		config = json.load(fp)
+	config['input']['filename'] = CSV_IMPORT_FILE
+	with open(os.path.expanduser('~/.import_shell_config'), 'wb') as fp:
+		json.dump(config, fp)
+	from ucsschool.importer.utils.shell import logger  # this will setup a complete import system configuration
+	up = user_import.UserImport()
+	imported_users = up.read_input()
+	user_dns = list()
+	for user in imported_users:
+		user.make_username()
+		if re.match(r'.*\d$', user.name):
+			username = user.name[:-1]
+		else:
+			username = user.name
+		try:
+			user_dns.append(get_user_dn(username))
+		except IndexError:
+			# username calculated differently when importing and now, can happen, ignore
+			pass
+		if len(user_dns) >= 40:
+			break
 	return user_dns
 
 
@@ -143,8 +194,9 @@ def execute_timing(description, allowedTime, callback, *args):
 
 
 def count_ldap_users():
-
-	lo = univention.uldap.getMachineConnection()
+	global lo
+	if not lo:
+		lo = univention.uldap.getMachineConnection()
 	res = lo.search('(&(uid=*)(!(uid=*$))(objectClass=sambaSamAccount))', attr=['dn'])
 	print 'INFO: Found %d OpenLDAP users' % len(res)
 
