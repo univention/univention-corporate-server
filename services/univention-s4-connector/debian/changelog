@@ -1,3 +1,10 @@
+univention-s4-connector (11.0.6-12) unstable; urgency=medium
+
+  * Bug #44276: Fix sync_from_ucs case of samaccountname_dn_mapping
+    for account names containing non-ascii characters
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Apr 2017 19:05:51 +0200
+
 univention-s4-connector (11.0.6-11) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

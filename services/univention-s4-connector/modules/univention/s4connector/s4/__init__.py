@@ -327,7 +327,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				if dn_attr and dn_attr_val:
 					# also look for dn attr (needed to detect modrdn)
 					filter_parts_s4.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
-				filter_s4 = compatible_modstring('(&{})'.format(''.join(filter_parts_s4)))
+				filter_s4 = compatible_modstring(u'(&{})'.format(''.join(filter_parts_s4)))
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in s4 for %s" % filter_s4)
 				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
 
