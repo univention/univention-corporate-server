@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-s4-connector
+fix: 11.0.6-12A~4.2.0.201704041918
+desc: |
+ This update addresses the following issue(s):
+ * Fix search for non-ascii samaccount names against Samba/AD
+bug: [44276]
