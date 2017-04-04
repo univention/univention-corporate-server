@@ -650,12 +650,11 @@ setup_appliance ()
 	ucr set "auth/gdm/group/Domain Users"=yes
 	 
 	# Disable xorg autodetection and set resolution to 800x600 for system setup
-	# ucr set xorg/autodetect=no \
-	# xorg/device/driver='' \
-	# xorg/resolution=800x600
+	ucr set xorg/autodetect=no \
+	  xorg/resolution=800x600
+	# xorg/device/driver=''
 	 
 	# Disable kernel mode set
-	# If set in UCS 4.2, X server will segfault on VMware
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
 	 
 	# Show bootscreen in 800x600
