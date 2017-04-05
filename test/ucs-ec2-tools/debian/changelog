@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-4) unstable; urgency=low
+
+  * Bug #44293: Use 4.2-0 AMIs
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Apr 2017 08:50:55 +0200
+
 ucs-ec2-tools (3.0.2-3) unstable; urgency=low
 
   * Bug #43544: force english locale
