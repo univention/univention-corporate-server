@@ -8,6 +8,7 @@
 ##   - ucs-school-import
 ##   - univention-s4-connector
 ##   - univention-samba4
+## bugs: [43936]
 
 import sys
 from performanceutils import *
@@ -62,6 +63,9 @@ if __name__ == '__main__':
 		returnCode = 1
 
 	if not count_users(needed=test_user_kwargs['teachers'] + test_user_kwargs['staff'] + test_user_kwargs['staffteachers'] + test_user_kwargs['students']):
+		returnCode = 1
+
+	if not execute_timing('remove OUs', MAX_SECONDS_OU_CREATION, remove_ous, school_names):
 		returnCode = 1
 
 	sys.exit(returnCode)

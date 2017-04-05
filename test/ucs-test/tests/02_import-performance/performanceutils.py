@@ -38,6 +38,13 @@ def create_ous(names_of_ous):
 	return res
 
 
+def remove_ous(names_of_ous):
+	res = 0
+	for school_name in names_of_ous:
+		res += subprocess.call('udm container/ou remove --dn={}'.format(school_name), shell=True)
+	return res
+
+
 def _start_time():
 	return time.time()
 
