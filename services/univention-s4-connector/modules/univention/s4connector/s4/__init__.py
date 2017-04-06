@@ -332,17 +332,17 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
-					s4dn = unicode(encode_attrib(result[0][0]))
+					s4dn = unicode(encode_attrib(result[0][0]), 'utf8')
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
 						newdn = s4dn
 					else:
 						s4_rdn = ldap.dn.str2dn(s4dn)[0]
-						new_s4_dn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]))
+						new_s4_dn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
 						newdn = new_s4_dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
 
 				else:
 					newdn_rdn = [('cn', fst_rdn_value, ldap.AVA_STRING)]
-					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # new object, don't need to change
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # new object, don't need to change
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in S4 and use it as name
@@ -381,7 +381,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
 				ucsdn_result = s4connector.search_ucs(filter=ucsdn_filter, base=s4connector.lo.base, scope='sub', attr=['objectClass'])
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
-					ucsdn = unicode(ucsdn_result[0][0])
+					ucsdn = unicode(ucsdn_result[0][0], 'utf8')
 
 				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
 					newdn = ucsdn
@@ -392,7 +392,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					else:
 						newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
 
-					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # guess the old dn
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # guess the old dn
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -807,6 +807,8 @@ class LDAPEscapeFormatter(string.Formatter):
 	"""
 	def convert_field(self, value, conversion):
 		if conversion == 'e':
+			if isinstance(value, basestring):
+				return escape_filter_chars(value)
 			return escape_filter_chars(str(value))
 		return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
 
@@ -1342,7 +1344,7 @@ class s4(univention.s4connector.ucs):
 
 			rdn_exploded = ldap.dn.str2dn(rdn)
 			parent_exploded = ldap.dn.str2dn(object['attributes']['lastKnownParent'][0])
-			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded))
+			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded), 'utf8')
 		else:
 			ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
 			return None
