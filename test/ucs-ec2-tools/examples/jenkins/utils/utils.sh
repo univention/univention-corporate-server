@@ -692,6 +692,9 @@ monkeypatch () {
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
+
+	# Bug #44247 and Bug #44316: Fix reconnect handling for LDAP modify operations
+	sed -i 's|lo_ref.modify_s|lo_ref.modify_ext_s|;s|self.lo.modify_s|self.lo.modify_ext_s|' /usr/share/pyshared/univention/uldap.py
 }
 
 # vim:set filetype=sh ts=4:
