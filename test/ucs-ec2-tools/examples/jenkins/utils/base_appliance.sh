@@ -653,6 +653,21 @@ setup_appliance ()
 	ucr set xorg/autodetect=no \
 	  xorg/resolution=800x600
 	# xorg/device/driver=''
+
+	# Use fbdev as xorg driver
+	mkdir -p /etc/X11/xorg.conf.d
+	cat >/etc/X11/xorg.conf.d/use-fbdev-driver.conf <<__EOF__
+Section "Device"
+	Identifier  "Card0"
+	Driver      "fbdev"
+EndSection
+__EOF__
+
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config <<__EOF__
+#!/bin/sh
+rm /etc/X11/xorg.conf.d/use-fbdev-driver.conf
+exit 0
+__EOF__
 	 
 	# Disable kernel mode set
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
