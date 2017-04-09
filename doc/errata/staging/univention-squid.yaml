@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-squid
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * When switching to UCS 4.2 the program name of squid's kerberos
+   authentication handler has changed. The authentication helper of
+   univention-squid has been changed accordingly (Bug #44287).
+bug: [44287]
