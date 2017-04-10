@@ -668,6 +668,7 @@ __EOF__
 rm /etc/X11/xorg.conf.d/use-fbdev-driver.conf
 exit 0
 __EOF__
+	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
 	 
 	# Disable kernel mode set
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
