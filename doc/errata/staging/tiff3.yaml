@@ -1,0 +1,33 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: tiff3
+fix: 3.9.6-11.6.201704101339
+desc: |
+ This update addresses the following issues:
+ * Applications using libtiff can trigger buffer overflows through
+   TIFFGetField() when processing TIFF images with unknown tags
+   (CVE-2015-7554, CVE-2016-5318)
+ * an out of bounds write in tif_luv.c (CVE-2015-8781)
+ * other out-of-bounds writes (CVE-2015-8782)
+ * other out-of-bounds reads (CVE-2015-8783)
+ * potential out-of-bound write in NeXTDecode (CVE-2015-8784)
+ * tif_pixarlog.c has out-of-bounds write vulnerabilities in heap allocated
+   buffers (CVE-2016-9533)
+ * tif_write.c has an issue in the error code path of TIFFFlushData1() that
+   didn't reset the tif_rawcc and tif_rawcp members (CVE-2016-9534)
+ * tif_predict.h and tif_predict.c have assertions that can lead to assertion
+   failures in debug mode, or buffer overflows in release mode, when dealing
+   with unusual tile size like YCbCr with subsampling (CVE-2016-9535)
+bug: [42897]
+cve:
+ - CVE-2015-7554
+ - CVE-2016-5318
+ - CVE-2015-8781
+ - CVE-2015-8782
+ - CVE-2015-8783
+ - CVE-2015-8784
+ - CVE-2016-9533
+ - CVE-2016-9534
+ - CVE-2016-9535
