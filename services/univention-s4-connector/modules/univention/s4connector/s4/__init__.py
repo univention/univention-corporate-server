@@ -159,6 +159,12 @@ def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_t
 		add_or_modlist.append(('objectSid', [objectSid]))
 
 
+def unicode_to_utf8(attrib):
+	'''The inverse of encode_attrib'''
+	if not isinstance(attrib, types.UnicodeType):
+		return attrib
+	return attrib.encode('utf8')
+
 def encode_attrib(attrib):
 	if not attrib or isinstance(attrib, type(u'')):  # referral or already unicode
 		return attrib
@@ -240,8 +246,8 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 	'''
 	object = copy.deepcopy(given_object)
 
-	samaccountname = ''
-	dn_attr_val = ''
+	samaccountname = u''
+	dn_attr_val = u''
 
 	if object['dn'] is not None:
 		if 'sAMAccountName' in object['attributes']:
@@ -268,10 +274,11 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			#	272read_ad_change_username
 			t_dn = object.get('dn')
 			if t_dn:
-				(_rdn_attribute, rdn_value, _flags) = ldap.dn.str2dn(t_dn)[0][0]
-				t_samaccount = ''
+				(_rdn_attribute, rdn_value_utf8, _flags) = ldap.dn.str2dn(unicode_to_utf8(t_dn))[0][0]
+				rdn_value = unicode(rdn_value_utf8, 'utf8')
+				t_samaccount = u''
 				if object.get('attributes'):
-					t_samaccount = object['attributes'].get('sAMAccountName', [''])[0]
+					t_samaccount = object['attributes'].get('sAMAccountName', [u''])[0]
 				if rdn_value.lower() == t_samaccount.lower():
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
 					return True
@@ -301,13 +308,13 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			if dn is None:
 				break
 
-			exploded_dn = ldap.dn.str2dn(dn)
-			(_fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
+			exploded_dn = ldap.dn.str2dn(unicode_to_utf8(dn))
+			(_fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 
 			if ucsobject and object.get('attributes') and object['attributes'].get(ucsattrib):
 				value = object['attributes'][ucsattrib][0]
 			else:
-				value = fst_rdn_value
+				value = unicode(fst_rdn_value_utf8, 'utf8')
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in S4 to get corresponding DN, if not found create new
@@ -327,21 +334,20 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				if dn_attr and dn_attr_val:
 					# also look for dn attr (needed to detect modrdn)
 					filter_parts_s4.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
-				filter_s4 = compatible_modstring(u'(&{})'.format(''.join(filter_parts_s4)))
+				filter_s4 = unicode_to_utf8(u'(&{})'.format(''.join(filter_parts_s4)))
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in s4 for %s" % filter_s4)
 				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
-					s4dn = unicode(encode_attrib(result[0][0]), 'utf8')
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
-						newdn = s4dn
+						newdn = unicode(result[0][0], 'utf8')
 					else:
-						s4_rdn = ldap.dn.str2dn(s4dn)[0]
+						s4_rdn = ldap.dn.str2dn(result[0][0])[0]
 						new_s4_dn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
 						newdn = new_s4_dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())
 
 				else:
-					newdn_rdn = [('cn', fst_rdn_value, ldap.AVA_STRING)]
+					newdn_rdn = [('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]
 					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # new object, don't need to change
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
@@ -388,9 +394,9 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
 					if dn_attr:
-						newdn_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]
+						newdn_rdn = [(dn_attr, unicode_to_utf8(dn_attr_val), ldap.AVA_STRING)]
 					else:
-						newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
+						newdn_rdn = [(ucsattrib, unicode_to_utf8(samaccountname), ldap.AVA_STRING)]
 
 					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # guess the old dn
 			try:
@@ -1342,8 +1348,8 @@ class s4(univention.s4connector.ucs):
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent")
 
-			rdn_exploded = ldap.dn.str2dn(rdn)
-			parent_exploded = ldap.dn.str2dn(object['attributes']['lastKnownParent'][0])
+			rdn_exploded = ldap.dn.str2dn(unicode_to_utf8(rdn))
+			parent_exploded = ldap.dn.str2dn(unicode_to_utf8(object['attributes']['lastKnownParent'][0]))
 			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded), 'utf8')
 		else:
 			ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
@@ -2063,16 +2069,16 @@ class s4(univention.s4connector.ucs):
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
-				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(member)[0][0]
-				memberUid_add.append(uid)
+				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(unicode_to_utf8(member))[0][0]
+				memberUid_add.append(unicode(uid, 'utf8'))
 			for member in add_members['unknown']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
 				uid = ucs_object_attr.get('uid')
 				if uid:
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
-				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(member)[0][0]
-				memberUid_del.append(uid)
+				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(unicode_to_utf8(member))[0][0]
+				memberUid_del.append(unicode(uid, 'utf8'))
 			if uniqueMember_del or memberUid_del:
 				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
 			if uniqueMember_add or memberUid_del:
