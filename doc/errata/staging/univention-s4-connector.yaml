@@ -3,8 +3,8 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-s4-connector
-fix: 11.0.6-13A~4.2.0.201704061342
+fix: 11.0.6-14A~4.2.0.201704111642
 desc: |
  This update addresses the following issue(s):
- * Fix search for non-ascii samaccount names against Samba/AD
+ * Fix the handling of UTF-8 encoded DNs
 bug: [44276]
