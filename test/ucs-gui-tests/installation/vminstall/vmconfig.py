@@ -36,7 +36,7 @@ class Config(object):
 	# in here.
 	# E.g.: IP address of the VM, IP address of the master, DNS server,
 	# additional apps to install, update after installation (bool), ...
-	def __init__(self, ip, language="en", update_ucs_after_install=True):
+	def __init__(self, ip, language='en', update_ucs_after_install=True):
 		self.ip = ip
 		# Use an ISO 639-1 language code here:
 		self.language = language

@@ -51,7 +51,7 @@ strings = {
 	'partitioning_commit': 'Partitionierung beenden und Änderungen übernehmen',
 	'partitioning_warning3': 'Wenn Sie fortfahren, werden alle unten aufgeführten',
 	'domain_setup': 'Domäneneinstellungen',
-	'setup_master': 'Erstellen einer euen UCS-Domäne',
+	'setup_master': 'Erstellen einer neuen UCS-Domäne',
 	'account_info': 'Kontoinformationen',
 	'company': 'Univention GmbH',
 	'host_settings': 'Rechnereinstellungen',

@@ -44,7 +44,7 @@ class GermanMasterInstaller(Installer):
 		self.set_country_and_keyboard_layout()
 		self.network_setup()
 		self.account_setup()
-		self.hdd_setup()
+		self.hdd_setup(hdd_empty=False)
 		self.setup_ucs_master()
 
 

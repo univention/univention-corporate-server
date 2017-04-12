@@ -34,16 +34,16 @@
 
 
 def iso_639_1_to_iso_639_2(language_code):
-	if language_code == "en":
-		return "eng"
-	if language_code == "de":
-		return "deu"
+	if language_code == 'en':
+		return 'eng'
+	if language_code == 'de':
+		return 'deu'
 
 	return None
 
 
 def iso_639_1_to_english_name(language_code):
-	if language_code == "en":
+	if language_code == 'en':
 		return "English"
-	elif language_code == "de":
+	elif language_code == 'de':
 		return "German"

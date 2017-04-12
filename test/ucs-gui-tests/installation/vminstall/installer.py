@@ -53,7 +53,7 @@ class Installer(object):
 
 	def __enter__(self):
 		self.client = self.vnc_connection.__enter__()
-		self.client.updateOCRConfig(self.ocr_config)
+		self.__set_ocr_language('en')
 		return self
 
 	def __exit__(self, etype, exc, etraceback):
@@ -71,16 +71,16 @@ class Installer(object):
 		return config
 
 	def __set_language(self, language):
-		self.locale_strings = self.__get_strings(self.vm_config.language)
-		self.__set_ocr_lang(self.vm_config.language)
+		self.locale_strings = self.__get_strings(language)
+		self.__set_ocr_language(language)
 
 	def __get_strings(self, language):
-		if language == "en":
+		if language == 'en':
 			return english.strings
-		elif language == "de":
+		elif language == 'de':
 			return german.strings
 
-	def __set_ocr_lang(self, language):
+	def __set_ocr_language(self, language):
 		language_iso_639_2 = utils.iso_639_1_to_iso_639_2(language)
 		self.ocr_config.update(lang=language_iso_639_2)
 		self.client.updateOCRConfig(self.ocr_config)
@@ -89,10 +89,6 @@ class Installer(object):
 		return self.args.host
 
 	def skip_boot_device_selection(self):
-		# TODO: Find a better place for this, because it's possible
-		# that the user doesn't call this function - the language should be
-		# set regardless.
-		self.__set_language("en")
 		self.client.waitForText('start with default settings')
 		self.client.keyPress('enter')
 
@@ -104,7 +100,7 @@ class Installer(object):
 		self.client.enterText(language_english_name)
 		self.client.keyPress('enter')
 
-		self.__set_ocr_lang(self.vm_config.language)
+		self.__set_language(self.vm_config.language)
 
 	def set_country_and_keyboard_layout(self):
 		self.client.waitForText(self.locale_strings['location_selection'], timeout=30)
@@ -148,7 +144,7 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['time_zone'], timeout=60)
 		self.client.keyPress('enter')
 
-	def hdd_setup(self, hdd_empty=False):
+	def hdd_setup(self, hdd_empty=True):
 		self.client.waitForText(self.locale_strings['partitioning_method'], timeout=60)
 		self.client.keyPress('enter')
 		self.client.waitForText(self.locale_strings['partitioning_device'], timeout=30)
@@ -156,8 +152,7 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['partitioning_structure'], timeout=30)
 		self.client.keyPress('enter')
 
-		# Remove logical volume data? This dialog only appears when the
-		# HDD is not empty.
+		# This dialog only appears when the HDD is not empty.
 		if not hdd_empty:
 			self.client.waitForText(self.locale_strings['partitioning_warning1'], timeout=30)
 			self.client.keyPress('down')
@@ -193,7 +188,7 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
 
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)    # FIXME: Screen saver still active!
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)    # FIXME: Screen saver still active!?
 		self.client.mouseClickOnText(self.locale_strings['finish'])    # This got lost once. Maybe the mouse needs to be held down longer.
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)

@@ -34,9 +34,9 @@ from vminstall.installer import Installer
 from vminstall.vmconfig import Config as VmConfig
 
 
-class GermanMasterInstaller(Installer):
+class EnglishMasterInstaller(Installer):
 	def __init__(self, vm_config):
-		super(GermanMasterInstaller, self).__init__(vm_config)
+		super(EnglishMasterInstaller, self).__init__(vm_config)
 
 	def install(self):
 		self.skip_boot_device_selection()
@@ -45,7 +45,7 @@ class GermanMasterInstaller(Installer):
 		self.network_setup()
 		self.account_setup()
 		self.set_time_zone()
-		self.hdd_setup()
+		self.hdd_setup(hdd_empty=False)
 		self.setup_ucs_master()
 
 
@@ -55,7 +55,7 @@ def main():
 		language="en",
 		update_ucs_after_install=False
 	)
-	with GermanMasterInstaller(vm_config) as installer:
+	with EnglishMasterInstaller(vm_config) as installer:
 		installer.install()
 
 if __name__ == '__main__':
