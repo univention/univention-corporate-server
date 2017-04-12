@@ -11,11 +11,32 @@ pkgname="test-$$-${RANDOM}"
 repoprefix="univention-repository"
 ARCH=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 
+bug43914 () {
+	local name="$1"
+	[[ "$name" = [78]* ]] || return 0
+
+	local DST="$HOME/artifacts"
+	mkdir -p "$DST"
+	UT_VERBOSE="$DST/ucs-test-$name"
+
+	local IFS=.
+	set -- $(uname -r)
+	case "$1" in
+	3) apt-get install -qq "linux-tools-$1.$2" </dev/null || return $? ;;
+	4) apt-get install -qq "linux-perf-$1.$2" </dev/null || return $? ;;
+	esac
+	sysctl kernel.perf_event_paranoid=-1 || :
+	mountpoint -q /sys/kernel/debug || mount -o remount,mode=755 /sys/kernel/debug || :
+
+	[ -n "${UT_PERF:-}" ] && retun 0
+	exec env UT_PERF=$$ perf record -o "$DST/ucs-test-$name.perf" -g -F 10 -q -- "$SHELL" "$0" "$@" || :
+}
+bug43914 "${0##*/}"
 # if UT_VERBOSE is set, output messages to STDERR, otherwise /dev/null
 case "${UT_VERBOSE-}" in
 	/?*|./?*)
 		exec 3>&2 4>"${UT_VERBOSE}.$$"
-		PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+		PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}@${SECONDS}: '
 		BASH_XTRACEFD=4
 		set -x
 		;;
@@ -53,7 +74,7 @@ ucr () { # (get|set|unset) name[=value]...
 }
 
 cleanup () { # Undo all changes
-	set +e +x
+	set +e
 	trap - EXIT
 
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
