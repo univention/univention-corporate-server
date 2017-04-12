@@ -1,3 +1,9 @@
+ucs-test (7.0.21-12) unstable; urgency=low
+
+  * Bug #43914: Re-enable 09_updater/7*_mirror tests
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 Apr 2017 17:16:57 +0200
+
 ucs-test (7.0.21-11) unstable; urgency=low
 
   * Bug #43936: add test for performance of new import script

@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Mirror localhost repository on port 81
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

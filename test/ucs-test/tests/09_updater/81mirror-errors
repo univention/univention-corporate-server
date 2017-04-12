@@ -5,7 +5,7 @@
 ##  2. check if upgrade of package work
 ##  3. check if --updateto is honored
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Mirror localhost repository with prefix unset
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

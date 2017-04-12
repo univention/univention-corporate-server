@@ -3,7 +3,7 @@
 ##  Mirror local repository and clean obsolete files
 ##  1. Create repository with deprecated and current files
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

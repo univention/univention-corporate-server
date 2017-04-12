@@ -4,7 +4,7 @@
 ##  1. Create releases before and after an artificial version
 ##  2. Mirror only two releases in between
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

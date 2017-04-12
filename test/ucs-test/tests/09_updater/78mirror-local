@@ -7,7 +7,7 @@
 ##  3. Install first version
 ##  4. Mirror and install second version using u-updater
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

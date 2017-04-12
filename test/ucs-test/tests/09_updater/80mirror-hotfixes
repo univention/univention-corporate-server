@@ -4,7 +4,7 @@
 ##  1. Create mirror with two minors, each with hotfixes
 ##  2. Check for both hotfix-repositories being used
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror

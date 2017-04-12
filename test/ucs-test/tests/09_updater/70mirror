@@ -10,7 +10,6 @@
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
-set -x
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained all

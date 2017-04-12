@@ -4,7 +4,7 @@
 ##  1. Create minimum mirror with 101 minor updates, using hard-links
 ##  2. Check if updater aborts on 99 and 999
 ## roles-not: [basesystem]
-## tags: [basic,SKIP]
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror
