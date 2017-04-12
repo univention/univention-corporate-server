@@ -18,7 +18,8 @@ from time import sleep
 ENCODING = 'UTF-8'
 
 VM_NAME = "installer-target"
-VM_ISO = "/mnt/omar/vmwares/kvm/iso/ucs/UCS-4.2-0-amd64.iso"
+#VM_ISO = "/mnt/omar/vmwares/kvm/iso/ucs/UCS-4.2-0-amd64.iso"
+VM_ISO = "/mnt/omar/vmwares/kvm/iso/iso-tests/ucs_4.2-0-latest-amd64.iso"
 VM_MAC = "62:54:00:35:36:33"
 for VM_BRIDGE in ["virbr0", "br0", "eth0"]:
 	if exists(join("/sys/class/net", VM_BRIDGE, "bridge")):
@@ -211,6 +212,7 @@ class TestInstaller(object):
 		self.dom = None
 
 	def find_domain(self):
+		self.logger.info("Trying to find the vm.")
 		try:
 			self.dom = self.conn.lookupByName(self.name)
 			self.logger.info("Reusing existing VM %s", self.dom)
