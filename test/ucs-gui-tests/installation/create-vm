@@ -212,7 +212,6 @@ class TestInstaller(object):
 		self.dom = None
 
 	def find_domain(self):
-		self.logger.info("Trying to find the vm.")
 		try:
 			self.dom = self.conn.lookupByName(self.name)
 			self.logger.info("Reusing existing VM %s", self.dom)
