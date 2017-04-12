@@ -27,6 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+: ${SSH_KEY:=$HOME/ec2/keys/tech.pem}
+
 fetch-files () {
 	# fetch-files <IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARGS]
 	#
@@ -35,7 +37,7 @@ fetch-files () {
 	local ADDR="$1"
 	local FILES="$2"
 	local TARGET="$3"
-	local SCP_ARGS=${4:-'-i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'}
+	local SCP_ARGS=${4:-"-i $SSH_KEY -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"}
 
 	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET"
 	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET" | sh
@@ -44,15 +46,12 @@ fetch-files () {
 fetch-results () {
 	# fetch-results <IP-ADDRESS> [TARGET-DIR]
 	local ADDR="$1"
-	local TARGETDIR="$2"
-	if [ -n "$TARGETDIR" ] ; then
-		[ ! -d "$TARGETDIR" ] && mkdir -p "$TARGETDIR"
-	else
-		TARGETDIR="."
-	fi
+	local TARGETDIR="${2:-.}"
+	mkdir -p "$TARGETDIR"
 	declare -a FILES=(
 		ucs-test.log
 		test-reports
+		artifacts
 		'/var/log/univention/management*'
 		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater}.log'
 		'/var/log/{syslog,auth.log}'
@@ -61,6 +60,7 @@ fetch-results () {
 		'/var/log/{mail,dovecot,daemon}.log'
 		'/var/log/univention/ucs-windows-tools.log'
 	)
+	local FILE
 	for FILE in "${FILES[@]}"; do
 		fetch-files root@${ADDR} "$FILE" "$TARGETDIR"
 	done
@@ -71,12 +71,8 @@ fetch-results () {
 
 fetch-coverage () {
 	local ADDR="$1"
-	local TARGETDIR="$2"
-	if [ -n "$TARGETDIR" ] ; then
-		[ ! -d "$TARGETDIR" ] && mkdir -p "$TARGETDIR"
-	else
-		TARGETDIR="."
-	fi
+	local TARGETDIR="${2:-.}"
+	mkdir -p "$TARGETDIR"
 	fetch-files root@${ADDR} "htmlcov/" "$TARGETDIR"
 }
 
@@ -98,7 +94,7 @@ ec2-start-job-async () {
 	local ADDR="$2"
 	local THISSERVER="$3"
 	local COMMAND="$4"
-	ssh -f -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR} nohup "bash -c '($COMMAND; touch $THISSERVER-$JOBNAME-finished) &'"
+	ssh -f -i "$SSH_KEY" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR} nohup "bash -c '($COMMAND; touch $THISSERVER-$JOBNAME-finished) &'"
 	echo "$THISSERVER $ADDR" >> "$JOBNAME-local"
 }
 
@@ -107,23 +103,22 @@ ec2-wait-for-async-job () {
 	echo "Waiting for job $JOBNAME to finish on all hosts"
 	while true
 	do
-		# echo -n "job $JOBNAME finished on "
-		local FINISHED=
+		local FINISHED=true SERVER ADDR
 		while IFS=' ' read SERVER ADDR; do
-			if [ ! -e "$SERVER-$JOBNAME-finished" ]; then
-				# check and copy
-				scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@\[${ADDR}\]:${SERVER}-${JOBNAME}-finished . >/dev/null 2>&1
-			fi
-			if [ ! -e "$SERVER-$JOBNAME-finished" ]; then
-				local FINISHED=false
+			local fname="${SERVER}-${JOBNAME}-finished"
+			[ -e "$fname" ] || continue
+			# check and copy
+			if fetch-files "[${ADDR}]" "$fname" . >/dev/null 2>&1 && [ -e "$fname" ]
+			then
+				echo -n " $SERVER"
 			else
-				echo -n "$SERVER "
+				FINISHED=false
 			fi
 		done < "$JOBNAME-local"
-		# echo
-		[ -z $FINISHED ] && return 0
+		"$FINISHED" && break
 		sleep 10
 	done
+	echo
 }
 
 # === MAIN ===
