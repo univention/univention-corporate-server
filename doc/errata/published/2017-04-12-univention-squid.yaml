@@ -10,3 +10,5 @@ desc: |
    authentication handler has changed. The authentication helper of
    univention-squid has been changed accordingly (Bug #44287).
 bug: [44287]
+erratum: 1
+announced: 2017-04-12
