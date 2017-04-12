@@ -229,7 +229,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						if relativeDomainName.endswith('._msdcs'):
 							target_zone_name = '_msdcs.' + ol_zone_name
 							target_RR_val = relativeDomainName[:-7]
-							target_zone_rdn = [(s4_RR_attr.upper(), target_zone_name, ldap.AVA_STRING)]
+							target_zone_rdn = [(s4_RR_attr.upper(), unicode_to_utf8(target_zone_name), ldap.AVA_STRING)]
 							target_zone_dn = unicode(ldap.dn.dn2str([target_zone_rdn] + exploded_dn[2:]), 'utf8')
 
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for target zone %s" % target_zone_dn)
