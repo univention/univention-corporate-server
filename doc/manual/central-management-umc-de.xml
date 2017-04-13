@@ -13,7 +13,7 @@
 
 <section id="central-management-umc:Einfuehrung">
 	<title>Einführung</title>
-	<figure id="ucs-portal">
+	<figure id="fig-ucs-portal">
 		<title>UCS Portalseite</title>
 		<graphic align="center" width="100%" fileref="illustrations42/portal_de.png"/>
 	</figure>
@@ -26,7 +26,7 @@
 		Die Anmeldung an der Oberfläche geschieht über eine zentrale Seite für alle Unterseiten von UCS sowie Drittherstellern sofern diese einen webbasierten <foreignphrase>Single Sign-on</foreignphrase> unterstützen (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
-		Zentraler Ausganspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="ucs-portal"/>).
+		Zentraler Ausganspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
 		Die Portalseite ist standardmäßig auf dem &ucsMaster; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
 		Allen anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsMaster; an.
 		Alle Aspekte der Portalseite können umfangreich an die eigenen Bedürfnisse angepasst werden (<xref linkend="central:portal"/>).

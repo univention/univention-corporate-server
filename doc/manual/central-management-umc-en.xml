@@ -13,7 +13,7 @@
 
 <section id="central-management-umc:Introduction">
 	<title>Introduction</title>
-	<figure id="ucs-portal">
+	<figure id="fig-ucs-portal">
 		<title>UCS portal page</title>
 		<graphic align="center" width="100%" fileref="illustrations42/portal_en.png"/>
 	</figure>
@@ -26,7 +26,7 @@
 		The login at the web interface is done via a centrale page once for all sub pages of UCS as well as for third party applications as far as a web based <foreignphrase>single sign-on</foreignphrase> is supported (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
-		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="ucs-portal"/>).
+		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="fig-ucs-portal"/>).
 		By default, the portal page is available on the &ucsMaster;.
 		It allows an overview of all Apps and further services which are installed in the UCS domain.
 		All other system roles show by default links to locally installed Apps as well as a link back to the portal page of the &ucsMaster;.
