@@ -9,52 +9,73 @@
 	%entities;
 ]>
 <chapter id="central:general">
-<title>Univention Management Console</title>
+<title>&ucsWeb;</title>
 
 <section id="central-management-umc:Introduction">
 	<title>Introduction</title>
+	<figure id="ucs-portal">
+		<title>UCS portal page</title>
+		<graphic align="center" width="100%" fileref="illustrations42/portal_en.png"/>
+	</figure>
 	<para>
-		&ucsUMC; (UMC) is the central tool for web-based administration of the
-		UCS domain. There are various modules available for the
-		administration of the different aspects depending on the respective
-		system role. New UMC modules may be added to a system when installing
-		further software components.
+		The &ucsWeb; is the central tool for managing a UCS domain as well as for accessing installed applications of the domain.
 	</para>
 	<para>
-		UMC modules for the administration of all the data included in the LDAP
-		directory (such as users, groups and computer accounts) are only
-		provided on &ucsMaster; and &ucsBackup;. Changes made in these
-		modules apply for the whole domain.
+		The &ucsWeb; is divided into several subpages which all have a similarily designed header.
+		Via the symbols in the top right, one may launch a search on the current page (magnifier), log in/out (lock) or open the user menu (three bars).
+		The login at the web interface is done via a centrale page once for all sub pages of UCS as well as for third party applications as far as a web based <foreignphrase>single sign-on</foreignphrase> is supported (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
-		UMC modules for the configuration and administration of the local
-		system are provided on all system roles. These modules can be used to
-		install additional applications and updates, adapt the local
-		configuration via &ucsUCR; or start/stop services, for example.
+		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="ucs-portal"/>).
+		By default, the portal page is available on the &ucsMaster;.
+		It allows an overview of all Apps and further services which are installed in the UCS domain.
+		All other system roles show by default links to locally installed Apps as well as a link back to the portal page of the &ucsMaster;.
+		All aspects of the portal page can be customized to match one's needs (<xref linkend="central:portal"/>).
 	</para>
 	<para>
-		<xref linkend="central:user-interface"/> first describes the general
-		operation of &ucsUMC;. The following sections explain among other things
-		the work with the LDAP directory browser (<xref linkend="central:navigation"/>),
-		the use of administrative settings via policies (<xref linkend="central:policies"/>),
-		the extension of the scope of function of the domain administration with
-		extended attributes (<xref linkend="central:extendedattrs"/>) and delegating
-		administration rights to additional user groups (<xref linkend="delegated-administration"/>).
-		Lastly, the command line interface of the domain administration is displayed
-		(<xref linkend="central:udm"/>) and the evaluation of domain data via the
+		For environments with more than one server, an additional entry to a server overview page is shown on the portal page.
+		This sub page, gives an overview of all available UCS systems in the domain.
+		It allows a fast navigation to other systems in order to adjust local settings via &ucsUMC;.
+	</para>
+	<para>
+		&ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
+		<xref linkend="central:user-interface"/> describes its general operation.
+		There are various modules available for the	administration of the different aspects of a domain depending on the respective system role.
+		New UMC modules may be added to a system when installing further software components.
+	</para>
+	<para>
+		The subsequent sections detail the usage of various aspects of the domain management.
+		<xref linkend="central:navigation"/> gives an overview of the LDAP directory browser.
+		The use of administrative settings via policies is discused in <xref linkend="central:policies"/>.
+		How to extend the scope of function of the domain administration is detailed in <xref linkend="central:extendedattrs"/>.
+		<xref linkend="delegated-administration"/> explains delegating administration rights to additional user groups.
+	</para>
+	<para>
+		In conclusion, the command line interface of the domain administration is illustrated
+		(<xref linkend="central:udm"/>), and the evaluation of domain data via the
 		UCS reporting function are explained (<xref linkend="central:reports"/>).
 	</para>
-</section>
 
-<section id="central:user-interface">
-	<title>Operating instructions for &ucsUMC;</title>
-
-	<section id="central-management-umc:login">
-		<title>Login</title>
+	<section id="central:access">
+		<title>Access</title>
 		<para>
-		&ucsUMC; uses numerous JavaScript and CSS functions to display the
-		web interface. Cookies need to be permitted in the browser.
-		The following browsers are supported.
+			The &ucsWeb; can be opened on any UCS system via the URL <uri>https://servername/</uri>.
+			Alternatively, access is also possible via the server's IP address.
+
+			Under certain circumstances it may be necessary to access
+			the services over an insecure connection (e.g., if no SSL
+			certificates have been created for the system yet). In this
+			case, <uri>http</uri> must be used instead of <uri>https</uri> in the
+			URL. In this case, passwords are sent over the network in plain text!
+		</para>
+	</section>
+
+	<section id="central:browser-compatibility">
+		<title>Browser compatibility</title>
+		<para>
+			The &ucsWeb; uses numerous JavaScript and CSS functions.
+			Cookies need to be permitted in the browser.
+			The following browsers are supported:
 		</para>
 		<itemizedlist>
 			<listitem><simpara><application>Chrome</application> as of version 37</simpara></listitem>
@@ -66,85 +87,145 @@
 			Users with older browsers may experience display problems.
 		</para>
 		<para>
-			&ucsUMC; is available in German and English; the language to be used
-			can be selected during login via the select list in the upper right corner.
+			The &ucsWeb; is available in German and English (and French if it is chosen as language during the installation from DVD);
+			the language to be used can be changed via the entry <guimenu>Switch language</guimenu> of the user menu in the upper right corner.
 		</para>
+	</section>
 
+	<section id="central-management-umc:feedback">
+		<title>Feedback on UMC and UCS</title>
 		<para>
-		  The overview page can be opened on any UCS system via the URL
-		  <uri>https://servername/</uri>. Alternatively, access is also possible via the server's
-		  IP address. All the services which are offered on a system are linked here. In the
-		  <guimenu>Administration</guimenu> tab, &ucsUMC; can then be opened using the
-		  <guimenu>System and domain settings</guimenu> or the <guimenu>system settings</guimenu> link.
-		  If there are services installed on
-		  the system which include their own web service (e.g., Horde web mail), they are linked
-		  in the <guimenu>Installed web services</guimenu> tab.
+			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right user menu,
+			you can provide feedback on UCS via a web form.
 		</para>
+	</section>
 
-		<para>
-			Under certain circumstances it may be necessary to access
-			&ucsUMC; over an insecure connection (e.g., if no SSL
-			certificates have been created for the system yet). In this
-			case, <uri>http</uri> must be used instead of <uri>https</uri> in the
-			URL. In this case, passwords are sent over the network in plain text!
-		</para>
-		<figure id="umc-login">
-		<title>UMC login mask</title>
-			<graphic align="center" width="35%" fileref="illustrations42/umc_login_en.png"/>
-		</figure>
-		<para>
-			Once the URL has been opened, a login mask is displayed in which
-			the <guimenu>Username</guimenu> and <guimenu>Password</guimenu> need to be
-			entered:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				When logging in with the system's local <systemitem class="username">root</systemitem> account (see
-				<xref linkend="computers:rootaccount"/>), only the UMC modules for the administration
-				and configuration of the local system are displayed.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				When logging in with the <systemitem class="username">Administrator</systemitem> account on
-				the &ucsMaster; or &ucsBackup;, UMC modules for the administration of data
-				in the LDAP directory are displayed, as well.
-				</simpara>
-			</listitem>
-			<listitem>
-			  <simpara>
-				When logging on with another user account, the UMC modules approved for the user
-				are shown. Additional information on allowing further modules can be found in <xref
-				linkend="delegated-administration"/>.
-				</simpara>
-			</listitem>
-		</itemizedlist>
+	<section id="central-management-umc:piwik">
+	  <title>Collection of usage statistics</title>
+	  <para>
+		Anonymous usage statistics on the use of the &ucsWeb; are collected when using the <emphasis>core edition</emphasis>
+		version of UCS (which is generally used for evaluating UCS). Further
+		information can be found in <u:sdb>1318</u:sdb>.
+	  </para>
+	</section>
 
-		<para>
-		  During the first login, an introduction wizard is shown, which informs the user of the
-		  collection of usage statistics (see <xref linkend="central-management-umc:piwik"/>) and
-		  allows license activation (see <xref linkend="central:license" />) among other things.
-		</para>
+</section>
 
-		<para>
-		  Following ten minutes of inactivity, the browser session is automatically closed and it is
-		  necessary to login again. This interval can be adjusted in seconds with the &ucsUCRV;
-		  <envar>umc/http/session/timeout</envar>.
-		</para>
+<section id="central-management-umc:login">
+	<title>Login</title>
+	<figure id="umc-login">
+	<title>UCS login page</title>
+		<graphic align="center" width="35%" fileref="illustrations42/umc_login_en.png"/>
+	</figure>
+	<para>
+		UCS comes with a central login page.
+		By default, a <foreignphrase>single sign-on</foreignphrase> (SSO) is carried out via SAML (cf. <xref linkend="domain:saml"/>) provided that <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
+		After succesful login, a session is valid for all UCS systems of the domain as well as for third party Apps if these support web based SSO.
+		In case <uri>ucs-sso.<replaceable>domainname</replaceable></uri> cannot be reached, the login is carried out at the local UCS system.
+		The session is then only valid for the UCS web pages on the same system.
+		It is possible to enforce a login on the local system by clicking on the link <guimenu>Login without Single Sign On</guimenu>.
+	</para>
+	<para>
+		In the login mask, enter the <guimenu>Username</guimenu> and <guimenu>Password</guimenu> of the corresponding domain account:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			When logging in with the <systemitem class="username">Administrator</systemitem> account on
+			a &ucsMaster; or &ucsBackup;, UMC modules for the administration
+			and configuration of the local system as well as UMC modules for the administration of data
+			in the LDAP directory are displayed.
+			The initial password of this account has been specified in the setup wizard during the installation.
+			It corresponds to the intial password of the local <systemitem class="username">root</systemitem> account.
+			<systemitem class="username">Administrator</systemitem> is also the account which should be used for the initial login at a newly installed &ucsMaster; system.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			In some cases, it might be necessary to log on with the system's local <systemitem class="username">root</systemitem> account (see <xref linkend="computers:rootaccount"/>).
+			This account enables access only to the UMC modules for the administration and configuration of the local system.
+			</simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			When logging on with another user account, the UMC modules approved for the user
+			are shown. Additional information on allowing further modules can be found in <xref
+			linkend="delegated-administration"/>.
+			</simpara>
+		</listitem>
+	</itemizedlist>
 
-		<para>
-		  Users who are already logged in can use additional UMC instances in the domain without having
-		  to log in again: If a host is selected in the title bar under
-		  <guimenu>Host:</guimenu>, a new window opens with the system's &ucsUMC;.
-		</para>
+	<para>
+		The duration of a browser session is 8 hours for the SSO login.
+		After these, the login process must be carried out again.
+		For the login at the local UCS system, the browser sesson will be automatically closed after an inactivity of 8 hours.
+	</para>
 
-		<para>
-		  By installing a third-party application, such as <application>privacyIDEA</application>,
-		  it is possible to extend the &ucsUMC; authentication with a two-factor authentication (2FA).
-		  These extensions can be installed from the Univention App Center.
-		</para>
+	<para>
+	  By installing a third-party application, such as <application>privacyIDEA</application>,
+	  it is possible to extend the &ucsUMC; authentication with a two-factor authentication (2FA).
+	  These extensions can be installed from the Univention App Center.
+	</para>
 
+</section>
+
+<section id="central:portal">
+	<title>UCS portal page</title>
+	<para>
+		The concept of portal pages replaces the previous start sites of UCS 4.1.
+		Portal pages offer a central view of all available services in a UCS domain.
+		Requirements strongly differ from small to large environments in organisations, public authorities, or even schools.
+		Therefore, UCS implemented a very flexible and individually customizable concept for portal pages.
+	</para>
+	<para>
+		As illustrated in <xref linkend="portal-schema"/>, portal entries (i.e., links to applications/Apps/services; UDM object type <classname>settings/portal_entry</classname>) can be assigned to none, one or multiple portals.
+		A portal itself (UDM object type <classname>settings/portal</classname>) renders all entries which are assigned to it.
+		A portal can then be assigned to none, one or multiple UCS computer objects (this is done at the computer object itself).
+	</para>
+	<para>
+		By default, UCS is configured to have two portals.
+		The portal <emphasis>domain</emphasis> is assigned to the &ucsMaster; of the domain.
+		In addition to all installed applications of the domain, links to &ucsUMC; as well as the server overview are shown on this portal page.
+		The portal <emphasis>local</emphasis> is assigned to all other server roles in the domain.
+		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsMaster; are shown.
+	</para>
+	<para>
+		Custom portals and portal entries can be defined and managed via the UMC module <guimenu>LDAP directory</guimenu> (cf. <xref linkend="central:navigation"/>) below the container <emphasis>cn=portal,cn=univention</emphasis>.
+	</para>
+	<figure id="portal-schema">
+		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigend to UCS systems as start site; a link entry can be displayed on multiple portals.</title>
+		<graphic align="center" width="60%" fileref="illustrations42/portal-schema.png"/>
+	</figure>
+</section>
+
+<section id="central:user-interface">
+	<title>&ucsUMC;</title>
+
+	<section id="central-management-umc:introduction">
+		<title>Introduction</title>
+		<para>
+			&ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
+			It can be launched from the portal page (<xref linkend="central:portal"/>) via the link <guimenu>System and domain settings</guimenu> or <guimenu>System settings</guimenu>, respectively.
+			Depending on the system role, different UMC modules are provided for administrating UCS.
+			These may be complemented with new modules when installing additional software components.
+		</para>
+		<para>
+			UMC modules for the administration of all the data included in the LDAP
+			directory (such as users, groups and computer accounts) are only
+			provided on &ucsMaster; and &ucsBackup;. Changes made in these
+			modules are applied to the whole domain.
+		</para>
+		<para>
+			UMC modules for the configuration and administration of the local
+			system are provided on all system roles. These modules can be used to
+			install additional applications and updates, adapt the local
+			configuration via &ucsUCR; or start/stop services, for example.
+		</para>
+		<para>
+			During the first login, an introduction wizard is shown, which informs the user of the
+			collection of usage statistics (see <xref linkend="central-management-umc:piwik"/>) and
+			allows license activation (see <xref linkend="central:license" />) among other things.
+		</para>
 	</section>
 
 	<section id="central:license">
@@ -350,14 +431,6 @@
 	  </para>
 	</section>
 
-	<section id="central-management-umc:feedback">
-		<title>Feedback on UMC and UCS</title>
-		<para>
-			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right user menu
-			of &ucsUMC;, you can provide feedback on UCS and &ucsUMC; via a web form.
-		</para>
-	</section>
-
 	<section id="central-management-umc:notifications">
 	  <title>Display of system notifications</title>
 	  <para>
@@ -366,15 +439,6 @@
 		The messages are shown on the right side and can be dismissed with a mouse click.
 	  </para>
 	</section>
-</section>
-
-<section id="central-management-umc:piwik">
-  <title>Collection of usage statistics</title>
-  <para>
-	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>core edition</emphasis>
-    version of UCS (which is generally used for evaluating UCS). Further
-	information can be found in <u:sdb>1318</u:sdb>.
-  </para>
 </section>
 
 <section id="central:navigation">
