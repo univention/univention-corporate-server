@@ -42,7 +42,7 @@ import vminstall.languages.english as english
 
 class Installer(object):
 	def __init__(self, vm_config):
-		init_logger('info')
+		init_logger('warn')
 		self.args = self.__parse_args()
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = vm_config
