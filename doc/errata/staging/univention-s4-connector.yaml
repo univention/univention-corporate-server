@@ -3,8 +3,10 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-s4-connector
-fix: 11.0.6-15A~4.2.0.201704121207
+fix: 11.0.6-16A~4.2.0.201704131142
 desc: |
  This update addresses the following issue(s):
+ * Fix fetching the SID in sync_from_ucs ALREADY_EXISTS handling
+ * Fix handling special case of "Printer-Admins"
  * Fix the handling of UTF-8 encoded DNs
-bug: [44276]
+bug: [43368, 44276]
