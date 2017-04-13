@@ -1,3 +1,10 @@
+univention-s4-connector (11.0.6-16) unstable; urgency=medium
+
+  * Bug #44276: Fix handling of Printer-Admins and looking for
+    the objectsid.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Apr 2017 11:27:56 +0200
+
 univention-s4-connector (11.0.6-15) unstable; urgency=medium
 
   * Bug #44276: Fix unicode conversion of utf-8 encoded DNs

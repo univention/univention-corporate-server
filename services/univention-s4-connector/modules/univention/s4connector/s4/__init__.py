@@ -322,6 +322,8 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
+						if ucsval == "Printer-Admins":
+							continue
 						try:
 							if value.lower() == ucsval.lower():
 								value = conval
@@ -2513,12 +2515,11 @@ class s4(univention.s4connector.ucs):
 				try:
 					self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls)  # FIXME encoding
 				except ldap.ALREADY_EXISTS as ex:
-					sAMAccountName_attr_value = object['attributes'].get('sAMAccountName', [None])[0]
-					objectSid_attr_value = object['attributes'].get('objectSid', [None])[0]
-					objectSid = decode_sid(objectSid_attr_value)
-					if not (sAMAccountName_attr_value and objectSid):
+					sAMAccountName = object['attributes'].get('sAMAccountName', [None])[0]
+					sambaSID = object['attributes'].get('sambaSID', [None])[0]
+					if not (sAMAccountName and sambaSID):
 						raise  # unknown situation, raise original traceback
-					filter_s4 = '(&(sAMAccountName=%s)(objectSid=%s)(isDeleted=TRUE))' % (sAMAccountName_attr_value, objectSid)
+					filter_s4 = format_escaped(u'(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName, sambaSID)
 					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: error during add, searching for conflicting deleted object in S4")
 					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: search filter: %s" % filter_s4)
 					result = self.lo_s4.lo.search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(
