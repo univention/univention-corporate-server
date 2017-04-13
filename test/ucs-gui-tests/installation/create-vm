@@ -147,7 +147,7 @@ class TestDomain(TestXml):
 			self.features(),
 			E.clock(offset="utc"),
 			E.on_poweroff("destroy"),
-			E.on_reboot("destroy"),
+			E.on_reboot("restart"),
 			E.on_crash("destroy"),
 			self.devices(),
 			type="kvm"
