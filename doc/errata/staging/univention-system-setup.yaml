@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-system-setup
+fix: 10.0.10-13A~4.2.0.201704131209
+desc: |
+ This update addresses the following issue(s):
+ * In the script univention-system-setup-boot the link to the
+   AWS apache2 start site was corrected.
+ * In the script download-packages a package reference to
+   univention-self-service-master was added.
+bug: [42133,44284]
