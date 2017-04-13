@@ -9,6 +9,7 @@ from sys import (exit, stderr)
 import argparse
 import subprocess
 import libvirt
+import random
 from lxml import etree
 from lxml.builder import E
 from logging import (getLogger, basicConfig, DEBUG)
@@ -31,7 +32,7 @@ ENCODING = 'UTF-8'
 
 VM_NAME = ARGS.vm_name
 VM_ISO = ARGS.ucs_iso
-VM_MAC = "62:54:00:35:36:33"
+VM_MAC = "52:54:00:%02x:%02x:%02x" % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 for VM_BRIDGE in ["virbr0", "br0", "eth0"]:
 	if exists(join("/sys/class/net", VM_BRIDGE, "bridge")):
 		break
