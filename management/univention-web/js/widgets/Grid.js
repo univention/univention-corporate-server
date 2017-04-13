@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, require, setTimeout, clearTimeout*/
+/*global define, require, setTimeout, clearTimeout, dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -141,6 +141,7 @@ define([
 		//		Controls which column is used for default sorting (values < 0 indicated
 		//		sorting in descending order)
 		sortIndex: 1,
+		naturalSort: true,
 
 		// use the framework wide translation file
 		i18nClass: 'umc.app',
@@ -224,6 +225,35 @@ define([
 				});
 				return html;
 			});
+		},
+
+		_createSortQuerier: function(sorted) {
+			// see also dstore/SimpleQuery
+			var sorter = sorted[0];
+			var compare = function(a, b) {
+				if (typeof(a.localeCompare) === 'function') {
+					return a.localeCompare(b, dojo.locale, {numeric: true}) < 0;
+				} else if (typeof(a.toLowerCase) === 'function') {
+					return a.toLowerCase() < b.toLowerCase();
+				} else {
+					return a < b;
+				}
+			};
+			return function(data) {
+				var comparison;
+				data = data.slice();
+				data.sort(function(a,b) {
+					var descending = sorter.descending;
+					var aValue = a[sorter.property];
+					var bValue = b[sorter.property];
+					var isALessThanB = typeof bValue === 'undefined' ||
+						bValue === null && typeof aValue !== 'undefined' ||
+						aValue !== null && compare(aValue, bValue);
+					comparison = Boolean(descending) === isALessThanB ? 1 : -1;
+					return comparison;
+				});
+				return data;
+			};
 		},
 
 		_parentModule: undefined,
@@ -318,6 +348,9 @@ define([
 			this.collection = new Memory({
 				idProperty: this._store.idProperty
 			});
+			if (this.naturalSort) {
+				this.collection._createSortQuerier = this._createSortQuerier;
+			}
 		},
 
 		buildRendering: function() {

@@ -1,3 +1,9 @@
+univention-web (1.0.42-9) unstable; urgency=medium
+
+  * Bug #44361: sort grid values using locale aware sorting 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 13 Apr 2017 14:19:37 +0200
+
 univention-web (1.0.42-8) unstable; urgency=medium
 
   * Bug #44179: Grid: Fix subsequent search results after a query error
