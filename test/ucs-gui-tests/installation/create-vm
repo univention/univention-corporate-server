@@ -6,6 +6,7 @@ Create installer VM programatically.
 """
 from os.path import (join, split, splitext, exists, extsep)
 from sys import (exit, stderr)
+import argparse
 import subprocess
 import libvirt
 from lxml import etree
@@ -15,10 +16,21 @@ from urlparse import urlparse
 from time import sleep
 
 
+def parse_args():
+	parser = argparse.ArgumentParser(description='Create a virtual machine on a kvm server.')
+	parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
+	parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
+	parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
+	parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
+	return parser.parse_args()
+
+
+ARGS = parse_args()
+
 ENCODING = 'UTF-8'
 
-VM_NAME = "installer-target"
-VM_ISO = "/mnt/omar/vmwares/kvm/iso/iso-tests/ucs_4.2-0-latest-amd64.iso"
+VM_NAME = ARGS.vm_name
+VM_ISO = ARGS.ucs_iso
 VM_MAC = "62:54:00:35:36:33"
 for VM_BRIDGE in ["virbr0", "br0", "eth0"]:
 	if exists(join("/sys/class/net", VM_BRIDGE, "bridge")):
@@ -28,7 +40,7 @@ VM_VNC = "0.0.0.0"
 UID = 2260  # FIXME: phahn
 GID = 1009  # FIXME: Tech
 POOL = '/var/lib/libvirt/images'
-HOST = 'qemu+ssh://build@krus.knut.univention.de/system'
+HOST = 'qemu+ssh://build@' + ARGS.kvm_server + '/system'
 QEMU = '/usr/bin/kvm'
 LOCAL = '127.0.0.1'  # TODO: IPv6
 
