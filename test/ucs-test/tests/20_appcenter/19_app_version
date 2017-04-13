@@ -1,0 +1,16 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if latest app version is installed
+## tags: [SKIP-UCSSCHOOL, basic, apptest]
+## roles-not: [basesystem]
+## packages:
+##   - univention-appcenter
+## exposure: safe
+
+for app in $(< /var/cache/appcenter-installed.txt); do
+	latest_version="$(univention-app get $app --values-only version)"
+	installed_version="$(ucr get appcenter/apps/$app/version)"
+	echo $app: latest $latest_version, installed $installed_version
+	test "$latest_version" = "$installed_version" || exit 110
+done
+
+exit 0
