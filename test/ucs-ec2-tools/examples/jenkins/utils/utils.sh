@@ -254,9 +254,8 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		latestversion="$(python -c "from univention.appcenter.app import AppManager; print AppManager.find('$app', latest=True).version")"
 		username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
-		if [ -n "$(univention-app get "$app=$latestversion" DockerImage)" ]; then
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			else
