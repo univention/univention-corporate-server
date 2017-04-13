@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-web
+fix: 1.0.42-9A~4.2.0.201704131427
+desc: |
+ This update addresses the following issue(s):
+ * Use locale aware sorting for values inside grids.
+bug: [44361]
