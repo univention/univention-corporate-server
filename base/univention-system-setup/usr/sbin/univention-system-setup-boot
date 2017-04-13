@@ -45,7 +45,7 @@ ACTION=$1
 
 eval "$(univention-config-registry shell)"
 
-SITE_INITIALSETUP="univention/initialsetup.html"
+SITE_INITIALSETUP="univention/initialsetup/"
 SITE_SYSTEM_SETUP='univention/setup/?username=root'
 
 _has_system_setup_boot_startsite() {

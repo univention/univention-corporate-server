@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-13) unstable; urgency=medium
+
+  * Bug #42133: Fix aws setup page link
+  * Bug #44284: Add u-self-service-master package to download-packages script
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 13 Apr 2017 12:05:31 +0200
+
 univention-system-setup (10.0.10-12) unstable; urgency=medium
 
   * Bug #42853: Ensure to use correct initial locale + support en_US as locale
