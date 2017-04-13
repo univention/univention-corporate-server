@@ -48,12 +48,12 @@ class Installer(object):
 		self.vm_config = vm_config
 
 		host = self.__get_host()
-		# Note: The second part of this initialisation is in __enter__().
 		self.vnc_connection = VNCConnection(host)
+		# Note: The second part of this initialisation is in __enter__().
 
 	def __enter__(self):
 		self.client = self.vnc_connection.__enter__()
-		self.__set_ocr_language('en')
+		self.__set_language('en')
 		return self
 
 	def __exit__(self, etype, exc, etraceback):
@@ -172,14 +172,14 @@ class Installer(object):
 	def setup_ucs_master(self):
 		self.client.waitForText(self.locale_strings['domain_setup'], timeout=1200, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['setup_master'])
-		self.client.keyPress('enter')
+		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['account_info'], timeout=30)
 		self.client.enterText(self.locale_strings['company'])
-		self.client.keyPress('enter')
+		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.keyPress('enter')
+		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
 		self.client.mouseClickOnText(self.locale_strings['next'])

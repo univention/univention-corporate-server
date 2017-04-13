@@ -18,7 +18,6 @@ from time import sleep
 ENCODING = 'UTF-8'
 
 VM_NAME = "installer-target"
-#VM_ISO = "/mnt/omar/vmwares/kvm/iso/ucs/UCS-4.2-0-amd64.iso"
 VM_ISO = "/mnt/omar/vmwares/kvm/iso/iso-tests/ucs_4.2-0-latest-amd64.iso"
 VM_MAC = "62:54:00:35:36:33"
 for VM_BRIDGE in ["virbr0", "br0", "eth0"]:
