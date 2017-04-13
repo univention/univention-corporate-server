@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.6-17) unstable; urgency=medium
+
+  * Bug #44276: Fix handling of Printer-Admins
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Apr 2017 14:17:49 +0200
+
 univention-s4-connector (11.0.6-16) unstable; urgency=medium
 
   * Bug #44276: Fix handling of Printer-Admins and looking for
