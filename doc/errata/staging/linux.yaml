@@ -3,7 +3,7 @@ release: "3.3"
 version: [0,1]
 scope: ucs_3.3-0-errata3.3-1
 src: linux
-fix: 3.16.39-1~bpo70+1~ucs3.3.223.201703091448
+fix: 3.16.39-1~bpo70+1~ucs3.3.225.201704150007
 desc: |
  This update of the Linux kernel to 3.16.39 addresses the following issues:
  * perf: Fix event->ctx locking (CVE-2016-6786 CVE-2016-6787)
@@ -59,6 +59,63 @@ desc: |
  * Denial-of-service flaw in the IPv4 networking code.  This can be triggered
    by a local or remote attacker if a local UDP or raw socket has the
    IP_RETOPTS option (CVE-2017-5970)
+ * fs/namespace.c in the Linux kernel before 4.9 does not restrict how many
+   mounts may exist in a mount namespace, which allows local users to cause a
+   denial of service (memory consumption and deadlock) via MS_BIND mount
+   system calls, as demonstrated by a loop that triggers exponential growth in
+   the number of mounts (CVE-2016-6213)
+ * The tipc_msg_build function in net/tipc/msg.c in the Linux kernel through
+   4.8.11 does not validate the relationship between the minimum fragment
+   length and the maximum packet size, which allows local users to gain
+   privileges or cause a denial of service (heap-based buffer overflow) by
+   leveraging the CAP_NET_ADMIN capability (CVE-2016-8632)
+ * Race condition in the ion_ioctl function in
+   drivers/staging/android/ion/ion.c in the Linux kernel before 4.6 allows
+   local users to gain privileges or cause a denial of service
+   (use-after-free) by calling ION_IOC_FREE on two CPUs at the same time
+   (CVE-2016-9120)
+ * arch/x86/kvm/vmx.c in the Linux kernel through 4.9 mismanages the #BP and
+   #OF exceptions, which allows guest OS users to cause a denial of service
+   (guest OS crash) by declining to handle an exception thrown by an L2 guest
+   (CVE-2016-9588)
+ * Race condition in the L2TPv3 IP Encapsulation feature in the Linux kernel
+   before 4.8.14 allows local users to gain privileges or cause a denial of
+   service (use-after-free) by making multiple bind system calls without
+   properly ascertaining whether a socket has the SOCK_ZAPPED status, related
+   to net/l2tp/l2tp_ip.c and net/l2tp/l2tp_ip6.c (CVE-2016-10200)
+ * The ext4_fill_super function in fs/ext4/super.c in the Linux kernel through
+   4.9.8 does not properly validate meta block groups, which allows physically
+   proximate attackers to cause a denial of service (out-of-bounds read and
+   system crash) via a crafted ext4 image (CVE-2016-10208)
+ * Race condition in drivers/tty/n_hdlc.c in the Linux kernel through 4.10.1
+   allows local users to gain privileges or cause a denial of service (double
+   free) by setting the HDLC line discipline (CVE-2017-2636)
+ * The do_shmat function in ipc/shm.c in the Linux kernel through 4.9.12 does
+   not restrict the address calculated by a certain rounding operation, which
+   allows local users to map page zero, and consequently bypass a protection
+   mechanism that exists for the mmap system call, by making crafted shmget
+   and shmat system calls in a privileged context (CVE-2017-5669)
+ * The tcp_splice_read function in net/ipv4/tcp.c in the Linux kernel before
+   4.9.11 allows remote attackers to cause a denial of service (infinite loop
+   and soft lockup) via vectors involving a TCP packet with the URG flag
+   (CVE-2017-6214)
+ * The LLC subsystem in the Linux kernel before 4.9.13 does not ensure that a
+   certain destructor exists in required circumstances, which allows local
+   users to cause a denial of service (BUG_ON) or possibly have unspecified
+   other impact via crafted system calls (CVE-2017-6345)
+ * Race condition in net/packet/af_packet.c in the Linux kernel before 4.9.13
+   allows local users to cause a denial of service (use-after-free) or
+   possibly have unspecified other impact via a multithreaded application that
+   makes PACKET_FANOUT setsockopt system calls (CVE-2017-6346)
+ * The hashbin_delete function in net/irda/irqueue.c in the Linux kernel
+   before 4.9.13 improperly manages lock dropping, which allows local users to
+   cause a denial of service (deadlock) via crafted operations on IrDA devices
+   (CVE-2017-6348)
+ * net/sctp/socket.c in the Linux kernel through 4.10.1 does not properly
+   restrict association peel-off operations during certain wait states, which
+   allows local users to cause a denial of service (invalid unlock and double
+   free) via a multithreaded application. NOTE: this vulnerability exists
+   because of an incorrect fix for CVE-2017-5986 (CVE-2017-6353)
 note: This is the first part of the update.
 bug: [43596]
 cve:
@@ -105,3 +162,16 @@ cve:
  - CVE-2016-9794
  - CVE-2017-2596
  - CVE-2017-5970
+ - CVE-2016-6213
+ - CVE-2016-8632
+ - CVE-2016-9120
+ - CVE-2016-9588
+ - CVE-2016-10200
+ - CVE-2016-10208
+ - CVE-2017-2636
+ - CVE-2017-5669
+ - CVE-2017-6214
+ - CVE-2017-6345
+ - CVE-2017-6346
+ - CVE-2017-6348
+ - CVE-2017-6353
