@@ -1,3 +1,9 @@
+univention-kernel-image (7.100.0-13) unstable; urgency=low
+
+  * Bug #43596: Update to 3.16.43
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 15 Apr 2017 00:05:38 +0200
+
 univention-kernel-image (7.100.0-12) unstable; urgency=low
 
   * Bug #43596: Update to 3.16.39
