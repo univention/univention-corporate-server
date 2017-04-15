@@ -1,3 +1,9 @@
+ucs-test (7.0.21-14) unstable; urgency=low
+
+  * Bug #43914: Disable 09_updater/7*_debug output
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 15 Apr 2017 10:11:21 +0200
+
 ucs-test (7.0.21-13) unstable; urgency=low
 
   * Bug #44366: added 20_appcenter/19_app_version

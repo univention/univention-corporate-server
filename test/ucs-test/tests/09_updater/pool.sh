@@ -31,7 +31,7 @@ bug43914 () {
 	[ -n "${UT_PERF:-}" ] && retun 0
 	exec env UT_PERF=$$ perf record -o "$DST/ucs-test-$name.perf" -g -F 10 -q -- "$SHELL" "$0" "$@" || :
 }
-bug43914 "${0##*/}"
+#bug43914 "${0##*/}"
 # if UT_VERBOSE is set, output messages to STDERR, otherwise /dev/null
 case "${UT_VERBOSE-}" in
 	/?*|./?*)
