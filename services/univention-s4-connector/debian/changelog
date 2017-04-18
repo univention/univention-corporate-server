@@ -1,3 +1,12 @@
+univention-s4-connector (10.0.4-11) unstable; urgency=medium
+
+  * Bug #44291: Rejects for DNs containing non-ASCII characters could
+    not be saved, becasue python-sqlite3 doesn't accept UTF-8, causing
+    rejects not to be visible but keeping the S4-Connector retrying
+    endlessly, flooding the logs with rejects.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Apr 2017 12:20:51 +0200
+
 univention-s4-connector (10.0.4-10) unstable; urgency=medium
 
   * Bug #44289: Fix handling of Printer-Admins and searching for

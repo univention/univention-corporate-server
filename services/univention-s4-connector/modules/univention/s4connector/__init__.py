@@ -570,7 +570,6 @@ class ucs:
 
 	def _save_rejected_ucs(self, filename, dn):
 		_d = ud.function('ldap._save_rejected_ucs')
-		modstring_dn = univention.s4connector.s4.compatible_modstring(dn)
 		self._set_config_option('UCS rejected', filename, modstring_dn)
 
 	def _get_rejected_ucs(self, filename):
