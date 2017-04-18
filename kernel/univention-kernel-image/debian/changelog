@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-27) unstable; urgency=low
+
+  * Bug #43602: Update to 3.10.105
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 18 Apr 2017 09:57:23 +0200
+
 univention-kernel-image (7.0.0-26) unstable; urgency=low
 
   * Bug #42983: Backport no_mbcache
