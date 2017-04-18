@@ -26,7 +26,7 @@
 		Die Anmeldung an der Oberfläche geschieht über eine zentrale Seite für alle Unterseiten von UCS sowie Drittherstellern sofern diese einen webbasierten <foreignphrase>Single Sign-on</foreignphrase> unterstützen (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
-		Zentraler Ausganspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
+		Zentraler Ausgangspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
 		Die Portalseite ist standardmäßig auf dem &ucsMaster; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
 		Allen anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsMaster; an.
 		Alle Aspekte der Portalseite können umfangreich an die eigenen Bedürfnisse angepasst werden (<xref linkend="central:portal"/>).
@@ -118,7 +118,7 @@
 		UCS stellt eine zentral Anmeldeseite zur Verfügung.
 		Die Anmeldung an der &ucsWeb; geschieht zentral mit den Anmeldedaten des jeweiligen Domänenkontos.
 		Auf der Portalseite kann der Anmeldevorgang entweder über das Benutzermenü und dann <guimenu>Anmelden</guimenu> (letzter Eintrag)  oder über einen Klick auf das Schlosssymbol in der Kopfzeile oben rechts angestoßen werden.
-		Setzt eine Seite (wie bspw. &ucsUMC;) eine Anmeldunge voraus, so wird automatisch auf die zentrale Anmeldeseite weitergeleitet.
+		Setzt eine Seite (wie bspw. &ucsUMC;) eine Anmeldung voraus, so wird automatisch auf die zentrale Anmeldeseite weitergeleitet.
 		Zum Abmelden kann analog entweder auf das (geöffnete) Schlosssymbol in der Kopfzeile geklickt oder der Eintrag <guimenu>Abmelden</guimenu> im Benutzermenü (letzter Eintrag) ausgewählt werden.
 	</para>
 
@@ -148,7 +148,7 @@
 
 	  <listitem><simpara>
 		In einigen Fällen kann es notwendig sein, eine Anmeldung mit dem lokalen <systemitem class="username">root</systemitem>-Konto des Systems durchzuführen (siehe <xref linkend="computers:rootaccount"/>).
-		Dieses Konto ermöglicht lediglich den Zugrif auf UMC-Module zur Verwaltung und Konfiguration des lokalen Systems.
+		Dieses Konto ermöglicht lediglich den Zugriff auf UMC-Module zur Verwaltung und Konfiguration des lokalen Systems.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -159,7 +159,7 @@
 	</itemizedlist>
 
 	<para>
-		Die Dauer einer Browser-Sitzung beträgt 8 Stunden bei SSO-Anmeldung danach ist eine erneute Anmeldung erforderlich.
+		Die Dauer einer Browser-Sitzung beträgt 8 Stunden bei Anmeldung über SSO, danach ist eine erneute Anmeldung erforderlich.
 		Bei Anmeldung am lokalen UCS-System wird die Browser-Sitzung nach 8 Stunden Inaktivität automatisch geschlossen.
 	</para>
 
@@ -180,17 +180,17 @@
 	<para>
 		Wie in <xref linkend="portal-schema"/> dargestellt, können Portaleinträge (also Verweise auf Applikationen/Apps/Dienste; UDM-Objekttyp <classname>settings/portal_entry</classname>) keinem, einem oder mehreren Portalen zugeordnet sein.
 		Ein Portal selbst (UDM-Objekttyp <classname>settings/portal</classname>) stellt alle Einträge dar, die mit ihm verknüpft sind.
-		Ein Portal kann keinem, einem oder mehreren UCS-Rechnerobjekten zugewiesen sein (dies geschieht direkt am Rechnerobjekt selber).
+		Ein Portal kann keinem, einem oder mehreren Rechnerobjekten zugewiesen sein (dies geschieht direkt am Rechnerobjekt selber).
 	</para>
 	<para>
 		Standardmäßig ist UCS so voreingestellt, dass es zwei Portale gibt.
-		Das Portal <emphasis>domain</emphasis> ist mit dem &ucsMaster; der Domäne verknüpft.
+		Das Portal <foreignphrase>domain</foreignphrase> ist mit dem &ucsMaster; der Domäne verknüpft.
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
-		Das Portal <emphasis>local</emphasis> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
+		Das Portal <foreignphrase>local</foreignphrase> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
 		Hier werden neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
 	</para>
 	<para>
-		Eigene Portale und Portaleinträge können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> (siehe <xref linkend="central:navigation"/>) unterhalb des Containers <emphasis>cn=portal,cn=univention</emphasis> angelegt und verwaltet werden.
+		Eigene Portale und Portaleinträge können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> (siehe <xref linkend="central:navigation"/>) unterhalb des Containers <uri>cn=portal,cn=univention</uri> angelegt und verwaltet werden.
 	</para>
 	<figure id="portal-schema">
 		<title>Schema des Portal-Konzepts in UCS: Portale können frei definiert und UCS-Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren Portalen angezeigt werden.</title>

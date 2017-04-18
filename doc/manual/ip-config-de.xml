@@ -1823,7 +1823,7 @@
 	<para>
 	  Darüber hinaus werden die im Verzeichnis
 	  <filename class="directory">/etc/security/packetfilter.d/</filename> liegenden
-	  Konfigurations-Skripte in alphabetischer Reihenfolge
+	  Konfigurationsskripte in alphabetischer Reihenfolge
 	  ausgeführt. Standardmäßig sind alle Skripte mit zwei führenden Ziffern
 	  benannt, so dass eine einfache Festlegung der Reihenfolge möglich
 	  ist. Die Skripte müssen als ausführbar markiert sein.

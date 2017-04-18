@@ -21,9 +21,9 @@
 		The &ucsWeb; is the central tool for managing a UCS domain as well as for accessing installed applications of the domain.
 	</para>
 	<para>
-		The &ucsWeb; is divided into several subpages which all have a similarily designed header.
+		The &ucsWeb; is divided into several subpages which all have a similarly designed header.
 		Via the symbols in the top right, one may launch a search on the current page (magnifier), log in/out (lock) or open the user menu (three bars).
-		The login at the web interface is done via a centrale page once for all sub pages of UCS as well as for third party applications as far as a web based <foreignphrase>single sign-on</foreignphrase> is supported (<xref linkend="central-management-umc:login"/>).
+		The login at the web interface is done via a central page once for all sub pages of UCS as well as for third party applications as far as a web based <foreignphrase>single sign-on</foreignphrase> is supported (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
 		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="fig-ucs-portal"/>).
@@ -46,7 +46,7 @@
 	<para>
 		The subsequent sections detail the usage of various aspects of the domain management.
 		<xref linkend="central:navigation"/> gives an overview of the LDAP directory browser.
-		The use of administrative settings via policies is discused in <xref linkend="central:policies"/>.
+		The use of administrative settings via policies is discussed in <xref linkend="central:policies"/>.
 		How to extend the scope of function of the domain administration is detailed in <xref linkend="central:extendedattrs"/>.
 		<xref linkend="delegated-administration"/> explains delegating administration rights to additional user groups.
 	</para>
@@ -120,7 +120,7 @@
 	<para>
 		UCS comes with a central login page.
 		By default, a <foreignphrase>single sign-on</foreignphrase> (SSO) is carried out via SAML (cf. <xref linkend="domain:saml"/>) provided that <uri>ucs-sso.<replaceable>domainname</replaceable></uri> can be reached.
-		After succesful login, a session is valid for all UCS systems of the domain as well as for third party Apps if these support web based SSO.
+		After successful login, a session is valid for all UCS systems of the domain as well as for third party Apps if these support web based SSO.
 		In case <uri>ucs-sso.<replaceable>domainname</replaceable></uri> cannot be reached, the login is carried out at the local UCS system.
 		The session is then only valid for the UCS web pages on the same system.
 		It is possible to enforce a login on the local system by clicking on the link <guimenu>Login without Single Sign On</guimenu>.
@@ -136,7 +136,7 @@
 			and configuration of the local system as well as UMC modules for the administration of data
 			in the LDAP directory are displayed.
 			The initial password of this account has been specified in the setup wizard during the installation.
-			It corresponds to the intial password of the local <systemitem class="username">root</systemitem> account.
+			It corresponds to the initial password of the local <systemitem class="username">root</systemitem> account.
 			<systemitem class="username">Administrator</systemitem> is also the account which should be used for the initial login at a newly installed &ucsMaster; system.
 			</simpara>
 		</listitem>
@@ -158,7 +158,7 @@
 	<para>
 		The duration of a browser session is 8 hours for the SSO login.
 		After these, the login process must be carried out again.
-		For the login at the local UCS system, the browser sesson will be automatically closed after an inactivity of 8 hours.
+		For the login at the local UCS system, the browser session will be automatically closed after an inactivity of 8 hours.
 	</para>
 
 	<para>
@@ -174,13 +174,13 @@
 	<para>
 		The concept of portal pages replaces the previous start sites of UCS 4.1.
 		Portal pages offer a central view of all available services in a UCS domain.
-		Requirements strongly differ from small to large environments in organisations, public authorities, or even schools.
+		Requirements strongly differ from small to large environments in organizations, public authorities, or even schools.
 		Therefore, UCS implemented a very flexible and individually customizable concept for portal pages.
 	</para>
 	<para>
 		As illustrated in <xref linkend="portal-schema"/>, portal entries (i.e., links to applications/Apps/services; UDM object type <classname>settings/portal_entry</classname>) can be assigned to none, one or multiple portals.
 		A portal itself (UDM object type <classname>settings/portal</classname>) renders all entries which are assigned to it.
-		A portal can then be assigned to none, one or multiple UCS computer objects (this is done at the computer object itself).
+		A portal can then be assigned to none, one or multiple computer objects (this is done at the computer object itself).
 	</para>
 	<para>
 		By default, UCS is configured to have two portals.
@@ -190,10 +190,10 @@
 		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsMaster; are shown.
 	</para>
 	<para>
-		Custom portals and portal entries can be defined and managed via the UMC module <guimenu>LDAP directory</guimenu> (cf. <xref linkend="central:navigation"/>) below the container <emphasis>cn=portal,cn=univention</emphasis>.
+		Custom portals and portal entries can be defined and managed via the UMC module <guimenu>LDAP directory</guimenu> (cf. <xref linkend="central:navigation"/>) below the container <uri>cn=portal,cn=univention</uri>.
 	</para>
 	<figure id="portal-schema">
-		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigend to UCS systems as start site; a link entry can be displayed on multiple portals.</title>
+		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigned to UCS systems as start site; a link entry can be displayed on multiple portals.</title>
 		<graphic align="center" width="60%" fileref="illustrations42/portal-schema.png"/>
 	</figure>
 </section>
