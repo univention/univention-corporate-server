@@ -3,11 +3,15 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-s4-connector
-fix: 10.0.4-10.635.201704181211
+fix: 10.0.4-11.636.201704181221
 desc: |
  This update addresses the following issue(s):
  * Add new UCR variables
    `connector/s4/mapping/{gpo,wmifilter,msprintconnectionpolicy}/syncmode`.
  * Fix handling of Printer-Admins and searching for conflicting deleted
    objects by objectsid.
-bug: [43629,44289]
+ * Rejects for DNs containing non-ASCII characters could not be saved,
+   because python-sqlite3 doesn't accept UTF-8, causing rejects not to be
+   visible but keeping the S4-Connector retrying endlessly, flooding the
+   logs with rejects.
+bug: [43629,44289,44291]
