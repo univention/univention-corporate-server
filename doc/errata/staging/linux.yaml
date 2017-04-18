@@ -1,0 +1,91 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: linux
+fix: 3.10.104-0.1.226.201704180954
+desc: |-
+ This update addresses the following issues:
+ * Xen, when used on a system providing PV backends, allows local guest OS
+   administrators to cause a denial of service (host OS crash) or gain
+   privileges by writing to memory shared between the frontend and backend,
+   aka a double fetch vulnerability (CVE-2015-8550)
+ * The PCI backend driver in Xen, when running on an x86 system and using
+   Linux 3.1.x through 4.3.x as the driver domain, allows local guest
+   administrators to hit BUG conditions and cause a denial of service (NULL
+   pointer dereference and host OS crash) by leveraging a system with access
+   to a passed-through MSI or MSI-X capable physical PCI device and a crafted
+   sequence of XEN_PCI_OP_* operations, aka "Linux pciback missing sanity
+   checks." (CVE-2015-8551)
+ * The tty_set_termios_ldisc function in drivers/tty/tty_ldisc.c in the Linux
+   kernel before 4.5 allows local users to obtain sensitive information from
+   kernel memory by reading a tty data structure (CVE-2015-8964)
+ * crypto/algif_skcipher.c in the Linux kernel before 4.4.2 does not verify
+   that a setkey operation has been performed on an AF_ALG socket before an
+   accept system call is processed, which allows local users to cause a denial
+   of service (NULL pointer dereference and system crash) via a crafted
+   application that does not supply a key, related to the lrw_crypt function
+   in crypto/lrw.c (CVE-2015-8970)
+ * Xen and the Linux kernel through 4.5.x do not properly suppress hugetlbfs
+   support in x86 PV guests, which allows local PV guest OS users to cause a
+   denial of service (guest OS crash) by attempting to access a hugetlbfs
+   mapped area (CVE-2016-3961)
+ * The tcp_check_send_head function in include/net/tcp.h in the Linux kernel
+   before 4.7.5 does not properly maintain certain SACK state after a failed
+   data copy, which allows local users to cause a denial of service
+   (tcp_xmit_retransmit_queue use-after-free and system crash) via a crafted
+   SACK option (CVE-2016-6828)
+ * The proc_keys_show function in security/keys/proc.c in the Linux kernel
+   through 4.8.2, when the GNU Compiler Collection (gcc) stack protector is
+   enabled, uses an incorrect buffer size for certain timeout data, which
+   allows local users to cause a denial of service (stack memory corruption
+   and panic) by reading the /proc/keys file (CVE-2016-7042)
+ * The arcmsr_iop_message_xfer function in drivers/scsi/arcmsr/arcmsr_hba.c in
+   the Linux kernel through 4.8.2 does not restrict a certain length field,
+   which allows local users to gain privileges or cause a denial of service
+   (heap-based buffer overflow) via an ARCMSR_MESSAGE_WRITE_WQBUFFER control
+   code (CVE-2016-7425)
+ * drivers/firewire/net.c in the Linux kernel before 4.8.7, in certain unusual
+   hardware configurations, allows remote attackers to execute arbitrary code
+   via crafted fragmented packets (CVE-2016-8633)
+ * The TCP stack in the Linux kernel before 4.8.10 mishandles skb truncation,
+   which allows local users to cause a denial of service (system crash) via a
+   crafted application that makes sendto system calls, related to
+   net/ipv4/tcp_ipv4.c and net/ipv6/tcp_ipv6.c (CVE-2016-8645)
+ * The mpi_powm function in lib/mpi/mpi-pow.c in the Linux kernel through
+   4.8.11 does not ensure that memory is allocated for limb data, which allows
+   local users to cause a denial of service (stack memory corruption and
+   panic) via an add_key system call for an RSA key with a zero exponent
+   (CVE-2016-8650)
+ * Stack-based buffer overflow in the brcmf_cfg80211_start_ap function in
+   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c in the Linux
+   kernel before 4.7.5 allows local users to cause a denial of service (system
+   crash) or possibly have unspecified other impact via a long SSID
+   Information Element in a command to a Netlink socket (CVE-2016-8658)
+ * The sctp_sf_ootb function in net/sctp/sm_statefuns.c in the Linux kernel
+   before 4.8.8 lacks chunk-length checking for the first chunk, which allows
+   remote attackers to cause a denial of service (out-of-bounds slab access)
+   or possibly have unspecified other impact via crafted SCTP data
+   (CVE-2016-9555)
+ * Race condition in the snd_pcm_period_elapsed function in
+   sound/core/pcm_lib.c in the ALSA subsystem in the Linux kernel before 4.7
+   allows local users to cause a denial of service (use-after-free) or
+   possibly have unspecified other impact via a crafted
+   SNDRV_PCM_TRIGGER_START command (CVE-2016-9794)
+note: This is the first part of the update.
+bug: [43602]
+cve:
+- CVE-2015-8550
+- CVE-2015-8551
+- CVE-2015-8964
+- CVE-2015-8970
+- CVE-2016-3961
+- CVE-2016-6828
+- CVE-2016-7042
+- CVE-2016-7425
+- CVE-2016-8633
+- CVE-2016-8645
+- CVE-2016-8650
+- CVE-2016-8658
+- CVE-2016-9555
+- CVE-2016-9794
