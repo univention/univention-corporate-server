@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: freetype
-fix: 2.4.9-1.1.66.201703071341
+fix: 2.4.9-1.1.74.201704181350
 desc: |
  This update addresses the following issues:
  * remote denial of service (integer overflow and heap-based buffer overflow)
@@ -15,6 +15,8 @@ desc: |
  * remote denial of service (infinite loop) via a Type42 font (CVE-2014-9747)
  * remote denial of service (heap-based buffer over-read) or possibly
    unspecified other impact via a crafted file (CVE-2016-10244)
+ * out-of-bounds write caused by a heap-based buffer overflow related to
+   the cff_parser_run function in cff/cffparse.c (CVE-2016-10328)
 bug: [40548]
 cve:
  - CVE-2014-9674
@@ -22,3 +24,4 @@ cve:
  - CVE-2014-9746
  - CVE-2014-9747
  - CVE-2016-10244
+ - CVE-2016-10328
