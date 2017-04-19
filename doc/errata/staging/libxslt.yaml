@@ -1,0 +1,24 @@
+product: ucs
+release: "3.3"
+version: [1]
+scope: ucs_3.3-0-errata3.3-1
+src: libxslt
+fix: 1.1.26-6~ucs3.3.44.201704191038
+desc: |
+ This update addresses the following issues:
+ * The xsltStylePreCompute function in preproc.c does not check if
+   the parent nonfusion" issue. (CVE-2015-7995)
+ * numbers.c mishandles nssibly have unspecified other impact via a
+   crafted document. (CVE-2016-1683)
+ * numbers.c mishandles t or resource consumption) or possibly have
+   unspecified other impact via a crafted document. (CVE-2016-1684)
+ * heap overread can cause arbitrary code execution or denial of
+   service (CVE-2016-4738)
+ * integer overflow in libxslt (CVE-2017-5029)
+bug: [41561]
+cve:
+ - CVE-2015-7995
+ - CVE-2016-1683
+ - CVE-2016-1684
+ - CVE-2016-4738
+ - CVE-2017-5029
