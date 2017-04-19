@@ -44,7 +44,7 @@ from vminstall.vmconfig import Config as VmConfig
 class Installer(object):
 	def __init__(self):
 		init_logger('info')
-		self.args = self.__parse_args()
+		self.args = self.parse_args()
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = VmConfig(
 			ip=self.args.ip,
@@ -57,13 +57,13 @@ class Installer(object):
 
 	def __enter__(self):
 		self.client = self.vnc_connection.__enter__()
-		self.__set_language('en')
+		self.__set_language(self.vm_config.language)
 		return self
 
 	def __exit__(self, etype, exc, etraceback):
 		self.vnc_connection.__exit__(etype, exc, etraceback)
 
-	def __parse_args(self):
+	def parse_args(self):
 		parser = argparse.ArgumentParser(description='VNC example test')
 		parser.add_argument('host', metavar='vnc_host', help='Host with VNC port to connect to')
 		parser.add_argument('--ip', dest='ip', required=True, help='The IP to assign to this virtual machine')
@@ -94,10 +94,12 @@ class Installer(object):
 		return self.args.host
 
 	def skip_boot_device_selection(self):
+		self.__set_language('en')
 		self.client.waitForText('start with default settings')
 		self.client.keyPress('enter')
 
 	def select_language(self):
+		self.__set_language('en')
 		language_english_name = utils.iso_639_1_to_english_name(self.vm_config.language)
 
 		self.client.waitForText('select a language', timeout=30)
@@ -135,6 +137,7 @@ class Installer(object):
 		self.client.keyPress('enter')
 
 		self.client.waitForText(self.locale_strings['name_server'], timeout=30)
+		self.client.enterText(self.vm_config.dns_server_ip)
 		self.client.keyPress('enter')
 
 	def account_setup(self):
@@ -173,9 +176,9 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['partitioning_warning3'], timeout=30)
 		self.client.keyPress('down')
 		self.client.keyPress('enter')
+		self.client.waitForText(self.locale_strings['domain_setup'], timeout=1200, prevent_screen_saver=True)
 
 	def setup_ucs_master(self):
-		self.client.waitForText(self.locale_strings['domain_setup'], timeout=1200, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['setup_master'])
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
@@ -193,7 +196,35 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
 
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)    # FIXME: Screen saver still active!?
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)
+		self.client.mouseClickOnText(self.locale_strings['finish'])
+
+		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
+
+	def setup_ucs_slave(self):
+		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['dc_slave'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['dc_slave'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['password_field'])
+		self.client.enterText(self.locale_strings['password'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+		if not self.vm_config.update_ucs_after_install:
+			self.client.mouseClickOnText(self.locale_strings['do_update'])
+		self.client.keyPress('enter')
+
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)

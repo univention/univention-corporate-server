@@ -30,15 +30,42 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import argparse
 
-class Config(object):
-	# All information that is relevant for an UCS-installation is stored
-	# in here.
-	# E.g.: IP address of the VM, IP address of the master, DNS server,
-	# additional apps to install, update after installation (bool), ...
-	def __init__(self, ip, language='en', update_ucs_after_install=True, dns_server_ip=""):
-		self.ip = ip
-		# Use an ISO 639-1 language code here:
-		self.language = language
-		self.update_ucs_after_install = update_ucs_after_install
-		self.dns_server_ip = dns_server_ip
+from vncautomate.cli import add_config_options_to_parser
+
+from vminstall.installer import Installer
+
+
+class EnglishSlaveInstaller(Installer):
+	def __init__(self):
+		super(EnglishSlaveInstaller, self).__init__()
+		self.vm_config.update_ucs_after_install = False
+		self.vm_config.dns_server_ip = self.args.dns_server_ip
+
+	def parse_args(self):
+		parser = argparse.ArgumentParser(description='VNC example test')
+		parser.add_argument('host', metavar='vnc_host', help='Host with VNC port to connect to')
+		parser.add_argument('--ip', dest='ip', required=True, help='The IP to assign to this virtual machine')
+		parser.add_argument('--dns-server', dest='dns_server_ip', required=True, help='The IP of the name server; should be the IP of the domain controller master')
+		add_config_options_to_parser(parser)
+		args = parser.parse_args()
+		return args
+
+	def install(self):
+		self.skip_boot_device_selection()
+		self.select_language()
+		self.set_country_and_keyboard_layout()
+		self.network_setup()
+		self.account_setup()
+		self.set_time_zone()
+		self.hdd_setup()
+		self.setup_ucs_slave()
+
+
+def main():
+	with EnglishSlaveInstaller() as installer:
+		installer.install()
+
+if __name__ == '__main__':
+	main()

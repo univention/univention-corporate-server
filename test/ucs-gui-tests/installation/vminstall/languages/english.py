@@ -51,11 +51,20 @@ strings = {
 	'partitioning_warning2': 'Before the Logical Volume Manager',
 	'partitioning_commit': 'Finish partitioning and write changes',
 	'partitioning_warning3': 'the changes listed below will be written',
+
 	'domain_setup': 'domain settings',
 	'setup_master': 'Create a new',
 	'account_info': 'Organization name',
-	'company': 'Univention GmbH',
+	'company': 'Univention North America Inc.',
 	'host_settings': 'domain name',
+
+	'join_ucs': 'Join into an existing UCS',
+	'dc_slave': 'Domain controller slave',
+	'domain_join': 'Domain join information',
+	'password_field': 'Password',
+
+	'dc_backup': 'Domain controller backup',
+
 	'software_config': 'software component',
 	'next': 'Next',
 	'confirm_config': 'Please confirm',

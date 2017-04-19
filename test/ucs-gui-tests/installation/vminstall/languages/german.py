@@ -50,11 +50,18 @@ strings = {
 	'partitioning_warning2': 'Bevor der Logical Volume Manager konfiguriert werden kann',
 	'partitioning_commit': 'Partitionierung beenden und Änderungen übernehmen',
 	'partitioning_warning3': 'Wenn Sie fortfahren, werden alle unten aufgeführten',
+
 	'domain_setup': 'Domäneneinstellungen',
 	'setup_master': 'Erstellen einer neuen UCS-Domäne',
 	'account_info': 'Kontoinformationen',
 	'company': 'Univention GmbH',
 	'host_settings': 'Rechnereinstellungen',
+
+	'join_ucs': 'Einer bestehenden UCS-Domäne',
+	'dc_slave': 'Slave',
+	'domain_join': 'Informationen zum Domänenbeitritt',
+	'password_field': 'Passwort',
+
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',
 	'confirm_config': 'Bestätigen der Einstellungen',
