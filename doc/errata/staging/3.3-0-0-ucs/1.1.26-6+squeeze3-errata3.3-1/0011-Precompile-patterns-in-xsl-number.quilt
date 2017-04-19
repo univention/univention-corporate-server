@@ -1,0 +1,248 @@
+From 0d6713d715509da1fec27bec220d43aa4fc48d0f Mon Sep 17 00:00:00 2001
+From: Nick Wellnhofer <wellnhofer@aevum.de>
+Date: Mon, 8 Nov 2010 14:50:17 +0100
+Subject: [PATCH] Precompile patterns in xsl:number
+
+speedup optimization, it should not change semantic at all
+---
+ libxslt/numbers.c          | 55 ++++++++++++++--------------------------------
+ libxslt/numbersInternals.h |  4 ++++
+ libxslt/preproc.c          | 25 +++++++++++++++++----
+ 3 files changed, 41 insertions(+), 43 deletions(-)
+
+diff --git a/libxslt/numbers.c b/libxslt/numbers.c
+index 8683ca8..076ba2a 100644
+--- a/libxslt/numbers.c
++++ b/libxslt/numbers.c
+@@ -534,8 +534,8 @@ xsltNumberFormatInsertNumbers(xsltNumberDataPtr data,
+ static int
+ xsltNumberFormatGetAnyLevel(xsltTransformContextPtr context,
+ 			    xmlNodePtr node,
+-			    const xmlChar *count,
+-			    const xmlChar *from,
++			    xsltCompMatchPtr countPat,
++			    xsltCompMatchPtr fromPat,
+ 			    double *array,
+ 			    xmlDocPtr doc,
+ 			    xmlNodePtr elem)
+@@ -543,14 +543,7 @@ xsltNumberFormatGetAnyLevel(xsltTransformContextPtr context,
+     int amount = 0;
+     int cnt = 0;
+     xmlNodePtr cur;
+-    xsltCompMatchPtr countPat = NULL;
+-    xsltCompMatchPtr fromPat = NULL;
+ 
+-    if (count != NULL)
+-	countPat = xsltCompilePattern(count, doc, elem, NULL, context);
+-    if (from != NULL)
+-	fromPat = xsltCompilePattern(from, doc, elem, NULL, context);
+-	
+     /* select the starting node */
+     switch (node->type) {
+ 	case XML_ELEMENT_NODE:
+@@ -571,7 +564,7 @@ xsltNumberFormatGetAnyLevel(xsltTransformContextPtr context,
+ 
+     while (cur != NULL) {
+ 	/* process current node */
+-	if (count == NULL) {
++	if (countPat == NULL) {
+ 	    if ((node->type == cur->type) &&
+ 		/* FIXME: must use expanded-name instead of local name */
+ 		xmlStrEqual(node->name, cur->name)) {
+@@ -586,7 +579,7 @@ xsltNumberFormatGetAnyLevel(xsltTransformContextPtr context,
+ 	    if (xsltTestCompMatchList(context, cur, countPat))
+ 		cnt++;
+ 	}
+-	if ((from != NULL) &&
++	if ((fromPat != NULL) &&
+ 	    xsltTestCompMatchList(context, cur, fromPat)) {
+ 	    break; /* while */
+ 	}
+@@ -613,18 +606,14 @@ xsltNumberFormatGetAnyLevel(xsltTransformContextPtr context,
+ 
+     array[amount++] = (double) cnt;
+ 
+-    if (countPat != NULL)
+-	xsltFreeCompMatchList(countPat);
+-    if (fromPat != NULL)
+-	xsltFreeCompMatchList(fromPat);
+     return(amount);
+ }
+ 
+ static int
+ xsltNumberFormatGetMultipleLevel(xsltTransformContextPtr context,
+ 				 xmlNodePtr node,
+-				 const xmlChar *count,
+-				 const xmlChar *from,
++				 xsltCompMatchPtr countPat,
++				 xsltCompMatchPtr fromPat,
+ 				 double *array,
+ 				 int max,
+ 				 xmlDocPtr doc,
+@@ -635,17 +624,7 @@ xsltNumberFormatGetMultipleLevel(xsltTransformContextPtr context,
+     xmlNodePtr ancestor;
+     xmlNodePtr preceding;
+     xmlXPathParserContextPtr parser;
+-    xsltCompMatchPtr countPat;
+-    xsltCompMatchPtr fromPat;
+-
+-    if (count != NULL)
+-	countPat = xsltCompilePattern(count, doc, elem, NULL, context);
+-    else
+-	countPat = NULL;
+-    if (from != NULL)
+-	fromPat = xsltCompilePattern(from, doc, elem, NULL, context);
+-    else
+-	fromPat = NULL;
++
+     context->xpathCtxt->node = node;
+     parser = xmlXPathNewParserContext(NULL, context->xpathCtxt);
+     if (parser) {
+@@ -654,11 +633,11 @@ xsltNumberFormatGetMultipleLevel(xsltTransformContextPtr context,
+ 	     (ancestor != NULL) && (ancestor->type != XML_DOCUMENT_NODE);
+ 	     ancestor = xmlXPathNextAncestor(parser, ancestor)) {
+ 	    
+-	    if ((from != NULL) &&
++	    if ((fromPat != NULL) &&
+ 		xsltTestCompMatchList(context, ancestor, fromPat))
+ 		break; /* for */
+ 	    
+-	    if ((count == NULL && node->type == ancestor->type && 
++	    if ((countPat == NULL && node->type == ancestor->type &&
+ 		xmlStrEqual(node->name, ancestor->name)) ||
+ 		xsltTestCompMatchList(context, ancestor, countPat)) {
+ 		/* count(preceding-sibling::*) */
+@@ -667,7 +646,7 @@ xsltNumberFormatGetMultipleLevel(xsltTransformContextPtr context,
+ 		     preceding != NULL;
+ 		     preceding = 
+ 		        xmlXPathNextPrecedingSibling(parser, preceding)) {
+-		    if (count == NULL) {
++		    if (countPat == NULL) {
+ 			if ((preceding->type == ancestor->type) &&
+ 			    xmlStrEqual(preceding->name, ancestor->name)){
+ 			    if ((preceding->ns == ancestor->ns) ||
+@@ -690,8 +669,6 @@ xsltNumberFormatGetMultipleLevel(xsltTransformContextPtr context,
+ 	}
+ 	xmlXPathFreeParserContext(parser);
+     }
+-    xsltFreeCompMatchList(countPat);
+-    xsltFreeCompMatchList(fromPat);
+     return amount;
+ }
+ 
+@@ -779,8 +756,8 @@ xsltNumberFormat(xsltTransformContextPtr ctxt,
+ 	if (xmlStrEqual(data->level, (const xmlChar *) "single")) {
+ 	    amount = xsltNumberFormatGetMultipleLevel(ctxt,
+ 						      node,
+-						      data->count,
+-						      data->from,
++						      data->countPat,
++						      data->fromPat,
+ 						      &number,
+ 						      1,
+ 						      data->doc,
+@@ -797,8 +774,8 @@ xsltNumberFormat(xsltTransformContextPtr ctxt,
+ 	    int max = sizeof(numarray)/sizeof(numarray[0]);
+ 	    amount = xsltNumberFormatGetMultipleLevel(ctxt,
+ 						      node,
+-						      data->count,
+-						      data->from,
++						      data->countPat,
++						      data->fromPat,
+ 						      numarray,
+ 						      max,
+ 						      data->doc,
+@@ -813,8 +790,8 @@ xsltNumberFormat(xsltTransformContextPtr ctxt,
+ 	} else if (xmlStrEqual(data->level, (const xmlChar *) "any")) {
+ 	    amount = xsltNumberFormatGetAnyLevel(ctxt,
+ 						 node,
+-						 data->count,
+-						 data->from,
++						 data->countPat,
++						 data->fromPat,
+ 						 &number, 
+ 						 data->doc,
+ 						 data->node);
+diff --git a/libxslt/numbersInternals.h b/libxslt/numbersInternals.h
+index 7b3cb17..cacb272 100644
+--- a/libxslt/numbersInternals.h
++++ b/libxslt/numbersInternals.h
+@@ -17,6 +17,8 @@
+ extern "C" {
+ #endif
+ 
++struct _xsltCompMatch;
++
+ /**
+  * xsltNumberData:
+  *
+@@ -37,6 +39,8 @@ struct _xsltNumberData {
+     int groupingCharacterLen;
+     xmlDocPtr doc;
+     xmlNodePtr node;
++    struct _xsltCompMatch *countPat;
++    struct _xsltCompMatch *fromPat;
+ 
+     /*
+      * accelerators
+diff --git a/libxslt/preproc.c b/libxslt/preproc.c
+index 0e39343..4a4bfbf 100644
+--- a/libxslt/preproc.c
++++ b/libxslt/preproc.c
+@@ -39,6 +39,7 @@
+ #include "extra.h"
+ #include "imports.h"
+ #include "extensions.h"
++#include "pattern.h"
+ 
+ #ifdef WITH_XSLT_DEBUG
+ #define WITH_XSLT_DEBUG_PREPROC
+@@ -420,6 +421,10 @@ xsltFreeStylePreComp(xsltStylePreCompPtr comp) {
+ 	    }
+             break;
+         case XSLT_FUNC_NUMBER:
++            if (item->numdata.countPat != NULL)
++                xsltFreeCompMatchList(item->numdata.countPat);
++            if (item->numdata.fromPat != NULL)
++                xsltFreeCompMatchList(item->numdata.fromPat);
+             break;
+         case XSLT_FUNC_APPLYIMPORTS:
+             break;
+@@ -1426,7 +1431,7 @@ xsltNumberComp(xsltStylesheetPtr style, xmlNodePtr cur) {
+     comp->numdata.node = cur;
+     comp->numdata.value = xsltGetCNsProp(style, cur, (const xmlChar *)"value",
+ 	                                XSLT_NAMESPACE);
+-    
++
+     prop = xsltEvalStaticAttrValueTemplate(style, cur,
+ 			 (const xmlChar *)"format",
+ 			 XSLT_NAMESPACE, &comp->numdata.has_format);
+@@ -1437,10 +1442,22 @@ xsltNumberComp(xsltStylesheetPtr style, xmlNodePtr cur) {
+     }
+ 
+     comp->numdata.count = xsltGetCNsProp(style, cur, (const xmlChar *)"count",
+-					XSLT_NAMESPACE);
++                                         XSLT_NAMESPACE);
+     comp->numdata.from = xsltGetCNsProp(style, cur, (const xmlChar *)"from",
+-					XSLT_NAMESPACE);
+-    
++                                        XSLT_NAMESPACE);
++
++    prop = xsltGetCNsProp(style, cur, (const xmlChar *)"count", XSLT_NAMESPACE);
++    if (prop != NULL) {
++	comp->numdata.countPat = xsltCompilePattern(prop, cur->doc, cur, style,
++                                                    NULL);
++    }
++
++    prop = xsltGetCNsProp(style, cur, (const xmlChar *)"from", XSLT_NAMESPACE);
++    if (prop != NULL) {
++	comp->numdata.fromPat = xsltCompilePattern(prop, cur->doc, cur, style,
++                                                   NULL);
++    }
++
+     prop = xsltGetCNsProp(style, cur, (const xmlChar *)"level", XSLT_NAMESPACE);
+     if (prop != NULL) {
+ 	if (xmlStrEqual(prop, BAD_CAST("single")) ||
+-- 
+2.8.1
+
