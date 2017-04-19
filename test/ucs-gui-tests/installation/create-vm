@@ -7,6 +7,7 @@ Create installer VM programatically.
 from os.path import (join, split, splitext, exists, extsep)
 from sys import (exit, stderr)
 import argparse
+import json
 import subprocess
 import libvirt
 import random
@@ -299,7 +300,10 @@ def main():
 	tester = TestInstaller(VM_NAME)
 	tester.find_domain()
 	with tester as (host, port):
-		print("%s::%d" % (host, port))
+		if ARGS.resultfile is not None:
+			results = [{'vnchost': host, 'name': VM_NAME, 'vncport': (port - 5900)}]
+			with ARGS.resultfile as resultfile:
+				json.dump(results, resultfile)
 
 
 if __name__ == '__main__':
