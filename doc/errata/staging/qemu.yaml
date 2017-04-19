@@ -1,0 +1,24 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: qemu
+fix: 1.1.2+dfsg-6.55.201704191253
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-2620: cirrus: add blit_is_unsafe call to cirrus_bitblt
+ * CVE-2017-2615: cirrus: fix oob access issue
+ * CVE-2017-5973: xhci: apply limits to loops
+ * CVE-2017-5898: usb: ccid: check ccid apdu length
+ * CVE-2016-9921, CVE-2016-9922: display: cirrus_vga: a divide by zero in
+   cirrus_do_copy
+ * CVE-2016-9911: usb: ehci: memory leakage in ehci_init_transfer
+bug: [43359]
+cve:
+ - CVE-2016-9911
+ - CVE-2016-9921
+ - CVE-2016-9922
+ - CVE-2017-2620
+ - CVE-2017-2615
+ - CVE-2017-5973
+ - CVE-2017-5898
