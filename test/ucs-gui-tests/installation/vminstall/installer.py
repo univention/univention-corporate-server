@@ -42,7 +42,7 @@ import vminstall.languages.english as english
 
 class Installer(object):
 	def __init__(self, vm_config):
-		init_logger('warn')
+		init_logger('info')
 		self.args = self.__parse_args()
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = vm_config
@@ -189,6 +189,6 @@ class Installer(object):
 		self.client.keyPress('enter')
 
 		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)    # FIXME: Screen saver still active!?
-		self.client.mouseClickOnText(self.locale_strings['finish'])    # This got lost once. Maybe the mouse needs to be held down longer.
+		self.client.mouseClickOnText(self.locale_strings['finish'])
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
