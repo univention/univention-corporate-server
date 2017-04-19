@@ -31,12 +31,13 @@
 # <http://www.gnu.org/licenses/>.
 
 from vminstall.installer import Installer
-from vminstall.vmconfig import Config as VmConfig
 
 
 class GermanMasterInstaller(Installer):
-	def __init__(self, vm_config):
-		super(GermanMasterInstaller, self).__init__(vm_config)
+	def __init__(self):
+		super(GermanMasterInstaller, self).__init__()
+		self.vm_config.language = "de"
+		self.vm_config.update_ucs_after_install = False
 
 	def install(self):
 		self.skip_boot_device_selection()
@@ -49,12 +50,7 @@ class GermanMasterInstaller(Installer):
 
 
 def main():
-	vm_config = VmConfig(
-		ip='10.200.36.60',
-		language="de",
-		update_ucs_after_install=False
-	)
-	with GermanMasterInstaller(vm_config) as installer:
+	with GermanMasterInstaller() as installer:
 		installer.install()
 
 if __name__ == '__main__':

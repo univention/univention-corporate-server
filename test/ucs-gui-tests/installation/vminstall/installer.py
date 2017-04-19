@@ -38,14 +38,18 @@ from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 import vminstall.utils as utils
 import vminstall.languages.german as german
 import vminstall.languages.english as english
+from vminstall.vmconfig import Config as VmConfig
 
 
 class Installer(object):
-	def __init__(self, vm_config):
+	def __init__(self):
 		init_logger('info')
 		self.args = self.__parse_args()
 		self.ocr_config = self.__get_ocr_config()
-		self.vm_config = vm_config
+		self.vm_config = VmConfig(
+			ip=self.args.ip,
+			language="en",
+		)
 
 		host = self.__get_host()
 		self.vnc_connection = VNCConnection(host)
@@ -62,6 +66,7 @@ class Installer(object):
 	def __parse_args(self):
 		parser = argparse.ArgumentParser(description='VNC example test')
 		parser.add_argument('host', metavar='vnc_host', help='Host with VNC port to connect to')
+		parser.add_argument('--ip', dest='ip', required=True, help='The IP to assign to this virtual machine')
 		add_config_options_to_parser(parser)
 		args = parser.parse_args()
 		return args
