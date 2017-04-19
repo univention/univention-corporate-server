@@ -1,7 +1,7 @@
 product: ucs
 release: "3.2"
 version: [8]
-scope: ucs_3.2-0-errata3.2-8
+scope: ucs_3.2-0-extsec3.2
 src: linux
 fix: 3.10.104-0.1.226.201704180954
 desc: |-
