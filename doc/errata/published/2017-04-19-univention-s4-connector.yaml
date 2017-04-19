@@ -10,3 +10,5 @@ desc: |
  * Fix handling special case of "Printer-Admins"
  * Fix the handling of UTF-8 encoded DNs
 bug: [43368, 44276]
+erratum: 2
+announced: 2017-04-19
