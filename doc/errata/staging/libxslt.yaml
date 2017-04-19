@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: libxslt
+fix: 1.1.26-14.1.42.201704190957
+desc: |
+ This update addresses the following issues:
+ * heap overread can cause arbitrary code execution or denial of service
+   (CVE-2016-4738)
+ * integer overflow in libxslt (CVE-2017-5029)
+bug: [42890]
+cve:
+ - CVE-2016-4738
+ - CVE-2017-5029
