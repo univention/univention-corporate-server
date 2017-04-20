@@ -63,6 +63,9 @@ strings = {
 	'domain_join': 'Domain join information',
 	'password_field': 'Password',
 
+	'no_domain': 'Do not use any domain',
+	'no_domain_warn': 'No domain warning',
+
 	'software_config': 'software component',
 	'next': 'Next',
 	'confirm_config': 'Please confirm',

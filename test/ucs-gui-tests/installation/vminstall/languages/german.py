@@ -62,6 +62,9 @@ strings = {
 	'domain_join': 'Informationen zum Domänenbeitritt',
 	'password_field': 'Passwort',
 
+	'no_domain': 'Keine Domäne benutzen',
+	'no_domain_warn': 'Warnung: Keine Domäne',
+
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',
 	'confirm_config': 'Bestätigen der Einstellungen',
