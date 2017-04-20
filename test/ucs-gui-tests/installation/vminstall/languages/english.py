@@ -65,6 +65,8 @@ strings = {
 
 	'dc_backup': 'Domain controller backup',
 
+	'dc_member': 'Member server',
+
 	'software_config': 'software component',
 	'next': 'Next',
 	'confirm_config': 'Please confirm',

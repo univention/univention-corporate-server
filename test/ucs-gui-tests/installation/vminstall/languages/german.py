@@ -64,6 +64,8 @@ strings = {
 
 	'dc_backup': 'Backup',
 
+	'dc_member': 'Member-Server',
+
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',
 	'confirm_config': 'Bestätigen der Einstellungen',
