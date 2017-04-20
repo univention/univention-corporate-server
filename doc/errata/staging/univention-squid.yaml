@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-squid
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The Squid proxy server now uses STARTTLS to encrypt all LDAP
+   connections (Bug #43675).
+bug: [43675]

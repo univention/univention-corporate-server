@@ -1,3 +1,9 @@
+univention-squid (9.0.2-6) unstable; urgency=medium
+
+  * Bug #43675: use STARTTLS to encrypt all LDAP connections
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 20 Apr 2017 14:24:37 +0200
+
 univention-squid (9.0.2-5) unstable; urgency=low
 
   * Bug #34206: password cache lifetime can now be set by UCRV
