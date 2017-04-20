@@ -59,13 +59,9 @@ strings = {
 	'host_settings': 'domain name',
 
 	'join_ucs': 'Join into an existing UCS',
-	'dc_slave': 'Domain controller slave',
+	'system_role': 'System role',
 	'domain_join': 'Domain join information',
 	'password_field': 'Password',
-
-	'dc_backup': 'Domain controller backup',
-
-	'dc_member': 'Member server',
 
 	'software_config': 'software component',
 	'next': 'Next',

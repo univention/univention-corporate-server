@@ -58,13 +58,9 @@ strings = {
 	'host_settings': 'Rechnereinstellungen',
 
 	'join_ucs': 'Einer bestehenden UCS-Domäne',
-	'dc_slave': 'Slave',
+	'system_role': 'Systemrolle',
 	'domain_join': 'Informationen zum Domänenbeitritt',
 	'password_field': 'Passwort',
-
-	'dc_backup': 'Backup',
-
-	'dc_member': 'Member-Server',
 
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',

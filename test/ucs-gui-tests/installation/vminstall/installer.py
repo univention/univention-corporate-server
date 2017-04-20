@@ -205,8 +205,7 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
-		self.client.waitForText(self.locale_strings['dc_backup'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['dc_backup'])
+		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
@@ -233,8 +232,8 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
-		self.client.waitForText(self.locale_strings['dc_slave'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['dc_slave'])
+		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
+		self.client.keyPress('down')
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
@@ -261,8 +260,9 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
-		self.client.waitForText(self.locale_strings['dc_member'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['dc_member'])
+		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
+		self.client.keyPress('down')
+		self.client.keyPress('down')
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
