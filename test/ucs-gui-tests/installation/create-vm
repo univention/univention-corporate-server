@@ -80,7 +80,7 @@ class TestVolume(TestXml):
 
 
 class TestDisk(TestVolume):
-	def __init__(self, fname, capacity=10):
+	def __init__(self, fname, capacity=14):
 		super(TestDisk, self).__init__(fname)
 		self.logger = getLogger('test.disk')
 		self.capacity = capacity
