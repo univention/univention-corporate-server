@@ -62,6 +62,8 @@ strings = {
 	'domain_join': 'Informationen zum Domänenbeitritt',
 	'password_field': 'Passwort',
 
+	'dc_backup': 'Backup',
+
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',
 	'confirm_config': 'Bestätigen der Einstellungen',

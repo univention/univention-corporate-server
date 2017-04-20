@@ -201,6 +201,34 @@ class Installer(object):
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
 
+	def setup_ucs_backup(self):
+		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['dc_backup'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['dc_backup'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['password_field'])
+		self.client.enterText(self.locale_strings['password'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+		if not self.vm_config.update_ucs_after_install:
+			self.client.mouseClickOnText(self.locale_strings['do_update'])
+		self.client.keyPress('enter')
+
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)
+		self.client.mouseClickOnText(self.locale_strings['finish'])
+
+		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
+
 	def setup_ucs_slave(self):
 		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
 		self.client.mouseClickOnText(self.locale_strings['next'])
