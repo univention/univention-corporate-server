@@ -1,3 +1,11 @@
+univention-squid (10.0.0-10) unstable; urgency=medium
+
+  * Bug 29576: squid: cleanup squid.conf
+  * Bug 29576: squid: unify ipaddr parsing
+  * Bug 29576: squid: include local ipv6 addresses
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 20 Apr 2017 15:18:21 +0200
+
 univention-squid (10.0.0-9) unstable; urgency=low
 
   * Bug #44287: fix kerberos auth by using correct auth helper cmd
