@@ -284,3 +284,23 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
+
+	def setup_ucs_base_system(self):
+		self.client.mouseClickOnText(self.locale_strings['no_domain'])
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['no_domain_warn'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['next'])
+
+		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+		if not self.vm_config.update_ucs_after_install:
+			self.client.mouseClickOnText(self.locale_strings['do_update'])
+		self.client.keyPress('enter')
+
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=2400, prevent_screen_saver=True)
+		self.client.mouseClickOnText(self.locale_strings['finish'])
+
+		self.client.waitForText('login:', timeout=360)
