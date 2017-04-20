@@ -46,6 +46,7 @@ strings = {
 	'partitioning_method': 'Der Installer kann Sie durch die Partitionierung einer Festplatte',
 	'partitioning_device': 'Beachten Sie, dass alle Daten auf der',
 	'partitioning_structure': 'Es gibt verschiedene Möglichkeiten',
+	'multiple_partitions': 'Separate /home-, /var-',
 	'partitioning_warning1': 'dass durch diese Aktion auch alle Daten',
 	'partitioning_warning2': 'Bevor der Logical Volume Manager konfiguriert werden kann',
 	'partitioning_commit': 'Partitionierung beenden und Änderungen übernehmen',

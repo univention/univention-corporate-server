@@ -30,16 +30,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from vminstall.installer import Installer
 
-class Config(object):
-	# All information that is relevant for an UCS-installation is stored
-	# in here.
-	# E.g.: IP address of the VM, IP address of the master, DNS server,
-	# additional apps to install, update after installation (bool), ...
-	def __init__(self, ip, language='en', update_ucs_after_install=True, dns_server_ip="", use_multiple_partitions=False):
-		self.ip = ip
-		# Use an ISO 639-1 language code here:
-		self.language = language
-		self.update_ucs_after_install = update_ucs_after_install
-		self.dns_server_ip = dns_server_ip
-		self.use_multiple_partitions = use_multiple_partitions
+
+class EnglishMasterInstaller(Installer):
+	def __init__(self):
+		super(EnglishMasterInstaller, self).__init__()
+		self.vm_config.update_ucs_after_install = False
+		self.vm_config.use_multiple_partitions = True
+
+	def install(self):
+		self.skip_boot_device_selection()
+		self.select_language()
+		self.set_country_and_keyboard_layout()
+		self.network_setup()
+		self.account_setup()
+		self.set_time_zone()
+		self.hdd_setup()
+		self.setup_ucs_master()
+
+
+def main():
+	with EnglishMasterInstaller() as installer:
+		installer.install()
+
+if __name__ == '__main__':
+	main()

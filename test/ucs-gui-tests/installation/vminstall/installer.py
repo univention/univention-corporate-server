@@ -158,6 +158,8 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['partitioning_device'], timeout=30)
 		self.client.keyPress('enter')
 		self.client.waitForText(self.locale_strings['partitioning_structure'], timeout=30)
+		if self.vm_config.use_multiple_partitions:
+			self.client.mouseClickOnText(self.locale_strings['multiple_partitions'])
 		self.client.keyPress('enter')
 
 		# This dialog only appears when the HDD is not empty.

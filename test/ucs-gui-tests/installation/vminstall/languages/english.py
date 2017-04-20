@@ -47,6 +47,7 @@ strings = {
 	'partitioning_method': 'The installer can guide you',
 	'partitioning_device': 'Note that all data on the disk',
 	'partitioning_structure': 'The disk can be partitioned',
+	'multiple_partitions': 'Separate /home, /var',
 	'partitioning_warning1': 'The selected device already contains',
 	'partitioning_warning2': 'Before the Logical Volume Manager',
 	'partitioning_commit': 'Finish partitioning and write changes',
