@@ -343,6 +343,9 @@ install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license
 "
 fi
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
+
+# fix docker app image name
+ucr set appcenter/apps/${app}/image='${$dockerimage}'
 __EOF__
 		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
 	fi
