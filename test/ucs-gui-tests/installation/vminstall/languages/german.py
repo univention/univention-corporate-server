@@ -42,7 +42,6 @@ strings = {
 	'gateway': 'Geben Sie hier die IP-Adresse',
 	'name_server': 'um Rechnernamen im Internet aufzulösen',
 	'user_and_password': 'Benutzer und Passwörter einrichten',
-	'password': 'univention',
 	'partitioning_method': 'Der Installer kann Sie durch die Partitionierung einer Festplatte',
 	'partitioning_device': 'Beachten Sie, dass alle Daten auf der',
 	'partitioning_structure': 'Es gibt verschiedene Möglichkeiten',

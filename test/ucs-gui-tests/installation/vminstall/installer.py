@@ -142,9 +142,9 @@ class Installer(object):
 
 	def account_setup(self):
 		self.client.waitForText(self.locale_strings['user_and_password'], timeout=30)
-		self.client.enterText(self.locale_strings['password'])
+		self.client.enterText(self.vm_config.password)
 		self.client.keyPress('tab')
-		self.client.enterText(self.locale_strings['password'])
+		self.client.enterText(self.vm_config.password)
 		self.client.keyPress('enter')
 
 	# Only some countries (e.g. USA) have a time zone selection dialog here.
@@ -212,7 +212,7 @@ class Installer(object):
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
 		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.locale_strings['password'])
+		self.client.enterText(self.vm_config.password)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
@@ -240,7 +240,7 @@ class Installer(object):
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
 		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.locale_strings['password'])
+		self.client.enterText(self.vm_config.password)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
@@ -269,7 +269,7 @@ class Installer(object):
 
 		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
 		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.locale_strings['password'])
+		self.client.enterText(self.vm_config.password)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)

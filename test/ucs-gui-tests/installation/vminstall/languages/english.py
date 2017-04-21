@@ -42,7 +42,6 @@ strings = {
 	'gateway': 'The gateway is an IP address',
 	'name_server': 'The name servers are used',
 	'user_and_password': 'You nedd to set a password',
-	'password': 'univention',
 	'time_zone': 'If the desired time zone',
 	'partitioning_method': 'The installer can guide you',
 	'partitioning_device': 'Note that all data on the disk',
