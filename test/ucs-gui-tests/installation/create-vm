@@ -236,7 +236,6 @@ class VmCreator(object):
 		parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
 		parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
 		parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
-		# FIXME: The amount of interfaces won't change, if a VM is reused.
 		parser.add_argument('--interfaces', dest='interface_count', default='1', help='The amount of network interfaces the virtual machine should get.')
 		parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
 		return parser.parse_args()
@@ -244,8 +243,8 @@ class VmCreator(object):
 	def reuse_or_create_vm(self):
 		try:
 			self.dom = self.conn.lookupByName(self.vm_name)
-			self.logger.info("Reusing existing VM %s", self.dom)
-			self.create_disk()
+			self.logger.info("VM %s already exists! Exiting.", self.dom)
+			exit(1)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				self.logger.error('Failed libvirt: %s', ex)
