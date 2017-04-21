@@ -123,6 +123,24 @@ class TestIso(TestVolume):
 		return dev
 
 
+class TestInterface(TestXml):
+	def __init__(self):
+		super(TestInterface, self).__init__()
+		self.mac = "52:54:00:%02x:%02x:%02x" % (
+			random.randint(0, 255), random.randint(0, 255),
+			random.randint(0, 255)
+		)
+
+	def source_tree(self):
+		interface = E.interface(
+			E.mac(address=self.mac),
+			E.source(bridge=VM_BRIDGE),
+			E.model(type="virtio"),
+			type="bridge",
+		)
+		return interface
+
+
 class TestDomain(TestXml):
 	def __init__(self, iname):
 		super(TestDomain, self).__init__()
@@ -130,9 +148,13 @@ class TestDomain(TestXml):
 		self.iname = iname
 		self.memory = 1024
 		self.disks = []
+		self.interfaces = []
 
 	def add_disk(self, disk):
 		self.disks.append(disk)
+
+	def add_interface(self, interface):
+		self.interfaces.append(interface)
 
 	def domain_tree(self):
 		dom = E.domain(
@@ -164,7 +186,6 @@ class TestDomain(TestXml):
 	def devices(self):
 		devices = E.devices(
 			E.emulator(QEMU),
-			self.interface(),
 			E.input(type="tablet", bus="usb"),
 			E.input(type="mouse", bus="ps2"),
 			self.graphics(),
@@ -173,20 +194,9 @@ class TestDomain(TestXml):
 		)
 		for disk in self.disks:
 			devices.append(disk.source_tree())
+		for interface in self.interfaces:
+			devices.append(interface.source_tree())
 		return devices
-
-	def interface(self):
-		vm_mac = "52:54:00:%02x:%02x:%02x" % (
-			random.randint(0, 255), random.randint(0, 255),
-			random.randint(0, 255)
-		)
-		interface = E.interface(
-			E.mac(address=vm_mac),
-			E.source(bridge=VM_BRIDGE),
-			E.model(type="virtio"),
-			type="bridge",
-		)
-		return interface
 
 	def graphics(self):
 		graphics = E.graphics(
@@ -215,6 +225,7 @@ class VmCreator(object):
 		self.vm_name = self.args.vm_name
 		self.vm_iso = self.args.ucs_iso
 		self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
+		self.interface_count = int(self.args.interface_count)
 		self.resultfile = self.args.resultfile
 		self.conn = libvirt.open(self.kvm_server)
 		self.domain_xml = None
@@ -225,6 +236,8 @@ class VmCreator(object):
 		parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
 		parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
 		parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
+		# FIXME: The amount of interfaces won't change, if a VM is reused.
+		parser.add_argument('--interfaces', dest='interface_count', default='1', help='The amount of network interfaces the virtual machine should get.')
 		parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
 		return parser.parse_args()
 
@@ -242,6 +255,8 @@ class VmCreator(object):
 
 	def create_domain(self):
 		self.domain_xml = TestDomain(self.vm_name)
+		for i in range(self.interface_count):
+			self.add_interface()
 		self.add_disk()
 		self.add_cdrom()
 		xml = self.domain_xml.domain_xml()
@@ -263,6 +278,9 @@ class VmCreator(object):
 		disk = pool.createXML(xml, 0)
 		vol.pool_path = disk.path()
 		return vol
+
+	def add_interface(self):
+		self.domain_xml.add_interface(TestInterface())
 
 	def add_disk(self):
 		vol = self.create_disk()
