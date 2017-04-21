@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-24) unstable; urgency=low
+
+  * Bug #43811: make sure SSL certificate cache is rewritten
+
+ -- Florian Best <best@univention.de>  Mon, 13 Mar 2017 15:28:46 +0100
+
 univention-ssl (10.0.0-23) unstable; urgency=low
 
   * Bug #22085: Fix sign command
