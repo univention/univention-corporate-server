@@ -18,7 +18,8 @@ from urlparse import urlparse
 
 ENCODING = 'UTF-8'
 
-for potential_vm_bridge in ["virbr0", "br0", "eth0"]:
+VM_BRIDGE = "eth0"
+for potential_vm_bridge in ["virbr0", "br0"]:
 	if exists(join("/sys/class/net", potential_vm_bridge, "bridge")):
 		VM_BRIDGE = potential_vm_bridge
 		break
