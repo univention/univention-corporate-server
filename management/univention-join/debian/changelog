@@ -1,3 +1,9 @@
+univention-join (8.0.4-9) unstable; urgency=low
+
+  * Bug #43811: make sure SSL certificate cache is rewritten
+
+ -- Florian Best <best@univention.de>  Mon, 13 Mar 2017 15:26:59 +0100
+
 univention-join (8.0.4-8) unstable; urgency=low
 
   * Bug #43381: redirect hostname warning to join.log
