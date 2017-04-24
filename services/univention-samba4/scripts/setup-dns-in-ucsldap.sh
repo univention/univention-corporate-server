@@ -120,7 +120,7 @@ esac
 
 if [ -n "$dc" ] || [ -n "$rodc" ]; then		### determine NTDS_objectGUID
 	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" \
-							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: //p')
+							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: //p' | grep -v '\\0ACNF:')
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: //p')
 fi
