@@ -655,7 +655,7 @@ def __unpack_cName(object):
 		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_CNAME:
-			c.append(__append_dot(ndrRecord.data))
+			c.append(ndrRecord.data)
 	return c
 
 

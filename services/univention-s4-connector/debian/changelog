@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.7-1) unstable; urgency=medium
+
+  * Bug #31311: Don't append a trailing dot to the cname record value
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Apr 2017 19:42:24 +0200
+
 univention-s4-connector (11.0.6-17) unstable; urgency=medium
 
   * Bug #44276: Fix handling of Printer-Admins
