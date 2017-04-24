@@ -33,6 +33,7 @@
 strings = {
 	'location_selection': 'Der hier ausgewählte Standort',
 	'configure_keyboard': 'Tastatur konfigurieren',
+	'multiple_network_deivces': 'Ihr System besitzt mehrere',
 	'dhcp_configuration': 'Konfigurieren des Netzwerks mit DHCP',
 	'cancel': 'Abbrechen',
 	'not_using_dhcp': 'Ihr Netzwerk benutzt möglicherweise nicht',

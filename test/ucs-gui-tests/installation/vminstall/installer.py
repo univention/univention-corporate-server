@@ -116,7 +116,11 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['configure_keyboard'], timeout=30)
 		self.client.keyPress('enter')
 
-	def network_setup(self):
+	def network_setup(self, has_multiple_network_devices=False):
+		if has_multiple_network_devices:
+			self.client.waitForText(self.locale_strings['multiple_network_deivces'], timeout=30)
+			self.client.keyPress('enter')
+
 		self.client.waitForText(self.locale_strings['dhcp_configuration'], timeout=120)
 		self.client.mouseClickOnText(self.locale_strings['cancel'])
 
