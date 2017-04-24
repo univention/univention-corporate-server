@@ -38,6 +38,7 @@ from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 import vminstall.utils as utils
 import vminstall.languages.german as german
 import vminstall.languages.english as english
+import vminstall.languages.french as french
 from vminstall.vmconfig import Config as VmConfig
 
 
@@ -84,6 +85,8 @@ class Installer(object):
 			return english.strings
 		elif language == 'de':
 			return german.strings
+		elif language == 'fr':
+			return french.strings
 
 	def __set_ocr_language(self, language):
 		language_iso_639_2 = utils.iso_639_1_to_iso_639_2(language)
@@ -113,7 +116,11 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['location_selection'], timeout=30)
 		self.client.keyPress('enter')
 
+		# Always using german keyboard layout here, because our vnc server
+		# seems to use that.
 		self.client.waitForText(self.locale_strings['configure_keyboard'], timeout=30)
+		self.client.mouseClickOnText(self.locale_strings['default_keyboard_layout_of_current_language'])
+		self.client.enterText(self.locale_strings['german_keyboard_layout'])
 		self.client.keyPress('enter')
 
 	def network_setup(self, has_multiple_network_devices=False):

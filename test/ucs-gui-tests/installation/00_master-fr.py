@@ -30,22 +30,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# TODO: Use the pycountry library here. (Adds additional dependency...)
+from vminstall.installer import Installer
 
 
-def iso_639_1_to_iso_639_2(language_code):
-	if language_code == 'en':
-		return 'eng'
-	elif language_code == 'de':
-		return 'deu'
-	elif language_code == 'fr':
-		return 'fra'
+class FrenchMasterInstaller(Installer):
+	def __init__(self):
+		super(FrenchMasterInstaller, self).__init__()
+		self.vm_config.language = "fr"
+		self.vm_config.update_ucs_after_install = False
+
+	def install(self):
+		self.skip_boot_device_selection()
+		self.select_language()
+		self.set_country_and_keyboard_layout()
+		self.network_setup()
+		self.account_setup()
+		self.hdd_setup()
+		self.setup_ucs_master()
 
 
-def iso_639_1_to_english_name(language_code):
-	if language_code == 'en':
-		return "English"
-	elif language_code == 'de':
-		return "German"
-	elif language_code == 'fr':
-		return "French"
+def main():
+	with FrenchMasterInstaller() as installer:
+		installer.install()
+
+if __name__ == '__main__':
+	main()

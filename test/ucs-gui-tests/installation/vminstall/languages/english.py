@@ -33,6 +33,8 @@
 strings = {
 	'location_selection': 'The selected location will be used',
 	'configure_keyboard': 'Configure the keyboard',
+	'default_keyboard_layout_of_current_language': 'English',
+	'german_keyboard_layout': 'German',
 	'dhcp_configuration': 'Configuring the network with DHCP',
 	'cancel': 'Cancel',
 	'not_using_dhcp': 'probably not using',
