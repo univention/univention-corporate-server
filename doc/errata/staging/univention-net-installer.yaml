@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-net-installer
+fix: 10.0.0-4A~4.2.0.201704240934
+desc: |
+ This update addresses the following issue:
+ * The configuration file has been upgrades to use the Apache 2.4 syntax.
+bug: [44213]
