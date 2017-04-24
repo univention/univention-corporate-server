@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.1-1) unstable; urgency=medium
+
+  * Bug #38983: Avoid traceback in case AD Takeover is run in AD member mode
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Apr 2017 20:08:13 +0200
+
 univention-management-console-module-adtakeover (4.0.0-3) unstable; urgency=medium
 
   * Bug #41221: Added comments for translators.

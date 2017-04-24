@@ -1489,7 +1489,7 @@ class AD_Takeover_Finalize():
 		if not "hosts/static/%s" % self.ad_server_ip in self.ucr:
 			msg = []
 			msg.append("")
-			msg.append("Error: given IP %s was not mapped to a hostname in phase I.")
+			msg.append("Error: given IP %s was not mapped to a hostname in phase I." % (self.ad_server_ip,))
 			msg.append("       Please complete phase I of the takeover before initiating the FSMO takeover.")
 			log.error("\n".join(msg))
 			raise TakeoverError(_("The Active Directory domain join was not completed successfully yet."))
@@ -1813,14 +1813,25 @@ class AD_Takeover_Finalize():
 		if dns_SPN_account_password[0] == '-':  # avoid passing an option
 			dns_SPN_account_password = '#%s' % dns_SPN_account_password
 		dns_SPN_account_name = "dns-%s" % self.ucr["hostname"]
-		run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline=False)
+
+		dnsKeyVersion = 1	## default
+		msgs = self.samdb.search(base="CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]), scope=samba.ldb.SCOPE_BASE,
+							attrs=["msDS-KeyVersionNumber"])
+		if msgs:
+			log.warn("CN=%s,CN=User already exists in sam.ldb" % dns_SPN_account_name)
+			run_and_output_to_log(["samba-tool", "user", "setpassword", dns_SPN_account_name, "--newpassword=%s" % (dns_SPN_account_password, )], log.debug, print_commandline=False)
+		else:
+			returncode = run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline=False)
+			if returncode != 0:
+				log.error("Adding CN=%s,CN=User failed!" % dns_SPN_account_name)
+				return
+
 		run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", dns_SPN_account_name], log.debug)
 		delta = ldb.Message()
 		delta.dn = ldb.Dn(self.samdb, "CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]))
 		delta["servicePrincipalName"] = ldb.MessageElement("DNS/%s" % self.local_fqdn, ldb.FLAG_MOD_REPLACE, "servicePrincipalName")
 		self.samdb.modify(delta)
 
-		dnsKeyVersion = 1  # default
 		msgs = self.samdb.search(base="CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]), scope=samba.ldb.SCOPE_BASE,
 			attrs=["msDS-KeyVersionNumber"])
 		if msgs:
@@ -1828,16 +1839,28 @@ class AD_Takeover_Finalize():
 			dnsKeyVersion = obj["msDS-KeyVersionNumber"][0]
 
 		secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		secretsdb.add({"dn": "samAccountName=%s,CN=Principals" % dns_SPN_account_name,
-			"objectClass": "kerberosSecret",
-			"privateKeytab": "dns.keytab",
-			"realm": self.ucr["kerberos/realm"],
-			"sAMAccountName": dns_SPN_account_name,
-			"secret": dns_SPN_account_password,
-			"servicePrincipalName": "DNS/%s" % self.local_fqdn,
-			"saltPrincipal": "DNS/%s@%s" % (self.local_fqdn, self.ucr["kerberos/realm"]),
-			"name": dns_SPN_account_name,
-			"msDS-KeyVersionNumber": dnsKeyVersion})
+		msgs = secretsdb.search(base="samAccountName=%s,CN=Principals" % (dns_SPN_account_name,), scope=samba.ldb.SCOPE_BASE,
+							attrs=["msDS-KeyVersionNumber"])
+		if msgs:
+			log.warn("samAccountName=%s,CN=Principals already exists in secrets.ldb" % dns_SPN_account_name)
+			if "msDS-KeyVersionNumber" in obj:
+				if dnsKeyVersion != obj["msDS-KeyVersionNumber"][0]:
+					delta = ldb.Message()
+					delta.dn = obj.dn
+					delta["secret"] = ldb.MessageElement(dns_SPN_account_password, ldb.FLAG_MOD_REPLACE, "secret")
+					delta["kvno"] = ldb.MessageElement(dnsKeyVersion, ldb.FLAG_MOD_REPLACE, "msDS-KeyVersionNumber")
+					secretsdb.modify(delta)
+		else:
+			secretsdb.add({"dn": "samAccountName=%s,CN=Principals" % dns_SPN_account_name,
+				"objectClass": "kerberosSecret",
+				"privateKeytab": "dns.keytab",
+				"realm": self.ucr["kerberos/realm"],
+				"sAMAccountName": dns_SPN_account_name,
+				"secret": dns_SPN_account_password,
+				"servicePrincipalName": "DNS/%s" % self.local_fqdn,
+				"saltPrincipal": "DNS/%s@%s" % (self.local_fqdn, self.ucr["kerberos/realm"]),
+				"name": dns_SPN_account_name,
+				"msDS-KeyVersionNumber": dnsKeyVersion})
 
 		# returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
 		# if returncode != 0:
