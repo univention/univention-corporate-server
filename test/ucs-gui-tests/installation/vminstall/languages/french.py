@@ -51,7 +51,7 @@ strings = {
 	'partitioning_warning1': 'Le périphérique choisi contient déjà',
 	'partitioning_warning2': 'Avant que le gestionnaire',
 	'partitioning_commit': 'Terminer le partitionnement',
-	'partitioning_warning3': 'cela détruira toutes les données',
+	'partitioning_warning3': 'si vous continuez, les modifications',
 
 	'domain_setup': 'Veuillez sélectionner les réglages',
 	'setup_master': 'Créer un nouveau',
