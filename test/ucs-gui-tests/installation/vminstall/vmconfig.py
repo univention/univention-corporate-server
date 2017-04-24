@@ -34,8 +34,8 @@
 class Config(object):
 	# All information that is relevant for an UCS-installation is stored
 	# in here.
-	# E.g.: IP address of the VM, IP address of the master, DNS server,
-	# additional apps to install, update after installation (bool), ...
+	# E.g.: IP address of the VM, DNS server, additional apps to install,
+	# update after installation (bool), ...
 	def __init__(self, ip, language='en', password="univention", update_ucs_after_install=True, dns_server_ip="", use_multiple_partitions=False):
 		self.ip = ip
 		# Use an ISO 639-1 language code here:

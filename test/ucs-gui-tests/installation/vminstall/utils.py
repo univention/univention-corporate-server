@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# TODO: Use the pycountry library here.
+# TODO: Use the pycountry library here. (Adds additional dependency...)
 
 
 def iso_639_1_to_iso_639_2(language_code):
