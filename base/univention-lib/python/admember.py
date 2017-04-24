@@ -776,21 +776,22 @@ def restart_service(service):
 
 
 def invoke_service(service, cmd):
-	if not os.path.exists('/etc/init.d/%s' % service):
+	init_script = '/etc/init.d/%s' % service
+	if not os.path.exists(init_script):
 		return
 	try:
-		p1 = subprocess.Popen(["invoke-rc.d", service, cmd],
+		p1 = subprocess.Popen([init_script, cmd],
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 	except OSError as ex:
-		ud.debug(ud.MODULE, ud.ERROR, "invoke-rc.d %s %s failed: %s" % (service, cmd, ex.args[1],))
+		ud.debug(ud.MODULE, ud.ERROR, "%s %s failed: %s" % (init_script, cmd, ex.args[1],))
 		return
 
 	if p1.returncode:
-		ud.debug(ud.MODULE, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
+		ud.debug(ud.MODULE, ud.ERROR, "%s %s failed (%d)" % (init_script, cmd, p1.returncode,))
 		return
 
-	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout))
+	ud.debug(ud.MODULE, ud.PROCESS, "%s %s: %s" % (init_script, cmd, stdout))
 
 
 def do_time_sync(ad_ip):
@@ -1118,7 +1119,7 @@ def revert_connector_settings(ucr=None):
 def disable_local_samba4():
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Disable local samba4")
-	stop_service("samba4")
+	stop_service("samba")
 	univention.config_registry.handler_set([u'samba4/autostart=false'])
 
 
