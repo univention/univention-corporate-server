@@ -6,5 +6,5 @@ src: univention-web
 fix: 1.0.42-10A~4.2.0.201704241500
 desc: |
  This update addresses the following issue(s):
- * Use locale aware sorting for values inside grids.
+ * Values inside of grids are now sorted locale aware.
 bug: [44361]
