@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-python
+fix:  10.0.3-3A~4.2.0.201704240907
+desc: |
+ This update addresses the following issue:
+ * The re-connecting methods for "add" and "modify" of Python-LDAP are used to
+   better handle SERVER_DOWN conditions.
+bug: [44316]
