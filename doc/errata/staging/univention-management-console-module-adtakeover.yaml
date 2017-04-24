@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-management-console-module-adtakeover
+fix: 4.0.1-1A~4.2.0.201704242009
+desc: |
+ This update addresses the following issue(s):
+ * Avoid traceback in case AD Takeover is run in AD member mode
+bug: [38983]
