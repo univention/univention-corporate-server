@@ -40,7 +40,7 @@ main () {
 		then
 			update_filenames
 		fi
-		configure_http
+		configure_http "$2"
 		install_template
 		call_joinscript 81univention-net-installer.inst
 		restart_listener
@@ -64,11 +64,13 @@ update_filenames () {
 }
 
 configure_http () {
-	if [ -x /etc/init.d/apache2 ]
+	command -v apachectl >/dev/null 2>&1 || return 0
+	if dpkg --compare-versions "$1" lt-nl 10.0.0-5  # Bug #44213: Only on upgrade to errata-4.2-0
 	then
-		a2ensite univention-net-installer
-		apachectl graceful
+		a2dissite univention-net-installer
 	fi
+	a2ensite univention-net-installer.conf
+	apachectl graceful
 }
 
 install_template () {

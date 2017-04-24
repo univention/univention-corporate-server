@@ -1,3 +1,9 @@
+univention-net-installer (10.0.0-5) unstable; urgency=low
+
+  * Bug #44213: Rename Apache configuration file
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 24 Apr 2017 09:38:52 +0200
+
 univention-net-installer (10.0.0-4) unstable; urgency=low
 
   * Bug #44213: Upgrade to Apache 2.4 syntax
