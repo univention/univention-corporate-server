@@ -44,8 +44,7 @@ case "$1" in
 		uvmm/debug/command \
 		uvmm/debug/ldap \
 		uvmm/debug/node \
-		uvmm/debug/unix \
-		auth/uvmmd/accessfile
+		uvmm/debug/unix
     rm -f /etc/pki/libvirt/clientcert.pem
     rm -f /etc/pki/libvirt/private/clientkey.pem
     rm -f /etc/pki/CA/cacert.pem

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.4-2) unstable; urgency=low
+
+  * Bug #33702: Remove forgotten access file
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 24 Apr 2017 12:09:57 +0200
+
 univention-virtual-machine-manager-daemon (6.0.4-1) unstable; urgency=medium
 
   * Bug #44128: fix error when unpickling / parsing messages from UVMMd in
