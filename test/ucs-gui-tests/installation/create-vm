@@ -64,11 +64,12 @@ class TestVolume(TestXml):
 
 
 class TestDisk(TestVolume):
-	def __init__(self, fname, capacity=14):
+	def __init__(self, fname, boot_order_index, capacity=14):
 		super(TestDisk, self).__init__(fname)
 		self.logger = getLogger('test.disk')
 		self.capacity = capacity
 		self.suffix = "qcow2"
+		self.boot_order_index = boot_order_index
 
 	def volume_tree(self):
 		vol = E.volume(
@@ -97,8 +98,8 @@ class TestDisk(TestVolume):
 		dev = E.disk(
 			E.driver(name="qemu", type="qcow2", cache="unsafe"),
 			E.source(file=self.pool_path),
-			E.target(dev="vda", bus="virtio"),
-			E.boot(order="1"),
+			E.target(dev="vd" + chr(self.boot_order_index + 96), bus="virtio"),
+			E.boot(order=str(self.boot_order_index)),
 			# E.transient(),
 			type="file", device="disk"
 		)
@@ -106,10 +107,11 @@ class TestDisk(TestVolume):
 
 
 class TestIso(TestVolume):
-	def __init__(self, fname):
+	def __init__(self, fname, boot_order_index):
 		super(TestIso, self).__init__(fname)
 		self.logger = getLogger('test.cdrom')
 		self.suffix = "iso"
+		self.boot_order_index = boot_order_index
 
 	def source_tree(self):
 		dev = E.disk(
@@ -117,7 +119,7 @@ class TestIso(TestVolume):
 			E.source(file=self.pool_path),
 			E.target(dev="hda", bus="ide"),
 			E.readonly(),
-			E.boot(order="2"),
+			E.boot(order=str(self.boot_order_index)),
 			type="file", device="cdrom"
 		)
 		return dev
@@ -223,6 +225,9 @@ class VmCreator(object):
 		self.logger = getLogger('test')
 		self.args = self.parse_args()
 		self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
+
+		self.boot_order_index = 1
+
 		self.conn = libvirt.open(self.kvm_server)
 		self.domain_xml = None
 		self.dom = None
@@ -233,6 +238,7 @@ class VmCreator(object):
 		parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
 		parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
 		parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.')
+		parser.add_argument('--disks', dest='disk_count', default=1, type=int, help='The amount of hard disks the virtual machine should get.')
 		parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
 		return parser.parse_args()
 
@@ -252,13 +258,15 @@ class VmCreator(object):
 		self.domain_xml = TestDomain(self.args.vm_name)
 		for i in range(self.args.interface_count):
 			self.add_interface()
-		self.add_disk()
+		for i in range(self.args.disk_count):
+			self.add_disk()
 		self.add_cdrom()
 		xml = self.domain_xml.domain_xml()
 		self.dom = self.conn.defineXML(xml)
 
 	def create_disk(self):
-		vol = TestDisk(self.args.vm_name)
+		vol = TestDisk(self.args.vm_name + str(self.boot_order_index), boot_order_index=self.boot_order_index)
+		self.boot_order_index += 1
 		try:
 			pool = self.conn.storagePoolLookupByName('default')
 			disk = pool.storageVolLookupByName(vol.name)
@@ -282,7 +290,8 @@ class VmCreator(object):
 		self.domain_xml.add_disk(vol)
 
 	def add_cdrom(self):
-		vol = TestIso(self.args.ucs_iso)
+		vol = TestIso(self.args.ucs_iso, boot_order_index=self.boot_order_index)
+		self.boot_order_index += 1
 		self.domain_xml.add_disk(vol)
 
 	def __enter__(self):
