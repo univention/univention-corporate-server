@@ -222,11 +222,7 @@ class VmCreator(object):
 	def __init__(self):
 		self.logger = getLogger('test')
 		self.args = self.parse_args()
-		self.vm_name = self.args.vm_name
-		self.vm_iso = self.args.ucs_iso
 		self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
-		self.interface_count = int(self.args.interface_count)
-		self.resultfile = self.args.resultfile
 		self.conn = libvirt.open(self.kvm_server)
 		self.domain_xml = None
 		self.dom = None
@@ -236,14 +232,14 @@ class VmCreator(object):
 		parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
 		parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
 		parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
-		parser.add_argument('--interfaces', dest='interface_count', default='1', help='The amount of network interfaces the virtual machine should get.')
+		parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.')
 		parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
 		return parser.parse_args()
 
-	def reuse_or_create_vm(self):
+	def create_vm_if_possible(self):
 		try:
-			self.dom = self.conn.lookupByName(self.vm_name)
-			self.logger.info("VM %s already exists! Exiting.", self.dom)
+			self.dom = self.conn.lookupByName(self.args.vm_name)
+			self.logger.info("A VM with the name %s already exists! Exiting.", self.dom.name())
 			exit(1)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
@@ -253,8 +249,8 @@ class VmCreator(object):
 			self.create_domain()
 
 	def create_domain(self):
-		self.domain_xml = TestDomain(self.vm_name)
-		for i in range(self.interface_count):
+		self.domain_xml = TestDomain(self.args.vm_name)
+		for i in range(self.args.interface_count):
 			self.add_interface()
 		self.add_disk()
 		self.add_cdrom()
@@ -262,7 +258,7 @@ class VmCreator(object):
 		self.dom = self.conn.defineXML(xml)
 
 	def create_disk(self):
-		vol = TestDisk(self.vm_name)
+		vol = TestDisk(self.args.vm_name)
 		try:
 			pool = self.conn.storagePoolLookupByName('default')
 			disk = pool.storageVolLookupByName(vol.name)
@@ -286,7 +282,7 @@ class VmCreator(object):
 		self.domain_xml.add_disk(vol)
 
 	def add_cdrom(self):
-		vol = TestIso(self.vm_iso)
+		vol = TestIso(self.args.ucs_iso)
 		self.domain_xml.add_disk(vol)
 
 	def __enter__(self):
@@ -316,15 +312,15 @@ class VmCreator(object):
 def main():
 	basicConfig(stream=stderr, level=DEBUG)
 	test_vm = VmCreator()
-	test_vm.reuse_or_create_vm()
+	test_vm.create_vm_if_possible()
 	with test_vm as created_test_vm:
-		if created_test_vm.resultfile is not None:
+		if created_test_vm.args.resultfile is not None:
 			(host, port) = created_test_vm.get_vnc()
-			vm_name = created_test_vm.vm_name
+			vm_name = created_test_vm.args.vm_name
 			results = [
 				{'vnchost': host, 'name': vm_name, 'vncport': (port - 5900)}
 			]
-			with created_test_vm.resultfile as resultfile:
+			with created_test_vm.args.resultfile as resultfile:
 				json.dump(results, resultfile)
 
 
