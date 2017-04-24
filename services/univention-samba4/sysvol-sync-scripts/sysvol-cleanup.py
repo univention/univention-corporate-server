@@ -68,8 +68,9 @@ def getLDAPGPOs(options):
 		#   ...
 		#
 
-		if line.startswith('cn: '):
-			currentGPO = line.split('cn: ', 1)[1]
+		line_lower = line.lower()
+		if line_lower.startswith('cn: '):
+			currentGPO = line_lower.split('cn: ', 1)[1]
 		elif line.startswith(' '):
 			# if the attributes value uses more than one line
 			currentGPO += line.split(' ', 1)[1]
