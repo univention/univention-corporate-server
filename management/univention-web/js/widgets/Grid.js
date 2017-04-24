@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, require, setTimeout, clearTimeout, dojo*/
+/*global define, require, setTimeout, clearTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -232,7 +232,7 @@ define([
 			var sorter = sorted[0];
 			var compare = function(a, b) {
 				if (typeof(a.localeCompare) === 'function') {
-					return a.localeCompare(b, dojo.locale, {numeric: true}) < 0;
+					return a.localeCompare(b, kernel.locale, {numeric: true}) < 0;
 				} else if (typeof(a.toLowerCase) === 'function') {
 					return a.toLowerCase() < b.toLowerCase();
 				} else {
