@@ -424,12 +424,12 @@ class access:
 
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 		try:
-			self.lo.add_s(dn, nal)
+			self.lo.add_ext_s(dn, nal)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			lo_ref.add_s(dn, nal)
+			lo_ref.add_ext_s(dn, nal)
 
 	def modify(self, dn, changes):
 		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
@@ -494,12 +494,12 @@ class access:
 	def modify_s(self, dn, ml):
 		"""Redirect modify_s directly to lo"""
 		try:
-			self.lo.modify_s(dn, ml)
+			self.lo.modify_ext_s(dn, ml)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			lo_ref.modify_s(dn, ml)
+			lo_ref.modify_ext_s(dn, ml)
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
