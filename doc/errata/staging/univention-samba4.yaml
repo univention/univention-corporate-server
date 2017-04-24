@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-samba4
+fix: 6.0.10-1A~4.2.0.201704241930
+desc: |
+ This update addresses the following issue(s):
+ * Support uppercase CN: attribute in sysvol-cleanup.py
+bug: [43620]
