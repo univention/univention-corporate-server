@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: samba
+fix: 2:4.5.1-1.861.201704251251
+desc: |
+ This update addresses the following issues:
+ * Workaround for Samba Bug 12398: Avoid blocking DRS replication on
+   missing parent DN.
+bug: [43279]
