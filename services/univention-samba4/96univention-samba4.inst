@@ -520,31 +520,13 @@ sysvol_fixup() {
 	set_default_fACL /var/lib/samba/sysvol
 }
 
-get_available_s4connector_dc() {
-	local s4connector_dc
-	local s4connector_dc_candidates
-	s4connector_dc=()
-	s4connector_dc_candidates=$(univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
-	if univention-ldapsearch -LLL univentionservice=UCS@school dn | grep -q ^dn; then
-		for dc in "${s4connector_dc_candidates[@]}"; do
-			if samba-tool drs showrepl "$dc" >/dev/null 2>&1; then
-				s4connector_dc+=( "$dc" )
-			fi
-			if [ "${#s4connector_dc[@]}" -gt 1 ]; then
-				echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc_candidates" 1>&2
-				return 1	## this is fatal
-			fi
-		done
-	else
-		s4connector_dc="$s4connector_dc_candidates"
-	fi
-	echo "$s4connector_dc"
-}
-
 wait_until_dc_was_replicated_to_connector_dc() {
 	s4connector_dc=$(get_available_s4connector_dc) || return $?
 	if [ -z "$s4connector_dc" ]; then
 		echo "WARNING: Failed to search for S4 connector DC"
+		return 0
+	fi
+	if [ "$s4connector_dc" = "$hostname" ]; then
 		return 0
 	fi
 
@@ -871,9 +853,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	s4connector_is_used=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
-	                   "(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(cn=$hostname))" cn \
-					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+	s4connector_dc=$(get_available_s4connector_dc)
 
 	/etc/init.d/samba stop
 
@@ -882,7 +862,10 @@ if [ "$samba4_role" = 'DC' ]; then
 		kerberos/kpasswdserver=127.0.0.1
 
 	is_ucr_true samba4/provision/primary
-	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ] || [ -n "$s4connector_is_used" ]; then	## we are the first domaincontroller to provide this service
+	if [ $? -eq 0 ] \
+		|| [ -z "$samba4servicedcs" ] \
+		|| [ -z "$s4connector_dc" ] \
+		|| [ "$s4connector_dc" = "$hostname" ]; then
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			run_samba_provision "$@"

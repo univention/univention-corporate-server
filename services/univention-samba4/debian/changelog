@@ -1,3 +1,11 @@
+univention-samba4 (6.0.10-3) unstable; urgency=medium
+
+  * Bug #43478: Don't consider unreachable UCS@school Slave DCs
+    for joining and make get_available_s4connector_dc reusable for
+    the S4-Connector.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Apr 2017 20:52:52 +0200
+
 univention-samba4 (6.0.10-2) unstable; urgency=medium
 
   * Bug #43280: Don't fail join if CNF-Objects are in serverReferenceBL.
