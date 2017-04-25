@@ -67,6 +67,17 @@ fi
 
 call_joinscript 03univention-directory-listener.inst
 
+cleanup_and_convert_to_lmdb () {
+	local CACHE_DIR="/var/lib/univention-directory-listener"
+	local BDB="$CACHE_DIR/cache.db"
+	local CACHE_MDB_DIR="$CACHE_DIR/cache"
+
+	[ -f "$BDB" ] || return 0
+	rm -f "$CACHE_MDB_DIR"/*
+
+	convert_to_lmdb
+}
+
 convert_to_lmdb () {
 	local rv
 	local CACHE_DIR="/var/lib/univention-directory-listener"
@@ -107,9 +118,11 @@ convert_to_lmdb () {
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 11.0.1-1; then
 		convert_to_lmdb || exit $?
+	elif dpkg --compare-versions "$2" lt 11.0.1-27; then
+		cleanup_and_convert_to_lmdb || exit $?
+	else
+		/etc/init.d/univention-directory-listener crestart
 	fi
-
-	/etc/init.d/univention-directory-listener crestart
 fi
 
 exit 0

@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-27) unstable; urgency=medium
+
+  * Bug #44466: Fix cache migration
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Apr 2017 14:44:48 +0200
+
 univention-directory-listener (11.0.1-26) unstable; urgency=medium
 
   * Bug #44166: Copy cache_master_entry data from BDB to LMDB
