@@ -222,6 +222,13 @@ def check_connection(ad_domain_info, username, password):
 		raise connectionFailed()
 
 
+def flush_nscd_hosts_cache():
+	if os.path.exists("/usr/sbin/nscd"):
+		cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
+		p1 = subprocess.Popen(cmd, close_fds=True)
+		p1.communicate()
+
+
 def check_ad_account(ad_domain_info, username, password, ucr=None):
 	'''
 	returns True if account is Administrator in AD
@@ -257,6 +264,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
+		flush_nscd_hosts_cache()
 		raise
 
 	# Ok, ready and set for kerberized LDAP lookup
@@ -271,6 +279,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
+		flush_nscd_hosts_cache()
 
 	res = lo_ad.search(scope="base", attr=["objectSid"])
 	if not res or "objectSid" not in res[0][1]:
@@ -985,10 +994,7 @@ def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
 		ucr.load()
 
 	# Flush the cache, just in case
-	if os.path.exists("/usr/sbin/nscd"):
-		cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
-		p1 = subprocess.Popen(cmd, close_fds=True)
-		p1.communicate()
+	flush_nscd_hosts_cache()
 
 	# Test DNS resolution (just for fun)
 	try:
