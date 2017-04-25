@@ -3,8 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-s4-connector
-fix: 11.0.7-1A~4.2.0.201704241942
+fix: 11.0.7-2A~4.2.0.201704251932
 desc: |
  This update addresses the following issue(s):
  * Don't append a trailing dot to DNS alias values
-bug: [31311]
+ * Allow recursive removal of unmapped objects in sync_from_ucs
+bug: [31311, 33882]
