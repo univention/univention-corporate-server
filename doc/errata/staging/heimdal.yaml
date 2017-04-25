@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: heimdal
+fix: 1.6~rc2+dfsg-9A~4.2.0.201704251819
+desc: |
+ This update addresses the following issue(s):
+ * 
+bug: [43859]
