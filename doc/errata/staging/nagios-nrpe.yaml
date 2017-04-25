@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: nagios-nrpe
-fix: 2.15-1A~4.2.0.201704251405
+fix: 2.15-1A~4.2.0.201704251534
 desc: |
  This update addresses the following issue(s):
  * IPV6 support for allowed_hosts has been added.
