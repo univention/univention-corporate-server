@@ -61,7 +61,7 @@ strings = {
 
 	'software_config': 'Configuration logicielle',
 	'next': 'suivant',
-	'confirm_config': 'Confirmer les réglages de configuration',
+	'confirm_config': 'Informations du compte',
 	'do_update': 'le système après l\'installation',
 	'setup_successful': 'Installation d\'UCS réussie',
 	'finish': 'TERMINER',

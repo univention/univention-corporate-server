@@ -70,7 +70,7 @@ strings = {
 
 	'software_config': 'software component',
 	'next': 'Next',
-	'confirm_config': 'Please confirm',
+	'confirm_config': 'Account information',
 	'do_update': 'Update system after setup',
 	'setup_successful': 'setup successful',
 	'finish': 'Finish',
