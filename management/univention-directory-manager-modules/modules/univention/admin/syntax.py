@@ -2186,7 +2186,7 @@ class network(UDM_Objects):
 	empty_value = True
 
 
-class IP_AddressList(ipv4Address, select):
+class IP_AddressList(ipAddress, select):
 	choices = ()
 	depends = 'ip'
 
