@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-lib
-fix: 6.0.9-3A~4.2.0.201704252157
+fix: 6.0.9-4A~4.2.0.201704252218
 desc: |
  This update addresses the following issue(s):
  * Make DNS lookup more robust for Kerberos kinit in admember.check_ad_account
