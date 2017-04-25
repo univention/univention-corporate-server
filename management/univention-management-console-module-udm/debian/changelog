@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.9-16) unstable; urgency=medium
+
+  * Bug #42533: fix admin size limit reached error message
+
+ -- Florian Best <best@univention.de>  Tue, 25 Apr 2017 17:58:33 +0200
+
 univention-management-console-module-udm (7.0.9-15) unstable; urgency=medium
 
   * Bug #32027: Fix css for firefox 31 - firefox 48

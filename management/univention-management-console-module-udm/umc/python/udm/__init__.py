@@ -65,8 +65,6 @@ from univention.config_registry import handler_set
 
 import univention.directory.reports as udr
 
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
-
 from .udm_ldap import (
 	UDM_Error, UDM_Module, UDM_Settings,
 	ldap_dn2path, get_module, read_syntax_choices, list_objects, _get_syntax,
@@ -164,8 +162,6 @@ class Instance(Base, ProgressMixin):
 		if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
 			MODULE.warn('Authentication failed: %s' % (exc,))
 			raise LDAP_AuthenticationFailed()
-		if isinstance(exc, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout)):
-			raise UMC_Error(exc.args[0], status=MODULE_ERR_COMMAND_FAILED)
 		if isinstance(exc, (udm_errors.base, LDAPError)):
 			MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
 
