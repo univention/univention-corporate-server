@@ -1260,6 +1260,8 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 			ud.debug(ud.MODULE, ud.ERROR, 'Non-unique SRV record: %s!' % (response.rrset,))
 			return None
 		return str(response[0].target)
+	except dns.resolver.NoAnswer:
+		ud.debug(ud.MODULE, ud.WARN, 'Received no answer to query for _domaincontroller_master._tcp.%s. SRV record.' % (domain,))
 	except dns.resolver.NXDOMAIN:
 		ud.debug(ud.MODULE, ud.WARN, 'Domain (%s) not resolvable!' % (domain,))
 	except dns.exception.Timeout as exc:
