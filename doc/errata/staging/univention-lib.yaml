@@ -3,10 +3,11 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-lib
-fix: 6.0.9-2A~4.2.0.201704252134
+fix: 6.0.9-3A~4.2.0.201704252157
 desc: |
  This update addresses the following issue(s):
+ * Make DNS lookup more robust for Kerberos kinit in admember.check_ad_account
  * Handle NoAnswer exception of dns.resolver when looking for
    _domaincontroller_master._tcp SRV record during admember setup
  * Properly stop Samba before running the admember setup
-bug: [38788, 44144]
+bug: [38285, 38788, 44144]
