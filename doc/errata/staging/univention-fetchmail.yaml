@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-fetchmail
+fix: 10.0.1-1A~4.2.0.201704251516
+desc: |
+ This update addresses the following issue(s):
+ * The fetchmail password attributes now disallows substring searches and
+   are not searchable in UMC anymore.
+ * The fetchmail ACLs now respect overridden default groupnames.
+bug: [41336, 33648]
