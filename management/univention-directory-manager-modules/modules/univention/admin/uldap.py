@@ -431,7 +431,7 @@ class access:
 			raise univention.admin.uexceptions.insufficientInformation(_err2str(msg))
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED) as msg:
 			raise univention.admin.uexceptions.ldapTimeout(_err2str(msg))
-		except ldap.SIZELIMIT_EXCEEDED as msg:
+		except (ldap.SIZELIMIT_EXCEEDED, ldap.ADMINLIMIT_EXCEEDED) as msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
@@ -447,7 +447,7 @@ class access:
 			raise univention.admin.uexceptions.insufficientInformation(_err2str(msg))
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED) as msg:
 			raise univention.admin.uexceptions.ldapTimeout(_err2str(msg))
-		except ldap.SIZELIMIT_EXCEEDED as msg:
+		except (ldap.SIZELIMIT_EXCEEDED, ldap.ADMINLIMIT_EXCEEDED) as msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
