@@ -3,8 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-directory-manager-modules
-fix: 12.0.16-4A~4.2.0.201704241131
+fix: 12.0.16-5A~4.2.0.201704251558
 desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
-bug: [27286]
+ * Creating computers with IPv6 addresses is possible again.
+bug: [27286, 44152]
