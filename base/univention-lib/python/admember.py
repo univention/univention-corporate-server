@@ -247,15 +247,16 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 
 	(previous_dns_ucr_set, previous_dns_ucr_unset) = set_nameserver([ad_server_ip], ucr)
 	(previous_krb_ucr_set, previous_krb_ucr_unset) = prepare_kerberos_ucr_settings(realm=ad_realm, ucr=ucr)
+	(previous_host_static_ucr_set, previous_host_static_ucr_unset) = prepare_dns_reverse_settings(ad_domain_info, ucr=ucr)
 
 	try:
 		principal = "%s@%s" % (username, ad_realm)
 		_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
-		prepare_dns_reverse_settings(ad_domain_info)
 	except Exception:
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
+		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
 		raise
 
 	# Ok, ready and set for kerberized LDAP lookup
@@ -269,6 +270,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	finally:
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
+		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
 
 	res = lo_ad.search(scope="base", attr=["objectSid"])
 	if not res or "objectSid" not in res[0][1]:
@@ -964,24 +966,58 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
 		raise connectionFailed()
 
 
-def prepare_dns_reverse_settings(ad_domain_info):
+def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
 	# For python-ldap / GSSAPI / AD we need working reverse DNS lookups
 	# Otherwise one ends up with:
+	#
 	# SASL(-1): generic failure: GSSAPI Error: Miscellaneous failure (see text)
-	# (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
-	try:
-		socket.gethostbyaddr(ad_domain_info['DC IP'])
-	except socket.herror:
-		ad_server_name = ad_domain_info['DC DNS Name']
-		ip = socket.gethostbyname(ad_server_name)
-		ucr_key = u'hosts/static/%s' % (ip,)
-		ucr_set = [u'%s=%s' % (ucr_key, ad_server_name), ]
-		univention.config_registry.handler_set(ucr_set)
-		if os.path.exists("/usr/sbin/nscd"):
-			cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
-			p1 = subprocess.Popen(cmd, close_fds=True)
-			p1.communicate()
+	#           (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
+	#
+	# Or even worse, in case there had been a (nscd cached?) PTR record
+	# in the ucs.domain:
+	#
+	# SASL(-1): generic failure: GSSAPI Error: Miscellaneous failure (see text)
+	#           (Matching credential (ldap/adhost.ucs.domain@UCS.DOMAIN) not found)
+	#
 
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	# Flush the cache, just in case
+	if os.path.exists("/usr/sbin/nscd"):
+		cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
+		p1 = subprocess.Popen(cmd, close_fds=True)
+		p1.communicate()
+
+	# Test DNS resolution (just for fun)
+	try:
+		hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ad_domain_info['DC IP'])
+		ud.debug(ud.MODULE, ud.INFO, "%s resolves to %s" % (ad_domain_info['DC IP'], hostname))
+	except (socket.herror, socket.gaierror) as exc:
+		ud.debug(ud.MODULE, ud.INFO, "Resolving %s failed: %s" % (ad_domain_info['DC IP'], exc.args[1]))
+
+	## Set a hosts/static anyway, to be safe from DNS issues (Bug #38285)
+	previous_ucr_set = []
+	previous_ucr_unset = []
+
+	ad_server_name = ad_domain_info['DC DNS Name']
+	ip = socket.gethostbyname(ad_server_name)
+	ucr_key = u'hosts/static/%s' % (ip,)
+	ucr_set = [u'%s=%s' % (ucr_key, ad_server_name), ]
+
+	for setting in ucr_set:
+		var = setting.split("=", 1)[0]
+		old_val = ucr.get(var)
+		if old_val is not None:
+			previous_ucr_set.append(u'%s=%s' % (var, old_val))
+		else:
+			previous_ucr_unset.append(u'%s' % (var,))
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
+	univention.config_registry.handler_set(ucr_set)
+
+	return (previous_ucr_set, previous_ucr_unset)
 
 def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Prepare Kerberos UCR settings")

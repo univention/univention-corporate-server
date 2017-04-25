@@ -1,3 +1,9 @@
+univention-lib (6.0.9-3) unstable; urgency=medium
+
+  * Bug #38285: Make DNS lookup more robust for Kerberos in check_ad_account
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Apr 2017 21:56:52 +0200
+
 univention-lib (6.0.9-2) unstable; urgency=medium
 
   * Bug #38788: dns.resolver throws NoAnswer by default (raise_on_no_answer)
