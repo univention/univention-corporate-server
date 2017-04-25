@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
  * Creating computers with IPv6 addresses is possible again.
-bug: [27286, 44152]
+ * The error handling regarding LDAP size limits has been improved.
+bug: [27286, 44152, 42533]
