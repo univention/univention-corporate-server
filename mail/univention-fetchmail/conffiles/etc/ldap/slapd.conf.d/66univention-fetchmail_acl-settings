@@ -1,5 +1,11 @@
-access to attrs=univentionFetchmailPasswd
-    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" write
-    by set="user/univentionService & [Fetchmail]" write
-    by dn.base="cn=admin,@%@ldap/base@%@" write
-    by * none
+@!@
+from univention.lib.misc import custom_groupname
+from ldap.dn import escape_dn_chars
+ldap_base = configRegistry['ldap/base']
+
+print 'access to attrs=univentionFetchmailPasswd'
+print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" write' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base)
+print '    by set="user/univentionService & [Fetchmail]" write'
+print '    by dn.base="cn=admin,%s" write' % (ldap_base,)
+print '    by * none'
+@!@

@@ -2,6 +2,7 @@ univention-fetchmail (10.0.1-1) unstable; urgency=medium
 
   * Bug #41336: protect univentionFetchmailPasswd attribute against substring
   	brute force through ldap searches and hide it in UMC
+  * Bug #33648: respect overridden "Domain Admins" group name
 
  -- Florian Best <best@univention.de>  Tue, 25 Apr 2017 14:07:09 +0200
 
