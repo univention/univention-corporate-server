@@ -386,8 +386,7 @@ class property:
 		con_sync_function=None,
 		ucs_sync_function=None,
 		disable_delete_in_ucs=False,
-		identify=None,
-		con_subtree_delete_objects=[]):
+		identify=None):
 
 		self.ucs_default_dn = ucs_default_dn
 
@@ -428,8 +427,6 @@ class property:
 			self.con_sync_function = con_sync_function
 		if ucs_sync_function:
 			self.ucs_sync_function = ucs_sync_function
-
-		self.con_subtree_delete_objects = con_subtree_delete_objects
 
 		# Overwrite the identify function from the ucs modules, at least needed for dns
 		if identify:

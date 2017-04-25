@@ -1,3 +1,13 @@
+univention-s4-connector (11.0.7-2) unstable; urgency=medium
+
+  * Bug #33882: sync_from_ucs: Allow subtree delete with unmapped objects
+    Note: Bug #26210 implemented this for the special case of "CN=RID Set"
+    by whitelisting some RDNs allowed for removal. Since the whitelisting
+    doesn't scale for other Active Directory objects, we now generally
+    allow subtree removal and log this a process level.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Apr 2017 19:32:29 +0200
+
 univention-s4-connector (11.0.7-1) unstable; urgency=medium
 
   * Bug #31311: Don't append a trailing dot to the cname record value
