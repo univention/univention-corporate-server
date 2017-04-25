@@ -17,9 +17,8 @@ attributetype ( 1.3.6.1.4.1.10176.1057.1.4 NAME 'univentionFetchmailProtocol'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1057.1.5 NAME 'univentionFetchmailPasswd'
-	SUBSTR caseIgnoreSubstringsMatch
 	DESC 'password'
-	EQUALITY caseIgnoreMatch
+	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1057.1.6 NAME 'univentionFetchmailKeepMailOnServer'

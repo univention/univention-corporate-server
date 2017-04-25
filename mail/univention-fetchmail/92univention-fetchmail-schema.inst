@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-lib/base.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -135,7 +135,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set deleteObjectClass='1' \
 	--set tabPosition='3' \
 	--set overwritePosition='0' \
-	--set doNotSearch='0' \
+	--set doNotSearch='1' \
 	--set hook='None' || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -187,19 +187,9 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set hook='None' || die
 
 
-if [ "$JS_LAST_EXECUTED_VERSION" = "1" ]; then
-	# univention-fetchmail has been installed in UCS 2.4 and old custom attributes have to be removed
-	udm settings/syntax remove "$@" --dn "cn=UniventionFetchmail-Syntax-ProtocolType,cn=mail,cn=custom attributes,cn=univention,$ldap_base" || die
-	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-ContainerDC-ProtocolTypeList,cn=mail,cn=custom attributes,cn=univention,$ldap_base" || die
-	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=custom attributes,cn=univention,$ldap_base" || die
-	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Protocol,cn=custom attributes,cn=univention,$ldap_base" || die
-	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Address,cn=custom attributes,cn=univention,$ldap_base" || die
-	udm settings/customattribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=custom attributes,cn=univention,$ldap_base" || die
-
-	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Types=IMAP || die
-	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Types=POP3 || die
-	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Typen=IMAP || die
-	univention-directory-manager container/dc modify "$@" --ignore_exists --dn "$ldap_base" --customattribute-remove Protocol-Typen=POP3 || die
+if [ "$JS_LAST_EXECUTED_VERSION" = "2" ]; then
+	# extended attributes have been modified in UCS 4.2
+	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set doNotSearch='1'
 fi
 
 stop_udm_cli_server
