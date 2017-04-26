@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Values inside of grids are now sorted locale aware.
 bug: [44361]
+erratum: 4
+announced: 2017-04-26
