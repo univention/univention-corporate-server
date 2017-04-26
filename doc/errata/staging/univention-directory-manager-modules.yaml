@@ -3,12 +3,14 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-directory-manager-modules
-fix: 12.0.17-1A~4.2.0.201704261614
+fix: 12.0.17-2A~4.2.0.201704261631
 desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
- * Fix handling of "Change password on next login" for new user accounts
+ * Fix handling of "Change password on next login" for new user accounts.
  * Support for forwarding emails to external addresses has been added.
  * The error handling regarding LDAP size limits has been improved.
  * Creating computers with IPv6 addresses is possible again.
-bug: [27286, 42148, 42249, 42533, 44152]
+ * Fix typo in users/user, where the minimal password length is taken from
+   the UDM policy instead of from the samba policy.
+bug: [27286, 42148, 42249, 42533, 44152, 44472]
