@@ -252,6 +252,46 @@ Variables: mail/postfix/ldaptable/starttls
 Variables: mail/postfix/ldaptable/tlsrequirecert
 
 Type: multifile
+Multifile: etc/postfix/ldap.virtual_mailbox
+User: root
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.virtual_mailbox
+Subfile: etc/postfix/ldap.virtual_mailbox.d/10_base
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/server/addition
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.external_aliases
+User: root
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.external_aliases
+Subfile: etc/postfix/ldap.external_aliases.d/10_base
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/server/addition
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
 Multifile: etc/postfix/ldap.saslusermapping
 User: root
 Group: root
