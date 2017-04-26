@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import argparse
+import datetime
+import ldif
 import sys
 from time import time, localtime, strftime
 from os import path
@@ -47,12 +49,26 @@ class JenkinsTestLicenseClient(TestLicenseClient, object):
             exit(1)
 
 
+def does_valid_license_exist(license_file_name):
+    try:
+        with open(license_file_name, 'r') as license_file:
+            parser = ldif.LDIFRecordList(open(license_file, "r"))
+        parser.parse()
+        end_date_string = parser.all_records[0][1]["univentionLicenseEndDate"][0]
+        end_date = datetime.datetime.strptime(end_date_string, "%d.%m.%Y").date()
+
+        valid_license_exists = end_date > datetime.date.today()
+    except IOError:
+        valid_license_exists = False
+
+    return valid_license_exists
+
+
 def get_valid_license(ldap_base, secret_file, license_file):
     """
     Gets a valid test-license by ordering and downloading it from the
     licensing server via LicenseClient tool
     """
-    print("\nObtaining a valid license for the test:")
     end_date = time()
     end_date += 2630000  # approx. amount of seconds in 1 month
     end_date = strftime('%d.%m.%Y', localtime(end_date))
@@ -69,9 +85,12 @@ def get_valid_license(ldap_base, secret_file, license_file):
 
 if __name__ == '__main__':
     args = parse_args()
-    # if args.force_renewal or not does_valid_license_exist(args.license_file):
-    get_valid_license(
-        ldap_base=args.ldap_base,
-        secret_file=args.secret_file,
-        license_file=args.license_file
-    )
+    if args.force_renewal or not does_valid_license_exist(args.license_file):
+        print("Obtaining a valid license for the test:")
+        get_valid_license(
+            ldap_base=args.ldap_base,
+            secret_file=args.secret_file,
+            license_file=args.license_file
+        )
+    else:
+        print("A valid license file already exists at %s. Exiting." % (args.license_file))
