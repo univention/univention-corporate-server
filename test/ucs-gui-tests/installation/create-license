@@ -7,7 +7,7 @@ from univention.testing.license_client import TestLicenseClient, CredentialsMiss
 
 
 class JenkinsTestLicenseClient(TestLicenseClient):
-    def get_server_password(self, secret_file='~/ec2/license/license.secret'):
+    def get_server_password(self, secret_file='/var/lib/jenkins/ec2/license/license.secret'):
         """
         Opens and reads the 'secret_file'. Saves the result to a
         'self.server_password'
