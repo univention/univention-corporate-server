@@ -2153,7 +2153,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 				smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 				if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] is not None and len(smbpwhistoryPolicy['length']) > 0:
-					smbpwhlen = int(pwhistoryPolicy['length'])
+					smbpwhlen = int(smbpwhistoryPolicy['length'])
 					smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
 					newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
 					ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
