@@ -52,7 +52,7 @@ class JenkinsTestLicenseClient(TestLicenseClient, object):
 def does_valid_license_exist(license_file_name):
     try:
         with open(license_file_name, 'r') as license_file:
-            parser = ldif.LDIFRecordList(open(license_file, "r"))
+            parser = ldif.LDIFRecordList(license_file)
         parser.parse()
         end_date_string = parser.all_records[0][1]["univentionLicenseEndDate"][0]
         end_date = datetime.datetime.strptime(end_date_string, "%d.%m.%Y").date()
