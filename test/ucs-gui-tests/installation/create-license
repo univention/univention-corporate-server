@@ -1,0 +1,30 @@
+#!/usr/bin/python
+import sys
+from time import time, localtime, strftime
+from univention.testing.codes import TestCodes
+from univention.testing.license_client import TestLicenseClient, CredentialsMissing
+
+
+def get_valid_license(ldap_base="dc=installertest,dc=intranet"):
+    """
+    Gets a valid test-license by ordering and downloading it
+    from the licensing server via LicenseClient tool
+    """
+    print("\nObtaining a valid license for the test:")
+    end_date = time()
+    end_date += 2630000  # approx. amount of seconds in 1 month
+    end_date = strftime('%d.%m.%Y', localtime(end_date))
+
+    LicenseClient = TestLicenseClient()
+    valid_license_file = 'tmp.license'
+    try:
+        LicenseClient.main(base_dn=ldap_base,
+                           end_date=end_date,
+                           license_file=valid_license_file)
+    except CredentialsMissing as exc:
+        print("\nMissing a secret file with password to order a license: "
+              "%r" % exc)
+        sys.exit(TestCodes.REASON_INSTALL)
+
+if __name__ == '__main__':
+    get_valid_license()
