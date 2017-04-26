@@ -2066,7 +2066,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					except ValueError as e:
 						raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
-			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
+			if pwd_change_next_login == 1:
+				pass  # handled below
+			elif pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
 				try:
 					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
 				except:
@@ -2110,8 +2112,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
 					if old_krb5PasswordEnd != krb5PasswordEnd:
 						ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
-				if pwd_change_next_login == 1:
-					pwd_change_next_login = 0
 			else:  # no pwhistoryPolicy['expiryInterval']
 				if 'posix' in self.options or 'mail' in self.options:
 					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], ''))

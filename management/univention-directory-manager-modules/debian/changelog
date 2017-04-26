@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-1) unstable; urgency=medium
+
+  * Bug #42148: Fix handling of "Change password on next login" for
+    new user accounts.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 26 Apr 2017 16:08:37 +0200
+
 univention-directory-manager-modules (12.0.16-7) unstable; urgency=medium
 
   * Bug #42249: add support for virtual mail aliases
