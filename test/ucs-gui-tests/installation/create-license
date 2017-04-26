@@ -1,21 +1,48 @@
 #!/usr/bin/python
 import sys
 from time import time, localtime, strftime
+from os import path
 from univention.testing.codes import TestCodes
 from univention.testing.license_client import TestLicenseClient, CredentialsMissing
 
 
+class JenkinsTestLicenseClient(TestLicenseClient):
+    def get_server_password(self, secret_file='~/ec2/license/license.secret'):
+        """
+        Opens and reads the 'secret_file'. Saves the result to a
+        'self.server_password'
+        """
+        self.log.debug("In 'get_server_password': secret_file='%s'"
+                       % secret_file)
+        if not path.exists(secret_file):
+            self.log.critical("The '%s' secret file does not exist, cannot "
+                              "proceed without password" % secret_file)
+            raise CredentialsMissing("The '%s' secret file does not exist"
+                                     % secret_file)
+        try:
+            with open(secret_file, 'r') as password:
+                self.server_password = password.read()
+        except (IOError, ValueError) as exc:
+            self.log.exception("Failed to get the password from the '%s', "
+                               "an error occured: %r" % (secret_file, exc))
+            exit(1)
+        if not self.server_password:
+            self.log.critical("The password to access the license service "
+                              "cannot be empty")
+            exit(1)
+
+
 def get_valid_license(ldap_base="dc=installertest,dc=intranet"):
     """
-    Gets a valid test-license by ordering and downloading it
-    from the licensing server via LicenseClient tool
+    Gets a valid test-license by ordering and downloading it from the
+    licensing server via LicenseClient tool
     """
     print("\nObtaining a valid license for the test:")
     end_date = time()
     end_date += 2630000  # approx. amount of seconds in 1 month
     end_date = strftime('%d.%m.%Y', localtime(end_date))
 
-    LicenseClient = TestLicenseClient()
+    LicenseClient = JenkinsTestLicenseClient()
     valid_license_file = 'tmp.license'
     try:
         LicenseClient.main(base_dn=ldap_base,
