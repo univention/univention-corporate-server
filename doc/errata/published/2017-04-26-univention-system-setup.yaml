@@ -10,3 +10,5 @@ desc: |
  * The package univention-self-service-master is now also downloaded
    while preparing an appliance.
 bug: [42133,44284]
+erratum: 3
+announced: 2017-04-26
