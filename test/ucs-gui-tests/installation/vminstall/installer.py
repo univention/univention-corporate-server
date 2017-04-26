@@ -208,7 +208,6 @@ class Installer(object):
 			self.client.mousePress(1)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		self.client.keyPress('end')    # This is to scroll down when the software-components list is long
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
@@ -239,7 +238,6 @@ class Installer(object):
 			self.client.mousePress(1)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		self.client.keyPress('end')    # This is to scroll down when the software-components list is long
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
@@ -271,7 +269,6 @@ class Installer(object):
 			self.client.mousePress(1)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		self.client.keyPress('end')    # This is to scroll down when the software-components list is long
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
@@ -304,7 +301,6 @@ class Installer(object):
 			self.client.mousePress(1)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		self.client.keyPress('end')    # This is to scroll down when the software-components list is long
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
