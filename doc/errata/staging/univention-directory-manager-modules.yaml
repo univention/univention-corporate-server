@@ -3,10 +3,11 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-directory-manager-modules
-fix: 12.0.16-5A~4.2.0.201704251558
+fix: 12.0.16-7A~4.2.0.201704261323
 desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
  * Creating computers with IPv6 addresses is possible again.
  * The error handling regarding LDAP size limits has been improved.
-bug: [27286, 44152, 42533]
+ * Support for forwarding emails to external addresses has been added.
+bug: [27286, 44152, 42533, 42249]
