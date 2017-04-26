@@ -629,6 +629,30 @@ property_descriptions = {
 		identifies=False,
 		readonly_when_synced=False,
 	),
+	'externalMailAlias': univention.admin.property(
+		short_description=_('External e-mail address'),
+		long_description='',
+		syntax=univention.admin.syntax.emailAddress,
+		multivalue=True,
+		options=['mail'],
+		required=False,
+		dontsearch=False,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=False,
+	),
+	'externalMailAliasCopyToSelf': univention.admin.property(
+		short_description=_('Copy to the primary e-mail address'),
+		long_description=_('Send a copy to the primary e-mail address when forwarding to external e-mail address'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=['mail'],
+		required=False,
+		dontsearch=True,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=False,
+	),
 	'overridePWHistory': univention.admin.property(
 		short_description=_('Override password history'),
 		long_description='',
@@ -1004,6 +1028,8 @@ layout = [
 		Group(_('Advanced settings'), layout=[
 			'mailAlternativeAddress',
 			'mailHomeServer',
+			'externalMailAlias',
+			'externalMailAliasCopyToSelf',
 		], ),
 	]),
 	Tab(_('UMC preferences'), _('UMC preferences'), advanced=True, layout=[
@@ -1221,6 +1247,8 @@ mapping.register('organisation', 'o', None, univention.admin.mapping.ListToStrin
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
+mapping.register('externalMailAlias', 'univentionExternalMailAlias')
+mapping.register('externalMailAliasCopyToSelf', 'univentionExternalMailAliasCopyToSelf', None, univention.admin.mapping.ListToString)
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('e-mail', 'mail')
@@ -1326,6 +1354,26 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			return 'keep'
 		return 'no'
 
+	@property
+	def __alias_copy_to_self(self):
+		return self.get('externalMailAliasCopyToSelf') == '1'
+
+	def __remove_old_mpa(self, alias_list):
+		if alias_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
+			try:
+				alias_list.remove(self.oldattr['mailPrimaryAddress'])
+			except ValueError:
+				pass
+
+	def __set_mpa_for_alias_copy_to_self(self, alias_list):
+		if self.__alias_copy_to_self and self['externalMailAlias']:
+			alias_list.append(self['mailPrimaryAddress'])
+		else:
+			try:
+				alias_list.remove(self['mailPrimaryAddress'])
+			except ValueError:
+				pass
+
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		self.kerberos_active = 0
 		self.pwhistory_active = 0
@@ -1394,6 +1442,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.save()
 
 		if self.exists():
+			if self.get('mailPrimaryAddress') in self.get('externalMailAlias', []):
+				self.oldattr['univentionExternalMailAlias'] = self.oldattr.get('univentionExternalMailAlias', [])[:]
+				self['externalMailAlias'].remove(self['mailPrimaryAddress'])
+				self['externalMailAliasCopyToSelf'] = '1'
+			else:
+				self['externalMailAliasCopyToSelf'] = '0'
+
 			self.modifypassword = 0
 			self['password'] = '********'
 			if 'posix' in self.options or 'mail' in self.options or 'ldap_pwd' in self.options:
@@ -2307,6 +2362,39 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				except univention.admin.uexceptions.noLock:
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
+
+		if self['externalMailAlias'] and not self['mailPrimaryAddress']:
+				raise univention.admin.uexceptions.missingInformation(
+					_('Primary e-mail address must be set, if messages should be forwarded for it.'))
+		if self.__alias_copy_to_self and not self['mailPrimaryAddress']:
+				raise univention.admin.uexceptions.missingInformation(
+					_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
+
+		for num_, (key_, old_, new_) in enumerate(ml[:]):
+			if key_ == 'univentionExternalMailAliasCopyToSelf':
+				ml.pop(num_)
+				break
+
+		for num_, (key_, old_, new_) in enumerate(ml[:]):
+			if key_ == 'univentionExternalMailAlias':
+				# old in ml may be missing the mPA removed in open()
+				if old_:
+					ml[num_][1][:] = self.oldattr.get('univentionExternalMailAlias')
+				if new_:
+					self.__remove_old_mpa(new_)
+					self.__set_mpa_for_alias_copy_to_self(new_)
+				break
+		else:
+			mod_ = (
+				'univentionExternalMailAlias',
+				self.oldattr.get('univentionExternalMailAlias'),
+				self['externalMailAlias'][:]
+				)
+			if self['externalMailAlias']:
+				self.__remove_old_mpa(mod_[2])
+				self.__set_mpa_for_alias_copy_to_self(mod_[2])
+			if mod_[1] != mod_[2]:
+				ml.append(mod_)
 
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
