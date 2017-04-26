@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-fetchmail
-fix: 10.0.1-1A~4.2.0.201704251516
+fix: 10.0.1-2A~4.2.0.201704261658
 desc: |
  This update addresses the following issue(s):
  * The fetchmail password attributes now disallows substring searches and
