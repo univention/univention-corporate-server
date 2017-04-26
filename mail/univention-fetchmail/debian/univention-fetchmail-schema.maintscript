@@ -1,0 +1,1 @@
+mv_conffile /etc/univention/templates/files/etc/ldap/slapd.conf.d/66univention-fetchmail_acl-settings /etc/univention/templates/files/etc/ldap/slapd.conf.d/610univention-fetchmail_acl-settings 10.0.1-2~
