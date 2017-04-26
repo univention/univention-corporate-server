@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-6) unstable; urgency=medium
+
+  * Bug #42249: add support for virtual mail aliases
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 26 Apr 2017 11:13:08 +0200
+
 univention-ldap (13.0.7-5) unstable; urgency=medium
 
   * Bug #43520: Remove incorrect ACL dependencies from univention-ldap-server
