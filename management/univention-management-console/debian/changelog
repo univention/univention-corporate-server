@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-4) unstable; urgency=medium
+
+  * Bug #41786: parse more PAM error messages when changing password fails
+
+ -- Florian Best <best@univention.de>  Thu, 27 Apr 2017 18:17:41 +0200
+
 univention-management-console (9.0.80-3) unstable; urgency=medium
 
   * Bug #44146: revert dead code

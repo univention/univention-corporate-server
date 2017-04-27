@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import traceback
+import re
 
 from PAM import (
 	pam as PAM,
@@ -54,14 +55,15 @@ from univention.management.console.log import AUTH
 from univention.lib.i18n import Translation, I18N_Error
 _ = Translation('univention.management.console').translate
 
-_('The password is too short')
-_('The password is too simple')
-_('The password is a palindrome')
-_('The password is based on a dictionary word')
-_('The password was already used')
-_('The password does not contain enough different characters')
-_('The password has expired and must be renewed')
-_('The authentication has failed')
+_('The password is too short.')
+_('The password is too simple.')
+_('The password is a palindrome.')
+_('The password is based on a dictionary word.')
+_('The password was already used.')
+_('The password does not contain enough different characters.')
+_('The password has expired and must be renewed.')
+_('The minimum password age is not reached yet.')
+_('Make sure the kerberos service is functioning or inform an Administrator.')
 
 
 class AuthenticationError(Exception):  # abstract base class
@@ -92,17 +94,98 @@ class PasswordChangeFailed(AuthenticationError):
 
 
 class PamAuth(object):
-	known_errors = [
-		([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short', 'BAD PASSWORD: it is WAY too short', ': Password too short, password must be at least 8 characters long.'], 'The password is too short'),
-		([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', 'BAD PASSWORD: is too simple', ': Password does not meet complexity requirements'], 'The password is too simple'),
-		([': is a palindrome'], 'The password is a palindrome'),
-		([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], 'The password is based on a dictionary word'),
-		([': Password already used'], 'The password was already used'),
-		([': Es enthält nicht genug unterschiedliche Zeichen', ': it does not contain enough DIFFERENT characters'], 'The password does not contain enough different characters'),
-	]
+
+	known_errors = {
+		'Make sure the kerberos service is functioning or inform an Administrator.': [
+			'Unable to reach any changepw server  in realm %s'
+		],
+		'The password is too short.': [
+			re.compile('Password too short, password must be at least (?P<minlen>\d+) characters long.', re.I),
+			re.compile('^Password too short$'),
+			'You must choose a longer password'
+			'Password Too Short',
+			'Password is too short',
+			': Es ist zu kurz',
+			': Es ist VIEL zu kurz',
+			': it is WAY too short',
+			': Password is too short',
+			'BAD PASSWORD: it is WAY too short',
+			'Schlechtes Passwort: Es ist zu kurz',
+			'Schlechtes Passwort: Es ist VIEL zu kurz',
+		],
+		'The password is too simple.': [
+			': Es ist zu einfach/systematisch',
+			': it is too simplistic/systematic',
+			'BAD PASSWORD: is too simple',
+			': Password does not meet complexity requirements',
+			'Schlechtes Passwort: ist zu einfach',
+			'Error: Password does not meet complexity requirements',
+			'Bad: new password is too simple',
+			'Insufficient Password Quality',
+			'Password Insufficient',
+			'Password does not meet complexity requirements',
+			'is too simple',
+			"The passwort didn't pass quality check",
+			"Password doesn't meet complexity requirement.",
+			# 'contains the user name in some form'
+		],
+		'The password is a palindrome.': [
+			'is a palindrome',
+			'Bad: new password cannot be a palindrome',
+			': is a palindrome',
+			'Schlechtes Passwort: ist ein Palindrome',
+			'Schlechtes Passwort: wurde gedreht',
+		],
+		'The password is based on a dictionary word.': [
+			': Es basiert auf einem Wörterbucheintrag',
+			': it is based on a dictionary word',
+			'Schlechtes Passwort: Es basiert auf einem (umgekehrten) W?rterbucheintrag',
+			'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag',
+			u'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag'.encode('utf-8'),
+			u'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag'.encode('latin-1'),
+			'Schlechtes Passwort: Es basiert auf einem W?rterbucheintrag',
+			'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag',
+			u'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag'.encode('utf-8'),
+			u'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag'.encode('latin-1'),
+		],
+		'The password was already used.': [
+			re.compile('Password is already in password history. New password must not match any of your (?P<history>\d+) previous passwords.', re.I),
+			re.compile('^Password is already in password history$'),
+			': Password already used',
+			'Bad: new password must be different than the old one',
+			'Password already used',
+			'Password has been already used.',
+			'Password has been already used. Choose another.',
+			'is the same as the old one',
+			'is rotated',
+		],
+		'The password does not contain enough different characters.': [
+			': Es enthält nicht genug unterschiedliche Zeichen',
+			': it does not contain enough DIFFERENT characters',
+			'not enough character classes',
+			'contains too many same characters consecutively',
+			'contains too long of a monotonic character sequence',
+		],
+		'The password is too similar to the old one.': [
+			'case changes only',
+			'Bad: new and old password must differ by more than just case',
+			'is too similar to the old one',
+			'Bad: new and old password are too similar',
+			'Bad: new password is just a wrapped version of the old one',
+			'Schlechtes Passwort: ist dem alten zu ?hnlich',
+			'Schlechtes Passwort: ist dem alten zu ähnlich',
+			'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('utf-8'),
+			'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('latin-1'),
+		],
+		'The minimum password age is not reached yet.': [
+			'You must wait longer to change your password',
+			'Password Too Young',
+			'Password change rejected, password changes may not be permitted on this account, or the minimum password age may not have elapsed.',
+		]
+	}
 	known_errors = dict(
 		(response_message, user_friendly_response)
-		for possible_responses, user_friendly_response in known_errors
+		for user_friendly_response, possible_responses in known_errors.iteritems()
 		for response_message in possible_responses
 	)
 
@@ -152,6 +235,10 @@ class PamAuth(object):
 		}
 		prompts = []
 		self.start(username, (answers, prompts, []))
+		# we are parsing error messages. Best to get the english version. Unfortionately not all pam modules evaluate these variables
+		self.pam.putenv('LC_ALL=en_US.UTF-8')
+		self.pam.putenv('LC_MESSAGES=en_US.UTF-8')
+		self.pam.putenv('LANG=en_US.UTF-8')
 
 		try:
 			self.pam.chauthtok()
@@ -212,8 +299,9 @@ class PamAuth(object):
 			return self.error_message(pam_err)
 		messages = []
 		for prompt, errno in prompts[::-1]:
-			if prompt in self.known_errors:
-				return self._(self.known_errors[prompt])
+			error_message = self._parse_password_change_fail_reason(prompt)
+			if error_message:
+				return error_message
 			if errno in (PAM_TEXT_INFO, PAM_ERROR_MSG):
 				messages.append('%s.' % (self._(prompt).strip(': .'),))
 		messages.append('Errorcode %s: %s' % (pam_err[1], self.error_message(pam_err)))
@@ -229,7 +317,27 @@ class PamAuth(object):
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore.'),
 			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again.'),
 			PAM_AUTH_ERR: self._('The authentication has failed, please login again.'),
-			PAM_AUTHTOK_ERR: self._('Make sure the kerberos service is functioning or inform an Administrator.'),
+			PAM_AUTHTOK_ERR: self._('The new password could not be set.'),
 			PAM_AUTHTOK_RECOVER_ERR: self._('The entered password does not match the current one.'),
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))
+
+	def _parse_password_change_fail_reason(self, prompt):
+		if prompt in self.known_errors:
+			return self._(self.known_errors[prompt])
+		for pattern, error_message in self.known_errors.iteritems():
+			if isinstance(pattern, basestring):
+				pattern = re.compile(re.escape(pattern), re.I)
+			match = pattern.search(prompt)
+			if match:
+				match = match.groupdict()
+				additional_message = ''
+				for x, y in match.groupdict().iteritems():
+					try:
+						additional_message = {
+							'minlen': ' ' + _('The password must consist of at least %s characters.'),
+							'history': ' ' + _('Choose a password which does not match any of your last %s passwords.')
+						}[x] % (y,)
+					except KeyError:
+						pass
+				return self._(error_message) + additional_message
