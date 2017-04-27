@@ -15,7 +15,7 @@ if mail_cyrus_murder_master:
 		print ''
 		print '        # --- Mupdate master ---------------------------'
 		print ''
-		print '        checkpointmaster cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30'
+		print '        checkpointmaster cmd="/usr/lib/cyrus/bin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30'
 	else:
 		mupdateMaster = 0
 
@@ -24,11 +24,11 @@ if mail_cyrus_murder_master:
 			print ''
 			print '        # --- Mupdate slave ----------------------------'
 			print ''
-			print '        checkpointslave cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30'
+			print '        checkpointslave cmd="/usr/lib/cyrus/bin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30'
 
 		print ''
 		print '        # this is only necessary if caching TLS sessions'
-		print '        tlsprunefrontend cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf" at=0401'
+		print '        tlsprunefrontend cmd="/usr/lib/cyrus/bin/tls_prune -C /etc/imapd/frontend.conf" at=0401'
 		print ''
 		print '        # ----------------------------------------------'
 		print ''

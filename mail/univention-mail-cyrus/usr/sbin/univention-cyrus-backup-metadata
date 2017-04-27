@@ -62,7 +62,7 @@ if [ ! -d "$backupdir" ]; then
 fi
 
 # backup mailbox db
-su cyrus -c "/usr/sbin/ctl_mboxlist -C /etc/imapd/imapd.conf -d" > "$mailboxbackup"
+su cyrus -c "/usr/lib/cyrus/bin/ctl_mboxlist -C /etc/imapd/imapd.conf -d" > "$mailboxbackup"
 gzip -f "$mailboxbackup"
 
 # annotations, is there a way to dump this file?

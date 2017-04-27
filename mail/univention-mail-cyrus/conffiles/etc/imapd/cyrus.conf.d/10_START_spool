@@ -4,15 +4,15 @@ START {
         # --- Normal cyrus spool, or Murder backends ---
         
         # do not delete this entry!
-        recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/imapd.conf"
+        recover		cmd="/usr/lib/cyrus/bin/ctl_cyrusdb -r -C /etc/imapd/imapd.conf"
         
         # this is only necessary if using idled for IMAP IDLE
         idled		cmd="idled -C /etc/imapd/imapd.conf"
         
         # this is recommended if using duplicate delivery suppression
-        delprune	cmd="/usr/sbin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf"
+        delprune	cmd="/usr/lib/cyrus/bin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf"
 
         # this is recommended if caching TLS sessions
-        tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/imapd.conf"'''
+        tlsprune	cmd="/usr/lib/cyrus/bin/tls_prune -C /etc/imapd/imapd.conf"'''
 
         # ----------------------------------------------

@@ -2,6 +2,6 @@
 Description[de]=IMAP-Server
 Description[en]=IMAP server
 icon=service/cyrus-imapd
-programs=/usr/sbin/cyrmaster
+programs=/usr/lib/cyrus/bin/master
 start_type=mail/cyrus/autostart
 systemd=cyrus-imapd.service

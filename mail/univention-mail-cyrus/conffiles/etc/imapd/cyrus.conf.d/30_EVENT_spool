@@ -6,12 +6,12 @@ EVENTS {
         # --- normal cyrus spool, or murder backends ---
 
         # periodic care
-        checkpoint	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/imapd.conf" period=30
+        checkpoint	cmd="/usr/lib/cyrus/bin/ctl_cyrusdb -c -C /etc/imapd/imapd.conf" period=30
         
         # this is only necessary if using duplicate delivery suppression
-        delprune	cmd="/usr/sbin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf" at=0401
+        delprune	cmd="/usr/lib/cyrus/bin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf" at=0401
         
         # this is only necessary if caching TLS sessions
-        tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/imapd.conf" at=0401
+        tlsprune	cmd="/usr/lib/cyrus/bin/tls_prune -C /etc/imapd/imapd.conf" at=0401
 
         # ----------------------------------------------
