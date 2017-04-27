@@ -91,7 +91,7 @@ if [ ! -e /etc/cyrus.secret ]; then
 fi
 chown cyrus /etc/cyrus.secret
 
-# if creatings of imap accounts fails, info will be stored here
+# if creation of imap accounts fails, info will be stored here
 if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user
 fi
@@ -101,23 +101,28 @@ fi
 
 # restart saslauthd
 if [ -x /etc/init.d/saslauthd ]; then
-	/etc/init.d/saslauthd stop || true
+	deb-systemd-invoke stop saslauthd.service || true
 	sleep 1
-	/etc/init.d/saslauthd start || true
+	deb-systemd-invoke start saslauthd.service || true
+fi
+
+# unjoin script
+if [ "$1" = "configure" ]
+then
+	uinst=/usr/lib/univention-install/19univention-mail-cyrus-uninstall.uinst
+	[ -e "$uinst" ] && rm "$uinst"
 fi
 
 # run join script
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/81univention-mail-cyrus.inst || true
+call_joinscript 81univention-mail-cyrus.inst
+
+# Bug #44377: Cyrus IMAP not starting automatically after upgrade to 4.2
+if dpkg --compare-versions "$2" lt-nl 9.0.0-1; then
+	systemctl enable cyrus-imapd.service
 fi
 
 # restart cyrus
-if [ -x /etc/init.d/cyrus2.2 ]; then
-	/etc/init.d/cyrus2.2 restart
-fi
-if [ -x /etc/init.d/cyrus-imapd ]; then
-	/etc/init.d/cyrus-imapd restart
-fi
+deb-systemd-invoke restart cyrus-imapd.service
 
 # restart listener
 if [ -x /etc/init.d/univention-directory-listener ]; then
@@ -135,6 +140,6 @@ ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT"
 		security/packetfilter/package/univention-mail-cyrus/tcp/995/all/en="POP3S" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all/en="Sieve"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+[ -x "/etc/init.d/univention-firewall" ] && deb-systemd-invoke restart univention-firewall.service
 
 exit 0

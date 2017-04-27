@@ -1,3 +1,11 @@
+univention-mail-cyrus (9.0.0-3) unstable; urgency=medium
+
+  * Bug #44377: adjust "restart" calls to systemd
+  * adjust package dependencies to Jessie
+  * add unjoin script
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 27 Apr 2017 09:27:56 +0200
+
 univention-mail-cyrus (9.0.0-2) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

@@ -1,9 +1,10 @@
 #!/bin/sh
+
 #
 # Univention Mail Cyrus
-#  join script
+#  unjoin script
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/ldap.sh
+
 joinscript_init
 
-eval "$(univention-config-registry shell)"
+ucs_removeServiceFromLocalhost "IMAP" "$@" || die
 
-cp "/etc/univention/ssl/$hostname.$domainname/cert.pem" /var/lib/cyrus/
-cp "/etc/univention/ssl/$hostname.$domainname/private.key" /var/lib/cyrus/
-chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
-chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
-
-# add service to my host object
-ucs_addServiceToLocalhost "IMAP" "$@"
-
-# copy machine.secret
-dest="/etc/cyrus-ldap.secret"
-cp /etc/machine.secret "$dest"
-chown cyrus:root "$dest"
-chmod 600  "$dest"
-
-# restart cyrus
-deb-systemd-invoke restart cyrus-imapd.service
-
-ucs_registerLDAPExtension "$@" --udm_module /usr/share/univention-mail-cyrus/mailquota.py --ucsversionstart 3.2-0 || die
-
-joinscript_save_current_version
+joinscript_remove_script_from_status_file univention-mail-cyrus
 
 exit 0

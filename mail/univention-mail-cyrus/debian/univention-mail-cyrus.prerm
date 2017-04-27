@@ -1,9 +1,8 @@
 #!/bin/sh
 #
-# Univention Mail Cyrus
-#  join script
+# prerm script for univention-mail-cyrus
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +29,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+#DEBHELPER#
 
-. /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/all.sh
-joinscript_init
-
-eval "$(univention-config-registry shell)"
-
-cp "/etc/univention/ssl/$hostname.$domainname/cert.pem" /var/lib/cyrus/
-cp "/etc/univention/ssl/$hostname.$domainname/private.key" /var/lib/cyrus/
-chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
-chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
-
-# add service to my host object
-ucs_addServiceToLocalhost "IMAP" "$@"
-
-# copy machine.secret
-dest="/etc/cyrus-ldap.secret"
-cp /etc/machine.secret "$dest"
-chown cyrus:root "$dest"
-chmod 600  "$dest"
-
-# restart cyrus
-deb-systemd-invoke restart cyrus-imapd.service
-
-ucs_registerLDAPExtension "$@" --udm_module /usr/share/univention-mail-cyrus/mailquota.py --ucsversionstart 3.2-0 || die
-
-joinscript_save_current_version
+if [ "$1" = "remove" ]
+then
+	cp /usr/lib/univention-uninstall/19univention-mail-cyrus-uninstall.uinst \
+		/usr/lib/univention-install/
+fi
 
 exit 0
