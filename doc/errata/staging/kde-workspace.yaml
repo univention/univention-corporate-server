@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: kde-workspace
-fix: 4:4.11.13-2A~4.2.0.201704271220
+fix: 4:4.11.13-2A~4.2.0.201704271339
 desc: |
  This update addresses the following issue(s):
  * The kdm init script now waits for the stop of the plymouth
