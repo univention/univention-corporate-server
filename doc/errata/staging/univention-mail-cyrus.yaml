@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-mail-cyrus
+fix: 9.0.0-4A~4.2.0.201704271005
+desc: |
+ This update addresses the following issue(s):
+ * After an upgrade from UCS 4.1 to UCS 4.2 the Cyrus daemons did not
+   start automatically anymore (Bug #44377).
+ * The paths to executables have been adjusted for Debian Jessie
+   (Bug #44424).
+bug: [44377, 44424]

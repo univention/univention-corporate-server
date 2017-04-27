@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-mail-cyrus-murder
+fix: 8.0.0-2A~4.2.0.201704271006
+desc: |
+ This update addresses the following issue(s):
+ * The paths to executables have been adjusted for Debian Jessie
+   (Bug #44424).
+bug: [44424]
