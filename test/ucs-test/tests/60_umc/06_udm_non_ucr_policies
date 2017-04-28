@@ -210,9 +210,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# policy (Length=4 and an empty pwLength), first user (without Samba)
 		# should have base container policy inherited (Lenght=pwLength=5):
 		self.check_policies('4', '', self.test_user_2_dn)
-		# Check commented due to Bug #35423,
-		# should be uncommented after bug is resolved:
-		#self.check_policies('5', '5', self.test_user_dn)
+		self.check_policies('5', '5', self.test_user_dn)
 
 	def assert_policies(self, should_be, in_fact):
 		"""

@@ -1,3 +1,9 @@
+ucs-test (7.0.21-15) unstable; urgency=medium
+
+  * Bug #35423: the underlying issue seems to be fixed
+
+ -- Florian Best <best@univention.de>  Fri, 28 Apr 2017 07:58:59 +0200
+
 ucs-test (7.0.21-14) unstable; urgency=low
 
   * Bug #43914: Disable 09_updater/7*_debug output
