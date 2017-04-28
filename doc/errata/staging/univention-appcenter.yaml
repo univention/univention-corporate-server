@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 
+fix: 6.0.7-4A~4.2.0.201704281417
 desc: |
  This update addresses the following issue(s):
  * The App Center now uses a different directory for temporary files in for
