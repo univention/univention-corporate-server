@@ -71,11 +71,8 @@ class VmTester(object):
 
 	def test_vm(self):
 		self.create_license_for_ldap_base()
-		print("111")
 		self.import_license_on_vm()
-		print("222")
 		self.install_dudle_on_vm()
-		print("333")
 		self.exit_with_exitcode_of_dudle_installation()
 
 	def create_license_for_ldap_base(self):
@@ -104,13 +101,13 @@ class VmTester(object):
 
 	def execute_through_ssh(self, command):
 		subprocess.call(
-			'sshpass -p %s ssh root@%s "%s"' %
+			'sshpass -p %s ssh root@%s -o StrictHostKeyChecking=no "%s"' %
 			(self.args.password, self.args.ip, command), shell=True
 		)
 
 	def copy_through_ssh(self, source_file, target_file):
 		subprocess.call(
-			"sshpass -p %s scp %s %s" %
+			"sshpass -p %s scp -o StrictHostKeyChecking=no %s %s" %
 			(self.args.password, source_file, target_file), shell=True
 		)
 
