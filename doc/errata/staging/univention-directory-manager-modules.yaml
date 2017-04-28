@@ -11,6 +11,5 @@ desc: |
  * Support for forwarding emails to external addresses has been added.
  * The error handling regarding LDAP size limits has been improved.
  * Creating computers with IPv6 addresses is possible again.
- * Fix typo in users/user, where the minimal password length is taken from
-   the UDM policy instead of from the samba policy.
+ * Fix typo in users/user when reading the minimal password length.
 bug: [27286, 42148, 42249, 42533, 44152, 44472]
