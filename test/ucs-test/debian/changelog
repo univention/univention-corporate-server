@@ -1,3 +1,9 @@
+ucs-test (7.0.21-16) unstable; urgency=medium
+
+  * Bug #42148: add test case 61_udm-users/34_user_creation_password_policy
+
+ -- Florian Best <best@univention.de>  Fri, 28 Apr 2017 08:39:39 +0200
+
 ucs-test (7.0.21-15) unstable; urgency=medium
 
   * Bug #35423: the underlying issue seems to be fixed
