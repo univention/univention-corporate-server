@@ -37,6 +37,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort
 from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.actions.service import Stop
 
 
 class Remove(Remove, DockerActionMixin):
@@ -72,5 +73,6 @@ class Remove(Remove, DockerActionMixin):
 				raise Abort('Could not backup container!')
 		docker = self._get_docker(app)
 		if docker.container:
+			Stop.call(app=app)
 			docker.stop()
 			docker.rm()
