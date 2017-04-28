@@ -39,7 +39,8 @@ class Config(object):
 	def __init__(
 		self, ip, language='en', password="univention",
 		update_ucs_after_install=True, dns_server_ip="",
-		use_multiple_partitions=False, install_all_additional_components=False
+		use_multiple_partitions=False, install_all_additional_components=False,
+		ldap_base=""
 	):
 		self.ip = ip
 		# Use an ISO 639-1 language code here:
@@ -49,3 +50,4 @@ class Config(object):
 		self.dns_server_ip = dns_server_ip
 		self.use_multiple_partitions = use_multiple_partitions
 		self.install_all_additional_components = install_all_additional_components
+		self.ldap_base = ldap_base

@@ -59,6 +59,7 @@ strings = {
 	'account_info': 'Kontoinformationen',
 	'company': 'Univention GmbH',
 	'host_settings': 'Rechnereinstellungen',
+	'domain_name': 'Vollqualifizierter Domänenname',
 
 	'join_ucs': 'Einer bestehenden UCS-Domäne',
 	'system_role': 'Systemrolle',

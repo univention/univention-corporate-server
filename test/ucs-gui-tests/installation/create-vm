@@ -326,9 +326,11 @@ def main():
 		if created_test_vm.args.resultfile is not None:
 			(host, port) = created_test_vm.get_vnc()
 			vm_name = created_test_vm.args.vm_name
-			results = [
-				{'vnchost': host, 'name': vm_name, 'vncport': (port - 5900)}
-			]
+			results = [{
+				'vnchost': host,
+				'name': vm_name,
+				'vncport': (port - 5900)
+			}]
 			with created_test_vm.args.resultfile as resultfile:
 				json.dump(results, resultfile)
 
