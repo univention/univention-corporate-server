@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-3) unstable; urgency=low
+
+  * Bug #44501: use different tmp dir
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 Apr 2017 14:12:18 +0200
+
 univention-appcenter (6.0.7-2) unstable; urgency=medium
 
   * Bug #44148: Fix sending notifications about upgraded Docker Apps

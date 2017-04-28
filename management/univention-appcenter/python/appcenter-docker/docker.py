@@ -250,7 +250,9 @@ class Docker(object):
 		if not path:
 			yield None
 		else:
-			tmp_dir = os.path.join(path, 'tmp')
+			tmp_dir = os.path.join(path, 'var', 'univention', 'tmp')
+			if not os.path.isdir(tmp_dir):
+				os.makedirs(tmp_dir)
 			tmp_file = NamedTemporaryFile(dir=tmp_dir)
 			os.chmod(tmp_file.name, 0622)  # world writable for containers not using root as user
 			tmp_file.container_path = tmp_file.name[len(path) - 1:]
