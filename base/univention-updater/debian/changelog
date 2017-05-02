@@ -2,7 +2,7 @@ univention-updater (12.0.10-5) unstable; urgency=low
 
   * Bug #44346: Pin tmporary sources list
 
-Bug #44346: Pin tmporary sources list -- Philipp Hahn <hahn@univention.de>  Tue, 02 May 2017 13:48:40 +0200
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 May 2017 17:23:50 +0200
 
 univention-updater (12.0.10-4) unstable; urgency=medium
 
