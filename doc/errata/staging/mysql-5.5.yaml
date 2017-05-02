@@ -3,10 +3,10 @@ release: "3.3"
 version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: mysql-5.5
-fix: 5.5.54-0~ucs3.3.28.201701251955
+fix: 5.5.55-0~ucs3.3.30.201705021649
 desc: |
  This update fixes several unspecified security issues in MySQL.
-bug: [42876]
+bug: [42876, 44516]
 cve:
  - CVE-2016-5584
  - CVE-2016-7440
@@ -20,3 +20,16 @@ cve:
  - CVE-2017-3313
  - CVE-2017-3317
  - CVE-2017-3318
+ - CVE-2016-5483
+ - CVE-2017-3302
+ - CVE-2017-3305
+ - CVE-2017-3308
+ - CVE-2017-3309
+ - CVE-2017-3329
+ - CVE-2017-3453
+ - CVE-2017-3456
+ - CVE-2017-3461
+ - CVE-2017-3462
+ - CVE-2017-3463
+ - CVE-2017-3464
+ - CVE-2017-3600
