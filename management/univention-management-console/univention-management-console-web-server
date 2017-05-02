@@ -46,7 +46,7 @@ import traceback
 import functools
 import threading
 from errno import ESRCH
-from urlparse import urlparse
+from urlparse import urlparse, urlunsplit
 from optparse import OptionParser
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
@@ -974,11 +974,18 @@ class CPAuth(CPgeneric):
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
 				# slapd down, time synchronization between IDP and SP is wrong, etc.
-				raise HTTPRedirect('/univention/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
+				CORE.error('SAML authentication failed: Make sure slapd runs and the time on the service provider and identity provider is identical.')
+				raise UMC_HTTPError(
+					500,
+					'The SAML authentication failed. This might be a temporary problem. Please login again.\n'
+					'Further information can be found in the following logfiles:\n'
+					'* /var/log/univention/management-console-web-server.log\n'
+					'* /var/log/univention/management-console-server.log\n'
+				)
 			raise
 
 		cherrypy.response.status = 303
-		cherrypy.response.headers['Location'] = user.data.get('relay_state', {}).get('referer') or '/univention/management/'
+		cherrypy.response.headers['Location'] = (user.data or {}).get('relay_state', {}).get('referer') or '/univention/management/'
 
 	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
@@ -1277,9 +1284,14 @@ class SAML(Ressource):
 		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
 
 		if relay_state:
+			# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+			location = urlparse(cherrypy.request.query.get('location', ''))
+			if location.path.startswith('//'):
+				location = urlparse('')
+			location = urlunsplit((None, None, location.path, location.query, location.fragment))
 			self.relay_state[relay_state] = {
 				'uri': cherrypy.request.uri,
-				'referer': cherrypy.request.headers.get('Referer'),
+				'referer': location,
 			}
 
 		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
