@@ -208,30 +208,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
         )), set(tmp))
 
-    def test_security_update_temporary_sources_list(self):
-        """Test temporary sources list for security update."""
-        self._uri({
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, ARCH): DATA,
-        })
-        tmp = self.u.security_update_temporary_sources_list()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, SEC + 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, SEC + 1, ARCH),
-        )), set(tmp))
-
-    def test_errata_update_temporary_sources_list(self):
-        """Test temporary sources list for errata update."""
-        self._uri({
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 1, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 1, ARCH): DATA,
-        })
-        tmp = self.u.errata_update_temporary_sources_list()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, ERRAT + 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, ERRAT + 1, ARCH),
-        )), set(tmp))
-
     def test_get_all_available_security_updates(self):
         """Test next available security updates."""
         self._uri({

@@ -780,26 +780,6 @@ class UniventionUpdater:
             result += repos
         return result
 
-    def security_update_temporary_sources_list(self):
-        '''Create a list of Debian repository statements for the next security update'''
-        start = end = UCS_Version((self.version_major, self.version_minor, self.security_patchlevel + 1))
-        archs = ['all'] + self.architectures
-
-        sources_list = []
-        for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
-            sources_list.append(ver.deb(server))
-        return sources_list
-
-    def errata_update_temporary_sources_list(self):
-        '''Create a list of Debian repository statements for the next errata update'''
-        start = end = UCS_Version((self.version_major, self.version_minor, self.erratalevel + 1))
-        archs = ['all'] + self.architectures
-
-        sources_list = []
-        for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-            sources_list.append(ver.deb(server))
-        return sources_list
-
     def get_all_available_security_updates(self):
         '''
         Returns a list of all available security updates for current major.minor version

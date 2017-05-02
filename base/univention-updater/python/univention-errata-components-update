@@ -82,17 +82,6 @@ def dprint(str, fd=[]):
         print >>f, str
 
 
-def add_temporary_sources_list(debline):
-    fp = open(TMPSOURCE, 'a+')
-    fp.write(debline + '\n')
-    fp.close()
-
-
-def remove_temporary_sources_list():
-    if os.path.exists(TMPSOURCE):
-        os.remove(TMPSOURCE)
-
-
 def usage(fd=sys.stdout):
     print >> fd, 'univention-errata-components-update: tool for installing errata updates for components'
     print >> fd, 'copyright (c) 2011-2017 Univention GmbH, Germany'
