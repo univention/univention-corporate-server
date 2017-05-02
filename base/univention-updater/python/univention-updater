@@ -44,6 +44,7 @@ import subprocess
 import datetime
 import itertools
 from textwrap import dedent, wrap
+from errno import ENOENT
 
 try:
     import univention.debug as ud
@@ -66,6 +67,7 @@ FN_STATUS = '/var/lib/univention-updater/univention-updater.status'
 failure = '/var/lib/univention-updater/update-failed'
 reboot_required = '/run/univention-updater-reboot'
 TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
+TMPSOURCE2 = '/etc/apt/sources.list.d/00_ucs_update_in_progress.list'
 
 LOGNAME = '/var/log/univention/updater.log'
 fd_log = sys.stderr
@@ -184,17 +186,27 @@ def deactivateSourcesListMethods(methods=['cdrom']):
         log('   %s\n' % '\n   '.join(deactivated_lines))
 
 
-def add_temporary_sources_list(debline):
-    """ Add line to a temporary sources.list. """
-    fp = open(TMPSOURCE, 'a+')
-    fp.write(debline + '\n')
-    fp.close()
-
-
 def remove_temporary_sources_list():
     """ Add the temporary sources.list. """
-    if os.path.exists(TMPSOURCE):
+    try:
         os.remove(TMPSOURCE)
+    except EnvironmentError as ex:
+        if ex.errno != ENOENT:
+            raise
+
+    try:
+        os.remove(TMPSOURCE2)
+    except EnvironmentError as ex:
+        if ex.errno != ENOENT:
+            raise
+
+
+def add_temporary_sources_list(temporary_sources_list):
+    """ Add line to a temporary sources.list. """
+    remove_temporary_sources_list()
+    with open(TMPSOURCE2, 'w') as fp:
+        for entry in temporary_sources_list:
+            print >> fp, entry
 
 
 def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None):
@@ -496,10 +508,6 @@ def main():
     if ignoreterm:
         os.putenv('update%d%d_ignoreterm' % (new_version.major, new_version.minor, ), 'yes')
 
-    temporary_sources_list = updater.release_update_temporary_sources_list(nextversion)
-    remove_temporary_sources_list()
-    add_temporary_sources_list('\n'.join(temporary_sources_list))
-
     if command == 'cdrom':
         if baseConfig.is_true('local/repository', False):
             log('local/reposity active, copy %s and start local mode' % device_name)
@@ -520,6 +528,8 @@ def main():
             dprint('       repository (/usr/sbin/univention-repository-create)')
             dprint('       or try to install via "univention-updater net"')
             sys.exit(1)
+
+    add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
 
     rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
@@ -658,10 +668,6 @@ if __name__ == '__main__':
             do_ucr_update = False
             raise
     finally:
-        try:
-            remove_temporary_sources_list()
-        except:
-            print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
         if do_ucr_update:
             update_ucr_updatestatus()
         fd_log.close()
