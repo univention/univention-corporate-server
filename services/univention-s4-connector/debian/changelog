@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.4-13) unstable; urgency=medium
+
+  * Bug #44291: Fix incomplete patch
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 May 2017 21:26:49 +0200
+
 univention-s4-connector (10.0.4-12) unstable; urgency=medium
 
   * Bug #44289: Fix handling of Printer-Admins
