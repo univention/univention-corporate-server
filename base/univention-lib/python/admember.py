@@ -501,10 +501,16 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 		ucr.load()
 
 	# First determine target position from AD:
+	ad_server_ip = ad_domain_info["DC IP"]
 	ad_server_name = ad_domain_info["DC DNS Name"]
 	ad_ldap_base = ad_domain_info["LDAP Base"]
 	ad_domain = ad_domain_info["Domain"]
 	ad_realm = ad_domain.upper()
+
+	try:
+		time_sync(ad_server_ip)
+	except timeSyncronizationFailed as ex:
+		ud.debug(ud.MODULE, ud.WARN, "Time sync failed, trying to authenticate anyway. Original exception: %s" % (ex,))
 
 	principal = "%s@%s" % (username, ad_realm)
 	_get_kerberos_ticket(principal, password, ucr)
