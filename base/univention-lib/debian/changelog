@@ -1,3 +1,10 @@
+univention-lib (6.0.9-5) unstable; urgency=medium
+
+  * Bug #38285: Always get new Kerberos Tickets in
+    synchronize_account_position
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 May 2017 16:15:18 +0200
+
 univention-lib (6.0.9-4) unstable; urgency=medium
 
   * Bug #38285: flush the nscd hosts cache after trying check_ad_account

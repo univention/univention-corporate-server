@@ -178,18 +178,6 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 	if p1.returncode != 0:
 		ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout)
 
-	if 'KRB5CCNAME' in os.environ:
-		uid = os.geteuid()
-		default_krb5_cc_path = '/tmp/krb5cc_%d' % uid
-		# get the default "/tmp/krb5cc_$uid" key cache out of the way,
-		# otherwise kinit doesn't generate one in the specified location
-		# Note: Could also above run "kdestroy -A" instead
-		default_krb5_cc = None
-		if os.path.exists(default_krb5_cc_path):
-			backup_default_krb5_cc = tempfile.NamedTemporaryFile(delete=False)
-			backup_default_krb5_cc.close()
-			os.rename(default_krb5_cc_path, backup_default_krb5_cc.name)
-
 	f = tempfile.NamedTemporaryFile(delete=False)
 	try:
 		os.chmod(f.name, 0o600)
@@ -199,8 +187,6 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 		cmd = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
-		if 'KRB5CCNAME' in os.environ and default_krb5_cc:
-			os.rename(backup_default_krb5_cc.name, default_krb5_cc_path)
 		if p1.returncode != 0:
 			ud.debug(ud.MODULE, ud.ERROR, "kinit failed:\n%s" % stdout)
 			raise connectionFailed()
@@ -519,21 +505,15 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 	ad_ldap_base = ad_domain_info["LDAP Base"]
 	ad_domain = ad_domain_info["Domain"]
 	ad_realm = ad_domain.upper()
+
+	principal = "%s@%s" % (username, ad_realm)
+	_get_kerberos_ticket(principal, password, ucr)
+
 	try:
 		lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
 		lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
-		if 'KRB5CCNAME' in os.environ:
-			krb5_cc_path = os.environ['KRB5CCNAME']
-		else:
-			uid = os.geteuid()
-			krb5_cc_path = '/tmp/krb5cc_%d' % uid
-
-		if not os.path.exists(krb5_cc_path):
-			# should have been created by check_ad_account, but just in case..
-			principal = "%s@%s" % (username, ad_realm)
-			_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
