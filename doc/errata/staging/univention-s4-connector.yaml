@@ -3,11 +3,12 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-s4-connector
-fix: 11.0.7-3A~4.2.0.201704252057
+fix: 11.0.7-4A~4.2.0.201705021814
 desc: |
  This update addresses the following issue(s):
  * Don't append a trailing dot to DNS alias values
  * Allow recursive removal of unmapped objects in sync_from_ucs
  * Don't consider unreachable UCS@school Slave DCs when looking for hosts
    running a S4-Connector
-bug: [31311, 33882, 43478]
+ * Fix handling of Printer-Admins
+bug: [31311, 33882, 43478, 44517]
