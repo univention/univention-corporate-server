@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.7-4) unstable; urgency=medium
+
+  * Bug #44517: Fix handling of Printer-Admins
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 May 2017 18:13:43 +0200
+
 univention-s4-connector (11.0.7-3) unstable; urgency=medium
 
   * Bug #43478: Don't consider unreachable UCS@school Slave DCs when

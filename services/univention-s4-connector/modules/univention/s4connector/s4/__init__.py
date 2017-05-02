@@ -321,19 +321,26 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an UCS-Object")
 				filter_parts_s4 = [format_escaped('(objectclass={0!e})', ocs4),]
 
+				alternative_samaccountnames = []
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
 						try:
 							if value.lower() == ucsval.lower():
 								if ucsval == "Printer-Admins":	## Also look for the original name (Bug #42675#c1)
-									filter_parts_s4.append(format_escaped('(samaccountname={0!e})', ucsval))
+									alternative_samaccountnames.append(ucsval)
 								value = conval
 								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 								continue
 						except UnicodeDecodeError:
 							pass  # values are not the same codec
 
-				filter_parts_s4.append(format_escaped('(samaccountname={0!e})', value))
+				if len(alternative_samaccountnames) == 0:
+					filter_parts_s4.append(format_escaped('(samaccountname={0!e})', value))
+				else:
+					alternative_samaccountnames.append(value)
+					samaccountname_filter_parts = map(lambda x: format_escaped('(samaccountname={0!e})', x), alternative_samaccountnames)
+					filter_parts_s4.append(unicode_to_utf8(u'(|{})'.format(''.join(samaccountname_filter_parts))))
+
 				if dn_attr and dn_attr_val:
 					# also look for dn attr (needed to detect modrdn)
 					filter_parts_s4.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
