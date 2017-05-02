@@ -300,9 +300,11 @@ install_apps_master_packages ()
 
 install_with_unmaintained () {
 	local rv=0
+	ucr set --force repository/online=true
 	ucr set repository/online/unmaintained=yes
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
+	ucr unset --force repository/online
 	return $rv
 }
 
