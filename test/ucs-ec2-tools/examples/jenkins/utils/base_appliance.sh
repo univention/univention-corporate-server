@@ -769,10 +769,15 @@ uninstall_packages ()
 
 setup_pre_joined_environment ()
 {
+	# $1 = appid
+	# $2 = domainname / derived ldapbase
 	if app_appliance_AllowPreconfiguredSetup $1; then
+		[ -z "${2}" ] && set -- "$1" "ucs.example"
+		local domainname="${2}"
+		local ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
 		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
-domainname="ucs.example"
+domainname="${domainname}"
 server/role="domaincontroller_master"
 locale="de_DE.UTF-8:UTF-8 en_US.UTF-8:UTF-8"
 interfaces/eth0/type="static"
@@ -789,8 +794,8 @@ interfaces/eth0/broadcast="10.203.255.255"
 packages_remove=""
 ssl/organization="DE"
 root_password="$appliance_default_password"
-ssl/email="ssl@ucs.example"
-ldap/base="dc=ucs,dc=example"
+ssl/email="ssl@${domainname}"
+ldap/base="${ldapbase}"
 locale/default="de_DE.UTF-8:UTF-8"
 nameserver1="192.168.0.3"
 ssl/state="DE"
@@ -1011,7 +1016,7 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	ucr set --force auth/sshd/user/root=no
+	[ "${1}" = "DISABLE_ROOTLOGIN" ] && ucr set --force auth/sshd/user/root=no
 	rm /root/*
 	rm /root/.bash_history
 	history -c
