@@ -1,0 +1,23 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: mysql-5.5
+fix: 5.5.55-0.29.201705021645
+desc: |
+ This update fixes several unspecified security issues in MySQL.
+bug: [44516]
+cve:
+ - CVE-2016-5483
+ - CVE-2017-3302
+ - CVE-2017-3305
+ - CVE-2017-3308
+ - CVE-2017-3309
+ - CVE-2017-3329
+ - CVE-2017-3453
+ - CVE-2017-3456
+ - CVE-2017-3461
+ - CVE-2017-3462
+ - CVE-2017-3463
+ - CVE-2017-3464
+ - CVE-2017-3600
