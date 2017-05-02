@@ -538,6 +538,9 @@ apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
 
+# Bug #44346: Pin temporary sources list - can be removed after UCS-4-2-0
+ln -n -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list /etc/apt/sources.list.d/00_ucs_update_in_progress.list 2>&3 || :
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
