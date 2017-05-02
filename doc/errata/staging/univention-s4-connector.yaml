@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-s4-connector
-fix: 10.0.4-12.637.201705021754
+fix: 10.0.4-13.638.201705022127
 desc: |
  This update addresses the following issue(s):
  * Add new UCR variables
