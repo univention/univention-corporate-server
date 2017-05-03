@@ -6,6 +6,5 @@ src: samba
 fix: 2:4.5.1-1.861.201704251251
 desc: |
  This update addresses the following issues:
- * Workaround for Samba Bug 12398: Avoid blocking DRS replication on
-   missing parent DN.
+ * Avoid blocking DRS replication on missing parent DN (Samba Bug 12398).
 bug: [43279]
