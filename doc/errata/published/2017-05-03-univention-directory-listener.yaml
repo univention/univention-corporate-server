@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Migrate BDB cache to MDB in case it didn't happen during update.
 bug: [44466]
+erratum: 10
+announced: 2017-05-03
