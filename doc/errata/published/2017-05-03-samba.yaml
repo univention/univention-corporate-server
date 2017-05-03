@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Avoid blocking DRS replication on missing parent DN (Samba Bug 12398).
 bug: [43279]
+erratum: 411
+announced: 2017-05-03
