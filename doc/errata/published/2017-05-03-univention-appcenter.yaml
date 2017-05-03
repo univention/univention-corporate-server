@@ -11,3 +11,5 @@ desc: |
  * The App Center now uses a different directory for special temporary files
    for Docker Apps to avoid problems with the sysvinit's tmp cleanup.
 bug: [44148, 44387]
+erratum: 412
+announced: 2017-05-03
