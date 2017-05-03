@@ -78,3 +78,8 @@ def random_name():
 @pytest.fixture
 def random_username():
 	return strings.random_username
+
+
+@pytest.fixture
+def wait_for_replication():
+	return utils.wait_for_replication
