@@ -10,3 +10,5 @@ desc: |
    are not searchable in UMC anymore.
  * The fetchmail ACLs now respect overridden default groupnames.
 bug: [41336, 33648]
+erratum: 9
+announced: 2017-05-03
