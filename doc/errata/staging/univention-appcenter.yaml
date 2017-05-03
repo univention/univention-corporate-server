@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Notifications about App updates of Docker Apps were not sent. This has been
    corrected.
- * The App Center now uses a different directory for temporary files in for
-   docker Apps to avoid problems with the sysvinit's tmp cleanup.
-bug: [44148,44387]
+ * The App Center now uses a different directory for special temporary files
+   for Docker Apps to avoid problems with the sysvinit's tmp cleanup.
+bug: [44148, 44387]
