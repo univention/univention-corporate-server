@@ -52,7 +52,7 @@ mkdir -p /var/cache/univention-system-setup/packages/
 	install_cmd="$(univention-config-registry get update/commands/install)"
 
 	for package in server-master server-backup server-slave server-member basesystem \
-				ad-connector management-console-module-adtakeover printserver printquota \
+				ad-connector samba management-console-module-adtakeover printserver printquota \
 				dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server \
 				nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon welcome-screen \
 				self-service self-service-passwordreset-umc self-service-master; do

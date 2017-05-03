@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-14) unstable; urgency=medium
+
+  * Bug #44522: Add univention-samba package to download-packages script
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 03 May 2017 10:14:19 +0200
+
 univention-system-setup (10.0.10-13) unstable; urgency=medium
 
   * Bug #42133: Fix aws setup page link
