@@ -10,3 +10,5 @@ desc: |
    for Docker Apps to avoid problems with the sysvinit's tmp cleanup.
  * During the remove of Docker Apps, the App is stoppend via the init script.
 bug: [44501, 44286]
+erratum: 6
+announced: 2017-05-03
