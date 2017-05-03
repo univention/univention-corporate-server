@@ -11,3 +11,5 @@ desc: |
    _domaincontroller_master._tcp SRV record during admember setup
  * Properly stop Samba before running the admember setup
 bug: [38285, 38788, 44144]
+erratum: 5
+announced: 2017-05-03
