@@ -1,3 +1,9 @@
+ucs-test (7.0.21-18) unstable; urgency=medium
+
+  * Bug #43859: Bug #41786: add missing executable flag
+
+ -- Florian Best <best@univention.de>  Wed, 03 May 2017 19:36:16 +0200
+
 ucs-test (7.0.21-17) unstable; urgency=medium
 
   * Bug #43859: Bug #41786: add 60_umc/104_expired_password
