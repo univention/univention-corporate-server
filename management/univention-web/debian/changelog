@@ -1,3 +1,10 @@
+univention-web (1.0.42-11) unstable; urgency=low
+
+  * Bug #44527: check info.result.display_feedback in __getErrorHandler and
+    display feedback dialog
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 May 2017 15:08:33 +0200
+
 univention-web (1.0.42-10) unstable; urgency=medium
 
   * Bug #44361: don't use global dojo variable

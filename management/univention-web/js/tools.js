@@ -625,7 +625,13 @@ define([
 						return;
 					}
 
-					if (info.traceback) {
+					if (info.result && info.result.display_feedback) {
+						if (info.result.title) {
+							info.title = info.result.title;
+						}
+						info.traceback = '';
+						this.displayTraceback(info);
+					} else if (info.traceback) {
 						this.displayTraceback(info);
 					} else if (info.title) {
 						// all other cases
