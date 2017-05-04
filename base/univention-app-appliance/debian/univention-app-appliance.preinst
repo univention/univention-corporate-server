@@ -46,10 +46,10 @@ _divert() {
 case "$1" in
 	install|upgrade)
 		# create necessary diversions
-		_divert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
+		_divert /usr/share/univention-system-setup/www/style.css style.real.css
 		_divert /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
 		for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
-			_divert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
+			_divert /usr/share/univention-system-setup/www/$i
 		done
 		;;
 	abort-upgrade)

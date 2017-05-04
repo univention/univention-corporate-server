@@ -33,21 +33,22 @@
 #DEBHELPER#
 
 _undivert() {
-	[ -e "$1" -a -e "$1" ] && rm -f "$1"  # make sure that also config files are removed
+	# make sure an already 'un-diverted' file is not removed again
+	[ -e "$1" -a -e "$2" ] && rm -f "$1"
 	dpkg-divert --package univention-app-appliance --remove --rename "$1"
 }
 
 _list_diverted_files() {
-	LC_ALL=C dpkg-divert --list univention-app-appliance | sed 's/diversion of \(.*\) to .*/\1/'
+	LC_ALL=C dpkg-divert --list univention-app-appliance | sed 's/diversion of \(.*\) to \(.*\) by.*/\1 \2/'
 }
 
 case "$1" in
 	remove|disappear|failed-upgrade|abort-install)
 
 		# remove all diversions associated with this package
-		_list_diverted_files | while read file
+		_list_diverted_files | while read orig_path diversion_path
 		do
-			_undivert "$file"
+			_undivert "$orig_path" "$diversion_path"
 		done
 
 		# reset UCR variables for grub

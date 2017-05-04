@@ -50,7 +50,7 @@ class App(app.App):
 	appliance_bootsplash_logo = app.AppAttribute()
 
 	# additional logos for the setup wizard
-	appliance_setup_header_logo = app.AppAttribute()  # also used for the system activation
+	appliance_header_logo = app.AppAttribute()  # also used for the system activation
 	appliance_logo = app.AppAttribute()  # logo is displayed on the first wizard page
 
 	# logo and font color to be used together with the appliance_css_background
@@ -62,7 +62,7 @@ class App(app.App):
 	appliance_portal_logo = app.AppAttribute()
 	appliance_portal_font_color = app.AppAttribute()
 	appliance_portal_css_background = app.AppAttribute()
-	appliance_portal_background_image = app.AppAttribute()
+	appliance_portal_background_image = app.AppFileAttribute()
 	appliance_portal_tile = app.AppAttribute()
 	readme_appliance = app.AppFileAttribute()
 
@@ -100,3 +100,26 @@ def get_luminance(hexcolor):
 	red, green, blue = struct.unpack('BBB', hexcolor.decode('hex'))
 	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
 	return (0.299 * red + 0.587 * green + 0.114 * blue) / 255
+
+
+def get_app_style_properties(app):
+	props = dict()
+	for i in (
+		'primary_color',
+		'secondary_color',
+		'css_background',
+		'bootsplash_logo',
+		'header_logo',
+		'logo',
+		'welcome_screen_logo',
+		'welcome_screen_font_color',
+		'portal_logo',
+		'portal_font_color',
+		'portal_css_background',
+		'portal_background_image',
+		'portal_tile',
+	):
+		ival = getattr(app, 'appliance_%s' % i, None)
+		if ival:
+			props[i] = ival
+	return props

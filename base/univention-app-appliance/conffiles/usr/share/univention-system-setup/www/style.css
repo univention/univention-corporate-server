@@ -1,0 +1,34 @@
+/*
+@%@UCRWARNING= * @%@
+ */
+
+@import url("style.real.css");
+@!@
+from univention.app_appliance import Apps, get_app_style_properties
+app = Apps().find(configRegistry.get('umc/web/appliance/id', ''))
+app_props = get_app_style_properties(app)
+
+# only print these CSS rules when appliance mode is enabled
+has_required_props = len(set(('secondary_color', 'primary_color', 'header_logo')) - set(app_props.keys())) == 0
+if app and has_required_props:
+	print '''
+/* import original css file */
+@import url("style.real.css");
+
+/* additional CSS rules for the app appliance branding */
+
+.umc .umcHeader {
+	background-color: %(primary_color)s;
+	/* ensure that the logo is not larger than 20px */
+	background-size: auto 20px;
+}
+
+.umc .umcHeader .umcHeaderRight .univentionLogo {
+	background-image: url(/univention/js/dijit/themes/umc/images/appliance_header_logo.svg);
+}
+
+.umc .umcCard .dijitDefaultButton .dijitButtonText {
+	color: %(primary_color)s;
+}
+''' % app_props
+@!@

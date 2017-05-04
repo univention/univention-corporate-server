@@ -11,7 +11,7 @@ File: usr/share/univention-management-console/i18n/de/appliance.mo
 Variables: umc/web/appliance/.*
 
 Type: file
-File: usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css
+File: usr/share/univention-system-setup/www/style.css
 Variables: system/setup/boot/start
 Variables: umc/web/appliance/.*
 

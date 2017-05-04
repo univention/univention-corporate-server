@@ -1,11 +1,8 @@
 plymouth/ucs-appliance-light usr/share/plymouth/themes
 plymouth/ucs-appliance-dark usr/share/plymouth/themes
 umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/modules
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/*	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
 images/*	usr/share/univention-app-appliance/images
 tools/*	usr/share/univention-app-appliance/
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg usr/share/univention-system-activation/www/css/icons
-usr/share/univention-system-activation/www/css/icons/appliance_header_logo.svg usr/share/univention-system-activation/www/css/icons
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/category-appliance.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
-usr/share/univention-system-activation/www/css/icons/icons-white.svg usr/share/univention-system-activation/www/css/icons/
+usr/share/univention-web/js/dijit/themes/umc/images/*	usr/share/univention-web/js/dijit/themes/umc/images
 usr/sbin/univention-app-appliance	usr/sbin
+usr/share/univention-system-setup/www/

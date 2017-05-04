@@ -34,9 +34,23 @@
 
 . /usr/share/univention-lib/umc.sh
 
+_undivert() {
+	local orig_path="$1"
+	local path="${1%/*}"
+	# if no second parameter is given as destination filename, default to <filename>.real
+	local diversion_path="$path/${2:-${1##*/}.real}"
+
+	# make sure an already undiverted file is not remove
+	[ -e "$orig_path" -a -e "$diversion_path" ] && rm -f "$orig_path"
+	dpkg-divert --package univention-app-appliance --remove --rename "$orig_path"
+}
+
 case "$1" in
 	configure)
-		umc_frontend_new_hash
+		_undivert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
+		for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
+			_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
+		done
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;

@@ -112,7 +112,7 @@ def main(app_id):
 	print_status('Adjusting colors of UMC images.')
 	for src_path in glob('/usr/share/univention-app-appliance/images/*.svg'):
 		filename = os.path.basename(src_path)
-		dest_path = os.path.join('/usr/share/univention-management-console-frontend/js/umc/modules/setup/', filename)
+		dest_path = os.path.join('/usr/share/univention-system-setup/www/', filename)
 		if secondary_color:
 			with open(src_path, 'r') as in_file:
 				with open(dest_path, 'w') as out_file:
@@ -146,7 +146,7 @@ def main(app_id):
 			'grub/menu/color/normal': 'black/black',
 			'bootsplash/theme': 'ucs',
 		}
-		if primary_color and css_background and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
+		if primary_color and css_background and app.appliance_header_logo and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
 			# only set branded grub theme if all necessary images are specified
 			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
 			if theme == 'dark':
@@ -172,20 +172,17 @@ def main(app_id):
 	# download image files for the app appliance
 	print_status('Downloading images.')
 	if app.appliance_logo:
-		logo = '/usr/share/univention-management-console-frontend/js/umc/modules/setup/welcome.svg'
+		logo = '/usr/share/univention-system-setup/www/welcome.svg'
 		download_resource(app, app.appliance_logo, logo)
 		logo_copy = '/var/www/icon/%s' % app.appliance_logo
 		shutil.copy(logo, logo_copy)
 		os.chmod(logo_copy, 0o644)
 		ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
-	if app.appliance_setup_header_logo:
+	if app.appliance_header_logo:
 		# UMC
-		header_logo = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg'
-		download_resource(app, app.appliance_setup_header_logo, header_logo)
-
-		# system-activation needs that resource too
-		shutil.copy(header_logo, '/usr/share/univention-system-activation/www/css/icons/appliance_header_logo.svg')
+		umc_header = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
+		download_resource(app, app.appliance_header_logo, umc_header)
 
 		# welcome-screen (plymouth) needs it as png
 		params = 'no-repeat; background-size: auto 28px; background-position: left center;'
