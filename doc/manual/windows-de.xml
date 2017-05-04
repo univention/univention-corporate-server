@@ -920,12 +920,12 @@ END CATEGORY
   </para>
 
   <para>
-    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. Einige Apps aus dem App Center benötigen verschlüsselte Passwortdaten. Sofern eine App diese benötigt, wird ein entsprechender Hinweis im App Center angezeigt. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
+    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. Einige Apps aus dem App Center benötigen verschlüsselte Passwortdaten. Sofern eine App diese benötigt, wird ein entsprechender Hinweis im App Center angezeigt.
   </para>
 
   <para>
 	  Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend.
-	  Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden.
+	  Daher muss in diesem Fall zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden.
 	  Dieser muss im AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein.
 	  Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden.
 	  Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändert wurde, muss das neue Passwort in diese Datei eingetragen werden.
@@ -952,15 +952,12 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <title>Einrichtung des UCS AD-Connectors</title>
 
   <para>
-  	Als Alternative zur Mitgliedschaft in einer AD-Domäne, die im vorherigen Abschnitt beschrieben ist, kann der UCS Active Directory-Connector dazu verwendet werden, Benutzer- und Gruppenobjekte zwischen einer UCS-Domäne und einer AD-Domäne zu synchronisieren. Diese Betriebsart erlaubt über die unidirektionale Synchronisation hinaus auch die bidirektionale Synchronisation. In dieser Betriebsart bestehen beide Domänen parallel und ihre Authentifikationssysteme funktionieren unabhängig. Voraussetzung dafür ist die Synchronisation der verschlüsselten Passwortdaten. Dafür ist die Installation eines speziellen Passwortdienstes auf dem AD-Domänencontroller notwendig.
+  	Als Alternative zur Mitgliedschaft in einer AD-Domäne, die im vorherigen Abschnitt beschrieben ist, kann der UCS Active Directory-Connector dazu verwendet werden, Benutzer- und Gruppenobjekte zwischen einer UCS-Domäne und einer AD-Domäne zu synchronisieren. Diese Betriebsart erlaubt über die unidirektionale Synchronisation hinaus auch die bidirektionale Synchronisation. In dieser Betriebsart bestehen beide Domänen parallel und ihre Authentifikationssysteme funktionieren unabhängig. In diesem Betriebsmodus werden per Voreinstellung auch verschlüsselten Passwortdaten synchronisiert.
   </para>
 
   <para>
     In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer und Gruppen
-    synchronisiert. Die Benutzer nehmen eine Sonderstellung ein, da das Passwort in Active
-    Directory nicht über das LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
-    Dienst auf dem Windows-Server installiert, der diese Passwortsynchronisation ermöglicht (siehe
-    <xref linkend="ad-connector:password-dienst"/>).
+    synchronisiert.
   </para>
 
   <para>
@@ -1116,10 +1113,6 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Im letzten Dialog werden alle zur <guimenu>Installation des Passwortdienstes</guimenu> notwendigen Dateien zum Download auf den Windows-Server angeboten. Weitere Details dazu sind in <xref linkend="ad-connector:password-dienst"/> beschrieben.
-	</para>
-
-	<para>
 	  Nach einem Klick auf <mousebutton>Weiter</mousebutton> wird die Konfiguration übernommen und der UCS AD-Connector wird gestartet.
 	  Der abschließende Dialog muss dann durch Klick auf <mousebutton>Fertigstellen</mousebutton> geschlossen werden.
 	</para>
@@ -1156,9 +1149,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	Die verschlüsselte Verbindung zwischen UCS-System und Active Directory
 	kann auch deaktiviert werden, indem die
 	&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <literal>no</literal> gesetzt wird. Diese
-	Einstellung betrifft nicht die Kommunikation mit dem
-	Passwort-Dienst (siehe <xref linkend="ad-connector:password-dienst"/>);
-	diese ist immer verschlüsselt.
+	Einstellung betrifft nicht die Synchronisation der verschlüsselten Passwortdaten.
   </para>
 
   <section id="windows:Export_unter_Windows_2003">
@@ -1291,54 +1282,6 @@ Das hochgeladene Zertifikat wird dadurch für den UCS AD-Connector verfügbar ge
 </section>
 </section>
 
-<section id="ad-connector:password-dienst"><title>Einrichtung des Passwort-Dienstes auf dem AD-System</title>
-<para>
-Active Directory verbietet die Abfrage von Passwörtern über das
-LDAP-Protokoll, was die Installation eines Paketes auf dem
-Windows-Server erfordert.
-</para>
-<para>
-Die Installations-Pakete werden ebenfalls über den
-UMC-Einrichtungs-Assistenten bereitgestellt:
-</para>
-
-<itemizedlist>
-<listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
-<listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
-<listitem><simpara><filename>Microsoft Visual C++ 2010 Redistributable Package (x86)</filename></simpara></listitem>
-<listitem><simpara><filename>private.key</filename></simpara></listitem>
-<listitem><simpara><filename>cert.pem</filename></simpara></listitem>
-</itemizedlist>
-<para>
-Auf 64 Bit-Varianten von Windows muss vor der Installation des AD
-Connectors das <package>Microsoft Visual C++ 2010
-  Redistributable Package (x86)</package> installiert werden.
-</para>
-<para>
-	Die <filename class="extension">MSI</filename>-Pakete sind die Installations-Dateien für den
-Passwortdienst und können durch einen Doppelklick gestartet werden.
-</para>
-<para>
-Das Paket wird automatisch in das Verzeichnis <filename class="directory">C:\Windows\UCS-AD-Connector\</filename> installiert. Zusätzlich wird der
-Passwort-Dienst als Systemdienst in die Windows-Umgebung integriert,
-wodurch der Dienst automatisch oder manuell gestartet werden kann.
-Nach der Installation ist der Passwort-Dienst für den automatischen
-Start konfiguriert.
-</para>
-<para>
-Die Dateien <filename>private.key</filename> und <filename>cert.pem</filename> beinhalten unter UCS erzeugte
-SSL-Zertifikate für die gesicherte Kommunikation des Passwort-Dienstes. Sie müssen ebenfalls
-in das Installationsverzeichnis des Passwort-Dienstes kopiert werden.
-Anschließend muss der Passwort-Dienst neu gestartet werden.
-</para>
-<para>
-In einer Standard-Installation unter Windows 2008 blockiert die
-Windows-Firewall die Zugriffe auf den UCS AD-Connector. Diese muss entweder
-in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
-6670/TCP freigegeben werden.
-</para>
-</section>
-
 <section id="ad-connector:neustart"><title>Start/Stopp des Active Directory Connectors</title>
 <para>
 	Abschließend kann der Connector über <mousebutton>Active Directory-Verbindungsdienst starten</mousebutton>
@@ -1421,10 +1364,6 @@ entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
 /var/log/univention/connector.log
 /var/log/univention/connector-status.log
 </programlisting>
-<para>
-Die Statusmeldungen des Passwort-Dienstes auf AD-Seite werden in die
-Datei <filename>C:\Windows\UCS-AD-Connector\UCS-AD-Connector.log</filename> protokolliert.
-</para>
 </section>
 </section>
 

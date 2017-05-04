@@ -864,13 +864,13 @@ END CATEGORY
   </para>
 
   <para>
-    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. Some apps from the Univention App Center require encrypted password data. If an app needs it, a note is shown in the App Center. For this purpose, the password service can be installed on the AD server (see <xref linkend="ad-connector:password-dienst"/>).
+    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. Some apps from the Univention App Center require encrypted password data. If an app needs it, a note is shown in the App Center.
   </para>
 
   <para>
 	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorizations of the &ucsMaster;'s machine account.
 	  These authorizations are not sufficient for exporting encrypted password data.
-	  As such, the LDAP DN of a privileged replication user can also be manually entered in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> for the setting up of the password service.
+	  In this case, the LDAP DN of a privileged replication user can be adjusted manually in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>.
 	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
 	  The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
 	  If the access password is changed at a later point in time, the new password must be entered in this file.
@@ -898,11 +898,11 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <title>Setup of the UCS AD connector</title>
 
   <para>
-    As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronize user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronization, this operating mode also allows bidirectional synchronization. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronization of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
+    As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronize user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronization, this operating mode also allows bidirectional synchronization. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronization of the encrypted password data.
   </para>
 
   <para>
-    In the default setting, containers, organizational units, users and groups are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory. A special service is installed on the Windows server for this purpose, which enables password synchronization (see <xref linkend="ad-connector:password-dienst"/>).
+    In the default setting, containers, organizational units, users and groups are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory.
   </para>
 
   <para>
@@ -1027,10 +1027,6 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	In the last dialogue window, all the files required for the <guimenu>Installation of password service</guimenu> are offered for download to the Windows server. Further information on this topic can be found in <xref linkend="ad-connector:password-dienst"/>.
-  </para>
-
-  <para>
 	Once <mousebutton>Next</mousebutton> is clicked, the configuration is taken over and the UCS AD Connector started.
 	The subsequent dialogue window needs to be closed by clicking on <mousebutton>Finish</mousebutton>.
   </para>
@@ -1063,9 +1059,8 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   <para>
 	The encrypted communication between the UCS system and Active Directory
 	can also be deactivated by setting the &ucsUCRV; <envar>connector/ad/ldap/ssl</envar>
-	to <literal>no</literal>. This setting does not concern the communication with the
-	password service (see <xref linkend="ad-connector:password-dienst"/>);
-	this is always encrypted.
+	to <literal>no</literal>. This setting does not affect the replication of
+	encrypted password data.
   </para>
 
   <section id="windows:Exporting_the_certificate_on_Windows_2003">
@@ -1197,54 +1192,6 @@ uploaded and integrated into the UCS AD Connector.
 </section>
 </section>
 
-<section id="ad-connector:password-dienst"><title>Setting up the password service on the AD system</title>
-<para>
-Active Directory prohibits the request of passwords via the LDAP
-protocol, which requires the installation of a package on the
-Windows server.
-</para>
-<para>
-The installation packages are also provided via the setup
-wizard &ucsUMC;.
-</para>
-
-<itemizedlist>
-<listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
-<listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
-<listitem><simpara><filename>Microsoft Visual C++ 2010 Redistributable Package (x86)</filename></simpara></listitem>
-<listitem><simpara><filename>private.key</filename></simpara></listitem>
-<listitem><simpara><filename>cert.pem</filename></simpara></listitem>
-</itemizedlist>
-<para>
-On 64-bit Windows versions, the <package>Microsoft Visual C++ 2010
-  Redistributable Package (x86)</package> must be installed before the
-installation of the AD connector.
-</para>
-<para>
-	The <filename class="extension">MSI</filename> files are the installation files for the
-password service and can be started by double clicking on it.
-</para>
-<para>
-The package is installed in the <filename class="directory">C:\Windows\UCS-AD-Connector\</filename> directory automatically.
-Additionally, the
-password service is integrated into the Windows environment as a
-system service, which means the service can be started automatically
-or manually. After the installation the password service is configured
-for automatic startup.
-</para>
-<para>
-The <filename>private.key</filename> and <filename>cert.pem</filename> files contain the SSL
-certificates created in UCS for secure communication with the password service. They must also
-be copied into the installation directory of the password service.
-The password service must then be restarted.
-</para>
-<para>
-During a standard installation in Windows 2008 the Windows firewall
-blocks the access to the UCS AD Connector. This must either be deactivated
-in <guimenu>System settings</guimenu> or Port 6670/TCP authorized.
-</para>
-</section>
-
 <section id="ad-connector:neustart"><title>Starting/Stopping the Active Directory Connection</title>
 <para>
 The connector can be started using <mousebutton>Start Active
@@ -1336,10 +1283,6 @@ system:
 /var/log/univention/connector.log
 /var/log/univention/connector-status.log
 </programlisting>
-<para>
-The status notifications of the password service on the AD side are
-logged in the <filename>C:\Windows\UCS-AD-Connector\UCS-AD-Connector.log</filename> file.
-</para>
 </section>
 </section>
 
