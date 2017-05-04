@@ -3,10 +3,12 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-samba4
-fix: 6.0.10-3A~4.2.0.201704252056
+fix: 6.0.10-4A~4.2.0.201705041533
 desc: |
  This update addresses the following issue(s):
  * Don't fail join if CNF-Objects are in serverReferenceBL
  * Support uppercase CN: attribute in sysvol-cleanup.py
  * Don't consider unreachable UCS@school Slave DCs for joining
-bug: [43280, 43478, 43620]
+ * Adjust check_essential_samba4_dns_records.sh to change of behavior
+   of the "host" command in UCS 4.2
+bug: [43280, 43478, 43620, 44535]
