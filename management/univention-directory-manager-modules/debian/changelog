@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-4) unstable; urgency=low
+
+  * Bug #44203: pass LDAP connection to udm hooks
+  * doesn't change simpleHook API
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 04 May 2017 17:41:11 +0200
+
 univention-directory-manager-modules (12.0.17-3) unstable; urgency=low
 
   * Bug #42249: prevent circular dependency

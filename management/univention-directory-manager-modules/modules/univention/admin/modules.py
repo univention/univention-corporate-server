@@ -295,6 +295,8 @@ def update_extended_attributes(lo, module, position):
 		propertyHook = None
 		if propertyHookString and hasattr(univention.admin.hook, propertyHookString):
 			propertyHook = getattr(univention.admin.hook, propertyHookString)()
+			propertyHook._lo = lo
+			propertyHook._po = position
 
 		# get default value
 		propertyDefault = attrs.get('univentionUDMPropertyDefault', [''])
