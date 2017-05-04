@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 
+fix: 6.0.7-5A~4.2.0.201705041227
 desc: |
  This update addresses the following issue(s):
  * Error handling has been improved.
