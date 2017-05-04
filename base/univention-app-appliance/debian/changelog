@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-5) unstable; urgency=medium
+
+  * [WIP] Bug #44523: minor fixes for setup wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 May 2017 18:15:53 +0200
+
 univention-app-appliance (1.0.2-4) unstable; urgency=medium
 
   * [WIP] Bug #44523: adaptations for setup wizard

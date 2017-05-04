@@ -181,8 +181,8 @@ def main(app_id):
 
 	if app.appliance_header_logo:
 		# UMC
-		umc_header = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
-		download_resource(app, app.appliance_header_logo, umc_header)
+		header_logo = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
+		download_resource(app, app.appliance_header_logo, header_logo)
 
 		# welcome-screen (plymouth) needs it as png
 		params = 'no-repeat; background-size: auto 28px; background-position: left center;'
