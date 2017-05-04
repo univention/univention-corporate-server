@@ -44,7 +44,7 @@ from urlparse import urlsplit
 
 from univention.appcenter.app_cache import AllApps
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
+from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information, _
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -52,6 +52,17 @@ JOINSCRIPT_DIR = '/usr/lib/univention-install'
 
 class Abort(Exception):
 	pass
+
+
+class AppCenterError(Exception):
+	code = 500
+	title = _('An error occurred!')
+	info = _('We are sorry for the inconvenience. Please help us to improve the AppCenter and the Apps by sending us the information below.')
+
+
+class AppCenterErrorContainerStart(AppCenterError):
+	code = 501
+	title = _('The docker container could not be started!')
 
 
 class NetworkError(Abort):

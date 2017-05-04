@@ -35,14 +35,14 @@
 import shutil
 import os.path
 import re
-from time import time
+import time
 
 from ldap.dn import explode_dn
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
-from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.actions import Abort, get_action, AppCenterErrorContainerStart
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get
@@ -79,7 +79,7 @@ class DockerActionMixin(object):
 			if not self._store_data(app):
 				self.fatal('Storing data for %s failed' % app)
 				return False
-			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
+			image_name = 'appcenter-backup-%s:%d' % (app.id, time.time())
 			if backup_data == 'copy':
 				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
 				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'), symlinks=True)
@@ -201,6 +201,29 @@ class DockerActionMixin(object):
 		autostart = 'yes'
 		if not Start.call(app=app):
 			raise Abort('Unable to start the container!')
+		time.sleep(3)
+		if not docker.is_running():
+			dlogs = docker.dockerd_logs()
+			clogs = docker.logs()
+			inspect = docker.inspect_container()
+			msg = """
+The container for {app} could not be started!
+
+docker logs {container}:
+{clogs}
+
+dockerd logs:
+{dlogs}
+
+docker inspect:
+{state}
+{graphdriver}""".format(
+				app=app, container=docker.container,
+				clogs='\n'.join(clogs), dlogs='\n'.join(dlogs),
+				state=inspect.get('State'),
+				graphdriver=inspect.get('GraphDriver')
+			)
+			raise AppCenterErrorContainerStart(msg)
 		if password:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)

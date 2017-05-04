@@ -43,7 +43,7 @@ import requests
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
-from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, get_sha256, _
+from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.actions import Abort
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter
@@ -184,6 +184,18 @@ def stop(container):
 
 def commit(container, new_base_image):
 	return check_output(['docker', 'commit', container, new_base_image])
+
+
+def docker_logs(container, logger=None):
+	args = ['docker', 'logs', container]
+	ret, out = call_process2(args, logger=logger)
+	return out
+
+
+def dockerd_logs(logger=None):
+	args = ['journalctl', '-n', '20', '-o', 'short', '/usr/bin/dockerd']
+	ret, out = call_process2(args, logger=logger)
+	return out
 
 
 class Docker(object):
@@ -340,3 +352,9 @@ class Docker(object):
 
 	def rm(self):
 		return rm(self.container)
+
+	def logs(self):
+		return docker_logs(self.container, self.logger)
+
+	def dockerd_logs(self):
+		return dockerd_logs(logger=self.logger)
