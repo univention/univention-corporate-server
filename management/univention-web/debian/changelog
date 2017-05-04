@@ -1,3 +1,9 @@
+univention-web (1.0.42-12) unstable; urgency=low
+
+  * Bug #44527: fix displayTraceback
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 May 2017 13:30:38 +0200
+
 univention-web (1.0.42-11) unstable; urgency=low
 
   * Bug #44527: check info.result.display_feedback in __getErrorHandler and

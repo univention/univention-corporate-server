@@ -647,7 +647,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(info.traceback + ' ' + info.message, info.title);
+					tools.showTracebackDialog(info.message + ' ' + info.traceback, info.title);
 				}
 			}, custom);
 			return errorHandler;
