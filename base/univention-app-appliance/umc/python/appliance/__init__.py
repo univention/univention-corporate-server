@@ -35,7 +35,7 @@ import locale
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response
 from univention.appcenter import get_action
-from univention.app_appliance import AppManager
+from univention.app_appliance import Apps
 from univention.appcenter.ucr import ucr_instance
 from univention.lib.i18n import Translation
 
@@ -52,7 +52,7 @@ class Instance(Base):
 		domain = get_action('domain')
 		ucr = ucr_instance()
 		application = ucr.get('umc/web/appliance/id', '')
-		app = AppManager.find(application)
+		app = Apps().find(application)
 		if app is None:
 			raise UMC_Error(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]

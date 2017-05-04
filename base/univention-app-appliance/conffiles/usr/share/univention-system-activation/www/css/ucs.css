@@ -4,9 +4,9 @@
 
 @import url("ucs.real.css");
 @!@
-from univention.app_appliance import AppManager, get_luminance
+from univention.app_appliance import Apps, get_luminance
 
-app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
+app = Apps().find(configRegistry.get('umc/web/appliance/id', ''))
 
 # get app color values
 css_background = app and app.appliance_css_background

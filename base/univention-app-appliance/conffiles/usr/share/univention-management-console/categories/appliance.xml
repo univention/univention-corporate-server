@@ -5,10 +5,10 @@
 	-->
 
 @!@
-from univention.app_appliance import AppManager
+from univention.app_appliance import Apps
 
 appId = configRegistry['umc/web/appliance/id']
-app = AppManager.find(appId)
+app = Apps().find(appId)
 
 category = ''' 
 	<categories>

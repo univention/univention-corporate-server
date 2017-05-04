@@ -16,10 +16,10 @@
 # Warning: Please make sure to check "../i18n/de/appliance.mo" if you change any strings here
 import cgi
 import ast
-from univention.app_appliance import AppManager
+from univention.app_appliance import Apps
 
 appId = configRegistry.get('umc/web/appliance/id', '')
-app = AppManager.find(appId)
+app = Apps().find(appId)
 
 link_appcenter_detailspage = '''
 	<module id="apps">
@@ -94,28 +94,5 @@ if app and app.name and app.appliance_primary_color:
 		)
 		print link_overview
 
-	if app.appliance_links:
-		appliance_links = ast.literal_eval(app.appliance_links)
-		for idx, appliance_link in enumerate(appliance_links):
-			print(link_appliance.format(
-				number=idx,
-				url=cgi.escape(appliance_link['link']),
-				name=cgi.escape(appliance_link['short']),
-				desc=cgi.escape(appliance_link['long'])
-			))
-
-	if app.appliance_category_modules:
-		for module in app.appliance_category_modules:
-			module = module.split(':')
-			if len(module) == 2:
-				moduleId, flavor = module
-				print module_with_flavor.format(
-					moduleId=cgi.escape(moduleId),
-					flavor=cgi.escape(flavor)
-				)
-			else:
-				print module_without_flavor.format(
-					moduleId=cgi.escape(module[0])
-				)
 @!@
 </umc>

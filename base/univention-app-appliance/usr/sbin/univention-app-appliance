@@ -37,7 +37,7 @@ import shutil
 import requests
 from glob import glob
 from subprocess import call
-from univention.app_appliance import AppManager, get_luminance
+from univention.app_appliance import Apps, get_luminance
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
@@ -94,7 +94,7 @@ def set_appliance_ucr_values(app):
 
 def main(app_id):
 	# query app information
-	app = AppManager.find(app_id)
+	app = Apps().find(app_id)
 	if not app:
 		return
 
@@ -107,7 +107,6 @@ def main(app_id):
 	theme = 'light'
 	if primary_color and get_luminance(primary_color) < .5:
 		theme = 'dark'
-	category_logo = app.appliance_umc_category_logo or app.appliance_welcome_screen_logo
 
 	# adjust colors in SVG images via search and replace
 	print_status('Adjusting colors of UMC images.')
@@ -147,7 +146,7 @@ def main(app_id):
 			'grub/menu/color/normal': 'black/black',
 			'bootsplash/theme': 'ucs',
 		}
-		if primary_color and css_background and app.appliance_umc_header_logo and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
+		if primary_color and css_background and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
 			# only set branded grub theme if all necessary images are specified
 			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
 			if theme == 'dark':
@@ -180,17 +179,17 @@ def main(app_id):
 		os.chmod(logo_copy, 0o644)
 		ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
-	if app.appliance_umc_header_logo:
+	if app.appliance_setup_header_logo:
 		# UMC
-		umc_header = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg'
-		download_resource(app, app.appliance_umc_header_logo, umc_header)
+		header_logo = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg'
+		download_resource(app, app.appliance_setup_header_logo, header_logo)
 
 		# system-activation needs that resource too
-		shutil.copy(umc_header, '/usr/share/univention-system-activation/www/css/icons/appliance_header_logo.svg')
+		shutil.copy(header_logo, '/usr/share/univention-system-activation/www/css/icons/appliance_header_logo.svg')
 
 		# welcome-screen (plymouth) needs it as png
 		params = 'no-repeat; background-size: auto 28px; background-position: left center;'
-		_svg_to_png(umc_header,
+		_svg_to_png(header_logo,
 			'/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen.svg.png' % theme,
 			params,
 			'400x30')
@@ -206,10 +205,6 @@ def main(app_id):
 		download_resource(app, app.appliance_bootsplash_logo, img)
 		params = 'no-repeat; background-size: contain; background-position: center center;'
 		_svg_to_png(img, img + '.png', params)
-
-	if category_logo:
-		download_resource(app, category_logo,
-			'/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/category-appliance.svg')
 
 	print_status("Applying branded boot splash and grub theme.")
 	set_grub_theme()

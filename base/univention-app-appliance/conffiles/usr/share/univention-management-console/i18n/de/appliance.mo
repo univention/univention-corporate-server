@@ -4,11 +4,11 @@ from polib import POFile, POEntry
 from datetime import datetime
 import cgi
 import ast
-from univention.app_appliance import AppManager
+from univention.app_appliance import Apps
 from univention.appcenter import get_action
 
 appId = configRegistry.get('umc/web/appliance/id', '')
-app = AppManager.find(appId)
+app = Apps().find(appId)
 get = get_action('get')()
 app_name = (app and app.name) or ''
 
