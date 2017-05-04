@@ -27,13 +27,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell windows/domain samba4/ldap/base ldap/hostdn)"
+eval "$(univention-config-registry shell windows/domain samba4/ldap/base ldap/hostdn domainname)"
 
 Domain_GUID="$(ldbsearch -H /var/lib/samba/private/sam.ldb -s base objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
 
 ## Now lookup DNS entries
-host gc._msdcs
-cat << %EOF | while read rec proto; do host -t srv "_$rec._$proto"; done
+host "gc._msdcs.$domainname"
+cat << %EOF | while read rec proto; do host -t srv "_$rec._$proto.$domainname"; done
 gc tcp
 ldap._tcp.gc msdcs
 ldap tcp
@@ -87,19 +87,19 @@ for s4dc in $samba4servicedcs; do
 done
 
 for NTDS_objectGUID in "${NTDS_objectGUIDs[@]}"; do
-	host -t cname $NTDS_objectGUID._msdcs
+	host -t cname "$NTDS_objectGUID._msdcs.$domainname"
 done
 
 for sitename in "${sites[@]}"; do
 	echo "## Records for site $sitename:"
-	cat <<-%EOF | while read rec proto; do host -t srv "_$rec._$proto"; done
+	cat <<-%EOF | while read rec proto; do host -t srv "_$rec._$proto.$domainname"; done
 	ldap._tcp.$sitename sites
 	ldap._tcp.$sitename._sites.dc msdcs
 	kerberos._tcp.$sitename sites
 	kerberos._tcp.$sitename._sites.dc msdcs
 	%EOF
 	echo "## Optional GC Records for site $sitename:"
-	cat <<-%EOF | while read rec proto; do host -t srv "_$rec._$proto"; done
+	cat <<-%EOF | while read rec proto; do host -t srv "_$rec._$proto.$domainname"; done
 	gc._tcp.$sitename sites
 	ldap._tcp.$sitename._sites.gc msdcs
 	%EOF
