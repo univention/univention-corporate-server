@@ -33,32 +33,66 @@
 #
 
 import univention.appcenter.app as app
+import univention.appcenter.app_cache as app_cache
 import struct
 
 
 class App(app.App):
-	appliance_category_modules = app.AppListAttribute()
+	# UMC modules to be displayed in the UMC category 'favorites'
+	appliance_favorite_modules = app.AppListAttribute()
+
+	# simple two-color scheme for setup wizard + system activation
 	appliance_primary_color = app.AppAttribute()
 	appliance_secondary_color = app.AppAttribute()
+
+	# background CSS style as well as logo for the bootsplash screen
 	appliance_css_background = app.AppAttribute()
 	appliance_bootsplash_logo = app.AppAttribute()
-	appliance_umc_header_logo = app.AppAttribute()
+
+	# additional logos for the setup wizard
+	appliance_setup_header_logo = app.AppAttribute()  # also used for the system activation
+	appliance_logo = app.AppAttribute()  # logo is displayed on the first wizard page
+
+	# logo and font color to be used together with the appliance_css_background
+	# for the welcome screen
 	appliance_welcome_screen_logo = app.AppAttribute()
-	appliance_umc_category_logo = app.AppAttribute()
-	appliance_logo = app.AppAttribute()
-	appliance_links = app.AppAttribute()
+	appliance_welcome_screen_font_color = app.AppAttribute()
+
+	# properties to be applied to the portal
+	appliance_portal_logo = app.AppAttribute()
+	appliance_portal_font_color = app.AppAttribute()
+	appliance_portal_css_background = app.AppAttribute()
+	appliance_portal_background_image = app.AppAttribute()
+	appliance_portal_tile = app.AppAttribute()
+	readme_appliance = app.AppFileAttribute()
+
+	# additional properties
 	appliance_pages_blacklist = app.AppAttribute()
 	appliance_fields_blacklist = app.AppAttribute()
 	appliance_blacklist = app.AppAttribute()
 	appliance_whitelist = app.AppAttribute()
-	appliance_notify_vendor = app.AppAttribute()
 	appliance_allow_preconfigured_setup = app.AppBooleanAttribute(default=False)
 
 
-class AppManager(app.AppManager):
-	_AppClass = App
-	_cache = []
-	_cache_file = None
+class AppCache(app_cache.AppCache):
+	def get_app_class(self):
+		if self._app_class is None:
+			self._app_class = App
+		return self._app_class
+
+
+class AppCenterCache(app_cache.AppCenterCache):
+	def get_app_cache_class(self):
+		if self._cache_class is None:
+			self._cache_class = AppCache
+		return self._cache_class
+
+
+class Apps(app_cache.Apps):
+	def get_appcenter_cache_class(self):
+		if self._cache_class is None:
+			self._cache_class = AppCenterCache
+		return self._cache_class
 
 
 def get_luminance(hexcolor):

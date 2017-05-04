@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-2) unstable; urgency=medium
+
+  * [WIP] Bug #44523: adjust appliance classes to changes in UCS 4.2
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 May 2017 13:10:27 +0200
+
 univention-app-appliance (1.0.2-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone
