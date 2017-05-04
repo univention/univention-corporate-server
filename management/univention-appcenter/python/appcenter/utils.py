@@ -200,7 +200,7 @@ def rmdir(directory):
 
 def call_process2(args, logger=None, env=None):
 	if logger:
-		logger.info('Calling %s' % args)
+		logger.info('Calling %s', args)
 	try:
 		p = Popen(args, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env)
 	except OSError as exc:
