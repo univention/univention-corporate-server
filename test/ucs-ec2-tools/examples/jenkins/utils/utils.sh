@@ -122,13 +122,19 @@ upgrade_to_latest_test_errata () {
 }
 
 upgrade_to_testing () {
-
 	ucr set update42/skip/updater/check=yes
 	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest "$@"
 }
 
 upgrade_to_latest () {
+	local rv=0
+	ucr set --force repository/online=true
+	_upgrade_to_latest "$@" || rv=$?
+	ucr unset --force repository/online
+	return $rv
+}
+_upgrade_to_latest () {
 	declare -i remain=300 rv delay=30
 	while true
 	do

@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-5) unstable; urgency=low
+
+  * Bug #44530: Force-enable online repository
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 May 2017 12:42:28 +0200
+
 ucs-ec2-tools (3.0.2-4) unstable; urgency=low
 
   * Bug #44293: Use 4.2-0 AMIs
