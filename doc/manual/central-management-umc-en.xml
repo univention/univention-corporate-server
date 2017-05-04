@@ -34,7 +34,7 @@
 	</para>
 	<para>
 		For environments with more than one server, an additional entry to a server overview page is shown on the portal page.
-		This sub page, gives an overview of all available UCS systems in the domain.
+		This sub page gives an overview of all available UCS systems in the domain.
 		It allows a fast navigation to other systems in order to adjust local settings via &ucsUMC;.
 	</para>
 	<para>

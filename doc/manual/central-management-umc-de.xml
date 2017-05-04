@@ -23,16 +23,16 @@
 	<para>
 		Die &ucsWeb; untergliedert sich in mehrere Unterseiten, die alle eine ähnlich gestaltete Kopfzeile besitzen.
 		Über die Symbole oben rechts kann eine Suche auf der aktuellen Seite durchgeführt (Lupe), sich angemeldet/abgemeldet (Schloss) oder das Benutzermenü (drei Balken) geöffnet werden.
-		Die Anmeldung an der Oberfläche geschieht über eine zentrale Seite für alle Unterseiten von UCS sowie Drittherstellern sofern diese einen webbasierten <foreignphrase>Single Sign-on</foreignphrase> unterstützen (<xref linkend="central-management-umc:login"/>).
+		Die Anmeldung an der Oberfläche geschieht über eine zentrale Seite für alle Unterseiten von UCS sowie Drittherstellern, sofern diese einen webbasierten <foreignphrase>Single Sign-on</foreignphrase> unterstützen (<xref linkend="central-management-umc:login"/>).
 	</para>
 	<para>
 		Zentraler Ausgangspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
 		Die Portalseite ist standardmäßig auf dem &ucsMaster; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
-		Allen anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsMaster; an.
+		Alle anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsMaster; an.
 		Alle Aspekte der Portalseite können umfangreich an die eigenen Bedürfnisse angepasst werden (<xref linkend="central:portal"/>).
 	</para>
 	<para>
-		Für Umgebungen mit mehr als einem Server, ist auf der Portalseite ein Verweis auf eine Serverübersichtseite zu sehen.
+		Für Umgebungen mit mehr als einem Server ist auf der Portalseite ein Verweis auf eine Serverübersichtseite zu sehen.
 		Diese Unterseite gibt einen Überblick über alle in der Domäne verfügbaren UCS-Systeme.
 		Sie erlaubt die schnelle Navigation hin zu anderen Systemen, um dort bspw. über &ucsUMC; Anpassungen an lokalen Einstellungen vorzunehmen.
 		<!-- (<xref linkend="central:server-overview"/>) -->
@@ -187,7 +187,7 @@
 		Das Portal <foreignphrase>domain</foreignphrase> ist mit dem &ucsMaster; der Domäne verknüpft.
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
 		Das Portal <foreignphrase>local</foreignphrase> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
-		Hier werden neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
+		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
 	</para>
 	<para>
 		Eigene Portale und Portaleinträge können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> (siehe <xref linkend="central:navigation"/>) unterhalb des Containers <uri>cn=portal,cn=univention</uri> angelegt und verwaltet werden.
