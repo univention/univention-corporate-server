@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-app-appliance
+fix: 1.0.2-3A~4.2.0.201705041503
+desc: |
+ This update addresses the following issue(s):
+ * Adapt univention-app-appliance to changes in UCS 4.2 branding
+bug: [44513]
