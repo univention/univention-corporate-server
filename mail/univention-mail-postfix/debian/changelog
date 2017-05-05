@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-2) unstable; urgency=low
+
+  * Bug #42249: remove dependency on univention-ldap-config
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 May 2017 08:44:46 +0200
+
 univention-mail-postfix (11.0.1-1) unstable; urgency=medium
 
   * Bug #42249: add support for virtual mail aliases

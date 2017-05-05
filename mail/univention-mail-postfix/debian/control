@@ -17,7 +17,6 @@ Depends: ${misc:Depends},
  univention-base-files,
  univention-config (>= 7.0.31-1),
  python-univention-lib (>= 3.0.4-1),
- univention-ldap-config (>= 13.0.7-6),
  openssl
 Conflicts: univention-mail,
  exim4,
