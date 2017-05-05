@@ -91,9 +91,9 @@ app_get_packages ()
 app_get_database_packages_for_docker_host ()
 {
 	local app=$1
-	python -c "from univention.appcenter.app import AppManager; \
+	python -c "from univention.appcenter.app_cache import Apps; \
 		from univention.appcenter.database import DatabaseConnector; \
-		app=AppManager.find('$app'); \
+		app=Apps().find('$app'); \
 		d = DatabaseConnector.get_connector(app); \
 		print ' '.join(d._get_software_packages())"
 }
@@ -101,9 +101,9 @@ app_get_database_packages_for_docker_host ()
 app_get_database_name_for_docker_app ()
 {
 	local app=$1
-	python -c "from univention.appcenter.app import AppManager; \
+	python -c "from univention.appcenter.app_cache import Apps; \
 		from univention.appcenter.database import DatabaseConnector; \
-		app=AppManager.find('$app'); \
+		app=Apps().find('$app'); \
 		d = DatabaseConnector.get_connector(app); \
 		print d.get_db_name()"
 }
@@ -329,13 +329,13 @@ if is_ucr_true system/setup/boot/start; then
 	univention-app register \${APP} --undo-it
 
 	# install app
-	python -c "from univention.appcenter.app import AppManager
+	python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
 
 log_to_stream()
 
-app=AppManager.find('\$APP')
+app=Apps().find('\$APP')
 app.docker_image='${app}-app'
 
 install = get_action('install')
