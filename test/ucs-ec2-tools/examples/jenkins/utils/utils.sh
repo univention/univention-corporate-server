@@ -129,9 +129,8 @@ upgrade_to_testing () {
 
 upgrade_to_latest () {
 	local rv=0
-	ucr set --force repository/online=true
+	ucr set repository/online=true
 	_upgrade_to_latest "$@" || rv=$?
-	ucr unset --force repository/online
 	return $rv
 }
 _upgrade_to_latest () {
@@ -306,11 +305,9 @@ install_apps_master_packages ()
 
 install_with_unmaintained () {
 	local rv=0
-	ucr set --force repository/online=true
-	ucr set repository/online/unmaintained=yes
+	ucr set repository/online=true repository/online/unmaintained=yes
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
-	ucr unset --force repository/online
 	return $rv
 }
 

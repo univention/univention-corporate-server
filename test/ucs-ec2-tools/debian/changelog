@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.2-6) unstable; urgency=low
+
+  * Bug #44530: enable online repository in all cases
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 May 2017 13:03:07 +0200
+
 ucs-ec2-tools (3.0.2-5) unstable; urgency=low
 
   * Bug #44530: Force-enable online repository
