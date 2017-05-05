@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-mail-postfix
-fix: 11.0.1-1A~4.2.0.201704261324
+fix: 11.0.1-2A~4.2.0.201705050845
 desc: |
  This update addresses the following issue(s):
  * Support for forwarding emails to external addresses has been added.
