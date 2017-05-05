@@ -1,6 +1,7 @@
 ucs-test (6.0.37-61) unstable; urgency=medium
 
   * Bug #44538: skip test case 60_umc/04_policies
+  * Bug #44539: skip test case 60_umc/07_expired_password
 
  -- Florian Best <best@univention.de>  Fri, 05 May 2017 11:35:12 +0200
 
