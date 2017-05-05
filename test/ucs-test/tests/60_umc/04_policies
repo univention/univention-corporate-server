@@ -5,6 +5,8 @@
 ## packages:
 ##  - univention-management-console-module-udm
 ## exposure: safe
+## tags: [SKIP]
+## bugs: [44538]
 
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
