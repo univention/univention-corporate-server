@@ -1,3 +1,9 @@
+univention-web (1.0.42-13) unstable; urgency=medium
+
+  * Bug #44527: fix displayTraceback
+
+ -- Florian Best <best@univention.de>  Fri, 05 May 2017 16:54:03 +0200
+
 univention-web (1.0.42-12) unstable; urgency=low
 
   * Bug #44527: fix displayTraceback
