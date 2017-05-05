@@ -205,6 +205,7 @@ class ModuleServer(Server):
 		if not isinstance(exc, UMC_Error):
 			error = _('The initialization of the module failed: %s') % (trace,)
 			exc = UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
+			etype = UMC_Error
 
 		self.__init_etype = etype
 		self.__init_exc = exc

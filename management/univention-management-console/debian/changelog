@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-8) unstable; urgency=medium
+
+  * Bug #44428: fix tracebacks during module initialization
+
+ -- Florian Best <best@univention.de>  Fri, 05 May 2017 16:45:15 +0200
+
 univention-management-console (9.0.80-7) unstable; urgency=medium
 
   * Bug #43859: change account 'required' back to 'sufficient'
