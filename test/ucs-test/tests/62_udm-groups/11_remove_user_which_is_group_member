@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove a user which is member in a groups/group
-## tags: [udm]
+## tags: [udm, apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -8,7 +8,6 @@
 ##   - univention-directory-manager-tools
 
 
-import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
