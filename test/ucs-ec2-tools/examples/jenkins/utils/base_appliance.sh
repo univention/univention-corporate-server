@@ -1016,7 +1016,11 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	[ "${1}" = "DISABLE_ROOTLOGIN" ] && ucr set --force auth/sshd/user/root=no
+	if [ "${1}" = "DISABLE_ROOTLOGIN" ]; then
+		ucr set --force auth/sshd/user/root=no
+	else
+		echo "root:univention" | chpasswd
+	fi
 	rm /root/*
 	rm /root/.bash_history
 	history -c
