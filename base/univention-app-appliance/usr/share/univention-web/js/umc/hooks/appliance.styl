@@ -1,0 +1,86 @@
+.umc .umcApplianceOverlay
+	background-color: rgba(0, 0, 0, 0.5)
+	height: 100%
+	width: 100%
+	min-height: 100%
+	position: absolute
+	top: 0
+	left: 0
+	color: white
+	z-index: 1
+
+	a
+		color: white
+
+	h1, h2
+		font-size: 20px
+		font-weight: 500
+
+	.umcApplianceReadme
+		padding: 0 15px
+		position: relative
+		float: right
+		width: 100%
+		max-width: 600px
+
+		& > *:nth-child(2)
+			margin-top: 0
+
+	.dijitButton.umcApplianceReadmeCloseButton
+		float: right
+		margin-top: -8px
+		box-shadow: none
+
+		.dijitButtonNode
+			background-color: transparent
+
+		.dijitButtonText
+			display: none
+
+	.umcApplianceInfoBox
+		position: absolute
+		width: 400px
+
+		&.top .infoText
+			margin-top: 17px
+
+		&.bottom .infoText
+			margin-bottom: 17px
+
+		&.left
+			padding-left: 55px
+
+		&.right
+			padding-right: 55px
+			.umcText
+				text-align: right
+
+.umcApplianceArrowBottomRightIcon,
+.umcApplianceArrowBottomLeftIcon,
+.umcApplianceArrowTopRightIcon,
+.umcApplianceArrowTopLeftIcon
+	background: url("appliance-arrows.svg") 0px 0px no-repeat
+	background-size: 100px 70px
+	width: 50px
+	height: 35px
+	position: absolute
+
+.umcApplianceArrowBottomRightIcon
+	background-position: -50px 0
+	right: 0
+	bottom: 0
+
+.umcApplianceArrowBottomLeftIcon
+	background-position: 0 0
+	left: 0
+	bottom: 0
+
+.umcApplianceArrowTopRightIcon
+	background-position: -50px -35px
+	right: 0
+	top: 0
+
+.umcApplianceArrowTopLeftIcon
+	background-position: 0 -35px
+	left: 0
+	top: 0

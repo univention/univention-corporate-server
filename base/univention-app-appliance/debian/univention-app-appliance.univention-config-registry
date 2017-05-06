@@ -19,3 +19,7 @@ Type: file
 File: usr/share/univention-system-activation/www/css/ucs.css
 Variables: system/setup/boot/start
 Variables: umc/web/appliance/.*
+
+Type: file
+File: usr/share/univention-web/js/umc/hooks/appliance.json
+Variables: umc/web/appliance/.*

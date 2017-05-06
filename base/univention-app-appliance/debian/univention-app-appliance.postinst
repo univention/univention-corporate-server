@@ -51,6 +51,9 @@ case "$1" in
 		for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
 			_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
 		done
+
+		# register the umc hook file
+		ucr set umc/web/hooks/univention-app-appliance=appliance
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;

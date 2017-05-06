@@ -30,5 +30,9 @@ if app and has_required_props:
 .umc .umcCard .dijitDefaultButton .dijitButtonText {
 	color: %(primary_color)s;
 }
+
+.umc .umc-setup-page .umcPageIcon {
+	background-position: center top
+}
 ''' % app_props
 @!@

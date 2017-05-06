@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"usr/share/univention-web/js/umc/hooks/.*\\.js"
+		],
+		"po_subdir": "usr/share/univention-web/js/umc/hooks",
+		"target_type": "json",
+		"destination": "usr/share/univention-web/js/umc/hooks/i18n/{lang}/appliance.json"
+	}
+]
+

@@ -1,8 +1,7 @@
 plymouth/ucs-appliance-light usr/share/plymouth/themes
 plymouth/ucs-appliance-dark usr/share/plymouth/themes
-umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/modules
 images/*	usr/share/univention-app-appliance/images
 tools/*	usr/share/univention-app-appliance/
-usr/share/univention-web/js/dijit/themes/umc/images/*	usr/share/univention-web/js/dijit/themes/umc/images
-usr/sbin/univention-app-appliance	usr/sbin
+usr/sbin/
 usr/share/univention-system-setup/www/
+usr/share/univention-web/js/

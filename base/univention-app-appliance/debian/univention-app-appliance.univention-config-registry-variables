@@ -3,3 +3,9 @@ Description[en]=App id of the appliance.
 Description[de]=App id der der Appliance.
 Type=str
 Categories=appliance
+
+[umc/web/appliance/close_first_steps]
+Description[en]=Controls whether or not the first steps information is automatically shown on the UCS portal page.
+Description[de]=Steuer inwieweit die Ersten Schritte Informationen auf der UCS Portalseite automatisch eingeblendet werden.
+Type=str
+Categories=appliance

@@ -1,0 +1,17 @@
+@!@
+import json
+
+def get_ucr_entry(ucrKey, key=None, defaultValue=None):
+	if key is None:
+		key = ucrKey
+	return (key, configRegistry.get(ucrKey, defaultValue))
+
+# list of all UCR variables + mappings
+ucr_vars = [
+	('umc/web/appliance/name', 'appliance_name'),
+	('umc/web/appliance/close_first_steps', 'close_first_steps'),
+]
+data = dict([get_ucr_entry(*i) for i in ucr_vars])
+
+print json.dumps(data, indent=2)
+@!@

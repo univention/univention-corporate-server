@@ -124,9 +124,9 @@ def main(app_id):
 			shutil.copy(src_path, dest_path)
 
 	def symlink_first_steps():
-		for lang in ['', '_DE']:
-			source = '/var/cache/univention-appcenter/%s.README%s' % (app.component_id, lang)
-			target = '/var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README%s' % (lang,)
+		for lang in ['_DE', '_EN']:
+			source = '/var/cache/univention-appcenter/%s.README_APPLIANCE%s' % (app.component_id, lang)
+			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme_%s' % (lang.lower(),)
 			if os.path.exists(target):
 				print("Remove old first steps symlink")
 				try:
