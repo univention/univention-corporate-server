@@ -110,7 +110,7 @@ class VmTester(object):
 			'-p', self.args.password,
 			'scp',
 			'-o', 'StrictHostKeyChecking=no',
-			source_file, target_file,
+			source_file, target_file
 		))
 
 if __name__ == '__main__':
