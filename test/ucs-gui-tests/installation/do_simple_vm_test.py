@@ -33,7 +33,6 @@
 import argparse
 import re
 import subprocess
-import sys
 import unicodedata
 
 import create_license
@@ -80,7 +79,6 @@ class VmTester(object):
 		self.create_license_for_ldap_base()
 		self.import_license_on_vm()
 		self.install_dudle_on_vm()
-		self.exit_with_exitcode_of_dudle_installation()
 
 	def create_license_for_ldap_base(self):
 		license_creator = create_license.LicenseCreator(self.ldap_base, self.license_file)
@@ -93,24 +91,27 @@ class VmTester(object):
 	def install_dudle_on_vm(self):
 		self.execute_through_ssh('echo %s > pwdfile' % (self.args.password,))
 		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
-		subprocess.call('echo $? > app_installation_return_code', shell=True)
-
-	def exit_with_exitcode_of_dudle_installation(self):
-		with open('app_installation_return_code', 'r') as return_code_file:
-			sys.exit(int(return_code_file.read()))
 
 	def execute_through_ssh(self, command):
-		subprocess.call(
-			'sshpass -p %s ssh root@%s -o StrictHostKeyChecking=no "%s"' %
-			(self.args.password, self.args.ip, command), shell=True
-		)
+		return_code = subprocess.call((
+			'sshpass',
+			'-p', self.args.password,
+			'ssh',
+			'-o', 'StrictHostKeyChecking=no',
+			'root@%s' % (self.args.ip,),
+			command
+		))
+		if return_code > 0:
+			raise RuntimeError('Command on %s exited with return code %s: %s' % (self.args.ip, return_code, command))
 
 	def copy_through_ssh(self, source_file, target_file):
-		subprocess.call(
-			"sshpass -p %s scp -o StrictHostKeyChecking=no %s %s" %
-			(self.args.password, source_file, target_file), shell=True
-		)
-
+		return subprocess.call((
+			'sshpass'
+			'-p', self.args.password,
+			'scp',
+			'-o', 'StrictHostKeyChecking=no',
+			source_file, target_file,
+		))
 
 if __name__ == '__main__':
 	tester = VmTester()
