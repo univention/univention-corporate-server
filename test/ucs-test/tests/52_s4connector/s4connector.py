@@ -126,6 +126,32 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
+	def verify_object(self, dn, expected_attributes):
+		"""
+		Verify an object exists with the given `dn` and attributes in the
+		S4-LDAP. Setting `expected_attributes` to `None` requires the object to
+		not exist. `expected_attributes` is a dictionary of
+		`attribute`:`list-of-values`.
+
+		This will throw an `AssertionError` in case of a mismatch.
+		"""
+		if expected_attributes is None:
+			assert not self.exists(dn), "S4 object {} should not exist".format(dn)
+		else:
+			s4_object = self.get(dn)
+			for (key, value) in expected_attributes.iteritems():
+				s4_value = set(to_unicode(x).lower() for x in s4_object.get(key, []))
+				expected = set((to_unicode(value).lower(),)) if isinstance(value, basestring) \
+					else set(to_unicode(v).lower() for v in value)
+				if not expected.issubset(s4_value):
+					try:
+						s4_value = set(normalize_dn(dn) for dn in s4_value)
+						expected = set(normalize_dn(dn) for dn in expected)
+					except ldap.DECODING_ERROR:
+						pass
+				error_msg = '{}: {} not in {}, object {}'.format(key, expected, s4_value, s4_object)
+				assert expected.issubset(s4_value), error_msg
+
 
 def check_object(object_dn, sid=None, old_object_dn=None):
 	S4 = S4Connection()
@@ -155,6 +181,12 @@ def normalize_dn(dn):
 	'cn=peter#,cn=groups'
 	"""
 	return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+
+def to_unicode(string):
+	if isinstance(string, unicode):
+		return string
+	return unicode(string, 'utf-8')
 
 
 def get_object_sid(dn):
