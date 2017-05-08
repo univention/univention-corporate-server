@@ -67,17 +67,22 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.create(new_dn, new_attributes)
 		return new_dn
 
-	def group_create(self, groupname, position=None, description=None):
-		if not position:
-			position = 'cn=groups,%s' % self.adldapbase
+	def group_create(self, groupname, position=None, **attributes):
+		"""
+		Create a S4 group with attributes as given by the keyword-args
+		`attributes`. The created group will be populated with some defaults if
+		not otherwise set.
 
-		attrs = {}
-		attrs['objectclass'] = ['top', 'group']
-		attrs['sAMAccountName'] = groupname
-		if description:
-			attrs['description'] = description
+		Returns the dn of the created group.
+		"""
+		new_position = position or 'cn=groups,%s' % self.adldapbase
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
-		self.create('cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), position), attrs)
+		defaults = (('objectclass', ['top', 'group']), ('sAMAccountName', groupname))
+
+		new_attributes = self._set_module_default_attr(attributes, defaults)
+		self.create(new_dn, new_attributes)
+		return new_dn
 
 	def getprimarygroup(self, user_dn):
 		try:
