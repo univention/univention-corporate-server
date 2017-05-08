@@ -1,7 +1,7 @@
 import ldap
-import univention.config_registry
 import sys
 import copy
+import subprocess
 import ldap_glue_s4
 import univention.s4connector.s4 as s4
 from time import sleep
@@ -9,6 +9,9 @@ import univention.testing.utils as utils
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+
+import univention.config_registry
+from univention.config_registry import handler_set as ucr_set
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -287,6 +290,19 @@ def wait_for_sync(min_wait_time=0):
 		synctime = min_wait_time
 	print ("Waiting {0} seconds for sync...".format(synctime))
 	sleep(synctime)
+
+
+def restart_s4connector():
+	print("Restarting S4-Connector")
+	subprocess.check_call(["service", "univention-s4-connector", "restart"])
+
+
+def s4_in_sync_mode(sync_mode, configbase='connector'):
+	"""
+	Set the S4-Connector into the given `sync_mode` restart.
+	"""
+	ucr_set(['{}/s4/mapping/syncmode={}'.format(configbase, sync_mode)])
+	restart_s4connector()
 
 
 def map_udm_user_to_s4(user):
