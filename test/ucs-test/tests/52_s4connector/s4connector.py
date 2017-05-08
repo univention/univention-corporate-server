@@ -297,6 +297,11 @@ def restart_s4connector():
 	subprocess.check_call(["service", "univention-s4-connector", "restart"])
 
 
+def restart_univention_cli_server():
+	print("Restarting Univention-CLI-Server")
+	subprocess.call(["pkill", "-f", "univention-cli-server"])
+
+
 def s4_in_sync_mode(sync_mode, configbase='connector'):
 	"""
 	Set the S4-Connector into the given `sync_mode` restart.
