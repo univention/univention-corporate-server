@@ -106,7 +106,7 @@ class VmTester(object):
 
 	def copy_through_ssh(self, source_file, target_file):
 		return subprocess.call((
-			'sshpass'
+			'sshpass',
 			'-p', self.args.password,
 			'scp',
 			'-o', 'StrictHostKeyChecking=no',
