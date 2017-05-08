@@ -88,16 +88,12 @@ class VmTester(object):
 
 	def import_license_on_vm(self):
 		self.copy_through_ssh(self.license_file, 'root@%s:~/tmp.license' % (self.args.ip,))
-		self.execute_through_ssh(
-			'univention-license-import tmp.license'
-		)
+		self.execute_through_ssh('univention-license-import tmp.license')
 
 	def install_dudle_on_vm(self):
-		self.execute_through_ssh(
-			'echo %s > pwdfile;' % (self.args.password,) +
-			'univention-app install dudlo --noninteractive --pwdfile=pwdfile;' +
-			'echo $? > app_installation_return_code'
-		)
+		self.execute_through_ssh('echo %s > pwdfile' % (self.args.password,))
+		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
+		self.execute_through_ssh('echo $? > app_installation_return_code')
 
 	def exit_with_exitcode_of_dudle_installation(self):
 		self.copy_through_ssh(
