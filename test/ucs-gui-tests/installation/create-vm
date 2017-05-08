@@ -203,7 +203,7 @@ class TestDomain(TestXml):
 	def graphics(self):
 		graphics = E.graphics(
 			E.listen(type="address", address=VM_VNC),
-			type="vnc", port="-1", autoport="yes", listen=VM_VNC, keymap="de")
+			type="vnc", port="-1", autoport="yes", listen=VM_VNC, keymap="en-us")
 		return graphics
 
 	def video(self):

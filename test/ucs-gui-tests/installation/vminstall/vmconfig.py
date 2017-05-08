@@ -40,7 +40,7 @@ class Config(object):
 		self, ip, language='en', password="univention",
 		update_ucs_after_install=True, dns_server_ip="",
 		use_multiple_partitions=False, install_all_additional_components=False,
-		ldap_base=""
+		ldap_base="dc=mydomain,dc=intranet"
 	):
 		self.ip = ip
 		# Use an ISO 639-1 language code here:

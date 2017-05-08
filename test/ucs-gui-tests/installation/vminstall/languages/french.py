@@ -34,7 +34,7 @@ strings = {
 	'location_selection': 'Le pays choisi permet',
 	'configure_keyboard': 'Configurer le clavier',
 	'default_keyboard_layout_of_current_language': 'Français',
-	'german_keyboard_layout': 'Allemand',
+	'us_keyboard_layout': 'E',
 	'dhcp_configuration': 'Configuration du réseau avec DHCP',
 	'cancel': 'Annuler',
 	'not_using_dhcp': 'Le protocole DHCP',

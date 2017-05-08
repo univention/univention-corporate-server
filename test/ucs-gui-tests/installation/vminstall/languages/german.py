@@ -34,7 +34,7 @@ strings = {
 	'location_selection': 'Der hier ausgewählte Standort',
 	'configure_keyboard': 'Tastatur konfigurieren',
 	'default_keyboard_layout_of_current_language': 'Deutsch',
-	'german_keyboard_layout': 'Deutsch',
+	'us_keyboard_layout': 'Amerikanisches Englisch',
 	'multiple_network_devices': 'Ihr System besitzt mehrere',
 	'dhcp_configuration': 'Konfigurieren des Netzwerks mit DHCP',
 	'cancel': 'Abbrechen',
