@@ -3,8 +3,10 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 6.0.7-6A~4.2.0.201705041313
+fix: 6.0.7-7A~4.2.0.201705081120
 desc: |
  This update addresses the following issue(s):
  * Error handling has been improved.
-bug: [44493]
+ * Some Docker Apps did not register their user management extensions
+   properly. This has been fixed.
+bug: [44493, 44550]
