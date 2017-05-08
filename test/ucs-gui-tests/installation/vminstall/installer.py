@@ -214,7 +214,7 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
 
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=3000, prevent_screen_saver=True)
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
 		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
