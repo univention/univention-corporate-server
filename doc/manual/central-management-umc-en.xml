@@ -48,6 +48,7 @@
 		<xref linkend="central:navigation"/> gives an overview of the LDAP directory browser.
 		The use of administrative settings via policies is discussed in <xref linkend="central:policies"/>.
 		How to extend the scope of function of the domain administration is detailed in <xref linkend="central:extendedattrs"/>.
+		<xref linkend="central:cn-and-ous"/> details how containers and organizational units can be used to structure the LDAP directory.
 		<xref linkend="delegated-administration"/> explains delegating administration rights to additional user groups.
 	</para>
 	<para>

@@ -50,6 +50,7 @@
 		Die Anwendung von administrativen Einstellungen über Richtlinien wird in <xref linkend="central:policies"/> besprochen.
 		Wie genau der Funktionsumfangs der Domänenverwaltung erweitert werden kann ist in
 		<xref linkend="central:extendedattrs"/> beschrieben.
+		<xref linkend="central:cn-and-ous"/> vertieft wie Container und Organisationseinheiten (OU) zur Strukturierung des LDAP-Verzeichnisses genutzt werden können.
 		<xref linkend="delegated-administration"/> erläutert das Delegieren von Administrationsrechten an weitere Benutzergruppen.
 	</para>
 	<para>
