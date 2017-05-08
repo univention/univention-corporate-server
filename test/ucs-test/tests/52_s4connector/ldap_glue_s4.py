@@ -102,6 +102,20 @@ class LDAPConnection:
 		except LookupError:
 			return []
 
+	def get(self, dn, attr=[], required=False):
+		'''returns ldap object'''
+
+		if dn:
+			try:
+				result = self.lo.search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr, timeout=10)
+			except ldap.NO_SUCH_OBJECT:
+				result = []
+			if result:
+				return result[0][1]
+		if required:
+			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
+		return {}
+
 	def create(self, dn, attrs):
 		ldif = modlist.addModlist(attrs)
 		self.lo.add_ext_s(s4.compatible_modstring(unicode(dn)), ldif, serverctrls=self.serverctrls_for_add_and_modify)
