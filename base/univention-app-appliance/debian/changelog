@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-8) unstable; urgency=medium
+
+  * [WIP] Bug #44523: remove references to UCR template files
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 May 2017 16:07:48 +0200
+
 univention-app-appliance (1.0.2-7) unstable; urgency=medium
 
   * [WIP] Bug #44523: remove UMC files and rename {,umc}_header_logo

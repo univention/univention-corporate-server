@@ -1,16 +1,4 @@
 Type: file
-File: usr/share/univention-management-console/modules/appliance.xml
-Variables: umc/web/appliance/.*
-
-Type: file
-File: usr/share/univention-management-console/categories/appliance.xml
-Variables: umc/web/appliance/.*
-
-Type: file
-File: usr/share/univention-management-console/i18n/de/appliance.mo
-Variables: umc/web/appliance/.*
-
-Type: file
 File: usr/share/univention-system-setup/www/style.css
 Variables: system/setup/boot/start
 Variables: umc/web/appliance/.*
