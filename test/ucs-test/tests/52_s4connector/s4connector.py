@@ -332,3 +332,16 @@ def map_udm_user_to_s4(user):
 		"sambaUserWorkstations": "userWorkstations"}
 	return {mapping.get(key): value for (key, value) in user.iteritems()
 			if key in mapping}
+
+
+def map_udm_group_to_s4(group):
+	"""
+	Map a UDM group given as a dictionary of `property`:`values` mappings to a
+	dictionary of `attributes`:`values` mappings as required by the S4-LDAP.
+	Note: This expects the properties from the UDM groups/group modul and not
+	OpenLDAP-attributes!.
+	"""
+	mapping = {"name": "sAMAccountName",
+		"description": "description"}
+	return {mapping.get(key): value for (key, value) in group.iteritems()
+			if key in mapping}
