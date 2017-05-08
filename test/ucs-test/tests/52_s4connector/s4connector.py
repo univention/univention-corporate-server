@@ -202,3 +202,27 @@ def wait_for_sync(min_wait_time=0):
 		synctime = min_wait_time
 	print ("Waiting {0} seconds for sync...".format(synctime))
 	sleep(synctime)
+
+
+def map_udm_user_to_s4(user):
+	"""
+	Map a UDM user given as a dictionary of `property`:`values` mappings to a
+	dictionary of `attributes`:`values` mappings as required by the S4-LDAP.
+	Note: This expects the properties from the UDM users/user modul and not
+	OpenLDAP-attributes!.
+	"""
+	mapping = {"username": "sAMAccountName",
+		"firstname": "givenName",
+		"lastname": "sn",
+		"description": "description",
+		"street": "streetAddress",
+		"city": "l",
+		"postcode": "postalCode",
+		"profilepath": "profilePath",
+		"scriptpath": "scriptPath",
+		"homeTelephoneNumber": "homePhone",
+		"mobileTelephoneNumber": "mobile",
+		"pagerTelephoneNumber": "pager",
+		"sambaUserWorkstations": "userWorkstations"}
+	return {mapping.get(key): value for (key, value) in user.iteritems()
+			if key in mapping}
