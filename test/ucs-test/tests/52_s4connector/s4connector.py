@@ -6,6 +6,9 @@ import ldap_glue_s4
 import univention.s4connector.s4 as s4
 from time import sleep
 import univention.testing.utils as utils
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.objects
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -217,6 +220,45 @@ def verify_users(group_dn, users):
 		'uniqueMember': [user for user in users],
 		'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users]
 	})
+
+
+def verify_udm_object(module, dn, expected_properties):
+	"""
+	Verify an object exists with the given `dn` in the given UDM `module` with
+	some properties. Setting `expected_properties` to `None` requires the
+	object to not exist. `expected_properties` is a dictionary of
+	`property`:`value` pairs.
+
+	This will throw an `AssertionError` in case of a mismatch.
+	"""
+	lo = utils.get_ldap_connection()
+	try:
+		position = univention.admin.uldap.position(lo.base)
+		udm_module = univention.admin.modules.get(module)
+		udm_object = univention.admin.objects.get(udm_module, None, lo, position, dn)
+		udm_object.open()
+	except univention.admin.uexceptions.noObject as e:
+		if expected_properties is None:
+			return
+		raise e
+
+	if expected_properties is None:
+		raise AssertionError("UDM object {} should not exist".format(dn))
+
+	for (key, value) in expected_properties.iteritems():
+		udm_value = udm_object.info.get(key)
+		if isinstance(udm_value, basestring):
+			value = set([value])
+			udm_value = set([udm_value])
+		value = set(to_unicode(v).lower() for v in value)
+		udm_value = set(to_unicode(v).lower() for v in udm_value)
+		if udm_value != value:
+			try:
+				value = set(normalize_dn(dn) for dn in value)
+				udm_value = set(normalize_dn(dn) for dn in udm_value)
+			except ldap.DECODING_ERROR:
+				pass
+		assert udm_value == value, '{}: {} != expected {}'.format(key, udm_value, value)
 
 
 def modify_username(user_dn, new_user_name, udm_instance):
