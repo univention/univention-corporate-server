@@ -95,7 +95,7 @@ class VmTester(object):
 	def install_dudle_on_vm(self):
 		self.execute_through_ssh(
 			'echo %s > pwdfile;' % (self.args.password,) +
-			'univention-app install dudle --noninteractive --pwdfile=pwdfile;' +
+			'univention-app install dudlo --noninteractive --pwdfile=pwdfile;' +
 			'echo $? > app_installation_return_code'
 		)
 
