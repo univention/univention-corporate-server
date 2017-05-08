@@ -126,6 +126,12 @@ class LDAPConnection:
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
 			[(ldap.MOD_REPLACE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
 
+	def set_attributes(self, dn, **attributes):
+		old_attributes = self.get(dn, attr=attributes.keys())
+		ldif = modlist.modifyModlist(old_attributes, attributes)
+		comp_dn = s4.compatible_modstring(unicode(dn))
+		self.lo.modify_ext_s(comp_dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
+
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
 		LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
 		ctrls = [LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0)] + self.serverctrls_for_add_and_modify
