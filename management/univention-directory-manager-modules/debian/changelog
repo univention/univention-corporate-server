@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-5) unstable; urgency=low
+
+  * Bug #44203: API change: added simpleHook.register_ldap_connection() to
+    pass LDAP connection to UDM hook
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 08 May 2017 13:30:54 +0200
+
 univention-directory-manager-modules (12.0.17-4) unstable; urgency=low
 
   * Bug #44203: pass LDAP connection to udm hooks

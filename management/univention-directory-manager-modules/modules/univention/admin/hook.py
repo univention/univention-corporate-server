@@ -65,10 +65,18 @@ def import_hook_files():
 class simpleHook(object):
 	type = 'simpleHook'
 
-	# LDAP connection and position used for UDM call.
-	# These will be set *after* __init__(), first time usage in hook_open()!
-	_lo = None
-	_po = None
+	def register_ldap_connection(self, lo, position):
+		"""
+		LDAP connection and position used for UDM call.
+
+		This method will be called directly after __init__() and before
+		hook_open().
+
+		:param lo: univention.admin.uldap.access object
+		:param position: univention.admin.uldap.position object
+		:return: None
+		"""
+		pass
 
 	def hook_open(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _open called')
