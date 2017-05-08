@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-7) unstable; urgency=medium
+
+  * [WIP] Bug #44523: remove UMC files and rename {,umc}_header_logo
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 May 2017 15:59:23 +0200
+
 univention-app-appliance (1.0.2-6) unstable; urgency=medium
 
   * [WIP] Bug #44523: add first steps info to portal + remove obsolete parts

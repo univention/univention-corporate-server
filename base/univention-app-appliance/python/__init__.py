@@ -50,7 +50,7 @@ class App(app.App):
 	appliance_bootsplash_logo = app.AppAttribute()
 
 	# additional logos for the setup wizard
-	appliance_header_logo = app.AppAttribute()  # also used for the system activation
+	appliance_umc_header_logo = app.AppAttribute()  # also used for the system activation
 	appliance_logo = app.AppAttribute()  # logo is displayed on the first wizard page
 
 	# logo and font color to be used together with the appliance_css_background
@@ -109,7 +109,7 @@ def get_app_style_properties(app):
 		'secondary_color',
 		'css_background',
 		'bootsplash_logo',
-		'header_logo',
+		'umc_header_logo',
 		'logo',
 		'welcome_screen_logo',
 		'welcome_screen_font_color',

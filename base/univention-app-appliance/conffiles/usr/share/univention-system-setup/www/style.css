@@ -9,7 +9,7 @@ app = Apps().find(configRegistry.get('umc/web/appliance/id', ''))
 app_props = get_app_style_properties(app)
 
 # only print these CSS rules when appliance mode is enabled
-has_required_props = len(set(('secondary_color', 'primary_color', 'header_logo')) - set(app_props.keys())) == 0
+has_required_props = len(set(('secondary_color', 'primary_color', 'umc_header_logo')) - set(app_props.keys())) == 0
 if app and has_required_props:
 	print '''
 /* import original css file */

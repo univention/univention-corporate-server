@@ -146,7 +146,7 @@ def main(app_id):
 			'grub/menu/color/normal': 'black/black',
 			'bootsplash/theme': 'ucs',
 		}
-		if primary_color and css_background and app.appliance_header_logo and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
+		if primary_color and css_background and app.appliance_umc_header_logo and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
 			# only set branded grub theme if all necessary images are specified
 			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
 			if theme == 'dark':
@@ -179,10 +179,10 @@ def main(app_id):
 		os.chmod(logo_copy, 0o644)
 		ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
-	if app.appliance_header_logo:
+	if app.appliance_umc_header_logo:
 		# UMC
 		header_logo = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
-		download_resource(app, app.appliance_header_logo, header_logo)
+		download_resource(app, app.appliance_umc_header_logo, header_logo)
 
 		# welcome-screen (plymouth) needs it as png
 		params = 'no-repeat; background-size: auto 28px; background-position: left center;'
