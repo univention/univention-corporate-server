@@ -146,6 +146,17 @@ def check_object(object_dn, sid=None, old_object_dn=None):
 			sys.exit("Object not synced")
 
 
+def normalize_dn(dn):
+	"""
+	Normalize a given dn. This removes some escaping of special chars in the
+	DNs. Note: The S4-LDAP returns DNs with escaping chars, OpenLDAP does not.
+
+	>>> normalize_dn("cn=peter\#,cn=groups")
+	'cn=peter#,cn=groups'
+	"""
+	return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+
 def get_object_sid(dn):
 	S4 = S4Connection()
 	dn_modified = _replace_uid_with_cn(dn)
