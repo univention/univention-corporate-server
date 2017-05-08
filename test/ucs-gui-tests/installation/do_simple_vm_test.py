@@ -41,13 +41,12 @@ import create_license
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Test a fully installed virtual machine, by installing the app dudle on it.')
-	parser.add_argument('--ldap-base', dest="ldap_base", required=True, help='The LDAP-base which is used by the virtual machine.')
 	parser.add_argument('--password', dest="password", default="univention", help='The password which is used by the root account of the virtual machine. Default is univention.')
 	parser.add_argument('ip', help='The IP address which is used by the virtual machine.')
 	return parser.parse_args()
 
 
-# FIXME: Would be nicer to use library, but this adds dependency.
+# FIXME: Would be nicer to use a library, but this would add a dependency.
 def slugify(txt):
 	slug = unicodedata.normalize('NFKD', txt.decode())
 	slug = slug.encode('ascii', 'ignore').lower()
@@ -59,9 +58,17 @@ def slugify(txt):
 class VmTester(object):
 	def __init__(self):
 		self.args = parse_args()
+		self.ldap_base = self.get_ldap_base_of_vm()
 		self.license_file = self.ldap_base_to_license_filename(
-			self.args.ldap_base
+			self.ldap_base
 		)
+
+	def get_ldap_base_of_vm(self):
+		self.execute_through_ssh('ucr get ldap/base > target_vm_ldap_base')
+		self.copy_through_ssh('root@%s:~/target_vm_ldap_base' % (self.args.ip,), '.')
+		with open('target_vm_ldap_base', 'r') as ldap_base_file:
+			ldap_base = ldap_base_file.read()
+			return ldap_base.strip('\n\r')
 
 	def ldap_base_to_license_filename(self, ldap_base):
 		ldap_base_slug = slugify(ldap_base)
@@ -76,7 +83,7 @@ class VmTester(object):
 		self.exit_with_exitcode_of_dudle_installation()
 
 	def create_license_for_ldap_base(self):
-		license_creator = create_license.LicenseCreator(self.args.ldap_base, self.license_file)
+		license_creator = create_license.LicenseCreator(self.ldap_base, self.license_file)
 		license_creator.provide_valid_license()
 
 	def import_license_on_vm(self):

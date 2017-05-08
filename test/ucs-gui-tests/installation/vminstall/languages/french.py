@@ -58,6 +58,7 @@ strings = {
 	'account_info': 'Informations du compte',
 	'company': 'Univention',
 	'host_settings': 'Réglages de l\'hôte',
+	'ldap_base': 'Base LDAP',
 
 	'software_config': 'Configuration logicielle',
 	'next': 'suivant',

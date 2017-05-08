@@ -59,6 +59,7 @@ strings = {
 	'account_info': 'Organization name',
 	'company': 'Univention North America Inc.',
 	'host_settings': 'domain name',
+	'ldap_base': 'LDAP base',
 
 	'join_ucs': 'Join into an existing UCS',
 	'system_role': 'System role',

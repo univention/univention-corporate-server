@@ -200,8 +200,8 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['domain_name'])
-		self.client.enterText(self.vm_config.domain_name)
+		self.client.mouseClickOnText(self.locale_strings['ldap_base'])
+		self.client.enterText(self.vm_config.ldap_base)
 		self.client.mouseClickOnText(self.locale_strings['next'])
 
 		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
