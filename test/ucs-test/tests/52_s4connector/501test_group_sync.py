@@ -185,7 +185,8 @@ def pytest_generate_tests(metafunc):
 				yield (udm_group(), None, "sync")
 				yield (udm_group(), None, "read")
 
-		for nested_group in [utf8_group, special_group]:
+		# XXX Special-Groups are skipped until bug #44374 is fixed.
+		for nested_group in [utf8_group]: #, special_group]:
 			if "udm_to_s4" in metafunc.function.__name__:
 				def udm_member_factory(*args, **kwargs):
 					return udm_group_factory(nested_group(), *args, **kwargs)
@@ -199,7 +200,8 @@ def pytest_generate_tests(metafunc):
 				yield (special_group(), s4_member_factory, "sync")
 				yield (special_group(), s4_member_factory, "read")
 
-		for nested_user in [utf8_user, special_user]:
+		# XXX Special-Groups are skipped until bug #44374 is fixed.
+		for nested_user in [utf8_user]: #, special_user]:
 			if "udm_to_s4" in metafunc.function.__name__:
 				def udm_member_factory(*args, **kwargs):
 					return udm_user_factory(nested_user(), *args, **kwargs)

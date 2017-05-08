@@ -133,11 +133,12 @@ def test_user_sync_from_udm_to_s4(udm_user, sync_mode):
 			s4.verify_object(s4_user_dn, None)
 
 
+# XXX Special-Users are skipped until bug #44374 is fixed.
 @pytest.mark.parametrize("udm_user", [
 	NORMAL_SIMPLE_USER, NORMAL_COMPLEX_USER, UTF8_SIMPLE_USER,
-	UTF8_COMPLEX_USER, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER],
+	UTF8_COMPLEX_USER], #, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER],
 	ids=["NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
-		"UTF8_COMPLEX_USER", "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"])
+		"UTF8_COMPLEX_USER"]) #, "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"])
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
 @pytest.mark.skipif(not connector_running_on_this_host(),
 	reason="Univention S4 Connector not configured.")
