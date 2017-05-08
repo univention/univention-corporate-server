@@ -93,12 +93,9 @@ class VmTester(object):
 	def install_dudle_on_vm(self):
 		self.execute_through_ssh('echo %s > pwdfile' % (self.args.password,))
 		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
-		self.execute_through_ssh('echo $? > app_installation_return_code')
+		subprocess.call('echo $? > app_installation_return_code', shell=True)
 
 	def exit_with_exitcode_of_dudle_installation(self):
-		self.copy_through_ssh(
-			'root@%s:app_installation_return_code' % (self.args.ip,), '.'
-		)
 		with open('app_installation_return_code', 'r') as return_code_file:
 			sys.exit(int(return_code_file.read()))
 
