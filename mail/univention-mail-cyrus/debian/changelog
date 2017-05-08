@@ -1,3 +1,9 @@
+univention-mail-cyrus (9.0.0-6) unstable; urgency=low
+
+  * Bug #44424: fix deprecated binary name (ctl_deliver -E -> cyr_expire)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 08 May 2017 13:28:57 +0200
+
 univention-mail-cyrus (9.0.0-5) unstable; urgency=low
 
   * Bug #44377: fix unjoin script path
