@@ -1,6 +1,7 @@
 import ldap
 import univention.config_registry
 import sys
+import copy
 import ldap_glue_s4
 import univention.s4connector.s4 as s4
 from time import sleep
@@ -26,6 +27,16 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
 		self.connect(no_starttls)
+
+	def _set_module_default_attr(self, attributes, defaults):
+		"""
+		Returns the given attributes, extented by every property given in defaults if not yet set.
+		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
+		"""
+		attr = copy.deepcopy(attributes)
+		for prop, value in defaults:
+			attr.setdefault(prop, value)
+		return attr
 
 	def createuser(self, username, position=None, cn=None, sn=None, description=None):
 		if not position:
