@@ -36,7 +36,6 @@ import re
 from fnmatch import fnmatch
 
 from univention.appcenter.actions import UniventionAppAction
-from univention.appcenter.app import App
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.udm import get_app_ldap_object
 from univention.appcenter.utils import flatten
@@ -90,7 +89,7 @@ class List(UniventionAppAction):
 			whitelist = re.split('\s*,\s*', whitelist)
 		for app in apps:
 			if blacklist or whitelist:
-				unlocalised_app = App.from_ini(app.get_ini_file(), locale=False)
+				unlocalised_app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
 				if cls._blacklist_includes_app(blacklist, unlocalised_app) and not cls._blacklist_includes_app(whitelist, unlocalised_app):
 					continue
 			if app.end_of_life and not app.is_installed():

@@ -42,7 +42,6 @@ from ldap.dn import str2dn, dn2str
 
 from univention.lib.ldap_extension import UniventionLDAPSchema
 
-from univention.appcenter.app import App
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
@@ -224,7 +223,7 @@ class Register(CredentialsAction):
 					del os.environ['UNIVENTION_APP_IDENTIFIER']
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
-				app = App.from_ini(app.get_ini_file(), locale=False)
+				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
 				attributes, __ = get_extended_attributes(app)
 				if attributes:
 					for i, attribute in enumerate(attributes):
