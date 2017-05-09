@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-mail-cyrus
-fix: 9.0.0-8A~4.2.0.201705092223
+fix: 9.0.0-9A~4.2.0.201705092255
 desc: |
  This update addresses the following issue(s):
  * After an upgrade from UCS 4.1 to UCS 4.2 the Cyrus daemons did not
