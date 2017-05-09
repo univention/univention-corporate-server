@@ -22,7 +22,7 @@ port=configRegistry.get('ldap/server/port', '7389')
 ldapserver=map(lambda s: '%s:%s' % (s,port) , ldapserver)
 
 print '\tidmap config * : backend\t= ldap'
-print '\tidmap config * : range\t\t= 55000-64000'
+print '\tidmap config * : range\t\t= %s' % configRegistry.get('samba/idmap/*/range', '55000-64000')
 print '\tidmap config * : ldap_url\t= ldap://%s' % ' ldap://'.join(ldapserver)
 print '\tidmap config * : ldap_user_dn\t= %s' % (admindn)
 ## print '\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base)
