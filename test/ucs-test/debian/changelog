@@ -1,3 +1,9 @@
+ucs-test (7.0.21-22) unstable; urgency=medium
+
+  * Bug #41786: error message differs for samba4 / plain heimdal
+
+ -- Florian Best <best@univention.de>  Tue, 09 May 2017 14:28:47 +0200
+
 ucs-test (7.0.21-21) unstable; urgency=medium
 
   * Bug #41786: fix error message

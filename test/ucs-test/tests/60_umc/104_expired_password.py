@@ -82,7 +82,7 @@ class TestPwdChangeNextLogin(object):
 			client = Client()
 			client.authenticate(username, password)
 
-	def test_changing_too_short_password_fail(self, options, new_password, reason, udm, Client, random_string, Unauthorized):
+	def test_password_changing_failure_reason(self, options, new_password, reason, udm, Client, random_string, Unauthorized):
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		client = Client()
@@ -93,7 +93,7 @@ class TestPwdChangeNextLogin(object):
 
 
 def pytest_generate_tests(metafunc):
-	if metafunc.function.__name__ != 'test_changing_too_short_password_fail':
+	if metafunc.function.__name__ != 'test_password_changing_failure_reason':
 		return
 
 	samba4_installed = utils.package_installed('univention-samba4')
