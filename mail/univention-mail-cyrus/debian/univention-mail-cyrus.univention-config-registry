@@ -88,6 +88,7 @@ Multifile: etc/imapd/cyrus.conf
 Subfile: etc/imapd/cyrus.conf.d/10_START_spool
 Variables: hostname
 Variables: domainname
+Variables: mail/cyrus/duplicate-suppression/expiry/start
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf
@@ -109,6 +110,7 @@ Multifile: etc/imapd/cyrus.conf
 Subfile: etc/imapd/cyrus.conf.d/30_EVENT_spool
 Variables: hostname
 Variables: domainname
+Variables: mail/cyrus/duplicate-suppression/expiry/event
 
 Type: subfile
 Multifile: etc/imapd/cyrus.conf

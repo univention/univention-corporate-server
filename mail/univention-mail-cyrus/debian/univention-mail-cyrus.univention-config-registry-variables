@@ -226,3 +226,15 @@ Description[de]=Mit Variablen der Form mail/cyrus/bdb/dbconfig/VARIABLE=WERT kö
 Description[en]=Arbitrary BDB configuration options for the Cyrus database in /var/lib/cyrus/db/DB_CONFIG can be configured with variables in the format mail/cyrus/bdb/dbconfig/VARIABLE=VALUE. After changing these variables the Cyrus server must be restarted.
 Type=str
 Categories=service-mail
+
+[mail/cyrus/duplicate-suppression/expiry/start]
+Description[de]=Ist diese Option aktiviert, wird eine Reinigung veralteter Einträge der "duplicate delivery database" von Cyrus vor dem Start des IMAP/POP3 Dienstes durchgeführt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: off)
+Description[en]=If this option is enabled, a purging of old entries from the Cyrus "duplicate delivery database" will run before starting the IMAP/POP3 service. Depending on the database size this can take several hours. (Default: off)
+Type=bool
+Categories=service-mail
+
+[mail/cyrus/duplicate-suppression/expiry/event]
+Description[de]=Ist diese Option aktiviert, wird eine Reinigung veralteter Einträge der "duplicate delivery database" von Cyrus um 4:01 Nachts durchgeführt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: off)
+Description[en]=If this option is enabled, a purging of old entries from the Cyrus "duplicate delivery database" will run at 4:01 at night. Depending on the database size this can take several hours. (Default: off)
+Type=bool
+Categories=service-mail
