@@ -71,7 +71,7 @@ strings = {
 
 	'software_config': 'Wählen Sie UCS-Software-Komponenten',
 	'next': 'Weiter',
-	'confirm_config': 'Kontoinformationen',
+	'confirm_config': 'Softwarekomponenten',
 	'do_update': 'System nach der Einrichtung aktualisieren',
 	'setup_successful': 'UCS-Einrichtung erfolgreich',
 	'finish': 'Fertigstellen',

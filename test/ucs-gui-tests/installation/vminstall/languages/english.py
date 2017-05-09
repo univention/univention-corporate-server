@@ -71,7 +71,7 @@ strings = {
 
 	'software_config': 'software component',
 	'next': 'Next',
-	'confirm_config': 'Domain and host',
+	'confirm_config': 'Software components',
 	'do_update': 'Update system after setup',
 	'setup_successful': 'setup successful',
 	'finish': 'Finish',
