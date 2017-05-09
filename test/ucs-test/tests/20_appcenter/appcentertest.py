@@ -132,7 +132,7 @@ class AppCenterOperations(object):
 			(last_info, last_steps) = ("", 0)
 
 			while not (event.wait(3) and finished):
-				progress = self.client.umc_command("appcenter/progress", print_request=False, print_response=False)
+				progress = self.client.umc_command("appcenter/progress", print_request_data=False, print_response=False).result
 				info = progress.get("info") or last_info
 				steps = progress.get("steps") or last_steps
 				changed = (info, steps) != (last_info, last_steps)
