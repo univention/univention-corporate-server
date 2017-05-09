@@ -1,3 +1,9 @@
+univention-printserver (10.0.1-12) unstable; urgency=low
+
+  * Bug #44153: re reload samba in cups-printers.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 May 2017 17:31:38 +0200
+
 univention-printserver (10.0.1-11) unstable; urgency=low
 
   * Bug #44187: added dependency to cups-browsed
@@ -6,7 +12,7 @@ univention-printserver (10.0.1-11) unstable; urgency=low
 
 univention-printserver (10.0.1-10) unstable; urgency=low
 
-  * Bug #44088: fixed univention-cups-init 
+  * Bug #44088: fixed univention-cups-init
 
  -- Felix Botner <botner@univention.de>  Fri, 31 Mar 2017 11:27:45 +0200
 

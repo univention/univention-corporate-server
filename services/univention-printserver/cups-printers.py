@@ -426,6 +426,8 @@ def handler(dn, new, old):
 
 		if need_to_reload_samba:
 			reload_smbd()
+			time.sleep(3)
+			reload_smbd()
 
 
 def reload_daemon(daemon, prefix):
