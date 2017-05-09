@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-59) unstable; urgency=low
+
+  * Bug #44554: check info.result.display_feedback in __getErrorHandler and
+    display feedback dialog
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 May 2017 10:58:30 +0200
+
 univention-management-console-frontend (5.0.63-58) unstable; urgency=medium
 
   * Bug #42980: fix wrong error pop-up when clicking a link on the overview

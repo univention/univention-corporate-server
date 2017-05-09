@@ -589,7 +589,13 @@ define([
 					}
 
 					// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
-					if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
+					if (info.result && info.result.display_feedback) {
+						if (info.result.title) {
+							info.title = info.result.title;
+						}
+						info.traceback = '';
+						this.displayTraceback(info);
+					} else if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 						this.displayTraceback(info);
 					} else if (503 == status && dialog.loginOpened()) {
 						// either the UMC-server or the UMC-Web-Server is not runnning
@@ -611,7 +617,11 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools._handleTraceback(info.message, tools._statusMessages[info.status]);
+					if (info.title) {
+						tools._handleTraceback(info.message, info.title);
+					} else {
+						tools._handleTraceback(info.message, tools._statusMessages[info.status]);
+					}
 				}
 			}, custom);
 			return errorHandler;
