@@ -592,153 +592,179 @@ install_app_in_prejoined_setup ()
 
 appliance_preinstall_non_univention_packages ()
 {
-	packages="	texlive-doc-base
-			heimdal-clients
-			libfile-copy-recursive-perl
-			update-inetd
-			openbsd-inetd
-			libcap-ng0
-			heimdal-kdc
-			quota
-			libslp1
-			slapd
-			nagios-plugins-common
-			liblockfile-bin
-			rpcbind
-			nfs-common
-			python-egenix-mxtools
-			python-egenix-mxdatetime
-			libpq5
-			python-pygresql
-			bc
-			libblas3
-			liblinear1
-			nmap
-			libsnmp-session-perl
-			mrtg
-			wamerican
-			pam-runasroot
-			nscd
-			libnss-extrausers
-			libdaemon0
-			ifplugd
-			nfs-kernel-server
-			libopts25
-			ntp
-			bind9utils
-			bind9
-			libgraphite3
-			libkpathsea6
-			libptexenc1
-			tex-common
-			texlive-common
-			ed
-			texlive-binaries
-			xdg-utils
-			luatex
-			ttf-marvosym
-			preview-latex-style
-			mysql-common
-			libyaml-syck-perl
-			lmodern
-			nagios-nrpe-server
-			tex-gyre
-			freeipmi-common
-			nagios-plugins-basic
-			dpt-i2o-raidutils
-			libfsplib0
-			elinks-data
-			elinks
-			libotf0
-			m17n-db
-			m17n-contrib
-			libm17n-0
-			fonts-liberation
-			fping
-			gnuplot-nox
-			groff
-			libconfig-tiny-perl
-			libdate-manip-perl
-			libfile-basedir-perl
-			libfile-desktopentry-perl
-			libfile-mimeinfo-perl
-			libsocket6-perl
-			libio-socket-inet6-perl
-			liblinear-tools
-			liblwp-useragent-determined-perl
-			libparse-recdescent-perl
-			libmail-imapclient-perl
-			libmath-calc-units-perl
-			libparams-classify-perl
-			libmodule-runtime-perl
-			libtry-tiny-perl
-			libmodule-implementation-perl
-			libparams-validate-perl
-			libnagios-plugin-perl
-			libxml-twig-perl
-			libnet-dbus-perl
-			libnet-smtp-tls-perl
-			libnet-snmp-perl
-			libradiusclient-ng2
-			libreadonly-perl
-			libreadonly-xs-perl
-			libruby1.9.1
-			libsnmp-base
-			libsnmp15
-			libutempter0
-			libx11-protocol-perl
-			libxml-xpathengine-perl
-			locate
-			postgresql-client-common
-			postgresql-client-9.1
-			postgresql-client
-			ps2eps
-			psutils
-			raidutils
-			ruby1.9.1
-			ruby
-			snmp
-			tcl8.5
-			tk8.5
-			nagios-plugins-standard
-			nagios-plugins
-			vim-runtime
-			vim
-			x11-xserver-utils
-			xbitmaps
-			xterm
-			zip
-			libfreeipmi12
-			libipmiconsole2
-			libipmidetect0
-			freeipmi-tools
-			nagios-plugins-contrib
-			texlive-base
-			gnuplot
-			libsvm-tools
-			texlive-extra-utils
-			texlive-font-utils
-			texlive-luatex
-			texlive-latex-base
-			texlive-fonts-recommended
-			texlive-pictures
-			texlive-lang-german
-			texlive-generic-recommended
-			tipa
-			texlive-latex-recommended
-			texlive-pstricks
-			texlive
-			texlive-latex-extra
-			latex-xcolor
-			prosper
-			pgf
-			latex-beamer
-			heimdal-servers
-			gettext
-			patch
-			libgif4
-			libegl1-mesa
-		"
+	packages="
+adwaita-icon-theme
+apache2-suexec-pristine
+bc
+bind9
+bind9utils
+dconf-gsettings-backend
+dconf-service
+dictionaries-common
+dpt-i2o-raidutils
+elinks
+elinks-data
+emacs24
+emacs24-bin-common
+emacs24-common
+emacsen-common
+fbcat
+fbi
+fping
+gconf-service
+gconf2-common
+ghostscript
+glib-networking
+glib-networking-common
+glib-networking-services
+gsettings-desktop-schemas
+gsfonts
+heimdal-kdc
+heimdal-servers
+ifplugd
+imagemagick-common
+libatk-bridge2.0-0
+libatspi2.0-0
+libblas-common
+libblas3
+libcairo-gobject2
+libcolord2
+libcupsfilters1
+libcupsimage2
+libdaemon0
+libdconf1
+libexif12
+libfftw3-double3
+libfile-copy-recursive-perl
+libfribidi0
+libfsplib0
+libgconf-2-4
+libgd3
+libgfortran3
+libgomp1
+libgpm2
+libgs9
+libgs9-common
+libgtk-3-0
+libgtk-3-bin
+libgtk-3-common
+libharfbuzz-icu0
+libijs-0.35
+libio-socket-inet6-perl
+libjbig2dec0
+libjson-glib-1.0-0
+libjson-glib-1.0-common
+libkdc2-heimdal
+libkpathsea6
+liblinear1
+liblqr-1-0
+libltdl7
+liblua5.2-0
+libm17n-0
+libmagickcore-6.q16-2
+libmagickwand-6.q16-2
+libmcrypt4
+libnetpbm10
+libnfsidmap2
+libnl-3-200
+libnl-genl-3-200
+libnss-extrausers
+libnss-ldap
+libodbc1
+libopenjpeg5
+libopts25
+libotf0
+libpam-cracklib
+libpam-heimdal
+libpam-ldap
+libpaper-utils
+libpaper1
+libpcap0.8
+libperl5.20
+libpoppler46
+libpotrace0
+libpq5
+libproxy1
+libptexenc1
+libquadmath0
+librest-0.7-0
+libslp1
+libsnmp-session-perl
+libsocket6-perl
+libsoup-gnome2.4-1
+libsoup2.4-1
+libsynctex1
+libtirpc1
+libtre5
+libvpx1
+libwayland-cursor0
+libxkbcommon0
+libyaml-0-2
+libzzip-0-13
+locate
+m17n-db
+memcached
+monitoring-plugins
+monitoring-plugins-basic
+monitoring-plugins-common
+monitoring-plugins-standard
+mrtg
+nagios-nrpe-server
+nagios-plugins-basic
+netpbm
+nfs-common
+nfs-kernel-server
+nmap
+nscd
+ntp
+ntpdate
+openbsd-inetd
+pam-runasroot
+php-openid
+php-pear
+php-xml-parser
+php5-cgi
+php5-curl
+php5-gmp
+php5-ldap
+php5-mcrypt
+php5-memcache
+poppler-data
+postgresql-client-9.4
+postgresql-client-common
+preview-latex-style
+python-ecdsa
+python-egenix-mxdatetime
+python-egenix-mxtools
+python-paramiko
+python-pycurl
+python-pygresql
+python-yaml
+quota
+rpcbind
+simplesamlphp
+slapd
+stunnel4
+sudo
+sysvinit
+tex-common
+texlive
+texlive-base
+texlive-binaries
+texlive-fonts-recommended
+texlive-lang-german
+texlive-latex-base
+texlive-latex-extra
+texlive-latex-recommended
+texlive-pictures
+unzip
+update-inetd
+vim
+vim-runtime
+wamerican
+wngerman
+xdg-utils
+zip"
 	for p in $packages; do
 		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
 	done
