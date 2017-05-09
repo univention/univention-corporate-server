@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-mail-dovecot
+fix: 3.0.1-1A~4.2.0.201705091502
+desc: |
+ This update addresses the following issue(s):
+ * The package dependencies allow now to install Dovecot Pro instead of
+   Dovecot from the Debian repositories.
+bug: [44559]
