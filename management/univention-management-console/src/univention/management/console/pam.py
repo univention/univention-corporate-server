@@ -220,7 +220,7 @@ class PamAuth(object):
 			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
 				raise AccountExpired(self.error_message(pam_err))
 			if missing:
-				message = _('Please insert your one time password (OTP).')
+				message = self._('Please insert your one time password (OTP).')
 				raise AuthenticationInformationMissing(message, missing)
 			raise AuthenticationFailed(self.error_message(pam_err))
 
@@ -335,8 +335,8 @@ class PamAuth(object):
 				for x, y in match.iteritems():
 					try:
 						additional_message = {
-							'minlen': ' ' + _('The password must consist of at least %s characters.'),
-							'history': ' ' + _('Choose a password which does not match any of your last %s passwords.')
+							'minlen': ' ' + self._('The password must consist of at least %s characters.'),
+							'history': ' ' + self._('Choose a password which does not match any of your last %s passwords.')
 						}[x] % (y,)
 					except KeyError:
 						pass

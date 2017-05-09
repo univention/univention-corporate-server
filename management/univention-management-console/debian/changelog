@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-11) unstable; urgency=medium
+
+  * Bug #41786: use the language of the currently logged in user
+
+ -- Florian Best <best@univention.de>  Tue, 09 May 2017 14:24:02 +0200
+
 univention-management-console (9.0.80-10) unstable; urgency=medium
 
   * Bug #41786: fix duplicated groupdict
