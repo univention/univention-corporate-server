@@ -1,3 +1,9 @@
+univention-mail-cyrus (9.0.0-9) unstable; urgency=low
+
+  * Bug #44377: fix version comparison in postinst script
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 09 May 2017 22:54:45 +0200
+
 univention-mail-cyrus (9.0.0-8) unstable; urgency=low
 
   * Bug #22852: updated UCR variable descriptions
