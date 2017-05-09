@@ -105,13 +105,16 @@ class VmTester(object):
 			raise RuntimeError('Command on %s exited with return code %s: %s' % (self.args.ip, return_code, command))
 
 	def copy_through_ssh(self, source_file, target_file):
-		return subprocess.call((
+		return_code = subprocess.call((
 			'sshpass',
 			'-p', self.args.password,
 			'scp',
 			'-o', 'StrictHostKeyChecking=no',
 			source_file, target_file
 		))
+		if return_code > 0:
+			raise RuntimeError("Trying to copy '%s' to '%s' failed with return code %s." % (source_file, target_file, return_code))
+
 
 if __name__ == '__main__':
 	tester = VmTester()
