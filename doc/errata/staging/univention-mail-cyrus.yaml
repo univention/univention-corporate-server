@@ -12,11 +12,13 @@ desc: |
  * The paths to Cyrus executables have been adjusted for Debian Jessie
    (Bug #44424).
  * The path to the tool to automatically purge old entries from the Cyrus
-   "duplicate delivery database" has been fixed. As it was wrong the tool
-   never ran. When starting it the first time, it may take minutes or
-   hours. Thus for this update it has been disabled by default, but it
-   will be enabled by default when updating to UCS 4.2-1. The UCR variables
+   "duplicate delivery database" has been fixed. As the path was wrong in
+   the past, the tool never ran. When starting it (the first time), it may
+   take minutes or hours (depending on the database size). Thus for this
+   update the tool has been disabled by default, but it will be enabled
+   by default when updating to UCS 4.2-1. Via the new UCR variables
    mail/cyrus/duplicate-supression/expiry/start and
-   mail/cyrus/duplicate-supression/expiry/event enable or disable running
-   this cleanup job when starting Cyrus or at 4:01 at night (Bug #22852).
+   mail/cyrus/duplicate-supression/expiry/event this cleanup job can be
+   configured to be run when starting Cyrus or regularly at 4:01 each
+   night (Bug #22852).
 bug: [22852, 44377, 44424]
