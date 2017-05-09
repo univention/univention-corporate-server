@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-1) unstable; urgency=low
+
+  * Bug #44559: allow to install Dovecot Pro
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 09 May 2017 14:43:46 +0200
+
 univention-mail-dovecot (3.0.0-3) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
