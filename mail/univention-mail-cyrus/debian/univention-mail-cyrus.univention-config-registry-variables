@@ -228,13 +228,13 @@ Type=str
 Categories=service-mail
 
 [mail/cyrus/duplicate-suppression/expiry/start]
-Description[de]=Ist diese Option aktiviert, wird eine Reinigung veralteter Einträge der "duplicate delivery database" von Cyrus vor dem Start des IMAP/POP3 Dienstes durchgeführt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: off)
-Description[en]=If this option is enabled, a purging of old entries from the Cyrus "duplicate delivery database" will run before starting the IMAP/POP3 service. Depending on the database size this can take several hours. (Default: off)
+Description[de]=Ist diese Option aktiviert, werden vor dem Start der IMAP/POP3-Dienste die veraltete Einträge der Cyrus "duplicate delivery database" entfernt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: disabled)
+Description[en]=If this option is enabled, old entries within the Cyrus "duplicate delivery database" will be removed before starting the IMAP/POP3 services. Depending on the database size this can take several hours. (Default: disabled)
 Type=bool
 Categories=service-mail
 
 [mail/cyrus/duplicate-suppression/expiry/event]
-Description[de]=Ist diese Option aktiviert, wird eine Reinigung veralteter Einträge der "duplicate delivery database" von Cyrus um 4:01 Nachts durchgeführt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: off)
-Description[en]=If this option is enabled, a purging of old entries from the Cyrus "duplicate delivery database" will run at 4:01 at night. Depending on the database size this can take several hours. (Default: off)
+Description[de]=Ist diese Option aktiviert, werden täglich um 04:01 Uhr die veraltete Einträge der Cyrus "duplicate delivery database" entfernt. Abhängig von der Datenbankgröße kann dies mehrere Stunden dauern. (Standard: disabled)
+Description[en]=If this option is enabled, a purging of old entries from the Cyrus "duplicate delivery database" will run at 4:01 at night. Depending on the database size this can take several hours. (Default: disabled)
 Type=bool
 Categories=service-mail

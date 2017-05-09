@@ -1,3 +1,9 @@
+univention-mail-cyrus (9.0.0-8) unstable; urgency=low
+
+  * Bug #22852: updated UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 09 May 2017 22:22:51 +0200
+
 univention-mail-cyrus (9.0.0-7) unstable; urgency=low
 
   * Bug #22852: fix path for cyr_expire
