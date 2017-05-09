@@ -33,12 +33,14 @@ def random_string(length=10, alpha=False, numeric=False, charset=None, encoding=
 	return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
-NORMAL_SIMPLE_USER = {"username": tstrings.random_username(),
+NORMAL_SIMPLE_USER = {
+	"username": tstrings.random_username(),
 	"firstname": tstrings.random_name(),
 	"lastname": tstrings.random_name(),
 	"description": random_string(alpha=True, numeric=True)}
 
-NORMAL_COMPLEX_USER = {"username": tstrings.random_username(),
+NORMAL_COMPLEX_USER = {
+	"username": tstrings.random_username(),
 	"firstname": tstrings.random_name(),
 	"lastname": tstrings.random_name(),
 	"description": random_string(alpha=True, numeric=True),
@@ -52,12 +54,14 @@ NORMAL_COMPLEX_USER = {"username": tstrings.random_username(),
 	"pagerTelephoneNumber": random_string(numeric=True),
 	"sambaUserWorkstations": random_string(numeric=True)}
 
-UTF8_SIMPLE_USER = {"username": random_string(charset=UTF8_CHARSET),
+UTF8_SIMPLE_USER = {
+	"username": random_string(charset=UTF8_CHARSET),
 	"firstname": random_string(charset=UTF8_CHARSET),
 	"lastname": random_string(charset=UTF8_CHARSET),
 	"description": random_string(charset=UTF8_CHARSET)}
 
-UTF8_COMPLEX_USER = {"username": random_string(charset=UTF8_CHARSET),
+UTF8_COMPLEX_USER = {
+	"username": random_string(charset=UTF8_CHARSET),
 	"firstname": random_string(charset=UTF8_CHARSET),
 	"lastname": random_string(charset=UTF8_CHARSET),
 	"description": random_string(charset=UTF8_CHARSET),
@@ -71,12 +75,14 @@ UTF8_COMPLEX_USER = {"username": random_string(charset=UTF8_CHARSET),
 	"pagerTelephoneNumber": random_string(numeric=True),
 	"sambaUserWorkstations": random_string(numeric=True)}
 
-SPECIAL_SIMPLE_USER = {"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
+SPECIAL_SIMPLE_USER = {
+	"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
 	"firstname": tstrings.random_name_special_characters(),
 	"lastname": tstrings.random_name_special_characters(),
 	"description": random_string(charset=SPECIAL_CHARSET)}
 
-SPECIAL_COMPLEX_USER = {"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
+SPECIAL_COMPLEX_USER = {
+	"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
 	"firstname": tstrings.random_name_special_characters(),
 	"lastname": tstrings.random_name_special_characters(),
 	"description": random_string(charset=SPECIAL_CHARSET),
@@ -93,12 +99,13 @@ SPECIAL_COMPLEX_USER = {"username": random_string(charset=SPECIAL_CHARSET_USERNA
 
 @pytest.mark.parametrize("udm_user", [
 	NORMAL_SIMPLE_USER, NORMAL_COMPLEX_USER, UTF8_SIMPLE_USER,
-	UTF8_COMPLEX_USER, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER],
-	ids=["NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
-		"UTF8_COMPLEX_USER", "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"])
+	UTF8_COMPLEX_USER, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER
+], ids=[
+	"NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
+	"UTF8_COMPLEX_USER", "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"
+])
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_udm_to_s4(udm_user, sync_mode):
 	print("\n###################")
 	print("running test_user_sync_from_udm_to_s4({}, {})".format(udm_user, sync_mode))
@@ -117,7 +124,8 @@ def test_user_sync_from_udm_to_s4(udm_user, sync_mode):
 
 			print("\nCreating UDM user {}\n".format(basic_udm_user))
 			(udm_user_dn, username) = udm.create_user(**basic_udm_user)
-			s4_user_dn = ldap.dn.dn2str([[("CN", username, ldap.AVA_STRING)],
+			s4_user_dn = ldap.dn.dn2str([
+				[("CN", username, ldap.AVA_STRING)],
 				[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
 			s4connector.wait_for_sync()
 			s4.verify_object(s4_user_dn, s4connector.map_udm_user_to_s4(basic_udm_user))
@@ -136,12 +144,13 @@ def test_user_sync_from_udm_to_s4(udm_user, sync_mode):
 # XXX Special-Users are skipped until bug #44374 is fixed.
 @pytest.mark.parametrize("udm_user", [
 	NORMAL_SIMPLE_USER, NORMAL_COMPLEX_USER, UTF8_SIMPLE_USER,
-	UTF8_COMPLEX_USER], #, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER],
-	ids=["NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
-		"UTF8_COMPLEX_USER"]) #, "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"])
+	UTF8_COMPLEX_USER  # , SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER
+], ids=[
+	"NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
+	"UTF8_COMPLEX_USER"  # "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"
+])
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_user_sync_from_s4_to_udm(udm_user, sync_mode):
 	print("\n###################")
 	print("running test_user_sync_from_s4_to_udm({}, {})".format(udm_user, sync_mode))
@@ -162,7 +171,8 @@ def test_user_sync_from_s4_to_udm(udm_user, sync_mode):
 		print("\nCreating S4 user {}\n".format(basic_s4_user))
 		username = udm_user.get("username")
 		s4_user_dn = s4.createuser(username, **basic_s4_user)
-		udm_user_dn = ldap.dn.dn2str([[("uid", username, ldap.AVA_STRING)],
+		udm_user_dn = ldap.dn.dn2str([
+			[("uid", username, ldap.AVA_STRING)],
 			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
 		s4connector.wait_for_sync()
 		s4connector.verify_udm_object("users/user", udm_user_dn, basic_udm_user)
