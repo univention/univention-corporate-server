@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issue(s):
  * After an upgrade from UCS 4.1 to UCS 4.2 the Cyrus daemons did not
    start automatically anymore. When installing this bugfix the service
-   will be enabled automatically (Bug #44377).
- * The paths to executables have been adjusted for Debian Jessie
+   will be enabled automatically in systemd (Bug #44377).
+ * The paths to Cyrus executables have been adjusted for Debian Jessie
    (Bug #44424).
  * The path to the tool to automatically purge old entries from the Cyrus
    "duplicate delivery database" has been fixed. As it was wrong the tool
