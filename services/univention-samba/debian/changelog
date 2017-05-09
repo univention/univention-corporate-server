@@ -1,3 +1,9 @@
+univention-samba (11.0.1-7) unstable; urgency=low
+
+  * Bug #44549: added samba/idmap/range
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 May 2017 12:03:24 +0200
+
 univention-samba (11.0.1-6) unstable; urgency=medium
 
   * Bug #44118: invoke-rc.d doesn't work with the one-shot samba.service

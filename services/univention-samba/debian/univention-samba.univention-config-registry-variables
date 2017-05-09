@@ -453,3 +453,9 @@ Description[de]=Diese Variable definiert Netzwerk Interfaces  die von Samba igno
 Description[en]=This variable defines network interfaces which are ignored by samba (e.g. eth0). Multiple values need to be separated by blanks.
 Type=str
 Categories=service-samba
+
+[samba/idmap/range]
+Description[de]=Definiert den verfügbaren Uid- und Gid-Bereich, für den das Backend maßgebend ist (* default domain).
+Description[en]=Defines the available matching uid and gid range for which the backend is authoritative (* default domain).
+Type=str
+Categories=service-samba
