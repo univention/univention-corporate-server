@@ -96,9 +96,10 @@ def pytest_generate_tests(metafunc):
 	if metafunc.function.__name__ != 'test_changing_too_short_password_fail':
 		return
 
+	samba4_installed = utils.package_installed('univention-samba4')
 	data = []
 	# pam_unix
-	for option in [[], ['posix']]:
+	for option in [[], ['posix'], ['posix', 'samba']]:
 		new_password = 'Test'
 		reason = "Changing password failed. The password is too short."
 		data.append([option, new_password, reason])
@@ -108,7 +109,7 @@ def pytest_generate_tests(metafunc):
 		data.append([option, new_password, reason])
 
 	# pam_krb5
-	for option in [['posix', 'samba'], ['kerberos', 'person']]:
+	for option in [['kerberos', 'person']]:
 		new_password = 'Test'
 		reason = "Changing password failed. The password is too simple."
 		data.append([option, new_password, reason])
@@ -119,7 +120,7 @@ def pytest_generate_tests(metafunc):
 
 	for option in [[], ['posix', 'samba'], ['kerberos', 'person'], ['posix']]:
 		new_password = 'chocolate'
-		reason = "Changing password failed. The password is too simple." if utils.package_installed('univention-samba4') else "Changing password failed. The password is based on a dictionary word."
+		reason = "Changing password failed. The password is too simple." if samba4_installed else "Changing password failed. The password is based on a dictionary word."
 		data.append([option, new_password, reason])
 
 	metafunc.parametrize('options,new_password,reason', data)
@@ -140,6 +141,11 @@ class TestBasics(object):
 		with pytest.raises(Unauthorized):
 			client = Client()
 			client.authenticate(username, password + 'INVALID')
+
+	def test_login_as_root(self, Client):
+		client = Client()
+		# Actually this is the password of the Administrator account but probably in most test scenarios also the root password
+		client.authenticate('root', utils.UCSTestDomainAdminCredentials().bindpw)
 
 
 class TestLDAPUsers(object):

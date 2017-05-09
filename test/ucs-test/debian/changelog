@@ -1,3 +1,9 @@
+ucs-test (7.0.21-21) unstable; urgency=medium
+
+  * Bug #41786: fix error message
+
+ -- Florian Best <best@univention.de>  Tue, 09 May 2017 13:31:24 +0200
+
 ucs-test (7.0.21-20) unstable; urgency=medium
 
   * Bug #43598: s4c-test: add utility functions in s4connector.py
