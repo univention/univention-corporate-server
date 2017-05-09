@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-mail-cyrus
-fix: 9.0.0-6A~4.2.0.201705081329
+fix: 9.0.0-7A~4.2.0.201705091108
 desc: |
  This update addresses the following issue(s):
  * After an upgrade from UCS 4.1 to UCS 4.2 the Cyrus daemons did not
@@ -11,12 +11,12 @@ desc: |
    will be enabled automatically (Bug #44377).
  * The paths to executables have been adjusted for Debian Jessie
    (Bug #44424).
- * Before UCS 4.2 the Cyrus tool ctl_deliver has been called to remove
-   expired entries within the deliver.db. Due to a wrong search path, the
-   tool never came into effect. Please note: by fixing bug #44424 and
-   bug #22852, the command is now executed for the first time, which may
-   cause a delayed startup of the Cyrus daemons. Depending on the size
-   of the current deliver.db, this may take minutes or hours.
-   Additionally cyr_expire is now called directly instead of the wrapper
-   ctl_deliver (Bug #22852).
+ * The path to the tool to automatically purge old entries from the Cyrus
+   "duplicate delivery database" has been fixed. As it was wrong the tool
+   never ran. When starting it the first time, it may take minutes or
+   hours. Thus for this update it has been disabled by default, but it
+   will be enabled by default when updating to UCS 4.2-1. The UCR variables
+   mail/cyrus/duplicate-supression/expiry/start and
+   mail/cyrus/duplicate-supression/expiry/event enable or disable running
+   this cleanup job when starting Cyrus or at 4:01 at night (Bug #22852).
 bug: [22852, 44377, 44424]
