@@ -245,7 +245,7 @@ class VmCreator(object):
 	def create_vm_if_possible(self):
 		try:
 			self.dom = self.conn.lookupByName(self.args.vm_name)
-			self.logger.info("A VM with the name %s already exists! Exiting.", self.dom.name())
+			self.logger.critical("A VM with the name %s already exists! Exiting.", self.dom.name())
 			exit(1)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
