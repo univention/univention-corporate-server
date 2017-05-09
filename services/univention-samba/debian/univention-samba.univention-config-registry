@@ -53,7 +53,7 @@ Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/winbind/trusted/domains/only
 Variables: samba/winbind/max/clients
-Variables: samba/idmap/*/range
+Variables: samba/idmap/range
 
 Type: subfile
 Multifile: etc/samba/smb.conf

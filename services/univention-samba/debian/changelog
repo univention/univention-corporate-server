@@ -1,3 +1,9 @@
+univention-samba (10.0.3-3) unstable; urgency=low
+
+  * Bug #44560 : added samba/idmap/*/range
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 May 2017 11:57:34 +0200
+
 univention-samba (10.0.3-2) unstable; urgency=low
 
   * Bug #44560 : added samba/idmap/*/range

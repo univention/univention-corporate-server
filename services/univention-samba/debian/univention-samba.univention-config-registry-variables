@@ -454,8 +454,8 @@ Description[en]=This variable defines network interfaces which are ignored by sa
 Type=str
 Categories=service-samba
 
-[samba/idmap/*/range]
-Description[de]=Definiert den verfügbaren Uid- und Gid-Bereich, für den das Backend maßgebend ist.
-Description[en]=Defines the available matching uid and gid range for which the backend is authoritative.
+[samba/idmap/range]
+Description[de]=Definiert den verfügbaren Uid- und Gid-Bereich, für den das Backend maßgebend ist (* default domain).
+Description[en]=Defines the available matching uid and gid range for which the backend is authoritative (* default domain).
 Type=str
 Categories=service-samba
