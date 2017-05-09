@@ -36,7 +36,7 @@ import os
 import os.path
 import re
 import shutil
-from subprocess import Popen, PIPE, list2cmdline
+from subprocess import Popen, PIPE, STDOUT, list2cmdline
 import pipes
 from threading import Thread
 from uuid import uuid4
@@ -198,6 +198,24 @@ def rmdir(directory):
 	if os.path.exists(directory):
 		shutil.rmtree(directory)
 
+def call_process2(args, logger=None, env=None):
+	if logger:
+		logger.info('Calling %s' % args)
+	try:
+		p = Popen(args, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env)
+	except OSError as exc:
+		err = '%s failed with %s' % (' '.join(args), str(exc))
+		if logger:
+			logger.warn(err)
+		return -1, [err]
+	out = list()
+	while p.poll() is None:
+		stdout = p.stdout.readline().rstrip()
+		if stdout:
+			out.append(stdout)
+			if logger:
+				logger.info(stdout)
+	return p.returncode, out
 
 def call_process(args, logger=None, env=None):
 	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env)

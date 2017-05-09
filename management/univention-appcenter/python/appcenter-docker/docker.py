@@ -46,7 +46,7 @@ from hashlib import sha256
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
-from univention.appcenter.utils import app_ports_with_protocol, call_process, shell_safe, _
+from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
@@ -215,6 +215,18 @@ def commit(container, new_base_image):
 	return check_output(['docker', 'commit', container, new_base_image])
 
 
+def docker_logs(container, logger=None):
+	args = ['docker', 'logs', container]
+	ret, out = call_process2(args, logger=logger)
+	return out
+
+
+def dockerd_logs(logger=None):
+	args = ['tail', '-20', '/var/log/syslog']
+	ret, out = call_process2(args, logger=logger)
+	return out
+
+
 class Docker(object):
 
 	def __init__(self, app, logger=None):
@@ -352,3 +364,9 @@ class Docker(object):
 
 	def rm(self):
 		return rm(self.container)
+
+	def logs(self):
+		return docker_logs(self.container, self.logger)
+
+	def dockerd_logs(self):
+		return dockerd_logs(logger=self.logger)

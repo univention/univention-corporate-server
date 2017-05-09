@@ -43,7 +43,7 @@ from functools import wraps
 
 from univention.appcenter.app import AppManager
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error, send_information
+from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error, send_information, _
 from univention.appcenter.ucr import ucr_get
 
 _ACTIONS = {}
@@ -56,6 +56,17 @@ class Abort(Exception):
 
 class NetworkError(Abort):
 	pass
+
+
+class AppCenterError(Exception):
+	code = 500
+	title = _('An error occurred!')
+	info = _('We are sorry for the inconvenience. Please help us to improve the AppCenter and the Apps by sending us the information below.')
+
+
+class AppCenterErrorContainerStart(AppCenterError):
+	code = 501
+	title = _('The docker container could not be started!')
 
 
 def possible_network_error(func):

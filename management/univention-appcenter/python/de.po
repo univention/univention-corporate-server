@@ -65,3 +65,19 @@ msgid ""
 msgstr ""
 "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
 "läuft mit einem %(has)s-Bit-Betriebssystem."
+
+#, python-format
+msgid "An error occurred!"
+msgstr "Es ist ein Fehler aufgetreten!"
+
+#, python-format
+msgid ""
+"We are sorry for the inconvenience. Please help us to improve "
+"the AppCenter and the Apps by sending us the information below."
+msgstr ""
+"Wir entschuldigen uns für die Unannehmlichkeiten. Bitte helfen Sie uns, "
+"das AppCenter und die Apps zu verbessern, indem Sie uns die unten stehenden Informationen senden."
+
+#, python-format
+msgid "The docker container could not be started!"
+msgstr "Der Docker Container konnte nicht gestartet werden!"

@@ -41,7 +41,7 @@ from argparse import SUPPRESS
 from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App, AppManager
-from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
+from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action, AppCenterError
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
@@ -124,6 +124,9 @@ class InstallRemoveUpgrade(Register):
 				except Abort:
 					self.warn('Cancelled...')
 					status = 0
+		except AppCenterError as exc:
+			status = exc.code
+			raise
 		except Exception:
 			raise
 		else:

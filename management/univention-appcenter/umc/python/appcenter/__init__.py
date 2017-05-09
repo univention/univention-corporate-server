@@ -57,7 +57,7 @@ from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.appcenter.actions import get_action
+from univention.appcenter.actions import get_action, AppCenterError
 from univention.appcenter.app import AppManager
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information
 from univention.appcenter.log import get_base_logger, log_to_logfile
@@ -369,6 +369,10 @@ class Instance(umcm.Base, ProgressMixin):
 				action.logger.addHandler(handler)
 				try:
 					result['success'] = action.call(app=app, username=self.username, password=self.password, **kwargs)
+				except AppCenterError as exc:
+					raise umcm.UMC_Error(str(exc), result=dict(
+						display_feedback=True,
+						title='%s %s' % (exc.title, exc.info)))
 				finally:
 					action.logger.removeHandler(handler)
 		return result
