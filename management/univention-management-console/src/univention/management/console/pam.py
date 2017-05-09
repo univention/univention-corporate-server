@@ -332,7 +332,7 @@ class PamAuth(object):
 			if match:
 				match = match.groupdict()
 				additional_message = ''
-				for x, y in match.groupdict().iteritems():
+				for x, y in match.iteritems():
 					try:
 						additional_message = {
 							'minlen': ' ' + _('The password must consist of at least %s characters.'),
