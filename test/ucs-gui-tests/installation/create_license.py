@@ -33,6 +33,7 @@
 import argparse
 import datetime
 import ldif
+import logging
 import sys
 from time import time, localtime, strftime
 from os import path
@@ -90,13 +91,13 @@ class LicenseCreator(object):
 
     def provide_valid_license(self):
         if self.force_renewal or not self.valid_license_exists():
-            print("Obtaining a valid license for the ldap base '%s'."
-                  % (self.ldap_base,))
+            logging.info("Obtaining a valid license for the ldap base '%s'."
+                         % (self.ldap_base,))
             self.get_license()
-            print("Wrote new license to '%s'." % (self.license_file,))
+            logging.info("Wrote new license to '%s'." % (self.license_file,))
         else:
-            print("A valid license file already exists at '%s'. "
-                  "Not obtaining a new one." % (self.license_file,))
+            logging.warn("A valid license file already exists at '%s'. "
+                         "Not obtaining a new one." % (self.license_file,))
 
     def valid_license_exists(self):
         try:
