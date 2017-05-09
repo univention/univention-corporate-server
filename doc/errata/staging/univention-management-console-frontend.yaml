@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-management-console-frontend
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Allow UMC feedback dialog for non traceback errors.
+bug: [44554]
