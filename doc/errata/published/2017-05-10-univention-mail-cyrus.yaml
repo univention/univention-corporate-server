@@ -22,3 +22,5 @@ desc: |
    configured to be run when starting Cyrus or regularly at 4:01 each
    night (Bug #22852).
 bug: [22852, 44377, 44424, 44566]
+erratum: 12
+announced: 2017-05-10
