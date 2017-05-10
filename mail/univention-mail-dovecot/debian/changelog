@@ -1,3 +1,9 @@
+univention-mail-dovecot (2.0.2-1) unstable; urgency=low
+
+  * Bug #44567: allow to install Dovecot Pro
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 09 May 2017 14:43:46 +0200
+
 univention-mail-dovecot (2.0.1-5) unstable; urgency=low
 
   * Bug #42032: restart Dovecot at the end of the join script
