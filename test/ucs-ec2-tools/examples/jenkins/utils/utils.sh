@@ -698,4 +698,9 @@ monkeypatch () {
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
 }
 
+import_license () {
+	python -m univention.testing.license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+	univention-license-import ./ValidTest.license && univention-license-check
+	return $?
+}
 # vim:set filetype=sh ts=4:
