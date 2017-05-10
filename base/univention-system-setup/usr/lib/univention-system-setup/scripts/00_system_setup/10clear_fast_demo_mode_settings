@@ -45,7 +45,8 @@ if [ "$DEMO_MODE" != 1 ]; then
 		ucs/server/saml-idp-server/master.ucs.example \
 		ucs/server/sso/fqdn \
 		umc/saml/idp-server \
-		umc/saml/trusted/sp/master.ucs.example
+		umc/saml/trusted/sp/master.ucs.example \
+		ucs/web/overview/entries/admin/ucs-local-to-domain/link
 fi
 
 exit 0
