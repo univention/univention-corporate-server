@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Error handling has been improved.
 bug: [44557]
+erratum: 415
+announced: 2017-05-10
