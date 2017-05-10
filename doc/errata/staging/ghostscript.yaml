@@ -1,0 +1,45 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: ghostscript
+fix: 9.05~dfsg-6.3.32.201705101311
+desc: |
+ This update addresses the following issues:
+ * Ghostscript information disclosure through getenv, filenameforall
+   (CVE-2013-5653)
+ * Integer overflow in the gs_heap_alloc_bytes function in base/gsmalloc.c in
+   Ghostscript 9.15 and earlier allows remote attackers to cause a denial of
+   service (crash) via a crafted Postscript (ps) file, as demonstrated by
+   using the ps2pdf command, which triggers an out-of-bounds read or write
+   (CVE-2015-3228)
+ * various userparams allow %pipe% in paths, allowing remote shell command
+   execution (CVE-2016-7976)
+ * .libfile doesn't check PermitFileReading array, allowing remote file
+   disclosure (CVE-2016-7977)
+ * reference leak in .setdevice allows use-after-free and remote code
+   execution (CVE-2016-7978)
+ * type confusion in .initialize_dsc_parser allows remote code execution
+   (CVE-2016-7979)
+ * type confusion (CVE-2016-8602)
+ * Application crash with division by 0 in scan conversion code triggered
+   through crafted content (CVE-2016-10219)
+ * Application crash with a segfault in gx_device_finalize() triggered through
+   crafted content (CVE-2016-10220)
+ * Application crash with a segfault in ref_stack_index() triggered through
+   crafted content (CVE-2017-5951)
+ * Possible execution of arbitrary code or denial of service if a specially
+   crafted Postscript file is processed (CVE-2017-8291)
+bug: [39423]
+cve:
+ - CVE-2013-5653
+ - CVE-2015-3228
+ - CVE-2016-7976
+ - CVE-2016-7977
+ - CVE-2016-7978
+ - CVE-2016-7979
+ - CVE-2016-8602
+ - CVE-2016-10219
+ - CVE-2016-10220
+ - CVE-2017-5951
+ - CVE-2017-8291
