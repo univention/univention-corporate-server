@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Allow UMC feedback dialog for non traceback errors.
 bug: [44527]
+erratum: 15
+announced: 2017-05-10
