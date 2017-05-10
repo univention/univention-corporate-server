@@ -10,3 +10,5 @@ desc: |
  * Some Docker Apps did not register their user management extensions
    properly. This has been fixed.
 bug: [44493, 44550]
+erratum: 14
+announced: 2017-05-10
