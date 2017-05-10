@@ -117,7 +117,8 @@ fi
 call_joinscript 81univention-mail-cyrus.inst
 
 # Bug #44377: Cyrus IMAP not starting automatically after upgrade to 4.2
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.0-3; then
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=790885
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 9.0.0-3; then
 	systemctl enable cyrus-imapd.service
 fi
 

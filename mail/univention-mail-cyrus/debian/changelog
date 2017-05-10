@@ -1,3 +1,9 @@
+univention-mail-cyrus (9.0.0-10) unstable; urgency=low
+
+  * Bug #44377: enable Cyrus service also on install
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 10 May 2017 09:47:03 +0200
+
 univention-mail-cyrus (9.0.0-9) unstable; urgency=low
 
   * Bug #44377: fix version comparison in postinst script
