@@ -1,6 +1,7 @@
 univention-mail-cyrus (9.0.0-10) unstable; urgency=low
 
   * Bug #44377: enable Cyrus service also on install
+  * Bug #44566: fix path of makedirs binary
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 10 May 2017 09:47:03 +0200
 

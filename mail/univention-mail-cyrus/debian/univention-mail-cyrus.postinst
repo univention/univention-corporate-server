@@ -72,7 +72,7 @@ univention-config-registry set mail/cyrus=yes \
 
 # fresh installation
 if [ "$1" = "configure" -a -z "$2" ] ; then
-	cyrus-makedirs --cleansquat
+	/usr/lib/cyrus/bin/makedirs --cleansquat
 fi
 
 CHROOT=/var/spool/postfix
