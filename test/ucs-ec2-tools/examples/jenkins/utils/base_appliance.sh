@@ -83,8 +83,8 @@ download_packages ()
 app_get_packages ()
 {
 	local app=$1
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
 				print ' '.join(app.get('defaultpackages')+app.get('defaultpackagesmaster'))"
 }
 
@@ -111,25 +111,33 @@ app_get_database_name_for_docker_app ()
 app_get_component ()
 {
 	local app=$1
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
 				print app.component_id"
 }
 
 app_get_name ()
 {
 	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
 				print app.name;"
 }
 
 app_get_pre_installed_packages ()
 {
 	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
 				print app.get('AppliancePreInstalledPackages').replace(',',' ');"
+}
+
+app_get_umc_favorites ()
+{
+	local app="$1"
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
+				print app.get('ApplianceFavoriteModules').replace(',',' ');"
 }
 
 app_appliance_is_software_blacklisted ()
@@ -138,8 +146,8 @@ app_appliance_is_software_blacklisted ()
 	[ -z "$app" ] && return 1
 	python -c "
 import sys
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
+from univention.appcenter.app_cache import Apps; \
+app = Apps().find('$app')
 bl = app.get('AppliancePagesBlackList')
 if bl and 'software' in bl.split(','):
 	sys.exit(0)
@@ -151,8 +159,8 @@ else:
 app_get_appliance_additional_apps ()
 {
 	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
+	python -c "from univention.appcenter.app_cache import Apps; \
+				app = Apps().find('$app'); \
 				print app.get('ApplianceAdditionalApps').replace(',',' ');"
 }
 
@@ -161,8 +169,8 @@ appliance_dump_memory ()
 	local app="$1"
 	local targetfile="$2"
 	python -c "
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
+from univention.appcenter.app_cache import Apps; \
+app = Apps().find('$app')
 if app.get('ApplianceMemory'):
 	print app.get('ApplianceMemory')
 else:
@@ -175,8 +183,8 @@ app_appliance_AllowPreconfiguredSetup ()
 	[ -z "$app" ] && return 1
 	python -c "
 import sys
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
+from univention.appcenter.app_cache import Apps; \
+app = Apps().find('$app')
 bl = app.get('ApplianceAllowPreconfiguredSetup')
 if bl and bl in ['true', 'True', 'yes', 'Yes']:
 	sys.exit(0)
@@ -191,8 +199,8 @@ app_appliance_IsDockerApp ()
 	[ -z "$app" ] && return 1
 	python -c "
 import sys
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
+from univention.appcenter.app_cache import Apps; \
+app = Apps().find('$app')
 dockerimage = app.get('DockerImage')
 if dockerimage:
 	sys.exit(0)
@@ -206,8 +214,8 @@ appliance_get_docker_image ()
 	local app="$1"
 	python -c "
 import sys
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
+from univention.appcenter.app_cache import Apps; \
+app = Apps().find('$app')
 if app.get('DockerImage'):
 	print app.get('DockerImage')
 else:
@@ -964,18 +972,19 @@ appliance_basesettings ()
 	
 	/usr/sbin/univention-app-appliance $app
 
-	app_fav_list=""
-	for a in $apps; do
-		app_fav_list="$app_fav_list,apps:$a"
+	app_fav_list="appcenter,updater"
+	
+	for a in "$(app_get_umc_favorites $app)"; do
+		app_fav_list="$app_fav_list,$a"
 	done
 	
-	# App as UMC favourite for administrator user
+	# Set UMC favourites for administrator user
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
-old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
-test -z "\$old_fav" && old_fav="udm:users/user,udm:groups/group,appcenter,updater"
-fav="favorites \$old_fav$app_fav_list"
+#old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
+#test -z "\$old_fav" && old_fav="appcenter,updater"
+fav="favorites \$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
