@@ -574,7 +574,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<term>Different Xen patch set</term>
 					<listitem>
 						<simpara>
-							The UCS version contained several patches on top of the Debian version, which fixed several issues (<u:bug>>18357</u:bug>, <u:bug>23394</u:bug>, <u:bug>23812</u:bug>, <u:bug>36098</u:bug>).
+							The UCS version contained several patches on top of the Debian version, which fixed several issues (<u:bug>18357</u:bug>, <u:bug>23394</u:bug>, <u:bug>23812</u:bug>, <u:bug>36098</u:bug>).
 							Their status in Debian is unknown.
 						</simpara>
 					</listitem>
