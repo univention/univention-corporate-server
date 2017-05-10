@@ -73,50 +73,26 @@ ACTION=$1
 
 eval "$(ucr shell)"
 
-if [ "$ACTION" = "start" -a -n "$apache2_system_activation_sites" ]; then
+if [ "$ACTION" = "start" -a -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
 	echo
-	echo "ERROR: The UCR variable 'apache2/system_activation/sites' is set,"
-	echo "       it seems that the system activation has already been started."
+	echo "ERROR: It seems that the system activation has already been started."
 	echo
 	exit 1
 elif [ "$ACTION" = "start" ]; then
-	# save currently active apache sites in UCR variable for later re-activation
-	active_sites=($(find /etc/apache2/sites-enabled/ -not -type d | sed 's|^.*/||'))
-	ucr set apache2/system_activation/sites="${active_sites[*]}"
-
-	# make sure that json files are up-to-date
-	ucr commit /usr/share/univention-system-activation/www/{languages,entries}.json
-
-	# disable sites
-	a2dissite ${active_sites[@]}
-
 	restrict_root_login
-
-	# enable system activation site configuration and reload apache
 	a2ensite univention-system-activation
 	/etc/init.d/apache2 reload
-elif [ "$ACTION" = "stop" -a -z "$apache2_system_activation_sites" ]; then
+elif [ "$ACTION" = "stop" -a ! -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
 	echo
-	echo "ERROR: The UCR variable 'apache2/system_activation/sites' is empty,"
-	echo "       it seems that the system activation has not been started yet."
+	echo "ERROR: It seems that the system activation has not been started yet."
 	echo
 	exit 1
 elif [ "$ACTION" = "stop" ]; then
 	# delay the execution to allow the final HTTP request to be answered
 	sleep 1
 
-	# enable previous sites
-	a2ensite ${apache2_system_activation_sites}
-
-	# disable system activation site configuration
 	a2dissite univention-system-activation
-
-	# unset previously stored sites
-	ucr unset apache2/system_activation/sites
-
 	allow_root_login
-
-	# apache reload as last step
 	/etc/init.d/apache2 reload
 elif [ "$ACTION" == "allow-root" ]; then
 	allow_root_login

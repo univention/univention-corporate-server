@@ -1,10 +1,10 @@
 [
 	{
 		"input_files": [
-			"js/ucs/.*js"
+			"www/.*js"
 		],
-		"po_subdir": "js/ucs",
+		"po_subdir": "www",
 		"target_type": "json",
-		"destination": "www/js/ucs/{lang}.json"
+		"destination": "usr/share/univention-system-activation/i18n/{lang}/main.json"
 	}
 ]

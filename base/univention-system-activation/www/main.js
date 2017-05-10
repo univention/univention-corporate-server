@@ -54,13 +54,17 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
 	"dojox/form/Uploader",
+	"umc/widgets/Wizard",
+	"umc/widgets/TextBox",
 	"put-selector/put",
-	"./TextBox",
-	"./text!/languages.json",
-	"./text!/entries.json",
-	"./text!/license",
-	"./i18n!."
-], function(lang, kernel, array, request, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+	"./ActivationWizard",
+	// "./TextBox",
+	"umc/json!./languages.json",
+	"umc/json!./entries.json",
+	"umc/json!/license",
+	"umc/i18n!systemactivation"
+// ], function(lang, kernel, array, request, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put[>, TextBox, _availableLocales, entries, license, _<]) {
+], function(lang, kernel, array, request, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, Wizard, TextBox, put, ActivationWizard, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
@@ -171,7 +175,7 @@ define([
 
 		_createTitle: function() {
 			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', _('Activation of {appliance_name} Appliance', entries));
+			put(titleNode, 'h1', _('Activation of %(appliance_name)s Appliance', entries));
 			put(titleNode, '!.dijitDisplayNone');
 		},
 
@@ -432,15 +436,25 @@ define([
 
 		createElements: function() {
 			this._createTitle();
-			this._createRegistrationTab();
-			this._createUploadTab();
-			this._createFinishedTab();
+			// this._createRegistrationTab();
+			// this._createUploadTab();
+			// this._createFinishedTab();
+		},
+
+		createWizard: function() {
+			this._wizard = new ActivationWizard({
+				'class': 'umcCard'
+			});
+			var contentNode = dom.byId('content');
+			put(contentNode, this._wizard.domNode);
+			this._wizard.startup();
 		},
 
 		start: function() {
 			this.registerRouter();
-			this.createLanguagesDropDown();
 			this.createElements();
+			this.createWizard();
+			// this.createLanguagesDropDown();
 			// check if license already requested
 			if (hasLicenseRequested) {
 				router.startup('upload');

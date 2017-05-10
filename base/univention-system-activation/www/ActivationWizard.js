@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Univention GmbH
+ * Copyright 2017 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,24 +26,50 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global define require*/
 
-/*global define require */
-
-// idea taken from: http://stackoverflow.com/a/16650916/3116268
 define([
-	"dojo/text",
+	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/json"
-], function(text,lang,json) {
-	return lang.delegate(text, {
-		load: function(id, require, load){
-			text.load(id, require, function(data) {
-				// parse JSON data
-				if (id.split('.').pop() == 'json') {
-					data = json.parse(data);
-				}
-				load(data);
+	"umc/widgets/Wizard",
+	"umc/widgets/TextBox"
+], function(declare, lang, Wizard, TextBox) {
+	return declare("ActivationWizard", [ Wizard ], {
+		autoHeight: true,
+		autoFocus: true,
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			lang.mixin(this, {
+				pages: [{
+					name: 'registration',
+					headerText: 'registration headerText',
+					helpText: 'registration helpText',
+					widgets: [{
+						type: TextBox,
+						value: 'foobar',
+						name: 'foo'
+					}],
+					layout: [['foo']]
+				}, {
+					name: 'upload',
+					headerText: 'upload headerText',
+					helpText: 'upload helpText',
+					widgets: [{
+						type: TextBox,
+						value: 'arrrrr',
+						name: 'arr'
+					}],
+					layout: [['arr']]
+				}, {
+					name: 'finish',
+					headerText: 'finish headerText',
+					helpText: 'finish helpText'
+				}]
 			});
+		},
+
+		canCancel: function() {
+			return false;
 		}
 	});
 });

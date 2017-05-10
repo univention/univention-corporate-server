@@ -66,6 +66,12 @@ def application(environ, start_response):
 		start_response(status, headers)
 		return [data]
 
+	def _removeMOTDOutput(_out):
+		out = ''
+		for line in out.split('\n'):
+			#HEREAMI
+			pass
+
 	# output the license upon GET request
 	if environ.get('REQUEST_METHOD') == 'GET':
 		try:

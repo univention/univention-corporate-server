@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-2) unstable; urgency=medium
+
+  * [WIP] Bug #44523: Adjust package to changes in UCS 4.2
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 May 2017 18:15:40 +0200
+
 univention-system-activation (2.0.2-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone

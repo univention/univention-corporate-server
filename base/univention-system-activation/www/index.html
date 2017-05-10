@@ -5,42 +5,57 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Activation of Univention Corporate Server</title>
-		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
-		<link rel="stylesheet" href="css/bootstrap.css"/>
-		<link rel="stylesheet" href="css/ucs.css">
-		<script type="text/javascript" src="js/ucs/config.js"></script>
-		<script type="text/javascript" src="js/dojo/dojo.js"></script>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="style.setup.css">
+		<script type="text/javascript">
+			var umcConfig = {
+				deps: ["systemactivation"],
+				autoLogin: false,
+				callback: function(systemActivation) {
+					systemActivation.start();
+				}
+			};
+		</script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
+		<script type="text/javascript">
+			dojoConfig.packages.push({
+				name: 'systemactivation',
+				location: '/univention/system-activation/'
+			});
+
+			//// make sure that login is not loaded
+			//var origDeps = dojoConfig.deps;
+			//var deps = [];
+			//for (var i = 0; i < origDeps.length; ++i) {
+			//	if ("login" != origDeps[i]) {
+			//		deps.push(origDeps[i]);
+			//	}
+			//}
+			//dojoConfig.deps = deps;
+		</script>
+		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="ucs">
-		<div id="wrapper">
-			<div id="site-header">
-				<div id="header-top">
-					<div id="header-left">
-					</div>
-					<div id="header-right">
-						<div class="dropdown" id="dropDownButton"></div>
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div id="title" class="dijitDisplayNone">
-				</div>
-				<div id="navigation"></div>
-				<div id="content">
-					<noscript>
-						<div>
-							<h1 class="no-js">Welcome to Univention Corporate Server</h1>
-						</div>
-						<div class="warning" id="no-js">
-							<div class="icon"></div>
-							<div class="title">JavaScript required</div>
-							<p>A browser with JavaScript enabled is required in order to use this service.</p>
-							<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
-						</div>
-					</noscript>
-				</div>
+	<body class="umc umcOverviewNotShown">
+		<div class="umcHeader">
+			<div class="umcHeaderRight">
+				<div data-dojo-type="umc/menu/Button"></div>
+				<div class="univentionLogo"></div>
 			</div>
 		</div>
+		<div id="content" class="tab-content container">
+			<h1 id="title"></h1>
+		</div>
+		<noscript>
+			<div>
+				<h1 class="no-js">Welcome to Univention Corporate Server</h1>
+			</div>
+			<div class="warning" id="no-js">
+				<div class="icon"></div>
+				<div class="title">JavaScript required</div>
+				<p>A browser with JavaScript enabled is required in order to use this service.</p>
+				<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+			</div>
+		</noscript>
 	</body>
 </html>
