@@ -9,3 +9,5 @@ desc: |
  * The paths to executables have been adjusted for Debian Jessie
    (Bug #44424, Bug #44566).
 bug: [44424, 44566]
+erratum: 13
+announced: 2017-05-10
