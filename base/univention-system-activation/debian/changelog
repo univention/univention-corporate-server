@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-3) unstable; urgency=medium
+
+  * [WIP] Bug #44523: Make sure that LDIF does not contain MOTD output
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 May 2017 18:28:25 +0200
+
 univention-system-activation (2.0.2-2) unstable; urgency=medium
 
   * [WIP] Bug #44523: Adjust package to changes in UCS 4.2

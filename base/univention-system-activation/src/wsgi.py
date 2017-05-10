@@ -51,6 +51,23 @@ def get_installed_apps():
 	return apps
 
 
+def clean_license_output(out):
+	# the output might contain the message of the day, as well
+	# ... let's clean up that!
+	ldif = []
+	for line in out.split('\n'):
+		if ldif and not line:
+			# first empty line after the LDIF -> stop
+			break
+		matchesLdifStart = line.startswith('dn:')
+		if not ldif and not matchesLdifStart:
+			# we have not yet found the beginning of the LDIF -> inspect next line
+			continue
+		# this line is part of the LDIF -> append to LDIF ldifput
+		ldif.append(line)
+	return '\n'.join(ldif)
+
+
 def application(environ, start_response):
 	"""WSGI entry point"""
 
@@ -66,16 +83,11 @@ def application(environ, start_response):
 		start_response(status, headers)
 		return [data]
 
-	def _removeMOTDOutput(_out):
-		out = ''
-		for line in out.split('\n'):
-			#HEREAMI
-			pass
-
 	# output the license upon GET request
 	if environ.get('REQUEST_METHOD') == 'GET':
 		try:
 			out = subprocess.check_output(['/usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense'])
+			out = clean_license_output(out)
 			return _finish(data=out)
 		except subprocess.CalledProcessError as exc:
 			_log('Failed to read license data from LDAP:\n%s' % exc)
