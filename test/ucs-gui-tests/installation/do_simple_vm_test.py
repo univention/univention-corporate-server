@@ -41,6 +41,7 @@ import create_license
 def parse_args():
 	parser = argparse.ArgumentParser(description='Test a fully installed virtual machine, by installing the app dudle on it.')
 	parser.add_argument('--password', dest="password", default="univention", help='The password which is used by the root account of the virtual machine. Default is univention.')
+	parser.add_argument('--reuse-license', dest="reuse_license", action='store_true', help='Don\'t create and import a license; Should be set for non-master systems.')
 	parser.add_argument('ip', help='The IP address which is used by the virtual machine.')
 	return parser.parse_args()
 
@@ -76,8 +77,9 @@ class VmTester(object):
 		return filepath
 
 	def test_vm(self):
-		self.create_license_for_ldap_base()
-		self.import_license_on_vm()
+		if not self.args.reuse_license:
+			self.create_license_for_ldap_base()
+			self.import_license_on_vm()
 		self.install_dudle_on_vm()
 
 	def create_license_for_ldap_base(self):
