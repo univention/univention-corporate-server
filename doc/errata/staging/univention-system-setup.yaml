@@ -3,9 +3,11 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-system-setup
-fix: 10.0.10-14A~4.2.0.201705031025
+fix: 10.0.10-15A~4.2.0.201705101428
 desc: |
  This update addresses the following issue(s):
  * The package univention-samba is now also downloaded
    while preparing an appliance.
-bug: [44522]
+ * A cleanup script used in Univention App Appliances has
+   been adapted for UCS 4.2.
+bug: [44522,44575]
