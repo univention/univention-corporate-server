@@ -42,7 +42,7 @@ import lxml.html
 import subprocess
 import contextlib
 
-from univention.appcenter.app_cache import Apps
+from univention.appcenter.app_cache import Apps, AppCenterCache
 import univention.appcenter.log as app_logger
 from univention.appcenter.actions import get_action
 from univention.config_registry import ConfigRegistry
@@ -605,7 +605,8 @@ class TestOperations(object):
 def local_appcenter():
 	setup_local_appcenter = get_action("dev-setup-local-appcenter")
 	print("Setting up local app-center.")
-	setup_local_appcenter.call()
+	for ucs_version in AppCenterCache().get_ucs_versions():
+		setup_local_appcenter.call(ucs_version=ucs_version)
 	try:
 		yield
 	except Exception:
