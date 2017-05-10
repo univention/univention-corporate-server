@@ -950,7 +950,7 @@ __EOF__
 	# Manual cleanup
 	rm -rf /tmp/*
 	rm /var/log/installer/cdebconf/*
-	for dir in "python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev"; do
+	for dir in "python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc"; do
 		[ -d /usr/share/doc/$dir ] && rm -rf /usr/share/doc/$dir
 	done
 
