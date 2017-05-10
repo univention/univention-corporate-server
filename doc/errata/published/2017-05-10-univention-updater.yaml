@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Aquire an UpdaterLock also for --check
 bug: [43917]
+erratum: 418
+announced: 2017-05-10
