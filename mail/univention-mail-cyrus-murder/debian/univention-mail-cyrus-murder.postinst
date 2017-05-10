@@ -35,7 +35,7 @@
 # already done by entry in 'dirs', but just in case..
 mkdir -p /var/lib/mupdate
 mkdir -p /var/tmp/mupdate
-cyrus-makedirs /etc/imapd/frontend.conf
+/usr/lib/cyrus/bin/makedirs /etc/imapd/frontend.conf
 
 # change /etc/services entry from cfinger to lmtp
 sed -i 's|cfinger.*2003/tcp.*# GNU Finger|lmtp        2003/tcp            # Local mail transport|' /etc/services
