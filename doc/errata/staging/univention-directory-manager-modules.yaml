@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-directory-manager-modules
-fix: 12.0.17-5A~4.2.0.201705081340
+fix: 12.0.17-6A~4.2.0.201705111649
 desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
@@ -12,5 +12,4 @@ desc: |
  * The error handling regarding LDAP size limits has been improved.
  * Creating computers with IPv6 addresses is possible again.
  * Fix typo in users/user when reading the minimal password length.
- * UDM now passes the existing LDAP connection to UDM hooks.
-bug: [27286, 42148, 42249, 42533, 44152, 44472, 44203]
+bug: [27286, 42148, 42249, 42533, 44152, 44472]
