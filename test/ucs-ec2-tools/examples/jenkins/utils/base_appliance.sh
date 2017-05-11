@@ -80,12 +80,36 @@ download_packages ()
 	return 0
 }
 
-app_get_packages ()
+app_get_ini ()
 {
 	local app=$1
-	python -c "from univention.appcenter.app_cache import Apps; \
-				app = Apps().find('$app'); \
-				print ' '.join(app.get('defaultpackages')+app.get('defaultpackagesmaster'))"
+	python -c "from univention.appcenter.app_cache import Apps
+app = Apps().find('$app')
+print app.get_ini_file()"
+}
+
+get_app_attr_raw_line ()
+{
+	local app=$1
+	local attr=$2
+	local ini="$(app_get_ini $app)"
+	grep -i "^$attr " "$ini" # assumption: ini contains $attr + <space> before the '='
+}
+
+get_app_attr_raw ()
+{
+	local app=$1
+	local attr=$2
+	local line="$(get_app_attr_raw_line $app $attr)"
+	echo "$line" | sed -e "s/^.*= //"
+}
+
+get_app_attr ()
+{
+	local app=$1
+	local attr=$2
+	local value="$(get_app_attr_raw $app $attr)"
+	echo "$value" | sed -e 's/, \+/ /g'
 }
 
 app_get_database_packages_for_docker_host ()
@@ -98,16 +122,6 @@ app_get_database_packages_for_docker_host ()
 		print ' '.join(d._get_software_packages())"
 }
 
-app_get_database_name_for_docker_app ()
-{
-	local app=$1
-	python -c "from univention.appcenter.app_cache import Apps; \
-		from univention.appcenter.database import DatabaseConnector; \
-		app=Apps().find('$app'); \
-		d = DatabaseConnector.get_connector(app); \
-		print d.get_db_name()"
-}
-
 app_get_component ()
 {
 	local app=$1
@@ -116,39 +130,15 @@ app_get_component ()
 				print app.component_id"
 }
 
-app_get_name ()
-{
-	local app="$1"
-	python -c "from univention.appcenter.app_cache import Apps; \
-				app = Apps().find('$app'); \
-				print app.name;"
-}
-
-app_get_pre_installed_packages ()
-{
-	local app="$1"
-	python -c "from univention.appcenter.app_cache import Apps; \
-				app = Apps().find('$app'); \
-				print app.get('AppliancePreInstalledPackages').replace(',',' ');"
-}
-
-app_get_umc_favorites ()
-{
-	local app="$1"
-	python -c "from univention.appcenter.app_cache import Apps; \
-				app = Apps().find('$app'); \
-				print app.get('ApplianceFavoriteModules').replace(',',' ');"
-}
-
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
 	[ -z "$app" ] && return 1
 	python -c "
 import sys
-from univention.appcenter.app_cache import Apps; \
+from univention.app_appliance import Apps
 app = Apps().find('$app')
-bl = app.get('AppliancePagesBlackList')
+bl = app.attrs_dict().get('appliance_pages_blacklist')
 if bl and 'software' in bl.split(','):
 	sys.exit(0)
 else:
@@ -156,41 +146,25 @@ else:
 "
 }
 
-app_get_appliance_additional_apps ()
-{
-	local app="$1"
-	python -c "from univention.appcenter.app_cache import Apps; \
-				app = Apps().find('$app'); \
-				print app.get('ApplianceAdditionalApps').replace(',',' ');"
-}
-
 appliance_dump_memory ()
 {
 	local app="$1"
 	local targetfile="$2"
-	python -c "
-from univention.appcenter.app_cache import Apps; \
-app = Apps().find('$app')
-if app.get('ApplianceMemory'):
-	print app.get('ApplianceMemory')
-else:
-	print '1024'" >"$targetfile"
+	local value="$(get_app_attr $app ApplianceMemory)"
+	[ -z $value ] && value="1024"
+	echo "$value" > "$targetfile"
 }
 
 app_appliance_AllowPreconfiguredSetup ()
 {
 	local app="$1"
-	[ -z "$app" ] && return 1
-	python -c "
-import sys
-from univention.appcenter.app_cache import Apps; \
-app = Apps().find('$app')
-bl = app.get('ApplianceAllowPreconfiguredSetup')
-if bl and bl in ['true', 'True', 'yes', 'Yes']:
-	sys.exit(0)
-else:
-	sys.exit(1)
-"
+	local value="$(get_app_attr $app ApplianceAllowPreconfiguredSetup)"
+	. /usr/share/univention-lib/ucr.sh 
+	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
+		1|yes|on|true|enable|enabled) return 0 ;;
+		0|no|off|false|disable|disabled) return 1 ;;
+		*) return 2 ;;
+	esac
 }
 
 app_appliance_IsDockerApp ()
@@ -201,26 +175,12 @@ app_appliance_IsDockerApp ()
 import sys
 from univention.appcenter.app_cache import Apps; \
 app = Apps().find('$app')
-dockerimage = app.get('DockerImage')
+dockerimage = app.get_docker_image_name()
 if dockerimage:
 	sys.exit(0)
 else:
 	sys.exit(1)
 "
-}
-
-appliance_get_docker_image ()
-{
-	local app="$1"
-	python -c "
-import sys
-from univention.appcenter.app_cache import Apps; \
-app = Apps().find('$app')
-if app.get('DockerImage'):
-	print app.get('DockerImage')
-else:
-	print 'Error: no docker image'
-	sys.exit(1)"
 }
 
 prepare_docker_app_container ()
@@ -233,7 +193,7 @@ prepare_docker_app_container ()
 			php7_required=true
 		fi
 
-		dockerimage="$(appliance_get_docker_image ${app})"
+		dockerimage="$(get_app_attr $app DockerImage)"
 		if [ "$?" != 0 ]; then
 			echo "Error: No docker image for docker app!"
 			exit 1
@@ -253,10 +213,10 @@ prepare_docker_app_container ()
 			update/secure_apt="$(ucr get update/secure_apt)"
 
 		# register required components
-		apps="$app $(app_get_appliance_additional_apps $app)"
+		apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
 
 		for the_app in $apps; do
-			name=$(app_get_name $the_app)
+			name=$(get_app_attr $the_app Name)
 			component=$(app_get_component $the_app)
 			component_prefix="repository/online/component/"
 			docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
@@ -279,7 +239,7 @@ prepare_docker_app_container ()
 
 		# provide required packages inside container
 		docker exec "$container_id" apt-get update
-		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
+		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)
 		docker exec "$container_id" apt-get update
 
 		# shutdown container and use it as app base
@@ -365,10 +325,10 @@ register_apps ()
 
 	# No docker app: Add app components manually
 	if ! app_appliance_IsDockerApp $app; then
-		apps="$app $(app_get_appliance_additional_apps $app)"
+		apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
 
 		for the_app in $apps; do
-			name=$(app_get_name $the_app)
+			name=$(get_app_attr $the_app Name)
 			component=$(app_get_component $the_app)
 			component_prefix="repository/online/component/"
 			ucr set ${component_prefix}${component}/description="$name" \
@@ -397,7 +357,7 @@ install_pre_packages ()
 {
 	app=$1
 
-	packages="$(app_get_pre_installed_packages $app)"
+	packages="$(get_app_attr $app AppliancePreInstalledPackages)"
 	if [ -n "$packages" ]; then
 		DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
 	fi
@@ -413,7 +373,7 @@ download_packages_and_dependencies ()
 
 	# Only for non docker apps
 	if ! app_appliance_IsDockerApp $app; then
-		apps="$app $(app_get_appliance_additional_apps $app)"
+		apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
 
 		mkdir -p /var/cache/univention-system-setup/packages/
 		if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
@@ -424,7 +384,7 @@ download_packages_and_dependencies ()
 		install_cmd="$(univention-config-registry get update/commands/install)"
 
 		for app in $apps; do
-			packages="$(app_get_packages $app)"
+				packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 			echo "Try to download: $packages"
 			for package in $packages; do
 				LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
@@ -497,15 +457,15 @@ create_install_script ()
 {
 	main_app=$1
 
-	apps="$main_app $(app_get_appliance_additional_apps $main_app)"
+	apps="$main_app $(get_app_attr $main_app ApplianceAdditionalApps)"
 
 	# Only for non docker apps
 	if ! app_appliance_IsDockerApp $main_app; then
-		main_app_packages="$(app_get_packages $main_app)"
+		main_app_packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 
 		additional_app_packages=""
-		for app in $(app_get_appliance_additional_apps $main_app); do
-			additional_app_packages="$additional_app_packages $(app_get_packages $app)"
+		for app in $(get_app_attr $main_app ApplianceAdditionalApps $main_app); do
+			additional_app_packages="$additional_app_packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 		done
 		# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 		if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ] || [ "$main_app" = "fortnox" ]; then
@@ -589,7 +549,7 @@ install_app_in_prejoined_setup ()
 
 		packages=""
 		for app in $apps; do
-			packages="$packages $(app_get_packages $app)"
+				packages="$packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 		done
 
 		$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
@@ -974,7 +934,7 @@ appliance_basesettings ()
 
 	app_fav_list="appcenter,updater"
 	
-	for a in "$(app_get_umc_favorites $app)"; do
+	for a in "$(get_app_attr $app ApplianceCategoryModules)"; do
 		app_fav_list="$app_fav_list,$a"
 	done
 	
@@ -983,13 +943,14 @@ appliance_basesettings ()
 #!/bin/bash
 eval "\$(ucr shell)"
 #old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
-#test -z "\$old_fav" && old_fav="appcenter,updater"
+#test -z "\$old_fav" && old_fav="appcenter,updater,udm:users/user"
 fav="favorites \$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
 
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings <<__EOF__
+	if app_appliance_IsDockerApp $app; then
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
 APP=$app
@@ -1000,7 +961,8 @@ cp /etc/univention/ssl/ucsCA/CAcert.pem /var/lib/docker/overlay/\$(ucr get appce
 # Fix container nameserver entries
 univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
+		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
+	fi
 
 	if [ "$app" = "owncloud82" ]; then
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
