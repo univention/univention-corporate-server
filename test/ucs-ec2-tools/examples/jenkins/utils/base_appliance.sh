@@ -803,6 +803,7 @@ interfaces/eth0/address="10.203.10.40"
 __EOF__
 		ucr set umc/web/appliance/fast_setup_mode=true
 		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+		echo "root:univention" | chpasswd
 	else
 		ucr set umc/web/appliance/fast_setup_mode=false
 		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
@@ -909,9 +910,8 @@ __EOF__
 
 	# Manual cleanup
 	rm -rf /tmp/*
-	rm /var/log/installer/cdebconf/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
-		[ -d /usr/share/doc/$dir ] && rm -rf /usr/share/doc/$dir
+		[ -d "/usr/share/doc/$dir" ] && rm -rf "/usr/share/doc/$dir"
 	done
 
 	# fill up HDD with ZEROs to maximize possible compression
@@ -1015,8 +1015,7 @@ disable_root_login_and_poweroff ()
 {
 	if [ "${1}" = "DISABLE_ROOTLOGIN" ]; then
 		ucr set --force auth/sshd/user/root=no
-	else
-		echo "root:univention" | chpasswd
+		echo "root:$appliance_default_password" | chpasswd
 	fi
 	rm /root/*
 	rm /root/.bash_history
