@@ -5,22 +5,9 @@
 
 import pytest
 from univention.testing import utils
-from univention.config_registry import handler_set
 
 # TODO: test detection of expired password + account disabled + both
 # TODO: test password history, complexity, length
-
-
-@pytest.yield_fixture()
-def enabled_password_quality_checks(lo, ldap_base, ucr):
-	# TODO: from 07_expired_password: only if univention-samba4 is not installed
-	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
-	old = lo.getAttr(dn, 'univentionPWQualityCheck')
-	new = ['TRUE']
-	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
-	handler_set(['password/quality/credit/lower=1', 'password/quality/credit/upper=1', 'password/quality/credit/other=1', 'password/quality/credit/digits=1'])
-	yield
-	lo.modify(dn, [('univentionPWQualityCheck', new, old)])
 
 
 class TestPwdChangeNextLogin(object):
@@ -44,8 +31,7 @@ class TestPwdChangeNextLogin(object):
 		client = Client()
 		with pytest.raises(Unauthorized) as msg:
 			client.authenticate(username, password)
-		assert msg.value.result['password_expired']
-		assert msg.value.message == "The password has expired and must be renewed."
+		self.assert_password_expired(msg.value)
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_modify_pwdchangenextlogin(self, options, udm, Client, random_string, Unauthorized):
@@ -59,8 +45,12 @@ class TestPwdChangeNextLogin(object):
 		client = Client()
 		with pytest.raises(Unauthorized) as msg:
 			client.authenticate(username, password)
-		assert msg.value.result['password_expired']
-		assert msg.value.message == "The password has expired and must be renewed."
+		self.assert_password_expired(msg.value)
+
+	def assert_password_expired(self, exc):
+		assert exc.status == 401
+		assert exc.result['password_expired']
+		assert exc.message == "The password has expired and must be renewed."
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_change_password(self, options, udm, Client, random_string, Unauthorized, wait_for_replication):
@@ -81,49 +71,6 @@ class TestPwdChangeNextLogin(object):
 		with pytest.raises(Unauthorized):
 			client = Client()
 			client.authenticate(username, password)
-
-	def test_password_changing_failure_reason(self, options, new_password, reason, udm, Client, random_string, Unauthorized):
-		password = random_string()
-		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
-		client = Client()
-		print 'change password from %r to %r' % (password, new_password)
-		with pytest.raises(Unauthorized) as msg:
-			client.umc_auth(username, password, new_password=new_password)
-		assert msg.value.message == reason
-
-
-def pytest_generate_tests(metafunc):
-	if metafunc.function.__name__ != 'test_password_changing_failure_reason':
-		return
-
-	samba4_installed = utils.package_installed('univention-samba4')
-	data = []
-	# pam_unix
-	for option in [[], ['posix'], ['posix', 'samba']]:
-		new_password = 'Test'
-		reason = "Changing password failed. The password is too short."
-		data.append([option, new_password, reason])
-
-		new_password = 'ana'
-		reason = "Changing password failed. The password is too short."
-		data.append([option, new_password, reason])
-
-	# pam_krb5
-	for option in [['kerberos', 'person']]:
-		new_password = 'Test'
-		reason = "Changing password failed. The password is too simple."
-		data.append([option, new_password, reason])
-
-		new_password = 'ana'
-		reason = "Changing password failed. The password is a palindrome."
-		data.append([option, new_password, reason])
-
-	for option in [[], ['posix', 'samba'], ['kerberos', 'person'], ['posix']]:
-		new_password = 'chocolate'
-		reason = "Changing password failed. The password is too simple." if samba4_installed else "Changing password failed. The password is based on a dictionary word."
-		data.append([option, new_password, reason])
-
-	metafunc.parametrize('options,new_password,reason', data)
 
 
 class TestBasics(object):
