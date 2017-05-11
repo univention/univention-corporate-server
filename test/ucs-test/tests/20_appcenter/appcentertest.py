@@ -604,8 +604,9 @@ class TestOperations(object):
 @contextlib.contextmanager
 def local_appcenter():
 	setup_local_appcenter = get_action("dev-setup-local-appcenter")
-	print("Setting up local app-center.")
-	for ucs_version in AppCenterCache().get_ucs_versions():
+	ucs_versions = AppCenterCache().get_ucs_versions()
+	print("Setting up local app-center for UCS versions = %r." % (ucs_versions,))
+	for ucs_version in ucs_versions:
 		setup_local_appcenter.call(ucs_version=ucs_version)
 	try:
 		yield
