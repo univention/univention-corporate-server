@@ -1824,7 +1824,6 @@ class AD_Takeover_Finalize():
 			returncode = run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline=False)
 			if returncode != 0:
 				log.error("Adding CN=%s,CN=User failed!" % dns_SPN_account_name)
-				return
 
 		run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", dns_SPN_account_name], log.debug)
 		delta = ldb.Message()

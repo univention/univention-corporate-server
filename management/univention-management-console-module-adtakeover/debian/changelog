@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.1-2) unstable; urgency=medium
+
+  * Bug #38983: Don't mask the traceback, if the dns-user cannot be found
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 May 2017 18:26:05 +0200
+
 univention-management-console-module-adtakeover (4.0.1-1) unstable; urgency=medium
 
   * Bug #38983: Avoid traceback in case AD Takeover is run in AD member mode
