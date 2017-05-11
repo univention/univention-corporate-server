@@ -54,7 +54,14 @@ class TestPwdChangeNextLogin(object):
 		assert exc.result['password_expired']
 		assert exc.message == "The password has expired and must be renewed."
 
-	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
+	@pytest.mark.parametrize('options', [
+		[],
+		['kerberos', 'person'],
+		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582')(['posix', 'samba']),
+		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582')(['posix']),
+		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=34481')(['samba']),
+		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=34481')(['kerberos']),
+	])
 	def test_change_password(self, options, udm, Client, random_string, Unauthorized, wait_for_replication):
 		print 'test_change_password(%r)' % (options,)
 		password = random_string()
