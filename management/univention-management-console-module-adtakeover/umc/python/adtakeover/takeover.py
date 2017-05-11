@@ -1814,9 +1814,10 @@ class AD_Takeover_Finalize():
 			dns_SPN_account_password = '#%s' % dns_SPN_account_password
 		dns_SPN_account_name = "dns-%s" % self.ucr["hostname"]
 
-		dnsKeyVersion = 1	## default
-		msgs = self.samdb.search(base="CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]), scope=samba.ldb.SCOPE_BASE,
-							attrs=["msDS-KeyVersionNumber"])
+		dnsKeyVersion = 1  # default
+		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+			expression="sAMAccountName=%s" % (dns_SPN_account_name,),
+			attrs=["msDS-KeyVersionNumber"])
 		if msgs:
 			log.warn("CN=%s,CN=User already exists in sam.ldb" % dns_SPN_account_name)
 			run_and_output_to_log(["samba-tool", "user", "setpassword", dns_SPN_account_name, "--newpassword=%s" % (dns_SPN_account_password, )], log.debug, print_commandline=False)
@@ -1831,7 +1832,8 @@ class AD_Takeover_Finalize():
 		delta["servicePrincipalName"] = ldb.MessageElement("DNS/%s" % self.local_fqdn, ldb.FLAG_MOD_REPLACE, "servicePrincipalName")
 		self.samdb.modify(delta)
 
-		msgs = self.samdb.search(base="CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]), scope=samba.ldb.SCOPE_BASE,
+		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+			expression="sAMAccountName=%s" % (dns_SPN_account_name,),
 			attrs=["msDS-KeyVersionNumber"])
 		if msgs:
 			obj = msgs[0]
