@@ -371,10 +371,8 @@ def take_over_domain(progress):
 	takeover_final.reconfigure_nameserver_for_samba_backend()
 	progress.message(_('Finalizing'))
 	progress.percentage(69)
-	takeover_final.create_DNS_SPN()
-	progress.percentage(80)
 	takeover_final.configure_SNTP()
-	progress.percentage(90)
+	progress.percentage(80)
 	takeover_final.finalize()
 	progress.percentage(100)
 	state.set_finished()
@@ -1807,71 +1805,6 @@ class AD_Takeover_Finalize():
 		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "restart"], log.debug)
 		check_samba4_started()
 
-	def create_DNS_SPN(self):
-		log.debug("Creating new DNS SPN account in Samba4")
-		dns_SPN_account_password = univention.lib.createMachinePassword()
-		if dns_SPN_account_password[0] == '-':  # avoid passing an option
-			dns_SPN_account_password = '#%s' % dns_SPN_account_password
-		dns_SPN_account_name = "dns-%s" % self.ucr["hostname"]
-
-		dnsKeyVersion = 1  # default
-		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-			expression="sAMAccountName=%s" % (dns_SPN_account_name,),
-			attrs=["msDS-KeyVersionNumber"])
-		if msgs:
-			log.warn("CN=%s,CN=User already exists in sam.ldb" % dns_SPN_account_name)
-			run_and_output_to_log(["samba-tool", "user", "setpassword", dns_SPN_account_name, "--newpassword=%s" % (dns_SPN_account_password, )], log.debug, print_commandline=False)
-		else:
-			returncode = run_and_output_to_log(["samba-tool", "user", "add", dns_SPN_account_name, dns_SPN_account_password], log.debug, print_commandline=False)
-			if returncode != 0:
-				log.error("Adding CN=%s,CN=User failed!" % dns_SPN_account_name)
-
-		run_and_output_to_log(["samba-tool", "user", "setexpiry", "--noexpiry", dns_SPN_account_name], log.debug)
-		delta = ldb.Message()
-		delta.dn = ldb.Dn(self.samdb, "CN=%s,CN=Users,%s" % (dns_SPN_account_name, self.ucr["samba4/ldap/base"]))
-		delta["servicePrincipalName"] = ldb.MessageElement("DNS/%s" % self.local_fqdn, ldb.FLAG_MOD_REPLACE, "servicePrincipalName")
-		self.samdb.modify(delta)
-
-		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-			expression="sAMAccountName=%s" % (dns_SPN_account_name,),
-			attrs=["msDS-KeyVersionNumber"])
-		if msgs:
-			obj = msgs[0]
-			dnsKeyVersion = obj["msDS-KeyVersionNumber"][0]
-
-		secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = secretsdb.search(base="sAMAccountName=%s,CN=Principals" % (dns_SPN_account_name,), scope=samba.ldb.SCOPE_BASE,
-							attrs=["msDS-KeyVersionNumber"])
-		if msgs:
-			log.warn("sAMAccountName=%s,CN=Principals already exists in secrets.ldb" % dns_SPN_account_name)
-			if "msDS-KeyVersionNumber" in obj:
-				if dnsKeyVersion != obj["msDS-KeyVersionNumber"][0]:
-					delta = ldb.Message()
-					delta.dn = obj.dn
-					delta["secret"] = ldb.MessageElement(dns_SPN_account_password, ldb.FLAG_MOD_REPLACE, "secret")
-					delta["kvno"] = ldb.MessageElement(dnsKeyVersion, ldb.FLAG_MOD_REPLACE, "msDS-KeyVersionNumber")
-					secretsdb.modify(delta)
-		else:
-			secretsdb.add({"dn": "sAMAccountName=%s,CN=Principals" % dns_SPN_account_name,
-				"objectClass": "kerberosSecret",
-				"privateKeytab": "dns.keytab",
-				"realm": self.ucr["kerberos/realm"],
-				"sAMAccountName": dns_SPN_account_name,
-				"secret": dns_SPN_account_password,
-				"servicePrincipalName": "DNS/%s" % self.local_fqdn,
-				"saltPrincipal": "DNS/%s@%s" % (self.local_fqdn, self.ucr["kerberos/realm"]),
-				"name": dns_SPN_account_name,
-				"msDS-KeyVersionNumber": dnsKeyVersion})
-
-		# returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
-		# if returncode != 0:
-		#	log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
-
-		# Restart bind9, just to be sure
-		returncode = run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
-		if returncode != 0:
-			log.error("Start of Bind9 daemon failed. See %s for details." % (LOGFILE_NAME,))
-
 	def configure_SNTP(self):
 		# re-create /etc/krb5.keytab
 		# https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
@@ -1885,7 +1818,7 @@ class AD_Takeover_Finalize():
 
 	def finalize(self):
 		# Re-run joinscripts that create an SPN account (lost in old secrets.ldb)
-		for joinscript_name in ("zarafa4ucs-sso", "univention-squid-samba4"):
+		for joinscript_name in ("zarafa4ucs-sso", "univention-squid-samba4", "univention-samba4-dns"):
 			run_and_output_to_log(["sed", "-i", "/^%s v[0-9]* successful/d" % joinscript_name, "/var/univention-join/status"], log.debug)
 		returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
 		if returncode != 0:

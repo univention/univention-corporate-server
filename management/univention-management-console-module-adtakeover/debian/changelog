@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (4.0.1-5) unstable; urgency=medium
+
+  * Bug #38983: simply replace the create_DNS_SPN method by running
+    the univention-samba4-dns joinscript instead
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 May 2017 19:29:57 +0200
+
 univention-management-console-module-adtakeover (4.0.1-4) unstable; urgency=medium
 
   * Bug #38983: Fix camelcase of samaccountname
