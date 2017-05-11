@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.1-4) unstable; urgency=medium
+
+  * Bug #38983: Fix camelcase of samaccountname
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 May 2017 18:35:10 +0200
+
 univention-management-console-module-adtakeover (4.0.1-3) unstable; urgency=medium
 
   * Bug #38983: Search with SCOPE_SUBTREE instead of SCOPE_BASE

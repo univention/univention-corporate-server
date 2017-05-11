@@ -1840,10 +1840,10 @@ class AD_Takeover_Finalize():
 			dnsKeyVersion = obj["msDS-KeyVersionNumber"][0]
 
 		secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = secretsdb.search(base="samAccountName=%s,CN=Principals" % (dns_SPN_account_name,), scope=samba.ldb.SCOPE_BASE,
+		msgs = secretsdb.search(base="sAMAccountName=%s,CN=Principals" % (dns_SPN_account_name,), scope=samba.ldb.SCOPE_BASE,
 							attrs=["msDS-KeyVersionNumber"])
 		if msgs:
-			log.warn("samAccountName=%s,CN=Principals already exists in secrets.ldb" % dns_SPN_account_name)
+			log.warn("sAMAccountName=%s,CN=Principals already exists in secrets.ldb" % dns_SPN_account_name)
 			if "msDS-KeyVersionNumber" in obj:
 				if dnsKeyVersion != obj["msDS-KeyVersionNumber"][0]:
 					delta = ldb.Message()
@@ -1852,7 +1852,7 @@ class AD_Takeover_Finalize():
 					delta["kvno"] = ldb.MessageElement(dnsKeyVersion, ldb.FLAG_MOD_REPLACE, "msDS-KeyVersionNumber")
 					secretsdb.modify(delta)
 		else:
-			secretsdb.add({"dn": "samAccountName=%s,CN=Principals" % dns_SPN_account_name,
+			secretsdb.add({"dn": "sAMAccountName=%s,CN=Principals" % dns_SPN_account_name,
 				"objectClass": "kerberosSecret",
 				"privateKeytab": "dns.keytab",
 				"realm": self.ucr["kerberos/realm"],
