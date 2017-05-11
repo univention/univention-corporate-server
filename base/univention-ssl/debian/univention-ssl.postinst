@@ -109,6 +109,11 @@ then
 	then
 		/etc/init.d/univention-directory-listener crestart || true
 	fi
+
+	if dpkg --compare-versions "$2" lt-nl 10.0.0-25 && [ -e "$SSL" ]; then
+		update-ca-certificates --fresh
+	fi
+
 fi
 
 #DEBHELPER#
