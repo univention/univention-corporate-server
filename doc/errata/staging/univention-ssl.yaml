@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ssl
-fix: 10.0.0-24.182.201704211402
+fix: 10.0.0-25.183.201705111457
 desc: |
  This update addresses the following issue(s):
  * The local system SSL certificates are correctly regenerated when refreshing certificates.
