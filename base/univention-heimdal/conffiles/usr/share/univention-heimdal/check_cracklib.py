@@ -30,30 +30,40 @@
 import sys
 import univention.password
 
-params = {}
-end = False
-while not end:
-	line = sys.stdin.readline()
-	line = line[:-1]
-	if line == 'end':
-		end = True
-		continue
 
-	try:
-		key, val = line.split(': ', 1)
-	except:
-		print 'key value pair is not correct: %s' % line
+def main():
+	params = {}
+	end = False
+	while not end:
+		line = sys.stdin.readline()
+		line = line[:-1]
+		if line == 'end':
+			end = True
+			continue
+
+		try:
+			key, val = line.split(': ', 1)
+		except:
+			print 'key value pair is not correct: %s' % line
+			sys.exit(1)
+		params[key] = val
+
+	if 'new-password' not in params:
+		print 'missing password'
 		sys.exit(1)
-	params[key] = val
 
-if 'new-password' not in params:
-	print 'missing password'
+	if 'principal' in params:
+		pwdCheck = univention.password.Check(None, params['principal'])
+		try:
+			pwdCheck.check(params['new-password'])
+			print 'APPROVED'
+		except ValueError as e:
+			print str(e)
+
+
+try:
+	main()
+except:
+	import traceback
+	print traceback.format_exc().replace('\n', ' ')  # heimdal-kdc / kpasswd only displays the first line as error message.
 	sys.exit(1)
-
-if 'principal' in params:
-	pwdCheck = univention.password.Check(None, params['principal'])
-	try:
-		pwdCheck.check(params['new-password'])
-		print 'APPROVED'
-	except ValueError as e:
-		print str(e)

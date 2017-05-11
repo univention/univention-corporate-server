@@ -21,6 +21,7 @@ def enabled_password_quality_checks(lo, ldap_base, ucr):
 
 
 def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized):
+	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
 	password = random_string()
 	userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 	client = Client()
@@ -35,30 +36,34 @@ def pytest_generate_tests(metafunc):
 		return
 
 	samba4_installed = utils.package_installed('univention-samba4')
-	data = []
-	# pam_unix
-	for option in [[], ['posix'], ['posix', 'samba']]:
-		new_password = 'Test'
-		reason = "Changing password failed. The password is too short."
-		data.append([option, new_password, reason])
 
-		new_password = 'ana'
-		reason = "Changing password failed. The password is too short."
-		data.append([option, new_password, reason])
+	REASON_TOO_SHORT = "Changing password failed. The password is too short."
+	REASON_TOO_SIMPLE = "Changing password failed. The password is too simple."
+	REASON_PALINDROME = "Changing password failed. The password is a palindrome."
+	REASON_DICTIONARY = "Changing password failed. The password is based on a dictionary word."
+
+	reasons = {
+		REASON_TOO_SHORT: [],
+		REASON_TOO_SIMPLE: [],
+		REASON_PALINDROME: [],
+		REASON_DICTIONARY: [],
+	}
+	# pam_unix
+	for option in [[], ['posix']]:
+		reasons[REASON_TOO_SHORT].append([option, 'Test'])
+		reasons[REASON_TOO_SHORT].append([option, 'ana'])
+
+	for option in [['posix', 'samba']]:
+		reasons[REASON_TOO_SHORT if samba4_installed else REASON_TOO_SIMPLE].append([option, 'Test'])
+		reasons[REASON_TOO_SHORT if samba4_installed else REASON_PALINDROME].append([option, 'ana'])
 
 	# pam_krb5
 	for option in [['kerberos', 'person']]:
-		new_password = 'Test'
-		reason = "Changing password failed. The password is too simple."
-		data.append([option, new_password, reason])
-
-		new_password = 'ana'
-		reason = "Changing password failed. The password is a palindrome."
-		data.append([option, new_password, reason])
+		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
+		reasons[REASON_PALINDROME if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
 
 	for option in [[], ['posix', 'samba'], ['kerberos', 'person'], ['posix']]:
-		new_password = 'chocolate'
-		reason = "Changing password failed. The password is too simple." if samba4_installed else "Changing password failed. The password is based on a dictionary word."
-		data.append([option, new_password, reason])
+		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_DICTIONARY].append([option, 'chocolate'])
 
+	data = [y + [reason] for reason, x in reasons.iteritems() for y in x]
 	metafunc.parametrize('options,new_password,reason', data)

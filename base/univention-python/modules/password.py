@@ -86,10 +86,13 @@ class Check:
 		self.username = username
 
 		# username or kerberos principal
-		if '@' in self.username:
-			dn = self.lo.searchDn('krb5PrincipalName=%s' % username)[0]
-		else:
-			dn = self.lo.searchDn('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))' % username)[0]
+		try:
+			if '@' in self.username:
+				dn = self.lo.searchDn('krb5PrincipalName=%s' % username)[0]
+			else:
+				dn = self.lo.searchDn('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))' % username)[0]
+		except IndexError:
+			raise ValueError('User was not found.')
 
 		policy_result = self.lo.getPolicies(dn)
 		if policy_result.get('univentionPolicyPWHistory'):

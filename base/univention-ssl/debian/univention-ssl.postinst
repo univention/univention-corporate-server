@@ -111,6 +111,10 @@ then
 	fi
 fi
 
+if dpkg --compare-versions "$2" lt-nl 10.0.0-12 && [ -e '/usr/local/share/ca-certificates/ucsCA.crt' ]; then
+	update-ca-certificates --fresh
+fi
+
 #DEBHELPER#
 
 exit 0
