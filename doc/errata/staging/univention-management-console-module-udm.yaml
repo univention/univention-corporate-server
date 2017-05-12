@@ -7,4 +7,6 @@ fix: 7.0.9-16A~4.2.0.201704251803
 desc: |
  This update addresses the following issue(s):
  * The error handling regarding LDAP size limits has been improved.
-bug: [42533]
+ * Default values (escpecially from extended attributes) are now prefilled
+   when modifying objects.
+bug: [42533, 41053]

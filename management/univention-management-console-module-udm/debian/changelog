@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-1) unstable; urgency=medium
+
+  * Bug #41053: set default values of objects when receiving form values
+
+ -- Florian Best <best@univention.de>  Fri, 12 May 2017 13:04:35 +0200
+
 univention-management-console-module-udm (7.0.9-16) unstable; urgency=medium
 
   * Bug #42533: fix admin size limit reached error message

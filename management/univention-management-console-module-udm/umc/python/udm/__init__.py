@@ -174,7 +174,7 @@ class Instance(Base, ProgressMixin):
 			return
 		self.__license_checks.add(id(lo))
 		try:
-			import univention.admin.license
+			import univention.admin.license  # noqa: F401
 		except ImportError:
 			return  # GPL Version
 		try:
@@ -465,6 +465,10 @@ class Instance(Base, ProgressMixin):
 				else:
 					obj = module.get(ldap_dn)
 					if obj:
+						obj.set_defaults = True
+						for name, p in obj.descriptions.items():
+							if obj.has_key(name) and obj.descriptions[name].default(obj):  # noqa: W601
+								obj[name]  # __getitem__ sets default value
 						props = obj.info
 						for passwd in module.password_properties:
 							if passwd in props:
