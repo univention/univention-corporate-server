@@ -6,6 +6,7 @@
 import pytest
 from univention.config_registry import handler_set
 from univention.testing import utils
+from univention.lib.umc import Unauthorized
 
 
 @pytest.yield_fixture()
@@ -38,19 +39,21 @@ def pytest_generate_tests(metafunc):
 	samba4_installed = utils.package_installed('univention-samba4')
 
 	REASON_TOO_SHORT = "Changing password failed. The password is too short."
+	REASON_TOO_SHORT_AT_LEAST_CHARACTERS = "Changing password failed. The password is too short. The password must consist of at least 8 characters."
 	REASON_TOO_SIMPLE = "Changing password failed. The password is too simple."
 	REASON_PALINDROME = "Changing password failed. The password is a palindrome."
 	REASON_DICTIONARY = "Changing password failed. The password is based on a dictionary word."
 
 	reasons = {
 		REASON_TOO_SHORT: [],
+		REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
 		REASON_TOO_SIMPLE: [],
 		REASON_PALINDROME: [],
 		REASON_DICTIONARY: [],
 	}
 	# pam_unix
-	for option in [[], ['posix']]:
-		reasons[REASON_TOO_SHORT].append([option, 'Test'])
+	for option in [[], pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix'])]:
+		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
 		reasons[REASON_TOO_SHORT].append([option, 'ana'])
 
 	for option in [['posix', 'samba']]:
@@ -62,8 +65,17 @@ def pytest_generate_tests(metafunc):
 		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
 		reasons[REASON_PALINDROME if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
 
-	for option in [[], ['posix', 'samba'], ['kerberos', 'person'], ['posix']]:
+	for option in [[], pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix', 'samba']), ['kerberos', 'person'], pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix'])]:
 		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_DICTIONARY].append([option, 'chocolate'])
 
 	data = [y + [reason] for reason, x in reasons.iteritems() for y in x]
+	data = [xfail(x) for x in data]
 	metafunc.parametrize('options,new_password,reason', data)
+
+
+def xfail(set_):
+	fails = [x for x in set_ if isinstance(x, type(pytest.mark.xfail()))]
+	if fails:
+		data = [x.args[0] if isinstance(x, type(pytest.mark.xfail())) else x for x in set_]
+		set_ = pytest.mark.xfail(**fails[0].kwargs)(data)
+	return set_
