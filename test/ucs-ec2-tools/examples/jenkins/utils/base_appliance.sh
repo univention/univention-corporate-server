@@ -109,7 +109,7 @@ get_app_attr ()
 	local app=$1
 	local attr=$2
 	local value="$(get_app_attr_raw $app $attr)"
-	echo "$value" | sed -e 's/, \+/ /g'
+	echo "$value" | sed -e 's/, */ /g'
 }
 
 app_get_database_packages_for_docker_host ()
@@ -134,16 +134,9 @@ app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
 	[ -z "$app" ] && return 1
-	python -c "
-import sys
-from univention.app_appliance import Apps
-app = Apps().find('$app')
-bl = app.attrs_dict().get('appliance_pages_blacklist')
-if bl and 'software' in bl.split(','):
-	sys.exit(0)
-else:
-	sys.exit(1)
-"
+	local value="$(get_app_attr $app AppliancePagesBlackList)"
+	echo "$value" | grep -qs software
+	return $?
 }
 
 appliance_dump_memory ()
@@ -461,10 +454,10 @@ create_install_script ()
 
 	# Only for non docker apps
 	if ! app_appliance_IsDockerApp $main_app; then
-		main_app_packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
+		main_app_packages="$(get_app_attr ${main_app} DefaultPackages) $(get_app_attr ${main_app} DefaultPackagesMaster)"
 
 		additional_app_packages=""
-		for app in $(get_app_attr $main_app ApplianceAdditionalApps $main_app); do
+		for app in $apps; do
 			additional_app_packages="$additional_app_packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 		done
 		# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
@@ -540,21 +533,21 @@ __EOF__
 
 install_app_in_prejoined_setup ()
 {
-	app="$1"
+	main_app="$1"
 
 	# Only for non docker apps
 	if ! app_appliance_IsDockerApp $app; then
 		eval "$(ucr shell update/commands/install)"
 		export DEBIAN_FRONTEND=noninteractive
 
-		packages=""
+		apps="$main_app $(get_app_attr $main_app ApplianceAdditionalApps)"
 		for app in $apps; do
-				packages="$packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
+			packages=""
+			packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
+			$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+			univention-run-join-scripts
 		done
 
-		$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
-
-		univention-run-join-scripts
 	fi
 }
 
