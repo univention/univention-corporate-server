@@ -4,6 +4,12 @@ Description[en]=This variable configures the start mode of the RADIUS service. I
 Type=str
 Categories=service-radius,system-services
 
+[freeradius/conf/max_requests]
+Description[de]=Die höchste Anzahl von Anfragen die der Server verwaltet. Dies sollte 256 pro Client sein, z.B. bei 4 Clients sollte es 1024 sein. (Standard: 1024)
+Description[en]=The maximum number of requests which the server keeps track of. This should be 256 multiplied by the number of clients, e.g. With 4 clients, this number should be 1024. (Default: 1024)
+Type=str
+Categories=service-radius
+
 [radius/mac/whitelisting]
 Description[de]=Ob die Station ID (MAC Adresse) von RADIUS-Clients auch auf Zugriffserlaubnis geprüft werden soll.
 Description[en]=Whether to check the station ID (MAC address) of RADIUS clients for access too.

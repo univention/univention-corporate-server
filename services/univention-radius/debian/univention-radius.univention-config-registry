@@ -11,6 +11,7 @@ Variables: freeradius/conf/log/strippednames
 Variables: freeradius/conf/log/auth
 Variables: freeradius/conf/log/auth/badpass
 Variables: freeradius/conf/log/auth/goodpass
+Variables: freeradius/conf/max_requests
 Variables: freeradius/conf/servers/start
 Variables: freeradius/conf/servers/max
 Variables: freeradius/conf/servers/spare/min
