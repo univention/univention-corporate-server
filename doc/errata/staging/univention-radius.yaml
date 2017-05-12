@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-radius
-fix: 
+fix: 4.0.0-3A~4.2.0.201705121854
 desc: |
  This update addresses the following issue(s):
  * Allow TTLS to be disabled via UCR
