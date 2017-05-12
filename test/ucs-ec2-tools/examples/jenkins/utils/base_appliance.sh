@@ -500,8 +500,15 @@ fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $main_app_packages || die
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $additional_app_packages || die
 joinscript_save_current_version
-univention-app register --component --do-it $apps
-univention-app register $apps
+__EOF__
+	# register each app individually
+	for app in $apps; do
+		local version="$(get_app_attr $app Version)"	
+		local ucsversion="$(app_get_ini $app | sed -e 's/.*\(4\.2\|4\.1\).*/\1/')"
+		echo "univention-app register --do-it ${ucsversion}/${app}=${version}" >> /usr/lib/univention-install/99_setup_${main_app}.inst
+	done
+
+		cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 if [ \$# -gt 1 ]; then
 	. /usr/share/univention-lib/ldap.sh
 
@@ -534,21 +541,25 @@ __EOF__
 install_app_in_prejoined_setup ()
 {
 	main_app="$1"
+	apps="$main_app $(get_app_attr $main_app ApplianceAdditionalApps)"
 
 	# Only for non docker apps
 	if ! app_appliance_IsDockerApp $app; then
 		eval "$(ucr shell update/commands/install)"
 		export DEBIAN_FRONTEND=noninteractive
 
-		apps="$main_app $(get_app_attr $main_app ApplianceAdditionalApps)"
 		for app in $apps; do
 			packages=""
 			packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 			$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
 			univention-run-join-scripts
 		done
-
 	fi
+	for app in $apps; do
+		local version="$(get_app_attr $app Version)"	
+		local ucsversion="$(app_get_ini $app | sed -e 's/.*\(4\.2\|4\.1\).*/\1/')"
+		univention-app register --do-it ${ucsversion}/${app}=${version}
+	done
 }
 
 appliance_preinstall_non_univention_packages ()
