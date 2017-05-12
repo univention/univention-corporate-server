@@ -7,11 +7,12 @@
 		<title>Activation of Univention Corporate Server</title>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="style.setup.css">
+		<link rel="stylesheet" href="style.css">
 		<script type="text/javascript">
 			var umcConfig = {
 				deps: ["systemactivation"],
 				autoLogin: false,
+				loadHooks: false,
 				callback: function(systemActivation) {
 					systemActivation.start();
 				}
@@ -23,24 +24,16 @@
 				name: 'systemactivation',
 				location: '/univention/system-activation/'
 			});
-
-			//// make sure that login is not loaded
-			//var origDeps = dojoConfig.deps;
-			//var deps = [];
-			//for (var i = 0; i < origDeps.length; ++i) {
-			//	if ("login" != origDeps[i]) {
-			//		deps.push(origDeps[i]);
-			//	}
-			//}
-			//dojoConfig.deps = deps;
 		</script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewNotShown">
 		<div class="umcHeader">
+			<div class="umcHeaderLeft">
+				<div class="univentionLogo"></div>
+			</div>
 			<div class="umcHeaderRight">
 				<div data-dojo-type="umc/menu/Button"></div>
-				<div class="univentionLogo"></div>
 			</div>
 		</div>
 		<div id="content" class="tab-content container">

@@ -31,45 +31,302 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/io-query",
+	"dojo/query",
+	"dojo/request",
+	"dojo/request/xhr",
+	"dojox/form/Uploader",
+	"umc/dialog",
 	"umc/widgets/Wizard",
-	"umc/widgets/TextBox"
-], function(declare, lang, Wizard, TextBox) {
+	"umc/widgets/Text",
+	"umc/widgets/TextBox",
+	"put-selector/put",
+	"umc/json!./entries.json",
+	"umc/json!/license",
+	"umc/i18n!systemactivation"
+], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, Uploader, dialog, Wizard, Text, TextBox, put, entries, license, _) {
+	entries.appliance_name = entries.appliance_name || '';
+
+	var hasLicenseRequested = Boolean(entries.email);
+
 	return declare("ActivationWizard", [ Wizard ], {
-		autoHeight: true,
 		autoFocus: true,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			lang.mixin(this, {
 				pages: [{
-					name: 'registration',
-					headerText: 'registration headerText',
-					helpText: 'registration helpText',
+					name: 'register',
+					headerText: _('License request.'),
 					widgets: [{
+						type: Text,
+						content: _('Please enter a valid email address in order to activate %(appliance_name)s Appliance. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', entries),
+						name: 'helpText'
+					}, {
 						type: TextBox,
-						value: 'foobar',
-						name: 'foo'
+						inlineLabel: _('E-mail address'),
+						regExp: '.+@.+',
+						invalidMessage: _('No valid email address.'),
+						required: true,
+						name: 'email'
+					}, {
+						type: Text,
+						content: _('More details about the activation can be found in the <a href="http://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.'),
+						name: 'moreDetails'
+					}, {
+						type: Text,
+						content:_('If you already have a license file you can <a href="#upload">skip this step and upload the license</a>.'),
+						name: 'skip'
 					}],
-					layout: [['foo']]
+					layout: [['helpText'], ['email'], ['moreDetails'], ['skip']],
+					fullWidth: true,
+					// prevent default submit button to be created if no submit button is specified
+					buttons: [{
+						name: 'submit',
+						visible: false
+					}]
 				}, {
 					name: 'upload',
-					headerText: 'upload headerText',
-					helpText: 'upload helpText',
+					headerText: _('You have received a license file by email!'),
 					widgets: [{
-						type: TextBox,
-						value: 'arrrrr',
-						name: 'arr'
+						type: Text,
+						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [entries.email || _('your email address')]),
+						name: 'helpText'
+					}, {
+						type: Text,
+						content: _('If you did not receive an email, please check your SPAM directory or <a href="#register"> request the email again</a>.'),
+						name: 'back'
+					}, {
+						type: Uploader,
+						url: '/license',
+						name: 'license',
+						label: _('Upload license file'),
+						uploadOnSelect: true,
+						getForm: function() {
+							// make sure that the Uploader does not find any of our encapsulating forms
+							return null;
+						},
+						visible: false
 					}],
-					layout: [['arr']]
+					layout: [['helpText'], ['back'], ['license']],
+					fullWidth: true,
+					buttons: [{
+						name: 'submit',
+						visible: false
+					}]
 				}, {
-					name: 'finish',
-					headerText: 'finish headerText',
-					helpText: 'finish helpText'
+					name: 'finished',
+					headerText: _('Activation successful!'),
+					helpText: _('%(appliance_name)s Appliance is now activated. Click "Finish" to access the management interface (which may take a while).', entries),
+					fullWidth: true
 				}]
 			});
 		},
 
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._alterPageButtons();
+			this._registerEvents();
+		},
+
+		_alterPageButtons: function() {
+			//rename specific buttons
+			this._pages.register._footerButtons.next.set('label', _('Request activation'));
+
+			//// add dojox.form.Uploader button to 'upload' page
+			// we defined the 'upload' page to have no buttons.
+			// To prevent an error in the _udpateButtons function in umc.widgets.Wizard.js
+			// we set _footerButtons
+			this._pages.upload._footerButtons = {
+				'license': this.getWidget('upload', 'license')
+			};
+			// add the button dojox.form.Uploader button to the right buttons footer of the upload page
+			this._pages.upload._footer.getChildren()[1].addChild(this.getWidget('upload', 'license'));
+		},
+
+		_registerEvents: function() {
+			//// register Uploader events
+			var uploader = this.getWidget('upload', 'license');
+			uploader.on('begin', lang.hitch(this, function(evt) {
+				this.standby(true);
+			}));
+			uploader.on('complete', lang.hitch(this, function(response) {
+				this.standby(false);
+
+				if (response && response.success) {
+					// success case
+					this._sendNotification(response.uuid, response.apps);
+					this.onGoTo('finished');
+					return;
+				}
+
+				// error case
+				this._showError(response ? response.message : _('An unknown error has occurred.'));
+			}));
+			uploader.on('error', lang.hitch(this, function(err) {
+				this.standby(false);
+				this._showError(err ? err.message : _('An unknown error has occurred.'));
+			}));
+		},
+
+		_sendNotification: function(uuid, apps) {
+			var data = {
+				uuid: uuid,
+				action: 'install',
+				'status': 200,
+				'role': entries.role
+			};
+			var url = entries.appcenter_server + '/postinst';
+			if (url.indexOf('://') < 0) {
+				// no scheme given
+				url = 'https://' + url;
+			}
+
+			// send a notification for each app
+			array.forEach(apps, function(app) {
+				// data to be sent via the query string
+				var idata = lang.mixin({
+					app: app[0],
+					version: app[1]
+				}, data);
+
+				// post cross domain query via dynamic script tag
+				script(url, { query: idata });
+			});
+		},
+
+		_sendEmail: function() {
+			// set the email entered in the 'register' page in the help text of the 'upload' page
+			var email_address = this.getWidget('register', 'email').get('value');
+			var emailNode = domQuery('.email-address', this.getWidget('upload', 'helpText').domNode)[0];
+			emailNode.innerHTML = email_address;
+
+			// send the email
+			var data = {
+				email: email_address,
+				licence: license
+			};
+			return xhr.post('https://license.univention.de/keyid/conversion/submit', {
+				data: data,
+				handleAs: 'text',
+				headers: {
+					'X-Requested-With': null
+				}
+			});
+		},
+
+		_checkEmail: function() {
+			var emailTextBox = this.getWidget('register', 'email');
+			if (!emailTextBox.isValid()){
+				emailTextBox.focus();
+				emailTextBox.validate();
+				return false;
+			}
+			return true;
+		},
+
 		canCancel: function() {
 			return false;
+		},
+
+		hasPrevious: function() {
+			// Do not allow going backwards in the wizard.
+			// Previous pages can only be visited through links in the text of a page.
+			return false;
+		},
+
+		_next: function(/*String*/ pageName) {
+			if (pageName === 'register') {
+				var emailValid = this._checkEmail();
+				if (emailValid) {
+					this._sendEmail().then(lang.hitch(this, function() {
+						this.onGoTo(this.next(pageName));
+					}), lang.hitch(this, function(err) {
+						this._showEmailError(err);
+					}));
+				}
+			}
+		},
+
+		_showEmailError: function(err) {
+			var status_code = err.response.status;
+			var error_details = null;
+			if(status_code >= 400 && status_code <= 500){
+				error_details = put('html');
+				error_details.innerHTML = err.response.data;
+				error_details = error_details.getElementsByTagName('span')[0].innerText;
+			} else {
+				error_details = _('An unknown error occured. Please try it again later!');
+			}
+			var error_msg = _('Error ') + status_code + ': ' + error_details;
+			this._showError(error_msg);
+		},
+
+		_showError: function(error_msg) {
+			error_msg = error_msg.replace(/\n/g, '<br/>');
+			var title = _('The following error occurred:');
+			var footer = _('If you encounter problems during the activation, please send an email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>');
+			var msg = lang.replace('<p>{error_msg}</p><p>{footer}</p>', {error_msg: error_msg, footer: footer});
+			dialog.alert(msg, title);
+		},
+
+		onGoTo: function(/*String*/ nextPage) {
+			// stub
+		},
+
+		_finish: function() {
+			this.standby(true);
+			var query = ioQuery.queryToObject(location.search.substring(1));
+			lang.mixin(query, {
+				username: 'Administrator'
+			});
+			var uri = '/univention/portal/?' + ioQuery.objectToQuery(query);
+			var reachableDeferred = new Deferred();
+			reachableDeferred.then(function() {
+				location.href = uri;
+			}, lang.hitch(this, function() {
+				this.standby(false);
+				this._showError(_('The server is not responding. Please restart the system.'));
+			}));
+			this._isReachableWithinSecs(uri, 30, reachableDeferred);
+		},
+
+		_isReachableWithinSecs: function(uri, secs, deferred) {
+			var countUntil = secs / 0.5;
+			var counter = 0;
+			var requestUriTillCounter = function() {
+				request(uri).response.then(function(result) {
+					// if uri is reachable http status code has to be 200
+					if (result.status === 200) {
+						deferred.resolve();
+					} else { // otherwise tryAgain
+						tryAgain();
+					}
+				},
+				function(error) {
+					tryAgain();
+				});
+			};
+			var tryAgain = function() {
+				if (counter >= countUntil) {
+					deferred.reject();
+				} else {
+					setTimeout(requestUriTillCounter, 500);
+				}
+				counter++;
+			};
+			requestUriTillCounter();
+		},
+
+		getFooterButtons: function(pageName) {
+			// for the 'upload' page we want the next button to be the button
+			// created by dojox.form.Uploader. So we define no buttons for the upload page
+			if (pageName === 'upload') {
+				return [];
+			}
+			return this.inherited(arguments);
 		}
 	});
 });

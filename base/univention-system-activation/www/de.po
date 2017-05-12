@@ -2,67 +2,72 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-02 23:44+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2017-05-12 16:35+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 
-#: www/main.js:364
-#, python-brace-format
+#: ActivationWizard.js:122
 msgid ""
-"A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
+"%(appliance_name)s Appliance is now activated. Click \"Finish\" to access "
+"the management interface (which may take a while)."
+msgstr ""
+"%(appliance_name)s Appliance ist nun aktiviert. Klicken sie auf \"Weiter\", "
+"um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit "
+"benötigen.)"
+
+#: ActivationWizard.js:95
+#, javascript-format
+msgid ""
+"A license file has been sent to <strong class=\"email-address\">%s</strong>. "
 "This file is necessary to activate the system. For this, please carry out "
 "the following steps: <ol><li>Open the email.</li><li>Save the attachement "
 "(ucs.license) on your computer.</li><li>Click the button 'Upload license "
-"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm"
-" the selection.</li></ol>Once the activation has been finished your email "
+"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm "
+"the selection.</li></ol>Once the activation has been finished your email "
 "address will be sent to the app provider. The app provider may contact you."
 msgstr ""
-"Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
+"Eine Lizenzdatei wurde an <strong class=\"email-address\">%s</strong> "
 "gesendet. Sie wird benötigt um das System zu aktivieren. Bitte führen Sie "
-"dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</li><li>Speichern"
-" Sie den Anhang (ucs.license) auf Ihren Computer.</li><li>Klicken Sie auf "
-"die Schaltfläche 'Lizenzdatei hochladen'.</li><li>Wählen Sie die soeben "
-"gespeicherte Datei (ucs.license) aus.</li><li>Bestätigen Sie die "
-"Auswahl.</li></ol> Sobald die Aktivierung durchgeführt ist, wird Ihre E"
-"-Mail-Adresse an den App-Anbieter weitergeleitet. Der App-Anbieter wird Sie "
-"ggf. kontaktieren."
+"dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</li><li>Speichern "
+"Sie den Anhang (ucs.license) auf Ihren Computer.</li><li>Klicken Sie auf die "
+"Schaltfläche 'Lizenzdatei hochladen'.</li><li>Wählen Sie die soeben "
+"gespeicherte Datei (ucs.license) aus.</li><li>Bestätigen Sie die Auswahl.</"
+"li></ol> Sobald die Aktivierung durchgeführt ist, wird Ihre E-Mail-Adresse "
+"an den App-Anbieter weitergeleitet. Der App-Anbieter wird Sie ggf. "
+"kontaktieren."
 
-#: www/main.js:178
+#: main.js:98
 msgid "Activation of %(appliance_name)s Appliance"
 msgstr "Aktivierung von %(appliance_name)s Appliance"
 
-#: www/main.js:383
+#: ActivationWizard.js:121
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
 
-#: www/main.js:347 www/main.js:353
+#: ActivationWizard.js:166 ActivationWizard.js:170
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: www/main.js:262
+#: ActivationWizard.js:261
 msgid "An unknown error occured. Please try it again later!"
 msgstr ""
 "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: www/main.js:378
-msgid "Continue"
-msgstr "Weiter"
-
-#: www/main.js:199
+#: ActivationWizard.js:69
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: www/main.js:264
+#: ActivationWizard.js:263
 msgid "Error "
 msgstr "Fehler "
 
-#: www/main.js:230
+#: ActivationWizard.js:80
 msgid ""
 "If you already have a license file you can <a href=\"#upload\">skip this "
 "step and upload the license</a>."
@@ -70,92 +75,83 @@ msgstr ""
 "Wenn Sie bereits über eine Lizenzdatei verfügen, dann können Sie diesen <a "
 "href=\"#upload\">Schritt überspringen und die Lizenz einspielen</a>."
 
-#: www/main.js:367
+#: ActivationWizard.js:99
 msgid ""
-"If you did not receive an email, please check your SPAM directory or <a "
-"href=\"#register\"> request the email again</a>."
+"If you did not receive an email, please check your SPAM directory or <a href="
+"\"#register\"> request the email again</a>."
 msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
 
-#: www/main.js:306
+#: ActivationWizard.js:270
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
-"<strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
+"<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+"#000\">feedback@univention.de</a></strong>"
 msgstr ""
-"Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-Mail"
-" an: <strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
+"Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-Mail "
+"an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+"#000\">feedback@univention.de</a></strong>"
 
-#: www/main.js:168
-msgid "Language"
-msgstr "Language"
-
-#: www/main.js:194
+#: ActivationWizard.js:62
 msgid "License request."
 msgstr "Anforderung einer Lizenz."
 
-#: www/main.js:213
+#: ActivationWizard.js:76
 msgid ""
-"More details about the activation can be found in the <a "
-"href=\"http://docs.univention.de/manual.html#central:license\" "
-"target=\"_blank\">UCS manual</a>."
+"More details about the activation can be found in the <a href=\"http://docs."
+"univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
 msgstr ""
-"Weitere Informationen zu der Aktivierung können im <a "
-"href=\"http://docs.univention.de/handbuch.html#central:license\" "
-"target=\"_blank\">UCS-Handbuch</a> gefunden werden."
+"Weitere Informationen zu der Aktivierung können im <a href=\"http://docs."
+"univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
+"Handbuch</a> gefunden werden."
 
-#: www/main.js:201
+#: ActivationWizard.js:71
 msgid "No valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
-#: www/main.js:195
-#, python-brace-format
+#: ActivationWizard.js:65
 msgid ""
-"Please enter a valid email address in order to activate {appliance_name} "
+"Please enter a valid email address in order to activate %(appliance_name)s "
 "Appliance. The activation is mandatory to deploy the system. In the next "
 "step you can upload the license file that has been sent to your email "
 "address."
 msgstr ""
-"Bitte geben Sie eine gültige E-Mail-Adresse ein, um {appliance_name} "
-"Appliance zu aktivieren. Die Aktivierung ist Voraussetzung, um das System in"
-" Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
+"Bitte geben Sie eine gültige E-Mail-Adresse ein, um %(appliance_name)s "
+"Appliance zu aktivieren. Die Aktivierung ist Voraussetzung, um das System in "
+"Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
 "hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
-#: www/main.js:218
+#: ActivationWizard.js:136
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
 
-#: www/main.js:304
+#: main.js:71
+msgid "Switch language"
+msgstr "Sprache ändern"
+
+#: ActivationWizard.js:269
 msgid "The following error occurred:"
 msgstr "Der folgende Fehler trat auf:"
 
-#: www/main.js:403
+#: ActivationWizard.js:291
 msgid "The server is not responding. Please restart the system."
 msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 
-#: www/main.js:321
+#: ActivationWizard.js:105
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: www/main.js:362
+#: ActivationWizard.js:92
 msgid "You have received a license file by email!"
 msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
 
-#: www/main.js:71
+#: ActivationWizard.js:95
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
 
-#: www/main.js:384
-#, python-brace-format
-msgid ""
-"{appliance_name} Appliance is now activated. Click \"Continue\" to access "
-"the management interface (which may take a while)."
-msgstr ""
-"{appliance_name} Appliance ist nun aktiviert. Klicken sie auf \"Weiter\", um"
-" auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit "
-"benötigen.)"
+#~ msgid "Continue"
+#~ msgstr "Weiter"
 
 #~ msgid "You have got mail!"
 #~ msgstr "Sie haben eine neue E-Mail!"
