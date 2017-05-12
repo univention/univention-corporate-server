@@ -10,6 +10,12 @@ Description[en]=The maximum number of requests which the server keeps track of. 
 Type=str
 Categories=service-radius
 
+[freeradius/conf/port]
+Description[de]=Der Port auf dem der Server horcht, z.B. 1812. Bei 0 wird der Port aus der /etc/services gelesen (Standard: 0)
+Description[en]=The port the server listens on, e.g. 1812. If 0 the port is read from /etc/services (Default: 0)
+Type=str
+Categories=service-radius
+
 [radius/mac/whitelisting]
 Description[de]=Ob die Station ID (MAC Adresse) von RADIUS-Clients auch auf Zugriffserlaubnis geprüft werden soll.
 Description[en]=Whether to check the station ID (MAC address) of RADIUS clients for access too.

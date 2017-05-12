@@ -1,6 +1,7 @@
 univention-radius (4.0.0-3) unstable; urgency=medium
 
   * Bug #42730: Allow max_requests to be configured via UCR
+  * Bug #42729: Allow port to be configured via UCR
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 May 2017 18:05:19 +0200
 
