@@ -14,7 +14,7 @@ samba4_installed = utils.package_installed('univention-samba4')
 
 
 def check_test_skip(options):
-	if samba4_installed and options and not (set(['posix', 'kerberos']) < set(options)):
+	if samba4_installed and options and ('posix' not in options or 'kerberos' not in options):
 		pytest.skip('Objects without posix&kerberos &(objectClass=posixAccount)(objectClass=krb5Principal) are not synced to S4 and therefore cannot change their password via UMC.')
 
 

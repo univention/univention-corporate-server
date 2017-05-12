@@ -24,7 +24,7 @@ def enabled_password_quality_checks(lo, ldap_base, ucr):
 
 
 def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized):
-	if samba4_installed and options and not (set(['posix', 'kerberos']) < set(options)):
+	if samba4_installed and options and ('posix' not in options or 'kerberos' not in options):
 		pytest.skip('Objects without posix&kerberos &(objectClass=posixAccount)(objectClass=krb5Principal) are not synced to S4 and therefore cannot change their password via UMC.')
 	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
 	password = random_string()

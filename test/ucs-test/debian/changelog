@@ -1,3 +1,9 @@
+ucs-test (7.0.21-27) unstable; urgency=medium
+
+  * Bug #41786: fix boolean logic
+
+ -- Florian Best <best@univention.de>  Fri, 12 May 2017 16:51:32 +0200
+
 ucs-test (7.0.21-26) unstable; urgency=medium
 
   * Bug #41786: skip tests for users which aren't synced to S4
