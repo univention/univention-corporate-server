@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-radius
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Allow TTLS to be disabled via UCR
+ * Allow port to be configured via UCR
+ * Allow max_requests to be configured via UCR
+bug: [42728, 42729, 42730]
