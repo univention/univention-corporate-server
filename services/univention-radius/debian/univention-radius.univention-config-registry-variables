@@ -21,3 +21,15 @@ Description[de]=Ob die Station ID (MAC Adresse) von RADIUS-Clients auch auf Zugr
 Description[en]=Whether to check the station ID (MAC address) of RADIUS clients for access too.
 Type=str
 Categories=service-radius
+
+[freeradius/conf/auth-type/mschap]
+Description[de]=Aktiviert die Authentifizierung über MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (Dies überstimmt freeradius/conf/auth-type/ttls) (Standard: false)
+Description[en]=Activates the authentication over MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (This takes precedence over freeradius/conf/auth-type/ttls) (Default: false)
+Type=str
+Categories=service-radius
+
+[freeradius/conf/auth-type/ttls]
+Description[de]=Aktiviert die Authentifizierung über MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Nur wirksam wenn freeradius/conf/auth-type/mschap false ist) (Standard: true)
+Description[en]=Activates the authentication over MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Only applicable if freeradius/conf/auth-type/mschap is false) (Default: true)
+Type=str
+Categories=service-radius
