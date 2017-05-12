@@ -10,6 +10,13 @@ from univention.lib.umc import Unauthorized
 # TODO: test detection of expired password + account disabled + both
 # TODO: test password history, complexity, length
 
+samba4_installed = utils.package_installed('univention-samba4')
+
+
+def check_test_skip(options):
+	if samba4_installed and options and not (set(['posix', 'kerberos']) < set(options)):
+		pytest.skip('Objects without posix&kerberos &(objectClass=posixAccount)(objectClass=krb5Principal) are not synced to S4 and therefore cannot change their password via UMC.')
+
 
 class TestPwdChangeNextLogin(object):
 	"""
@@ -20,6 +27,7 @@ class TestPwdChangeNextLogin(object):
 
 	PWD_CHANGE_NEXT_LOGIN_OPTIONS = [
 		[],
+		['kerberos', 'posix'],
 		['posix', 'samba'],
 		['kerberos', 'person'],
 		['posix'],
@@ -29,6 +37,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_create_pwdchangenextlogin(self, options, udm, Client, random_string, Unauthorized):
+		check_test_skip(options)
 		print 'test_expired_password_detection_create_pwdchangenextlogin(%r)' % (options,)
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
@@ -39,6 +48,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', [
 		[],
+		['kerberos', 'posix'],
 		['posix', 'samba'],
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=39097', raises=UCSTestUDM_ModifyUDMObjectFailed)(['kerberos', 'person']),
 		['posix'],
@@ -46,6 +56,7 @@ class TestPwdChangeNextLogin(object):
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=34481', raises=UCSTestUDM_CreateUDMObjectFailed)(['kerberos']),
 	])
 	def test_expired_password_detection_modify_pwdchangenextlogin(self, options, udm, Client, random_string, Unauthorized):
+		check_test_skip(options)
 		print 'test_expired_password_detection_modify_pwdchangenextlogin(%r)' % (options,)
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password)
@@ -66,6 +77,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', [
 		[],
+		['kerberos', 'posix'],
 		['kerberos', 'person'],
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix', 'samba']),
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix']),
@@ -73,6 +85,7 @@ class TestPwdChangeNextLogin(object):
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=34481', raises=UCSTestUDM_CreateUDMObjectFailed)(['kerberos']),
 	])
 	def test_change_password(self, options, udm, Client, random_string, Unauthorized, wait_for_replication):
+		check_test_skip(options)
 		print 'test_change_password(%r)' % (options,)
 		password = random_string()
 		new_password = random_string()

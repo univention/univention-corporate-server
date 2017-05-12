@@ -1,3 +1,9 @@
+ucs-test (7.0.21-26) unstable; urgency=medium
+
+  * Bug #41786: skip tests for users which aren't synced to S4
+
+ -- Florian Best <best@univention.de>  Fri, 12 May 2017 16:15:23 +0200
+
 ucs-test (7.0.21-25) unstable; urgency=medium
 
   * Bug #44582: xfail flag for failing test cases

@@ -8,6 +8,8 @@ from univention.config_registry import handler_set
 from univention.testing import utils
 from univention.lib.umc import Unauthorized
 
+samba4_installed = utils.package_installed('univention-samba4')
+
 
 @pytest.yield_fixture()
 def enabled_password_quality_checks(lo, ldap_base, ucr):
@@ -22,6 +24,8 @@ def enabled_password_quality_checks(lo, ldap_base, ucr):
 
 
 def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized):
+	if samba4_installed and options and not (set(['posix', 'kerberos']) < set(options)):
+		pytest.skip('Objects without posix&kerberos &(objectClass=posixAccount)(objectClass=krb5Principal) are not synced to S4 and therefore cannot change their password via UMC.')
 	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
 	password = random_string()
 	userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
@@ -35,8 +39,6 @@ def test_password_changing_failure_reason(options, new_password, reason, udm, Cl
 def pytest_generate_tests(metafunc):
 	if metafunc.function.__name__ != 'test_password_changing_failure_reason':
 		return
-
-	samba4_installed = utils.package_installed('univention-samba4')
 
 	REASON_TOO_SHORT = "Changing password failed. The password is too short."
 	REASON_TOO_SHORT_AT_LEAST_CHARACTERS = "Changing password failed. The password is too short. The password must consist of at least 8 characters."
