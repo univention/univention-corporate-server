@@ -20,13 +20,14 @@ if app and has_required_props:
 	background-color: %(primary_color)s;
 }
 
-.umc .umcHeader .umcHeaderRight .univentionLogo {
+.umc .umcHeader .umcHeaderLeft .univentionLogo {
 	background-image: url(/univention/js/dijit/themes/umc/images/appliance_header_logo.svg);
 	/* ensure that the logo is not larger than 20px */
 	background-size: auto 20px;
 }
 
-.umc .umcCard .dijitDefaultButton .dijitButtonText {
+.umc .umcWizard.umcCard .dijitDefaultButton .dijitButtonText,
+.umc .umcWizard.umcCard .dijitUploader .dijitButtonText {
 	color: %(primary_color)s;
 }
 

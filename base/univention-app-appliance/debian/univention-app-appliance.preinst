@@ -47,7 +47,7 @@ case "$1" in
 	install|upgrade)
 		# create necessary diversions
 		_divert /usr/share/univention-system-setup/www/style.css style.real.css
-		_divert /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
+		_divert /usr/share/univention-system-activation/style.css style.real.css
 		for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
 			_divert /usr/share/univention-system-setup/www/$i
 		done
