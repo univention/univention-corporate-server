@@ -3,8 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 6.0.7-8A~4.2.0.201705151613
+fix: 6.0.7-9A~4.2.0.201705151704
 desc: |
  This update addresses the following issue(s):
- * Check package manager lock during docker installation in UMC.
-bug: [41303]
+ * Handle errors for package manager lock during docker installation in UMC.
+ * Hanlde BadStatusLine line errors.
+bug: [41303,34543]
