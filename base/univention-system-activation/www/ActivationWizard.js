@@ -37,6 +37,7 @@ define([
 	"dojo/query",
 	"dojo/request",
 	"dojo/request/xhr",
+	"dojo/request/script",
 	"dojox/form/Uploader",
 	"umc/dialog",
 	"umc/widgets/Wizard",
@@ -46,7 +47,7 @@ define([
 	"umc/json!./entries.json",
 	"umc/json!/license",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, Uploader, dialog, Wizard, Text, TextBox, put, entries, license, _) {
+], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, entries, license, _) {
 	entries.appliance_name = entries.appliance_name || '';
 
 	var hasLicenseRequested = Boolean(entries.email);

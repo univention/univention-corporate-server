@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-6) unstable; urgency=medium
+
+  * Bug #44523: Add missing JS module dependency
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 May 2017 17:00:09 +0200
+
 univention-system-activation (2.0.2-5) unstable; urgency=medium
 
   * Bug #44523: Add mod_rewrite exception for file required by system-setup
