@@ -101,13 +101,13 @@ class Instance(umcm.Base):
 
 	@background
 	def connect(self, request):
-		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
-		return takeover.count_domain_objects_on_server(ip, username, password, self.progress)
+		ad_username, ad_password, ip = [request.options[var] for var in ['ad_username', 'ad_password', 'ip']]
+		return takeover.count_domain_objects_on_server(ip, ad_username, ad_password, self.progress)
 
 	@background
 	def copy_domain_data(self, request):
-		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
-		takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress)
+		ad_username, ad_password, ip = [request.options[var] for var in ['ad_username', 'ad_password', 'ip']]
+		takeover.join_to_domain_and_copy_domain_data(ip, ad_username, ad_password, self.progress)
 
 	@simple_response
 	def sysvol_info(self):
@@ -118,6 +118,6 @@ class Instance(umcm.Base):
 		takeover.check_sysvol(self.progress)
 
 	@background
+	@require_password
 	def take_over_domain(self, request):
-		username, password = [request.options[var] for var in ['username', 'password']]
-		takeover.take_over_domain(username, password, self.progress)
+		takeover.take_over_domain(self.username, self.password, self.progress)

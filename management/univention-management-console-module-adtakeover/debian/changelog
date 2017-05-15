@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.1-7) unstable; urgency=medium
+
+  * Bug #38983: Pass UMC credentials to univention-run-join-scripts
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 May 2017 17:06:08 +0200
+
 univention-management-console-module-adtakeover (4.0.1-6) unstable; urgency=medium
 
   * Bug #38983: Pass credentials to univention-run-join-scripts
