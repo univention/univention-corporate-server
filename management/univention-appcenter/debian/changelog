@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-8) unstable; urgency=low
+
+  * Bug #41303: raise error if another package operation is in progress
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 May 2017 16:09:29 +0200
+
 univention-appcenter (6.0.7-7) unstable; urgency=medium
 
   * Bug #44550: Fix registering attributes for 4.1 Apps

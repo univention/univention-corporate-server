@@ -383,8 +383,11 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@contextmanager
 	def locked(self):
-		with self.package_manager.locked(reset_status=True, set_finished=True):
-			yield
+		try:
+			with self.package_manager.locked(reset_status=True, set_finished=True):
+				yield
+		except LockError:
+			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
 
 	@require_apps_update
 	@require_password
