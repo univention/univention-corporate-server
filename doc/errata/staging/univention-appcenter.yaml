@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Check package manager lock during docker installation in UMC.
+bug: [41303]
