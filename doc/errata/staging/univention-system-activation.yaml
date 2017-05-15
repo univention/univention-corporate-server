@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-system-activation
+fix: 2.0.2-5A~4.2.0.201705151237
+desc: |
+ This update addresses the following issue(s):
+ * The package has been updated to work with UCS 4.2 App Appliances
+bug: [44523]
