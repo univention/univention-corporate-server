@@ -271,7 +271,7 @@ __EOF__
 		chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app_joinscript
 
 		# reinstall the app
-		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
+		cat >/usr/lib/univention-install/99setup_${app}.inst <<__EOF__
 #!/bin/bash
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ucr.sh
@@ -308,7 +308,7 @@ fi
 # fix docker app image name
 ucr set appcenter/apps/${app}/image='${$dockerimage}'
 __EOF__
-		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
+		chmod 755 /usr/lib/univention-install/99setup_${app}.inst
 	fi
 }
 
@@ -484,7 +484,7 @@ create_install_script ()
 			close_fds=TRUE
 		fi
 		
-		cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
+		cat >/usr/lib/univention-install/99setup_${main_app}.inst <<__EOF__
 #!/bin/sh
 . /usr/share/univention-join/joinscripthelper.lib
 VERSION="1"
@@ -505,10 +505,10 @@ __EOF__
 	for app in $apps; do
 		local version="$(get_app_attr $app Version)"	
 		local ucsversion="$(app_get_ini $app | sed -e 's/.*\(4\.2\|4\.1\).*/\1/')"
-		echo "univention-app register --do-it ${ucsversion}/${app}=${version}" >> /usr/lib/univention-install/99_setup_${main_app}.inst
+		echo "univention-app register --do-it ${ucsversion}/${app}=${version}" >> /usr/lib/univention-install/99setup_${main_app}.inst
 	done
 
-		cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
+		cat >>/usr/lib/univention-install/99setup_${main_app}.inst <<__EOF__
 if [ \$# -gt 1 ]; then
 	. /usr/share/univention-lib/ldap.sh
 
@@ -534,7 +534,7 @@ if [ -e /usr/share/univention-management-console-frontend/js/umc/modules/udm/wiz
 	umc_frontend_new_hash
 fi
 __EOF__
-		chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
+		chmod 755 /usr/lib/univention-install/99setup_${main_app}.inst
 	fi
 }
 
