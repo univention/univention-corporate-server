@@ -85,3 +85,10 @@ msgstr ""
 #, python-format
 msgid "The docker container could not be started!"
 msgstr "Der Docker Container konnte nicht gestartet werden!"
+
+#, python-format
+msgid ""
+"There was a problem with the HTTP response of the server (BadStatusLine). "
+"Please try again later."
+"Es gab ein Problem mit der HTTP-Antwort des Servers (BadStatusLine). "
+"Bitte versuchen Sie es später noch einmal."

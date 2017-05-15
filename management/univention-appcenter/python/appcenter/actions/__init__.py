@@ -38,6 +38,7 @@ import os.path
 from argparse import ArgumentParser, Action, Namespace
 import logging
 import urllib2
+import httplib
 import ssl
 from functools import wraps
 from urlparse import urlsplit
@@ -74,7 +75,7 @@ def possible_network_error(func):
 	def _func(*args, **kwargs):
 		try:
 			return func(*args, **kwargs)
-		except (urllib2.HTTPError, urllib2.URLError, ssl.CertificateError) as exc:
+		except (urllib2.HTTPError, urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine) as exc:
 			raise NetworkError(verbose_http_error(exc))
 	return _func
 

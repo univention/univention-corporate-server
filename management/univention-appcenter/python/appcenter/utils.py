@@ -280,6 +280,8 @@ def verbose_http_error(exc):
 		strerror = str(exc)
 	if isinstance(exc, ssl.CertificateError):
 		strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (' + strerror + ')'
+	if isinstance(exc, httplib.BadStatusLine):
+		strerror = _('There was a problem with the HTTP response of the server (BadStatusLine). Please try again later.')
 	return strerror
 
 
