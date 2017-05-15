@@ -74,6 +74,7 @@ import ConfigParser
 import univention.lib.admember
 from univention.config_registry.interfaces import Interfaces
 from samba import Ldb
+from tempfile import NamedTemporaryFile
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -327,7 +328,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	state.set_sysvol()
 
 
-def take_over_domain(progress):
+def take_over_domain(username, password, progress):
 	'''Actually takes control of the domain, deletes old AD server, takes
 	its IP, etc.
 	Gets Progress
@@ -373,7 +374,7 @@ def take_over_domain(progress):
 	progress.percentage(69)
 	takeover_final.configure_SNTP()
 	progress.percentage(80)
-	takeover_final.finalize()
+	takeover_final.finalize(username, password)
 	progress.percentage(100)
 	state.set_finished()
 
@@ -1816,13 +1817,16 @@ class AD_Takeover_Finalize():
 		if returncode != 0:
 			log.error("Start of NTP daemon failed. See %s for details." % (LOGFILE_NAME,))
 
-	def finalize(self):
+	def finalize(self, username, password):
 		# Re-run joinscripts that create an SPN account (lost in old secrets.ldb)
 		for joinscript_name in ("zarafa4ucs-sso", "univention-squid-samba4", "univention-samba4-dns"):
 			run_and_output_to_log(["sed", "-i", "/^%s v[0-9]* successful/d" % joinscript_name, "/var/univention-join/status"], log.debug)
-		returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
-		if returncode != 0:
-			log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
+		with NamedTemporaryFile('w+b') as password_file:
+			password_file.write(password)
+			password_file.flush()
+			returncode = run_and_output_to_log(["univention-run-join-scripts", "-dcaccount", username, "-dcpwd", password_file.name], log.debug)
+			if returncode != 0:
+				log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
 
 		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/completed=yes"], log.debug)
 		run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)

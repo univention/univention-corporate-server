@@ -119,4 +119,5 @@ class Instance(umcm.Base):
 
 	@background
 	def take_over_domain(self, request):
-		takeover.take_over_domain(self.progress)
+		username, password = [request.options[var] for var in ['username', 'password']]
+		takeover.take_over_domain(username, password, self.progress)
