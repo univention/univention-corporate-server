@@ -1,3 +1,10 @@
+univention-mail-cyrus (9.0.0-11) unstable; urgency=low
+
+  * Bug #44594: fix UMC module "system services" showing Cyrus as always
+    stopped (regression introduced with r78967)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 15 May 2017 16:23:48 +0200
+
 univention-mail-cyrus (9.0.0-10) unstable; urgency=low
 
   * Bug #44377: enable Cyrus service also on install
