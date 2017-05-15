@@ -39,7 +39,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST, MODULE_ERR_COMMAND_FAILED
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import require_password, simple_response
 # from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 
 from univention.management.console.modules.adtakeover import takeover
