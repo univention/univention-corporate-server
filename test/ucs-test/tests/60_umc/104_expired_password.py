@@ -88,7 +88,7 @@ class TestPwdChangeNextLogin(object):
 		check_test_skip(options)
 		print 'test_change_password(%r)' % (options,)
 		password = random_string()
-		new_password = random_string()
+		new_password = random_string(5) + random_string(5).upper()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		client = Client()
 		print 'change password from %r to %r' % (password, new_password)
