@@ -14,4 +14,5 @@ desc: |
  * The error handling on module initialization has been improoved.
  * If the URL to access UMC contained a Port a XSRF-Attack was wrong detected
    causing UMC to be unusable. This has been fixed.
-bug: [41786, 44217, 44450, 43859, 44428, 44564]
+ * The link to send feedback to Univention has been fixed.
+bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381]

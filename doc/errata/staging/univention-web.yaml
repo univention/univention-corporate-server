@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-web
+fix: 1.0.42-14A~4.2.0.201705161937
+desc: |
+ This update addresses the following issue(s):
+ * The link to send feedback to Univention has been fixed.
+bug: [44381]
