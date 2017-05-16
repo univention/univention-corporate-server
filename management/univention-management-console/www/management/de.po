@@ -810,9 +810,9 @@ msgstr ""
 #: www/management/widgets/WelcomePage.js:78
 #, javascript-format
 msgid ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you "
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us your "
 "opinion!</a></p>"
-msgstr ""
+msgstr "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre Meinung!</a></p>"
 
 #: www/management/widgets/FinishedActivationPage.js:44
 msgid ""

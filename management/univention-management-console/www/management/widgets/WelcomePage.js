@@ -75,7 +75,7 @@ define([
 		}, {
 			type: Text,
 			name: 'link',
-			content: _('<p><a href="%s?umc=StartupDialog" target="_blank">Tell us you opinion!</a></p>', _('umcFeedbackUrl')),
+			content: _('<p><a href="%s?umc=StartupDialog" target="_blank">Tell us your opinion!</a></p>', _('umcFeedbackUrl')),
 			labelConf: {
 				'class': 'umcAppWelcomePageLink dijitDisplayNone'
 			}
