@@ -300,7 +300,7 @@ def update_extended_attributes(lo, module, position):
 			register_ldap_connection(lo, position)
 
 		# get default value
-		propertyDefault = attrs.get('univentionUDMPropertyDefault', [''])
+		propertyDefault = attrs.get('univentionUDMPropertyDefault', [None])
 
 		# value may change
 		try:
