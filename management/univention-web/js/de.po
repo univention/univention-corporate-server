@@ -1096,8 +1096,8 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ "Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich "
 #~ "erneut an."
 
-#~ msgid "umcFeedbackUrl"
-#~ msgstr "https://www.univention.de/produkt-feedback/"
+msgid "umcFeedbackUrl"
+msgstr "https://www.univention.de/produkt-feedback/"
 
 #~ msgid "umcOverviewHeader"
 #~ msgstr "Übersicht"

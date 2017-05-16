@@ -1,3 +1,9 @@
+univention-web (1.0.42-14) unstable; urgency=medium
+
+  * Bug #44381: fix link for sending feedback
+
+ -- Florian Best <best@univention.de>  Tue, 16 May 2017 19:29:00 +0200
+
 univention-web (1.0.42-13) unstable; urgency=medium
 
   * Bug #44527: fix displayTraceback

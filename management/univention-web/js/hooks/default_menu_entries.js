@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,require*/
 
 define([
 	"dojo/_base/declare",
@@ -177,7 +177,7 @@ define([
 			onClick: function() {
 				var page = location.pathname.replace(/^\/univention\/|\/[^/]*$/g, '');
 				var query = '?umc=' + page;
-				if ('umc/app' in require.modules) {
+				if ('umc/app' in (require.modules || {})) {
 					try {
 						query = '?umc=management/' + require('umc/app')._tabContainer.get('selectedChildWidget').title.toLowerCase();
 					} catch(err) { }

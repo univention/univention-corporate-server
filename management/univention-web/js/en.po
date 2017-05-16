@@ -511,6 +511,9 @@ msgstr ""
 msgid "{number} errors occurred: "
 msgstr ""
 
+msgid "umcFeedbackUrl"
+msgstr "https://www.univention.com/feedback/"
+
 #~ msgid "umcLogoTitle"
 #~ msgstr "Website Univention GmbH"
 
