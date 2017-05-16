@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-management-console
-fix: 9.0.80-9A~4.2.0.201705091306
+fix: 9.0.80-12A~4.2.0.201705161339
 desc: |
  This update addresses the following issue(s):
  * The reason why changing the password failed is shown again.
