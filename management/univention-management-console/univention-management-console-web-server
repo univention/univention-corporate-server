@@ -988,7 +988,10 @@ class CPAuth(CPgeneric):
 			raise
 
 		cherrypy.response.status = 303
-		cherrypy.response.headers['Location'] = (user.data or {}).get('relay_state', {}).get('referer') or '/univention/management/'
+		location = '/univention/management/'
+		if user and user.data and user.data.get('relay_state') and user.data['relay_state'].get('referer'):
+			location = user.data['relay_state']['referer']
+		cherrypy.response.headers['Location'] = location
 
 	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
