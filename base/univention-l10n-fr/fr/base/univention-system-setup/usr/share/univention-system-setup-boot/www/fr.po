@@ -1,16 +1,16 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup-boot\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: usr/share/univention-system-setup-boot/www/main.js:50
 msgid ""
@@ -28,8 +28,8 @@ msgstr ""
 
 #: usr/share/univention-system-setup-boot/www/main.js:59
 msgid ""
-"If a password for <i>root</i> has been set, <a "
-"href='/univention/setup/?username=root'>start the setup wizard</a>."
+"If a password for <i>root</i> has been set, <a href='/univention/setup/?"
+"username=root'>start the setup wizard</a>."
 msgstr ""
 
 #: usr/share/univention-system-setup-boot/www/main.js:53

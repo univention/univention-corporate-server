@@ -1,7 +1,7 @@
 # LDAP Schema package.
 # Copyright (C) 2010-2017 Univention GmbH.
 # This file is distributed under the same license as the univention-virtual-machine-manager-schema package.
-# 
+#
 # Andreas Büsching <buesching@univention.de>, 2010.
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-06 09:20+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: German <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -108,14 +108,14 @@ msgstr "Espace disque"
 msgid "Full virtualization (KVM)"
 msgstr "Virtualisation totale (KVM)"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:122
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:123
 #: modules/univention/admin/handlers/uvmm/info.py:109
 #: modules/univention/admin/handlers/uvmm/info.py:110
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:69
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:70
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:122
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:123
 #: modules/univention/admin/handlers/uvmm/profile.py:322
 #: modules/univention/admin/handlers/uvmm/profile.py:323
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:69
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:70
 msgid "General"
 msgstr "Général"
 
@@ -167,10 +167,10 @@ msgstr "Mémoire"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:57
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:57
 #: modules/univention/admin/handlers/uvmm/profile.py:111
 #: modules/univention/admin/handlers/uvmm/profile.py:112
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:57
 msgid "Name"
 msgstr "Nom"
 
@@ -291,8 +291,8 @@ msgstr "UVMM : types de clouds"
 msgid "UVMM: Machine information"
 msgstr "UVMM : informations sur la machine"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:48
 #: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:5
+#: modules/univention/admin/handlers/uvmm/profile.py:48
 msgid "UVMM: Profile"
 msgstr "UVMM : profil"
 

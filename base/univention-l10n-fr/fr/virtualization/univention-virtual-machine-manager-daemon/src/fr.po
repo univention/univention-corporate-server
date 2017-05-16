@@ -1,34 +1,34 @@
 # UCS Virtual Machine Manager Daemon.
-# 
+#
 # Copyright 2010-2017 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of the software contained in this package
 # as well as the source package itself are made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this package provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention.
-# 
+#
 # In the case you use the software under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
-# 
+#
+#
 # Philipp Hahn <hahn@univention.de>, 2010.
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
@@ -36,14 +36,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.333-1\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-03 21:15+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: German <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -100,8 +100,7 @@ msgstr "Le domaine « %(domain)s » existe déjà : %(uuid)s"
 #: src/univention/uvmm/node.py:1554
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
-msgstr ""
-"Le domaine « %(domain)s » dans l'état « %(state)s » ne peut être migré"
+msgstr "Le domaine « %(domain)s » dans l'état « %(state)s » ne peut être migré"
 
 #: src/univention/uvmm/node.py:1718
 #, python-format
@@ -135,7 +134,8 @@ msgstr ""
 
 #: src/univention/uvmm/storage.py:275
 #, python-format
-msgid "Error creating storage volume \"%(name)s\" for \"%(domain)s\": %(error)s"
+msgid ""
+"Error creating storage volume \"%(name)s\" for \"%(domain)s\": %(error)s"
 msgstr ""
 "Erreur en créant le volume de stockage « %(name)s » de « %(domain)s » : "
 "%(error)s"
@@ -167,15 +167,16 @@ msgstr "Erreur en obtenant la liste des volumes de « %(uri)s » : %(error)s"
 #, python-format
 msgid "Error locating storage pool \"%(pool)s\" for \"%(domain)s\": %(error)s"
 msgstr ""
-"Erreur en localisant l'espace de stockage mis en commun « %(pool)s » pour « "
-"%(domain)s » : %(error)s"
+"Erreur en localisant l'espace de stockage mis en commun « %(pool)s » pour "
+"« %(domain)s » : %(error)s"
 
 #: src/univention/uvmm/storage.py:123 src/univention/uvmm/storage.py:185
 #, python-format
-msgid "Error locating storage volume \"%(volume)s\" for \"%(domain)s\": %(error)s"
+msgid ""
+"Error locating storage volume \"%(volume)s\" for \"%(domain)s\": %(error)s"
 msgstr ""
-"Erreur en localisant le volume de stockage « %(volume)s » pour « %(domain)s "
-"» : %(error)s"
+"Erreur en localisant le volume de stockage « %(volume)s » pour "
+"« %(domain)s » : %(error)s"
 
 #: src/univention/uvmm/node.py:1449
 #, python-format
@@ -336,7 +337,7 @@ msgstr "L'hyperviseur « %(uri)s » est déjà connecté."
 msgid "Hypervisor \"%(uri)s\" is not connected."
 msgstr "L'hyperviseur « %(uri)s » n'est pas connecté."
 
-#: src/univention/uvmm/protocol.py:90
+#: src/univention/uvmm/protocol.py:94
 #, python-format
 msgid "Incompatible version: %(major)d.%(minor)d"
 msgstr "Version non compatible : %(major)d.%(minor)d"
@@ -349,7 +350,7 @@ msgstr "Aucun SERVICE défini."
 msgid "No nodes found."
 msgstr ""
 
-#: src/univention/uvmm/protocol.py:101
+#: src/univention/uvmm/protocol.py:105
 #, python-format
 msgid "Not a Packet: %(type)s"
 msgstr "N'est pas un paquet : %(type)s"
@@ -358,7 +359,7 @@ msgstr "N'est pas un paquet : %(type)s"
 msgid "Not a UVMM_Response."
 msgstr "N'est pas une réponse UVMM."
 
-#: src/univention/uvmm/protocol.py:99
+#: src/univention/uvmm/protocol.py:103
 #, python-format
 msgid "Not a valid Packet: %(msg)s"
 msgstr "N'est pas un paquet valide : %(msg)s"
@@ -412,11 +413,15 @@ msgstr "L'instantané n'est pas pris en charge « %(node)s »"
 msgid ""
 "The EC2 region returned an error for connection \"%(connection)s\":\n"
 "\n"
-"AuthFailure: The provided AWS access credentials could not be validated. Please ensure that you are using the correct access keys. Consult the AWS service documentation for details."
+"AuthFailure: The provided AWS access credentials could not be validated. "
+"Please ensure that you are using the correct access keys. Consult the AWS "
+"service documentation for details."
 msgstr ""
 "La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
 "\n"
-"AuthFailure : les preuves d'identité pour l'accès à AWS fournies n'ont pu être validées. Veuillez vous assurer que vous utilisez des clés d'accès correctes. Consultez la documentation du service AWS pour plus de détails."
+"AuthFailure : les preuves d'identité pour l'accès à AWS fournies n'ont pu "
+"être validées. Veuillez vous assurer que vous utilisez des clés d'accès "
+"correctes. Consultez la documentation du service AWS pour plus de détails."
 
 #: src/univention/uvmm/ec2cloud.py:540
 #, python-format
@@ -427,29 +432,39 @@ msgid ""
 msgstr ""
 "La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
 "\n"
-"RequestExpired: veuillez vérifier l'horloge de votre système pour interagir avec AWS."
+"RequestExpired: veuillez vérifier l'horloge de votre système pour interagir "
+"avec AWS."
 
 #: src/univention/uvmm/ec2cloud.py:542
 #, python-format
 msgid ""
 "The EC2 region returned an error for connection \"%(connection)s\":\n"
 "\n"
-"UnauthorizedOperation: The provided AWS access credentials are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys. Also, the IAM user must have appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess."
+"UnauthorizedOperation: The provided AWS access credentials are not "
+"authorized to perform this operation. Check your IAM policies, and ensure "
+"that you are using the correct access keys. Also, the IAM user must have "
+"appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess."
 msgstr ""
 "La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
 "\n"
-"UnauthorizedOperation : les preuves d'identité pour l'accès à AWS fournies ne permettent pas d'effectuer cette opération. Vérifiez vos droits IAM et assurez-vous que vous utilisez des clés d'accès correctes. De plus, l'utilisateur IAM doit avoir des droits d'accès appropriés pour interagir avec EC2, par ex. AmazonEC2FullAccess."
+"UnauthorizedOperation : les preuves d'identité pour l'accès à AWS fournies "
+"ne permettent pas d'effectuer cette opération. Vérifiez vos droits IAM et "
+"assurez-vous que vous utilisez des clés d'accès correctes. De plus, "
+"l'utilisateur IAM doit avoir des droits d'accès appropriés pour interagir "
+"avec EC2, par ex. AmazonEC2FullAccess."
 
 #: src/univention/uvmm/ec2cloud.py:538
 #, python-format
 msgid ""
 "The EC2 region returned an error for connection \"%(connection)s\":\n"
 "\n"
-"Your AWS account is currently blocked. If you have questions, please contact AWS Support."
+"Your AWS account is currently blocked. If you have questions, please contact "
+"AWS Support."
 msgstr ""
 "La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
 "\n"
-"Votre compte AWS est actuellement bloqué. Si vous avez des questions, veuillez contacter le service en ligne d'AWS."
+"Votre compte AWS est actuellement bloqué. Si vous avez des questions, "
+"veuillez contacter le service en ligne d'AWS."
 
 #: src/univention/uvmm/client.py:105
 msgid "Timed out while closing socket."

@@ -1,20 +1,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 13:00+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -77,15 +77,15 @@ msgid ""
 "Failed to modify print quota settings for user %(user)s on printer "
 "%(printer)s"
 msgstr ""
-"Échec de la modification des réglages du quota d'impression de l'utilisateur"
-" %(user)s pour l'imprimante %(printer)s"
+"Échec de la modification des réglages du quota d'impression de l'utilisateur "
+"%(user)s pour l'imprimante %(printer)s"
 
 #: modules/univention/management/console/handlers/cups/_printer.py:175
 #, python-format
 msgid "Failed to reset print quota for user %(user)s on printer %(printer)s"
 msgstr ""
-"Échec de la réinitialisation du quota d'impression de l'utilisateur %(user)s"
-" pour l'imprimante %(printer)s"
+"Échec de la réinitialisation du quota d'impression de l'utilisateur %(user)s "
+"pour l'imprimante %(printer)s"
 
 #: modules/univention/management/console/handlers/cups/_revamp.py:165
 msgid "Hard limit"
@@ -302,13 +302,13 @@ msgstr "Réglages du quota d'impression de l'utilisateur"
 msgid "User quota on %(printer)s"
 msgstr "Quota de l'utilisateur sur %(printer)s"
 
-#: modules/univention/management/console/handlers/cups/tools.py:73
 #: modules/univention/management/console/handlers/cups/_revamp.py:75
+#: modules/univention/management/console/handlers/cups/tools.py:73
 msgid "active"
 msgstr "active"
 
+#: modules/univention/management/console/handlers/cups/_revamp.py:69
 #: modules/univention/management/console/handlers/cups/tools.py:57
 #: modules/univention/management/console/handlers/cups/tools.py:75
-#: modules/univention/management/console/handlers/cups/_revamp.py:69
 msgid "inactive"
 msgstr "inactive"

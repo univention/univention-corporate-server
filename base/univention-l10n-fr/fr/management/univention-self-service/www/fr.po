@@ -1,34 +1,39 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
-#: www/ProtectAccountAccess.js:236
+#: www/ProtectAccountAccess.js:245
 msgid " (retype)"
 msgstr ""
 
-#: www/ProtectAccountAccess.js:207
+#: www/ProtectAccountAccess.js:216
 msgid "Activate renew options."
 msgstr ""
 
-#: www/ProtectAccountAccess.js:255
+#: www/ProtectAccountAccess.js:264
 msgid "Cancel"
 msgstr "Annuler"
 
-#: www/NewPassword.js:240
+#: www/PasswordChange.js:189 www/NewPassword.js:240
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: www/ProtectAccountAccess.js:48
+#: www/PasswordChange.js:52
+#, fuzzy
+msgid "Change your (expired) password."
+msgstr "Changer le mot de passe"
+
+#: www/ProtectAccountAccess.js:49
 msgid ""
 "Everyone forgets his password now and then. Protect yourself and activate "
 "the opportunity to set a new password."
@@ -53,21 +58,35 @@ msgid ""
 "this link to go back to step 2."
 msgstr ""
 
-#: www/NewPassword.js:197
+#: www/PasswordChange.js:253
+msgid "Invalid credentials. Password change failed."
+msgstr ""
+
+#: www/PasswordChange.js:156 www/NewPassword.js:197
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: www/NewPassword.js:212
+#: www/PasswordChange.js:166 www/NewPassword.js:212
 msgid "New Password (retype)"
 msgstr "Nouveau mot de passe (saisir à nouveau)"
 
-#: www/ProtectAccountAccess.js:151 www/PasswordForgotten.js:127
-#: www/PasswordForgotten.js:173
+#: www/PasswordForgotten.js:127 www/PasswordForgotten.js:173
+#: www/ProtectAccountAccess.js:160
 msgid "Next"
 msgstr "Suivant"
 
-#: www/ProtectAccountAccess.js:129
+#: www/PasswordChange.js:136
+#, fuzzy
+msgid "Old Password"
+msgstr "Mot de passe"
+
+#: www/ProtectAccountAccess.js:138
 msgid "Password"
+msgstr "Mot de passe"
+
+#: www/PasswordChange.js:51
+#, fuzzy
+msgid "Password change"
 msgstr "Mot de passe"
 
 #: www/PasswordForgotten.js:50
@@ -78,11 +97,11 @@ msgstr ""
 msgid "Please choose an option to renew your password."
 msgstr ""
 
-#: www/ProtectAccountAccess.js:47
-msgid "Protect Account Access"
+#: www/ProtectAccountAccess.js:48
+msgid "Protect account"
 msgstr ""
 
-#: www/ProtectAccountAccess.js:250
+#: www/ProtectAccountAccess.js:259
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -98,29 +117,28 @@ msgstr ""
 msgid "Set new password"
 msgstr ""
 
-#: www/ProtectAccountAccess.js:221
+#: www/ProtectAccountAccess.js:230
 msgid "The entries do not match, please retype again."
 msgstr ""
 
-#: www/NewPassword.js:221
+#: www/PasswordChange.js:175 www/NewPassword.js:221
 msgid "The passwords do not match, please retype again."
-msgstr ""
-"Les mots de passe ne correspondent pas, veuillez les saisir à nouveau."
+msgstr "Les mots de passe ne correspondent pas, veuillez les saisir à nouveau."
 
 #: www/NewPassword.js:172
 msgid "Token"
 msgstr "Jeton"
 
-#: www/ProtectAccountAccess.js:105 www/NewPassword.js:147
-#: www/PasswordForgotten.js:109
+#: www/PasswordForgotten.js:109 www/PasswordChange.js:113
+#: www/NewPassword.js:147 www/ProtectAccountAccess.js:110
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
 #: www/PasswordForgotten.js:265
 msgid ""
-"We have send you an e-mail to your alternative e-mail address, that you have"
-" provided on the page \"Protect Account Access\". Please check your mails "
-"and follow the link to renew your password."
+"We have send you an e-mail to your alternative e-mail address, that you have "
+"provided on the page \"Protect Account Access\". Please check your mails and "
+"follow the link to renew your password."
 msgstr ""
 
 #: www/PasswordForgotten.js:263

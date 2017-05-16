@@ -4,14 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-06 22:01+0100\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -24,8 +24,8 @@ msgstr ""
 msgid "... loading data ..."
 msgstr "... données en cours de chargement ..."
 
-#: umc/js/updater/_LogViewer.js:77 umc/js/updater/_LogViewer.js:197
-#: umc/js/updater/_LogViewer.js:222
+#: umc/js/updater/_LogViewer.js:75 umc/js/updater/_LogViewer.js:195
+#: umc/js/updater/_LogViewer.js:221
 msgid "... loading log file ..."
 msgstr "... fichier journal en cours de chargement ..."
 
@@ -44,17 +44,15 @@ msgstr "1 paquetage à mettre à jour"
 #: umc/js/updater.js:75
 #, javascript-format
 msgid ""
-"<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out"
-" of maintenance. Plase visit the %s for more information"
+"<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out "
+"of maintenance. Plase visit the %s for more information"
 msgstr ""
 
 #: umc/js/updater.js:322 umc/js/updater.js:454
 #: umc/js/updater/ProgressPage.js:319
-msgid ""
-"<b>Leave the system up and running</b> at any moment during the update!"
+msgid "<b>Leave the system up and running</b> at any moment during the update!"
 msgstr ""
-"<b>Laissez le système en marche</b> pendant l'intégralité de la mise à jour "
-"!"
+"<b>Laissez le système en marche</b> pendant l'intégralité de la mise à jour !"
 
 #: umc/js/updater/UpdatesPage.js:644
 msgid ""
@@ -87,8 +85,8 @@ msgstr "<p><b>Attention !</b> Une mise à niveau de version est en cours !</p>"
 #: umc/js/updater.js:54
 msgid "<p>Leave the system up and running until the update is completed!</p>"
 msgstr ""
-"<p>Laissez le système en marche jusqu'à ce que la mise à jour soit terminée "
-"!</p>"
+"<p>Laissez le système en marche jusqu'à ce que la mise à jour soit terminée !"
+"</p>"
 
 #: umc/js/updater.js:62
 #, javascript-format
@@ -114,8 +112,7 @@ msgstr "Mises à jour de l'App Center"
 
 #: umc/js/updater.js:200
 msgid "Are you sure to close the updater log view?"
-msgstr ""
-"Souhaitez-vous vraiment fermer l'affichage du journal de mise à jour ?"
+msgstr "Souhaitez-vous vraiment fermer l'affichage du journal de mise à jour ?"
 
 #: umc/js/updater/UpdatesPage.js:75
 msgid "Available system updates"
@@ -146,31 +143,29 @@ msgstr ""
 
 #: umc/js/updater.js:329
 msgid ""
-"Consider <a href=\"https://docs.software-univention.de/\" "
-"target=\"_blank\">release notes and changelogs</a> as well as references "
-"posted in the <a href=\"http://forum.univention.de/viewforum.php?f=54\" "
-"target=\"_blank\">Univention Forum</a>."
+"Consider <a href=\"https://docs.software-univention.de/\" target=\"_blank"
+"\">release notes and changelogs</a> as well as references posted in the <a "
+"href=\"http://forum.univention.de/viewforum.php?f=54\" target=\"_blank"
+"\">Univention Forum</a>."
 msgstr ""
-"Consultez aussi les <a href=\"https://docs.software-univention.de/\" "
-"target=\"_blank\">notes de version et listes de modifications</a> ainsi que "
-"les références publiées dans le <a "
-"href=\"http://forum.univention.de/viewforum.php?f=54\" "
-"targe=\"_blank\">Forum Univention</a>."
+"Consultez aussi les <a href=\"https://docs.software-univention.de/\" target="
+"\"_blank\">notes de version et listes de modifications</a> ainsi que les "
+"références publiées dans le <a href=\"http://forum.univention.de/viewforum."
+"php?f=54\" targe=\"_blank\">Forum Univention</a>."
 
 #: umc/js/updater.js:326
 #, javascript-format
 msgid ""
-"Consider <a href=\"https://docs.software-univention.de/release-"
-"notes-%s-en.html\" target=\"_blank\">release notes and changelogs</a> as "
-"well as references posted in the <a "
-"href=\"http://forum.univention.de/viewforum.php?f=54\" "
-"target=\"_blank\">Univention Forum</a>."
+"Consider <a href=\"https://docs.software-univention.de/release-notes-%s-en."
+"html\" target=\"_blank\">release notes and changelogs</a> as well as "
+"references posted in the <a href=\"http://forum.univention.de/viewforum.php?"
+"f=54\" target=\"_blank\">Univention Forum</a>."
 msgstr ""
 "Consultez aussi les <a href=\"https://docs.software-univention.de/release-"
 "notes-%s-en.html\" target=\"_blank\">notes de version et listes de "
-"modifications</a> ainsi que les références publiées dans le <a "
-"href=\"http://forum.univention.de/viewforum.php?f=54\" "
-"targe=\"_blank\">Forum Univention</a>."
+"modifications</a> ainsi que les références publiées dans le <a href=\"http://"
+"forum.univention.de/viewforum.php?f=54\" targe=\"_blank\">Forum Univention</"
+"a>."
 
 #: umc/js/updater.js:332
 msgid ""
@@ -190,8 +185,8 @@ msgid ""
 "Do you really want to perform the update/install/remove of the above "
 "packages?"
 msgstr ""
-"Souhaitez-vous vraiment mettre à jour / installer / supprimer les paquetages"
-" ci-dessus ?"
+"Souhaitez-vous vraiment mettre à jour / installer / supprimer les paquetages "
+"ci-dessus ?"
 
 #: umc/js/updater/ProgressPage.js:253
 msgid "Finish updates"
@@ -210,15 +205,15 @@ msgid ""
 "Further release updates are available but cannot be installed because the "
 "component '{0}' is not available for newer release versions."
 msgstr ""
-"D'autres mises à niveau de version sont disponibles mais ne peuvent pas être"
-" installées car le composant '{0}' n'est pas disponible pour ces versions "
+"D'autres mises à niveau de version sont disponibles mais ne peuvent pas être "
+"installées car le composant '{0}' n'est pas disponible pour ces versions "
 "plus récentes."
 
 #: umc/js/updater/UpdatesPage.js:182
 msgid "Further release updates are available but cannot be installed."
 msgstr ""
 
-#: umc/js/updater/ProgressPage.js:113 umc/js/updater/UpdatesPage.js:113
+#: umc/js/updater/UpdatesPage.js:113 umc/js/updater/ProgressPage.js:113
 msgid ""
 "In order to complete the recently executed action, it is required to reboot "
 "the system."
@@ -251,8 +246,8 @@ msgid ""
 msgstr ""
 "Pendant la mise à jour, il est à prévoir que le système ne sera pas en "
 "mesure de répondre (à travers le navigateur, SSH, etc.) pour une période "
-"allant jusqu'à plusieurs minutes, du fait que des services sont arrêtés, mis"
-" à jour et redémarrés."
+"allant jusqu'à plusieurs minutes, du fait que des services sont arrêtés, mis "
+"à jour et redémarrés."
 
 #: umc/js/updater.js:324
 msgid ""
@@ -334,11 +329,9 @@ msgstr ""
 
 #: umc/js/updater/UpdatesPage.js:445
 msgid ""
-"The currently installed release version is {ucs_version} "
-"errata{erratalevel}."
+"The currently installed release version is {ucs_version} errata{erratalevel}."
 msgstr ""
-"La version actuellement installée est {ucs_version} correctifs "
-"{erratalevel}."
+"La version actuellement installée est {ucs_version} correctifs {erratalevel}."
 
 #: umc/js/updater/UpdatesPage.js:447
 msgid "The currently installed release version is {ucs_version}."
@@ -346,17 +339,16 @@ msgstr "La version actuellement installée est {ucs_version}."
 
 #: umc/js/updater/UpdatesPage.js:207
 msgid ""
-"The currently installed version of the application %(name)s is not available"
-" for all newer UCS releases."
+"The currently installed version of the application %(name)s is not available "
+"for all newer UCS releases."
 msgstr ""
 
-#: umc/js/updater/_LogViewer.js:136
+#: umc/js/updater/_LogViewer.js:134
 msgid ""
-"The log file exceeded {max} lines by {exceeded}. Please see the full "
-"logfile."
+"The log file exceeded {max} lines by {exceeded}. Please see the full logfile."
 msgstr ""
-"Le fichier journal dépasse {max} lignes de {exceeded}. Veuillez consulter le"
-" fichier journal complet."
+"Le fichier journal dépasse {max} lignes de {exceeded}. Veuillez consulter le "
+"fichier journal complet."
 
 #: umc/js/updater/ProgressPage.js:328
 msgid ""

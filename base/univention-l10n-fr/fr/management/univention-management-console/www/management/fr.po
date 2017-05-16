@@ -1,25 +1,25 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: www/management/widgets/WelcomePage.js:78
 #, python-format
 msgid ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you "
-"opinion!</a></p>"
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!</"
+"a></p>"
 msgstr ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Donnez-nous votre avis"
-" !</a></p>"
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Donnez-nous votre "
+"avis !</a></p>"
 
 #: www/management/widgets/LicenseImportPage.js:48
 msgid ""
@@ -27,8 +27,8 @@ msgid ""
 "your email address. Upload the license file from the email to activate your "
 "UCS instance.</p>"
 msgstr ""
-"<p><b>Vous avez reçu un message !</b></p><p>Un fichier de licence vous a été"
-" envoyé à votre adresse électronique. Envoyez ce fichier de licence par "
+"<p><b>Vous avez reçu un message !</b></p><p>Un fichier de licence vous a été "
+"envoyé à votre adresse électronique. Envoyez ce fichier de licence par "
 "courrier électronique pour activer votre instance UCS.</p>"
 
 #: www/management/widgets/WelcomePage.js:58
@@ -39,8 +39,8 @@ msgid ""
 "comfortable system administration and domain management.</p><p>Are you "
 "satisfied with the system configuration?</p>"
 msgstr ""
-"<p>Félicitations, vous avez terminé la configuration de Univention Corporate"
-" Server (UCS), et vous êtes authentifié sur Univention Management Console "
+"<p>Félicitations, vous avez terminé la configuration de Univention Corporate "
+"Server (UCS), et vous êtes authentifié sur Univention Management Console "
 "(UMC). UMC est l'application Web centrale permettant une administration "
 "conviviale des systèmes et la gestion des domaines.</p><p>La configuration "
 "du système vous convient-elle ?</p>"
@@ -53,15 +53,14 @@ msgid ""
 msgstr ""
 "<p>Les informations détaillées sur l'utilisation de Univention Management "
 "Console se trouvent dans le manuel d'UCS. Le manuel ainsi que d'autres "
-"informations importantes sont disponibles au travers des liens suivants "
-":</p>"
+"informations importantes sont disponibles au travers des liens suivants :</p>"
 
 #: www/management/widgets/ActivationPage.js:65
 #, python-format
 msgid ""
-"<p>Details about the activation of a UCS license can be found in the <a "
-"href=\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
-"target=\"_blank\">UCS manual</a>.</p>"
+"<p>Details about the activation of a UCS license can be found in the <a href="
+"\"http://docs.univention.de/manual-%(version)s.html#central:license\" target="
+"\"_blank\">UCS manual</a>.</p>"
 msgstr ""
 "<p>Les détails sur l'activation d'une licence UCS se trouvent dans le <a "
 "href=\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
@@ -80,18 +79,18 @@ msgstr ""
 msgid ""
 "<p>On UCS evaluation systems, anonymous usage statistics are created by "
 "default and sent to Univention. This allows to continuously adapt UCS to "
-"suit the practical needs of its users.</p><p>The information consists of UMC"
-" usage statistics and a one-time statistic on the hardware configuration. "
+"suit the practical needs of its users.</p><p>The information consists of UMC "
+"usage statistics and a one-time statistic on the hardware configuration. "
 "Details about the usage statistics and about its deactivation can be found "
 "in the <a href=\"http://docs.univention.de/manual-%(version)s.html#central-"
 "management-umc:piwik\" target=\"_blank\">UCS manual</a>.</p><p>Usage "
-"statistics are automatically deactivated when importing a commercial "
-"license.</p>"
+"statistics are automatically deactivated when importing a commercial license."
+"</p>"
 msgstr ""
 "<p>Sur les systèmes d'évaluation d'UCS, des statistiques d'utilisation "
 "anonymes sont créées par défaut et envoyées à Univention. Ceci permet "
-"d'adapter de manière continue UCS aux besoins de ses utilisateurs.</p><p>Ces"
-" informations comportent des statistiques d'utilisation d'UMC et une "
+"d'adapter de manière continue UCS aux besoins de ses utilisateurs.</p><p>Ces "
+"informations comportent des statistiques d'utilisation d'UMC et une "
 "statistique unique sur la configuration du matériel. Les détails des "
 "statistiques d'utilisation et leur possible désactivation sont décrits dans "
 "le <a href=\"http://docs.univention.de/manual-%(version)s.html#central-"
@@ -102,8 +101,8 @@ msgstr ""
 #: www/management/widgets/FinishedActivationPage.js:44
 msgid ""
 "<p>The license has been updated successfully.</p><p>You can now continue to "
-"use UMC, all applications in the Univention App Center are now available for"
-" installation on this system.</p>"
+"use UMC, all applications in the Univention App Center are now available for "
+"installation on this system.</p>"
 msgstr ""
 "<p>La licence a été correctement mise à jour.</p><p>Vous pouvez maintenant "
 "continuer à utiliser UMC, toutes les applications de Univention App Center "
@@ -131,19 +130,17 @@ msgstr ""
 
 #: www/management/widgets/HelpPage.js:48
 msgid ""
-"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" "
-"target=\"_blank\">Online documentation</a></li><li><a "
-"href=\"http://wiki.univention.de/index.php?title=Hauptseite\" "
-"target=\"_blank\">Univention Wiki</a></li><li><a "
-"href=\"https://www.univention.com/products/support/community-support/\" "
-"target=\"_blank\">Community and support</a></li></ul>"
+"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" target=\"_blank"
+"\">Online documentation</a></li><li><a href=\"http://wiki.univention.de/"
+"index.php?title=Hauptseite\" target=\"_blank\">Univention Wiki</a></"
+"li><li><a href=\"https://www.univention.com/products/support/community-"
+"support/\" target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
-"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" "
-"target=\"_blank\">Documentation en ligne</a></li><li><a "
-"href=\"http://wiki.univention.de/index.php?title=Hauptseite\" "
-"target=\"_blank\">Wiki Univention</a></li><li><a "
-"href=\"https://www.univention.com/products/support/community-support/\" "
-"target=\"_blank\">Communauté et assistance</a></li></ul>"
+"<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" target=\"_blank"
+"\">Documentation en ligne</a></li><li><a href=\"http://wiki.univention.de/"
+"index.php?title=Hauptseite\" target=\"_blank\">Wiki Univention</a></"
+"li><li><a href=\"https://www.univention.com/products/support/community-"
+"support/\" target=\"_blank\">Communauté et assistance</a></li></ul>"
 
 #: www/management/main.js:679
 msgid "About UMC"
@@ -154,11 +151,11 @@ msgstr "À propos de UMC"
 msgid "Activation of Univention Corporate Server"
 msgstr "Activation de Univention Corporate Server"
 
-#: www/management/main.js:1244
+#: www/management/main.js:1230
 msgid "Add to favorites"
 msgstr "Ajouter aux favoris"
 
-#: www/management/main.js:707
+#: www/management/main.js:705
 msgid "Close"
 msgstr "Fermer"
 
@@ -166,7 +163,7 @@ msgstr "Fermer"
 msgid "Completion of startup wizard"
 msgstr "Fin de l'assistant de démarrage"
 
-#: www/management/main.js:1012
+#: www/management/main.js:1003
 #, python-format
 msgid "Could not load module \"%s\"."
 msgstr "Impossible de charger le module « %s »."
@@ -193,10 +190,6 @@ msgstr ""
 msgid "Everything worked great."
 msgstr "Tout a fonctionné parfaitement."
 
-#: www/management/main.js:673
-msgid "Feedback"
-msgstr "Avis"
-
 #: www/management/widgets/FeedbackPage.js:40
 msgid "Feedback via usage statistics"
 msgstr "Retour par le biais des statistiques d'utilisation"
@@ -210,7 +203,7 @@ msgstr "Informations supplémentaires"
 msgid "HTTP Error %s"
 msgstr "Erreur HTTP %s"
 
-#: www/management/main.js:667
+#: www/management/main.js:672
 msgid "Help"
 msgstr "Aide"
 
@@ -236,11 +229,11 @@ msgstr "Recherche de module"
 msgid "No valid e-mail address."
 msgstr "Pas d'adresse électronique valide."
 
-#: www/management/main.js:1234
+#: www/management/main.js:1220
 msgid "Open module"
 msgstr "Ouvrir le module"
 
-#: www/management/main.js:1244
+#: www/management/main.js:1230
 msgid "Remove from favorites"
 msgstr "Supprimer des favoris"
 
@@ -252,7 +245,7 @@ msgstr "Certificat SSL de l'hôte"
 msgid "SSL root certificate"
 msgstr "Certificat SSL racine"
 
-#: www/management/main.js:1387
+#: www/management/main.js:1375
 #, python-format
 msgid "Search query ›%s‹"
 msgstr "Requête de recherche ›%s‹"
@@ -277,8 +270,7 @@ msgstr "Message d'erreur du serveur :"
 
 #: www/management/main.js:437
 #, python-format
-msgid ""
-"The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgid "The %(certificate)s will expire in %(days)d days and should be renewed!"
 msgstr ""
 "Le %(certificate)s expirera dans %(days)d jours et doit être renouvelé !"
 
@@ -304,7 +296,7 @@ msgstr ""
 msgid "The license has been imported successfully."
 msgstr "La licence a été importée avec succès."
 
-#: www/management/main.js:1086
+#: www/management/main.js:1072
 #, python-format
 msgid "There is no module available for the authenticated user %s."
 msgstr "Aucun module disponible pour l'utilisateur authentifié %s."
@@ -329,7 +321,7 @@ msgstr "Actualisation des données de session..."
 msgid "Upload license file..."
 msgstr "Envoyer un fichier de licence..."
 
-#: www/management/main.js:695
+#: www/management/main.js:692
 msgid "Usage statistics"
 msgstr "Statistiques d'utilisation"
 
@@ -349,6 +341,9 @@ msgstr ""
 "Vous pouvez importer ultérieurement le fichier de licence par le biais du "
 "menu utilisateur en haut à droite."
 
-#: www/management/main.js:771 www/management/widgets/WelcomePage.js:78
+#: www/management/widgets/WelcomePage.js:78
 msgid "umcFeedbackUrl"
 msgstr "umcFeedbackUrl"
+
+#~ msgid "Feedback"
+#~ msgstr "Avis"

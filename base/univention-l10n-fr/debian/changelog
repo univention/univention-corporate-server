@@ -1,3 +1,9 @@
+univention-l10n-fr (1.2.1-0) unstable; urgency=medium
+
+  * Bug #43462: update catalogs to current SVN state
+
+ -- Eduard Mai <mai@univention.de>  Tue, 16 May 2017 12:14:18 +0200
+
 univention-l10n-fr (1.2.0-1) unstable; urgency=medium
 
   * Bug #43462: Fix fuzzy targets + add some directly visible translations

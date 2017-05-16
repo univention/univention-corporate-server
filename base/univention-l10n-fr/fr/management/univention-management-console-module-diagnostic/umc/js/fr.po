@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 13:58+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -32,7 +32,7 @@ msgstr "Conflit :"
 msgid "Critical: "
 msgstr "Grave :"
 
-#: umc/js/diagnostic.js:275
+#: umc/js/diagnostic.js:278
 #, javascript-format
 msgid "Diagnosis of \"%s\" was successful"
 msgstr "Le diagnostic de « %s » a réussi"
@@ -43,10 +43,9 @@ msgid ""
 "function as additional buttons. "
 msgstr ""
 "Si le système est en mesure de réparer automatiquement les problèmes "
-"trouvés, ces fonctions apparaîtront sous la forme de boutons "
-"supplémentaires."
+"trouvés, ces fonctions apparaîtront sous la forme de boutons supplémentaires."
 
-#: umc/js/diagnostic.js:206 umc/js/diagnostic.js:307
+#: umc/js/diagnostic.js:206 umc/js/diagnostic.js:310
 msgid "No problems could be detected."
 msgstr "Aucun problème trouvé."
 

@@ -1,43 +1,43 @@
 # Copyright 2010-2017 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-# 
+#
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # eric <zzz>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-11 07:26+0100\n"
 "Last-Translator: eric <zzz>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -53,18 +53,18 @@ msgid ""
 "directory tree. Connected policies allow to define object properties in a "
 "unified manner. Policies that are connected with containers or "
 "organizational units are inherited by all objects located below.</p><p>More "
-"information can be found in the <a "
-"href=\"http://docs.univention.de/manual.html#central:policies\" "
-"target=\"_blank\">online documentation for UCS</a>.</p>"
+"information can be found in the <a href=\"http://docs.univention.de/manual."
+"html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</"
+"p>"
 msgstr ""
 "<p>Les stratégies sont des objets pouvant être connectés à d'autres objets "
-"dans l'arborescence des répertoires. Les stratégies connectées permettent de"
-" définir les propriétés des objets de manière uniforme. Les stratégies "
+"dans l'arborescence des répertoires. Les stratégies connectées permettent de "
+"définir les propriétés des objets de manière uniforme. Les stratégies "
 "connectées à des conteneurs ou des unités d'organisation sont héritées par "
 "tous les objets situés aux niveaux inférieurs.</p><p>Vous pouvez trouver "
-"davantage d'informations à ce sujet dans la <a "
-"href=\"http://docs.univention.de/manual.html#central:policies\" "
-"target=\"_blank\">documentation en ligne d'UCS</a>.</p>"
+"davantage d'informations à ce sujet dans la <a href=\"http://docs.univention."
+"de/manual.html#central:policies\" target=\"_blank\">documentation en ligne "
+"d'UCS</a>.</p>"
 
 #: modules/univention/admin/handlers/policies/release.py:85
 msgid "Activate release updates (Errata updates are activated by default)."
@@ -136,11 +136,11 @@ msgstr "BOOTP"
 msgid "Basic DNS settings"
 msgstr "Réglages DNS de base"
 
-#: modules/univention/admin/handlers/policies/umc.py:105
-#: modules/univention/admin/handlers/policies/printserver.py:105
-#: modules/univention/admin/handlers/policies/ldapserver.py:105
 #: modules/univention/admin/handlers/policies/nfsmounts.py:105
+#: modules/univention/admin/handlers/policies/printserver.py:105
+#: modules/univention/admin/handlers/policies/umc.py:105
 #: modules/univention/admin/handlers/policies/policy.py:72
+#: modules/univention/admin/handlers/policies/ldapserver.py:105
 msgid "Basic settings"
 msgstr "Réglages de base"
 
@@ -309,13 +309,13 @@ msgid ""
 "Domain name that will be appended to the client's hostname to form a fully-"
 "qualified domain-name (FQDN)"
 msgstr ""
-"Nom de domaine qui sera ajouté au nom d'hôte du client pour former un nom de"
-" domaine pleinement qualifié (Fully Qualified Domain Name, FQDN)"
+"Nom de domaine qui sera ajouté au nom d'hôte du client pour former un nom de "
+"domaine pleinement qualifié (Fully Qualified Domain Name, FQDN)"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:112
 msgid ""
-"Domain name that will be appended to the client's hostname to produce a name"
-" for use in the client's PTR record"
+"Domain name that will be appended to the client's hostname to produce a name "
+"for use in the client's PTR record"
 msgstr ""
 "Nom de domaine qui sera ajouté au nom d'hôte du client pour former un nom à "
 "utiliser dans l'enregistrement PTR du client"
@@ -352,13 +352,12 @@ msgid ""
 "addresses. Allow and deny statements within pool declarations will still be "
 "respected."
 msgstr ""
-"Activer l'obtention d'adresses IP par les clients pour lesquels il n'y a pas"
-" de déclaration d'hôte. Les déclarations d'autorisation et d'interdiction au"
-" sein des déclarations de réservoirs continueront d'être respectées."
+"Activer l'obtention d'adresses IP par les clients pour lesquels il n'y a pas "
+"de déclaration d'hôte. Les déclarations d'autorisation et d'interdiction au "
+"sein des déclarations de réservoirs continueront d'être respectées."
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:117
-msgid ""
-"Enables/disables password quality checks for example dictionary entries"
+msgid "Enables/disables password quality checks for example dictionary entries"
 msgstr ""
 "Active / désactive les vérifications du niveau de sécurité des mots de "
 "passe, par exemple les comparaisons avec le dictionnaire"
@@ -366,35 +365,34 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:109
 msgid ""
 "First send an ICMP Echo request (a ping) when considering dynamically "
-"allocating an IP address. Should only be disabled if the delay of one second"
-" introduced by this is a problem for a client."
+"allocating an IP address. Should only be disabled if the delay of one second "
+"introduced by this is a problem for a client."
 msgstr ""
 "En premier lieu, envoyer une requête ICMP Echo (ping) lorsque l'allocation "
 "dynamique d'une adresse IP est envisagée. Ne doit être désactivé que si le "
-"délai d'une seconde introduit par cette procédure pose un problème au "
-"client."
+"délai d'une seconde introduit par cette procédure pose un problème au client."
 
-#: modules/univention/admin/handlers/policies/umc.py:105
-#: modules/univention/admin/handlers/policies/release.py:115
-#: modules/univention/admin/handlers/policies/admin_container.py:102
 #: modules/univention/admin/handlers/policies/repositorysync.py:146
-#: modules/univention/admin/handlers/policies/autostart.py:102
-#: modules/univention/admin/handlers/policies/masterpackages.py:116
-#: modules/univention/admin/handlers/policies/maintenance.py:186
-#: modules/univention/admin/handlers/policies/registry.py:103
-#: modules/univention/admin/handlers/policies/slavepackages.py:116
-#: modules/univention/admin/handlers/policies/memberpackages.py:116
-#: modules/univention/admin/handlers/policies/printserver.py:105
-#: modules/univention/admin/handlers/policies/pwhistory.py:136
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
-#: modules/univention/admin/handlers/policies/print_quota.py:131
-#: modules/univention/admin/handlers/policies/desktop.py:136
+#: modules/univention/admin/handlers/policies/admin_container.py:102
 #: modules/univention/admin/handlers/policies/share_userquota.py:150
+#: modules/univention/admin/handlers/policies/desktop.py:136
+#: modules/univention/admin/handlers/policies/slavepackages.py:116
+#: modules/univention/admin/handlers/policies/maintenance.py:186
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:114
-#: modules/univention/admin/handlers/policies/repositoryserver.py:106
-#: modules/univention/admin/handlers/policies/ldapserver.py:105
+#: modules/univention/admin/handlers/policies/memberpackages.py:116
 #: modules/univention/admin/handlers/policies/nfsmounts.py:105
+#: modules/univention/admin/handlers/policies/masterpackages.py:116
+#: modules/univention/admin/handlers/policies/autostart.py:102
+#: modules/univention/admin/handlers/policies/registry.py:103
+#: modules/univention/admin/handlers/policies/printserver.py:105
+#: modules/univention/admin/handlers/policies/umc.py:105
 #: modules/univention/admin/handlers/policies/policy.py:72
+#: modules/univention/admin/handlers/policies/print_quota.py:131
+#: modules/univention/admin/handlers/policies/pwhistory.py:136
+#: modules/univention/admin/handlers/policies/ldapserver.py:105
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
+#: modules/univention/admin/handlers/policies/repositoryserver.py:106
+#: modules/univention/admin/handlers/policies/release.py:115
 msgid "General"
 msgstr "Général"
 
@@ -557,8 +555,8 @@ msgstr "Heure"
 msgid ""
 "If a request is received from a client that matches the MAC address of a "
 "host declaration, any other leases matching that MAC address will be "
-"discarded by the server, if this is set to deny. Allowed by default. Setting"
-" this to deny violates the DHCP protocol."
+"discarded by the server, if this is set to deny. Allowed by default. Setting "
+"this to deny violates the DHCP protocol."
 msgstr ""
 "Si cette valeur est fixée à interdire, lorsqu'une requête est reçue d'un "
 "client correspondant à l'adresse MAC d'une déclaration d'hôte, tout autre "
@@ -691,33 +689,33 @@ msgstr "Montages NFS"
 msgid "NFS shares to mount"
 msgstr "Partages NFS à monter"
 
-#: modules/univention/admin/handlers/policies/umc.py:75
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:79
-#: modules/univention/admin/handlers/policies/release.py:74
-#: modules/univention/admin/handlers/policies/admin_container.py:72
 #: modules/univention/admin/handlers/policies/repositorysync.py:75
-#: modules/univention/admin/handlers/policies/autostart.py:72
-#: modules/univention/admin/handlers/policies/masterpackages.py:75
-#: modules/univention/admin/handlers/policies/maintenance.py:75
-#: modules/univention/admin/handlers/policies/registry.py:72
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:74
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:73
-#: modules/univention/admin/handlers/policies/slavepackages.py:75
-#: modules/univention/admin/handlers/policies/memberpackages.py:75
-#: modules/univention/admin/handlers/policies/printserver.py:73
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:76
-#: modules/univention/admin/handlers/policies/pwhistory.py:75
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:77
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:72
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:74
-#: modules/univention/admin/handlers/policies/print_quota.py:80
-#: modules/univention/admin/handlers/policies/desktop.py:74
+#: modules/univention/admin/handlers/policies/admin_container.py:72
 #: modules/univention/admin/handlers/policies/share_userquota.py:78
+#: modules/univention/admin/handlers/policies/desktop.py:74
+#: modules/univention/admin/handlers/policies/slavepackages.py:75
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:77
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:74
+#: modules/univention/admin/handlers/policies/maintenance.py:75
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:73
-#: modules/univention/admin/handlers/policies/repositoryserver.py:74
-#: modules/univention/admin/handlers/policies/ldapserver.py:74
+#: modules/univention/admin/handlers/policies/memberpackages.py:75
 #: modules/univention/admin/handlers/policies/nfsmounts.py:74
+#: modules/univention/admin/handlers/policies/masterpackages.py:75
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:76
+#: modules/univention/admin/handlers/policies/autostart.py:72
+#: modules/univention/admin/handlers/policies/registry.py:72
+#: modules/univention/admin/handlers/policies/printserver.py:73
+#: modules/univention/admin/handlers/policies/umc.py:75
 #: modules/univention/admin/handlers/policies/policy.py:61
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:79
+#: modules/univention/admin/handlers/policies/print_quota.py:80
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:73
+#: modules/univention/admin/handlers/policies/pwhistory.py:75
+#: modules/univention/admin/handlers/policies/ldapserver.py:74
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:72
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:74
+#: modules/univention/admin/handlers/policies/repositoryserver.py:74
+#: modules/univention/admin/handlers/policies/release.py:74
 msgid "Name"
 msgstr "Nom"
 
@@ -754,27 +752,27 @@ msgstr "Nombre de jours au delà desquels le mot de passe doit être modifié"
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:85
 msgid ""
-"Numeric IP address or name of the server from which the initial boot file is"
-" retrieved."
+"Numeric IP address or name of the server from which the initial boot file is "
+"retrieved."
 msgstr ""
 "Adresse IP numérique ou nom du serveur depuis lequel le fichier d'amorçage "
 "initial est récupéré."
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:55
-#: modules/univention/admin/handlers/policies/masterpackages.py:86
 #: modules/univention/admin/handlers/policies/slavepackages.py:55
 #: modules/univention/admin/handlers/policies/slavepackages.py:86
 #: modules/univention/admin/handlers/policies/memberpackages.py:55
 #: modules/univention/admin/handlers/policies/memberpackages.py:86
+#: modules/univention/admin/handlers/policies/masterpackages.py:55
+#: modules/univention/admin/handlers/policies/masterpackages.py:86
 msgid "Package installation list"
 msgstr "Liste de paquetages à installer"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:56
-#: modules/univention/admin/handlers/policies/masterpackages.py:96
 #: modules/univention/admin/handlers/policies/slavepackages.py:56
 #: modules/univention/admin/handlers/policies/slavepackages.py:96
 #: modules/univention/admin/handlers/policies/memberpackages.py:56
 #: modules/univention/admin/handlers/policies/memberpackages.py:96
+#: modules/univention/admin/handlers/policies/masterpackages.py:56
+#: modules/univention/admin/handlers/policies/masterpackages.py:96
 msgid "Package removal list"
 msgstr "Liste de paquetages à supprimer"
 
@@ -965,9 +963,9 @@ msgid ""
 "Reapply the mountpoint specific user quota policies on each user login. If "
 "not set, the initially configured quota settings will not be overwritten."
 msgstr ""
-"Appliquer à chaque ouverture de session les stratégies de quotas utilisateur"
-" propres au point de montage. Si cette valeur n'est pas définie, les "
-"réglages de quotas configurés initialement ne seront pas écrasés."
+"Appliquer à chaque ouverture de session les stratégies de quotas utilisateur "
+"propres au point de montage. Si cette valeur n'est pas définie, les réglages "
+"de quotas configurés initialement ne seront pas écrasés."
 
 #: modules/univention/admin/handlers/policies/maintenance.py:106
 msgid "Reboot after maintenance"
@@ -1074,8 +1072,8 @@ msgid ""
 "of the following units as postfix: B (default), kB, MB, GB"
 msgstr ""
 "Limite douce. En cas de dépassement, les utilisateurs peuvent être avertis. "
-"Les valeurs peuvent être saisies avec l'une des unités suivantes : B (valeur"
-" par défaut), kB, MB, GB"
+"Les valeurs peuvent être saisies avec l'une des unités suivantes : B (valeur "
+"par défaut), kB, MB, GB"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:132
 msgid "Specify the DDNS Update Style to use for a DHCP Service"

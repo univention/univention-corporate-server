@@ -1,20 +1,20 @@
 # Copyright (C) YEAR Univention GmbH
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 14:40+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -98,8 +98,8 @@ msgstr ""
 
 #: umc/js/ucr.js:311
 msgid ""
-"Select the attribute of a UCR variable that should be searched for the given"
-" keyword"
+"Select the attribute of a UCR variable that should be searched for the given "
+"keyword"
 msgstr ""
 "Sélectionnez l'attribut recherché de la variable UCR pour le mot-clé donné"
 
@@ -119,10 +119,9 @@ msgid ""
 msgstr ""
 "Univention Configuration Registry (UCR) est une base de données locale "
 "contenant la configuration des systèmes UCS pour l'accès et l'édition de "
-"façon unifiée de propriétés globales au système. Attention : la modification"
-" de variables UCR provoque des modifications dans la configuration du "
-"système. Un système inutilisable peut résulter d'une mauvaise configuration "
-"!"
+"façon unifiée de propriétés globales au système. Attention : la modification "
+"de variables UCR provoque des modifications dans la configuration du "
+"système. Un système inutilisable peut résulter d'une mauvaise configuration !"
 
 #: umc/js/ucr.js:81 umc/js/ucr.js:274
 msgid "UCR variable"

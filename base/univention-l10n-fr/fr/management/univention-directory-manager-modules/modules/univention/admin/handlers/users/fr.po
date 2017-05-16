@@ -1,57 +1,57 @@
 # Copyright 2010-2017 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-# 
+#
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 12:27+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: modules/univention/admin/handlers/users/user.py:2329
+#: modules/univention/admin/handlers/users/user.py:2417
 #, python-format
 msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
 msgstr "%(homeSharePath)s doit être indiqué si %(homeShare)s est fourni."
 
-#: modules/univention/admin/handlers/users/user.py:2333
+#: modules/univention/admin/handlers/users/user.py:2421
 #, python-format
 msgid "%s: Invalid path"
 msgstr "%s : chemin invalide"
 
-#: modules/univention/admin/handlers/users/user.py:969
+#: modules/univention/admin/handlers/users/user.py:993
 msgid "Account"
 msgstr "Compte"
 
@@ -63,28 +63,27 @@ msgstr "Désactivation du compte"
 msgid "Account expiry date"
 msgstr "Date d'expiration du compte"
 
-#: modules/univention/admin/handlers/users/user.py:969
+#: modules/univention/admin/handlers/users/user.py:993
 msgid "Account settings"
 msgstr "Réglages du compte"
 
-#: modules/univention/admin/handlers/users/user.py:965
+#: modules/univention/admin/handlers/users/user.py:989
 msgid "Additional groups"
 msgstr "Groupes supplémentaires"
 
-#: modules/univention/admin/handlers/users/user.py:1004
+#: modules/univention/admin/handlers/users/user.py:1028
 msgid "Advanced settings"
 msgstr "Réglages avancés"
 
-#: modules/univention/admin/handlers/users/user.py:680
+#: modules/univention/admin/handlers/users/user.py:704
 msgid "Allow the authentication only on this Microsoft Windows host"
-msgstr ""
-"Autoriser l'authentification uniquement sur cet hôte Microsoft Windows"
+msgstr "Autoriser l'authentification uniquement sur cet hôte Microsoft Windows"
 
 #: modules/univention/admin/handlers/users/user.py:621
 msgid "Alternative e-mail address"
 msgstr "Adresse électronique alternative"
 
-#: modules/univention/admin/handlers/users/user.py:942
+#: modules/univention/admin/handlers/users/user.py:966
 msgid "Basic settings"
 msgstr "Réglages de base"
 
@@ -92,83 +91,83 @@ msgstr "Réglages de base"
 msgid "Birthdate"
 msgstr "Date de naissance"
 
-#: modules/univention/admin/handlers/users/user.py:990
+#: modules/univention/admin/handlers/users/user.py:1014
 msgid "Business"
 msgstr "Professionnel"
 
-#: modules/univention/admin/handlers/users/user.py:1014
+#: modules/univention/admin/handlers/users/user.py:1040
 msgid "Certificate"
 msgstr "Certificat"
 
-#: modules/univention/admin/handlers/users/user.py:782
+#: modules/univention/admin/handlers/users/user.py:806
 msgid "Certificate Issuer Common Name"
 msgstr "Nom courant de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:727
+#: modules/univention/admin/handlers/users/user.py:751
 msgid "Certificate Issuer Country"
 msgstr "Pays de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:749
+#: modules/univention/admin/handlers/users/user.py:773
 msgid "Certificate Issuer Location"
 msgstr "Emplacement géographique de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:793
+#: modules/univention/admin/handlers/users/user.py:817
 msgid "Certificate Issuer Mail"
 msgstr "Courriel de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:760
+#: modules/univention/admin/handlers/users/user.py:784
 msgid "Certificate Issuer Organisation"
 msgstr "Organisation de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:771
+#: modules/univention/admin/handlers/users/user.py:795
 msgid "Certificate Issuer Organisational Unit"
 msgstr "Unité d'Organisation de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:738
+#: modules/univention/admin/handlers/users/user.py:762
 msgid "Certificate Issuer State"
 msgstr "État de l'émetteur du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:914
+#: modules/univention/admin/handlers/users/user.py:938
 msgid "Certificate Serial"
 msgstr "Numéro de série du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:859
+#: modules/univention/admin/handlers/users/user.py:883
 msgid "Certificate Subject Common Name"
 msgstr "Nom courant du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:804
+#: modules/univention/admin/handlers/users/user.py:828
 msgid "Certificate Subject Country"
 msgstr "Pays du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:826
+#: modules/univention/admin/handlers/users/user.py:850
 msgid "Certificate Subject Location"
 msgstr "Emplacement géographique du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:870
+#: modules/univention/admin/handlers/users/user.py:894
 msgid "Certificate Subject Mail"
 msgstr "Courriel du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:837
+#: modules/univention/admin/handlers/users/user.py:861
 msgid "Certificate Subject Organisation"
 msgstr "Organisation du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:848
+#: modules/univention/admin/handlers/users/user.py:872
 msgid "Certificate Subject Organisational Unit"
 msgstr "Unité d'Organisation du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:815
+#: modules/univention/admin/handlers/users/user.py:839
 msgid "Certificate Subject State"
 msgstr "État du sujet du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:903
+#: modules/univention/admin/handlers/users/user.py:927
 msgid "Certificate Version"
 msgstr "Version du certificat"
 
-#: modules/univention/admin/handlers/users/user.py:881
+#: modules/univention/admin/handlers/users/user.py:905
 msgid "Certificate valid from"
 msgstr "Certificat valide du"
 
-#: modules/univention/admin/handlers/users/user.py:892
+#: modules/univention/admin/handlers/users/user.py:916
 msgid "Certificate valid until"
 msgstr "Certificat valide jusqu'au"
 
@@ -185,19 +184,24 @@ msgstr "Changer le mot de passe à la prochaine ouverture de session"
 msgid "City"
 msgstr "Ville"
 
-#: modules/univention/admin/handlers/users/user.py:989
+#: modules/univention/admin/handlers/users/user.py:1013
 msgid "Contact"
 msgstr "Contact"
 
-#: modules/univention/admin/handlers/users/user.py:989
+#: modules/univention/admin/handlers/users/user.py:1013
 msgid "Contact information"
 msgstr "Informations de contact"
+
+#: modules/univention/admin/handlers/users/user.py:645
+#, fuzzy
+msgid "Copy to the primary e-mail address"
+msgstr "Adresse électronique principale"
 
 #: modules/univention/admin/handlers/users/user.py:367
 msgid "Country"
 msgstr "Pays"
 
-#: modules/univention/admin/handlers/users/user.py:2322
+#: modules/univention/admin/handlers/users/user.py:2410
 msgid "DN given as share is not valid."
 msgstr "Le nom distingué donné comme partage n'est pas valide."
 
@@ -234,6 +238,11 @@ msgstr "Type d'employé"
 msgid "Enter date as day.month.year."
 msgstr "Saisissez la date sous la forme jour.mois.année."
 
+#: modules/univention/admin/handlers/users/user.py:633
+#, fuzzy
+msgid "External e-mail address"
+msgstr "Adresse électronique alternative"
+
 #: modules/univention/admin/handlers/users/user.py:161
 msgid "First name"
 msgstr "Prénom"
@@ -242,13 +251,13 @@ msgstr "Prénom"
 msgid "GECOS"
 msgstr "GECOS"
 
+#: modules/univention/admin/handlers/users/user.py:966
+#: modules/univention/admin/handlers/users/user.py:1041
 #: modules/univention/admin/handlers/users/self.py:51
-#: modules/univention/admin/handlers/users/user.py:942
-#: modules/univention/admin/handlers/users/user.py:1015
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/users/user.py:2339
+#: modules/univention/admin/handlers/users/user.py:2427
 msgid "Given DN is no share."
 msgstr "Le nom distingué donné n'est pas un partage."
 
@@ -257,50 +266,50 @@ msgid "Group ID of the primary group"
 msgstr "identifiant de groupe du groupe principal"
 
 #: modules/univention/admin/handlers/users/user.py:572
-#: modules/univention/admin/handlers/users/user.py:961
+#: modules/univention/admin/handlers/users/user.py:985
 msgid "Groups"
 msgstr "Groupes"
 
-#: modules/univention/admin/handlers/users/user.py:657
-#: modules/univention/admin/handlers/users/user.py:2329
+#: modules/univention/admin/handlers/users/user.py:681
+#: modules/univention/admin/handlers/users/user.py:2417
 msgid "Home share"
 msgstr "Répertoire partagé personnel"
 
-#: modules/univention/admin/handlers/users/user.py:668
-#: modules/univention/admin/handlers/users/user.py:2329
-#: modules/univention/admin/handlers/users/user.py:2333
+#: modules/univention/admin/handlers/users/user.py:692
+#: modules/univention/admin/handlers/users/user.py:2417
+#: modules/univention/admin/handlers/users/user.py:2421
 msgid "Home share path"
 msgstr "Chemin du répertoire partagé personnel"
 
-#: modules/univention/admin/handlers/users/user.py:1024
+#: modules/univention/admin/handlers/users/user.py:1050
 msgid "Issuer"
 msgstr "Émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:781
+#: modules/univention/admin/handlers/users/user.py:805
 msgid "Issuer Common Name"
 msgstr "Nom courant de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:726
+#: modules/univention/admin/handlers/users/user.py:750
 msgid "Issuer Country"
 msgstr "Pays de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:748
+#: modules/univention/admin/handlers/users/user.py:772
 msgid "Issuer Location"
 msgstr "Emplacement géographique de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:792
+#: modules/univention/admin/handlers/users/user.py:816
 msgid "Issuer Mail"
 msgstr "Courriel de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:759
+#: modules/univention/admin/handlers/users/user.py:783
 msgid "Issuer Organisation"
 msgstr "Organisation de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:770
+#: modules/univention/admin/handlers/users/user.py:794
 msgid "Issuer Organisational Unit"
 msgstr "Unité d'Organisation de l'émetteur"
 
-#: modules/univention/admin/handlers/users/user.py:737
+#: modules/univention/admin/handlers/users/user.py:761
 msgid "Issuer State"
 msgstr "État de l'émetteur"
 
@@ -308,7 +317,7 @@ msgstr "État de l'émetteur"
 msgid "Kerberos principal"
 msgstr "Principal Kerberos"
 
-#: modules/univention/admin/handlers/users/user.py:925
+#: modules/univention/admin/handlers/users/user.py:949
 msgid "Key value pairs storing user preferences for UMC"
 msgstr "Paires clé-valeur contenant les préférences utilisateur pour UMC"
 
@@ -320,7 +329,7 @@ msgstr "Nom"
 msgid "Locked login methods"
 msgstr "Méthodes de connexion verrouillée"
 
-#: modules/univention/admin/handlers/users/user.py:970
+#: modules/univention/admin/handlers/users/user.py:994
 msgid "Locking and deactivation"
 msgstr "Verrouillage et désactivation"
 
@@ -328,7 +337,7 @@ msgstr "Verrouillage et désactivation"
 msgid "Login shell"
 msgstr "Terminal de connexion"
 
-#: modules/univention/admin/handlers/users/user.py:1003
+#: modules/univention/admin/handlers/users/user.py:1027
 msgid "Mail"
 msgstr "Courriel"
 
@@ -340,7 +349,7 @@ msgstr "Compte de courriel"
 msgid "Mail home server"
 msgstr "Serveur de courriel personnel"
 
-#: modules/univention/admin/handlers/users/user.py:1003
+#: modules/univention/admin/handlers/users/user.py:1027
 msgid "Mail preferences"
 msgstr "Préférences de courriel"
 
@@ -348,7 +357,7 @@ msgstr "Préférences de courriel"
 msgid "Manage Samba privileges"
 msgstr "Gérer les privilèges Samba"
 
-#: modules/univention/admin/handlers/users/user.py:1033
+#: modules/univention/admin/handlers/users/user.py:1059
 msgid "Misc"
 msgstr "Divers"
 
@@ -356,7 +365,7 @@ msgstr "Divers"
 msgid "Mobile phone number"
 msgstr "Numéro de téléphone portable"
 
-#: modules/univention/admin/handlers/users/user.py:1747
+#: modules/univention/admin/handlers/users/user.py:1802
 #, python-format
 msgid ""
 "Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to "
@@ -366,27 +375,27 @@ msgstr ""
 "dans les options pour créer l'utilisateur."
 
 #: modules/univention/admin/handlers/users/user.py:242
-#: modules/univention/admin/handlers/users/user.py:955
+#: modules/univention/admin/handlers/users/user.py:979
 msgid "Organisation"
 msgstr "Organisation"
 
-#: modules/univention/admin/handlers/users/user.py:645
+#: modules/univention/admin/handlers/users/user.py:669
 msgid "Override password check"
 msgstr "Ignorer la vérification de mot de passe"
 
-#: modules/univention/admin/handlers/users/user.py:633
+#: modules/univention/admin/handlers/users/user.py:657
 msgid "Override password history"
 msgstr "Ignorer l'historique de mots de passe"
 
-#: modules/univention/admin/handlers/users/user.py:715
+#: modules/univention/admin/handlers/users/user.py:739
 msgid "PKI user certificate (DER format)"
 msgstr "Certificat utilisateur PKI (format DER)"
 
-#: modules/univention/admin/handlers/users/user.py:983
+#: modules/univention/admin/handlers/users/user.py:1007
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: modules/univention/admin/handlers/users/user.py:983
+#: modules/univention/admin/handlers/users/user.py:1007
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "Réglages de compte POSIX (Linux/UNIX)"
 
@@ -407,25 +416,25 @@ msgstr "Mot de passe"
 msgid "Password expiry date"
 msgstr "Date d'expiration du mot de passe"
 
-#: modules/univention/admin/handlers/users/user.py:669
+#: modules/univention/admin/handlers/users/user.py:693
 msgid "Path to the home directory on the home share"
 msgstr ""
 "Chemin vers le répertoire personnel sur le répertoire partagé personnel"
 
-#: modules/univention/admin/handlers/users/user.py:692
+#: modules/univention/admin/handlers/users/user.py:716
 msgid "Permitted times for Windows logins"
 msgstr "Horaires autorisés pour l'ouverture de sessions Windows"
 
 #: modules/univention/admin/handlers/users/user.py:113
-#: modules/univention/admin/handlers/users/user.py:950
+#: modules/univention/admin/handlers/users/user.py:974
 msgid "Personal information"
 msgstr "Informations personnelles"
 
-#: modules/univention/admin/handlers/users/user.py:705
+#: modules/univention/admin/handlers/users/user.py:729
 msgid "Picture for user account in JPEG format"
 msgstr "Image pour le compte utilisateur au format JPEG"
 
-#: modules/univention/admin/handlers/users/user.py:704
+#: modules/univention/admin/handlers/users/user.py:728
 msgid "Picture of the user (JPEG format)"
 msgstr "Image de l'utilisateur (format JPEG)"
 
@@ -437,12 +446,23 @@ msgstr "Code postal"
 msgid "Primary e-mail address"
 msgstr "Adresse électronique principale"
 
+#: modules/univention/admin/handlers/users/user.py:2371
+msgid ""
+"Primary e-mail address must be set, if a copy of forwarded messages should "
+"be stored in its mailbox."
+msgstr ""
+
+#: modules/univention/admin/handlers/users/user.py:2368
+msgid ""
+"Primary e-mail address must be set, if messages should be forwarded for it."
+msgstr ""
+
 #: modules/univention/admin/handlers/users/user.py:584
-#: modules/univention/admin/handlers/users/user.py:962
+#: modules/univention/admin/handlers/users/user.py:986
 msgid "Primary group"
 msgstr "Groupe principal"
 
-#: modules/univention/admin/handlers/users/user.py:996
+#: modules/univention/admin/handlers/users/user.py:1020
 msgid "Private"
 msgstr "Personnel"
 
@@ -454,7 +474,7 @@ msgstr "Adresse postale personnelle"
 msgid "Private telephone number"
 msgstr "Numéro de téléphone personnel"
 
-#: modules/univention/admin/handlers/users/user.py:716
+#: modules/univention/admin/handlers/users/user.py:740
 msgid "Public key infrastructure - user certificate "
 msgstr "Infrastructure à clés publiques - certificat utilisateur"
 
@@ -478,14 +498,19 @@ msgstr "Compte Samba"
 msgid "Samba privilege"
 msgstr "Privilèges Samba"
 
-#: modules/univention/admin/handlers/users/user.py:913
+#: modules/univention/admin/handlers/users/user.py:646
+msgid ""
+"Send a copy to the primary e-mail address when forwarding to external e-mail "
+"address"
+msgstr ""
+
+#: modules/univention/admin/handlers/users/user.py:937
 msgid "Serial"
 msgstr "Numéro de série"
 
-#: modules/univention/admin/handlers/users/user.py:658
+#: modules/univention/admin/handlers/users/user.py:682
 msgid "Share, the user's home directory resides on"
-msgstr ""
-"Partage dans lequel se trouve le répertoire personnel de l'utilisateur"
+msgstr "Partage dans lequel se trouve le répertoire personnel de l'utilisateur"
 
 #: modules/univention/admin/handlers/users/user.py:118
 msgid "Simple authentication account"
@@ -495,35 +520,35 @@ msgstr "Compte à authentification simple"
 msgid "Street"
 msgstr "Rue"
 
-#: modules/univention/admin/handlers/users/user.py:1018
+#: modules/univention/admin/handlers/users/user.py:1044
 msgid "Subject"
 msgstr "Sujet"
 
-#: modules/univention/admin/handlers/users/user.py:858
+#: modules/univention/admin/handlers/users/user.py:882
 msgid "Subject Common Name"
 msgstr "Nom courant du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:803
+#: modules/univention/admin/handlers/users/user.py:827
 msgid "Subject Country"
 msgstr "Pays du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:825
+#: modules/univention/admin/handlers/users/user.py:849
 msgid "Subject Location"
 msgstr "Emplacement géographique du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:869
+#: modules/univention/admin/handlers/users/user.py:893
 msgid "Subject Mail"
 msgstr "Courriel du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:836
+#: modules/univention/admin/handlers/users/user.py:860
 msgid "Subject Organisation"
 msgstr "Organisation du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:847
+#: modules/univention/admin/handlers/users/user.py:871
 msgid "Subject Organisational Unit"
 msgstr "Unité d'Organisation du sujet"
 
-#: modules/univention/admin/handlers/users/user.py:814
+#: modules/univention/admin/handlers/users/user.py:838
 msgid "Subject State"
 msgstr "État du sujet"
 
@@ -535,8 +560,8 @@ msgstr "Supérieur"
 msgid "Telephone number"
 msgstr "Numéro de téléphone"
 
-#: modules/univention/admin/handlers/users/user.py:1998
-#: modules/univention/admin/handlers/users/user.py:2004
+#: modules/univention/admin/handlers/users/user.py:2053
+#: modules/univention/admin/handlers/users/user.py:2059
 #, python-format
 msgid "The password is too short, at least %d characters needed!"
 msgstr ""
@@ -546,12 +571,12 @@ msgstr ""
 msgid "Title"
 msgstr "Titre"
 
-#: modules/univention/admin/handlers/users/user.py:1009
-#: modules/univention/admin/handlers/users/user.py:1010
+#: modules/univention/admin/handlers/users/user.py:1035
+#: modules/univention/admin/handlers/users/user.py:1036
 msgid "UMC preferences"
 msgstr "Préférences UMC"
 
-#: modules/univention/admin/handlers/users/user.py:924
+#: modules/univention/admin/handlers/users/user.py:948
 msgid "UMC user preferences"
 msgstr "Préférences utilisateur UMC"
 
@@ -567,7 +592,7 @@ msgstr "Utilisateur"
 msgid "User ID"
 msgstr "Identifiant utilisateur"
 
-#: modules/univention/admin/handlers/users/user.py:943
+#: modules/univention/admin/handlers/users/user.py:967
 msgid "User account"
 msgstr "Compte utilisateur"
 
@@ -584,27 +609,27 @@ msgstr "Utilisateur : mot de passe"
 msgid "User: Self"
 msgstr "Utilisateur : Self"
 
-#: modules/univention/admin/handlers/users/user.py:880
+#: modules/univention/admin/handlers/users/user.py:904
 msgid "Valid from"
 msgstr "Valide à partir du"
 
-#: modules/univention/admin/handlers/users/user.py:891
+#: modules/univention/admin/handlers/users/user.py:915
 msgid "Valid until"
 msgstr "Valide jusqu'au"
 
-#: modules/univention/admin/handlers/users/user.py:1030
+#: modules/univention/admin/handlers/users/user.py:1056
 msgid "Validity"
 msgstr "Validité"
 
-#: modules/univention/admin/handlers/users/user.py:902
+#: modules/univention/admin/handlers/users/user.py:926
 msgid "Version"
 msgstr "Version"
 
-#: modules/univention/admin/handlers/users/user.py:975
+#: modules/univention/admin/handlers/users/user.py:999
 msgid "Windows"
 msgstr "Windows"
 
-#: modules/univention/admin/handlers/users/user.py:975
+#: modules/univention/admin/handlers/users/user.py:999
 msgid "Windows account settings"
 msgstr "Réglages de compte Windows"
 

@@ -1,44 +1,44 @@
 # Copyright 2003-2017 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of the software contained in this package
 # as well as the source package itself are made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this package provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-# 
+#
 # In the case you use the software under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 12:46+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -80,8 +80,8 @@ msgstr "Vérifier les réglages"
 msgid "Command name of Nagios plugin"
 msgstr "Nom de la commande associée au plugin Nagios"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:91
 #: modules/univention/admin/handlers/nagios/service.py:73
+#: modules/univention/admin/handlers/nagios/timeperiod.py:91
 msgid "Description"
 msgstr "Description"
 
@@ -93,8 +93,8 @@ msgstr "Description de la plage horaire (par exemple heures non ouvrées)"
 msgid "Friday"
 msgstr "Vendredi"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:175
 #: modules/univention/admin/handlers/nagios/service.py:235
+#: modules/univention/admin/handlers/nagios/timeperiod.py:175
 msgid "General"
 msgstr "Général"
 
@@ -125,8 +125,8 @@ msgstr "Intervalle entre deux notifications"
 #: modules/univention/admin/handlers/nagios/service.py:149
 msgid "Interval between re-checks if service is in non-OK-state"
 msgstr ""
-"Intervalle entre deux vérifications si le service est dans un état différent"
-" de OK"
+"Intervalle entre deux vérifications si le service est dans un état différent "
+"de OK"
 
 #: modules/univention/admin/handlers/nagios/service.py:124
 msgid "Maximum number of check attempts"
@@ -160,10 +160,10 @@ msgstr "Service Nagios"
 msgid "Nagios time period"
 msgstr "Plage horaire Nagios"
 
+#: modules/univention/admin/handlers/nagios/service.py:62
+#: modules/univention/admin/handlers/nagios/nagios.py:60
 #: modules/univention/admin/handlers/nagios/timeperiod.py:80
 #: modules/univention/admin/handlers/nagios/timeperiod.py:81
-#: modules/univention/admin/handlers/nagios/nagios.py:60
-#: modules/univention/admin/handlers/nagios/service.py:62
 msgid "Name"
 msgstr "Nom"
 
@@ -276,10 +276,11 @@ msgstr ""
 
 #: modules/univention/admin/handlers/nagios/nagios.py:45
 msgid ""
-"http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring"
+"http://docs.univention.de/manual.html#nagios:"
+"Configuration_of_the_Nagios_monitoring"
 msgstr ""
-"http://docs.univention.de/manual.html#nagios "
-":Configuration_of_the_Nagios_monitoring"
+"http://docs.univention.de/manual.html#nagios :"
+"Configuration_of_the_Nagios_monitoring"
 
 #~ msgid "Add"
 #~ msgstr "Ajouter"

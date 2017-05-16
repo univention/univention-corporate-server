@@ -4,14 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-21 20:54+0100\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-09 18:27+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
@@ -39,8 +39,8 @@ msgstr "Ajouter un quota"
 #, javascript-format
 msgid "Add quota settings for a new user on partition <i>%s</i>."
 msgstr ""
-"Ajouter un réglage de quota pour un nouvel utilisateur sur la partition "
-"<i>%s</i>."
+"Ajouter un réglage de quota pour un nouvel utilisateur sur la partition <i>"
+"%s</i>."
 
 #: umc/js/quota/PartitionPage.js:71
 msgid "Back to overview"
@@ -117,8 +117,8 @@ msgstr "Modifier les quotas"
 
 #: umc/js/quota/DetailPage.js:165
 msgid ""
-"Modify the quota settings for user <i>%(user)s</i> on partition "
-"<i>%(partition)s</i>."
+"Modify the quota settings for user <i>%(user)s</i> on partition <i>"
+"%(partition)s</i>."
 msgstr ""
 "Modifier les réglages de quotas pour l'utilisateur <i>%(user)s</i> sur la "
 "partition <i>%(partition)s</i>."
@@ -222,7 +222,7 @@ msgstr "La limite douce doit être inférieure ou égale à la limite dure"
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: umc/js/quota/DetailPage.js:87 umc/js/quota/PartitionPage.js:148
+#: umc/js/quota/PartitionPage.js:148 umc/js/quota/DetailPage.js:87
 msgid "User"
 msgstr "Utilisateur"
 
