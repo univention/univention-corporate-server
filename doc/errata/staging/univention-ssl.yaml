@@ -6,5 +6,6 @@ src: univention-ssl
 fix: 10.0.0-25.183.201705111457
 desc: |
  This update addresses the following issue(s):
- * The local system SSL certificates are correctly regenerated when refreshing certificates.
+ * The local system SSL certificates are correctly regenerated when
+   refreshing certificates.
 bug: [44322]
