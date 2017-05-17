@@ -9,3 +9,5 @@ desc: |
  * The local system SSL certificates are correctly regenerated during
    system join.
 bug: [44322]
+erratum: 419
+announced: 2017-05-17
