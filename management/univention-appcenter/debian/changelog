@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-11) unstable; urgency=low
+
+  * Bug #41303: replace UMC_CommandError with UMC_Error
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 May 2017 14:31:55 +0200
+
 univention-appcenter (6.0.7-10) unstable; urgency=low
 
   * Bug #34543: fix po file

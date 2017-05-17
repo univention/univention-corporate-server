@@ -193,7 +193,7 @@ class Instance(umcm.Base, ProgressMixin):
 		apps = list_apps.get_apps()
 		if self.ucr.is_true('appcenter/docker', True):
 			if not self._test_for_docker_service():
-				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
+				raise umcm.UMC_Error(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 		info = domain.to_dict(apps)
 		if quick:
 			ret = []
@@ -239,7 +239,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if self._test_for_docker_service():
 			ucr_save({'appcenter/docker': 'enabled'})
 		else:
-			raise umcm.UMC_CommandError(_('Unable to start the docker service!') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
+			raise umcm.UMC_Error(_('Unable to start the docker service!') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 
 	@require_apps_update
 	@require_password
@@ -260,7 +260,7 @@ class Instance(umcm.Base, ProgressMixin):
 			if app:
 				return domain.to_dict([app])[0]
 			else:
-				raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
+				raise umcm.UMC_Error(_('Could not find an application for %s') % component_id)
 
 	# used in updater-umc
 	@simple_response
@@ -275,7 +275,7 @@ class Instance(umcm.Base, ProgressMixin):
 		domain = get_action('domain')
 		app = Apps().find(application)
 		if app is None:
-			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
+			raise umcm.UMC_Error(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]
 
 	@sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
@@ -387,7 +387,7 @@ class Instance(umcm.Base, ProgressMixin):
 			with self.package_manager.locked(reset_status=True, set_finished=True):
 				yield
 		except LockError:
-			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
+			raise umcm.UMC_Error(_('Another package operation is in progress'))
 
 	@require_apps_update
 	@require_password
@@ -420,7 +420,7 @@ class Instance(umcm.Base, ProgressMixin):
 		Application.all(only_local=True)  # if not yet cached, cache. but use only local inis
 		application = Application.find(application_id)
 		if application is None:
-			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application_id,))
+			raise umcm.UMC_Error(_('Could not find an application for %s') % (application_id,))
 		force = request.options.get('force')
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
@@ -545,7 +545,7 @@ class Instance(umcm.Base, ProgressMixin):
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
-			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
+			raise umcm.UMC_Error(_('Another package operation is in progress'))
 
 	def keep_alive(self, request):
 		''' Fix for Bug #30611: UMC kills appcenter module
@@ -693,7 +693,7 @@ class Instance(umcm.Base, ProgressMixin):
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
-			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
+			raise umcm.UMC_Error(_('Another package operation is in progress'))
 
 	def _working(self):
 		return not self.package_manager.progress_state._finished
