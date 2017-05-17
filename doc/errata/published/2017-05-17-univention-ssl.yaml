@@ -9,3 +9,5 @@ desc: |
  * The local system SSL certificates are correctly regenerated when
    refreshing certificates.
 bug: [44322]
+erratum: 420
+announced: 2017-05-17
