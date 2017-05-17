@@ -119,9 +119,6 @@ def prevent_denial_of_service(func):
 					},
 					decay
 				)
-			except pylibmc.Error as exc:
-				MODULE.error("Error increasing usage count. Exception: %r" % (exc,))
-				raise
 			if count > limit:
 				limit_reached = True
 				_max_wait = max(_max_wait, memcache.get("{}:exp".format(key)))
