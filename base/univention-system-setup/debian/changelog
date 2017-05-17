@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-16) unstable; urgency=medium
+
+  * Bug #43671: Reflect IP address changes in udm settings/portal_entry
+    objects
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 17 May 2017 12:46:37 +0200
+
 univention-system-setup (10.0.10-15) unstable; urgency=medium
 
   * Bug #44575: Adapt setup cleanup script and unset portal UCRv
