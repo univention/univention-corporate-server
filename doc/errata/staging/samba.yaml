@@ -1,0 +1,12 @@
+product: ucs
+release: "3.3"
+version: [1]
+scope: ucs_3.3-0-errata3.3-1
+src: samba
+fix: 2:4.3.7-1.828.201705171518
+desc: |
+ This update addresses the following issue:
+ * rpc_server3: Refuse to open pipe names with / inside (CVE-2017-7494)
+bug: [44614]
+cve:
+ - CVE-2017-7494
