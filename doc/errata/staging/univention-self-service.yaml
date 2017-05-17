@@ -3,9 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-self-service
-fix: 2.0.16-6A~4.2.0.201705161209
+fix: 2.0.16-7A~4.2.0.201705171158
 desc: |
  This update addresses the following issue(s):
- * It was not possible to reset a users password, because the memcache
-   service for the self service module hadn't started.
+ * The memcache service for the self service module did not start,
+   because it was misconfigured.
 bug: [44477]
