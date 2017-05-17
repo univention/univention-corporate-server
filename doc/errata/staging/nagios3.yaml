@@ -1,6 +1,6 @@
 product: ucs
 release: "3.3"
-version: [0,1]
+version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: nagios3
 fix: 3.2.1-2.57.201612191626
