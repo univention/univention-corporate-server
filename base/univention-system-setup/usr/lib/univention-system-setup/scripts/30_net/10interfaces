@@ -33,6 +33,7 @@ Configure IPvX network interfaces.
 import sys
 from optparse import OptionParser
 from univention.config_registry.frontend import ucr_update
+from univention.config_registry import handler_unset
 from univention.management.console.modules.setup.setup_script import SetupScript, main, _
 from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.modules import RunPhases
@@ -109,6 +110,17 @@ class NetworkSetup(SetupScript):
 		ud.set_level(ud.ADMIN, level)
 
 	def prepare_changeset(self):
+		# This if clause is only executed on prejoined ucs appliances
+		# We need to update the ldap, and therefore have to supply the
+		# ip address with which the system was initially joined
+		# otherwise, the ldap objects will not be updated with the
+		# new ip address chosen in system setup
+		if self.ucr.ucr.get('system/setup/boot/old_ipv4', None):
+			self.logger.info("Setting old ipv4 address")
+			self.ucr.ucr['interfaces/eth0/address'] = self.ucr.ucr.get('system/setup/boot/old_ipv4')
+			if not self.options.no_act:
+				handler_unset(['system/setup/boot/old_ipv4'])
+
 		self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)
 		if not self.changeset.ucr_changes:
 			self.logger.info("No chnages to apply. Exiting.")

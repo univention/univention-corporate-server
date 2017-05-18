@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-17) unstable; urgency=medium
+
+  * Bug #43140: If defined, use UCR system/setup/boot/old_ipv4 to reconfigure
+    outdated LDAP values in fast demo mode
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 18 May 2017 17:37:49 +0200
+
 univention-system-setup (10.0.10-16) unstable; urgency=medium
 
   * Bug #43671: Reflect IP address changes in udm settings/portal_entry
