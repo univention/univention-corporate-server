@@ -1,3 +1,10 @@
+univention-docker-container-mode (2.0.0-12) unstable; urgency=low
+
+  * Bug #44015: disable update check cron job and limit update_available
+    to once per day
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 May 2017 10:21:35 +0200
+
 univention-docker-container-mode (2.0.0-11) unstable; urgency=medium
 
   * Bug #43324: Fix UCR restoration

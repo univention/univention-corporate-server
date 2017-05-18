@@ -38,16 +38,33 @@ if [ ! "$?" -eq 0 ]; then
 	exit 0
 fi
 
-available=$(ucr get update/available)
-if [ "$available" != "yes" ]; then
-	exit 0
-fi
-upgrade=$(univention-upgrade --check --disable-app-updates)
-release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)
-if [ -n "$release" ]; then
-	echo "release: $release"
-else
-	packages=$(echo "$upgrade" | grep "Checking for package updates:" | sed -n "s/.*found/packages/p")
-	echo "$packages"
+eval "$(ucr shell update/container/check/last update/container/check/type)"
+now="$(date +%s)"
+
+# one check a day
+if [ -n "$update_container_check_last" ]; then
+	seconds_since_last_check="$(($now - $update_container_check_last))"
+	if [ $seconds_since_last_check -lt 86400 ]; then
+		test -n "$update_container_check_type" && echo "$update_container_check_type"
+		exit 0
+	fi
 fi
 
+# check
+upgrade="$(univention-upgrade --check --setucr --disable-app-updates)"
+eval "$(ucr shell update/available)"
+if [ "$update_available" = "yes" ]; then
+	release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)
+	if [ -n "$release" ]; then
+		update="release: $release"
+	else
+		update=$(echo "$upgrade" | grep "Checking for package updates:" | sed -n "s/.*found/packages/p")
+	fi
+	ucr set update/container/check/type="$update" >/dev/null
+	echo "$update"
+else
+	test -n "$update_container_check_type" && ucr unset update/container/check/type >/dev/null
+fi
+ucr set update/container/check/last="$now" >/dev/null
+
+exit 0
