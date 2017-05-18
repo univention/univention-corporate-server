@@ -806,6 +806,8 @@ components=""
 interfaces/eth0/address="10.203.10.40"
 __EOF__
 		ucr set umc/web/appliance/fast_setup_mode=true
+		# set same address as in the profile, otherwise the ldap will not be updated
+		ucr set system/setup/boot/old_ipv4=10.203.10.40
 		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
 		echo "root:univention" | chpasswd
 	else
