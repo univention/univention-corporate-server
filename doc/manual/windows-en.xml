@@ -1514,7 +1514,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  The UCS domain controller (&ucsMaster;, &ucsBackup; or &ucsSlave;) needs to be installed
+		  The UCS domain controller (&ucsMaster;) needs to be installed
 		  with a unique hostname, not used in the AD domain.
 		</simpara></listitem>
 

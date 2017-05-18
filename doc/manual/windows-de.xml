@@ -1590,7 +1590,7 @@ immer in dieser Gruppe Mitglied.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Der UCS-Domänencontroller (&ucsMaster;, &ucsBackup; oder &ucsSlave;) muss mit einem
+		  Der UCS-Domänencontroller (&ucsMaster;) muss mit einem
 		  eindeutigen Rechnernamen installiert werden, der nicht in der AD-Domäne vorhanden ist.
 		</simpara></listitem>
 
