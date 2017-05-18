@@ -3,16 +3,17 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-management-console
-fix: 9.0.80-12A~4.2.0.201705161339
+fix: 9.0.80-14A~4.2.0.201705181622
 desc: |
  This update addresses the following issue(s):
  * The reason why changing the password failed is shown again.
  * An error during login via SAML has been fixed.
  * A redirection loop during SAML login is prevented.
- * The PAM configuration has been adjusted to make password changes possible
-   again if the password was expired.
+ * The PAM configuration has been adjusted to make password changes
+   possible again if the password was expired.
  * The error handling on module initialization has been improoved.
- * If the URL to access UMC contained a Port a XSRF-Attack was wrong detected
-   causing UMC to be unusable. This has been fixed.
+ * If the URL to access UMC contained a Port a XSRF-Attack was wrong
+   detected causing UMC to be unusable. This has been fixed.
  * The link to send feedback to Univention has been fixed.
-bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381]
+ * A crash of the UMC-Server during handling of errors has been fixed.
+bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381, 44365]
