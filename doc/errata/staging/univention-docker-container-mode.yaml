@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-docker-container-mode
+fix: 2.0.0-12A~4.2.0.201705181023
+desc: |
+ This update addresses the following issue(s):
+ * The cron job for the updater check has been deactivated.
+bug: [44630]
