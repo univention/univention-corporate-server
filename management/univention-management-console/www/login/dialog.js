@@ -41,12 +41,14 @@ define([
 	"dojo/has",
 	"dojo/_base/event",
 	"dojo/cookie",
+	"dojo/json",
 	"dojo/Deferred",
 	"dijit/Tooltip",
 	"dojox/html/entities",
 	"umc/dialog",
+	"umc/tools",
 	"umc/i18n!login"
-], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, Deferred, Tooltip, entities, dialog, _) {
+], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, json, Deferred, Tooltip, entities, dialog, tools, _) {
 
 	return {
 		_loginDialogRenderedDeferred: new Deferred(),
@@ -59,6 +61,7 @@ define([
 		renderLoginDialog: function() {
 			this._addDefaultLinks();
 			this.checkCookiesEnabled();
+			this._watchUsernameField();
 			this._loginDialogRenderedDeferred.resolve();
 		},
 
@@ -114,14 +117,28 @@ define([
 			}
 		},
 
+		_watchUsernameField: function() {
+			var node = dom.byId('umcLoginUsername');
+			on(node, 'keyup', lang.hitch(this, function() {
+				if (node.value === 'root') {
+					Tooltip.show(_('The default username to manage the domain is %s.', this._administratorLink()) + ' ' + _('The <i>root</i> user neither has access to the domain administration nor to the App Center.'), node);
+				}
+			}));
+		},
+
 		howToLogin: function() {
 			var helpText = _('Please login with a valid username and password.') + ' ';
 			if (getQuery('username') === 'root') {
 				helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
 			} else {
-				helpText += _('The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'Administrator\')">Administrator</a></b>');
+				helpText += _('The default username to manage the domain is %s.', this._administratorLink());
 			}
 			return lang.replace('<a href="javascript:void(0);" title="{tooltip}">{text}</a>', {tooltip: entities.encode(helpText), text: entities.encode(_('How do I login?'))});
+		},
+
+		_administratorLink: function() {
+			var username = tools.status('administrator') || 'Administrator';
+			return '<b><a href="javascript:void();" onclick=\'_fillUsernameField(' + json.stringify(username) + ')\'>' + entities.encode(username) + '</a></b>';
 		},
 
 		_cookiesEnabled: function() {

@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-42) unstable; urgency=medium
+
+  * Bug #40986: display tooltip about Administrator user when entering root as
+  	username into the login dialog
+
+ -- Florian Best <best@univention.de>  Thu, 18 May 2017 18:08:18 +0200
+
 univention-management-console (9.0.80-14) unstable; urgency=medium
 
   * Bug #44365: fix crashing of UMC server during error handling

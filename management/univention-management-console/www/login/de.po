@@ -141,3 +141,6 @@ msgstr "Abbrechen"
 #: www/login/main.js:377
 msgid "Logout"
 msgstr "Abmelden"
+
+msgid "The <i>root</i> user neither has access to the domain administration nor to the App Center."
+msgstr "Der <i>root</i>-Nenutzer hat weder Zugriff auf die Domänenadministration noch auf das App Center."
