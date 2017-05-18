@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-14) unstable; urgency=medium
+
+  * Bug #44365: fix crashing of UMC server during error handling
+
+ -- Florian Best <best@univention.de>  Thu, 18 May 2017 16:20:03 +0200
+
 univention-management-console (9.0.80-13) unstable; urgency=medium
 
   * Bug #44381: fix link for sending feedback

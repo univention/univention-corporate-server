@@ -355,7 +355,7 @@ class Client(signals.Provider, Translation):
 			self.__unfinishedRequests.pop(response.id)
 		else:
 			CORE.warn('Client: _handle: received an unknown response: %s' % (response.id,))
-			self.signal_emit('error', UnknownRequestError())
+			self.signal_emit('error', UnknownRequestError(500, 'Received an unknown response.'))
 
 	def authenticate(self, msg):
 		"""Authenticate against the UMC server"""

@@ -242,7 +242,7 @@ class Base(signals.Provider, Translation):
 			return
 
 		try:
-			MODULE.info('Executing %s' % (request.arguments,))
+			MODULE.info('Executing %r' % (request.arguments or request.command,))
 			self._parse_accept_language(request)
 			if ucr.is_false('umc/server/disable-security-restrictions', True):
 				self.security_checks(request, function)
