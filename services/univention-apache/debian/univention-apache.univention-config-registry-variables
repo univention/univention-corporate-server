@@ -16,6 +16,12 @@ Description[de]=Erzwingt eine verschlüsselte Verbindung durch Weiterleitung auf
 Type=bool
 Categories=service-apache
 
+[apache2/force_https/exclude/(request_uri|http_host|remote_addr|server_name)/.*]
+Description[en]=Configures conditions which excludes certain requests from being forcing to use an encrypted connection. The conditions type can check one of the request URI, HTTP Host request header, IP address (remote_addr) of the client or server name. If the request matches the set value it is not forced to use an encrypted connection. The wildcard can be anything to name the rule.
+Description[de]=Konfiguriert Bedinungen, um keine verschlüsselte Verbindung für bestimmte Anfragen zu erzwingen. Der Bedingungstyp kann die Anfrage-URL (request_uri), HTTP Host Anfrage-Header (http_host), IP-Adresse des Clients (remote_addr) oder der Server-Name (server_name) sein. Wenn die Anfrage dem gesetzten Wert entspricht wird keine verschlüsselte Verbindung erzwungen. Ein beliebiger Platzhalter kann als Name für die Regel gewählt werden.
+Type=str
+Categories=service-apache
+
 [apache2/hsts]
 Description[en]=Enable HTTP Strict Transport Security (HSTS) by setting this variable to 'yes'. 'apache2/force_https' should be enabled additionally to take full advantage of HSTS.
 Description[de]=Aktiviert HTTP Strict Transport Security (HSTS), wenn auf 'yes' gesetzt. 'apache2/force_https' sollte zusätzlich aktiviert werden, um den Vorteil von HSTS voll nutzen zu können.

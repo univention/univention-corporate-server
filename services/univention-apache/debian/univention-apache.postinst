@@ -57,6 +57,8 @@ if dpkg --compare-versions "$2" le 5.0.7-3; then
 		univention-config-registry set apache2/startsite="ucs-overview/"
 	fi
 fi
+univention-config-registry set apache2/force_https/exclude/request_uri/mod-status?/server-status
+univention-config-registry set apache2/force_https/exclude/http_host/localhost?localhost
 
 # configure firewall
 ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \
