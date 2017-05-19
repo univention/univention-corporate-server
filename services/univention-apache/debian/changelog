@@ -1,3 +1,9 @@
+univention-apache (9.0.5-10) unstable; urgency=medium
+
+  * Bug #44628: make excludes for force_https configurable
+
+ -- Florian Best <best@univention.de>  Fri, 19 May 2017 11:22:06 +0200
+
 univention-apache (9.0.5-9) unstable; urgency=medium
 
   * Bug #44146: move to updater postup

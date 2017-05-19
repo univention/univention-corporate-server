@@ -62,6 +62,8 @@ univention-config-registry set apache2/maxclients?150
 univention-config-registry set mail/alias/webmaster?root
 univention-config-registry set apache2/startsite?"univention/"
 univention-config-registry set ucs/server/robots/disallow?"/"
+univention-config-registry set apache2/force_https/exclude/request_uri/mod-status?/server-status
+univention-config-registry set apache2/force_https/exclude/http_host/localhost?localhost
 
 # configure firewall
 ucr set security/packetfilter/package/univention-apache/tcp/80/all=ACCEPT \
