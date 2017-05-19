@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-apache
+fix: 9.0.5-10A~4.2.0.201705191124
+desc: |
+ This update addresses the following issue(s):
+ * Exceptions for the apache2/force_https configuration can now be
+   configured via UCR.
+bug: [44628]
