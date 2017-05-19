@@ -215,12 +215,6 @@ Description[en]=If this option is enabled or the variable unset, the Cyrus mail 
 Type=bool
 Categories=service-mail
 
-[mail/cyrus/initscript]
-Description[de]=Diese Variable konfiguriert den Namen des Init-Scripts des Cyrus-Dienstes. Wird Cyrus 2.2 eingesetzt, muss sie auf 'cyrus2.2' gesetzt sein, ansonsten auf 'cyrus-imapd'.
-Description[en]=This variable configures the name of the init script of the Cyrus service. If Cyrus 2.2 is used, it must be set to 'cyrus2.2', otherwise to 'cyrus-imapd'.
-Type=str
-Categories=service-mail
-
 [mail/cyrus/bdb/dbconfig/.*]
 Description[de]=Mit Variablen der Form mail/cyrus/bdb/dbconfig/VARIABLE=WERT können beliebige BDB-Konfigurationsoptionen für die Cyrus-Datenbank in /var/lib/cyrus/db/DB_CONFIG gesetzt werden. Beispiel: 'mail/cyrus/bdb/dbconfig/set_lg_regionmax=2097152'. Nach Änderungen muss der Cyrus-Server neu gestartet werden.
 Description[en]=Arbitrary BDB configuration options for the Cyrus database in /var/lib/cyrus/db/DB_CONFIG can be configured with variables in the format mail/cyrus/bdb/dbconfig/VARIABLE=VALUE. After changing these variables the Cyrus server must be restarted.

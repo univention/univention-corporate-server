@@ -1,3 +1,9 @@
+univention-mail-cyrus (9.0.0-12) unstable; urgency=low
+
+  * Bug #44594: Remove duplicate service file (patch by phahn)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 19 May 2017 15:32:00 +0200
+
 univention-mail-cyrus (9.0.0-11) unstable; urgency=low
 
   * Bug #44594: fix UMC module "system services" showing Cyrus as always
