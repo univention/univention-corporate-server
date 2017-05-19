@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-mail-cyrus
-fix: 9.0.0-11A~4.2.0.201705151629
+fix: 9.0.0-12A~4.2.0.201705191538
 desc: |
  This update addresses the following issue(s):
  * The UMC module "System services" showed the Cyrus IMAP service always as
