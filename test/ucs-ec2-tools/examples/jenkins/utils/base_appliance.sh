@@ -359,7 +359,7 @@ fi
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 # fix docker app image name
-ucr set appcenter/apps/${app}/image='${$dockerimage}'
+ucr set appcenter/apps/${app}/image="${dockerimage}"
 __EOF__
 		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
 	fi
@@ -771,6 +771,7 @@ uninstall_packages ()
 
 	# Old kernels
 	for kernel in linux-image-4.1.0-ucs205-amd64 linux-image-4.1.0-ucs205-amd64-signed \
+		linux-image-4.1.0-ucs207-amd64 linux-image-4.1.0-ucs207-amd64-signed \
 		linux-image-4.1.0-ucs190-amd64 linux-image-4.1.0-ucs190-amd64-signed \
 		linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed \
 		linux-image-4.1.0-ucs174-amd64 linux-image-4.1.0-ucs174-amd64-signed \
