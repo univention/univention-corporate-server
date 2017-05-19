@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner python
+## desc: UMC remove user
+## roles: [domaincontroller_master]
+## exposure: dangerous
+
+
+from selenium import webdriver
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.umc_selenium as umc_selenium_test
+
+usersurl = '#module=udm:users/user'
+username_user = 'a' + uts.random_username()
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		with umc_selenium_test.UMCSeleniumTest() as selenium:
+			user = udm.create_user(username = username_user)[0]
+			selenium.driver.get(selenium.base_url + usersurl)
+			selenium.wait_for_pageload()
+			assert "Management of domain users" in selenium.driver.page_source
+
+			print('select user')
+			selenium.select_table_item_by_name(username_user)
+
+			print('click Delete')
+			selenium.click_button('Delete')
+
+			# expect bracket after username in form
+			print('check username and confirm form')
+			assert "Please confirm the removal of user:" in selenium.driver.page_source
+			assert username_user + " (" in selenium.driver.page_source
+
+			print('click Delete')
+			selenium.click_button('Delete')
+			print('verify deleted')
+			assert "Management of domain users" in selenium.driver.page_source
+			assert username_user not in selenium.driver.page_source
+			utils.verify_ldap_object(user, should_exist = False)

@@ -1,0 +1,87 @@
+#!/usr/share/ucs-test/runner python
+## desc: UMC checking error symbols create user wizard
+## roles: [domaincontroller_master]
+## exposure: dangerous
+
+
+from selenium import webdriver
+import univention.testing.udm as udm_test
+import univention.testing.umc_selenium as umc_selenium_test
+import univention.testing.strings as uts
+
+usersurl = '#module=udm:users/user'
+lastname = uts.random_string()
+username = uts.random_username()
+password_1 = password_2 = uts.random_string()
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		with umc_selenium_test.UMCSeleniumTest() as selenium:
+			selenium.driver.get(selenium.base_url + usersurl)
+			selenium.wait_for_pageload()
+			assert "Management of domain users" in selenium.driver.page_source
+
+			print('click add')
+			selenium.click_button('Add')
+
+			print('call check no error symbols')
+			selenium.error_symbol_displayed('lastname', False)
+			selenium.error_symbol_displayed('username', False)
+
+			print('call check error empty username and lastname')
+			selenium.click_button('Next')
+			selenium.error_symbol_displayed('lastname')
+			selenium.error_symbol_displayed('username')
+
+			print('call check error empty username')
+			elem = selenium.enter_input('lastname', lastname)
+			selenium.error_symbol_displayed('lastname', False)
+			selenium.error_symbol_displayed('username')
+
+			print('clear lastname')
+			elem.clear()
+			selenium.enter_input('username', username)
+
+			print('call check error empty lastname')
+			selenium.error_symbol_displayed('lastname')
+			selenium.error_symbol_displayed('username', False)
+
+			selenium.enter_input('lastname', lastname)
+			selenium.error_symbol_displayed('lastname', False)
+			selenium.error_symbol_displayed('username', False)
+
+			print('click next')
+			selenium.click_button('Next')
+
+			print('call check no error symbols')
+			selenium.error_symbol_displayed('password_1', False)
+			selenium.error_symbol_displayed('password_2', False)
+
+			print('call check error empty passwords')
+			selenium.click_button('Create user')
+			selenium.error_symbol_displayed('password_1')
+			selenium.error_symbol_displayed('password_2')
+
+			selenium.enter_input('password_1', password_1)
+			no_match_password = uts.random_string()
+			print('call check empty and no match password', no_match_password)
+			selenium.error_symbol_displayed('password_1', False)
+			selenium.error_symbol_displayed('password_2')
+			elem = selenium.enter_input('password_2', no_match_password)
+			selenium.error_symbol_displayed('password_1', False)
+			selenium.error_symbol_displayed('password_2')
+			elem.clear()
+
+			print('enter password 2', password_2)
+			elem.send_keys(password_2)
+			print('call check no error symbols')
+			selenium.error_symbol_displayed('password_1', False)
+			selenium.error_symbol_displayed('password_2', False)
+
+			print('click back')
+			selenium.click_button('Back')
+			assert "First name" in selenium.driver.page_source
+
+			print('click cancel')
+			selenium.click_button('Cancel')
+			assert "Management of domain users" in selenium.driver.page_source
