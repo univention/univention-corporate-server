@@ -215,6 +215,18 @@ else:
 	sys.exit(1)"
 }
 
+appliance_app_has_external_docker_image ()
+{
+	local app="$1"
+	image="$(appliance_get_docker_image $app)"
+	echo "Docker image: $image"
+	if echo "$image" | grep -qs "ucs-appbox" ; then
+		return 1
+	else
+		return 0
+	fi
+}
+
 prepare_docker_app_container ()
 {
 	local app="$1"
@@ -239,40 +251,42 @@ prepare_docker_app_container ()
 		docker start "$container_id"
 		sleep 5 # some startup time...
 
-		docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
-			repository/app_center/server="$(ucr get repository/app_center/server)" \
-			appcenter/index/verify="$(ucr get appcenter/index/verify)" \
-			update/secure_apt="$(ucr get update/secure_apt)"
+		if ! appliance_app_has_external_docker_image $app; then
+				docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
+					repository/app_center/server="$(ucr get repository/app_center/server)" \
+					appcenter/index/verify="$(ucr get appcenter/index/verify)" \
+					update/secure_apt="$(ucr get update/secure_apt)"
 
-		# register required components
-		apps="$app $(app_get_appliance_additional_apps $app)"
+				# register required components
+				apps="$app $(app_get_appliance_additional_apps $app)"
 
-		for the_app in $apps; do
-			name=$(app_get_name $the_app)
-			component=$(app_get_component $the_app)
-			component_prefix="repository/online/component/"
-			docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
-					${component_prefix}${component}/localmirror=false \
-					${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-					${component_prefix}${component}/unmaintained=disabled \
-					${component_prefix}${component}/version=current \
-					${component_prefix}${component}=enabled
-			# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
-			if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
-				ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
-			fi
-		done
+				for the_app in $apps; do
+					name=$(app_get_name $the_app)
+					component=$(app_get_component $the_app)
+					component_prefix="repository/online/component/"
+					docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
+							${component_prefix}${component}/localmirror=false \
+							${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
+							${component_prefix}${component}/unmaintained=disabled \
+							${component_prefix}${component}/version=current \
+							${component_prefix}${component}=enabled
+					# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
+					if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+						ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
+					fi
+				done
 
-		"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
-			repository/online/component/php7/version=current \
-			repository/online/component/php7/server=http://updates-test.software-univention.de \
-			repository/online/component/php7/description="PHP 7 for UCS" \
-			repository/online/unmaintained=yes
+				"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
+					repository/online/component/php7/version=current \
+					repository/online/component/php7/server=http://updates-test.software-univention.de \
+					repository/online/component/php7/description="PHP 7 for UCS" \
+					repository/online/unmaintained=yes
 
-		# provide required packages inside container
-		docker exec "$container_id" apt-get update
-		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
-		docker exec "$container_id" apt-get update
+				# provide required packages inside container
+				docker exec "$container_id" apt-get update
+				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
+				docker exec "$container_id" apt-get update
+		fi
 
 		# shutdown container and use it as app base
 		docker stop "$container_id"
