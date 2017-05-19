@@ -94,7 +94,6 @@ class UMCSeleniumTest(object):
 			else:
 				self.driver = webdriver.Firefox()
 		self.driver.implicitly_wait(2)
-		self.set_viewport_size(1200, 800)
 
 		ucr = ucr_test.UCSTestConfigRegistry()
 		ucr.load()
@@ -112,6 +111,11 @@ class UMCSeleniumTest(object):
 
 		if self.login:
 			self.do_login()
+
+		# FIXME: For some reason I need to do set_window_size() once before it
+		# works correctly.
+		self.driver.set_window_size(1200, 800)
+		self.set_viewport_size(1200, 800)
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
@@ -123,8 +127,6 @@ class UMCSeleniumTest(object):
 	def set_viewport_size(self, width, height):
 		self.driver.set_window_size(width, height)
 
-		# Measure the difference between the actual document width and the
-		# desired viewport width so we can account for scrollbars and stuff:
 		measured = self.driver.execute_script("return {width: window.innerWidth, height: window.innerHeight};")
 		width_delta = width - measured['width']
 		height_delta = height - measured['height']
@@ -144,19 +146,26 @@ class UMCSeleniumTest(object):
 		assert self.umcLoginUsername in self.driver.page_source
 		logger.info('Successful login')
 
-	def save_screenshot(self, name='error'):
-		old_viewport_height = self.driver.execute_script("return window.innerHeight")
+	def save_screenshot(self, name='error', hide_notifications=True):
 		old_viewport_width = self.driver.execute_script("return window.innerWidth")
+		old_viewport_height = self.driver.execute_script("return window.innerHeight")
 		document_height = self.driver.execute_script("return document.body.clientHeight")
-		document_width = self.driver.execute_script("return document.body.clientWidth")
-		logger.info('Increasing viewport size temporarily to fit the whole document into a screenshot.')
-		if old_viewport_height < document_height or old_viewport_width < document_width:
-			self.set_viewport_size(document_width, document_height)
+		if old_viewport_height < document_height:
+			logger.info(
+				'Increasing viewport height temporarily from %spx to %spx to '
+				'fit the whole document into a screenshot.'
+				% (old_viewport_height, document_height)
+			)
+			self.set_viewport_size(old_viewport_width, document_height)
 
-		filename = self.screenshot_path + name + '_' + str(datetime.datetime.now()) + '.png'
+		if hide_notifications:
+			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
+
+		filename = self.screenshot_path + name + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + '.png'
 		logger.info('Saving screenshot %s' % filename)
 		self.driver.save_screenshot(filename)
 
+		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
 		self.set_viewport_size(old_viewport_width, old_viewport_height)
 
 	def check_checkbox_by_name(self, inputname, checked=True):
