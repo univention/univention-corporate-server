@@ -163,6 +163,14 @@ def main(app_id):
 			}
 		ucr_update(UCR, ucr_vars)
 
+	def commit_css_template_files():
+		css_files = [
+			'usr/share/univention-system-setup/www/style.css',
+			'usr/share/univention-system-activation/style.css',
+			'usr/share/univention-web/js/umc/hooks/appliance.json'
+		]
+		call(['/usr/sbin/ucr', 'commit'] + css_files)
+
 	def _svg_to_png(source, dest, params, res='800x600'):
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
 		call(['/usr/share/univention-app-appliance/render-css-background', res, css_background, dest])
@@ -205,6 +213,7 @@ def main(app_id):
 
 	print_status("Applying branded boot splash and grub theme.")
 	set_grub_theme()
+	commit_css_template_files()
 
 
 if __name__ == '__main__':
