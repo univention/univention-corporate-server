@@ -38,6 +38,8 @@ import struct
 
 
 class App(app.App):
+	appliance_name = app.AppAttribute()
+	
 	# UMC modules to be displayed in the UMC category 'favorites'
 	appliance_favorite_modules = app.AppListAttribute()
 
@@ -63,7 +65,7 @@ class App(app.App):
 	appliance_portal_font_color = app.AppAttribute()
 	appliance_portal_css_background = app.AppAttribute()
 	appliance_portal_background_image = app.AppFileAttribute()
-	appliance_portal_tile = app.AppAttribute()
+	appliance_portal_title = app.AppAttribute()
 	readme_appliance = app.AppFileAttribute()
 
 	# additional properties
@@ -113,11 +115,12 @@ def get_app_style_properties(app):
 		'logo',
 		'welcome_screen_logo',
 		'welcome_screen_font_color',
+		'favorite_modules',
 		'portal_logo',
 		'portal_font_color',
 		'portal_css_background',
 		'portal_background_image',
-		'portal_tile',
+		'portal_title',
 	):
 		ival = getattr(app, 'appliance_%s' % i, None)
 		if ival:
