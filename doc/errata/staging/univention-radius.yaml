@@ -6,7 +6,9 @@ src: univention-radius
 fix: 4.0.0-3A~4.2.0.201705121854
 desc: |
  This update addresses the following issue(s):
- * Allow TTLS to be disabled via UCR
- * Allow port to be configured via UCR
- * Allow max_requests to be configured via UCR
+ * Allow TTLS to be disabled via UCR freeradius/conf/auth-type/ttls.
+ * Allow the port the server listens on to be configured via UCR
+   freeradius/conf/port.
+ * Allow the maximum number of requests which the server keeps track of
+   to be configured via UCR freeradius/conf/max_requests.
 bug: [42728, 42729, 42730]
