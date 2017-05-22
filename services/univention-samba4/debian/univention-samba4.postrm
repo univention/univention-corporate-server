@@ -40,6 +40,7 @@ if [ "$1" = "remove" ]; then
 			samba/max_open_files \
 			samba/quota/command \
 			samba/max/protocol \
+			samba/min/protocol \
 			samba/share/netlogon
 
 	ucr unset security/packetfilter/package/univention-samba4/tcp/389/all \
