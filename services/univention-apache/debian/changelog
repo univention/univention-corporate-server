@@ -1,3 +1,9 @@
+univention-apache (8.0.1-9) unstable; urgency=medium
+
+  * Bug #43603: fix syntax error
+
+ -- Florian Best <best@univention.de>  Mon, 22 May 2017 14:59:39 +0200
+
 univention-apache (8.0.1-8) unstable; urgency=medium
 
   * Bug #43603: make excludes for force_https configurable
