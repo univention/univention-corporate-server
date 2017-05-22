@@ -5,7 +5,7 @@
 ## packages:
 ##  - univention-apache
 ##  - univention-ssl
-## exposire: dangerous
+## exposure: dangerous
 
 . "$TESTLIBPATH/ucr.sh" || exit 137
 eval "$(univention-config-registry shell)"

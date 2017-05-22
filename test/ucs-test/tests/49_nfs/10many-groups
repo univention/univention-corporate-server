@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check user with many groups using /bin/ps and NFS
 ## exposure: dangerous
-## bug: [34596,34597]
+## bugs: [34596,34597]
 set -e -u
 
 # add enough groups to overflow the buffer ~770 + G * strlen(" 50xx") >> 1024

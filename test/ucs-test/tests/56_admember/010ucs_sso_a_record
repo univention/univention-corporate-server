@@ -4,7 +4,7 @@
 ## exposure: safe
 ## packages: [univention-samba]
 ## roles: [domaincontroller_master,domaincontroller_backup]
-## bug: [39574]
+## bugs: [39574]
 
 import univention.lib.admember
 import sys

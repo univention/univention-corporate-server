@@ -4,7 +4,7 @@
 ##  - basic
 ##  - apptest
 ## exposure: safe
-## bug: [40654]
+## bugs: [40654]
 
 . "$TESTLIBPATH/base.sh" || exit 137
 

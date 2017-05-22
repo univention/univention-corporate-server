@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Create and delete a UCS user and re-create a user with the same username at a different position"
 ## exposure: dangerous
-## bug: 40233
+## bugs: [40233]
 ## tags:
 ##  - basic
 ## packages:

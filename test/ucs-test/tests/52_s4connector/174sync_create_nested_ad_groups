@@ -3,7 +3,7 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
-## version:
+## versions:
 ##  3.0-0: skip
 ## bugs:
 ##  - 18680

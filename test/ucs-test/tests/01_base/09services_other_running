@@ -3,13 +3,6 @@
 ## roles:
 ##  - domaincontroller_master
 ## tags: [basic,apptest]
-## optional-packages:
-##  - apache2 | apache2-mpm-prefork
-##  - nscd
-##  - bind9
-##  - isc-dhcp-server | dhcp3-server
-##  - univention-management-console
-##  - nagios2 | nagios2
 ## exposure: safe
 
 returnCode=0

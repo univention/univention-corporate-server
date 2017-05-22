@@ -3,7 +3,7 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
-## version:
+## versions:
 ##  3.0-0: skip
 ## bugs:
 ##  - 18680
