@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Admin credentials are now passed to a preinst script during App
+   installation / upgrade.
+bug: [44655]
