@@ -291,14 +291,16 @@ define([
 				this.standby(false);
 				this._showError(_('The server is not responding. Please restart the system.'));
 			}));
-			this._isReachableWithinSecs(uri, 30, reachableDeferred);
+			this._canReachPortalWithinSecs(uri, 30, reachableDeferred);
 		},
 
-		_isReachableWithinSecs: function(uri, secs, deferred) {
+		_canReachPortalWithinSecs: function(uri, secs, deferred) {
 			var countUntil = secs / 0.5;
 			var counter = 0;
 			var requestUriTillCounter = function() {
-				request(uri).response.then(function(result) {
+				request(uri, {
+					method: 'HEAD'
+				}).response.then(function(result) {
 					// if uri is reachable http status code has to be 200
 					if (result.status === 200) {
 						deferred.resolve();

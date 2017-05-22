@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-7) unstable; urgency=medium
+
+  * Bug #44523: Wait for apache to reload before redirecting to portal
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 22 May 2017 11:34:52 +0200
+
 univention-system-activation (2.0.2-6) unstable; urgency=medium
 
   * Bug #44523: Add missing JS module dependency
