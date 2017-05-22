@@ -8,7 +8,11 @@ desc: |
  This update addresses the following issue(s):
  * The UCR variable samba/idmap/range has been added
    to configure the uid and gid range for the default (*)
-   domain.
+   idmap backend. This can be used to avoid overlaps between
+   that default range and the domain specific setting, which is
+   configurable via samba/idmap/$windows_domain/range.
  * The UCR variables samba/client/min/protocol, samba/min/protocol
    and samba/client/max/protocol have been added.
+   Please be aware that raising samba/min/protocol e.g. to SMB2 also
+   requires raising samba/client/max/protocol to that value or higher.
 bug: [44549, 44591]
