@@ -247,6 +247,7 @@ prepare_docker_app_container ()
 		docker login -e invalid -u ucs -p readonly docker.software-univention.de
 
 		docker pull "$dockerimage"
+		local_app_docker_image="$dockerimage"
 		container_id=$(docker create "$dockerimage")
 		if ! appliance_app_has_external_docker_image $app; then
 				docker start "$container_id"
@@ -289,10 +290,9 @@ prepare_docker_app_container ()
 
 				# shutdown container and use it as app base
 				docker stop "$container_id"
+				local_app_docker_image=$(docker commit "$container_id" "${app}-app")
+				docker rm "$container_id"
 		fi
-
-		prepared_app_container_id=$(docker commit "$container_id" "${app}-app")
-		docker rm "$container_id"
 
 		cat >/root/provide_joinpwdfile.patch <<__EOF__
 --- /usr/lib/univention-system-setup/scripts/10_basis/18root_password.orig      2016-10-27 16:40:47.296000000 +0200
@@ -351,7 +351,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 log_to_stream()
 
 app=AppManager.find('\$APP')
-app.docker_image='${app}-app'
+app.docker_image='${local_app_docker_image}'
 
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
