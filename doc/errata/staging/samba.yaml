@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * rpc_server3: Refuse to open pipe names with / inside (CVE-2017-7494)
 bug: [44612]
+cve:
  - CVE-2017-7494
