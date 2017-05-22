@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The UCR variables samba/client/min/protocol, samba/min/protocol
    and samba/client/max/protocol have been added.
+   Please be aware that raising samba/min/protocol e.g. to SMB2 also
+   requires raising samba/client/max/protocol to that value or higher.
 bug: [44646]
