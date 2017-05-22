@@ -3,8 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-samba4
-fix: 5.0.3-1.689.201705221308
+fix: 5.0.3-2.690.201705221458
 desc: |
  This update addresses the following issue(s):
- * The UCR variable samba/min/protocol has been added.
+ * The UCR variables samba/client/min/protocol, samba/min/protocol
+   and samba/client/max/protocol have been added.
 bug: [44646]
