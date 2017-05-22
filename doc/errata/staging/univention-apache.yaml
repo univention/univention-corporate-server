@@ -3,9 +3,10 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-apache
-fix: 9.0.5-10A~4.2.0.201705191124
+fix: 9.0.5-11A~4.2.0.201705221445
 desc: |
  This update addresses the following issue(s):
  * Exceptions for the apache2/force_https configuration can now be
-   configured via UCR.
+   configured via UCR. When apache2/force_https is enabled, by default
+   "localhost" will be excluded.
 bug: [44628]
