@@ -248,10 +248,10 @@ prepare_docker_app_container ()
 
 		docker pull "$dockerimage"
 		container_id=$(docker create "$dockerimage")
-		docker start "$container_id"
-		sleep 5 # some startup time...
-
 		if ! appliance_app_has_external_docker_image $app; then
+				docker start "$container_id"
+				sleep 5 # some startup time...
+
 				docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
 					repository/app_center/server="$(ucr get repository/app_center/server)" \
 					appcenter/index/verify="$(ucr get appcenter/index/verify)" \
@@ -286,10 +286,11 @@ prepare_docker_app_container ()
 				docker exec "$container_id" apt-get update
 				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(app_get_packages ${app})
 				docker exec "$container_id" apt-get update
+
+				# shutdown container and use it as app base
+				docker stop "$container_id"
 		fi
 
-		# shutdown container and use it as app base
-		docker stop "$container_id"
 		prepared_app_container_id=$(docker commit "$container_id" "${app}-app")
 		docker rm "$container_id"
 
