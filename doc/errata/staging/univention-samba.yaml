@@ -3,10 +3,11 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-samba
-fix: 10.0.3-3.521.201705091157
+fix: 10.0.3-4.522.201705221328
 desc: |
  This update addresses the following issue(s):
  * The UCR variable samba/idmap/range has been added
    to configure the uid and gid range for the default (*)
    domain.
-bug: [44560]
+ * The UCR variable samba/min/protocol has been added. 
+bug: [44560, 44644]
