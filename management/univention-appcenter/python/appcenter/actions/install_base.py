@@ -99,7 +99,7 @@ class InstallRemoveUpgrade(Register):
 			errors, warnings = app.check(action)
 			can_continue = self._handle_errors(app, args, errors, True)
 			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
-			if not can_continue or not self._call_prescript(app):
+			if not can_continue or not self._call_prescript(app, args):
 				status = 0
 				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
 			else:
@@ -182,25 +182,34 @@ class InstallRemoveUpgrade(Register):
 					return aggreed.lower()[:1] in ['y', 'j']
 		return True
 
-	def _call_prescript(self, app, **kwargs):
+	def _call_prescript(self, app, args, **kwargs):
 		ext = self.prescript_ext
 		self.debug('Calling prescript (%s)' % ext)
 		if not ext:
 			return True
+		script = app.get_cache_file(ext)
+		# check here to not bother asking for a password
+		# otherwise self._call_script could handle it, too
+		if not os.path.exists(script):
+			self.debug('%s does not exist' % script)
+			return True
 		with NamedTemporaryFile('r+b') as error_file:
-			kwargs['version'] = app.version
-			kwargs['error_file'] = error_file.name
-			locale = get_locale()
-			if locale:
-				kwargs['locale'] = locale
-			success = self._call_cache_script(app, ext, **kwargs)
-			if success is None:
-				# no prescript
-				success = True
-			if not success:
-				for line in error_file:
-					self.fatal(line)
-			return success
+			with self._get_password_file(args) as pwdfile:
+				if not pwdfile:
+					self.warn('Could not get password')
+					return False
+				kwargs['version'] = app.version
+				kwargs['error_file'] = error_file.name
+				kwargs['binddn'] = self._get_userdn(args)
+				kwargs['bindpwdfile'] = pwdfile
+				locale = get_locale()
+				if locale:
+					kwargs['locale'] = locale
+				success = self._call_cache_script(app, ext, **kwargs)
+				if not success:
+					for line in error_file:
+						self.fatal(line)
+				return success
 
 	def _revert(self, app, args):
 		pass
