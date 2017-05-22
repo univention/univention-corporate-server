@@ -88,8 +88,8 @@ class Upgrade(Install):
 		if app.license_agreement != self.old_app.license_agreement:
 			return super(Upgrade, self)._show_license(app, args)
 
-	def _call_prescript(self, app):
-		return super(Upgrade, self)._call_prescript(app, old_version=self.old_app.version)
+	def _call_prescript(self, app, args):
+		return super(Upgrade, self)._call_prescript(app, args, old_version=self.old_app.version)
 
 	def _send_information(self, app, status):
 		if app > self.original_app:
