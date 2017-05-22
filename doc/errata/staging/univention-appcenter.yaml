@@ -7,5 +7,7 @@ fix: 6.0.7-11A~4.2.0.201705171432
 desc: |
  This update addresses the following issue(s):
  * Handle errors for package manager lock during docker installation in UMC.
- * Hanlde BadStatusLine line errors.
-bug: [41303,34543]
+ * Handle BadStatusLine line errors.
+ * Admin credentials are now passed to a preinst script during App
+   installation / upgrade.
+bug: [41303, 34543, 44654]
