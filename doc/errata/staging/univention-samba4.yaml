@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-samba4
-fix: 6.0.10-6A~4.2.0.201705221453
+fix: 6.0.10-7A~4.2.0.201705221913
 desc: |
  This update addresses the following issue(s):
  * Don't fail join if CNF-Objects are in serverReferenceBL
