@@ -278,12 +278,17 @@ define([
 		},
 
 		_finish: function() {
-			this.standby(true);
 			var query = ioQuery.queryToObject(location.search.substring(1));
 			lang.mixin(query, {
 				username: 'Administrator'
 			});
+			this._canReachPortalWithinSecs(query, 30);
+		},
+
+		_canReachPortalWithinSecs: function(query, secs) {
+			this.standby(true);
 			var uri = '/univention/portal/?' + ioQuery.objectToQuery(query);
+
 			var reachableDeferred = new Deferred();
 			reachableDeferred.then(function() {
 				location.href = uri;
@@ -291,10 +296,7 @@ define([
 				this.standby(false);
 				this._showError(_('The server is not responding. Please restart the system.'));
 			}));
-			this._canReachPortalWithinSecs(uri, 30, reachableDeferred);
-		},
 
-		_canReachPortalWithinSecs: function(uri, secs, deferred) {
 			var countUntil = secs / 0.5;
 			var counter = 0;
 			var requestUriTillCounter = function() {
@@ -303,7 +305,7 @@ define([
 				}).response.then(function(result) {
 					// if uri is reachable http status code has to be 200
 					if (result.status === 200) {
-						deferred.resolve();
+						reachableDeferred.resolve();
 					} else { // otherwise tryAgain
 						tryAgain();
 					}
@@ -314,7 +316,7 @@ define([
 			};
 			var tryAgain = function() {
 				if (counter >= countUntil) {
-					deferred.reject();
+					reachableDeferred.reject();
 				} else {
 					setTimeout(requestUriTillCounter, 500);
 				}
