@@ -1,3 +1,10 @@
+univention-samba (10.0.3-5) unstable; urgency=low
+
+  * Bug #44644: added samba/client/min/protocol,
+    samba/client/max/protocol 
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 May 2017 15:17:27 +0200
+
 univention-samba (10.0.3-4) unstable; urgency=low
 
   * Bug #44644: added samba/min/protocol

@@ -80,6 +80,8 @@ if [ "$1" = "remove" ]; then
 			samba/max_open_files \
 			samba/max/protocol \
 			samba/min/protocol \
+			samba/client/max/protocol \
+			samba/client/min/protocol \
 			samba/getwd_cache \
 			samba/store_dos_attributes \
 			samba/preserve_case \
