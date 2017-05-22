@@ -116,6 +116,8 @@ Variables: samba/time_server
 Variables: samba/wide_links
 Variables: samba/max/protocol
 Variables: samba/min/protocol
+Variables: samba/client/max/protocol
+Variables: samba/client/min/protocol
 Variables: samba/client/use/spnego/principal
 
 Type: subfile

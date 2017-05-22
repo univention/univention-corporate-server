@@ -1,3 +1,10 @@
+univention-samba (11.0.1-9) unstable; urgency=low
+
+  * Bug #44591: added samba/client/min/protocol,
+    samba/client/max/protocol
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 May 2017 15:12:27 +0200
+
 univention-samba (11.0.1-8) unstable; urgency=low
 
   * Bug #44591: added samba/min/protocol
