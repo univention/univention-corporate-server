@@ -274,12 +274,18 @@ def main(app):
 
 if __name__ == '__main__':
 	if '-h' in sys.argv[1:] or '--help' in sys.argv[1:]:
-		print("Apply initial settings for Univention App Appliances.")
-		print("")
-		print("usage: univention-app-appliance [App ID]")
+		print('Apply initial settings for Univention App Appliances.')
+		print('')
+		print('usage: univention-app-appliance [<options>] <AppID>')
+		print('')
+		print('options:')
+		print('  --only-configure-portal')
+		print('  --not-configure-portal')
+		print('')
 		sys.exit()
 
-	only_config_portal = '--only-configure-portal' in sys.argv or '-P' in sys.argv
+	only_config_portal = '--only-configure-portal' in sys.argv or '-p' in sys.argv
+	not_config_portal = '--not-configure-portal' in sys.argv or '-P' in sys.argv
 
 	try:
 		# query app information
@@ -289,6 +295,7 @@ if __name__ == '__main__':
 			raise RuntimeError('Could not find corresponding app for given ID "%s"' % (app_id, ))
 		
 		# launch portal config functions
+		if not not_config_portal:
 		configure_portal(app)
 
 		# launch main config functions
