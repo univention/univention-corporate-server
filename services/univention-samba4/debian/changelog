@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-5) unstable; urgency=low
+
+  * Bug #44643: added samba/min/protocol
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 May 2017 12:56:07 +0200
+
 univention-samba4 (6.0.10-4) unstable; urgency=medium
 
   * Bug #44535: Adjust check_essential_samba4_dns_records.sh to change
