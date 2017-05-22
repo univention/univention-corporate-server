@@ -1,3 +1,9 @@
+ucs-test (7.0.21-28) unstable; urgency=low
+
+  * Bug #44645: Check dpkg-vendor
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 22 May 2017 13:11:03 +0200
+
 ucs-test (7.0.21-27) unstable; urgency=medium
 
   * Bug #41786: fix boolean logic

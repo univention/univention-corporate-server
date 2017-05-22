@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check dpkg-vendor
+## tags:
+##  - basic
+##  - apptest
+## bugs: [44645]
+## exposure: safe
+exec dpkg-vendor --is univention
