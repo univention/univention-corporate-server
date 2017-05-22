@@ -310,6 +310,12 @@ Description[en]=This variable configures the highest protocol level that will be
 Type=str
 Categories=service-samba
 
+[samba/min/protocol]
+Description[de]=Diese Variable konfiguriert das niedrigste Protokoll, welches dieser Server unterstützt (gültige Werte sind in "man smb.conf" dokumentiert). Ist die Variable nicht gesetzt, so gilt der Standardwert, der in der Manual-Seite zu smb.conf dokumentiert ist.
+Description[en]=This variable configures the lowest protocol level that will be supported by this server (valid values may be found in "man smb.conf"). If the variable is unset, the default given in the smb.conf manual page applies.
+Type=str
+Categories=service-samba
+
 [samba/usershare/max_shares]
 Description[de]=Die maximale Anzahl an Freigaben, die von normalen Benutzern über 'net'-Aufrufe angelegt werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'. Ist die Variable nicht gesetzt oder auf 0 gesetzt, können keine Freigaben auf diesem Weg angelegt werden.
 Description[en]=The maximum number of shares, which can be defined by standard users using 'net' calls. Additional information can be found in 'man smb.conf' under 'USERSHARES'. If the variable is set to 0 or unset, no shares can be defined that way.

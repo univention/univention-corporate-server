@@ -1,3 +1,9 @@
+univention-samba (11.0.1-8) unstable; urgency=low
+
+  * Bug #44591: added samba/min/protocol
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 May 2017 13:20:35 +0200
+
 univention-samba (11.0.1-7) unstable; urgency=low
 
   * Bug #44549: added samba/idmap/range
