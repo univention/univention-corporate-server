@@ -3,7 +3,7 @@ release: "3.3"
 version: [0,1]
 scope: ucs_3.3-0-errata3.3-1
 src: icu
-fix: 4.4.1-8.31.201612191627
+fix: 4.4.1-8.32.201705231453
 desc: |
  This update addresses the following issues:
  * Unspecified vulnerability in Oracle Java SE allows remote attackers to
@@ -20,6 +20,12 @@ desc: |
  * buffer overflow problem in uresbund.c (CVE-2014-9911)
  * stack-based buffer overflow in the Locale class via a long locale string
    (CVE-2016-7415)
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_setNativeIndex*
+   function (CVE-2017-7867)
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_moveIndex32*
+   function (CVE-2017-7868)
 bug: [41953]
 cve:
  - CVE-2015-2632
@@ -27,3 +33,5 @@ cve:
  - CVE-2016-6293
  - CVE-2014-9911
  - CVE-2016-7415
+ - CVE-2017-7867
+ - CVE-2017-7868
