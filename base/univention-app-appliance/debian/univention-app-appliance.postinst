@@ -52,6 +52,7 @@ case "$1" in
 		then
 			_undivert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
 			_undivert /var/www/ucs-overview/css/ucs.css ucs.real.css
+			_undivert /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
 			for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
 				_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
 			done

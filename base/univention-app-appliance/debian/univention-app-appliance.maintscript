@@ -3,3 +3,4 @@ rm_conffile /etc/univention/templates/files/usr/share/univention-management-cons
 rm_conffile /etc/univention/templates/files/usr/share/univention-management-console/modules/appliance.xml 1.0.2~
 rm_conffile /etc/univention/templates/files/usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css 1.0.2~
 rm_conffile /etc/univention/templates/files/usr/share/univention-management-console/categories/appliance.xml 1.0.2~
+rm_conffile /etc/univention/templates/files/usr/share/univention-system-activation/www/css/ucs.css 1.0.2~
