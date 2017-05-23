@@ -220,14 +220,17 @@ def main(app):
 	def commit_css_template_files():
 		print_status('Updating CSS and JSON files')
 		css_files = [
-			('setup_style.css', 'usr/share/univention-system-setup/www/style.css'),
-			('system_activation_style.css', 'usr/share/univention-system-activation/style.css'),
-			('umc_hooks_appliance.json', 'usr/share/univention-web/js/umc/hooks/appliance.json')
+			('setup_style.css', '/usr/share/univention-system-setup/www/style.css'),
+			('system_activation_style.css', '/usr/share/univention-system-activation/style.css'),
 		]
 		for isrc_file, idest_path in css_files:
 			file_in = open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file))
 			file_out = open(idest_path, 'w')
-			call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
+			try:
+				print 'Creating template file %s' % (idest_path, )
+				call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
+			except IOError as exc:
+				print 'ERROR: Could not update template file %s: %s' % (idest_path, exc)
 
 	def _svg_to_png(source, dest, params, res='800x600'):
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)

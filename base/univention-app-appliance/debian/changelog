@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-17) unstable; urgency=medium
+
+  * Bug #44523: fix typo in path + handle appliance.json as UCR template
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 23 May 2017 14:59:44 +0200
+
 univention-app-appliance (1.0.2-16) unstable; urgency=medium
 
   * Bug #44523: Remove UCR debian file
