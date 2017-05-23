@@ -142,6 +142,9 @@ define([
 		//		sorting in descending order)
 		sortIndex: 1,
 		naturalSort: true,
+		// sortRepresentations: Object
+		//		Object of functions to control how columns are sorted
+		sortRepresentations: {},
 
 		// use the framework wide translation file
 		i18nClass: 'umc.app',
@@ -230,7 +233,15 @@ define([
 		_createSortQuerier: function(sorted) {
 			// see also dstore/SimpleQuery
 			var sorter = sorted[0];
-			var compare = function(a, b) {
+			var sortRepresentation;
+			if (this.sortRepresentations.hasOwnProperty(sorter.property)) {
+				sortRepresentation = this.sortRepresentations[sorter.property];
+			} else {
+				sortRepresentation = function(value) {return value;};
+			}
+			var compare = function(aValue, bValue) {
+				var a = sortRepresentation(aValue);
+				var b = sortRepresentation(bValue);
 				if (typeof(a.localeCompare) === 'function') {
 					return a.localeCompare(b, kernel.locale, {numeric: true}) < 0;
 				} else if (typeof(a.toLowerCase) === 'function') {
@@ -349,7 +360,7 @@ define([
 				idProperty: this._store.idProperty
 			});
 			if (this.naturalSort) {
-				this.collection._createSortQuerier = this._createSortQuerier;
+				this.collection._createSortQuerier = lang.hitch(this, '_createSortQuerier');
 			}
 		},
 

@@ -1,3 +1,9 @@
+univention-web (1.0.42-15) unstable; urgency=medium
+
+  * Bug #44652: Grid: API to make the column sorting configurable
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 23 May 2017 13:23:18 +0200
+
 univention-web (1.0.42-14) unstable; urgency=medium
 
   * Bug #44381: fix link for sending feedback
