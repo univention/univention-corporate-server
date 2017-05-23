@@ -1,8 +1,1 @@
-Type: file
-File: usr/share/univention-system-setup/www/style.css
 
-Type: file
-File: usr/share/univention-system-activation/style.css
-
-Type: file
-File: usr/share/univention-web/js/umc/hooks/appliance.json
