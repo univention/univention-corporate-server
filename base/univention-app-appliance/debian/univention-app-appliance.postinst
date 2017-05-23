@@ -35,6 +35,12 @@
 . /usr/share/univention-lib/umc.sh
 
 _undivert() {
+	if [ "$1" = "-f" ]
+	then
+		# force removal of original file
+		local force_remove=1
+		shift
+	fi
 	local orig_path="$1"
 	local path="${1%/*}"
 	# if no second parameter is given as destination filename, default to <filename>.real
@@ -42,6 +48,11 @@ _undivert() {
 
 	# make sure an already undiverted file is not remove
 	[ -e "$orig_path" -a -e "$diversion_path" ] && rm -f "$orig_path"
+	if [ -n "$force_remove" ]
+	then
+		# removal of original file is enforced
+		rm -f "$orig_path"
+	fi
 	dpkg-divert --package univention-app-appliance --remove --rename "$orig_path"
 }
 
@@ -50,9 +61,9 @@ case "$1" in
 		# clean up old diversions and update branding when updating from 4.1 to 4.2
 		if dpkg --compare-versions "1.0.2~" gt-nl "$2"
 		then
-			_undivert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
-			_undivert /var/www/ucs-overview/css/ucs.css ucs.real.css
-			_undivert /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
+			_undivert -f /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
+			_undivert -f /var/www/ucs-overview/css/ucs.css ucs.real.css
+			_undivert -f /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
 			for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
 				_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
 			done
