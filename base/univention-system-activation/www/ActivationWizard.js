@@ -44,26 +44,22 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"put-selector/put",
-	"umc/json!./entries.json",
 	"umc/json!/license",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, entries, license, _) {
-	entries.appliance_name = entries.appliance_name || '';
-
-	var hasLicenseRequested = Boolean(entries.email);
-
+], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, license, _) {
 	return declare("ActivationWizard", [ Wizard ], {
 		autoFocus: true,
+		entries: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			lang.mixin(this, {
 				pages: [{
 					name: 'register',
-					headerText: _('License request.'),
+					headerText: _('License request for %(appliance_name)s Appliance', this.entries),
 					widgets: [{
 						type: Text,
-						content: _('Please enter a valid email address in order to activate %(appliance_name)s Appliance. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', entries),
+						content: _('Please enter a valid email address in order to activate %(appliance_name)s Appliance. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', this.entries),
 						name: 'helpText'
 					}, {
 						type: TextBox,
@@ -90,10 +86,10 @@ define([
 					}]
 				}, {
 					name: 'upload',
-					headerText: _('You have received a license file by email!'),
+					headerText: _('Activation of %(appliance_name)s Appliance', this.entries),
 					widgets: [{
 						type: Text,
-						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [entries.email || _('your email address')]),
+						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [this.entries.email || _('your email address')]),
 						name: 'helpText'
 					}, {
 						type: Text,
@@ -120,7 +116,7 @@ define([
 				}, {
 					name: 'finished',
 					headerText: _('Activation successful!'),
-					helpText: _('%(appliance_name)s Appliance is now activated. Click "Finish" to access the management interface (which may take a while).', entries),
+					helpText: _('%(appliance_name)s Appliance is now activated. Click "Finish" to access the management interface (which may take a while).', this.entries),
 					fullWidth: true
 				}]
 			});
@@ -177,9 +173,9 @@ define([
 				uuid: uuid,
 				action: 'install',
 				'status': 200,
-				'role': entries.role
+				'role': this.entries.role
 			};
-			var url = entries.appcenter_server + '/postinst';
+			var url = this.entries.appcenter_server + '/postinst';
 			if (url.indexOf('://') < 0) {
 				// no scheme given
 				url = 'https://' + url;

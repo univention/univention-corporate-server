@@ -50,7 +50,7 @@ define([
 		start: function() {
 			this.registerRouter();
 			this.setupLanguageMenu();
-			this.createElements();
+			this.createWizard();
 			// check if license already requested
 			if (hasLicenseRequested) {
 				router.startup('upload');
@@ -88,20 +88,10 @@ define([
 			}
 		},
 
-		createElements: function() {
-			this._createTitle();
-			this._createWizard();
-		},
-
-		_createTitle: function() {
-			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', _('Activation of %(appliance_name)s Appliance', entries));
-			put(titleNode, '!.dijitDisplayNone');
-		},
-
-		_createWizard: function() {
+		createWizard: function() {
 			this._wizard = new ActivationWizard({
-				'class': 'umcCard'
+				'class': 'umcCard',
+				entries: entries
 			});
 			var contentNode = dom.byId('content');
 			put(contentNode, this._wizard.domNode);
