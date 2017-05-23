@@ -248,8 +248,8 @@ prepare_docker_app_container ()
 
 		docker pull "$dockerimage"
 		local_app_docker_image="$dockerimage"
-		container_id=$(docker create "$dockerimage")
 		if ! appliance_app_has_external_docker_image $app; then
+				container_id=$(docker create "$dockerimage")
 				docker start "$container_id"
 				sleep 5 # some startup time...
 
