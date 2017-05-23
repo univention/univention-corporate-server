@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-43) unstable; urgency=medium
+
+  * Bug #40986: improove tooltip position and add hint about Administrator
+  	password
+
+ -- Florian Best <best@univention.de>  Tue, 23 May 2017 15:56:07 +0200
+
 univention-management-console (9.0.80-42) unstable; urgency=medium
 
   * Bug #40986: display tooltip about Administrator user when entering root as

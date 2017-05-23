@@ -94,8 +94,8 @@ msgstr "Verwenden Sie den Benutzer %s für die initiale Systemeinrichtung."
 
 #: www/login/dialog.js:115
 #, javascript-format
-msgid "The default username to manage the domain is %s."
-msgstr "Der Standardbenutzername zum Verwalten dieser Domäne ist %s."
+msgid "The default user to manage the domain is %s which has the same initial password as the <i>root</i> account."
+msgstr "Der Standardbenutzer zum Verwalten dieser Domäne ist %s mit demselben initialen Passwort des <i>root</i> Benutzers."
 
 #: www/login/dialog.js:117
 msgid "How do I login?"
