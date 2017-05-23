@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-12) unstable; urgency=medium
+
+  * Bug #44523: Clean up old diversions and templates when updating
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 23 May 2017 12:47:42 +0200
+
 univention-app-appliance (1.0.2-11) unstable; urgency=medium
 
   * Bug #44523: Re-configure the portal object after setup process

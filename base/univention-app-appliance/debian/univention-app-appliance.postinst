@@ -47,10 +47,15 @@ _undivert() {
 
 case "$1" in
 	configure)
-		_undivert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
-		for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
-			_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
-		done
+		# clean up old diversions when updating from 4.1 to 4.2
+		if dpkg --compare-versions "1.0.2~" gt-nl "$2"
+		then
+			_undivert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
+			_undivert /var/www/ucs-overview/css/ucs.css ucs.real.css
+			for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
+				_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
+			done
+		fi
 
 		# register the umc hook file
 		ucr set umc/web/hooks/univention-app-appliance=appliance

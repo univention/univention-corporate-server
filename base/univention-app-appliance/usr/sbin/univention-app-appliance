@@ -296,7 +296,7 @@ if __name__ == '__main__':
 		
 		# launch portal config functions
 		if not not_config_portal:
-		configure_portal(app)
+			configure_portal(app)
 
 		# launch main config functions
 		if not only_config_portal:
