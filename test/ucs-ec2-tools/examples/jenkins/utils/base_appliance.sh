@@ -715,7 +715,6 @@ python-yaml
 quota
 rpcbind
 simplesamlphp
-slapd
 stunnel4
 sudo
 sysvinit
