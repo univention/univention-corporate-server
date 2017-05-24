@@ -1,6 +1,6 @@
 product: ucs
 release: "3.3"
-version: [0,1]
+version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: linux
 fix: 3.16.39-1~bpo70+1~ucs3.3.225.201704150007
