@@ -165,8 +165,9 @@ class object(DHCPBase):
 
 		for i in self.oldattr.get('dhcpPermitList', []):
 			permit, name = i.split(' ', 1)
-			prop = self.permits_dhcp2udm[name]
-			self[prop] = permit
+			if name in self.permits_dhcp2udm:
+				prop = self.permits_dhcp2udm[name]
+				self[prop] = permit
 
 		self.save()
 
