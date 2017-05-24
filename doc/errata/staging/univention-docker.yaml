@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-docker
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A template for dockerd proxy settings has been added.
+bug: [44536]
