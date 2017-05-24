@@ -9,3 +9,5 @@ desc: |
  * The memcache service for the self service module did not start,
    because it was misconfigured.
 bug: [44477]
+erratum: 25
+announced: 2017-05-24
