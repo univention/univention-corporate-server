@@ -14,4 +14,7 @@ desc: |
  * Fix typo in users/user when reading the minimal password length.
  * The default value of extended attributes which don't define any default
    has been changed from "" to None.
-bug: [27286, 42148, 42249, 42533, 44152, 44472, 41053]
+ * A regression in UCS 4.2 has been fixed which caused that DHCP pools
+   which have values unknown by UDM in its dhcpPermitList could not be
+   opened or modified anymore.
+bug: [27286, 42148, 42249, 42533, 44152, 44472, 41053, 44611]
