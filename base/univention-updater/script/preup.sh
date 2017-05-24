@@ -163,6 +163,24 @@ if [ -n "$hold_packages" ]; then
 	fi
 fi
 
+## Bug #44650 begin - check slapd on member
+if [ -e "$(which slapd)" -a "$server_role" = "memberserver" ]; then
+	echo "WARNING: The ldap server is installed on your memberserver. This is not supported"
+	echo "         and may lead to problems during the update. Please deinstall the package"
+	echo "         *slapd* from this system with either the command line tool univention-remove "
+	echo "           -> univention-remove slapd"
+	echo "         or via the package management in the Univention Management Console."
+	echo "         Make sure that only the package slapd gets removed!"
+	echo "         This check can be disabled by setting the UCR variable"
+	echo "         update42/ignore_slapd_on_member to yes."
+	if is_ucr_true update42/ignore_slapd_on_member; then
+		echo "WARNING: update42/ignore_slapd_on_member is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+fi
+## Bug #44650 end
+
 #################### Bug #22093
 
 list_passive_kernels () {
