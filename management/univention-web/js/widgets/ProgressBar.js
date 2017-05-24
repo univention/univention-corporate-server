@@ -46,6 +46,8 @@ define([
 		//		This class provides a widget providing detailed progress information
 		baseClass: 'umcProgressBar',
 
+		allowHTMLErrors: false,
+
 		_component: null,
 		_message: null,
 		_progressBar: null,
@@ -86,7 +88,7 @@ define([
 			this._criticalError = false;
 			this._errors = [];
 
-			this._component.set('content', this._initialComponent);
+			this._component.set('content', entities.encode(this._initialComponent));
 
 			// make sure that at least a not breakable space is printed
 			// ... this avoids vertical jumping of widgets
@@ -172,10 +174,10 @@ define([
 			if (errors.length && handleErrors) {
 				var msg = '';
 				if (errors.length === 1) {
-					msg = _('An error occurred: ') + errors[0];
+					msg = _('An error occurred: ') + this._encodeError(errors[0]);
 				} else {
 					msg = lang.replace(_('{number} errors occurred: '), {number : errors.length});
-					msg += '<ul><li>' + errors.join('</li><li>') + '</li></ul>';
+					msg += '<ul><li>' + array.map(errors, lang.hitch(this, '_encodeError')).join('</li><li>') + '</li></ul>';
 				}
 				dialog.confirm(msg, [{
 					label: 'Ok',
@@ -185,6 +187,13 @@ define([
 			} else {
 				callback();
 			}
+		},
+
+		_encodeError: function(error) {
+			if (!this.allowHTMLErrors) {
+				error = entities.encode(error);
+			}
+			return error;
 		},
 
 		getErrors: function() {

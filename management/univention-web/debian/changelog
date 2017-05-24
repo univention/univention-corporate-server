@@ -1,3 +1,9 @@
+univention-web (1.0.42-17) unstable; urgency=medium
+
+  * Bug #44498: escape HTML in progressbar messages
+
+ -- Florian Best <best@univention.de>  Wed, 24 May 2017 12:48:30 +0200
+
 univention-web (1.0.42-16) unstable; urgency=medium
 
   * Bug #44652: Grid: sortFormatter is now defined at the column
