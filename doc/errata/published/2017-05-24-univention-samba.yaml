@@ -16,3 +16,5 @@ desc: |
    Please be aware that raising samba/min/protocol e.g. to SMB2 also
    requires raising samba/client/max/protocol to that value or higher.
 bug: [44549, 44591]
+erratum: 19
+announced: 2017-05-24
