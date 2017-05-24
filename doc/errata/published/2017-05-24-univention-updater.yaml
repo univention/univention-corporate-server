@@ -9,3 +9,5 @@ desc: |
  * The file containing the APT repository during a UCS release update is no
    longer deleted on failures to allow fixing failed updates more easily.
 bug: [44346]
+erratum: 24
+announced: 2017-05-24
