@@ -418,8 +418,8 @@ define([
 						}
 					];
 				} else {
-					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: array.map(ids, lang.hitch(entities, 'encode')).join(', ')});
-					var msg = _("%(verb)s %(ids)s", {verb: verb1, ids: array.map(ids, lang.hitch(entities, 'encode')).join(', ')});
+					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: ids.join(', ')});
+					var msg = _("%(verb)s %(ids)s", {verb: verb1, ids: ids.join(', ')});
 					buttons = [
 						{
 							name: 'cancel',

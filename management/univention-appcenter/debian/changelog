@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-14) unstable; urgency=medium
+
+  * Bug #44498: escape HTML in progressbar messages
+
+ -- Florian Best <best@univention.de>  Wed, 24 May 2017 12:47:33 +0200
+
 univention-appcenter (6.0.7-13) unstable; urgency=medium
 
   * Bug #44654: Version bump

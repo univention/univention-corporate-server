@@ -957,7 +957,7 @@ define([
 					'values': values || {}
 				};
 
-				this._progressBar.reset(_('%s: Performing software tests on involved systems', entities.encode(this.app.name)));
+				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
 				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
 				var invokation;
 				if (this.app.installsAsDocker()) {
@@ -1082,7 +1082,7 @@ define([
 			if (keepAlive !== false) {
 				tools.umcpCommand('appcenter/keep_alive', {}, false);
 			}
-			msg = entities.encode(msg || _('Another package operation is in progress.'));
+			msg = msg || _('Another package operation is in progress.');
 			var callback = lang.hitch(this, function() {
 				if (this._progressBar.getErrors().errors.length) {
 					deferred.reject();
@@ -1110,14 +1110,17 @@ define([
 					var role = match[2];
 					var host = match[3];
 					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + entities.encode(host) + '</strong>') + '</p>';
-					if (role == 'DC Backup') {
+					if (role === 'DC Backup') {
 						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-add-app ' + entities.encode(component) + ' -m</pre>') + '</p>';
 					}
 					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
+				} else {
+					error = entities.encode(error);
 				}
 				return error;
 			});
 			this._progressBar._errors = errors;
+			this._progressBar.allowHTMLErrors = true;
 			this._progressBar.stop(lang.hitch(this, 'restartOrReload'), undefined, true);
 		},
 
