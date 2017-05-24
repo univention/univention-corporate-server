@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Reload samba after printer has been created.
 bug: [44153]
+erratum: 21
+announced: 2017-05-24
