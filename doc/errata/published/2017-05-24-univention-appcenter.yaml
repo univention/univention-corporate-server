@@ -9,3 +9,5 @@ desc: |
  * Admin credentials are now passed to a preinst script during App
    installation / upgrade.
 bug: [44655]
+erratum: 427
+announced: 2017-05-24
