@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-updater
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A check to deny update on UCS member servers with the package slapd
+   has been added to the updaters preup script.
+bug: [44650]
