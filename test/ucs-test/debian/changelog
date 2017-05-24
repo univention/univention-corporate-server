@@ -1,3 +1,9 @@
+ucs-test (7.0.21-29) unstable; urgency=medium
+
+  * Bug #31311: Adjust test to modified code behavior
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 May 2017 19:38:41 +0200
+
 ucs-test (7.0.21-28) unstable; urgency=low
 
   * Bug #44645: Check dpkg-vendor
