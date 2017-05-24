@@ -9,3 +9,5 @@ desc: |
  * The UMC module "System services" showed the Cyrus IMAP service always as
    stopped. It does now show the correct service state.
 bug: [44594]
+erratum: 16
+announced: 2017-05-24
