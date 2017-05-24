@@ -6,3 +6,8 @@ Variables: docker/daemon/default/parameter/.*
 
 Type: file
 File: etc/docker/seccomp-systemd.json
+
+Type: file
+File: etc/systemd/system/docker.service.d/http-proxy.conf
+Variables: proxy/http
+Variables: proxy/https
