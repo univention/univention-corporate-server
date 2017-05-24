@@ -93,6 +93,7 @@ def configure_portal(app):
 	app_props_de = get_app_style_properties(app_de)
 
 	# portal title
+	print 'Setting portal title...'
 	if app_props.get('portal_title'):
 		portal_obj.info['displayName'] = [
 			['en_US', app_props.get('portal_title')],
@@ -107,6 +108,7 @@ def configure_portal(app):
 
 	# portal background image
 	if app_props.get('portal_background_image'):
+		print 'Setting portal background image...'
 		img_name = app_props.get('portal_background_image')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
@@ -117,6 +119,7 @@ def configure_portal(app):
 
 	# portal logo
 	if app_props.get('portal_logo'):
+		print 'Setting portal logo...'
 		img_name = app_props.get('portal_logo')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
@@ -125,11 +128,16 @@ def configure_portal(app):
 			base64_img = base64.encodestring(fp.read())
 		portal_obj.info['logo'] = base64_img
 
-	if app_props.get('css_background'):
+	if app_props.get('portal_css_background'):
+		print 'Setting portal CSS background...'
 		portal_obj.info['cssBackground'] = app_props.get('css_background')
 
 	if app_props.get('portal_font_color') and 'fontColor' in module.property_descriptions:
+		print 'Setting portal font color'
 		portal_obj.info['fontColor'] = app_props.get('portal_font_color')
+
+	print 'Saving modifications to LDAP'
+	portal_obj.modify()
 
 
 def main(app):
@@ -178,14 +186,14 @@ def main(app):
 
 	def symlink_first_steps():
 		for lang in ['_DE', '_EN']:
-			source = '/var/cache/univention-appcenter/%s.README_APPLIANCE%s' % (app.component_id, lang)
-			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme_%s' % (lang.lower(),)
-			if os.path.exists(target):
+			source = app.get_cache_file('README_APPLIANCE%s' % (lang, ))
+			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme%s' % (lang.lower(),)
+			if os.path.islink(target):
 				print("Remove old first steps symlink")
 				try:
 					os.remove(target)
-				except OSError:
-					pass
+				except OSError as exc:
+					print 'WARNING: An error occurred when removing the file %s: %s' % (target, exc)
 			print("Symlink first steps from %s to %s" % (source, target,))
 			if os.path.exists(source):
 				os.symlink(source, target)
