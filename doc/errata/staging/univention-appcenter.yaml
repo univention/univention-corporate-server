@@ -2,10 +2,9 @@ product: ucs
 release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
-src: univention-web
-fix: 1.0.42-15A~4.2.0.201705231328
+src: univention-appcenter
+fix: 
 desc: |
  This update addresses the following issue(s):
- * The link to send feedback to Univention has been fixed.
  * Progressbars are now escaping HTML content more strict.
-bug: [44381, 44652, 44498]
+bug: [44498]
