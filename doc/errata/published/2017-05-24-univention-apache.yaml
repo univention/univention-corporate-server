@@ -10,3 +10,5 @@ desc: |
    configured via UCR. When apache2/force_https is enabled, by default
    "localhost" will be excluded.
 bug: [43603]
+erratum: 424
+announced: 2017-05-24
