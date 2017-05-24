@@ -1,3 +1,9 @@
+univention-web (1.0.42-16) unstable; urgency=medium
+
+  * Bug #44652: Grid: sortFormatter is now defined at the column
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 23 May 2017 17:43:34 +0200
+
 univention-web (1.0.42-15) unstable; urgency=medium
 
   * Bug #44652: Grid: API to make the column sorting configurable

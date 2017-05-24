@@ -142,9 +142,6 @@ define([
 		//		sorting in descending order)
 		sortIndex: 1,
 		naturalSort: true,
-		// sortRepresentations: Object
-		//		Object of functions to control how columns are sorted
-		sortRepresentations: {},
 
 		// use the framework wide translation file
 		i18nClass: 'umc.app',
@@ -233,15 +230,14 @@ define([
 		_createSortQuerier: function(sorted) {
 			// see also dstore/SimpleQuery
 			var sorter = sorted[0];
-			var sortRepresentation;
-			if (this.sortRepresentations.hasOwnProperty(sorter.property)) {
-				sortRepresentation = this.sortRepresentations[sorter.property];
-			} else {
-				sortRepresentation = function(value) {return value;};
+			var column = this._getColumnByName(sorter.property);
+			var sortFormatter = function(value) {return value;};
+			if (column.hasOwnProperty('sortFormatter')) {
+				sortFormatter = column.sortFormatter;
 			}
 			var compare = function(aValue, bValue) {
-				var a = sortRepresentation(aValue);
-				var b = sortRepresentation(bValue);
+				var a = sortFormatter(aValue);
+				var b = sortFormatter(bValue);
 				if (typeof(a.localeCompare) === 'function') {
 					return a.localeCompare(b, kernel.locale, {numeric: true}) < 0;
 				} else if (typeof(a.toLowerCase) === 'function') {
@@ -1067,6 +1063,18 @@ define([
 				return row.data;
 			}
 			return null;
+		},
+
+		_getColumnByName: function(name) {
+			var targetColumn;
+			array.some(this.columns, function(column) {
+				if (column.name === name) {
+					targetColumn = column;
+					return true;
+				}
+				return false;
+			});
+			return targetColumn;
 		},
 
 		//_updateDisabledItems: function() {
