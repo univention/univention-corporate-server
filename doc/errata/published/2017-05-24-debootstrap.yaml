@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added a symlink to enable debootstrap for UCS 4.2
 bug: [44593]
+erratum: 17
+announced: 2017-05-24
