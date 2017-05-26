@@ -37,6 +37,7 @@ define([
 	"dojo/on",
 	"dojo/dom",
 	"dojo/dom-construct",
+	"dojo/dom-class",
 	"./PortalCategory",
 	"umc/tools",
 	"umc/i18n/tools",
@@ -45,7 +46,7 @@ define([
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, kernel, registry, on, dom, domConstruct, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, kernel, registry, on, dom, domConstruct, domClass, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
 
 	var _regHasImageSuffix = /\.(svg|jpg|jpeg|png|gif)$/i;
 	var hasImageSuffix = function(path) {
@@ -55,6 +56,18 @@ define([
 	var hasAbsolutePath = function(path) {
 		return path && path.indexOf('/') === 0;
 	};
+
+	// adjust white styling of header via extra CSS class
+	if (lang.getObject('portal.fontColor', false, portalContent) == 'white') {
+		try {
+			domClass.add(dojo.byId('umcHeader'), 'umcWhiteIcons');
+		} catch(err) { }
+	}
+
+	// remove display=none from header 
+	try {
+		domClass.remove(dojo.byId('umcHeaderRight'), 'dijitDisplayNone');
+	} catch(err) { }
 
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
 	return {

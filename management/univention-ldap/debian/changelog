@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-7) unstable; urgency=medium
+
+  * Bug #44697: Allow to change the font color of the portal page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 May 2017 13:33:14 +0200
+
 univention-ldap (13.0.7-6) unstable; urgency=medium
 
   * Bug #42249: add support for virtual mail aliases

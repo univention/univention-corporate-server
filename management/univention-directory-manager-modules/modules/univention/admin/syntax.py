@@ -3399,6 +3399,13 @@ class PortalCategory(select):
 	]
 
 
+class PortalFontColor(select):
+	choices = [
+		('white', _('White')),
+		('black', _('Black')),
+	]
+
+
 class LocalizedDisplayName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Display Name'), string)]
 

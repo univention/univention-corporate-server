@@ -159,6 +159,18 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'fontColor': univention.admin.property(
+		short_description=_('Font color'),
+		long_description='Defines the color which is used for the fonts on the portal page as well as the icons in the header. Use any valid CSS color, e.g., #EA1100, rgba(255, 0, 123, 0.5)',
+		syntax=univention.admin.syntax.PortalFontColor,
+		default='black',
+		multivalue=False,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
@@ -171,6 +183,7 @@ layout = [
 			["logo"],
 			["background"],
 			["cssBackground"],
+			["fontColor"],
 		]),
 		Group(_('General Content'), layout=[
 			# ["showMenu"],
@@ -207,6 +220,7 @@ mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
+mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)
 mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.ListToString)
 
 

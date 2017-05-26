@@ -109,16 +109,38 @@ def _write_css(obj):
 		background.append(css)
 	background = ', '.join(background)
 
+	# get font color
+	font_color = obj.get('univentionPortalFontColor', [''])[0]
+
+	# prepare CSS code
+	css_code = ''
+	if background:
+		css_code += '''
+body.umc {
+	background: %s;
+}
+''' % (background, )
+
+	if font_color == 'white':
+		css_code += '''
+body.umc .umcHeader .umcHeaderLeft h1 {
+	color: white;
+}
+
+body.umc .portalCategory h2 {
+	color: white;
+}
+'''
+
+	if not css_code:
+		css_code = '/* no styling defined via UDM portal object */\n'
+
 	# write CSS file
 	fname = os.path.join(os.path.dirname(_fname()), 'portal.css')
 	ud.debug(ud.LISTENER, ud.PROCESS, 'Writing CSS file %s' % fname)
 	try:
 		with open(fname, 'wb') as fd:
-			if background:
-				fd.write('body.umc {\n  background: %s;\n}\n' % background)
-			else:
-				fd.write('/* no styling defined via UDM portal object */\n')
-
+			fd.write(css_code)
 	except (EnvironmentError, IOError) as err:
 		ud.debug(ud.LISTENER, ud.WARN, 'Failed to write CSS file %s: %s' % (fname, err))
 
@@ -132,6 +154,7 @@ def _make_obj(obj):
 		'showApps': obj.get('univentionPortalShowApps', [''])[0] == 'TRUE',
 		'showServers': obj.get('univentionPortalShowServers', [''])[0] == 'TRUE',
 		'logo': _save_image(obj, 'univentionPortalLogo', 'logos'),
+		'fontColor': obj.get('univentionPortalFontColor', [''])[0],
 	}
 
 

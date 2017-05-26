@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-9) unstable; urgency=medium
+
+  * Bug #44697: Allow to change the font color of the portal page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 May 2017 13:33:07 +0200
+
 univention-directory-manager-modules (12.0.17-8) unstable; urgency=medium
 
   * Bug #44611: make dhcpPermitList of dhcp pools robust against values
