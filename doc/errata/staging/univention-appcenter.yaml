@@ -3,8 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 
+fix: 6.0.7-15A~4.2.0.201705261611
 desc: |
  This update addresses the following issue(s):
  * Progressbars are now escaping HTML content more strict.
-bug: [44498]
+ * Start containers with the hosts proxy settings by default.
+bug: [44498,44561]
