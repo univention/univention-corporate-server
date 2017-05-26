@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 6.0.7-15A~4.2.0.201705261611
+fix: 6.0.7-16A~4.2.0.201705261616
 desc: |
  This update addresses the following issue(s):
  * Progressbars are now escaping HTML content more strict.
