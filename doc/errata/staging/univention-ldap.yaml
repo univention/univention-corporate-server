@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-ldap
-fix: 
+fix: 13.0.7-7A~4.2.0.201705261334
 desc: |
  This update addresses the following issue(s):
  * Support for forwarding emails to external addresses has been added.
