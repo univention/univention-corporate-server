@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-16) unstable; urgency=low
+
+  * Bug #44561: fixed last commit
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 May 2017 16:15:46 +0200
+
 univention-appcenter (6.0.7-15) unstable; urgency=low
 
   * Bug #44561: apply host proxy settings for container

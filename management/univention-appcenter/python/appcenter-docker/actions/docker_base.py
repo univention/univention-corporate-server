@@ -181,7 +181,7 @@ class DockerActionMixin(object):
 				set_vars['https_proxy'] = ucr_get('proxy/https')
 			if ucr_get('proxy/no_proxy')
 				set_vars['proxy/no_proxy'] = ucr_get('proxy/no_proxy')
-				set_vars['/no_proxy'] = ucr_get('proxy/no_proxy')
+				set_vars['no_proxy'] = ucr_get('proxy/no_proxy')
 		set_vars['updater/identify'] = 'Docker App'
 		database_connector = DatabaseConnector.get_connector(app)
 		database_password_file = None
