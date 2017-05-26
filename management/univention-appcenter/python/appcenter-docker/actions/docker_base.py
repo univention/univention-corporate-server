@@ -45,7 +45,7 @@ from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import Abort, get_action, AppCenterErrorContainerStart
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
-from univention.appcenter.ucr import ucr_keys, ucr_get
+from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
@@ -172,6 +172,16 @@ class DockerActionMixin(object):
 			for key in ucr_keys_list:
 				if re.match(var, key):
 					set_vars[key] = ucr_get(key)
+		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
+			if ucr_get('proxy/http'):
+				set_vars['proxy/http'] = ucr_get('proxy/http')
+				set_vars['http_proxy'] = ucr_get('proxy/http')
+			if ucr_get('proxy/https'):
+				set_vars['proxy/https'] = ucr_get('proxy/https')
+				set_vars['https_proxy'] = ucr_get('proxy/https')
+			if ucr_get('proxy/no_proxy')
+				set_vars['proxy/no_proxy'] = ucr_get('proxy/no_proxy')
+				set_vars['/no_proxy'] = ucr_get('proxy/no_proxy')
 		set_vars['updater/identify'] = 'Docker App'
 		database_connector = DatabaseConnector.get_connector(app)
 		database_password_file = None

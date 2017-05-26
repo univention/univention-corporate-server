@@ -3,3 +3,9 @@ Description[de]=Diese Variable steuert, ob das App Center sogenannte Docker Apps
 Description[en]=This variable controls whether the App Center supports so-called Docker Apps. Docker Apps run in a container and need a running "docker" service.
 Type=bool
 Categories=management-umc
+
+[appcenter/docker/container/proxy/settings]
+Description[de]=Diese Variable steuert, ob Container mit den Proxy-Einstellungen (proxy/http, proxy/https, proxy/no_proxy, /etc/apt/apt.conf.d/80proxy) des Hosts gestart werden.
+Description[en]=This variable controls whether containers are started with the proxy settings (proxy/http, proxy/https, proxy/no_proxy, /etc/apt/apt.conf.d/80proxy) of the host.
+Type=bool
+Categories=management-umc
