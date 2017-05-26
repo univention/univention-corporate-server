@@ -179,7 +179,7 @@ class DockerActionMixin(object):
 			if ucr_get('proxy/https'):
 				set_vars['proxy/https'] = ucr_get('proxy/https')
 				set_vars['https_proxy'] = ucr_get('proxy/https')
-			if ucr_get('proxy/no_proxy')
+			if ucr_get('proxy/no_proxy'):
 				set_vars['proxy/no_proxy'] = ucr_get('proxy/no_proxy')
 				set_vars['no_proxy'] = ucr_get('proxy/no_proxy')
 		set_vars['updater/identify'] = 'Docker App'
