@@ -147,26 +147,14 @@ class UMCSeleniumTest(object):
 		logger.info('Successful login')
 
 	def save_screenshot(self, name='error', hide_notifications=True):
-		old_viewport_width = self.driver.execute_script("return window.innerWidth")
-		old_viewport_height = self.driver.execute_script("return window.innerHeight")
-		document_height = self.driver.execute_script("return document.body.clientHeight")
-		if old_viewport_height < document_height:
-			logger.info(
-				'Increasing viewport height temporarily from %spx to %spx to '
-				'fit the whole document into a screenshot.'
-				% (old_viewport_height, document_height)
-			)
-			self.set_viewport_size(old_viewport_width, document_height)
-
 		if hide_notifications:
 			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
 
 		filename = self.screenshot_path + name + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + '.png'
 		logger.info('Saving screenshot %s' % filename)
-		self.driver.save_screenshot(filename)
+		self.driver.find_element_by_tag_name('body').screenshot(filename)
 
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
-		self.set_viewport_size(old_viewport_width, old_viewport_height)
 
 	def check_checkbox_by_name(self, inputname, checked=True):
 		"""
@@ -276,6 +264,7 @@ class UMCSeleniumTest(object):
 		return elem
 
 	def wait_for_pageload(self, timeout=30):
+		# TODO: Doesn't work with grids yet.
 		"""
 		Waits until page is loaded. Can only be used if a user is signed in. Parameter 'timeout' gives maximum time to wait in seconds.
 		"""
