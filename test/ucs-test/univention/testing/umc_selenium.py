@@ -196,23 +196,36 @@ class UMCSeleniumTest(object):
 		return self.driver.find_element_by_xpath('//*[contains(text(), "%s")]' % text)
 
 	def click_button(self, buttonname):
+		self.click_element(buttonname, '.dijitButtonText')
+
+	def click_tile(self, tilename):
+		self.click_element(tilename, '.umcGalleryName')
+
+	def click_grid_entry(self, name):
+		elems = self.driver.execute_script("""
+			return dojo.query('.umcGridDefaultAction').filter(function(node) { return node.offsetParent !== null });""")
+		# Only check if name is contained, because innerHTML is "polluted" in
+		# grids.
+		elem = filter(lambda elem: name in elem.get_attribute("innerHTML"), elems)[0]
+		elem.click()
+		self.wait_for_pageload()
+
+	def click_element(self, name, css_class):
 		"""
-		Do not (or very careful) use this method when more then one element has the buttonname content.
-		This method search the buttonname in dojo .dijitButtonText, clicks the last found match, and waits for the next page to be loaded.
-		First it looks for a visible buttonname.
-		When no element is found it search for a visible parent of the content.
-		This should find symbol buttons with hover text.
-		When no clickable element is found an exception is thrown.
-		This method does not verify if the click was successful.
+		Click on an element with innerHTML=name and CCS2-selector=css_class.
+
+		Only use with caution when there are multiple elements with that name.
+		Also looks for hover texts, if no visible element is found.
 		User must be logged in.
 		"""
 
 		elem = self.driver.execute_script("""
-			return dojo.query('.dijitButtonText').filter(function(node) { return node.offsetParent !== null && node.innerHTML == %s }).pop();""" % json.dumps(buttonname))
+			return dojo.query(%s).filter(function(node) { return node.offsetParent !== null && node.innerHTML == %s }).pop();
+			""" % (json.dumps(css_class), json.dumps(name)))
 		if not elem:
 			elem = self.driver.execute_script("""
-				return dojo.query('.dijitButtonText').filter(function(node) { return node.innerHTML == %s })[0].parentNode;
-				""" % json.dumps(buttonname))
+				return dojo.query(%s).filter(function(node) { return node.innerHTML == %s })[0].parentNode;
+				""" % (json.dumps(css_class), json.dumps(name)))
 		elem.click()
 		self.wait_for_pageload()
 
@@ -262,7 +275,7 @@ class UMCSeleniumTest(object):
 		elem.send_keys(inputvalue)
 		return elem
 
-	def wait_for_pageload(self, timeout=12):
+	def wait_for_pageload(self, timeout=30):
 		"""
 		Waits until page is loaded. Can only be used if a user is signed in. Parameter 'timeout' gives maximum time to wait in seconds.
 		"""
