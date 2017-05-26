@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-portal
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The possibilty to change the font color on the portal page has been added.
+bug: [44697]

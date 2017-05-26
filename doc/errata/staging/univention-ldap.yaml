@@ -3,8 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-ldap
-fix: 13.0.7-6A~4.2.0.201704261322
+fix: 
 desc: |
  This update addresses the following issue(s):
  * Support for forwarding emails to external addresses has been added.
-bug: [42249]
+ * The possiblity to change the font color on the portal page has been added.
+bug: [42249, 44697]

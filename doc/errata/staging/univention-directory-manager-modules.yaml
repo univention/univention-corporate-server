@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-directory-manager-modules
-fix: 12.0.17-7A~4.2.0.201705161453
+fix: 
 desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
@@ -17,4 +17,5 @@ desc: |
  * A regression in UCS 4.2 has been fixed which caused that DHCP pools
    which have values unknown by UDM in its dhcpPermitList could not be
    opened or modified anymore.
-bug: [27286, 42148, 42249, 42533, 44152, 44472, 41053, 44611]
+ * The possiblity to change the font color on the portal page has been added.
+bug: [27286, 42148, 42249, 42533, 44152, 44472, 41053, 44611, 44697]
