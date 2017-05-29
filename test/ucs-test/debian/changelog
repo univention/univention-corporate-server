@@ -1,3 +1,9 @@
+ucs-test (6.0.37-62) unstable; urgency=medium
+
+  * Bug #43838: Test configure script
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 May 2017 09:37:45 +0200
+
 ucs-test (6.0.37-61) unstable; urgency=medium
 
   * Bug #44538: skip test case 60_umc/04_policies
