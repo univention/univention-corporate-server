@@ -110,6 +110,7 @@ class UMCSeleniumTest(object):
 		if not os.path.exists(self.screenshot_path):
 			os.makedirs(self.screenshot_path)
 
+		self.driver.get(self.base_url + 'univention/login/?lang=en-US')
 		if self.login:
 			self.do_login()
 
@@ -132,8 +133,6 @@ class UMCSeleniumTest(object):
 		self.driver.set_window_size(width + width_delta, height + height_delta)
 
 	def do_login(self):
-		self.driver.get(self.base_url + 'univention/login/?lang=en-US')
-
 		elem = self.driver.find_element_by_id("umcLoginUsername")
 		elem.clear()
 		elem.send_keys(self.umcLoginUsername)
@@ -160,7 +159,7 @@ class UMCSeleniumTest(object):
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
 
 	def open_module(self, name):
-		self.driver.get('https://' + self.ip + '/univention/management/?lang=en-US')
+		self.driver.get(self.base_url + 'univention/management/?lang=en-US')
 
 		search_field = self.driver.find_element_by_xpath('//*[@id="umc_widgets_LiveSearch_0"]')
 		search_field.click()
@@ -289,7 +288,7 @@ class UMCSeleniumTest(object):
 		"""
 		Log out the logged in user.
 		"""
-		self.driver.get('https://' + self.ip + '/univention/logout')
+		self.driver.get(self.base_url + 'univention/logout')
 
 	def select_table_item_by_name(self, itemname):
 		elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
