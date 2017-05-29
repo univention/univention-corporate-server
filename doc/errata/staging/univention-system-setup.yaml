@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-system-setup
-fix: 10.0.10-18A~4.2.0.201705291240
+fix: 10.0.10-19A~4.2.0.201705291717
 desc: |
  This update addresses the following issue(s):
  * The package univention-samba is now also downloaded
@@ -14,4 +14,9 @@ desc: |
  * When selecting fast demo mode in an App Appliance, all IP
    addresses in LDAP are reconfigured to the correct address
  * The overview of changed network settings doesn't show HTML code anymore.
-bug: [44522,44575,43671,43140,41204]
+ * The decision between joining systems into UCS or Active Directory domains
+   was confusing and has been improved.
+ * A crash is prevented when trying to join into an active directory domain
+   and the active directory server is not reachable.
+ * A crash is prevented in appliance scenarios if no domainname was entered.
+bug: [44522,44575,43671,43140,41204,44035,44394,43273]
