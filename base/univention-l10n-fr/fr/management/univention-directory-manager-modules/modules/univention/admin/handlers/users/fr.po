@@ -26,20 +26,21 @@
 # <http://www.gnu.org/licenses/>.
 #
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 12:27+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-28 20:36+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: modules/univention/admin/handlers/users/user.py:2417
 #, python-format
@@ -193,9 +194,8 @@ msgid "Contact information"
 msgstr "Informations de contact"
 
 #: modules/univention/admin/handlers/users/user.py:645
-#, fuzzy
 msgid "Copy to the primary e-mail address"
-msgstr "Adresse électronique principale"
+msgstr "Copier vers l'adresse électronique principale"
 
 #: modules/univention/admin/handlers/users/user.py:367
 msgid "Country"
@@ -239,9 +239,8 @@ msgid "Enter date as day.month.year."
 msgstr "Saisissez la date sous la forme jour.mois.année."
 
 #: modules/univention/admin/handlers/users/user.py:633
-#, fuzzy
 msgid "External e-mail address"
-msgstr "Adresse électronique alternative"
+msgstr "Adresse électronique externe"
 
 #: modules/univention/admin/handlers/users/user.py:161
 msgid "First name"
@@ -451,11 +450,15 @@ msgid ""
 "Primary e-mail address must be set, if a copy of forwarded messages should "
 "be stored in its mailbox."
 msgstr ""
+"L'adresse électronique principale doit être définie si une copie des messages "
+"transmis doit être stockée dans la boîte aux lettres associée."
 
 #: modules/univention/admin/handlers/users/user.py:2368
 msgid ""
 "Primary e-mail address must be set, if messages should be forwarded for it."
 msgstr ""
+"L'adresse électronique principale doit être définie si des messages doivent "
+"être transmis pour son compte."
 
 #: modules/univention/admin/handlers/users/user.py:584
 #: modules/univention/admin/handlers/users/user.py:986
@@ -503,6 +506,9 @@ msgid ""
 "Send a copy to the primary e-mail address when forwarding to external e-mail "
 "address"
 msgstr ""
+"Envoyer une copie à l'adresse électronique principale lorsque des messages "
+"sont "
+"transmis à l'adresse électronique externe"
 
 #: modules/univention/admin/handlers/users/user.py:937
 msgid "Serial"
@@ -657,20 +663,3 @@ msgstr "jour"
 msgid "days"
 msgstr "jours"
 
-#~ msgid "Add"
-#~ msgstr "Ajouter"
-
-#~ msgid "Add User"
-#~ msgstr "Ajouter un utilisateur"
-
-#~ msgid "Add, edit and delete users"
-#~ msgstr "Ajouter, modifier et supprimer des utilisateurs"
-
-#~ msgid "Search"
-#~ msgstr "Rechercher"
-
-#~ msgid "Search for user(s)"
-#~ msgstr "Chercher des utilisateurs"
-
-#~ msgid "Users"
-#~ msgstr "Utilisateurs"

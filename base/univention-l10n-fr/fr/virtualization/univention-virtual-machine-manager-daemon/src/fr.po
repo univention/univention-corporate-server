@@ -32,15 +32,16 @@
 # Philipp Hahn <hahn@univention.de>, 2010.
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
+# Nicolas Ternisien <nicolas@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.333-1\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-03 21:15+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
-"Language-Team: German <fr@bureau-cornavin.com>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-23 22:24+0100\n"
+"Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,7 +50,7 @@ msgstr ""
 
 #: src/univention-virtual-machine-manager-daemon:212
 msgid "Cache options"
-msgstr ""
+msgstr "Options du cache"
 
 #: src/univention/uvmm/commands.py:630
 #, python-format
@@ -58,7 +59,7 @@ msgstr "L'utilisation de la commande « %(command)s » est restreinte"
 
 #: src/univention-virtual-machine-manager-daemon:206
 msgid "Connection options"
-msgstr ""
+msgstr "Options de la connexion"
 
 #: src/univention/uvmm/uvmm_ldap.py:194 src/univention/uvmm/uvmm_ldap.py:250
 #: src/univention/uvmm/uvmm_ldap.py:284 src/univention/uvmm/uvmm_ldap.py:301
@@ -86,11 +87,11 @@ msgstr "Impossible d'envoyer la requête : %(errno)d"
 
 #: src/univention-virtual-machine-manager-daemon:221
 msgid "Daemon options"
-msgstr ""
+msgstr "Options du démon"
 
 #: src/univention-virtual-machine-manager-daemon:218
 msgid "Do not load cached state"
-msgstr ""
+msgstr "Ne pas charger l'état en cache"
 
 #: src/univention/uvmm/node.py:1710
 #, python-format
@@ -302,7 +303,7 @@ msgstr "Échec de la duplication du volume « %(volume)s » : %(error)s"
 
 #: src/univention-virtual-machine-manager-daemon:124
 msgid "Failed to fork daemon."
-msgstr ""
+msgstr "Impossible de scinder le démon."
 
 #: src/univention/uvmm/node.py:1830
 #, python-format
@@ -325,7 +326,7 @@ msgstr ""
 
 #: src/univention-virtual-machine-manager-daemon:227
 msgid "Fork into background"
-msgstr ""
+msgstr "Scinder en arrière-plan"
 
 #: src/univention/uvmm/node.py:841
 #, python-format
@@ -348,7 +349,7 @@ msgstr "Aucun SERVICE défini."
 
 #: src/univention-virtual-machine-manager:108
 msgid "No nodes found."
-msgstr ""
+msgstr "Aucun nœud trouvé."
 
 #: src/univention/uvmm/protocol.py:105
 #, python-format
@@ -371,35 +372,35 @@ msgstr "Le paquet n'est pas une requête UVMM : %(type)s"
 
 #: src/univention-virtual-machine-manager:136
 msgid "Path to the UNIX socket"
-msgstr ""
+msgstr "Emplacement de la socket UNIX"
 
 #: src/univention-virtual-machine-manager-daemon:209
 #, python-format
 msgid "Path to the UNIX socket [%(default)s]"
-msgstr ""
+msgstr "Emplacement de la socket UNIX [%(default)s]"
 
 #: src/univention-virtual-machine-manager-daemon:236
 #, python-format
 msgid "Path to the ini-file [%(default)s]"
-msgstr ""
+msgstr "Emplacement du fichier « ini » [(default)s]"
 
 #: src/univention-virtual-machine-manager-daemon:230
 msgid "Path to the log-file"
-msgstr ""
+msgstr "Emplacement du fichier de journalisation"
 
 #: src/univention-virtual-machine-manager-daemon:224
 #, python-format
 msgid "Path to the pid-file [%(default)s]"
-msgstr ""
+msgstr "Emplacement du fichier de PID [%(default)s]"
 
 #: src/univention-virtual-machine-manager:142
 #: src/univention-virtual-machine-manager-daemon:233
 msgid "Print additional information"
-msgstr ""
+msgstr "Afficher des informations supplémentaires"
 
 #: src/univention-virtual-machine-manager-daemon:239
 msgid "Skip reading ini-file"
-msgstr ""
+msgstr "Ignorer la lecture du fichier « ini »"
 
 #: src/univention/uvmm/node.py:1581 src/univention/uvmm/node.py:1586
 #: src/univention/uvmm/node.py:1603 src/univention/uvmm/node.py:1608
@@ -468,12 +469,12 @@ msgstr ""
 
 #: src/univention/uvmm/client.py:105
 msgid "Timed out while closing socket."
-msgstr "Délai dépassé en fermant la connexion."
+msgstr "Délai dépassé en fermant la socket."
 
 #: src/univention/uvmm/client.py:122
 #, python-format
 msgid "Timed out while opening local socket \"%(path)s\"."
-msgstr "Délai dépassé en ouvrant une connexion locale « %(path)s »."
+msgstr "Délai dépassé en ouvrant une socket locale « %(path)s »."
 
 #: src/univention/uvmm/client.py:93
 msgid "Timed out while receiving data."
@@ -485,7 +486,7 @@ msgstr "Délai dépassé en envoyant les données."
 
 #: src/univention-virtual-machine-manager:149
 msgid "Timeout in seconds for UVMM commands"
-msgstr ""
+msgstr "Délai à ne pas dépasser en secondes pour les commandes UVMM"
 
 #: src/univention/uvmm/commands.py:634
 #, python-format
@@ -542,7 +543,7 @@ msgstr "args != dictionnaire : %(args)s"
 #: src/univention-virtual-machine-manager-daemon:215
 #, python-format
 msgid "cache directory [%(default)s]"
-msgstr ""
+msgstr "Dossier de cache [(default)s]"
 
 #: src/univention/uvmm/commands.py:105 src/univention/uvmm/commands.py:135
 #: src/univention/uvmm/commands.py:149 src/univention/uvmm/commands.py:162
@@ -658,7 +659,7 @@ msgstr "uri != chaîne : %(uri)s"
 
 #: src/univention-virtual-machine-manager-daemon:204
 msgid "usage: %prog [options] [uri...]"
-msgstr ""
+msgstr "utilisation : %prog [options] [uri...]"
 
 #: src/univention/uvmm/commands.py:622
 #, python-format
@@ -675,17 +676,3 @@ msgstr "volumes != liste ou None: %(volumes)s"
 msgid "volumes[] != string: %(volume)s"
 msgstr "volumes[] != chaîne : %(volume)s"
 
-#~ msgid "Authentication failed"
-#~ msgstr "Échec de l'authentification"
-
-#~ msgid "Authentication protocol violated"
-#~ msgstr "Protocole d'authentification violé"
-
-#~ msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
-#~ msgstr "Impossible de se connecter à « %(host)s:%(port)d » : %(errno)d"
-
-#~ msgid "Timed out while connecting to \"%(host)s:%(port)d\"."
-#~ msgstr "Délai dépassé en se connectant à « %(host)s:%(port)d »."
-
-#~ msgid "Unknown PAM type: %(type)s"
-#~ msgstr "Type PAM inconnu : %(type)s"

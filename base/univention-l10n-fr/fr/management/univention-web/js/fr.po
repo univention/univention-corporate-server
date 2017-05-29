@@ -1,18 +1,18 @@
-#
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-web-js\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2017-05-28 21:09+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"#-#-#-#-#  fr.pot (univention-web-js)  #-#-#-#-#\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: js/tools.js:1711
 #, python-brace-format
@@ -53,6 +53,11 @@ msgid ""
 "<b>Warning</b>: The current session with all opened modules and unsaved "
 "settings gets lost and a page reload is done when switching the language."
 msgstr ""
+"<b>Avertissement </b>: la session en cours, y compris tous les modules "
+"ouverts "
+"et les réglages non enregistrés, sera perdue et un rafraîchissement de page a "
+"lieu "
+"lorsque vous changez de langue."
 
 #: js/tools.js:268
 msgid ""
@@ -139,11 +144,11 @@ msgstr "Effacer les données de l'image"
 
 #: js/menu/Button.js:55
 msgid "Click for menu options"
-msgstr ""
+msgstr "Cliquez pour les options des menus"
 
 #: js/widgets/LoginButton.js:52 js/widgets/LoginButton.js:63
 msgid "Click to login"
-msgstr ""
+msgstr "Cliquez pour vous connecter"
 
 #: js/tools.js:897 js/widgets/Module.js:230
 msgid "Close"
@@ -159,7 +164,7 @@ msgstr "Impossible de satisfaire la requête."
 
 #: js/widgets/Grid.js:990
 msgid "Could not load search results"
-msgstr ""
+msgstr "Impossible de charger les résultats de recherche"
 
 #: js/tools.js:749
 msgid "Could not process the request."
@@ -167,7 +172,7 @@ msgstr "Impossible de traiter la requête."
 
 #: js/hooks/default_menu_entries.js:175
 msgid "Feedback"
-msgstr ""
+msgstr "Impressions"
 
 #: js/widgets/ProgressBar.js:147
 msgid "Fetching information from the server failed!"
@@ -202,8 +207,8 @@ msgstr "Masquer le message d'erreur du serveur"
 #: js/i18n.js:133
 msgid "In directory %2$s: removed one file."
 msgid_plural "In directory %2$s: removed %1$d files."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Dans le dossier %2$s : un fichier supprimé."
+msgstr[1] "Dans le dossier %2$s : %1$d fichiers supprimés."
 
 #: js/tools.js:911
 msgid "Inform vendor"
@@ -279,7 +284,7 @@ msgstr ""
 #: js/widgets/LoginButton.js:60
 #, python-format
 msgid "Logged in as <i>%(username)s</i>"
-msgstr ""
+msgstr "Connecté en tant que <i>%(username)s</i>"
 
 #: js/hooks/default_menu_entries.js:204
 msgid "Login"
@@ -327,8 +332,8 @@ msgstr "Valider"
 #, python-format
 msgid "One file removed from directory %s"
 msgid_plural "%d files removed from directory %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Un fichier supprimé du dossier %s"
+msgstr[1] "%d fichiers supprimés du répertoire %s"
 
 #: js/widgets/UnixAccessRightsExtended.js:79 js/widgets/UnixAccessRights.js:79
 msgid "Others"
@@ -340,7 +345,7 @@ msgstr "Propriétaire"
 
 #: js/widgets/Grid.js:164
 msgid "Please perform a search"
-msgstr ""
+msgstr "Veuillez effectuer une recherche"
 
 #: js/tools.js:859
 msgid "Please take a second to provide the following information:"
@@ -463,8 +468,8 @@ msgstr "Le coût total était de %.2f euros !"
 #, python-format
 msgid "There is one foo."
 msgid_plural "There are %d foos."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il y a un truc."
+msgstr[1] "Il y a %d trucs."
 
 #: js/i18n.js:125
 msgid "Translate me!"
@@ -475,9 +480,8 @@ msgid "UMC reload required"
 msgstr "Rechargement d'UMC nécessaire"
 
 #: js/hooks/default_menu_entries.js:169
-#, fuzzy
 msgid "Univention Help"
-msgstr "Site Internet Univention"
+msgstr "Aide Univention"
 
 #: js/hooks/default_menu_entries.js:163
 msgid "Univention Website"
@@ -567,15 +571,15 @@ msgstr "résultat attendu"
 
 #: js/hooks/default_menu_entries.js:171
 msgid "http://help.univention.com"
-msgstr ""
+msgstr "http://help.univention.com"
 
 #: js/hooks/default_menu_entries.js:165
 msgid "http://www.univention.com"
-msgstr ""
+msgstr "http://www.univention.com"
 
 #: js/hooks/default_menu_entries.js:185
 msgid "https://www.univention.com/feedback/"
-msgstr ""
+msgstr "https://www.univention.com/feedback/"
 
 #: js/widgets/Grid.js:735
 msgid "more"
@@ -590,5 +594,3 @@ msgstr "étapes pour reproduire l'erreur"
 msgid "{number} errors occurred: "
 msgstr "{number} erreurs survenues : "
 
-#~ msgid "umcUniventionUrl"
-#~ msgstr "umcUniventionUrl"

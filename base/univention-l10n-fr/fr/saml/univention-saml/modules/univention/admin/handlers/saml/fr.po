@@ -5,20 +5,21 @@
 # <packages@univention.de>, 2013.
 # Sandrine Burriel <sandrine@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-06-20 19:05+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
-"Language-Team: French <fr@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2017-05-28 21:11+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:124
 msgid "A description of this service provider that can be shown to users"
@@ -99,6 +100,8 @@ msgid ""
 "Raw XML metadata of the service provider to extend the simplesamlphp "
 "configuration."
 msgstr ""
+"Métadonnées XML brutes du fournisseur de service pour étendre la "
+"configuration simplesamlphp."
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:71
 msgid "Respond to this service provider URL after login"
@@ -199,7 +202,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:173
 msgid "XML metadata"
-msgstr ""
+msgstr "Métadonnées XML"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:44
 #, python-format
@@ -208,3 +211,4 @@ msgid ""
 msgstr ""
 "Vous pouvez télécharger le certificat public de ce fournisseur d'identité à "
 "l'adresse %s."
+

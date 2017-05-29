@@ -1,22 +1,20 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 14:34+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
-"Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-28 20:47+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: src/univention/management/console/modules/sanitizers.py:120
 #, python-format
@@ -83,7 +81,7 @@ msgstr ""
 #: src/univention/management/console/pam.py:339
 #, python-format
 msgid "Choose a password which does not match any of your last %s passwords."
-msgstr ""
+msgstr "Choisissez un mot de passe différent des %s derniers mots de passe."
 
 #: src/univention/management/console/protocol/definitions.py:71
 msgid "Connection to module process failed"
@@ -99,6 +97,9 @@ msgid ""
 "Cross Site Request Forgery attack detected. Please provide the \"UMCSessionId"
 "\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
 msgstr ""
+"Attaque de type Cross Site Request Forgery détectée. Veuillez fournir la "
+"valeur du cookie \"UMCSessionId\" comme en-tête de requête HTTP "
+"\"X-Xsrf-Protection\"."
 
 #: src/univention/management/console/protocol/definitions.py:74
 msgid "Error occurred during command processing"
@@ -126,7 +127,7 @@ msgstr ""
 
 #: src/univention/management/console/protocol/session.py:230
 msgid "For using this request a login is required."
-msgstr ""
+msgstr "Pour utiliser cette requête, vous devez vous identifier."
 
 #: src/univention/management/console/error.py:67
 #: src/univention/management/console/protocol/definitions.py:64
@@ -205,7 +206,7 @@ msgstr ""
 #: src/univention/management/console/error.py:77
 #: src/univention/management/console/protocol/definitions.py:66
 msgid "Method not allowed"
-msgstr ""
+msgstr "Méthode non autorisée"
 
 #: src/univention/management/console/protocol/definitions.py:70
 msgid "Module process died unexpectedly"
@@ -282,7 +283,7 @@ msgstr "L'identifiant de localisation n'est pas disponible"
 
 #: src/univention/management/console/base.py:275
 msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
-msgstr ""
+msgstr "L'en-tête HTTP \"Referer\" doit commencer par \"/univention/\"."
 
 #: src/univention/management/console/base.py:251
 msgid ""
@@ -344,23 +345,20 @@ msgid "The message header is not (yet) complete"
 msgstr "L'entête du message n'est pas (encore) complet"
 
 #: src/univention/management/console/pam.py:65
-#, fuzzy
 msgid "The minimum password age is not reached yet."
-msgstr "Le mot de passe saisi ne correspond pas à l'actuel."
+msgstr "L'âge minimum du mot de passe n'est pas encore atteint."
 
 #: src/univention/management/console/protocol/modserver.py:107
 msgid "The module may have been removed recently."
 msgstr "Le module a probablement été supprimé dernièrement."
 
 #: src/univention/management/console/pam.py:320
-#, fuzzy
 msgid "The new password could not be set."
-msgstr "La raison n'a pu être déterminée"
+msgstr "Le nouveau mot de passe n'a pas pu être défini."
 
 #: src/univention/management/console/pam.py:63
-#, fuzzy
 msgid "The password does not contain enough different characters."
-msgstr "Le mot de passe ne contient pas suffisamment de caractères différents"
+msgstr "Le mot de passe ne contient pas suffisamment de caractères différents."
 
 #: src/univention/management/console/pam.py:64
 #: src/univention/management/console/pam.py:316
@@ -368,34 +366,29 @@ msgid "The password has expired and must be renewed."
 msgstr "Le mot de passe a expiré et doit être renouvelé."
 
 #: src/univention/management/console/pam.py:60
-#, fuzzy
 msgid "The password is a palindrome."
-msgstr "Le mot de passe est un palindrome"
+msgstr "Le mot de passe est un palindrome."
 
 #: src/univention/management/console/pam.py:61
-#, fuzzy
 msgid "The password is based on a dictionary word."
-msgstr "Le mot de passe est tiré d'un mot du dictionnaire"
+msgstr "Le mot de passe est tiré d'un mot du dictionnaire."
 
 #: src/univention/management/console/pam.py:58
-#, fuzzy
 msgid "The password is too short."
-msgstr "Le mot de passe est trop court"
+msgstr "Le mot de passe est trop court."
 
 #: src/univention/management/console/pam.py:59
-#, fuzzy
 msgid "The password is too simple."
-msgstr "Le mot de passe est trop simple"
+msgstr "Le mot de passe est trop simple."
 
 #: src/univention/management/console/pam.py:338
-#, fuzzy, python-format
+#, python-format
 msgid "The password must consist of at least %s characters."
-msgstr "Le mot de passe ne contient pas suffisamment de caractères différents"
+msgstr "Le mot de passe doit comporter au moins %s caractères."
 
 #: src/univention/management/console/pam.py:62
-#, fuzzy
 msgid "The password was already used."
-msgstr "Le mot de passe a déjà été utilisé"
+msgstr "Le mot de passe a déjà été utilisé."
 
 #: src/univention/management/console/pam.py:309
 msgid "The reason could not be determined"
@@ -405,10 +398,12 @@ msgstr "La raison n'a pu être déterminée"
 #, python-format
 msgid "The requested Content-Type is not acceptable. Please use one of %s."
 msgstr ""
+"Le Content-Type demandé n'est pas acceptable. Veuillez utiliser l'une des "
+"valeurs parmi %s."
 
 #: src/univention/management/console/base.py:268
 msgid "The requested HTTP method is not allowed on this resource."
-msgstr ""
+msgstr "La méthode HTTP demandée n'est pas autorisée sur cette ressource."
 
 #: src/univention/management/console/protocol/modserver.py:106
 #, python-format
@@ -489,46 +484,3 @@ msgstr ""
 msgid "error parsing UMCP message body"
 msgstr "erreur lors de l'analyse du corps du message UMCP"
 
-#~ msgid "'%s' is not a valid UMCP command"
-#~ msgstr "« %s » n'est pas une commande UMCP valide"
-
-#~ msgid "Invalid UCR variable requested: %s"
-#~ msgstr "Variable UCR demandée invalide : %s"
-
-#~ msgid "Invalid number of arguments"
-#~ msgstr "Nombre de paramètres invalide"
-
-#~ msgid ""
-#~ "Nevertheless an error occurred while updating the password for running "
-#~ "modules. Please relogin to UMC to solve this problem."
-#~ msgstr ""
-#~ "Une erreur s'est toutefois produite lors de l'actualisation du mot de "
-#~ "passe pour les modules lancés. Veuillez vous authentifier à UMC à nouveau "
-#~ "pour résoudre ce problème."
-
-#~ msgid "OK, containing report message"
-#~ msgstr "OK, contenant un message de rapport"
-
-#~ msgid "OK, operation successful ask for shutdown of connection"
-#~ msgstr "OK, opération réussie demandant un arrêt de la connexion"
-
-#~ msgid "OK, partial response"
-#~ msgstr "OK, réponse partielle"
-
-#~ msgid "SSL server certificate is not trustworthy"
-#~ msgstr "Le certificat SSL du serveur n'est pas de confiance"
-
-#~ msgid "The authentication has failed"
-#~ msgstr "Échec de l'authentification"
-
-#~ msgid "The command '%s' do not have any arguments"
-#~ msgstr "La commande « %s » n'a pas d'arguments"
-
-#~ msgid "The password has expired and must be renewed"
-#~ msgstr "Le mot de passe a expiré et doit être renouvelé"
-
-#~ msgid "Unknown UMCP command: %s"
-#~ msgstr "Commande UMCP inconnue : %s"
-
-#~ msgid "Unknown command"
-#~ msgstr "Commande inconnue"

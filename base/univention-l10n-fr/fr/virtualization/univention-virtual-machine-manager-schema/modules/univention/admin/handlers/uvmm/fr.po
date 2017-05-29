@@ -5,15 +5,16 @@
 # Andreas Büsching <buesching@univention.de>, 2010.
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
+# Nicolas Ternisien <nicolas@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-06 09:20+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
-"Language-Team: German <fr@bureau-cornavin.com>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-23 22:25+0100\n"
+"Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,7 +27,7 @@ msgstr "Accès distant VNC actif"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:98
 msgid "Add the listed images to the list of selectable images"
-msgstr ""
+msgstr "Ajouter les images listées à la liste des images sélectionnables"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:172
 msgid "Amount of disk space"
@@ -220,7 +221,7 @@ msgstr "Ordre des périphériques au démarrage"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:76
 msgid "Pattern for filtering images"
-msgstr ""
+msgstr "Motif pour filtrer les images"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:122
 msgid "Prefix for the name of virtual machines"
@@ -262,13 +263,15 @@ msgstr "Accès distant"
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:87
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:88
 msgid "Show UCS images when creating a new instance"
-msgstr ""
+msgstr "Afficher les images UCS à la création d'une nouvelle instance"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:99
 msgid ""
 "The specified images are added to the list of selectable images in the "
 "instance wizard"
 msgstr ""
+"Les images indiquées sont ajoutées à la liste des images sélectionnables "
+"dans l'assistant d'instance"
 
 #: modules/univention/admin/handlers/uvmm/info.py:56
 #: modules/univention/admin/handlers/uvmm/info.py:57
@@ -346,7 +349,10 @@ msgid ""
 "When creating new instances, this pattern is used to further filter all "
 "available Images"
 msgstr ""
+"Lors de la création de nouvelles instances, ce motif est utilisé pour "
+"restreindre plus parmi les images disponibles"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:58
 msgid "hard drive"
 msgstr "disque dur"
+

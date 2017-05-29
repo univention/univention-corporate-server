@@ -1,19 +1,20 @@
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
 # Eric Bischoff <eric@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 13:43+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
-"Language-Team: French <fr@bureau-cornavin.com>\n"
-"Language: German\n"
+"PO-Revision-Date: 2017-05-28 18:37+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: python/appcenter/utils.py:260
 #, python-format
@@ -26,7 +27,7 @@ msgstr ""
 
 #: python/appcenter/actions/__init__.py:60
 msgid "An error occurred!"
-msgstr ""
+msgstr "Une erreur s'est produite !"
 
 #: python/appcenter-docker/docker.py:63
 #, python-format
@@ -39,7 +40,7 @@ msgstr "Différences dans la somme de contrôle du manifeste"
 
 #: python/appcenter-docker/actions/docker_install.py:92
 msgid "Setup script failed!"
-msgstr ""
+msgstr "Le script d'installation a échoué"
 
 #: python/appcenter/app.py:1266
 #, python-format
@@ -52,7 +53,7 @@ msgstr ""
 
 #: python/appcenter/actions/__init__.py:66
 msgid "The docker container could not be started!"
-msgstr ""
+msgstr "Le conteneur Docker n'a pas pu être lancé !"
 
 #: python/appcenter/utils.py:265 python/appcenter/utils.py:282
 #, python-format
@@ -60,13 +61,12 @@ msgid "There is a problem with the certificate of the App Center server %s."
 msgstr "Il y a un problème avec le certificat du serveur d'App Center %s."
 
 #: python/appcenter/utils.py:284
-#, fuzzy
 msgid ""
 "There was a problem with the HTTP response of the server (BadStatusLine). "
 "Please try again later."
 msgstr ""
-"Ce problème provient du serveur d'App Center. Veuillez réessayer "
-"ultérieurement."
+"Un problème est survenu au niveau de la réponse HTTP du serveur "
+"(BadStatusLine). Veuillez réessayer ultérieurement."
 
 #: python/appcenter/utils.py:262
 msgid "This is a problem with the App Center server. Please try again later."
@@ -97,6 +97,8 @@ msgid ""
 "We are sorry for the inconvenience. Please help us to improve the AppCenter "
 "and the Apps by sending us the information below."
 msgstr ""
+"Nous sommes désolés de ce désagrément. Merci de nous aider à améliorer "
+"l'AppCenter et les Apps en nous transmettant les informations ci-dessous."
 
 #: python/appcenter/utils.py:274
 #, python-format
@@ -111,3 +113,4 @@ msgstr ""
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"
+

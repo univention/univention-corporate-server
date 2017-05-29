@@ -25,15 +25,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 01:56+0900\n"
-"Last-Translator: \n"
-"Language-Team: American English <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-28 20:28+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -127,7 +128,7 @@ msgstr "Identifiant d'app"
 
 #: modules/univention/admin/handlers/settings/portal.py:170
 msgid "Appearance"
-msgstr ""
+msgstr "Apparence"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:400
 msgid "Attribute layout"
@@ -135,15 +136,15 @@ msgstr "Présentation de l'attribut"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:125
 msgid "Authorization"
-msgstr ""
+msgstr "Autorisation"
 
 #: modules/univention/admin/handlers/settings/portal.py:130
 msgid "Background"
-msgstr ""
+msgstr "Arrière-plan"
 
 #: modules/univention/admin/handlers/settings/portal.py:131
 msgid "Background image of the Portal"
-msgstr ""
+msgstr "Image d'arrière-plan du portail"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:114
 msgid "Bad Lockout Attempts"
@@ -184,7 +185,7 @@ msgstr "Professionnel"
 
 #: modules/univention/admin/handlers/settings/portal.py:152
 msgid "CSS background"
-msgstr ""
+msgstr "Arrière-plan CSS"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:93
 msgid "Category"
@@ -360,6 +361,8 @@ msgid ""
 "Description of the entry. At least one entry; strongly encouraged to have "
 "one for en_US"
 msgstr ""
+"Description de l'entrée. Au moins une entrée : il est fortement recommandé "
+"d'avoir une entrée pour en_US."
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:164
 msgid "Disconnect Time"
@@ -579,11 +582,11 @@ msgstr "Réglages généraux des modèles utilisateurs"
 
 #: modules/univention/admin/handlers/settings/directory.py:111
 msgid "Group Link"
-msgstr "Lien groupe"
+msgstr "Lien de groupe"
 
 #: modules/univention/admin/handlers/settings/directory.py:190
 msgid "Group Links"
-msgstr "Liens groupes"
+msgstr "Liens de groupes"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:375
 msgid "Group Memberships"
@@ -612,12 +615,16 @@ msgid ""
 "Headline of the entry. At least one entry; strongly encouraged to have one "
 "for en_US"
 msgstr ""
+"En-tête de l'entrée. Au moins une entrée : il est fortement recommandé "
+"d'avoir une entrée pour en_US."
 
 #: modules/univention/admin/handlers/settings/portal.py:66
 msgid ""
 "Headline of the portal. At least one entry; strongly encouraged to have one "
 "for en_US"
 msgstr ""
+"En-tête du portail. Au moins une entrée : il est fortement recommandé "
+"d'avoir une entrée pour en_US."
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:141
 msgid "Home share"
@@ -668,15 +675,15 @@ msgstr ""
 "Dans certains cas, il est utile de remplacer des champs de saisie prédéfinis "
 "par des attributs étendus. Si le nom UDM interne d'un attribut est configuré "
 "ici, son champ de saisie est écrasé par cet attribut étendu. Le nom "
-"d'attribut UDM ne peut être déterminé qu'en cherchant dans le répertoire /"
-"usr/share/pyshared/univention/admin/handlers. Il s'agit du nom apparaissant "
+"d'attribut UDM ne peut être déterminé qu'en cherchant dans le répertoire "
+"/usr/share/pyshared/univention/admin/handlers. Il s'agit du nom qui apparaît "
 "avant les deux points dans les déclarations d'objets univention.admin."
 "property, par exemple roomNumber pour le numéro de salle d'un utilisateur."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:52
 #: modules/univention/admin/handlers/settings/portal.py:54
 msgid "Internal name"
-msgstr ""
+msgstr "Nom interne"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:232
 msgid ""
@@ -685,7 +692,7 @@ msgid ""
 "alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic "
 "numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
 msgstr ""
-"N'est pas basé sur le nom du compte utilisateur. Contient au moins six "
+"N'est pas dérivé du nom du compte utilisateur. Contient au moins six "
 "caractères. Contient des caractères dans trois des quatre catégories "
 "suivantes : lettres majuscules (A-Z), lettres minuscules (a-z), chiffres "
 "(0-9), caractères spéciaux (par exemple !$#,%)."
@@ -799,7 +806,7 @@ msgstr "Verrouillé jusqu'à"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:382
 msgid "Locking and deactivation"
-msgstr ""
+msgstr "Verrouillage et désactivation"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:144
 msgid "Lockout Duration Minutes"
@@ -815,7 +822,7 @@ msgstr "Terminal de connexion"
 
 #: modules/univention/admin/handlers/settings/portal.py:142
 msgid "Logo image for the portal."
-msgstr ""
+msgstr "Image à utiliser pour le logo du portail."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:381
 msgid "Long Description"
@@ -1061,13 +1068,15 @@ msgstr "Types de produits OEM autorisés par cette licence."
 
 #: modules/univention/admin/handlers/settings/portal.py:50
 msgid "Object that feeds everything in https://fqdn/univention/portal"
-msgstr ""
+msgstr "Objet alimentant tout le contenu de https://fqdn/univention/portal"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:48
 msgid ""
 "One link in https://fqdn/univention/portal. Belongs to one (or more) "
 "settings/portal"
 msgstr ""
+"Un lien dans https://fqdn/univention/portal. Appartient à un (ou plusieurs) "
+"réglages/portail."
 
 #: modules/univention/admin/handlers/settings/extended_options.py:121
 msgid "Option may be repeatedly turned on and off."
@@ -1105,7 +1114,7 @@ msgstr "POSIX (Linux/UNIX)"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:389
 msgid "POSIX (Linux/UNIX) account settings"
-msgstr ""
+msgstr "Réglages de compte POSIX (Linux/UNIX)"
 
 #: modules/univention/admin/handlers/settings/packages.py:66
 #: modules/univention/admin/handlers/settings/packages.py:67
@@ -1148,7 +1157,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:366
 msgid "Personal information"
-msgstr ""
+msgstr "Informations personnelles"
 
 #: modules/univention/admin/handlers/settings/directory.py:71
 msgid "Policy Link"
@@ -1160,23 +1169,23 @@ msgstr "Liens stratégies"
 
 #: modules/univention/admin/handlers/settings/portal.py:141
 msgid "Portal logo"
-msgstr ""
+msgstr "Logo du portail"
 
 #: modules/univention/admin/handlers/settings/portal.py:165
 msgid "Portal options"
-msgstr ""
+msgstr "Options du portail"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:47
 msgid "Portal: Entry"
-msgstr ""
+msgstr "Portail : Entrée"
 
 #: modules/univention/admin/handlers/settings/portal.py:49
 msgid "Portal: Portal"
-msgstr ""
+msgstr "Portail : Portail"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:115
 msgid "Portals"
-msgstr ""
+msgstr "Portails"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:216
 msgid "Postal code"
@@ -1457,39 +1466,39 @@ msgstr "Afficher uniquement"
 
 #: modules/univention/admin/handlers/settings/portal.py:108
 msgid "Show apps"
-msgstr ""
+msgstr "Afficher les apps"
 
 #: modules/univention/admin/handlers/settings/portal.py:97
 msgid "Show login"
-msgstr ""
+msgstr "Afficher l'outil de connexion"
 
 #: modules/univention/admin/handlers/settings/portal.py:75
 msgid "Show menu"
-msgstr ""
+msgstr "Afficher le menu"
 
 #: modules/univention/admin/handlers/settings/portal.py:86
 msgid "Show search"
-msgstr ""
+msgstr "Afficher l'outils de recherche"
 
 #: modules/univention/admin/handlers/settings/portal.py:119
 msgid "Show servers"
-msgstr ""
+msgstr "Afficher les serveurs"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:84
 msgid "Shown in the favorite section"
-msgstr ""
+msgstr "Afficher dans la section des favoris"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:116
 msgid "Shown on portals"
-msgstr ""
+msgstr "Afficher dans les portails"
 
 #: modules/univention/admin/handlers/settings/portal.py:120
 msgid "Shows links to all UCS servers"
-msgstr ""
+msgstr "Afficher les liens vers tous les serveurs UCS"
 
 #: modules/univention/admin/handlers/settings/portal.py:109
 msgid "Shows links to locally installed Apps"
-msgstr ""
+msgstr "Afficher les liens vers toutes les Apps installées localement"
 
 #: modules/univention/admin/handlers/settings/license.py:107
 msgid "Signature"
@@ -1951,17 +1960,3 @@ msgstr ""
 "Version du paquetage : la version ne peut pas être inférieure à la version "
 "actuelle."
 
-#~ msgid "Employee"
-#~ msgstr "Employé"
-
-#~ msgid "Employee Information"
-#~ msgstr "Informations relatives à l'employé"
-
-#~ msgid "Linux"
-#~ msgstr "Linux"
-
-#~ msgid "Mail"
-#~ msgstr "Courriel"
-
-#~ msgid "Mail Settings"
-#~ msgstr "Réglages de courriel"

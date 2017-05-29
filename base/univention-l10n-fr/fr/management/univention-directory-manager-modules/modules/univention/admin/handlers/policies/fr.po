@@ -25,21 +25,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-# eric <zzz>, 2016.
+# Eric Bischoff <eric@workshop-chapina.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-11 07:26+0100\n"
-"Last-Translator: eric <zzz>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-28 20:23+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:182
 #: modules/univention/admin/handlers/policies/print_quota.py:188
@@ -57,10 +58,10 @@ msgid ""
 "html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</"
 "p>"
 msgstr ""
-"<p>Les stratégies sont des objets pouvant être connectés à d'autres objets "
+"<p>Les stratégies sont des objets qui peuvent être connectés à d'autres objets "
 "dans l'arborescence des répertoires. Les stratégies connectées permettent de "
 "définir les propriétés des objets de manière uniforme. Les stratégies "
-"connectées à des conteneurs ou des unités d'organisation sont héritées par "
+"connectées à des conteneurs ou à des unités d'organisation sont héritées par "
 "tous les objets situés aux niveaux inférieurs.</p><p>Vous pouvez trouver "
 "davantage d'informations à ce sujet dans la <a href=\"http://docs.univention."
 "de/manual.html#central:policies\" target=\"_blank\">documentation en ligne "
@@ -75,7 +76,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:56
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:118
 msgid "Add hostnames to leases"
-msgstr "Ajouter les noms d'hôtes aux baux"
+msgstr "Incorporer les noms d'hôtes aux baux"
 
 # l dhcp_scope.py:33 dhcp_scope.py:150
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:70
@@ -265,7 +266,7 @@ msgstr "Quota par défaut pour chaque utilisateur sur un partage"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:139
 msgid "Define the name of the DHCP server"
-msgstr ""
+msgstr "Définir le nom du serveur DHCP"
 
 #: modules/univention/admin/handlers/policies/umc.py:68
 msgid "Defines a set of allowed UMC operations"
@@ -558,11 +559,11 @@ msgid ""
 "discarded by the server, if this is set to deny. Allowed by default. Setting "
 "this to deny violates the DHCP protocol."
 msgstr ""
-"Si cette valeur est fixée à interdire, lorsqu'une requête est reçue d'un "
-"client correspondant à l'adresse MAC d'une déclaration d'hôte, tout autre "
-"bail correspondant à cette adresse MAC sera abandonné par le serveur. La "
-"valeur par défaut est d'autoriser. Fixer la valeur à interdire viole le "
-"protocole DHCP."
+"Si cette valeur est fixée à « interdire », lorsqu'une requête est reçue "
+"d'un client correspondant à l'adresse MAC d'une déclaration d'hôte, tout "
+"autre bail correspondant à cette adresse MAC sera abandonné par le serveur. "
+"La valeur par défaut est d'autoriser. Fixer la valeur à « interdire » viole "
+"le protocole DHCP."
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:96
 msgid "Initial boot file to be loaded by a client"
@@ -1085,6 +1086,9 @@ msgid ""
 "clients. Use this only if auto-detection fails for servers with multiple IP "
 "addresses."
 msgstr ""
+"L'adresse IP identifiant le serveur DHCP devant être utilisé par les clients. "
+"N'utilisez cette option que si la détection automatique échoue pour les "
+"serveurs possédant plusieurs adresses IP."
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:106
 msgid "The node type of clients for NetBIOS over TCP/IP"
@@ -1152,32 +1156,3 @@ msgstr "Si rien n'est indiqué, la version la plus récente sera utilisée"
 msgid "http://docs.univention.de/manual.html#central:policies"
 msgstr "http://docs.univention.de/manual.html#central:policies"
 
-#~ msgid "Add"
-#~ msgstr "Ajouter"
-
-#~ msgid "Add Policy Object"
-#~ msgstr "Ajouter un objet de stratégie"
-
-#~ msgid "Add, edit and delete Policies"
-#~ msgstr "Ajouter, modifier et supprimer des stratégies"
-
-#~ msgid "Find"
-#~ msgstr "Trouver"
-
-#~ msgid "Find Policy Object(s)"
-#~ msgstr "Trouver un ou des objets de stratégie"
-
-#~ msgid "General mail quota settings"
-#~ msgstr "Réglages généraux des quotas de courriel"
-
-#~ msgid "Mail quota"
-#~ msgstr "Quota de courriel"
-
-#~ msgid "Policies"
-#~ msgstr "Stratégies"
-
-#~ msgid "Policy: Mail quota"
-#~ msgstr "Stratégie : quota de courriel"
-
-#~ msgid "Quota limit (MB)"
-#~ msgstr "Limite du quota (Mo)"

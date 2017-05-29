@@ -1,33 +1,35 @@
-#
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2017-05-28 21:02+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: www/main.js:64
 #, python-format
 msgid "%s - Server overview"
-msgstr ""
+msgstr "%s - Vue d'ensemble des serveurs"
 
 #: www/GalleryPane.js:43
 msgid "DC backup"
-msgstr ""
+msgstr "Contrôleur de domaine de secours"
 
 #: www/GalleryPane.js:42
 msgid "DC master"
-msgstr ""
+msgstr "Contrôleur de domaine maître"
 
 #: www/GalleryPane.js:44
 msgid "DC slave"
-msgstr ""
+msgstr "Contrôleur de domaine esclave"
 
 #: www/GalleryPane.js:45
 msgid "Member server"
@@ -35,13 +37,14 @@ msgstr "Serveur membre"
 
 #: www/main.js:71
 msgid "Search servers"
-msgstr ""
+msgstr "Serveurs de recherche"
 
 #: www/main.js:67
 #, python-format
 msgid "Server overview for domain %s"
-msgstr ""
+msgstr "Vue d'ensemble des serveurs pour le domaine %s"
 
 #: www/GalleryPane.js:52
 msgid "Unknown"
 msgstr "Inconnue"
+

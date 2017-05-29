@@ -1,16 +1,18 @@
-#
+# Nicolas Ternisien <nicolas@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-03-22 23:30+0100\n"
-"Last-Translator: Univention GmbH <packages@univention.de>\n"
-"Language-Team: Univention GmbH <packages@univention.de>\n"
+"PO-Revision-Date: 2017-05-23 22:34+0100\n"
+"Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 2.0\n"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:311
 #, python-format
@@ -23,13 +25,13 @@ msgid ""
 "%s Appliance could not be joined because the license on the DC Master is not "
 "activated."
 msgstr ""
-"L'appareil %s n'a pas pu rejoindr le domaine car la licence du contrôleur de "
+"L'appareil %s n'a pas pu rejoindre le domaine, car la licence du contrôleur de "
 "domaine maître n'est pas activée."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1963
 #, python-format
 msgid "%s Appliance has been successfully set up."
-msgstr "L'appareil %s a été installé avec succès."
+msgstr "L'appareil %s a été configuré avec succès."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1146
 #, python-format
@@ -77,7 +79,7 @@ msgid ""
 "prepared for the first boot procedure and will be rebooted afterwards.</p>"
 msgstr ""
 "<p>Cliquez sur <i>Terminer</i> pour conclure l'installation. Le system va "
-"être préparé pour le premier amorçage a il va être redémarré après.</p>"
+"être préparé pour le premier amorçage et il va être redémarré après.</p>"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:949
 msgid ""
@@ -109,7 +111,7 @@ msgid ""
 "local superuser <i>root</i>.</p>"
 msgstr ""
 "<p>Saisissez le nom de votre organisation, une adresse électronique pour "
-"activer UCS, et un mot de passe pour votre compte <i>Administrateur</i>. </"
+"activer UCS et un mot de passe pour votre compte <i>Administrateur</i>. </"
 "p><p>Le mot de passe est obligatoire, il sera utilisé pour l'administrateur "
 "du domaine ainsi que pour le super-utilisateur local <i>root</i>.</p>"
 
@@ -121,7 +123,7 @@ msgid ""
 "(APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm "
 "use of private address(es).</p>"
 msgstr ""
-"<p>Une ou plusieurs interfaces réseau n'ont pas pu obtenir d'adresse IP via "
+"<p>Une ou plusieurs interfaces réseau n'ont pas pu obtenir d'adresse IP par "
 "DHCP. Ces interfaces utiliseront à la place des adresses privées générées "
 "automatiquement (APIPA).</p> <ul> %s </ul> <p>Veuillez ajuster vos réglages "
 "DHCP ou confirmer l'utilisation d'adresses privées.</p>"
@@ -135,7 +137,7 @@ msgid ""
 msgstr ""
 "<p>Choisissez les composants logiciels UCS à installer sur ce système. Vous "
 "pouvez sauter cette étape : les composants sont également disponibles dans "
-"l'App Center Univention, dans la catégorie <i>Composants UCS</i>.</p><p> Des "
+"l'App Center Univention, dans la catégorie <i>Composants UCS</i>.</p><p>Des "
 "logiciels tiers (par exemple des collecticiels) sont également disponibles "
 "dans l'App Center d'Univention.</p>"
 
@@ -258,7 +260,7 @@ msgstr ""
 "Une adresse électronique valide est nécessaire pour activer l'appareil %s. "
 "Vous pouvez indiquer cette adresse maintenant ou ultérieurement. Un courriel "
 "contenant une clé de licence personnalisée vous sera alors envoyé à cette "
-"adresse. Vous pouvez transférer cette licence  après le processus de "
+"adresse. Vous pouvez transférer cette licence après le processus de "
 "configuration."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:658
@@ -394,7 +396,7 @@ msgstr "Continuer avec des réglages incomplets"
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2531
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2553
 msgid "Continue without internet access"
-msgstr "Continuer sans accès Internet"
+msgstr "Continuer sans accès à Internet"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1150
 msgid ""
@@ -491,7 +493,7 @@ msgid ""
 "language, keyboard layout."
 msgstr ""
 "Saisissez une ville à proximité afin de pré-configurer les réglages tels que "
-"fuseau horaire, langue du système, disposition du clavier."
+"fuseau horaire, langue du système et disposition du clavier."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:695
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:716
@@ -500,7 +502,7 @@ msgid ""
 "system into this domain."
 msgstr ""
 "Saisissez le nom et le mot de passe d'un compte utilisateur autorisé à faire "
-"rejoindre un système le domaine."
+"rejoindre un système dans le domaine."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1884
 msgid ""
@@ -515,7 +517,7 @@ msgid ""
 "module <i>Domain join</i>."
 msgstr ""
 "Les scripts de jonction au domaine qui ont échoué ou une nouvelle tentative "
-"de faire rejoindre le système peuvent être exécutés à travers le module UMC "
+"de jonction peuvent être exécutés à travers le module UMC "
 "<i>Rejoindre le domaine</i>."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:555
@@ -541,7 +543,7 @@ msgid ""
 "server setups with differing domains.<br/>Note that the domain name "
 "<b>cannot</b> be changed after the UCS setup wizard has been completed."
 msgstr ""
-"Pour un nom d'hôte donné, le nom du domaine est dérivé automatiquement du "
+"Pour un nom d'hôte donné, le nom du domaine est dérivé automatiquement à partir du "
 "serveur de noms du domaine. Un nom de domaine pleinement qualifié peut être "
 "nécessaire pour configurer des serveurs de courrier avec des domaines "
 "différents. <br/>Notez que le nom de domaine <b>ne peut pas</b> être modifié "
@@ -568,7 +570,7 @@ msgstr "Serveur mandataire HTTP"
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1865
 msgid "Help us improve UCS by sending the occurred errors as feedback."
 msgstr ""
-"Aidez nous à améliorer UCS par envoyer les erreurs apparus comme feedback."
+"Aidez-nous à améliorer UCS en envoyant les erreurs apparues en retour d'information."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:761
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:806
@@ -625,7 +627,7 @@ msgid ""
 "If you want to upgrade your memory first please press the power button of "
 "your server to shutdown the system."
 msgstr ""
-"Si vous souhaitez améliorer la mémoire d'abord, veuillez appuyer sur le "
+"Si vous souhaitez d'abord augmenter la mémoire, veuillez appuyer sur le "
 "bouton marche/arrêt de votre serveur pour arrêter le système."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2227
@@ -652,7 +654,7 @@ msgid ""
 "format for IPv6 is a number between 0 and 128."
 msgstr ""
 "Masque réseau IPv4 ou préfixe IPv6 non valide !<br/>Pour IPv4, l'information "
-"attendue est un nombre compris entre 0 et 32 ou un format du "
+"attendue est un nombre compris entre 0 et 32 ou un masque du "
 "type<i>255.255.255.0</i>.<br/>Pour IPv6, l'information attendue est un "
 "nombre compris entre 0 et 128."
 
@@ -710,7 +712,7 @@ msgid ""
 "select only one of these components."
 msgstr ""
 "Il n'est pas possible d'installer Samba 3 et Samba 4 sur un même système. "
-"veuillez ne choisir qu'un seul de ces deux composants."
+"Veuillez ne choisir qu'un seul de ces deux composants."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2629
 msgid ""
@@ -865,8 +867,8 @@ msgid ""
 "Quick setup of a system for testing purposes. Several system configurations "
 "are predefined and cannot be changed at a later point."
 msgstr ""
-"Mise en place rapide d'un système pour des buts de test. Quelquese "
-"configurations de système sont pré-définiées et non-modifiables plus tard."
+"Mise en place rapide d'un système en vue de tests. Plusieurs "
+"réglages de système sont prédéfinis et ne sont pas modifiables plus tard."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1321
 msgid "Reconfigure"
@@ -1106,3 +1108,4 @@ msgstr "par exemple Boston..."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:817
 msgid "more information"
 msgstr "plus d'informations"
+

@@ -1,16 +1,18 @@
-#
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2017-05-28 17:29+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:106
 msgid "An error occurred while installing necessary software components."
@@ -108,7 +110,7 @@ msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/15_install_univention_welcome_screen:37
 msgid "Installing univention-welcome-screen"
-msgstr ""
+msgstr "univention-welcome-screen en cours d'installation"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:134
 msgid "Join has been finished successfully."
@@ -137,8 +139,8 @@ msgstr "Démarrage du service de connexion Active Directory..."
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:137
 msgid "The AD member mode can only be configured on a DC master server."
 msgstr ""
-"Le mode membre AD ne peut être configuré que sur un serveur DC(contrôleur de "
-"domaine) maître."
+"Le mode membre AD ne peut être configuré que sur un serveur DC (contrôleur "
+"de domaine) maître."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:141
 #, python-format
@@ -151,3 +153,4 @@ msgstr ""
 "domaine UCS local (%(ucs_domain)s). Pour le mode membre AD, il est "
 "nécessaire de configurer un système UCS avec le même nom de domaine que le "
 "serveur AD."
+

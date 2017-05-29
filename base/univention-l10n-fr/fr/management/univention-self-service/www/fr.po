@@ -1,24 +1,26 @@
-#
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2017-05-28 21:01+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: www/ProtectAccountAccess.js:245
 msgid " (retype)"
-msgstr ""
+msgstr " (vérification)"
 
 #: www/ProtectAccountAccess.js:216
 msgid "Activate renew options."
-msgstr ""
+msgstr "Activer les options de renouvellement."
 
 #: www/ProtectAccountAccess.js:264
 msgid "Cancel"
@@ -29,15 +31,16 @@ msgid "Change password"
 msgstr "Changer le mot de passe"
 
 #: www/PasswordChange.js:52
-#, fuzzy
 msgid "Change your (expired) password."
-msgstr "Changer le mot de passe"
+msgstr "Changer le mot de passe (expiré)."
 
 #: www/ProtectAccountAccess.js:49
 msgid ""
 "Everyone forgets his password now and then. Protect yourself and activate "
 "the opportunity to set a new password."
 msgstr ""
+"Il peut arriver à tout le monde d'oublier son mot de passe. Protégez-vous et "
+"activez la possibilité de réinitialiser le mot de passe."
 
 #: www/lib.js:54
 #, python-brace-format
@@ -50,17 +53,20 @@ msgstr ""
 
 #: www/PasswordForgotten.js:51
 msgid "Forgot your password? Set a new one: "
-msgstr ""
+msgstr "Mot de passe oublié ? Définir un nouveau mot de passe :"
 
 #: www/PasswordForgotten.js:267
 msgid ""
 "If you did not received an e-mail please check your spam directory or use "
 "this link to go back to step 2."
 msgstr ""
+"Si vous n'avez pas reçu le courriel, veuillez vérifier votre dossier de "
+"pourriels ou "
+"utiliser ce lien pour revenir à l'étape 2."
 
 #: www/PasswordChange.js:253
 msgid "Invalid credentials. Password change failed."
-msgstr ""
+msgstr "Identifiants invalides. Le changement de mot de passe a échoué."
 
 #: www/PasswordChange.js:156 www/NewPassword.js:197
 msgid "New Password"
@@ -76,30 +82,28 @@ msgid "Next"
 msgstr "Suivant"
 
 #: www/PasswordChange.js:136
-#, fuzzy
 msgid "Old Password"
-msgstr "Mot de passe"
+msgstr "Ancien mot de passe"
 
 #: www/ProtectAccountAccess.js:138
 msgid "Password"
 msgstr "Mot de passe"
 
 #: www/PasswordChange.js:51
-#, fuzzy
 msgid "Password change"
-msgstr "Mot de passe"
+msgstr "Changer le mot de passe"
 
 #: www/PasswordForgotten.js:50
 msgid "Password forgotten"
-msgstr ""
+msgstr "Mot de passe oublié"
 
 #: www/PasswordForgotten.js:168
 msgid "Please choose an option to renew your password."
-msgstr ""
+msgstr "Veuillez choisir une option pour renouveler votre mot de passe."
 
 #: www/ProtectAccountAccess.js:48
 msgid "Protect account"
-msgstr ""
+msgstr "Protéger le compte"
 
 #: www/ProtectAccountAccess.js:259
 msgid "Save"
@@ -107,19 +111,19 @@ msgstr "Enregistrer"
 
 #: www/PasswordForgotten.js:52
 msgid "Set a new password!"
-msgstr ""
+msgstr "Définir un nouveau mot de passe !"
 
 #: www/NewPassword.js:47
 msgid "Set a new password: "
-msgstr ""
+msgstr "Définir un nouveau mot de passe :"
 
 #: www/NewPassword.js:46
 msgid "Set new password"
-msgstr ""
+msgstr "Définir un nouveau mot de passe"
 
 #: www/ProtectAccountAccess.js:230
 msgid "The entries do not match, please retype again."
-msgstr ""
+msgstr "Les entrées ne correspondent pas, veuillez les saisir à nouveau."
 
 #: www/PasswordChange.js:175 www/NewPassword.js:221
 msgid "The passwords do not match, please retype again."
@@ -140,7 +144,12 @@ msgid ""
 "provided on the page \"Protect Account Access\". Please check your mails and "
 "follow the link to renew your password."
 msgstr ""
+"Nous vous avons envoyé un courriel à votre adresse électronique alternative, "
+"que vous avez renseignée à la page \"Protéger l'accès au compte\". Veuillez "
+"vérifier vos courriers et ouvrir le lien fourni pour changer votre mot de "
+"passe."
 
 #: www/PasswordForgotten.js:263
 msgid "You have mail!"
-msgstr ""
+msgstr "Vous avez du courrier !"
+

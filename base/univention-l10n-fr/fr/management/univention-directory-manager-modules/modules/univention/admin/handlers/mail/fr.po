@@ -34,8 +34,8 @@ msgstr ""
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
 "PO-Revision-Date: 2016-07-10 13:33+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
+"Language-Team: French <fr@bureau-cornavin.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
@@ -154,17 +154,3 @@ msgstr "ACL utilisateur"
 msgid "Users that are allowed to send e-mails to the list"
 msgstr "Utilisateurs qui peuvent envoyer des messages à la liste"
 
-#~ msgid "Add"
-#~ msgstr "Ajouter"
-
-#~ msgid "Add mail object"
-#~ msgstr "Ajouter un objet de courriel"
-
-#~ msgid "Add, edit and delete mail objects"
-#~ msgstr "Ajouter, modifier et supprimer des objets de courriel"
-
-#~ msgid "Search"
-#~ msgstr "Chercher"
-
-#~ msgid "Search mail object(s)"
-#~ msgstr "Chercher un ou plusieurs objets de courriel"

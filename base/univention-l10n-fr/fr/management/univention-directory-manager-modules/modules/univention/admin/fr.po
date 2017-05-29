@@ -26,26 +26,27 @@
 # <http://www.gnu.org/licenses/>.
 #
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
-# eric <zzz>, 2016.
+# Eric Bischoff <eric@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-11 07:15+0100\n"
-"Last-Translator: eric <zzz>\n"
-"Language-Team: French <kde-i18n-doc@kde.org>\n"
-"Language: de\n"
+"PO-Revision-Date: 2017-05-28 19:42+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: modules/univention/admin/syntax.py:2967
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."
-msgstr "« %s » n'est pas un Univention Admin Module."
+msgstr "« %s » n'est pas un module d'administation Univention."
 
 #: modules/univention/admin/syntax.py:2285
 #, python-format
@@ -63,6 +64,11 @@ msgid ""
 "expanded (with leading zeroes and without ::-substitution) IPv6 address "
 "(example: \"2001:0db8:010\" for \"2001:db8:100::/24\")"
 msgstr ""
+"Un sous-réseau, pour une recherche inversée, est constitué des 1 à 3 "
+"premiers octets d'une adresse IPv4 (par exemple « 192.168.0 ») ou des "
+"1 à 31 premiers nibbles d'une adresse IPv6 étendue (y compris les zéros "
+"non significatifs et sans substitution du type :: , par exemple "
+"« 2001:0db8:010 » pour « 2001:db8:100::/24 »)"
 
 #: modules/univention/admin/syntax.py:1858
 msgid "Above primary display"
@@ -208,7 +214,7 @@ msgstr "Niveau minimal de chiffrement CTX"
 #: modules/univention/admin/locking.py:118
 #, python-format
 msgid "Can not modify lock time of %r."
-msgstr ""
+msgstr "Impossible de modifier la durée de verrouillage de %r."
 
 #: modules/univention/admin/uexceptions.py:243
 msgid "Cannot overwrite a fixed attribute."
@@ -232,11 +238,11 @@ msgstr "Motif de la commande"
 
 #: modules/univention/admin/mungeddial.py:67
 msgid "Connect client drives at login"
-msgstr "Connecter les disques client à la connexion"
+msgstr "Mettre en place les disques client à la connexion"
 
 #: modules/univention/admin/mungeddial.py:79
 msgid "Connect client printers at login"
-msgstr "Connecter les imprimantes client à la connexion"
+msgstr "Mettre en place les imprimantes client à la connexion"
 
 #: modules/univention/admin/mungeddial.py:347
 msgid "Connection"
@@ -287,7 +293,7 @@ msgstr ""
 
 #: modules/univention/admin/uexceptions.py:171
 msgid "DNS alias is already in use."
-msgstr "L'alias DNS est déjà utilisée."
+msgstr "L'alias DNS est déjà utilisé."
 
 #: modules/univention/admin/syntax.py:2209
 #: modules/univention/admin/syntax.py:2225
@@ -336,7 +342,7 @@ msgstr "Déconnecter"
 
 #: modules/univention/admin/syntax.py:3403
 msgid "Display Name"
-msgstr ""
+msgstr "Nom à l'affichage"
 
 #: modules/univention/admin/syntax.py:2877
 msgid "Domain Group"
@@ -471,7 +477,7 @@ msgstr "Forcer l'arrêt d'un système distant"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Fri"
-msgstr "Vend."
+msgstr "Ven"
 
 #: modules/univention/admin/syntax.py:2724
 msgid "Friday"
@@ -479,15 +485,15 @@ msgstr "Vendredi"
 
 #: modules/univention/admin/syntax.py:2195
 msgid "From known-hosts pool"
-msgstr ""
+msgstr "Depuis un réservoir d'hôtes connus"
 
 #: modules/univention/admin/syntax.py:1423
 msgid "Full domain name must be between 1 and 253 characters long!"
-msgstr ""
+msgstr "Le nom de domaine complet doit comporter entre 1 et 253 caractères !"
 
 #: modules/univention/admin/syntax.py:1469
 msgid "Full name must not be all numeric!"
-msgstr ""
+msgstr "Le nom complet ne peut pas être exclusivement numérique !"
 
 #: modules/univention/admin/syntax.py:571
 msgid "GNU message catalog"
@@ -553,7 +559,7 @@ msgstr "Ignorer cet objet dans les modules UDM standards"
 #: modules/univention/admin/syntax.py:1191
 #: modules/univention/admin/syntax.py:1195
 msgid "Illegal range"
-msgstr ""
+msgstr "Intervalle invalide"
 
 #: modules/univention/admin/syntax.py:3007
 msgid "Immediately"
@@ -561,7 +567,7 @@ msgstr "Immédiatement"
 
 #: modules/univention/admin/uexceptions.py:73
 msgid "Information provided is not sufficient."
-msgstr "L'information donnée n'est pas suffisante."
+msgstr "Les informations fournies ne sont pas suffisantes."
 
 #: modules/univention/admin/syntax.py:387
 #, python-format
@@ -610,7 +616,7 @@ msgstr "Juin"
 
 #: modules/univention/admin/syntax.py:3014
 msgid "Kerberos Principal"
-msgstr "Utilisateur Kerberos"
+msgstr "Principal Kerberos"
 
 #: modules/univention/admin/syntax.py:3241
 msgid "Kerberos disabled"
@@ -634,7 +640,7 @@ msgstr "Filtre LDAP"
 
 #: modules/univention/admin/syntax.py:1426
 msgid "Labels must be between 1 and 63 characters long!"
-msgstr ""
+msgstr "Les étiquettes doivent comporter entre 1 et 63 caractères !"
 
 #: modules/univention/admin/syntax.py:3215
 #: modules/univention/admin/syntax.py:3220
@@ -759,7 +765,7 @@ msgstr "Valeur manquante !"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Mon"
-msgstr "Lun."
+msgstr "Lun"
 
 #: modules/univention/admin/syntax.py:2720
 msgid "Monday"
@@ -767,7 +773,7 @@ msgstr "Lundi"
 
 #: modules/univention/admin/uldap.py:505
 msgid "Moving children is not supported."
-msgstr "Déplacer les enfants n'est pas pris en charge."
+msgstr "Il n'est pas possible de déplacer les enfants."
 
 #: modules/univention/admin/syntax.py:3196
 msgid "NFS share"
@@ -844,7 +850,7 @@ msgstr "Propriété demandée non trouvée."
 #: modules/univention/admin/syntax.py:402
 #, python-format
 msgid "Non-integer epoch in debian package version: %s"
-msgstr "Version du paquetage Debian avec une ère de valeur non entière : %s"
+msgstr "Version du paquetage Debian avec une ère non entière : %s"
 
 #: modules/univention/admin/syntax.py:3237
 #: modules/univention/admin/syntax.py:3251
@@ -1112,7 +1118,7 @@ msgstr "Compte Samba"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Sat"
-msgstr "Sam."
+msgstr "Sam"
 
 #: modules/univention/admin/syntax.py:2725
 msgid "Saturday"
@@ -1132,11 +1138,11 @@ msgstr "Service"
 
 #: modules/univention/admin/syntax.py:3397
 msgid "Shown in category \"Administration\""
-msgstr ""
+msgstr "Affiché dans la catégorie « Administration »"
 
 #: modules/univention/admin/syntax.py:3398
 msgid "Shown in category \"Installed services\""
-msgstr ""
+msgstr "Affiché dans la catégorie « Services installés »"
 
 #: modules/univention/admin/syntax.py:3284
 #: modules/univention/admin/syntax.py:3288
@@ -1159,7 +1165,7 @@ msgstr "Rue"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Sun"
-msgstr "Dim."
+msgstr "Dim"
 
 #: modules/univention/admin/syntax.py:2726
 msgid "Sunday"
@@ -1229,7 +1235,7 @@ msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
 msgstr ""
-"L'entrée DHCP pour cet hôte doit contenir le DN de zone, l'adresse IP et "
+"L'entrée DHCP pour cet hôte doit contenir le ND de zone, l'adresse IP et "
 "l'adresse MAC."
 
 #: modules/univention/admin/uexceptions.py:227
@@ -1283,7 +1289,7 @@ msgstr "L'adresse MAC est déjà utilisée."
 #: modules/univention/admin/locking.py:121
 #, python-format
 msgid "The attribute %r could not get locked."
-msgstr ""
+msgstr "L'attribut %r n'a pas pu être verrouillé."
 
 #: modules/univention/admin/syntax.py:1253
 #, python-format
@@ -1292,7 +1298,7 @@ msgid ""
 "mail domains: %s"
 msgstr ""
 "La partie domaine des adresses électroniques suivantes n'est pas dans la "
-"liste configurée des domaines de courriels : %s"
+"liste configurée des domaines de courriel : %s"
 
 #: modules/univention/admin/syntax.py:1285
 #, python-format
@@ -1301,7 +1307,7 @@ msgid ""
 "mail domains: %s"
 msgstr ""
 "La partie domaine de l'adresse électronique principale n'est pas dans la "
-"liste configurée des domaines de courriels : %s"
+"liste configurée des domaines de courriel : %s"
 
 #: modules/univention/admin/uexceptions.py:131
 msgid "The gidNumber is already in use as a uidNumber"
@@ -1399,6 +1405,9 @@ msgid ""
 "(example: \"4.3\") or for IPv6 in nibble format (example: "
 "\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
 msgstr ""
+"Le nom d'hôte inversé pour IPv4 est constitué de l'adresse inversée de "
+"l'hôte (par exemple « 4.3 ») ou, pour IPv6, de l'adresse au format "
+"nibble (par exemple « 8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0 »)."
 
 #: modules/univention/admin/uexceptions.py:69
 msgid "The specified size limit for the LDAP search has been exceeded."
@@ -1449,7 +1458,7 @@ msgstr "Ce nom d'hôte est invalide."
 
 #: modules/univention/admin/syntax.py:3467
 msgid "This object is related to a Docker App container"
-msgstr ""
+msgstr "Cet objet est lié à un conteneur d'App Docker"
 
 #: modules/univention/admin/uexceptions.py:359
 msgid "This operation is not allowed on this object."
@@ -1458,12 +1467,12 @@ msgstr "Cette opération n'est pas autorisée sur cet objet."
 #: modules/univention/admin/policy.py:119
 msgid "This policy applies only to objects which matches this LDAP filter."
 msgstr ""
-"La stratégie s'applique uniquement aux objets correspondants à ce filtre "
+"La stratégie s'applique uniquement aux objets correspondant à ce filtre "
 "LDAP."
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Thu"
-msgstr "Jeu."
+msgstr "Jeu"
 
 #: modules/univention/admin/syntax.py:2723
 msgid "Thursday"
@@ -1511,7 +1520,7 @@ msgstr "Trop de serveurs"
 
 #: modules/univention/admin/uexceptions.py:279
 msgid "Too many user accounts"
-msgstr "Trop de comptes d'utilisateurs"
+msgstr "Trop de comptes d'utilisateur"
 
 #: modules/univention/admin/uexceptions.py:295
 msgid "Too many users"
@@ -1541,7 +1550,7 @@ msgstr "Vrai"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Tue"
-msgstr "Mar."
+msgstr "Mar"
 
 #: modules/univention/admin/syntax.py:2721
 msgid "Tuesday"
@@ -1579,7 +1588,7 @@ msgid ""
 "Username must only contain numbers, letters and dots, and may not be 'admin'!"
 msgstr ""
 "Le nom d'utilisateur ne doit contenir que des chiffres, des lettres et des "
-"points, et ne peut être « admin » !"
+"points et ne peut être « admin » !"
 
 #: modules/univention/admin/syntax.py:1504
 #: modules/univention/admin/syntax.py:2277
@@ -1657,12 +1666,12 @@ msgstr ""
 #: modules/univention/admin/syntax.py:529
 #, python-format
 msgid "Value must be bzip2 compressed and Base64 encoded: %s"
-msgstr "La valeur doit être une archive bzip2 compressée au format Base64 : %s"
+msgstr "La valeur doit être une archive au format Base64 compressée par bzip2 : %s"
 
 #: modules/univention/admin/syntax.py:437
 #, python-format
 msgid "Value must be gzip compressed and Base64 encoded: %s"
-msgstr "La valeur doit être une archive gzip compressée au format Base64 : %s"
+msgstr "La valeur doit être une archive au format Base64 compressée par gzip : %s"
 
 #: modules/univention/admin/syntax.py:781
 msgid ""
@@ -1711,19 +1720,19 @@ msgstr "Variable"
 
 #: modules/univention/admin/syntax.py:3389
 msgid "Visible for Admins only"
-msgstr ""
+msgstr "Visible uniquement par les administrateurs"
 
 #: modules/univention/admin/syntax.py:3390
 msgid "Visible for authenticated users"
-msgstr ""
+msgstr "Visible par les utilisateurs authentifiés"
 
 #: modules/univention/admin/syntax.py:3391
 msgid "Visible for everyone"
-msgstr ""
+msgstr "Visible par tous"
 
 #: modules/univention/admin/syntax.py:2897
 msgid "Wed"
-msgstr "Mer."
+msgstr "Mer"
 
 #: modules/univention/admin/syntax.py:2722
 msgid "Wednesday"
@@ -1881,40 +1890,3 @@ msgstr "trop de paramètres"
 msgid "undefined"
 msgstr "non défini"
 
-#~ msgid ": type was %s"
-#~ msgstr ": le type était %s"
-
-#~ msgid "A DNS zone may not be longer than 255 characters!"
-#~ msgstr "Une zone DNS ne peut pas dépasser les 255 caractères !"
-
-#~ msgid "Add"
-#~ msgstr "Ajouter"
-
-#~ msgid "Add object(s)"
-#~ msgstr "Ajouter un ou des objets"
-
-#~ msgid "DN not found: %s."
-#~ msgstr "ND non trouvé : %s."
-
-#~ msgid ""
-#~ "Invalid DNS zone name! (Must not end with a \".\", only \"0\"-\"9\", \"A"
-#~ "\"-\"Z\", \"a\"-\"z\", and \"-\" allowed)"
-#~ msgstr ""
-#~ "Nom de zone DNS invalide ! (Il ne doit pas se terminer avec un « . », "
-#~ "seuls « 0 » à « 9 », « A » à « Z », « a » à « z » et « - » sont autorisés)"
-
-#~ msgid "Not a valid windows hostname!"
-#~ msgstr "Nom d'hôte Windows invalide !"
-
-#~ msgid "Search"
-#~ msgstr "Chercher"
-
-#~ msgid "Search object(s)"
-#~ msgstr "Chercher un ou des objets"
-
-#~ msgid ""
-#~ "This is not a valid DNS entry name. A valid name can only consist of "
-#~ "numbers, letters, dots and hyphens."
-#~ msgstr ""
-#~ "Nom d'enregistrement DNS invalide. Un nom valide se compose uniquement de "
-#~ "chiffres, lettres, points et traits d'union."
