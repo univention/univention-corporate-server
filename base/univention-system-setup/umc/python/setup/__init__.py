@@ -472,6 +472,7 @@ class Instance(Base, ProgressMixin):
 			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 				nameserver = obj.get(nameserver)
 				if nameserver:
+					guessed_domain = None
 					if obj.get('ad/member') and obj.get('ad/address'):
 						try:
 							ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1': nameserver})

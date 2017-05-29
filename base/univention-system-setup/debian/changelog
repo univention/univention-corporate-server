@@ -1,6 +1,8 @@
 univention-system-setup (10.0.10-19) unstable; urgency=medium
 
   * Bug #44035: enhance the choice of domain type to join into
+  * Bug #44394: don't crash at validation if joining into a AD domain and the
+  	AD server is not reachable
 
  -- Florian Best <best@univention.de>  Mon, 29 May 2017 16:37:15 +0200
 
