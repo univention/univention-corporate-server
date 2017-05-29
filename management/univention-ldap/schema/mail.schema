@@ -94,8 +94,8 @@ attributetype ( 1.3.6.1.4.1.10176.1010.1.46 NAME 'univentionPublicAlternativeMai
 attributetype ( 1.3.6.1.4.1.10176.1010.1.47 NAME 'univentionExternalMailAlias'
 	SUBSTR caseIgnoreSubstringsMatch
 	DESC 'External mail addresses to forward the users emails to'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 
 objectclass ( 1.3.6.1.4.1.10176.1010.2.40 NAME 'univentionMailCanonicalMaps'
