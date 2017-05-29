@@ -154,7 +154,7 @@ class UMCSeleniumTest(object):
 			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
 
 		filename = self.screenshot_path + name + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + '.png'
-		logger.info('Saving screenshot %s' % filename)
+		logger.info('Saving screenshot %r', filename)
 		self.driver.find_element_by_tag_name('body').screenshot(filename)
 
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
@@ -194,7 +194,7 @@ class UMCSeleniumTest(object):
 		return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
 	def wait_for_text(self, text, timeout=30):
-		logger.info("Waiting for text: '%s'" % (text,))
+		logger.info("Waiting for text: %r", text)
 
 		xpath = '//*[contains(text(), "%s")]' % (text,)
 		elem = webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
@@ -205,15 +205,15 @@ class UMCSeleniumTest(object):
 		return elem
 
 	def click_button(self, buttonname):
-		logger.info("Clicking the button '%s'" % (buttonname,))
+		logger.info("Clicking the button %r", buttonname)
 		self.click_element(buttonname, '.dijitButtonText')
 
 	def click_tile(self, tilename):
-		logger.info("Clicking the tile '%s'" % (tilename,))
+		logger.info("Clicking the tile %r", tilename)
 		self.click_element(tilename, '.umcGalleryName')
 
 	def click_grid_entry(self, name):
-		logger.info("Clicking the grid entry '%s'" % (name,))
+		logger.info("Clicking the grid entry %r", name)
 		elems = self.driver.execute_script("""
 			return dojo.query('.umcGridDefaultAction').filter(function(node) { return node.offsetParent !== null });""")
 		# Only check if name is contained, because innerHTML is "polluted" in
@@ -271,7 +271,7 @@ class UMCSeleniumTest(object):
 				raise SeleniumErrorSymbolException
 		else:
 			if self.find_error_symbol_for_inputfield(inputfield):
-				logger.error('Error symbol %s should not be displayed.' % inputfield)
+				logger.error('Error symbol %r should not be displayed.', inputfield)
 				raise SeleniumErrorSymbolException
 
 	def enter_input(self, inputname, inputvalue):
