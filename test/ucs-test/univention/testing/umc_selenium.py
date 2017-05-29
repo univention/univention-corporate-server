@@ -29,8 +29,8 @@ Common functions used by tests.
 # <http://www.gnu.org/licenses/>.
 
 from selenium import webdriver
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import datetime
@@ -47,10 +47,6 @@ class SeleniumError(Exception):
 
 
 class SeleniumTimeoutPageload(SeleniumError):
-	pass
-
-
-class SeleniumTimeoutFindText(SeleniumError):
 	pass
 
 
@@ -149,6 +145,11 @@ class UMCSeleniumTest(object):
 		logger.info('Successful login')
 
 	def save_screenshot(self, name='error', hide_notifications=True):
+		# FIXME: This is needed, because sometimes it takes some time until
+		# some texts are really visible (even if elem.is_displayed() is already
+		# true).
+		time.sleep(1)
+
 		if hide_notifications:
 			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
 
@@ -183,32 +184,26 @@ class UMCSeleniumTest(object):
 		return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
 	def wait_for_text(self, text, timeout=30):
-		while timeout > 0:
-			logger.info("Waiting for text: '%s'" % (text,))
-			elem = self.find_element_by_text(text)
-			if elem is not None:
-				logger.info("Found text: '%s'" % (text,))
-				return
+		logger.info("Waiting for text: '%s'" % (text,))
 
-			time.sleep(1)
-			timeout -= 1
-
-		logger.info("Did not find text: '%s'" % (text,))
-		raise SeleniumTimeoutFindText
-
-	def find_element_by_text(self, text):
-		try:
-			return self.driver.find_element_by_xpath('//*[contains(text(), "%s")]' % text)
-		except NoSuchElementException:
-			return None
+		xpath = '//*[contains(text(), "%s")]' % (text,)
+		elem = webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
+			expected_conditions.presence_of_element_located(
+				(webdriver.common.by.By.XPATH, xpath)
+			)
+		)
+		return elem
 
 	def click_button(self, buttonname):
+		logger.info("Clicking the button '%s'" % (buttonname,))
 		self.click_element(buttonname, '.dijitButtonText')
 
 	def click_tile(self, tilename):
+		logger.info("Clicking the tile '%s'" % (tilename,))
 		self.click_element(tilename, '.umcGalleryName')
 
 	def click_grid_entry(self, name):
+		logger.info("Clicking the grid entry '%s'" % (name,))
 		elems = self.driver.execute_script("""
 			return dojo.query('.umcGridDefaultAction').filter(function(node) { return node.offsetParent !== null });""")
 		# Only check if name is contained, because innerHTML is "polluted" in
