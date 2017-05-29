@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-69) unstable; urgency=medium
+
+  * Bug #43838: Run configure script after applying settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 May 2017 09:22:03 +0200
+
 univention-appcenter (5.0.23-68) unstable; urgency=medium
 
   * Bug #44654: Pass admin credentials to preinst
