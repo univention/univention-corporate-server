@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/aspect",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
@@ -44,7 +45,7 @@ define([
 	"umc/modules/setup/Interfaces",
 	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/InterfaceWizard"
-], function(declare, lang, array, aspect, tools, Page, StandbyMixin, ComboBox, TextBox, MultiInput, Form, InterfaceGrid, Interfaces, _) {
+], function(declare, lang, array, aspect, entities, tools, Page, StandbyMixin, ComboBox, TextBox, MultiInput, Form, InterfaceGrid, Interfaces, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -297,6 +298,7 @@ define([
 			}, {
 				variables: ['interfaces'],
 				description: _('Network interfaces'),
+				valuesAllowHTML: true,
 				values: this._getInterfaceSummary(vals.interfaces)
 			}, {
 				variables: ['interfaces/primary'],
@@ -337,7 +339,7 @@ define([
 				summary += '<li>' + _('Created:') + '<ul>';
 				array.forEach(created, function(iface) {
 					summary += '<li>';
-					summary += iface.name + ' (' + iface.label + '): ';
+					summary += entities.encode(iface.name + ' (' + iface.label + '): ');
 					summary += iface.getSummary();
 					summary += '</li>';
 				});
@@ -347,7 +349,7 @@ define([
 				summary += '<li>' + _('Modified:') + '<ul>';
 				array.forEach(modified, function(iface) {
 					summary += '<li>';
-					summary += iface.name + ' (' + iface.label + '): ';
+					summary += entities.encode(iface.name + ' (' + iface.label + '): ');
 					summary += iface.getSummary();
 					summary += '</li>';
 				});
@@ -356,9 +358,9 @@ define([
 			if (removed.length) {
 				summary += '<li>' + _('Removed:') + '<ul>';
 				summary += '<li>';
-				summary += array.map(removed, function(iface) {
+				summary += entities.encode(array.map(removed, function(iface) {
 					return iface.name + ' (' + iface.label + ')';
-				}).join(', ');
+				}).join(', '));
 				summary += '</li></ul>';
 			}
 			summary += '</li>';

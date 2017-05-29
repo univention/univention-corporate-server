@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-18) unstable; urgency=medium
+
+  * Bug #41204: fix duplicated html escaping in network settings dialog
+
+ -- Florian Best <best@univention.de>  Mon, 29 May 2017 12:38:39 +0200
+
 univention-system-setup (10.0.10-17) unstable; urgency=medium
 
   * Bug #43140: If defined, use UCR system/setup/boot/old_ipv4 to reconfigure

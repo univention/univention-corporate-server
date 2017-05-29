@@ -34,10 +34,11 @@ define([
 	"dojo/_base/array",
 	"dojo/store/Memory",
 	"dojo/Stateful",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Memory, Stateful, tools, types, _) {
+], function(declare, lang, array, Memory, Stateful, entities, tools, types, _) {
 
 	var Device = declare('umc.modules.setup.types.Device', null, {
 		constructor: function(props, interfaces) {
@@ -113,17 +114,17 @@ define([
 			var ip6s = formatIPs(this.ip6);
 
 			if (this.ip4dynamic) {
-				back.push(_('Dynamic (DHCP)'));
+				back.push(entities.encode(_('Dynamic (DHCP)')));
 			}
 			if (this.ip6dynamic) {
-				back.push(_('Autoconfiguration (SLAAC)'));
+				back.push(entities.encode(_('Autoconfiguration (SLAAC)')));
 			}
 
 			if (ip4s.length && !this.ip4dynamic){
-				back.push(_('Static') + ': ' + ip4s.join(', '));
+				back.push(entities.encode(_('Static') + ': ' + ip4s.join(', ')));
 			}
 			if (ip6s.length && !this.ip6dynamic) {
-				back.push(_('Static (IPv6)') + ': ' + ip6s.join(', '));
+				back.push(entities.encode(_('Static (IPv6)') + ': ' + ip6s.join(', ')));
 			}
 
 			return back.join('<br/>');
@@ -133,7 +134,7 @@ define([
 			if (description) {
 				return description;
 			}
-			return _('Unconfigured');
+			return entities.encode(_('Unconfigured'));
 		}
 	});
 	var Ethernet = declare('umc.modules.setup.interfaces.Ethernet', [Device], {});
@@ -164,7 +165,7 @@ define([
 			if (descr) {
 				back.push(descr);
 			}
-			back.push(_('Bond slaves') + ': ' + this.bond_slaves.join(', '));
+			back.push(entities.encode(_('Bond slaves') + ': ' + this.bond_slaves.join(', ')));
 
 			return back.join('<br/>');
 		}
@@ -186,7 +187,7 @@ define([
 			if (descr) {
 				back.push(descr);
 			}
-			back.push(_('Bridge ports') + ': ' + this.bridge_ports.join(', '));
+			back.push(entities.encode(_('Bridge ports') + ': ' + this.bridge_ports.join(', ')));
 
 			return back.join('<br/>');
 		}

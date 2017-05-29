@@ -361,7 +361,11 @@ define([
 				var confirmMessage = '<p>' + _('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
 				array.forEach(summaries, function(idesc) {
 					if (idesc.showConfirm) {
-						confirmMessage += '<li>' + entities.encode(idesc.description) + ': ' + entities.encode(idesc.values) + '</li>';
+						var values = idesc.values;
+						if (!idesc.valuesAllowHTML) {
+							values = entities.encode(values);
+						}
+						confirmMessage += '<li>' + entities.encode(idesc.description) + ': ' + values + '</li>';
 					}
 				});
 				confirmMessage += '</ul><p>' + _('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
