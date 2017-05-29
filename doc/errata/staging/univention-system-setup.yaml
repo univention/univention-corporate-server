@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-system-setup
-fix: 10.0.10-17A~4.2.0.201705181750
+fix: 10.0.10-18A~4.2.0.201705291240
 desc: |
  This update addresses the following issue(s):
  * The package univention-samba is now also downloaded
@@ -13,4 +13,5 @@ desc: |
  * IP address changes are now also applied to portal entries
  * When selecting fast demo mode in an App Appliance, all IP
    addresses in LDAP are reconfigured to the correct address
-bug: [44522,44575,43671,43140]
+ * The overview of changed network settings doesn't show HTML code anymore.
+bug: [44522,44575,43671,43140,41204]
