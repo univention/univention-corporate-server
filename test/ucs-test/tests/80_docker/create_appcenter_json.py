@@ -128,7 +128,7 @@ class App(object):
 				yield self.file_info(special_file, url, filename)
 
 		# Adding files for docker
-		for docker_file in ['setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'attributes']:
+		for docker_file in ['configure', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'attributes']:
 			for filename in glob(self._components_dir(docker_file)):
 				basename = os.path.basename(filename)
 				url = self._repository_url(basename)
