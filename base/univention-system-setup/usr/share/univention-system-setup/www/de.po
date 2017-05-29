@@ -1195,8 +1195,8 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:593
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:584
-msgid "Join into an existing Active Directory domain"
-msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
+msgid "Join into an existing Microsoft Active Directory domain"
+msgstr "Einer bestehenden Microsoft Active-Directory-Domäne beitreten"
 
 #: umc/js/setup/ApplianceWizard.js:604
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:595
@@ -1736,8 +1736,8 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:598
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:589
-msgid "This system will become part of an existing Active Directory domain."
-msgstr "Dieses System wird Teil einer existierenden Active-Directory-Domäne."
+msgid "This system will become part of an existing non-UCS Active Directory domain."
+msgstr "Dieses System wird Teil einer existierenden nicht-UCS Active-Directory-Domäne."
 
 #: umc/js/setup/ApplianceWizard.js:1752
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1724

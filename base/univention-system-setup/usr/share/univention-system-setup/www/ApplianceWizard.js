@@ -578,17 +578,6 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: '_adDomain',
-					label: _('Join into an existing Active Directory domain'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'adDomainHelpText',
-					content: _('This system will become part of an existing Active Directory domain.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
 					name: '_joinDomain',
 					label: _('Join into an existing UCS domain'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
@@ -596,6 +585,17 @@ define([
 					type: Text,
 					name: 'joinDomainHelpText',
 					content: _('Use this option if you already have one or more UCS systems.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}, {
+					type: RadioButton,
+					radioButtonGroup: 'role',
+					name: '_adDomain',
+					label: _('Join into an existing Microsoft Active Directory domain'),
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+				}, {
+					type: Text,
+					name: 'adDomainHelpText',
+					content: _('This system will become part of an existing non-UCS Active Directory domain.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
