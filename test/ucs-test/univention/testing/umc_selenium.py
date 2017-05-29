@@ -159,6 +159,16 @@ class UMCSeleniumTest(object):
 
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
 
+	def open_module(self, name):
+		self.driver.get('https://' + self.ip + '/univention/management/?lang=en-US')
+
+		search_field = self.driver.find_element_by_xpath('//*[@id="umc_widgets_LiveSearch_0"]')
+		search_field.click()
+		search_field.send_keys(name)
+		search_field.send_keys(Keys.RETURN)
+
+		self.click_tile(name)
+
 	def check_checkbox_by_name(self, inputname, checked=True):
 		"""
 		This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
