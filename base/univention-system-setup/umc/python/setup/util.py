@@ -857,9 +857,7 @@ is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")
 
 
 def domain2windowdomain(domainname):
-	if '.' in domainname:
-		windomain = domainname.split('.')[0]
-	windomain = windomain.upper()
+	windomain = domainname.split('.', 1)[0].upper()
 
 	invalidChars = re.compile(r"^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$")
 	match = invalidChars.match(windomain)
