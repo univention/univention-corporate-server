@@ -1,3 +1,9 @@
+univention-l10n-fr (1.2.1-2) unstable; urgency=medium
+
+  * Bug #44133: fixed a typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 29 May 2017 09:15:01 +0200
+
 univention-l10n-fr (1.2.1-1) unstable; urgency=medium
 
   * Bug #44133: update French translations

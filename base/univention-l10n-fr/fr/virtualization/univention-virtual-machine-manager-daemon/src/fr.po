@@ -382,7 +382,7 @@ msgstr "Emplacement de la socket UNIX [%(default)s]"
 #: src/univention-virtual-machine-manager-daemon:236
 #, python-format
 msgid "Path to the ini-file [%(default)s]"
-msgstr "Emplacement du fichier « ini » [(default)s]"
+msgstr "Emplacement du fichier « ini » [%(default)s]"
 
 #: src/univention-virtual-machine-manager-daemon:230
 msgid "Path to the log-file"
@@ -543,7 +543,7 @@ msgstr "args != dictionnaire : %(args)s"
 #: src/univention-virtual-machine-manager-daemon:215
 #, python-format
 msgid "cache directory [%(default)s]"
-msgstr "Dossier de cache [(default)s]"
+msgstr "Dossier de cache [%(default)s]"
 
 #: src/univention/uvmm/commands.py:105 src/univention/uvmm/commands.py:135
 #: src/univention/uvmm/commands.py:149 src/univention/uvmm/commands.py:162
