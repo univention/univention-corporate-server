@@ -30,6 +30,7 @@ Common functions used by tests.
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import datetime
@@ -46,6 +47,10 @@ class SeleniumError(Exception):
 
 
 class SeleniumTimeoutPageload(SeleniumError):
+	pass
+
+
+class SeleniumTimeoutFindText(SeleniumError):
 	pass
 
 
@@ -112,9 +117,6 @@ class UMCSeleniumTest(object):
 		if self.login:
 			self.do_login()
 
-		# FIXME: For some reason I need to do set_window_size() once before it
-		# works correctly.
-		self.driver.set_window_size(1200, 800)
 		self.set_viewport_size(1200, 800)
 		return self
 
@@ -180,8 +182,25 @@ class UMCSeleniumTest(object):
 	def find_combobox_by_name(self, inputname):
 		return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
+	def wait_for_text(self, text, timeout=30):
+		while timeout > 0:
+			logger.info("Waiting for text: '%s'" % (text,))
+			elem = self.find_element_by_text(text)
+			if elem is not None:
+				logger.info("Found text: '%s'" % (text,))
+				return
+
+			time.sleep(1)
+			timeout -= 1
+
+		logger.info("Did not find text: '%s'" % (text,))
+		raise SeleniumTimeoutFindText
+
 	def find_element_by_text(self, text):
-		return self.driver.find_element_by_xpath('//*[contains(text(), "%s")]' % text)
+		try:
+			return self.driver.find_element_by_xpath('//*[contains(text(), "%s")]' % text)
+		except NoSuchElementException:
+			return None
 
 	def click_button(self, buttonname):
 		self.click_element(buttonname, '.dijitButtonText')
@@ -196,7 +215,6 @@ class UMCSeleniumTest(object):
 		# grids.
 		elem = filter(lambda elem: name in elem.get_attribute("innerHTML"), elems)[0]
 		elem.click()
-		self.wait_for_pageload()
 
 	def click_element(self, name, css_class):
 		"""
@@ -215,7 +233,6 @@ class UMCSeleniumTest(object):
 				return dojo.query(%s).filter(function(node) { return node.innerHTML == %s })[0].parentNode;
 				""" % (json.dumps(css_class), json.dumps(name)))
 		elem.click()
-		self.wait_for_pageload()
 
 	@staticmethod
 	def find_visible_element_from_list(elements):
@@ -262,35 +279,6 @@ class UMCSeleniumTest(object):
 			""" % json.dumps(inputname))
 		elem.send_keys(inputvalue)
 		return elem
-
-	def wait_for_pageload(self, timeout=30):
-		# TODO: Doesn't work with grids yet.
-		"""
-		Waits until page is loaded. Can only be used if a user is signed in. Parameter 'timeout' gives maximum time to wait in seconds.
-		"""
-		deadline = time.time() + timeout
-		while time.time() < deadline:
-			time.sleep(0.2)
-			if self.driver.execute_script("""
-					try {
-						var tools = require('umc/tools');
-						var app = require('umc/app');
-						var load = false;
-						var page = app._tabContainer.selectedChildWidget;
-						require(['dojo/ready'], function (ready) {
-							ready(function () {
-								load =  document.readyState == "complete" && tools.status('setupGui') && !page.$isDummy$;
-							});
-						});
-						return load;
-					}
-					catch (err) {
-						return;
-					}"""):
-						break
-		else:
-			logger.error('Timeout reached - page still not loaded completely')
-			raise SeleniumTimeoutPageload
 
 	def end_umc_session(self):
 		"""
