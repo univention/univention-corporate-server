@@ -139,6 +139,15 @@ app_appliance_is_software_blacklisted ()
 	return $?
 }
 
+app_has_no_repository ()
+{
+	local app="$1"
+	[ -z "$app" ] && return 1
+	local value="$(get_app_attr $app WithoutRepository)"
+	echo "$value" | grep -qs True 
+	return $?
+}
+
 appliance_dump_memory ()
 {
 	local app="$1"
@@ -321,6 +330,9 @@ register_apps ()
 		apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
 
 		for the_app in $apps; do
+			if app_has_no_repository $the_app; then
+				continue
+			fi
 			name=$(get_app_attr $the_app Name)
 			component=$(app_get_component $the_app)
 			component_prefix="repository/online/component/"
@@ -805,10 +817,10 @@ components=""
 interfaces/eth0/address="10.203.10.40"
 __EOF__
 		ucr set umc/web/appliance/fast_setup_mode=true
-		# set same address as in the profile, otherwise the ldap will not be updated
-		ucr set system/setup/boot/old_ipv4=10.203.10.40
 		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
 		echo "root:univention" | chpasswd
+		# set same address as in the profile, otherwise the ldap will not be updated
+		ucr set system/setup/boot/old_ipv4=10.203.10.40
 	else
 		ucr set umc/web/appliance/fast_setup_mode=false
 		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
@@ -949,7 +961,7 @@ appliance_basesettings ()
 eval "\$(ucr shell)"
 #old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
 #test -z "\$old_fav" && old_fav="appcenter:appcenter,updater,udm:users/user"
-fav="favorites \$app_fav_list"
+fav="favorites $app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
