@@ -31,6 +31,7 @@ Common functions used by tests.
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.keys import Keys
+from univention.admin import localization
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import datetime
@@ -40,6 +41,9 @@ import time
 import json
 
 logger = logging.getLogger(__name__)
+
+translator = localization.translation('univention-ucs-test_umc-screenshots')
+_ = translator.translate
 
 
 class SeleniumError(Exception):
@@ -69,12 +73,14 @@ class UMCSeleniumTest(object):
 	Tests run on selenium grid server. To run tests locally use lacal varibable UCSTEST_SELENIUM=local.
 	Root privileges are required, also root needs the privilege to display the browser.
 	"""
-	def __init__(self, login=True):
+	def __init__(self, login=True, language='en'):
 
 		self.login = login
 		self.max_exceptions = 3
 		self.browser = 'firefox'
 		self.selenium_grid = False
+		self.language = language
+		translator.set_language(self.language)
 
 	def __enter__(self):
 		if 'UCSTEST_SELENIUM_BROWSER' in os.environ:
@@ -110,7 +116,9 @@ class UMCSeleniumTest(object):
 		if not os.path.exists(self.screenshot_path):
 			os.makedirs(self.screenshot_path)
 
-		self.driver.get(self.base_url + 'univention/login/?lang=en-US')
+		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+		# FIXME: Workaround for Bug #44718.
+		self.driver.execute_script('document.cookie = "UMCLang=%s; path=/univention/"' % (self.language,))
 		if self.login:
 			self.do_login()
 
@@ -140,7 +148,7 @@ class UMCSeleniumTest(object):
 		elem.clear()
 		elem.send_keys(self.umcLoginPassword)
 		elem.send_keys(Keys.RETURN)
-		assert self.umcLoginUsername in self.driver.page_source
+		self.wait_for_text(_('Favorites'))
 		logger.info('Successful login')
 
 	def save_screenshot(self, name='error', hide_notifications=True, element_xpath='/html/body', append_timestamp=False):
@@ -164,7 +172,7 @@ class UMCSeleniumTest(object):
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
 
 	def open_module(self, name):
-		self.driver.get(self.base_url + 'univention/management/?lang=en-US')
+		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
 		search_field = self.driver.find_element_by_xpath('//*[@id="umc_widgets_LiveSearch_0"]')
 		search_field.click()

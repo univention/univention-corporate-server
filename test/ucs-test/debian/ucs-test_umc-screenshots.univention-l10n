@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"tests/90_umc-screenshots/.*",
+			"univention/testing/umc_selenium.py"
+		],
+		"po_path": "usr/share/locale/{lang}/LC_MESSAGES/univention-ucs-test_umc-screenshots.po",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-ucs-test_umc-screenshots.mo"
+	}
+]
