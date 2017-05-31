@@ -1,3 +1,11 @@
+univention-mail-postfix (11.0.1-3) unstable; urgency=low
+
+  * Bug #44589: the default for mail/postfix/tls/client/level if unset has
+    been changed to "may"
+  * set smtp_tls_security_level=encrypt if mail/relayauth is enabled
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 31 May 2017 09:24:33 +0200
+
 univention-mail-postfix (11.0.1-2) unstable; urgency=low
 
   * Bug #42249: remove dependency on univention-ldap-config

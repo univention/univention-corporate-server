@@ -48,7 +48,6 @@ univention-config-registry set \
 	mail/alias/root?systemmail@$hostname.$domainname \
 	mail/alias/postmaster?root \
 	mail/messagesizelimit?10240000 \
-	mail/postfix/tls/client/level?may \
 	mail/postfix/tls/client/exclude_ciphers?"RC4, aNULL" \
 	mail/postfix/ldaptable/starttls?yes \
 	mail/postfix/ldaptable/tlsrequirecert?yes \

@@ -32,7 +32,11 @@ if configRegistry.is_true('mail/postfix/dovecot_sasl'):
 
 # smtp client
 @!@
-print 'smtp_tls_security_level = %s' % configRegistry.get('mail/postfix/tls/client/level', 'none')
+if configRegistry.get('mail/relayhost') and configRegistry.get('mail/relayauth') and configRegistry.get('mail/postfix/tls/client/level') != 'none':
+	smtp_tls_security_level = 'encrypt'
+else:
+	smtp_tls_security_level = configRegistry.get('mail/postfix/tls/client/level', 'may')
+print 'smtp_tls_security_level = %s' % smtp_tls_security_level
 print 'smtp_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/tls/client/mandatory_protocols', '!SSLv2')
 print 'smtp_tls_protocols = %s' % configRegistry.get('mail/postfix/tls/client/protocols', '!SSLv2')
 print 'smtp_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/tls/client/exclude_ciphers', 'RC4, aNULL')
