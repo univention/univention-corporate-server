@@ -143,7 +143,7 @@ class UMCSeleniumTest(object):
 		assert self.umcLoginUsername in self.driver.page_source
 		logger.info('Successful login')
 
-	def save_screenshot(self, name='error', hide_notifications=True, element_xpath='/html/body'):
+	def save_screenshot(self, name='error', hide_notifications=True, element_xpath='/html/body', append_timestamp=False):
 		# FIXME: This is needed, because sometimes it takes some time until
 		# some texts are really visible (even if elem.is_displayed() is already
 		# true).
@@ -152,7 +152,12 @@ class UMCSeleniumTest(object):
 		if hide_notifications:
 			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
 
-		filename = self.screenshot_path + name + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + '.png'
+		if append_timestamp:
+			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+		else:
+			timestamp = ''
+
+		filename = self.screenshot_path + name + timestamp + '.png'
 		logger.info('Saving screenshot %r', filename)
 		self.driver.find_element_by_xpath(element_xpath).screenshot(filename)
 
