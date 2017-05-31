@@ -1,3 +1,9 @@
+ucs-test (7.0.21-31) unstable; urgency=low
+
+  * Bug #44310: add missing build dependency
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 31 May 2017 16:19:41 +0200
+
 ucs-test (7.0.21-30) unstable; urgency=low
 
   * Bug #44310: ignore Bareos in UCS@school
