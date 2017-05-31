@@ -165,7 +165,7 @@ class UMCSeleniumTest(object):
 		else:
 			timestamp = ''
 
-		filename = self.screenshot_path + name + timestamp + '.png'
+		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
 		logger.info('Saving screenshot %r', filename)
 		self.driver.find_element_by_xpath(element_xpath).screenshot(filename)
 
