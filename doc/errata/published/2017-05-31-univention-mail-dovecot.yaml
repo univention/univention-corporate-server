@@ -9,3 +9,5 @@ desc: |
  * The package dependencies allow now to install Dovecot Pro instead of
    Dovecot from the Debian repositories.
 bug: [44559]
+erratum: 26
+announced: 2017-05-31
