@@ -39,7 +39,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST, MODULE_ERR_COMMAND_FAILED
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import require_password, simple_response
+from univention.management.console.modules.decorators import simple_response
 # from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 
 from univention.management.console.modules.adtakeover import takeover
@@ -101,13 +101,13 @@ class Instance(umcm.Base):
 
 	@background
 	def connect(self, request):
-		ad_username, ad_password, ip = [request.options[var] for var in ['ad_username', 'ad_password', 'ip']]
-		return takeover.count_domain_objects_on_server(ip, ad_username, ad_password, self.progress)
+		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
+		return takeover.count_domain_objects_on_server(ip, username, password, self.progress)
 
 	@background
 	def copy_domain_data(self, request):
-		ad_username, ad_password, ip = [request.options[var] for var in ['ad_username', 'ad_password', 'ip']]
-		takeover.join_to_domain_and_copy_domain_data(ip, ad_username, ad_password, self.progress)
+		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
+		takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress)
 
 	@simple_response
 	def sysvol_info(self):
@@ -118,6 +118,5 @@ class Instance(umcm.Base):
 		takeover.check_sysvol(self.progress)
 
 	@background
-	@require_password
 	def take_over_domain(self, request):
-		takeover.take_over_domain(self.username, self.password, self.progress)
+		takeover.take_over_domain(self.progress)

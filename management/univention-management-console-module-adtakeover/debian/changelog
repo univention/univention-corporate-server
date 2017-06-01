@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.1-9) unstable; urgency=medium
+
+  * Bug #38983: Revert back to 4.0.1-5
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Jun 2017 19:53:35 +0200
+
 univention-management-console-module-adtakeover (4.0.1-8) unstable; urgency=medium
 
   * Bug #38983: Include decorator

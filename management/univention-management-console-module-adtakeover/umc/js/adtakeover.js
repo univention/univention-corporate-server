@@ -86,13 +86,13 @@ define([
 					label: _('Name or address of the Domain Controller')
 				}, {
 					type: TextBox,
-					name: 'ad_username',
+					name: 'username',
 					required: true,
 					label: _('Active Directory Administrator account'),
 					value: 'Administrator'
 				}, {
 					type: PasswordBox,
-					name: 'ad_password',
+					name: 'password',
 					required: true,
 					label: _('Active Directory Administrator password')
 				}]
