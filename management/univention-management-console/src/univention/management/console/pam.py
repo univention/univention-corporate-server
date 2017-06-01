@@ -174,8 +174,8 @@ class PamAuth(object):
 			'Bad: new password is just a wrapped version of the old one',
 			'Schlechtes Passwort: ist dem alten zu ?hnlich',
 			'Schlechtes Passwort: ist dem alten zu ähnlich',
-			'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('utf-8'),
-			'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('latin-1'),
+			u'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('utf-8'),
+			u'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('latin-1'),
 		],
 		'The minimum password age is not reached yet.': [
 			'You must wait longer to change your password',

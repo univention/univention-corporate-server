@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-45) unstable; urgency=medium
+
+  * Bug #41786: fix unicode strings
+
+ -- Florian Best <best@univention.de>  Thu, 01 Jun 2017 13:22:41 +0200
+
 univention-management-console (9.0.80-44) unstable; urgency=medium
 
   * Bug #40986: fix typo in german translation
