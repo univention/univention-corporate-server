@@ -241,7 +241,7 @@ class AppcenterApp(object):
 			yield self.file_info(basename, url, readme_filename)
 
 		# Adding ucr, schema, (un)joinscript, etc
-		for ext in ['univention-config-registry-variables', 'schema', 'attributes', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env']:
+		for ext in ['schema', 'attributes', 'configure', 'settings', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env']:
 			control_filename = self._components_dir(ext)
 			if os.path.exists(control_filename):
 				basename = os.path.basename(control_filename)
@@ -324,6 +324,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('--ucr', help='Path to a file describing Univention Config Registry variables')
 		parser.add_argument('--schema', help='Path to an LDAP schema extension file')
 		parser.add_argument('--attributes', help='Path to the file describing Extended Attributes')
+		parser.add_argument('--configure', help='Path to a configure script that will be called when applying settings in a container')
+		parser.add_argument('--settings', help='Path to the file describing Settings')
 		parser.add_argument('--preinst', help='Path to a preinst script that will be called by the App Center before installation')
 		parser.add_argument('--join', help='Path to a join script that will be called by the App Center after installation')
 		parser.add_argument('--prerm', help='Path to a prerm script that will be called by the App Center before uninstallation')
@@ -489,6 +491,10 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.schema, os.path.join(repo_dir, 'schema'))
 		if args.attributes:
 			self.copy_file(args.attributes, os.path.join(repo_dir, 'attributes'))
+		if args.configure:
+			self.copy_file(args.configure, os.path.join(repo_dir, 'configure'))
+		if args.settings:
+			self.copy_file(args.settings, os.path.join(repo_dir, 'settings'))
 		if args.preinst:
 			self.copy_file(args.preinst, os.path.join(repo_dir, 'preinst'))
 		if args.join:

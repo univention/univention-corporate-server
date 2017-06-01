@@ -155,10 +155,10 @@ class DockerActionMixin(object):
 		self.log('Initializing app image')
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
-		configure = get_action('configure')
-		for variable in configure.list_config(app):
-			if variable['value'] is not None and variable['id'] not in set_vars:
-				set_vars[variable['id']] = variable['value']  # default
+		for setting in app.get_settings():
+			if 'Install' in setting.write or 'Upgrade' in setting.write:
+				if setting.name not in set_vars:
+					set_vars[setting.name] = setting.initial_value
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
@@ -224,4 +224,5 @@ docker inspect:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
 		self._copy_files_into_container(app, '/etc/timezone', '/etc/localtime', database_password_file)
+		configure = get_action('configure')
 		configure.call(app=app, autostart=autostart, set_vars=set_vars)

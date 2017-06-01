@@ -33,8 +33,6 @@
 #
 
 import os.path
-import ConfigParser
-import shlex
 from argparse import Action
 from contextlib import contextmanager
 
@@ -42,8 +40,8 @@ from univention.config_registry.backend import _ConfigRegistry
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.utils import app_is_running, mkdir, get_locale
-from univention.appcenter.ucr import ucr_save, ucr_evaluated_as_true
+from univention.appcenter.utils import app_is_running, mkdir
+from univention.appcenter.ucr import ucr_save
 
 
 class NoDatabaseFound(Exception):
@@ -119,47 +117,13 @@ class Configure(UniventionAppAction, DockerActionMixin):
 
 	@classmethod
 	def list_config(cls, app):
-		cls.debug('Finding all configuration options for %s' % app.id)
-		filename = app.get_cache_file('univention-config-registry-variables')
-		if not os.path.exists(filename):
-			return []
-		parser = ConfigParser.ConfigParser()
-		with open(filename, 'rb') as fp:
-			parser.readfp(fp)
-		locale = get_locale()
-		try:
-			_ucr = cls._get_app_ucr(app)
-		except NoDatabaseFound:
-			_ucr = {}
-
-		def _get_cfg(config, sec, name, split=False):
-			try:
-				val = config.get(sec, name)
-			except ConfigParser.NoOptionError:
-				return None
-			else:
-				if split:
-					val = shlex.split(val)
-				return val
-
 		variables = []
-		for section in parser.sections():
-			variable = {'id': section}
-			variable['description'] = _get_cfg(parser, section, 'Description[%s]' % locale) or _get_cfg(parser, section, 'Description[en]')
-			variable['labels'] = _get_cfg(parser, section, 'Labels[%s]' % locale, split=True) or _get_cfg(parser, section, 'Labels[en]', split=True)
-			variable['values'] = _get_cfg(parser, section, 'values', split=True)
-			variable['type'] = _get_cfg(parser, section, 'type')
-			if variable['type'] == 'boolean':
-				variable['type'] = 'bool'
-			default = _get_cfg(parser, section, 'default')
-			value = _ucr.get(section, default)
-			if variable['type'] == 'bool':
-				value = ucr_evaluated_as_true(value)
-			variable['value'] = value
-			advanced = _get_cfg(parser, section, 'advanced')
-			if advanced:
-				advanced = ucr_evaluated_as_true(advanced)
-			variable['advanced'] = advanced
+		settings = app.get_settings()
+		for setting in settings:
+			variable = setting.to_dict()
+			variable['id'] = setting.name
+			variable['value'] = setting.get_value(app)
+			variable['advanced'] = False
 			variables.append(variable)
 		return variables
 
@@ -180,22 +144,22 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		if not app_is_running(app):
 			self.fatal('%s is not running. Cannot configure the app' % app.id)
 			return
-		if not set_vars:
-			return
-		self._set_config_via_tool(app, set_vars)
+		settings = app.get_settings()
+		other_settings = {}
+		for key, value in set_vars.iteritems():
+			for setting in settings:
+				if setting.name == key:
+					setting.set_value(app, value)
+					break
+			else:
+				other_settings[key] = value
+		if other_settings:
+			self._set_config_via_tool(app, other_settings)
 		self._run_configure_script(app)
 
 	def _set_config_directly(self, app, set_vars):
 		with self._locked_app_ucr(app) as _ucr:
-			variables = self.list_config(app)
 			for key, value in set_vars.iteritems():
-				# if this was one of the defined variables
-				# and it is boolean, format it to "true"/"false"
-				for variable in variables:
-					if variable['id'] == key:
-						if variable['type'] == 'bool':
-							value = str(ucr_evaluated_as_true(str(value))).lower()
-
 				if value is None:
 					_ucr.pop(key, None)
 				else:
