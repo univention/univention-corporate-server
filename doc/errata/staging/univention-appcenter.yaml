@@ -3,8 +3,9 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-69.304.201706011422
+fix: 
 desc: |
  This update addresses the following issue(s):
+ * Apps may now ship a file describing settings that can be applied dynamically.
  * A script can now be run after configuring an App.
-bug: [43838]
+bug: [43816, 43838]
