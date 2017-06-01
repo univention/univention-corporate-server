@@ -423,6 +423,11 @@ if group_map:
 			# Whether a DC joins to the samba 4 domain
 			# the DC will be deleted.
 			disable_delete_in_ucs = True,
+
+			# Whether a DC is removed in UCS, the DC should be removed
+			# in S4. By default a DC has a subobject wihtout any mapping
+			# and this subobject would avoid a deletion of this DC in S4
+			con_subtree_delete_objects = [ 'cn=rid set' ],
 @!@
 from univention.s4connector.s4.mapping import ignore_filter_from_attr
 ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/dc/ignorelist')
