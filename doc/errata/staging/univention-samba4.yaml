@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-samba4
-fix: 6.0.10-8A~4.2.0.201706011936
+fix: 6.0.10-9A~4.2.0.201706011942
 desc: |
  This update addresses the following issue(s):
  * Don't fail join if CNF-Objects are in serverReferenceBL
@@ -15,4 +15,5 @@ desc: |
    and samba/client/max/protocol have been added.
    Please be aware that raising samba/min/protocol e.g. to SMB2 also
    requires raising samba/client/max/protocol to that value or higher.
-bug: [43280, 43478, 43620, 44535, 44643]
+ * Make sysvol-sync.sh robust against varying stderr output from rsync.
+bug: [43280, 43478, 43620, 44535, 44643, 44694]
