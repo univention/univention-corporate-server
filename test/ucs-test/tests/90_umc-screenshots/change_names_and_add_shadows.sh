@@ -53,4 +53,5 @@ function adapt_for_manual {
 mkdir manual
 adapt_for_manual -i "portal_$LANGUAGE.png" -o "manual/portal_$LANGUAGE.png"
 adapt_for_manual -i "umc-favorites_$LANGUAGE.png" -o "manual/umc-favorites-tab_$LANGUAGE.png" -s
+adapt_for_manual -i "umc-ldap_$LANGUAGE.png" -o "manual/umc_navigation_$LANGUAGE.png" -s
 adapt_for_manual -i "umc-login_cropped_$LANGUAGE.png" -o "manual/umc_login_$LANGUAGE.png" -s
