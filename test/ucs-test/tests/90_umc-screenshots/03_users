@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python
+# desc: UMC login test
+# roles-not: [basesystem]
+# exposure: dangerous
+
+from lib.screen_shooter import BaseScreenShooter
+from univention.admin import localization
+
+translator = localization.translation('univention-ucs-test_umc-screenshots')
+_ = translator.translate
+
+
+class ScreenShooter(BaseScreenShooter):
+	def take_screenshots(self):
+		self.selenium.click_button(_('Users'))
+		self.selenium.wait_for_text(_("Filesystem quotas"))
+		self.selenium.click_tile(_('Users'))
+		self.selenium.wait_for_text(":/users")
+		self.selenium.save_screenshot("umc-users")
+
+		self.selenium.click_grid_entry('Administrator')
+		self.selenium.wait_for_text(_("password history"))
+		self.selenium.save_screenshot("umc-users-administrator")
+
+
+if __name__ == '__main__':
+	with ScreenShooter(translator) as screen_shooter:
+		screen_shooter.take_screenshots()
