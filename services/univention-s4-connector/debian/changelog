@@ -1,3 +1,13 @@
+univention-s4-connector (11.0.7-6) unstable; urgency=medium
+
+  * Bug #33882: sync_from_ucs: Allow subtree delete with unmapped objects
+    Note: Bug #26210 implemented this for the special case of "CN=RID Set"
+    by whitelisting some RDNs allowed for removal. Now multiple alternative
+    filter criteria can be specified in the mapping. A list of standard
+    objectclasses has been configured for that.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Jun 2017 20:51:16 +0200
+
 univention-s4-connector (11.0.7-5) unstable; urgency=medium
 
   * Bug #43478: Update version dependency on univention-samba4
