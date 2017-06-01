@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-appcenter
+fix: 5.0.23-69.304.201706011422
+desc: |
+ This update addresses the following issue(s):
+ * A script can now be run after configuring an App.
+bug: [43838]
