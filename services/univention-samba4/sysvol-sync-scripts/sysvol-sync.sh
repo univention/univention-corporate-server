@@ -90,8 +90,8 @@ check_if_need_sync() {
 	local src="$remote_login:$SYSVOL_PATH"
 	need_sync="$(univention-ssh-rsync /etc/machine.secret \
 		--dry-run -v "${rsync_options[@]}" \
-		"$src"/ "$dst" 2>&1 \
-		| sed '1,/^receiving incremental file list$/d;' | head --lines=-3)"
+		"$src"/ "$dst" 2>/dev/null \
+		| tail --lines=+2 | head --lines=-3)"
 
 	if [ -z "$need_sync" ]; then
 		return 1
