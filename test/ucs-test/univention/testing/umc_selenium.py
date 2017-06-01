@@ -216,6 +216,33 @@ class UMCSeleniumTest(object):
 		)
 		return elem
 
+	def click_grid_entry(self, name):
+		logger.info("Clicking the grid entry %r", name)
+		# Only check if name is contained, because innerHTML is "polluted" in
+		# grids.
+		elems = self.driver.execute_script("""
+			return dojo.query('.umcGridDefaultAction').filter(
+				function(node) {
+					return node.offsetParent !== null && (node.innerHTML.indexOf('%s') >= 0)
+				}
+			);
+		""" % (name,))
+		elems[0].click()
+
+	def click_tree_entry(self, name):
+		logger.info("Clicking the tree entry %r", name)
+
+		# Only check if name is contained, because innerHTML is "polluted" in
+		# trees.
+		elems = self.driver.execute_script("""
+			return dojo.query('.dgrid-column-label').filter(
+				function(node) {
+					return node.offsetParent !== null && (node.innerHTML.indexOf('%s') >= 0)
+				}
+			);
+		""" % (name,))
+		elems[0].click()
+
 	def click_button(self, buttonname):
 		logger.info("Clicking the button %r", buttonname)
 		self.click_element(buttonname, '.dijitButtonText')
@@ -223,15 +250,6 @@ class UMCSeleniumTest(object):
 	def click_tile(self, tilename):
 		logger.info("Clicking the tile %r", tilename)
 		self.click_element(tilename, '.umcGalleryName')
-
-	def click_grid_entry(self, name):
-		logger.info("Clicking the grid entry %r", name)
-		elems = self.driver.execute_script("""
-			return dojo.query('.umcGridDefaultAction').filter(function(node) { return node.offsetParent !== null });""")
-		# Only check if name is contained, because innerHTML is "polluted" in
-		# grids.
-		elem = filter(lambda elem: name in elem.get_attribute("innerHTML"), elems)[0]
-		elem.click()
 
 	def click_element(self, name, css_class):
 		"""
