@@ -12,9 +12,7 @@ _ = translator.translate
 
 class ScreenShooter(BaseScreenShooter):
 	def take_screenshots(self):
-		self.selenium.click_button(_('Users'))
-		self.selenium.wait_for_text(_("Filesystem quotas"))
-		self.selenium.click_tile(_('Users'))
+		self.selenium.open_module(_('Users'))
 		self.selenium.wait_for_text(":/users")
 		self.selenium.save_screenshot("umc-users")
 
