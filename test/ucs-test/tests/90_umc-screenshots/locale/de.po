@@ -1,0 +1,41 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-31 14:29+0200\n"
+"PO-Revision-Date: 2017-05-31 14:29+020\n"
+"Last-Translator: <ulmer@univention.de>\n"
+"Language-Team: DE <packages@univention.de>\n"
+"Language: DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: tests/90_umc-screenshots/02_portal_en:41
+#: tests/90_umc-screenshots/02_portal_de:41
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: tests/90_umc-screenshots/00_favorites_en:40
+#: tests/90_umc-screenshots/00_favorites_de:40
+#: univention/testing/umc_selenium.py:151
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: tests/90_umc-screenshots/03_users_en:41
+#: tests/90_umc-screenshots/03_users_de:41
+msgid "Filesystem quotas"
+msgstr "Dateisystem Quota"
+
+#: tests/90_umc-screenshots/03_users_en:40
+#: tests/90_umc-screenshots/03_users_en:42
+#: tests/90_umc-screenshots/03_users_de:40
+#: tests/90_umc-screenshots/03_users_de:42
+msgid "Users"
+msgstr "Benutzer"
+
+#: tests/90_umc-screenshots/03_users_en:47
+#: tests/90_umc-screenshots/03_users_de:47
+msgid "password history"
+msgstr "Passwort-History"
