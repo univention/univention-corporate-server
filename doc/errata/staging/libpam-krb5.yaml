@@ -6,5 +6,6 @@ src: libpam-krb5
 fix: 4.6-3A~4.2.0.201705082217
 desc: |
  This update addresses the following issue(s):
- * 
+ * Expired user accounts are able to change their expired password via
+   UMC again.
 bug: [43859]

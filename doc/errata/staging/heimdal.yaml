@@ -6,5 +6,6 @@ src: heimdal
 fix: 1.6~rc2+dfsg-9A~4.2.0.201704251819
 desc: |
  This update addresses the following issue(s):
- * 
+ * Expired user accounts from Active Directory are now able to change
+   their expired password via UMC.
 bug: [43859]
