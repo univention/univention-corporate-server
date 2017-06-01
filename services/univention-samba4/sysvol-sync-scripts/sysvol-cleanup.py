@@ -68,9 +68,8 @@ def getLDAPGPOs(options):
 		#   ...
 		#
 
-		line_lower = line.lower()
-		if line_lower.startswith('cn: '):
-			currentGPO = line_lower.split('cn: ', 1)[1]
+		if line.lower().startswith('cn: '):
+			currentGPO = line[4:]
 		elif line.startswith(' '):
 			# if the attributes value uses more than one line
 			currentGPO += line.split(' ', 1)[1]
@@ -136,7 +135,7 @@ if __name__ == '__main__':
 	for fileSystemGPO in fileSystemGPOs:
 
 		if fileSystemGPO in ldapGPOs:
-			# LDAP GPO is alos available in sysvol directory
+			# LDAP GPO is also available in sysvol directory
 			continue
 
 		if not options.target_directory:

@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-8) unstable; urgency=medium
+
+  * Bug #43620: Allow uppercase CN: attribute in sysvol-cleanup.py
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Jun 2017 19:35:27 +0200
+
 univention-samba4 (6.0.10-7) unstable; urgency=low
 
   * Bug #44643: added samba/client/min/protocol,
