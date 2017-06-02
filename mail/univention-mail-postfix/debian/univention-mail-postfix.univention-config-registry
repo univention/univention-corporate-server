@@ -358,6 +358,30 @@ Variables: mail/cyrus
 Variables: mail/dovecot
 
 Type: multifile
+Multifile: etc/postfix/ldap.sharedfolderlocal_aliases
+User: root
+Group: root
+Mode: 0440
+
+Type: subfile
+Multifile: etc/postfix/ldap.sharedfolderlocal_aliases
+Subfile: etc/postfix/ldap.sharedfolderlocal_aliases.d/10_base
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/server/addition
+Variables: hostname
+Variables: domainname
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/cyrus
+Variables: mail/dovecot
+
+Type: multifile
 Multifile: etc/postfix/ldap.canonicalrecipient
 User: root
 Group: root

@@ -7,10 +7,10 @@
 search_base = @%@ldap/base@%@
 @!@
 if configRegistry.is_true("mail/dovecot", False):
-	print "query_filter = (&(objectClass=univentionMailSharedFolder)(mailPrimaryAddress=%%s)(univentionMailHomeServer=%s.%s))" %(configRegistry.get("hostname"), configRegistry.get("domainname"))
+	print "query_filter = (&(objectClass=univentionMailSharedFolder)(mailAlternativeAddress=%%s)(univentionMailHomeServer=%s.%s))" %(configRegistry.get("hostname"), configRegistry.get("domainname"))
 	print "result_attribute = mailPrimaryAddress"
 else:
-	print "query_filter = (&(objectClass=univentionMailSharedFolder)(|(mailPrimaryAddress=%%s)(univentionMailSharedFolderDeliveryAddress=%%s))(univentionMailHomeServer=%s.%s))" %(configRegistry.get("hostname"), configRegistry.get("domainname"))
+	print "query_filter = (&(objectClass=univentionMailSharedFolder)(mailAlternativeAddress=%%s)(univentionMailHomeServer=%s.%s))" %(configRegistry.get("hostname"), configRegistry.get("domainname"))
 	print "result_attribute = univentionMailSharedFolderDeliveryAddress"
 @!@
 result_format = %s

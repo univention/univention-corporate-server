@@ -1,3 +1,11 @@
+univention-mail-postfix (11.0.1-5) unstable; urgency=low
+
+  * Bug #42249: split ldap.sharedfolderlocal for mailAlternativeAddress
+  * move ldap.sharedfolderremote to virtual_alias_maps
+  * add UCRV update code
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Jun 2017 12:31:22 +0200
+
 univention-mail-postfix (11.0.1-4) unstable; urgency=low
 
   * Bug #44589: add missing UCRV to ucr-registry
