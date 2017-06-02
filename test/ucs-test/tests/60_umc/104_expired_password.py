@@ -77,7 +77,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', [
 		[],
-		pytest.mark.xfail(condition=samba4_installed, reason="Don't know. Probably missing Samba object class?", raises=Unauthorized)(['kerberos', 'posix']),
+		pytest.mark.xfail(condition=samba4_installed, reason="https://forge.univention.org/bugzilla/show_bug.cgi?id=43524", raises=Unauthorized)(['kerberos', 'posix']),
 		['kerberos', 'person'],
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix', 'samba']),
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix']),
