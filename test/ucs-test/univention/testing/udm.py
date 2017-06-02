@@ -161,7 +161,11 @@ class UCSTestUDM(object):
             cmd.extend(['--option', option])
 
         for key, value in args.pop('set', {}).items():
-            cmd.extend(['--set', '%s=%s' % (key, value)])
+            if isinstance(value, (list, tuple)):
+                for item in value:
+                    cmd.extend(['--set', '%s=%s' % (key, item)])
+            else:
+                cmd.extend(['--set', '%s=%s' % (key, value)])
 
         for operation in ('append', 'remove'):
             for key, values in args.pop(operation, {}).items():
