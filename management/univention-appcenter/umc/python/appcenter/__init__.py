@@ -59,7 +59,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action, AppCenterError
 from univention.appcenter.app import AppManager
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
@@ -273,9 +273,24 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]
 
+	@sanitize(app=AppSanitizer(required=True))
+	@simple_response
+	def config(self, app):
+		self.ucr.load()
+		autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
+		is_running = app_is_running(app)
+		values = {}
+		for setting in app.get_settings():
+			values[setting.name] = setting.get_value(app)
+		return {
+			'autostart': autostart,
+			'is_running': is_running,
+			'values': values,
+		}
+
 	@sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
 	@simple_response
-	def configure(self, app, autostart, values):
+	def configure(self, app, values, autostart=None):
 		configure = get_action('configure')
 		configure.call(app=app, set_vars=values, autostart=autostart)
 
@@ -355,10 +370,9 @@ class Instance(umcm.Base, ProgressMixin):
 		}
 		if can_continue:
 			with self.locked():
-				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation']}
+				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], 'set_vars': values}
 				if function == 'install':
 					progress.title = _('Installing %s') % (app.name,)
-					kwargs['set_vars'] = values
 				elif function == 'uninstall':
 					progress.title = _('Uninstalling %s') % (app.name,)
 				elif function == 'upgrade':

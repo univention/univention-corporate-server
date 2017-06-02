@@ -37,7 +37,7 @@ import shutil
 from glob import glob
 from getpass import getuser
 import subprocess
-from argparse import SUPPRESS
+from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App, AppManager
@@ -76,6 +76,19 @@ class _AptLogger(object):
 		self.action.warn(msg)
 
 
+class StoreConfigAction(Action):
+	def __call__(self, parser, namespace, value, option_string=None):
+		set_vars = {}
+		for val in value:
+			try:
+				key, value = val.split('=', 1)
+			except ValueError:
+				parser.error('Could not parse %s. Use var=val. Skipping...' % val)
+			else:
+				set_vars[key] = value
+		setattr(namespace, self.dest, set_vars)
+
+
 class InstallRemoveUpgrade(Register):
 	prescript_ext = None
 	pre_readme = None
@@ -83,6 +96,7 @@ class InstallRemoveUpgrade(Register):
 
 	def setup_parser(self, parser):
 		super(Register, self).setup_parser(parser)
+		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the application')

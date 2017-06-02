@@ -33,12 +33,12 @@
 #
 
 import os.path
-from argparse import Action
 from contextlib import contextmanager
 
 from univention.config_registry.backend import _ConfigRegistry
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.utils import app_is_running, mkdir
 from univention.appcenter.ucr import ucr_save
@@ -46,20 +46,6 @@ from univention.appcenter.ucr import ucr_save
 
 class NoDatabaseFound(Exception):
 	pass
-
-
-class StoreConfigAction(Action):
-
-	def __call__(self, parser, namespace, value, option_string=None):
-		set_vars = {}
-		for val in value:
-			try:
-				key, value = val.split('=', 1)
-			except ValueError:
-				parser.error('Could not parse %s. Use var=val. Skipping...' % val)
-			else:
-				set_vars[key] = value
-		setattr(namespace, self.dest, set_vars)
 
 
 class Configure(UniventionAppAction, DockerActionMixin):
@@ -126,11 +112,6 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			variable['advanced'] = False
 			variables.append(variable)
 		return variables
-
-	@classmethod
-	def get_variable(cls, app, key):
-		ucr = cls._get_app_ucr(app)
-		return ucr.get(key)
 
 	def _set_autostart(self, app, autostart):
 		if autostart is None:

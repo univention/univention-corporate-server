@@ -48,8 +48,9 @@ define([
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
 	"./_AppDialogMixin",
+	"./AppSettings",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _AppDialogMixin, _) {
+], function(declare, lang, array, entities, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _AppDialogMixin, AppSettings, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
 		_continueDeferred: null,
@@ -128,51 +129,25 @@ define([
 		},
 
 		showConfiguration: function(funcName) {
-			var widgets = [];
-			if (funcName == 'install') {
-				var addWidgets = function(conf, disabled, _widgets) {
-					array.forEach(conf, function(variable) {
-						var type = TextBox;
-						var value = variable.value;
-						var additionalParams = {};
-						if (variable.type === 'bool') {
-							type = CheckBox;
-							value = tools.isTrue(value);
-						} else if (variable.type == 'list') {
-							type = ComboBox;
-							additionalParams.staticValues = [];
-							array.forEach(variable.values, function(val, i) {
-								var label = variable.labels[i] || val;
-								additionalParams.staticValues.push({
-									id: val,
-									label: label
-								});
-							});
-						}
-						var widget = {
-							name: variable.id,
-							type: type,
-							label: variable.description,
-							disabled: disabled,
-							value: value
-						};
-						widget = lang.mixin(widget, additionalParams);
-						_widgets.push(widget);
+			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id}).then(lang.hitch(this, function(values) {
+				if (funcName == 'install') {
+					funcName = 'Install';
+				} else if (funcName == 'update') {
+					funcName = 'Upgrade';
+				} else if (funcName == 'uninstall') {
+					funcName = 'Uninstall';
+				}
+				var form = AppSettings.getForm(this.app, values, funcName);
+				if (form) {
+					this._configForm = form;
+					var titlePane = new TitlePane({
+						'class': 'umcAppConfigTitlePane',
+						title: _('Configure %s', entities.encode(this.app.name))
 					});
-				};
-				addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), false, widgets);
-			}
-			if (widgets.length) {
-				this._configForm = new Form({
-					widgets: widgets
-				});
-				var titlePane = new TitlePane({
-					'class': 'umcAppConfigTitlePane',
-					title: _('Configure %s', entities.encode(this.app.name))
-				});
-				titlePane.addChild(this._configForm);
-				this._container.addChild(titlePane);
-			}
+					titlePane.addChild(this._configForm);
+					this._container.addChild(titlePane);
+				}
+			})));
 		},
 
 		showRequirements: function(label, stressedRequirements, appDetailsPage) {

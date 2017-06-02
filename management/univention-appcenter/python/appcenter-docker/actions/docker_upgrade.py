@@ -47,7 +47,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Upgrade, self).setup_parser(parser)
-		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
 
 	def __init__(self):

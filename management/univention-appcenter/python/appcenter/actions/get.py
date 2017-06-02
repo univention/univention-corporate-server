@@ -111,7 +111,6 @@ class Get(UniventionAppAction):
 		ret['local_role'] = ucr_get('server/role')
 		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
 		ret['host_master'] = ucr_get('ldap/master')
-		ret['autostart'] = ucr_get('%s/autostart' % app.id, 'yes')
 		ret['is_ucs_component'] = app.is_ucs_component()
 		ret.update(cls._candidate_dict(app))
 		return ret

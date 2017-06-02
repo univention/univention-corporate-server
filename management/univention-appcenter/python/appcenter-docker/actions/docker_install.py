@@ -35,7 +35,6 @@
 
 from argparse import SUPPRESS
 
-from univention.appcenter.actions.configure import StoreConfigAction
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions import Abort, get_action
@@ -47,7 +46,6 @@ class Install(Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
-		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS)  # debugging
 
 	def _install_app(self, app, args):
