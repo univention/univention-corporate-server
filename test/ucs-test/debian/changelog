@@ -1,3 +1,9 @@
+ucs-test (7.0.21-36) unstable; urgency=low
+
+  * Bug #44037 up: Clean "update in process APT source"
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Jun 2017 13:46:54 +0200
+
 ucs-test (7.0.21-35) unstable; urgency=medium
 
   * Bug #43859: fix 105_change_expired_password_fail_reason.py

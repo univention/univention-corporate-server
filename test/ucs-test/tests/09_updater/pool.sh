@@ -63,7 +63,7 @@ ucr () { # (get|set|unset) name[=value]...
 			local name_value
 			for name_value in "$@"
 			do
-				_reset+=("${name_value%%=*}")
+				_reset+=("${name_value%%[?=]*}")
 			done
 			univention-config-registry "${mode}" "$@" >&3 2>&3
 			;;
@@ -97,6 +97,7 @@ cleanup () { # Undo all changes
 	[ -n "${reset}" ] && univention-config-registry set "${reset[@]}" >&3 2>&3
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
+	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
 
