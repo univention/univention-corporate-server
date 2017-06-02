@@ -158,6 +158,12 @@ define([
 			query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
 			query('#umcCustomPromptForm').style('display', showCustomPrompt ? 'block' : 'none');
 
+			if (showLogin) {
+				 // important! If we failed to set a new password in the 'umcNewPasswordForm' we must reset the form content (new_password)
+				 // so that this is not send along with the next authentication request
+				this._resetForm();
+			}
+
 			this._setFocus();
 			if (!has('touch')) {
 				if (showNewPassword) {
