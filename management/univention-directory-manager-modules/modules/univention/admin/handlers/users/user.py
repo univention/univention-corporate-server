@@ -629,7 +629,7 @@ property_descriptions = {
 		identifies=False,
 		readonly_when_synced=False,
 	),
-	'externalMailAlias': univention.admin.property(
+	'mailForwardAddress': univention.admin.property(
 		short_description=_('Forward e-mail address'),
 		long_description="Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
 		syntax=univention.admin.syntax.emailAddress,
@@ -641,7 +641,7 @@ property_descriptions = {
 		identifies=False,
 		readonly_when_synced=False,
 	),
-	'externalMailAliasCopyToSelf': univention.admin.property(
+	'mailForwardCopyToSelf': univention.admin.property(
 		short_description=_('Forwarding setting'),
 		long_description="Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
 		syntax=univention.admin.syntax.emailForwardSetting,
@@ -1030,8 +1030,8 @@ layout = [
 			'mailHomeServer',
 		], ),
 		Group(_('Mail forwarding'), layout=[
-			'externalMailAliasCopyToSelf',
-			'externalMailAlias',
+			'mailForwardCopyToSelf',
+			'mailForwardAddress',
 		], ),
 	]),
 	Tab(_('UMC preferences'), _('UMC preferences'), advanced=True, layout=[
@@ -1249,8 +1249,8 @@ mapping.register('organisation', 'o', None, univention.admin.mapping.ListToStrin
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('externalMailAlias', 'univentionExternalMailAlias')
-mapping.register('externalMailAliasCopyToSelf', 'univentionExternalMailAliasCopyToSelf', None, univention.admin.mapping.ListToString)
+mapping.register('mailForwardAddress', 'mailForwardAddress')
+mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('e-mail', 'mail')
@@ -1358,7 +1358,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	@property
 	def __alias_copy_to_self(self):
-		return self.get('externalMailAliasCopyToSelf') == '1'
+		return self.get('mailForwardCopyToSelf') == '1'
 
 	def __remove_old_mpa(self, alias_list):
 		if alias_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
@@ -1368,7 +1368,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				pass
 
 	def __set_mpa_for_alias_copy_to_self(self, alias_list):
-		if self.__alias_copy_to_self and self['externalMailAlias']:
+		if self.__alias_copy_to_self and self['mailForwardAddress']:
 			alias_list.append(self['mailPrimaryAddress'])
 		else:
 			try:
@@ -1444,12 +1444,15 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.save()
 
 		if self.exists():
-			if self.get('mailPrimaryAddress') in self.get('externalMailAlias', []):
-				self.oldattr['univentionExternalMailAlias'] = self.oldattr.get('univentionExternalMailAlias', [])[:]
-				self['externalMailAlias'].remove(self['mailPrimaryAddress'])
-				self['externalMailAliasCopyToSelf'] = '1'
+			# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
+			# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
+			# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+			if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
+				self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
+				self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
+				self['mailForwardCopyToSelf'] = '1'
 			else:
-				self['externalMailAliasCopyToSelf'] = '0'
+				self['mailForwardCopyToSelf'] = '0'
 
 			self.modifypassword = 0
 			self['password'] = '********'
@@ -2365,34 +2368,33 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		if self['externalMailAlias'] and not self['mailPrimaryAddress']:
+		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
 				raise univention.admin.uexceptions.missingInformation(
 					_('Primary e-mail address must be set, if messages should be forwarded for it.'))
 		if self.__alias_copy_to_self and not self['mailPrimaryAddress']:
 				raise univention.admin.uexceptions.missingInformation(
 					_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
-		for num_, (key_, old_, new_) in enumerate(ml[:]):
-			if key_ == 'univentionExternalMailAliasCopyToSelf':
-				ml.pop(num_)
-				break
+		# remove virtual property mailForwardCopyToSelf from modlist
+		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != 'mailForwardCopyToSelf']
 
+		# add mailPrimaryAddress to mailForwardAddress if "mailForwardCopyToSelf" is True
 		for num_, (key_, old_, new_) in enumerate(ml[:]):
-			if key_ == 'univentionExternalMailAlias':
+			if key_ == 'mailForwardAddress':
 				# old in ml may be missing the mPA removed in open()
 				if old_:
-					ml[num_][1][:] = self.oldattr.get('univentionExternalMailAlias')
+					ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
 				if new_:
 					self.__remove_old_mpa(new_)
 					self.__set_mpa_for_alias_copy_to_self(new_)
 				break
 		else:
 			mod_ = (
-				'univentionExternalMailAlias',
-				self.oldattr.get('univentionExternalMailAlias'),
-				self['externalMailAlias'][:]
+				'mailForwardAddress',
+				self.oldattr.get('mailForwardAddress'),
+				self['mailForwardAddress'][:]
 				)
-			if self['externalMailAlias']:
+			if self['mailForwardAddress']:
 				self.__remove_old_mpa(mod_[2])
 				self.__set_mpa_for_alias_copy_to_self(mod_[2])
 			if mod_[1] != mod_[2]:
