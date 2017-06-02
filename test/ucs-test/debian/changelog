@@ -1,3 +1,9 @@
+ucs-test (7.0.21-32) unstable; urgency=medium
+
+  * Bug #43859: xfail current failing tests
+
+ -- Florian Best <best@univention.de>  Fri, 02 Jun 2017 10:48:20 +0200
+
 ucs-test (7.0.21-31) unstable; urgency=low
 
   * Bug #44310: add missing build dependency
