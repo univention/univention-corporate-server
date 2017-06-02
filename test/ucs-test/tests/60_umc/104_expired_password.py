@@ -76,7 +76,7 @@ class TestPwdChangeNextLogin(object):
 		assert exc.message == "The password has expired and must be renewed."
 
 	@pytest.mark.parametrize('options', [
-		pytest.mark.xfail(condition=samba4_installed, reason="FIXME?! This should work imho.", raises=Unauthorized)([]),
+		[],
 		pytest.mark.xfail(condition=samba4_installed, reason="Don't know. Probably missing Samba object class?", raises=Unauthorized)(['kerberos', 'posix']),
 		['kerberos', 'person'],
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix', 'samba']),
@@ -95,6 +95,8 @@ class TestPwdChangeNextLogin(object):
 		client.umc_auth(username, password, new_password=new_password)
 
 		wait_for_replication()
+		if samba4_installed:
+			utils.wait_for_connector_replication()
 
 		print 'check login with new password'
 		client = Client()
