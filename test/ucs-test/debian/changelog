@@ -1,3 +1,9 @@
+ucs-test (7.0.21-34) unstable; urgency=medium
+
+  * Bug #43859: wait for s4-connector replication
+
+ -- Florian Best <best@univention.de>  Fri, 02 Jun 2017 12:15:18 +0200
+
 ucs-test (7.0.21-33) unstable; urgency=medium
 
   * Bug #43859: wait for s4-connector replication

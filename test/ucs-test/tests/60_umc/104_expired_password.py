@@ -90,6 +90,9 @@ class TestPwdChangeNextLogin(object):
 		password = random_string()
 		new_password = random_string(5) + random_string(5).upper()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
+		if samba4_installed:
+			utils.wait_for_connector_replication()
+
 		client = Client()
 		print 'change password from %r to %r' % (password, new_password)
 		client.umc_auth(username, password, new_password=new_password)
