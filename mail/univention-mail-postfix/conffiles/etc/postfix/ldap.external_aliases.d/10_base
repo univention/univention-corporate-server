@@ -5,7 +5,7 @@
 
 search_base = @%@ldap/base@%@
 query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s))(!(univentionCanonicalRecipientRewriteEnabled=1)))
-result_attribute = univentionExternalMailAlias
+result_attribute = mailForwardAddress
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@
 scope = sub
