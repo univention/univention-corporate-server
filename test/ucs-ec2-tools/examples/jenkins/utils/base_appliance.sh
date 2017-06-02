@@ -185,6 +185,18 @@ else:
 "
 }
 
+appliance_app_has_external_docker_image ()
+{
+	local app="$1"
+	image="$(get_app_attr $app DockerImage)"
+	echo "Docker image: $image"
+	if echo "$image" | grep -qs "ucs-appbox" ; then
+		return 1
+	else
+		return 0
+	fi
+}
+
 prepare_docker_app_container ()
 {
 	local app="$1"
@@ -205,49 +217,52 @@ prepare_docker_app_container ()
 		docker login -e invalid -u ucs -p readonly docker.software-univention.de
 
 		docker pull "$dockerimage"
-		container_id=$(docker create "$dockerimage")
-		docker start "$container_id"
-		sleep 5 # some startup time...
+		local_app_docker_image="$dockerimage"
+		if ! appliance_app_has_external_docker_image $app; then
+				container_id=$(docker create "$dockerimage")
+				docker start "$container_id"
+				sleep 5 # some startup time...
 
-		docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
-			repository/app_center/server="$(ucr get repository/app_center/server)" \
-			appcenter/index/verify="$(ucr get appcenter/index/verify)" \
-			update/secure_apt="$(ucr get update/secure_apt)"
+				docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
+					repository/app_center/server="$(ucr get repository/app_center/server)" \
+					appcenter/index/verify="$(ucr get appcenter/index/verify)" \
+					update/secure_apt="$(ucr get update/secure_apt)"
 
-		# register required components
-		apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
+				# register required components
+				apps="$app $(get_app_attr $app ApplianceAdditionalApps)"
 
-		for the_app in $apps; do
-			name=$(get_app_attr $the_app Name)
-			component=$(app_get_component $the_app)
-			component_prefix="repository/online/component/"
-			docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
-					${component_prefix}${component}/localmirror=false \
-					${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-					${component_prefix}${component}/unmaintained=disabled \
-					${component_prefix}${component}/version=current \
-					${component_prefix}${component}=enabled
-			# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
-			if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
-				ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
-			fi
-		done
+				for the_app in $apps; do
+					name=$(get_app_attr $the_app Name)
+					component=$(app_get_component $the_app)
+					component_prefix="repository/online/component/"
+					docker exec "$container_id" ucr set ${component_prefix}${component}/description="$name" \
+							${component_prefix}${component}/localmirror=false \
+							${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
+							${component_prefix}${component}/unmaintained=disabled \
+							${component_prefix}${component}/version=current \
+							${component_prefix}${component}=enabled
+					# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
+					if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+						ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
+					fi
+				done
 
-		"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
-			repository/online/component/php7/version=current \
-			repository/online/component/php7/server=http://updates-test.software-univention.de \
-			repository/online/component/php7/description="PHP 7 for UCS" \
-			repository/online/unmaintained=yes
+				"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
+					repository/online/component/php7/version=current \
+					repository/online/component/php7/server=http://updates-test.software-univention.de \
+					repository/online/component/php7/description="PHP 7 for UCS" \
+					repository/online/unmaintained=yes
 
-		# provide required packages inside container
-		docker exec "$container_id" apt-get update
-		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)
-		docker exec "$container_id" apt-get update
+				# provide required packages inside container
+				docker exec "$container_id" apt-get update
+				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)
+				docker exec "$container_id" apt-get update
 
-		# shutdown container and use it as app base
-		docker stop "$container_id"
-		prepared_app_container_id=$(docker commit "$container_id" "${app}-app")
-		docker rm "$container_id"
+				# shutdown container and use it as app base
+				docker stop "$container_id"
+				local_app_docker_image=$(docker commit "$container_id" "${app}-app")
+				docker rm "$container_id"
+		fi
 
 		cat >/root/provide_joinpwdfile.patch <<__EOF__
 --- /usr/lib/univention-system-setup/scripts/10_basis/18root_password.orig      2016-10-27 16:40:47.296000000 +0200
@@ -306,7 +321,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 log_to_stream()
 
 app=Apps().find('\$APP')
-app.docker_image='${app}-app'
+app.docker_image='${local_app_docker_image}'
 
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
@@ -315,7 +330,7 @@ fi
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 # fix docker app image name
-ucr set appcenter/apps/${app}/image='${$dockerimage}'
+ucr set appcenter/apps/${app}/image="${dockerimage}"
 __EOF__
 		chmod 755 /usr/lib/univention-install/99setup_${app}.inst
 	fi
