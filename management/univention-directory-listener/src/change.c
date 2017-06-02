@@ -728,7 +728,6 @@ int change_update_dn(struct transaction *trans) {
 			uuid = NULL;
 			goto retry_dn;
 		}
-		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
 		change_delete(trans);
 		rv = 0;
 	}
