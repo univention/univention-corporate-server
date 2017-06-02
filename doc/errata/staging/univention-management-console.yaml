@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-management-console
-fix: 9.0.80-43A~4.2.0.201705231558
+fix: 9.0.80-46A~4.2.0.201706020854
 desc: |
  This update addresses the following issues:
  * The reason why changing the password failed is shown again.
@@ -18,4 +18,7 @@ desc: |
  * A crash of the UMC-Server during handling of errors has been fixed.
  * A notification about the Administrator account is shown when trying
    to login as root.
-bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381, 44365, 40986]
+ * After a failed attempt to change a expired user password via the
+   login dialog the formular fields weren't reset resuling in furhter
+   authentication attempts being impossible.
+bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381, 44365, 40986, 44720]
