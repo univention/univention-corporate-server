@@ -60,6 +60,8 @@ def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 				break
 		if not delivered:
 			time.sleep(1)
+		else:
+			break
 	if should_be_delivered != delivered:
 		utils.fail('Mail sent with token = %r, delivered to the mail sink = %r   expected=%r' % (token, delivered, should_be_delivered))
 
@@ -106,7 +108,7 @@ if __name__ == '__main__':
 				utils.verify_ldap_object(
 					user.dn,
 					{
-						'mailHomeServer': [user.mailHomeServer],
+						'univentionMailHomeServer': [user.mailHomeServer],
 						'mailPrimaryAddress': [user.mailPrimaryAddress],
 						'mailAlternativeAddress': user.mailAlternativeAddress,
 						'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
@@ -125,5 +127,28 @@ if __name__ == '__main__':
 						msg=token,
 					)
 					# check if mail has been delivered to mailsink AND locally
-					check_delivery_mailsink(token, sink_files, True)
+					check_delivery_mailsink(token, [x.name for x in sink_files], True)
 					check_delivery(token, user.mailPrimaryAddress, True)
+
+				# disable copy to self
+				udm.modify_object(
+					'users/user',
+					dn=user.dn,
+					set={
+						'mailForwardCopyToSelf': '0'
+					})
+
+				# send mails
+				for addr, msg in (
+					(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
+					(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+				):
+					print '*** %s' % (msg,)
+					token = str(time.time())
+					send_mail(
+						recipients=addr,
+						msg=token,
+					)
+					# check if mail has been delivered to mailsink AND locally
+					check_delivery_mailsink(token, [x.name for x in sink_files], True)
+					check_delivery(token, user.mailPrimaryAddress, False)

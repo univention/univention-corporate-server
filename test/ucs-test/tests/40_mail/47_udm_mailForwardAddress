@@ -57,7 +57,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress,
 				},
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress,
 				},
@@ -83,11 +83,11 @@ if __name__ == '__main__':
 				'fwd2-%s@univention.de' % (user.username,),
 				'fwd3-%s@univention.de' % (user.username,),
 			]
-			udm.modify_object('users/user', dn=user.dn, mailForwardAddress=user.mailForwardAddress)
+			udm.modify_object('users/user', dn=user.dn, set={'mailForwardAddress': user.mailForwardAddress})
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress,
 				},
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
 				},
@@ -111,10 +111,12 @@ if __name__ == '__main__':
 			udm.modify_object(
 				'users/user',
 				dn=user.dn,
-				mailForwardAddress=user.mailForwardAddress,
-				mailForwardCopyToSelf='0')
+				set={
+					'mailForwardAddress': user.mailForwardAddress,
+					'mailForwardCopyToSelf': '0'
+				})
 			utils.verify_ldap_object(user.dn, {
-				'mailHomeServer': [user.mailHomeServer],
+				'univentionMailHomeServer': [user.mailHomeServer],
 				'mailPrimaryAddress': [user.mailPrimaryAddress],
 				'mailForwardAddress': user.mailForwardAddress,
 				}, strict=True)
@@ -128,12 +130,14 @@ if __name__ == '__main__':
 			udm.modify_object(
 				'users/user',
 				dn=user.dn,
-				mailForwardAddress=user.mailForwardAddress,
-				mailForwardCopyToSelf='1')
+				set={
+					'mailForwardAddress': user.mailForwardAddress,
+					'mailForwardCopyToSelf': '1'
+				})
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
 				},
@@ -148,7 +152,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': []
 				},
@@ -159,8 +163,8 @@ if __name__ == '__main__':
 			user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
 			user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
 			user.mailForwardAddress = [
-				'fwd5-%s@univention.de' % (user.username,),
-				'fwd6-%s@univention.de' % (user.username,),
+				'fwd5-%s@univention.de' % (uts.random_string(),),
+				'fwd6-%s@univention.de' % (uts.random_string(),),
 			]
 			user.dn, user.username = udm.create_user(set={
 				'mailHomeServer': user.mailHomeServer,
@@ -171,7 +175,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(
 				user.dn,
 				{
-					'mailHomeServer': [user.mailHomeServer],
+					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
 				},
