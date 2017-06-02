@@ -63,7 +63,7 @@ def pytest_generate_tests(metafunc):
 		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix'])
 	]:
 		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
-		reasons[REASON_TOO_SHORT].append([option, 'ana'])
+		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
 
 	for option in [['posix', 'samba']]:
 		reasons[REASON_TOO_SHORT if samba4_installed else REASON_TOO_SIMPLE].append([option, 'Test'])
