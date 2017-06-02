@@ -1226,6 +1226,11 @@ class absolutePath(simple):
 		else:
 			raise univention.admin.uexceptions.valueError(_("Not an absolute path!"))
 
+class emailForwardSetting(select):
+	choices = [
+		('0', _('Redirect all e-mails to forward addresses')),
+		('1', _('Keep e-mails and forward a copy')),
+	]
 
 class emailAddress(simple):
 

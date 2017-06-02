@@ -630,8 +630,8 @@ property_descriptions = {
 		readonly_when_synced=False,
 	),
 	'externalMailAlias': univention.admin.property(
-		short_description=_('External e-mail address'),
-		long_description='',
+		short_description=_('Forward e-mail address'),
+		long_description="Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
 		options=['mail'],
@@ -642,9 +642,9 @@ property_descriptions = {
 		readonly_when_synced=False,
 	),
 	'externalMailAliasCopyToSelf': univention.admin.property(
-		short_description=_('Copy to the primary e-mail address'),
-		long_description=_('Send a copy to the primary e-mail address when forwarding to external e-mail address'),
-		syntax=univention.admin.syntax.boolean,
+		short_description=_('Forwarding setting'),
+		long_description="Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
+		syntax=univention.admin.syntax.emailForwardSetting,
 		multivalue=False,
 		options=['mail'],
 		required=False,
@@ -1028,8 +1028,10 @@ layout = [
 		Group(_('Advanced settings'), layout=[
 			'mailAlternativeAddress',
 			'mailHomeServer',
-			'externalMailAlias',
+		], ),
+		Group(_('Mail forwarding'), layout=[
 			'externalMailAliasCopyToSelf',
+			'externalMailAlias',
 		], ),
 	]),
 	Tab(_('UMC preferences'), _('UMC preferences'), advanced=True, layout=[
