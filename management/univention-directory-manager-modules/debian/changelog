@@ -1,3 +1,11 @@
+univention-directory-manager-modules (12.0.17-9.1) unstable; urgency=low
+
+  * Bug #42249: change wording, UDM/UMC grouping and syntax
+  * rename properties
+  * refactoring for consistent naming
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Jun 2017 13:16:47 +0200
+
 univention-directory-manager-modules (12.0.17-9) unstable; urgency=medium
 
   * Bug #44697: Allow to change the font color of the portal page

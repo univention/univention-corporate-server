@@ -1357,22 +1357,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return 'no'
 
 	@property
-	def __alias_copy_to_self(self):
+	def __forward_copy_to_self(self):
 		return self.get('mailForwardCopyToSelf') == '1'
 
-	def __remove_old_mpa(self, alias_list):
-		if alias_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
+	def __remove_old_mpa(self, forward_list):
+		if forward_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
 			try:
-				alias_list.remove(self.oldattr['mailPrimaryAddress'])
+				forward_list.remove(self.oldattr['mailPrimaryAddress'])
 			except ValueError:
 				pass
 
-	def __set_mpa_for_alias_copy_to_self(self, alias_list):
-		if self.__alias_copy_to_self and self['mailForwardAddress']:
-			alias_list.append(self['mailPrimaryAddress'])
+	def __set_mpa_for_forward_copy_to_self(self, forward_list):
+		if self.__forward_copy_to_self and self['mailForwardAddress']:
+			forward_list.append(self['mailPrimaryAddress'])
 		else:
 			try:
-				alias_list.remove(self['mailPrimaryAddress'])
+				forward_list.remove(self['mailPrimaryAddress'])
 			except ValueError:
 				pass
 
@@ -2371,7 +2371,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
 				raise univention.admin.uexceptions.missingInformation(
 					_('Primary e-mail address must be set, if messages should be forwarded for it.'))
-		if self.__alias_copy_to_self and not self['mailPrimaryAddress']:
+		if self.__forward_copy_to_self and not self['mailPrimaryAddress']:
 				raise univention.admin.uexceptions.missingInformation(
 					_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
@@ -2386,7 +2386,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
 				if new_:
 					self.__remove_old_mpa(new_)
-					self.__set_mpa_for_alias_copy_to_self(new_)
+					self.__set_mpa_for_forward_copy_to_self(new_)
 				break
 		else:
 			mod_ = (
@@ -2396,7 +2396,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				)
 			if self['mailForwardAddress']:
 				self.__remove_old_mpa(mod_[2])
-				self.__set_mpa_for_alias_copy_to_self(mod_[2])
+				self.__set_mpa_for_forward_copy_to_self(mod_[2])
 			if mod_[1] != mod_[2]:
 				ml.append(mod_)
 
