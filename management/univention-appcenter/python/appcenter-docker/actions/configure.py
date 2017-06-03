@@ -67,6 +67,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 				self.log('%s: %s (%s)' % (variable['id'], variable['value'], variable['description']))
 			return variables
 		else:
+			self.log('Configuring %s' % args.app)
 			self._set_autostart(args.app, args.autostart)
 			set_vars = (args.set_vars or {}).copy()
 			for key in (args.unset or []):
@@ -119,6 +120,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		if autostart not in ['yes', 'manually', 'no']:
 			self.warn('Autostart must be one of yes, manually, no. Not setting to %r' % autostart)
 			return
+		self.log('Setting autostart to %r' % autostart)
 		ucr_save({'%s/autostart' % app.id: autostart})
 
 	def _set_config(self, app, set_vars):

@@ -30,11 +30,12 @@
 
 define([
 	"dojo/_base/declare",
+	"dojox/html/entities",
 	"umc/widgets/Uploader",
-	"umc/widgets/Image",
+	"umc/widgets/Text",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, Uploader, Image, tools, _) {
+], function(declare, entities, Uploader, Text, tools, _) {
 	return declare("umc.modules.appcenter.AppSettingsFileUploader", Uploader, {
 		showClearButton: false,
 		size: 'Two',
@@ -43,15 +44,25 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// create an image widget
 			this._content = new Text({
-				content: '<pre>' + (this.content || '') + '</pre>',
+				content: ''
 			});
 			this.addChild(this._content, 0);
 		},
 
+		_getValueAttr: function() {
+			return this._uploadedValue;
+		},
+
 		updateView: function(value) {
-			this._content.set('content', value);
+			if (value) {
+				this._uploadedValue = atob(value);
+				value = entities.encode(this._uploadedValue);
+			} else {
+				this._uploadedValue = null;
+				value = '&nbsp;';
+			}
+			this._content.set('content', '<pre>' + value + '</pre>');
 		}
 	});
 });

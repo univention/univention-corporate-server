@@ -29,7 +29,7 @@ define([
 				var value = values[variable.name] || null;
 				var params = {
 					name: variable.name,
-					_groupName: variable.group,
+					_groupName: variable.group || _('Settings'),
 					required: variable.required,
 					label: variable.description,
 					disabled: (variable.read || []).indexOf(phase) !== -1,
@@ -73,20 +73,25 @@ define([
 						type: PasswordBox
 					}));
 				} else if (variable.type == 'File') {
+					if (params.value) {
+						params.value = btoa(params.value);
+						params.data = {content: params.value};
+					}
 					ret.push(lang.mixin(params, {
 						type: AppSettingsFileUploader,
-						content: ''
 					}));
 				} else if (variable.type == 'PasswordFile') {
 					ret.push(lang.mixin(params, {
 						type: PasswordBox
 					}));
 				} else if (variable.type == 'Status') {
-					ret.push(lang.mixin(params, {
-						type: Text,
-						content: '<h2>' + params.name + '</h2>' + params.value,
-						_groupName: variable.group
-					}));
+					if (value) {
+						ret.push(lang.mixin(params, {
+							type: Text,
+							content: value,
+							_groupName: params._groupName
+						}));
+					}
 				}
 			});
 			return ret;
@@ -118,28 +123,18 @@ define([
 		getGroups: function(app, widgets) {
 			var groups = [];
 			array.forEach(app.settings, function(setting) {
-				if (! setting.group) {
-					return;
+				var groupName = setting.group || _('Settings');
+				if (groups.indexOf(groupName) === -1) {
+					groups.push(groupName);
 				}
-				var widget = array.filter(widgets, function(_widget) {
-					return _widget._groupName !== setting.name;
-				})[0];
-				if (! widget) {
-					return;
-				}
-
-				var groupDef = array.filter(groups, function(group) {
-					return group.label == setting.group;
-				})[0];
-				if (! groupDef) {
-					groupDef = {label: setting.group, widgets: []};
-					groups.push(groupDef);
-				}
-				groupDef.widgets.push(widget);
 			});
-			if (! groups.length) {
-				groups = [{label: _('Settings'), widgets: widgets.slice()}];
-			}
+			groups = array.map(groups, function(group) {
+				var _widgets = array.filter(widgets, function(widget) {
+					return group === widget._groupName;
+				});
+				var groupDef = {label: group, widgets: _widgets};
+				return groupDef;
+			});
 			return groups;
 		}
 	};

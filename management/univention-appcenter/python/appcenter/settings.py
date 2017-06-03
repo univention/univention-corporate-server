@@ -32,7 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.utils import app_is_running, container_mode, _
+import os
+import os.path
+
+from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save
 from univention.appcenter.ini_parser import TypedIniSectionObject, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionAttribute
@@ -90,10 +93,11 @@ class Setting(TypedIniSectionObject):
 			return self.initial_value
 
 	def _log_set_value(self, app, value):
-		settings_logger.info('Setting %s for %s to %r' % (self.name, app, value))
+		settings_logger.info('Setting %s to %r' % (self.name, value))
 
 	def set_value(self, app, value):
 		value = self.sanitize_value(app, value)
+		value = self.value_for_setting(app, value)
 		self._log_set_value(app, value)
 		if self.is_outside(app):
 			ucr_save({self.name: value})
@@ -115,6 +119,9 @@ class Setting(TypedIniSectionObject):
 			raise SettingValueError()
 		return value
 
+	def value_for_setting(self, app, value):
+		return value
+
 
 class StringSetting(Setting):
 	pass
@@ -123,7 +130,12 @@ class StringSetting(Setting):
 class BoolSetting(Setting):
 	def sanitize_value(self, app, value):
 		super(BoolSetting, self).sanitize_value(app, value)
+		if isinstance(value, bool):
+			return value
 		return ucr_is_true(self.name, value=value)
+
+	def value_for_setting(self, app, value):
+		return str(value).lower()
 
 
 class ListSetting(Setting):
@@ -134,6 +146,7 @@ class ListSetting(Setting):
 		super(ListSetting, self).sanitize_value(app, value)
 		if not value in self.values:
 			raise SettingValueError()
+		return value
 
 
 class UDMListSetting(ListSetting):
@@ -151,12 +164,17 @@ class FileSetting(Setting):
 			return self.initial_value
 
 	def _write_file_content(self, filename, content):
-		settings_logger.debug('Writing to %s' % filename)
 		try:
-			with open(self.filename, 'wb') as fd:
-				fd.write(content)
-		except EnvironmentError:
-			pass
+			if content:
+				settings_logger.debug('Writing to %s' % filename)
+				mkdir(os.path.dirname(self.filename))
+				with open(self.filename, 'wb') as fd:
+					fd.write(content)
+			else:
+				settings_logger.debug('Deleting %s' % filename)
+				os.unlink(self.filename)
+		except EnvironmentError as exc:
+			self.warn('Could not set content: %s' % exc)
 
 	def get_value(self, app):
 		if self.is_outside(app):
