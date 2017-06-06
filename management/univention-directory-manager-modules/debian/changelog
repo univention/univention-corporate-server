@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-10) unstable; urgency=low
+
+  * Bug #42249: add translations
+  * Bug #44697: add translations
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 06 Jun 2017 10:08:43 +0200
+
 univention-directory-manager-modules (12.0.17-9.1) unstable; urgency=low
 
   * Bug #42249: change wording, UDM/UMC grouping and syntax
