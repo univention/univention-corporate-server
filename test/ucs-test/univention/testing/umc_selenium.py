@@ -100,7 +100,6 @@ class UMCSeleniumTest(object):
 				self.driver = webdriver.Chrome()
 			else:
 				self.driver = webdriver.Firefox()
-		self.driver.implicitly_wait(2)
 
 		ucr = ucr_test.UCSTestConfigRegistry()
 		ucr.load()
@@ -141,6 +140,11 @@ class UMCSeleniumTest(object):
 		self.driver.set_window_size(width + width_delta, height + height_delta)
 
 	def do_login(self):
+		self.wait_until(
+			expected_conditions.presence_of_element_located(
+				(webdriver.common.by.By.ID, "umcLoginUsername")
+			)
+		)
 		elem = self.driver.find_element_by_id("umcLoginUsername")
 		elem.clear()
 		elem.send_keys(self.umcLoginUsername)
@@ -150,6 +154,11 @@ class UMCSeleniumTest(object):
 		elem.send_keys(Keys.RETURN)
 		self.wait_for_text(_('Favorites'))
 		logger.info('Successful login')
+
+	def wait_until(self, check_function, timeout=60):
+		webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
+			check_function
+		)
 
 	def save_screenshot(self, name='error', hide_notifications=True, element_xpath='/html/body', append_timestamp=False):
 		# FIXME: This is needed, because sometimes it takes some time until
@@ -174,7 +183,13 @@ class UMCSeleniumTest(object):
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		search_field = self.driver.find_element_by_xpath('//*[@id="umc_widgets_LiveSearch_0"]')
+		xpath = '//*[@id="umc_widgets_LiveSearch_0"]'
+		self.wait_until(
+			expected_conditions.presence_of_element_located(
+				(webdriver.common.by.By.XPATH, xpath)
+			)
+		)
+		search_field = self.driver.find_element_by_xpath(xpath)
 		search_field.click()
 		search_field.send_keys(name)
 		search_field.send_keys(Keys.RETURN)
@@ -205,16 +220,17 @@ class UMCSeleniumTest(object):
 	def find_combobox_by_name(self, inputname):
 		return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
-	def wait_for_text(self, text, timeout=30):
+	def wait_for_text(self, text, timeout=60):
 		logger.info("Waiting for text: %r", text)
 
 		xpath = '//*[contains(text(), "%s")]' % (text,)
-		elem = webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
+		self.wait_until(
 			expected_conditions.presence_of_element_located(
 				(webdriver.common.by.By.XPATH, xpath)
-			)
+			),
+			timeout=timeout
 		)
-		return elem
+		logger.info("\tFound the text: %r", text)
 
 	def click_grid_entry(self, name):
 		logger.info("Clicking the grid entry %r", name)
@@ -259,6 +275,8 @@ class UMCSeleniumTest(object):
 		Also looks for hover texts, if no visible element is found.
 		User must be logged in.
 		"""
+
+		# TODO: Wait until the element is actually interactable.
 
 		elem = self.driver.execute_script("""
 			return dojo.query(%s).filter(function(node) { return node.offsetParent !== null && node.innerHTML == %s }).pop();
