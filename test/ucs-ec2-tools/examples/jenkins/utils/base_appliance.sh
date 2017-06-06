@@ -280,7 +280,7 @@ prepare_docker_app_container ()
  if [ -z "\$root_password" ]; then
 __EOF__
 		univention-install -y patch
-		patch -p0 < /root/provide_joinpwdfile.patch
+		patch -d/ -p0 < /root/provide_joinpwdfile.patch
 		rm /root/provide_joinpwdfile.patch
 
 		# clear old app joinscript
