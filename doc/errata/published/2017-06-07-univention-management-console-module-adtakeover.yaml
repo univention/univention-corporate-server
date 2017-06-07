@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Avoid traceback in case AD Takeover is run in AD member mode
 bug: [38983]
+erratum: 29
+announced: 2017-06-07
