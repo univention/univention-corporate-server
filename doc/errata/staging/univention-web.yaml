@@ -5,8 +5,8 @@ scope: ucs_4.2-0-errata4.2-0
 src: univention-web
 fix: 1.0.42-15A~4.2.0.201705231328
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The link to send feedback to Univention has been fixed.
- * The way a grid is sorted is now better configurable for module devolopers.
- * Progressbars are now escaping HTML content more strict.
+ * The way a grid is sorted is now better configurable for module developers.
+ * Progress bars are now escaping HTML content more strict.
 bug: [44381, 44652, 44498]

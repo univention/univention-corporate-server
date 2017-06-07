@@ -5,12 +5,12 @@ scope: ucs_4.2-0-errata4.2-0
 src: univention-mail-postfix
 fix:
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Support for forwarding emails to external addresses has been added
    (Bug #42249).
  * The default of the UCR variable mail/postfix/tls/client/level when
    unset has been changed to "may". On existing UCS installations this
-   has already been set explicitely (Bug #44589).
+   has already been set explicitly (Bug #44589).
  * When a relay host with authentication is used (mail/relayauth=yes),
    the Postfix option smtp_tls_security_level will automatically be set
    to "encrypt", unless mail/postfix/tls/client/level is set to "none"

@@ -1,0 +1,59 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: firefox-esr
+fix: 45.9.0esr-1~deb8u1
+desc: |-
+ This update addresses the following issues:
+ * Mozilla Network Security Services (NSS) before 3.21.4, 3.22.x through
+   3.28.x before 3.28.4, 3.29.x before 3.29.5, and 3.30.x before 3.30.1 allows
+   remote attackers to cause a denial of service (out-of-bounds write) or
+   possibly have unspecified other impact by leveraging incorrect base64
+   operations. (CVE-2017-5461)
+ * Fixes for mfsa2017-11, also known as: CVE-2017-5433, CVE-2017-5435,
+   CVE-2017-5436, CVE-2017-5461, CVE-2017-5459, CVE-2017-5434, CVE-2017-5432,
+   CVE-2017-5460, CVE-2017-5438, CVE-2017-5439, CVE-2017-5440, CVE-2017-5441,
+   CVE-2017-5442, CVE-2017-5464, CVE-2017-5443, CVE-2017-5444, CVE-2017-5446,
+   CVE-2017-5447, CVE-2017-5465, CVE-2017-5448, CVE-2017-5469, CVE-2017-5445,
+   CVE-2017-5462, CVE-2017-5429.
+ * accessible/generic/ApplicationAccessible.h: Add missing null checks causing
+   crashes with accessibility.
+ * Fixes for mfsa2017-06, also known as: CVE-2017-5400, CVE-2017-5401,
+   CVE-2017-5402, CVE-2017-5404, CVE-2017-5407, CVE-2017-5410, CVE-2017-5408,
+   CVE-2017-5405, CVE-2017-5398.
+bug: []
+cve:
+- CVE-2017-5461
+- CVE-2017-5433
+- CVE-2017-5435
+- CVE-2017-5436
+- CVE-2017-5459
+- CVE-2017-5434
+- CVE-2017-5432
+- CVE-2017-5460
+- CVE-2017-5438
+- CVE-2017-5439
+- CVE-2017-5440
+- CVE-2017-5441
+- CVE-2017-5442
+- CVE-2017-5464
+- CVE-2017-5443
+- CVE-2017-5444
+- CVE-2017-5446
+- CVE-2017-5447
+- CVE-2017-5465
+- CVE-2017-5448
+- CVE-2017-5469
+- CVE-2017-5445
+- CVE-2017-5462
+- CVE-2017-5429
+- CVE-2017-5400
+- CVE-2017-5401
+- CVE-2017-5402
+- CVE-2017-5404
+- CVE-2017-5407
+- CVE-2017-5410
+- CVE-2017-5408
+- CVE-2017-5405
+- CVE-2017-5398

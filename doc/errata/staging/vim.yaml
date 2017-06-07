@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: vim
+fix: 2:7.4.488-7+deb8u3
+desc: |-
+ This update addresses the following issues:
+ * Fix an integer overflow at an unserialize_uep memory allocation site if it
+   does not properly validate values for tree length when reading a corrupted
+   undo file, which may lead to resultant buffer overflows (CVE-2017-6350)
+ * Fix an integer overflow at a u_read_undo memory allocation site if it does
+   not properly validate values for tree length when reading a corrupted undo
+   file, which may lead to resultant buffer overflows (CVE-2017-6349)
+bug: []
+cve:
+- CVE-2017-6350
+- CVE-2017-6349

@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: wget
+fix: 1.16-1+deb8u2
+desc: |-
+ This update addresses the following issue:
+ * CRLF injection vulnerability in the url_parse function in url.c allows
+   remote attackers to inject arbitrary HTTP headers via CRLF sequences in the
+   host subcomponent of a URL (CVE-2017-6508)
+bug: []
+cve:
+- CVE-2017-6508

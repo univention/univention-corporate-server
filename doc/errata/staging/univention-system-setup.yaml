@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-0
 src: univention-system-setup
 fix: 10.0.10-19A~4.2.0.201705291717
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The package univention-samba is now also downloaded
    while preparing an appliance.
  * A cleanup script used in Univention App Appliances has
@@ -18,5 +18,5 @@ desc: |
    was confusing and has been improved.
  * A crash is prevented when trying to join into an active directory domain
    and the active directory server is not reachable.
- * A crash is prevented in appliance scenarios if no domainname was entered.
+ * A crash is prevented in appliance scenarios if no domain name was entered.
 bug: [44522,44575,43671,43140,41204,44035,44394,43273]

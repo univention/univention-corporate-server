@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: jbig2dec
+fix: 0.13-4~deb8u2
+desc: |-
+ This update addresses the following issues:
+ * Prevent integer overflow vulnerability (CVE-2017-7885)
+ * Prevent SEGV due to integer overflow (CVE-2017-7975)
+ * Bounds check before reading from image source data (CVE-2017-7976)
+ * Fixes CVE-2016-9601 and many other unreported issues.
+bug: [44407]
+cve:
+- CVE-2017-7885
+- CVE-2017-7975
+- CVE-2017-7976
+- CVE-2016-9601

@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-0
 src: univention-samba4
 fix: 6.0.10-9A~4.2.0.201706011942
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Don't fail join if CNF-Objects are in serverReferenceBL
  * Don't consider unreachable UCS@school Slave DCs for joining
  * Support uppercase CN: attribute in sysvol-cleanup.py

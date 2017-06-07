@@ -19,6 +19,6 @@ desc: |
  * A notification about the Administrator account is shown when trying
    to login as root.
  * After a failed attempt to change an expired user password via the
-   login dialog the formular fields weren't reset resulting in further
+   login dialog the form fields weren't reset resulting in further
    authentication attempts being impossible.
 bug: [41786, 44217, 44450, 43859, 44428, 44564, 44381, 44365, 40986, 44720]

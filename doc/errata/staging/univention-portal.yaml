@@ -6,5 +6,5 @@ src: univention-portal
 fix: 1.0.12-2A~4.2.0.201705261335
 desc: |
  This update addresses the following issue(s):
- * The possibilty to change the font color on the portal page has been added.
+ * The possibility to change the font color on the portal page has been added.
 bug: [44697]
