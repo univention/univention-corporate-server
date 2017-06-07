@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-docker-container-mode
-fix: 1.0.14-9.70.201705181020
+fix: 1.0.14-10.71.201706071001
 desc: |
  This update addresses the following issue(s):
  * The cron job for the updater check has been
