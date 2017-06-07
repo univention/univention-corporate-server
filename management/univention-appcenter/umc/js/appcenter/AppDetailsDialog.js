@@ -135,17 +135,12 @@ define([
 				} else if (funcName == 'update') {
 					funcName = 'Upgrade';
 				} else if (funcName == 'uninstall') {
-					funcName = 'Uninstall';
+					funcName = 'Remove';
 				}
 				var form = AppSettings.getForm(this.app, values, funcName);
 				if (form) {
 					this._configForm = form;
-					var titlePane = new TitlePane({
-						'class': 'umcAppConfigTitlePane',
-						title: _('Configure %s', entities.encode(this.app.name))
-					});
-					titlePane.addChild(this._configForm);
-					this._container.addChild(titlePane);
+					this._container.addChild(this._configForm);
 				}
 			})));
 		},
