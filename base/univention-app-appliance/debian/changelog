@@ -1,3 +1,10 @@
+univention-app-appliance (1.0.2-22) unstable; urgency=medium
+
+  * Bug #44523: Add dir /var/www/icon
+  * Use app.ucs_version when accessing app center server
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Jun 2017 16:30:51 +0200
+
 univention-app-appliance (1.0.2-21) unstable; urgency=medium
 
   * Bug #44523: Fix some logical errors and typos

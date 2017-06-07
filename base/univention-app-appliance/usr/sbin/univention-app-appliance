@@ -47,21 +47,21 @@ from univention.config_registry import ConfigRegistry
 UCR = ConfigRegistry()
 UCR.load()
 
-def _branding_resources_base_url(app_id, version):
+def _branding_resources_base_url(app_id, ucs_version):
 	protocol = 'https://'
 	if '://' in UCR.get('repository/app_center/server'):
 		protocol = ''
 	return '{protocol}{server}/meta-inf/{version}/{app}'.format(
 		protocol=protocol,
 		server=UCR.get('repository/app_center/server'),
-		version=UCR.get('version/version'),
+		version=ucs_version,
 		app=app_id
 	)
 
 
 def _download_resource(app, resource, dest_path):
 	resource_url = "{app_url}/{res_name}".format(
-		app_url=_branding_resources_base_url(app.id, app.version),
+		app_url=_branding_resources_base_url(app.id, app.ucs_version),
 		res_name=resource)
 	try:
 		req = requests.head(resource_url, timeout=5)
@@ -71,6 +71,8 @@ def _download_resource(app, resource, dest_path):
 				for block in req.iter_content(8192):
 					handle.write(block)
 			print 'Successfully downloaded %s' % resource_url
+		else:
+			print 'WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url)
 	except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
 			print 'WARNING: Failed to download %s' % resource_url
 
