@@ -51,7 +51,7 @@ if [ -n "$update_container_check_last" ]; then
 fi
 
 # check
-upgrade="$(univention-upgrade --check --setucr --disable-app-updates)"
+upgrade="$(univention-upgrade --check --setucr --disable-app-updates 2>/dev/null)"
 eval "$(ucr shell update/available)"
 if [ "$update_available" = "yes" ]; then
 	release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)

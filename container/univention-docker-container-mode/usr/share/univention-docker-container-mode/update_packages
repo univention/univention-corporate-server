@@ -46,6 +46,8 @@ if [ -n "$username" -a -n "$password_file" ]; then
 	ret_join="$?"
 fi
 
+ucr unset update/container/check/last update/container/check/type
+
 if [ "$ret_pack" -ne 0 ]; then
 	exit "$ret_pack"
 else
