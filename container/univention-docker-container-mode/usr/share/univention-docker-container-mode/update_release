@@ -42,3 +42,8 @@ if [ -n "$MAJOR_WITHOUT_DOT" ]; then
 fi
 
 univention-upgrade --noninteractive --updateto "$RELEASE" --disable-app-updates && /usr/share/univention-updater/univention-updater-check
+ret_val=$?
+
+ucr unset update/container/check/last update/container/check/type
+
+exit $ret_val
