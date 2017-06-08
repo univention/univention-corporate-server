@@ -1,0 +1,18 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: openssl
+fix: 1.0.2k-1~bpo8+1~ucs41.134.201706081137
+desc: |-
+ This update addresses the following issues:
+ * Montgomery multiplication may produce incorrect results (CVE-2016-7055)
+ * SSL/TLS SSL3_AL_WARNING undefined alert DoS (CVE-2016-8610)
+ * Truncated packet could crash via OOB read (CVE-2017-3731)
+ * BN_mod_exp may produce incorrect results on x86_64 (CVE-2017-3732)
+bug: [42925]
+cve:
+- CVE-2016-7055
+- CVE-2016-8610
+- CVE-2017-3731
+- CVE-2017-3732
