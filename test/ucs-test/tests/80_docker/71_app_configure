@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the .configure script for Apps
-## tags: [SKIP]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
@@ -24,25 +24,22 @@ if __name__ == '__main__':
 				DockerImage=image,
 				DockerScriptConfigure='/root/configure',
 				DockerScriptSetup='/root/setup')
-			app.add_script(configure='''
-#!/bin/bash
+			app.add_script(configure='''#!/bin/bash
 set -x
 echo "Configuring the App"
 echo -n "$(ucr get test/configure/param)" > /root/configure.output
 exit 0
 ''')
 			app.add_script(setup='#!/bin/bash')
-
 			app.add_to_local_appcenter()
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
 			configured_file = app.file('/root/configure.output')
-			#assert open(configured_file).read() == ''
 			app.configure({'test/configure/param': 'test1'})
 			assert open(configured_file).read() == 'test1'
 			app.configure({'test/configure/param': 'test2'})
-			assert open(configured_file).read() == 'test1'
+			assert open(configured_file).read() == 'test2'
 			app.configure({'test/configure/param': None})
 			assert open(configured_file).read() == ''
 		finally:

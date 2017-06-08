@@ -255,8 +255,7 @@ class App(object):
 	def file(self, fname):
 		if fname.startswith('/'):
 			fname = fname[1:]
-		dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id]).strip()
-		return os.path.join(dirname, fname)
+		return os.path.join('/var/lib/docker/overlay', self.container_id, 'merged', fname)
 
 	def configure(self, args):
 		set_vars = []
