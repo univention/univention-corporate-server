@@ -5,20 +5,23 @@
 
 from lib.screen_shooter import BaseScreenShooter
 from univention.admin import localization
-# TODO: Wait for appropriate events instead of sleeping.
-import time
-
 translator = localization.translation('univention-ucs-test_umc-screenshots')
 _ = translator.translate
 
 
 class ScreenShooter(BaseScreenShooter):
 	def take_screenshots(self, user_template_exists=False):
+		self.open_module_and_take_overview_screenshot()
+		self.take_screenshots_of_adding_a_user(user_template_exists)
+		self.take_screenshot_of_details_page()
+
+	def open_module_and_take_overview_screenshot(self):
 		self.selenium.open_module(_('Users'))
 		self.selenium.wait_for_text(":/users")
+		self.selenium.wait_until_all_standby_animations_disappeared()
 		self.selenium.save_screenshot("umc-users")
 
-		time.sleep(5)
+	def take_screenshots_of_adding_a_user(self, user_template_exists):
 		self.selenium.click_button(_("Add"))
 		if user_template_exists:
 			self.take_template_screenshot_and_move_on()
@@ -34,17 +37,18 @@ class ScreenShooter(BaseScreenShooter):
 		self.selenium.click_button(_("Create user"))
 		self.selenium.wait_for_text(_("has been created"))
 		self.selenium.click_button(_("Cancel"))
-
-		time.sleep(5)
-		self.selenium.click_grid_entry(_("anna"))
-		self.selenium.wait_for_text(_("password history"))
-		self.selenium.save_screenshot("umc-users-details")
+		self.selenium.wait_until_all_dialogues_closed()
 
 	def take_template_screenshot_and_move_on(self):
 		# TODO: Make nicer screenshot.
 		self.selenium.wait_for_text(_("User template"))
 		self.selenium.save_screenshot("umc-users-template", xpath='//*[@id="umc_modules_udm_NewObjectDialog_0"]')
 		self.selenium.click_button(_("Next"))
+
+	def take_screenshot_of_details_page(self):
+		self.selenium.click_grid_entry(_("anna"))
+		self.selenium.wait_for_text(_("password history"))
+		self.selenium.save_screenshot("umc-users-details")
 
 if __name__ == '__main__':
 	# TODO: Delete user "anna" if it already exists.
