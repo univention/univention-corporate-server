@@ -183,6 +183,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		if not set_vars:
 			return
 		self._set_config_via_tool(app, set_vars)
+		self._run_configure_script(app)
 
 	def _set_config_directly(self, app, set_vars):
 		with self._locked_app_ucr(app) as _ucr:
@@ -219,3 +220,8 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			docker.execute('ucr', 'set', *set_args)
 		if unset_args:
 			docker.execute('ucr', 'unset', *unset_args)
+
+	def _run_configure_script(self, app):
+		if not app.docker:
+			return
+		self._execute_container_script(app, 'configure', _credentials=False)

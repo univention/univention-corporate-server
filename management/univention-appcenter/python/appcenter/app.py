@@ -751,6 +751,9 @@ class App(object):
 			but for a script that is run to specifically install
 			App package updates in the container without destroying
 			it.
+		docker_script_configure: Like *docker_script_setup*,
+			but for a script that is run after settings inside the
+			container were applied.
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 	"""
@@ -871,6 +874,7 @@ class App(object):
 	docker_script_update_packages = AppDockerScriptAttribute()
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
+	docker_script_configure = AppAttribute()
 
 	host_certificate_access = AppBooleanAttribute()
 
