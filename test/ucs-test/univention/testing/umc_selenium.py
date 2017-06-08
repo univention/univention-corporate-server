@@ -160,7 +160,7 @@ class UMCSeleniumTest(object):
 			check_function
 		)
 
-	def save_screenshot(self, name='error', hide_notifications=True, element_xpath='/html/body', append_timestamp=False):
+	def save_screenshot(self, name='error', hide_notifications=True, xpath='/html/body', append_timestamp=False):
 		# FIXME: This is needed, because sometimes it takes some time until
 		# some texts are really visible (even if elem.is_displayed() is already
 		# true).
@@ -176,7 +176,7 @@ class UMCSeleniumTest(object):
 
 		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
 		logger.info('Saving screenshot %r', filename)
-		self.driver.find_element_by_xpath(element_xpath).screenshot(filename)
+		self.driver.find_element_by_xpath(xpath).screenshot(filename)
 
 		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
 
@@ -224,68 +224,61 @@ class UMCSeleniumTest(object):
 		logger.info("Waiting for text: %r", text)
 
 		xpath = '//*[contains(text(), "%s")]' % (text,)
-		self.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, xpath)
-			),
-			timeout=timeout
+		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
+			self.get_all_visible_elements
 		)
-		logger.info("\tFound the text: %r", text)
+
+	def get_all_visible_elements(self, xpath):
+		elems = self.driver.find_elements_by_xpath(xpath)
+		visible_elems = [elem for elem in elems if elem.is_displayed()]
+		if len(visible_elems) > 0:
+			return visible_elems
+		return False
+
+	def click_text(self, text):
+		logger.info("Clicking the text %r", text)
+		self.click_element('//*[contains(text(), "%s")]' % (text,))
 
 	def click_grid_entry(self, name):
 		logger.info("Clicking the grid entry %r", name)
-		# Only check if name is contained, because innerHTML is "polluted" in
-		# grids.
-		elems = self.driver.execute_script("""
-			return dojo.query('.umcGridDefaultAction').filter(
-				function(node) {
-					return node.offsetParent !== null && (node.innerHTML.indexOf('%s') >= 0)
-				}
-			);
-		""" % (name,))
-		elems[0].click()
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcGridDefaultAction ")][contains(text(), "%s")]' % (name,))
 
 	def click_tree_entry(self, name):
 		logger.info("Clicking the tree entry %r", name)
-
-		# Only check if name is contained, because innerHTML is "polluted" in
-		# trees.
-		elems = self.driver.execute_script("""
-			return dojo.query('.dgrid-column-label').filter(
-				function(node) {
-					return node.offsetParent !== null && (node.innerHTML.indexOf('%s') >= 0)
-				}
-			);
-		""" % (name,))
-		elems[0].click()
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]' % (name,))
 
 	def click_button(self, buttonname):
 		logger.info("Clicking the button %r", buttonname)
-		self.click_element(buttonname, '.dijitButtonText')
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]' % (buttonname,))
 
 	def click_tile(self, tilename):
 		logger.info("Clicking the tile %r", tilename)
-		self.click_element(tilename, '.umcGalleryName')
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,))
 
-	def click_element(self, name, css_class):
+	def click_element(self, xpath):
 		"""
-		Click on an element with innerHTML=name and CCS2-selector=css_class.
+		Click on the element which is found by the given xpath.
 
-		Only use with caution when there are multiple elements with that name.
-		Also looks for hover texts, if no visible element is found.
-		User must be logged in.
+		Only use with caution when there are multiple elements with that xpath.
+		Waits for the element to be clickable before attempting to click.
 		"""
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.get_all_clickable_elements
+		)
 
-		# TODO: Wait until the element is actually interactable.
+		if len(elems) is not 1:
+			logger.warn(
+				"Found %d clickable elements instead of 1. Trying to click on "
+				"the first one." % (len(elems),)
+			)
+		elems[0].click()
 
-		elem = self.driver.execute_script("""
-			return dojo.query(%s).filter(function(node) { return node.offsetParent !== null && node.innerHTML == %s }).pop();
-			""" % (json.dumps(css_class), json.dumps(name)))
-		if not elem:
-			elem = self.driver.execute_script("""
-				return dojo.query(%s).filter(function(node) { return node.innerHTML == %s })[0].parentNode;
-				""" % (json.dumps(css_class), json.dumps(name)))
-		elem.click()
+	def get_all_clickable_elements(self, xpath):
+		elems = self.driver.find_elements_by_xpath(xpath)
+		clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
+		if len(clickable_elems) > 0:
+			return clickable_elems
+		return False
 
 	@staticmethod
 	def find_visible_element_from_list(elements):
@@ -326,7 +319,7 @@ class UMCSeleniumTest(object):
 		"""
 		Parameter inputname is the name of input tag, parameter inputvalue is the value to enter in input tag
 		"""
-		logger.info('enter', inputname, inputvalue)
+		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
 		elem = self.driver.execute_script("""
 			return dojo.query('input').filter(function(node) { return node.name == %s && node.offsetParent !== null })[0];
 			""" % json.dumps(inputname))

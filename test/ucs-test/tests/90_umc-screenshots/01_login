@@ -21,7 +21,7 @@ class ScreenShooter(BaseScreenShooter):
 	def take_screenshots(self):
 		self.selenium.set_viewport_size(800, 600)
 		self.selenium.save_screenshot("umc-login")
-		self.selenium.save_screenshot("umc-login_cropped", element_xpath='//*[@id="umcLoginDialog"]')
+		self.selenium.save_screenshot("umc-login_cropped", xpath='//*[@id="umcLoginDialog"]')
 
 
 if __name__ == '__main__':
