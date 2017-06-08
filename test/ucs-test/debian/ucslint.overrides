@@ -14,3 +14,6 @@
 0016-2: tests/01_base/check_log_files_definitions.py
 # Violations for testing
 0008-4: umc/de.po
+# E:0008-3: tests/90_umc-screenshots/locale/de.po:49: contains "fuzzy"
+# don't know what that is
+0008-3: tests/90_umc-screenshots/locale/de.po
