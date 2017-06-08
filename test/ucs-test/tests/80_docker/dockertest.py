@@ -66,6 +66,10 @@ class UCSTest_DockerApp_InstallationFailed(Exception):
 	pass
 
 
+class UCSTest_DockerApp_ConfigureFailed(Exception):
+	pass
+
+
 class UCSTest_DockerApp_UpdateFailed(Exception):
 	pass
 
@@ -253,6 +257,29 @@ class App(object):
 
 		self.installed = True
 
+	def file(self, fname):
+		if fname.startswith('/'):
+			fname = fname[1:]
+		dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id]).strip()
+		return os.path.join(dirname, fname)
+
+	def configure(self, args):
+		set_vars = []
+		unset_vars = []
+		for key, value in args.iteritems():
+			if value is None:
+				unset_vars.append(key)
+			else:
+				set_vars.append('%s=%s' % (key, value))
+		cmd = ['univention-app', 'configure', '%s=%s' % (self.app_name, self.app_version)]
+		if set_vars:
+			cmd.extend(['--set'] + set_vars)
+		if unset_vars:
+			cmd.extend(['--unset'] + unset_vars)
+		ret = subprocess.call(cmd)
+		if ret != 0:
+			raise UCSTest_DockerApp_ConfigureFailed()
+
 	def install_via_umc(self):
 		def _thread(event, options):
 			try:
@@ -262,6 +289,7 @@ class App(object):
 		print 'App.umc_install()'
 		client = umc.Client.get_test_connection()
 		client.umc_get('session-info')
+
 		options = dict(
 			function='install',
 			application=self.app_name,
@@ -454,7 +482,6 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 
 
 class Appcenter(object):
-
 	def __init__(self, version=None):
 		self.meta_inf_created = False
 		self.univention_repository_created = False
