@@ -6,7 +6,6 @@ src: postgresql-9.4
 fix: 9.4.12-0+deb8u1
 desc: |-
  This update addresses the following issues:
- 9.4.12-0+deb8u1 (Tue, 09 May 2017 17:00:48 +0200)
  * Restrict visibility of pg_user_mappings.umoptions, to protect passwords
    stored as user mapping options (CVE-2017-7486)
  * Prevent exposure of statistical information via leaky operators
