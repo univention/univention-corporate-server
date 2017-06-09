@@ -201,7 +201,7 @@ class UCSTestUDM(object):
 
         dn = None
         cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
-        print 'Creating %s object with %s' % (modulename, _prettify_cmd(cmd))
+        print('Creating %s object with %s' % (modulename, _prettify_cmd(cmd)))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -244,7 +244,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-        print 'Modifying %s object with %s' % (modulename, _prettify_cmd(cmd))
+        print('Modifying %s object with %s' % (modulename, _prettify_cmd(cmd)))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -255,7 +255,7 @@ class UCSTestUDM(object):
             if line.startswith('Object modified: '):
                 dn = line.split('Object modified: ', 1)[-1]
                 if dn != kwargs.get('dn'):
-                    print 'modrdn detected: %r ==> %r' % (kwargs.get('dn'), dn)
+                    print('modrdn detected: %r ==> %r' % (kwargs.get('dn'), dn))
                     if kwargs.get('dn') in self._cleanup.get(modulename, []):
                         self._cleanup.setdefault(modulename, []).append(dn)
                         self._cleanup[modulename].remove(kwargs.get('dn'))
@@ -282,7 +282,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
-        print 'Moving %s object %s' % (modulename, _prettify_cmd(cmd))
+        print('Moving %s object %s' % (modulename, _prettify_cmd(cmd)))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -316,7 +316,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-        print 'Removing %s object %s' % (modulename, _prettify_cmd(cmd))
+        print('Removing %s object %s' % (modulename, _prettify_cmd(cmd)))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -351,6 +351,14 @@ class UCSTestUDM(object):
                                                       ('firstname', uts.random_name())))
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
+
+    def remove_user(self, username, wait_for_replication=True):
+        """Removes a user object from the ldap given it's username."""
+
+        kwargs = {
+            'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
+        }
+        self.remove_object('users/user', wait_for_replication, **kwargs)
 
     def create_group(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
         """
@@ -387,7 +395,7 @@ class UCSTestUDM(object):
         """
 
         failedObjects = {}
-        print 'Performing UCSTestUDM cleanup...'
+        print('Performing UCSTestUDM cleanup...')
         for module, objects in self._cleanup.items():
             for dn in objects:
                 cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
@@ -419,14 +427,14 @@ class UCSTestUDM(object):
                 except ldap.NO_SUCH_OBJECT:
                     pass
                 except Exception as ex:
-                    print 'Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex)
+                    print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
         self._cleanupLocks = {}
 
-        print 'UCSTestUDM cleanup done'
+        print('UCSTestUDM cleanup done')
 
     def stop_cli_server(self):
         """ restart UDM CLI server """
-        print 'trying to restart UDM CLI server'
+        print('trying to restart UDM CLI server')
         procs = []
         for proc in psutil.process_iter():
             try:
@@ -438,10 +446,10 @@ class UCSTestUDM(object):
         for signal in (15, 9):
             for proc in procs:
                 try:
-                    print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),)
+                    print('sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),))
                     os.kill(proc.pid, signal)
                 except (psutil.NoSuchProcess, EnvironmentError):
-                    print 'process already terminated'
+                    print('process already terminated')
                     procs.remove(proc)
             if signal == 15:
                 time.sleep(1)
@@ -451,7 +459,7 @@ class UCSTestUDM(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type:
-            print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
+            print('Cleanup after exception: %s %s' % (exc_type, exc_value))
         self.cleanup()
 
 
@@ -464,7 +472,7 @@ def _prettify_cmd(cmd):
 
 if __name__ == '__main__':
     import doctest
-    print doctest.testmod()
+    print(doctest.testmod())
 
     ucr = univention.testing.ucr.UCSTestConfigRegistry()
     ucr.load()
@@ -486,10 +494,10 @@ if __name__ == '__main__':
         try:
             _dnUser, _username = udm.create_user(username='')
         except UCSTestUDM_CreateUDMObjectFailed as ex:
-            print 'Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS'
+            print('Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS')
 
         # try to modify object not created by create_udm_object()
         try:
             udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
         except UCSTestUDM_CannotModifyExistingObject as ex:
-            print 'Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS'
+            print('Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS')
