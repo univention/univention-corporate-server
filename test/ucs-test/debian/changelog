@@ -1,3 +1,9 @@
+ucs-test (7.0.21-42) unstable; urgency=low
+
+  * Bug #43934, Bug #44741: Check working OpenSSL
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Jun 2017 08:15:55 +0200
+
 ucs-test (7.0.21-41) unstable; urgency=medium
 
   * Bug #43838: Test configure script
