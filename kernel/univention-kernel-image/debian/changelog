@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-17) unstable; urgency=low
+
+  * Bug #44706: Update to linux-4.1.40-ucs227
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Jun 2017 18:03:20 +0200
+
 univention-kernel-image (9.0.0-16) unstable; urgency=low
 
   * Bug #42754: Update to linux-4.1.38-ucs222
