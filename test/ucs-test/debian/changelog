@@ -1,3 +1,9 @@
+ucs-test (7.0.21-43) unstable; urgency=medium
+
+  * Bug #44640: Added remove_user() method in univention.testing.udm .
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Jun 2017 10:39:58 +0200
+
 ucs-test (7.0.21-42) unstable; urgency=low
 
   * Bug #43934, Bug #44741: Check working OpenSSL
