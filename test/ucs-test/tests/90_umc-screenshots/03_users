@@ -1,10 +1,11 @@
 #!/usr/share/ucs-test/runner python
-# desc: UMC login test
+# desc: Screenshot script for the Users module
 # roles-not: [basesystem]
 # exposure: dangerous
 
 from lib.screen_shooter import BaseScreenShooter
 from univention.admin import localization
+import univention.testing.udm
 translator = localization.translation('univention-ucs-test_umc-screenshots')
 _ = translator.translate
 
@@ -30,12 +31,10 @@ class ScreenShooter(BaseScreenShooter):
 		self.selenium.enter_input("lastname", "Alster")
 		self.selenium.enter_input("username", "anna")
 		self.selenium.save_screenshot("umc-users-add_dialog", xpath='//*[@id="umc_modules_udm_NewObjectDialog_0"]')
-		self.selenium.click_button(_("Next"))
-		self.selenium.wait_for_text(_("Password *"))
-		self.selenium.enter_input("password_1", "univention")
-		self.selenium.enter_input("password_2", "univention")
-		self.selenium.click_button(_("Create user"))
-		self.selenium.wait_for_text(_("has been created"))
+		#self.selenium.click_button(_("Next"))
+		#self.selenium.wait_for_text(_("Password *"))
+		#self.selenium.enter_input("password_1", "univention")
+		#self.selenium.enter_input("password_2", "univention")
 		self.selenium.click_button(_("Cancel"))
 		self.selenium.wait_until_all_dialogues_closed()
 
@@ -51,6 +50,7 @@ class ScreenShooter(BaseScreenShooter):
 		self.selenium.save_screenshot("umc-users-details")
 
 if __name__ == '__main__':
-	# TODO: Delete user "anna" if it already exists.
-	with ScreenShooter(translator) as screen_shooter:
-		screen_shooter.take_screenshots(True)
+	with univention.testing.udm.UCSTestUDM() as udm:
+		udm.create_user(username='anna', firstname='Anna', lastname='Alster')
+		with ScreenShooter(translator) as screen_shooter:
+			screen_shooter.take_screenshots(True)

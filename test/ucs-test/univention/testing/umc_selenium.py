@@ -164,7 +164,7 @@ class UMCSeleniumTest(object):
 		# FIXME: This is needed, because sometimes it takes some time until
 		# some texts are really visible (even if elem.is_displayed() is already
 		# true).
-		time.sleep(1)
+		time.sleep(2)
 
 		if hide_notifications:
 			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
@@ -222,7 +222,6 @@ class UMCSeleniumTest(object):
 
 	def wait_for_text(self, text, timeout=60):
 		logger.info("Waiting for text: %r", text)
-
 		xpath = '//*[contains(text(), "%s")]' % (text,)
 		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 			self.get_all_visible_elements
@@ -233,6 +232,27 @@ class UMCSeleniumTest(object):
 		visible_elems = [elem for elem in elems if elem.is_displayed()]
 		if len(visible_elems) > 0:
 			return visible_elems
+		return False
+
+	def wait_until_all_dialogues_closed(self):
+		logger.info("Waiting for all dialogues to close.")
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dijitDialogUnderlay ")]'
+		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
+			self.elements_invisible
+		)
+
+	def wait_until_all_standby_animations_disappeared(self):
+		logger.info("Waiting for all standby animations to disappear.")
+		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
+		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
+			self.elements_invisible
+		)
+
+	def elements_invisible(self, xpath):
+		elems = self.driver.find_elements_by_xpath(xpath)
+		visible_elems = [elem for elem in elems if elem.is_displayed()]
+		if len(visible_elems) is 0:
+			return True
 		return False
 
 	def click_text(self, text):
