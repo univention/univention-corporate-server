@@ -39,7 +39,6 @@ from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
-from univention.appcenter.actions.configure import Configure, StoreConfigAction
 from univention.appcenter.ucr import ucr_save
 
 
@@ -131,7 +130,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.old_app = app
 
 	def _get_config(self, app, args):
-		config = Configure.list_config(app)
+		configure = get_action('configure')
+		config = configure.list_config(app)
 		set_vars = dict((var['id'], var['value']) for var in config)
 		if args.set_vars:
 			set_vars.update(args.set_vars)

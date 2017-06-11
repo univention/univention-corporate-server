@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-71) unstable; urgency=medium
+
+  * Bug #43816: Allow configure for Non-Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Jun 2017 00:31:16 +0200
+
 univention-appcenter (5.0.23-70) unstable; urgency=medium
 
   * Bug #43816: Support settings files
