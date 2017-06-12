@@ -1,3 +1,9 @@
+ucs-test (7.0.21-44) unstable; urgency=low
+
+  * Bug #44741: enable ucs-test-crypto in jenkins runs
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 12 Jun 2017 12:21:28 +0200
+
 ucs-test (7.0.21-43) unstable; urgency=medium
 
   * Bug #44640: Added remove_user() method in univention.testing.udm .

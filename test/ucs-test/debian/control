@@ -589,6 +589,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  openssl,
  ${misc:Depends}
 Recommends: ucs-test-framework
+Provides: ucs-test-module
 Description: Test scripts to check cryptography software in UCS
  This package includes test-cases to check software and libraries used for
  cryptography (OpenSSL, GnuTLS, NSS, SSH, python-gnutls, python-ssl etc).
