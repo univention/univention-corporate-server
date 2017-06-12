@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-23) unstable; urgency=medium
+
+  * Bug #44523: Fix appliance hook script
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 12 Jun 2017 16:20:58 +0200
+
 univention-app-appliance (1.0.2-22) unstable; urgency=medium
 
   * Bug #44523: Add dir /var/www/icon
