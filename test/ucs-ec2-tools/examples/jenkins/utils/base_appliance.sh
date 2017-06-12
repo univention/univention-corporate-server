@@ -260,7 +260,7 @@ prepare_docker_app_container ()
 
 				# shutdown container and use it as app base
 				docker stop "$container_id"
-				local_app_docker_image=$(docker commit "$container_id" "${app}-app")
+				local_app_docker_image=$(docker commit "$container_id" "${app}-app-image")
 				docker rm "$container_id"
 		fi
 
@@ -321,7 +321,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 log_to_stream()
 
 app=Apps().find('\$APP')
-app.docker_image='${local_app_docker_image}'
+app.docker_image='${app}-app-image'
 
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
@@ -962,7 +962,7 @@ appliance_basesettings ()
 	set -x
 	app=$1
 	
-	/usr/sbin/univention-app-appliance $app
+	/usr/sbin/univention-app-appliance --not-configure-portal $app
 
 	app_fav_list="appcenter:appcenter,updater"
 	
@@ -985,13 +985,23 @@ __EOF__
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
+. /usr/share/univention-lib/ldap.sh
+
 APP=$app
 
-# update host certificate in container
-cp /etc/univention/ssl/ucsCA/CAcert.pem /var/lib/docker/overlay/\$(ucr get appcenter/apps/\$APP/container)/merged/etc/univention/ssl/ucsCA
+# update host certificates in container
+CONTAINER_DIR="$(docker inspect --format={{.GraphDriver.Data.MergedDir}} $(ucr get appcenter/apps/\$APP/container))"
+cp /etc/univention/ssl/ucsCA/CAcert.pem "$CONTAINER_DIR"/etc/univention/ssl/ucsCA/
+
+CONTAINER_HOSTNAME=$(ucs_getAttrOfDN cn $(ucr get $(univention-app get "$APP" ucr_hostdn_key --values-only)))
+cp /etc/univention/ssl/"$CONTAINER_HOSTNAME"/* "$CONTAINER_DIR"/etc/univention/ssl/"$CONTAINER_HOSTNAME"
+cp /etc/univention/ssl/"$CONTAINER_HOSTNAME"/* "$CONTAINER_DIR"/etc/univention/ssl/"$CONTAINER_HOSTNAME"."$domainname"
 
 # Fix container nameserver entries
 univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
+
+# Update portal
+/usr/sbin/univention-app-appliance --only-configure-portal $app
 __EOF__
 		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
 	fi
