@@ -2,6 +2,7 @@
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
+## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
 
 import pytest
 from univention.testing import utils

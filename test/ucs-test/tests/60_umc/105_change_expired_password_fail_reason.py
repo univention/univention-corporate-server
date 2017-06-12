@@ -2,6 +2,7 @@
 ## desc: Test detection of changing expired password failure reason
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
+## roles: [domaincontroller_master, domaincontroller_backup]
 
 import pytest
 from univention.config_registry import handler_set

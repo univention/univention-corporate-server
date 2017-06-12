@@ -1,3 +1,9 @@
+ucs-test (7.0.21-45) unstable; urgency=medium
+
+  * Bug #44744: skip tests on certain server roles
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2017 20:00:43 +0200
+
 ucs-test (7.0.21-44) unstable; urgency=low
 
   * Bug #44741: enable ucs-test-crypto in jenkins runs
