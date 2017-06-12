@@ -631,7 +631,7 @@ property_descriptions = {
 	),
 	'mailForwardAddress': univention.admin.property(
 		short_description=_('Forward e-mail address'),
-		long_description="Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
+		long_description=_("Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
 		options=['mail'],
@@ -643,7 +643,7 @@ property_descriptions = {
 	),
 	'mailForwardCopyToSelf': univention.admin.property(
 		short_description=_('Forwarding setting'),
-		long_description="Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox.",
+		long_description=_("Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailForwardSetting,
 		multivalue=False,
 		options=['mail'],
