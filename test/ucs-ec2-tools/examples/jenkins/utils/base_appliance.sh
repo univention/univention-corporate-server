@@ -261,6 +261,7 @@ prepare_docker_app_container ()
 				# shutdown container and use it as app base
 				docker stop "$container_id"
 				local_app_docker_image=$(docker commit "$container_id" "${app}-app-image")
+				local_app_docker_image="${app}-app-image"
 				docker rm "$container_id"
 		fi
 
@@ -321,7 +322,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 log_to_stream()
 
 app=Apps().find('\$APP')
-app.docker_image='${app}-app-image'
+app.docker_image='${local_app_docker_image}'
 
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
@@ -999,9 +1000,6 @@ cp /etc/univention/ssl/"$CONTAINER_HOSTNAME"/* "$CONTAINER_DIR"/etc/univention/s
 
 # Fix container nameserver entries
 univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
-
-# Update portal
-/usr/sbin/univention-app-appliance --only-configure-portal $app
 __EOF__
 		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
 	fi
