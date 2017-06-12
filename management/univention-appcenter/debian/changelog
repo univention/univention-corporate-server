@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-19) unstable; urgency=medium
+
+  * Bug #44724: Find the correct App version in the CLI
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Jun 2017 16:31:44 +0200
+
 univention-appcenter (6.0.7-18) unstable; urgency=medium
 
   * Bug #44750: Run configure script after applying settings

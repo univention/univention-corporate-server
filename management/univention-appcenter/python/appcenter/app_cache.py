@@ -74,7 +74,7 @@ class _AppCache(object):
 		return ret
 
 	def find(self, app_id, app_version=None, latest=False):
-		apps = sorted(self.get_all_apps_with_id(app_id))
+		apps = self.get_all_apps_with_id(app_id)
 		if app_version:
 			for app in apps:
 				if app.version == app_version:
@@ -85,7 +85,7 @@ class _AppCache(object):
 				if app.is_installed():
 					return app
 		if apps:
-			latest_app = apps[-1]
+			latest_app = sorted(apps)[-1]
 			for app in apps:
 				if app == latest_app:
 					return app
