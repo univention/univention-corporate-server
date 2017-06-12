@@ -1,0 +1,28 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-1
+src: libarchive
+fix: 2.8.4.forreal-1.25.201706071443
+desc: |
+ This update addresses the following issue(s):
+ * Absolute path traversal vulnerability in bsdcpio in libarchive
+   3.1.2 and earlier allows remote attackers to write to arbitrary
+   files via a full pathname in an archive (CVE-2015-2304)
+ * Fix CVE-2015-8915, a out of bounds read using malformed cpio
+   archive.
+ * NULL pointer access in CAB parser (CVE-2015-8917)
+ * Stack out of bounds read in ar parser (CVE-2015-8920)
+ * Global out of bounds read in mtree parser (CVE-2015-8921)
+ * Heap out of bounds read in TAR parser (CVE-2015-8924)
+ * Endless loop in ISO parser (CVE-2015-8930)
+ * undefined behaviour / signed integer overflow in
+   archive_read_format_tar_skip() (CVE-2015-8933)
+ * Memory allocate error with symbolic links in cpio archives
+   (CVE-2016-4809)
+ * undefined behaviour (integer overflow) in iso parser
+   (CVE-2016-5844)
+ * Fix CVE-2016-7166, a denial of service bug with gzip quine.
+bug: [33326]
+cve:
+ - CVE-2015-2304
