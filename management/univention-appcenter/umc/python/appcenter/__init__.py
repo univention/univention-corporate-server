@@ -289,10 +289,16 @@ class Instance(umcm.Base, ProgressMixin):
 		}
 
 	@sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
-	@simple_response
-	def configure(self, app, values, autostart=None):
+	@simple_response(with_progress=True)
+	def configure(self, progress, app, values, autostart=None):
 		configure = get_action('configure')
-		configure.call(app=app, set_vars=values, autostart=autostart)
+		handler = UMCProgressHandler(progress)
+		handler.setLevel(logging.INFO)
+		configure.logger.addHandler(handler)
+		try:
+			return configure.call(app=app, set_vars=values, autostart=autostart)
+		finally:
+			configure.logger.removeHandler(handler)
 
 	@sanitize(app=AppSanitizer(required=True), mode=ChoicesSanitizer(['start', 'stop']))
 	@simple_response

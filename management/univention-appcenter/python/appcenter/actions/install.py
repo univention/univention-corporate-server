@@ -82,6 +82,7 @@ class Install(InstallRemoveUpgrade):
 			self._register_attributes(app, args)
 			self.percentage = 25
 			if self._install_app(app, args):
+				self._configure(app, args)
 				self.percentage = 80
 				self._call_join_script(app, args)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})

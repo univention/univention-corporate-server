@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-72) unstable; urgency=medium
+
+  * Bug #43816: Show errors for scripts that failed; honor configuration in
+    Install, Upgrade, Remove
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Jun 2017 03:49:11 +0200
+
 univention-appcenter (5.0.23-71) unstable; urgency=medium
 
   * Bug #43816: Allow configure for Non-Docker Apps

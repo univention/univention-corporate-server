@@ -81,11 +81,11 @@ class StoreConfigAction(Action):
 		set_vars = {}
 		for val in value:
 			try:
-				key, value = val.split('=', 1)
+				key, val = val.split('=', 1)
 			except ValueError:
 				parser.error('Could not parse %s. Use var=val. Skipping...' % val)
 			else:
-				set_vars[key] = value
+				set_vars[key] = val
 		setattr(namespace, self.dest, set_vars)
 
 
@@ -293,6 +293,17 @@ class InstallRemoveUpgrade(Register):
 						username = self._get_username(args)
 						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
+
+	def _configure(self, app, args):
+		configure = get_action('configure')
+		set_vars = args.set_vars or {}
+		set_vars = set_vars.copy()
+		for setting in app.get_settings():
+			if setting.name in set_vars:
+				continue
+			if self.action_name().title() in setting.write:
+				set_vars[setting.name] = setting.initial_value
+		configure.call(app=app, set_vars=args.set_vars)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')

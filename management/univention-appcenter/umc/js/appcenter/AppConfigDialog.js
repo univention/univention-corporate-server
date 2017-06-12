@@ -32,8 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/Deferred",
 	"dojox/html/entities",
 	"umc/tools",
+	"umc/widgets/ProgressBar",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
@@ -45,7 +47,7 @@ define([
 	"./_AppDialogMixin",
 	"./AppSettings",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, AppSettings, _) {
+], function(declare, lang, array, Deferred, entities, tools, ProgressBar, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, AppSettings, _) {
 	return declare("umc.modules.appcenter.AppConfigDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
 		title: _('App management'),
@@ -54,6 +56,12 @@ define([
 			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id}).then(lang.hitch(this, function(values) {
 				this._showUp(values);
 			})));
+		},
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
 		},
 
 		_showUp: function(values) {
@@ -157,7 +165,29 @@ define([
 
 		apply: function(serviceValues, confValues) {
 			var autostart = serviceValues.autostart;
-			return this.standbyDuring(tools.umcpCommand('appcenter/configure', {app: this.app.id, autostart: autostart, values: confValues}));
+			this._progressBar.reset(_('%s: Configuring', entities.encode(this.app.name)));
+			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+			var deferred = new Deferred();
+			tools.umcpProgressCommand(this._progressBar, 'appcenter/configure', {app: this.app.id, autostart: autostart, values: confValues}).then(
+				lang.hitch(this, function() {
+					this._progressBar.stop(function() {
+						deferred.resolve();
+					}, undefined, true);
+				}),
+				function() {
+					deferred.reject();
+				},
+				lang.hitch(this, function(result) {
+					this._progressBar._addErrors(result.errors);
+					var errors = array.map(result.intermediate, function(res) {
+						if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+							return res.message;
+						}
+					});
+					this._progressBar._addErrors(errors);
+				})
+			);
+			return this.standbyDuring(deferred, this._progressBar);
 		}
 	});
 });

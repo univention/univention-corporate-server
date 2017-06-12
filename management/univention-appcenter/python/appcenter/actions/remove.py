@@ -52,6 +52,7 @@ class Remove(InstallRemoveUpgrade):
 		pass
 
 	def _do_it(self, app, args):
+		self._configure()
 		self._remove_app(app, args)
 		self.percentage = 45
 		self._unregister_app(app, args)

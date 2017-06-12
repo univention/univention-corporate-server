@@ -126,6 +126,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if not process or process.returncode != 0:
 			raise Abort('App upgrade script failed')
 		self._register_app(app, args)
+		self._configure(app, args)
 		self._call_join_script(app, args)
 		self.old_app = app
 
@@ -152,7 +153,11 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
-		args.set_vars = self._get_config(self.old_app, args)
+		set_vars = self._get_config(self.old_app, args)
+		if args.set_vars:
+			args.set_vars.update(set_vars)
+		else:
+			args.set_vars = set_vars
 		self._install_new_app(app, args)
 		self.log('Removing old container')
 		if old_container:
@@ -170,6 +175,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			remove._remove_app(self.old_app, action_args)
 			if remove._unregister_component(self.old_app):
 				remove._apt_get_update()
+			self._configure()
 			self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
 			self.old_app = app
 
