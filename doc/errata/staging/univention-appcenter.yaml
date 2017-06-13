@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-appcenter
-fix: 6.0.7-19A~4.2.0.201706121639
+fix: 6.0.7-20A~4.2.0.201706131423
 desc: |
  This update addresses the following issues:
  * Progress bars are now escaping HTML content more strict.
@@ -11,4 +11,5 @@ desc: |
  * A script can now be run after configuring an App.
  * Under certain circumstances, it was possible that the CLI selected the
    wrong App version.
-bug: [44498,44561,44750,44724]
+ * AdditionalPackages... are no longer removed when uninstalling an app. 
+bug: [44498,44561,44750,44724,44778]
