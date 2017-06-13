@@ -48,8 +48,8 @@ Type=str
 Categories=service-mail
 
 [mail/relayauth]
-Description[de]=Wird ein Mail-Relay verwendet (siehe 'mail/relayhost') und erfordert das Relay Authentifizierung, muss diese Option aktiviert werden. Der Benutzername und das Passwort für den Relay-Server werden in der Datei /etc/postfix/smtp_auth konfiguriert. Um eine verschlüsselte Übertragung sicher zu stellen, sollte mail/postfix/tls/client/level=encrypt gesetzt werden. Dies ist im UCS-Handbuch dokumentiert.
-Description[en]=If a mail relay is used (see 'mail/relayhost') and if the relay requires authentication, this option must be enabled. The username and the password for the relay server are configured in the file /etc/postfix/smtp_auth. To ensure an encrypted transmission mail/postfix/tls/client/level=encrypt should be set. This is documented in the UCS manual.
+Description[de]=Wird ein Mail-Relay verwendet (siehe 'mail/relayhost') und erfordert das Relay Authentifizierung, muss diese Option aktiviert werden. Der Benutzername und das Passwort für den Relay-Server werden in der Datei /etc/postfix/smtp_auth konfiguriert. Dies ist im UCS-Handbuch dokumentiert.
+Description[en]=If a mail relay is used (see 'mail/relayhost') and if the relay requires authentication, this option must be enabled. The username and the password for the relay server are configured in the file /etc/postfix/smtp_auth. This is documented in the UCS manual.
 Type=bool
 Categories=service-mail
 
@@ -210,8 +210,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/level]
-Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung durch den SMTP-client (ausgehende Verbindungen): 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben. Der Standard, wenn nicht gesetzt, ist 'may', außer wenn mail/relayauth verwendet wird, dann ist er 'encrypt'.
-Description[en]=This variable configures the use of TLS encryption by the SMTP client (outgoing connections): 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>. The default when unset is 'may', except when mail/relayauth is used, then it is  'encrypt'.
+Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung durch den SMTP-Client (ausgehende Verbindungen): 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben. Der Standard ist 'may', wenn die UCR-Variable nicht gesetzt. Sonderfall: sind mail/relayhost und mail/relayauth auf "yes" gesetzt und die UCR-Variable enthält NICHT den Wert "none", wird der Level 'encrypt' verwendet.
+Description[en]=This variable configures the use of TLS encryption by the SMTP client (outgoing connections): 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>. The default is 'may' if the variable is unset. Special case: if mail/relayhost and mail/relayauth are set to 'yes' and the UCR variable does NOT contain the value 'none', the encryption level 'encrypt' is used.
 Type=str
 Categories=service-mail
 

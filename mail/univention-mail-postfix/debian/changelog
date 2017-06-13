@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-7) unstable; urgency=low
+
+  * Bug #44589: updated UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Jun 2017 13:46:12 +0200
+
 univention-mail-postfix (11.0.1-6) unstable; urgency=low
 
   * Bug #42249: rename mailForwardAddress property
