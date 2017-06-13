@@ -6,8 +6,14 @@ src: univention-mail-postfix
 fix:
 desc: |
  This update addresses the following issues:
- * Support for forwarding emails to external addresses has been added
-   (Bug #42249).
+ * Support for forwarding user emails to external addresses has been
+   added. During the update, the UCR variables
+   mail/postfix/virtual/alias/maps and
+   mail/postfix/virtual/mailbox/maps are updated automatically,
+   because some postfix virtual lookup tables have been modified.
+   Please note, that the forwarding of emails on systems with OX App Suite
+   will only come into effect if at least version 7.8.3-ucs2 of OX App
+   Suite is installed (Bug #42249).
  * The default of the UCR variable mail/postfix/tls/client/level when
    unset has been changed to "may". On existing UCS installations this
    has already been set explicitly (Bug #44589).

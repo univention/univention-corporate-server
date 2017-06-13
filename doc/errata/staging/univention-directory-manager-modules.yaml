@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * The unmaintained and deprecated internal test suite has been removed.
  * Fix handling of "Change password on next login" for new user accounts.
- * Support for forwarding emails to external addresses has been added.
+ * Support for forwarding user emails to external addresses has been added.
  * The error handling regarding LDAP size limits has been improved.
  * Creating computers with IPv6 addresses is possible again.
  * Fix typo in users/user when reading the minimal password length.
