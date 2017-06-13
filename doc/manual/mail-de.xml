@@ -822,9 +822,15 @@ postmap /etc/postfix/smtp_auth
 		aufgerufen werden, damit die Änderungen durch Postfix übernommen
 		werden.
 	  </para>
-	  <para>
-		Um eine verschlüsselte Übertragung sicher zu stellen, sollte die Postfix Option <literal>smtp_tls_security_level=encrypt</literal> gesetzt werden. Wenn <envar>mail/relayauth</envar> angeschaltet ist, tut &ucsUCS; dies automatisch, sofern <envar>mail/postfix/tls/client/level</envar> nicht auf <literal>none</literal> steht.
-	  </para>
+	  <note>
+		  <para>
+			  Um eine verschlüsselte Verbindung bei der Verwendung eines Relay-Hosts sicherzustellen,
+			  muss die Postfix-Option <literal>smtp_tls_security_level=encrypt</literal> gesetzt sein.
+			  &ucsUCS; setzt diese Option automatisch, wenn <envar>mail/relayhost</envar> und
+			  <envar>mail/relayauth</envar> auf <literal>yes</literal> und
+			  <envar>mail/postfix/tls/client/level</envar> nicht auf <literal>none</literal> stehen.
+		  </para>
+	  </note>
 	</section>
 
 	<section id="mail::serverconfig::mailsize">
