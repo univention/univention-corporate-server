@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-s4-connector
-fix: 11.0.7-7A~4.2.0.201706131738
+fix: 11.0.7-8A~4.2.0.201706131801
 desc: |
  This update addresses the following issues:
  * Don't append a trailing dot to DNS alias values
