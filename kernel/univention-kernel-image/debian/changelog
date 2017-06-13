@@ -1,3 +1,9 @@
+univention-kernel-image (10.0.0-7) unstable; urgency=low
+
+  * Bug #44416: Update to linux-4.9.31-ucs104
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Jun 2017 08:47:43 +0200
+
 univention-kernel-image (10.0.0-6) unstable; urgency=medium
 
   * Bug #42047: Update to 4.9-ucs103
