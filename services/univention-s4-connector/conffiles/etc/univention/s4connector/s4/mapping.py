@@ -427,7 +427,7 @@ if group_map:
 			# When a DC is removed in UCS, the DC should be removed
 			# in S4. By default a DC has a subobject wihtout any mapping
 			# and this subobject would avoid a deletion of this DC in S4
-			con_subtree_delete_objects = [ 'objectClass=rIDSet', 'objectClass=printQueue', 'objectClass=connectionPoint', 'objectclass=nTFRSMember' ],
+			con_subtree_delete_objects = [ 'objectClass=rIDSet', 'objectClass=connectionPoint', 'objectclass=nTFRSMember' ],
 @!@
 from univention.s4connector.s4.mapping import ignore_filter_from_attr
 ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/dc/ignorelist')
@@ -528,6 +528,8 @@ else:
 			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient)(objectClass=univentionCorporateClient))',
 
 			ignore_subtree = global_ignore_subtree,
+
+			con_subtree_delete_objects = [ 'objectClass=rIDSet', 'objectClass=connectionPoint', 'objectclass=nTFRSMember' ],
 @!@
 from univention.s4connector.s4.mapping import ignore_filter_from_attr
 ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/windowscomputer/ignorelist')
