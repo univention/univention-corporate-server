@@ -1015,18 +1015,19 @@ class App(object):
 			if attr.name == attr_name:
 				return attr
 
-	def get_packages(self):
+	def get_packages(self, additional=True):
 		packages = []
 		packages.extend(self.default_packages)
-		role = ucr_get('server/role')
-		if role == 'domaincontroller_master':
-			packages.extend(self.additional_packages_master)
-		elif role == 'domaincontroller_backup':
-			packages.extend(self.additional_packages_backup)
-		elif role == 'domaincontroller_slave':
-			packages.extend(self.additional_packages_slave)
-		elif role == 'memberserver':
-			packages.extend(self.additional_packages_member)
+		if additional:
+			role = ucr_get('server/role')
+			if role == 'domaincontroller_master':
+				packages.extend(self.additional_packages_master)
+			elif role == 'domaincontroller_backup':
+				packages.extend(self.additional_packages_backup)
+			elif role == 'domaincontroller_slave':
+				packages.extend(self.additional_packages_slave)
+			elif role == 'memberserver':
+				packages.extend(self.additional_packages_member)
 		return packages
 
 	def supports_ucs_version(self):

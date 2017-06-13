@@ -1,3 +1,9 @@
+univention-appcenter (6.0.7-20) unstable; urgency=medium
+
+  * Bug #44778: do not uninstall AdditionalPackages...
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Jun 2017 14:22:41 +0200
+
 univention-appcenter (6.0.7-19) unstable; urgency=medium
 
   * Bug #44724: Find the correct App version in the CLI

@@ -1253,18 +1253,19 @@ class Application(object):
 			return ret
 		return _check(True), _check(False)
 
-	def get_packages(self):
+	def get_packages(self, additional=True):
 		packages = []
 		packages.extend(self.get('defaultpackages'))
-		role = ucr.get('server/role')
-		if role == 'domaincontroller_master':
-			packages.extend(self.get('additionalpackagesmaster'))
-		elif role == 'domaincontroller_backup':
-			packages.extend(self.get('additionalpackagesbackup'))
-		elif role == 'domaincontroller_slave':
-			packages.extend(self.get('additionalpackagesslave'))
-		elif role == 'memberserver':
-			packages.extend(self.get('additionalpackagesmember'))
+		if additional:
+			role = ucr.get('server/role')
+			if role == 'domaincontroller_master':
+				packages.extend(self.get('additionalpackagesmaster'))
+			elif role == 'domaincontroller_backup':
+				packages.extend(self.get('additionalpackagesbackup'))
+			elif role == 'domaincontroller_slave':
+				packages.extend(self.get('additionalpackagesslave'))
+			elif role == 'memberserver':
+				packages.extend(self.get('additionalpackagesmember'))
 		return packages
 
 	def is_installed(self, package_manager, strict=True):
@@ -1297,7 +1298,7 @@ class Application(object):
 		try:
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
-			package_manager.commit(remove=self.get_packages())
+			package_manager.commit(remove=self.get_packages(additional=False))
 			package_manager.add_hundred_percent()
 
 			# remove all dependencies
@@ -1593,7 +1594,7 @@ class Application(object):
 	def uninstall_dry_run(self, package_manager):
 		MODULE.info('Invoke uninstall_dry_run')
 		package_manager.reopen_cache()
-		to_uninstall = package_manager.get_packages(self.get_packages())
+		to_uninstall = package_manager.get_packages(self.get_packages(additional=False))
 		for package in to_uninstall:
 			package.mark_delete()
 		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable or pkg.marked_delete]
