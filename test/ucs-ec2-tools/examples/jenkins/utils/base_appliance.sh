@@ -991,12 +991,12 @@ eval "\$(ucr shell)"
 APP=$app
 
 # update host certificates in container
-CONTAINER_DIR="$(docker inspect --format={{.GraphDriver.Data.MergedDir}} $(ucr get appcenter/apps/\$APP/container))"
-cp /etc/univention/ssl/ucsCA/CAcert.pem "$CONTAINER_DIR"/etc/univention/ssl/ucsCA/
+CONTAINER_DIR="\$(docker inspect --format={{.GraphDriver.Data.MergedDir}} \$(ucr get appcenter/apps/\$APP/container))"
+cp /etc/univention/ssl/ucsCA/CAcert.pem "\$CONTAINER_DIR"/etc/univention/ssl/ucsCA/
 
-CONTAINER_HOSTNAME=$(ucs_getAttrOfDN cn $(ucr get $(univention-app get "$APP" ucr_hostdn_key --values-only)))
-cp /etc/univention/ssl/"$CONTAINER_HOSTNAME"/* "$CONTAINER_DIR"/etc/univention/ssl/"$CONTAINER_HOSTNAME"
-cp /etc/univention/ssl/"$CONTAINER_HOSTNAME"/* "$CONTAINER_DIR"/etc/univention/ssl/"$CONTAINER_HOSTNAME"."$domainname"
+CONTAINER_HOSTNAME=\$(ucs_getAttrOfDN cn \$(ucr get \$(univention-app get "\$APP" ucr_hostdn_key --values-only)))
+cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* "\$CONTAINER_DIR"/etc/univention/ssl/"\$CONTAINER_HOSTNAME"
+cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* "\$CONTAINER_DIR"/etc/univention/ssl/"\$CONTAINER_HOSTNAME"."\$domainname"
 
 # Fix container nameserver entries
 univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
