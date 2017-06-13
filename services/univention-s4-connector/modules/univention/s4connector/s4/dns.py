@@ -657,7 +657,7 @@ def __unpack_cName(object):
 		if ndrRecord.wType == dnsp.DNS_TYPE_CNAME:
 			if "." in ndrRecord.data:
 				c.append(__append_dot(ndrRecord.data))
-			else
+			else:
 				c.append(ndrRecord.data)
 	return c
 
