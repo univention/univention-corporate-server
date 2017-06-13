@@ -70,7 +70,7 @@ if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
 			with NetworkRedirector() as nethelper:
-				domain = ucr.get('domainname')
+				domain = ucr.get('domainname').lower()
 
 				# get IP addresses of the MX of "univention.de"
 				# FIXME: perform a dynamic lookup

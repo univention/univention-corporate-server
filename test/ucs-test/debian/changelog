@@ -1,3 +1,9 @@
+ucs-test (7.0.21-46) unstable; urgency=low
+
+  * Bug #42249: compare with lowercase domain name
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 13 Jun 2017 10:48:15 +0200
+
 ucs-test (7.0.21-45) unstable; urgency=medium
 
   * Bug #44744: skip tests on certain server roles

@@ -43,7 +43,7 @@ class Bunch(object):
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
-			domain = ucr.get('domainname')
+			domain = ucr.get('domainname').lower()
 
 			# create user with mPA
 			user = Bunch()
