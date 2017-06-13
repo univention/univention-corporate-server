@@ -1,3 +1,9 @@
+ucs-test (7.0.21-47) unstable; urgency=medium
+
+  * Bug #44744: skip tests on certain server roles
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jun 2017 11:37:27 +0200
+
 ucs-test (7.0.21-46) unstable; urgency=low
 
   * Bug #42249: compare with lowercase domain name
