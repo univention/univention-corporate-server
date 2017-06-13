@@ -792,8 +792,8 @@ postmap /etc/postfix/smtp_auth
 		  <para>
 			  To ensure an encrypted connection while using a relay host, the Postfix option
 			  <literal>smtp_tls_security_level=encrypt</literal> has to be set. &ucsUCS; will
-			  set this option automatically, if <envar>mail/relayhost</envar> and
-			  <envar>mail/relayauth</envar> are set to <literal>yes</literal> and
+			  set this option automatically, if <envar>mail/relayhost</envar> is set and
+			  <envar>mail/relayauth</envar> is set to <literal>yes</literal> and
 			  <envar>mail/postfix/tls/client/level</envar> is not set to <literal>none</literal>.
 		  </para>
 	  </note>
