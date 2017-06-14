@@ -1,3 +1,10 @@
+univention-samba4 (6.0.10-10) unstable; urgency=medium
+
+  * Bug #43478: Don't consider unreachable UCS@school Slave DCs
+    for joining.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Jun 2017 17:52:54 +0200
+
 univention-samba4 (6.0.10-9) unstable; urgency=medium
 
   * Bug #44694: Make sysvol-sync.sh robust against varying stderr output
