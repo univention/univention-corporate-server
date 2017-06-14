@@ -3,10 +3,11 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: samba
-fix: 2:4.6.1-1A~4.2.0.201706071938
+fix: 2:4.6.1-1A~4.2.0.201706142033
 desc: |
  This update addresses the following issue(s):
  * Improve handling of tombstoned DNS objects during DDNS update
  * Keep DNS_TYPE_TOMBSTONE value marker and dnsTombstoned attribute in sync
- * Allow DDNS update in FQDN of authenticated machine matches DNS record name
+ * Allow DDNS update if the account name of authenticated machine matches the
+   name of the target record
 bug: [39806, 41190]
