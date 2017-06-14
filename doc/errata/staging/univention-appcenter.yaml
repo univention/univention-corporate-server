@@ -11,5 +11,6 @@ desc: |
  * A script can now be run after configuring an App.
  * Under certain circumstances, it was possible that the CLI selected the
    wrong App version.
- * AdditionalPackages... are no longer removed when uninstalling an app. 
+ * AdditionalPackages defined by the App are no longer removed when
+   uninstalling an app.
 bug: [44498,44561,44750,44724,44778]
