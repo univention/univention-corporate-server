@@ -3,7 +3,7 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: linux
-fix: 4.9.30-1A~4.2.0.201706121006
+fix: 4.9.30-1A~4.2.0.201706121456
 desc: |-
  This update addresses the following issues:
  * tty: n_hdlc: get rid of racy n_hdlc.tbuf (CVE-2017-2636)
