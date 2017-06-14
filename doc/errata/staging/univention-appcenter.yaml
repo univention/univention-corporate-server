@@ -6,7 +6,8 @@ src: univention-appcenter
 fix: 5.0.23-73.307.201706131355
 desc: |
  This update addresses the following issue(s):
- * Apps may now ship a file describing settings that can be applied dynamically.
+ * Apps may now ship a file describing settings that can be applied
+   dynamically.
  * A script can now be run after configuring an App.
  * AdditionalPackages defined by the App are no longer removed when
    uninstalling an app
