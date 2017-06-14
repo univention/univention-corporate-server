@@ -8,5 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Apps may now ship a file describing settings that can be applied dynamically.
  * A script can now be run after configuring an App.
- * AdditionalPackages... are no longer removed when uninstalling an app.
+ * AdditionalPackages defined by the App are no longer removed when
+   uninstalling an app
 bug: [43816, 43838, 44772]
