@@ -13,6 +13,7 @@ Variables: freeradius/conf/log/auth/badpass
 Variables: freeradius/conf/log/auth/goodpass
 Variables: freeradius/conf/max_requests
 Variables: freeradius/conf/port
+Variables: freeradius/conf/accountingport
 Variables: freeradius/conf/servers/start
 Variables: freeradius/conf/servers/max
 Variables: freeradius/conf/servers/spare/min
