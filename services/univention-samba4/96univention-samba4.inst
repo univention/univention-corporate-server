@@ -853,7 +853,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	s4connector_dc=$(get_available_s4connector_dc) || return $?
+	s4connector_dc=$(get_available_s4connector_dc) || exit $?
 
 	/etc/init.d/samba stop
 
