@@ -10,3 +10,5 @@ desc: |
    support for forwarding user emails to external addresses.
  * The possibility to change the font color on the portal page has been added.
 bug: [42249, 44697]
+erratum: 35
+announced: 2017-06-15
