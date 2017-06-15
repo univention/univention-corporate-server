@@ -1,0 +1,17 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Check that HTTPS connection against system FQDN works
+## bugs: [44751]
+## tags: [basic]
+## packages:
+##  - wget
+## exposure: safe
+
+eval "$(ucr shell ldap/master)"
+
+if ! wget "https://$ldap_master" -O /dev/null -o /dev/null; then
+	echo "HTTPS connection to system FQDN doesn't work"
+	exit 1
+fi
+
+# vim: set ft=sh :

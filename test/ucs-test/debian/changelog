@@ -1,3 +1,9 @@
+ucs-test (7.0.21-48) unstable; urgency=medium
+
+  * Bug #44751: Generic HTTPS client test for OpenSSL security updates
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Jun 2017 17:58:37 +0200
+
 ucs-test (7.0.21-47) unstable; urgency=medium
 
   * Bug #44744: skip tests on certain server roles
