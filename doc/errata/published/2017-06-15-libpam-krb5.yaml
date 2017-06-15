@@ -9,3 +9,5 @@ desc: |
  * Expired user accounts are able to change their expired password via
    UMC again.
 bug: [43859]
+erratum: 32
+announced: 2017-06-15
