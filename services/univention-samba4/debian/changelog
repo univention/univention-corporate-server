@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-16) unstable; urgency=medium
+
+  * Bug #39806, Bug #41190: update samba dependency version
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Jun 2017 13:48:18 +0200
+
 univention-samba4 (6.0.10-15) unstable; urgency=medium
 
   * Bug #43478: Fix regression

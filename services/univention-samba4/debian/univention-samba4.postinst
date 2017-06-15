@@ -331,7 +331,9 @@ secret: $machine_secret
 
 		# bug #41190 / bug #39806 - restart bind9 after bind-dlz changes
 		if dpkg --compare-versions "$2" lt-nl "6.0.10-13"; then
-				/etc/init.d/bind9 restart
+				if [ -x /etc/init.d/bind9 ]; then
+					/etc/init.d/bind9 restart
+				fi
 		fi
 	fi
 
