@@ -11,3 +11,5 @@ desc: |
  * Allow DDNS update if the account name of authenticated machine matches the
    name of the target record
 bug: [39806, 41190]
+erratum: 43
+announced: 2017-06-15
