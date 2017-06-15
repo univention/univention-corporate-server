@@ -19,3 +19,5 @@ desc: |
    opened or modified anymore.
  * The font color on the portal page can be configured now.
 bug: [27286, 42148, 42249, 42533, 44152, 44472, 41053, 44611, 44697]
+erratum: 41
+announced: 2017-06-15
