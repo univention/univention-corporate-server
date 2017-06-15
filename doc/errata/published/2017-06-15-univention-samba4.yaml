@@ -20,3 +20,5 @@ desc: |
    the updated dlz_bind9 module version, which contains improvements in
    the handling of DDNS updates.
 bug: [43280, 43478, 43620, 44535, 44643, 44694, 39806, 41190]
+erratum: 42
+announced: 2017-06-15
