@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-12) unstable; urgency=medium
+
+  * Bug #43478: Revert collateral commit of unrelated patch
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Jun 2017 11:28:19 +0200
+
 univention-samba4 (6.0.10-11) unstable; urgency=medium
 
   * Bug #43478: Check return code of get_available_s4connector_dc

@@ -867,8 +867,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		|| [ -z "$s4connector_dc" ] \
 		|| [ "$s4connector_dc" = "$hostname" ]; then
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ] \
-			&& ! ldbsearch -H /var/lib/samba/private/sam.ldb -s base '(objectSid=*)' objectSid 2>/dev/null | grep -q '^objectSid: '; then
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			run_samba_provision "$@"
 		fi
 
@@ -900,8 +899,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		if [ $? -eq 0 ]; then
 			## secondary provision for selective replication
 
-			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ] \
-				&& ! ldbsearch -H /var/lib/samba/private/sam.ldb -s base '(objectSid=*)' objectSid 2>/dev/null | grep -q '^objectSid: '; then
+			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 				## special case: provision another instance of Samba 4
 				## this is similar to univention-samba-slave-pdc
 				run_samba_provision "$@"
