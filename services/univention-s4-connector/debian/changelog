@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.7-10) unstable; urgency=medium
+
+  * Bug #43478: Check return code of get_available_s4connector_dc
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Jun 2017 11:23:03 +0200
+
 univention-s4-connector (11.0.7-9) unstable; urgency=medium
 
   * Bug #31311: fix last commit 
