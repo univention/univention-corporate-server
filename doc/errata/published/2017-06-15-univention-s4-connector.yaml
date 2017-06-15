@@ -12,3 +12,5 @@ desc: |
    running a S4-Connector
  * Fix handling of Printer-Admins
 bug: [31311, 33882, 43478, 44517]
+erratum: 44
+announced: 2017-06-15
