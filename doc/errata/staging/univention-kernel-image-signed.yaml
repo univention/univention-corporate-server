@@ -3,9 +3,10 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-kernel-image-signed
-fix: 3.0.2-3A~4.2.0.201706130838
+fix: 3.0.2-4A~4.2.0.201706151338
 desc: |-
- This update addresses the following issues:
+ This update of the Linux kernel to version 4.9.32 addresses the following
+ issues:
  * tty: n_hdlc: get rid of racy n_hdlc.tbuf (CVE-2017-2636)
  * ucount: Remove the atomicity from ucount->count (CVE-2017-6874)
  * USB: iowarrior: fix NULL-deref at probe (CVE-2016-2188)
@@ -120,6 +121,11 @@ desc: |-
    (CVE-2017-9077)
  * ipv6: fix out of bound writes in __ip6_append_data() (CVE-2017-9242)
  * crypto: skcipher - Add missing API setkey checks (CVE-2017-9211)
+ * drm/vmwgfx: limit the number of mip levels in vmw_gb_surface_define_ioctl()
+   (CVE-2017-7346)
+ * ipv6: Prevent overrun when parsing v6 header options (CVE-2017-9074)
+ * drm/vmwgfx: Make sure backup_handle is always valid (CVE-2017-9605)
+ * infoleak due to a data race in ALSA timer (CVE-2017-1000380)
 note: This is the second part of the update.
 bug: [44416]
 cve:
@@ -157,3 +163,7 @@ cve:
 - CVE-2017-9077
 - CVE-2017-9242
 - CVE-2017-9211
+- CVE-2017-7346
+- CVE-2017-9074
+- CVE-2017-9605
+- CVE-2017-1000380
