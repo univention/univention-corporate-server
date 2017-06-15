@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-15) unstable; urgency=medium
+
+  * Bug #43478: Fix regression
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Jun 2017 13:45:36 +0200
+
 univention-samba4 (6.0.10-14) unstable; urgency=medium
 
   * Bug #43478: Fix exit

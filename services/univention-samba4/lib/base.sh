@@ -169,10 +169,12 @@ get_available_s4connector_dc() {
 		"$s4cldapfilter" cn)
 	s4connector_dc=$(sed -n 's/^cn: \(.*\)/\1/p' <<<"$ldif")
 
-	s4connector_dc_array=( $s4connector_dc )
-	if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
-		echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc" 1>&2
-		return 1	## this is fatal
+	if is_ucs_school_domain; then
+		s4connector_dc_array=( $s4connector_dc )
+		if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
+			echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc" 1>&2
+			return 1	## this is fatal
+		fi
 	fi
 
 	echo "$s4connector_dc"
