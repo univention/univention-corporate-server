@@ -10,3 +10,5 @@ desc: |
  * Default values (especially from extended attributes) are now pre-filled
    when modifying objects.
 bug: [42533, 41053]
+erratum: 39
+announced: 2017-06-15
