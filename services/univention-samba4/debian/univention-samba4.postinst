@@ -312,7 +312,6 @@ secret: $machine_secret
 		if dpkg --compare-versions "$2" lt-nl "5.0.1-27"; then
 			divert_univention_heimdal_service_cfg
 		fi
-
 		### The following block of code may be removed after ucs_4.1-4
 		if dpkg --compare-versions "$2" lt-nl "5.0.1-53"; then
 			## run dbcheck on update but backup first.
@@ -328,6 +327,11 @@ secret: $machine_secret
 				samba-tool dbcheck --cross-ncs --fix --yes
 				/etc/init.d/samba start
  			fi
+		fi
+
+		# bug #41190 / bug #39806 - restart bind9 after bind-dlz changes
+		if dpkg --compare-versions "$2" lt-nl "6.0.10-13"; then
+				/etc/init.d/bind9 restart
 		fi
 	fi
 
