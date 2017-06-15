@@ -9,3 +9,5 @@ desc: |
  * Expired user accounts from Active Directory are now able to change
    their expired password via UMC.
 bug: [43859]
+erratum: 34
+announced: 2017-06-15
