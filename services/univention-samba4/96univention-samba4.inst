@@ -853,7 +853,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	s4connector_dc=$(get_available_s4connector_dc)
+	s4connector_dc=$(get_available_s4connector_dc) || return $?
 
 	/etc/init.d/samba stop
 
@@ -867,7 +867,8 @@ if [ "$samba4_role" = 'DC' ]; then
 		|| [ -z "$s4connector_dc" ] \
 		|| [ "$s4connector_dc" = "$hostname" ]; then
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ] \
+			&& ! ldbsearch -H /var/lib/samba/private/sam.ldb -s base '(objectSid=*)' objectSid 2>/dev/null | grep -q '^objectSid: '; then
 			run_samba_provision "$@"
 		fi
 
@@ -899,7 +900,8 @@ if [ "$samba4_role" = 'DC' ]; then
 		if [ $? -eq 0 ]; then
 			## secondary provision for selective replication
 
-			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ] \
+				&& ! ldbsearch -H /var/lib/samba/private/sam.ldb -s base '(objectSid=*)' objectSid 2>/dev/null | grep -q '^objectSid: '; then
 				## special case: provision another instance of Samba 4
 				## this is similar to univention-samba-slave-pdc
 				run_samba_provision "$@"
