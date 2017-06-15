@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The possibility to change the font color on the portal page has been added.
 bug: [44697]
+erratum: 33
+announced: 2017-06-15
