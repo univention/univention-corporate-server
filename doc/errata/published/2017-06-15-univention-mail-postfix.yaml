@@ -22,3 +22,5 @@ desc: |
    to "encrypt", unless mail/postfix/tls/client/level is set to "none"
    (Bug #44589).
 bug: [42249, 44589]
+erratum: 36
+announced: 2017-06-15
