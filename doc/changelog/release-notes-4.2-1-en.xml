@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.2-0-en">
+<book lang="en" id="releasenotes-4.2-1-en">
 	<bookinfo>
-		<title>UCS 4.2 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2</subtitle>
+		<title>UCS 4.2-1 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,32 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2, the second minor release of Univention Corporate Server (UCS) is now
+			With Univention Corporate Server 4.2-1, the first point release of Univention Corporate Server (UCS) is now
 			available. It provides several substantial feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				UCS 4.2 is based on Debian GNU/Linux 8 (Jessie). More than 16,000 source packages have been updated and
-				adapted to the needs of UCS administrators. Selected core components, e.g. Linux Kernel (4.9), Docker
-				(1.12) or QEMU (2.8) are more recent in UCS compared to Debian GNU/Linux 8.
-            </para></listitem>
-            <listitem><para>
-				From UCS 4.2, the management system offers a central portal for quick access to all applications in the
-				environment, as well as the management of the various UCS instances. This allows users to
-				access their applications more easily. The portal is configurable and can be adapted to individual needs.
-            </para></listitem>
-            <listitem><para>
-				The design and user experience have been improved further with UCS 4.2. For example, the password self
-				service provides a simplified usage. The management system now uses SAML (Web Single Sign-On) by default,
-				provided that the prerequisites, such as working name resolution, are given.
-            </para></listitem>
-            <listitem><para>
-				Samba has been updated to version 4.6.1. This includes various improvements in the areas of DRS
-				replication, Active Directory compatibility, file services and printer handling, among other things. In
-				addition, the performance has been improved in environments with many users.
-            </para></listitem>
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
@@ -241,10 +223,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.1-4 errata408</wordasword>:
+			Listed are the changes since UCS <wordasword>4.2-0</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

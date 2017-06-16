@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.2-0-de">
+<book lang="de" id="releasenotes-4.2-1-de">
 	<bookinfo>
-		<title>UCS 4.2 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2</subtitle>
+		<title>UCS 4.2-1 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,33 +44,13 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.2 steht das zweite Minor Release für Univention Corporate Server (UCS) zur
+			Mit Univention Corporate Server 4.2-1 steht das erste Pont Release für Univention Corporate Server (UCS) zur
 			Verfügung. Es umfasst eine Reihe umfangreicher Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				UCS 4.2 basiert auf Debian GNU/Linux 8 (<wordasword>Jessie</wordasword>). Mehr als 16.000 Source Pakete wurden aktualisiert und
-				an die Bedürfnisse der UCS-Administratoren angepasst. Einige Kernkomponenten, wie der Linux Kernel
-				(4.9), Docker (1.12) oder QEMU (2.8) sind in UCS 4.2 aktueller als in Debian GNU/Linux 8. Als
-				Standard-Init-System wird nun <application>systemd</application> verwendet.
-			</para></listitem>
-			<listitem><para>
-				Das Managementsystem bietet ab UCS 4.2 ein zentrales Portal für einen schnellen Zugriff auf alle
-				Anwendungen der Umgebung, sowie die Verwaltung der unterschiedlichen UCS-Systeme. Damit können Nutzer
-				einfacher auf freigeschaltete Anwendungen zugreifen. Das Portal ist konfigurierbar und kann auf die
-				individuellen Bedürfnisse zugeschnitten werden.
-			</para></listitem>
-			<listitem><para>
-				Das Design und die Benutzerführung wurde mit UCS 4.2 weiter verbessert. So bietet bspw. der <application>Passwort Self
-				Service</application> eine vereinfachte Nutzung. Das Managementsystem verwendet nun per Default SAML (Web
-				Single Sign-on), sofern die Voraussetzungen, wie eine funktionierende Namensauflösung, gegeben sind.
-			</para></listitem>
-			<listitem><para>
-				Samba wurde auf Version 4.6.1 aktualisiert. Dies umfasst diverse Verbesserungen, u.a. im Bereich der
-				DRS-Replikation, allgemein der Active Directory Kompatibilität und der Datei- und Druckdienste.
-				Zusätzlich ist die Performance in Umgebungen mit vielen Anwendern verbessert worden.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -243,10 +223,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.1-4 errata408</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-0</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
