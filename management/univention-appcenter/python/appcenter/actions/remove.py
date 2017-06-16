@@ -52,7 +52,6 @@ class Remove(InstallRemoveUpgrade):
 		pass
 
 	def _do_it(self, app, args):
-		self._configure()
 		self._remove_app(app, args)
 		self.percentage = 45
 		self._unregister_app(app, args)
@@ -69,4 +68,5 @@ class Remove(InstallRemoveUpgrade):
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 
 	def _remove_app(self, app, args):
+		self._configure(app, args)
 		self._apt_get('remove', app.get_packages(additional=False), 45, update=False)

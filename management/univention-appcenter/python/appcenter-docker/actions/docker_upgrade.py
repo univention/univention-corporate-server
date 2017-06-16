@@ -175,7 +175,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			remove._remove_app(self.old_app, action_args)
 			if remove._unregister_component(self.old_app):
 				remove._apt_get_update()
-			self._configure()
 			self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
 			self.old_app = app
 
