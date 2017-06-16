@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-4.2-0-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-4.2-0-de.html"
+echo " English version: https://docs.software-univention.de/release-notes-4.2-1-en.html"
+echo " German version:  https://docs.software-univention.de/release-notes-4.2-1-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -427,37 +427,6 @@ check_app_appliance () {
 }
 check_app_appliance
 
-# Bug 41868, fix old computer objects, can be removed after 4.2-0
-if ! is_ucr_true update42/skip/computerobjectcheck; then
-	if [ "domaincontroller_master" = "$server_role" -a -e /etc/ldap.secret -a -e /var/univention-join/joined ]; then
-		while read dn; do
-			echo "fixing objectclass (adding shadowAccount) on: $dn" >>"$UPDATER_LOG"
-			echo "dn: $dn
-changetype: modify
-add: objectClass
-objectClass: shadowAccount" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret >>"$UPDATER_LOG" 2>&1
-		done < <( \
-			univention-ldapsearch -LLL \
-			'(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))' dn 2>>"$UPDATER_LOG" \
-			| ldapsearch-wrapper \
-			| sed -n 's/^dn: \(.*\)/\1/p')
-	fi
-fi
-
-# Bug 43639, removed old sysklogd configs, can be removed after 4.2-0
-if [ "deinstall" = "$(dpkg --get-selections sysklogd 2>/dev/null | awk '{print $2}')" ]; then
-	dpkg -P sysklogd >>"$UPDATER_LOG" 2>&1
-	rm /etc/init.d/sysklogd* >>"$UPDATER_LOG" 2>&1
-fi
-
-# Bug 43639, remove old blas/lapack alternatives, can be removed after 4.2-0
-if update-alternatives --quiet --list liblapack.so.3gf >/dev/null 2>&1; then
-	update-alternatives --remove-all liblapack.so.3gf
-fi
-if update-alternatives --quiet --list libblas.so.3gf >/dev/null 2>&1; then
-	update-alternatives --remove-all libblas.so.3gf
-fi
-
 check_qemu () {
 	local f issues=false
 
@@ -556,7 +525,7 @@ apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
 
-# Bug #44346: Pin temporary sources list - can be removed after UCS-4-2-0
+# Bug #44346: Pin temporary sources list
 ln -n -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list /etc/apt/sources.list.d/00_ucs_update_in_progress.list 2>&3 || :
 
 echo ""

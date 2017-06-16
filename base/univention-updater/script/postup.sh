@@ -99,15 +99,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# update to firefox-esr, can be removed after update to 4.2-0
-if is_installed firefox-en; then
-	install firefox-esr
-	dpkg -P firefox-en >>"$UPDATER_LOG" 2>&1
-fi
-if is_installed firefox-de; then
-	install firefox-esr-l10n-de
-	dpkg -P firefox-de >>"$UPDATER_LOG" 2>&1
-fi
 # Bug #43899: master package of self-service changed, install new master
 # package now, or dependencies will be uninstalled
 if [ "$server_role" = "domaincontroller_master" ] && is_installed univention-self-service-passwordreset-umc
@@ -118,17 +109,6 @@ fi
 # Update to UCS 4.2 autoremove
 if ! is_ucr_true update42/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
-fi
-
-# after update to apache 2.4 (UCS 4.2), old apache 2.2 config files
-# can be purged as they conflict with new naming schema (package has
-# already been removed)
-dpkg -P apache2.2-common >>"$UPDATER_LOG" 2>&1
-
-# This HAS to be done after the UCS 4.2 apt-get autoremove (Bug #43782#c2)
-if is_installed kopano-webmeetings; then
-	a2enmod proxy_wstunnel >>"$UPDATER_LOG" 2>&1
-	service apache2 restart >>"$UPDATER_LOG" 2>&1
 fi
 
 # removes temporary sources list (always required)
@@ -165,85 +145,24 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.2-0" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.2-1" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	version/erratalevel=0 \
-	repository/online/component/4.2-0-errata=enabled \
-	repository/online/component/4.2-0-errata/description="Errata updates for UCS 4.2-0" \
-	repository/online/component/4.2-0-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.2-0-errata=false \
+	repository/online/component/4.2-0-errata/localmirror=true \
+	repository/online/component/4.2-1-errata=enabled \
+	repository/online/component/4.2-1-errata/description="Errata updates for UCS 4.2-1" \
+	repository/online/component/4.2-1-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
 
-# Bug #43217: Fix DNS configuration in UCR
-[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
-	/usr/share/univention-server/univention-fix-ucr-dns $(is_installed bind9 || echo --no-self) >>"$UPDATER_LOG" 2>&1 ||
-	: # better safe than sorry
-
-# Bug #44006: 
-(
-	if [ -x /usr/lib/univention-docker/scripts/migrate_container_MountPoints_to_v2_config ]; then
-		restart=0
-		if pgrep -F /var/run/docker.pid >/dev/null 2>&1; then
-			restart=1
-		fi
-		service docker stop || true
-
-		## start docker daemon (manually w/o systemd)
-		## to make it generate config.v2.json
-		. /etc/default/docker	## load DOCKER_OPTS
-		/usr/bin/dockerd -H unix:///var/run/docker.sock $DOCKER_OPTS &
-		i=0; while [ "$((i++))" -lt 1800 ]; do 
-			if docker ps >/dev/null 2>&1; then
-				break
-			fi
-			sleep 1;
-		done
-		pkill -F /var/run/docker.pid
-
-		## Now migrate volumes to config.v2.json
-		/usr/lib/univention-docker/scripts/migrate_container_MountPoints_to_v2_config
-
-		if [ "$restart" = 1 ]; then
-			service docker start || true
-		fi
-	fi
-) >>"$UPDATER_LOG" 2>&1
-
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
-
-# Bug #43835: update app cache and portal entries
-test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
-python -c '
-import sys
-from univention.appcenter.ucr import ucr_keys, ucr_instance
-sys.path.append("/etc/univention/templates/modules")
-import create_portal_entries
-import re
-ids = set()
-for key in ucr_keys():
-    match = re.match("ucs/web/overview/entries/(admin|service)/([^/]+)/.*", key)
-    if match:
-        ids.add(key)
-changes = dict((id, (None, None)) for id in ids)
-create_portal_entries.handler(ucr_instance(), changes)
-' >>"$UPDATER_LOG" 2>&1
-
-# Bug #44146: fix apache sites
-# add .conf suffix (we have some unpackaged files from SDB articles)
-for file in /etc/apache2/ucs-sites.conf.d/*; do
-	if [ "$file" = "${file%.conf}" ] && ! dpkg -S "$file" > /dev/null 2>&1; then
-		mv "$file" "${file}.conf" >>"$UPDATER_LOG" 2>&1
-	fi
-done
-# remove broken symlinks e.g. univention-management-console, univention-saml
-find /etc/apache2/sites-enabled/ -xtype l -delete >>"$UPDATER_LOG" 2>&1
 
 echo "
 
@@ -270,7 +189,7 @@ cp /var/run/apache2.pid /var/run/apache2/apache2.pid
 service apache2 restart >>"$UPDATER_LOG" 2>&1
 EOF
 
-# Bug #44346: Pin temporary sources list - can be removed after UCS-4-2-0
+# Bug #44346: Pin temporary sources list
 rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
 
 exit 0
