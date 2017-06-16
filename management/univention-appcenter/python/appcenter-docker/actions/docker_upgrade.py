@@ -71,7 +71,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise Abort('Could not start the app container. It needs to be running to be upgraded!')
-		mode = self._execute_container_script(self.old_app, 'update_available', _credentials=False, _output=True) or ''
+		mode = self._execute_container_script(self.old_app, 'update_available', credentials=False, output=True) or ''
 		mode = mode.strip()
 		if mode.startswith('release:'):
 			mode, detail = 'release', mode[8:].strip()
@@ -117,7 +117,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			raise Abort('Package upgrade script failed')
 
 	def _upgrade_release(self, app, release):
-		process = self._execute_container_script(app, 'update_release', _credentials=False, release=release)
+		process = self._execute_container_script(app, 'update_release', credentials=False, cmd_kwargs={'release': release})
 		if not process or process.returncode != 0:
 			raise Abort('Release upgrade script failed')
 

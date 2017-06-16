@@ -99,7 +99,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the application')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
 
 	main = None  # no action by itself
 

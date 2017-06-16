@@ -124,8 +124,8 @@ class Configure(Configure, DockerActionMixin):
 					_ucr[key] = str(value)
 			_ucr.save()
 
-	def _run_configure_script(self, app):
-		success = super(Configure, self)._run_configure_script(app)
+	def _run_configure_script(self, app, action):
+		success = super(Configure, self)._run_configure_script(app, action)
 		if success is not False and app.docker:
-			success = self._execute_container_script(app, 'configure', _credentials=False)
+			success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])
 		return success

@@ -76,9 +76,9 @@ class Install(Install, DockerActionMixin):
 			pass
 
 	def _setup_docker_image(self, app, args):
-		self._execute_container_script(app, 'restore_data_before_setup', _credentials=False)
+		self._execute_container_script(app, 'restore_data_before_setup', credentials=False)
 		if app.docker_script_setup:
 			process = self._execute_container_script(app, 'setup', args)
 			if not process or process.returncode != 0:
 				raise Abort(_('Setup script failed!'))
-		self._execute_container_script(app, 'restore_data_after_setup', _credentials=False)
+		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)

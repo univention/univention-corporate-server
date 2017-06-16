@@ -653,7 +653,7 @@ class DevSet(UniventionAppAction):
 	help = 'Sets attributes for an App and clears cache. Also works for files like README, store_data'
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be altered')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be altered')
 		parser.add_argument('--meta', action='store_true', help='Whether to change the .meta file instead of the .ini file')
 		parser.add_argument('attrs', action=StoreAttrActions, metavar='ATTR=VALUE', nargs='+', help='The attribute that shall be altered')
 

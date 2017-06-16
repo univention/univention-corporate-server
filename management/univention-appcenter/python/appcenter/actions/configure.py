@@ -46,10 +46,11 @@ class Configure(UniventionAppAction):
 	help = 'Configure an app'
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be configured')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be configured')
 		parser.add_argument('--list', action='store_true', help='List all configuration options as well as their current values')
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--unset', nargs='+', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
+		parser.add_argument('--run-script', choices=['settings', 'install', 'upgrade', 'remove', 'no'], default='settings', help='Run configuration script to support a specific action - or not at all. Default: %(default)s')
 
 	def main(self, args):
 		if args.list:
@@ -88,12 +89,13 @@ class Configure(UniventionAppAction):
 				other_settings[key] = value
 		if other_settings:
 			self._set_config_via_tool(app, other_settings)
-		self._run_configure_script(app)
+		if args.run_script != 'no':
+			self._run_configure_script(app, args.run_script)
 
 	def _set_config_via_tool(self, app, set_vars):
 		ucr_save(set_vars)
 
-	def _run_configure_script(self, app):
+	def _run_configure_script(self, app, action):
 		ext = 'configure_host'
 		with NamedTemporaryFile('r+b') as error_file:
 			kwargs = {}
@@ -102,7 +104,7 @@ class Configure(UniventionAppAction):
 			locale = get_locale()
 			if locale:
 				kwargs['locale'] = locale
-			success = self._call_cache_script(app, ext, **kwargs)
+			success = self._call_cache_script(app, ext, action, **kwargs)
 			if success is False:
 				for line in error_file:
 					self.fatal(line)

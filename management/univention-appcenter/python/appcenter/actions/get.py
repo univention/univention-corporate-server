@@ -68,7 +68,7 @@ class Get(UniventionAppAction):
 	help = 'Query an app'
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be queried')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be queried')
 		parser.add_argument('--shell', action='store_true', help='Print the information so that it can be evaluated in shell scripts. Example: %(prog)s app Vendor UseShop -> vendor="Vendor Inc."\\nuse_shop="1"')
 		parser.add_argument('--values-only', action='store_true', help='Only print the value of KEY, not KEY itself')
 		parser.add_argument('keys', action=StoreKeysAction, metavar='KEY', nargs='+', help='The key of the meta information')
