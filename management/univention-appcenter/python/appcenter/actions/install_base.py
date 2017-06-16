@@ -301,7 +301,7 @@ class InstallRemoveUpgrade(Register):
 		for setting in app.get_settings():
 			if setting.name in set_vars:
 				continue
-			if self.action_name().title() in setting.write:
+			if self.get_action_name().title() in setting.write:
 				set_vars[setting.name] = setting.initial_value
 		configure.call(app=app, set_vars=args.set_vars)
 
