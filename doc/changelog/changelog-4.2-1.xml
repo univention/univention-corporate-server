@@ -844,10 +844,10 @@
 		<itemizedlist>
 			<listitem><simpara>
 				The <application>KDM</application> init script now waits for the stop of the <application>plymouth</application>
-				bootsplash before starting and presenting the KDE login window (<u:bug>44452</u:bug>).
+				<application>bootsplash</application> before starting and presenting the KDE login window (<u:bug>44452</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				A symlink has been added to enable debootstrap for UCS 4.2 (<u:bug>44593</u:bug>).
+				A symbolic link has been added to enable <package>debootstrap</package> for UCS 4.2 (<u:bug>44593</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				All <package>postgresql-9.4</package> packages are now available in UCS 4.2 (<u:bug>44507</u:bug>).
