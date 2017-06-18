@@ -220,7 +220,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The App Center now uses a different directory for special temporary files
-					for Docker Apps to avoid problems with the System V init tmp cleanup (<u:bug>44501</u:bug>).
+					for Docker Apps to avoid problems with the System V init <property>tmp</property> cleanup (<u:bug>44501</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					During the remove of Docker Apps, the App is stopped via the init script (<u:bug>44286</u:bug>).
@@ -502,7 +502,7 @@
 				Make DNS lookup more robust for Kerberos <command>kinit</command> in <wordasword>admember.check_ad_account</wordasword> (<u:bug>38285</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Handle <property>NoAnswer</property> exception of dns.resolver when looking for
+				Handle <property>NoAnswer</property> exception of <command>dns.resolver</command> when looking for
 				<property>_domaincontroller_master._tcp</property> SRV record during Active Directory member setup (<u:bug>38788</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -742,7 +742,7 @@
 				<listitem><simpara>
 					The UCR variable <envar>samba/idmap/range</envar> has been added
 					to configure the <property>uid</property> and <property>gid</property> range for the default (*)
-					idmap backend. This can be used to avoid overlaps between
+					<command>idmap</command> backend. This can be used to avoid overlaps between
 					that default range and the domain specific setting, which is
 					configurable via <envar>samba/idmap/$windows_domain/range</envar> (<u:bug>44549</u:bug>).
 				</simpara></listitem>
@@ -753,10 +753,10 @@
 					requires raising <envar>samba/client/max/protocol</envar> to that value or higher (<u:bug>44591</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Improve handling of tombstoned DNS objects during <property>DDNS</property> update (<u:bug>39806</u:bug>).
+					Improve handling of <property>tombstoned</property> DNS objects during <property>DDNS</property> update (<u:bug>39806</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Keep <property>DNS_TYPE_TOMBSTONE</property> value marker and dnsTombstoned attribute in sync (<u:bug>39806</u:bug>).
+						Keep <property>DNS_TYPE_TOMBSTONE</property> value marker and <property>dnsTombstoned</property> attribute in sync (<u:bug>39806</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Allow <property>DDNS</property> update if the account name of authenticated machine matches the
@@ -782,10 +782,10 @@
 					requires raising <envar>samba/client/max/protocol</envar> to that value or higher (<u:bug>44643</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Make <command>sysvol-sync.sh</command> robust against varying stderr output from <command>rsync</command> (<u:bug>44694</u:bug>).
+					Make <command>sysvol-sync.sh</command> robust against varying <property>stderr</property> output from <command>rsync</command> (<u:bug>44694</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Update Samba package and restart Bind9 on upgrade to make Bind9 load
+					Update Samba package and restart BIND9 on upgrade to make BIND9 load
 					the updated <application>dlz_bind9</application> module version, which contains improvements in
 					the handling of <property>DDNS</property> updates (<u:bug>39806</u:bug>, <u:bug>41190</u:bug>).
 				</simpara></listitem>
@@ -843,14 +843,14 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The KDM init script now waits for the stop of the plymouth
+				The <application>KDM</application> init script now waits for the stop of the <application>plymouth</application>
 				bootsplash before starting and presenting the KDE login window (<u:bug>44452</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				A symlink has been added to enable debootstrap for UCS 4.2 (<u:bug>44593</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				All postgresql-9.4 packages are now available in UCS 4.2 (<u:bug>44507</u:bug>).
+				All <package>postgresql-9.4</package> packages are now available in UCS 4.2 (<u:bug>44507</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Missing French translations have been updated (<u:bug>44133</u:bug>).
