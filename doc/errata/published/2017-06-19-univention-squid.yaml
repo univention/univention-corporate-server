@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Allow IPv6 addresses in UCR variable squid/allowfrom.
 bug: [29576]
+erratum: 46
+announced: 2017-06-19
