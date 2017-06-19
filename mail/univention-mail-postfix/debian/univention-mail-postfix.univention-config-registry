@@ -76,8 +76,6 @@ Variables: mail/postfix/tls/client/protocols
 Variables: mail/postfix/smtpd/tls/exclude_ciphers
 Variables: mail/postfix/tls/client/exclude_ciphers
 Variables: mail/postfix/dovecot_sasl
-Variables: mail/relayauth
-Variables: mail/relayhost
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -455,3 +453,5 @@ Variables: mail/postfix/cron/recreate/dh/parameter
 Type: file
 File: etc/postfix/tls_policy
 Variables: mail/postfix/tls/client/policy/.*
+Variables: mail/relayauth
+Variables: mail/relayhost
