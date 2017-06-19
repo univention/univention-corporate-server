@@ -855,6 +855,9 @@
 			<listitem><simpara>
 				Missing French translations have been updated (<u:bug>44133</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Removed the App re-registration during the upgrade to UCS 4.2-1. This was only necessary for upgrades to UCS 4.2-0 (<u:bug>44812</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
