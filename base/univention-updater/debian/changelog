@@ -1,3 +1,10 @@
+univention-updater (12.0.11-1) unstable; urgency=medium
+
+  * Bug #44812: Remove App registration from preup.sh that was needed for
+    upgrades to 4.2-0 only
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2017 10:37:21 +0200
+
 univention-updater (12.0.10-7) unstable; urgency=low
 
   * Bug #44799: Adapt links and components for 4.2-1
