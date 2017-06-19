@@ -9,6 +9,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
+	"umc/widgets/NumberSpinner",
 	"umc/widgets/Uploader",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/CheckBox",
@@ -17,7 +18,7 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/modules/appcenter/AppSettingsFileUploader",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, Uploader, PasswordBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
+], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
@@ -38,6 +39,10 @@ define([
 				if (variable.type == 'String') {
 					ret.push(lang.mixin(params, {
 						type: TextBox
+					}));
+				} else if (variable.type == 'Int') {
+					ret.push(lang.mixin(params, {
+						type: NumberSpinner
 					}));
 				} else if (variable.type == 'Bool') {
 					ret.push(lang.mixin(params, {

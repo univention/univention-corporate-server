@@ -227,4 +227,4 @@ docker inspect:
 				f.write(password)
 		self._copy_files_into_container(app, '/etc/timezone', '/etc/localtime', database_password_file)
 		configure = get_action('configure')
-		configure.call(app=app, autostart=autostart, set_vars=set_vars)
+		configure.call(app=app, autostart=autostart, run_script='no', set_vars=set_vars)

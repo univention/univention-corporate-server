@@ -37,7 +37,7 @@ import os.path
 
 from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save, ucr_run_filter
 from univention.appcenter.ini_parser import TypedIniSectionObject, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionAttribute
 
 settings_logger = get_base_logger().getChild('settings')
@@ -75,10 +75,15 @@ class Setting(TypedIniSectionObject):
 		# only for Docker Apps (and called from the Docker Host). And not only 'outside' is specified
 		return app.docker and not container_mode() and ('inside' in self.scope or self.scope == [])
 
+	def get_initial_value(self):
+		if isinstance(self.initial_value, basestring):
+			return ucr_run_filter(self.initial_value)
+		return self.initial_value
+
 	def get_value(self, app):
 		'''Get the current value for this Setting. Easy implementation'''
 		if self.is_outside(app):
-			value = ucr_get(self.name, self.initial_value)
+			value = ucr_get(self.name, self.get_initial_value())
 		else:
 			if not app_is_running(app):
 				settings_logger.error('Cannot read %s while %s is not running' % (self.name, app))
@@ -86,11 +91,11 @@ class Setting(TypedIniSectionObject):
 			from univention.appcenter.actions import get_action
 			configure = get_action('configure')
 			ucr = configure._get_app_ucr(app)
-			value = ucr.get(self.name, self.initial_value)
+			value = ucr.get(self.name, self.get_initial_value())
 		try:
 			return self.sanitize_value(app, value)
 		except SettingValueError:
-			return self.initial_value
+			return self.get_initial_value()
 
 	def _log_set_value(self, app, value):
 		settings_logger.info('Setting %s to %r' % (self.name, value))
@@ -107,12 +112,7 @@ class Setting(TypedIniSectionObject):
 				return
 			from univention.appcenter.actions import get_action
 			configure = get_action('configure')
-			with configure._locked_app_ucr(app) as _ucr:
-				if value is None:
-					_ucr.pop(self.name, None)
-				else:
-					_ucr[self.name] = str(value)
-				_ucr.save()
+			configure._set_config_via_tool(app, {self.name: value})
 
 	def sanitize_value(self, app, value):
 		if self.required and value in [None, '']:
@@ -125,6 +125,13 @@ class Setting(TypedIniSectionObject):
 
 class StringSetting(Setting):
 	pass
+
+
+class IntSetting(Setting):
+	def sanitize_value(self, app, value):
+		super(BoolSetting, self).sanitize_value(app, value)
+		if value is not None:
+			return int(value)
 
 
 class BoolSetting(Setting):
@@ -161,7 +168,7 @@ class FileSetting(Setting):
 			with open(filename) as fd:
 				return fd.read()
 		except EnvironmentError:
-			return self.initial_value
+			return self.get_initial_value()
 
 	def _write_file_content(self, filename, content):
 		try:
@@ -174,7 +181,7 @@ class FileSetting(Setting):
 				settings_logger.debug('Deleting %s' % filename)
 				os.unlink(self.filename)
 		except EnvironmentError as exc:
-			self.warn('Could not set content: %s' % exc)
+			settings_logger.error('Could not set content: %s' % exc)
 
 	def get_value(self, app):
 		if self.is_outside(app):

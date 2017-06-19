@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-77) unstable; urgency=medium
+
+  * Bug #43816: Add IntSetting; fix first parameter of configure script; add
+    UCR filter for initial values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2017 13:44:37 +0200
+
 univention-appcenter (5.0.23-76) unstable; urgency=medium
 
   * Bug #43816: Run configure script on the host, add an argument to configure

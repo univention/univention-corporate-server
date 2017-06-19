@@ -294,7 +294,9 @@ class InstallRemoveUpgrade(Register):
 						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
 
-	def _configure(self, app, args):
+	def _configure(self, app, args, run_script=None):
+		if run_script is None:
+			run_script = self.get_action_name()
 		configure = get_action('configure')
 		set_vars = args.set_vars or {}
 		set_vars = set_vars.copy()
@@ -303,7 +305,7 @@ class InstallRemoveUpgrade(Register):
 				continue
 			if self.get_action_name().title() in setting.write:
 				set_vars[setting.name] = setting.initial_value
-		configure.call(app=app, set_vars=args.set_vars)
+		configure.call(app=app, run_script=run_script, set_vars=args.set_vars)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
