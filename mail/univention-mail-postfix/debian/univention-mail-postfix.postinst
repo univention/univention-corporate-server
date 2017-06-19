@@ -64,7 +64,9 @@ univention-config-registry set \
 	mail/postfix/mastercf/options/smtps/smtpd_sasl_auth_enable?yes \
 	mail/postfix/mastercf/options/submission/smtpd_sasl_auth_enable?yes \
 	mail/postfix/mastercf/options/submission/smtpd_enforce_tls?yes \
-	mail/postfix/tls/client/policy/127.0.0.1:10024/nomx?none
+	mail/postfix/tls/client/policy/amavis?"[127.0.0.1]:10024 none"
+
+postmap /etc/postfix/tls_policy
 
 eval "$(univention-config-registry shell)"
 
