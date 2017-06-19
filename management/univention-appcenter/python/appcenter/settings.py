@@ -120,7 +120,7 @@ class Setting(TypedIniSectionObject):
 		return value
 
 	def value_for_setting(self, app, value):
-		return value
+		return str(value)
 
 
 class StringSetting(Setting):
