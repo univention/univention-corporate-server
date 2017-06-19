@@ -264,7 +264,7 @@
 					The cron job for the updater check has been deactivated in <package>univention-docker-container-mode</package> (<u:bug>44630</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A template for dockerd proxy settings has been added (<u:bug>44536</u:bug>).
+					A template for Docker proxy settings has been added (<u:bug>44536</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -658,7 +658,7 @@
 			<title>Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
-					IPV6 support for allowed hosts has been added (<u:bug>44454</u:bug>).
+					IPv6 support for allowed hosts has been added (<u:bug>44454</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
