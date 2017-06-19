@@ -15,7 +15,7 @@ eval "$(ucr shell)"
 
 RETVAL=100
 
-USERNAME=$(random_chars 8 "${_lowerletters}${_ciphers}")
+USERNAME=$(user_randomname)
 PASSWORD=univention
 
 info "Create user"
