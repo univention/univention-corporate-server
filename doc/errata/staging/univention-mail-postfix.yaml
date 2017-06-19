@@ -8,8 +8,9 @@ desc: |
  This update addresses the following issue(s):
  * Entries in the SMTP client TLS policy table (see
    <http://www.postfix.org/TLS_README.html#client_tls_policy>)
-   can now be configured through the UCR variables
+   can now be configured for each domain or mail exchanger
+   individually through the UCR variables
    mail/postfix/tls/client/policy/.*.
-   A problem with the encryption settings if relaying is fixed
-   through this (Bug #44811).
+   A problem with the encryption settings introduced by erratum 36
+   has been fixed by this erratum (Bug #44811).
 bug: [44811]
