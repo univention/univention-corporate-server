@@ -129,7 +129,7 @@ class StringSetting(Setting):
 
 class IntSetting(Setting):
 	def sanitize_value(self, app, value):
-		super(BoolSetting, self).sanitize_value(app, value)
+		super(IntSetting, self).sanitize_value(app, value)
 		if value is not None:
 			return int(value)
 
