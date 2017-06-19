@@ -1,16 +1,11 @@
 @%@UCRWARNING=# @%@
 @!@
-targets = list()
-for key, value in [x for x in configRegistry.items() if x[0].startswith('mail/postfix/tls/client/policy')]:
-	target = host = key.split('/')[-1]
-	if target == 'nomx':
-		host = key.split('/')[-2]
-		target = host.split(':')
-		target = '[{}]{}'.format(target[0], ':{}'.format(target[1]) if len(target) > 1 else '')
-	targets.append(host)
-	print '{} {}'.format(target, value)
+targets = [v for k, v in configRegistry.items() if k.startswith('mail/postfix/tls/client/policy/')]
 
 relayhost = configRegistry.get('mail/relayhost')
 if configRegistry.is_true('mail/relayauth') and relayhost and not any(relayhost in t for t in targets):
-	print '{} encrypt'.format(relayhost)
+	targets.append('{} encrypt'.format(relayhost))
+
+for target in targets:
+	print(target)
 @!@

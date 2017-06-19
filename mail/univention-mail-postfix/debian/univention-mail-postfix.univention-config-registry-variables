@@ -222,8 +222,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/policy/.*]
-Description[de]=Einträge in der SMTP client TLS policy Tabelle (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Um MX DNS looks zu unterdrücken, muss "/nomx" an den Schlüssel angehängt werden (z.B. mail/postfix/tls/client/policy/127.0.0.1:10024/nomx=none).
-Description[en]=Entries in the SMTP client TLS policy table (see <http://www.postfix.org/TLS_README.html#client_tls_policy>). To disable MX DNS lookups, append "/nomx" to the key (e.g. mail/postfix/tls/client/policy/127.0.0.1:10024/nomx=none).
+Description[de]=Einträge in der SMTP client TLS policy Tabelle (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Der Variabelwert enthält enthält je eine Zeile der Tabelle (z.B. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
+Description[en]=Entries in the SMTP client TLS policy table (see <http://www.postfix.org/TLS_README.html#client_tls_policy>). Each variable value contains a complete line of the table (e.g. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
 Type=str
 Categories=service-mail
 
