@@ -1,0 +1,12 @@
+@%@UCRWARNING=# @%@
+@!@
+targets = [v for k, v in configRegistry.items() if k.startswith('mail/postfix/tls/client/policy/')]
+all_hosts = set(x.split(None, 1)[0] for x in targets)
+
+relayhost = configRegistry.get('mail/relayhost')
+if configRegistry.is_true('mail/relayauth') and relayhost and relayhost not in all_hosts:
+	targets.append('{} encrypt'.format(relayhost))
+
+for target in targets:
+	print(target)
+@!@
