@@ -1,3 +1,10 @@
+univention-mail-postfix (11.0.1-9) unstable; urgency=low
+
+  * Bug #44811: create possibility to set SMTP client TLS policy through
+    UCRV mail/postfix/tls/client/policy/.*
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Jun 2017 10:12:38 +0200
+
 univention-mail-postfix (11.0.1-8) unstable; urgency=low
 
   * Bug #44589: updated UCR variable descriptions
