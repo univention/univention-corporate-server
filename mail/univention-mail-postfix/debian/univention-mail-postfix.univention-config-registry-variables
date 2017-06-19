@@ -222,8 +222,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/policy/.*]
-Description[de]=Einträge in der SMTP client TLS policy Tabelle (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Der Variabelwert enthält enthält je eine Zeile der Tabelle (z.B. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
-Description[en]=Entries in the SMTP client TLS policy table (see <http://www.postfix.org/TLS_README.html#client_tls_policy>). Each variable value contains a complete line of the table (e.g. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
+Description[de]=Diese Variablen konfigurieren die Verwendung von TLS-Verschlüsselung durch den SMTP-Client für bestimmte Domänen oder Mailserver in der Datei /etc/postfix/tls_policy (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Der Variablenwert enthält enthält je eine Zeile der Tabelle (z.B. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
+Description[en]=This variable configures the use of TLS encryption by the SMTP client for certain mail domains or mail servers. The entries are stored in /etc/postfix/tls_policy (see <http://www.postfix.org/TLS_README.html#client_tls_policy>). Each variable value contains a complete line of the table (e.g. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
 Type=str
 Categories=service-mail
 
@@ -240,8 +240,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/policy/maps]
-Description[de]=Liste der Tabellen mit der SMTP-Client TLS Sicherheitsrichtlinie (siehe smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Standard, wenn nicht gesetzt, ist "hash:/etc/postfix/tls_policy".
-Description[en]=List of lookup tables with the Postfix SMTP client TLS security policy (see smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Defaults if empty to "hash:/etc/postfix/tls_policy".
+Description[de]=Liste der Tabellen für TLS-Sicherheitsrichtlinien für den SMTP-Client (siehe smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Standard, wenn nicht gesetzt, ist "hash:/etc/postfix/tls_policy".
+Description[en]=List of lookup tables for TLS security policies for the Postfix SMTP client (see smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Defaults if empty to "hash:/etc/postfix/tls_policy".
 Type=str
 Categories=service-mail
 

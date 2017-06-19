@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-14) unstable; urgency=low
+
+  * Bug #44811: handle subdomains safer, run postmap when installing, wording
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Jun 2017 13:31:25 +0200
+
 univention-mail-postfix (11.0.1-13) unstable; urgency=low
 
   * Bug #44811: fix default UCR value
