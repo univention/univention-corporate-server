@@ -3,9 +3,9 @@ release: "4.2"
 version: [0]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-kernel-image-signed
-fix: 3.0.2-4A~4.2.0.201706151338
+fix: 3.0.2-5A~4.2.0.201706190940
 desc: |-
- This update of the Linux kernel to version 4.9.32 addresses the following
+ This update of the Linux kernel to version 4.9.33 addresses the following
  issues:
  * tty: n_hdlc: get rid of racy n_hdlc.tbuf (CVE-2017-2636)
  * ucount: Remove the atomicity from ucount->count (CVE-2017-6874)
