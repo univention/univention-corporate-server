@@ -158,9 +158,9 @@ class DockerActionMixin(object):
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
 		for setting in app.get_settings():
-			if 'Install' in setting.write or 'Upgrade' in setting.write:
+			if 'Install' in setting.show or 'Upgrade' in setting.show:
 				if setting.name not in set_vars:
-					set_vars[setting.name] = setting.initial_value
+					set_vars[setting.name] = setting.get_initial_value()
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role

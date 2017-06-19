@@ -304,7 +304,7 @@ class InstallRemoveUpgrade(Register):
 			if setting.name in set_vars:
 				continue
 			if self.get_action_name().title() in setting.show:
-				set_vars[setting.name] = setting.initial_value
+				set_vars[setting.name] = setting.get_initial_value()
 		configure.call(app=app, run_script=run_script, set_vars=args.set_vars)
 
 	def _reload_apache(self):

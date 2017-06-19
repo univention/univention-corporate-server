@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-82) unstable; urgency=medium
+
+  * Bug #43816: Fix Show; ShowReadOnly
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2017 17:00:05 +0200
+
 univention-appcenter (5.0.23-81) unstable; urgency=medium
 
   * Bug #43816: Fix IntSetting
