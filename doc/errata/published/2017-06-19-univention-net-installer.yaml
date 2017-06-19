@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The configuration file has been upgraded to use the Apache 2.4 syntax.
 bug: [44213]
+erratum: 48
+announced: 2017-06-19
