@@ -51,7 +51,7 @@ class Setting(TypedIniSectionObject):
 	'''Based on the .settings file, models additional settings for Apps
 	that can be configured before installation, during run-time, etc.'''
 
-	type = IniSectionAttribute(default='String', choices=['String', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
+	type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
 	description = IniSectionAttribute(localisable=True, required=True)
 	group = IniSectionAttribute(localisable=True)
 	write = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])

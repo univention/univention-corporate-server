@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-78) unstable; urgency=medium
+
+  * Bug #43816: Fix IntSetting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2017 14:09:36 +0200
+
 univention-appcenter (5.0.23-77) unstable; urgency=medium
 
   * Bug #43816: Add IntSetting; fix first parameter of configure script; add
