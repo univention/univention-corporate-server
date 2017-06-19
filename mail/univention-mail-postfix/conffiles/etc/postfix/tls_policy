@@ -11,6 +11,6 @@ for key, value in [x for x in configRegistry.items() if x[0].startswith('mail/po
 	print '{} {}'.format(target, value)
 
 relayhost = configRegistry.get('mail/relayhost')
-if configRegistry.get('mail/relayauth') and relayhost and not any(relayhost in t for t in targets):
+if configRegistry.is_true('mail/relayauth') and relayhost and not any(relayhost in t for t in targets):
 	print '{} encrypt'.format(relayhost)
 @!@

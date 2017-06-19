@@ -76,6 +76,7 @@ Variables: mail/postfix/tls/client/protocols
 Variables: mail/postfix/smtpd/tls/exclude_ciphers
 Variables: mail/postfix/tls/client/exclude_ciphers
 Variables: mail/postfix/dovecot_sasl
+Variables: mail/postfix/tls/policy/maps
 
 Type: subfile
 Multifile: etc/postfix/main.cf

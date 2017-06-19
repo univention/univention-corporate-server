@@ -239,6 +239,12 @@ Description[en]=List of ciphers or cipher types to exclude from the Postfix SMTP
 Type=str
 Categories=service-mail
 
+[mail/postfix/tls/policy/maps]
+Description[de]=Liste der Tabellen mit der SMTP-Client TLS Sicherheitsrichtlinie (siehe smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Standard, wenn nicht gesetzt, ist "hash:/etc/postfix/tls_policy".
+Description[en]=List of lookup tables with the Postfix SMTP client TLS security policy (see smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Defaults if empty to "hash:/etc/postfix/tls_policy".
+Type=str
+Categories=service-mail
+
 [mail/postfix/ssl/cafile]
 Description[de]=Eine Datei mit CA-Zertifikaten (im PEM-Format) von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA-Zertifikate zu signieren.
 Description[en]=A file containing  CA certificates (in PEM format) of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates.
