@@ -24,7 +24,7 @@ define([
 			var ret = [];
 			var staticValues;
 			array.forEach(app.settings, function(variable) {
-				if ((variable.write || []).indexOf(phase) === -1 && (variable.read || []).indexOf(phase) === -1) {
+				if ((variable.show || []).indexOf(phase) === -1 && (variable.show_read_only || []).indexOf(phase) === -1) {
 					return;
 				}
 				var value = values[variable.name] || null;
@@ -33,7 +33,7 @@ define([
 					_groupName: variable.group || _('Settings'),
 					required: variable.required,
 					label: variable.description,
-					disabled: (variable.read || []).indexOf(phase) !== -1,
+					disabled: (variable.show_read_only || []).indexOf(phase) !== -1,
 					value: value
 				};
 				if (variable.type == 'String') {

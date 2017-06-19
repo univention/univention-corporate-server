@@ -54,8 +54,8 @@ class Setting(TypedIniSectionObject):
 	type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
 	description = IniSectionAttribute(localisable=True, required=True)
 	group = IniSectionAttribute(localisable=True)
-	write = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
-	read = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
+	show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
+	show_read_only = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
 
 	initial_value = IniSectionAttribute()
 	required = IniSectionBooleanAttribute()

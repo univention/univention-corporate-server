@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-80) unstable; urgency=medium
+
+  * Bug #43816: Rename Write -> Show and Read -> ShowReadOnly
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2017 15:43:22 +0200
+
 univention-appcenter (5.0.23-79) unstable; urgency=medium
 
   * Bug #43816: Fix IntSetting
