@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The cron job for the updater check has been deactivated.
 bug: [44630]
+erratum: 51
+announced: 2017-06-19
