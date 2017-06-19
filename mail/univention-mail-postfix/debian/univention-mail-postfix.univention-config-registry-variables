@@ -221,6 +221,12 @@ Description[en]=List of SSL/TLS protocols that the Postfix SMTP client will use 
 Type=str
 Categories=service-mail
 
+[mail/postfix/tls/client/policy/.*]
+Description[de]=Einträge in der SMTP client TLS policy Tabelle (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Um MX DNS looks zu unterdrücken, muss "/nomx" an den Schlüssel angehängt werden (z.B. mail/postfix/tls/client/policy/127.0.0.1:10024/nomx=none).
+Description[en]=Entries in the SMTP client TLS policy table (see <http://www.postfix.org/TLS_README.html#client_tls_policy>). To disable MX DNS lookups, append "/nomx" to the key (e.g. mail/postfix/tls/client/policy/127.0.0.1:10024/nomx=none).
+Type=str
+Categories=service-mail
+
 [mail/postfix/tls/client/protocols]
 Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Client mit opportunistischer TLS-Verschlüsselung verwendet. (Standard ist: '!SSLv2') <http://www.postfix.org/postconf.5.html#smtp_tls_protocols>
 Description[en]=List of TLS protocols that the Postfix SMTP client will exclude or include with opportunistic TLS encryption. (default: '!SSLv2') <http://www.postfix.org/postconf.5.html#smtp_tls_protocols>

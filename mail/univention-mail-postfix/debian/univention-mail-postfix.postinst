@@ -63,7 +63,8 @@ univention-config-registry set \
 	mail/postfix/mastercf/options/smtps/smtpd_tls_wrappermode?yes \
 	mail/postfix/mastercf/options/smtps/smtpd_sasl_auth_enable?yes \
 	mail/postfix/mastercf/options/submission/smtpd_sasl_auth_enable?yes \
-	mail/postfix/mastercf/options/submission/smtpd_enforce_tls?yes
+	mail/postfix/mastercf/options/submission/smtpd_enforce_tls?yes \
+	mail/postfix/tls/client/policy/127.0.0.1:10024/nomx?none
 
 eval "$(univention-config-registry shell)"
 
@@ -113,11 +114,11 @@ univention-config-registry commit /etc/mailname
 univention-config-registry commit /etc/listfilter.secret
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
-	/etc/init.d/postfix restart
+	deb-systemd-invoke restart postfix.service
 fi
 
 # restart to activate new listener module
-/etc/init.d/univention-directory-listener crestart
+deb-systemd-invoke restart univention-directory-listener.service
 
 # reload cron
 invoke-rc.d cron reload

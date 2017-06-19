@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-mail-postfix
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Entries in the SMTP client TLS policy table (see
+   <http://www.postfix.org/TLS_README.html#client_tls_policy>)
+   can now be configured through the UCR variables
+   mail/postfix/tls/client/policy/.*.
+   A problem with the encryption settings if relaying is fixed
+   through this (Bug #44811).
+bug: [44811]

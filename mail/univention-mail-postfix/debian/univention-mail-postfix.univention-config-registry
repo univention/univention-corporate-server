@@ -451,3 +451,7 @@ Mode: 0440
 Type: file
 File: etc/cron.d/univention-mail-postfix
 Variables: mail/postfix/cron/recreate/dh/parameter
+
+Type: file
+File: etc/postfix/tls_policy
+Variables: mail/postfix/tls/client/policy/.*
