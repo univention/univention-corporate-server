@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * IPV6 support for allowed_hosts has been added.
 bug: [44454]
+erratum: 47
+announced: 2017-06-19
