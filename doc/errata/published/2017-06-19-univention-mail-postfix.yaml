@@ -14,3 +14,5 @@ desc: |
    A problem with the encryption settings introduced by erratum 36
    has been fixed by this erratum (Bug #44811).
 bug: [44811]
+erratum: 49
+announced: 2017-06-19
