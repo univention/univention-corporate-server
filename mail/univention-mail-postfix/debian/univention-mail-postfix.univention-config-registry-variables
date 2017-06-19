@@ -210,8 +210,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/level]
-Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung durch den SMTP-Client (ausgehende Verbindungen): 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben. Der Standard ist 'may', wenn die UCR-Variable nicht gesetzt. Sonderfall: ist mail/relayhost gesetzt, mail/relayauth auf "yes" gesetzt und die UCR-Variable enthält NICHT den Wert "none", wird der Level 'encrypt' verwendet.
-Description[en]=This variable configures the use of TLS encryption by the SMTP client (outgoing connections): 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>. The default is 'may' if the variable is unset. Special case: if mail/relayhost is set, mail/relayauth ist set to 'yes' and the UCR variable does NOT contain the value 'none', the encryption level 'encrypt' is used.
+Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung durch den SMTP-Client (ausgehende Verbindungen): 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben. Der Standard ist 'may', wenn die UCR-Variable nicht gesetzt. Eine zielabhängige Konfiguration ist möglich durch das Setzen von mail/postfix/tls/client/policy/.*.
+Description[en]=This variable configures the use of TLS encryption by the SMTP client (outgoing connections): 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>. The default is 'may' if the variable is unset. A target dependent configuration is possible by setting mail/postfix/tls/client/policy/.*.
 Type=str
 Categories=service-mail
 
@@ -236,6 +236,12 @@ Categories=service-mail
 [mail/postfix/tls/client/exclude_ciphers]
 Description[de]=Liste der Verschlüsselungstypen, die aus der SMTP-Client Cipher Liste auf allen TLS Sicherheitsstufen ausgenommen sind, siehe <http://www.postfix.org/postconf.5.html#smtp_tls_exclude_ciphers>. Standard ist "RC4, aNULL"
 Description[en]=List of ciphers or cipher types to exclude from the Postfix SMTP client cipher list at all TLS security levels as described in <http://www.postfix.org/postconf.5.html#smtp_tls_exclude_ciphers>. Defaults to "RC4, aNULL"
+Type=str
+Categories=service-mail
+
+[mail/postfix/tls/policy/maps]
+Description[de]=Liste der Tabellen mit der SMTP-Client TLS Sicherheitsrichtlinie (siehe smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Standard, wenn nicht gesetzt, ist "hash:/etc/postfix/tls_policy".
+Description[en]=List of lookup tables with the Postfix SMTP client TLS security policy (see smtp_tls_policy_maps: <http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps>). Defaults if empty to "hash:/etc/postfix/tls_policy".
 Type=str
 Categories=service-mail
 
