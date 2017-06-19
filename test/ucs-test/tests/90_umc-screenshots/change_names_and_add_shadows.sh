@@ -55,3 +55,7 @@ adapt_for_manual -i "portal_$LANGUAGE.png" -o "manual/portal_$LANGUAGE.png"
 adapt_for_manual -i "umc-favorites_$LANGUAGE.png" -o "manual/umc-favorites-tab_$LANGUAGE.png" -s
 adapt_for_manual -i "umc-ldap_$LANGUAGE.png" -o "manual/umc_navigation_$LANGUAGE.png" -s
 adapt_for_manual -i "umc-login_cropped_$LANGUAGE.png" -o "manual/umc_login_$LANGUAGE.png" -s
+adapt_for_manual -i "umc-users-add_dialog_$LANGUAGE.png" -o "manual/users_user_$LANGUAGE.png" -s
+adapt_for_manual -i "umc-users-details_$LANGUAGE.png" -o "manual/users_user_advanced_$LANGUAGE.png" -s
+adapt_for_manual -i "umc-users-template_$LANGUAGE.png" -o "manual/users_usertemplate_$LANGUAGE.png" -s
+adapt_for_manual -i "umc-users_$LANGUAGE.png" -o "manual/umc_user_$LANGUAGE.png" -s
