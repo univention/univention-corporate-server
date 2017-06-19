@@ -34,6 +34,7 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The configuration file of <package>univention-net-installer</package> has been upgraded to use the Apache 2.4 syntax (<u:bug>44213</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -259,6 +260,12 @@
 					<property>AdditionalPackages</property> defined by the App are no longer removed when
 					uninstalling an app (<u:bug>44778</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The cron job for the updater check has been deactivated in <package>univention-docker-container-mode</package> (<u:bug>44630</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A template for dockerd proxy settings has been added (<u:bug>44536</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -311,6 +318,35 @@
 				<listitem><simpara>
 					The package <package>univention-self-service-master</package> is now also downloaded
 					while preparing an appliance (<u:bug>44284</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-samba</package> is now also downloaded
+					while preparing an appliance (<u:bug>44522</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A cleanup script used in Univention App Appliances has
+					been adapted for UCS 4.2 (<u:bug>44575</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					IP address changes are now also applied to portal entries (<u:bug>43671</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When selecting fast demo mode in an App Appliance, all IP
+					addresses in LDAP are reconfigured to the correct address (<u:bug>43140</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The overview of changed network settings doesn't show HTML code anymore (<u:bug>41204</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The decision between joining systems into UCS or Active Directory domains
+					was confusing and has been improved (<u:bug>44035</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A crash is prevented when trying to join into an Active Directory domain
+					and the Active Directory server is not reachable (<u:bug>44394</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A crash is prevented in appliance scenarios if no domain name was entered (<u:bug>43273</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -592,6 +628,12 @@
 					to "encrypt", unless <envar>mail/postfix/tls/client/level</envar> is set to "none"
 					(<u:bug>44589</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Entries in the SMTP client TLS policy table
+					can now be configured for each domain or mail exchanger
+					individually through the UCR variables
+					<envar>mail/postfix/tls/client/policy/.*</envar> (<u:bug>44811</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -616,6 +658,7 @@
 			<title>Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
+					IPV6 support for allowed hosts has been added (<u:bug>44454</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -624,7 +667,7 @@
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Expired user accounts from Active Directory are now able to change
+					User accounts from Active Directory are now able to change
 					their expired password via UMC (<u:bug>43859</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -645,6 +688,9 @@
 					When switching to UCS 4.2 the program name of squid's Kerberos
 					authentication handler has changed. The authentication helper of
 					<package>univention-squid</package> has been changed accordingly (<u:bug>44287</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Allow IPv6 addresses in UCR variable <envar>squid/allowfrom</envar> (<u:bug>29576</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
