@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test smart host configuration
+## desc: Test smart host configuration *without* authentication
 ## exposure: dangerous
 ## versions:
 ##  4.1-0: skip

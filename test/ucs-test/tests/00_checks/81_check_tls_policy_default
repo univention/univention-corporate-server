@@ -1,0 +1,16 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test default entries for smtp_tls_policy_map
+## tags: [apptest]
+## exposure: safe
+## packages:
+##   - univention-config
+##   - univention-mail-postfix
+
+import univention.testing.utils as utils
+
+if __name__ == '__main__':
+	entry = '[127.0.0.1]:10024 none'
+	fn = '/etc/postfix/tls_policy'
+	content = open(fn).read()
+	if entry not in content:
+		utils.fail('Could not find default amavis TLS policy entry %r in %r' % (entry, fn))

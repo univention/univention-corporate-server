@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test smtp_tls_policy_map via UCR
+## tags: [apptest]
+## exposure: unsafe
+## packages:
+##   - univention-config
+##   - univention-mail-postfix
+
+import univention.testing.utils as utils
+import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
+
+
+def test_tls_policy(value):
+	content = open('/etc/postfix/tls_policy').read()
+	return '\n%s\n' % (value,) in content
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+
+		for key, value in [
+			# domainname
+			('mail/postfix/tls/client/policy/1', 'univention.de encrypt'),
+			('mail/postfix/tls/client/policy/2', 'univention.org:2525 none'),
+			# hostname
+			('mail/postfix/tls/client/policy/3', '[hostnameB.test.univention.de may'),
+			('mail/postfix/tls/client/policy/4', '[hostnameD.test.univention.de]:25025 encrypt'),
+			# address ipv4
+			('mail/postfix/tls/client/policy/5', '[127.1.0.1] may'),
+			('mail/postfix/tls/client/policy/6', '[127.2.0.1] none'),
+			# address ipv6
+			('mail/postfix/tls/client/policy/7', '[2001:db8:0:0:0:0:1:1] may'),
+			('mail/postfix/tls/client/policy/8', '[2001:db8:0:0:0:0:2:1]:2225 encrypt'),
+			# address ipv6
+			('mail/postfix/tls/client/policy/9', '[ipv6:2001:db8:0:0:0:0:3:1] may'),
+			('mail/postfix/tls/client/policy/10', '[ipv6:2001:db8:0:0:0:0:4:1]:2225 encrypt'),
+		]:
+			handler_set(['%s=%s' % (key, value)])
+			if not test_tls_policy(value):
+				utils.fail('%r could not be found in /etc/postfix/tls_policy' % (value,))
+
+		# set relay host and activate authentication
+		handler_set([
+			'mail/relayhost=mx.example.com',
+			'mail/relayauth=yes'
+		])
+		value = 'mx.example.com encrypt'
+		if not test_tls_policy(value):
+			utils.fail('(1) Automatic smarthost entry (%r) could not be found in /etc/postfix/tls_policy' % (value,))
+
+		# Set policy for MX that uses a "longer" FQDN (foo.mx.example.com) than the smarthost (mx.example.com).
+		# The automatic default entry for the smarthost should still remain in the target file.
+		handler_set(['mail/postfix/tls/client/policy/foobar=foo.mx.example.com may'])
+		if not test_tls_policy(value):
+			utils.fail('(2) Automatic smarthost entry (%r) could not be found in /etc/postfix/tls_policy' % (value,))
+
+		value = 'mx.example.com may'
+		handler_set(['mail/postfix/tls/client/policy/foobar=%s' % (value,)])
+		if not test_tls_policy(value):
+			utils.fail('Smarthost entry (%r) could not be found in /etc/postfix/tls_policy' % (value,))
