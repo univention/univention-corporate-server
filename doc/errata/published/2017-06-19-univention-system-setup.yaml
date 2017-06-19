@@ -20,3 +20,5 @@ desc: |
    and the active directory server is not reachable.
  * A crash is prevented in appliance scenarios if no domain name was entered.
 bug: [44522,44575,43671,43140,41204,44035,44394,43273]
+erratum: 50
+announced: 2017-06-19
