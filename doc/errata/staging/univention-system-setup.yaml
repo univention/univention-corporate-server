@@ -10,9 +10,9 @@ desc: |
    while preparing an appliance.
  * A cleanup script used in Univention App Appliances has
    been adapted for UCS 4.2.
- * IP address changes are now also applied to portal entries
+ * IP address changes are now also applied to portal entries.
  * When selecting fast demo mode in an App Appliance, all IP
-   addresses in LDAP are reconfigured to the correct address
+   addresses in LDAP are reconfigured to the correct address.
  * The overview of changed network settings doesn't show HTML code anymore.
  * The decision between joining systems into UCS or Active Directory domains
    was confusing and has been improved.
