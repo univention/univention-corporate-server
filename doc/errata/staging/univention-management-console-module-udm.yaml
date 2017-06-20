@@ -8,9 +8,11 @@ desc: |
  This update addresses the following issue(s):
  * Objects can now be copied.
  * The generation of reports has been optimized.
- * Adapt styling of the policy tab
+ * Adapt styling of the policy tab.
  * Correctly normalize umlauts and special characters
-   for the umlauts modifier in templates
+   for the umlauts modifier in templates.
  * Hidden objects are no longer shown by default in
-   an multi object select widget
-bug: [1567, 39239, 44066, 44370, 44044]
+   an multi object select widget.
+ * Show a warning if a user name is too long to be usable for
+   a login on Windows clients.
+bug: [1567, 39239, 44066, 44370, 44044, 34973]
