@@ -1,3 +1,10 @@
+univention-web (1.0.42-19) unstable; urgency=medium
+
+  * Bug #44044: Do not show hidden objects in MultiObjectSelect widgets
+    by default
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 19:19:37 +0200
+
 univention-web (1.0.42-18) unstable; urgency=medium
 
   * Bug #44066: Adapt styling of buttons in policy tab to UCS 4.2 design
