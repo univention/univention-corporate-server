@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-5) unstable; urgency=medium
+
+  * Bug #44370: Add missing basic latin umlauts for the 'umlauts' modifier
+    in templates
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 18:57:51 +0200
+
 univention-management-console-module-udm (7.0.10-4) unstable; urgency=medium
 
   * Bug #39239: improove report creation
