@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * Group and user objects can now be copied in UMC.
-bug: [1567]
+ * Correctly normalize umlauts and special characters
+   for the umlauts modifier in templates
+bug: [1567, 44370]
