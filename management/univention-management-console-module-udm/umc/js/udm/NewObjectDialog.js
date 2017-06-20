@@ -41,8 +41,9 @@ define([
 	"umc/modules/udm/cache",
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/modules/udm/NotificationText",
+	"umc/modules/udm/UsernameMaxLengthChecker",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, NotificationText, _) {
+], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, NotificationText, UsernameMaxLengthChecker, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -215,6 +216,9 @@ define([
 							properties: detailsValues.properties,
 							autoHeight: true
 						});
+						if (this.moduleFlavor === 'users/user') {
+							new UsernameMaxLengthChecker({textBoxWidget: createWizard.getWidget('username')});
+						}
 						// insert at position 1. If another createWizard is added
 						//   (after successfully saving the object) that
 						//   wizard is also insert at 1, and removing this createWizard will

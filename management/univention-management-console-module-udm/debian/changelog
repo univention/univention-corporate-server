@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-7) unstable; urgency=medium
+
+  * Bug #34973: Show a warning if a user name has more than 20 characters
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 19:30:03 +0200
+
 univention-management-console-module-udm (7.0.10-6) unstable; urgency=medium
 
   * Bug #44044: Do not show hidden objects in MultiObjectSelect widgets

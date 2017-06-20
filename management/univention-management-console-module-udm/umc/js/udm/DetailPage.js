@@ -58,11 +58,12 @@ define([
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
 	"umc/modules/udm/UMCPBundle",
+	"umc/modules/udm/UsernameMaxLengthChecker",
 	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -1138,6 +1139,9 @@ define([
 
 			// render widgets and full layout
 			var widgets = render.widgets(properties, this);
+			if (this.moduleFlavor === 'users/user' && widgets.username) {
+				this.usernameMaxLengthChecker = new UsernameMaxLengthChecker({textBoxWidget: widgets.username});
+			}
 			this._autoUpdateTabTitle(widgets);
 			this._renderSubTabs(widgets, layout, metaInfo).then(lang.hitch(this, function() {
 				this._renderPolicyTab(policies);
@@ -1782,6 +1786,25 @@ define([
 							dialog.alert(_('The changes have been successfully applied.'));
 							saveDeferred.resolve();
 						} else if (success) {
+							// show a warning notification if a user is saved
+							// and the user name is too long
+							var usernameChanged = false;
+							for (x = 0; x < data.result.length; x++) {
+								if (data.result[x].property === 'username') {
+									usernameChanged = true;
+									break;
+								}
+							}
+
+							var showWarning = this.moduleFlavor === 'users/user' && usernameChanged && this.usernameMaxLengthChecker.usernameTooLong();
+							if (showWarning) {
+								var messageData = {
+									'username': lang.replace(' {0}', [this._form.getWidget('username').get('value')]),
+									'length': this.usernameMaxLengthChecker.maxLength
+								};
+								dialog.warn(lang.replace(this.usernameMaxLengthChecker.warningMessageTemplate, messageData));
+							}
+
 							// everything ok, close page
 							this.onCloseTab();
 							this.onSave(result.$dn$, this.objectType);
