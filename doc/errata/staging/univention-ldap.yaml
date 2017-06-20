@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-ldap
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The LDAP attribute "univentionUDMPropertyCopyable" for extended
+   attributes has been added.
+bug: [1567]
