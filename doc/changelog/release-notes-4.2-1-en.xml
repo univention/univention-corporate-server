@@ -51,6 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
+				A forwarding of the e-mails can now be stored per mail user in the management system.
+			</para></listitem>
+			<listitem><para>
+				Changing the password via UMC has been improved. This allows users from a Microsoft
+				Active Directory domain to change their expired password, and more hints are displayed
+				if the change fails.
+			</para></listitem>
+			<listitem><para>
+				The IPv6 configuration options of the services on UCS have been improved in several
+				places, for example in the Nagios or proxy server configuration and the management system.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -92,7 +102,7 @@
 		<para>
 			It must be checked whether sufficient disk space is available.
 			A standard installation requires a minimum of 6 GB of disk space.
-			Depending on the scope of the existing installation, the update will require about another 2 GB of disk space for download and installation all packages.
+			Depending on the scope of the existing installation, the update will require about another 1 GB of disk space for download and installation all packages.
 		</para>
 
 		<para>
@@ -118,24 +128,6 @@
 		</para>
 
 		<para>
-			The packages <package>univention-log-collector-server</package> and <package>univention-log-collector-client</package> are no longer maintained. If these packages are installed, they should
-			be removed.
-		</para>
-
-		<para>
-			With &ucsUCS; 4.2 the <emphasis>OpenLDAP</emphasis> server by default denies the LDAP bind if 
-			passwords or the accounts are expired. This feature is not activated for systems updated
-			to &ucsUCS; 4.2. but can be activated by setting the &ucsUCRV; <envar>ldap/shadowbind</envar>
-			to <emphasis>true</emphasis>.
-		</para>
-
-		<para>
-			During the update the &ucsUCR; settings <envar>nameserver*</envar> and <envar>dns/forwarder*</envar> are checked and adjusted automatically to ensure that the <envar>nameserver*</envar> variables only contain DNS servers that know about the UCS domain.
-			This is done by running <command>/usr/share/univention-server/univention-fix-ucr-dns</command> once.
-			We recommend to check the values of these &ucsUCRV;s.
-		</para>
-
-		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>
 
@@ -143,20 +135,6 @@
 
 	<chapter id="relnotes:packages">
 		<title>Further notes on selected packages</title>
-
-		<section id="relnotes:qemu">
-			<title>QEMU issues</title>
-			<para>
-				For UCS-4.2 the package <package>qemu</package> has been updated from version 1.1 to version 2.8.
-				Currently this leads to problems with
-				<itemizedlist spacing="compact">
-					<listitem><simpara>live migrating virtual machines from old to new versions of QEMU.</simpara></listitem>
-					<listitem><simpara>restoring of snapshots of running virtual machines, which have been created with an older version of QEMU.</simpara></listitem>
-					<listitem><simpara>restoring the state of old running virtual machines, which haven been put into the state of <phrase>suspended to disk</phrase> with an older version of QEMU.</simpara></listitem>
-				</itemizedlist>
-				Univention is working on a solution and delegates to article <u:sdb>1384</u:sdb> for known temporary workarounds until then.
-			</para>
-		</section>
 
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>

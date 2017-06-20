@@ -51,6 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Eine Weiterleitung der E-Mails kann nun pro Mailbenutzer im Managementsystem hinterlegt werden.
+			</para></listitem>
+			<listitem><para>
+				Das Ändern des Passworts an UMC wurde verbessert. So können nun
+				auch Benutzer aus einer Microsoft Active Directory Domänen ihr abgelaufenes Passwort
+				ändern und es werden mehr Hinweise angezeigt, falls die Änderung fehlschlägt.
+			</para></listitem>
+			<listitem><para>
+				Die IPv6 Konfigurationsmöglichkeiten der Dienste auf UCS wurde an diversen Stellen
+				verbessert, bspw. in der Nagios, Proxy Server Konfiguration und im Managementsystem.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -94,7 +104,7 @@
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
 			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 2 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 1 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para> 
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
@@ -118,24 +128,6 @@
 		</para>
 
 		<para>
-			Die Pakete <package>univention-log-collector-server</package> und <package>univention-log-collector-client</package> werden nicht länger gepflegt. Sofern diese Pakete installiert sind, sollten diese 
-			entfernt werden.
-		</para>
-
-		<para>
-			In &ucsUCS; 4.2 verbietet der <emphasis>OpenLDAP</emphasis> Server standardmäßig den LDAP bind
-			falls Passwörter oder Accounts abgelaufen sind. Auf aktualisierten Systemen ist diese nicht
-			aktiviert, kann aber durch das Setzen der &ucsUCRV; <envar>ldap/shadowbind</envar> auf
-			<literal>true</literal> aktiviert werden.
-		</para>
-
-		<para>
-			Während des Updates werden die &ucsUCR; Einstellungen <envar>nameserver*</envar> und <envar>dns/forwarder*</envar> überprüft und automatisch korrigiert, um sicherzustellen, dass die <envar>nameserver*</envar> Variablen nur auf DNS Server verweisen, die die UCS-Domäne auflösen können.
-			Die automatisierte Korrektur geschieht einmalig durch Aufruf von <command>/usr/share/univention-server/univention-fix-ucr-dns</command>.
-			Wir empfehlen die Werte dieser &ucsUCRV;n zu prüfen.
-		</para>
-
-		<para>
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
 
@@ -143,20 +135,6 @@
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
-
-		<section id="relnotes:qemu">
-			<title>QEMU Angelegenheiten</title>
-			<para>
-				Für UCS-4.2 wurde die Version von <package>qemu</package> von Version 1.1 auf Version 2.8 aktualisiert.
-				Dies führt derzeit zu Problemen mit
-				<itemizedlist spacing="compact">
-					<listitem><simpara>der Live-Migration von alten zu neuen Versionen von QEMU.</simpara></listitem>
-					<listitem><simpara>dem Wiederherstellen von Snapshots von laufenden virtuellen Maschinen, die mit einer alten Versionen von QEMU erstellt wurden.</simpara></listitem>
-					<listitem><simpara>dem Wiederherstellen des Zustands einer laufenden virtuellen Maschine, die noch mit einer alten Version von QEMU in den Zustand <foreignphrase>suspended to disk</foreignphrase> versetzt wurde.</simpara></listitem>
-				</itemizedlist>
-				Univention arbeitet an einer Lösung und verweist bis dahin auf den Artikel <u:sdb>1384</u:sdb> für temporäre Lösungsmöglichkeiten.
-			</para>
-		</section>
 
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
