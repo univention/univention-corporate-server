@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-83) unstable; urgency=medium
+
+  * Bug #43816: Fix setting variable via tool
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Jun 2017 10:46:24 +0200
+
 univention-appcenter (5.0.23-82) unstable; urgency=medium
 
   * Bug #43816: Fix Show; ShowReadOnly

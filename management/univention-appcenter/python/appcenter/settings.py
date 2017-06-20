@@ -111,7 +111,7 @@ class Setting(TypedIniSectionObject):
 				settings_logger.error('Cannot write %s while %s is not running' % (self.name, app))
 				return
 			from univention.appcenter.actions import get_action
-			configure = get_action('configure')
+			configure = get_action('configure')()
 			configure._set_config_via_tool(app, {self.name: value})
 
 	def sanitize_value(self, app, value):
