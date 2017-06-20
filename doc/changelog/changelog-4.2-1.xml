@@ -39,7 +39,7 @@
 		</itemizedlist>
 	</section>
 
-
+	<!--
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
@@ -83,12 +83,14 @@
 			</itemizedlist>
 		</section>
 	</section>
+	-->
 
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
+	<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -101,6 +103,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+	-->
 
 			<section id="changelog:domain:openldap:schema">
 				<title>LDAP schema changes</title>
@@ -124,6 +127,7 @@
 				</itemizedlist>
 			</section>
 
+	<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
@@ -139,6 +143,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+	-->
 		</section>
 	</section>
 
@@ -351,6 +356,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:umc:update">
 			<title>Software update module</title>
 			<itemizedlist>
@@ -446,6 +452,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:umc:mail">
 			<title>Mail</title>
@@ -458,6 +465,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
 			<itemizedlist>
@@ -498,6 +506,7 @@
 			</itemizedlist>
 		</section>
 	</section>
+	-->
 
 
 	<section id="changelog:deployment">
@@ -513,6 +522,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 
+	<!--
 		<section id="changelog:deployment:pkgdb">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -528,6 +538,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
 
@@ -555,6 +566,7 @@
 	<section id="changelog:service">
 		<title>System services</title>
 
+	<!--
 		<section id="changelog:service:saml">
 			<title>SAML</title>
 			<itemizedlist>
@@ -562,6 +574,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:service:selfservice">
 			<title>Univention self service</title>
@@ -637,6 +650,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -644,6 +658,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:service:print">
 			<title>Printing services</title>
@@ -673,6 +688,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
@@ -680,6 +696,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:service:proxy">
 			<title>Proxy services</title>
@@ -695,6 +712,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -702,6 +720,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -714,6 +733,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:pam">
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
@@ -721,6 +741,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:service:radius">
 			<title>Radius</title>
@@ -739,6 +760,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:service:other">
 			<title>Other services</title>
 			<itemizedlist>
@@ -746,6 +768,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
 
@@ -761,6 +784,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
@@ -768,9 +792,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
 
+	<!--
 	<section id="changelog:container">
 		<title>Container Technologies</title>
 			<itemizedlist>
@@ -778,6 +804,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
+	-->
 
 
 	<section id="changelog:win">
@@ -875,6 +902,7 @@
 			</itemizedlist>
 		</section>
 
+	<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
@@ -882,6 +910,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 	</section>
 
 
