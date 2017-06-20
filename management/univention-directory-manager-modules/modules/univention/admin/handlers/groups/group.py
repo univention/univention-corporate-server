@@ -50,7 +50,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'groups/group'
-operations = ['add', 'edit', 'remove', 'search', 'move']
+operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 childs = 0
 short_description = _('Group')
 long_description = ''
@@ -113,7 +113,8 @@ property_descriptions = {
 		may_change=True,
 		identifies=False,
 		default=('2', []),
-		options=['samba']
+		options=['samba'],
+		copyable=True,
 	),
 	'sambaPrivileges': univention.admin.property(
 		short_description=_('Samba privilege'),
@@ -125,6 +126,7 @@ property_descriptions = {
 		dontsearch=False,
 		may_change=True,
 		identifies=False,
+		copyable=True,
 	),
 	'adGroupType': univention.admin.property(
 		short_description=_('AD group type'),
@@ -138,6 +140,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
@@ -150,6 +153,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'users': univention.admin.property(
 		short_description=_('Users'),
@@ -162,6 +166,7 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'hosts': univention.admin.property(
 		short_description=_('Hosts'),
@@ -175,6 +180,7 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'mailAddress': univention.admin.property(
 		short_description=_('Mail address'),
@@ -188,6 +194,7 @@ property_descriptions = {
 		dontsearch=False,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'memberOf': univention.admin.property(
 		short_description=_('Member of'),
@@ -200,6 +207,7 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'nestedGroup': univention.admin.property(
 		short_description=_('Groups'),
@@ -212,6 +220,7 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 		readonly_when_synced=True,
+		copyable=True,
 	),
 	'allowedEmailUsers': univention.admin.property(
 		short_description=_('Users that are allowed to send e-mails to the group'),
@@ -223,6 +232,7 @@ property_descriptions = {
 		may_change=True,
 		dontsearch=True,
 		identifies=False,
+		copyable=True,
 	),
 	'allowedEmailGroups': univention.admin.property(
 		short_description=_('Groups that are allowed to send e-mails to the group'),
@@ -234,6 +244,7 @@ property_descriptions = {
 		may_change=True,
 		dontsearch=True,
 		identifies=False,
+		copyable=True,
 	)
 }
 
