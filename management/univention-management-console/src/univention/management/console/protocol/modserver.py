@@ -207,10 +207,6 @@ class ModuleServer(Server):
 			exc = UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
 			etype = UMC_Error
 
-		self.__init_etype = etype
-		self.__init_exc = exc
-		self.__init_etraceback = etraceback
-
 		resp = Response(request)
 		resp.status = exc.status
 		resp.message = str(exc)
@@ -246,7 +242,7 @@ class ModuleServer(Server):
 			notifier.timer_add(shutdown_timeout, self._timed_out)
 			return
 
-		if not self.__handler:
+		if self.__init_etype:
 			notifier.timer_add(10000, self._timed_out)
 			raise self.__init_etype, self.__init_exc, self.__init_etraceback
 
@@ -290,8 +286,12 @@ class ModuleServer(Server):
 				try:
 					self.__handler.init()
 				except BaseException:
-					self.__handler = None
-					raise
+					etype, exc, etraceback = sys.exc_info()
+					self.__init_etype = etype
+					self.__init_exc = exc
+					self.__init_etraceback = etraceback
+					self.error_handling(msg, 'init', *sys.exc_info())
+					return
 
 			self.response(resp)
 			return
