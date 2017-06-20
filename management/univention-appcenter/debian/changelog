@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-84) unstable; urgency=medium
+
+  * Bug #43816: Unset variable if form widget is empty
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Jun 2017 13:11:10 +0200
+
 univention-appcenter (5.0.23-83) unstable; urgency=medium
 
   * Bug #43816: Fix setting variable via tool

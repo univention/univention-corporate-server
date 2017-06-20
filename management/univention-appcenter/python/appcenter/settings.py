@@ -120,7 +120,10 @@ class Setting(TypedIniSectionObject):
 		return value
 
 	def value_for_setting(self, app, value):
-		return str(value)
+		value = str(value)
+		if value == '':
+			return None
+		return value
 
 
 class StringSetting(Setting):
@@ -132,6 +135,11 @@ class IntSetting(Setting):
 		super(IntSetting, self).sanitize_value(app, value)
 		if value is not None:
 			return int(value)
+
+	def value_for_setting(self, app, value):
+		if value is None:
+			return None
+		return super(IntSetting, self).value_for_setting(app, value)
 
 
 class BoolSetting(Setting):
