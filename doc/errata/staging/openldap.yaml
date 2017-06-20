@@ -3,7 +3,7 @@ release: "4.2"
 version: [0,1]
 scope: ucs_4.2-0-errata4.2-1
 src: openldap
-fix: 2.4.42+dfsg-2A~4.2.0.201706201906
+fix: 2.4.42+dfsg-2.A~4.2.0.201706201914
 desc: |
  This update addresses the following issue:
  * A user with access to search the directory could crash slapd by issuing
