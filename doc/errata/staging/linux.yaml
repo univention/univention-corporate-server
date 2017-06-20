@@ -10,15 +10,7 @@ desc: |-
  * tty: n_hdlc: get rid of racy n_hdlc.tbuf (CVE-2017-2636)
  * ucount: Remove the atomicity from ucount->count (CVE-2017-6874)
  * USB: iowarrior: fix NULL-deref at probe (CVE-2016-2188)
- * xfrm_user: validate XFRM_MSG_NEWAE XFRMA_REPLAY_ESN_VAL replay_window
-   (CVE-2017-7184)
- * xfrm_user: validate XFRM_MSG_NEWAE incoming ESN size harder (CVE-2017-7184)
  * scsi: sg: check length passed to SG_NEXT_CMD_LEN (CVE-2017-7187)
- * [x86] vmwgfx: NULL pointer dereference in vmw_surface_define_ioctl()
-   (CVE-2017-7261)
- * [x86] drm/vmwgfx: fix integer overflow in vmw_surface_define_ioctl()
-   (CVE-2017-7294)
- * net/packet: Fix integer overflow in various range checks (CVE-2017-7308)
  * The built-in keyrings for security tokens can be joined as a session and
    then modified by the root user (CVE-2016-9604)
  * The nested_vmx_check_vmptr function in arch/x86/kvm/vmx.c improperly
@@ -123,9 +115,24 @@ desc: |-
  * crypto: skcipher - Add missing API setkey checks (CVE-2017-9211)
  * drm/vmwgfx: limit the number of mip levels in vmw_gb_surface_define_ioctl()
    (CVE-2017-7346)
- * ipv6: Prevent overrun when parsing v6 header options (CVE-2017-9074)
  * drm/vmwgfx: Make sure backup_handle is always valid (CVE-2017-9605)
  * infoleak due to a data race in ALSA timer (CVE-2017-1000380)
+ * A buffer overflow flaw was discovered in the trace subsystem
+   (CVE-2017-0605)
+ * The NFSv2 and NFSv3 server implementations do not properly handle payload
+   bounds checking of WRITE requests. A remote attacker with write access to a
+   NFS mount can take advantage of this flaw to read chunks of arbitrary
+   memory from both kernel-space and user-space (CVE-2017-7895)
+ * The io_ti USB serial driver could leak sensitive information if a malicious
+   USB device was connected (CVE-2017-8924)
+ * A reference counter leak in the omninet USB serial driver, resulting in a
+   use-after-free vulnerability. This can be triggered by a local user
+   permitted to open tty devices (CVE-2017-8925)
+ * The stack guard page is not sufficiently large. The stack-pointer can jump
+   over the guard-page and moving from the stack into another memory region
+   without accessing the guard-page. In this case no page-fault exception is
+   raised and the stack extends into the other memory region. An attacker can
+   exploit this flaw for privilege escalation (CVE-2017-1000364)
 note: This is the first part of the update.
 bug: [44416]
 cve:
@@ -164,6 +171,10 @@ cve:
 - CVE-2017-9242
 - CVE-2017-9211
 - CVE-2017-7346
-- CVE-2017-9074
 - CVE-2017-9605
 - CVE-2017-1000380
+- CVE-2017-0605
+- CVE-2017-7895
+- CVE-2017-8924
+- CVE-2017-8925
+- CVE-2017-1000364
