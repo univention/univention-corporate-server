@@ -51,3 +51,9 @@ Description[de]=Die Variable deaktiviert die Sicherheitsspezifischen Restriktion
 Description[en]=This variable deactivates the security related restrictions against XSRF attacks in the UMC-Server. This is necessary for UCS 4.1 systems in the domain to communicate with UCS 4.2 systems.
 Type=bool
 Categories=management-umc
+
+[umc/server/ssl/ciphers]
+Description[de]=Diese Variable spezifiziert die SSL Cipher Liste, die für SSL Verbindungen akzeptiert und genutzt wird.
+Description[en]=This variable specifies the SSL cipher list which is accepted and used for ssl connections.
+Type=str
+Categories=management-umc

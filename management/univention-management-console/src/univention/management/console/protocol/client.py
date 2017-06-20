@@ -42,6 +42,7 @@ from univention.lib.i18n import Translation
 from .message import Request, Response, IncompleteMessageError, ParseError
 from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SUCCESS, status_description
 from ..log import CORE, PROTOCOL
+from ..config import ucr
 from OpenSSL import SSL
 
 import notifier
@@ -97,8 +98,10 @@ class Client(signals.Provider, Translation):
 		self.__ssl = ssl
 		self.__unix = unix
 		if self.__ssl and not self.__unix:
-			self.__crypto_context = SSL.Context(SSL.SSLv23_METHOD)
-			self.__crypto_context.set_cipher_list('DEFAULT')
+			self.__crypto_context = SSL.Context(SSL.TLSv1_METHOD)
+			self.__crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
+			self.__crypto_context.set_options(SSL.OP_NO_SSLv2)
+			self.__crypto_context.set_options(SSL.OP_NO_SSLv3)
 			self.__crypto_context.set_verify(SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb)
 			try:
 				self.__crypto_context.load_verify_locations(os.path.join('/etc/univention/ssl/ucsCA', 'CAcert.pem'))

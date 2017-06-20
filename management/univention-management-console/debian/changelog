@@ -1,5 +1,7 @@
 univention-management-console (9.0.80-47) unstable; urgency=medium
 
+  * Bug #40998: disable SSLv3 in UMC server and client; make tls ciphers
+  	configurable
   * Bug #39963: handle CONNECT_ERROR
   * Bug #44670: fix error handling during module initialization
 
