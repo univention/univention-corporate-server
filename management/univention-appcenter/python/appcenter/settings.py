@@ -87,7 +87,7 @@ class Setting(TypedIniSectionObject):
 		else:
 			if not app_is_running(app):
 				settings_logger.error('Cannot read %s while %s is not running' % (self.name, app))
-				return
+				return self.get_initial_value()
 			from univention.appcenter.actions import get_action
 			configure = get_action('configure')
 			ucr = configure._get_app_ucr(app)
@@ -120,6 +120,8 @@ class Setting(TypedIniSectionObject):
 		return value
 
 	def value_for_setting(self, app, value):
+		if value is None:
+			return None
 		value = str(value)
 		if value == '':
 			return None
@@ -135,11 +137,6 @@ class IntSetting(Setting):
 		super(IntSetting, self).sanitize_value(app, value)
 		if value is not None:
 			return int(value)
-
-	def value_for_setting(self, app, value):
-		if value is None:
-			return None
-		return super(IntSetting, self).value_for_setting(app, value)
 
 
 class BoolSetting(Setting):

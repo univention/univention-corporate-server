@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-85) unstable; urgency=medium
+
+  * Bug #43816: Initial value for Install variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Jun 2017 14:05:41 +0200
+
 univention-appcenter (5.0.23-84) unstable; urgency=medium
 
   * Bug #43816: Unset variable if form widget is empty
