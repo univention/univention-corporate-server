@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * Adapt styling of the policy tab
-bug: [44066]
+ * Hidden objects are no longer shown by default in
+   an multi object select widget
+bug: [44066, 44044]

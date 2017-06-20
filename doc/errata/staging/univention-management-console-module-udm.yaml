@@ -11,4 +11,6 @@ desc: |
  * Adapt styling of the policy tab
  * Correctly normalize umlauts and special characters
    for the umlauts modifier in templates
-bug: [1567, 39239, 44066, 44370]
+ * Hidden objects are no longer shown by default in
+   an multi object select widget
+bug: [1567, 39239, 44066, 44370, 44044]
