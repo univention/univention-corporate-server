@@ -1,5 +1,6 @@
 univention-management-console (9.0.80-47) unstable; urgency=medium
 
+  * Bug #39963: handle CONNECT_ERROR
   * Bug #44670: fix error handling during module initialization
 
  -- Florian Best <best@univention.de>  Tue, 20 Jun 2017 18:57:28 +0200

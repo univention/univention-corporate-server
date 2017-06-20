@@ -126,7 +126,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR, MODUL
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
-from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown
+from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed
 
 _ = Translation('univention.management.console').translate
 
@@ -292,6 +292,8 @@ class Base(signals.Provider, Translation):
 			exc = exc.original_exception
 		if isinstance(exc, ldap.SERVER_DOWN):
 			raise LDAP_ServerDown()
+		if isinstance(exc, ldap.CONNECT_ERROR):
+			raise LDAP_ConnectionFailed(exc)
 
 	def __error_handling(self, request, method, etype, exc, etraceback):
 		message = ''

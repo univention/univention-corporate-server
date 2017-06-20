@@ -131,3 +131,21 @@ class LDAP_ServerDown(UMC_Error):
 		# yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
 		# yield ' * /var/log/univention/management-console-server.log'
 		# yield ' * /var/log/univention/management-console-module-*.log'
+
+
+class LDAP_ConnectionFailed(LDAP_ServerDown):
+
+	def __init__(self, exc):
+		self.exc = exc
+		super(LDAP_ConnectionFailed, self).__init__()
+
+	def _error_msg(self):
+		yield _('Cannot connect to the LDAP service.')
+		yield _('Error message: %s') % (self.exc.args[0].get('info', ''),)
+		yield _('The following steps can help to solve this problem:')
+		if not self._is_master:
+			yield ' * ' + _('Make sure the domain controller master is running and reachable from %s') % (self._fqdn,)
+		yield ' * ' + _('Check the SSL certificates, proxy and firewall settings.')
+		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "service slapd restart" on command line or with the UMC module "System services"')
+		if self._updates_available:
+			yield ' * ' + _('Install the latest software updates')

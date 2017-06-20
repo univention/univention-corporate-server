@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-05-18 18:09+0200\n"
+"POT-Creation-Date: 2017-06-20 18:58+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -21,7 +21,7 @@ msgstr "%d Fehler aufgetreten"
 msgid "%s can only be used as UPLOAD"
 msgstr "%s kann nur als UPLOAD genutzt werden"
 
-#: univention/management/console/base.py:312
+#: univention/management/console/base.py:314
 #, python-format
 msgid "An option passed to %(method)s has the wrong type: %(exc)s"
 msgstr "Eine Option für %(method)s hat den falschen Typ: %(exc)s"
@@ -49,6 +49,7 @@ msgid "Cannot be converted to a number"
 msgstr "Kann nicht in eine Zahl umgewandelt werden"
 
 #: univention/management/console/error.py:120
+#: univention/management/console/error.py:143
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
@@ -72,6 +73,10 @@ msgstr ""
 "Überprüfen Sie, ob auf diesem Server genügend Festplattenspeicher und "
 "Arbeitsspeicher (RAM) verfügbar sind"
 
+#: univention/management/console/error.py:148
+msgid "Check the SSL certificates, proxy and firewall settings."
+msgstr "Überprüfen Sie die SSL Zertifikate, Proxy- und Firewall-Einstellungen."
+
 #: univention/management/console/pam.py:339
 #, python-format
 msgid "Choose a password which does not match any of your last %s passwords."
@@ -93,11 +98,16 @@ msgid ""
 "\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
 msgstr ""
 
+#: univention/management/console/error.py:144
+#, python-format
+msgid "Error message: %s"
+msgstr "Fehlermeldung: %s"
+
 #: univention/management/console/protocol/definitions.py:74
 msgid "Error occurred during command processing"
 msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
 
-#: univention/management/console/base.py:321
+#: univention/management/console/base.py:323
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -140,6 +150,7 @@ msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 
 #: univention/management/console/error.py:129
+#: univention/management/console/error.py:151
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
@@ -165,6 +176,7 @@ msgid "Invalid progress ID"
 msgstr "Ungültige Fortschritt ID"
 
 #: univention/management/console/error.py:125
+#: univention/management/console/error.py:147
 #, python-format
 msgid "Make sure the domain controller master is running and reachable from %s"
 msgstr ""
@@ -225,7 +237,7 @@ msgstr "Nicht gefunden"
 msgid "OK, operation successful"
 msgstr "OK, Operation erfolgreich"
 
-#: univention/management/console/base.py:314
+#: univention/management/console/base.py:316
 #, python-format
 msgid "One or more options to %(method)s are missing: %(exc)s"
 msgstr "Eine oder mehrere Optionen für %(method)s fehlen: %(exc)s"
@@ -251,6 +263,7 @@ msgid "Please wait for operation to finish"
 msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
 #: univention/management/console/error.py:127
+#: univention/management/console/error.py:149
 msgid ""
 "Restart the LDAP service on the domain controller master either via "
 "\"service slapd restart\" on command line or with the UMC module \"System "
@@ -292,7 +305,7 @@ msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden."
 msgid "The authentication has failed, please login again."
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 
-#: univention/management/console/base.py:316
+#: univention/management/console/base.py:318
 #, python-format
 msgid "The command has failed: %s"
 msgstr "Das Kommando ist fehlgeschlagen: %s"
@@ -306,6 +319,7 @@ msgid "The execution of a command caused a fatal error"
 msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
 
 #: univention/management/console/error.py:121
+#: univention/management/console/error.py:145
 msgid "The following steps can help to solve this problem:"
 msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 
