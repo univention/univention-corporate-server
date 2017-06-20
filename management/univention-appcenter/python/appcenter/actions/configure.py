@@ -38,6 +38,7 @@ from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_save
+from univention.appcenter.settings import SettingValueError
 
 
 class Configure(UniventionAppAction):
@@ -72,7 +73,10 @@ class Configure(UniventionAppAction):
 		for setting in settings:
 			variable = setting.to_dict()
 			variable['id'] = setting.name
-			variable['value'] = setting.get_value(app)
+			try:
+				variable['value'] = setting.get_value(app)
+			except SettingValueError:
+				variable['value'] = setting.get_initial_value()
 			variable['advanced'] = False
 			variables.append(variable)
 		return variables
@@ -80,13 +84,18 @@ class Configure(UniventionAppAction):
 	def _set_config(self, app, set_vars, args):
 		settings = app.get_settings()
 		other_settings = {}
+		together_config_settings = {}
 		for key, value in set_vars.iteritems():
 			for setting in settings:
 				if setting.name == key:
-					setting.set_value(app, value)
+					setting.set_value_together(app, value, together_config_settings)
 					break
 			else:
 				other_settings[key] = value
+		if together_config_settings.get('outside'):
+			ucr_save(together_config_settings['outside'])
+		if together_config_settings.get('inside'):
+			other_settings.update(together_config_settings['inside'])
 		if other_settings:
 			self._set_config_via_tool(app, other_settings)
 		if args.run_script != 'no':

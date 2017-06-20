@@ -37,7 +37,7 @@ import os.path
 
 from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save, ucr_run_filter
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter
 from univention.appcenter.ini_parser import TypedIniSectionObject, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionAttribute
 
 settings_logger = get_base_logger().getChild('settings')
@@ -83,11 +83,10 @@ class Setting(TypedIniSectionObject):
 	def get_value(self, app):
 		'''Get the current value for this Setting. Easy implementation'''
 		if self.is_outside(app):
-			value = ucr_get(self.name, self.get_initial_value())
+			value = ucr_get(self.name)
 		else:
 			if not app_is_running(app):
-				settings_logger.error('Cannot read %s while %s is not running' % (self.name, app))
-				return self.get_initial_value()
+				raise SettingValueError('Cannot read %s while %s is not running' % (self.name, app))
 			from univention.appcenter.actions import get_action
 			configure = get_action('configure')
 			ucr = configure._get_app_ucr(app)
@@ -98,21 +97,24 @@ class Setting(TypedIniSectionObject):
 			return self.get_initial_value()
 
 	def _log_set_value(self, app, value):
-		settings_logger.info('Setting %s to %r' % (self.name, value))
+		if value is None:
+			settings_logger.info('Unsetting %s' % self.name)
+		else:
+			settings_logger.info('Setting %s to %r' % (self.name, value))
 
-	def set_value(self, app, value):
+	def set_value(self, app, value, together_config_settings, part):
+		together_config_settings[part][self.name] = value
+
+	def set_value_together(self, app, value, together_config_settings):
 		value = self.sanitize_value(app, value)
 		value = self.value_for_setting(app, value)
 		self._log_set_value(app, value)
 		if self.is_outside(app):
-			ucr_save({self.name: value})
+			together_config_settings.setdefault('outside', {})
+			self.set_value(app, value, together_config_settings, 'outside')
 		if self.is_inside(app):
-			if not app_is_running(app):
-				settings_logger.error('Cannot write %s while %s is not running' % (self.name, app))
-				return
-			from univention.appcenter.actions import get_action
-			configure = get_action('configure')()
-			configure._set_config_via_tool(app, {self.name: value})
+			together_config_settings.setdefault('inside', {})
+			self.set_value(app, value, together_config_settings, 'inside')
 
 	def sanitize_value(self, app, value):
 		if self.required and value in [None, '']:
@@ -136,7 +138,10 @@ class IntSetting(Setting):
 	def sanitize_value(self, app, value):
 		super(IntSetting, self).sanitize_value(app, value)
 		if value is not None:
-			return int(value)
+			try:
+				return int(value)
+			except (ValueError, TypeError):
+				raise SettingValueError()
 
 
 class BoolSetting(Setting):
@@ -179,12 +184,13 @@ class FileSetting(Setting):
 		try:
 			if content:
 				settings_logger.debug('Writing to %s' % filename)
-				mkdir(os.path.dirname(self.filename))
-				with open(self.filename, 'wb') as fd:
+				mkdir(os.path.dirname(filename))
+				with open(filename, 'wb') as fd:
 					fd.write(content)
 			else:
 				settings_logger.debug('Deleting %s' % filename)
-				os.unlink(self.filename)
+				if os.path.exists(filename):
+					os.unlink(filename)
 		except EnvironmentError as exc:
 			settings_logger.error('Could not set content: %s' % exc)
 
@@ -193,14 +199,13 @@ class FileSetting(Setting):
 			return self._read_file_content(self.filename)
 		else:
 			if not app_is_running(app):
-				settings_logger.error('Cannot read %s while %s is not running' % (self.name, app))
-				return
+				raise SettingValueError('Cannot read %s while %s is not running' % (self.name, app))
 			from univention.appcenter.docker import Docker
 			docker = Docker(app)
 			return self._read_file_content(docker.path(self.filename))
 
-	def set_value(self, app, value):
-		if self.is_outside(app):
+	def set_value(self, app, value, together_config_settings, part):
+		if part == 'outside':
 			return self._write_file_content(self.filename, value)
 		else:
 			if not app_is_running(app):
@@ -224,6 +229,6 @@ class PasswordFileSetting(FileSetting, PasswordSetting):
 
 
 class StatusSetting(Setting):
-	def set_value(self, app, value):
+	def set_value(self, app, value, together_config_settings, part):
 		# do not set value via this function - has to be done directly
 		pass

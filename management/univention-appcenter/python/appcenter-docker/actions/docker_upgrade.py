@@ -130,14 +130,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._call_join_script(app, args)
 		self.old_app = app
 
-	def _get_config(self, app, args):
-		configure = get_action('configure')
-		config = configure.list_config(app)
-		set_vars = dict((var['id'], var['value']) for var in config)
-		if args.set_vars:
-			set_vars.update(args.set_vars)
-		return set_vars
-
 	def _upgrade_image(self, app, args):
 		docker = self._get_docker(app)
 
@@ -146,6 +138,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
+		Start.call(app=self.old_app)
+		old_vars = self._get_configure_settings(self.old_app, filter_action=False)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		if self._backup_container(self.old_app, backup_data='copy') is False:
@@ -153,12 +147,12 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
-		set_vars = self._get_config(self.old_app, args)
-		if args.set_vars:
-			args.set_vars.update(set_vars)
-		else:
-			args.set_vars = set_vars
+		old_configure = args.configure
+		args.configure = False
 		self._install_new_app(app, args)
+		args.configure = old_configure
+		args.set_vars = old_vars
+		self._configure(app, args)
 		self.log('Removing old container')
 		if old_container:
 			docker_rm(old_container)
@@ -168,7 +162,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def _upgrade_docker(self, app, args):
 		install = get_action('install')()
-		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
+		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_configure_settings(self.old_app, filter_action=False), send_info=False, skip_checks=['must_not_be_installed'])
 		if install.call_with_namespace(action_args):
 			remove = get_action('remove')()
 			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)

@@ -53,8 +53,8 @@ define([
 		title: _('App management'),
 
 		showUp: function() {
-			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id}).then(lang.hitch(this, function(values) {
-				this._showUp(values);
+			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id, phase: 'Settings'}).then(lang.hitch(this, function(data) {
+				this._showUp(data.result);
 			})));
 		},
 
@@ -64,7 +64,7 @@ define([
 			this.own(this._progressBar);
 		},
 
-		_showUp: function(values) {
+		_showUp: function(result) {
 			this._clearWidget('_container', true);
 
 			this.set('headerText', _('Configure %s', entities.encode(this.app.name)));
@@ -80,7 +80,11 @@ define([
 						serviceValues = this._serviceForm.get('value');
 					}
 					if (this._settingsForm) {
-						confValues = this._settingsForm.get('value');
+						tools.forIn(this._settingsForm.get('value'), lang.hitch(this, function(key, value) {
+							if (! this._settingsForm.getWidget(key).get('disabled')) {
+								confValues[key] = value;
+							}
+						}));
 					}
 					this.apply(serviceValues, confValues).then(lang.hitch(this, 'onBack', true));
 				})
@@ -96,7 +100,7 @@ define([
 
 			if (this.app.isDocker) {
 				var statusMessage = _('The application is currently not running.') + ' <strong>' + _('It can only be configured while it is running.') + '</strong>';
-				if (values.is_running) {
+				if (result.is_running) {
 					statusMessage = _('The application is currently running.');
 				}
 				var widgets = [{
@@ -108,7 +112,7 @@ define([
 					type: ComboBox,
 					label: _('Autostart'),
 					size: 'One',
-					value: values.autoStart,
+					value: result.autostart,
 					staticValues: [{
 						id: 'yes',
 						label: _('Started automatically')
@@ -122,14 +126,14 @@ define([
 				}];
 				var buttons = [{
 					name: 'start',
-					visible: !values.is_running,
+					visible: !result.is_running,
 					label: _('Start the application'),
 					callback: lang.hitch(this, function() {
 						this.startStop('start');
 					})
 				}, {
 					name: 'stop',
-					visible: values.is_running,
+					visible: result.is_running,
 					label: _('Stop the application'),
 					callback: lang.hitch(this, function() {
 						this.startStop('stop');
@@ -149,7 +153,7 @@ define([
 				this._serviceForm = null;
 			}
 
-			var form = AppSettings.getForm(this.app, values.result.values, 'Settings');
+			var form = AppSettings.getForm(this.app, result.values, 'Settings');
 			if (form) {
 					this._settingsForm = form;
 					this._container.addChild(this._settingsForm);

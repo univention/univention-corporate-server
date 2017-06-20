@@ -45,6 +45,7 @@ from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, ge
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
+from univention.appcenter.settings import SettingValueError
 
 
 class _AptLogger(object):
@@ -98,6 +99,7 @@ class InstallRemoveUpgrade(Register):
 		super(Register, self).setup_parser(parser)
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
+		parser.add_argument('--do-not-configure', action='store_false', dest='configure', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
 
@@ -294,18 +296,29 @@ class InstallRemoveUpgrade(Register):
 						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
 
-	def _configure(self, app, args, run_script=None):
-		if run_script is None:
-			run_script = self.get_action_name()
-		configure = get_action('configure')
-		set_vars = args.set_vars or {}
-		set_vars = set_vars.copy()
+	def _get_configure_settings(self, app, filter_action=True):
+		set_vars = {}
 		for setting in app.get_settings():
 			if setting.name in set_vars:
 				continue
-			if self.get_action_name().title() in setting.show:
-				set_vars[setting.name] = setting.get_initial_value()
-		configure.call(app=app, run_script=run_script, set_vars=args.set_vars)
+			if filter_action and self.get_action_name().title() not in setting.show:
+				continue
+			try:
+				value = setting.get_value(app)
+			except SettingValueError:
+				value = setting.get_initial_value()
+			set_vars[setting.name] = value
+		return set_vars
+
+	def _configure(self, app, args, run_script=None):
+		if not args.configure:
+			return
+		if run_script is None:
+			run_script = self.get_action_name()
+		configure = get_action('configure')
+		set_vars = (args.set_vars or {}).copy()
+		set_vars.update(self._get_configure_settings(app))
+		configure.call(app=app, run_script=run_script, set_vars=set_vars)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')

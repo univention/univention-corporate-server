@@ -100,12 +100,11 @@ define([
 					callback: lang.hitch(this, function() {
 						var values = {};
 						if (this._configForm) {
-							tools.forIn(this._configForm.get('value'), function(key, value) {
-								if (value === '') {
-									value = null;
+							tools.forIn(this._configForm.get('value'), lang.hitch(this, function(key, value) {
+								if (! this._configForm.getWidget(key).get('disabled')) {
+									values[key] = value;
 								}
-								values[key] = value;
-							});
+							}));
 						}
 						array.forEach(this.app.config, function(config) {
 							if (values[config.id] === undefined) {
@@ -129,15 +128,15 @@ define([
 		},
 
 		showConfiguration: function(funcName) {
-			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id}).then(lang.hitch(this, function(values) {
-				if (funcName == 'install') {
-					funcName = 'Install';
-				} else if (funcName == 'update') {
-					funcName = 'Upgrade';
-				} else if (funcName == 'uninstall') {
-					funcName = 'Remove';
-				}
-				var form = AppSettings.getForm(this.app, values, funcName);
+			if (funcName == 'install') {
+				funcName = 'Install';
+			} else if (funcName == 'update') {
+				funcName = 'Upgrade';
+			} else if (funcName == 'uninstall') {
+				funcName = 'Remove';
+			}
+			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id, phase: funcName}).then(lang.hitch(this, function(data) {
+				var form = AppSettings.getForm(this.app, data.result.values, funcName);
 				if (form) {
 					this._configForm = form;
 					this._container.addChild(this._configForm);

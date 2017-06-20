@@ -40,7 +40,7 @@ from univention.config_registry.backend import _ConfigRegistry
 
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.configure import Configure
-from univention.appcenter.utils import mkdir
+from univention.appcenter.utils import mkdir, app_is_running
 from univention.appcenter.ucr import ucr_save
 
 
@@ -70,6 +70,9 @@ class Configure(Configure, DockerActionMixin):
 	def _set_config_via_tool(self, app, set_vars):
 		if not app.docker:
 			return super(Configure, self)._set_config_via_tool(app, set_vars)
+		if not app_is_running(app):
+			self.warn('Cannot write settings while %s is not running' % app)
+			return
 		docker = self._get_docker(app)
 		if not docker.execute('which', 'ucr').returncode == 0:
 			self.warn('ucr cannot be found, falling back to changing the database file directly')
@@ -126,6 +129,6 @@ class Configure(Configure, DockerActionMixin):
 
 	def _run_configure_script(self, app, action):
 		success = super(Configure, self)._run_configure_script(app, action)
-		if success is not False and app.docker:
+		if success is not False and app.docker and app_is_running(app):
 			success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])
 		return success

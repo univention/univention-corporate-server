@@ -33,7 +33,7 @@ define([
 					_groupName: variable.group || _('Settings'),
 					required: variable.required,
 					label: variable.description,
-					disabled: (variable.show_read_only || []).indexOf(phase) !== -1,
+					disabled: (variable.show_read_only || []).indexOf(phase) !== -1 || values[variable.name] === undefined,
 					value: value
 				};
 				if (variable.type == 'String') {
