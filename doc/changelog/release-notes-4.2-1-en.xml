@@ -45,22 +45,22 @@
 
 		<para>
 			With Univention Corporate Server 4.2-1, the first point release of Univention Corporate Server (UCS) is now
-			available. It provides several substantial feature improvements and extensions, new properties as well as
+			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				A forwarding of the e-mails can now be stored per mail user in the management system.
+				Forwarding of e-mails can now be stored per mail user in the management system.
 			</para></listitem>
 			<listitem><para>
 				Changing the password via UMC has been improved. This allows users from a Microsoft
-				Active Directory domain to change their expired password, and more hints are displayed
-				if the change fails.
+				Active Directory domain to change their expired password. In addition, more information
+				is shown if the password change fails.
 			</para></listitem>
 			<listitem><para>
-				The IPv6 configuration options of the services on UCS have been improved in several
-				places, for example in the Nagios or proxy server configuration and the management system.
+				The IPv6 configuration of several services have been improved, for example
+				the Nagios or proxy server configuration and the management system.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

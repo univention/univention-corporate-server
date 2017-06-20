@@ -45,7 +45,7 @@
 
 		<para>
 			Mit Univention Corporate Server 4.2-1 steht das erste Point-Release für Univention Corporate Server (UCS) zur
-			Verfügung. Es umfasst eine Reihe umfangreicher Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
+			Verfügung. Es umfasst eine Reihe Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
@@ -56,11 +56,11 @@
 			<listitem><para>
 				Das Ändern des Passworts an UMC wurde verbessert. So können nun
 				auch Benutzer aus einer Microsoft Active Directory Domänen ihr abgelaufenes Passwort
-				ändern und es werden mehr Hinweise angezeigt, falls die Änderung fehlschlägt.
+				ändern. Zusätzlich werden mehr Hinweise angezeigt, falls die Passwort Änderung fehlschlägt.
 			</para></listitem>
 			<listitem><para>
-				Die IPv6 Konfigurationsmöglichkeiten der Dienste auf UCS wurde an diversen Stellen
-				verbessert, bspw. in der Nagios, Proxy Server Konfiguration und im Managementsystem.
+				Die IPv6 Konfigurationsmöglichkeiten diverser Dienste wurde verbessert, bspw. in
+				der Nagios oder Proxy Server Konfiguration und im Managementsystem.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
