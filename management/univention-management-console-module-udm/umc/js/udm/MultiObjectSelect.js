@@ -35,8 +35,9 @@ define([
 	"umc/tools",
 	"umc/widgets/MultiObjectSelect",
 	"umc/widgets/MixedInput",
+	"umc/widgets/CheckBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, tools, MultiObjectSelect, MixedInput, _) {
+], function(declare, lang, array, tools, MultiObjectSelect, MixedInput, CheckBox, _) {
 	return declare("umc.modules.udm.MultiObjectSelect", [ MultiObjectSelect ], {
 		// summary:
 		//		This class extends the normal MultiObjectSelect in order to encapsulate
@@ -133,6 +134,12 @@ define([
 				dynamicOptions: { objectType : this.objectType },
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				depends: [ 'objectProperty' ]
+			}, {
+				type: CheckBox,
+				name: 'hidden',
+				visible: true,
+				label: _('Include hidden objects'),
+				value: false
 			}];
 		}
 

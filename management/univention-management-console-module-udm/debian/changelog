@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-6) unstable; urgency=medium
+
+  * Bug #44044: Do not show hidden objects in MultiObjectSelect widgets
+    by default
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 19:13:20 +0200
+
 univention-management-console-module-udm (7.0.10-5) unstable; urgency=medium
 
   * Bug #44370: Add missing basic latin umlauts for the 'umlauts' modifier

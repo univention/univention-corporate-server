@@ -1113,7 +1113,8 @@ def _create_ldap_filter(syn, options, module=None):
 			filter_s = '(%s)' % filter_s
 		object_property = options.get('objectProperty')
 		object_property_value = options.get('objectPropertyValue')
-		property_filter_s = _object_property_filter(module, object_property, object_property_value)
+		show_hidden = options.get('hidden', True)
+		property_filter_s = _object_property_filter(module, object_property, object_property_value, show_hidden)
 		if property_filter_s and not property_filter_s.startswith('('):
 			# make sure that the LDAP filter is wrapped in brackets
 			property_filter_s = '(%s)' % property_filter_s
