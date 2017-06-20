@@ -6,7 +6,7 @@ src: univention-web
 fix: 
 desc: |
  This update addresses the following issue(s):
- * Adapt styling of the policy tab
+ * Adapt styling of the policy tab.
  * Hidden objects are no longer shown by default in
-   an multi object select widget
+   an multi object select widget.
 bug: [44066, 44044]
