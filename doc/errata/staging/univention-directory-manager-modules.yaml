@@ -8,5 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Group and user objects can now be copied in UMC.
  * Correctly normalize umlauts and special characters
-   for the umlauts modifier in templates
-bug: [1567, 44370]
+   for the umlauts modifier in templates.
+ * The DN of objects created with the CLI is now correctly shown.
+bug: [1567, 44370, 43150]
