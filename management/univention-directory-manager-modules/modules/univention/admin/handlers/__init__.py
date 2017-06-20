@@ -2729,17 +2729,17 @@ class simplePolicy(simpleLdap):
 
 	def create(self):
 		if not self.resultmode:
-			simpleLdap.create(self)
-			return
+			return simpleLdap.create(self)
 
 		self._exists = False
 		try:
 			self.oldinfo = {}
-			simpleLdap.create(self)
+			dn = simpleLdap.create(self)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
 		except univention.admin.uexceptions.objectExists:
 			self.__makeUnique()
-			self.create()
+			dn = self.create()
+		return dn
 
 	def policy_result(self, faked_policy_reference=None):
 		"""This method retrieves the policy values currently effective

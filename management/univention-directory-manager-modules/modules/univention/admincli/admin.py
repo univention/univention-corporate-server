@@ -818,8 +818,6 @@ def _doit(arglist):
 				else:
 					out.append('Object exists')
 			else:
-				if not dn:
-					dn = object.dn
 				out.append('Object created: %s' % _2utf8(dn))
 
 # +++# ACTION MODIFY #+++#
