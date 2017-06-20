@@ -224,23 +224,13 @@ define([
 
 			this.set('title', _('Creating the report ...'));
 
-			var request_data = {objects: this.objects, report: options.report};
-			this.standbyDuring(this.umcpCommand('udm/reports/create', request_data, this._form)).then(lang.hitch(this, function(data) {
-				var title = '';
-				var message = '';
-
+			this.standbyDuring(this.umcpCommand('udm/reports/create', {objects: this.objects, report: options.report}, this._form)).then(lang.hitch(this, function(data) {
 				this._container.removeChild(this._form);
 				this._container.removeChild(waiting);
 				waiting.destroy();
 
-				if (true === data.result.success) {
-					message = lang.replace('<p>{0}</p>', [_standbyDuringSuccessText(data.result.docType, data.result.URL)]);
-					title = _('Report has been created');
-				} else {
-					title = _('Report creation has failed');
-					message = _('The report could not be created. Details for the problems can be found in the log files.');
-				}
-				this.set('title', title);
+				var message = lang.replace('<p>{0}</p>', [_standbyDuringSuccessText(options.report, data.result.URL)]);
+				this.set('title', _('Report has been created'));
 				this._container.addChild(new Text({content: message}));
 
 				var btnContainer = new ContainerWidget({

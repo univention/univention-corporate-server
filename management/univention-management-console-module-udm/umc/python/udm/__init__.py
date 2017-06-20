@@ -51,7 +51,8 @@ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
-	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
+	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer,
+	DNSanitizer
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
@@ -588,62 +589,37 @@ class Instance(Base, ProgressMixin):
 
 	def reports_query(self, request):
 		"""Returns a list of reports for the given object type"""
-		self.finished(request.id, self.reports_cfg.get_report_names(request.flavor))
+		self.finished(request.id, sorted(self.reports_cfg.get_report_names(request.flavor)))
 
 	def sanitize_reports_create(self, request):
 		choices = self.reports_cfg.get_report_names(request.flavor)
 		return dict(
 			report=ChoicesSanitizer(choices=choices, required=True),
-			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
+			objects=ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1)
 		)
 
 	@sanitize_func(sanitize_reports_create)
 	def reports_create(self, request):
-		"""Creates a report for the given LDAP DNs and returns the file
-
-		requests.options = {}
-			'report' -- name of the report
-			'objects' -- list of LDAP DNs to include in the report
-
-		return: report file
-		"""
+		"""Creates a report for the given LDAP DNs and returns the URL to access the file"""
 
 		@LDAP_Connection
 		def _thread(request, ldap_connection=None, ldap_position=None):
-			udr.admin.connect(access=ldap_connection)
-			udr.admin.clear_cache()
-			cfg = udr.Config()
-			template = cfg.get_report(request.flavor, request.options['report'])
-			doc = udr.Document(template, header=cfg.get_header(request.flavor, request.options['report']), footer=cfg.get_footer(request.flavor, request.options['report']))
-			tmpfile = doc.create_source(request.options['objects'])
-			if doc._type == udr.Document.TYPE_LATEX:
-				doc_type = _('PDF document')
-				pdffile = doc.create_pdf(tmpfile)
-				os.unlink(tmpfile)
-			else:
-				doc_type = _('text file')
-				pdffile = tmpfile
+			report = udr.Report(ldap_connection)
 			try:
-				os.unlink(tmpfile[: -4] + 'aux')
-				os.unlink(tmpfile[: -4] + 'log')
-			except:
-				pass
-			if pdffile:
-				path = '/var/www/univention-directory-reports'
-				shutil.copy(pdffile, path)
-				os.unlink(pdffile)
+				report_file = report.create(request.flavor, request.options['report'], request.options['objects'])
+			except udr.ReportError as exc:
+				raise UMC_Error(str(exc))
 
-				www_data_user = pwd.getpwnam('www-data')
-				www_data_grp = grp.getgrnam('www-data')
-				filename = os.path.join(path, os.path.basename(pdffile))
-				os.chown(filename, www_data_user.pw_uid, www_data_grp.gr_gid)
-				os.chmod(filename, 0o644)
-				url = '/univention-directory-reports/%s' % os.path.basename(pdffile)
-				# link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module.name, request.options[ 'report' ] )
+			www_data_user = pwd.getpwnam('www-data')
+			www_data_grp = grp.getgrnam('www-data')
+			path = '/var/www/univention-directory-reports/'
+			filename = os.path.join(path, os.path.basename(report_file))
 
-				return {'success': True, 'count': len(request.options['objects']), 'URL': url, 'docType': doc_type}
-			else:
-				return {'success': False, 'count': 0, 'URL': None, 'docType': doc_type}
+			shutil.move(report_file, path)
+			os.chown(filename, www_data_user.pw_uid, www_data_grp.gr_gid)
+			os.chmod(filename, 0o644)
+			url = '/univention-directory-reports/%s' % os.path.basename(report_file)
+			return {'URL': url}
 
 		thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()

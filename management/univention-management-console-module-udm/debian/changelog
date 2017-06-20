@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-4) unstable; urgency=medium
+
+  * Bug #39239: improove report creation
+
+ -- Florian Best <best@univention.de>  Tue, 20 Jun 2017 18:53:36 +0200
+
 univention-management-console-module-udm (7.0.10-3) unstable; urgency=medium
 
   * Bug #44066: Adapt styling of buttons in policy tab to UCS 4.2 design
