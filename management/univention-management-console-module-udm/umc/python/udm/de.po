@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-11-01 17:24+0100\n"
+"POT-Creation-Date: 2017-06-20 19:09+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:325
+#: umc/python/udm/__init__.py:323
 #, python-format
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
@@ -22,7 +22,7 @@ msgstr "%($dn$)s verschoben"
 msgid "All IP addresses in the specified network \"%s\" are already in use."
 msgstr "Alle IP Adressen im gewählten Netzwerk \"%s\" sind schon in Benutzung."
 
-#: umc/python/udm/__init__.py:1232
+#: umc/python/udm/__init__.py:1243
 #, python-format
 msgid "An error occurred while contacting the license server: %s"
 msgstr "Ein Fehler beim kontaktieren des Lizenz-Servers ist aufgetreten: %s"
@@ -31,7 +31,7 @@ msgstr "Ein Fehler beim kontaktieren des Lizenz-Servers ist aufgetreten: %s"
 msgid "Authentication failed"
 msgstr "Authentifikation fehlgeschlagen"
 
-#: umc/python/udm/__init__.py:1193
+#: umc/python/udm/__init__.py:1204
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Could not identify the LDAP object type for %s."
 msgstr "Der LDAP-Objekttyp von %s konnte nicht identifiziert werden."
 
-#: umc/python/udm/__init__.py:333
+#: umc/python/udm/__init__.py:331
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
@@ -94,7 +94,7 @@ msgstr ""
 "Es wurde vermutlich gelöscht oder verschoben. Bitte erneuern Sie Ihre "
 "Suchergebnisse und versuchen Sie das Objekt erneut zu öffnen."
 
-#: umc/python/udm/__init__.py:312
+#: umc/python/udm/__init__.py:310
 #, python-format
 msgid "LDAP error: %s."
 msgstr "LDAP-Fehler: %s."
@@ -104,11 +104,11 @@ msgstr "LDAP-Fehler: %s."
 msgid "LDAP object %s could not be found."
 msgstr "Das LDAP-Objekt %s konnte nicht gefunden werden."
 
-#: umc/python/udm/__init__.py:429
+#: umc/python/udm/__init__.py:427
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:399
+#: umc/python/udm/__init__.py:397
 msgid "LDAP object does not exist."
 msgstr "Das LDAP-Objekt ist nicht vorhanden."
 
@@ -136,12 +136,12 @@ msgstr ""
 msgid "More than one object has been found."
 msgstr "Es wurde mehr als ein Objekt gefunden"
 
-#: umc/python/udm/__init__.py:325
+#: umc/python/udm/__init__.py:323
 #, python-format
 msgid "Moving %d object(s)"
 msgstr "Verschiebe %d Objekt(e)"
 
-#: umc/python/udm/__init__.py:205
+#: umc/python/udm/__init__.py:202
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 
@@ -149,13 +149,9 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:645
+#: umc/python/udm/udm_ldap.py:657
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
-
-#: umc/python/udm/__init__.py:609
-msgid "PDF document"
-msgstr "PDF Dokument"
 
 #: umc/python/udm/udm_ldap.py:183
 msgid ""
@@ -165,12 +161,12 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass "
 "ungenutzte IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:306 umc/python/udm/__init__.py:865
+#: umc/python/udm/udm_ldap.py:319 umc/python/udm/__init__.py:851
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:645
+#: umc/python/udm/udm_ldap.py:657
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
@@ -193,7 +189,7 @@ msgstr ""
 "Die LDAP-Basis der Lizenz stimmt nicht mit der LDAP-Basis der UCS-Domäne "
 "(%s) überein."
 
-#: umc/python/udm/__init__.py:329
+#: umc/python/udm/__init__.py:327
 msgid "The destination is missing"
 msgstr "Das Ziel fehlt"
 
@@ -210,13 +206,13 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %(expected)s, gefunden: %(found)s)."
 
-#: umc/python/udm/udm_ldap.py:320 umc/python/udm/udm_ldap.py:334
+#: umc/python/udm/udm_ldap.py:333 umc/python/udm/udm_ldap.py:347
 #, python-format
 msgid "The property %(property)s has an invalid value: %(value)s"
 msgstr ""
 "Die Eigenschaft '%(property)s' hat einen nicht gültigen Wert: %(value)s"
 
-#: umc/python/udm/udm_ldap.py:482
+#: umc/python/udm/udm_ldap.py:189
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifying more query parameters"
@@ -224,7 +220,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:484
+#: umc/python/udm/udm_ldap.py:195
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -237,7 +233,7 @@ msgstr ""
 "Begrenzung der Anzahl an Treffern beträgt %s und kann mit der UCR-Variable "
 "directory/manager/web/sizelimit angepasst werden."
 
-#: umc/python/udm/__init__.py:1229
+#: umc/python/udm/__init__.py:1240
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -246,7 +242,7 @@ msgstr ""
 "Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
 "Hilfe unter %s."
 
-#: umc/python/udm/__init__.py:1226
+#: umc/python/udm/__init__.py:1237
 #, python-format
 msgid ""
 "This may be a problem with the proxy of your system. You may find help at %s."
@@ -254,11 +250,11 @@ msgstr ""
 "Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy "
 "hindeuten. Sie finden Hilfe unter %s."
 
-#: umc/python/udm/__init__.py:335
+#: umc/python/udm/__init__.py:333
 msgid "This object can not be moved"
 msgstr "Das Objekt kann nicht verschoben werden"
 
-#: umc/python/udm/__init__.py:1217
+#: umc/python/udm/__init__.py:1228
 msgid ""
 "This seems to be a problem with the license server. Please try again later."
 msgstr ""
@@ -392,7 +388,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/__init__.py:1225
+#: umc/python/udm/__init__.py:1236
 #, python-format
 msgid ""
 "http://docs.univention.de/manual-%s.html#ip-config:"
@@ -401,15 +397,17 @@ msgstr ""
 "http://docs.univention.de/handbuch-%s.html#ip-config:Web-"
 "Proxy_fuer_Caching_und_Policy_Management_Virenscan"
 
-#: umc/python/udm/__init__.py:1228
+#: umc/python/udm/__init__.py:1239
 #, python-format
 msgid "http://docs.univention.de/manual-%s.html#networks:dns"
 msgstr "http://docs.univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/udm/udm_ldap.py:532
+#: umc/python/udm/udm_ldap.py:544
 msgid "manual"
 msgstr "handbuch"
 
-#: umc/python/udm/__init__.py:613
-msgid "text file"
-msgstr "Textdatei"
+#~ msgid "PDF document"
+#~ msgstr "PDF Dokument"
+
+#~ msgid "text file"
+#~ msgstr "Textdatei"
