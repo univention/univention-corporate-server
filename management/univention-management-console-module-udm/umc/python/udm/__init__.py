@@ -454,46 +454,55 @@ class Instance(Base, ProgressMixin):
 		return: [ { '$dn$' : <LDAP DN>, <object properties> }, ... ]
 		"""
 
-		def _thread(request):
-			result = []
-			for ldap_dn in request.options:
-				if request.flavor == 'users/self':
-					ldap_dn = self._user_dn
-				module = get_module(request.flavor, ldap_dn)
-				if module is None:
-					raise ObjectDoesNotExist(ldap_dn)
-				else:
-					obj = module.get(ldap_dn)
-					if obj:
-						obj.set_defaults = True
-						for name, p in obj.descriptions.items():
-							if obj.has_key(name) and obj.descriptions[name].default(obj):  # noqa: W601
-								obj[name]  # __getitem__ sets default value
-						props = obj.info
-						for passwd in module.password_properties:
-							if passwd in props:
-								del props[passwd]
-						props['$dn$'] = obj.dn
-						props['$options$'] = {}
-						for opt in module.get_options(udm_object=obj):
-							props['$options$'][opt['id']] = opt['value']
-						props['$policies$'] = {}
-						for policy in obj.policies:
-							pol_mod = get_module(None, policy)
-							if pol_mod and pol_mod.name:
-								props['$policies$'].setdefault(pol_mod.name, []).append(policy)
-						props['$labelObjectType$'] = module.title
-						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
-						props['$operations$'] = module.operations
-						props['$references$'] = module.get_references(ldap_dn)
-						result.append(props)
-					else:
-						MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
-			return result
-
 		MODULE.info('Starting thread for udm/get request')
-		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
+		thread = notifier.threads.Simple('Get', notifier.Callback(self._get, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
+
+	def copy(self, request):
+		thread = notifier.threads.Simple('Copy', notifier.Callback(self._get, request, True), notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
+
+	def _get(self, request, copy=False):
+		result = []
+		for ldap_dn in request.options:
+			if request.flavor == 'users/self':
+				ldap_dn = self._user_dn
+			module = get_module(request.flavor, ldap_dn)
+			if module is None:
+				raise ObjectDoesNotExist(ldap_dn)
+			else:
+				obj = module.get(ldap_dn)
+				if obj:
+					if copy:
+						for name, p in obj.descriptions.items():
+							if not p.copyable:
+								obj.info.pop(name, None)
+					obj.set_defaults = True
+					for name, p in obj.descriptions.items():
+						if obj.has_key(name) and obj.descriptions[name].default(obj):  # noqa: W601
+							obj[name]  # __getitem__ sets default value
+					props = obj.info
+					for passwd in module.password_properties:
+						if passwd in props:
+							del props[passwd]
+					if not copy:
+						props['$dn$'] = obj.dn
+					props['$options$'] = {}
+					for opt in module.get_options(udm_object=obj):
+						props['$options$'][opt['id']] = opt['value']
+					props['$policies$'] = {}
+					for policy in obj.policies:
+						pol_mod = get_module(None, policy)
+						if pol_mod and pol_mod.name:
+							props['$policies$'].setdefault(pol_mod.name, []).append(policy)
+					props['$labelObjectType$'] = module.title
+					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
+					props['$operations$'] = module.operations
+					props['$references$'] = module.get_references(ldap_dn)
+					result.append(props)
+				else:
+					MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
+		return result
 
 	@sanitize(
 		objectPropertyValue=LDAPSearchSanitizer(

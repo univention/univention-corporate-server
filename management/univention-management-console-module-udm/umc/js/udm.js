@@ -277,13 +277,13 @@ define([
 
 			// check whether we need to open directly the detail page of a given or a new object
 			if (this.openObject) {
-				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage',
+				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage', 'edit',
 					this.openObject.objectType, this.openObject.objectDN, undefined, true, this.openObject.note)
 				);
 				return; // do not render the search page
 			}
 			if (this.newObject) {
-				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage',
+				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage', 'add',
 					this.newObject.objectType, undefined, this.newObject, true, this.newObject.note)
 				);
 				return; // do not render the search page
@@ -366,7 +366,7 @@ define([
 					var objType = state.shift();
 					var ldapName = state.length > 1 ? state : state[0];
 					this._loadUCRVariables().then(lang.hitch(this, function() {
-						this.createDetailPage(objType, ldapName);
+						this.createDetailPage('edit', objType, ldapName);
 					}));
 				}
 				this._set('moduleState', _state);
@@ -684,7 +684,7 @@ define([
 				canExecute: lang.hitch(this, '_canEdit'),
 				callback: lang.hitch(this, function(ids, items) {
 					if (items.length == 1 && items[0].objectType) {
-						this.createDetailPage(items[0].objectType, ids[0]);
+						this.createDetailPage('edit', items[0].objectType, ids[0]);
 					} else if (items.length >= 1 && items[0].objectType) {
 						// make sure that all objects do have the same type
 						var sameType = true;
@@ -698,7 +698,7 @@ define([
 						}
 
 						// everything ok, load detail page
-						this.createDetailPage(items[0].objectType, ids);
+						this.createDetailPage('edit', items[0].objectType, ids);
 					}
 				})
 			}, {
@@ -741,6 +741,25 @@ define([
 				canExecute: lang.hitch(this, '_canMove'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.moveObjects(objects);
+				})
+			}, {
+				name: 'copy',
+				label: _('Copy'),
+				description: _('Create a copy of the LDAP object.'),
+				isMultiAction: false,
+				canExecute: lang.hitch(this, '_canCopy'),
+				callback: lang.hitch(this, function(ids, items) {
+					this._showNewObjectDialog({
+						args: {
+							wizardsDisabled: true,
+							defaultObjectType: items[0].objectType,
+							showObjectType: false,
+							showObjectTemplate: false
+						},
+						callback: lang.hitch(this, function(options) {
+							this.createDetailPage('copy', items[0].objectType, ids[0], options);
+						})
+					});
 				})
 			}];
 
@@ -1145,7 +1164,7 @@ define([
 				label: _('Edit'),
 				iconClass: 'umcIconEdit',
 				onClick: lang.hitch(this, function() {
-					this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
+					this.createDetailPage('edit', this._navContextItem.objectType, this._navContextItem.id);
 				})
 			}));
 			menu.addChild(this._menuDelete = new MenuItem({
@@ -1205,6 +1224,10 @@ define([
 				return -1 === array.indexOf(item.$flags$, 'synced');
 			}
 			return item.$operations$.indexOf('move') !== -1;
+		},
+
+		_canCopy: function(item) {
+			return item.$operations$.indexOf('copy') !== -1;
 		},
 
 		_canDelete: function(item) {
@@ -1794,6 +1817,15 @@ define([
 		},
 
 		showNewObjectDialog: function() {
+			this._showNewObjectDialog({
+				args: {},
+				callback: lang.hitch(this, function(options) {
+					this.createDetailPage('add', options.objectType, undefined, options);
+				})
+			});
+		},
+
+		_showNewObjectDialog: function(args) {
 			// summary:
 			//		Open a user dialog for creating a new LDAP object.
 
@@ -1821,7 +1853,7 @@ define([
 
 			// open the dialog
 			var onHandlerRegistered = new Deferred();
-			this._newObjectDialog = new NewObjectDialog({
+			this._newObjectDialog = new NewObjectDialog(lang.mixin({
 				addNotification: lang.hitch(this, 'addNotification'),
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				wizardsDisabled: tools.isTrue(this._wizardsDisabled),
@@ -1831,10 +1863,8 @@ define([
 				selectedContainer: selectedContainer,
 				selectedSuperordinate: superordinate,
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null
-			});
-			this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
-				this.createDetailPage(options.objectType, undefined, options);
-			}));
+			}, args.args));
+			this._newObjectDialog.on('FirstPageFinished', args.callback);
 			this._newObjectDialog.on('Done', lang.hitch(this, function() {
 				if (this._newObjectDialog) {
 					this._newObjectDialog.destroyRecursive();
@@ -1880,6 +1910,7 @@ define([
 			}
 
 			this._setDetailPage(
+				'edit',
 				this._preloadedObjectType,
 				this._ldapNameDeferred,
 				/*newObjectOptions*/ null,
@@ -1888,7 +1919,7 @@ define([
 			);
 		},
 
-		_setDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
+		_setDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
 			this._destroyDetailPage();
 			var cssClass = this.moduleFlavor == 'users/user' ? 'umcUDMUsersModule' : '';
 			this._detailPage = new DetailPage({
@@ -1899,6 +1930,7 @@ define([
 				moduleStore: this.moduleStore,
 				moduleFlavor: this.moduleFlavor,
 				objectType: objectType,
+				operation: operation,
 				ldapBase: this._ucr['ldap/base'],
 				ldapName: ldapName,
 				newObjectOptions: newObjOptions,
@@ -1913,17 +1945,20 @@ define([
 			}
 		},
 
-		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
+		createDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects if it doesn't exists. Afterwards it opens the detailpage.
 			if (!this._ldapNameDeferred) {
-				this._preloadDetailPage();
+				this._preloadDetailPage(operation);
 			}
-			if (this._detailPage && this._preloadedObjectType == this.moduleFlavor && ldapName && !(ldapName instanceof Array)) {
+			if (operation === 'copy') {
+				this._setDetailPage(operation, objectType, ldapName, newObjOptions, isClosable, note);
+				this._ldapNameDeferred.resolve(ldapName);
+			} else if (this._detailPage && this._preloadedObjectType == this.moduleFlavor && ldapName && !(ldapName instanceof Array)) {
 				// use pre-rendered detail page when loading a (single) object
 				this._ldapNameDeferred.resolve(ldapName);
 			} else {
-				this._setDetailPage(objectType, ldapName, newObjOptions, isClosable, note);
+				this._setDetailPage(operation, objectType, ldapName, newObjOptions, isClosable, note);
 				this._ldapNameDeferred.resolve(null);
 			}
 

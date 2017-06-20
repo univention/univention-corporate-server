@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global require,define,setTimeout,dijit,window,console*/
+/*global require,define,setTimeout,window,console*/
 
 define([
 	"dojo/_base/declare",
@@ -100,6 +100,10 @@ define([
 		// moduleFlavor: String
 		//		Flavor of the module
 		moduleFlavor: this.moduleFlavor,
+
+		// operation: String
+		// 		One of 'add', 'edit', 'copy'
+		operation: null,
 
 		// objectType: String
 		//		The object type of the LDAP object that is edited.
@@ -278,7 +282,7 @@ define([
 			}
 
 			return all({
-				object: this.moduleStore.get(this.ldapName),
+				object: this.getObject(this.ldapName),
 				formBuilt: formBuiltDeferred
 			}).then(lang.hitch(this, function(result) {
 				// save the original data we received from the server
@@ -304,18 +308,29 @@ define([
 					}, this);
 				}));
 
-				// var objecttype = vals.$labelObjectType$;
-				var path = tools.ldapDn2Path( this.ldapName, this.ldapBase);
-				var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
-				var position = _('Position: <i>%(path)s</i>', { path: path });
-				var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
-				array.forEach(this._tabs.getChildren(), lang.hitch(this, function(child) {
-					if (child.position_text) {
-						child.position_text.set('content', position_text);
-					}
-				}));
+				if (this.operation === 'add') {  // don't show when copying objects
+					// var objecttype = vals.$labelObjectType$;
+					var path = tools.ldapDn2Path( this.ldapName, this.ldapBase);
+					var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
+					var position = _('Position: <i>%(path)s</i>', { path: path });
+					var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
+					array.forEach(this._tabs.getChildren(), lang.hitch(this, function(child) {
+						if (child.position_text) {
+							child.position_text.set('content', position_text);
+						}
+					}));
+				}
 				return this._form.ready();
 			}));
+		},
+
+		getObject: function(dn) {
+			if (this.operation === 'copy') {
+				return this.umcpCommand('udm/copy', [dn], undefined, this.moduleFlavor).then(function(response) {
+					return response.result[0];
+				});
+			}
+			return this.moduleStore.get(dn);
 		},
 
 		ready: function() {
@@ -364,7 +379,7 @@ define([
 		},
 
 		_notifyAboutAutomaticChanges: function() {
-			if (!this.ldapName || this._multiEdit) {
+			if (this.operation === 'add' || this.operation === 'copy' || this._multiEdit) {
 				// ignore creation of a new object as well as the multi edit mode
 				return;
 			}
@@ -427,6 +442,11 @@ define([
 						this._policyDeferred.resolve();
 					}));
 				}));
+				if (this.operation === 'copy') {
+					this._loadPolicies(policies).then(lang.hitch(this, function() {
+						this._policyDeferred.resolve();
+					}));
+				}
 			} else {
 				// in case there are no policies, we use a dummy Deferred object
 				this._policyDeferred.resolve();
@@ -554,7 +574,7 @@ define([
 					}, this);
 
 					// make sure that the widget use the flavored umcpCommand
-					array.forEach( newProperties, function( iprop) {
+					array.forEach(newProperties, function(iprop) {
 						iprop.umcpCommand = this.umcpCommand;
 					}, this);
 
@@ -654,11 +674,11 @@ define([
 				}
 
 				// handle editable items
-				if ( iprop.readonly) {
+				if (iprop.readonly) {
 					iprop.disabled = true;
 				} else {
 					if (iprop.disabled !== true) {
-						iprop.disabled = this.ldapName === undefined ? false : ! iprop.editable;
+						iprop.disabled = this.operation === 'add' ? false : ! iprop.editable;
 					}
 				}
 				if (this._multiEdit && iprop.identifies) {
@@ -754,8 +774,8 @@ define([
 			// the following checks are only necessary for the AD member mode
 			when(this.ldapName, lang.hitch(this, function(ldapName){
 				this.ldapName = ldapName;
-				if (!ldapName) {
-					// new object / multiEdit...
+				if (!ldapName || this.operation === 'copy') {
+					// new object / multiEdit / copy...
 					deferred.resolve(properties);
 					return;
 				}
@@ -821,7 +841,7 @@ define([
 				return text;
 			});
 
-			if (!this.active_directory_enabled() || !this.ldapName || !this.isSyncedObject) {
+			if (!this.active_directory_enabled() || this.operation === 'add' || !this.isSyncedObject) {
 				return;
 			}
 			var value = '';
@@ -852,7 +872,7 @@ define([
 		},
 
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
-			var isNewObject = !this.ldapName;
+			var isNewObject = this.operation === 'add';
 
 			var _getOptionProperty = function(properties) {
 				var result = array.filter(properties, function(item) {
@@ -1142,7 +1162,7 @@ define([
 		},
 
 		buildTemplate: function(_template, properties, widgets) {
-			if (this.ldapName || this._multiEdit) {
+			if (this.operation !== 'add' || this._multiEdit) {
 				return;
 			}
 
@@ -1214,7 +1234,7 @@ define([
 			});
 
 			var createLabel = '';
-			if (this.newObjectOptions) {
+			if (this.operation === 'add' || this.operation === 'copy') {
 				createLabel = _createLabelText();
 			} else {
 				createLabel = _('Save');
@@ -1731,7 +1751,7 @@ define([
 							this.moduleStore.put(ivals);
 						}, this);
 						deferred = transaction.commit();
-					} else if (this.newObjectOptions) {
+					} else if (this.operation === 'add' || this.operation === 'copy') {
 						deferred = this.moduleStore.add(vals, this.newObjectOptions);
 					} else {
 						deferred = this.moduleStore.put(vals);
@@ -1885,7 +1905,7 @@ define([
 						newVals[iname] = iwidget.get('value');
 					}
 				}));
-			} else if (this.newObjectOptions) {
+			} else if (this.operation === 'add' || this.operation === 'copy') {
 				// get only non-empty values or values of type 'boolean'
 				tools.forIn(vals, lang.hitch(this, function(iname, ival) {
 					if (typeof(ival) == 'boolean' || (!(ival instanceof Array && !ival.length) && ival)) {
@@ -1919,7 +1939,7 @@ define([
 		confirmClose: function() {
 			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
 
-			if (!this.newObjectOptions && this.haveVisibleValuesChanged()) {
+			if (this.operation === 'edit' && this.haveVisibleValuesChanged()) {
 				return dialog.confirm(_('There are unsaved changes. Are you sure to cancel?'), [{
 					label: _('Continue editing'),
 					name: 'cancel'

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-2) unstable; urgency=medium
+
+  * Bug #1567: make it possible to copy objects
+
+ -- Florian Best <best@univention.de>  Tue, 20 Jun 2017 18:34:05 +0200
+
 univention-management-console-module-udm (7.0.10-1) unstable; urgency=medium
 
   * Bug #41053: set default values of objects when receiving form values

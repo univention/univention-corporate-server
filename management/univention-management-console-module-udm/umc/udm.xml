@@ -116,6 +116,7 @@
 		<command name="udm/add" function="add" />
 		<command name="udm/remove" function="remove" />
 		<command name="udm/get" function="get" />
+		<command name="udm/copy" function="copy" />
 		<command name="udm/move" function="move" />
 		<command name="udm/progress" function="progress" />
 		<command name="udm/validate" function="validate" />

@@ -48,6 +48,9 @@ define([
 
 		_canContinue: null, // deferred which indicates if any of the pages in this wizard should be displayed or not
 
+		showObjectType: true,
+		showObjectTemplate: true,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._canContinue = new Deferred();
@@ -388,6 +391,7 @@ define([
 				label: _('Type'),
 				description: _('The exact object type of the new LDAP object.'),
 				autoHide: true,
+				visible: this.showObjectType,
 				depends: selectedContainer ? [] : ['container'/*, 'superordinate'*/],
 				dynamicValues: lang.hitch(this, function() {
 					var containerWidget = this.getWidget('firstPage', 'container');
@@ -404,7 +408,9 @@ define([
 				}),
 				size: 'Two'
 			});
-			layout.push('objectType');
+			if (this.showObjectType) {
+				layout.push('objectType');
+			}
 
 			// templates
 			widgets.push({
@@ -415,6 +421,7 @@ define([
 				value: this.defaultTemplate,
 				depends: 'objectType',
 				autoHide: true,
+				visible: this.showObjectTemplate,
 				umcpCommand: this.umcpCommand,
 				dynamicValues: lang.hitch(this, function(options) {
 					return this.moduleCache.getTemplates(options.objectType).then(function(result) {
@@ -425,7 +432,9 @@ define([
 				staticValues: [{id: 'None', label: _('None')}],
 				size: 'Two'
 			});
-			layout.push('objectTemplate');
+			if (this.showObjectTemplate) {
+				layout.push('objectTemplate');
+			}
 
 			if (this.moduleFlavor === 'navigation') {
 				layout = ['container', 'container_help', 'objectType', 'objectTemplate'];

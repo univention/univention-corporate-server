@@ -74,6 +74,9 @@ define([
 		//		The object type that is selected by default.
 		defaultObjectType: null,
 
+		showObjectType: true,
+		showObjectTemplate: true,
+
 		autofocus: false, // interferes with Wizard.autoFocus
 
 		_notificationText: null,
@@ -148,7 +151,9 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				umcpCommand: this.umcpCommand,
 				selectedContainer: this.selectedContainer,
-				selectedSuperordinate: this.selectedSuperordinate
+				selectedSuperordinate: this.selectedSuperordinate,
+				showObjectTemplate: this.showObjectTemplate,
+				showObjectType: this.showObjectType
 			});
 
 			this._preWizard.canContinue().then(lang.hitch(this, function() {
