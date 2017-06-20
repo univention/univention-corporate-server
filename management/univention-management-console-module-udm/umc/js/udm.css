@@ -22,6 +22,7 @@
 	padding: 0 !important;
 	box-shadow: none;
 	margin-top: -2em;
+	position: relative;
 }
 .umc .umcUDMSearchForm .umcSearchFormChangeViewButton .dijitButtonNode {
 	background-color: transparent;
@@ -119,17 +120,42 @@
 	}
 }
 
-.umc .umcUDMMultiInputEditButton {
-	margin: 0;
-}
-
-.umc .umcUDMMultiInputEditButton .dijitButtonNode {
-	width: 27px;
-	padding: 3px;
-}
-
 .umc .umcUDMSearchForm+.umcGrid .dojoxGridCell {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* Styling of the MultiInput Edit button */
+.umc .umcUDMMultiInputEditButton {
+	margin: 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.umc .umcUDMMultiInputEditButton .dijitButtonNode {
+	width: 32px;
+	height: 32px;
+	background-color: rgba(255, 255, 255, 0);
+}
+
+.umc .umcUDMMultiInputEditButton .dijitButtonNode .dijitButtonContents {
+	line-height: 32px;
+}
+
+.umc .umcUDMMultiInputEditButton .dijitButtonNode .dijitButtonContents .dijitIcon {
+	margin: 0 6px;
+	opacity: 0.7;
+}
+
+.umc .umcUDMMultiInputEditButton.dijitButtonHover .dijitButtonNode .dijitButtonContents .dijitIcon {
+	opacity: 1;
+}
+/* MultiInput focus */
+.umc .umcUDMMultiInputEditButton.dijitButtonFocused .dijitButtonNode {
+	background-color: rgba(0, 0, 0, 0.0784);
+}
+/* MultiInput active */
+.umc .umcUDMMultiInputEditButton.dijitButtonActive .dijitButtonNode {
+	background-color: rgba(0, 0, 0, 0.16);
 }

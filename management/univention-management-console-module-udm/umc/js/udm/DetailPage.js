@@ -614,7 +614,7 @@ define([
 					var buttonsConf = [{
 						type: Button,
 						name: '$addPolicy$',
-						iconClass: 'umcIconAdd',
+						'class': 'umcFlatButton',
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];

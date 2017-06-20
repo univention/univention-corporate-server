@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-3) unstable; urgency=medium
+
+  * Bug #44066: Adapt styling of buttons in policy tab to UCS 4.2 design
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 18:47:11 +0200
+
 univention-management-console-module-udm (7.0.10-2) unstable; urgency=medium
 
   * Bug #1567: make it possible to copy objects
