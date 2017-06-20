@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-13) unstable; urgency=medium
+
+  * Bug #44370: Use unicodedata.normalize to convert umlauts
+    into ascii letters
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 18:59:56 +0200
+
 univention-directory-manager-modules (12.0.17-12) unstable; urgency=medium
 
   * Bug #1567: add 'copy' operation to users/user and groups/group

@@ -33,6 +33,7 @@
 import types
 import sys
 import re
+import unicodedata
 from ldap.filter import filter_format
 
 import univention.config_registry
@@ -123,7 +124,7 @@ def pattern_replace(pattern, object):
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
 
-				text = text.encode('ascii', 'replace')
+				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
 		return text
@@ -172,7 +173,18 @@ def pattern_replace(pattern, object):
 
 
 class property:
-	UMLAUTS = {'ä': 'ae', 'Ä': 'Ae', 'ö': 'oe', 'Ö': 'Oe', 'ü': 'ue', 'Ü': 'Ue', 'ß': 'ss', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE', 'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I', 'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O', 'Õ': 'O', 'Ö': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U', 'à': 'a', 'â': 'a', 'á': 'a', 'ã': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ý': 'y', 'ÿ': 'y', 'Ĉ': 'C', 'ĉ': 'c'}
+	UMLAUTS = {
+			'Ä': 'Ae',
+			'ä': 'ae',
+			'Ö': 'Oe',
+			'ö': 'oe',
+			'Ü': 'Ue',
+			'ü': 'ue',
+			'ß': 'ss',
+			'Æ': 'Ae',
+			'æ': 'ae',
+			'Ð': 'D'
+	}
 
 	def __init__(
 		self,
