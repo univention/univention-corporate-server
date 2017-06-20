@@ -563,20 +563,6 @@ class Response_DUMP(Response_OK):
 		self.messages = None
 
 
-class Data_StoragePool(object):
-
-	"""Container for storage pool statistics."""
-
-	def __init__(self):
-		self.uuid = None
-		self.name = None
-		self.capacity = None
-		self.available = None
-		self.path = None
-		self.active = None  # True False
-		self.type = None  # logical
-
-
 class Data_Domain(object):
 
 	"""Container for domain statistics."""
