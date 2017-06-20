@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0]
+scope: ucs_4.2-0-errata4.2-0
+src: univention-directory-reports
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The PDF reports are now generated with the RML language instead of LaTeX.
+   LaTeX reports are still supported by installing the new package
+   univention-directory-reports-latex.
+bug: [39239]
