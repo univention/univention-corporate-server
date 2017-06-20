@@ -42,7 +42,7 @@ from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encod
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, get_pool_info
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError
 from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
 import copy
@@ -635,9 +635,9 @@ class Node(PersistentCached):
 	def _register_default_pool(self):
 		'''create a default storage pool if not available'''
 		try:
-			get_pool_info(self, 'default')
+			self.conn.storagePoolLookupByName('default')
 			logger.debug("default pool already registered on %s" % self.pd.name)
-		except KeyError:
+		except libvirt.libvirtError as ex:
 			logger.info("creating default pool on %s" % self.pd.name)
 			create_storage_pool(
 				self.conn,
@@ -732,13 +732,7 @@ class Node(PersistentCached):
 		cpu_usage = 0
 		cached_domains = self.domains.keys()
 
-		def all_domains():
-			for dom_id in self.conn.listDomainsID():
-				yield self.conn.lookupByID(dom_id)
-			for name in self.conn.listDefinedDomains():
-				yield self.conn.lookupByName(name)
-
-		for dom in all_domains():
+		for dom in self.conn.listAllDomains():
 			uuid = dom.UUIDString()
 			if uuid in self.domains:
 				# Update existing domains

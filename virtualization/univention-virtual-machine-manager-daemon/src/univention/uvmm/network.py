@@ -73,15 +73,11 @@ def network_start(conn, name):
 
 def network_find_by_bridge(conn, bridge):
 	try:
-		networks = conn.listNetworks() + conn.listDefinedNetworks()
+		networks = conn.listAllNetworks()
 	except libvirt.libvirtError as e:
 		logger.error(e)
 		raise NetworkError(_('Error retrieving list of networks: %(error)s'), error=e.get_error_message())
-	for name in networks:
-		try:
-			net = conn.networkLookupByName(name)
-		except libvirt.libvirtError as e:
-			logger.error(e)
+	for net in networks:
 		if net.bridgeName() == bridge:
 			network = Network()
 			network.uuid = net.UUIDString()

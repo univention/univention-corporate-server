@@ -124,9 +124,8 @@ def create_storage_volume(conn, domain, disk):
 			)
 
 	best = (0, None, '')
-	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
+	for pool in conn.listAllStoragePools():
 		try:
-			pool = conn.storagePoolLookupByName(pool_name)
 			xml = pool.XMLDesc(0)
 			pool_tree = ET.fromstring(xml)
 			pool_type = pool_tree.attrib['type']
@@ -137,15 +136,6 @@ def create_storage_volume(conn, domain, disk):
 				length = len(path)
 				if length > best[0]:
 					best = (length, pool, pool_type)
-		except libvirt.libvirtError as ex:
-			if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
-				logger.error(ex)
-				raise StorageError(
-					_('Error locating storage pool "%(pool)s" for "%(domain)s": %(error)s'),
-					pool=pool_name,
-					domain=domain.name,
-					error=ex.get_error_message(),
-				)
 		except IndexError as ex:
 			pass
 	length, pool, pool_type = best
@@ -312,8 +302,7 @@ def get_storage_volumes(node, pool_name, type=None):
 	pool_tree = ET.fromstring(xml)
 	pool_type = pool_tree.attrib['type']
 
-	for name in pool.listVolumes():
-		vol = pool.storageVolLookupByName(name)
+	for vol in pool.listAllVolumes():
 		xml = vol.XMLDesc(0)
 		try:
 			volume_tree = ET.fromstring(xml)
@@ -408,25 +397,14 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 				raise
 
 
-def get_pool_info(node, name):
+def get_pool_info(pool):
 	"""
 	Get 'protocol.Data_Pool' instance for named pool.
 	"""
-	try:
-		pool = node.conn.storagePoolLookupByName(name)
-	except libvirt.libvirtError as ex:
-		if ex.get_error_code() == libvirt.VIR_ERR_NO_STORAGE_POOL:
-			raise KeyError(name)
-		logger.error(ex)
-		raise StorageError(
-			_('Error listing pools at "%(uri)s": %(error)s'),
-			uri=node.pd.uri,
-			error=ex.get_error_message(),
-		)
 	xml = pool.XMLDesc(0)
 	pool_tree = ET.fromstring(xml)
 	res = Data_Pool()
-	res.name = name
+	res.name = pool.name()
 	res.uuid = pool_tree.findtext('uuid')
 	res.capacity = int(pool_tree.findtext('capacity'))
 	res.available = int(pool_tree.findtext('available'))
@@ -447,10 +425,10 @@ def storage_pools(node):
 			error='no connection'
 		)
 	try:
-		pools = []
-		for name in timeout(node.conn.listStoragePools)():
-			pool = get_pool_info(node, name)
-			pools.append(pool)
+		pools = [
+			get_pool_info(pool)
+			for pool in timeout(node.conn.listAllStoragePools)()
+		]
 		return pools
 	except TimeoutError as ex:
 		logger.warning(
