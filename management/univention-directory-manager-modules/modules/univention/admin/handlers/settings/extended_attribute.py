@@ -367,6 +367,17 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'copyable': univention.admin.property(
+		short_description=_('Copyable'),
+		long_description=_('Values of this extended attribute are automatically filled into the form when copying a object.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		copyable=True,
+	),
 }
 
 layout = [
@@ -418,6 +429,7 @@ layout = [
 		["valueRequired"],
 		["mayChange"],
 		["notEditable"],
+		["copyable"],
 	]),
 ]
 
@@ -446,6 +458,7 @@ mapping.register('mayChange', 'univentionUDMPropertyValueMayChange', None, unive
 mapping.register('valueRequired', 'univentionUDMPropertyValueRequired', None, univention.admin.mapping.ListToString)
 mapping.register('notEditable', 'univentionUDMPropertyValueNotEditable', None, univention.admin.mapping.ListToString)
 mapping.register('doNotSearch', 'univentionUDMPropertyDoNotSearch', None, univention.admin.mapping.ListToString)
+mapping.register('copyable', 'univentionUDMPropertyCopyable', None, univention.admin.mapping.ListToString)
 mapping.register('version', 'univentionUDMPropertyVersion', None, univention.admin.mapping.ListToString)
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')

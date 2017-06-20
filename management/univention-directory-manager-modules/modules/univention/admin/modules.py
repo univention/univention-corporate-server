@@ -312,6 +312,8 @@ def update_extended_attributes(lo, module, position):
 		# value is editable (only via hooks or direkt module.info[] access)
 		editable = attrs.get('univentionUDMPropertyValueNotEditable', ['0'])[0] not in ['1', 'TRUE']
 
+		copyable = attrs.get('univentionUDMPropertyCopyable', ['0'])[0] not in ['1', 'TRUE']
+
 		# value is required
 		valueRequired = (attrs.get('univentionUDMPropertyValueRequired', ['0'])[0].upper() in ['1', 'TRUE'])
 
@@ -368,7 +370,8 @@ def update_extended_attributes(lo, module, position):
 			dontsearch=doNotSearch,
 			identifies=False,
 			default=propertyDefault,
-			editable=editable
+			editable=editable,
+			copyable=copyable,
 		)
 
 		# add LDAP mapping

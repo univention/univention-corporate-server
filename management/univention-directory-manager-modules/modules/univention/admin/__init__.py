@@ -198,7 +198,8 @@ class property:
 		include_in_default_search=False,
 		nonempty_is_default=False,
 		readonly_when_synced=False,
-		size=None):
+		size=None,
+		copyable=False):
 
 		self.short_description = short_description
 		self.long_description = long_description
@@ -228,6 +229,7 @@ class property:
 		self.nonempty_is_default = nonempty_is_default
 		self.readonly_when_synced = readonly_when_synced
 		self.size = size
+		self.copyable = copyable
 
 	def new(self):
 		if self.multivalue:
