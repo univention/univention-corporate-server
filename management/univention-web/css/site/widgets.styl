@@ -49,9 +49,13 @@
 			.dijitButtonNode
 				background-color: $button-hovered-background-color
 
+		&.dijitButtonActive
+			.dijitButtonNode
+				background-color: $button-pressed-background-color
+
 		.dijitButtonNode
 			height: 32px
-			background-color: transparent
+			background-color: rgba(255, 255, 255, 0)
 
 			.dijitButtonContents
 				line-height: @height

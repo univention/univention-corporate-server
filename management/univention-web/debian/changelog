@@ -1,3 +1,9 @@
+univention-web (1.0.42-18) unstable; urgency=medium
+
+  * Bug #44066: Adapt styling of buttons in policy tab to UCS 4.2 design
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Jun 2017 18:49:28 +0200
+
 univention-web (1.0.42-17) unstable; urgency=medium
 
   * Bug #44498: escape HTML in progressbar messages

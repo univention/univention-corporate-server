@@ -56,7 +56,6 @@
 	position: absolute
 	height: 5px
 	bottom: 0
-	transition-duration(0.25s)
 
 .umc .dijitSelect:before,
 .umc .dijitTextBox:before
@@ -76,6 +75,15 @@
 	border: 0 none
 	border-bottom: 1px solid
 	border-color: $base-border-color
+
+.umc .dijitSelect,
+.umc .dijitSelect .dijitButtonContents,
+.umc .dijitTextBox,
+.umc .dijitTextBox .dijitButtonNode,
+.umc .dijitSelect:before,
+.umc .dijitTextBox:before,
+.umc .dijitSelect:after,
+.umc .dijitTextBox:after
 	transition-property: background-color, border, color
 	transition-duration(0.25s)
 
