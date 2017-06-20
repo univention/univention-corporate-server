@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-11) unstable; urgency=medium
+
+  * Bug #1567: add attribute univentionUDMPropertyCopyable
+
+ -- Florian Best <best@univention.de>  Tue, 20 Jun 2017 18:36:22 +0200
+
 univention-ldap (13.0.7-10) unstable; urgency=low
 
   * Bug #42249: rename mailForwardAddress property

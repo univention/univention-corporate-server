@@ -285,6 +285,13 @@ attributetype ( 1.3.6.1.4.1.10176.200.130 NAME 'univentionUDMPropertyLayoutDisab
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
 
+attributetype ( 1.3.6.1.4.1.10176.200.131 NAME 'univentionUDMPropertyCopyable'
+        DESC 'defines if this attribute is copyable in UMC'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+
 objectclass ( 1.3.6.1.4.1.10176.200.199
     NAME 'univentionUDMProperty'
         DESC ' defines a custom attribute for use in univention directory manager '
@@ -319,7 +326,8 @@ objectclass ( 1.3.6.1.4.1.10176.200.199
 			  univentionUDMPropertyLayoutGroupName $
 			  univentionUDMPropertyTranslationGroupName $
 			  univentionUDMPropertyLayoutGroupPosition $
-			  univentionUDMPropertyLayoutDisable
+			  univentionUDMPropertyLayoutDisable $
+			  univentionUDMPropertyCopyable
 			  )
 	)
 
