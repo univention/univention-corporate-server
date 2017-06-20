@@ -755,9 +755,14 @@ class Node(PersistentCached):
 			curMem += domStat.pd.curMem
 			maxMem += domStat.pd.maxMem
 			cpu_usage += domStat._cpu_usage
+
 		for uuid in cached_domains:
 			# Remove obsolete domains
-			del self.domains[uuid]
+			try:
+				del self.domains[uuid]
+			except KeyError:
+				continue
+
 		self.pd.curMem = curMem
 		self.pd.maxMem = maxMem
 		self.pd.cpu_usage = min(1000, cpu_usage)
