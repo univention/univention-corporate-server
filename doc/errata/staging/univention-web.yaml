@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Adapt styling of the policy tab
+bug: [44066]
