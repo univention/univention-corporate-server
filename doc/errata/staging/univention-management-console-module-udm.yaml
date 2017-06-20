@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Objects can now be copied.
  * The generation of reports has been optimized.
-bug: [1567, 39239]
+ * Adapt styling of the policy tab
+bug: [1567, 39239, 44066]
