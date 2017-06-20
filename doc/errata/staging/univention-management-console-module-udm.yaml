@@ -9,4 +9,6 @@ desc: |
  * Objects can now be copied.
  * The generation of reports has been optimized.
  * Adapt styling of the policy tab
-bug: [1567, 39239, 44066]
+ * Correctly normalize umlauts and special characters
+   for the umlauts modifier in templates
+bug: [1567, 39239, 44066, 44370]
