@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Errors during connecting to the LDAP server are now handled.
+ * Errors during module initialization are now handled.
+ * The SSL security of the UMC server has been strengthened by disabling
+   SSLv3 and making the TLS Ciphers configurable via UCR.
+bug: [39963, 44670, 40998]
