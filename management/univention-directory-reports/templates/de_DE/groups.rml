@@ -1,0 +1,42 @@
+<para><h1>Gruppen-Report: <@attribute name="name"@></h1></para>
+<spacer length="1cm"/>
+
+<blockTable style="mainTable">
+<tr><td><h3>Gruppeneinzelnachweis: <@attribute name="name"@></h3></td></tr>
+<tr><td><para style="content">Name:</para></td><td><para style="content"><@attribute name="name"@></para></td></tr>
+<tr><td><para style="content">Beschreibung:</para></td><td><para style="content"><@attribute name="description" default="-"@></para></td></tr>
+<tr><td><para style="content">Gruppen ID:</para></td><td><para style="content"><@attribute name="gidNumber"@></para></td></tr>
+<tr><td><para style="content">Relative ID:</para></td><td><para style="content"><@attribute name="sambaRID"@></para></td></tr>
+<tr><td><para style="content">Gruppentyp:</para></td><td><para style="content"><@attribute name="sambaGroupType"@></para></td></tr>
+<tr><td><para style="content">E-Mail-Adresse:</para></td><td><para style="content"><@attribute name="mailAddress" default="-"@></para></td></tr>
+</blockTable>
+
+<spacer length="0.5cm"/>
+
+<h3>Mitglied folgender Gruppen</h3>
+
+<@resolve module="groups/group" dn-attribute="memberOf" alternative="<para>Diese Gruppe ist in keiner anderen Gruppe Mitglied.</para>"@>
+  <para bulletFontSize="5" bulletText="&#x25cf;"><@attribute name="name"@> (<@attribute name="description"@>)</para>
+<@/resolve@>
+
+
+<h3>Gruppen in dieser Gruppe</h3>
+
+<@query module="groups/group" start="nestedGroup" next="nestedGroup" alternative="<para>Keine Gruppe ist Mitglied dieser Gruppe.</para>"@>
+  <para bulletFontSize="5" bulletText="&#x25cf;"><@attribute name="name"@> (<@attribute name="description"@>)</para>
+<@/query@>
+
+<h3>Benutzer in dieser Gruppe</h3>
+
+<@resolve module="users/user" dn-attribute="users" alternative="<para>Kein Benutzer ist Mitglied dieser Gruppe.</para>"@>
+  <para bulletFontSize="5" bulletText="&#x25cf;"><@attribute name="username"@> (<@attribute name="lastname"@>, <@attribute name="firstname"@>)</para>
+<@/resolve@>
+
+<@query module="groups/group" start="nestedGroup" next="nestedGroup" alternative="<para>Keine indirekten Gruppenmitgliedschaften.</para>"@>
+  <h2>Gruppe: <@attribute name="name"@> (<@attribute name="description"@>)</h2>
+  <@resolve module="users/user" dn-attribute="users" alternative="<para>Keine Mitglieder in dieser Gruppe</para>"@>
+    <para bulletFontSize="4" bulletText="&#x25cf;"><@attribute name="username"@> (<@attribute name="lastname"@>)</para>
+  <@/resolve@>
+<@/query@>
+
+<nextFrame/>

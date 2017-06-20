@@ -31,19 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.debug as ud
-
+import sys
+import locale
 from optparse import OptionParser
 
-import os
-import sys
+import univention.debug as ud
+import univention.admin.uldap
 
-import univention.directory.reports as udr
+from univention.directory.reports import Report, ReportError, Config
 from univention.config_registry import ConfigRegistry
 
+from univention.lib.i18n import Translation
+_ = Translation('univention-directory-reports').translate
 
-baseConfig = ConfigRegistry()
-baseConfig.load()
+ucr = ConfigRegistry()
+ucr.load()
 
 
 def dump_modules(cfg, module=None, out=sys.stdout):
@@ -53,13 +55,13 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 	else:
 		modules = [module]
 	for module in modules:
-		print >>out, 'Reports for module: %s' % module
+		print >> out, 'Reports for module: %s' % module
 		for name in cfg.get_report_names(module):
-			print >>out, ' - %s' % name
+			print >> out, ' - %s' % name
 
 
 def main():
-	cfg = udr.Config()
+	cfg = Config()
 
 	parser = OptionParser(usage='usage: %prog -m <module> [options] dn1 dn2 ...')
 	parser.add_option(
@@ -80,11 +82,11 @@ def main():
 		help='file containing the footer for the report')
 	parser.add_option(
 		'-s', '--server', action='store',
-		dest='server', default=baseConfig.get('ldap/server/name', 'localhost'),
+		dest='server', default=ucr.get('ldap/server/name', 'localhost'),
 		help='LDAP server [%default]')
 	parser.add_option(
 		'-b', '--base', action='store',
-		dest='base', default=baseConfig.get('ldap/base', ''),
+		dest='base', default=ucr.get('ldap/base', ''),
 		help='LDAP base [%default]')
 	parser.add_option(
 		'-m', '--module', action='store',
@@ -99,10 +101,6 @@ def main():
 		dest='list_reports', default=False,
 		help='List names of available reports')
 	parser.add_option(
-		'-n', '--no-cleanup', action='store_true',
-		dest='no_cleanup', default=False,
-		help='do not remove the temporary LaTeX files (for debugging)')
-	parser.add_option(
 		'-c', '--config', action='store',
 		dest='config', default='/etc/univention/directory/reports/config.ini',
 		help='location of the configuration file [%default]')
@@ -113,96 +111,44 @@ def main():
 
 	(options, args) = parser.parse_args()
 
-	if not options.user or not options.password:
-		try:
-			pwdfile = '/etc/machine.secret'
-			options.user = baseConfig['ldap/hostdn']
-			if baseConfig['server/role'] == 'domaincontroller_master':
-				pwdfile = '/etc/ldap.secret'
-				options.user = 'cn=admin,%s' % baseConfig['ldap/base']
-			fd = open(pwdfile, 'r')
-			options.password = fd.readline()[: -1]
-			fd.close()
-		except:
-			print >>sys.stderr, "error: user and/or password not specified"
-			parser.print_help(sys.stderr)
-			sys.exit(1)
-
-	ud.init('/var/log/univention/directory-reports.log', 1, 1)
+	ud.init('/var/log/univention/directory-reports.log', ud.FLUSH, ud.FUNCTION)
 	ud.set_level(ud.ADMIN, options.debug)
 
-	cfg = udr.Config(options.config)
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+
+	cfg = Config(options.config)
 
 	if options.list_reports:
 		dump_modules(cfg, options.module)
 		sys.exit(0)
 
-	template = cfg.get_report(options.module, options.report)
-	if template is None:
-		parser.print_usage(sys.stderr)
-		if options.module is None:
-			print >>sys.stderr, "error: module not specified (use -m)"
-		elif options.module not in cfg._reports:
-			print >>sys.stderr, "error: specified module '%s' does not exist" % options.module
-			options.module = None
-		elif options.report is not None:
-			report_entry = cfg._get_report_entry(options.module, options.report)
-			if report_entry is None:
-				print >>sys.stderr, "error: specified report '%s' does not exist" % options.report
-			else:
-				print >>sys.stderr, "error: specified report '%s' is unavailable" % options.report
-				name, dir, filename = report_entry
-				if not os.path.exists(filename):
-					print >>sys.stderr, "Template file '%s' seems to be missing." % filename
-				else:
-					print >>sys.stderr, "Check settings in file '%s'." % cfg._filename
-				sys.exit(2)
-		else:
-			print >>sys.stderr, "error: no report found for module '%s'" % options.module
-		dump_modules(cfg, options.module, sys.stderr)
-		sys.exit(2)
-
 	if not args:
 		parser.print_usage(sys.stderr)
-		print >>sys.stderr, "error: no DNs specified on command line"
+		print >> sys.stderr, _("Error: no DNs specified on command line")
 		sys.exit(2)
 
-	udr.admin.connect(options.user, options.password, host=options.server, base=options.base, start_tls=0)
+	# FIXME: why is start_tls=0 used here?
+	if options.user and options.password:
+		lo = univention.admin.uldap.access(host=options.server, base=options.base, binddn=options.user, bindpw=options.password, start_tls=0)
+	else:
+		try:
+			if ucr['server/role'] == 'domaincontroller_master':
+				lo, po = univention.admin.uldap.getAdminConnection(start_tls=0)
+			else:
+				lo, po = univention.admin.uldap.getMachineConnection(start_tls=0)
+		except IOError:
+			print >> sys.stderr, _("Error: user and/or password not specified")
+			parser.print_help(sys.stderr)
+			sys.exit(1)
 
+	report = Report(lo, config=cfg)
 	try:
-		if options.header is None:
-			options.header = cfg.get_header(options.module, options.report)
-		if options.footer is None:
-			options.footer = cfg.get_footer(options.module, options.report)
-		doc = udr.Document(template, header=options.header, footer=options.footer)
-	except NameError as e:  # missing file
-		print >>sys.stderr, e
+		filename = report.create(options.module, options.report, args)
+	except ReportError as exc:
+		print >> sys.stderr, _("Error: The %s report could not be created: %s") % (options.report, exc)
 		sys.exit(1)
-	tmpfile = doc.create_source(args)
-	if doc._type == udr.Document.TYPE_LATEX:
-		type = 'PDF'
-		outfile = doc.create_pdf(tmpfile)
-		if options.no_cleanup:
-			print >>sys.stderr, 'kept temporary source file at %s' % tmpfile
-		else:
-			basefile = tmpfile.rsplit('.', 1)[0]  # strip suffix
-			for file in [tmpfile] + ['%s.%s' % (basefile, suffix) for suffix in ('aux', 'log')]:
-				try:
-					os.unlink(file)
-				except OSError as e:
-					pass
-	elif doc._type == udr.Document.TYPE_CSV:
-		type = 'CSV'
-		outfile = tmpfile
-	else:
-		type = ''
-		outfile = tmpfile
 
-	if os.path.exists(outfile):
-		print 'created %s file: %s' % (type, outfile)
-	else:
-		print >>sys.stderr, "error: report could not be created"
-		sys.exit(1)
+	print _('The %s has been created: %s') % (options.report, filename)
 
 
 if __name__ == "__main__":

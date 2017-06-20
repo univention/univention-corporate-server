@@ -33,7 +33,7 @@
 import re
 import shlex
 
-from tokens import Token, TextToken, AttributeToken, PolicyToken, QueryToken, HeaderToken, FooterToken, IContextToken, ResolveToken
+from tokens import Token, TextToken, AttributeToken, PolicyToken, QueryToken, HeaderToken, FooterToken, IContextToken, ResolveToken, DateToken
 
 
 class Parser(object):
@@ -109,13 +109,15 @@ class Parser(object):
 			return HeaderToken(attrs, closing)
 		elif name == 'footer':
 			return FooterToken(attrs, closing)
+		elif name == 'date':
+			return DateToken(attrs)
 		else:
 			raise SyntaxError('Unknown tag: %s' % name)
 
 	def tokenize(self):
 		token = self.next_token()
 		while token:
-			if isinstance(token, (TextToken, AttributeToken, PolicyToken)):
+			if isinstance(token, (TextToken, AttributeToken, PolicyToken, DateToken)):
 				if isinstance(token, TextToken):
 					if token.data == '\n' and len(self._context) and isinstance(self._context[-1], HeaderToken):
 						# ignore line feed after header

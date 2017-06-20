@@ -4,18 +4,18 @@ Variables: directory/reports/templates/.*
 Variables: directory/reports/default
 
 Type: file
-File: etc/univention/directory/reports/default/en_US/header.tex
+File: etc/univention/directory/reports/default/en_US/header.rml
 Variables: directory/reports/logo
 
 Type: file
-File: etc/univention/directory/reports/default/en_US/footer.tex
+File: etc/univention/directory/reports/default/en_US/footer.rml
 
 Type: file
-File: etc/univention/directory/reports/default/de_DE/header.tex
+File: etc/univention/directory/reports/default/de_DE/header.rml
 Variables: directory/reports/logo
 
 Type: file
-File: etc/univention/directory/reports/default/de_DE/footer.tex
+File: etc/univention/directory/reports/default/de_DE/footer.rml
 
 Type: file
 File: etc/logrotate.d/univention-directory-reports

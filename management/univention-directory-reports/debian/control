@@ -15,14 +15,10 @@ Architecture: all
 Depends: ${misc:Depends},
  python-univention-directory-reports,
  shell-univention-lib,
- texlive,
- texlive-latex-recommended,
- texlive-latex-extra,
- texlive-lang-german,
- python-univention-lib (>= 1.0.25-1)
+ python-univention-lib (>= 1.0.25-1),
 Description: Creates reports for UCS Directory Manager objects
  UCS Report Generator creates reports in PDF format using
- LaTeX template files that contain a special template syntax to
+ template files that contain a special template syntax to
  describe LDAP attributes and objects that should replace the patterns.
 
 Package: python-univention-directory-reports
@@ -30,7 +26,21 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention-directory-manager,
  univention-config,
+ python-trml2pdf,
 Provides: ${python:Provides}
+Description: Creates reports for UCS Directory manager objects
+ UCS Report Generator creates reports in PDF format using
+ RML template files that contain a special template syntax to
+ describe LDAP attributes and objects that should replace the patterns.
+
+Package: univention-directory-reports-latex
+Architecture: all
+Depends: univention-directory-reports,
+ univention-config,
+ texlive,
+ texlive-latex-recommended,
+ texlive-latex-extra,
+ texlive-lang-german,
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  LaTeX template files that contain a special template syntax to

@@ -33,7 +33,7 @@
 import codecs
 import os
 
-from tokens import TextToken, ResolveToken, QueryToken, AttributeToken, PolicyToken
+from tokens import TextToken, ResolveToken, QueryToken, AttributeToken, PolicyToken, DateToken
 
 
 class Output(object):
@@ -69,5 +69,5 @@ class Output(object):
 			elif isinstance(token, (ResolveToken, QueryToken)):
 				if len(token):
 					self.write(token)
-			elif isinstance(token, (AttributeToken, PolicyToken)):
+			elif isinstance(token, (DateToken, AttributeToken, PolicyToken)):
 				self._fd.write(token.value)

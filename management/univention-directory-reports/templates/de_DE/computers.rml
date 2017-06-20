@@ -1,0 +1,11 @@
+<!--<para><h1>Rechner-Report</h1></para>
+<spacer length="1cm"/>
+-->
+<blockTable style="mainTable">
+<tr><td><h3>Rechner <@attribute name="name"@></h3></td> </tr>
+<tr><td><para style="content">IP-Adresse:</para></td><td><para style="content"><@attribute name="ip"@></para></td> </tr>
+<tr><td><para style="content">MAC-Adresse:</para></td><td><para style="content"><@attribute name="mac"@></para></td></tr>
+<tr><td><para style="content">Network:</para></td><td><para style="content"><@resolve module="networks/network" dn-attribute="network" alternative="nicht zugewiesen"@><@attribute name="name"@><@/resolve@></para></td></tr>
+<tr><td><para style="content">Inventarnummer:</para></td><td><para style="content"><@attribute name="inventoryNumber"@></para></td></tr>
+</blockTable>
+<spacer length="1cm"/>

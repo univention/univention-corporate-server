@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE document SYSTEM "../rml_1_0.dtd">
+<document filename="univention-directory-report.pdf">
+	<template author="Univention Corporate Server" title="Univention Directory Report" showBoundary="0" pageSize="(21cm, 29.7cm)" leftMargin="2.5cm" rightMargin="2.5cm" topMargin="2.5cm" bottomMargin="2.5cm">
+		<pageTemplate id="main">
+			<pageGraphics>
+				<image file="@%@directory/reports/logo@%@" y="27.5cm" x="13.5cm" width="5cm"/>
+			</pageGraphics>
+			<frame id="first" x1="2.5cm" y1="2.5cm" width="16cm" height="24.5cm"/>
+		</pageTemplate>
+		<pageTemplate id="regularpages">
+			<pageGraphics>
+				<image file="@%@directory/reports/logo@%@" y="27.5cm" x="13.5cm" width="5cm"/>
+				<lines>2.5cm 2.5cm 18.5cm 2.5cm</lines>
+				<drawString x="18cm" y="2cm"><pageNumber/></drawString>
+			</pageGraphics>
+			<setFont name="Times-Roman" size="9"/>
+			<frame id="first" x1="2.5cm" y1="2.5cm" width="16cm" height="24.5cm"/>
+		</pageTemplate>
+	</template>
+	<stylesheet>
+		<paraStyle name="content" fontName="Helvetica" fontSize="9" textColor="black"/>
+		<blockTableStyle id="mainTableOuter">
+			<blockFont name="Times-Roman" size="9"/>
+			<blockTextColor colorName="black"/>
+			<blockLeftPadding length="0"/>
+			<blockValign value="TOP"/>
+			<blockAlignment value="LEFT"/>
+			<!--<lineStyle kind="GRID" colorName="black"/>-->
+		</blockTableStyle>
+		<blockTableStyle id="mainTable">
+			<blockFont name="Times-Roman" size="9"/>
+			<blockTextColor colorName="black"/>
+			<blockValign value="TOP"/>
+			<blockLeftPadding length="0"/>
+			<blockBottomPadding length="0"/>
+			<blockTopPadding length="0"/>
+			<blockAlignment value="LEFT"/>
+			<!--<lineStyle kind="GRID" colorName="black"/>-->
+			<blockSpan start="0,0" stop="1,0"/>
+		</blockTableStyle>
+	</stylesheet>
+	<story>
+		<spacer length="1cm"/>
+		<title>Auswertung der Verzeichnisdienstobjekte</title>
+		<spacer length="3cm"/>
+		<title>Erstellt am <@date format="%A %d. %B %Y"@></title>
+		<setNextTemplate name="regularpages"/>
+		<nextFrame/>

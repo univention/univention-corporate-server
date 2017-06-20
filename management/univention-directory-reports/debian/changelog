@@ -1,3 +1,9 @@
+univention-directory-reports (9.0.1-1) unstable; urgency=medium
+
+  * Bug #39239: remove dependency to latex
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jun 2017 14:09:00 +0200
+
 univention-directory-reports (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

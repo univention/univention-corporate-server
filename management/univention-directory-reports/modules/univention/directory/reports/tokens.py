@@ -118,3 +118,10 @@ class PolicyToken(TemplateToken):
 	def __init__(self, attrs={}, value=''):
 		TemplateToken.__init__(self, 'policy', attrs)
 		self.value = value
+
+
+class DateToken(TemplateToken):
+
+	def __init__(self, attrs={}, value=''):
+		TemplateToken.__init__(self, 'date', attrs)
+		self.value = value

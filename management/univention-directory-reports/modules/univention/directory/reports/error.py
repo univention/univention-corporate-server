@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
-#  module for creating reports about any kind of Univention Admin object
 #
-# Copyright 2007-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,10 +30,5 @@
 # <http://www.gnu.org/licenses/>.
 
 
-from univention.directory.reports.error import ReportError
-from univention.directory.reports.report import Report
-from univention.directory.reports.document import Document
-from univention.directory.reports.admin import connect, get_object, cache_object, connected, identify, set_format
-from univention.directory.reports.config import Config
-
-__all__ = ['Report', 'ReportError', 'Document', 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format', 'Config']
+class ReportError(Exception):
+	pass

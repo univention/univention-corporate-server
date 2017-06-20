@@ -30,18 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import cgi
+
 import univention.admin.uldap as ua_ldap
 import univention.admin.objects as ua_objects
 import univention.admin.modules as ua_modules
 import univention.admin.mapping as ua_mapping
-import univention.admin.syntax as ua_syntax
 import univention.admin.config as ua_config
 import univention.admin.uexceptions as ua_exceptions
 from univention.config_registry import ConfigRegistry
 
 import univention.debug as ud
 
-from filter import filter_get
+from univention.directory.reports.filter import filter_get
 
 __all__ = ['connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format']
 
@@ -85,7 +86,7 @@ def texClean(str):
 
 class AdminConnection(object):
 
-	def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=True):
+	def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=None):
 		self._cached = {}
 		self._modules = {}
 		self._policies = {}
@@ -163,7 +164,8 @@ class AdminConnection(object):
 			except:
 				pass
 		for key, value in new.items():
-			if self._format:
+			from univention.directory.reports.document import Document
+			if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):
 				i, j = self.format_property(new.descriptions, key, value)
 				new.info[i] = j
 			else:
@@ -215,17 +217,25 @@ class AdminConnection(object):
 				for v in value:
 					if isinstance(v, (list, tuple)):
 						for i in v:
-							result.append(texClean(str(i)))
+							result.append(self.escape(str(i)))
 					else:
-						result.append(texClean(str(v)))
+						result.append(self.escape(str(v)))
 				value = result
 			elif value:
-				value = texClean(value)
+				value = self.escape(value)
 			filter = filter_get(prop.syntax)
 			if filter:
 				return filter(prop, key, value)
 
 		return (key, value)
+
+	def escape(self, value):
+		from univention.directory.reports.document import Document
+		if self._format == Document.TYPE_LATEX:
+			return texClean(value)
+		elif self._format == Document.TYPE_RML:
+			return cgi.escape(value, quote=True)
+		return value
 
 	def _get_policies(self, obj):
 		dict = {}
@@ -239,7 +249,8 @@ class AdminConnection(object):
 				dict[attr_name] = value_dict['value']
 
 			for key, value in ua_mapping.mapDict(module.mapping, dict).items():
-				if self._format:
+				from univention.directory.reports.document import Document
+				if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):
 					i, j = self.format_property(module.property_descriptions, key, value)
 					obj.info[i] = j
 				else:

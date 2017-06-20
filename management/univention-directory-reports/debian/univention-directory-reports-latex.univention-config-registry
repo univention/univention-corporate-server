@@ -1,0 +1,13 @@
+Type: file
+File: etc/univention/directory/reports/default/en_US/header.tex
+Variables: directory/reports/logo
+
+Type: file
+File: etc/univention/directory/reports/default/en_US/footer.tex
+
+Type: file
+File: etc/univention/directory/reports/default/de_DE/header.tex
+Variables: directory/reports/logo
+
+Type: file
+File: etc/univention/directory/reports/default/de_DE/footer.tex

@@ -1,0 +1,96 @@
+<para><h1>Benutzer-Report: <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@></h1></para>
+<spacer length="1cm"/>
+
+<blockTable style="mainTableOuter" colWidths="7.8cm,7.8cm">
+<tr><td>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Benutzereinzelnachweis: <@attribute name="lastname"@>, <@attribute name="firstname"@></h3></td> </tr>
+<tr><td><para style="content">Name:</para></td><td><para style="content"><@attribute name="lastname"@><@attribute name="firstname" prepend=", "@></para></td> </tr>
+<tr><td><para style="content">Benutzer:</para></td><td><para style="content"><@attribute name="username"@></para></td></tr>
+<tr><td><para style="content">Beschreibung:</para></td><td><para style="content"><@attribute name="description"@></para></td></tr>
+<tr><td><para style="content">Organisation:</para></td><td><para style="content"><@attribute name="organisation"@></para></td></tr>
+<tr><td><para style="content">Mitarbeiternummer:</para></td><td><para style="content"><@attribute name="employeeNumber"@></para></td></tr>
+<tr><td><para style="content">Mitarbeitertyp:</para></td><td><para style="content"><@attribute name="employeeType"@></para></td></tr>
+<tr><td><para style="content">Raumnummer:</para></td><td><para style="content"><@attribute name="roomNumber"@></para></td></tr>
+<tr><td><para style="content">Vorgesetzter:</para></td><td><para style="content">
+<@resolve module="users/user" dn-attribute="secretary" alternative=""@>
+    <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@>
+<@/resolve@></para></td></tr>
+</blockTable>
+<spacer length="1cm"/>
+
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Kontakt</h3></td></tr>
+<tr><td></td></tr>
+<tr><td><para style="content">Telefon:</para></td><td><para style="content"><@attribute name="phone"@> </para></td></tr>
+<tr><td><para style="content">Mobiltelefon:</para></td><td><para style="content"><@attribute name="mobileTelephoneNumber"@></para></td></tr>
+<tr><td><para style="content">Straße:</para></td><td><para style="content"><@attribute name="street"@></para></td></tr>
+<tr><td></td></tr>
+</blockTable>
+<spacer length="1cm"/>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Kontoeinstellungen</h3></td></tr>
+<tr><td><para style="content">Deaktiviert:</para></td><td><para style="content"><@attribute name="disabled" default="Nein"@> </para></td></tr>
+<tr><td><para style="content">Gesperrt:</para></td><td><para style="content"><@attribute name="locked" default="Nein"@> </para></td></tr>
+<tr><td><para style="content">Kontoablaufdatum:</para></td><td><para style="content"><@attribute name="userexpiry" default="Nicht gesetzt"@> </para></td></tr>
+<tr><td><para style="content">Passwortablaufdatum:</para></td><td><para style="content"><@attribute name="passwordexpiry" default="Nicht gesetzt"@> </para></td></tr>
+<tr><td><para style="content">Passwortänderung:</para></td><td><para style="content"><@attribute name="pwdChangeNextLogin" default="Nein"@> </para></td></tr>
+</blockTable>
+<spacer length="1cm"/>
+
+</td><td>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Linux/UNIX</h3></td></tr>
+<tr><td><para style="content">Benutzer-ID:</para></td><td><para style="content"><@attribute name="uidNumber"@> </para></td></tr>
+<tr><td><para style="content">Gruppen-ID:</para></td><td><para style="content"><@attribute name="gidNumber"@></para></td></tr>
+<tr><td><para style="content">Login-Shell:</para></td><td><para style="content"><@attribute name="shell"@> </para></td></tr>
+<tr><td><para style="content">Heimatverzeichnis:</para></td><td><para style="content"><@attribute name="unixhome"@> </para></td></tr>
+<tr><td><para style="content">Freigabepfad:</para></td><td><para style="content"><@attribute name="homeSharePath"@> </para></td></tr>
+<tr><td><para style="content">Freigabe:</para></td><td><para style="content"><@resolve module="shares/share" dn-attribute="homeShare"@>
+    <@attribute name="printablename"@>
+<@/resolve@></para></td></tr>
+</blockTable>
+
+<spacer length="1cm"/>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Passwort-Richtlinie</h3></td></tr>
+<tr><td><para style="content">Ererbt:</para></td><td><@policy module="policies/pwdhistory" inherited=""@> </td></tr>
+<tr><td><para style="content">History Länge:</para></td><td><para style="content"><@attribute name="length"@></para></td></tr>
+<tr><td><para style="content">Passwort Länge:</para></td><td><para style="content"><@attribute name="pwLength"@></para></td></tr>
+<tr><td><para style="content">Ablaufintervall:</para></td><td><para style="content"><@attribute name="expiryInterval" default="-"@></para></td></tr>
+</blockTable>
+<spacer length="1cm"/>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Mail</h3></td></tr>
+<tr><td><para style="content">E-Mail-Adresse:</para></td><td><para style="content"><@attribute name="mailPrimaryAddress" default="Keine"@> </para></td></tr>
+<tr><td><para style="content">weitere Adressen:</para></td><td><para style="content"><@attribute name="mailAlternativeAddress" default="Keine"@> </para></td></tr>
+<tr><td><para style="content">Globaler SPAM-Ordner:</para></td><td><para style="content"><@attribute name="mailGlobalSpamFolder" default="-"@> </para></td></tr>
+</blockTable>
+<spacer length="1cm"/>
+
+<blockTable style="mainTable" colWidths="3.5cm,4cm">
+<tr><td><h3>Windows</h3></td></tr>
+<tr><td><para style="content">Heimatverzeichnis:</para></td><td><para style="content"><@attribute name="sambahome"@> </para></td></tr>
+<tr><td><para style="content">Laufwerk für Heimatverzeichnis:</para></td><td><para style="content"><@attribute name="homedrive"@> </para></td></tr>
+<tr><td><para style="content">Profilverzeichnis:</para></td><td><para style="content"><@attribute name="profilepath"@> </para></td></tr>
+<tr><td><para style="content">Anmeldeskript:</para></td><td><para style="content"><@attribute name="scriptpath"@> </para></td></tr>
+<tr><td><para style="content">Relative ID:</para></td><td><para style="content"><@attribute name="sambaRID"@> </para></td></tr>
+</blockTable>
+
+</td></tr>
+</blockTable>
+
+
+<h3>Mitglied in folgenden Gruppen</h3>
+
+<@query module="groups/group" start="groups" next="memberOf" regex="name=^[^(s\-)([a\-)(i\-)(h\-)]" alternative="<para>Der Benutzer ist in keiner weiteren Gruppen enthalten</para>"@>
+	<para bulletFontSize="5" bulletText="&#x25cf;"><b><@attribute name="name"@></b> (<@attribute name="description"@>)</para>
+<@/query@>
+
+<nextFrame/>

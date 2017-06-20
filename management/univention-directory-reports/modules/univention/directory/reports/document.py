@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
-#  	creates a report document
+#  creates a report document
 #
 # Copyright 2007-2017 Univention GmbH
 #
@@ -37,29 +37,40 @@ import codecs
 import tempfile
 import subprocess
 
-from parser import Parser
-from output import Output
-from interpreter import Interpreter
-import admin
+from univention.directory.reports.error import ReportError
+from univention.directory.reports.parser import Parser
+from univention.directory.reports.output import Output
+from univention.directory.reports.interpreter import Interpreter
+from univention.directory.reports import admin
+
+import trml2pdf
+
+from univention.lib.i18n import Translation
+_ = Translation('univention-directory-reports').translate
 
 
 class Document(object):
-	(TYPE_LATEX, TYPE_CSV, TYPE_UNKNOWN) = range(3)
+	(TYPE_LATEX, TYPE_CSV, TYPE_RML, TYPE_UNKNOWN) = range(4)
+
+	@classmethod
+	def get_type(cls, template):
+		if template.endswith('.tex'):
+			return cls.TYPE_LATEX
+		elif template.endswith('.csv'):
+			return cls.TYPE_CSV
+		elif template.endswith('.rml'):
+			return cls.TYPE_RML
+		return cls.TYPE_UNKNOWN
 
 	def __init__(self, template, header=None, footer=None):
 		self._template = template
 		self._header = header
 		self._footer = footer
-		if self._template.endswith('.tex'):
-			self._type = Document.TYPE_LATEX
-		elif self._template.endswith('.csv'):
-			self._type = Document.TYPE_CSV
-		else:
-			self._type = Document.TYPE_UNKNOWN
+		self._type = self.get_type(self._template)
 		self.__check_files()
 
 	def __check_files(self):
-		if self._type == Document.TYPE_LATEX:
+		if self._type in (Document.TYPE_LATEX, Document.TYPE_RML):
 			files = (self._header, self._footer, self._template)
 		elif self._type == Document.TYPE_CSV:
 			files = (self._template, )
@@ -67,7 +78,7 @@ class Document(object):
 			files = tuple()
 		for filename in files:
 			if not os.path.isfile(filename):
-				raise NameError("error: required file '%s' does not exist or is not readable" % filename)
+				raise ReportError(_("Configuration error: File %r could not be opened.") % (filename,))
 
 	def __create_tempfile(self):
 		if self._type == Document.TYPE_LATEX:
@@ -82,15 +93,19 @@ class Document(object):
 
 		return filename
 
-	def __append_file(self, fd, filename):
-		tmpfd = open(filename, 'r')
-		fd.write(tmpfd.read())
-		tmpfd.close()
+	def __append_file(self, fd, filename, obj=None):
+		parser = Parser(filename=filename)
+		parser.tokenize()
+		tks = copy.deepcopy(parser._tokens)
+		interpret = Interpreter(obj, tks)
+		interpret.run()
+		output = Output(tks, fd=fd)
+		output.write()
 
 	def create_source(self, objects=[]):
 		"""Create report from objects (list of DNs)."""
 		tmpfile = self.__create_tempfile()
-		admin.set_format(self._type == Document.TYPE_LATEX)
+		admin.set_format(self._type)
 		parser = Parser(filename=self._template)
 		parser.tokenize()
 		tokens = parser._tokens
@@ -106,7 +121,7 @@ class Document(object):
 			else:
 				obj = admin.cache_object(dn)
 			if obj is None:
-				print >>sys.stderr, "warning: dn '%s' not found, skipped." % dn
+				print >> sys.stderr, "warning: dn '%s' not found, skipped." % dn
 				continue
 			tks = copy.deepcopy(tokens)
 			interpret = Interpreter(obj, tks)
@@ -130,7 +145,22 @@ class Document(object):
 			if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
 				if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
 					return '%s.pdf' % latex_file.rsplit('.', 1)[0]
-			print >>sys.stderr, "error: failed to create PDF file"
-			return None
+			raise ReportError(_('Failed creating PDF file.'))
 		finally:
 			devnull.close()
+			basefile = latex_file.rsplit('.', 1)[0]  # strip suffix
+			for file_ in [latex_file] + ['%s.%s' % (basefile, suffix) for suffix in ('aux', 'log')]:
+				try:
+					os.unlink(file_)
+				except EnvironmentError:
+					pass
+
+	def create_rml_pdf(self, rml_file):
+		output = '%s.pdf' % (os.path.splitext(rml_file)[0],)
+		with open(rml_file, 'rb') as fd:
+			outputfile = trml2pdf.parseString(fd.read(), output)
+		try:
+			os.unlink(rml_file)
+		except EnvironmentError:
+			pass
+		return outputfile

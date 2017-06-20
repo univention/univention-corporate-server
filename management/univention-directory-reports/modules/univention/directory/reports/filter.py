@@ -77,9 +77,11 @@ filter_add((ua_syntax.emailAddress, ), _email_address)
 
 def _samba_group_type(prop, key, value):
 	# need to call str() directly in order to force a correct translation
-	types = {'2': str(_('Domain Group')),
-			  '3': str(_('Local Group')),
-			  '5': str(_('Well-Known Group'))}
+	types = {
+		'2': str(_('Domain Group')),
+		'3': str(_('Local Group')),
+		'5': str(_('Well-Known Group'))
+	}
 	if value in types.keys():
 		value = types[value]
 	return (key, value)

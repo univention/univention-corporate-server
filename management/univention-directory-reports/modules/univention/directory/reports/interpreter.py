@@ -30,20 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.modules as ua_modules
-import univention.admin.objects as ua_objects
-import univention.admin.uldap as ua_ldap
+import re
+import copy
+import fnmatch
+import datetime
 
-from tokens import QueryToken, ResolveToken, TextToken, AttributeToken, PolicyToken
-import admin
+import univention.admin.objects as ua_objects
+
+from univention.directory.reports.tokens import QueryToken, ResolveToken, TextToken, AttributeToken, PolicyToken, DateToken
+from univention.directory.reports import admin
 
 import univention.admin.localization
 translation = univention.admin.localization.translation('univention-directory-reports')
 _ = translation.translate
-
-import copy
-import fnmatch
-import re
 
 
 class Interpreter(object):
@@ -101,6 +100,8 @@ class Interpreter(object):
 						token.value = token.attrs['prepend'] + token.value
 			elif isinstance(token, PolicyToken):
 				self.policy(token, base_objects[0])
+			elif isinstance(token, DateToken):
+				token.value = datetime.datetime.today().strftime(token.attrs.get('format', "%A %B %d, %Y"))
 
 	def resolve(self, token, base):
 		if 'module' in token.attrs:

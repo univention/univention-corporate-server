@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^templates\///')
+TEMPLATE_FILES=$(shell find templates -name '*.rml' -o -name '*.csv' | sed 's/^templates\///')
+LATEX_TEMPLATE_FILES=$(shell find templates -name '*.tex' | sed 's/^templates\///')
 
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
@@ -51,6 +52,9 @@ override_dh_auto_install:
 
 	@for i in $(TEMPLATE_FILES); do\
 		install -m 644 templates/$$i debian/univention-directory-reports/etc/univention/directory/reports/default/$$i;\
+	done
+	@for i in $(LATEX_TEMPLATE_FILES); do\
+		install -m 644 templates/$$i debian/univention-directory-reports-latex/etc/univention/directory/reports/default/$$i;\
 	done
 	@for i in $(MO_FILES); do\
 		lang=`basename $$i .mo`;\
