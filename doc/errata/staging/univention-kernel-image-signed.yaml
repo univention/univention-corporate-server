@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [0]
+version: [0,1]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-kernel-image-signed
 fix: 3.0.2-5A~4.2.0.201706190940

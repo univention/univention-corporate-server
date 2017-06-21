@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [0]
+version: [0,1]
 scope: ucs_4.2-0-errata4.2-0
 src: linux
 fix: 4.9.30-2A~4.2.0.201706171152
