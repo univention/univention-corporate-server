@@ -9,3 +9,5 @@ desc: |
  * The cron job for the updater check has been
    deactivated.
 bug: [44015]
+erratum: 430
+announced: 2017-06-21
