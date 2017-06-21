@@ -1786,26 +1786,8 @@ define([
 							dialog.alert(_('The changes have been successfully applied.'));
 							saveDeferred.resolve();
 						} else if (success) {
-							// show a warning notification if a user is saved
-							// and the user name is too long
-							var usernameChanged = false;
-							for (x = 0; x < data.result.length; x++) {
-								if (data.result[x].property === 'username') {
-									usernameChanged = true;
-									break;
-								}
-							}
-
-							var showWarning = this.moduleFlavor === 'users/user' && usernameChanged && this.usernameMaxLengthChecker.usernameTooLong();
-							if (showWarning) {
-								var messageData = {
-									'username': lang.replace(' {0}', [this._form.getWidget('username').get('value')]),
-									'length': this.usernameMaxLengthChecker.maxLength
-								};
-								dialog.warn(lang.replace(this.usernameMaxLengthChecker.warningMessageTemplate, messageData));
-							}
-
 							// everything ok, close page
+							this._showUsernameTooLongWarning(data.result);
 							this.onCloseTab();
 							this.onSave(result.$dn$, this.objectType);
 							saveDeferred.resolve();
@@ -1824,6 +1806,24 @@ define([
 			var validatedAndSaved = all([validationDeferred, saveDeferred]);
 			this.standbyDuring(validatedAndSaved);
 			return validatedAndSaved;
+		},
+
+		_showUsernameTooLongWarning: function(changedValues) {
+			if (this.moduleFlavor !== 'users/user') {
+				return;
+			}
+
+			var usernameChanged = array.some(changedValues, function(iChangedValue) {
+				return iChangedValue.property === 'username';
+			});
+
+			var showWarning = usernameChanged && this.usernameMaxLengthChecker.usernameTooLong();
+			if (showWarning) {
+				var messageData = {
+					'length': this.usernameMaxLengthChecker.maxLength
+				};
+				dialog.warn(lang.replace(this.usernameMaxLengthChecker.warningMessageTemplate, messageData));
+			}
 		},
 
 		_parseValidation: function(validationList) {

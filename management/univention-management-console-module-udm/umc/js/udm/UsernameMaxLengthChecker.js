@@ -34,7 +34,7 @@ define([
 	"umc/modules/udm/TextBoxMaxLengthChecker",
 	"umc/i18n!umc/modules/udm"
 ], function(declare, lang, TextBoxMaxLengthChecker, _) {
-	return declare("umc.modules.udm.TextBoxMaxLengthChecker", TextBoxMaxLengthChecker, {
+	return declare("umc.modules.udm.UsernameMaxLengthChecker", TextBoxMaxLengthChecker, {
 		maxLength: 20,
 		warningMessage: null,
 		warningMessageTemplate: null,
@@ -42,11 +42,9 @@ define([
 		constructor: function() {
 			this.inherited(arguments);
 
-			// no white space between name{username} is intentional
-			this.warningMessageTemplate = _('<b>Warning:</b> The user name{username} is longer than {length} characters.<br>A login on Windows clients is not possible with a user name that has more than {length} characters.');
+			this.warningMessageTemplate = _('<b>Warning:</b> The user name is longer than {length} characters which makes a login on Windows clients imposible. Please consider shortening the user name.');
 
 			this.warningMessage = lang.replace(this.warningMessageTemplate, {
-				'username': '',
 				'length': this.maxLength
 			});
 		}

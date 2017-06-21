@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-8) unstable; urgency=medium
+
+  * Bug #34973: Improve wording of warning message for long user names
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 21 Jun 2017 19:23:29 +0200
+
 univention-management-console-module-udm (7.0.10-7) unstable; urgency=medium
 
   * Bug #34973: Show a warning if a user name has more than 20 characters
