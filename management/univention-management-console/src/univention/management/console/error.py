@@ -142,10 +142,12 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
 	def _error_msg(self):
 		yield _('Cannot connect to the LDAP service.')
 		yield _('Error message: %s') % (self.exc.args[0].get('info', ''),)
+		yield ''
 		yield _('The following steps can help to solve this problem:')
 		if not self._is_master:
 			yield ' * ' + _('Make sure the domain controller master is running and reachable from %s') % (self._fqdn,)
-		yield ' * ' + _('Check the SSL certificates, proxy and firewall settings.')
+		yield ' * ' + _('Check the SSL certificates, proxy and firewall settings')
+		yield ' * ' + _('In case the SSL certificates are expired or a recent renewal of the root SSL CA has been done, please consider http://sdb.univention.de/1183')
 		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "service slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')

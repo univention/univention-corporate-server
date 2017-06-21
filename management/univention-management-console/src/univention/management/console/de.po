@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-06-20 18:58+0200\n"
+"POT-Creation-Date: 2017-06-21 16:09+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -73,9 +73,9 @@ msgstr ""
 "Überprüfen Sie, ob auf diesem Server genügend Festplattenspeicher und "
 "Arbeitsspeicher (RAM) verfügbar sind"
 
-#: univention/management/console/error.py:148
-msgid "Check the SSL certificates, proxy and firewall settings."
-msgstr "Überprüfen Sie die SSL Zertifikate, Proxy- und Firewall-Einstellungen."
+#: univention/management/console/error.py:149
+msgid "Check the SSL certificates, proxy and firewall settings"
+msgstr "Überprüfen Sie die SSL Zertifikate, Proxy- und Firewall-Einstellungen"
 
 #: univention/management/console/pam.py:339
 #, python-format
@@ -149,8 +149,14 @@ msgstr "Hat mehr Schlüssel als erlaubt"
 msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 
+#: univention/management/console/error.py:150
+msgid ""
+"In case the SSL certificates are expired or a recent renewal of the root SSL "
+"CA has been done, please consider http://sdb.univention.de/1183"
+msgstr "Falls die SSL Zertifikate abgelaufen sind oder das Wurzelzertifikat kürzlich erneuert worden ist, bitte ziehen Sie http://sdb.univention.de/1000 zu rat."
+
 #: univention/management/console/error.py:129
-#: univention/management/console/error.py:151
+#: univention/management/console/error.py:153
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
@@ -176,7 +182,7 @@ msgid "Invalid progress ID"
 msgstr "Ungültige Fortschritt ID"
 
 #: univention/management/console/error.py:125
-#: univention/management/console/error.py:147
+#: univention/management/console/error.py:148
 #, python-format
 msgid "Make sure the domain controller master is running and reachable from %s"
 msgstr ""
@@ -263,7 +269,7 @@ msgid "Please wait for operation to finish"
 msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
 #: univention/management/console/error.py:127
-#: univention/management/console/error.py:149
+#: univention/management/console/error.py:151
 msgid ""
 "Restart the LDAP service on the domain controller master either via "
 "\"service slapd restart\" on command line or with the UMC module \"System "
@@ -319,7 +325,7 @@ msgid "The execution of a command caused a fatal error"
 msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
 
 #: univention/management/console/error.py:121
-#: univention/management/console/error.py:145
+#: univention/management/console/error.py:146
 msgid "The following steps can help to solve this problem:"
 msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 

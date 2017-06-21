@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-48) unstable; urgency=medium
+
+  * Bug #39963: enhance error message
+
+ -- Florian Best <best@univention.de>  Wed, 21 Jun 2017 16:12:25 +0200
+
 univention-management-console (9.0.80-47) unstable; urgency=medium
 
   * Bug #40998: disable SSLv3 in UMC server and client; make tls ciphers
