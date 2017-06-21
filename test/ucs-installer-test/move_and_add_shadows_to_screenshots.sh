@@ -29,5 +29,5 @@ for image in ${shadowed_images[*]}; do
 	add_shadow $image
 done
 
-mkdir manual
+mkdir -p manual
 mv ${all_images[*]} manual
