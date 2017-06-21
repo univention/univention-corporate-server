@@ -1,0 +1,22 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check system status with univention-system-check
+## tags:
+##  - basic
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+curl -OOs https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz{,.gpg}
+gpgv \
+  --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
+  univention-system-check.tar.gz.gpg \
+  univention-system-check.tar.gz \
+  && tar -xzf  univention-system-check.tar.gz \
+  && python ./univention-system-check
+if [ $? != 0 ]; then
+	RETVAL=110
+fi
+
+exit $RETVAL
