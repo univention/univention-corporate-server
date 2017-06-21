@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.3-1) unstable; urgency=medium
+
+  * Bug #44792: Use 4.2-1 AMIs
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Jun 2017 12:00:15 +0200
+
 ucs-ec2-tools (3.0.2-6) unstable; urgency=low
 
   * Bug #44530: enable online repository in all cases
