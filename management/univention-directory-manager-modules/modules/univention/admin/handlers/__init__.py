@@ -2646,24 +2646,6 @@ class simpleComputer(simpleLdap):
 			raise raise_after
 
 
-class simpleLdapSub(simpleLdap):
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		base.__init__(self, co, lo, position, dn, superordinate)
-
-	def _create(self):
-		self._modify()
-
-	def _remove(self, remove_childs=0):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '_remove() called')
-		self._ldap_pre_remove()
-
-		ml = self._ldap_dellist()
-		self.lo.modify(self.dn, ml)
-
-		self._ldap_post_remove()
-
-
 class simplePolicy(simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
