@@ -9,8 +9,8 @@ desc: |
  * Objects can now be copied.
  * The generation of reports has been optimized.
  * The button styling of referenced policy objects has been adapted.
- * Correctly normalize umlauts and special characters
-   for the umlauts modifier in templates.
+ * The <:umlauts> modifier in the templating mechanism of e.g. user templates
+   now normalizes all characters.
  * Hidden objects are no longer shown by default in
    an multi object select widget.
  * A warning is now shown if a user name is too long to be usable for
