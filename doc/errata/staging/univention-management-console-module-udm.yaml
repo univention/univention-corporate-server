@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * Objects can now be copied.
  * The generation of reports has been optimized.
- * Adapt styling of the policy tab.
+ * The button styling of referenced policy objects has been adapted.
  * Correctly normalize umlauts and special characters
    for the umlauts modifier in templates.
  * Hidden objects are no longer shown by default in
