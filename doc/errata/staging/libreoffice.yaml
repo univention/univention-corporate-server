@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-0
+src: libreoffice
+fix: 1:4.3.3-2+deb8u7
+desc: |-
+ This update addresses the following issue:
+ * LibreOffice before 2017-01-02 has an out-of-bounds write caused by a
+   heap-based buffer overflow related to the tools::Polygon::Insert function
+   in tools/source/generic/poly.cxx (CVE-2017-7870)
+bug: [44664]
+cve:
+- CVE-2017-7870
