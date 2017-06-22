@@ -479,9 +479,7 @@ class Instance(Base, ProgressMixin):
 							if not p.copyable:
 								obj.info.pop(name, None)
 					obj.set_defaults = True
-					for name, p in obj.descriptions.items():
-						if obj.has_key(name) and obj.descriptions[name].default(obj):  # noqa: W601
-							obj[name]  # __getitem__ sets default value
+					obj.set_default_values()
 					props = obj.info
 					for passwd in module.password_properties:
 						if passwd in props:

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-9) unstable; urgency=medium
+
+  * Bug #43395: Substitute code block with function call
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Jun 2017 16:30:05 +0200
+
 univention-management-console-module-udm (7.0.10-8) unstable; urgency=medium
 
   * Bug #34973: Improve wording of warning message for long user names
