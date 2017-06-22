@@ -55,6 +55,7 @@ def ucr_overwrite_properties(module, lo):
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
+	prop_obj = property()
 	ucr_prefix = ucr_property_prefix % module.module
 	if not module:
 		return
@@ -149,7 +150,7 @@ def pattern_replace(pattern, object):
 				return ''
 
 		# make sure the key value exists
-		if key in object and object[key]:
+		if object.has_key(key) and object[key]:
 			val = modify_text(object[key], strCommands)
 			# try to apply the indexing instructions, indicated through '[...]'
 			if ext:
@@ -316,7 +317,7 @@ class property:
 						self.syntax.parse(d)
 			elif defaults:
 				self.syntax.parse(defaults)
-		except univention.admin.uexceptions.valueError:
+		except univention.admin.uexceptions.valueError, exc:
 			raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
 	def matches(self, options):
@@ -510,7 +511,7 @@ class policiesGroup:
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import syntax, hook
+from univention.admin import modules, objects, syntax, hook, mapping
 syntax.import_syntax_files()
 hook.import_hook_files()
 

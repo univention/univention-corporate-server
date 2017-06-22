@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-18) unstable; urgency=medium
+
+  * Bug #43395: Revert commit r 80408
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Jun 2017 12:50:54 +0200
+
 univention-directory-manager-modules (12.0.17-17) unstable; urgency=medium
 
   * Bug #43395: Fix pyflakes warnings
