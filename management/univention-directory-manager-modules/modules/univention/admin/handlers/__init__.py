@@ -714,7 +714,7 @@ class simpleLdap(base):
 		# Make sure all default values are set ...
 		for name, p in self.descriptions.items():
 			# ... if property has no option or any required option is currently enabled
-			if self.has_key(name) and self.descriptions[name].default(self):
+			if self.has_key(name) and p.default(self):
 				self[name]  # __getitem__ sets default value
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
