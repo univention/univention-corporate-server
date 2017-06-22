@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-0
+src: git
+fix: 1:2.1.4-2.1+deb8u3
+desc: |-
+ This update addresses the following issue(s):
+ * Do not allow git helpers run via git-shell to launch a pager
+   (CVE-2017-8386).
+bug: [44677]
+cve:
+- CVE-2017-8386
