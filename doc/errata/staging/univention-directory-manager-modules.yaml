@@ -11,4 +11,6 @@ desc: |
    for the umlauts modifier in templates.
  * When creating policy objects the DN of the created object is returned.
  * The LDAP base could not be modified via UMC anymore since erratum 39. This has been fixed.
-bug: [1567, 44370, 43150, 43395]
+ * The default value for the e-mail of a new user was the e-mail of the previously
+   created user. This has been fixed.
+bug: [1567, 44370, 43150, 43395, 41092]
