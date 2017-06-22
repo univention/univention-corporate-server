@@ -10,4 +10,5 @@ desc: |
  * Correctly normalize umlauts and special characters
    for the umlauts modifier in templates.
  * When creating policy objects the DN of the created object is returned.
-bug: [1567, 44370, 43150]
+ * The LDAP base could not be modified via UMC anymore since erratum 39. This has been fixed.
+bug: [1567, 44370, 43150, 43395]
