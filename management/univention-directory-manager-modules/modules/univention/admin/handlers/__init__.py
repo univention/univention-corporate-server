@@ -711,11 +711,7 @@ class simpleLdap(base):
 		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
-		# Make sure all default values are set ...
-		for name, p in self.descriptions.items():
-			# ... if property has no option or any required option is currently enabled
-			if self.has_key(name) and p.default(self):
-				self[name]  # __getitem__ sets default value
+		self.set_default_values()
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
@@ -794,11 +790,7 @@ class simpleLdap(base):
 		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_modify', self)
 
-		# Make sure all default values are set...
-		for name, p in self.descriptions.items():
-			# ... if property has no option or any required option is currently enabled
-			if self.has_key(name) and self.descriptions[name].default(self):
-				self[name]  # __getitem__ sets default value
+		self.set_default_values()
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
@@ -816,6 +808,13 @@ class simpleLdap(base):
 
 		self.save()
 		return self.dn
+
+	def set_default_values(self):
+		# Make sure all default values are set...
+		for name, p in self.descriptions.items():
+			# ... if property has no option or any required option is currently enabled
+			if self.has_key(name) and p.default(self):  # noqa: W601
+				self[name]  # __getitem__ sets default value
 
 	def _ldap_object_classes(self, ml):
 		m = univention.admin.modules.get(self.module)

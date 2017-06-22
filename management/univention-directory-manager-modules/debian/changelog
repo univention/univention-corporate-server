@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-19) unstable; urgency=medium
+
+  * Bug #43395: Move duplicated code into function and remove unittest
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Jun 2017 13:27:40 +0200
+
 univention-directory-manager-modules (12.0.17-18) unstable; urgency=medium
 
   * Bug #43395: Revert commit r 80408
