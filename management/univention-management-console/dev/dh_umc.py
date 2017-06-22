@@ -189,9 +189,8 @@ class UMC_Module(dict):
 	@property
 	def js_po_files(self):
 		"""Iterate over all JavaScript UMC message catalogs."""
-		try:
-			path = self[JAVASCRIPT]
-		except KeyError:
+		path = self.get(JAVASCRIPT)
+		if not path:  # might be an empty string
 			return
 		for lang in LANGUAGES:
 			yield os.path.join(path, '%s.po' % lang)
