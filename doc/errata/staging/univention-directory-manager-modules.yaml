@@ -7,8 +7,7 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * Group and user objects can now be copied in UMC.
- * Correctly normalize umlauts and special characters
-   for the umlauts modifier in templates.
+ * The <:umlauts> modifier in the templating mechanism of e.g. user templates now normalizes all characters.
  * When creating policy objects the DN of the created object is returned.
  * The LDAP base could not be modified via UMC anymore since erratum 39. This has been fixed.
  * The default value for the e-mail of a new user was the e-mail of the previously
