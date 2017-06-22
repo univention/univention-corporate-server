@@ -42,10 +42,10 @@ class TestProperty(unittest.TestCase):
 		o = FakeObject()
 		self.assertEqual(p.default(o), 'x')
 
-	# def test_str_default_mv(self):
-	# 	p = property(multivalue=True, default=('x', 'y'))
-	# 	o = N(set_defaults=True)
-	# 	self.assertEqual(p.default(o), ['x', 'y'])
+	def test_str_default_mv(self):
+		p = property(multivalue=True, default=('x', 'y'))
+		o = N(set_defaults=True)
+		self.assertEqual(p.default(o), ['x', 'y'])
 
 	def test_complex_syntax(self):
 		s = N(subsyntaxes=())
