@@ -15,4 +15,5 @@ desc: |
    an multi object select widget.
  * A warning is now shown if a user name is too long to be usable for
    a login on Windows clients.
-bug: [1567, 39239, 44066, 44370, 44044, 34973]
+ * The LDAP base could not be modified via UMC anymore since erratum 39. This has been fixed.
+bug: [1567, 39239, 44066, 44370, 44044, 34973, 43395]
