@@ -10,4 +10,6 @@ desc: |
  * Errors during module initialization are now handled.
  * The SSL security of the UMC server has been strengthened by disabling
    SSLv3 and making the TLS Ciphers configurable via UCR.
-bug: [39963, 44670, 40998]
+ * The build utilities have been adjusted to enhance the creation of
+   translation packages.
+bug: [39963, 44670, 40998, 44841]
