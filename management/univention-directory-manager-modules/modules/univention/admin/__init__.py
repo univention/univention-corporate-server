@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import types
+import copy
 import sys
 import re
 import unicodedata
@@ -244,25 +245,23 @@ class property:
 		self.copyable = copyable
 
 	def new(self):
-		if self.multivalue:
-			return []
-		else:
-			return None
+		return [] if self.multivalue else None
 
 	def _replace(self, res, object):
-		return pattern_replace(res, object)
+		return pattern_replace(copy.copy(res), object)
 
 	def default(self, object):
+		base_default = copy.copy(self.base_default)
 		if not object.set_defaults:
 			return [] if self.multivalue else ''
 
-		if not self.base_default:
+		if not base_default:
 			return self.new()
 
-		if isinstance(self.base_default, basestring):
-			return self._replace(self.base_default, object)
+		if isinstance(base_default, basestring):
+			return self._replace(base_default, object)
 
-		bd0 = self.base_default[0]
+		bd0 = base_default[0]
 
 		# we can not import univention.admin.syntax here (recursive import) so we need to find another way to identify a complex syntax
 		if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, (list, tuple)) and not self.multivalue:
@@ -271,14 +270,14 @@ class property:
 		if isinstance(bd0, basestring):
 			# multivalue defaults will only be a part of templates, so not multivalue is the common way for modules
 			if not self.multivalue:  # default=(template-str, [list-of-required-properties])
-				if all(object[p] for p in self.base_default[1]):
-					for p in self.base_default[1]:
+				if all(object[p] for p in base_default[1]):
+					for p in base_default[1]:
 						bd0 = bd0.replace('<%s>' % (p,), object[p])
 					return bd0
 				return self.new()
 			else:  # multivalue
-				if all(isinstance(bd, basestring) for bd in self.base_default):
-					return [self._replace(bd, object) for bd in self.base_default]
+				if all(isinstance(bd, basestring) for bd in base_default):
+					return [self._replace(bd, object) for bd in base_default]
 				# must be a list of loaded extended attributes then, so we return it if it has content
 				# return the first element, this is only related to empty extended attributes which are loaded wrong, needs to be fixed elsewhere
 				if bd0:
@@ -286,8 +285,8 @@ class property:
 				return self.new()
 
 		if callable(bd0):  # default=(func_obj_extra, [list-of-required-properties], extra-arg)
-			if all(object[p] for p in self.base_default[1]):
-				return bd0(object, self.base_default[2])
+			if all(object[p] for p in base_default[1]):
+				return bd0(object, base_default[2])
 			return self.new()
 
 		return self.new()

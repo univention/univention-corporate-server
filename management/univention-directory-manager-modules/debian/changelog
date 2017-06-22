@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-20) unstable; urgency=medium
+
+  * Bug #41092 Copy base_default value for modification
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Jun 2017 14:32:29 +0200
+
 univention-directory-manager-modules (12.0.17-19) unstable; urgency=medium
 
   * Bug #43395: Move duplicated code into function and remove unittest
