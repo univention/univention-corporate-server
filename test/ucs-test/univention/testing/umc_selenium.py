@@ -223,13 +223,22 @@ class UMCSeleniumTest(object):
 	def wait_for_text(self, text, timeout=60):
 		logger.info("Waiting for text: %r", text)
 		xpath = '//*[contains(text(), "%s")]' % (text,)
-		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
+		webdriver.support.ui.WebDriverWait([xpath], timeout).until(
 			self.get_all_visible_elements
 		)
 
-	def get_all_visible_elements(self, xpath):
-		elems = self.driver.find_elements_by_xpath(xpath)
-		visible_elems = [elem for elem in elems if elem.is_displayed()]
+	def wait_for_any_text_in_list(self, texts, timeout=60):
+		logger.info("Waiting until any of those texts is visible: %r", texts)
+		xpaths = ['//*[contains(text(), "%s")]' % (text,) for text in texts]
+		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
+			self.get_all_visible_elements
+		)
+
+	def get_all_visible_elements(self, xpaths):
+		visible_elems = []
+		for xpath in xpaths:
+			elems = self.driver.find_elements_by_xpath(xpath)
+			[visible_elems.append(elem) for elem in elems if elem.is_displayed()]
 		if len(visible_elems) > 0:
 			return visible_elems
 		return False
@@ -347,7 +356,7 @@ class UMCSeleniumTest(object):
 
 	def submit_input(self, inputname):
 		"""
-		submit the input in an input-element with the tag inputname.
+		Submit the input in an input-element with the tag inputname.
 		"""
 		logger.info('Submitting input field %r.' % (inputname,))
 		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
