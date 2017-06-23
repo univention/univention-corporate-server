@@ -341,6 +341,7 @@ class UMCSeleniumTest(object):
 		"""
 		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
 		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
+		elem.clear()
 		elem.send_keys(inputvalue)
 		return elem
 
