@@ -1,0 +1,85 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-06-22 23:32+0200\n"
+"PO-Revision-Date: 2017-06-23 12:00+0200\n"
+"Last-Translator: <ulmer@univention.de>\n"
+"Language-Team: DE <packages@univention.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: DE\n"
+
+#: tests/86_umc/10_product_test_password_change:114
+msgid "Account"
+msgstr "Konto"
+
+#: tests/86_umc/10_product_test_password_change:169
+#: tests/86_umc/10_product_test_password_change:174
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: tests/86_umc/10_product_test_password_change:115
+#: tests/86_umc/10_product_test_password_change:116
+msgid "Change password on next login"
+msgstr "Passwort bei der nächsten Anmeldung ändern"
+
+#: tests/86_umc/10_product_test_password_change:170
+msgid "Change the password of"
+msgstr "Passwort ändern für"
+
+#: tests/86_umc/10_product_test_password_change:156
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: tests/86_umc/10_product_test_password_change:161
+#: tests/86_umc/10_product_test_password_change:190
+msgid "Ok"
+msgstr "Ok"
+
+#: tests/86_umc/10_product_test_password_change:117
+msgid "Save"
+msgstr "Speichern"
+
+#: tests/86_umc/10_product_test_password_change:118
+msgid "Search users..."
+msgstr "Suche Benutzer..."
+
+#: tests/86_umc/10_product_test_password_change:168
+msgid "User settings"
+msgstr "Benutzereinstellungen"
+
+#: tests/86_umc/10_product_test_password_change:68
+#: tests/86_umc/10_product_test_password_change:106
+msgid "Users"
+msgstr "Benutzer"
+
+#: tests/86_umc/10_product_test_password_change:157
+#: tests/86_umc/10_product_test_password_change:160
+msgid "no module available"
+msgstr "kein Modul verfügbar"
+
+#: tests/86_umc/10_product_test_password_change:176
+msgid "password has been changed"
+msgstr "Passwort wurde erfolgreich geändert"
+
+#: tests/86_umc/10_product_test_password_change:122
+msgid "password has expired and must be renewed"
+msgstr "password has expired and must be renewed"
+
+#: tests/86_umc/10_product_test_password_change:77
+#: tests/86_umc/10_product_test_password_change:110
+msgid "password history"
+msgstr "Passwort-History"
+
+#: tests/86_umc/10_product_test_password_change:178
+#: tests/86_umc/10_product_test_password_change:186
+msgid "password is too short"
+msgstr "Passwort ist zu kurz"
+
+#: tests/86_umc/10_product_test_password_change:177
+#: tests/86_umc/10_product_test_password_change:181
+msgid "password was already used"
+msgstr "Passwort wurde bereits genutzt"
