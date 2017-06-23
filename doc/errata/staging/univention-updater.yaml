@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-updater
+fix: 12.0.11-2A~4.2.0.201706230818
+desc: |
+ This update addresses the following issues:
+ * The temporary APT sources.list used for release updates is now removed, if
+   any of the pre-update scripts signals an abort condition.
+ * The check for QEMU virtual machines has been removed from the pre-update
+   script.
+bug: [44821, 44842]
