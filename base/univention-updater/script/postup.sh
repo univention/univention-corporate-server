@@ -189,7 +189,4 @@ cp /var/run/apache2.pid /var/run/apache2/apache2.pid
 service apache2 restart >>"$UPDATER_LOG" 2>&1
 EOF
 
-# Bug #44346: Pin temporary sources list
-rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
-
 exit 0

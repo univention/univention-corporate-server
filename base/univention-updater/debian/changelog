@@ -1,6 +1,7 @@
 univention-updater (12.0.11-2) unstable; urgency=low
 
   * Bug #44842: Remove QEMU check from preup.sh
+  * Bug #44821: Remove temporary sources list on preup failure
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jun 2017 17:03:51 +0200
 

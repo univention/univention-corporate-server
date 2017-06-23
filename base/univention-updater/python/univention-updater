@@ -204,7 +204,7 @@ def remove_temporary_sources_list():
 def add_temporary_sources_list(temporary_sources_list):
     """ Add line to a temporary sources.list. """
     remove_temporary_sources_list()
-    with open(TMPSOURCE2, 'w') as fp:
+    with open(TMPSOURCE, 'w') as fp:
         for entry in temporary_sources_list:
             print >> fp, entry
 
@@ -530,44 +530,50 @@ def main():
             sys.exit(1)
 
     add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
+    try:
+        phase = 'preup'
 
-    rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
+        rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
-    components = updater.get_components()
-    # components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
-    com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
+        components = updater.get_components()
+        # components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
+        com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
-    all = itertools.chain(rel, com)
-    scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
-    for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
-        if (phase, order) == ('update', 'pre'):
-            log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
-        elif (phase, order) == ('preup', 'pre'):
-            log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
-        elif (phase, order) == ('update', 'main'):
-            count = 300
-            while os.path.exists('/var/run/apt-get.lock') and count > 0:
-                time.sleep(1)
-                count -= 1
+        all = itertools.chain(rel, com)
+        scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
+        for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
+            if (phase, order) == ('update', 'pre'):
+                log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
+            elif (phase, order) == ('preup', 'pre'):
+                log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
+            elif (phase, order) == ('update', 'main'):
+                count = 300
+                while os.path.exists('/var/run/apt-get.lock') and count > 0:
+                    time.sleep(1)
+                    count -= 1
 
-            # TODO: should we really exit if the 'apt-get update' process failed?
-            resultCode = os.system('touch /var/run/apt-get.lock && %s >>%s 2>&1' % (cmd_update, LOGNAME))
-            if os.path.exists('/var/run/apt-get.lock'):
-                os.unlink('/var/run/apt-get.lock')
-            if resultCode != 0:
-                raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
+                # TODO: should we really exit if the 'apt-get update' process failed?
+                resultCode = os.system('touch /var/run/apt-get.lock && %s >>%s 2>&1' % (cmd_update, LOGNAME))
+                if os.path.exists('/var/run/apt-get.lock'):
+                    os.unlink('/var/run/apt-get.lock')
+                if resultCode != 0:
+                    raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
 
-            # Execute the dist-upgrade!
-            count = 300
-            while os.path.exists('/var/run/apt-get.lock') and count > 0:
-                time.sleep(1)
-                count -= 1
+                # Execute the dist-upgrade!
+                count = 300
+                while os.path.exists('/var/run/apt-get.lock') and count > 0:
+                    time.sleep(1)
+                    count -= 1
 
-            resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>%s 2>&1' % (cmd_dist_upgrade, LOGNAME))
-            if os.path.exists('/var/run/apt-get.lock'):
-                os.unlink('/var/run/apt-get.lock')
-            if resultCode != 0:
-                raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
+                resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>%s 2>&1' % (cmd_dist_upgrade, LOGNAME))
+                if os.path.exists('/var/run/apt-get.lock'):
+                    os.unlink('/var/run/apt-get.lock')
+                if resultCode != 0:
+                    raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
+    except:
+        if phase == 'preup' or (phase == 'update' and order == 'pre'):
+            remove_temporary_sources_list()
+        raise
 
     # Call the postup.sh
     (nvv, nvp) = nextversion.split('-')[0:2]
