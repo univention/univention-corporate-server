@@ -346,6 +346,14 @@ class UMCSeleniumTest(object):
 		elem.send_keys(inputvalue)
 		return elem
 
+	def submit_input(self, inputname):
+		"""
+		submit the input in an input-element with the tag inputname.
+		"""
+		logger.info('Submitting input field %r.' % (inputname,))
+		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
+		elem.submit()
+
 	def end_umc_session(self):
 		"""
 		Log out the logged in user.
