@@ -337,12 +337,10 @@ class UMCSeleniumTest(object):
 
 	def enter_input(self, inputname, inputvalue):
 		"""
-		Parameter inputname is the name of input tag, parameter inputvalue is the value to enter in input tag
+		Enter inputvalue into an input-element with the tag inputname.
 		"""
 		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
-		elem = self.driver.execute_script("""
-			return dojo.query('input').filter(function(node) { return node.name == %s && node.offsetParent !== null })[0];
-			""" % json.dumps(inputname))
+		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
 		elem.send_keys(inputvalue)
 		return elem
 
@@ -353,6 +351,7 @@ class UMCSeleniumTest(object):
 		logger.info('Submitting input field %r.' % (inputname,))
 		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
 		elem.submit()
+		return elem
 
 	def end_umc_session(self):
 		"""
