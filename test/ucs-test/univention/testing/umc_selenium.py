@@ -284,6 +284,10 @@ class UMCSeleniumTest(object):
 		logger.info("Clicking the tile %r", tilename)
 		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,))
 
+	def click_tab(self, tabname):
+		logger.info("Clicking the tab %r", tabname)
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]' % (tabname,))
+
 	def click_element(self, xpath):
 		"""
 		Click on the element which is found by the given xpath.
