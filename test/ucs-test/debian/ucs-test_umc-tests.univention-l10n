@@ -1,8 +1,7 @@
 [
 	{
 		"input_files": [
-			"tests/86_umc/[0-9]+_.*",
-			"univention/testing/umc_selenium.py"
+			"tests/86_umc/[0-9]+_.*"
 		],
 		"po_path": "tests/86_umc/locale/{lang}.po",
 		"target_type": "mo",
