@@ -1,3 +1,11 @@
+ucs-test (7.0.22-2) unstable; urgency=medium
+
+  * Bug #44852: Disable 62_udm-groups.24_group_different_case.test
+  * Bug #44853: Disable
+    63_udm-containers.06_container_ou_rename_with_special_characters.test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 25 Jun 2017 18:24:57 +0200
+
 ucs-test (7.0.22-1) unstable; urgency=medium
 
   * Bug #44702: Disable 40_mail.31_sieve_script.test

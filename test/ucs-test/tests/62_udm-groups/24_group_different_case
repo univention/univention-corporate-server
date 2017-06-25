@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check different case in LDAP DN of group modifications
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
