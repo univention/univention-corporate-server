@@ -395,7 +395,7 @@ define([
 							data: item,
 							appStatus: appStatus
 						};
-						if (!item.isLocal() && item.ucsVersion != umc.tools.status('version/version') {
+						if (!item.isLocal() && item.ucsVersion != tools.status('version/version')) {
 							ihost.appStatus = _('Different UCS Version. Limited manageability');
 						}
 						hosts.push(ihost);
