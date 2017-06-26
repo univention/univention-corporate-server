@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-0
+src: shadow
+fix: 1:4.2-3+deb8u4
+desc: |
+ This update addresses the following issues:
+ * Reset pid_child only if waitpid was successful. This is a regression fix
+   for CVE-2017-2616. If su receives a signal like SIGTERM, it is not
+   propagated to the child.
+bug: [44673]
+cve:
+ - CVE-2017-2616
