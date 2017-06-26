@@ -1,3 +1,12 @@
+univention-system-setup (10.0.10-20) unstable; urgency=medium
+
+  Bug #43402:
+  * do not validate nameserver when joining into an existing
+    UCS domain and 'Start join at the end of the installation' is set to false
+  * add missing basic latin special characters to umlauts dict
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 26 Jun 2017 12:59:47 +0200
+
 univention-system-setup (10.0.10-19) unstable; urgency=medium
 
   * Bug #44035: enhance the choice of domain type to join into
