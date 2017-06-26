@@ -8,7 +8,6 @@
 from univention.testing.udm import UCSTestUDM
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import ldap
 
 
 def main():
@@ -22,7 +21,6 @@ def main():
 
 		new_name = uts.random_string()
 		computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, groups=[groupdn_b])
-		computerdn_new = 'cn=%s,%s' % (new_name, ldap.dn.dn2str(ldap.dn.str2dn(computerdn)[1:]))
 		print 'moved to %s' % (computerdn_new,)
 		utils.verify_ldap_object(computerdn, should_exist=False)
 		utils.verify_ldap_object(computerdn_new, should_exist=True)
