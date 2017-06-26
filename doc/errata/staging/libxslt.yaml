@@ -3,7 +3,7 @@ release: "3.3"
 version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: libxslt
-fix: 1.1.26-6~ucs3.3.44.201704191038
+fix: 1.1.26-6.45.201706261656
 desc: |
  This update addresses the following issues:
  * The xsltStylePreCompute function in preproc.c does not check if
