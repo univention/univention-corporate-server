@@ -38,11 +38,11 @@ from optparse import OptionParser
 import univention.debug as ud
 import univention.admin.uldap
 
-from univention.directory.reports import Report, ReportError, Config
 from univention.config_registry import ConfigRegistry
 
 from univention.lib.i18n import Translation
-_ = Translation('univention-directory-reports').translate
+translation = Translation('univention-directory-reports')
+_ = translation.translate
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -61,6 +61,11 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 
 
 def main():
+	# important! set locale before importing
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+	translation.set_language(locale.getdefaultlocale()[0])
+	from univention.directory.reports import Report, ReportError, Config
+
 	cfg = Config()
 
 	parser = OptionParser(usage='usage: %prog -m <module> [options] dn1 dn2 ...')
@@ -113,8 +118,6 @@ def main():
 
 	ud.init('/var/log/univention/directory-reports.log', ud.FLUSH, ud.FUNCTION)
 	ud.set_level(ud.ADMIN, options.debug)
-
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
 
 	cfg = Config(options.config)
 
