@@ -52,4 +52,10 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 6.0.1-10; then
 	ln -s /usr/share/pyshared/univention/appcenter/app_cache.py /usr/lib/pymodules/python2.7/univention/appcenter/app_cache.py
 fi
 
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 6.0.8-1; then
+	ln -s /usr/share/pyshared/univention/appcenter/ini_parser.py /usr/lib/pymodules/python2.7/univention/appcenter/ini_parser.py
+	ln -s /usr/share/pyshared/univention/appcenter/settings.py /usr/lib/pymodules/python2.7/univention/appcenter/settings.py
+	ln -s /usr/share/pyshared/univention/appcenter/actions/docker_configure.py /usr/lib/pymodules/python2.7/univention/appcenter/actions/docker_configure.py
+fi
+
 exit 0

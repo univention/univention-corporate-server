@@ -69,7 +69,7 @@ class Register(CredentialsAction):
 		parser.add_argument('--attributes', dest='register_task', action='append_const', const='attributes', help='Adding schema extions to LDAP; adding extended attributes')
 		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
 		parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
-		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
+		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the App that shall be registered')
 
 	def main(self, args):
 		reload_package_manager()

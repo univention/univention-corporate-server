@@ -68,6 +68,7 @@ class Remove(Remove, DockerActionMixin):
 				self._remove_docker_container(app, args)
 
 	def _remove_docker_container(self, app, args):
+		self._configure(app, args)
 		if args.backup:
 			if self._backup_container(app, backup_data='move') is False:
 				raise Abort('Could not backup container!')

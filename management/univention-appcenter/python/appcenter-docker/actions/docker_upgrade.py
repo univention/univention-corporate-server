@@ -40,7 +40,6 @@ from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
-from univention.appcenter.actions.configure import Configure, StoreConfigAction
 from univention.appcenter.ucr import ucr_save
 
 
@@ -48,7 +47,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Upgrade, self).setup_parser(parser)
-		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
 
 	def __init__(self):
@@ -78,7 +76,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise Abort('Could not start the app container. It needs to be running to be upgraded!')
-		mode = self._execute_container_script(self.old_app, 'update_available', _credentials=False, _output=True) or ''
+		mode = self._execute_container_script(self.old_app, 'update_available', credentials=False, output=True) or ''
 		mode = mode.strip()
 		if mode.startswith('release:'):
 			mode, detail = 'release', mode[8:].strip()
@@ -124,7 +122,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			raise Abort('Package upgrade script failed')
 
 	def _upgrade_release(self, app, release):
-		process = self._execute_container_script(app, 'update_release', _credentials=False, release=release)
+		process = self._execute_container_script(app, 'update_release', credentials=False, cmd_kwargs={'release': release})
 		if not process or process.returncode != 0:
 			raise Abort('Release upgrade script failed')
 
@@ -133,15 +131,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if not process or process.returncode != 0:
 			raise Abort('App upgrade script failed')
 		self._register_app(app, args)
+		self._configure(app, args)
 		self._call_join_script(app, args)
 		self.old_app = app
-
-	def _get_config(self, app, args):
-		config = Configure.list_config(app)
-		set_vars = dict((var['id'], var['value']) for var in config)
-		if args.set_vars:
-			set_vars.update(args.set_vars)
-		return set_vars
 
 	def _upgrade_image(self, app, args):
 		docker = self._get_docker(app)
@@ -151,6 +143,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
+		Start.call(app=self.old_app)
+		old_vars = self._get_configure_settings(self.old_app, filter_action=False)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		if self._backup_container(self.old_app, backup_data='copy') is False:
@@ -158,8 +152,12 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
-		args.set_vars = self._get_config(self.old_app, args)
+		old_configure = args.configure
+		args.configure = False
 		self._install_new_app(app, args)
+		args.configure = old_configure
+		args.set_vars = old_vars
+		self._configure(app, args)
 		self.log('Removing old container')
 		if old_container:
 			docker_rm(old_container)
@@ -169,7 +167,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def _upgrade_docker(self, app, args):
 		install = get_action('install')()
-		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
+		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_configure_settings(self.old_app, filter_action=False), send_info=False, skip_checks=['must_not_be_installed'])
 		if install.call_with_namespace(action_args):
 			app_cache = Apps()
 			for _app in app_cache.get_all_apps():

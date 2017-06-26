@@ -51,6 +51,7 @@ from univention.appcenter.packages import get_package_manager, packages_are_inst
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
+from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
 
 
@@ -256,6 +257,29 @@ class AppListAttribute(AppAttribute):
 			return
 		for val in value:
 			super(AppListAttribute, self).test_regex(regex, val)
+
+
+class AppFromFileAttribute(AppAttribute):
+	def __init__(self, klass):
+		self.klass = klass
+
+	def get_value(self, component_id, ini_file, meta_parser, locale):
+		return None
+
+	def post_creation(self, app):
+		values = getattr(app, 'get_%s' % self.name)()
+		setattr(app, self.name, [value.to_dict() for value in values])
+
+	def contribute_to_class(self, klass, name):
+		super(AppFromFileAttribute, self).contribute_to_class(klass, name)
+
+		def _get_objects_fn(_self):
+			cache_name = '_%s_cache' % name
+			if not hasattr(_self, cache_name):
+				setattr(_self, cache_name, self.klass.all_from_file(_self.get_cache_file(name), _self.get_locale()))
+			return getattr(_self, cache_name)
+
+		setattr(klass, 'get_%s' % name, _get_objects_fn)
 
 
 class AppRatingAttribute(AppListAttribute):
@@ -831,6 +855,7 @@ class App(object):
 	additional_packages_slave = AppListAttribute()
 	additional_packages_member = AppListAttribute()
 
+	settings = AppFromFileAttribute(Setting)
 	rating = AppRatingAttribute()
 
 	umc_module_name = AppAttribute()

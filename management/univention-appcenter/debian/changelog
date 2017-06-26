@@ -1,3 +1,9 @@
+univention-appcenter (6.0.8-1) unstable; urgency=medium
+
+  * Bug #43816: Add App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 25 Jun 2017 17:40:25 +0200
+
 univention-appcenter (6.0.7-20) unstable; urgency=medium
 
   * Bug #44778: do not uninstall AdditionalPackages...

@@ -32,8 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/Deferred",
 	"dojox/html/entities",
 	"umc/tools",
+	"umc/widgets/ProgressBar",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
@@ -43,39 +45,53 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/widgets/Page",
 	"./_AppDialogMixin",
+	"./AppSettings",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, _) {
-	var endsWith = function(str, suffix) {
-	    return str.indexOf(suffix, str.length - suffix.length) !== -1;
-	};
+], function(declare, lang, array, Deferred, entities, tools, ProgressBar, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, AppSettings, _) {
 	return declare("umc.modules.appcenter.AppConfigDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
 		title: _('App management'),
 
 		showUp: function() {
+			this.standbyDuring(tools.umcpCommand('appcenter/config', {app: this.app.id, phase: 'Settings'}).then(lang.hitch(this, function(data) {
+				this._showUp(data.result);
+			})));
+		},
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
+		},
+
+
+		_showUp: function(result) {
 			this._clearWidget('_container', true);
 
-			this.set('headerText', _('Configure %s', this.app.name));
-			this.set('helpText', _('Here you can set configuration options as well as start and stop the application.'));
+			this.set('headerText', _('Configure %s', entities.encode(this.app.name)));
 
 			this.set('headerButtons', [{
 				name: 'submit',
+				iconClass: 'umcSaveIconWhite',
 				label: _('Apply changes'),
 				callback: lang.hitch(this, function() {
-					var getValues = function(form) {
-						var values = {};
-						tools.forIn(form.get('value'), function(key, value) {
-							if (value === '') {
-								value = null;
+					var serviceValues = {};
+					var confValues = {};
+					if (this._serviceForm) {
+						serviceValues = this._serviceForm.get('value');
+					}
+					if (this._settingsForm) {
+						tools.forIn(this._settingsForm.get('value'), lang.hitch(this, function(key, value) {
+							if (! this._settingsForm.getWidget(key).get('disabled')) {
+								confValues[key] = value;
 							}
-							values[key] = value;
-						});
-						return values;
-					};
-					this.apply(this._serviceForm.get('value'), getValues(this._confForm), getValues(this._advancedConfForm)).then(lang.hitch(this, 'onBack', true));
+						}));
+					}
+					this.apply(serviceValues, confValues).then(lang.hitch(this, 'onBack', true));
 				})
 			}, {
 				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Cancel configuration'),
 				callback: lang.hitch(this, 'onBack', false)
 			}]);
@@ -83,116 +99,65 @@ define([
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
 
-			var statusMessage = _('The application is currently not running.') + ' <strong>' + _('It can only be configured while it is running.') + '</strong>';
-			if (this.app.isRunning) {
-				statusMessage = _('The application is currently running.');
-			}
-			var widgets = [{
-				name: 'status',
-				type: Text,
-				content: statusMessage
-			}, {
-				name: 'autostart',
-				type: ComboBox,
-				label: _('Autostart'),
-				size: 'One',
-				value: this.app.autoStart,
-				staticValues: [{
-					id: 'yes',
-					label: _('Started automatically')
+			if (this.app.isDocker) {
+				var statusMessage = _('The application is currently not running.') + ' <strong>' + _('It can only be configured while it is running.') + '</strong>';
+				if (result.is_running) {
+					statusMessage = _('The application is currently running.');
+				}
+				var widgets = [{
+					name: 'status',
+					type: Text,
+					content: statusMessage
 				}, {
-					id: 'manually',
-					label: _('Started manually')
+					name: 'autostart',
+					type: ComboBox,
+					label: _('Autostart'),
+					size: 'One',
+					value: result.autostart,
+					staticValues: [{
+						id: 'yes',
+						label: _('Started automatically')
+					}, {
+						id: 'manually',
+						label: _('Started manually')
+					}, {
+						id: 'no',
+						label: _('Starting is prevented')
+					}]
+				}];
+				var buttons = [{
+					name: 'start',
+					visible: !result.is_running,
+					label: _('Start the application'),
+					callback: lang.hitch(this, function() {
+						this.startStop('start');
+					})
 				}, {
-					id: 'no',
-					label: _('Starting is prevented')
-				}]
-			}];
-			var buttons = [{
-				name: 'start',
-				visible: !this.app.isRunning,
-				label: _('Start the application'),
-				callback: lang.hitch(this, function() {
-					this.startStop('start');
-				})
-			}, {
-				name: 'stop',
-				visible: this.app.isRunning,
-				label: _('Stop the application'),
-				callback: lang.hitch(this, function() {
-					this.startStop('stop');
-				})
-			}];
-			this._serviceForm = new Form({
-				widgets: widgets,
-				buttons: buttons,
-				layout: [
-					['status'],
-					['start', 'stop'],
-					['autostart']
-				]
-			});
-
-			var addWidgets = function(conf, disabled, _widgets) {
-				array.forEach(conf, function(variable) {
-					var type = TextBox;
-					var value = variable.value;
-					var additionalParams = {};
-					if (variable.type === 'bool') {
-						type = CheckBox;
-						value = tools.isTrue(value);
-					} else if (variable.type == 'list') {
-						type = ComboBox;
-						additionalParams.staticValues = [];
-						array.forEach(variable.values, function(val, i) {
-							var label = variable.labels[i] || val;
-							additionalParams.staticValues.push({
-								id: val,
-								label: label
-							});
-						});
-					}
-					var widget = {
-						name: variable.id,
-						type: type,
-						label: variable.description,
-						disabled: disabled,
-						value: value
-					};
-					widget = lang.mixin(widget, additionalParams);
-					widgets.push(widget);
+					name: 'stop',
+					visible: result.is_running,
+					label: _('Stop the application'),
+					callback: lang.hitch(this, function() {
+						this.startStop('stop');
+					})
+				}];
+				this._serviceForm = new Form({
+					widgets: widgets,
+					buttons: buttons,
+					layout: [
+						['status'],
+						['start', 'stop'],
+						['autostart']
+					]
 				});
-			};
-
-			widgets = [{
-			}];
-			addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), !this.app.isRunning, widgets);
-			this._confForm = new Form({
-				widgets: widgets
-			});
-			var formTitlePane = new TitlePane({
-				'class': 'umcAppDialogTitlePane',
-				title: _('Settings')
-			});
-			if (this.app.isDocker && !this.app.pluginOf) {
-				formTitlePane.addChild(this._serviceForm);
+				this._container.addChild(this._serviceForm);
+			} else {
+				this._serviceForm = null;
 			}
-			formTitlePane.addChild(this._confForm);
-			this._container.addChild(formTitlePane);
 
-			widgets = [];
-			addWidgets(array.filter(this.app.config, function(w) { return w.advanced; }), !this.app.isRunning, widgets);
-			this._advancedConfForm = new Form({
-				widgets: widgets
-			});
-			if (widgets.length) {
-				var advancedFormTitlePane = new TitlePane({
-					'class': 'umcAppDialogTitlePane',
-					title: _('Settings (advanced)'),
-					open: false
-				});
-				advancedFormTitlePane.addChild(this._advancedConfForm);
-				this._container.addChild(advancedFormTitlePane);
+			var form = AppSettings.getForm(this.app, result.values, 'Settings');
+			if (form) {
+					this._settingsForm = form;
+					this._container.addChild(this._settingsForm);
 			}
 			this.onShowUp();
 		},
@@ -203,10 +168,31 @@ define([
 			})));
 		},
 
-		apply: function(serviceValues, confValues, advancedConfValues) {
+		apply: function(serviceValues, confValues) {
 			var autostart = serviceValues.autostart;
-			var values = lang.mixin({}, confValues, advancedConfValues);
-			return this.standbyDuring(tools.umcpCommand('appcenter/configure', {app: this.app.id, autostart: autostart, values: values}));
+			this._progressBar.reset(_('%s: Configuring', entities.encode(this.app.name)));
+			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+			var deferred = new Deferred();
+			tools.umcpProgressCommand(this._progressBar, 'appcenter/configure', {app: this.app.id, autostart: autostart, values: confValues}).then(
+				lang.hitch(this, function() {
+					this._progressBar.stop(function() {
+						deferred.resolve();
+					}, undefined, true);
+				}),
+				function() {
+					deferred.reject();
+				},
+				lang.hitch(this, function(result) {
+					this._progressBar._addErrors(result.errors);
+					var errors = array.map(result.intermediate, function(res) {
+						if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+							return res.message;
+						}
+					});
+					this._progressBar._addErrors(errors);
+				})
+			);
+			return this.standbyDuring(deferred, this._progressBar);
 		}
 	});
 });

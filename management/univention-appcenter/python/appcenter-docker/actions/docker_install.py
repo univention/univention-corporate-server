@@ -35,7 +35,6 @@
 
 from argparse import SUPPRESS
 
-from univention.appcenter.actions.configure import StoreConfigAction
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions import Abort, get_action
@@ -47,7 +46,6 @@ class Install(Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
-		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS)  # debugging
 
 	def _install_app(self, app, args):
@@ -85,9 +83,9 @@ class Install(Install, DockerActionMixin):
 		return True
 
 	def _setup_docker_image(self, app, args):
-		self._execute_container_script(app, 'restore_data_before_setup', _credentials=False)
+		self._execute_container_script(app, 'restore_data_before_setup', credentials=False)
 		if app.docker_script_setup:
 			process = self._execute_container_script(app, 'setup', args)
 			if not process or process.returncode != 0:
 				raise Abort(_('Setup script failed!'))
-		self._execute_container_script(app, 'restore_data_after_setup', _credentials=False)
+		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)
