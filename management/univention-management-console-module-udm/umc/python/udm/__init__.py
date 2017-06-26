@@ -36,13 +36,15 @@ import re
 import grp
 import os
 import shutil
-import notifier
-import notifier.threads
 import pwd
 import tempfile
+import locale
 import urllib
 import urllib2
 import traceback
+
+import notifier
+import notifier.threads
 
 from ldap import LDAPError, INVALID_CREDENTIALS
 from univention.lib.i18n import Translation
@@ -157,6 +159,10 @@ class Instance(Base, ProgressMixin):
 		self.settings.user(self.user_dn)
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
+
+	def set_locale(self, _locale):
+		super(Instance, self).set_locale(_locale)
+		locale.setlocale(locale.LC_TIME, _locale)
 
 	def error_handling(self, etype, exc, etraceback):
 		super(Instance, self).error_handling(etype, exc, etraceback)
@@ -587,7 +593,9 @@ class Instance(Base, ProgressMixin):
 
 	def reports_query(self, request):
 		"""Returns a list of reports for the given object type"""
-		self.finished(request.id, sorted(self.reports_cfg.get_report_names(request.flavor)))
+		# i18n: translattion for univention-directory-reports
+		_('PDF Document')
+		self.finished(request.id, [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(request.flavor))])
 
 	def sanitize_reports_create(self, request):
 		choices = self.reports_cfg.get_report_names(request.flavor)

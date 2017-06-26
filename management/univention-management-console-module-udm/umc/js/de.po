@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-06-21 19:19+0200\n"
+"POT-Creation-Date: 2017-06-26 13:59+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -68,84 +68,84 @@ msgstr ""
 "ol><p>Wenn Sie eine neue Lizenz benötigen, kontaktieren Sie bitte Ihren UCS "
 "Partner."
 
-#: umc/js/udm/CreateReportDialog.js:180
+#: umc/js/udm/CreateReportDialog.js:155
 #, javascript-format
 msgid "<p>Generating DHCP object report for one object.</p>"
 msgid_plural "<p>Generating DHCP object report for %d objects.</p>"
 msgstr[0] "<p>Generiere DHCP-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Generiere DHCP-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:178
+#: umc/js/udm/CreateReportDialog.js:153
 #, javascript-format
 msgid "<p>Generating DNS object report for one object.</p>"
 msgid_plural "<p>Generating DNS object report for %d objects.</p>"
 msgstr[0] "<p>Generiere DNS-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Generiere DNS-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:194
+#: umc/js/udm/CreateReportDialog.js:169
 #, javascript-format
 msgid "<p>Generating LDAP object report for one object.</p>"
 msgid_plural "<p>Generating LDAP object report for %d objects.</p>"
 msgstr[0] "<p>Generiere LDAP-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Generiere LDAP-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:188
+#: umc/js/udm/CreateReportDialog.js:163
 #, javascript-format
 msgid "<p>Generating Nagios object report for one object.</p>"
 msgid_plural "<p>Generating Nagios object report for %d objects.</p>"
 msgstr[0] "<p>Generiere Nagios-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Generiere Nagios-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:174
+#: umc/js/udm/CreateReportDialog.js:149
 #, javascript-format
 msgid "<p>Generating computer report for one object.</p>"
 msgid_plural "<p>Generating computer report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Rechner-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Rechner-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:172
+#: umc/js/udm/CreateReportDialog.js:147
 #, javascript-format
 msgid "<p>Generating group report for one object.</p>"
 msgid_plural "<p>Generating group report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Gruppen-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Gruppen-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:186
+#: umc/js/udm/CreateReportDialog.js:161
 #, javascript-format
 msgid "<p>Generating mail object report for one object.</p>"
 msgid_plural "<p>Generating mail object report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Mail-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Mail-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:176
+#: umc/js/udm/CreateReportDialog.js:151
 #, javascript-format
 msgid "<p>Generating network object report for one object.</p>"
 msgid_plural "<p>Generating network object report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Netz-Objekt-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Netz-Objekt-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:190
+#: umc/js/udm/CreateReportDialog.js:165
 #, javascript-format
 msgid "<p>Generating policy report for one object.</p>"
 msgid_plural "<p>Generating policy report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Richtlinien-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Richtlinien-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:184
+#: umc/js/udm/CreateReportDialog.js:159
 #, javascript-format
 msgid "<p>Generating printer report for one object.</p>"
 msgid_plural "<p>Generating printer report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Drucker-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Drucker-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:182
+#: umc/js/udm/CreateReportDialog.js:157
 #, javascript-format
 msgid "<p>Generating share report for one object.</p>"
 msgid_plural "<p>Generating share report for %d objects.</p>"
 msgstr[0] "<p>Erzeuge Freigaben-Report für ein Objekt.</p>"
 msgstr[1] "<p>Erzeuge Freigaben-Report für %d Objekte.</p>"
 
-#: umc/js/udm/CreateReportDialog.js:170
+#: umc/js/udm/CreateReportDialog.js:145
 #, javascript-format
 msgid "<p>Generating user report for one object.</p>"
 msgid_plural "<p>Generating user report for %d objects.</p>"
@@ -257,8 +257,8 @@ msgstr "Alle Objekttypen"
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/js/udm.js:1438 umc/js/udm.js:1800 umc/js/udm/CreateReportDialog.js:150
-#: umc/js/udm/DetailPage.js:1248
+#: umc/js/udm.js:1438 umc/js/udm.js:1800 umc/js/udm/DetailPage.js:1248
+#: umc/js/udm/CreateReportDialog.js:105
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -270,8 +270,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/CreateReportDialog.js:242 umc/js/udm/LicenseDialog.js:69
-#: umc/js/udm/LicenseImportDialog.js:120
+#: umc/js/udm/LicenseDialog.js:69 umc/js/udm/LicenseImportDialog.js:120
+#: umc/js/udm/CreateReportDialog.js:217
 msgid "Close"
 msgstr "Schließen"
 
@@ -307,7 +307,7 @@ msgstr "Kopieren"
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
-#: umc/js/udm/CreateReportDialog.js:143
+#: umc/js/udm/CreateReportDialog.js:98
 msgid "Create"
 msgstr "Erstellen"
 
@@ -371,7 +371,7 @@ msgstr "Freigabe erstellen"
 msgid "Create user"
 msgstr "Benutzer erstellen"
 
-#: umc/js/udm/CreateReportDialog.js:225
+#: umc/js/udm/CreateReportDialog.js:200
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
@@ -383,7 +383,7 @@ msgstr "Diese Seite anpassen"
 msgid "DHCP object"
 msgstr "DHCP-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:207
+#: umc/js/udm/CreateReportDialog.js:182
 msgid "DHCP object report"
 msgstr "DHCP-Objekt-Report"
 
@@ -411,7 +411,7 @@ msgstr "DHCP-Dienste"
 msgid "DNS object"
 msgstr "DNS-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:206
+#: umc/js/udm/CreateReportDialog.js:181
 msgid "DNS object report"
 msgstr "DNS-Objekt-Report"
 
@@ -710,7 +710,7 @@ msgstr "LDAP-Basis"
 msgid "LDAP object"
 msgstr "LDAP-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:215
+#: umc/js/udm/CreateReportDialog.js:190
 msgid "LDAP object report"
 msgstr "LDAP-Objekt-Report"
 
@@ -911,7 +911,7 @@ msgstr[1] "Benutzer verschieben"
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:211
+#: umc/js/udm/CreateReportDialog.js:186
 msgid "Nagios object report"
 msgstr "Nagios-Objekt-Report"
 
@@ -1440,95 +1440,91 @@ msgstr "Neu laden"
 msgid "Remove certificate"
 msgstr "Zertifikat entfernen"
 
-#: umc/js/udm/CreateReportDialog.js:84 umc/js/udm/CreateReportDialog.js:113
+#: umc/js/udm/CreateReportDialog.js:129
 #, javascript-format
 msgid "Report for DHCP object"
 msgid_plural "Report for %d DHCP objects"
 msgstr[0] "Report für DHCP-Objekt"
 msgstr[1] "Report für %d DHCP-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:83 umc/js/udm/CreateReportDialog.js:112
+#: umc/js/udm/CreateReportDialog.js:128
 #, javascript-format
 msgid "Report for DNS object"
 msgid_plural "Report for %d DNS objects"
 msgstr[0] "Report für DNS-Objekt"
 msgstr[1] "Report für %d DNS-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:92 umc/js/udm/CreateReportDialog.js:121
+#: umc/js/udm/CreateReportDialog.js:137
 #, javascript-format
 msgid "Report for LDAP object"
 msgid_plural "Report for %d LDAP objects"
 msgstr[0] "Report für LDAP-Objekt"
 msgstr[1] "Report für %d LDAP-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:88
-msgid "Report for Nagio object"
-msgstr "Report für Nagios-Objekt"
-
-#: umc/js/udm/CreateReportDialog.js:117
+#: umc/js/udm/CreateReportDialog.js:133
 #, javascript-format
 msgid "Report for Nagios object"
 msgid_plural "Report for %d Nagios objects"
 msgstr[0] "Report für Nagios-Objekt"
 msgstr[1] "Report für %d Nagios-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:81 umc/js/udm/CreateReportDialog.js:110
+#: umc/js/udm/CreateReportDialog.js:126
 #, javascript-format
 msgid "Report for computer"
 msgid_plural "Report for %d computers"
 msgstr[0] "Report für Rechner"
 msgstr[1] "Report für %d Rechner"
 
-#: umc/js/udm/CreateReportDialog.js:80 umc/js/udm/CreateReportDialog.js:109
+#: umc/js/udm/CreateReportDialog.js:125
 #, javascript-format
 msgid "Report for group"
 msgid_plural "Report for %d groups"
 msgstr[0] "Report für Gruppe"
 msgstr[1] "Report für %d Gruppen"
 
-#: umc/js/udm/CreateReportDialog.js:87 umc/js/udm/CreateReportDialog.js:116
+#: umc/js/udm/CreateReportDialog.js:132
 #, javascript-format
 msgid "Report for mail object"
 msgid_plural "Report for %d mail objects"
 msgstr[0] "Report für Mail-Objekt"
 msgstr[1] "Report für %d Mail-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:82 umc/js/udm/CreateReportDialog.js:111
+#: umc/js/udm/CreateReportDialog.js:127
 #, javascript-format
 msgid "Report for network object"
 msgid_plural "Report for %d network objects"
 msgstr[0] "Report für Netz-Objekt"
 msgstr[1] "Report für %d Netz-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:89 umc/js/udm/CreateReportDialog.js:118
+#: umc/js/udm/CreateReportDialog.js:134
 #, javascript-format
 msgid "Report for policy"
 msgid_plural "Report for %d policies"
 msgstr[0] "Report für Richtlinie"
 msgstr[1] "Report für %d Richtlinien"
 
-#: umc/js/udm/CreateReportDialog.js:86 umc/js/udm/CreateReportDialog.js:115
+#: umc/js/udm/CreateReportDialog.js:131
 #, javascript-format
 msgid "Report for printer"
 msgid_plural "Report for %d printers"
 msgstr[0] "Report für Drucker"
 msgstr[1] "Report für %d Drucker"
 
-#: umc/js/udm/CreateReportDialog.js:85 umc/js/udm/CreateReportDialog.js:114
+#: umc/js/udm/CreateReportDialog.js:130
 #, javascript-format
 msgid "Report for share"
 msgid_plural "Report for %d shares"
 msgstr[0] "Report für Freigaben"
 msgstr[1] "Report für %d Freigaben"
 
-#: umc/js/udm/CreateReportDialog.js:79 umc/js/udm/CreateReportDialog.js:108
+#: umc/js/udm/CreateReportDialog.js:124
 #, javascript-format
 msgid "Report for user"
 msgid_plural "Report for %d users"
 msgstr[0] "Report für Benutzer"
 msgstr[1] "Report für %d Benutzer"
 
-#: umc/js/udm/CreateReportDialog.js:233
+#: umc/js/udm/CreateReportDialog.js:208
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
@@ -1781,7 +1777,7 @@ msgid_plural "The printers are part of the Active Directory domain."
 msgstr[0] "Der Drucker \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Drucker sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/CreateReportDialog.js:134
+#: umc/js/udm/CreateReportDialog.js:90
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
@@ -1807,7 +1803,7 @@ msgid_plural "The users are part of the Active Directory domain."
 msgstr[0] "Der Benutzer \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Benutzer sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/CreateReportDialog.js:217
+#: umc/js/udm/CreateReportDialog.js:192
 msgid ""
 "The {type} can be downloaded at<br><br><a target=\"_blank\" href="
 "\"{href}\">{obj}</a>"
@@ -1822,6 +1818,10 @@ msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie abbrechen?"
 #: umc/js/udm/wizards/FirstPageWizard.js:276
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
+
+#: umc/js/udm/CreateReportDialog.js:172
+msgid "This may take a while."
+msgstr "Die Aktion kann einen Moment dauern."
 
 #: umc/js/udm.js:1046
 msgid "Toggle visual presentation"
@@ -1921,7 +1921,7 @@ msgstr "[Richtlinien]"
 msgid "computer"
 msgstr "Rechner"
 
-#: umc/js/udm/CreateReportDialog.js:204
+#: umc/js/udm/CreateReportDialog.js:179
 msgid "computer report"
 msgstr "Rechner-Report"
 
@@ -1937,7 +1937,7 @@ msgstr "bearbeiten"
 msgid "group"
 msgstr "Gruppe"
 
-#: umc/js/udm/CreateReportDialog.js:203
+#: umc/js/udm/CreateReportDialog.js:178
 msgid "group report"
 msgstr "Gruppen-Report"
 
@@ -1953,7 +1953,7 @@ msgstr "insgesamt {size} Objekte"
 msgid "mail object"
 msgstr "Mail-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:210
+#: umc/js/udm/CreateReportDialog.js:185
 msgid "mail object report"
 msgstr "Mail-Objekt-Report"
 
@@ -1969,7 +1969,7 @@ msgstr "handbuch"
 msgid "network object"
 msgstr "Netz-Objekt"
 
-#: umc/js/udm/CreateReportDialog.js:205
+#: umc/js/udm/CreateReportDialog.js:180
 msgid "network object report"
 msgstr "Netz-Objekt-Report"
 
@@ -1993,7 +1993,7 @@ msgstr "Richtlinien"
 msgid "policy"
 msgstr "Richtlinie"
 
-#: umc/js/udm/CreateReportDialog.js:212
+#: umc/js/udm/CreateReportDialog.js:187
 msgid "policy report"
 msgstr "Richtlinien-Report"
 
@@ -2001,7 +2001,7 @@ msgstr "Richtlinien-Report"
 msgid "printer"
 msgstr "Drucker"
 
-#: umc/js/udm/CreateReportDialog.js:209
+#: umc/js/udm/CreateReportDialog.js:184
 msgid "printer report"
 msgstr "Drucker-Report"
 
@@ -2013,7 +2013,7 @@ msgstr "Drucker"
 msgid "share"
 msgstr "Freigabe"
 
-#: umc/js/udm/CreateReportDialog.js:208
+#: umc/js/udm/CreateReportDialog.js:183
 msgid "share report"
 msgstr "Freigaben-Report"
 
@@ -2029,7 +2029,7 @@ msgstr "unbegrenzt"
 msgid "user"
 msgstr "Benutzer"
 
-#: umc/js/udm/CreateReportDialog.js:202
+#: umc/js/udm/CreateReportDialog.js:177
 msgid "user report"
 msgstr "Benutzer-Report"
 
@@ -2045,6 +2045,9 @@ msgstr "Benutzer"
 
 #~ msgid "Report creation has failed"
 #~ msgstr "Erstellen des Reports ist fehlgeschlagen"
+
+#~ msgid "Report for Nagio object"
+#~ msgstr "Report für Nagios-Objekt"
 
 #~ msgid ""
 #~ "The report could not be created. Details for the problems can be found in "

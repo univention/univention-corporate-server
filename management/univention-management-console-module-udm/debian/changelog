@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-10) unstable; urgency=medium
+
+  * Bug #39239: fix some translations
+
+ -- Florian Best <best@univention.de>  Mon, 26 Jun 2017 14:00:20 +0200
+
 univention-management-console-module-udm (7.0.10-9) unstable; urgency=medium
 
   * Bug #43395: Substitute code block with function call

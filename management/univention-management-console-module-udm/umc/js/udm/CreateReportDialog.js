@@ -74,66 +74,21 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			var _titleText = lang.hitch(this, function() {
-				var text = {
-					'users/user'        : _('Report for user'),
-					'groups/group'      : _('Report for group'),
-					'computers/computer': _('Report for computer'),
-					'networks/network'  : _('Report for network object'),
-					'dns/dns'           : _('Report for DNS object'),
-					'dhcp/dhcp'         : _('Report for DHCP object'),
-					'shares/share'      : _('Report for share'),
-					'shares/print'      : _('Report for printer'),
-					'mail/mail'         : _('Report for mail object'),
-					'nagios/nagios'     : _('Report for Nagio object'),
-					'policies/policy'   : _('Report for policy')
-				}[this.moduleFlavor];
-				if (!text) {
-					text = _('Report for LDAP object');
-				}
-				return text;
-			});
-
 			// mixin the dialog title
 			lang.mixin(this, {
-				title: _titleText()
+				title: this._widgetsLabelText(this.objects.length)
 			});
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var _widgetsLabelText = lang.hitch(this, function(n) {
-				var text = {
-					'users/user'        : _.ngettext('Report for user', 'Report for %d users', n),
-					'groups/group'      : _.ngettext('Report for group', 'Report for %d groups', n),
-					'computers/computer': _.ngettext('Report for computer', 'Report for %d computers', n),
-					'networks/network'  : _.ngettext('Report for network object', 'Report for %d network objects', n),
-					'dns/dns'           : _.ngettext('Report for DNS object', 'Report for %d DNS objects', n),
-					'dhcp/dhcp'         : _.ngettext('Report for DHCP object', 'Report for %d DHCP objects', n),
-					'shares/share'      : _.ngettext('Report for share', 'Report for %d shares', n),
-					'shares/print'      : _.ngettext('Report for printer', 'Report for %d printers', n),
-					'mail/mail'         : _.ngettext('Report for mail object', 'Report for %d mail objects', n),
-					'nagios/nagios'     : _.ngettext('Report for Nagios object', 'Report for %d Nagios objects', n),
-					'policies/policy'   : _.ngettext('Report for policy', 'Report for %d policies', n)
-				}[this.moduleFlavor];
-				if (!text) {
-					text = _.ngettext('Report for LDAP object', 'Report for %d LDAP objects', n);
-				}
-				return text;
-			});
-
-			var reports = array.map(this.reports, function(item) {
-				return {id: item, label: item};
-			});
-
 			var widgets = [{
 				type: ComboBox,
 				name: 'report',
-				label: _widgetsLabelText(this.objects.length),
+				label: this._widgetsLabelText(this.objects.length),
 				description: _('The report template that should be used for the report.'),
-				value: this.reports[0],
-				staticValues: reports
+				staticValues: this.reports
 			}];
 			var layout = ['report'];
 
@@ -162,6 +117,26 @@ define([
 			this._container = new ContainerWidget({});
 			this._container.addChild(this._form);
 			this.set('content', this._container);
+		},
+
+		_widgetsLabelText: function(n) {
+			var text = {
+				'users/user'        : _.ngettext('Report for user', 'Report for %d users', n),
+				'groups/group'      : _.ngettext('Report for group', 'Report for %d groups', n),
+				'computers/computer': _.ngettext('Report for computer', 'Report for %d computers', n),
+				'networks/network'  : _.ngettext('Report for network object', 'Report for %d network objects', n),
+				'dns/dns'           : _.ngettext('Report for DNS object', 'Report for %d DNS objects', n),
+				'dhcp/dhcp'         : _.ngettext('Report for DHCP object', 'Report for %d DHCP objects', n),
+				'shares/share'      : _.ngettext('Report for share', 'Report for %d shares', n),
+				'shares/print'      : _.ngettext('Report for printer', 'Report for %d printers', n),
+				'mail/mail'         : _.ngettext('Report for mail object', 'Report for %d mail objects', n),
+				'nagios/nagios'     : _.ngettext('Report for Nagios object', 'Report for %d Nagios objects', n),
+				'policies/policy'   : _.ngettext('Report for policy', 'Report for %d policies', n)
+			}[this.moduleFlavor];
+			if (!text) {
+				text = _.ngettext('Report for LDAP object', 'Report for %d LDAP objects', n);
+			}
+			return text;
 		},
 
 		onDone: function(options) {
@@ -194,7 +169,7 @@ define([
 					text = _.ngettext('<p>Generating LDAP object report for one object.</p>',
 					                   '<p>Generating LDAP object report for %d objects.</p>', n);
 				}
-				text += '<p>This may take a while</p>';
+				text += '<p>' + _('This may take a while.') + '</p>';
 				return text;
 			});
 			var _standbyDuringSuccessText = lang.hitch(this, function(type, href) {
