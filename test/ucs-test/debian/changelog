@@ -1,3 +1,9 @@
+ucs-test (7.0.22-3) unstable; urgency=low
+
+  * Bug #44751: Skip EXPORT and LOW cipher test
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 Jun 2017 10:19:49 +0200
+
 ucs-test (7.0.22-2) unstable; urgency=medium
 
   * Bug #44852: Disable 62_udm-groups.24_group_different_case.test
