@@ -84,6 +84,7 @@ define([
 					}
 					ret.push(lang.mixin(params, {
 						type: AppSettingsFileUploader,
+						fileName: variable.filename
 					}));
 				} else if (variable.type == 'PasswordFile') {
 					ret.push(lang.mixin(params, {

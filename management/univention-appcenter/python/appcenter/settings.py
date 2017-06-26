@@ -90,7 +90,7 @@ class Setting(TypedIniSectionObject):
 			from univention.appcenter.actions import get_action
 			configure = get_action('configure')
 			ucr = configure._get_app_ucr(app)
-			value = ucr.get(self.name, self.get_initial_value())
+			value = ucr.get(self.name)
 		try:
 			return self.sanitize_value(app, value)
 		except SettingValueError:
@@ -178,7 +178,7 @@ class FileSetting(Setting):
 			with open(filename) as fd:
 				return fd.read()
 		except EnvironmentError:
-			return self.get_initial_value()
+			return None
 
 	def _write_file_content(self, filename, content):
 		try:

@@ -37,9 +37,10 @@ define([
 	"umc/i18n!"
 ], function(declare, entities, Uploader, Text, tools, _) {
 	return declare("umc.modules.appcenter.AppSettingsFileUploader", Uploader, {
-		showClearButton: false,
 		size: 'Two',
-		buttonLabel: _('Upload new file'),
+		buttonLabel: _('Upload file'),
+		clearButtonLabel: _('Delete file'),
+		fileName: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -55,14 +56,17 @@ define([
 		},
 
 		updateView: function(value) {
+			var lengthContent;
 			if (value) {
+				lengthContent = _('File length is / will be %d bytes.', value.length);
 				this._uploadedValue = atob(value);
 				value = entities.encode(this._uploadedValue);
 			} else {
+				lengthContent = _('File is / will be deleted.');
 				this._uploadedValue = null;
 				value = '&nbsp;';
 			}
-			this._content.set('content', '<pre>' + value + '</pre>');
+			this._content.set('content', _('File will be uploaded to %s.', '<em>' + this.fileName + '</em>') + ' ' + lengthContent);
 		}
 	});
 });

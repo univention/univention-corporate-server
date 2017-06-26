@@ -289,10 +289,15 @@ class Instance(umcm.Base, ProgressMixin):
 		for setting in app.get_settings():
 			if phase in setting.show or phase in setting.show_read_only:
 				try:
-					values[setting.name] = setting.get_value(app)
+					value = setting.get_value(app)
 				except SettingValueError:
 					if phase == 'Install':
 						values[setting.name] = setting.get_initial_value()
+				else:
+					if value is None and phase == 'Install':
+						values[setting.name] = setting.get_initial_value()
+					else:
+						values[setting.name] = value
 		return {
 			'autostart': autostart,
 			'is_running': is_running,

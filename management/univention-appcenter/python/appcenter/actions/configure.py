@@ -38,7 +38,7 @@ from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_save
-from univention.appcenter.settings import SettingValueError
+from univention.appcenter.settings import SettingValueError, FileSetting
 
 
 class Configure(UniventionAppAction):
@@ -55,10 +55,19 @@ class Configure(UniventionAppAction):
 
 	def main(self, args):
 		if args.list:
-			variables = self.list_config(args.app)
-			for variable in variables:
-				self.log('%s: %s (%s)' % (variable['id'], variable['value'], variable['description']))
-			return variables
+			for setting in args.app.get_settings():
+				print_method = self.log
+				try:
+					value = setting.get_value(args.app)
+				except SettingValueError as exc:
+					print_method = self.warn
+					value = str(exc)
+				else:
+					if isinstance(setting, FileSetting):
+						value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+					else:
+						value = repr(value)
+				print_method('%s: %s (%s)' % (setting.name, value, setting.description))
 		else:
 			self.log('Configuring %s' % args.app)
 			set_vars = (args.set_vars or {}).copy()
@@ -68,6 +77,7 @@ class Configure(UniventionAppAction):
 
 	@classmethod
 	def list_config(cls, app):
+		# DEPRECATED. remove after 4.x!
 		variables = []
 		settings = app.get_settings()
 		for setting in settings:
