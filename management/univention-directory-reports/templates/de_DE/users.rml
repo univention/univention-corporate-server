@@ -11,7 +11,7 @@
 <tr><td><para style="content">Beschreibung:</para></td><td><para style="content"><@attribute name="description"@></para></td></tr>
 <tr><td><para style="content">Organisation:</para></td><td><para style="content"><@attribute name="organisation"@></para></td></tr>
 <tr><td><para style="content">Mitarbeiternummer:</para></td><td><para style="content"><@attribute name="employeeNumber"@></para></td></tr>
-<tr><td><para style="content">Mitarbeitertyp:</para></td><td><para style="content"><@attribute name="employeeType"@></para></td></tr>
+<tr><td><para style="content">Mitarbeiterkategorie:</para></td><td><para style="content"><@attribute name="employeeType"@></para></td></tr>
 <tr><td><para style="content">Raumnummer:</para></td><td><para style="content"><@attribute name="roomNumber"@></para></td></tr>
 <tr><td><para style="content">Vorgesetzter:</para></td><td><para style="content">
 <@resolve module="users/user" dn-attribute="secretary" alternative=""@>

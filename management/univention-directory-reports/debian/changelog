@@ -1,3 +1,9 @@
+univention-directory-reports (9.0.1-2) unstable; urgency=medium
+
+  * Bug #39239: fix some translations
+
+ -- Florian Best <best@univention.de>  Mon, 26 Jun 2017 14:02:40 +0200
+
 univention-directory-reports (9.0.1-1) unstable; urgency=medium
 
   * Bug #39239: remove dependency to latex
