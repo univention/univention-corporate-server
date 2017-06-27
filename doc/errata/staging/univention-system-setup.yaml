@@ -6,6 +6,6 @@ src: univention-system-setup
 fix: 10.0.10-20A~4.2.0.201706261452
 desc: |
  This update addresses the following issue(s):
- * The DNS server is no longer validated when joining an existing UCS domain
-   and the option to join at the end of the installation is disabled.
+ * It is possible again to install UCS systems without joining directly into any domain
+   when no DNS server is configured during set up.
 bug: [43402]
