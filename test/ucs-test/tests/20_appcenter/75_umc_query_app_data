@@ -4,8 +4,9 @@
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-management-console-module-appcenter
-## tags: [appcenter]
+## tags: [appcenter,SKIP]
 ## exposure: safe
+## bugs: [44768]
 
 import os
 import sys
