@@ -101,6 +101,9 @@ define([
 					callback: lang.hitch(this, function() {
 						var values = {};
 						if (this._configForm) {
+							if (! this._configForm.isValid()) {
+								return;
+							}
 							tools.forIn(this._configForm.get('value'), lang.hitch(this, function(key, value) {
 								if (! this._configForm.getWidget(key).get('disabled')) {
 									values[key] = value;

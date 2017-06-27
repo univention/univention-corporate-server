@@ -78,9 +78,15 @@ define([
 					var serviceValues = {};
 					var confValues = {};
 					if (this._serviceForm) {
+						if (! this._serviceForm.isValid()) {
+							return;
+						}
 						serviceValues = this._serviceForm.get('value');
 					}
 					if (this._settingsForm) {
+						if (! this._settingsForm.isValid()) {
+							return;
+						}
 						tools.forIn(this._settingsForm.get('value'), lang.hitch(this, function(key, value) {
 							if (! this._settingsForm.getWidget(key).get('disabled')) {
 								confValues[key] = value;

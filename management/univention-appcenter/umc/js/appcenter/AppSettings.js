@@ -111,6 +111,9 @@ define([
 			var groups = this.getGroups(app, widgets);
 			var layout = [];
 			array.forEach(groups, function(group, i) {
+				if (group.widgets.length === 0) {
+					return;
+				}
 				var groupName = '_group' + i;
 				widgets.push({
 					type: Text,

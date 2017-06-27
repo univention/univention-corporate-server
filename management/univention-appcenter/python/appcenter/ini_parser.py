@@ -130,7 +130,7 @@ class IniSectionAttribute(UniventionMetaInfo):
 class IniSectionBooleanAttribute(IniSectionAttribute):
 	def _fetch_from_parser(self, parser, section, name):
 		try:
-			parser.getboolean(section, name)
+			return parser.getboolean(section, name)
 		except ValueError:
 			raise ParseError(name, section, 'Not a Boolean')
 
