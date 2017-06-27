@@ -9,4 +9,6 @@ desc: |
  * The button styling of referenced policy objects has been adapted.
  * Hidden objects are no longer shown by default in
    an multi object select widget.
-bug: [44066, 44044]
+ * Some disabled input fields were not recognizable as such.
+   This has been fixed.
+bug: [44066, 44044, 43402]

@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-system-setup
+fix: 10.0.10-20A~4.2.0.201706261452
+desc: |
+ This update addresses the following issue(s):
+ * The DNS server is no longer validated when joining an existing UCS domain
+   and the option to join at the end of the installation is disabled.
+bug: [43402]
