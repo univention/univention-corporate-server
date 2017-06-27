@@ -194,7 +194,7 @@ property_descriptions = {
 		dontsearch=False,
 		identifies=False,
 		readonly_when_synced=True,
-		copyable=True,
+		copyable=False,
 	),
 	'memberOf': univention.admin.property(
 		short_description=_('Member of'),
