@@ -1,0 +1,39 @@
+{
+  "portal": {
+    "dn": "cn=domain,cn=portal",
+    "showMenu": true,
+    "showApps": false,
+    "name": {
+      "de_DE": "UCS Portal",
+      "en_US": "UCS Portal"
+    },
+    "showServers": true,
+    "showLogin": true,
+    "logo": null,
+    "showSearch": true
+  },
+  "entries": [
+    {
+      "category": "admin",
+      "logo_name": "/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg",
+      "portals": ["cn=domain,cn=portal"],
+      "name": {
+        "de_DE": "Systemeinstellungen",
+        "en_US": "System settings",
+        "fr_FR": "R\u00e9glages du syst\u00e8me"
+      },
+      "links": [
+        "/univention/management/"
+      ],
+      "favorite": false,
+      "activated": true,
+      "authRestriction": "anonymous",
+      "id": "",
+      "description": {
+        "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung des lokalen Systems",
+        "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the local system",
+        "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le syst\u00e8me local"
+      }
+    }
+  ]
+}

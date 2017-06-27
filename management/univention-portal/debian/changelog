@@ -1,3 +1,9 @@
+univention-portal (1.0.12-3) unstable; urgency=medium
+
+  * Bug #44865: Add default portal entries on unjoined systems
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2017 12:25:34 +0200
+
 univention-portal (1.0.12-2) unstable; urgency=medium
 
   * Bug #44697: Allow to change the font color of the portal page
