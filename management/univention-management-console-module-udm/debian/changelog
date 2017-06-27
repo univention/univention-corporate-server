@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-11) unstable; urgency=medium
+
+  * Bug #1567: hide object type selection when copying object via LDAP
+  	directory
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2017 14:29:21 +0200
+
 univention-management-console-module-udm (7.0.10-10) unstable; urgency=medium
 
   * Bug #39239: fix some translations

@@ -757,7 +757,7 @@ define([
 							showObjectTemplate: false
 						},
 						callback: lang.hitch(this, function(options) {
-							this.createDetailPage('copy', items[0].objectType, ids[0], options);
+							this.createDetailPage('copy', items[0].objectType, ids[0], lang.mixin(options, {objectTemplate: null}));
 						})
 					});
 				})

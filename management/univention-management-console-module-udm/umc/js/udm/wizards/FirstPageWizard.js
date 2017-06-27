@@ -384,56 +384,68 @@ define([
 			}
 
 			// object types
-			widgets.push({
-				type: 'ComboBox',
-				name: 'objectType',
-				value: this.defaultObjectType,
-				label: _('Type'),
-				description: _('The exact object type of the new LDAP object.'),
-				autoHide: true,
-				visible: this.showObjectType,
-				depends: selectedContainer ? [] : ['container'/*, 'superordinate'*/],
-				dynamicValues: lang.hitch(this, function() {
-					var containerWidget = this.getWidget('firstPage', 'container');
-					var superordinateWidget = this.getWidget('firstPage', 'superordinate');
-					var container = containerWidget && containerWidget.get('value') || null;
-					var superordinate = superordinateWidget && superordinateWidget.get('value') || null;
-					if (superordinate) {
-						container = null;
-					}
-					return this.moduleCache.getChildModules(superordinate, container, true).then(function(result) {
-						result.sort(tools.cmpObjects('label'));
-						return result;
-					});
-				}),
-				size: 'Two'
-			});
-			if (this.showObjectType) {
-				layout.push('objectType');
+			if (!this.showObjectType && this.defaultObjectType) {
+				widgets.push({
+					type: 'HiddenInput',
+					name: 'objectType',
+					value: this.defaultObjectType
+				});
+			} else {
+				widgets.push({
+					type: 'ComboBox',
+					name: 'objectType',
+					value: this.defaultObjectType,
+					label: _('Type'),
+					description: _('The exact object type of the new LDAP object.'),
+					autoHide: true,
+					visible: this.showObjectType,
+					depends: selectedContainer ? [] : ['container'/*, 'superordinate'*/],
+					dynamicValues: lang.hitch(this, function() {
+						var containerWidget = this.getWidget('firstPage', 'container');
+						var superordinateWidget = this.getWidget('firstPage', 'superordinate');
+						var container = containerWidget && containerWidget.get('value') || null;
+						var superordinate = superordinateWidget && superordinateWidget.get('value') || null;
+						if (superordinate) {
+							container = null;
+						}
+						return this.moduleCache.getChildModules(superordinate, container, true).then(function(result) {
+							result.sort(tools.cmpObjects('label'));
+							return result;
+						});
+					}),
+					size: 'Two'
+				});
 			}
+			layout.push('objectType');
 
 			// templates
-			widgets.push({
-				type: 'ComboBox',
-				name: 'objectTemplate',
-				label: _templateLabelText(),
-				description: _('A template defines rules for default object properties.'),
-				value: this.defaultTemplate,
-				depends: 'objectType',
-				autoHide: true,
-				visible: this.showObjectTemplate,
-				umcpCommand: this.umcpCommand,
-				dynamicValues: lang.hitch(this, function(options) {
-					return this.moduleCache.getTemplates(options.objectType).then(function(result) {
-						result.sort(tools.cmpObjects('label'));
-						return result;
-					});
-				}),
-				staticValues: [{id: 'None', label: _('None')}],
-				size: 'Two'
-			});
 			if (this.showObjectTemplate) {
+				widgets.push({
+					type: 'ComboBox',
+					name: 'objectTemplate',
+					label: _templateLabelText(),
+					description: _('A template defines rules for default object properties.'),
+					value: this.defaultTemplate,
+					depends: 'objectType',
+					autoHide: true,
+					visible: this.showObjectTemplate,
+					umcpCommand: this.umcpCommand,
+					dynamicValues: lang.hitch(this, function(options) {
+						return this.moduleCache.getTemplates(options.objectType).then(function(result) {
+							result.sort(tools.cmpObjects('label'));
+							return result;
+						});
+					}),
+					staticValues: [{id: 'None', label: _('None')}],
+					size: 'Two'
+				});
 				layout.push('objectTemplate');
+			} else {
+				widgets.push({
+					type: 'HiddenInput',
+					name: 'objectTemplate',
+					value: this.defaultTemplate
+				});
 			}
 
 			if (this.moduleFlavor === 'navigation') {
