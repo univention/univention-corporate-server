@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test Apache2 SSL ciphers
-## bugs: [38632]
+## bugs: [38632, 44751]
 ## packages:
 ##  - openssl
 ## exposure: safe
@@ -8,10 +8,12 @@ set -e -u
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
+# EXPORT and LOW(RC4) were removed from DEFAULT as of openssl-1.0.2g
 for cipher in LOW EXPORT aNULL MD5 RC4
 do
 	info "$cipher"
-	ciphers="$(openssl ciphers "$cipher")"
+	ciphers="$(openssl ciphers "$cipher")" ||
+		continue
 	openssl s_client \
 		-CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
 		-connect localhost:443 \
