@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-app module for uninstalling an app
+#  univention-app module for getting app meta information
+#  (docker version)
 #
 # Copyright 2015-2017 Univention GmbH
 #
@@ -32,40 +33,19 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions.install_base import InstallRemoveUpgrade
-from univention.appcenter.ucr import ucr_save
+from univention.appcenter.utils import app_is_running
+from univention.appcenter.actions import get_action
+from univention.appcenter.actions.get import Get
+from univention.appcenter.ucr import ucr_get
 
 
-class Remove(InstallRemoveUpgrade):
+class Get(Get):
 
-	'''Removes an application from the Univention App Center.'''
-	help = 'Uninstall an app'
-
-	prescript_ext = 'prerm'
-	pre_readme = 'readme_uninstall'
-	post_readme = 'readme_post_uninstall'
-
-	def main(self, args):
-		return self.do_it(args)
-
-	def _show_license(self, app, args):
-		pass
-
-	def _do_it(self, app, args):
-		self._remove_app(app, args)
-		self.percentage = 45
-		self._unregister_app(app, args)
-		self.percentage = 50
-		self._unregister_attributes(app, args)
-		self.percentage = 60
-		if self._unregister_component(app):
-			self._apt_get_update()
-		self.percentage = 70
-		self._unregister_files(app)
-		self.percentage = 80
-		self._call_unjoin_script(app, args)
-		if not app.docker:
-			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
-
-	def _remove_app(self, app, args):
-		self._apt_get('remove', app.get_packages(additional=False), 45, update=False)
+	@classmethod
+	def to_dict(cls, app):
+		ret = super(Get, cls).to_dict(app)
+		configure = get_action('configure')
+		ret['config'] = configure.list_config(app)
+		ret['is_running'] = app_is_running(app)
+		ret['autostart'] = ucr_get('%s/autostart' % app.id, 'yes')
+		return ret

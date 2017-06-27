@@ -44,7 +44,7 @@ class Stall(UniventionAppAction):
 	help = 'Stalls an app'
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be stalled')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be stalled')
 		parser.add_argument('--undo', action='store_true', help='Reenable a previously stalled app')
 
 	def main(self, args):

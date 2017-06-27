@@ -47,7 +47,7 @@ class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 		if not docker.is_running():
 			self.log('%s: Not running, cannot check further' % app)
 			return upgrade_available or None
-		output = self._execute_container_script(app, 'update_available', credentials=False, output=True)
+		output = self._execute_container_script(app, 'update_available', _credentials=False, _output=True)
 		if output:
 			output = output.strip()
 		if output:

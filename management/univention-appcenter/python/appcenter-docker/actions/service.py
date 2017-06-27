@@ -42,7 +42,7 @@ ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 class Service(UniventionAppAction):
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be started')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be started')
 
 	@classmethod
 	def get_init(self, app):

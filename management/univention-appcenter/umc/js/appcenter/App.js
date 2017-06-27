@@ -101,10 +101,12 @@ define([
 			this.isDocker = !!props.docker_image;
 			this.candidateIsDocker = !!props.candidate_docker;
 			this.dockerMigrationLink = props.docker_migration_link;
+			this.autoStart = props.autostart;
 			this.autoModProxy = props.auto_mod_proxy;
+			this.config = props.config;
+			this.isRunning = props.is_running;
 			this.hostMaster = props.host_master;
-			this.userActivationRequired = props.user_activation_required || props.generic_user_activation;
-			this.settings = props.settings;
+			this.userActivationRequired = props.user_activation_required;
 			this.ipAddress = props.ip_address;
 			this.updateAvailable = props.update_available;
 			this.installations = props.installations;
@@ -272,12 +274,8 @@ define([
 			return this.isInstalled && this.endOfLife && this.isCurrent;
 		},
 
-		hasConfiguration: function() {
-			return this.isDocker || !!this.settings.length;
-		},
-
 		canConfigure: function() {
-			return this.hasConfiguration() && this.isInstalled && this.isLocal();
+			return this.isDocker && this.isInstalled && this.isLocal();
 		},
 
 		canDisableInDomain: function() {

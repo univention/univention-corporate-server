@@ -60,7 +60,7 @@ class DockerActionMixin(object):
 
 	def _store_data(self, app):
 		if app.docker_script_store_data:
-			process = self._execute_container_script(app, 'store_data', credentials=False)
+			process = self._execute_container_script(app, 'store_data', _credentials=False)
 			if not process or process.returncode != 0:
 				self.fatal('Image upgrade script (pre) failed')
 				return False
@@ -91,45 +91,43 @@ class DockerActionMixin(object):
 		else:
 			self.fatal('No container found. Unable to backup')
 
-	def _execute_container_script(self, app, interface, args=None, credentials=True, output=False, cmd_args=None, cmd_kwargs=None):
-		cmd_args = cmd_args or []
-		cmd_kwargs = cmd_kwargs or {}
-		self.log('Executing interface %s for %s' % (interface, app.id))
-		docker = self._get_docker(app)
-		interface_file = getattr(app, 'docker_script_%s' % interface)
-		if not interface_file:
+	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
+		self.log('Executing interface %s for %s' % (_interface, _app.id))
+		docker = self._get_docker(_app)
+		interface = getattr(_app, 'docker_script_%s' % _interface)
+		if not interface:
 			self.log('No interface defined')
 			return None
-		remote_interface_script = app.get_cache_file(interface)
-		container_interface_script = docker.path(interface_file)
+		remote_interface_script = _app.get_cache_file(_interface)
+		container_interface_script = docker.path(interface)
 		if os.path.exists(remote_interface_script):
-			self.log('Copying App Center\'s %s to container\'s %s' % (interface, interface_file))
+			self.log('Copying App Center\'s %s to container\'s %s' % (_interface, interface))
 			mkdir(os.path.dirname(container_interface_script))
 			shutil.copy2(remote_interface_script, container_interface_script)
 			os.chmod(container_interface_script, 0o755)  # -rwxr-xr-x
 		if not os.path.exists(container_interface_script):
-			self.warn('Interface script %s not found!' % interface_file)
+			self.warn('Interface script %s not found!' % interface)
 			return None
 		with docker.tmp_file() as error_file:
 			with docker.tmp_file() as password_file:
-				if credentials:
-					self._get_ldap_connection(args)  # to get a working username/password
-					username = self._get_username(args)
-					password = self._get_password(args)
+				if _credentials:
+					self._get_ldap_connection(_args)  # to get a working username/password
+					username = self._get_username(_args)
+					password = self._get_password(_args)
 					with open(password_file.name, 'w') as f:
 						f.write(password)
-					cmd_kwargs['username'] = username
-					cmd_kwargs['password_file'] = password_file.container_path
-				cmd_kwargs['error_file'] = error_file.container_path
-				cmd_kwargs['app'] = app.id
-				cmd_kwargs['app_version'] = app.version
+					kwargs['username'] = username
+					kwargs['password_file'] = password_file.container_path
+				kwargs['error_file'] = error_file.container_path
+				kwargs['app'] = _app.id
+				kwargs['app_version'] = _app.version
 				# locale = get_locale()
 				# if locale:
-				#	cmd_kwargs['locale'] = locale
-				if output:
-					return docker.execute_with_output(interface_file, *cmd_args, **cmd_kwargs)
+				#	kwargs['locale'] = locale
+				if _output:
+					return docker.execute_with_output(interface, **kwargs)
 				else:
-					process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
+					process = docker.execute(interface, **kwargs)
 					if process.returncode != 0:
 						with open(error_file.name, 'r+b') as error_handle:
 							for line in error_handle:
@@ -157,10 +155,10 @@ class DockerActionMixin(object):
 		self.log('Initializing app image')
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
-		for setting in app.get_settings():
-			if 'Install' in setting.show or 'Upgrade' in setting.show:
-				if setting.name not in set_vars:
-					set_vars[setting.name] = setting.get_initial_value()
+		configure = get_action('configure')
+		for variable in configure.list_config(app):
+			if variable['value'] is not None and variable['id'] not in set_vars:
+				set_vars[variable['id']] = variable['value']  # default
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
@@ -226,5 +224,4 @@ docker inspect:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
 		self._copy_files_into_container(app, '/etc/timezone', '/etc/localtime', database_password_file)
-		configure = get_action('configure')
-		configure.call(app=app, autostart=autostart, run_script='no', set_vars=set_vars)
+		configure.call(app=app, autostart=autostart, set_vars=set_vars)

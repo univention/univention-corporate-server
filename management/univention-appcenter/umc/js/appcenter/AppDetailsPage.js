@@ -283,7 +283,7 @@ define([
 					callback: lang.hitch(this, 'disableApp')
 				});
 			}
-			if (this.app.hasConfiguration()) {
+			if (this.app.isDocker) {
 				buttons.push({
 					name: 'configure',
 					label: _('App settings'),
@@ -1001,7 +1001,7 @@ define([
 							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
 						}
 						this.detailsDialog.reset(mayContinue, title, text, actionLabel);
-						if (mayContinue) {
+						if (this.app.installsAsDocker() && mayContinue) {
 							this.detailsDialog.showConfiguration(func);
 						}
 						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);

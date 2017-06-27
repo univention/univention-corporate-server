@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-87) unstable; urgency=medium
+
+  * Bug #43816: Reverted
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Jun 2017 13:53:11 +0200
+
 univention-appcenter (5.0.23-86) unstable; urgency=medium
 
   * Bug #43816: Fixed Upgrade configure issues; fixed JS issues

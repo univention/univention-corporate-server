@@ -37,7 +37,7 @@ import shutil
 from glob import glob
 from getpass import getuser
 import subprocess
-from argparse import SUPPRESS, Action
+from argparse import SUPPRESS
 from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App, AppManager
@@ -45,7 +45,6 @@ from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, ge
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
-from univention.appcenter.settings import SettingValueError
 
 
 class _AptLogger(object):
@@ -77,19 +76,6 @@ class _AptLogger(object):
 		self.action.warn(msg)
 
 
-class StoreConfigAction(Action):
-	def __call__(self, parser, namespace, value, option_string=None):
-		set_vars = {}
-		for val in value:
-			try:
-				key, val = val.split('=', 1)
-			except ValueError:
-				parser.error('Could not parse %s. Use var=val. Skipping...' % val)
-			else:
-				set_vars[key] = val
-		setattr(namespace, self.dest, set_vars)
-
-
 class InstallRemoveUpgrade(Register):
 	prescript_ext = None
 	pre_readme = None
@@ -97,11 +83,9 @@ class InstallRemoveUpgrade(Register):
 
 	def setup_parser(self, parser):
 		super(Register, self).setup_parser(parser)
-		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
-		parser.add_argument('--do-not-configure', action='store_false', dest='configure', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the application')
 
 	main = None  # no action by itself
 
@@ -295,30 +279,6 @@ class InstallRemoveUpgrade(Register):
 						username = self._get_username(args)
 						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
-
-	def _get_configure_settings(self, app, filter_action=True):
-		set_vars = {}
-		for setting in app.get_settings():
-			if setting.name in set_vars:
-				continue
-			if filter_action and self.get_action_name().title() not in setting.show:
-				continue
-			try:
-				value = setting.get_value(app)
-			except SettingValueError:
-				value = setting.get_initial_value()
-			set_vars[setting.name] = value
-		return set_vars
-
-	def _configure(self, app, args, run_script=None):
-		if not args.configure:
-			return
-		if run_script is None:
-			run_script = self.get_action_name()
-		configure = get_action('configure')
-		set_vars = (args.set_vars or {}).copy()
-		set_vars.update(self._get_configure_settings(app))
-		configure.call(app=app, run_script=run_script, set_vars=set_vars)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
