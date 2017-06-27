@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-portal
+fix: 1.0.12-3A~4.2.0.201706271227
+desc: |
+ This update addresses the following issue(s):
+ * The portal was empty on unjoined systems. Therefore it was not
+   possible to reach UMC for the initial domain join after logging in.
+bug: [44865]
