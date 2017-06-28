@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * It is prevented to move or remove the own object now.
-bug: [42526]
+ * It is now checked if the create, modify and remove operation is allowed
+   before executing the action.
+bug: [42526, 39253]

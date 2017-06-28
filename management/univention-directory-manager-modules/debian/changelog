@@ -1,6 +1,7 @@
 univention-directory-manager-modules (12.0.17-22) unstable; urgency=medium
 
   * Bug #42526: prevent to move and remove the own object
+  * Bug #39253: check if operation is allowed
 
  -- Florian Best <best@univention.de>  Wed, 28 Jun 2017 16:54:20 +0200
 

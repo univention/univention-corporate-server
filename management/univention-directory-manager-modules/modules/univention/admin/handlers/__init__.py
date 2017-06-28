@@ -298,6 +298,9 @@ class base(object):
 	def create(self):
 		'''create object'''
 
+		if not univention.admin.modules.supports(self.module, 'add'):
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be created.'))
+
 		if self.exists():
 			raise univention.admin.uexceptions.objectExists(self.dn)
 
@@ -308,6 +311,9 @@ class base(object):
 
 	def modify(self, modify_childs=1, ignore_license=0):
 		'''modify object'''
+
+		if not univention.admin.modules.supports(self.module, 'edit'):
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be modified.'))
 
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject(self.dn)
@@ -349,8 +355,8 @@ class base(object):
 		'''move object'''
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s to %s' % (self.dn, newdn))
 
-		if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):  # this should have been checked before, but I want to be sure...
-			raise univention.admin.uexceptions.invalidOperation()
+		if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be moved.'))
 
 		if self.lo.compare_dn(self.dn, self.lo.whoami()):
 			raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
@@ -476,6 +482,9 @@ class base(object):
 
 	def remove(self, remove_childs=0):
 		'''remove object'''
+
+		if not univention.admin.modules.supports(self.module, 'remove'):
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be removed.'))
 
 		if not self.dn or not self.lo.get(self.dn):
 			raise univention.admin.uexceptions.noObject(self.dn)
