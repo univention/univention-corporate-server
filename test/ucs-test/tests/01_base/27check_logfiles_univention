@@ -17,6 +17,7 @@ find /var/log/univention \
 	! -name test_\*.log \
 	! -name directory-reports-cleanup.log \
 	! -name ucs-windows-tools.log \
+	! -name ec2.log $(: Bug 44803)\
 	! -name welcome-screen.log $(: Bug 38837)\
 	-print0 >"$tmpfile"
 
