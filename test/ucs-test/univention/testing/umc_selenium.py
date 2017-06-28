@@ -127,7 +127,7 @@ class UMCSeleniumTest(object):
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
 			logger.error('Exception: %s %s' % (exc_type, exc_value))
-			self.save_screenshot()
+			self.save_screenshot(hide_notifications=False, append_timestamp=True)
 		self.driver.quit()
 
 	def set_viewport_size(self, width, height):
@@ -174,7 +174,8 @@ class UMCSeleniumTest(object):
 		logger.info('Saving screenshot %r', filename)
 		self.driver.find_element_by_xpath(xpath).screenshot(filename)
 
-		self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "")')
+		if hide_notifications:
+			self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "")')
 
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
