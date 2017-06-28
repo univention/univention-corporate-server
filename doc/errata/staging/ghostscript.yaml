@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: ghostscript
-fix: 9.05~dfsg-6.3.32.201705101311
+fix: 9.05~dfsg-6.3.34.201706271134
 desc: |
  This update addresses the following issues:
  * Ghostscript information disclosure through getenv, filenameforall
