@@ -18,3 +18,5 @@ desc: |
  * The LDAP base could not be modified via UMC anymore since erratum 39.
    This has been fixed.
 bug: [1567, 39239, 44066, 44370, 44044, 34973, 43395]
+erratum: 75
+announced: 2017-06-28
