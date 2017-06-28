@@ -18,3 +18,5 @@ cve:
 - CVE-2015-8270
 - CVE-2015-8271
 - CVE-2015-8272
+erratum: 62
+announced: 2017-06-28
