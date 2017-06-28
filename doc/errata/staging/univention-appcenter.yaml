@@ -3,12 +3,10 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-appcenter
-fix: 5.0.23-86.320.201706210133
+fix: 5.0.23-88.321.201706281252
 desc: |
  This update addresses the following issue(s):
- * Apps may now ship a file describing settings that can be applied
-   dynamically.
  * A script can now be run after configuring an App.
  * AdditionalPackages defined by the App are no longer removed when
    uninstalling an app
-bug: [43816, 43838, 44772]
+bug: [43838, 44772]
