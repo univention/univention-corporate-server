@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner python
+## desc: UMC domainjoin test
+## roles:
+##  - domaincontroller_master
+## exposure: dangerous
+
+from lib.umc_tester import BaseUMCTester
+from univention.admin import localization
+import time
+
+translator = localization.translation('univention-ucs-test_umc-tests')
+_ = translator.translate
+
+
+class PasswordChangeError(Exception):
+	pass
+
+
+class UMCTester(BaseUMCTester):
+	def test_umc(self):
+		self.rerun_a_join_script()
+		self.test_if_login_works()
+
+	def rerun_a_join_script(self):
+		self.selenium.open_module(_('Domain join'))
+		self.selenium.wait_for_text("01univention-ldap-server-init")
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		self.selenium.click_grid_entry('01univention-ldap-server-init')
+		self.selenium.click_button(_('Force execute'))
+		self.selenium.click_button(_('Run join scripts'))
+
+		self.selenium.wait_for_text(_('restart of the UMC server'), timeout=300)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.click_button(_('Restart'))
+
+		time.sleep(25)
+
+	def test_if_login_works(self):
+		self.selenium.driver.get(
+			self.selenium.base_url + 'univention/login/?lang=%s'
+			% (self.selenium.language,)
+		)
+		self.selenium.do_login()
+
+
+if __name__ == '__main__':
+	with UMCTester(translator) as umc_tester:
+		umc_tester.test_umc()
