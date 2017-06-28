@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-12) unstable; urgency=medium
+
+  * Bug #44847: fix wizards with overwritten syntax classes
+
+ -- Florian Best <best@univention.de>  Wed, 28 Jun 2017 16:29:22 +0200
+
 univention-management-console-module-udm (7.0.10-11) unstable; urgency=medium
 
   * Bug #1567: hide object type selection when copying object via LDAP

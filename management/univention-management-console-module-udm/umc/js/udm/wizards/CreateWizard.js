@@ -73,13 +73,13 @@ define([
 				originalWidgetDefinition = lang.clone(originalWidgetDefinition);
 				originalWidgetDefinition.type = 'TextBox';
 			}
-			return {
+			return lang.mixin(lang.clone(originalWidgetDefinition), {
 				name: widgetName,
 				sizeClass: originalWidgetDefinition.size,
 				label: originalWidgetDefinition.label,
 				required: originalWidgetDefinition.required,
 				type: originalWidgetDefinition.type
-			};
+			});
 		},
 
 		getValues: function() {

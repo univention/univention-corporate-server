@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Overwritten syntax classes for properties which are shown in a
+   wizard for creating objects can now use ComboBox widgets.
+bug: [44847]
