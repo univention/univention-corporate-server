@@ -163,7 +163,7 @@ class UMCSeleniumTest(object):
 		time.sleep(2)
 
 		if hide_notifications:
-			self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "none")')
+			self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "none")')
 
 		if append_timestamp:
 			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -174,12 +174,12 @@ class UMCSeleniumTest(object):
 		logger.info('Saving screenshot %r', filename)
 		self.driver.find_element_by_xpath(xpath).screenshot(filename)
 
-		self.driver.execute_script('dojo.style(dojo.byId("umc_widgets_ContainerWidget_0"), "display", "")')
+		self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "")')
 
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		xpath = '//*[@id="umc_widgets_LiveSearch_0"]'
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch")]'
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
 				(webdriver.common.by.By.XPATH, xpath)
@@ -266,7 +266,11 @@ class UMCSeleniumTest(object):
 
 	def click_grid_entry(self, name):
 		logger.info("Clicking the grid entry %r", name)
-		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcGridDefaultAction ")][contains(text(), "%s")]' % (name,))
+		self.click_element(
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/div[contains(text(), "%s")]|'
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"][contains(text(), "%s")]'
+			% (name, name,)
+		)
 
 	def click_tree_entry(self, name):
 		logger.info("Clicking the tree entry %r", name)

@@ -30,7 +30,10 @@ class ScreenShooter(BaseScreenShooter):
 		self.selenium.enter_input("firstname", "Anna")
 		self.selenium.enter_input("lastname", "Alster")
 		self.selenium.enter_input("username", "anna")
-		self.selenium.save_screenshot("umc-users-add_dialog", xpath='//*[@id="umc_modules_udm_NewObjectDialog_0"]')
+		self.selenium.save_screenshot(
+			"umc-users-add_dialog",
+			xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
+		)
 		#self.selenium.click_button(_("Next"))
 		#self.selenium.wait_for_text(_("Password *"))
 		#self.selenium.enter_input("password_1", "univention")
@@ -40,7 +43,10 @@ class ScreenShooter(BaseScreenShooter):
 
 	def take_template_screenshot_and_move_on(self):
 		self.selenium.wait_for_text(_("User template"))
-		self.selenium.save_screenshot("umc-users-template", xpath='//*[@id="umc_modules_udm_NewObjectDialog_0"]')
+		self.selenium.save_screenshot(
+			"umc-users-template",
+			xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
+		)
 		self.selenium.click_button(_("Next"))
 
 	def take_screenshot_of_details_page(self):
