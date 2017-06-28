@@ -1,0 +1,84 @@
+#!/usr/share/ucs-test/runner python
+## desc: UMC domainjoin test
+## roles:
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memeberserver
+## exposure: dangerous
+
+from lib.umc_tester import BaseUMCTester
+from univention.admin import localization
+import time
+
+translator = localization.translation('univention-ucs-test_umc-tests')
+_ = translator.translate
+
+
+class PasswordChangeError(Exception):
+	pass
+
+
+class UMCTester(BaseUMCTester):
+	def test_umc(self):
+		self.selenium.driver.get(
+			self.selenium.base_url + 'univention/management/?lang=%s'
+			% (self.selenium.language,)
+		)
+		self.selenium.do_login(username='root')
+
+		self.join_domain()
+		self.test_if_login_works()
+
+		self.mark_one_join_script_as_unexecuted()
+		self.run_pending_join_scripts()
+		self.test_if_login_works()
+
+	def join_domain(self):
+		self.selenium.open_module(_('Domain join'))
+		self.selenium.wait_for_text(_('Please enter credentials'))
+		self.selenium.enter_input('password', self.selenium.umcLoginPassword)
+		self.selenium.click_button(_('Join system'))
+
+		self.selenium.wait_for_text(_('A reboot of the server is recommended'), timeout=600)
+		self.selenium.click_button(_('Reboot'))
+
+		time.sleep(60)
+
+	def test_if_login_works(self):
+		self.selenium.driver.get(
+			self.selenium.base_url + 'univention/login/?lang=%s'
+			% (self.selenium.language,)
+		)
+		self.selenium.do_login()
+
+	def mark_one_join_script_as_unexecuted(self):
+		with open('/var/univention-join/status', 'r') as join_status_file:
+			lines = join_status_file.readlines()
+
+		# Removing one line from this file will make the UMC think that the
+		# join script of that line didn't run.
+		with open('/var/univention-join/status', 'w') as join_status_file:
+			for line in lines[1:]:
+				join_status_file.write(line)
+
+	def run_pending_join_scripts(self):
+		self.selenium.open_module(_('Domain join'))
+		self.selenium.wait_for_text(_('This page shows the status of all'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.click_button(_('Execute all pending join scripts'))
+
+		self.selenium.wait_for_text(_('Please enter credentials'))
+		self.selenium.enter_input('username', self.selenium.umcLoginUsername)
+		self.selenium.enter_input('password', self.selenium.umcLoginPassword)
+		self.selenium.click_button(_('Run'))
+
+		self.selenium.wait_for_text(_('restart of the UMC server'), timeout=300)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.click_button(_('Restart'))
+
+		time.sleep(25)
+
+
+if __name__ == '__main__':
+	with UMCTester(login=False, translator=translator) as umc_tester:
+		umc_tester.test_umc()
