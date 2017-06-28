@@ -13,3 +13,5 @@ desc: |
  * The build utilities have been adjusted to enhance the creation of
    translation packages.
 bug: [39963, 44670, 40998, 44841]
+erratum: 64
+announced: 2017-06-28
