@@ -311,6 +311,7 @@ joinscript_save_current_version
 # Only install the app if joinscript is run during system-setup
 if is_ucr_true system/setup/boot/start; then
 	# uninstall old app
+	service docker-app-\$APP stop
 	docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
 	univention-app register \${APP} --undo-it
 
