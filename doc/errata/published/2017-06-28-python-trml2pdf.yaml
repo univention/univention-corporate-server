@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The package has been moved to maintained.
 bug: [39239]
+erratum: 71
+announced: 2017-06-28
