@@ -95,7 +95,7 @@ class UCTTest_DockerApp_UMCInstallFailed(Exception):
 
 
 def get_docker_appbox_image():
-	image_name = 'docker.software-univention.de/ucs-appbox-amd64:4.1-4'
+	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.1-4'
 	print 'Using %s' % image_name
 	return image_name
 

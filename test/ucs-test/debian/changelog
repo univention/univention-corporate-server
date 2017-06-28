@@ -1,3 +1,10 @@
+ucs-test (7.0.22-6) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: Switch to docker-test.software-
+    univention.de (Bug #42817)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jun 2017 20:44:25 +0200
+
 ucs-test (7.0.22-5) unstable; urgency=medium
 
   * 01_base/27check_logfiles_univention: Ignore ec2.log (Bug #44803)
