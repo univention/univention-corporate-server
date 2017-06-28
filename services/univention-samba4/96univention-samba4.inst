@@ -257,6 +257,29 @@ set_samba4_ldap_base() {
 	fi
 }
 
+skip_reprovision() {
+	if [ "$server_role" == "domaincontroller_slave" ]; then
+		return 1	## allow reprovision
+	fi
+	if [ "$s4connector_dc" != "$hostname" ]; then
+		return 1	## allow reprovision
+	fi
+	if ! [ -r /var/lib/samba/private/secrets.ldb ]; then
+		return 1	## allow reprovision
+	fi
+	if ! [ -r /var/lib/samba/private/sam.ldb ]; then
+		return 1	## allow reprovision
+	fi
+	client_kvno=$(ldbsearch -H /var/lib/samba/private/secrets.ldb -b "flatname=$windows_domain,cn=Primary Domains" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+	server_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(sAMAccountName=$hostname$)" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+	if [ "$client_kvno" = "$server_kvno" ]; then
+		echo "INFO: This system runs the S4-Connector and the sam.ldb looks functional"
+		echo "      skipping re-provision."
+		return 0	## looks good, skip reprovision
+	fi
+	return 1
+}
+
 run_samba_provision() {
 	cleanup_var_lib_samba
 	## Provision Samba4
@@ -868,7 +891,9 @@ if [ "$samba4_role" = 'DC' ]; then
 		|| [ "$s4connector_dc" = "$hostname" ]; then
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-			run_samba_provision "$@"
+			if ! skip_reprovision; then
+				run_samba_provision "$@"
+			fi
 		fi
 
 		## provision erases the idmap.ldb
