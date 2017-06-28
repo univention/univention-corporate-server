@@ -13,7 +13,10 @@ class BaseUMCTester(object):
 		logging.basicConfig(level=logging.INFO)
 
 		self.udm = udm_test.UCSTestUDM()
-		self.selenium = umc_selenium_test.UMCSeleniumTest(language=self.args.language)
+		self.selenium = umc_selenium_test.UMCSeleniumTest(
+			language=self.args.language,
+			host=self.args.host
+		)
 
 	def __enter__(self):
 		self.udm.__enter__()
@@ -30,6 +33,10 @@ class BaseUMCTester(object):
 			'-l', '--language', dest='language', default='en', help='Two digit'
 			' language code. Defines the language the UMC will be tested'
 			' with. Default is "en".'
+		)
+		parser.add_argument(
+			'--host', dest='host', default='localhost', help='The url to the '
+			'UMC, that is to be tested. Default is "localhost".'
 		)
 		args = parser.parse_args()
 		return args

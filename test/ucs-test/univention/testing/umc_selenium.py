@@ -73,13 +73,13 @@ class UMCSeleniumTest(object):
 	Tests run on selenium grid server. To run tests locally use lacal varibable UCSTEST_SELENIUM=local.
 	Root privileges are required, also root needs the privilege to display the browser.
 	"""
-	def __init__(self, login=True, language='en'):
-
+	def __init__(self, login=True, language='en', host='localhost'):
 		self.login = login
 		self.max_exceptions = 3
 		self.browser = 'firefox'
 		self.selenium_grid = False
 		self.language = language
+		self.base_url = 'https://' + host + '/'
 		translator.set_language(self.language)
 
 	def __enter__(self):
@@ -104,8 +104,6 @@ class UMCSeleniumTest(object):
 		ucr = ucr_test.UCSTestConfigRegistry()
 		ucr.load()
 		self.ldap_base = ucr.get('ldap/base')
-		self.ip = ucr.get('interfaces/eth0/address')
-		self.base_url = 'https://' + self.ip + '/'
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username
