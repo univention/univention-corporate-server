@@ -17,3 +17,5 @@ desc: |
    of a user) were not reset resulting in wrong default values if multiple
    objects were created at once.
 bug: [1567, 44370, 43150, 43395, 41092]
+erratum: 74
+announced: 2017-06-28
