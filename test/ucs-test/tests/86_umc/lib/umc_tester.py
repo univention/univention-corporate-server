@@ -5,7 +5,7 @@ import univention.testing.umc_selenium as umc_selenium_test
 
 
 class BaseUMCTester(object):
-	def __init__(self, translator=None):
+	def __init__(self, login=True, translator=None):
 		self.args = self.parse_args()
 		if translator is not None:
 			translator.set_language(self.args.language)
@@ -14,6 +14,7 @@ class BaseUMCTester(object):
 
 		self.udm = udm_test.UCSTestUDM()
 		self.selenium = umc_selenium_test.UMCSeleniumTest(
+			login=login,
 			language=self.args.language,
 			host=self.args.host
 		)

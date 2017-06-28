@@ -137,14 +137,19 @@ class UMCSeleniumTest(object):
 
 		self.driver.set_window_size(width + width_delta, height + height_delta)
 
-	def do_login(self):
+	def do_login(self, username=None, password=None):
+		if username is None:
+			username = self.umcLoginUsername
+		if password is None:
+			password = self.umcLoginPassword
+
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
 				(webdriver.common.by.By.ID, "umcLoginUsername")
 			)
 		)
-		self.enter_input('username', self.umcLoginUsername)
-		self.enter_input('password', self.umcLoginPassword)
+		self.enter_input('username', username)
+		self.enter_input('password', password)
 		self.submit_input('password')
 		self.wait_for_text(_('Favorites'))
 		logger.info('Successful login')
