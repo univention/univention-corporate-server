@@ -10,3 +10,5 @@ desc: |
  * AdditionalPackages defined by the App are no longer removed when
    uninstalling an app
 bug: [43838, 44772]
+erratum: 432
+announced: 2017-06-28
