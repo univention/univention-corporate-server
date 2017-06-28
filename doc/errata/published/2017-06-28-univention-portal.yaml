@@ -9,3 +9,5 @@ desc: |
  * The portal was empty on unjoined systems. Therefore it was not
    possible to reach UMC for the initial domain join after logging in.
 bug: [44865]
+erratum: 65
+announced: 2017-06-28
