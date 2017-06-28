@@ -12,3 +12,5 @@ desc: |
  * The design of disabled input fields has been improoved to be more
    recognizable.
 bug: [44066, 44044, 43402]
+erratum: 73
+announced: 2017-06-28
