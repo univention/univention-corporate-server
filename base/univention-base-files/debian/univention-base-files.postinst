@@ -70,10 +70,18 @@ univention-config-registry set cron/autostart?yes \
 if [ "$1" = configure -a -z "$2" ]; then
 	# installation
 	univention-config-registry set syslog/mail/mirrorto/syslog?no \
+		'systemd/journald/Storage?persistent' \
+		'systemd/journald/SystemMaxFileSize?100M' \
+		'systemd/journald/MaxFileSec?1 day' \
+		'systemd/journald/MaxRetentionSec?12 week' \
 		'ntp/noquery?true'
 else
 	# update
 	univention-config-registry set syslog/mail/mirrorto/syslog?yes \
+		'systemd/journald/Storage?persistent' \
+		'systemd/journald/SystemMaxFileSize?100M' \
+		'systemd/journald/MaxFileSec?1 day' \
+		'systemd/journald/MaxRetentionSec?12 week' \
 		'ntp/noquery?false'
 fi
 
