@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
-# desc: UMC login test
-# roles-not: [basesystem]
-# exposure: dangerous
+## desc: UMC LDAP screenshots
+## roles-not: [basesystem]
+## exposure: dangerous
 
 from lib.screen_shooter import BaseScreenShooter
 from univention.admin import localization
