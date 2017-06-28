@@ -9,3 +9,5 @@ desc: |
  * The LDAP attribute "univentionUDMPropertyCopyable" for extended
    attributes has been added.
 bug: [1567]
+erratum: 72
+announced: 2017-06-28
