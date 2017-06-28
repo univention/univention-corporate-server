@@ -352,6 +352,9 @@ class base(object):
 		if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):  # this should have been checked before, but I want to be sure...
 			raise univention.admin.uexceptions.invalidOperation()
 
+		if self.lo.compare_dn(self.dn, self.lo.whoami()):
+			raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
+
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject()
 
@@ -476,6 +479,9 @@ class base(object):
 
 		if not self.dn or not self.lo.get(self.dn):
 			raise univention.admin.uexceptions.noObject(self.dn)
+
+		if self.lo.compare_dn(self.dn, self.lo.whoami()):
+			raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be removed.'))
 
 		return self._remove(remove_childs)
 

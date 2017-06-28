@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-22) unstable; urgency=medium
+
+  * Bug #42526: prevent to move and remove the own object
+
+ -- Florian Best <best@univention.de>  Wed, 28 Jun 2017 16:54:20 +0200
+
 univention-directory-manager-modules (12.0.17-21) unstable; urgency=medium
 
   * Bug #1567: don't copy groups email address

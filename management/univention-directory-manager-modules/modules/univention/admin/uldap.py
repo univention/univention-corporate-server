@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import ldap
 import string
 import time
@@ -399,6 +400,10 @@ class access:
 
 	def unbind(self):
 		self.lo.unbind()
+
+	def whoami(self):
+		dn = self.lo.lo.whoami_s()
+		return re.sub('^dn:', '', dn)
 
 	def requireLicense(self, require=1):
 		self.require_license = require

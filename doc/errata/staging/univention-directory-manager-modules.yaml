@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * It is prevented to move or remove the own object now.
+bug: [42526]
