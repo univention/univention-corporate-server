@@ -300,7 +300,7 @@ class UMCSeleniumTest(object):
 		Waits for the element to be clickable before attempting to click.
 		"""
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-			self.get_all_clickable_elements
+			self.get_all_enabled_elements
 		)
 
 		if len(elems) is not 1:
@@ -310,7 +310,7 @@ class UMCSeleniumTest(object):
 			)
 		elems[0].click()
 
-	def get_all_clickable_elements(self, xpath):
+	def get_all_enabled_elements(self, xpath):
 		elems = self.driver.find_elements_by_xpath(xpath)
 		clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
 		if len(clickable_elems) > 0:
@@ -357,19 +357,33 @@ class UMCSeleniumTest(object):
 		Enter inputvalue into an input-element with the tag inputname.
 		"""
 		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
-		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
+		elem = self.get_input(inputname)
 		elem.clear()
 		elem.send_keys(inputvalue)
-		return elem
 
 	def submit_input(self, inputname):
 		"""
 		Submit the input in an input-element with the tag inputname.
 		"""
 		logger.info('Submitting input field %r.' % (inputname,))
-		elem = self.driver.find_element_by_xpath('//input[@name= %s ]' % (json.dumps(inputname),))
+		elem = self.get_input(inputname)
 		elem.submit()
-		return elem
+
+	def get_input(self, inputname):
+		"""
+		Get an input-element with the tag inputname.
+		"""
+		xpath = '//input[@name= %s ]' % (json.dumps(inputname),)
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.get_all_enabled_elements
+		)
+
+		if len(elems) is not 1:
+			logger.warn(
+				"Found %d input elements instead of 1. Trying to use the first "
+				"one." % (len(elems),)
+			)
+		return elems[0]
 
 	def end_umc_session(self):
 		"""
