@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * Apps may now ship a file describing settings that can be applied
    dynamically.
-bug: [44872]
+ * The host listing for an installed app incorrectly warned about
+   limited manageability in some cases.
+bug: [44872, 44036]
