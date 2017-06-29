@@ -246,8 +246,8 @@ class TestUMCLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for computer in self.computers_to_delete:
-            if self.check_obj_exists(computer, "computers/computer"):
-                self.delete_obj(computer, 'computers', 'computers/computer')
+            if self.check_obj_exists(computer, "computers/windows"):
+                self.delete_obj(computer, 'computers', 'computers/windows')
         self.computers_to_delete = []
 
     def delete_created_users(self):
