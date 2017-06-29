@@ -19,4 +19,6 @@ desc: |
    again.
  * Show readable error message when saving an extended attribute with unknown
    object class.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802]
+ * It is now possible to remove existing properties from layouts via
+   extended attributes.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373]
