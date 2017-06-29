@@ -226,10 +226,6 @@ class EA_Layout(dict):
 		return self.get('name', '')
 
 	@property
-	def fillWidth(self):
-		return self.get('fillWidth', False)
-
-	@property
 	def overwrite(self):
 		return self.get('overwrite', None)
 
@@ -358,7 +354,7 @@ def update_extended_attributes(lo, module, position):
 		longdesc = attrs.get('univentionUDMPropertyTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
 
 		# create property
-		# FIXME: must add attribute to honor fullWidth (should be defined by the syntax)
+		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth',[ '0' ])[0].upper() in [ '1', 'TRUE' ])
 		module.property_descriptions[pname] = univention.admin.property(
 			short_description=shortdesc,
 			long_description=longdesc,
@@ -372,6 +368,7 @@ def update_extended_attributes(lo, module, position):
 			default=propertyDefault,
 			editable=editable,
 			copyable=copyable,
+			size = 'Two' if fullWidth else None,
 		)
 
 		# add LDAP mapping
@@ -389,7 +386,6 @@ def update_extended_attributes(lo, module, position):
 			overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [''])[0]
 			if overwriteProp == '0':
 				overwriteProp = None
-			fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', ['0'])[0].upper() in ['1', 'TRUE'])
 			deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in ['1', 'TRUE'])
 			tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', ['0'])[0].upper() in ['1', 'TRUE'])
 
