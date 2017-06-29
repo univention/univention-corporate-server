@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner python
+## desc: settings/extended_attribute with attribute hidden in UMC
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-management-console-module-udm
+## bugs: [43373]
+
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+from univention.testing.umc import Client
+
+
+def flatten(layout):
+	result = set()
+
+	def _parse(x):
+		for y in x:
+			if isinstance(y, list):
+				_parse(y)
+			elif isinstance(y, dict):
+				_parse(y.get('layout', []))
+			elif isinstance(y, basestring):
+				result.add(y)
+	_parse(layout)
+	return result
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		properties = {
+			'name': uts.random_name(),
+			'shortDescription': uts.random_string(),
+			'CLIName': 'username',
+			'module': 'users/user',
+			'objectClass': 'person',
+			'ldapMapping': 'uid',
+			'disableUDMWeb': '1',
+		}
+		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		client = Client.get_test_connection()
+		layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
+
+		assert 'username' not in layout, 'username is part of %r' % (layout,)
