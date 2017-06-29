@@ -805,7 +805,7 @@ class UDM_Module(object):
 				'value': value,
 				'editable': bool(opt.editable)
 			})
-
+		options.sort(key=lambda x: x['label'])
 		return options
 
 	@property

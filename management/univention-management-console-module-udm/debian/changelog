@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-13) unstable; urgency=medium
+
+  * Bug #41015: Applied patch from Florian Best - The options of an UDM object
+  	are now sorted.
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 14:58:12 +0200
+
 univention-management-console-module-udm (7.0.10-12) unstable; urgency=medium
 
   * Bug #44847: fix wizards with overwritten syntax classes
