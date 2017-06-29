@@ -1,3 +1,9 @@
+ucs-test (7.0.22-8) unstable; urgency=medium
+
+  * 80_docker/62_app_update_available: Disable test case (Bug #44888)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jun 2017 06:46:33 +0200
+
 ucs-test (7.0.22-7) unstable; urgency=medium
 
   * 60_umc/80_udm_license: Disable test case (Bug #44887)
