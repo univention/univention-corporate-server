@@ -24,4 +24,5 @@ desc: |
  * More descriptions have been added to the windows settings of user objects.
  * The UDM CLI now shows a readable error message when the LDAP server is not
    available.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975]
+ * The home share and home share path properties are now correctly displayed.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611]
