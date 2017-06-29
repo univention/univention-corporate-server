@@ -440,6 +440,15 @@ def update_extended_attributes(lo, module, position):
 					groupName=groupname,
 					groupPosition=groupPosition,
 				))
+			else:
+				def remove_from_layout(x):
+					if hasattr(x, 'layout'):
+						if pname in x.layout:
+							x.layout = list(x.layout)
+							x.layout.remove(pname)
+						for y in x.layout:
+							remove_from_layout(y)
+				remove_from_layout(module)
 
 			module.extended_udm_attributes.append(univention.admin.extended_attribute(
 				name=pname,
