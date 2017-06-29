@@ -56,6 +56,7 @@ from univention.management.console.modules.udm.syntax import widget, default_val
 
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
+from ldap.dn import explode_dn
 from functools import reduce
 
 try:
@@ -974,31 +975,11 @@ def ldap_dn2path(ldap_dn, include_rdn=True):
 	representation"""
 
 	ldap_base = ucr.get('ldap/base')
-	if ldap_base is None or not ldap_dn.endswith(ldap_base):
+	if not ldap_base or not ldap_dn.lower().endswith(ldap_base.lower()):
 		return ldap_dn
-	rel_path = ldap_dn[: -1 * len(ldap_base)]
-	path = []
-	for item in ldap_base.split(','):
-		if not item:
-			continue
-		dummy, value = item.split('=', 1)
-		path.insert(0, value)
-	path = ['.'.join(path) + ':', ]
-	if rel_path:
-		if not include_rdn:
-			lst = rel_path.split(',')[1: -1]
-		else:
-			lst = rel_path.split(',')[: -1]
-		for item in lst:
-			if not item:
-				continue
-			dummy, value = item.split('=', 1)
-			path.insert(1, value)
-		if not lst:
-			path.insert(1, '')
-	else:
-		path.append('')
-	return '/'.join(path)
+	rel_path = ldap_dn[:-(1 + len(ldap_base))]
+	rel_path = explode_dn(rel_path, True)[int(not include_rdn):]
+	return '%s:/%s' % ('.'.join(reversed(explode_dn(ldap_base, True))), '/'.join(reversed(rel_path)))
 
 
 @LDAP_Connection
