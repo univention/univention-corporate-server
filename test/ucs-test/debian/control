@@ -513,7 +513,8 @@ Package: ucs-test-udm
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
+ ${misc:Depends},
+ python-pytest,
 Provides: ucs-test-module
 Description: Test scripts to test basic Univention Directory Manager
  This package includes test-cases for the Univention Directory Manager.
