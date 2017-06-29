@@ -1,3 +1,11 @@
+univention-directory-manager-modules (12.0.17-27) unstable; urgency=medium
+
+  * Bug #41802: Applied patch from Folrian Best - Show error message instead
+  	of a traceback when saving an extended attribute with non-existing LDAP
+  	object class
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 15:59:44 +0200
+
 univention-directory-manager-modules (12.0.17-26) unstable; urgency=medium
 
   * Bug #40487: Applied patch - Fix fullWidth option for extended attributes

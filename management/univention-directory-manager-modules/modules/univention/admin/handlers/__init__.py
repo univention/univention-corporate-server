@@ -882,7 +882,8 @@ class simpleLdap(base):
 
 		# case normalize object class names
 		schema = self.lo.get_schema()
-		ocs = set(schema.get_obj(ldap.schema.models.ObjectClass, x).names[0] for x in ocs)
+		ocs = (schema.get_obj(ldap.schema.models.ObjectClass, x) for x in ocs)
+		ocs = set(x.names[0] for x in ocs if x)
 
 		# make sure we still have a structural object class
 		if not schema.get_structural_oc(ocs):
