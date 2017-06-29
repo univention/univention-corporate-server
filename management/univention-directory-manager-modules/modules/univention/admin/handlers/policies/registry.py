@@ -122,7 +122,7 @@ class object(univention.admin.handlers.simplePolicy):
 		for key, value in values.items():
 			if key.startswith('univentionRegistry;entry-hex-'):
 				key_name = key.split('univentionRegistry;entry-hex-', 1)[1].decode('hex')
-				info['registry'].append((key_name, values[key][0].strip()))
+				info['registry'].append([key_name, values[key][0].strip()])
 
 		info['registry'].sort()
 
@@ -137,7 +137,7 @@ class object(univention.admin.handlers.simplePolicy):
 					raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated variables not allowed: %s') % (', '.join(map(repr, duplicated))))
 
 				old_dict = dict(old)
-				new_dict = dict((k.strip(), v) for k, v in new)  # strip leading and trailing whitespace in variable names
+				new_dict = dict([k.strip(), v] for k, v in new)  # strip leading and trailing whitespace in variable names
 
 				for var, value in old_dict.items():
 					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
