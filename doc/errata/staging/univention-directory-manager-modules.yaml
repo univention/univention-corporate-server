@@ -17,8 +17,8 @@ desc: |
    been enhanced.
  * The "Span both columns" option for extended attributes is functioning
    again.
- * A readable error message is shown when saving an extended attribute with an
-   unknown object class.
+ * An error is prevented when trying to attach an unkown object class to an
+   object.
  * It is now possible to remove existing properties from layouts via
    extended attributes.
  * More descriptions have been added to the windows settings of user objects.
