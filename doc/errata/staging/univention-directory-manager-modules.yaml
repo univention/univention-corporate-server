@@ -17,8 +17,9 @@ desc: |
    been enhanced.
  * The "Span both columns" option for extended attributes is functioning
    again.
- * Show readable error message when saving an extended attribute with unknown
-   object class.
+ * A readable error message is shown when saving an extended attribute with an
+   unknown object class.
  * It is now possible to remove existing properties from layouts via
    extended attributes.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373]
+ * More descriptions have been added to the windows settings of user objects.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964]
