@@ -17,7 +17,7 @@ desc: |
    been enhanced.
  * The "Span both columns" option for extended attributes is functioning
    again.
- * An error is prevented when trying to attach an unkown object class to an
+ * An error is prevented when trying to attach an unknown object class to an
    object.
  * It is now possible to remove existing properties from layouts via
    extended attributes.
@@ -25,4 +25,6 @@ desc: |
  * The UDM CLI now shows a readable error message when the LDAP server is not
    available.
  * The home share and home share path properties are now correctly displayed.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611]
+ * It is now possible to remove values from Univention Config Registry policies
+   via CLI.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562]
