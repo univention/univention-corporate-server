@@ -13,4 +13,5 @@ desc: |
    LDAP directory module. This has been fixed.
  * Apply policies to existing object when creating an already
    existing object.
-bug: [42526, 39253, 30214, 38856]
+ * Added missing descriptions to different print quota policies in UMC.
+bug: [42526, 39253, 30214, 38856, 39862]
