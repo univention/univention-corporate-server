@@ -9,5 +9,6 @@ desc: |
  * Overwritten syntax classes for properties which are shown in a
    wizard for creating objects can now use ComboBox widgets.
  * The options of objects are now sorted.
- * Default containers can now contain ",".
+ * A crash is prevented if a default container contained special characters
+   like ",".
 bug: [44847, 41015, 42423]
