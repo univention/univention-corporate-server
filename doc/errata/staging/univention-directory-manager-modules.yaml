@@ -15,6 +15,6 @@ desc: |
    should be referenced.
  * The descriptions of properties belonging to print quota policies have
    been enhanced.
- * The "Span both columns" option for extended attribtues did not take
-   effect. This has been fixed.
+ * The "Span both columns" option for extended attributes is functioning
+   again.
 bug: [42526, 39253, 30214, 38856, 39862, 40487]
