@@ -17,4 +17,6 @@ desc: |
    been enhanced.
  * The "Span both columns" option for extended attributes is functioning
    again.
-bug: [42526, 39253, 30214, 38856, 39862, 40487]
+ * Show readable error message when saving an extended attribute with unknown
+   object class.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802]
