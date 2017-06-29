@@ -169,6 +169,13 @@ class CheckLogFiles(object):
             '.*Usage: /etc/init.d/slapd {start|stop|restart|force-reload|status}.*',
             '.*invoke-rc.d: initscript slapd, action "(start|restart|crestart)" failed.*',
             '.*invoke-rc.d: initscript ntp, action "restart" failed.*',
+            '.*Job for univention-management-console-server.service failed.*',
+            '.*Job for slapd.service failed.*',
+            '.*Job for bind9.service failed.*',
+            '.*invoke-rc.d: initscript univention-management-console-server, action "reload" failed.*',
+            '.*invoke-rc.d: initscript bind9, action "restart" failed.*',
+            '.*Starting univention-directory-notifier (via systemctl).*',
+            '.*rsync: [Receiver] write error: Broken pipe (32).*',
             'ch.* failed to get attributes of .*/etc/resolv.conf.* No such file or directory']
 
         join_warnings = [
