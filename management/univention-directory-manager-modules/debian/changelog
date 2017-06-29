@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-25) unstable; urgency=medium
+
+  * Bug #39862: Applied patch - Add descriptions to different print quotas
+    in UMC
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 13:10:10 +0200
+
 univention-directory-manager-modules (12.0.17-24) unstable; urgency=medium
 
   * Bug #38856: Applied patch - Fix traceback when creating existing UDM

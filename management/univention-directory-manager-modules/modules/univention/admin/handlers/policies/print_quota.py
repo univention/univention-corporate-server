@@ -129,11 +129,10 @@ property_descriptions.update(dict([
 
 layout = [
 	Tab(_('General'), _('Print quota'), layout=[
-		Group(_('General print quota settings'), layout=[
-			'name',
-			['quotaUsers', 'quotaGroupsPerUsers'],
-			'quotaGroups'
-		]),
+		Group(_('General print quota settings'), layout=['name']),
+		Group(_('Print quota for users'), layout=['quotaUsers']),
+		Group(_('Print quota for groups per user'), layout=['quotaGroupsPerUsers']),
+		Group(_('Print quota for groups'), layout=['quotaGroups']),
 	]),
 	policy_object_tab(),
 ]
