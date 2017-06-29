@@ -542,7 +542,7 @@ property_descriptions = {
 	),
 	'sambahome': univention.admin.property(
 		short_description=_('Windows home path'),
-		long_description='',
+		long_description=_('The directory path which is used as the user\'s Windows home directory, e.g. \\\\ucs-file-server\\smith.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=['samba'],
@@ -554,7 +554,7 @@ property_descriptions = {
 	),
 	'scriptpath': univention.admin.property(
 		short_description=_('Windows logon script'),
-		long_description='',
+		long_description=_('The user-specific logon script relative to the NETLOGON share, e.g. user.bat.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=['samba'],
@@ -566,7 +566,7 @@ property_descriptions = {
 	),
 	'profilepath': univention.admin.property(
 		short_description=_('Windows profile directory'),
-		long_description='',
+		long_description=_('The directory path (resolvable by windows clients) e.g. %LOGONSERVER%\\%USERNAME%\\windows-profiles\\default which is used to configure a roaming profile.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=['samba'],
@@ -578,7 +578,7 @@ property_descriptions = {
 	),
 	'homedrive': univention.admin.property(
 		short_description=_('Windows home drive'),
-		long_description='',
+		long_description=_('The drive letter (with trailing colon) where the Windows home directory of this user lies, e.g. M:. Needs only be specified if it\'s different to the Samba configuration.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=['samba'],
@@ -590,7 +590,7 @@ property_descriptions = {
 	),
 	'sambaRID': univention.admin.property(
 		short_description=_('Relative ID'),
-		long_description='',
+		long_description=_('The relative ID (RID) is the local part of the SID and will be assigned automatically to next available RID. It can not be subsequently changed. Valid values are numbers upwards 1000. RIDs below 1000 are reserved to standard groups and other special objects.'),
 		syntax=univention.admin.syntax.integer,
 		multivalue=False,
 		required=False,

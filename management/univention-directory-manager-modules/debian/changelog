@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-30) unstable; urgency=medium
+
+  * Bug #40964: add some more descriptions for users/user properties
+
+ -- Florian Best <best@univention.de>  Thu, 29 Jun 2017 16:34:23 +0200
+
 univention-directory-manager-modules (12.0.17-29) unstable; urgency=medium
 
   * Bug #43562: Applied patch from Florian Best - Fix error in
