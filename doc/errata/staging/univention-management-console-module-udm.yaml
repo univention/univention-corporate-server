@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Overwritten syntax classes for properties which are shown in a
    wizard for creating objects can now use ComboBox widgets.
-bug: [44847]
+ * The options of objects are now sorted.
+bug: [44847, 41015]
