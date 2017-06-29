@@ -404,6 +404,8 @@ def doit(arglist):
 	out = []
 	try:
 		out = _doit(arglist)
+	except ldap.SERVER_DOWN:
+		return out + ["The LDAP Server is currently not available.", "OPERATION FAILED"]
 	except univention.admin.uexceptions.base, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
 
