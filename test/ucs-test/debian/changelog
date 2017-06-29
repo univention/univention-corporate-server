@@ -1,3 +1,9 @@
+ucs-test (7.0.22-10) unstable; urgency=low
+
+  * Bug #44884: Skip openssl s_client -ssl2
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Jun 2017 18:08:36 +0200
+
 ucs-test (7.0.22-9) unstable; urgency=medium
 
   * 00_checks/99check_log_files: Ignore some more error messages
