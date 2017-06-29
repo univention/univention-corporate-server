@@ -1618,7 +1618,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					host, path = unc.split(':', 1)
 					sharepath = path
 					while len(sharepath) > 1:
-						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_format('(&(host=%s)(path=%s))', [host, sharepath]), scope='domain')
+						filter_ = univention.admin.filter.conjunction('&', [
+							univention.admin.filter.expression('univentionShareHost', host),
+							univention.admin.filter.conjunction('|', [
+								univention.admin.filter.expression('univentionSharePath', sharepath.rstrip('/')),
+								univention.admin.filter.expression('univentionSharePath', '%s/' % (sharepath.rstrip('/'))),
+							])
+						])
+						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
 						if len(res) == 1:
 							self['homeShare'] = res[0].dn
 							relpath = path.replace(sharepath, '')

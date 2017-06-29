@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-32) unstable; urgency=medium
+
+  * Bug #37661: Applied patch from Florian Best - Correctly unmap homeShare
+    and homeSharePath
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 17:27:48 +0200
+
 univention-directory-manager-modules (12.0.17-31) unstable; urgency=medium
 
   * Bug #43975: Applied patch from Florian Best - UDM CLI now writes error
