@@ -9,4 +9,6 @@ desc: |
  * It is prevented to move or remove the own object now.
  * It is now checked if the create, modify and remove operation is allowed
    before executing the action.
-bug: [42526, 39253]
+ * Objects of type Settings: Service were not editable through the
+   LDAP directory module. This has been fixed.
+bug: [42526, 39253, 30214]
