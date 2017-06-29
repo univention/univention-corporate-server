@@ -3,7 +3,7 @@
 ## bugs: [34620]
 ## roles:
 ##  - domaincontroller_master
-## tags: [skip_admember]
+## tags: [skip_admember,SKIP]
 ## exposure: dangerous
 
 import sys
