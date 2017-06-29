@@ -15,4 +15,6 @@ desc: |
    existing object.
  * The descriptions of properties belonging to print quota policies have
    been enhanced.
-bug: [42526, 39253, 30214, 38856, 39862]
+ * The "Span both columns" option for extended attribtues did not take
+   effect. This has been fixed.
+bug: [42526, 39253, 30214, 38856, 39862, 40487]
