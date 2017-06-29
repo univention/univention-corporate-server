@@ -11,8 +11,8 @@ desc: |
    before executing the action.
  * Objects of type Settings: Service were not editable through the
    LDAP directory module. This has been fixed.
- * Apply policies to existing object when creating an already
-   existing object.
+ * An error during creation of existing objects has been fixed when policies
+   should be referenced.
  * The descriptions of properties belonging to print quota policies have
    been enhanced.
  * The "Span both columns" option for extended attribtues did not take
