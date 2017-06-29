@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-34) unstable; urgency=medium
+
+  * Bug #43975: Applied additional patch - Improved wording of error message
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 18:19:37 +0200
+
 univention-directory-manager-modules (12.0.17-33) unstable; urgency=medium
 
   * Bug #37661: Applied additional patch for escaping
