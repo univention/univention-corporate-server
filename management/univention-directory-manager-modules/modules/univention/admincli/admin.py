@@ -735,10 +735,10 @@ def _doit(arglist):
 				if not ignore_exists:
 					out.append('E: No free IP address found')
 					return out + ['OPERATION FAILED']
-			except univention.admin.uexceptions.valueInvalidSyntax, err:
+			except univention.admin.uexceptions.valueInvalidSyntax as err:
 				out.append('E: Invalid Syntax: %s' % err)
 				return out + ["OPERATION FAILED"]
-			except Exception, err:
+			except Exception as err:
 				out.append('E: Option %s is not valid' % err)
 				return out + ['OPERATION FAILED']
 
@@ -746,43 +746,44 @@ def _doit(arglist):
 			exists_msg = None
 			try:
 				dn = object.create()
-			except univention.admin.uexceptions.objectExists, dn:
-				exists_msg = dn
+			except univention.admin.uexceptions.objectExists as exc:
+				exists_msg = '%s' % (exc,)
+				dn = exc.args[0]
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists = 1
-			except univention.admin.uexceptions.uidAlreadyUsed, user:
+			except univention.admin.uexceptions.uidAlreadyUsed as user:
 				exists_msg = '(uid) %s' % user
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists = 1
-			except univention.admin.uexceptions.groupNameAlreadyUsed, group:
+			except univention.admin.uexceptions.groupNameAlreadyUsed as group:
 				exists_msg = '(group) %s' % group
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists = 1
-			except univention.admin.uexceptions.dhcpServerAlreadyUsed, name:
+			except univention.admin.uexceptions.dhcpServerAlreadyUsed as name:
 				exists_msg = '(dhcpserver) %s' % name
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists = 1
-			except univention.admin.uexceptions.macAlreadyUsed, mac:
+			except univention.admin.uexceptions.macAlreadyUsed as mac:
 				exists_msg = '(mac) %s' % mac
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists = 1
-			except univention.admin.uexceptions.noLock, e:
-				exists_msg = '(nolock) %s' % str(e)
+			except univention.admin.uexceptions.noLock as e:
+				exists_msg = '(nolock) %s' % (e,)
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
@@ -791,21 +792,21 @@ def _doit(arglist):
 			except univention.admin.uexceptions.invalidDhcpEntry:
 				out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
 				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.invalidOptions, e:
+			except univention.admin.uexceptions.invalidOptions as e:
 				if not ignore_exists:
 					out.append('E: invalid Options: %s' % e)
 					return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.insufficientInformation as exc:
 				out.append('E: Insufficient information: %s' % (exc,))
 				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.noObject, e:
+			except univention.admin.uexceptions.noObject as e:
 				out.append('E: object not found: %s' % e)
 				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.circularGroupDependency, e:
+			except univention.admin.uexceptions.circularGroupDependency as e:
 				out.append('E: circular group dependency detected: %s' % e)
 				return out + ["OPERATION FAILED"]
 
-			if policy_reference:
+			if not exists and policy_reference:
 				lo.modify(dn, [('objectClass', '', 'univentionPolicyReference')])
 				modlist = []
 				for el in policy_reference:
