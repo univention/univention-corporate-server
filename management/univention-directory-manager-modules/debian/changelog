@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-33) unstable; urgency=medium
+
+  * Bug #37661: Applied additional patch for escaping
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jun 2017 17:52:23 +0200
+
 univention-directory-manager-modules (12.0.17-32) unstable; urgency=medium
 
   * Bug #37661: Applied patch from Florian Best - Correctly unmap homeShare
