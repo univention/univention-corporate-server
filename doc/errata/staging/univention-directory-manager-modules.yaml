@@ -11,4 +11,6 @@ desc: |
    before executing the action.
  * Objects of type Settings: Service were not editable through the
    LDAP directory module. This has been fixed.
-bug: [42526, 39253, 30214]
+ * Apply policies to existing object when creating an already
+   existing object.
+bug: [42526, 39253, 30214, 38856]
