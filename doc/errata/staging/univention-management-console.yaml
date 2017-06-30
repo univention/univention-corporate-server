@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The permissions of the logfile /var/log/univention/ec2.log have been
    fixed.
-bug: [44803]
+ * The keywords for the module search on the UMC overview page are now
+   localized.
+bug: [44803, 34960]
