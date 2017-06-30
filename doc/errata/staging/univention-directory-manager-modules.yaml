@@ -19,8 +19,8 @@ desc: |
    again.
  * An error is prevented when trying to attach an unknown object class to an
    object.
- * It is now possible to remove existing properties from layouts via
-   extended attributes.
+ * It is now possible to hide existing properties in the layout via an
+   extended attribute.
  * More descriptions have been added to the windows settings of user objects.
  * The UDM CLI now shows a readable error message when the LDAP server is not
    available.
