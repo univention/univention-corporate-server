@@ -28,6 +28,7 @@ desc: |
  * It is now possible to remove values from Univention Config Registry policies
    via CLI.
  * The udm --help output has been cleaned up to improve readability.
- * The creation page of container objects has been simplified.
+ * The layout of container objects has been adapted so that the configuration
+   options for default containers are visible on the "General" tab.
  * The name of the "Administrator" role account is now configurable.
 bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891]
