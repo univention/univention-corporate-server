@@ -49,6 +49,7 @@ import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
 from univention.admin.layout import Group
+from univention.admin.syntax import ldapFilter
 import univention.config_registry
 import univention.admin.ipaddress
 
@@ -507,6 +508,7 @@ def _doit(arglist):
 		elif opt == '--append-option':
 			parsed_append_options.append(val)
 		elif opt == '--filter':
+			ldapFilter.parse(val)
 			filter = val
 		elif opt == '--policy-reference':
 			policy_reference.append(val)

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-44) unstable; urgency=medium
+
+  * Bug #34276: Applied patch from Florian Best - Improve syntax check for
+    udm --filter
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 30 Jun 2017 17:28:32 +0200
+
 univention-directory-manager-modules (12.0.17-43) unstable; urgency=medium
 
   * Bug #29929: Applied patch from Florian Best - Remove unused code from
