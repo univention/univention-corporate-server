@@ -1,0 +1,21 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: eject
+fix: 2.1.5+deb1+cvs20081104-13.A~4.2.1.201706301735
+desc: |-
+ This update addresses the following issue(s):
+ * dmcrypt-get-device, as shipped in the eject package of Debian and Ubuntu,
+   does not check the return value of the (1) setuid or (2) setgid function,
+   which might cause dmcrypt-get-device to execute code, which was intended to
+   run as an unprivileged user, as root. This affects eject through
+   2.1.5+deb1+cvs20081104-13.1 on Debian, eject before
+   2.1.5+deb1+cvs20081104-13.1ubuntu0.16.10.1 on Ubuntu 16.10, eject before
+   2.1.5+deb1+cvs20081104-13.1ubuntu0.16.04.1 on Ubuntu 16.04 LTS, eject
+   before 2.1.5+deb1+cvs20081104-13.1ubuntu0.14.04.1 on Ubuntu 14.04 LTS, and
+   eject before 2.1.5+deb1+cvs20081104-9ubuntu0.1 on Ubuntu 12.04 LTS.
+   (CVE-2017-6964)
+bug: [44410]
+cve:
+- CVE-2017-6964
