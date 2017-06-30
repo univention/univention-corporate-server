@@ -35,4 +35,5 @@ desc: |
    again.
  * The DN of objects removed with udm remove --filter is now displayed.
  * Old unused code has been removed.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929]
+ * The 'synced' keyword has been added to the ObjectFlag syntax.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676]
