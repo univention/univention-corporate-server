@@ -2825,11 +2825,7 @@ def lookup_filter(filter_s=None, lo=None):
 				univention.admin.filter.expression('objectClass', 'univentionMail'),
 				univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
 				univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-				univention.admin.filter.conjunction('&', [
-					univention.admin.filter.expression('objectClass', 'person'),
-					univention.admin.filter.expression('objectClass', 'organizationalPerson'),
-					univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-				]),
+				univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
 			]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
