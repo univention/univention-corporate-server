@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Tue, 20 Jun 2017 19:09:31 +0200\n"
+"POT-Creation-Date: Fri, 30 Jun 2017 15:11:41 +0200\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -100,4 +100,43 @@ msgid "User settings"
 msgstr "Benutzereinstellungen"
 
 msgid "Users"
+msgstr "Benutzer"
+
+msgid "computers"
+msgstr "Rechner"
+
+msgid "dhcp"
+msgstr "DHCP"
+
+msgid "dns"
+msgstr "DNS"
+
+msgid "groups"
+msgstr "Gruppen"
+
+msgid "ldap,directory,udm"
+msgstr "LDAP,Verzeichnis,UDM"
+
+msgid "mail,e-mail,email"
+msgstr "Mail,E-Mail,Email"
+
+msgid "nagios"
+msgstr "Nagios"
+
+msgid "networks"
+msgstr "Netzwerke"
+
+msgid "policy,policies"
+msgstr "Richtlinien"
+
+msgid "printers"
+msgstr "Drucker"
+
+msgid "shares"
+msgstr "Freigaben"
+
+msgid "user,password"
+msgstr "Benutzer,Passwort"
+
+msgid "users"
 msgstr "Benutzer"
