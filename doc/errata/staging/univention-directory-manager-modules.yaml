@@ -29,4 +29,5 @@ desc: |
    via CLI.
  * The udm --help output has been cleaned up to improve readability.
  * The creation page of container objects has been simplified.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652]
+ * The name of the "Administrator" role account is now configurable.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891]
