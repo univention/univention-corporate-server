@@ -190,15 +190,15 @@ layout = [
 		Group(_('Container description'), layout=[
 			["name", "description"],
 		]),
+		Group(_('Container settings'), _('Default position when adding objects'), layout=[
+			["userPath", "groupPath"],
+			["computerPath", "policyPath"],
+			["dnsPath", "dhcpPath"],
+			["networkPath", "sharePath"],
+			["printerPath", "mailPath"],
+			"licensePath",
+		]),
 	]),
-	Tab(_('Container settings'), _('Default position when adding objects'), advanced=True, layout=[
-		["userPath", "groupPath"],
-		["computerPath", "policyPath"],
-		["dnsPath", "dhcpPath"],
-		["networkPath", "sharePath"],
-		["printerPath", "mailPath"],
-		"licensePath",
-	])
 ]
 
 mapping = univention.admin.mapping.mapping()
