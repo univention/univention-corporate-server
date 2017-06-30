@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-43) unstable; urgency=medium
+
+  * Bug #29929: Applied patch from Florian Best - Remove unused code from
+    UCS 2.4
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 30 Jun 2017 17:15:54 +0200
+
 univention-directory-manager-modules (12.0.17-42) unstable; urgency=medium
 
   * Bug #43373: Applied new patch - Properties can now be

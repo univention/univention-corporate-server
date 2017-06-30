@@ -1211,9 +1211,6 @@ class simpleComputer(simpleLdap):
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False
 
-		self.open_warning = None
-		open_warnings = []
-
 		self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
 		self['dnsEntryZoneForward'] = []
@@ -1338,11 +1335,6 @@ class simpleComputer(simpleLdap):
 			# get groupmembership
 			result = self.lo.search(base=self.lo.base, filter=filter_format('(&(objectclass=univentionGroup)(uniqueMember=%s))', [self.dn]), attr=['dn'])
 			self['groups'] = [(x[0]) for x in result]
-
-		if len(open_warnings) > 0:
-			self.open_warning = ''
-			for warn in open_warnings:
-				self.open_warning += '\n' + warn
 
 		if 'name' in self.info and 'domain' in self.info:
 			self.info['fqdn'] = '%s.%s' % (self['name'], self['domain'])

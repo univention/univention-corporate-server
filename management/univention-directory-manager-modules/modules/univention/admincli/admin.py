@@ -717,8 +717,6 @@ def _doit(arglist):
 				object.options = parsed_options
 
 			object.open()
-			if hasattr(object, '	open_warning') and object.open_warning:
-				out.append('WAR	NING:%s' % object.open_warning)
 			exists = 0
 			try:
 				out.extend(object_input(module, object, input, append=append))
@@ -832,8 +830,6 @@ def _doit(arglist):
 			return out + ["OPERATION FAILED"]
 
 		object.open()
-		if hasattr(object, 'open_warning') and object.open_warning:
-			out.append('WARNING:%s' % object.open_warning)
 
 		if action == 'move':
 			if hasattr(module, 'operations') and module.operations:
@@ -950,8 +946,6 @@ def _doit(arglist):
 			return out + ["OPERATION FAILED"]
 
 		object.open()
-		if hasattr(object, 'open_warning') and object.open_warning:
-			out.append('WARNING:%s' % object.open_warning)
 
 		if remove_referring and univention.admin.objects.wantsCleanup(object):
 			univention.admin.objects.performCleanup(object)
@@ -986,8 +980,6 @@ def _doit(arglist):
 
 				if (hasattr(module, 'virtual') and not module.virtual) or not hasattr(module, 'virtual'):
 					object.open()
-					if hasattr(object, 'open_warning') and object.open_warning:
-						out.append('WARNING: %s' % object.open_warning)
 					for key, value in object.items():
 						if key == 'sambaLogonHours':
 							# returns a list, which breaks things here
