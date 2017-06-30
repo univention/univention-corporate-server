@@ -584,7 +584,7 @@ msgid ""
 "%USERNAME%\\windows-profiles\\default which is used to configure a roaming "
 "profile."
 msgstr ""
-"Der Verzeichnispfad (von Windows Clients auflösbar) z.B.: %LOGONSERVER%\\"
+"Der Verzeichnispfad (von Windows Clients auflösbar) z.B. %LOGONSERVER%\\"
 "%USERNAME%\\windows-profiles\\default, der zur Konfiguration eines Roaming "
 "Profils benutzt wird."
 
@@ -594,16 +594,16 @@ msgid ""
 "\\\\ucs-file-server\\smith."
 msgstr ""
 "Der Verzeichnispfad, der als Windows Heimatverzeichnis des Benutzers benutzt "
-"wird, z.B.: \\\\ucs-file-server\\smith."
+"wird, z.B. \\\\ucs-file-server\\smith."
 
 #: modules/univention/admin/handlers/users/user.py:581
 msgid ""
 "The drive letter (with trailing colon) where the Windows home directory of "
-"this user lies, e.g. M:. Needs only be specified if it's different to the "
+"this user lies, e.g. M:. Needs only be specified if it is different to the "
 "Samba configuration."
 msgstr ""
 "Der Laufwerksbuchstabe (mit abschließendem Doppelpunkt) wo das Windows "
-"Heimatverzeichnis des Benutzers liegt, z.B.: M:. Muss nur angegeben werden, "
+"Heimatverzeichnis des Benutzers liegt, z.B. M:. Muss nur angegeben werden, "
 "wenn es sich von der Samba-Konfiguration unterscheidet."
 
 #: modules/univention/admin/handlers/users/user.py:2122
@@ -624,7 +624,7 @@ msgstr "Die relative ID (RID) ist der lokale Teil der SID und wird automatisch a
 msgid ""
 "The user-specific logon script relative to the NETLOGON share, e.g. user.bat."
 msgstr ""
-"Das Benutzerspezifische Anmeldeskript relativ zur NETLOGON Freigabe, z.B.: "
+"Das Benutzerspezifische Anmeldeskript relativ zur NETLOGON Freigabe, z.B. "
 "user.bat."
 
 #: modules/univention/admin/handlers/users/user.py:212

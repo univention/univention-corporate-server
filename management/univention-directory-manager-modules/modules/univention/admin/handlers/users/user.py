@@ -578,7 +578,7 @@ property_descriptions = {
 	),
 	'homedrive': univention.admin.property(
 		short_description=_('Windows home drive'),
-		long_description=_('The drive letter (with trailing colon) where the Windows home directory of this user lies, e.g. M:. Needs only be specified if it\'s different to the Samba configuration.'),
+		long_description=_('The drive letter (with trailing colon) where the Windows home directory of this user lies, e.g. M:. Needs only be specified if it is different to the Samba configuration.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=['samba'],
