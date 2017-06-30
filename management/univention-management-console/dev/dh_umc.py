@@ -264,9 +264,11 @@ def module_xml2po(module, po_file, language):
 		tree = ET.ElementTree(file=module.xml_definition)
 		_append_po_entry(tree.find('module/name'))
 		_append_po_entry(tree.find('module/description'))
+		_append_po_entry(tree.find('module/keywords'))
 		for flavor in tree.findall('module/flavor'):
 			_append_po_entry(flavor.find('name'))
 			_append_po_entry(flavor.find('description'))
+			_append_po_entry(flavor.find('keywords'))
 		_append_po_entry(tree.find('link/name'))
 		_append_po_entry(tree.find('link/description'))
 		_append_po_entry(tree.find('link/url'))

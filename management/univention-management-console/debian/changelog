@@ -1,3 +1,11 @@
+univention-management-console (9.0.80-51) unstable; urgency=medium
+
+  * Bug #34960: Applied patch from Florian Best - Localize keywords for
+
+    live search on UMC overview page
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 30 Jun 2017 14:44:26 +0200
+
 univention-management-console (9.0.80-50) unstable; urgency=medium
 
   * Bug #44803: fix log permissions of /var/log/univention/ec2.log
