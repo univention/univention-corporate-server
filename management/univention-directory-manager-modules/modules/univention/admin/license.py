@@ -41,6 +41,7 @@ import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.license_data as licenses
 import univention.config_registry
+from univention.lib.misc import custom_username
 
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
@@ -96,21 +97,21 @@ class License(object):
 		self.version = '1'
 		self.searchResult = None
 		self.sysAccountNames = (
-			'Administrator',
+			custom_username('Administrator'),
 			'join-backup',
 			'join-slave',
 			'spam',
 			'oxadmin',
 			'krbtgt',
-			'Guest',
+			custom_username('Guest'),
 			'dns-*',
 			'http-%s' % configRegistry.get('hostname'),
 			'http-proxy-%s' % configRegistry.get('hostname'),
 			'zarafa-%s' % configRegistry.get('hostname'),
-			'SBSMonAcct',  # SBS account
-			'Network Administrator',  # SBS role
-			'Standard User',  # SBS role
-			'WebWorkplaceTools',  # SBS role "Standard User with administration links"
+			custom_username('SBSMonAcct'),  # SBS account
+			custom_username('Network Administrator'),  # SBS role
+			custom_username('Standard User'),  # SBS role
+			custom_username('WebWorkplaceTools'),  # SBS role "Standard User with administration links"
 			'IUSR_WIN-*',  # IIS account
 		)
 		self.sysAccountsFound = 0
