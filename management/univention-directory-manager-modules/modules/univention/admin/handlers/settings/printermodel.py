@@ -110,11 +110,13 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPrinterModels'])]
 
+
 def rewrite(filter, mapping):
 	if filter.variable == 'printmodel':
 		filter.variable = 'printerModel'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
