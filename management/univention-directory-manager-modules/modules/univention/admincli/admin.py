@@ -701,7 +701,7 @@ def _doit(arglist):
 					return out + ["OPERATION FAILED"]
 
 
-# +++# ACTION CREATE #+++#
+	#+++# ACTION CREATE #+++#
 	if action == 'create' or action == 'new':
 			if hasattr(module, 'operations') and module.operations:
 				if 'add' not in module.operations:
@@ -812,7 +812,7 @@ def _doit(arglist):
 			else:
 				out.append('Object created: %s' % _2utf8(dn))
 
-# +++# ACTION MODIFY #+++#
+	#+++# ACTION MODIFY #+++#
 	elif action == 'modify' or action == 'edit' or action == 'move':
 		if not dn:
 			out.append('E: DN is missing')
@@ -968,7 +968,7 @@ def _doit(arglist):
 			except univention.admin.uexceptions.primaryGroupUsed:
 				out.append('E: object in use')
 				return out + ["OPERATION FAILED"]
-		out.append('Object removed: %s' % _2utf8(dn))
+		out.append('Object removed: %s' % _2utf8(dn or object.dn))
 
 	elif action == 'list' or action == 'lookup':
 
