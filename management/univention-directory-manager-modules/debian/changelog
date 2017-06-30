@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-42) unstable; urgency=medium
+
+  * Bug #43373: Applied new patch - Properties can now be
+  	removed from the UMC layout via extended attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 30 Jun 2017 16:32:38 +0200
+
 univention-directory-manager-modules (12.0.17-41) unstable; urgency=medium
 
   * Bug #37676: Applied patch from Florian Best - Add 'synced' as valid
