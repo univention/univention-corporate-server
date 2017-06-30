@@ -3477,6 +3477,7 @@ class ObjectFlag(select):
 		('temporary', _('Mark this object as temporary')),
 		('functional', _('Ignore this object in standard UDM modules')),
 		('docker', _('This object is related to a Docker App container')),
+		('synced', _('This object is synchronized from Active Directory')),
 	]
 
 
