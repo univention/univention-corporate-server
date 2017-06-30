@@ -170,7 +170,7 @@ class CheckLogFiles(object):
             '.*invoke-rc.d: initscript slapd, action "(start|restart|crestart)" failed.*',
             '.*invoke-rc.d: initscript ntp, action "restart" failed.*',
             '.*Job for univention-management-console-server.service failed.*',
-            '.*Starting univention-directory-notifier (via systemctl): univention-directory-notifier.service.*',
+            '.*Job for univention-directory-notifier.service failed.*',
             '.*Job for slapd.service failed.*',
             '.*Job for bind9.service failed.*',
             '.*invoke-rc.d: initscript univention-management-console-server, action "reload" failed.*',
