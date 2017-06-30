@@ -31,17 +31,18 @@ def flatten(layout):
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		properties = {
-			'name': uts.random_name(),
-			'shortDescription': uts.random_string(),
-			'CLIName': 'username',
-			'module': 'users/user',
-			'objectClass': 'person',
-			'ldapMapping': 'uid',
-			'disableUDMWeb': '1',
-		}
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
-		client = Client.get_test_connection()
-		layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
+		for property in ('username', 'password'):
+			properties = {
+				'name': uts.random_name(),
+				'shortDescription': uts.random_string(),
+				'CLIName': property,
+				'module': 'users/user',
+				'objectClass': 'person',
+				'ldapMapping': 'uid',
+				'disableUDMWeb': '1',
+			}
+			extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+			client = Client.get_test_connection()
+			layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
 
-		assert 'username' not in layout, 'username is part of %r' % (layout,)
+			assert property not in layout, '%s is part of %r' % (property, layout,)
