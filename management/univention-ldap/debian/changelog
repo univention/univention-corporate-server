@@ -1,3 +1,10 @@
+univention-ldap (13.0.7-12) unstable; urgency=medium
+
+  * Bug #44909: index univentionUDMPropertyCopyable more carefully: If a DC
+  	Slave doesn't have the attribute yet the upgrade failed
+
+ -- Florian Best <best@univention.de>  Fri, 30 Jun 2017 13:35:48 +0200
+
 univention-ldap (13.0.7-11) unstable; urgency=medium
 
   * Bug #1567: add attribute univentionUDMPropertyCopyable

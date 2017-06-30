@@ -75,6 +75,22 @@ wait_named () {
 	fi
 }
 
+if [ -x /etc/init.d/slapd ] &&
+	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+	[ -e /var/univention-join/joined ] &&
+	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionUDMPropertyCopyable &&
+	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"
+then
+	if pidof slapd >/dev/null 2>/dev/null
+	then
+		invoke-rc.d slapd stop
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
+		invoke-rc.d slapd start
+	else
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
+	fi
+fi
+
 if ! local_is_ucr_false dns/register/srv_records/ldap; then
 	S4_DCS="$(univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 	if [ -z "$S4_DCS" ]; then

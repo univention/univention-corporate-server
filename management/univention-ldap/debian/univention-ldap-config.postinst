@@ -32,6 +32,25 @@
 
 #DEBHELPER#
 
+# UCS 4.2-1-errata: add univentionUDMPropertyCopyable to index. Is part of joinscript and can be removed somewhen.
+if [ -x /etc/init.d/slapd ] &&
+	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+	[ -e /var/univention-join/joined ] &&
+	[ "$1" = configure ] &&
+	dpkg --compare-versions "$2" lt 13.0.7-11~ &&
+	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionUDMPropertyCopyable &&
+	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"
+then
+	if pidof slapd >/dev/null 2>/dev/null
+	then
+		invoke-rc.d slapd stop
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
+		invoke-rc.d slapd start
+	else
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
+	fi
+fi
+
 if [ "$1" = "configure" -a -z "$2" ]; then
 	if test -x /etc/init.d/slapd; then
 		# start on master , slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template

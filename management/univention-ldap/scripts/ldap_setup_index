@@ -251,7 +251,6 @@ UDM_PROP_ATTRS = set((
     'univentionUDMPropertyValueMayChange',
     'univentionUDMPropertyValueRequired',
     'univentionUDMPropertyVersion',
-    'univentionUDMPropertyCopyable',
 ))
 
 RECOMMENDED_LDAP_INDEX = {
@@ -365,7 +364,6 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionUDMPropertyLongDescription',
         'univentionUDMPropertyShortDescription',
         'zoneName',
-        'univentionUDMPropertyCopyable',
     )),
     'approx': set((
         'cn',
