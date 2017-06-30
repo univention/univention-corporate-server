@@ -31,6 +31,6 @@ desc: |
  * The layout of container objects has been adapted so that the configuration
    options for default containers are visible on the "General" tab.
  * The license evaluation now respects renamed default user and group names.
- * Searching for printmodel property from objects of type
-   Settings: Printer Driver List works again.
+ * Searching for the printmodel property in printer driver lists is working
+   again.
 bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925]
