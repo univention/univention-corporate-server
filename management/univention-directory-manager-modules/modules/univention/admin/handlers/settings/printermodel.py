@@ -71,7 +71,7 @@ property_descriptions = {
 		multivalue=True,
 		include_in_default_search=True,
 		options=[],
-		dontsearch=True,
+		dontsearch=False,
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -110,6 +110,11 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPrinterModels'])]
 
+def rewrite(filter, mapping):
+	if filter.variable == 'printmodel':
+		filter.variable = 'printerModel'
+	else:
+		univention.admin.mapping.mapRewrite(filter, mapping)
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
@@ -119,7 +124,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
 	res = []
