@@ -250,7 +250,7 @@ define([
 		_showEmailError: function(err) {
 			var status_code = err.response.status;
 			var error_details = null;
-			if(status_code >= 400 && status_code <= 500){
+			if (status_code >= 400) {
 				error_details = put('html');
 				error_details.innerHTML = err.response.data;
 				error_details = error_details.getElementsByTagName('span')[0].innerText;

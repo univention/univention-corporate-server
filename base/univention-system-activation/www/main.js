@@ -44,7 +44,7 @@ define([
 ], function(lang, array, dom, on, router, topic, put, ActivationWizard, menu, entries, i18nTools, _) {
 	entries.appliance_name = entries.appliance_name || '';
 
-	var hasLicenseRequested = Boolean(entries.email);
+	var hasLicenseRequested = Boolean(entries.license_requested);
 
 	return {
 		start: function() {
