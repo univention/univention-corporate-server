@@ -1,3 +1,10 @@
+ucs-test (7.0.22-15) unstable; urgency=medium
+
+  * 00_checks/99check_log_files: Ignore some more error messages
+    (Bug #44904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jun 2017 08:09:12 +0200
+
 ucs-test (7.0.22-14) unstable; urgency=medium
 
   * 00_checks/99check_log_files: Ignore some more error messages
