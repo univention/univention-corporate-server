@@ -44,4 +44,5 @@ desc: |
  * Legacy code related to custom attributes has been removed.
  * The listener module for handling UDM extensions now removes old python
    files when the file was renamed.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862]
+ * The path keys of container objects are now static.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862, 43396]
