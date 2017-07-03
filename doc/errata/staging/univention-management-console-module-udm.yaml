@@ -11,5 +11,6 @@ desc: |
  * The options of objects are now sorted.
  * A crash is prevented if a default container contained special characters
    like ",".
- * Prevent a possible crash when loading UDM widgets.
+ * A possible crash when loading widget definitions for UDM properties is now
+   prevented.
 bug: [44847, 41015, 42423, 42466]
