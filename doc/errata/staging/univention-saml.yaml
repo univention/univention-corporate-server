@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The SAML serviceprovider has multiple properties that are marked as
+   an identifier. This has been fixed.
+bug: [41695]
