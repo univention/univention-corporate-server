@@ -89,8 +89,7 @@ def fork_server(sock, socket_path):
 				socket_timeout
 			sys.exit(1)
 
-	# this takes a long time if getfqdn(host) is used in cli-server
-	connection_timeout = 30
+	connection_timeout = 5
 	stime = time.time() + connection_timeout
 	while True:
 		try:
