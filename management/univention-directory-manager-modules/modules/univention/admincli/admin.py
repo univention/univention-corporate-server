@@ -982,7 +982,7 @@ def _doit(arglist):
 
 				if (hasattr(module, 'virtual') and not module.virtual) or not hasattr(module, 'virtual'):
 					object.open()
-					for key, value in object.items():
+					for key, value in sorted(object.items()):
 						if key == 'sambaLogonHours':
 							# returns a list, which breaks things here
 							# better show the bit string. See Bug #33703
