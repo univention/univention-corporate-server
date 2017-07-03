@@ -182,8 +182,7 @@ property_descriptions = {
 }
 
 layout = [
-	Tab(_(u'General'), _(u'Basic Settings'),
-		layout=[
+	Tab(_(u'General'), _(u'Basic Settings'), layout=[
 		Group(_('SAML service provider basic settings'), layout=[
 			["isActivated", ],
 			["Identifier", ],
@@ -195,8 +194,7 @@ layout = [
 			["serviceproviderdescription", ],
 		]),
 	]),
-	Tab(_(u'Extended Settings'), _(u'Additional configuration options'),
-		layout=[
+	Tab(_(u'Extended Settings'), _(u'Additional configuration options'), layout=[
 		Group(_('Extended Settings'), layout=[
 			["privacypolicyURL"],
 			["simplesamlAttributes", ],
@@ -224,41 +222,6 @@ mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, uni
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-		self.co = co
-		self.lo = lo
-		self.dn = dn
-		self.position = position
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-		self.options = []
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.save()
-
-	def _ldap_pre_create(self):
-		self.dn = '%s=%s,%s' % (mapping.mapName('Identifier'), mapping.mapValue('Identifier', self.info['Identifier']), self.position.getDn())
-
-	def _ldap_post_create(self):
-		pass
-
-	def _ldap_pre_modify(self):
-		pass
-
-	def _ldap_post_modify(self):
-		pass
-
-	def _ldap_pre_remove(self):
-		pass
-
-	def _ldap_post_remove(self):
-		pass
-
-	def _update_policies(self):
-		pass
 
 	def _ldap_addlist(self):
 		al = [('objectClass', ['top', 'univentionSAMLServiceProvider'])]
