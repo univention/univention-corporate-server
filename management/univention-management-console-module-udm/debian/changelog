@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-15) unstable; urgency=medium
+
+  * Bug #42466: Applied patch from Florian Best - Fix wrong use of
+    ucr.is_true()
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 16:56:32 +0200
+
 univention-management-console-module-udm (7.0.10-14) unstable; urgency=medium
 
   * Bug #42423: Applied patch from Florian Best - Fix traceback when default

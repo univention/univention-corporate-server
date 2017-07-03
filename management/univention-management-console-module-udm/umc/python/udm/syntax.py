@@ -129,7 +129,7 @@ class _UCRWidget(Widget):
 				continue
 
 			default = props.get('default', '')
-			subclasses = ucr.is_true(None, props.get('subclasses', 'false').lower(), False)
+			subclasses = ucr.is_true(None, False, props.get('subclasses', 'false').lower())
 			syntax_classes = []
 			for syntax in props.get('syntax', '').split(','):
 				if not syntax:
