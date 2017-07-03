@@ -75,7 +75,7 @@ property_descriptions = {
 		options=[],
 		required=True,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'NameIDFormat': univention.admin.property(
 		short_description=_(u'Format of NameID attribute'),
@@ -85,7 +85,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'simplesamlNameIDAttribute': univention.admin.property(
 		short_description=_(u'Name of the attribute that is used as NameID'),
@@ -95,7 +95,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 		default="uid"
 	),
 	'simplesamlAttributes': univention.admin.property(
@@ -117,7 +117,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'serviceproviderdescription': univention.admin.property(
 		short_description=_(u'Description of this service provider'),
@@ -127,7 +127,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'serviceProviderOrganizationName': univention.admin.property(
 		short_description=_(u'Name of the organization for this service provider'),
@@ -137,7 +137,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'privacypolicyURL': univention.admin.property(
 		short_description=_(u'URL to the service provider\'s privacy policy'),
@@ -147,7 +147,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'attributesNameFormat': univention.admin.property(
 		short_description=_(u'Value for attribute format field'),
@@ -157,7 +157,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'singleLogoutService': univention.admin.property(
 		short_description=_(u'Single logout URL for this service provider'),
@@ -167,7 +167,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=True,
+		identifies=False,
 	),
 	'serviceProviderMetadata': univention.admin.property(
 		short_description=_('XML metadata'),

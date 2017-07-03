@@ -1,3 +1,10 @@
+univention-saml (4.0.14-5) unstable; urgency=medium
+
+  * Bug #41695: Applied patch from Florian Best - Fix definition of multiple
+    identifies=True properties
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 14:17:47 +0200
+
 univention-saml (4.0.14-4) unstable; urgency=low
 
   * Bug #44216: start and stop only own memcache instance
