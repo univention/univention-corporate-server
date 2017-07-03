@@ -42,4 +42,5 @@ desc: |
    removed.
  * The output from the list command of the UDM CLI is now sorted.
  * Legacy code related to custom attributes has been removed.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556]
+ * Some files were not cleaned up when performing tests. This has been fixed.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862]
