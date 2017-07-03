@@ -11,4 +11,5 @@ desc: |
  * The keywords for the module search on the UMC overview page are now
    localized.
  * A crash of the UMC-Server during uninstallation of a module is prevented.
-bug: [44803, 34960, 38375]
+ * It is now possible to join UCS 4.1 appliances into UCS 4.2.
+bug: [44803, 34960, 38375, 44719]
