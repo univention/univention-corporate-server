@@ -10,4 +10,5 @@ desc: |
    fixed.
  * The keywords for the module search on the UMC overview page are now
    localized.
-bug: [44803, 34960]
+ * Prevent a possible crash of the UMC-server when uninstalling a module.
+bug: [44803, 34960, 38375]
