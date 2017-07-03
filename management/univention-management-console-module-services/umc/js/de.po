@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-03 13:23+0200\n"
+"POT-Creation-Date: 2017-07-03 14:14+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,47 +12,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/services.js:159
+#: umc/js/services.js:171
 msgid "Automatically"
 msgstr "Automatisch"
 
-#: umc/js/services.js:229
+#: umc/js/services.js:241
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/services.js:164
+#: umc/js/services.js:176
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/services.js:157
+#: umc/js/services.js:169
 msgid "Manually"
 msgstr "Manuell"
 
-#: umc/js/services.js:135
+#: umc/js/services.js:147
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/services.js:155
+#: umc/js/services.js:167
 msgid "Never"
 msgstr "Nie"
 
-#: umc/js/services.js:221
+#: umc/js/services.js:233
 msgid "OK"
 msgstr "OK"
 
-#: umc/js/services.js:106
+#: umc/js/services.js:112
 msgid "Please confirm to automatically start the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste automatisch zu starten: "
 
-#: umc/js/services.js:116
+#: umc/js/services.js:124
 msgid "Please confirm to manually start the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste manuell zu starten: "
 
-#: umc/js/services.js:126
+#: umc/js/services.js:136
 msgid "Please confirm to never start the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste niemals zu starten: "
 
-#: umc/js/services.js:95
+#: umc/js/services.js:99
 msgid "Please confirm to restart the following services: "
 msgstr "Bitte bestätigen Sie die folgenden Dienste neuzustarten: "
 
@@ -60,15 +60,15 @@ msgstr "Bitte bestätigen Sie die folgenden Dienste neuzustarten: "
 msgid "Please confirm to start the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste zu starten: "
 
-#: umc/js/services.js:82
+#: umc/js/services.js:84
 msgid "Please confirm to stop the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste zu stoppen: "
 
-#: umc/js/services.js:90
+#: umc/js/services.js:94
 msgid "Restart"
 msgstr "Neustarten"
 
-#: umc/js/services.js:188
+#: umc/js/services.js:200
 msgid "Search..."
 msgstr "Suche..."
 
@@ -76,27 +76,27 @@ msgstr "Suche..."
 msgid "Start"
 msgstr "Starten"
 
-#: umc/js/services.js:103
+#: umc/js/services.js:109
 msgid "Start automatically"
 msgstr "Automatisch starten"
 
-#: umc/js/services.js:113
+#: umc/js/services.js:121
 msgid "Start manually"
 msgstr "Manuell starten"
 
-#: umc/js/services.js:123
+#: umc/js/services.js:133
 msgid "Start never"
 msgstr "Niemals starten"
 
-#: umc/js/services.js:150
+#: umc/js/services.js:162
 msgid "Start type"
 msgstr "Startart"
 
-#: umc/js/services.js:138
+#: umc/js/services.js:150
 msgid "Status"
 msgstr "Status"
 
-#: umc/js/services.js:77
+#: umc/js/services.js:79
 msgid "Stop"
 msgstr "Stoppen"
 
@@ -108,10 +108,10 @@ msgstr ""
 "Dieses Modul zeigt die Systemdienste und ihren aktuellen Status. Einzelne "
 "Dienste können konfiguriert, gestartet und gestoppt werden."
 
-#: umc/js/services.js:143
+#: umc/js/services.js:155
 msgid "running"
 msgstr "läuft"
 
-#: umc/js/services.js:145
+#: umc/js/services.js:157
 msgid "stopped"
 msgstr "gestoppt"
