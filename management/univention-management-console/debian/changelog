@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-53) unstable; urgency=medium
+
+  * Bug #44719: Applied patch from Florian Best - Fix UCS 4.1 appliances
+    not being able to join UCS 4.2 systems.
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 15:38:38 +0200
+
 univention-management-console (9.0.80-52) unstable; urgency=medium
 
   * Bug #38375: Applied patch from Florian Best - Fix crash of umc-server when

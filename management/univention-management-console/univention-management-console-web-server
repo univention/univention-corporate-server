@@ -808,7 +808,7 @@ class CPgeneric(Ressource):
 			languages = []
 
 		# pre parse the HTTP syntax so that the UMC-Server doesn't need to do this (because there are no utility functions there)
-		request.headers['Accept-Language'] = ', '.join(languages)
+		request.headers['Accept-Language'] = ', '.join(languages) or 'en-US'
 
 
 class CPGet(CPgeneric):
