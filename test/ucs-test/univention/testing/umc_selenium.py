@@ -303,7 +303,7 @@ class UMCSeleniumTest(object):
 			self.get_all_enabled_elements
 		)
 
-		if len(elems) is not 1:
+		if len(elems) != 1:
 			logger.warn(
 				"Found %d clickable elements instead of 1. Trying to click on "
 				"the first one." % (len(elems),)
@@ -378,7 +378,7 @@ class UMCSeleniumTest(object):
 			self.get_all_enabled_elements
 		)
 
-		if len(elems) is not 1:
+		if len(elems) != 1:
 			logger.warn(
 				"Found %d input elements instead of 1. Trying to use the first "
 				"one." % (len(elems),)
