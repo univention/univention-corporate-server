@@ -35,7 +35,7 @@ desc: |
    again.
  * The DN of objects removed with udm remove --filter is now displayed.
  * Legacy and unused code has been removed.
- * The 'synced' keyword has been added to the ObjectFlag syntax.
+ * The ObjectFlag syntax now allows the value "synced".
  * The syntax check for udm search filter has been improved.
  * The performance of search filters for user objects has been improved.
  * Legacy code for handling TCP connections in the UDM CLI Server has been
