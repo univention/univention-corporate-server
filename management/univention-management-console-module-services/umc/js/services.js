@@ -67,8 +67,7 @@ define([
 					if (data.length) {
 						var command = 'services/start';
 						var confirmMessage = _('Please confirm to start the following services: ');
-						var errorMessage = _('Starting the following services failed: ');
-						this._changeState(data, command, confirmMessage, errorMessage);
+						this._changeState(data, command, confirmMessage);
 					}
 				}),
 				isStandardAction: true,
@@ -81,8 +80,7 @@ define([
 					if (data.length) {
 						var command = 'services/stop';
 						var confirmMessage = _('Please confirm to stop the following services: ');
-						var errorMessage = _('Stopping the following services failed: ');
-						this._changeState(data, command, confirmMessage, errorMessage);
+						this._changeState(data, command, confirmMessage);
 					}
 				}),
 				isStandardAction: true,
@@ -95,8 +93,7 @@ define([
 					if (data.length) {
 						var command = 'services/restart';
 						var confirmMessage = _('Please confirm to restart the following services: ');
-						var errorMessage = _('Restarting the following services failed: ');
-						this._changeState(data, command, confirmMessage, errorMessage);
+						this._changeState(data, command, confirmMessage);
 					}
 				}),
 				isStandardAction: true,
@@ -107,8 +104,7 @@ define([
 				callback: lang.hitch(this, function(data) {
 					var command = 'services/start_auto';
 					var confirmMessage = _('Please confirm to automatically start the following services: ');
-					var errorMessage = _('Could not change start type of the following services: ');
-					this._changeState(data, command, confirmMessage, errorMessage);
+					this._changeState(data, command, confirmMessage);
 				}),
 				isStandardAction: false,
 				isMultiAction: true
@@ -118,8 +114,7 @@ define([
 				callback: lang.hitch(this, function(data) {
 					var command = 'services/start_manual';
 					var confirmMessage = _('Please confirm to manually start the following services: ');
-					var errorMessage = _('Could not change start type of the following services: ');
-					this._changeState(data, command, confirmMessage, errorMessage);
+					this._changeState(data, command, confirmMessage);
 				}),
 				isStandardAction: false,
 				isMultiAction: true
@@ -129,8 +124,7 @@ define([
 				callback: lang.hitch(this, function(data) {
 					var command = 'services/start_never';
 					var confirmMessage = _('Please confirm to never start the following services: ');
-					var errorMessage = _('Could not change start type of the following services: ');
-					this._changeState(data, command, confirmMessage, errorMessage);
+					this._changeState(data, command, confirmMessage);
 				}),
 				isStandardAction: false,
 				isMultiAction: true
@@ -216,7 +210,7 @@ define([
 			this._grid.filter(data);
 		},
 
-		_changeState: function(data, command, confirmMessage, errorMessage) {
+		_changeState: function(data, command, confirmMessage) {
 			confirmMessage += '<ul>';
 			array.forEach(data, function(idata) {
 				confirmMessage += '<li>' + idata + '</li>';
@@ -227,14 +221,6 @@ define([
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					this.standbyDuring(tools.umcpCommand(command, data)).then(lang.hitch(this, function(response) {
-						if (response.result.success === false) {
-							errorMessage += '<ul>';
-							array.forEach(response.result.objects, function(item) {
-								errorMessage += '<li>' + item + '</li>';
-							});
-							errorMessage += '</ul>';
-							dialog.alert(errorMessage);
-						}
 						this.reloadGrid();
 					}));
 				})

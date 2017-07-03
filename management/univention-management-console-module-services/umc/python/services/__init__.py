@@ -35,162 +35,98 @@ import subprocess
 import notifier
 import notifier.threads
 
-import univention.info_tools as uit
-import univention.management.console as umc
-import univention.management.console.modules as umcm
+from univention.management.console import Translation
+from univention.management.console.base import Base, UMC_Error
+from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer
-from univention.management.console.protocol.definitions import *
+from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer
 
-import univention.service_info as usi
+from univention.service_info import ServiceInfo
 import univention.config_registry
 
-_ = umc.Translation('univention-management-console-module-services').translate
+_ = Translation('univention-management-console-module-services').translate
 
 
-class Instance(umcm.Base):
-
-	def _run_it(self, services, action):
-		failed = []
-		for srv in services:
-			if subprocess.call(('/usr/sbin/invoke-rc.d', srv, action)):
-				failed.append(srv)
-		return failed
+class Instance(Base):
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def query(self, pattern):
-		srvs = usi.ServiceInfo()
-		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
+		srvs = ServiceInfo()
+
+		lang = _.im_self.locale.language
+		if lang in (None, 'C'):
+			lang = 'en'
 
 		result = []
 		for name, srv in srvs.services.items():
-			entry = {}
-			entry['service'] = name
-			if 'description' in srv:
-				try:
-					lang = _.__self__.locale.language
-					if lang in (None, 'C'):
-						lang = 'en'
-					entry['description'] = srv['description[%s]' % lang]
-				except KeyError:
-					entry['description'] = srv['description']
-			else:
-				entry['description'] = None
-			key = '%s/autostart' % name
-			if 'start_type' in srv:
-				key = srv['start_type']
-			# default: autostart=yes
-			if not ucr.get(key):
+			key = srv.get('start_type', '%s/autostart' % (name,))
+			entry = {
+				'service': name,
+				'description': srv.get('description[%s]' % (lang,), srv.get('description')),
+				'autostart': ucr.get(key, 'yes'),
+				'isRunning': srv.running,
+			}
+			if entry['autostart'] not in ('yes', 'no', 'manually'):
 				entry['autostart'] = 'yes'
-			elif ucr.get(key).lower() in ('no'):
-				entry['autostart'] = 'no'
-			elif ucr.get(key).lower() in ('manually'):
-				entry['autostart'] = 'manually'
-			else:
-				entry['autostart'] = 'yes'
-			# Check if service is running
-			if srv.running:
-				entry['isRunning'] = True
-			else:
-				entry['isRunning'] = False
 			for value in entry.values():
 				if pattern.match(str(value)):
 					result.append(entry)
 					break
-
 		return result
 
+	@sanitize(StringSanitizer(required=True))
 	def start(self, request):
-		if self.permitted('services/start', request.options):
-			message = {}
-			message['success'] = _('Successfully started')
-			message['failed'] = _('Starting the following services failed:')
-			cb = notifier.Callback(self._service_changed, request, message)
-			func = notifier.Callback(self._run_it, request.options, 'start')
-			thread = notifier.threads.Simple('services', func, cb)
-			thread.run()
-		else:
-			message = _('You are not permitted to run this command.')
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
+		func = notifier.Callback(self._change_services, request.options, 'start')
+		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
 
+	@sanitize(StringSanitizer(required=True))
 	def stop(self, request):
-		if self.permitted('services/stop', request.options):
-			message = {}
-			message['success'] = _('Successfully stopped')
-			message['failed'] = _('Stopping the following services failed:')
-			cb = notifier.Callback(self._service_changed, request, message)
-			func = notifier.Callback(self._run_it, request.options, 'stop')
-			thread = notifier.threads.Simple('services', func, cb)
-			thread.run()
-		else:
-			message = _('You are not permitted to run this command.')
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
+		func = notifier.Callback(self._change_services, request.options, 'stop')
+		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
 
+	@sanitize(StringSanitizer(required=True))
 	def restart(self, request):
-		MODULE.error(str(request.arguments))
-		if self.permitted('services/restart', request.options):
-			message = {}
-			message['success'] = _('Successfully restarted')
-			message['failed'] = _('Restarting the following services failed:')
-			cb = notifier.Callback(self._service_changed, request, message)
-			func = notifier.Callback(self._run_it, request.options, 'restart')
-			thread = notifier.threads.Simple('services', func, cb)
-			thread.run()
-		else:
-			message = _('You are not permitted to run this command.')
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
+		func = notifier.Callback(self._change_services, request.options, 'restart')
+		thread = notifier.threads.Simple('services', func, notifier.Callback(self.thread_finished_callback, request))
+		thread.run()
 
-	def _service_changed(self, thread, result, request, message):
-		if result:
-			if len(request.options) == 1:
-				error_message = '%s %s' % (message['failed'], result[0])
-				request.status = MODULE_ERR
-				self.finished(request.id, {'success': False}, error_message)
-			else:
-				request.status = SUCCESS
-				self.finished(request.id, {'objects': result, 'success': False})
-		else:
-			request.status = SUCCESS
-			self.finished(request.id, {'success': True}, message['success'])
-
-	def start_type(self, request):
-		message = None
-		srvs = usi.ServiceInfo()
-
-		failed = []
-		for name in request.options:
-			srv = srvs.services.get(name, None)
-			if srv:
-				key = '%s/autostart' % name
-				if 'start_type' in srv:
-					key = srv['start_type']
-
-				value = 'yes'
-				if request.arguments[0] == 'services/start_auto':
-					value = 'yes'
-				if request.arguments[0] == 'services/start_manual':
-					value = 'manually'
-				if request.arguments[0] == 'services/start_never':
-					value = 'no'
-				univention.config_registry.handler_set(['%s=%s' % (key, value)])
-			else:
-				failed.append(name)
-
+	def _change_services(self, services, action):
+		failed = [srv for srv in services if subprocess.call(('/usr/sbin/invoke-rc.d', srv, action))]
 		if failed:
-			if len(request.options) == 1:
-				message = _('Could not change start type')
-				request.status = MODULE_ERR
-				self.finished(request.id, {'success': False}, message)
-			else:
-				request.status = SUCCESS
-				self.finished(request.id, {'objects': failed, 'success': False})
-		else:
-			message = _('Successfully changed start type')
-			request.status = SUCCESS
-			self.finished(request.id, {'success': True}, message)
+			MODULE.error('Failed to %s the following services: %s' % (action, failed))
+			error_message = '%s %s' % ({
+				'start': _('Starting the following services failed:'),
+				'stop': _('Stopping the following services failed:'),
+				'restart': _('Restarting the following services failed:'),
+			}[action], ', '.join(failed))
+			raise UMC_Error(error_message)
+		return {'success': True}
+
+	@sanitize(StringSanitizer(required=True))
+	def start_auto(self, request):
+		self._change_start_type(request.options, 'yes')
+		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
+
+	@sanitize(StringSanitizer(required=True))
+	def start_manual(self, request):
+		self._change_start_type(request.options, 'manually')
+		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
+
+	@sanitize(StringSanitizer(required=True))
+	def start_never(self, request):
+		self._change_start_type(request.options, 'no')
+		self.finished(request.id, {'success': True}, _('Successfully changed start type'))
+
+	def _change_start_type(self, service_names, start_type):
+		service_info = ServiceInfo()
+		services = [(service_name, service_info.services[service_name]) for service_name in service_names if service_name in service_info.services]
+		values = ['%s=%s' % (service.get('start_type', '%s/autostart' % (service_name,)), start_type) for service_name, service in services]
+		univention.config_registry.handler_set(values)
+		failed = [x for x in service_names if not service_info.services.get(x)]
+		if failed:
+			raise UMC_Error('%s %s' % (_('Could not change start type of the following services:'), ', '.join(failed)))

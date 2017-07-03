@@ -11,8 +11,8 @@
 		<command name="services/start" function="start" />
 		<command name="services/stop" function="stop" />
 		<command name="services/restart" function="restart" />
-		<command name="services/start_auto" function="start_type" />
-		<command name="services/start_manual" function="start_type" />
-		<command name="services/start_never" function="start_type" />
+		<command name="services/start_auto" function="start_auto" />
+		<command name="services/start_manual" function="start_manual" />
+		<command name="services/start_never" function="start_never" />
 	</module>
 </umc>
