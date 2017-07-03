@@ -271,9 +271,8 @@ class UMCSeleniumTest(object):
 	def click_grid_entry(self, name):
 		logger.info("Clicking the grid entry %r", name)
 		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/div[contains(text(), "%s")]|'
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"][contains(text(), "%s")]'
-			% (name, name,)
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]'
+			% (name,)
 		)
 
 	def click_tree_entry(self, name):
