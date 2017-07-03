@@ -1,3 +1,9 @@
+univention-python (10.0.3-4) unstable; urgency=medium
+
+  * Bug #41234: Revert changes made with Bug #36169 due to fix of Bug #36343
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 13:32:46 +0200
+
 univention-python (10.0.3-3) unstable; urgency=low
 
   * Bug #44316: Use re-connecting LDAP methods
