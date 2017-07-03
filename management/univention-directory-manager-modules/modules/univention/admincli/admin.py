@@ -978,7 +978,6 @@ def _doit(arglist):
 		try:
 			for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
 				out.append('DN: %s' % _2utf8(univention.admin.objects.dn(object)))
-				out.append('ARG: %s' % univention.admin.objects.arg(object))
 
 				if (hasattr(module, 'virtual') and not module.virtual) or not hasattr(module, 'virtual'):
 					object.open()

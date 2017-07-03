@@ -153,13 +153,6 @@ def dn(object):
 		return None
 
 
-def arg(object):
-	if hasattr(object, 'arg'):
-		return object.arg
-	else:
-		return None
-
-
 def ocToType(oc):
 	for module in univention.admin.modules.modules.values():
 		if univention.admin.modules.policyOc(module) == oc:

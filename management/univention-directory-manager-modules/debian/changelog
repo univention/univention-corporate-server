@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-49) unstable; urgency=medium
+
+  * Bug #41556: Applied patch from Philipp Hahn - Remove dead code related to
+  	custom attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 13:52:48 +0200
+
 univention-directory-manager-modules (12.0.17-48) unstable; urgency=medium
 
   * Bug #37676: Add missing translation
