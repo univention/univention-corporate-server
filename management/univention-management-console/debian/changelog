@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-52) unstable; urgency=medium
+
+  * Bug #38375: Applied patch from Florian Best - Fix crash of umc-server when
+  	uninstalling module and reloading
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 12:04:40 +0200
+
 univention-management-console (9.0.80-51) unstable; urgency=medium
 
   * Bug #34960: Applied patch from Florian Best - Localize keywords for

@@ -196,7 +196,7 @@ call_joinscript %s || true
 umc_frontend_new_hash
 ''')
 
-		with open(os.path.join('debian', '%s.prerm.debhelper' % (self.module.package,)), 'a') as f_prerm:
+		with open(os.path.join('debian', '%s.postrm.debhelper' % (self.module.package,)), 'a') as f_prerm:
 			f_prerm.write('invoke-rc.d univention-management-console-server reload || true\n')
 
 
