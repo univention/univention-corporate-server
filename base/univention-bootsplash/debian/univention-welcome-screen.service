@@ -1,15 +1,12 @@
 [Unit]
 Description=Starting univention-welcome screen
-#After=getty@tty1.service
 ConditionKernelCommandLine=splash
-#After=plymouth-start.service systemd-user-sessions.service
-#Before=plymouth-quit.service getty@tty1.service
-After=plymouth-quit.service
+Before=plymouth-quit.service
+After=apache2.service
 
 [Install]
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=-/usr/bin/univention-welcome-screen --only-show-welcome
-#Type=oneshot
-TimeoutSec=10
+ExecStart=-/usr/bin/univention-welcome-screen
+Type=forking

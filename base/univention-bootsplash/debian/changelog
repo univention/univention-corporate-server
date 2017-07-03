@@ -1,3 +1,10 @@
+univention-bootsplash (8.0.0-12) unstable; urgency=medium
+
+  * Bug #44061: remove fbgrab and fbi dependencies
+  * Bug #44061: fork welcome screen for better systemd integration
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 03 Jul 2017 11:17:25 +0200
+
 univention-bootsplash (8.0.0-11) unstable; urgency=low
 
   * Bug #43656: ignore return code in univention-welcome-screen.service

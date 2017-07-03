@@ -28,9 +28,7 @@ Depends: ${misc:Depends},
  univention-bootsplash (= ${binary:Version}),
  gettext-base,
  bsdmainutils,
- fbcat,
- netpbm,
- fbi
+ netpbm
 Description: UCS - welcome screen
  This package provides a welcome screen to the UCS system
  which is shown after the system startup.
