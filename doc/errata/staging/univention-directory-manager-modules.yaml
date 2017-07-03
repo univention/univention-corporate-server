@@ -34,10 +34,11 @@ desc: |
  * Searching for the printmodel property in printer driver lists is working
    again.
  * The DN of objects removed with udm remove --filter is now displayed.
- * Old unused code has been removed.
+ * Legacy and unused code has been removed.
  * The 'synced' keyword has been added to the ObjectFlag syntax.
  * The syntax check for udm search filter has been improved.
  * The performance of search filters for user objects has been improved.
- * Old references to TCP have been removed from the code base.
+ * Legacy code for handling TCP connections in the UDM CLI Server has been
+   removed.
  * The output from the list command of the UDM CLI is now sorted.
 bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180]
