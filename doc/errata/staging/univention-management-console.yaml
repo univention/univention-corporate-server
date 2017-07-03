@@ -11,5 +11,7 @@ desc: |
  * The keywords for the module search on the UMC overview page are now
    localized.
  * A crash of the UMC-Server during uninstallation of a module is prevented.
- * It is now possible to join UCS 4.1 appliances into UCS 4.2.
+ * The UMC-Web-Server falls back to english language in case no language is
+   provided in HTTP request, which is the case for clients using UCS 4.1.
+   This makes it possible to join UCS 4.1 Appliances into UCS 4.2 domains.
 bug: [44803, 34960, 38375, 44719]
