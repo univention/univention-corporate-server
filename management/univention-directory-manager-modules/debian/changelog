@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-48) unstable; urgency=medium
+
+  * Bug #37676: Add missing translation
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 13:16:52 +0200
+
 univention-directory-manager-modules (12.0.17-47) unstable; urgency=medium
 
   * Bug #34180: Applied patch from Philipp Hahn - Sort properties of

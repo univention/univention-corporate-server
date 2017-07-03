@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-06-06 10:03+0200\n"
+"POT-Creation-Date: 2017-07-03 13:15+0200\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -141,9 +141,9 @@ msgstr "August"
 msgid "Authentication Failed."
 msgstr "Authentisierung fehlgeschlagen"
 
-#: modules/univention/admin/uldap.py:332 modules/univention/admin/uldap.py:334
-#: modules/univention/admin/uldap.py:343 modules/univention/admin/uldap.py:345
-#: modules/univention/admin/uldap.py:352
+#: modules/univention/admin/uldap.py:333 modules/univention/admin/uldap.py:335
+#: modules/univention/admin/uldap.py:344 modules/univention/admin/uldap.py:346
+#: modules/univention/admin/uldap.py:353
 msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
@@ -768,7 +768,7 @@ msgstr "Mo"
 msgid "Monday"
 msgstr "Montag"
 
-#: modules/univention/admin/uldap.py:505
+#: modules/univention/admin/uldap.py:510
 msgid "Moving children is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
@@ -1281,10 +1281,10 @@ msgstr ""
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: modules/univention/admin/allocators.py:159
-#: modules/univention/admin/allocators.py:190
 #: modules/univention/admin/locking.py:98
 #: modules/univention/admin/locking.py:121
+#: modules/univention/admin/allocators.py:159
+#: modules/univention/admin/allocators.py:190
 #, python-format
 msgid "The attribute %r could not get locked."
 msgstr "Das Attribut %r konnte nicht gesperrt werden."
@@ -1432,7 +1432,7 @@ msgstr ""
 msgid "The value must not be longer than %d characters."
 msgstr "Der Wert darf nicht länger als %d Zeichen sein."
 
-#: modules/univention/admin/uldap.py:181
+#: modules/univention/admin/uldap.py:182
 msgid "There was no LDAP base specified."
 msgstr "Es wurde keine LDAP Basis angegeben."
 
@@ -1455,6 +1455,10 @@ msgstr "Dies ist kein gültiger Hostname"
 #: modules/univention/admin/syntax.py:3479
 msgid "This object is related to a Docker App container"
 msgstr "Dieses Objekt gehört zu einem Docker App-Container"
+
+#: modules/univention/admin/syntax.py:3480
+msgid "This object is synchronized from Active Directory"
+msgstr "Dieses Objekt ist aus Active Directory synchronisiert"
 
 #: modules/univention/admin/uexceptions.py:359
 msgid "This operation is not allowed on this object."
