@@ -131,7 +131,7 @@ Type=bool
 Categories=service-ssh
 
 [systemd/journald/Storage]
-Description[de]=
+Description[de]=Entweder "volatile", "persistent", "auto" oder "none". Standard ist "auto".
 Description[en]=One of "volatile", "persistent", "auto" and "none". Defaults to "auto".
 Type=str
 Categories=system-base

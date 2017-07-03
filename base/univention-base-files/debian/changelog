@@ -1,4 +1,4 @@
-univention-base-files (6.0.0-12) unstable; urgency=medium
+univention-base-files (6.0.0-13) unstable; urgency=medium
 
   * Bug #44234: Configure systemd-journald.service for time limited log retention
 
