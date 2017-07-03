@@ -190,7 +190,7 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Basic settings'), layout=[
 		Group(_('Organisational unit description'), layout=[
-			["name", "description"]
+			["name", "description"],
 		]),
 		Group(_('Container settings'), _('Default position when adding objects'), layout=[
 			["userPath" , "groupPath"],
@@ -211,6 +211,20 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	PATH_KEYS = {
+		'userPath': 'univentionUsersObject',
+		'groupPath': 'univentionGroupsObject',
+		'computerPath': 'univentionComputersObject',
+		'policyPath': 'univentionPolicyObject',
+		'dnsPath': 'univentionDnsObject',
+		'dhcpPath': 'univentionDhcpObject',
+		'networkPath': 'univentionNetworksObject',
+		'sharePath': 'univentionSharesObject',
+		'printerPath': 'univentionPrintersObject',
+		'mailPath': 'univentionMailObject',
+		'licensePath': 'univentionLicenseObject',
+	}
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
@@ -220,17 +234,14 @@ class object(univention.admin.handlers.simpleLdap):
 			pathResult = self.lo.get('cn=default containers,cn=univention,' + self.position.getDomain())
 			self.default_dn = 'cn=default containers,cn=univention,' + self.position.getDomain()
 
-		self.pathKeys = ['userPath', 'groupPath', 'computerPath', 'policyPath', 'dnsPath', 'dhcpPath', 'networkPath', 'sharePath', 'printerPath', 'mailPath', 'licensePath']
-		self.ldapKeys = ['univentionUsersObject', 'univentionGroupsObject', 'univentionComputersObject', 'univentionPolicyObject', 'univentionDnsObject', 'univentionDhcpObject', 'univentionNetworksObject', 'univentionSharesObject', 'univentionPrintersObject', 'univentionMailObject', 'univentionLicenseObject']
+		for prop in self.PATH_KEYS:
+			self[prop] = '0'
 
-		for key in self.pathKeys:
-			self[key] = '0'
-
-		for i in range(0, len(self.pathKeys)):
-			if pathResult.has_key(self.ldapKeys[i]):
-				for j in pathResult[self.ldapKeys[i]]:
+		for prop in self.PATH_KEYS:
+			if prop in pathResult:
+				for j in pathResult[prop]:
 					if j == self.dn:
-						self[self.pathKeys[i]] = '1'
+						self[prop] = '1'
 
 		self.save()
 
@@ -248,15 +259,15 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_create(self):
 		changes = []
 
-		for i in range(0, len(self.pathKeys)):
-			if self.oldinfo[self.pathKeys[i]] != self.info[self.pathKeys[i]]:
-				entries = self.lo.getAttr(self.default_dn, self.ldapKeys[i])
-				if self.info[self.pathKeys[i]] == '0':
+		for (prop, attr) in self.PATH_KEYS.items():
+			if self.oldinfo.get(prop) != self.info.get(prop):
+				entries = self.lo.getAttr(self.default_dn, attr)
+				if self.info[prop] == '0':
 					if self.dn in entries:
-						changes.append((self.ldapKeys[i], self.dn, ''))
+						changes.append((attr, self.dn, ''))
 				else:
 					if self.dn not in entries:
-						changes.append((self.ldapKeys[i], '', self.dn))
+						changes.append((attr, '', self.dn))
 
 		if changes:
 			self.lo.modify(self.default_dn, changes)
@@ -279,12 +290,12 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_modify(self):
 		changes = []
 
-		for i in range(0, len(self.pathKeys)):
-			if self.oldinfo[self.pathKeys[i]] != self.info[self.pathKeys[i]]:
-				if self.info[self.pathKeys[i]] == '0':
-					changes.append((self.ldapKeys[i], self.dn, ''))
+		for prop, attr in self.PATH_KEYS.items():
+			if self.oldinfo.get(prop) != self.info.get(prop):
+				if self.info[prop] == '0':
+					changes.append((attr, self.dn, ''))
 				else:
-					changes.append((self.ldapKeys[i], '', self.dn))
+					changes.append((attr, '', self.dn))
 		if changes:
 			self.lo.modify(self.default_dn, changes)
 
@@ -293,9 +304,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.open()
 
-		for i in range(0, len(self.pathKeys)):
-			if self.oldinfo[self.pathKeys[i]] == '1':
-				changes.append((self.ldapKeys[i], self.dn, ''))
+		for prop, attr in self.PATH_KEYS.items():
+			if self.oldinfo.get(prop) == '1':
+				changes.append((attr, self.dn, ''))
 		self.lo.modify(self.default_dn, changes)
 
 	def _ldap_addlist(self):
