@@ -96,15 +96,24 @@ class Instance(Base):
 		thread.run()
 
 	def _change_services(self, services, action):
-		failed = [srv for srv in services if subprocess.call(('/usr/sbin/invoke-rc.d', srv, action))]
-		if failed:
-			MODULE.error('Failed to %s the following services: %s' % (action, failed))
-			error_message = '%s %s' % ({
-				'start': _('Starting the following services failed:'),
-				'stop': _('Stopping the following services failed:'),
-				'restart': _('Restarting the following services failed:'),
-			}[action], ', '.join(failed))
-			raise UMC_Error(error_message)
+		error_messages = []
+		for srv in services:
+			process = subprocess.Popen(('/usr/sbin/service', srv, action), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			output = process.communicate()[0]
+			if process.returncode:
+				try:
+					MODULE.warn('Error during %s of %s: %s' % (action, srv, output.strip()))
+					process = subprocess.Popen(('/bin/systemctl', 'status', srv), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+					output = process.communicate()[0]
+				except EnvironmentError:
+					pass
+				error_messages.append('%s\n%s' % ({
+					'start': _('Starting the service %s failed:'),
+					'stop': _('Stopping the service %s failed:'),
+					'restart': _('Restarting the service %s failed:'),
+				}[action] % srv, output.strip()))
+		if error_messages:
+			raise UMC_Error('\n\n'.join(error_messages))
 		return {'success': True}
 
 	@sanitize(StringSanitizer(required=True))

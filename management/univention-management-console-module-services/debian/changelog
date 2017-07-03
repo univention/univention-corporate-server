@@ -1,3 +1,10 @@
+univention-management-console-module-services (6.0.0-4) unstable; urgency=medium
+
+  * Bug #36563: prevent starting of already started processes
+  * Bug #36562: improve error handling
+
+ -- Florian Best <best@univention.de>  Mon, 03 Jul 2017 13:58:08 +0200
+
 univention-management-console-module-services (6.0.0-3) unstable; urgency=medium
 
   * Bug #43528: Use full width for grids by default
