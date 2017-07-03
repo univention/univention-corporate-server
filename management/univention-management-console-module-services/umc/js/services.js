@@ -70,6 +70,8 @@ define([
 						this._changeState(data, command, confirmMessage);
 					}
 				}),
+				canExecute: function(item) { return !item.isRunning; },
+				enablingMode: 'some',
 				isStandardAction: true,
 				isMultiAction: true
 			}, {
@@ -83,6 +85,8 @@ define([
 						this._changeState(data, command, confirmMessage);
 					}
 				}),
+				canExecute: function(item) { return item.isRunning; },
+				enablingMode: 'some',
 				isStandardAction: true,
 				isMultiAction: true
 			}, {
@@ -96,6 +100,8 @@ define([
 						this._changeState(data, command, confirmMessage);
 					}
 				}),
+//				canExecute: function(item) { return item.isRunning; },
+				enablingMode: 'some',
 				isStandardAction: true,
 				isMultiAction: true
 			}, {
@@ -106,6 +112,8 @@ define([
 					var confirmMessage = _('Please confirm to automatically start the following services: ');
 					this._changeState(data, command, confirmMessage);
 				}),
+				canExecute: function(item) { return item.autostart !== 'yes'; },
+				enablingMode: 'some',
 				isStandardAction: false,
 				isMultiAction: true
 			}, {
@@ -116,6 +124,8 @@ define([
 					var confirmMessage = _('Please confirm to manually start the following services: ');
 					this._changeState(data, command, confirmMessage);
 				}),
+				canExecute: function(item) { return item.autostart !== 'manually'; },
+				enablingMode: 'some',
 				isStandardAction: false,
 				isMultiAction: true
 			}, {
@@ -126,6 +136,8 @@ define([
 					var confirmMessage = _('Please confirm to never start the following services: ');
 					this._changeState(data, command, confirmMessage);
 				}),
+				canExecute: function(item) { return item.autostart !== 'no'; },
+				enablingMode: 'some',
 				isStandardAction: false,
 				isMultiAction: true
 			}];
