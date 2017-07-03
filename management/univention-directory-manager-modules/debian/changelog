@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-53) unstable; urgency=medium
+
+  * Bug #42403: Applied patch from Florian Best - Print DN in
+    INVALID_DN_SYNTAX exceptions
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 17:09:33 +0200
+
 univention-directory-manager-modules (12.0.17-52) unstable; urgency=medium
 
   * Bug #43396: Applied additional patch from Florian Best - Make PATHS static

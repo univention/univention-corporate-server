@@ -440,6 +440,8 @@ class access:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), base), original_exception=msg)
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
@@ -456,6 +458,8 @@ class access:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), base), original_exception=msg)
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
@@ -480,6 +484,8 @@ class access:
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
@@ -501,6 +507,8 @@ class access:
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
@@ -522,6 +530,8 @@ class access:
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
@@ -542,6 +552,8 @@ class access:
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
+		except ldap.INVALID_DN_SYNTAX as msg:
+			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
