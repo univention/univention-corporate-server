@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-50) unstable; urgency=medium
+
+  * Bug #42862: Applied patch from Florian Best - Fix listener/udm_syntax.py
+    not cleaning up files
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 14:37:13 +0200
+
 univention-directory-manager-modules (12.0.17-49) unstable; urgency=medium
 
   * Bug #41556: Applied patch from Philipp Hahn - Remove dead code related to
