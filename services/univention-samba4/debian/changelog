@@ -1,3 +1,10 @@
+univention-samba4 (6.0.10-19) unstable; urgency=medium
+
+  * Bug #44787: skip_reprovision and cleanup_var_lib_samba need to be
+    run in setup-s4.sh, otherwise the reconfiguration of ports is skipped too
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Jul 2017 19:26:00 +0200
+
 univention-samba4 (6.0.10-18) unstable; urgency=medium
 
   * Bug #44787: Don't remove /var/lib/samba in the uinst script
