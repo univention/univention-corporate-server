@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-57) unstable; urgency=medium
+
+  * Bug #28054: Applied patch from Florian Best - Add dependency to
+    python-ipaddr
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Jul 2017 17:32:21 +0200
+
 univention-directory-manager-modules (12.0.17-56) unstable; urgency=medium
 
   * Bug #40737: add udm remove --ignore_not_exists
