@@ -113,6 +113,7 @@ def usage():
 	out.append('')
 	out.append('list options:')
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
+	out.append('  --%-30s %s' % ('position', 'Search underneath of position in tree'))
 	out.append('  --%-30s %s' % ('policies', 'List policy-based settings:'))
 	out.append('    %-30s %s' % ('', '0:short, 1:long (with policy-DN)'))
 	out.append('')
