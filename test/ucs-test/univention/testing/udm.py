@@ -178,6 +178,9 @@ class UCSTestUDM(object):
         if args.pop('ignore_exists', False) and action == 'create':
             cmd.append('--ignore_exists')
 
+        if args.pop('ignore_not_exists', False) and action == 'remove':
+            cmd.append('--ignore_not_exists')
+
         # set all other remaining properties
         for key, value in args.items():
             if isinstance(value, (list, tuple)):

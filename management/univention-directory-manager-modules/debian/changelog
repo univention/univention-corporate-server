@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-56) unstable; urgency=medium
+
+  * Bug #40737: add udm remove --ignore_not_exists
+
+ -- Florian Best <best@univention.de>  Tue, 04 Jul 2017 14:55:48 +0200
+
 univention-directory-manager-modules (12.0.17-55) unstable; urgency=medium
 
   * Bug #29501: add --position argument to udm --help output

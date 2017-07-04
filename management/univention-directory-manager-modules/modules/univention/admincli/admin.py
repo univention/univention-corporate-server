@@ -110,6 +110,7 @@ def usage():
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('remove_referring', 'remove referring objects'))
+	out.append('  --%-30s   ' % ('ignore_not_exists'))
 	out.append('')
 	out.append('list options:')
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
@@ -442,7 +443,7 @@ def _doit(arglist):
 	remove_referring = 0
 	recursive = 1
 	# parse options
-	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
+	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
 	try:
 		opts, args = getopt.getopt(arglist[3:], '', longopts)
 	except getopt.error, msg:
@@ -465,6 +466,7 @@ def _doit(arglist):
 	logfile = '/var/log/univention/directory-manager-cmd.log'
 	tls = 2
 	ignore_exists = 0
+	ignore_not_exists = False
 	superordinate_dn = ''
 	parsed_append_options = []
 	parsed_options = []
@@ -502,6 +504,8 @@ def _doit(arglist):
 			tls = val
 		elif opt == '--ignore_exists':
 			ignore_exists = 1
+		elif opt == '--ignore_not_exists':
+			ignore_not_exists = True
 		elif opt == '--superordinate':
 			superordinate_dn = val
 		elif opt == '--option':
@@ -945,6 +949,9 @@ def _doit(arglist):
 				out.append('E: dn or filter needed')
 				return out + ["OPERATION FAILED"]
 		except (univention.admin.uexceptions.noObject, IndexError):
+			if ignore_not_exists:
+				out.append('Object not found: %s' % _2utf8(dn or filter))
+				return out
 			out.append('E: object not found')
 			return out + ["OPERATION FAILED"]
 
@@ -956,7 +963,7 @@ def _doit(arglist):
 		if recursive:
 			try:
 				object.remove(recursive)
-			except univention.admin.uexceptions.ldapError, msg:
+			except univention.admin.uexceptions.ldapError as msg:
 				out.append(str(msg))
 				return out + ["OPERATION FAILED"]
 		else:
