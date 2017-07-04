@@ -202,25 +202,35 @@ if [ -z "$samba4_function_level" ]; then
 fi
 
 
-if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || is_ucr_true samba4/provision/secondary || is_ucr_true samba4/provision/primary; then
+start_provision() {
+	samba-tool domain provision \
+	    --realm="$kerberos_realm" \
+	    --domain="$windows_domain" \
+	    --domain-sid="$DOMAIN_SID" \
+	    --function-level="$samba4_function_level" \
+	    --adminpass="$adminpw" \
+	    --server-role='domain controller' \
+	    ${sitename:+--site="$sitename"} \
+	    --machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
+
+	if ! provision_is_ok; then
+		echo "Samba4 provision failed, exiting $0"
+		exit 1
+	fi
+}
+
+if [ -z "$S3_DCS" ] \
+    || [ -z "$DOMAIN_SID" ] \
+    || is_ucr_true samba4/provision/secondary \
+    || is_ucr_true samba4/provision/primary
+then
 
 	if [ -z "$DOMAIN_SID" ]; then
 		# No SID for this windows/domain has been generated
 		DOMAIN_SID="$(univention-newsid)"
 	fi
 
-	if [ -z "$sitename" ]; then
-		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
-							--function-level="$samba4_function_level" \
-							--adminpass="$adminpw" --server-role='domain controller'	\
-							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
-	else
-		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
-							--function-level="$samba4_function_level" \
-							--adminpass="$adminpw" --server-role='domain controller'	\
-							--site="$sitename" \
-							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
-	fi
+	start_provision
 
 	if ! ldbsearch -H "$samba_sam" -b "$samba4_ldap_base" -s base dn 2>/dev/null| grep -qi ^"dn: $samba4_ldap_base"; then
 		echo "Samba4 provision failed, exiting $0"
