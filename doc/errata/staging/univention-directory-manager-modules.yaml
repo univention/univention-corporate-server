@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 
+fix: 12.0.17-56A~4.2.0.201707041456
 desc: |
  This update addresses the following issue(s):
  * It is prevented to move or remove the own object now.
@@ -25,8 +25,8 @@ desc: |
  * The UDM CLI now shows a readable error message when the LDAP server is not
    available.
  * The home share and home share path properties are now correctly displayed.
- * It is now possible to remove values from Univention Config Registry policies
-   via CLI.
+ * It is now possible to remove values from Univention Config Registry
+   policies via CLI.
  * The udm --help output has been cleaned up to improve readability.
  * The --position argument has been added to the --help output of the udm
    list command.
