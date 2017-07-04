@@ -8,13 +8,13 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
-if __name__ == '__main__':
+
+def main():
 	with udm_test.UCSTestUDM() as udm:
 		properties = {
 			'name': uts.random_name(),
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			'overwriteTab': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].splitlines()
 
@@ -37,6 +37,10 @@ if __name__ == '__main__':
 					utils.fail('Could not find attribute CLI name under tab')
 				if not module_help_text[i + 2].endswith(':'):
 					utils.fail('Tab not overridden')
-				sys.exit(0)
+				return
 
 		utils.fail('Tab not found')
+
+
+if __name__ == '__main__':
+	main()

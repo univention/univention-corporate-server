@@ -8,12 +8,12 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
-if __name__ == '__main__':
+
+def main():
 	with udm_test.UCSTestUDM() as udm:
 		properties = {
 			'name': uts.random_name(),
@@ -25,12 +25,16 @@ if __name__ == '__main__':
 			'mayChange': '0'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		user = udm.create_user(**{properties['CLIName']: uts.random_string()})[0]
 		try:
 			udm.modify_object('users/user', dn=user, **{properties['CLIName']: uts.random_string()})
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-			sys.exit(0)
+			return
 
 		utils.fail('UDM did not report an error while trying to modify a settings/extended_attribute value which may not change')
+
+
+if __name__ == '__main__':
+	main()

@@ -8,12 +8,12 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
-if __name__ == '__main__':
+
+def main():
 	with udm_test.UCSTestUDM() as udm:
 		properties = {
 			'name': uts.random_name(),
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 			'multivalue': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		extended_attribute_values = [uts.random_string(), uts.random_string()]
 		group = udm.create_group(append={properties['CLIName']: extended_attribute_values})[0]
@@ -34,6 +34,10 @@ if __name__ == '__main__':
 		try:
 			udm.modify_object('groups/group', dn=group, remove={properties['CLIName']: extended_attribute_values})
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-			sys.exit(0)
+			return
 
 		utils.fail('UDM did not report an error while trying to remove a required settings/extended_attribute multi value from object')
+
+
+if __name__ == '__main__':
+	main()

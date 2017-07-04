@@ -9,12 +9,12 @@
 ## versions:
 ##   3.2-0: skip
 
-import sys
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 
-if __name__ == '__main__':
+
+def main():
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			udm.create_object(
@@ -30,6 +30,10 @@ if __name__ == '__main__':
 				default='notaninteger'
 			)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
+			return
 
 		utils.fail('Successfully created a settings/extented_attribute object with a value for it\'s default which is not valid for it\'s syntax value')
+
+
+if __name__ == '__main__':
+	main()

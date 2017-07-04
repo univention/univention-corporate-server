@@ -11,13 +11,12 @@
 ##  3.1-1: skip
 ##  3.2-0: fixed
 
-import sys
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 
 
-if __name__ == '__main__':
+def main():
 	with udm_test.UCSTestUDM() as udm:
 		udm.create_object(
 			'settings/extended_attribute',
@@ -35,6 +34,10 @@ if __name__ == '__main__':
 		try:
 			udm.create_group()
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
+			return
 
 		utils.fail('UDM did not report an error while trying to create an object eventhough a required multivalue extended attribute was not given')
+
+
+if __name__ == '__main__':
+	main()
