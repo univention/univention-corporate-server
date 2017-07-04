@@ -10,7 +10,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object, fail, wait_for_replication
 from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import *
+from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version, get_absolute_extension_filename, get_dn_of_extension_by_name, remove_extension_by_name
 import os
 import bz2
 import base64
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 				'settings/udm_%s' % extension_type,
 				name=extension_name,
 				data=base64.b64encode(bz2.compress(extension_buffer)),
-				filename='%s.py' % extension_name,
+				filename=extension_filename,
 				packageversion=package_version,
 				package=package_name,
 				active='TRUE',
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 			# check object
 			verify_ldap_object(dn, {
 				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
+				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
 				'univentionOwnedByPackage': [package_name],
 				'univentionObjectType': ['settings/udm_%s' % extension_type],
 				'univentionOwnedByPackageVersion': [package_version],
@@ -55,16 +55,17 @@ if __name__ == '__main__':
 			})
 
 			# check if registered file has been replicated to local system
-			target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)
+			target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 			if not os.path.exists(target_fn):
 				fail('ERROR: expected file does not exist (%s)' % (target_fn))
 
 			extension_name2 = random_name()
 			if extension_type == 'module':
 				extension_name2 = 'ucstest/%s' % extension_name2
+			extension_filename2 = get_extension_filename(extension_type, extension_name2)
 			expected_dn = dn.replace(extension_name, extension_name2)
 
-			udm.modify_object('settings/udm_%s' % extension_type, dn=dn, name=extension_name2)
+			udm.modify_object('settings/udm_%s' % extension_type, dn=dn, name=extension_name2, filename=extension_filename2)
 			dnlist = get_dn_of_extension_by_name(extension_type, extension_name2)
 			if not dnlist:
 				fail('ERROR: rename of udm %s extension object %s to %s failed' % (extension_type, extension_name, extension_name2))
@@ -72,9 +73,12 @@ if __name__ == '__main__':
 				fail('ERROR: rename successful but expected DN is not equal to actual DN (%r vs %r)' % (expected_dn, dnlist[0]))
 
 			# check if registered file is still present with the old name
-			target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)
-			if not os.path.exists(target_fn):
-				fail('ERROR: expected file does not exist (%s)' % (target_fn))
+			target_fn = get_absolute_extension_filename(extension_type, extension_filename)
+			target_fn2 = get_absolute_extension_filename(extension_type, extension_filename2)
+			if os.path.exists(target_fn):
+				fail('ERROR: expected file exist (%s) while it should be removed' % (target_fn))
+			if not os.path.exists(target_fn2):
+				fail('ERROR: expected file does not exist (%s)' % (target_fn2))
 
 			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
 			remove_extension_by_name(extension_type, extension_name2, fail_on_error=False)
@@ -82,6 +86,6 @@ if __name__ == '__main__':
 			wait_for_replication()
 
 			# check if registered file has been removed
-			target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)
+			target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 			if os.path.exists(target_fn):
 				fail('ERROR: file exists unexpectedly (%s)' % (target_fn))
