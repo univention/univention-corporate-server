@@ -351,13 +351,6 @@ else
 	samba-tool user setpassword Administrator --newpassword="$adminpw"
 fi
 
-if [ ! -d /etc/phpldapadmin ]; then
-	mkdir /etc/phpldapadmin
-fi
-if [ ! -e /etc/phpldapadmin/config.php ]; then
-	cp "$samba_private_dir/phpldapadmin-config.php" /etc/phpldapadmin/config.php
-fi
-
 ### Next adjust OpenLDAP ports before starting Samba4
 
 if [ -n "$slapd_port" ]; then
