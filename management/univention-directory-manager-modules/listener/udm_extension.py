@@ -101,7 +101,10 @@ def handler(dn, new, old):
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
 
-	old_relative_filename = old.get('%sFilename' % objectclass)[0]
+
+	old_relative_filename = None
+	if old:
+		old_relative_filename = old.get('%sFilename' % objectclass)[0]
 
 	if new:
 		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
@@ -138,7 +141,7 @@ def handler(dn, new, old):
 		new_relative_filename = new.get('%sFilename' % objectclass)[0]
 		listener.setuid(0)
 		try:
-			if old_relative_filename != new_relative_filename:
+			if old_relative_filename and old_relative_filename != new_relative_filename:
 				remove_python_file(objectclass, target_subdir, old_relative_filename)
 			if not install_python_file(objectclass, target_subdir, new_relative_filename, new_object_data):
 				return
