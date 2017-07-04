@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-06-02 04:06+0200\n"
+"POT-Creation-Date: 2017-07-01 12:53+0200\n"
 "PO-Revision-Date: 2017-05-31 14:29+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -20,12 +20,12 @@ msgstr "Hinzufügen"
 msgid "Administration"
 msgstr "Verwaltung"
 
-#: tests/90_umc-screenshots/03_users:38
+#: tests/90_umc-screenshots/03_users:41
 msgid "Cancel"
 msgstr "Abbrechen"
 
 #: tests/90_umc-screenshots/00_favorites:15
-#: univention/testing/umc_selenium.py:155
+#: univention/testing/umc_selenium.py:154
 msgid "Favorites"
 msgstr "Favoriten"
 
@@ -37,11 +37,11 @@ msgstr "Vorname"
 msgid "LDAP directory"
 msgstr "LDAP-Verzeichnis"
 
-#: tests/90_umc-screenshots/03_users:44
+#: tests/90_umc-screenshots/03_users:50
 msgid "Next"
 msgstr "Weiter"
 
-#: tests/90_umc-screenshots/03_users:42
+#: tests/90_umc-screenshots/03_users:45
 msgid "User template"
 msgstr "Benutzer-Vorlage"
 
@@ -49,6 +49,6 @@ msgstr "Benutzer-Vorlage"
 msgid "Users"
 msgstr "Benutzer"
 
-#: tests/90_umc-screenshots/03_users:48
+#: tests/90_umc-screenshots/03_users:54
 msgid "password history"
 msgstr "Passwort-History"
