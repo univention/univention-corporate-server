@@ -3,6 +3,7 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master]
+## tags: [skip_admember]
 
 import pytest
 from univention.config_registry import handler_set

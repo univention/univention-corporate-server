@@ -3,6 +3,7 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master, domaincontroller_backup]
+## tags: [skip_admember]
 
 import pytest
 from univention.testing import utils
