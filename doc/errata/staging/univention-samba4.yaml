@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-samba4
+fix: 6.0.10-18A~4.2.0.201707041558
+desc: |
+ This update addresses the following issues:
+ * Skip Re-provision of Samba on DC Master and DC Backup if the system
+   already provides the S4-Connector service and sam.ldb and secrets.ldb
+   look functional.
+bug: [44787]
