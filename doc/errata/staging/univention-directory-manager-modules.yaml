@@ -49,4 +49,6 @@ desc: |
  * A programmatic error when creating container objects has been fixed.
  * Error messages now contain more details in case of errors with invalid
    LDAP DN syntax.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 29501, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862, 43396, 42403]
+ * The remove operation of the UDM CLI now allows the option
+   --ignore_not_exists.
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 29501, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862, 43396, 42403, 40737]
