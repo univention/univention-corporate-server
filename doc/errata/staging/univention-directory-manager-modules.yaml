@@ -28,6 +28,8 @@ desc: |
  * It is now possible to remove values from Univention Config Registry policies
    via CLI.
  * The udm --help output has been cleaned up to improve readability.
+ * The --position argument has been added to the --help output of the udm
+   list command.
  * The layout of container objects has been adapted so that the configuration
    options for default containers are visible on the "General" tab.
  * The license evaluation now respects renamed default user and group names.
@@ -47,4 +49,4 @@ desc: |
  * A programmatic error when creating container objects has been fixed.
  * Error messages now contain more details in case of errors with invalid
    LDAP DN syntax.
-bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862, 43396, 42403]
+bug: [42526, 39253, 30214, 38856, 39862, 40487, 41802, 43373, 40964, 43975, 37611, 43562, 31768, 29501, 33652, 33891, 35925, 37285, 29929, 37676, 34276, 28633, 34836, 34180, 41556, 42862, 43396, 42403]
