@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import ldap
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
@@ -39,6 +40,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 import univention.admin.localization
+import univention.admin.uexceptions
 from univention.admin import configRegistry
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
@@ -278,30 +280,20 @@ mapping.register('notificationPeriod', 'univentionNagiosNotificationPeriod', Non
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	OPTION_BITS = {
+		'notificationOptionWarning': 'w',
+		'notificationOptionCritical': 'c',
+		'notificationOptionUnreachable': 'u',
+		'notificationOptionRecovered': 'r',
+	}
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		if self.exists():
 			if self.oldattr.get('univentionNagiosNotificationOptions', []):
 				options = self.oldattr.get('univentionNagiosNotificationOptions', [])[0].split(',')
-				if 'w' in options:
-					self['notificationOptionWarning'] = '1'
-				else:
-					self['notificationOptionWarning'] = '0'
-
-				if 'c' in options:
-					self['notificationOptionCritical'] = '1'
-				else:
-					self['notificationOptionCritical'] = '0'
-
-				if 'u' in options:
-					self['notificationOptionUnreachable'] = '1'
-				else:
-					self['notificationOptionUnreachable'] = '0'
-
-				if 'r' in options:
-					self['notificationOptionRecovered'] = '1'
-				else:
-					self['notificationOptionRecovered'] = '0'
+				for key, value in self.OPTION_BITS.iteritems():
+					self[key] = '1' if value in options else '0'
 
 		_re = re.compile('^([^.]+)\.(.+?)$')
 
@@ -315,7 +307,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# find correct dNSZone entry
 				res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
 				if not res:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'service.py: open: couldn''t find dNSZone of %s' % host)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'service.py: open: could not find dNSZone of %s' % (host,))
 				else:
 					# found dNSZone
 					filter = '(&(objectClass=univentionHost)'
@@ -332,24 +324,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	def _ldap_post_create(self):
-		pass
-
-	def _ldap_pre_modify(self):
-		pass
-
-	def _ldap_post_modify(self):
-		pass
-
-	def _ldap_pre_remove(self):
-		pass
-
-	def _ldap_post_remove(self):
-		pass
-
-	def _update_policies(self):
-		pass
-
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionNagiosServiceClass'])]
 
@@ -357,17 +331,12 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		options = []
-		if self['notificationOptionWarning'] in ['1']:
-			options.append('w')
-		if self['notificationOptionCritical'] in ['1']:
-			options.append('c')
-		if self['notificationOptionUnreachable'] in ['1']:
-			options.append('u')
-		if self['notificationOptionRecovered'] in ['1']:
-			options.append('r')
+		for key, value in self.OPTION_BITS.iteritems():
+			if self[key] == '1':
+				options.append(value)
 
 		# univentionNagiosNotificationOptions is required in LDAP schema
-		if len(options) == 0:
+		if not options:
 			options.append('n')
 
 		newoptions = ','.join(options)
@@ -377,12 +346,16 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('assignedHosts'):
 			hostlist = []
 			for hostdn in self.info.get('assignedHosts', []):
-				domain = self.lo.getAttr(hostdn, 'associatedDomain')
-				cn = self.lo.getAttr(hostdn, 'cn')
-				if not domain:
-					domain = [configRegistry.get("domainname")]
-				fqdn = "%s.%s" % (cn[0], domain[0])
-				hostlist.append(fqdn)
+				try:
+					host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
+					cn = host['cn']
+				except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
+					raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,))
+				except KeyError:
+					raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,))
+
+				domain = host.get('associatedDomain', [configRegistry.get("domainname")])
+				hostlist.append("%s.%s" % (cn[0], domain[0]))
 
 			ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))
 

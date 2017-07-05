@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-62) unstable; urgency=medium
+
+  * Bug #38362: prevent exception if hosts added to nagios/service doesn't exists
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 16:28:19 +0200
+
 univention-directory-manager-modules (12.0.17-61) unstable; urgency=medium
 
   * Bug #37623: add lookup() method of users/self and users/passwd
