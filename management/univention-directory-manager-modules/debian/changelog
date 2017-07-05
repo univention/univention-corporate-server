@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-61) unstable; urgency=medium
+
+  * Bug #37623: add lookup() method of users/self and users/passwd
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 16:04:02 +0200
+
 univention-directory-manager-modules (12.0.17-60) unstable; urgency=medium
 
   * Bug #32781: Applied patch from Philipp Hahn - Fix syntax error for

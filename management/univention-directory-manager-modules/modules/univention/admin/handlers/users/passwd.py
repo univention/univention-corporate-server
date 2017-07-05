@@ -82,3 +82,7 @@ layout = [
 ]
 
 object = univention.admin.handlers.users.user.object
+
+
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+	return []

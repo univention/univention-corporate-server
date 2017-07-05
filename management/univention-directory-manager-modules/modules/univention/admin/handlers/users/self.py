@@ -58,3 +58,7 @@ long_description = ''
 
 class object(univention.admin.handlers.users.user.object):
 	module = module
+
+
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+	return udm_user.lookup(co, lo, filter_s, lo.whoami(), superordinate, scope='base', unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
