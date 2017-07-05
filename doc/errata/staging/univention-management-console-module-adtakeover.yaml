@@ -1,11 +1,10 @@
 product: ucs
 release: "4.2"
-version: [1]
+version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
-src: univention-directory-manager-modules
+src: management-console-module-adtakeover
 fix: 
 desc: |
  This update addresses the following issue(s):
- * Some spelling mistakes in the UDM CLI Client have been corrected.
  * Unused legacy code has been removed.
-bug: [31927, 43299]
+bug: [43299]
