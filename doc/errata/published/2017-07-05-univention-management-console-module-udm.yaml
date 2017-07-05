@@ -14,3 +14,5 @@ desc: |
  * A possible crash when loading widget definitions for UDM properties is now
    prevented.
 bug: [44847, 41015, 42423, 42466]
+erratum: 83
+announced: 2017-07-05
