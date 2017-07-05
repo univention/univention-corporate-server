@@ -38,12 +38,7 @@ import time
 import univention.uldap
 from univention.admin import localization
 import univention.config_registry
-
-try:
-	import univention.admin.license
-	GPLversion = False
-except:
-	GPLversion = True
+import univention.admin.license
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -355,10 +350,6 @@ class access:
 
 	def __require_licence(self):
 		if self.require_license:
-			if GPLversion:
-				self.require_license = 0
-				raise univention.admin.uexceptions.licenseGPLversion
-
 			res = univention.admin.license.init_select(self.lo, 'admin')
 
 			self.licensetypes = univention.admin.license._license.types
@@ -409,7 +400,7 @@ class access:
 		self.require_license = require
 
 	def _validateLicense(self):
-		if self.require_license and not GPLversion:
+		if self.require_license:
 			univention.admin.license.select('admin')
 
 	def get_schema(self):

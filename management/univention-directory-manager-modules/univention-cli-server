@@ -45,11 +45,7 @@ import univention.admincli.admin
 import univention.admincli.passwd
 import signal
 from argparse import ArgumentParser
-try:
-	import univention.admincli.license_check
-	licenseImportError = False
-except ImportError:
-	licenseImportError = True
+import univention.admincli.license_check
 
 logfile = ''
 
@@ -225,12 +221,9 @@ def doit(sarglist, conn):
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
 			output = univention.admincli.passwd.doit(arglist)
 		elif cmdfile == 'univention-license-check':
-			if licenseImportError:
-				output = ['The license check is disabled. You are using the GPL version without any support or maintenance by Univention.']
-			else:
-				ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-license-check' % (os.getppid(), os.getpid()))
-				ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
-				output = univention.admincli.license_check.doit(arglist)
+			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-license-check' % (os.getppid(), os.getpid()))
+			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+			output = univention.admincli.license_check.doit(arglist)
 		else:
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-adduser' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))

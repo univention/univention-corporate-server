@@ -263,10 +263,6 @@ class licenseWrongBaseDn(base):
 	message = _('The license is invalid for the current base DN.')
 
 
-class licenseGPLversion(base):
-	message = _('The license check is disabled. You are using the GPL version without any support or maintenance by Univention.')
-
-
 class licenseCoreEdition(base):
 	message = 'UCS Core Edition.'
 
