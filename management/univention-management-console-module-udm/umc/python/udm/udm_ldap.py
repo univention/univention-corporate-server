@@ -51,6 +51,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
+import univention.admin.mapping as udm_mapping
 
 from univention.management.console.modules.udm.syntax import widget, default_value
 
@@ -58,12 +59,6 @@ from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
 from ldap.dn import explode_dn
 from functools import reduce
-
-try:
-	import univention.admin.license
-	GPLversion = False
-except:
-	GPLversion = True
 
 
 _ = Translation('univention-management-console-module-udm').translate
@@ -1246,7 +1241,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 						search_options['simple_attrs'] = ldap_attr
 						result = module.search(**search_options)
 						for dn, ldap_map in result:
-							info = univention.admin.mapping.mapDict(mapping, ldap_map)
+							info = udm_mapping.mapDict(mapping, ldap_map)
 							key, label = extract_key_label(syn, dn, info)
 							if key is None:
 								continue

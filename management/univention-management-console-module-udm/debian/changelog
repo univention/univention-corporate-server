@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-16) unstable; urgency=medium
+
+  * Bug #43299: remove code which belongs to the GPL version
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 15:48:35 +0200
+
 univention-management-console-module-udm (7.0.10-15) unstable; urgency=medium
 
   * Bug #42466: Applied patch from Florian Best - Fix wrong use of

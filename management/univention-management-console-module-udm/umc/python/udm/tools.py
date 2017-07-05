@@ -115,7 +115,7 @@ def check_license(ldap_connection, ignore_core_edition=False):
 	try:
 		try:
 			_check_license(ldap_connection)
-		except (udm_errors.freeForPersonalUse, udm_errors.licenseGPLversion):
+		except udm_errors.freeForPersonalUse:
 			if ignore_core_edition:
 				return
 	except udm_errors.licenseNotFound:
@@ -150,15 +150,9 @@ def check_license(ldap_connection, ignore_core_edition=False):
 		raise LicenseError(_('Your license does not allow modifications. During this session add and modify are disabled.'))
 	except udm_errors.freeForPersonalUse:
 		raise LicenseError(_('You are currently using the "Free for personal use" edition of Univention Corporate Server.'))
-	except udm_errors.licenseGPLversion:
-		raise LicenseError(_('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your Univention partner.'))
 
 
 def _check_license(ldap_connection):
-	try:
-		import univention.admin.license
-	except ImportError:
-		raise udm_errors.licenseGPLversion
 	mapping = {
 		1: udm_errors.licenseClients,
 		2: udm_errors.licenseAccounts,
