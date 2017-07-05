@@ -250,15 +250,7 @@ class EA_Layout(dict):
 		return self.get('advanced', False)
 
 	def __cmp__(self, other):
-		if self.groupName < other.groupName:
-			return -1
-		if other.groupName < self.groupName:
-			return 1
-		if self.position < other.position:
-			return -1
-		if other.position < self.position:
-			return 1
-		return 0
+		return cmp(self.groupName, other.groupName) or cmp(self.position, other.position)
 
 
 def update_extended_attributes(lo, module, position):
@@ -419,15 +411,8 @@ def update_extended_attributes(lo, module, position):
 					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 					tabPosition = -1
 
-				if tabPosition == -1:
-					for ea_layout in properties4tabs[tabname]:
-						try:
-							if ea_layout.position <= tabPosition:
-								# CLEANUP, FIXME: pos is undefined!
-								# does not break because of except:
-								tabPosition = pos - 1
-						except:
-							ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
+				if tabPosition == -1 and properties4tabs[tabname]:
+					tabPosition = min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1
 
 				properties4tabs[tabname].append(EA_Layout(
 					name=pname,
@@ -458,16 +443,14 @@ def update_extended_attributes(lo, module, position):
 			overwriteTabList.append(tab)
 
 	if properties4tabs:
-		lastprio = -1000  # CLEANUP: unneeded
-
 		# remove layout of tabs that have been marked for replacement
 		removetab = []  # CLEANUP: unneeded
 		for tab in module.layout:
 			if tab.label in overwriteTabList:
 				tab.layout = []
 
-		for tabname in properties4tabs.keys():
-			priofields = sorted(properties4tabs[tabname])
+		for tabname, priofields in properties4tabs.items():
+			priofields = sorted(priofields)
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
