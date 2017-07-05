@@ -412,7 +412,7 @@ def update_extended_attributes(lo, module, position):
 					tabPosition = -1
 
 				if tabPosition == -1 and properties4tabs[tabname]:
-					tabPosition = min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1
+					tabPosition = max([-1, min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1])
 
 				properties4tabs[tabname].append(EA_Layout(
 					name=pname,
@@ -444,7 +444,6 @@ def update_extended_attributes(lo, module, position):
 
 	if properties4tabs:
 		# remove layout of tabs that have been marked for replacement
-		removetab = []  # CLEANUP: unneeded
 		for tab in module.layout:
 			if tab.label in overwriteTabList:
 				tab.layout = []
