@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-22) unstable; urgency=medium
+
+  * Bug #40212: restrict hostname of AD systems to 16 characters
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 15:32:17 +0200
+
 univention-system-setup (10.0.10-21) unstable; urgency=medium
 
   * Bug #28070: Applied patch from Florian Best - Fix error caused
