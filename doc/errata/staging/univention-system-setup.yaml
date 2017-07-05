@@ -6,8 +6,8 @@ src: univention-system-setup
 fix: 10.0.10-21A~4.2.0.201707051422
 desc: |
  This update addresses the following issue(s):
- * Timezones that can not be decoded with UTF-8 caused a crash in the system
-   setup. This has been fixed.
- * The hostname of a System which joins into an Active Directory domain is now
+ * A crash during startup of the settings UMC modules has been fixed which
+   occurred if certain values were not correctly encoded.
+ * The host name of a System which joins into an Active Directory domain is now
    restricted to 16 characters in the initial system configuration.
 bug: [28070, 40212]
