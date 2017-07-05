@@ -10,4 +10,6 @@ desc: |
  * Unused legacy code has been removed.
  * Legacy code regarding the ordering number of extended attributes has
    been cleaned up.
-bug: [31927, 43299, 32781]
+ * A lookup function for the users/self and users/passwd modules have been
+   added for convenience.
+bug: [31927, 43299, 32781, 37623]
