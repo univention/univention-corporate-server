@@ -1,0 +1,17 @@
+diff --git a/ucs-ec2-tools/python/ec2/lib.py b/ucs-ec2-tools/python/ec2/lib.py
+index 934a09f..7c135dc 100644
+--- a/ucs-ec2-tools/python/ec2/lib.py
++++ b/ucs-ec2-tools/python/ec2/lib.py
+@@ -345,10 +345,10 @@ class VM(object):
+                     ret = self._exec_local(cmdline)
+                 else:
+                     try:
+-                        ret = self._ssh_exec(cmdline)
++                        ret = self._ssh_exec(cmdline, stdout=self.logfile_fd, stderr=self.logfile_fd)
+                     except paramiko.ssh_exception.SSHException:
+                         self.connect()
+-                        ret = self._ssh_exec(cmdline)
++                        ret = self._ssh_exec(cmdline, stdout=self.logfile_fd, stderr=self.logfile_fd)
+                 if ret != 0:
+                     _print_done('fail: return code %s' % ret)
+                     VM.failed_commands += 1
