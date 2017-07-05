@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Optimizations in the UDM module for SAML service providers have been done.
 bug: [41695]
+erratum: 85
+announced: 2017-07-05
