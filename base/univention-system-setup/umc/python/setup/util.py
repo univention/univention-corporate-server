@@ -130,7 +130,7 @@ def is_system_joined():
 def load_values(lang=None):
 	# load UCR variables
 	ucr.load()
-	values = dict([(ikey, ucr[ikey]) for ikey in UCR_VARIABLES])
+	values = dict([(ikey, ucr[ikey].decode('utf-8', 'replace')) for ikey in UCR_VARIABLES])
 
 	# net
 	from univention.management.console.modules.setup.network import Interfaces
@@ -148,16 +148,10 @@ def load_values(lang=None):
 	values['memory_total'] = psutil.virtual_memory().total / 1024.0 / 1024.0  # MiB
 
 	# get timezone
+	values['timezone'] = ''
 	if os.path.exists('/etc/timezone'):
 		with open('/etc/timezone') as fd:
-			timezone = fd.readline().strip()
-			try:
-				timezone = timezone.decode('UTF-8')
-			except UnicodeDecodeError:
-				timezone = timezone.decode('ISO8859-1')
-			values['timezone'] = timezone
-	else:
-		values['timezone'] = ''
+			values['timezone'] = fd.readline().strip().decode('utf-8', 'replace')
 
 	# read license agreement for app appliance
 	if lang and ucr.get('umc/web/appliance/data_path'):
@@ -168,7 +162,7 @@ def load_values(lang=None):
 		for ipath in (localized_license_path, license_path, english_license_path):
 			if os.path.exists(ipath):
 				with open(ipath) as license_file:
-					values['license_agreement'] = ''.join(license_file.readlines())
+					values['license_agreement'] = (''.join(license_file.readlines())).decode('utf-8', 'replace')
 					break
 
 	# check for installed system activation
