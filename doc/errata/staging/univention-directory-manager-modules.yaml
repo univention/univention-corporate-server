@@ -12,4 +12,6 @@ desc: |
    been cleaned up.
  * A lookup function for the users/self and users/passwd modules have been
    added for convenience.
-bug: [31927, 43299, 32781, 37623]
+ * The error handling during adding hosts to nagios services has been
+   improved.
+bug: [31927, 43299, 32781, 37623, 38362]
