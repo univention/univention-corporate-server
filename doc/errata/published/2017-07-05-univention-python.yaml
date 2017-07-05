@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Legacy and unused code has been removed.
 bug: [41234]
+erratum: 84
+announced: 2017-07-05
