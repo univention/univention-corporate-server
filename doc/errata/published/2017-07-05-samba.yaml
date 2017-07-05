@@ -9,3 +9,5 @@ desc: |
  * CVE-2017-2619 regression with non-wide symlinks to directories
  * CVE-2017-2619 regression with "follow symlinks = no"
 bug: [44891]
+erratum: 78
+announced: 2017-07-05
