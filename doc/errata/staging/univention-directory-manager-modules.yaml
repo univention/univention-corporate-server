@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
  * Unused legacy code has been removed.
-bug: [31927, 43299]
+ * Legacy code regarding the ordering number of extended attributes has
+   been cleaned up.
+bug: [31927, 43299, 32781]
