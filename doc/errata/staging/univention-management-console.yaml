@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * No duplicated tooltips are shown anymore for the links in the footer of
+   the login page.
+bug: [44072]
