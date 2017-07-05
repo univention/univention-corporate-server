@@ -81,7 +81,8 @@ define([
 			if (link) {
 				var node = domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
 				if (node.title) {
-					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node));
+					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node, node.title));
+					domAttr.remove(node, 'title');
 				}
 			}
 		},
@@ -164,8 +165,8 @@ define([
 			login._loginDialog.disableForm(_('Please enable your browser cookies which are necessary for using Univention Services.'));
 		},
 
-		showTooltip: function(node) {
-			Tooltip.show(node.title, node);
+		showTooltip: function(node, text) {
+			Tooltip.show(text, node);
 			on.once(dojo.body(), 'click', function(evt) {
 				Tooltip.hide(node);
 				dojoEvent.stop(evt);

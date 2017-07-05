@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-54) unstable; urgency=medium
+
+  * Bug #44072: hide HTML tooltip
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 13:51:25 +0200
+
 univention-management-console (9.0.80-53) unstable; urgency=medium
 
   * Bug #44719: Applied patch from Florian Best - Fix UCS 4.1 appliances
