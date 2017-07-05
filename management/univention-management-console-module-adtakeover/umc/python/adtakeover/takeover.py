@@ -528,15 +528,10 @@ class UCS_License_detection():
 	def __init__(self, ucr):
 		self.ucr = ucr
 
-		self.GPLversion = False
-		try:
-			import univention.admin.license
-			self.License = univention.admin.license.License
-			self._license = univention.admin.license._license
-			self.ignored_users_list = self._license.sysAccountNames
-		except ImportError:  # GPLversion
-			self.GPLversion = True
-			self.ignored_users_list = []
+		import univention.admin.license
+		self.License = univention.admin.license.License
+		self._license = univention.admin.license._license
+		self.ignored_users_list = self._license.sysAccountNames
 
 	def determine_license(self, lo, dn):
 		def mylen(xs):
@@ -576,9 +571,6 @@ class UCS_License_detection():
 		return result
 
 	def check_license(self, domain_info):
-
-		if self.GPLversion:
-			return True
 
 		binddn = self.ucr['ldap/hostdn']
 		with open('/etc/machine.secret', 'r') as pwfile:
