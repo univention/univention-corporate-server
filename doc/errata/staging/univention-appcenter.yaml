@@ -3,11 +3,13 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 6.0.8-4A~4.2.0.201706271349
+fix: 6.0.8-5A~4.2.0.201707051304
 desc: |
  This update addresses the following issues:
  * Apps may now ship a file describing settings that can be applied
    dynamically.
  * The host listing for an installed app incorrectly warned about
    limited manageability in some cases.
-bug: [44872, 44036]
+ * A crash during creation of translation files when the name or description
+   of an app is not set has been fixed.
+bug: [44872, 44036, 43896]
