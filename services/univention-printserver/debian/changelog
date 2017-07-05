@@ -1,3 +1,9 @@
+univention-printserver (10.0.1-13) unstable; urgency=medium
+
+  * Bug #39419: remove unused code from UCS 2.4
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 15:05:22 +0200
+
 univention-printserver (10.0.1-12) unstable; urgency=low
 
   * Bug #44153: re reload samba in cups-printers.py

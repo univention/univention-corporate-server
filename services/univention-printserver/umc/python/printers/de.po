@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-printers\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-07 18:38+0100\n"
+"POT-Creation-Date: 2017-07-05 15:10+0200\n"
 "PO-Revision-Date: 2011-11-17 14:18+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,18 +12,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/printers/__init__.py:110 umc/python/printers/__init__.py:124
+#: umc/python/printers/__init__.py:120
+msgid ""
+"The connection to the print quota postgres database failed. Please make sure "
+"the postgres service is running and reachable."
+msgstr ""
+"Die Verbindung zur Print-Quota Postgres Datenbank konnte nicht hergestellt "
+"werden. Bitte stellen Sie sicher, dass der Postgres Dienst verfügbar ist."
+
+#: umc/python/printers/__init__.py:110
 msgid ""
 "The print quota settings are currently disabled. Please install the package "
 "univention-printquota to enable them."
 msgstr ""
 "Die Quota-Einstellungen sind momentan nicht verfügbar. Bitte installieren "
 "Sie das Paket univention-printquota, um diese zu aktivieren."
-
-#: umc/python/printers/__init__.py
-msgid ""
-"The connection to the print quota postgres database failed. "
-"Please make sure the postgres service is running and reachable."
-msgstr ""
-"Die Verbindung zur Print-Quota Postgres Datenbank konnte nicht hergestellt werden. "
-"Bitte stellen Sie sicher, dass der Postgres Dienst verfügbar ist."
