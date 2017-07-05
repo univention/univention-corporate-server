@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-21) unstable; urgency=medium
+
+  * Bug #28070: Applied patch from Florian Best - Fix error caused
+    by non UTF-8 values in load_values
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 05 Jul 2017 13:52:27 +0200
+
 univention-system-setup (10.0.10-20) unstable; urgency=medium
 
   Bug #43402:

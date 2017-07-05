@@ -150,7 +150,12 @@ def load_values(lang=None):
 	# get timezone
 	if os.path.exists('/etc/timezone'):
 		with open('/etc/timezone') as fd:
-			values['timezone'] = fd.readline().strip()
+			timezone = fd.readline().strip()
+			try:
+				timezone = timezone.decode('UTF-8')
+			except UnicodeDecodeError:
+				timezone = timezone.decode('ISO8859-1')
+			values['timezone'] = timezone
 	else:
 		values['timezone'] = ''
 
