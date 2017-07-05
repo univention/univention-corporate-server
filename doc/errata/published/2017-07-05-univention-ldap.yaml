@@ -9,3 +9,5 @@ desc: |
  * The new attribute univentionUDMPropertyCopyable is now indexed only if the
    attribute is known to the LDAP server.
 bug: [44909]
+erratum: 80
+announced: 2017-07-05
