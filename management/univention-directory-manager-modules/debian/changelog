@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-58) unstable; urgency=medium
+
+  * Bug #80755: revert
+
+ -- Florian Best <best@univention.de>  Wed, 05 Jul 2017 09:21:04 +0200
+
 univention-directory-manager-modules (12.0.17-57) unstable; urgency=medium
 
   * Bug #28054: Applied patch from Florian Best - Add dependency to
