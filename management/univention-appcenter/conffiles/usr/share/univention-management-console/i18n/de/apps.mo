@@ -37,9 +37,11 @@ for app in apps:
 		app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
 		msgid = getattr(app_en, attr)
 		msgstr = getattr(app_de, attr)
+		if not msgid:
+			continue
 		entry = POEntry(
 			msgid=msgid,
-			msgstr=msgstr
+			msgstr=msgstr or ''
 		)
 		po.append(entry)
 print po.to_binary()
