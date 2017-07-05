@@ -11,3 +11,5 @@ desc: |
  * The error handling during starting/stopping/restarting services has been
    improved: Upon error the service status is shown.
 bug: [36563, 36562]
+erratum: 82
+announced: 2017-07-05
