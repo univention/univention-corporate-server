@@ -117,7 +117,7 @@ def doit(arglist):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: password changed')
 
 	except univention.admin.uexceptions.pwalreadyused:
-		out.append('passwd error: password alreay used')
+		out.append('passwd error: password already used')
 		return out
 
 	except Exception, e:

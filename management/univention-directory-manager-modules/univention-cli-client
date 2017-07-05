@@ -100,7 +100,7 @@ def fork_server(sock, socket_path):
 			time.sleep(0.1)
 			if time.time() > stime:
 				print >> sys.stderr, \
-					'W: Can`t connect daemon after %s seconds.' % \
+					'W: Can`t connect to daemon after %s seconds.' % \
 					connection_timeout
 				raise
 
@@ -112,7 +112,7 @@ def get_password():
 		pwd2 = raw_input('Re-enter new password ')
 		if pwd1 == pwd2:
 			return pwd1
-		print >> sys.stderr, 'password missmatch'
+		print >> sys.stderr, 'password mismatch'
 
 
 def receive_answer(sock):
@@ -137,9 +137,9 @@ def process_output(output, cmdfile):
 	result = 0
 	if cmdfile == 'univention-passwd':
 		for line in output:
-			if line == 'passwd error: password alreay used':
+			if line == 'passwd error: password already used':
 				result = 1
-			elif line.startswith('passwd error: The password is to short'):
+			elif line.startswith('passwd error: The password is too short'):
 				result = 2
 			print line
 	else:
@@ -170,7 +170,7 @@ def _re_create_socket():
 		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(map(ord, os.urandom(12))))
 		return _create_socket(socket_path)
 	except EnvironmentError:
-		print >> sys.stderr, 'E: Can`t connect daemon. Giving up.'
+		print >> sys.stderr, 'E: Can`t connect to daemon. Giving up.'
 		sys.exit(1)
 
 

@@ -324,7 +324,7 @@ class pwalreadyused(base):
 
 
 class passwordLength(base):
-	message = _('The password is to short, at least 8 character!')
+	message = _('The password is too short, at least 8 character!')
 
 
 class rangeNotInNetwork(base):

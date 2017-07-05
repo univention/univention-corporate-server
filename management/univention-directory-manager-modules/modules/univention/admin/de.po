@@ -1375,7 +1375,7 @@ msgstr ""
 "deinstallieren würde."
 
 #: modules/univention/admin/uexceptions.py:327
-msgid "The password is to short, at least 8 character!"
+msgid "The password is too short, at least 8 character!"
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
 #: modules/univention/admin/syntax.py:995
