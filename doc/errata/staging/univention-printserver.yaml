@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-printserver
+fix: 10.0.1-13A~4.2.0.201707051513
+desc: |
+ This update addresses the following issue(s):
+ * Old code from UCS 2.4 has been removed from the package.
+bug: [39419]
