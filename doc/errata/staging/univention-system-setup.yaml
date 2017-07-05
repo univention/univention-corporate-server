@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Timezones that can not be decoded with UTF-8 caused a crash in the system
    setup. This has been fixed.
-bug: [28070]
+ * The hostname of a System which joins into an Active Directory domain is now
+   restricted to 16 characters in the initial system configuration.
+bug: [28070, 40212]
