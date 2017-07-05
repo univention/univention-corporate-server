@@ -271,8 +271,7 @@ def update_extended_attributes(lo, module, position):
 	properties4tabs = {}
 	overwriteTabList = []
 	module.extended_udm_attributes = []
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(),
-								filter=filter_format('(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))', [name(module)])):
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=filter_format('(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))', [name(module)])):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0]
 
@@ -354,7 +353,7 @@ def update_extended_attributes(lo, module, position):
 		longdesc = attrs.get('univentionUDMPropertyTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
 
 		# create property
-		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth',[ '0' ])[0].upper() in [ '1', 'TRUE' ])
+		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', ['0'])[0].upper() in ['1', 'TRUE'])
 		module.property_descriptions[pname] = univention.admin.property(
 			short_description=shortdesc,
 			long_description=longdesc,
@@ -368,7 +367,7 @@ def update_extended_attributes(lo, module, position):
 			default=propertyDefault,
 			editable=editable,
 			copyable=copyable,
-			size = 'Two' if fullWidth else None,
+			size='Two' if fullWidth else None,
 		)
 
 		# add LDAP mapping
