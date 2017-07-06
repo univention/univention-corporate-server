@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 
+fix: 12.0.17-67A~4.2.0.201707061920
 desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
@@ -18,4 +18,5 @@ desc: |
    to save them twice. This has been fixed.
  * It was possible to supply a wrong object type when modifying objects. This
    is now prevented and a error message is shown.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368]
+ * UDM objects with the object flags synced and docker can now be deleted.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846]
