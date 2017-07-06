@@ -600,6 +600,8 @@ class simpleLdap(base):
 
 		if self.oldattr:
 			self._exists = True
+			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
+				raise univention.admin.uexceptions.wrongObjectType()
 			oldinfo = univention.admin.mapping.mapDict(self.mapping, self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			self.info.update(oldinfo)

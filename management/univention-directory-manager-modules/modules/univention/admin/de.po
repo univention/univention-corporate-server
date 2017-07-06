@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-03 13:15+0200\n"
+"POT-Creation-Date: 2017-07-06 14:59+0200\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -141,9 +141,9 @@ msgstr "August"
 msgid "Authentication Failed."
 msgstr "Authentisierung fehlgeschlagen"
 
-#: modules/univention/admin/uldap.py:333 modules/univention/admin/uldap.py:335
-#: modules/univention/admin/uldap.py:344 modules/univention/admin/uldap.py:346
-#: modules/univention/admin/uldap.py:353
+#: modules/univention/admin/uldap.py:328 modules/univention/admin/uldap.py:330
+#: modules/univention/admin/uldap.py:339 modules/univention/admin/uldap.py:341
+#: modules/univention/admin/uldap.py:348
 msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
@@ -218,7 +218,7 @@ msgstr "Konnte die Sperrzeit von %r nicht modifizieren."
 msgid "Cannot overwrite a fixed attribute."
 msgstr "Kann kein unveränderliches Attribut überschreiben."
 
-#: modules/univention/admin/uexceptions.py:406
+#: modules/univention/admin/uexceptions.py:402
 msgid "Circular group dependency detected: "
 msgstr "Zyklische Gruppen-Abhängigkeit festgestellt: "
 
@@ -250,7 +250,7 @@ msgstr "Verbindung"
 msgid "Could not acquire lock."
 msgstr "Konnte keine Sperrung erlangen."
 
-#: modules/univention/admin/modules.py:381
+#: modules/univention/admin/modules.py:372
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -283,7 +283,7 @@ msgstr "Alias DNS-Eintrag"
 msgid "DNS Entry Reverse"
 msgstr "Reverse Lookup DNS-Eintrag"
 
-#: modules/univention/admin/uexceptions.py:398
+#: modules/univention/admin/uexceptions.py:394
 msgid "DNS Forward Zone entry required to assign Nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
@@ -366,7 +366,7 @@ msgstr "Domaincontroller Slave"
 msgid "Driver"
 msgstr "Treiber"
 
-#: modules/univention/admin/uexceptions.py:319
+#: modules/univention/admin/uexceptions.py:315
 msgid "During this session add and modify are disabled"
 msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
 
@@ -386,7 +386,7 @@ msgstr "Leeres Attribut"
 msgid "Empty password not allowed!"
 msgstr "Ein leeres Passwort ist nicht erlaubt!"
 
-#: modules/univention/admin/uexceptions.py:363
+#: modules/univention/admin/uexceptions.py:359
 msgid "Empty printer groups are not possible."
 msgstr "Leere Druckergruppen sind nicht möglich."
 
@@ -539,7 +539,7 @@ msgstr "IMAP"
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: modules/univention/admin/uexceptions.py:394
+#: modules/univention/admin/uexceptions.py:390
 msgid "IP address entry required to assign Nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
@@ -574,7 +574,7 @@ msgstr "Ungültige UCS-Version: %s"
 msgid "Invalid character in debian package version: %s"
 msgstr "Ungültiges Zeichen in der Debian-Paketversion: %s"
 
-#: modules/univention/admin/uexceptions.py:347
+#: modules/univention/admin/uexceptions.py:343
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
@@ -582,7 +582,7 @@ msgstr "Unzulässige Zusammenstellung von Optionen."
 msgid "Invalid syntax"
 msgstr "Ungültige Syntax"
 
-#: modules/univention/admin/uexceptions.py:383
+#: modules/univention/admin/uexceptions.py:379
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
@@ -768,7 +768,7 @@ msgstr "Mo"
 msgid "Monday"
 msgstr "Montag"
 
-#: modules/univention/admin/uldap.py:510
+#: modules/univention/admin/uldap.py:509
 msgid "Moving children is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
@@ -800,7 +800,7 @@ msgstr "Nagios-Unterstützung"
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/uexceptions.py:414
+#: modules/univention/admin/uexceptions.py:410
 msgid ""
 "Need a primary group with samba option to create a user with samba option"
 msgstr ""
@@ -811,7 +811,7 @@ msgstr ""
 msgid "Network"
 msgstr "Netzwerk"
 
-#: modules/univention/admin/uexceptions.py:331
+#: modules/univention/admin/uexceptions.py:327
 msgid "Network and IP range are incompatible."
 msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
@@ -967,15 +967,15 @@ msgstr "Das Objekt existiert bereits."
 msgid "October"
 msgstr "Oktober"
 
-#: modules/univention/admin/uexceptions.py:375
+#: modules/univention/admin/uexceptions.py:371
 msgid "Only existing groups are allowed."
 msgstr "Nur existierende Gruppen sind erlaubt."
 
-#: modules/univention/admin/uexceptions.py:379
+#: modules/univention/admin/uexceptions.py:375
 msgid "Only existing users are allowed."
 msgstr "Nur existierende Benutzer sind erlaubt."
 
-#: modules/univention/admin/uexceptions.py:371
+#: modules/univention/admin/uexceptions.py:367
 msgid "Only printer objects can be members of a printer group."
 msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
 
@@ -987,7 +987,7 @@ msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 msgid "Option Pattern"
 msgstr "Optionenmuster"
 
-#: modules/univention/admin/uexceptions.py:343
+#: modules/univention/admin/uexceptions.py:339
 msgid "Overlapping IP ranges"
 msgstr "Überschneidung in den IP-Adressbereichen"
 
@@ -1011,12 +1011,12 @@ msgstr "POSIX deaktiviert"
 msgid "Parent hosts"
 msgstr "Übergeordnete Rechner"
 
-#: modules/univention/admin/uexceptions.py:323
+#: modules/univention/admin/uexceptions.py:319
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
 
+#: modules/univention/admin/uexceptions.py:347
 #: modules/univention/admin/uexceptions.py:351
-#: modules/univention/admin/uexceptions.py:355
 msgid "Password policy error: "
 msgstr "Fehler in der Passwort-Richtlinie: "
 
@@ -1054,7 +1054,7 @@ msgstr "Nur von vorherigem Client"
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
-#: modules/univention/admin/uexceptions.py:367
+#: modules/univention/admin/uexceptions.py:363
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
@@ -1249,7 +1249,7 @@ msgstr ""
 msgid "The DNS entry was not found"
 msgstr "Der DNS-Eintrag wurde nicht gefunden."
 
-#: modules/univention/admin/uexceptions.py:402
+#: modules/univention/admin/uexceptions.py:398
 msgid ""
 "The DNS forward entry could not be created. Please remove existing alias "
 "records or comparable DNS objects with the same name as this host from the "
@@ -1265,13 +1265,13 @@ msgid ""
 msgstr ""
 "Der FQDN dieses Objekts ist zu lang, er darf nicht mehr als 64 Zeichen haben."
 
-#: modules/univention/admin/uexceptions.py:339
+#: modules/univention/admin/uexceptions.py:335
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
 "zulässig!"
 
-#: modules/univention/admin/uexceptions.py:335
+#: modules/univention/admin/uexceptions.py:331
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
@@ -1281,10 +1281,10 @@ msgstr ""
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: modules/univention/admin/locking.py:98
-#: modules/univention/admin/locking.py:121
 #: modules/univention/admin/allocators.py:159
 #: modules/univention/admin/allocators.py:190
+#: modules/univention/admin/locking.py:98
+#: modules/univention/admin/locking.py:121
 #, python-format
 msgid "The attribute %r could not get locked."
 msgstr "Das Attribut %r konnte nicht gesperrt werden."
@@ -1329,14 +1329,6 @@ msgid "The groupname is already in use as groupname or as username"
 msgstr ""
 "Der Gruppenname wird bereits als Gruppenname oder als Benutzername verwendet"
 
-#: modules/univention/admin/uexceptions.py:267
-msgid ""
-"The license check is disabled. You are using the GPL version without any "
-"support or maintenance by Univention."
-msgstr ""
-"Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
-"die Support oder Maintenance Unterstüzung von Univention."
-
 #: modules/univention/admin/uexceptions.py:259
 msgid "The license is expired."
 msgstr "Die Lizenz ist abgelaufen."
@@ -1374,14 +1366,14 @@ msgstr ""
 "Das Paket \"%s\" kann nicht gelöscht werden da es wichtige Komponenten "
 "deinstallieren würde."
 
-#: modules/univention/admin/uexceptions.py:327
-msgid "The password is too short, at least 8 character!"
-msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
-
 #: modules/univention/admin/syntax.py:995
 #, python-format
 msgid "The password is too short, at least %d characters needed."
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen sind erforderlich."
+
+#: modules/univention/admin/uexceptions.py:323
+msgid "The password is too short, at least 8 character!"
+msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
 #: modules/univention/admin/uexceptions.py:183
 msgid "The provided DNS information are invalid."
@@ -1404,6 +1396,10 @@ msgstr ""
 "Der Name eines IPv4 Reverse Hostname besteht aus der inversen Host Addresse "
 "(z.B.: \"4.3\")  oder für IPv6 im Nibble Format (z.B.: "
 "\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
+
+#: modules/univention/admin/uexceptions.py:414
+msgid "The object type of this object differs from the specified object type."
+msgstr "Der Objekttyp dieses Objekts unterscheided sich von dem angegebenen Objekttyp."
 
 #: modules/univention/admin/uexceptions.py:69
 msgid "The specified size limit for the LDAP search has been exceeded."
@@ -1432,7 +1428,7 @@ msgstr ""
 msgid "The value must not be longer than %d characters."
 msgstr "Der Wert darf nicht länger als %d Zeichen sein."
 
-#: modules/univention/admin/uldap.py:182
+#: modules/univention/admin/uldap.py:177
 msgid "There was no LDAP base specified."
 msgstr "Es wurde keine LDAP Basis angegeben."
 
@@ -1460,7 +1456,7 @@ msgstr "Dieses Objekt gehört zu einem Docker App-Container"
 msgid "This object is synchronized from Active Directory"
 msgstr "Dieses Objekt ist aus Active Directory synchronisiert"
 
-#: modules/univention/admin/uexceptions.py:359
+#: modules/univention/admin/uexceptions.py:355
 msgid "This operation is not allowed on this object."
 msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
 
@@ -1478,7 +1474,7 @@ msgstr "Do"
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: modules/univention/admin/uexceptions.py:390
+#: modules/univention/admin/uexceptions.py:386
 msgid "Timeperiod Object still in use!"
 msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
@@ -1486,43 +1482,43 @@ msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 msgid "Token-Ring"
 msgstr "Token-Ring"
 
-#: modules/univention/admin/uexceptions.py:315
+#: modules/univention/admin/uexceptions.py:311
 msgid "Too many DVS clients"
 msgstr "Zu viele DVS-Client Konten"
 
-#: modules/univention/admin/uexceptions.py:311
+#: modules/univention/admin/uexceptions.py:307
 msgid "Too many DVS users"
 msgstr "Zu viele DVS-Benutzerkonten"
 
-#: modules/univention/admin/uexceptions.py:283
+#: modules/univention/admin/uexceptions.py:279
 msgid "Too many client accounts"
 msgstr "Zu viele Client Konten"
 
-#: modules/univention/admin/uexceptions.py:307
+#: modules/univention/admin/uexceptions.py:303
 msgid "Too many corporate clients"
 msgstr "Zu viele Corporate Client Konten"
 
-#: modules/univention/admin/uexceptions.py:287
+#: modules/univention/admin/uexceptions.py:283
 msgid "Too many desktop accounts"
 msgstr "Zu viele Desktop Konten"
 
-#: modules/univention/admin/uexceptions.py:291
+#: modules/univention/admin/uexceptions.py:287
 msgid "Too many groupware accounts"
 msgstr "Zu viele Groupware Konten"
 
-#: modules/univention/admin/uexceptions.py:303
+#: modules/univention/admin/uexceptions.py:299
 msgid "Too many managed clients"
 msgstr "Zu viele Managed Client Konten"
 
-#: modules/univention/admin/uexceptions.py:299
+#: modules/univention/admin/uexceptions.py:295
 msgid "Too many servers"
 msgstr "Zu viele Serverkonten"
 
-#: modules/univention/admin/uexceptions.py:279
+#: modules/univention/admin/uexceptions.py:275
 msgid "Too many user accounts"
 msgstr "Zu viele Benutzerkonten"
 
-#: modules/univention/admin/uexceptions.py:295
+#: modules/univention/admin/uexceptions.py:291
 msgid "Too many users"
 msgstr "Zu viele Benutzerkonten"
 

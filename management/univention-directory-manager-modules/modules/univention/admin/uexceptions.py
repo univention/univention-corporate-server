@@ -408,3 +408,7 @@ class invalidChild(base):
 
 class primaryGroupWithoutSamba(base):
 	message = _('Need a primary group with samba option to create a user with samba option')
+
+
+class wrongObjectType(base):
+	message = _('The object type of this object differs from the specified object type.')
