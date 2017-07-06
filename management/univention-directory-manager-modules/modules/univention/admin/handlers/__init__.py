@@ -769,11 +769,11 @@ class simpleLdap(base):
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "create object with dn: %s" % (self.dn,))
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
-		self.lo.add(self.dn, al)
-		self._exists = True
 
 		# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
 		try:
+			self.lo.add(self.dn, al)
+			self._exists = True
 			self._ldap_post_create()
 		except:
 			# ensure that there is no lock left
@@ -786,7 +786,8 @@ class simpleLdap(base):
 			except:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
 			try:
-				self.remove()
+				if self._exists:
+					self.remove()
 			except:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
 			raise exc[0], exc[1], exc[2]

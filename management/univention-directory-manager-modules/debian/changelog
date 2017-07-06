@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-65) unstable; urgency=medium
+
+  * Bug #41294: Applied patch from Florian Best - Call cancel() when creation
+    of UDM object fails
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Jul 2017 14:36:37 +0200
+
 univention-directory-manager-modules (12.0.17-64) unstable; urgency=medium
 
   * Bug #37623: respect search base when looking up user
