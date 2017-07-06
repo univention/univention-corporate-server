@@ -1,3 +1,9 @@
+ucs-test (7.0.22-19) unstable; urgency=medium
+
+  * #40735: rewrite 01_base/45udm-cli in python
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Jul 2017 11:14:29 +0200
+
 ucs-test (7.0.22-18) unstable; urgency=medium
 
   * Bug #44887: Reactivated test 60_umc.80_udm_license.test
