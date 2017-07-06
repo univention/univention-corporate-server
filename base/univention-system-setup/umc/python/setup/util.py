@@ -308,10 +308,10 @@ def run_networkscrips(demo_mode=False):
 				# appliance-mode for temporary saving the old ip address
 				# network-only for not restarting all those services (time consuming!)
 				p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
-				p.wait()
 				MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
-			except OSError, ex:
-				MODULE.info("Failed to run '%s': %s" % (scriptpath, ex))
+				p.wait()
+			except OSError as ex:
+				MODULE.error("Failed to run '%s': %s" % (scriptpath, ex))
 	finally:
 		# enable execution of servers again
 		subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
