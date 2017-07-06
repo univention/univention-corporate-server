@@ -1658,7 +1658,7 @@ def con2ucs(s4connector, key, object):
 		if object['modtype'] in ['add', 'modify']:
 			ucs_ptr_record_create(s4connector, object)
 		elif object['modtype'] in ['delete']:
-			ucs_ptr_record_create(s4connector, object)
+			ucs_ptr_record_delete(s4connector, object)
 		# ignore move
 	elif dns_type == 'alias':
 		if object['modtype'] in ['add', 'modify']:
