@@ -1,3 +1,10 @@
+ucs-test (7.0.22-20) unstable; urgency=medium
+
+  * Bug #40813: copy 022_concurrent_deletion_in_ucs from s4c-test to adc-test
+  * Bug #40813: u-test: dont skip admember in 20_computer_password
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Jul 2017 11:24:00 +0200
+
 ucs-test (7.0.22-19) unstable; urgency=medium
 
   * #40735: rewrite 01_base/45udm-cli in python
