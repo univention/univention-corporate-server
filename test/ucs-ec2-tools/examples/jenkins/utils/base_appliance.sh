@@ -49,6 +49,13 @@ install_virtualbox_packages ()
 	ucr set repository/online/unmaintained=yes
 	univention-install -y --force-yes virtualbox-guest-x11
 	ucr set repository/online/unmaintained=no
+}
+
+install_activation_packages ()
+{
+	univention-install -y --force-yes univention-system-activation
+	ucr set --force auth/sshd/user/root=yes
+	cp /root/dojo.js /usr/share/univention-system-activation/www/js/dojo/dojo.js
 
 	cat >/root/system-activation.patch <<'__EOF__'
 --- /usr/share/univention-system-activation/www/js/ucs/app.js
@@ -74,13 +81,6 @@ install_virtualbox_packages ()
 __EOF__
 	patch -d/ -p0 </root/system-activation.patch
 	rm /root/system-activation.patch
-}
-
-install_activation_packages ()
-{
-	univention-install -y --force-yes univention-system-activation
-	ucr set --force auth/sshd/user/root=yes
-	cp /root/dojo.js /usr/share/univention-system-activation/www/js/dojo/dojo.js
 }
 
 download_packages ()
