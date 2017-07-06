@@ -13,4 +13,5 @@ desc: |
  * The network configuration does not list TUN/TAP interfaces as configurable
    ethernet interfaces anymore.
  * The regular expression for valid interface names has been improved.
-bug: [28070, 40212, 33132, 33131]
+ * Prevent that non-existing setup scripts are blocking the system setup.
+bug: [28070, 40212, 33132, 33131, 32817]
