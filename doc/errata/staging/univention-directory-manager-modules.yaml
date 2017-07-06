@@ -16,4 +16,6 @@ desc: |
    improved.
  * Some errors during the creation of UDM objects resulted in the need
    to save them twice. This has been fixed.
-bug: [31927, 43299, 32781, 37623, 38362, 41294]
+ * It was possible to supply a wrong object type when modifying objects. This
+   is now prevented and a error message is shown.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368]
