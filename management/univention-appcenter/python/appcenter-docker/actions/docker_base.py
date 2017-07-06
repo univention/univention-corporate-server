@@ -161,10 +161,16 @@ class DockerActionMixin(object):
 		self.log('Initializing app image')
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
+		after_image_configuration = {}
 		for setting in app.get_settings():
-			if 'Install' in setting.show or 'Upgrade' in setting.show:
+			if setting.should_to_into_image_configuration(app):
 				if setting.name not in set_vars:
 					set_vars[setting.name] = setting.get_initial_value()
+			else:
+				try:
+					after_image_configuration[setting.name] = set_vars.pop(setting.name)
+				except KeyError:
+					pass
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
@@ -240,5 +246,6 @@ docker inspect:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
 		self._copy_files_into_container(app, '/etc/timezone', '/etc/localtime', database_password_file)
+		after_image_configuration.update(set_vars)
 		configure = get_action('configure')
-		configure.call(app=app, autostart=autostart, run_script='no', set_vars=set_vars)
+		configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)

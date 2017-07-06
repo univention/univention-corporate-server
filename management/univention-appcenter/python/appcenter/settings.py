@@ -129,6 +129,9 @@ class Setting(TypedIniSectionObject):
 			return None
 		return value
 
+	def should_to_into_image_configuration(self, app):
+		return self.is_inside(app) and ('Install' in self.show or 'Upgrade' in self.show)
+
 
 class StringSetting(Setting):
 	pass
@@ -214,6 +217,9 @@ class FileSetting(Setting):
 			from univention.appcenter.docker import Docker
 			docker = Docker(app)
 			return self._write_file_content(docker.path(self.filename), value)
+
+	def should_to_into_image_configuration(self, app):
+		return False
 
 
 class PasswordSetting(Setting):

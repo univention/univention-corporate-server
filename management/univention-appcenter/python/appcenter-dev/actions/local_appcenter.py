@@ -331,6 +331,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('--schema', help='Path to an LDAP schema extension file')
 		parser.add_argument('--attributes', help='Path to the file describing Extended Attributes')
 		parser.add_argument('--configure', help='Path to a configure script that will be called when applying settings in a container')
+		parser.add_argument('--configure-host', help='Path to a configure_host script that will be called when applying settings in a container')
 		parser.add_argument('--settings', help='Path to the file describing Settings')
 		parser.add_argument('--preinst', help='Path to a preinst script that will be called by the App Center before installation')
 		parser.add_argument('--join', help='Path to a join script that will be called by the App Center after installation')
@@ -499,6 +500,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.attributes, os.path.join(repo_dir, 'attributes'))
 		if args.configure:
 			self.copy_file(args.configure, os.path.join(repo_dir, 'configure'))
+		if args.configure_host:
+			self.copy_file(args.configure_host, os.path.join(repo_dir, 'configure_host'))
 		if args.settings:
 			self.copy_file(args.settings, os.path.join(repo_dir, 'settings'))
 		if args.preinst:
