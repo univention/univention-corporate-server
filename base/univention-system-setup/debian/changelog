@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-25) unstable; urgency=medium
+
+  * Bug #33132: Applied patch from Philipp Hahn - Filter out tun/tap
+    interfaces
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Jul 2017 15:05:15 +0200
+
 univention-system-setup (10.0.10-24) unstable; urgency=medium
 
   * Bug #28070: Applied additional patch from Florian Best

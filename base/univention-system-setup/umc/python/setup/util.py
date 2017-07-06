@@ -679,8 +679,8 @@ def detect_interfaces():
 		# filter out lo, etc. interfaces
 		if open(os.path.join(pathname, 'type'), 'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
 			continue
-		# filter out bridge, bond devices
-		if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding', 'brport')):
+		# filter out bridge, bond, tun/tap interfaces
+		if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding', 'brport', 'tun_flags')):
 			continue
 		# filter out vlan devices
 		if '.' in dirname:
