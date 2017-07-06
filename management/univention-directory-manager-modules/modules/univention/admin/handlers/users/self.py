@@ -61,4 +61,5 @@ class object(univention.admin.handlers.users.user.object):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	return udm_user.lookup(co, lo, filter_s, lo.whoami(), superordinate, scope='base', unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
+	dn = lo.whoami()
+	return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit) if lo.compare_dn(dn, user.dn)]

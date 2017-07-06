@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-64) unstable; urgency=medium
+
+  * Bug #37623: respect search base when looking up user
+
+ -- Florian Best <best@univention.de>  Thu, 06 Jul 2017 11:29:51 +0200
+
 univention-directory-manager-modules (12.0.17-63) unstable; urgency=medium
 
   * Bug #32781: Applied additional patch from Florian Best
