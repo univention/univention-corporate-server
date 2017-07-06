@@ -404,20 +404,20 @@ def update_extended_attributes(lo, module, position):
 			if not layoutDisabled:
 				# get position on tab
 				# -1 == append on top
-				tabPosition = attrs.get('univentionUDMPropertyLayoutPosition', ['-1'])[0]
+				priority = attrs.get('univentionUDMPropertyLayoutPosition', ['-1'])[0]
 				try:
-					tabPosition = int(tabPosition)
-				except:
+					priority = int(priority)
+				except ValueError:
 					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
-					tabPosition = -1
+					priority = -1
 
-				if tabPosition == -1 and properties4tabs[tabname]:
-					tabPosition = max([-1, min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1])
+				if priority == -1 and properties4tabs[tabname]:
+					priority = max([-1, min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1])
 
 				properties4tabs[tabname].append(EA_Layout(
 					name=pname,
 					tabName=tabname,
-					position=tabPosition,
+					position=priority,
 					advanced=tabAdvanced,
 					overwrite=overwriteProp,
 					fullWidth=fullWidth,
