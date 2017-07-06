@@ -49,12 +49,38 @@ install_virtualbox_packages ()
 	ucr set repository/online/unmaintained=yes
 	univention-install -y --force-yes virtualbox-guest-x11
 	ucr set repository/online/unmaintained=no
+
+	cat >/root/system-activation.patch <<'__EOF__'
+--- /usr/share/univention-system-activation/www/js/ucs/app.js
++++ /usr/share/univention-system-activation/www/js/ucs/app.js
+@@ -78,7 +78,7 @@ define([
+ 		});
+ 	}
+ 
+-	var hasLicenseRequested = Boolean(entries.email);
++	var hasLicenseRequested = Boolean(entries.license_requested);
+ 
+ 	return {
+ 		_availableLocales: _availableLocales,
+@@ -250,7 +250,7 @@ define([
+ 			}, lang.hitch(this, function(err) {
+ 				var status_code = err.response.status;
+ 				var error_details = null;
+-				if(status_code >= 400 && status_code <= 500){
++				if (status_code >= 400) {
+ 					error_details = put('html');
+ 					error_details.innerHTML = err.response.data;
+ 					error_details = error_details.getElementsByTagName('span')[0].innerText;
+__EOF__
+	patch -d/ -p0 </root/system-activation.patch
+	rm /root/system-activation.patch
 }
 
 install_activation_packages ()
 {
 	univention-install -y --force-yes univention-system-activation
 	ucr set --force auth/sshd/user/root=yes
+	cp /root/dojo.js /usr/share/univention-system-activation/www/js/dojo/dojo.js
 }
 
 download_packages ()
@@ -612,7 +638,6 @@ appliance_preinstall_non_univention_packages ()
 			heimdal-kdc
 			quota
 			libslp1
-			slapd
 			nagios-plugins-common
 			liblockfile-bin
 			rpcbind
