@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-15) unstable; urgency=low
+
+  * Bug #44948: fixed regression in delivery of mails to cyrus shared folders
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 06 Jul 2017 16:07:31 +0200
+
 univention-mail-postfix (11.0.1-14) unstable; urgency=low
 
   * Bug #44811: handle subdomains safer, run postmap when installing, wording
