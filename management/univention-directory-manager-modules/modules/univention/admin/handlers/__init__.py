@@ -109,6 +109,9 @@ class base(object):
 		self.old_options = []
 		self.alloc = []
 
+		if not isinstance(lo, univention.admin.uldap.access):
+			raise TypeError('lo must be instance of univention.admin.uldap.access.')
+
 	def open(self):
 		self._open = True
 
