@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-mail-postfix
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A regression has been fixed which was introduced in erratum 36. The
+   regression prevented the delivery of mails to shared folders in Cyrus.
+bug: [44948]
