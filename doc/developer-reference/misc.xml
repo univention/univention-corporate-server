@@ -290,7 +290,7 @@ override_dh_auto_test:
 					<term><package>univention.lib.ldap_extension</package></term>
 					<listitem>
 						<para>
-							This module provides some helper functions internally used to register LDAP extension as described in <xref linkend="app:ucs_registerLDAPExtension"/>.
+							This module provides some helper functions internally used to register LDAP extension as described in <xref linkend="join:libraries:shell"/>.
 						</para>
 					</listitem>
 				</varlistentry>

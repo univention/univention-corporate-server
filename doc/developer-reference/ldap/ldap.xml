@@ -117,7 +117,7 @@
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
 		</para>
 		<example id="join:registerSchema">
 			<title>Schema registration in join script</title>
@@ -217,7 +217,7 @@ ucs_registerLDAPExtension "$@" \
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
 		</para>
 		<example id="join:registerACL">
 			<title>LDAP ACL registration in join script</title>
