@@ -10,4 +10,5 @@ desc: |
    occurred if certain values were not correctly encoded.
  * The host name of a System which joins into an Active Directory domain is
    now restricted to 13 characters in the initial system configuration.
-bug: [28070, 40212]
+ * TUN/TAP interfaces are now filtered out on a VM server.
+bug: [28070, 40212, 33132]
