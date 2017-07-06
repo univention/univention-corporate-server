@@ -14,4 +14,6 @@ desc: |
    added for convenience.
  * The error handling during adding hosts to nagios services has been
    improved.
-bug: [31927, 43299, 32781, 37623, 38362]
+ * Some errors during the creation of UDM objects resulted in the need
+   to save them twice. This has been fixed.
+bug: [31927, 43299, 32781, 37623, 38362, 41294]
