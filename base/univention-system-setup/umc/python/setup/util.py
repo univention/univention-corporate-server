@@ -304,12 +304,14 @@ def run_networkscrips(demo_mode=False):
 		for scriptpath in sorted(os.listdir(netpath)):
 			scriptpath = os.path.join(netpath, scriptpath)
 			# launch script
-			MODULE.info('Running script %s\n' % scriptpath)
-			# appliance-mode for temporary saving the old ip address
-			# network-only for not restarting all those services (time consuming!)
-			p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
-			p.wait()
-
+			try:
+				# appliance-mode for temporary saving the old ip address
+				# network-only for not restarting all those services (time consuming!)
+				p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
+				p.wait()
+				MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
+			except OSError, ex:
+				MODULE.info("Failed to run '%s': %s" % (scriptpath, ex))
 	finally:
 		# enable execution of servers again
 		subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
