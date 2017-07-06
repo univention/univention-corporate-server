@@ -2453,10 +2453,20 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.ALL, "sync from ucs return True")
 		return True  # FIXME: return correct False if sync fails
 
+	def _get_objectGUID(self, dn):
+		ad_object = self.get_object(dn, ['objectGUID'])
+		if not ad_object:
+			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
+			return ''
+		return ad_object.get('objectGUID')[0]
+
 	def delete_in_ad(self, object):
 		_d = ud.function('ldap.delete_in_ad')
 		try:
+			objectGUID = self._get_objectGUID(object['dn'])
 			self.lo_ad.lo.delete_s(compatible_modstring(object['dn']))
+			entryUUID = object.get('attributes').get('entryUUID')[0]
+			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		except ldap.NO_SUCH_OBJECT:
 			pass  # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
