@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+#
+#
+# Univention Nagios Plugin
+#  check_univention_nscd: check if nscd is bound to its socket.
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+#
+
+VERSION="1.00"
+PROGNAME=`/usr/bin/basename $0`
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+get_state_string() {
+	if [ "$1" = "$STATE_OK" ] ; then
+		STATE_STRING="OK"
+	elif [ "$1" = "$STATE_WARNING" ] ; then
+		STATE_STRING="WARNING"
+	elif [ "$1" = "$STATE_CRITICAL" ] ; then
+		STATE_STRING="CRITICAL"
+	else
+		STATE_STRING="UNKNOWN"
+    fi
+}
+
+print_revision() {
+    echo "$PROGNAME: version $VERSION"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+    echo "Usage: $PROGNAME"
+}
+
+print_help() {
+    print_revision
+    echo ""
+    print_usage
+}
+
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision
+            exit $STATE_OK
+            ;;
+    esac
+    shift
+done
+
+nscd_socket="/var/run/nscd/socket"
+
+if [ ! -S $nscd_socket ]; then
+	state=$STATE_CRITICAL
+	get_state_string $state
+	echo "${STATE_STRING}: no nscd socket found! nscd not running?"
+	exit $state
+fi
+
+pids_on_nscd_socket=$(lsof -tV $nscd_socket)
+RET=$?
+if (( $RET != 0 )); then
+	if [[ "$pids_on_nscd_socket" == "lsof: no file use located: "$nscd_socket ]]; then
+		pids_on_nscd_socket=""
+	else
+		state=$STATE_UNKNOWN
+		get_state_string $state
+		echo "${STATE_STRING}: lsof command failed"
+		exit $state
+	fi
+fi
+
+nscd_processes_on_nscd_socket=0
+for pid in $pids_on_nscd_socket; do
+	process_path=$(readlink /proc/"$pid"/exe)
+	if (( $? != 0 )); then
+		#Process died?
+		continue
+	fi
+	process_name=$(basename "$process_path")
+	if [[ "$process_name" == "nscd" ]]; then
+		let nscd_processes_on_nscd_socket++
+	else
+		state=$STATE_CRITICAL
+		get_state_string $state
+		echo "${STATE_STRING}: Unknown program: \""$process_name"\" bound to nscd socket."
+		exit $state
+	fi
+done
+
+if (( $nscd_processes_on_nscd_socket == 1 )); then
+	state=$STATE_OK
+	get_state_string $state
+	echo "${STATE_STRING}: only one instance of nscd running."
+	exit $state
+elif (( $nscd_processes_on_nscd_socket > 1 )); then 
+	state=$STATE_WARNING
+	get_state_string $state
+	echo "${STATE_STRING}: more than one instance of nscd bound to nscd socket."
+	exit $state
+elif (( $nscd_processes_on_nscd_socket == 0 )); then
+	state=$STATE_CRITICAL
+	get_state_string $state
+	echo "${STATE_STRING}: no instance of nscd bound to nscd socket."
+	exit $state
+fi
+
+state=$STATE_CRITICAL
+get_state_string $state
+echo "${STATE_STRING}: PLUGIN FAILED"
+exit $state
