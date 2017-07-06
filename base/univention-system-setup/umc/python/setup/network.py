@@ -49,7 +49,7 @@ _ = _translation.translate
 
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/]+?)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')
-# VALID_NAME_RE = re.compile(r'^(?![.]{1,2})[^/ \t\n\r\f]{1,15}\Z')
+# VALID_NAME_RE = re.compile(r'^(?![.]{1,2}\Z)[^/ \t\n\r\f]{1,15}\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 

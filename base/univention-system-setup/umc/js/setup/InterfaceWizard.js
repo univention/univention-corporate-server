@@ -166,7 +166,10 @@ define([
 						name: 'name',
 						type: TextBox,
 						validator: function(value) {
-							return (/^[a-z]+[0-9]+(\.[0-9]+)?$/).test(value);
+							if (value.length > 15 || value === '.' || value === '..') {
+								return false;
+							}
+							return /^(?![.]{1,2}$)[^/ \t\n\r\f]{1,15}(\.[0-9]+)?$/.test(value);
 						},
 						visible: false
 					}, {
@@ -177,7 +180,7 @@ define([
 						type: TextBox,
 						validator: lang.hitch(this, function(value) {
 							if (this.getInterfaceType() === 'Bond' || this.getInterfaceType() === 'Bridge') {
-								return (/^[a-zA-Z]+[0-9]+$/).test(value);
+								return /^(?![.]{1,2}$)[^/ \t\n\r\f]{1,15}$/.test(value);
 							}
 							return true;
 						}),

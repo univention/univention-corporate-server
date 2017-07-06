@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-26) unstable; urgency=medium
+
+  * Bug #33131: Applied patch from Philipp Hahn - Fix interface name regular
+    expressions
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Jul 2017 15:24:01 +0200
+
 univention-system-setup (10.0.10-25) unstable; urgency=medium
 
   * Bug #33132: Applied patch from Philipp Hahn - Filter out tun/tap
