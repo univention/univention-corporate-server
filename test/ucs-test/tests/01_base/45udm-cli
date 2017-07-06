@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python
 ## desc: Create a user via udm cli and authenticate via ldap and samba
 ## roles:
 ##  - domaincontroller_master
@@ -15,44 +15,79 @@
 ## versions:
 ##  3.0-0: found
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/user.sh" || exit 137
-. "$TESTLIBPATH/samba.sh" || exit 137
+from __future__ import print_function
 
-USERNAME=$(user_randomname)
-PASSWORD=univention
+import time
+import subprocess
 
-info "Create a test user with UDM CLI" 
-user_create "$USERNAME"
+import univention.uldap as uldap
+import univention.config_registry as configRegistry
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
 
-wait_for_replication
-if checkpkg univention-samba4; then
-	wait_for_drs_replication "(sAMAccountName=$USERNAME)" || true
-fi
 
-ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w "$PASSWORD" -s base || RETVAL=110
+class cmd(object):
+	def __init__(self, *args):
+		self.args = args
+		self.input = None
 
-# In case of a memberserver in a S4 environment, we have to
-# wait until the user has been synchonized to Samba 4. Otherwise
-# we can't get a kerberos ticket
-if [ "$server_role" = "memberserver" ]; then
-	sleep 16
-fi
+	def with_stdin(self, input):
+		self.input = input
+		return self
 
-info "Try to get a kerberos ticket for the new user"
+	def check(self):
+		cmd = subprocess.Popen(self.args, stdin=subprocess.PIPE)
 
-echo "$PASSWORD" | kinit --password-file=STDIN "$USERNAME" || RETVAL=110
+		if self.input:
+			cmd.communicate(self.input)
+		else:
+			cmd.wait()
 
-if checkpkg univention-samba; then
-	info "Samba Logon with this new user"
-	if ! smbclient -L localhost -U "${USERNAME}%${PASSWORD}"; then
-		info "First Samba login failed. Wait for 30 seconds and try again ..."
-		sleep 30
-		smbclient -L localhost -U "${USERNAME}%${PASSWORD}" || RETVAL=110
-	fi
-fi
+		return cmd.returncode == 0
 
-user_remove "$USERNAME"
 
-exit $RETVAL
-# vim:set ft=sh:
+def test_ldap_connection(user_dn, password):
+	print("Testing ldap connection")
+	access = uldap.access(binddn=user_dn, bindpw=password)
+	for (key, value) in access.get(user_dn, required=True).items():
+		print("{} = {}".format(key, value))
+
+
+def test_samba_connection(username, password):
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	# In case of a memberserver in a S4 environment, we have to
+	# wait until the user has been synchonized to Samba 4. Otherwise
+	# we can't get a kerberos ticket
+	if ucr.get("server/role") == "memberserver":
+		time.sleep(16)
+
+	print("Try to get a kerberos ticket for the new user", username)
+	kinit = cmd("kinit", "--password-file=STDIN", username).with_stdin(password)
+
+	if not kinit.check():
+		utils.fail("Failed to acquire kerberos ticket.")
+
+	if utils.package_installed("univention-samba") or utils.package_installed("univention-samba4"):
+		print("Samba Logon with this new user")
+
+		smbclient = cmd("smbclient", "-L", "localhost", "-U", "{}%{}".format(username, password))
+
+		if not smbclient.check():
+			print("First Samba login failed. Wait for 30 seconds and try again ...")
+			time.sleep(30)
+			if not smbclient.check():
+				utils.fail("Samba login failed for {} with {}".format(username, password))
+
+
+def test(password="univention"):
+	with udm_test.UCSTestUDM() as udm:
+		(user_dn, username) = udm.create_user()
+
+		test_ldap_connection(user_dn, password)
+		test_samba_connection(username, password)
+
+
+if __name__ == '__main__':
+	test()
