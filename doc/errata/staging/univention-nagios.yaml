@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-nagios
+fix: 10.0.1-3A~4.2.0.201707061034
+desc: |
+ This update addresses the following issue(s):
+ * Fixed a nscd warning on systems with docker apps installed.
+   The check now inspects the processes on the nscd socket instead
+   of just counting the number of running nscd processes.
+bug: [42812]
