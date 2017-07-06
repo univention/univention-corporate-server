@@ -1117,7 +1117,8 @@ class simpleLdap(base):
 					raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value})
 
 	def _is_synced_object(self):
-		return 'synced' in self.oldattr.get('univentionObjectFlag', [])
+		flags = self.oldattr.get('univentionObjectFlag', [])
+		return 'synced' in flags and not 'docker' in flags
 
 
 class simpleComputer(simpleLdap):

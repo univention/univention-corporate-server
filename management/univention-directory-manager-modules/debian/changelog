@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-67) unstable; urgency=medium
+
+  * Bug #43846: treat objects with docker object flag as NOT synced in
+    _is_synced_object()
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Jul 2017 19:18:42 +0200
+
 univention-directory-manager-modules (12.0.17-66) unstable; urgency=medium
 
   * Bug #30368: check object type before opening object
