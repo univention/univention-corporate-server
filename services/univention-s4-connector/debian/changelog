@@ -1,3 +1,14 @@
+univention-s4-connector (11.0.7-12) unstable; urgency=medium
+
+  * Bug #43072: s4connector/dns: fix ptr_record deletion.
+    Due to a copy-paste error `ucs_ptr_record_create()` instead
+    of `ucs_ptr_record_delete() was called on `modtype == delete`.
+  * Bug #43072: s4connector/dns: fix cname deletion.
+    Due to a copy-paste error `ucs_cname_create()` instead
+    of `ucs_cname_delete() was called on `modtype == delete`.
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Jul 2017 12:01:10 +0200
+
 univention-s4-connector (11.0.7-11) unstable; urgency=medium
 
   * Bug #43478: Fix exit
