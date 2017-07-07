@@ -9,6 +9,7 @@
 		</categories>
 		<command name="ucr/put" function="put" />
 		<command name="ucr/add" function="add" />
+		<command name="ucr/validate" function="validate" />
 		<command name="ucr/remove" function="remove" />
 		<command name="ucr/get" function="get" />
 		<command name="ucr/categories" function="categories" />

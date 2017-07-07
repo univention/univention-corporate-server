@@ -33,11 +33,12 @@
 
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base, UMC_Error
+from univention.management.console.config import ucr
 
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, DictSanitizer, StringSanitizer
 
-import univention.config_registry as ucr
+from univention.config_registry import handler_set, handler_unset, ConfigRegistry, validate_key
 from univention.config_registry_info import ConfigRegistryInfo, Variable
 
 import univention.info_tools as uit
@@ -89,7 +90,16 @@ class Instance(Base):
 
 	def add(self, request):
 		# does the same as put
+		ucr.load()
+		already_set = set(ucr.keys()) & set(v['object']['key'] for v in request.options)
+		if already_set:
+			raise UMC_Error(_('The UCR variable %r is already set.') % (', '.join(already_set)))
+
 		self.put(request)
+
+	@simple_response
+	def validate(self, key):
+		return validate_key(key)
 
 	@sanitize(DictSanitizer({
 		'object': DictSanitizer({
@@ -102,10 +112,12 @@ class Instance(Base):
 			var = _var['object']
 			value = var['value'] or ''
 			key = var['key']
+			if not validate_key(key):
+				raise UMC_Error(_('The UCR variable %r has an invalid name.') % (key,))
 			if self.is_readonly(key):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
 			arg = ['%s=%s' % (key.encode(), value.encode())]
-			ucr.handler_set(arg)
+			handler_set(arg)
 
 			# handle descriptions, type, and categories
 			if 'descriptions' in var or 'type' in var or 'categories' in var:
@@ -118,11 +130,11 @@ class Instance(Base):
 			if self.is_readonly(var):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be removed!') % (var,))
 
-		ucr.handler_unset(variables)
+		handler_unset(variables)
 		self.finished(request.id, True)
 
 	def get(self, request):
-		ucrReg = ucr.ConfigRegistry()
+		ucrReg = ConfigRegistry()
 		ucrReg.load()
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
 

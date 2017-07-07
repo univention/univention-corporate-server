@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (6.0.1-5) unstable; urgency=medium
+
+  * Bug #25095: Applied patch - Show error message if UCR key is not valid
+    and improve key validation
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Jul 2017 15:35:25 +0200
+
 univention-management-console-module-ucr (6.0.1-4) unstable; urgency=medium
 
   * Bug #43528: Use full width for grids by default
