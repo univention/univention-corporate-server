@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-58) unstable; urgency=medium
+
+  * Bug #43846: treat objects with docker object flag as NOT synced in
+    _is_synced_object()
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jul 2017 11:21:25 +0200
+
 univention-directory-manager-modules (11.0.3-57) unstable; urgency=medium
 
   * Bug #43423: defer validations to the bottom of __init__, readd settings/cn
