@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-32) unstable; urgency=medium
+
+  * Bug #32817: Minor cleanup
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Jul 2017 16:39:23 +0200
+
 univention-system-setup (10.0.10-31) unstable; urgency=medium
 
   * Bug #32817: Cleanup

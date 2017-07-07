@@ -511,15 +511,15 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 		# launch script
 		icmd = [scriptpath] + args
-		MODULE.info('Running script %s\n' % icmd)
 		f.write('== script: %s\n' % icmd)
 		try:
 			p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
 				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 				'LANG': lang,
 			})
+			MODULE.info("Running script '%s': pid=%d" % (icmd, p.pid))
 		except EnvironmentError as exc:
-			MODULE.info("Failed to run '%s': %s" % (scriptpath, exc))
+			MODULE.error("Failed to run '%s': %s" % (icmd, exc))
 			continue
 		while p.poll() is None:
 			fr.seek(0, os.SEEK_END)  # update file handle
