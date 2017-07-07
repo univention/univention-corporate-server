@@ -12,7 +12,8 @@ desc: |
    now restricted to 13 characters in the initial system configuration.
  * The network configuration does not list TUN/TAP interfaces as configurable
    ethernet interfaces anymore.
- * The regular expression for valid interface names has been improved.
+ * The naming restrictions for bridge and bonding network interfaces have been
+   adjusted so that is is not required to have any number in the name anymore.
  * The error handling when executing system setup scripts has been improved.
  * Start the welcome screen after the setup in appliance mode
 bug: [28070, 40212, 33132, 33131, 32817, 44061]
