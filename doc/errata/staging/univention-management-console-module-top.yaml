@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console-module-top
+fix: 6.0.1-2A~4.2.0.201707071042
+desc: |
+ This update addresses the following issue(s):
+ * Querying information about a process is now bundled in a single call.
+bug: [38738]
