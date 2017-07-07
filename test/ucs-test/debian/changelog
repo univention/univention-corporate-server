@@ -1,3 +1,9 @@
+ucs-test (7.0.22-22) unstable; urgency=medium
+
+  * Bug #30368: fix wrong object type given in test scripts
+
+ -- Florian Best <best@univention.de>  Fri, 07 Jul 2017 11:22:45 +0200
+
 ucs-test (7.0.22-21) unstable; urgency=medium
 
   * Bug #41368: fix wrong use of univention.uldap.access instead of

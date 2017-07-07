@@ -149,7 +149,7 @@ class TestUMCExtendedAttributes(UDMModule):
         made with respective options and 'navigation' flavor
         """
         options = {
-            "objectType": "None",
+            "objectType": "settings/extended_attribute",
             "objectProperty": "None",
             "objectPropertyValue": "",
             "container": "cn=custom attributes,cn=univention," + self.ldap_base,

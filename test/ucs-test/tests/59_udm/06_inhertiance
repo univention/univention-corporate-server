@@ -34,7 +34,7 @@ setup () {
 		--position "cn=$name,$BASE" \
 		--set name="p2" \
 		--set routers="${NET%.0}.254"
-	udm-test dhcp/service modify \
+	udm-test dhcp/pool modify \
 		--dn "cn=pool,cn=$NET,cn=$name,$BASE" \
 		--policy-reference "cn=p2,cn=$name,$BASE"
 }
