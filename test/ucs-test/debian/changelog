@@ -1,3 +1,10 @@
+ucs-test (7.0.22-21) unstable; urgency=medium
+
+  * Bug #41368: fix wrong use of univention.uldap.access instead of
+  	univention.admin.uldap.access
+
+ -- Florian Best <best@univention.de>  Fri, 07 Jul 2017 10:49:40 +0200
+
 ucs-test (7.0.22-20) unstable; urgency=medium
 
   * Bug #40813: copy 022_concurrent_deletion_in_ucs from s4c-test to adc-test

@@ -100,7 +100,7 @@ class UCSTestDomainAdminCredentials(object):
             self.username = None
 
 
-def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None):
+def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admin_uldap=False):
     if decode_ignorelist is None:
         decode_ignorelist = []
     ucr = univention.config_registry.ConfigRegistry()
@@ -123,7 +123,11 @@ def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None):
 
     for ldapServer in ldapServers:
         try:
-            return uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, follow_referral=True)
+            lo = uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, follow_referral=True)
+            if admin_uldap:
+                import univention.admin.uldap
+                lo = univention.admin.uldap(lo=lo)
+            return lo
         except ldap.SERVER_DOWN():
             pass
     raise ldap.SERVER_DOWN()

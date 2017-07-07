@@ -19,7 +19,7 @@ udm_modules.update()
 
 
 def get_serial_number(zone_dn):
-	lo = utils.get_ldap_connection()
+	lo = utils.get_ldap_connection(admin_uldap=True)
 	position = univention.admin.uldap.position(lo.base)
 	udm_modules.init(lo, position, udm_modules.get('dns/forward_zone'))
 	results = udm_modules.lookup('dns/forward_zone', None, lo, base=zone_dn, scope='base')
@@ -43,5 +43,5 @@ if __name__ == '__main__':
 		# dnstests.check_ldap_object(test_zone_dn, 'forward zone')
 
 	s4connector.wait_for_sync()
-	## Removing a DNS zone triggers bind reload in postrun, better check:
+	# Removing a DNS zone triggers bind reload in postrun, better check:
 	dnstests.fail_if_cant_resolve_own_hostname()  # wait up to 17 seconds

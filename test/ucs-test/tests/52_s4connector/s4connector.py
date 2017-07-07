@@ -239,7 +239,7 @@ def verify_udm_object(module, dn, expected_properties):
 
 	This will throw an `AssertionError` in case of a mismatch.
 	"""
-	lo = utils.get_ldap_connection()
+	lo = utils.get_ldap_connection(admin_uldap=True)
 	try:
 		position = univention.admin.uldap.position(lo.base)
 		udm_module = univention.admin.modules.get(module)

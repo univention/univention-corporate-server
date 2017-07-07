@@ -21,7 +21,7 @@ import univention.config_registry
 UCR = ucr_test.UCSTestConfigRegistry()
 UCR.load()
 
-LO = utils.get_ldap_connection()
+LO = utils.get_ldap_connection(admin_uldap=True)
 
 
 class Failure():
