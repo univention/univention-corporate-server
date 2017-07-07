@@ -35,111 +35,81 @@ import time
 import psutil
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
-from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, ListSanitizer, IntegerSanitizer
 
 _ = Translation('univention-management-console-module-top').translate
 
 
-class Process(object):
-
-	"""A wrapper for psutil.Process which is able to handle API changes to support psutil 0.9 and >= 2.0"""
-
-	def __init__(self, process):
-		self.process = process
-
-	def __getattribute__(self, name):
-		try:
-			attr = object.__getattribute__(self, 'process').__getattribute__(name)
-			if name in ('name', 'parent', 'ppid', 'exe', 'cmdline', 'status', 'uids', 'gids', 'username', 'create_time') and callable(attr):
-				return attr()
-			return attr
-		except AttributeError:
-			if name.startswith('get_'):
-				return object.__getattribute__(self, 'process').__getattribute__(name[4:])
-			raise
-
-
 class Instance(Base):
 
-	@sanitize(pattern=PatternSanitizer(default='.*'))
-	def query(self, request):
-		category = request.options.get('category', 'all')
-		pattern = request.options.get('pattern')
+	@sanitize(
+		pattern=PatternSanitizer(default='.*'),
+		category=ChoicesSanitizer(choices=['user', 'pid', 'command', 'all'], default='all')
+	)
+	@simple_response
+	def query(self, pattern, category='all'):
 		processes = []
 		for process in psutil.process_iter():
-			process = Process(process)
 			try:
-				username = process.username
+				username = process.username()
 			except KeyError:  # fixed in psutil 2.2.0
-				username = str(process.uids.real)
+				username = str(process.uids().real)
 			try:
 				(user_time, system_time, ) = process.get_cpu_times()
-				listEntry = {
+				proc = {
 					'timestamp': time.time(),
 					'cpu_time': user_time + system_time,
 					'user': username,
 					'pid': process.pid,
 					'cpu': 0.0,
 					'mem': process.get_memory_percent(),
-					'command': ' '.join(process.cmdline or []) or process.name,
+					'command': ' '.join(process.cmdline() or []) or process.name(),
 				}
 			except psutil.NoSuchProcess:
 				continue
+
+			categories = [category]
 			if category == 'all':
-				for value in listEntry.itervalues():
-					if pattern.match(str(value)):
-						processes.append(listEntry)
-						break
-			else:
-				if pattern.match(str(listEntry[category])):
-					processes.append(listEntry)
+				categories = proc.keys()
+			if any(pattern.match(str(proc[cat])) for cat in categories):
+				processes.append(proc)
 
 		# Calculate correct cpu percentage
 		time.sleep(1)
 		for process_entry in processes:
 			try:
-				process = Process(psutil.Process(process_entry['pid']))
+				process = psutil.Process(process_entry['pid'])
 				(user_time, system_time, ) = process.get_cpu_times()
 			except psutil.NoSuchProcess:
-				pass
-			else:
-				elapsed_time = time.time() - process_entry['timestamp']
-				elapsed_cpu_time = user_time + system_time - process_entry['cpu_time']
-				cpu_percent = (elapsed_cpu_time / elapsed_time) * 100
-				process_entry['cpu'] = cpu_percent
-			# Cleanup request result
-			del process_entry['timestamp']
-			del process_entry['cpu_time']
+				continue
+			elapsed_time = time.time() - process_entry.pop('timestamp')
+			elapsed_cpu_time = user_time + system_time - process_entry.pop('cpu_time')
+			cpu_percent = (elapsed_cpu_time / elapsed_time) * 100
+			process_entry['cpu'] = cpu_percent
 
-		request.status = SUCCESS
-		self.finished(request.id, processes)
+		return processes
 
-	def kill(self, request):
+	@sanitize(
+		signal=ChoicesSanitizer(choices=['SIGTERM', 'SIGKILL']),
+		pid=ListSanitizer(IntegerSanitizer())
+	)
+	@simple_response
+	def kill(self, signal, pid):
 		failed = []
-		message = ''
-		signal = request.options.get('signal', 'SIGTERM')
-		pidList = request.options.get('pid', [])
-		for pid in pidList:
+		for pid_ in pid:
 			try:
-				process = Process(psutil.Process(int(pid)))
+				process = psutil.Process(pid_)
 				if signal == 'SIGTERM':
 					process.terminate()
 				elif signal == 'SIGKILL':
 					process.kill()
 			except psutil.NoSuchProcess as exc:
-				failed.append(pid)
-				MODULE.error(str(exc))
-		if not failed:
-			request.status = SUCCESS
-			success = True
-		else:
-			request.status = MODULE_ERR
-			failed = ', '.join(map(str, failed))
-			message = _('No process found with PID %s') % (failed)
-			success = False
-		self.finished(request.id, success, message=message)
+				failed.append(str(pid_))
+				MODULE.error('Could not %s pid %s: %s' % (signal, pid_, exc))
+		if failed:
+			failed = ', '.join(failed)
+			raise UMC_Error(_('No process found with PID %s') % (failed))
