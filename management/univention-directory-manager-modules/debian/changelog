@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-69) unstable; urgency=medium
+
+  * Bug #41368: Use univention.admin.uldap.access if univention.uldap.access
+    is used and log deprecated warning
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Jul 2017 11:52:40 +0200
+
 univention-directory-manager-modules (12.0.17-68) unstable; urgency=medium
 
   * Bug #41368: Applied patch from Florian Best - Prevent the direct use

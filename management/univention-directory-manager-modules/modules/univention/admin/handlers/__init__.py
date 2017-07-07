@@ -109,8 +109,11 @@ class base(object):
 		self.old_options = []
 		self.alloc = []
 
-		if not isinstance(lo, univention.admin.uldap.access):
-			raise TypeError('lo must be instance of univention.admin.uldap.access.')
+		if not isinstance(self.lo, univention.admin.uldap.access):
+			if not isinstance(self.lo, univention.uldap.access):
+				raise TypeError('lo must be instance of univention.admin.uldap.access.')
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
+			self.lo = univention.admin.uldap.access(lo=self.lo)
 
 	def open(self):
 		self._open = True
