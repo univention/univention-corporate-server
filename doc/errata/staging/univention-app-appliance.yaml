@@ -3,8 +3,9 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-0
 src: univention-app-appliance
-fix: 6.0.7-19A~4.2.0.201706121639
+fix: 1.0.2-26A~4.2.0.201707071137
 desc: |
  This update addresses the following issue(s):
  * Adapt univention-app-appliance to changes in UCS 4.2 branding
-bug: [44523]
+ * Fix position of status messages during boot
+bug: [44523, 44952]
