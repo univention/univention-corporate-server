@@ -38,7 +38,7 @@ import imaplib
 import shutil
 
 import univention.admin.modules
-from univention.uldap import getMachineConnection
+from univention.admin.uldap import getMachineConnection
 from univention.config_registry import handler_set
 from univention.mail.dovecot import DovecotListener
 
@@ -394,10 +394,9 @@ class DovecotSharedFolderListener(DovecotListener):
 		try:
 			self.listener.setuid(0)
 			univention.admin.modules.update()
-			lo = getMachineConnection()
-			config = univention.admin.config.config()
+			lo, po = getMachineConnection()
 			mod = univention.admin.modules.get(udm_module)
-			return mod.lookup(config, lo, udm_filter)
+			return mod.lookup(None, lo, udm_filter)
 		except:
 			self.log_e("get_udm_infos(%s, %s): Failed to retrieve UDM info:\n%s" % (udm_module, udm_filter, traceback.format_exc()))
 			raise

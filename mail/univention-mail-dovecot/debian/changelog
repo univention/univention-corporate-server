@@ -1,3 +1,10 @@
+univention-mail-dovecot (3.0.1-2) unstable; urgency=medium
+
+  * Bug #41368: Applied patch from Florian Best - Use univention.admin.uldap
+    instead of univention.uldap
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Jul 2017 10:56:56 +0200
+
 univention-mail-dovecot (3.0.1-1) unstable; urgency=low
 
   * Bug #44559: allow to install Dovecot Pro
