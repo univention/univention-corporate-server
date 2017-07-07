@@ -788,8 +788,8 @@ uninstall_packages ()
 	fi
 
 	# Old kernels
-	for kernel in ""; do
-		apt-get purge -y --force-yes ${kernel}
+	for kernel in " linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed"; do
+		DEBIAN_FRONTEND=noninteractive apt-get purge -y --force-yes ${kernel}
 	done
 }
 
@@ -1002,7 +1002,37 @@ cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* "\$CONTAINER_DIR"/etc/univention
 cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* "\$CONTAINER_DIR"/etc/univention/ssl/"\$CONTAINER_HOSTNAME"."\$domainname"
 
 # Fix container nameserver entries
-univention-app shell "\$APP" ucr set nameserver1=\${nameserver1} ldap/master=\${ldap_master} ldap/server/name=\${ldap_server_name}
+container_id=\$(ucr get "appcenter/apps/\$APP/container")
+configfile_base="/var/lib/docker/containers/\$container_id"
+
+docker stop "\$container_id"
+
+for configfile in "\$configfile_base/config.json" "\$configfile_base/config.v2.json"; do
+	[ -e "\$configfile" ] && python -c "import json
+from univention.config_registry import ConfigRegistry
+ucr = ConfigRegistry()
+ucr.load()
+config = {}
+with open('\$configfile', 'r') as configfile:
+  config=json.load(configfile)
+  for i, v in enumerate(config['Config']['Env']):
+    if v.startswith('nameserver1='):
+       config['Config']['Env'][i] = 'nameserver1=%s' % ucr.get('nameserver1')
+    if v.startswith('NAMESERVER1='):
+       config['Config']['Env'][i] = 'NAMESERVER1=%s' % ucr.get('nameserver1')
+    if v.startswith('nameserver2='):
+       config['Config']['Env'][i] = 'nameserver2=%s' % ucr.get('nameserver2')
+    if v.startswith('NAMESERVER2='):
+       config['Config']['Env'][i] = 'NAMESERVER2=%s' % ucr.get('nameserver2')
+
+with open('\$configfile', 'w') as configwriter:
+  json.dump(config, configwriter)
+"
+done
+
+service docker restart
+docker start "\$container_id"
+
 __EOF__
 		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_update_${app}_container_settings
 	fi
