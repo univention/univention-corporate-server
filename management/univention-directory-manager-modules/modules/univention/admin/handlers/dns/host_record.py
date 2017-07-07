@@ -215,7 +215,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
@@ -227,6 +226,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 			univention.admin.filter.expression('aRecord', '*'),
 			univention.admin.filter.expression('aAAARecord', '*'),
 			univention.admin.filter.expression('mXRecord', '*'),
+			univention.admin.filter.expression('tXTRecord', '*'),
+			univention.admin.filter.expression('univentionObjectType', module),  # host record without any record
 		]),
 	])
 
@@ -245,7 +246,12 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s' % dn)
-	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.arpa') and not attr.get('cNAMERecord', []) and \
-		not attr.get('sRVRecord', []) and (attr.get('aRecord', []) or attr.get('aAAARecord', []) or attr.get('mXRecord', []))
+	return all([
+		'dNSZone' in attr.get('objectClass', []),
+		'@' not in attr.get('relativeDomainName', []),
+		not attr['zoneName'][0].endswith('.arpa'),
+		not attr.get('cNAMERecord', []),
+		not attr.get('sRVRecord', []),
+		any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or module in attr.get('univentionObjectType', []),
+		module in attr.get('univentionObjectType', [module])
+	])

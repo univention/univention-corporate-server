@@ -288,10 +288,11 @@ def rewrite_rev(filter, subnet):
 
 
 def identify(dn, attr):
-
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		'@' not in attr.get('relativeDomainName', []) and\
+	return all([
+		'dNSZone' in attr.get('objectClass', []),
+		'@' not in attr.get('relativeDomainName', []),
 		(attr['zoneName'][0].endswith('.in-addr.arpa') or attr['zoneName'][0].endswith('.ip6.arpa'))
+	])
 
 
 if __name__ == '__main__':

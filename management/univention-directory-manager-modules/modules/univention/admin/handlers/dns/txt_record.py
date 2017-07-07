@@ -76,7 +76,7 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=[],
-		required=False,
+		required=True,
 		may_change=True,
 		size='Two',
 	)
@@ -133,6 +133,11 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*')]),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*')]),
 		univention.admin.filter.expression('tXTRecord', '*')
 	])
 
@@ -151,6 +156,11 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s' % dn)
-	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.in-addr.arpa') and attr.get('tXTRecord', [])
+	return all([
+		'dNSZone' in attr.get('objectClass', []),
+		'@' not in attr.get('relativeDomainName', []),
+		not attr['zoneName'][0].endswith('.in-addr.arpa'),
+		attr.get('tXTRecord', []),
+		not any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord', 'sRVRecord')),
+		module in attr.get('univentionObjectType', [module]),
+	])

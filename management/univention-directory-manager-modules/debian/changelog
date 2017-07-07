@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-70) unstable; urgency=medium
+
+  * Bug #40839: fix detection of txt/host records
+
+ -- Florian Best <best@univention.de>  Fri, 07 Jul 2017 14:14:24 +0200
+
 univention-directory-manager-modules (12.0.17-69) unstable; urgency=medium
 
   * Bug #41368: Use univention.admin.uldap.access if univention.uldap.access
