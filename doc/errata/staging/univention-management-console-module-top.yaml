@@ -3,8 +3,9 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-management-console-module-top
-fix: 6.0.1-2A~4.2.0.201707071042
+fix: 6.0.1-3A~4.2.0.201707071551
 desc: |
  This update addresses the following issue(s):
- * Querying information about a process is now bundled in a single call.
+ * The error handling has been improved when a process stops during the
+   calculation of the CPU consumption of a process.
 bug: [38738]
