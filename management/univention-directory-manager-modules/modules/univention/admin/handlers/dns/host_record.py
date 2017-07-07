@@ -226,7 +226,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 			univention.admin.filter.expression('aRecord', '*'),
 			univention.admin.filter.expression('aAAARecord', '*'),
 			univention.admin.filter.expression('mXRecord', '*'),
-			univention.admin.filter.expression('tXTRecord', '*'),
 			univention.admin.filter.expression('univentionObjectType', module),  # host record without any record
 		]),
 	])
