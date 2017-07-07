@@ -75,6 +75,15 @@ case "$1" in
 				/usr/sbin/univention-app-appliance --not-configure-portal "$app_id"
 			fi
 		fi
+		# re-apply auto generated images
+		theme_dark=/usr/share/plymouth/themes/ucs-appliance-dark
+		theme_light=/usr/share/plymouth/themes/ucs-appliance-light
+		for image in bg.png logo_header_welcome_screen.svg.png logo_bootsplash.svg.png logo_welcome_screen.svg.png; do
+			cp "$theme_dark"/"$image".fallback "$theme_dark"/"$image" || true
+			cp "$theme_dark"/"$image".real "$theme_dark"/"$image" || true
+			cp "$theme_light"/"$image".fallback "$theme_light"/"$image" || true
+			cp "$theme_light"/"$image".real "$theme_light"/"$image" || true
+		done
 
 		# register the umc hook file
 		ucr set umc/web/hooks/univention-app-appliance=appliance
