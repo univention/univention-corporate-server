@@ -13,6 +13,6 @@ desc: |
  * The network configuration does not list TUN/TAP interfaces as configurable
    ethernet interfaces anymore.
  * The regular expression for valid interface names has been improved.
- * Prevent that non-existing setup scripts are blocking the system setup.
+ * The error handling when executing system setup scripts has been improved.
  * Start the welcome screen after the setup in appliance mode
 bug: [28070, 40212, 33132, 33131, 32817, 44061]
