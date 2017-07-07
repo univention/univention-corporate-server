@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console-module-ucr
+fix: 6.0.1-5A~4.2.0.201707071540
+desc: |
+ This update addresses the following issue(s):
+ * The validation of UCR variable names has been improved.
+bug: [25095]

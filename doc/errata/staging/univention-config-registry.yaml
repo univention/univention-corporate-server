@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-config-registry
+fix: 12.0.1-6A~4.2.0.201707071531
+desc: |
+ This update addresses the following issue(s):
+ * The sequence ": " in a UCR variable key is now prohibited.
+bug: [25095]
