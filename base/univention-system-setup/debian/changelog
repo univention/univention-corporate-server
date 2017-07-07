@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-30) unstable; urgency=medium
+
+  * Bug #32817: Applied additional patch: Catch OSError in run_scripts
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Jul 2017 16:07:29 +0200
+
 univention-system-setup (10.0.10-29) unstable; urgency=medium
 
   * Bug #44061: fix welcome screen start in appliance mode

@@ -510,27 +510,30 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 
 	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 			# launch script
-			icmd = [scriptpath] + args
-			MODULE.info('Running script %s\n' % icmd)
-			f.write('== script: %s\n' % icmd)
-			p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
-				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
-				'LANG': lang,
-			})
+			try:
+				icmd = [scriptpath] + args
+				f.write('== script: %s\n' % icmd)
+				p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
+					'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
+					'LANG': lang,
+				})
+				MODULE.info('Running script %s: pid=%d\n' % (icmd, p.pid))
+			except OSError as ex:
+				MODULE.info("Failed to run '%s': %s" % (scriptpath, ex))
+			else:
+				while p.poll() is None:
+					fr.seek(0, os.SEEK_END)  # update file handle
+					fr.seek(lastPos, os.SEEK_SET)  # continue reading at last position
 
-			while p.poll() is None:
-				fr.seek(0, os.SEEK_END)  # update file handle
-				fr.seek(lastPos, os.SEEK_SET)  # continue reading at last position
+					currentLine = fr.readline()  # try to read until next line break
+					if not currentLine:
+						continue
 
-				currentLine = fr.readline()  # try to read until next line break
-				if not currentLine:
-					continue
-
-				fullLine += currentLine
-				lastPos += len(currentLine)
-				if currentLine[-1] == '\n':
-					progressParser.parse(fullLine)
-					fullLine = ''
+					fullLine += currentLine
+					lastPos += len(currentLine)
+					if currentLine[-1] == '\n':
+						progressParser.parse(fullLine)
+						fullLine = ''
 
 	fr.close()
 
