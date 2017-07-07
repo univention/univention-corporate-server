@@ -73,22 +73,23 @@ class Instance(Base):
 		processes = []
 		for process in psutil.process_iter():
 			process = Process(process)
-			listEntry = {}
-			# Temporary variables; used to calculate cpu percentage
-			listEntry['timestamp'] = []
-			listEntry['cpu_time'] = []
-			listEntry['timestamp'].append(time.time())
-			(user_time, system_time, ) = process.get_cpu_times()
-			listEntry['cpu_time'].append(user_time + system_time)
 			try:
 				username = process.username
 			except KeyError:  # fixed in psutil 2.2.0
 				username = str(process.uids.real)
-			listEntry['user'] = username
-			listEntry['pid'] = process.pid
-			listEntry['cpu'] = 0.0
-			listEntry['mem'] = process.get_memory_percent()
-			listEntry['command'] = ' '.join(process.cmdline or []) or process.name
+			try:
+				(user_time, system_time, ) = process.get_cpu_times()
+				listEntry = {
+					'timestamp': time.time(),
+					'cpu_time': user_time + system_time,
+					'user': username,
+					'pid': process.pid,
+					'cpu': 0.0,
+					'mem': process.get_memory_percent(),
+					'command': ' '.join(process.cmdline or []) or process.name,
+				}
+			except psutil.NoSuchProcess:
+				continue
 			if category == 'all':
 				for value in listEntry.itervalues():
 					if pattern.match(str(value)):
@@ -103,20 +104,17 @@ class Instance(Base):
 		for process_entry in processes:
 			try:
 				process = Process(psutil.Process(process_entry['pid']))
+				(user_time, system_time, ) = process.get_cpu_times()
 			except psutil.NoSuchProcess:
 				pass
 			else:
-				process_entry['timestamp'].append(time.time())
-				(user_time, system_time, ) = process.get_cpu_times()
-				process_entry['cpu_time'].append(user_time + system_time)
-
-				elapsed_time = process_entry['timestamp'][1] - process_entry['timestamp'][0]
-				elapsed_cpu_time = process_entry['cpu_time'][1] - process_entry['cpu_time'][0]
+				elapsed_time = time.time() - process_entry['timestamp']
+				elapsed_cpu_time = user_time + system_time - process_entry['cpu_time']
 				cpu_percent = (elapsed_cpu_time / elapsed_time) * 100
 				process_entry['cpu'] = cpu_percent
-				# Cleanup request result
-				del process_entry['timestamp']
-				del process_entry['cpu_time']
+			# Cleanup request result
+			del process_entry['timestamp']
+			del process_entry['cpu_time']
 
 		request.status = SUCCESS
 		self.finished(request.id, processes)
