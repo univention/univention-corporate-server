@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-directory-manager-modules
-fix: 
+fix: 11.0.3-58.1456.201707071210
 desc: |
  This update addresses the following issue(s):
  * UDM objects with the object flags synced and docker can now be deleted.
