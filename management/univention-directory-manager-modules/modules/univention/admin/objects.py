@@ -31,6 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import ldap
+
 import univention.debug
 import univention.admin.modules
 
@@ -66,7 +68,7 @@ def get_superordinate(module, co, lo, dn):
 	return None
 
 
-def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=[]):
+def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
 	'''return object of module while trying to create objects of
 	superordinate modules as well'''
 
@@ -76,6 +78,14 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 
 	if not superordinate:
 		superordinate = get_superordinate(module, co, lo, dn or position.getDn())
+
+	if dn:
+		try:
+			return univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True)[0]
+		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
+			if lo.get(dn):
+				raise univention.admin.uexceptions.wrongObjectType()
+			raise univention.admin.uexceptions.noObject(dn)
 
 	return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 
