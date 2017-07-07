@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-71) unstable; urgency=medium
+
+  * Bug #40839: fix KeyError due to change to all()
+
+ -- Florian Best <best@univention.de>  Fri, 07 Jul 2017 16:56:27 +0200
+
 univention-directory-manager-modules (12.0.17-70) unstable; urgency=medium
 
   * Bug #30368: don't force identify() function to match results of the

@@ -187,7 +187,7 @@ def identify(dn, attr, canonical=0):
 	return all([
 		'dNSZone' in attr.get('objectClass', []),
 		'@' not in attr.get('relativeDomainName', []),
-		not attr['zoneName'][0].endswith('.in-addr.arpa'),
-		not attr['zoneName'][0].endswith('.ip6.arpa'),
+		not attr.get('zoneName', ['.in-addr.arpa'])[0].endswith('.in-addr.arpa'),
+		not attr.get('zoneName', ['.ip6.arpa'])[0].endswith('.ip6.arpa'),
 		attr.get('sRVRecord', [])
 	])

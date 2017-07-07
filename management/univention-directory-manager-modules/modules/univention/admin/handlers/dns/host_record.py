@@ -249,7 +249,7 @@ def identify(dn, attr, canonical=0):
 	return all([
 		'dNSZone' in attr.get('objectClass', []),
 		'@' not in attr.get('relativeDomainName', []),
-		not attr['zoneName'][0].endswith('.arpa'),
+		not attr.get('zoneName', ['.arpa'])[0].endswith('.arpa'),
 		not attr.get('cNAMERecord', []),
 		not attr.get('sRVRecord', []),
 		any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or module in attr.get('univentionObjectType', []),
