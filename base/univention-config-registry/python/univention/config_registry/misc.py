@@ -119,6 +119,9 @@ def validate_key(key, out=sys.stderr):
 		return False
 
 	if len(key) > 0:
+		if ': ' in key:
+			print >> out, 'Please fix invalid ": " in config registry key "%s"' % (key,)
+			return False
 		match = INVALID_KEY_CHARS.search(key)
 
 		if not match:
