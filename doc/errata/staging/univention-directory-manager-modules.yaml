@@ -14,8 +14,9 @@ desc: |
    added for convenience.
  * The error handling during adding hosts to nagios services has been
    improved.
- * Some errors during the creation of UDM objects resulted in the need
-   to save them twice. This has been fixed.
+ * The temporary locking objects are removed when an error happens during
+   object creation. This prevents that one needs to save an object
+   twice to create it after resolving the error.
  * It was possible to supply a wrong object type when modifying objects. This
    is now prevented and a error message is shown.
  * UDM objects with the object flags synced and docker can now be deleted.
