@@ -39,6 +39,11 @@ import os
 import univention.config_registry
 import univention.uldap as uldap
 
+try:
+    from univention.admin.uldap import access
+except ImportError:
+    access = None
+
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
@@ -125,8 +130,7 @@ def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admi
         try:
             lo = uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, follow_referral=True)
             if admin_uldap:
-                import univention.admin.uldap
-                lo = univention.admin.uldap(lo=lo)
+                lo = access(lo=lo)
             return lo
         except ldap.SERVER_DOWN():
             pass
