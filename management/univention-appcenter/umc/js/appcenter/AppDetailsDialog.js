@@ -101,7 +101,7 @@ define([
 					callback: lang.hitch(this, function() {
 						var values = {};
 						if (this._configForm) {
-							if (! this._configForm.isValid()) {
+							if (! this._configForm.validate()) {
 								return;
 							}
 							tools.forIn(this._configForm.get('value'), lang.hitch(this, function(key, value) {

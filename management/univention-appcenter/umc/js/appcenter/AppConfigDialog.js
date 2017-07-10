@@ -78,13 +78,13 @@ define([
 					var serviceValues = {};
 					var confValues = {};
 					if (this._serviceForm) {
-						if (! this._serviceForm.isValid()) {
+						if (! this._serviceForm.validate()) {
 							return;
 						}
 						serviceValues = this._serviceForm.get('value');
 					}
 					if (this._settingsForm) {
-						if (! this._settingsForm.isValid()) {
+						if (! this._settingsForm.validate()) {
 							return;
 						}
 						tools.forIn(this._settingsForm.get('value'), lang.hitch(this, function(key, value) {
