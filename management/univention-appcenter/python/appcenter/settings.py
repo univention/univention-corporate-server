@@ -118,7 +118,7 @@ class Setting(TypedIniSectionObject):
 
 	def sanitize_value(self, app, value):
 		if self.required and value in [None, '']:
-			raise SettingValueError()
+			raise SettingValueError('%s is required' % self.name)
 		return value
 
 	def value_for_setting(self, app, value):
@@ -144,7 +144,7 @@ class IntSetting(Setting):
 			try:
 				return int(value)
 			except (ValueError, TypeError):
-				raise SettingValueError()
+				raise SettingValueError('%s: %r is not a number' % (self.name, value))
 
 
 class BoolSetting(Setting):
@@ -165,7 +165,7 @@ class ListSetting(Setting):
 	def sanitize_value(self, app, value):
 		super(ListSetting, self).sanitize_value(app, value)
 		if not value in self.values:
-			raise SettingValueError()
+			raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
 		return value
 
 
