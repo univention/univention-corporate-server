@@ -553,7 +553,11 @@ define([
 						msg = _('There are App Center updates available.');
 						var appUpdatesInfo = array.map(apps, function(app) {
 							var link = sprintf('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'apps\', \'%(id)s\')">%(name)s</a>', app);
-							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: link, old: app.version, 'new': app.candidate_version});
+							if (app.candidate_version) {
+								return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: link, old: app.version, 'new': app.candidate_version});
+							} else if (app.docker_image) {
+								return _('%s: Update for underlying container available', link)
+							}
 						});
 						var appUpdatesList = '<ul><li>' + appUpdatesInfo.join('</li><li>') + '</li></ul>';
 						this._form.getWidget('app_center_updates_apps').set('content', appUpdatesList);

@@ -1,3 +1,10 @@
+univention-updater (12.0.11-3) unstable; urgency=medium
+
+  * Bug #44623: Properly display updates when no new app version was provided
+    but underlying docker container were updated.
+
+ -- Eduard Mai <mai@univention.de>  Mon, 10 Jul 2017 16:25:40 +0200
+
 univention-updater (12.0.11-2) unstable; urgency=low
 
   * Bug #44842: Remove QEMU check from preup.sh
