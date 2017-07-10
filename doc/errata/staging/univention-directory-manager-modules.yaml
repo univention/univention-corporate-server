@@ -20,7 +20,8 @@ desc: |
  * It was possible to supply a wrong object type when modifying objects. This
    is now prevented and a error message is shown.
  * UDM objects with the object flags synced and docker can now be deleted.
- * The direct use of univention.uldap.access is now prohibited in UDM.
+ * Passing univention.uldap.access() instances to UDM objects is handled more
+   gracefully.
  * The detection of DNS TXT and Host records has been improved to not detect
    objects as the wrong type.
  * The description for the 'options' property of extended attributes

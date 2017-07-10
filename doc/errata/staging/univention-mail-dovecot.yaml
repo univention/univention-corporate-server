@@ -6,6 +6,6 @@ src: univention-mail-dovecot
 fix: 3.0.1-2A~4.2.0.201707071100
 desc: |
  This update addresses the following issue(s):
- * The use of UDM utilitiy functions has been corrected in the listener script
+ * The use of UDM utility functions has been corrected in the listener script
    dovecot_shared_folder.py.
 bug: [41368]
