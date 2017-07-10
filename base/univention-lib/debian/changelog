@@ -1,3 +1,10 @@
+univention-lib (6.0.9-7) unstable; urgency=medium
+
+  * Bug #44849: Catch NoNameservers exception in
+    get_domaincontroller_srv_record
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Jul 2017 12:36:20 +0200
+
 univention-lib (6.0.9-6) unstable; urgency=medium
 
   * Bug #38285: Sync time again before getting new Kerberos Tickets in

@@ -1292,6 +1292,8 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 		ud.debug(ud.MODULE, ud.WARN, 'Received no answer to query for _domaincontroller_master._tcp.%s. SRV record.' % (domain,))
 	except dns.resolver.NXDOMAIN:
 		ud.debug(ud.MODULE, ud.WARN, 'Domain (%s) not resolvable!' % (domain,))
+	except dns.resolver.NoNameservers:
+		ud.debug(ud.MODULE, ud.WARN, 'No name servers in domain (%s) available to answer the query.' % (domain,))
 	except dns.exception.Timeout as exc:
 		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC master record timed out: %s' % (exc,))
 	return None
