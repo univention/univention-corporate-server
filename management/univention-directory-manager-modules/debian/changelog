@@ -1,3 +1,11 @@
+univention-directory-manager-modules (12.0.17-75) unstable; urgency=medium
+
+  * Bug #30368: fix subtree move for DNs containing special characters leading
+  	to NOT_ALLOWED_ON_NONLEAF: {'info': 'subordinate objects must be deleted
+  	first', 'desc': 'Operation not allowed on non-leaf'} errors
+
+ -- Florian Best <best@univention.de>  Mon, 10 Jul 2017 17:56:19 +0200
+
 univention-directory-manager-modules (12.0.17-74) unstable; urgency=medium
 
   * Bug #42015: Applied patch from Florian Best - Fix LDAP error when

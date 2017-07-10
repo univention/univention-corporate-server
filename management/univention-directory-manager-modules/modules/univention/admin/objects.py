@@ -81,7 +81,9 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 
 	if dn:
 		try:
-			return univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True)[0]
+			obj = univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True)[0]
+			obj.position.setPosition(position or dn)
+			return obj
 		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
 			if lo.get(dn):
 				raise univention.admin.uexceptions.wrongObjectType()

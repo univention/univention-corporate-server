@@ -37,7 +37,7 @@ import time
 import ldap
 import ipaddr
 from ldap.filter import filter_format
-from ldap.dn import explode_rdn, explode_dn, escape_dn_chars
+from ldap.dn import explode_rdn, explode_dn, escape_dn_chars, str2dn, dn2str
 
 import univention.debug
 
@@ -404,23 +404,26 @@ class base(object):
 				position = univention.admin.uldap.position(self.lo.base)
 				position.setDn(self.lo.parentDn(newdn))
 				copyobject = module.object(None, self.lo, position)
+				copyobject.options = self.options[:]
 				copyobject.open()
 				for key in self.keys():
 					copyobject[key] = self[key]
 				copyobject.policies = self.policies
 				copyobject.create()
 				moved = []
+				pattern = re.compile('%s$' % (re.escape(dn2str(str2dn(self.dn)))))
 				try:
 					for subolddn, suboldattrs in subelements:
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %s' % subolddn)
 						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the python lib is
 						# used by the connector, for example:
 						#   subolddn: uid=user_test_h80,ou=TEST_H81,LDAP_BASE
 						#   self.dn: ou=test_h81,LDAP_BASE
 						#   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
-						rdn = explode_dn(subolddn)[0]
-						subolddn_dn_without_rdn_lower = self.lo.parentDn(subolddn).lower()
-						subnewdn = '%s,%s' % (rdn, subolddn_dn_without_rdn_lower.replace(self.dn.lower(), newdn))
+						rdn = str2dn(subolddn)[0]
+						subnew_position = str2dn(pattern.sub(newdn, dn2str(str2dn(self.lo.parentDn(subolddn)))))
+						subnewdn = dn2str([rdn] + subnew_position)
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %r to %r' % (subolddn, subnewdn))
+
 						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 						submodule = univention.admin.modules.get(submodule)
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
@@ -432,7 +435,7 @@ class base(object):
 						moved.append((subolddn, subnewdn))
 					self.remove()
 					self._delete_temporary_ou_if_empty(temporary_ou)
-				except:
+				except BaseException:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, trying to move back.')
 					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(self.lo.parentDn(olddn))
@@ -530,7 +533,7 @@ class base(object):
 		for name, prop in self.descriptions.items():
 			if prop.identifies:
 				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
-		return '%s,%s' % (ldap.dn.dn2str([identifier]), self.position.getDn())
+		return '%s,%s' % (dn2str([identifier]), self.position.getDn())
 
 	def _ldap_post_create(self):
 		pass
@@ -1125,7 +1128,7 @@ class simpleLdap(base):
 
 	def _is_synced_object(self):
 		flags = self.oldattr.get('univentionObjectFlag', [])
-		return 'synced' in flags and not 'docker' in flags
+		return 'synced' in flags and 'docker' not in flags
 
 
 class simpleComputer(simpleLdap):
@@ -1613,7 +1616,7 @@ class simpleComputer(simpleLdap):
 				return
 
 			# check if the object exists
-			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart] + list(ldap.dn.str2dn(zoneDn)[0][0][:2])), unique=False)
+			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['dn'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart] + list(str2dn(zoneDn)[0][0][:2])), unique=False)
 			if not results:
 				self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn), [
 					('objectClass', ['top', 'dNSZone', 'univentionObject']),
