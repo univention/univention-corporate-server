@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-76) unstable; urgency=medium
+
+  * Bug #30368: fix typo, improve error message
+
+ -- Florian Best <best@univention.de>  Mon, 10 Jul 2017 18:33:58 +0200
+
 univention-directory-manager-modules (12.0.17-75) unstable; urgency=medium
 
   * Bug #30368: fix subtree move for DNs containing special characters leading
