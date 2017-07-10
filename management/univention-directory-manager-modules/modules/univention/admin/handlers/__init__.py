@@ -182,6 +182,10 @@ class base(object):
 		return True
 
 	def has_key(self, key):
+		"""deprecated - use has_property() instead!"""
+		return self.has_property(key)
+
+	def has_property(self, key):
 		try:
 			p = self.descriptions[key]
 		except KeyError:
@@ -199,7 +203,7 @@ class base(object):
 			#	yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
 
 		# property does not exist
-		if not self.has_key(key):
+		if not self.has_property(key):
 			# don't set value if the option is not enabled
 			try:
 				self.descriptions[key]
@@ -299,7 +303,7 @@ class base(object):
 
 	def items(self):
 		# return all items which belong to the current options - even if they are empty
-		return [(key, self[key]) for key in self.keys() if self.has_key(key)]
+		return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
 	def create(self):
 		'''create object'''
@@ -750,10 +754,10 @@ class simpleLdap(base):
 		# evaluate extended attributes
 		ocs = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_key(prop.name), self.info.get(prop.name)))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
 			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
 				continue
-			if self.has_key(prop.name) and self.info.get(prop.name):
+			if self.has_property(prop.name) and self.info.get(prop.name):
 				ocs.add(prop.objClass)
 
 		# add object classes of (especially extended) options
@@ -841,7 +845,7 @@ class simpleLdap(base):
 		# Make sure all default values are set...
 		for name, p in self.descriptions.items():
 			# ... if property has no option or any required option is currently enabled
-			if self.has_key(name) and p.default(self):  # noqa: W601
+			if self.has_property(name) and p.default(self):  # noqa: W601
 				self[name]  # __getitem__ sets default value
 
 	def _ldap_object_classes(self, ml):
@@ -871,7 +875,7 @@ class simpleLdap(base):
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r' % (prop.name, prop.objClass))
 
-			if self.has_key(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
+			if self.has_property(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
 				required_ocs |= set([prop.objClass])
 				continue
 
@@ -1024,7 +1028,7 @@ class simpleLdap(base):
 		except:
 			errors = 1
 		infoattr = "univentionPolicyObject"
-		if pathResult.has_key(infoattr) and pathResult[infoattr]:
+		if pathResult.has_property(infoattr) and pathResult[infoattr]:
 			for i in pathResult[infoattr]:
 				try:
 					self.lo.searchDn(base=i, scope='base')
@@ -1343,7 +1347,7 @@ class simpleComputer(simpleLdap):
 						raise univention.admin.uexceptions.insufficientInformation, msg
 
 		if self.exists():
-			if self.has_key('network'):
+			if self.has_property('network'):
 				self.old_network = self['network']
 
 			# get groupmembership
@@ -2449,7 +2453,7 @@ class simpleComputer(simpleLdap):
 			new_groups.add(DN(self.newPrimaryGroupDn))
 
 		# prevent machineAccountGroup from being removed
-		if self.has_key('machineAccountGroup'):
+		if self.has_property('machineAccountGroup'):
 			machine_account_group = DN.set([self['machineAccountGroup']])
 			new_groups += machine_account_group
 			old_groups -= machine_account_group
@@ -2621,13 +2625,13 @@ class simpleComputer(simpleLdap):
 
 						self.network_object = network_object
 					if network_object['dnsEntryZoneForward']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
 							self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], self['ip'][0]], ]
 					if network_object['dnsEntryZoneReverse']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
 							self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], self['ip'][0]], ]
 					if network_object['dhcpEntryZone']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) == 1:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self.has_property('mac') and self['mac'] and len(self['mac']) == 1:
 							self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
 						else:
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
@@ -2642,13 +2646,13 @@ class simpleComputer(simpleLdap):
 					self.ip_alredy_requested = 0
 				if value and self.network_object:
 					if self.network_object['dnsEntryZoneForward']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
 							self['dnsEntryZoneForward'] = [[self.network_object['dnsEntryZoneForward'], self['ip'][0]], ]
 					if self.network_object['dnsEntryZoneReverse']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
 							self['dnsEntryZoneReverse'] = [[self.network_object['dnsEntryZoneReverse'], self['ip'][0]]]
 					if self.network_object['dhcpEntryZone']:
-						if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self.has_key('mac') and self['mac'] and len(self['mac']) > 0:
+						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self.has_property('mac') and self['mac'] and len(self['mac']) > 0:
 							self['dhcpEntryZone'] = [(self.network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
@@ -2656,7 +2660,7 @@ class simpleComputer(simpleLdap):
 				self.ip_freshly_set = False
 
 		elif key == 'mac' and self.__saved_dhcp_entry:
-			if self.has_key('ip') and self['ip'] and len(self['ip']) == 1 and self['mac'] and len(self['mac']) > 0:
+			if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self['mac'] and len(self['mac']) > 0:
 				if isinstance(value, list):
 					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, self['ip'][0], value[0])]
 				else:
@@ -2787,7 +2791,7 @@ class simplePolicy(simpleLdap):
 
 	def __getitem__(self, key):
 		if not self.resultmode:
-			if self.has_key('emptyAttributes') and self.mapping.mapName(key) and self.mapping.mapName(key) in simpleLdap.__getitem__(self, 'emptyAttributes'):
+			if self.has_property('emptyAttributes') and self.mapping.mapName(key) and self.mapping.mapName(key) in simpleLdap.__getitem__(self, 'emptyAttributes'):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__getitem__: empty Attribute %s' % key)
 				if self.descriptions[key].multivalue:
 					return []
@@ -2825,10 +2829,7 @@ class simplePolicy(simpleLdap):
 					self.policy_attrs = value
 
 		for attr_name, value_dict in self.policy_attrs.items():
-			if value_dict.has_key('fixed'):
-				fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict['fixed']
-			else:
-				fixed_attributes[self.mapping.unmapName(attr_name)] = 0
+			fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict.get('fixed', 0)
 
 		return fixed_attributes
 
@@ -2837,7 +2838,7 @@ class simplePolicy(simpleLdap):
 
 		empty_attributes = {}
 
-		if self.has_key('emptyAttributes'):
+		if self.has_property('emptyAttributes'):
 			for attrib in simpleLdap.__getitem__(self, 'emptyAttributes'):
 				empty_attributes[self.mapping.unmapName(attrib)] = 1
 
@@ -2850,9 +2851,8 @@ class simplePolicy(simpleLdap):
 
 		self.policy_result()
 
-		if self.polinfo.has_key(key):
-
-			if self.polinfo[key] != newvalue or self.polinfo_more[key]['policy'] == self.cloned or (self.info.has_key(key) and self.info[key] != newvalue):
+		if key in self.polinfo:
+			if self.polinfo[key] != newvalue or self.polinfo_more[key]['policy'] == self.cloned or (key in self.info and self.info[key] != newvalue):
 				if self.polinfo_more[key]['fixed'] and self.polinfo_more[key]['policy'] != self.cloned:
 					raise univention.admin.uexceptions.policyFixedAttribute, key
 				simpleLdap.__setitem__(self, key, newvalue)
@@ -2866,12 +2866,11 @@ class simplePolicy(simpleLdap):
 		if not self.oldinfo:
 			# if this attribute is of type boolean and the new value is equal to the default, than ignore this "change"
 			if isinstance(self.descriptions[key].syntax, univention.admin.syntax.boolean):
-				if self.descriptions.has_key(key):
-					default = self.descriptions[key].base_default
-					if type(self.descriptions[key].base_default) in (tuple, list):
-						default = self.descriptions[key].base_default[0]
-					if (not default and newvalue == '0') or default == newvalue:
-						return
+				default = self.descriptions[key].base_default
+				if type(self.descriptions[key].base_default) in (tuple, list):
+					default = self.descriptions[key].base_default[0]
+				if (not default and newvalue == '0') or default == newvalue:
+					return
 
 		simpleLdap.__setitem__(self, key, newvalue)
 		if self.hasChanged(key):
