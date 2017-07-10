@@ -24,7 +24,7 @@ desc: |
    gracefully.
  * The detection of DNS TXT and Host records has been improved to not detect
    objects as the wrong type.
- * The description for the 'options' property of extended attributes
+ * The description for the "options" property of extended attributes
    has been improved.
  * The simultaneous modification of a user password and the
    "Change password on next login" option is now possible.
