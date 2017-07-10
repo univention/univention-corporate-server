@@ -23,4 +23,6 @@ desc: |
  * The direct use of univention.uldap.access is now prohibited in UDM.
  * The detection of DNS TXT and Host records has been improved to not detect
    objects as the wrong type.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839]
+ * The description for the 'options' property of extended attributes
+   has been improved.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201]
