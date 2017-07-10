@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-10 11:23+0200\n"
+"POT-Creation-Date: 2017-07-10 15:46+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -240,7 +240,7 @@ msgstr "Zusätzliche Repositories"
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:77
+#: umc/js/appcenter/AppSettingsFileUploader.js:79
 #, python-format
 msgid "After saving, the file length will be %d bytes"
 msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
@@ -413,6 +413,11 @@ msgstr "Fortfahren"
 msgid "Continue using"
 msgstr "Weiterhin nutzen"
 
+#: umc/js/appcenter/AppSettingsFileUploader.js:72
+#, python-format
+msgid "Current file length is %d bytes."
+msgstr "Aktuelle Dateigröße ist %d Bytes."
+
 #: umc/js/appcenter/SettingsPage.js:188 umc/js/appcenter/SettingsPage.js:307
 msgid "Delete"
 msgstr "Löschen"
@@ -507,17 +512,7 @@ msgstr "Ende der Produktpflege"
 msgid "Error performing the action"
 msgstr "Ein Fehler trat während der Aktion auf"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:79
-#, python-format
-msgid "File length is %d bytes."
-msgstr "Dateigröße ist %d Bytes."
-
-#: umc/js/appcenter/AppSettingsFileUploader.js:70
-#, python-format
-msgid "File length was %d bytes."
-msgstr "Dateigröße war %d Bytes."
-
-#: umc/js/appcenter/AppSettingsFileUploader.js:93
+#: umc/js/appcenter/AppSettingsFileUploader.js:87
 #, python-format
 msgid "File will be uploaded to %s."
 msgstr "Datei wird nach %s hochgeladen."
@@ -718,8 +713,7 @@ msgstr "Nächste App"
 msgid "No"
 msgstr "Nein"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:72
-#: umc/js/appcenter/AppSettingsFileUploader.js:86
+#: umc/js/appcenter/AppSettingsFileUploader.js:74
 msgid "No file was uploaded yet."
 msgstr "Es wurde noch keine Datei hochgeladen."
 
@@ -1492,6 +1486,9 @@ msgstr "{0} Pakete werden deinstalliert"
 
 #~ msgid "Extended software management"
 #~ msgstr "Erweiterte Software-Verwaltung"
+
+#~ msgid "File length was %d bytes."
+#~ msgstr "Dateigröße war %d Bytes."
 
 #~ msgid ""
 #~ "Here you can set configuration options as well as start and stop the "

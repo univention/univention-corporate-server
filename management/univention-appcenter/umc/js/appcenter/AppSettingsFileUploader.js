@@ -49,7 +49,10 @@ define([
 				content: ''
 			});
 			this.addChild(this._content, 0);
-			this._originalValue = undefined;
+			this._originalValue = null;
+			if (this.data && this.data.content) {
+				this._originalValue = atob(this.data.content);
+			}
 		},
 
 		_getValueAttr: function() {
@@ -65,34 +68,21 @@ define([
 
 		updateView: function(value) {
 			var lengthContent = '';
-			if (this._originalValue !== undefined) {
-				if (this._originalValue) {
-					lengthContent += _('File length was %d bytes.', this._originalValue.length) + ' ';
-				} else {
-					lengthContent += _('No file was uploaded yet.') + ' ';
-				}
+			if (this._originalValue) {
+				lengthContent += _('Current file length is %d bytes.', this._originalValue.length) + ' ';
+			} else {
+				lengthContent += _('No file was uploaded yet.') + ' ';
 			}
 			if (value) {
-				if (this._originalValue !== undefined) {
-					if (this._originalValue !== value) {
-						lengthContent += _('After saving, the file length will be %d bytes', value.length);
-					}
-				} else {
-					lengthContent += _('File length is %d bytes.', this._originalValue.length) + ' ';
-				}
 				this._uploadedValue = atob(value);
-			} else {
-				if (this._originalValue !== undefined) {
-					if (this._originalValue.length) {
-						lengthContent += _('After saving, the file will be deleted.');
-					}
-				} else {
-					lengthContent += _('No file was uploaded yet.');
+				if (this._originalValue !== this._uploadedValue) {
+					lengthContent += _('After saving, the file length will be %d bytes', value.length);
 				}
+			} else {
 				this._uploadedValue = null;
-			}
-			if (this._originalValue === undefined) {
-				this._originalValue = value;
+				if (this._originalValue) {
+					lengthContent += _('After saving, the file will be deleted.');
+				}
 			}
 			this._content.set('content', _('File will be uploaded to %s.', '<em>' + this.fileName + '</em>') + ' ' + lengthContent);
 		}

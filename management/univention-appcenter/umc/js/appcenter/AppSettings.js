@@ -11,14 +11,14 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/NumberSpinner",
 	"umc/widgets/Uploader",
-	"umc/widgets/PasswordBox",
+	"umc/widgets/PasswordInputBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TitlePane",
 	"umc/modules/appcenter/AppSettingsFileUploader",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
+], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
@@ -75,7 +75,7 @@ define([
 					}));
 				} else if (variable.type == 'Password') {
 					ret.push(lang.mixin(params, {
-						type: PasswordBox
+						type: PasswordInputBox
 					}));
 				} else if (variable.type == 'File') {
 					if (params.value) {
@@ -88,7 +88,7 @@ define([
 					}));
 				} else if (variable.type == 'PasswordFile') {
 					ret.push(lang.mixin(params, {
-						type: PasswordBox
+						type: PasswordInputBox
 					}));
 				} else if (variable.type == 'Status') {
 					if (value) {
