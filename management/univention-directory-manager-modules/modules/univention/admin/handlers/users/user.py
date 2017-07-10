@@ -2365,6 +2365,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 				old_shadowMax = self.oldattr.get('shadowMax', '')
 				if old_shadowMax != shadowMax:
+					ml = [x for x in ml if x[0] != 'shadowMax']
 					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
 
 			if 'samba' in self.options:
@@ -2378,6 +2379,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
 				if old_krb5PasswordEnd != krb5PasswordEnd:
+					ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
 					ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 		elif pwd_change_next_login == 2:  # pwdChangeNextLogin changed from 1 to 0
 			# 1. determine expiryInterval (could be done once before "if self.modifypassword" above)
@@ -2405,6 +2407,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
 				old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
 				if old_shadowMax != shadowMax:
+					ml = [x for x in ml if x[0] != 'shadowMax']
 					ml.append(('shadowMax', old_shadowMax, shadowMax))
 
 			# 3. set samba attributes
@@ -2423,6 +2426,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
 				if old_krb5PasswordEnd != krb5PasswordEnd:
+					ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
 					ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
