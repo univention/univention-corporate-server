@@ -1028,7 +1028,7 @@ class simpleLdap(base):
 		except:
 			errors = 1
 		infoattr = "univentionPolicyObject"
-		if pathResult.has_property(infoattr) and pathResult[infoattr]:
+		if pathResult.get(infoattr):
 			for i in pathResult[infoattr]:
 				try:
 					self.lo.searchDn(base=i, scope='base')
