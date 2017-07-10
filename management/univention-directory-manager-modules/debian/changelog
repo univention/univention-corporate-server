@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-73) unstable; urgency=medium
+
+  * Bug #39201: Reword description for 'options' property of extended
+    attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Jul 2017 11:44:01 +0200
+
 univention-directory-manager-modules (12.0.17-72) unstable; urgency=medium
 
   * Bug #40839: fix wrong detection of TXT record as Host record

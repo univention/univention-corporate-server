@@ -348,7 +348,7 @@ property_descriptions = {
 		default='<name>',
 	),
 	'options': univention.admin.property(
-		short_description=_('Required options/object classes'),
+		short_description=_('Required options'),
 		long_description=_('This extended attribute is only used when at least one of these options is enabled, e.g. "posix" or "samba"'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=True,

@@ -1284,8 +1284,8 @@ msgid "Remove object class if the attribute is removed"
 msgstr "Objektklasse löschen, wenn das Attribut entfernt wird"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:351
-msgid "Required options/object classes"
-msgstr "Benötigte Optionen/Objektklassen"
+msgid "Required options"
+msgstr "Benötigte Optionen"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:154
 msgid "Reset Count Minutes"
