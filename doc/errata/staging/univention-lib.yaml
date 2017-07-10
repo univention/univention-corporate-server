@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-lib
+fix: 6.0.9-7A~4.2.0.201707101243
+desc: |
+ This update addresses the following issue(s):
+ * The error handling for looking up the SRV record of the
+   DC master with no name servers has been improved.
+bug: [44849]
