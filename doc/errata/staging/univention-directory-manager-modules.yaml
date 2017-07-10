@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 12.0.17-68A~4.2.0.201707061926
+fix: 12.0.17-74A~4.2.0.201707101408
 desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
@@ -25,4 +25,6 @@ desc: |
    objects as the wrong type.
  * The description for the 'options' property of extended attributes
    has been improved.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201]
+ * The simultaneous modification of a user password and the
+   "Change password on next login" option is now possible.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015]
