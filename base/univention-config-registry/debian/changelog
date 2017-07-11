@@ -1,3 +1,9 @@
+univention-config-registry (12.0.1-7) unstable; urgency=medium
+
+  * Bug #25095: Improve wording of validate_key error messages
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 11 Jul 2017 16:22:23 +0200
+
 univention-config-registry (12.0.1-6) unstable; urgency=medium
 
   * Bug #25095: Add a check for ": " in validate_key

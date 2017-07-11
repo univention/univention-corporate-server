@@ -114,20 +114,20 @@ def validate_key(key, out=sys.stderr):
 
 	if old != key:
 		print >> out, \
-			'Please fix invalid umlaut in config variables key "%s" to %s' % \
+			'Please fix invalid umlaut in config variable key "%s" to %s.' % \
 			(old, key)
 		return False
 
 	if len(key) > 0:
 		if ': ' in key:
-			print >> out, 'Please fix invalid ": " in config registry key "%s"' % (key,)
+			print >> out, 'Please fix invalid ": " in config variable key "%s".' % (key,)
 			return False
 		match = INVALID_KEY_CHARS.search(key)
 
 		if not match:
 			return True
 		print >> out, \
-			'Please fix invalid char "%s" in config registry key "%s"' % \
+			'Please fix invalid character "%s" in config variable key "%s".' % \
 			(match.group(), key)
 	return False
 
