@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from io import BytesIO
+
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.config import ucr
@@ -44,6 +46,18 @@ from univention.config_registry_info import ConfigRegistryInfo, Variable
 import univention.info_tools as uit
 
 _ = Translation('univention-management-console-module-ucr').translate
+
+
+class UCRKeySanitizer(StringSanitizer):
+
+	def _sanitize(self, value, name, further_arguments):
+		value = super(UCRKeySanitizer, self)._sanitize(value, name, further_arguments)
+		b = BytesIO()
+		if not validate_key(value, b):
+			error_message = b.getvalue()
+			self.raise_validation_error('%s %s' % (_('A valid UCR variable name must contain at least one character and can only contain letters, numerals, "/", ".", ":", "_" and "-".'), error_message))
+			return
+		return value
 
 
 class Instance(Base):
@@ -88,22 +102,24 @@ class Instance(Base):
 			return var.get('readonly') in ('yes', '1', 'true')
 		return False
 
+	@sanitize(DictSanitizer({
+		'object': DictSanitizer({
+			'key': UCRKeySanitizer(required=True),
+			'value': StringSanitizer(default=''),
+		})
+	}))
 	def add(self, request):
 		# does the same as put
 		ucr.load()
 		already_set = set(ucr.keys()) & set(v['object']['key'] for v in request.options)
 		if already_set:
-			raise UMC_Error(_('The UCR variable %r is already set.') % (', '.join(already_set)))
+			raise UMC_Error(_('The UCR variable %s is already set.') % ('", "'.join(already_set)))
 
 		self.put(request)
 
-	@simple_response
-	def validate(self, key):
-		return validate_key(key)
-
 	@sanitize(DictSanitizer({
 		'object': DictSanitizer({
-			'key': StringSanitizer(required=True),
+			'key': UCRKeySanitizer(required=True),
 			'value': StringSanitizer(default=''),
 		})
 	}))
@@ -112,8 +128,6 @@ class Instance(Base):
 			var = _var['object']
 			value = var['value'] or ''
 			key = var['key']
-			if not validate_key(key):
-				raise UMC_Error(_('The UCR variable %r has an invalid name.') % (key,))
 			if self.is_readonly(key):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
 			arg = ['%s=%s' % (key.encode(), value.encode())]

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-07 15:21+0200\n"
+"POT-Creation-Date: 2017-07-11 15:59+0200\n"
 "PO-Revision-Date: 2011-10-29 15:00+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,27 +16,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/ucr/__init__.py:156
+#: umc/python/ucr/__init__.py:58
+msgid ""
+"A valid UCR variable name must contain at least one character and can only "
+"contain letters, numerals, \"/\", \".\", \":\", \"_\" and \"-\"."
+msgstr ""
+"Ein gültiger UCR-Variablenname muss mindestens ein Zeichen lang sein und kann nur "
+"Buchstaben, Zahlen und die Zeichen \"/\", \".\", \":\", \"_\" und \"-\" enthalten."
+
+#: umc/python/ucr/__init__.py:170
 #, python-format
 msgid "The UCR variable %(key)s could not be found"
 msgstr "Die UCR-Variable %(key)s konnte nicht gefunden werden"
 
 #: umc/python/ucr/__init__.py:116
-#, python-format
-msgid "The UCR variable %r has an invalid name."
-msgstr "Der Name der UCR-Variable %r ist nicht gültig."
+msgid "The UCR variable %s is already set."
+msgstr "Die UCR-Variable %s ist bereits gesetzt."
 
-#: umc/python/ucr/__init__.py:96
-#, python-format
-msgid "The UCR variable %r is already set."
-msgstr "Die UCR-Variable %r ist bereits gesetzt."
-
-#: umc/python/ucr/__init__.py:118
+#: umc/python/ucr/__init__.py:132
 #, python-format
 msgid "The UCR variable %s is read-only and can not be changed!"
 msgstr "Die UCR-Variable %s ist nur lesbar und kann nicht geändert werden!"
 
-#: umc/python/ucr/__init__.py:131
+#: umc/python/ucr/__init__.py:145
 #, python-format
 msgid "The UCR variable %s is read-only and can not be removed!"
 msgstr "Die UCR-variable %s ist nur lesbar und kann nicht entfernt werden"
@@ -47,3 +49,6 @@ msgstr "Die UCR-variable %s ist nur lesbar und kann nicht entfernt werden"
 #~ msgstr ""
 #~ "Ungültiger UCR-Variableneintrag. Die Optionen \"key\" und \"value\" "
 #~ "müssen angegeben werden"
+
+#~ msgid "The UCR variable %r has an invalid name."
+#~ msgstr "Der Name der UCR-Variable %r ist nicht gültig."

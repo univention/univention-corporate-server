@@ -106,24 +106,7 @@ define([
 				label: _( 'Save' ),
 				style: 'float: right',
 				callback: lang.hitch(this, function() {
-					var keyWidget = this._form.getWidget('key');
-					tools.umcpCommand('ucr/validate', {'key': keyWidget.get('value')}).then(lang.hitch(this, function(data) {
-						var keyIsValid = data.result;
-						if (keyIsValid) {
-							// save the UCR variable
-							keyWidget.setValid(true);
-							this._form.save();
-							this.hide();
-						} else {
-							// show invalid UCR variable message
-							var invalidMessage =  _('A valid key must contain at least one character and can only contain letters, numerals, and "/", ".", ":", "_" and "-".');
-							if (keyWidget.get('value').indexOf(': ') !== -1) {
-								invalidMessage = lang.replace('{0}<br>{1}', [_('The sequence ": " in the name of a UCR variable is not allowed.'), invalidMessage]);
-							}
-							keyWidget.setValid(false, invalidMessage);
-							keyWidget.focus();
-						}
-					}));
+					this._form.save();
 				})
 			}, {
 				//FIXME: Should be much simpler. The key name should be enough
@@ -165,7 +148,10 @@ define([
 				this._position();
 				this.standby(false);
 			}));
-			this._form.on('saved', lang.hitch(this, function() {
+			this._form.on('saved', lang.hitch(this, function(success) {
+				if (success) {
+					this.hide();
+				}
 				this._position();
 				this.standby(false);
 			}));
@@ -173,6 +159,8 @@ define([
 
 		clearForm: function() {
 			var emptyValues = {};
+			this._form.getWidget('key').setValid(true);
+			this._form.getWidget('value').setValid(true);
 			tools.forIn(this._form.get('value'), function(ikey) {
 				emptyValues[ikey] = '';
 			});

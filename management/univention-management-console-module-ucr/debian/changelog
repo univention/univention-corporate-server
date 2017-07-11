@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (6.0.1-6) unstable; urgency=medium
+
+  * Bug #25095: Applied patch from Florian Best - Simplify error handling
+    and messages
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 11 Jul 2017 16:10:38 +0200
+
 univention-management-console-module-ucr (6.0.1-5) unstable; urgency=medium
 
   * Bug #25095: Applied patch - Show error message if UCR key is not valid
