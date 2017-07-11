@@ -144,7 +144,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 			for property_name, property in template_object.property_descriptions.items():
 				if not (property_name == "name" or property_name == "description"):
 					default = property.base_default
-					if default and module.property_descriptions.has_key(property_name):
+					if default and property_name in module.property_descriptions:
 						if property.multivalue:
 							if module.property_descriptions[property_name].multivalue:
 								module.property_descriptions[property_name].base_default = []

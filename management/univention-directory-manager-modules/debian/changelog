@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-79) unstable; urgency=medium
+
+  * Bug #30368: fix DN comparision
+
+ -- Florian Best <best@univention.de>  Tue, 11 Jul 2017 21:51:07 +0200
+
 univention-directory-manager-modules (12.0.17-78) unstable; urgency=medium
 
   * Bug #30368: fix typo

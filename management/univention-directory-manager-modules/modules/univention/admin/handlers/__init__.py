@@ -383,18 +383,17 @@ class base(object):
 		if not goalmodule or not hasattr(goalmodule, 'childs') or not goalmodule.childs == 1:
 			raise univention.admin.uexceptions.invalidOperation(_("Destination object can't have sub objects."))
 
-		if self.dn.lower() == newdn.lower():
+		if self.lo.compare_dn(self.dn.lower(), newdn.lower()):
 			if self.dn == newdn:
 				raise univention.admin.uexceptions.ldapError(_('Moving not possible: old and new DN are identical.'))
 			else:
 				# We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
 				temporary_ou = self._create_temporary_ou()
-				new_rdn = explode_rdn(newdn)[0]
-				temp_dn = '%s,%s,%s' % (new_rdn, temporary_ou, self.lo.base)
+				temp_dn = dn2str([str2dn(newdn)[0]] + str2dn(temporary_ou) + str2dn(self.lo.base))
 				self.move(temp_dn, ignore_license, temporary_ou)
 				self.dn = temp_dn
 
-		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
+		if self.dn.lower() == newdn.lower()[-len(self.dn):]:  # FIXME
 			raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
 
 		if univention.admin.modules.supports(self.module, 'subtree_move'):
@@ -472,7 +471,7 @@ class base(object):
 			try:
 				for subolddn, suboldattrs in subelements:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %s' % subolddn)
-					subnewdn = subolddn.replace(olddn, newdn)
+					subnewdn = re.sub('%s$' % (re.escape(olddn),), newdn, subolddn, flags=re.I)  # FIXME: looks broken
 					submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 					submodule = univention.admin.modules.get(submodule)
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
