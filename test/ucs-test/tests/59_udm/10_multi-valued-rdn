@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
 		print "Testing modify..."
 		DESC = 'The UDP echo service'
-		new_tcp = udm.modify_object(MODULE, dn=str_udp, description=DESC)
+		str_udp = udm.modify_object(MODULE, dn=str_udp, description=DESC)
 		verify_ldap_object(str_udp, expected_attr={'description': [DESC]}, strict=False)
 
 		print "Testing delete..."

@@ -1,3 +1,9 @@
+ucs-test (7.0.22-25) unstable; urgency=medium
+
+  * Bug #30368: fix detection of modified DN (modrdn detected)
+
+ -- Florian Best <best@univention.de>  Tue, 11 Jul 2017 20:00:16 +0200
+
 ucs-test (7.0.22-24) unstable; urgency=medium
 
   * Bug #38738: fix test case
