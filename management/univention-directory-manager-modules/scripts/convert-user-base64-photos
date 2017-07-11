@@ -30,6 +30,7 @@
 '''Univention Directory Manager Tools
 convert base64 encoded jpegPhoto LDAP entries to binary entries (Bug #26872)'''
 
+import binascii
 import optparse
 import sys
 import univention.config_registry as config
@@ -42,10 +43,6 @@ JPEG_HEADER = '\xff\xd8\xff\xe0'
 
 ucr = config.ConfigRegistry()
 ucr.load()
-
-
-def find_users(lo):
-	return udm_modules.lookup('users/user', None, lo, filter='jpegPhoto=*', base=ucr['ldap/base'], scope='sub')
 
 
 def run(action, verbose=False):
@@ -61,7 +58,6 @@ def run(action, verbose=False):
 			if verbose or force:
 				print 'DN: %s\n%s\n' % (idn, msg)
 
-		msg = ''
 		try:
 			b64 = iobj['jpegPhoto'][0]
 		except Exception as e:
@@ -79,7 +75,7 @@ def run(action, verbose=False):
 		try:
 			bin = b64.decode('base64')
 			_b64 = bin.encode('base64')
-		except Error as e:
+		except binascii.Error as e:
 			# no base64 encoded jpeg photo
 			log('jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
 			continue
