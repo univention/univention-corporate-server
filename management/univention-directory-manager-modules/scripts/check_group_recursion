@@ -31,12 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
 import sys
 import os
 import re
 import univention.config_registry
-import univention.admin.config
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uexceptions
@@ -127,7 +125,6 @@ def main():
 	lo, position = get_ldap_connection(basedn)
 	grp_module = univention.admin.modules.get('groups/group')
 	univention.admin.modules.init(lo, position, grp_module)
-	co = univention.admin.config.config()
 
 	recursionCnt = 0
 

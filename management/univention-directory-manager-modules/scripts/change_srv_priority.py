@@ -34,7 +34,6 @@ This tool changes the priority from some SRV records from 0 to 100
 
 import univention.admin
 import univention.admin.uldap
-import univention.admin.config
 import univention.admin.modules
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.srv_record
@@ -62,7 +61,7 @@ SRV_RECORDS = [
 
 
 lo, position = univention.admin.uldap.getAdminConnection()
-co = univention.admin.config.config()
+co = None
 forward_module = univention.admin.modules.get('dns/forward_zone')
 forward_zones = univention.admin.modules.lookup(forward_module, co, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'), filter=None)
 
@@ -81,12 +80,12 @@ for forward_zone in forward_zones:
 			if modify:
 
 				# make SRV records uniq
-				l = []
+				location = []
 				for i in range(len(srv_record['location'])):
-					if srv_record['location'][i] not in l:
-						l.append(srv_record['location'][i])
+					if srv_record['location'][i] not in location:
+						location.append(srv_record['location'][i])
 
-				srv_record['location'] = l
+				srv_record['location'] = location
 
 				# Change the objects
 				print 'Modify: %s' % srv_record.dn
