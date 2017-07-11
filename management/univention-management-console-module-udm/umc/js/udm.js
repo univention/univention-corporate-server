@@ -1904,8 +1904,9 @@ define([
 
 		_preloadDetailPage: function() {
 			this._ldapNameDeferred = new Deferred();
-			if (this.moduleFlavor != this._preloadedObjectType) {
+			if (this.moduleFlavor != this._preloadedObjectType || this.openObject) {
 				// make sure that only users/user is preloaded
+				// but do not preload if the module is opened with an user object to edit directly
 				return;
 			}
 
