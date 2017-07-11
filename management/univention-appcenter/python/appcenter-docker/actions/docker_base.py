@@ -163,7 +163,7 @@ class DockerActionMixin(object):
 		set_vars = (args.set_vars or {}).copy()
 		after_image_configuration = {}
 		for setting in app.get_settings():
-			if setting.should_to_into_image_configuration(app):
+			if setting.should_go_into_image_configuration(app):
 				if setting.name not in set_vars:
 					set_vars[setting.name] = setting.get_initial_value()
 			else:

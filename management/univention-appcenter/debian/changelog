@@ -1,3 +1,9 @@
+univention-appcenter (6.0.8-10) unstable; urgency=medium
+
+  * Bug #44872: Fix typo in method name
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Jul 2017 13:42:37 +0200
+
 univention-appcenter (6.0.8-9) unstable; urgency=medium
 
   * Bug #44872: Better phrasing for file upload widget
