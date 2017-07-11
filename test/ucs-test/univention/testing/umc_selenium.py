@@ -190,7 +190,7 @@ class UMCSeleniumTest(object):
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch")]'
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
 				(webdriver.common.by.By.XPATH, xpath)
@@ -323,6 +323,9 @@ class UMCSeleniumTest(object):
 			return clickable_elems
 		return False
 
+	def open_side_menu(self):
+		self.click_element('//*[@class="umcMobileMenuToggleButton"]')
+
 	@staticmethod
 	def find_visible_element_from_list(elements):
 		"""
@@ -373,7 +376,9 @@ class UMCSeleniumTest(object):
 		"""
 		logger.info('Submitting input field %r.' % (inputname,))
 		elem = self.get_input(inputname)
-		elem.submit()
+		# elem.submit() -> This doesn't work, when there is an html element
+		# named 'submit'.
+		elem.send_keys(Keys.RETURN)
 
 	def get_input(self, inputname):
 		"""
