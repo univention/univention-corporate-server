@@ -17,8 +17,9 @@ desc: |
  * The temporary locking objects are removed when an error happens during
    object creation. This prevents that one needs to save an object
    twice to create it after resolving the error.
- * It was possible to supply a wrong object type when modifying objects. This
-   is now prevented and a error message is shown.
+ * It is currently possible to supply a wrong object type when modifying
+   objects. This erratum prepares for preventing this and show error messages
+   instead.
  * UDM objects with the object flags synced and docker can now be deleted.
  * Passing univention.uldap.access() instances to UDM objects is handled more
    gracefully.
