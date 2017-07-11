@@ -26,6 +26,6 @@ desc: |
    objects as the wrong type.
  * The description for the "options" property of extended attributes
    has been improved.
- * The simultaneous modification of a user password and the
-   "Change password on next login" option is now possible.
+ * An LDAP error is prevented when changing the user password and the
+   "Change password on next login" option at the same time.
 bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015]
