@@ -176,6 +176,10 @@ class UDMListSetting(ListSetting):
 class FileSetting(Setting):
 	filename = IniSectionAttribute(required=True)
 
+	def _log_set_value(self, app, value):
+		# do not log complete file content
+		pass
+
 	def _read_file_content(self, filename):
 		try:
 			with open(filename) as fd:
