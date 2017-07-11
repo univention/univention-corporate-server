@@ -1,3 +1,10 @@
+univention-updater (12.0.11-4) unstable; urgency=medium
+
+  * Bug #44623: Don't display apps with updatable containers as this is not
+    supported through univention-updater.
+
+ -- Eduard Mai <mai@univention.de>  Tue, 11 Jul 2017 13:57:06 +0200
+
 univention-updater (12.0.11-3) unstable; urgency=medium
 
   * Bug #44623: Properly display updates when no new app version was provided
