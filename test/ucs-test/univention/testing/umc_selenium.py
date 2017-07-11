@@ -29,16 +29,17 @@ Common functions used by tests.
 # <http://www.gnu.org/licenses/>.
 
 from selenium import webdriver
-from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions
 from univention.admin import localization
-import univention.testing.utils as utils
-import univention.testing.ucr as ucr_test
 import datetime
+import json
 import logging
 import os
+import selenium.common.exceptions as selenium_exceptions
 import time
-import json
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
 logger = logging.getLogger(__name__)
 
@@ -166,7 +167,13 @@ class UMCSeleniumTest(object):
 		time.sleep(2)
 
 		if hide_notifications:
-			self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "none")')
+			try:
+				notifications_container = self.driver.find_element_by_xpath(
+					'//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationContainer ")]'
+				)
+				self.driver.execute_script('arguments[0].style.display="None"', notifications_container)
+			except selenium_exceptions.NoSuchElementException:
+				hide_notifications = False
 
 		if append_timestamp:
 			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -178,7 +185,7 @@ class UMCSeleniumTest(object):
 		self.driver.find_element_by_xpath(xpath).screenshot(filename)
 
 		if hide_notifications:
-			self.driver.execute_script('dojo.style(dojo.query(".umcNotificationContainer")[0], "display", "")')
+			self.driver.execute_script('arguments[0].style.display=""', notifications_container)
 
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
