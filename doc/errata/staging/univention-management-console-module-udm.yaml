@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * Unused legacy code has been removed.
-bug: [43299]
+ * The tab that is opened when editing a user in a new tab
+   is now closable.
+bug: [43299, 40486]
