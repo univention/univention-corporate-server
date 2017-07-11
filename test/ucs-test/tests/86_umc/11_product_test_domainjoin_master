@@ -37,10 +37,6 @@ class UMCTester(BaseUMCTester):
 		time.sleep(25)
 
 	def test_if_login_works(self):
-		self.selenium.driver.get(
-			self.selenium.base_url + 'univention/login/?lang=%s'
-			% (self.selenium.language,)
-		)
 		self.selenium.do_login()
 
 

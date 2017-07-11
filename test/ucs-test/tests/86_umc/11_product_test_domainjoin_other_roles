@@ -20,10 +20,6 @@ class PasswordChangeError(Exception):
 
 class UMCTester(BaseUMCTester):
 	def test_umc(self):
-		self.selenium.driver.get(
-			self.selenium.base_url + 'univention/management/?lang=%s'
-			% (self.selenium.language,)
-		)
 		self.selenium.do_login(username='root')
 
 		self.join_domain()
@@ -45,10 +41,6 @@ class UMCTester(BaseUMCTester):
 		time.sleep(60)
 
 	def test_if_login_works(self):
-		self.selenium.driver.get(
-			self.selenium.base_url + 'univention/login/?lang=%s'
-			% (self.selenium.language,)
-		)
 		self.selenium.do_login()
 
 	def mark_one_join_script_as_unexecuted(self):

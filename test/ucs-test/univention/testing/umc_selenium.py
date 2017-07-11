@@ -144,6 +144,8 @@ class UMCSeleniumTest(object):
 		if password is None:
 			password = self.umcLoginPassword
 
+		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
 				(webdriver.common.by.By.ID, "umcLoginUsername")
