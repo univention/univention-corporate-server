@@ -55,6 +55,7 @@ class ScreenShooter(BaseScreenShooter):
 	def take_screenshot_of_details_page(self):
 		self.selenium.click_grid_entry("anna")
 		self.selenium.wait_for_text(_("password history"))
+		self.selenium.wait_until_all_standby_animations_disappeared()
 		self.selenium.save_screenshot("umc-users-details")
 
 # This is a base64 encoded jpeg image of an user portrait.
