@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-07-01 12:53+0200\n"
+"POT-Creation-Date: 2017-07-02 22:13+0200\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -20,9 +20,17 @@ msgstr ""
 msgid "Account"
 msgstr "Konto"
 
+#: tests/86_umc/13_miscellaneous:50 tests/86_umc/13_miscellaneous:82
+msgid "App Center"
+msgstr ""
+
 #: tests/86_umc/12_product_test_ucr:142
 msgid "Base Settings"
 msgstr ""
+
+#: tests/86_umc/13_miscellaneous:41 tests/86_umc/13_miscellaneous:59
+msgid "Certificate settings"
+msgstr "Benutzereinstellungen"
 
 #: tests/86_umc/10_product_test_password_change:157
 #: tests/86_umc/10_product_test_password_change:162
@@ -38,6 +46,24 @@ msgstr "Passwort bei der nächsten Anmeldung ändern"
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
+#: tests/86_umc/13_miscellaneous:136
+msgid "Close"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:29
+msgid "Computers"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:32
+msgid "DHCP"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:33
+msgid "DNS"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:34 tests/86_umc/13_miscellaneous:58
+#: tests/86_umc/13_miscellaneous:73 tests/86_umc/13_miscellaneous:89
 #: tests/86_umc/11_product_test_domainjoin_other_roles:37
 #: tests/86_umc/11_product_test_domainjoin_other_roles:65
 #: tests/86_umc/11_product_test_domainjoin_master:25
@@ -52,16 +78,61 @@ msgstr ""
 msgid "Execute all pending join scripts"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:277
 #: tests/86_umc/10_product_test_password_change:144
 msgid "Favorites"
 msgstr "Favoriten"
+
+#: tests/86_umc/13_miscellaneous:26 tests/86_umc/13_miscellaneous:57
+#: tests/86_umc/13_miscellaneous:72 tests/86_umc/13_miscellaneous:88
+msgid "Filesystem quotas"
+msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_master:30
 msgid "Force execute"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:27
+msgid "Groups"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:42 tests/86_umc/13_miscellaneous:60
+#: tests/86_umc/13_miscellaneous:74 tests/86_umc/13_miscellaneous:90
+msgid "Hardware information"
+msgstr ""
+
 #: tests/86_umc/11_product_test_domainjoin_other_roles:40
 msgid "Join system"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:35
+msgid "LDAP directory"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:43 tests/86_umc/13_miscellaneous:61
+#: tests/86_umc/13_miscellaneous:75 tests/86_umc/13_miscellaneous:91
+msgid "Language settings"
+msgstr "Benutzereinstellungen"
+
+#: tests/86_umc/13_miscellaneous:146 tests/86_umc/13_miscellaneous:148
+msgid "Logout"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:36
+msgid "Mail"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:30
+msgid "Nagios"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:44 tests/86_umc/13_miscellaneous:62
+#: tests/86_umc/13_miscellaneous:76 tests/86_umc/13_miscellaneous:92
+msgid "Network settings"
+msgstr "Benutzereinstellungen"
+
+#: tests/86_umc/13_miscellaneous:37
+msgid "Networks"
 msgstr ""
 
 #: tests/86_umc/10_product_test_password_change:149
@@ -69,14 +140,36 @@ msgstr ""
 msgid "Ok"
 msgstr "Ok"
 
+#: tests/86_umc/13_miscellaneous:51 tests/86_umc/13_miscellaneous:83
+msgid "Package Management"
+msgstr ""
+
 #: tests/86_umc/11_product_test_domainjoin_other_roles:38
 #: tests/86_umc/11_product_test_domainjoin_other_roles:70
 msgid "Please enter credentials"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:38
+msgid "Policies"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:31
+msgid "Printers"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:45 tests/86_umc/13_miscellaneous:63
+#: tests/86_umc/13_miscellaneous:77 tests/86_umc/13_miscellaneous:93
+#: tests/86_umc/13_miscellaneous:165 tests/86_umc/13_miscellaneous:203
+msgid "Process overview"
+msgstr ""
+
 #: tests/86_umc/11_product_test_domainjoin_other_roles:43
 msgid "Reboot"
 msgstr ""
+
+#: tests/86_umc/13_miscellaneous:52 tests/86_umc/13_miscellaneous:84
+msgid "Repository Settings"
+msgstr "Benutzereinstellungen"
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:77
 #: tests/86_umc/11_product_test_domainjoin_master:35
@@ -91,19 +184,57 @@ msgstr ""
 msgid "Run join scripts"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:40
+msgid "SAML identity provider"
+msgstr ""
+
 #: tests/86_umc/10_product_test_password_change:105
 #: tests/86_umc/12_product_test_ucr:123
 msgid "Save"
 msgstr "Speichern"
 
+#: tests/86_umc/13_miscellaneous:137 tests/86_umc/13_miscellaneous:289
+msgid "Search query"
+msgstr "Suche Benutzer..."
+
 #: tests/86_umc/10_product_test_password_change:106
 msgid "Search users..."
 msgstr "Suche Benutzer..."
+
+#: tests/86_umc/13_miscellaneous:39
+msgid "Shares"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:53 tests/86_umc/13_miscellaneous:67
+#: tests/86_umc/13_miscellaneous:85 tests/86_umc/13_miscellaneous:97
+msgid "Software update"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:46 tests/86_umc/13_miscellaneous:64
+#: tests/86_umc/13_miscellaneous:78 tests/86_umc/13_miscellaneous:94
+msgid "Statistics"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:268 tests/86_umc/13_miscellaneous:270
+msgid "Switch language"
+msgstr "Sprache ändern"
+
+#: tests/86_umc/13_miscellaneous:49 tests/86_umc/13_miscellaneous:81
+msgid "System diagnostic"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:47 tests/86_umc/13_miscellaneous:65
+#: tests/86_umc/13_miscellaneous:79 tests/86_umc/13_miscellaneous:95
+msgid "System services"
+msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:66
 msgid "This page shows the status of all"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:48 tests/86_umc/13_miscellaneous:66
+#: tests/86_umc/13_miscellaneous:80 tests/86_umc/13_miscellaneous:96
+#: tests/86_umc/13_miscellaneous:163 tests/86_umc/13_miscellaneous:202
 #: tests/86_umc/12_product_test_ucr:92
 msgid "Univention Configuration Registry"
 msgstr ""
@@ -112,6 +243,7 @@ msgstr ""
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
+#: tests/86_umc/13_miscellaneous:28
 #: tests/86_umc/10_product_test_password_change:56
 #: tests/86_umc/10_product_test_password_change:94
 msgid "Users"
@@ -121,6 +253,11 @@ msgstr "Benutzer"
 msgid "apache"
 msgstr ""
 
+#: tests/86_umc/13_miscellaneous:166
+msgid "generates an overview"
+msgstr ""
+
+#: tests/86_umc/13_miscellaneous:192
 #: tests/86_umc/10_product_test_password_change:145
 #: tests/86_umc/10_product_test_password_change:148
 msgid "no module available"
@@ -148,6 +285,10 @@ msgstr "Passwort ist zu kurz"
 #: tests/86_umc/10_product_test_password_change:169
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
+
+#: tests/86_umc/13_miscellaneous:147
+msgid "really want to logout"
+msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:75
 #: tests/86_umc/11_product_test_domainjoin_master:33
