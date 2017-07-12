@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: heimdal
+fix: 1.6~git20120403+dfsg1-2.239.201707121218
+desc: |
+ This update addresses the following issue:
+ * Orpheus' Lyre KDC-REP service name validation (mutual auth bypass)
+   (CVE-2017-11103)
+bug: [44985]
+cve:
+ - CVE-2017-11103
