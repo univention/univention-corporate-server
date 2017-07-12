@@ -164,7 +164,7 @@ class ListSetting(Setting):
 
 	def sanitize_value(self, app, value):
 		super(ListSetting, self).sanitize_value(app, value)
-		if not value in self.values:
+		if value not in self.values:
 			raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
 		return value
 

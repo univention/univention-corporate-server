@@ -79,7 +79,6 @@ define([
 					}));
 				} else if (variable.type == 'File') {
 					if (params.value) {
-						params.value = btoa(params.value);
 						params.data = {content: params.value};
 					}
 					ret.push(lang.mixin(params, {

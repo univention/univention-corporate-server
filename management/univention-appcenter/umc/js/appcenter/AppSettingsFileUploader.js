@@ -51,7 +51,7 @@ define([
 			this.addChild(this._content, 0);
 			this._originalValue = null;
 			if (this.data && this.data.content) {
-				this._originalValue = atob(this.data.content);
+				this._originalValue = this.data.content;
 			}
 		},
 
@@ -74,7 +74,7 @@ define([
 				lengthContent += _('No file was uploaded yet.') + ' ';
 			}
 			if (value) {
-				this._uploadedValue = atob(value);
+				this._uploadedValue = value;
 				if (this._originalValue !== this._uploadedValue) {
 					lengthContent += _('After saving, the file length will be %d bytes', value.length);
 				}

@@ -62,7 +62,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
-from univention.appcenter.settings import SettingValueError
+from univention.appcenter.settings import SettingValueError, FileSetting, PasswordFileSetting
 
 # local application
 from univention.management.console.modules.appcenter.app_center import Application, LICENSE
@@ -307,6 +307,10 @@ class Instance(umcm.Base, ProgressMixin):
 	@sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
 	@simple_response(with_progress=True)
 	def configure(self, progress, app, values, autostart=None):
+		for setting in app.get_settings():
+			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+				if values.get(setting.name):
+					values[setting.name] = values[setting.name].decode('base64')
 		configure = get_action('configure')
 		handler = UMCProgressHandler(progress)
 		handler.setLevel(logging.INFO)
@@ -370,6 +374,10 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
+		for setting in app.get_settings():
+			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+				if values.get(setting.name):
+					values[setting.name] = values[setting.name].decode('base64')
 		if function == 'upgrade':
 			app = Apps().find_candidate(app)
 		serious_problems = False
