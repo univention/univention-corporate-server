@@ -10,3 +10,5 @@ desc: |
    looking up the _domaincontroller_master._tcp SRV record in case no
    nameservers are available.
 bug: [44849]
+erratum: 88
+announced: 2017-07-12
