@@ -797,7 +797,15 @@ setup_pre_joined_environment ()
 {
 	# $1 = appid
 	# $2 = domainname / derived ldapbase
+	set -x
+	fastdemomode="unknown"
 	if app_appliance_AllowPreconfiguredSetup $1; then
+			fastdemomode="yes"
+	fi
+	if [ "ignore" != "$FORCEFASTDEMOMODE" ]; then
+			fastdemomode="$FORCEFASTDEMOMODE"
+	fi
+	if [ "yes" = "$fastdemomode" ]; then
 		[ -z "${2}" ] && set -- "$1" "ucs.example"
 		local domainname="${2}"
 		local ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
