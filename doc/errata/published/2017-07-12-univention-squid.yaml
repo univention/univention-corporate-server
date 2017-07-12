@@ -9,3 +9,5 @@ desc: |
  * The Squid proxy server now uses STARTTLS to encrypt all LDAP
    connections (Bug #43675).
 bug: [43675]
+erratum: 442
+announced: 2017-07-12
