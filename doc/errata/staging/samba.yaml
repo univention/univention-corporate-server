@@ -9,3 +9,5 @@ desc: |
  * Orpheus' Lyre KDC-REP service name validation (mutual auth bypass) in
    embedded Heimdal (CVE-2017-11103)
 bug: [44983]
+cve:
+ - CVE-2017-11103
