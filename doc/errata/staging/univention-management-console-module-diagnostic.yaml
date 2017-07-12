@@ -3,8 +3,9 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-management-console-module-diagnostic
-fix: 3.0.1-2A~4.2.0.201707121629
+fix: 3.0.1-3A~4.2.0.201707121652
 desc: |
  This update addresses the following issue(s):
  * A non-working proxy server is now classified as an critical error.
-bug: [36750]
+ * The error of an unset gateway is now catched gracefully.
+bug: [36750, 42155]
