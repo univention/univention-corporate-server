@@ -12,3 +12,5 @@ desc: |
  * Fixed an error in univention-samba4.prerm
  * Fixed en error message due to missing phpldapadmin-config.php
 bug: [44787, 44936, 33235]
+erratum: 93
+announced: 2017-07-12
