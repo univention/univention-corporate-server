@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.17-82) unstable; urgency=medium
+
+  * Bug #24374: Applied patch from Florian Best - Remove unused code
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 12 Jul 2017 16:15:37 +0200
+
 univention-directory-manager-modules (12.0.17-81) unstable; urgency=medium
 
   * Bug #32781: Applied patch from Florian Best - Fix error with tabPosition=0
