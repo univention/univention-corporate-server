@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-10 15:46+0200\n"
+"POT-Creation-Date: 2017-07-12 14:38+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -192,6 +192,10 @@ msgstr ""
 "keine Weitergabe persönlicher oder individuell zuordenbarer Daten an Dritte."
 "</p>"
 
+#: umc/js/appcenter/AppSettingsFileUploader.js:72
+msgid "A file is present."
+msgstr "Eine Datei ist vorhanden."
+
 #: umc/js/appcenter/AppDetailsPage.js:1165
 #, python-format
 msgid "A module for the administration of the app is available: %s."
@@ -240,14 +244,13 @@ msgstr "Zusätzliche Repositories"
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:79
-#, python-format
-msgid "After saving, the file length will be %d bytes"
-msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
-
-#: umc/js/appcenter/AppSettingsFileUploader.js:84
+#: umc/js/appcenter/AppSettingsFileUploader.js:82
 msgid "After saving, the file will be deleted."
 msgstr "Nach dem Speichern wird die Datei gelöscht werden."
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:78
+msgid "After saving, the new file will be uploaded."
+msgstr "Nach dem Speichern wird die neue Datei hochgeladen werden."
 
 #: umc/js/appcenter/AppDetailsPage.js:1067
 #, python-format
@@ -413,11 +416,6 @@ msgstr "Fortfahren"
 msgid "Continue using"
 msgstr "Weiterhin nutzen"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:72
-#, python-format
-msgid "Current file length is %d bytes."
-msgstr "Aktuelle Dateigröße ist %d Bytes."
-
 #: umc/js/appcenter/SettingsPage.js:188 umc/js/appcenter/SettingsPage.js:307
 msgid "Delete"
 msgstr "Löschen"
@@ -512,7 +510,7 @@ msgstr "Ende der Produktpflege"
 msgid "Error performing the action"
 msgstr "Ein Fehler trat während der Aktion auf"
 
-#: umc/js/appcenter/AppSettingsFileUploader.js:87
+#: umc/js/appcenter/AppSettingsFileUploader.js:85
 #, python-format
 msgid "File will be uploaded to %s."
 msgstr "Datei wird nach %s hochgeladen."
@@ -944,7 +942,7 @@ msgstr "Kategorie"
 msgid "Server"
 msgstr "Server"
 
-#: umc/js/appcenter/AppSettings.js:33 umc/js/appcenter/AppSettings.js:135
+#: umc/js/appcenter/AppSettings.js:33 umc/js/appcenter/AppSettings.js:134
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1468,6 +1466,12 @@ msgstr "{0} Pakete werden installiert / aktualisiert"
 #, python-brace-format
 msgid "{0} packages will be removed"
 msgstr "{0} Pakete werden deinstalliert"
+
+#~ msgid "After saving, the file length will be %d bytes"
+#~ msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
+
+#~ msgid "Current file length is %d bytes."
+#~ msgstr "Aktuelle Dateigröße ist %d Bytes."
 
 #~ msgid ""
 #~ "Depending on the guideline of the respective application vendor an "

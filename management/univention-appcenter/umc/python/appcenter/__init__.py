@@ -37,8 +37,8 @@ import locale
 import time
 import sys
 from contextlib import contextmanager
-# import urllib2
 import logging
+from base64 import encodestring
 
 # related third party
 import notifier
@@ -297,6 +297,9 @@ class Instance(umcm.Base, ProgressMixin):
 					if value is None and phase == 'Install':
 						values[setting.name] = setting.get_initial_value()
 					else:
+						if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+							if value:
+								value = encodestring(value).rstrip()
 						values[setting.name] = value
 		return {
 			'autostart': autostart,

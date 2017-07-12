@@ -69,15 +69,13 @@ define([
 		updateView: function(value) {
 			var lengthContent = '';
 			if (this._originalValue) {
-				lengthContent += _('Current file length is %d bytes.', this._originalValue.length) + ' ';
+				lengthContent += _('A file is present.') + ' ';
 			} else {
 				lengthContent += _('No file was uploaded yet.') + ' ';
 			}
 			if (value) {
 				this._uploadedValue = value;
-				if (this._originalValue !== this._uploadedValue) {
-					lengthContent += _('After saving, the file length will be %d bytes', value.length);
-				}
+				lengthContent += _('After saving, the new file will be uploaded.');
 			} else {
 				this._uploadedValue = null;
 				if (this._originalValue) {
