@@ -909,16 +909,27 @@ class ucs:
 	def get_ucs_object(self, property_type, dn):
 		_d = ud.function('ldap.get_ucs_object')
 		ucs_object = None
-		if isinstance(dn, type(u'')):
+		if isinstance(dn, unicode):
 			searchdn = dn
 		else:
 			searchdn = unicode(dn)
 		try:
-			if not self.get_ucs_ldap_object(searchdn):  # fails if object doesn't exist
+			attr = self.get_ucs_ldap_object(searchdn)
+			if not attr:
 				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
-			module = self.modules[property_type]
-			ucs_object = univention.admin.objects.get(module, co='', lo=self.lo, position='', dn=searchdn)  # does not fail if object doesn't exist
+
+			module = self.modules[property_type]  # old default
+			if not module.identify(searchdn, attr):
+				for m in self.modules_others.get(property_type, []):
+					if m and m.identify(searchdn, attr):
+						module = m
+						break
+				else:
+					ud.debug(ud.LDAP, ud.ERROR, "get_ucs_object: could not identify UDM object type: %s" % searchdn)
+					ud.debug(ud.LDAP, ud.PROCESS, "get_ucs_object: using default: %s" % module.module)
+
+			ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
