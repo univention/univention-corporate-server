@@ -29,4 +29,5 @@ desc: |
    has been improved.
  * An LDAP error is prevented when changing the user password and the
    "Change password on next login" option at the same time.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015]
+ * Unused legacy code regarding container/dc objects has been removed.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374]
