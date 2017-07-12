@@ -9,3 +9,5 @@ desc: |
  * The error handling has been improved when a process stops during the
    calculation of the CPU consumption of a process.
 bug: [38738]
+erratum: 91
+announced: 2017-07-12
