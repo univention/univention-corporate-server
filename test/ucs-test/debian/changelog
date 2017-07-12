@@ -1,3 +1,9 @@
+ucs-test (7.0.22-26) unstable; urgency=medium
+
+  * Bug #35074: enable test script
+
+ -- Florian Best <best@univention.de>  Wed, 12 Jul 2017 16:39:53 +0200
+
 ucs-test (7.0.22-25) unstable; urgency=medium
 
   * Bug #30368: fix detection of modified DN (modrdn detected)

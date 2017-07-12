@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove ip range from network
-## tags: [udm-net,apptest,SKIP]
+## tags: [udm-net,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [35074]
