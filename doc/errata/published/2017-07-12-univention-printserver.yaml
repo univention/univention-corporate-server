@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Old code from UCS 2.4 has been removed from the package.
 bug: [39419]
+erratum: 92
+announced: 2017-07-12
