@@ -7,5 +7,6 @@ fix: 2.0.2-10A~4.2.0.201706301640
 desc: |
  This update addresses the following issue(s):
  * The package has been updated to work with UCS 4.2 App Appliances
- * The license upload step was displayed first even if no license mail was sent.
+ * The license upload step was displayed first even if no license mail
+   was sent.
 bug: [44523, 44910]
