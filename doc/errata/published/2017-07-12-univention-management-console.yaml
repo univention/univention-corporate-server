@@ -9,3 +9,5 @@ desc: |
  * No duplicated tooltips are shown anymore for the links in the footer of
    the login page.
 bug: [44072]
+erratum: 90
+announced: 2017-07-12
