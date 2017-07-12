@@ -3,8 +3,10 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-s4-connector
-fix: 11.0.7-12A~4.2.0.201707061203
+fix: 11.0.7-13A~4.2.0.201707121940
 desc: |
  This update addresses the following issue(s):
  * Fix CNAME and PTR record deletion in the S4-Connector.
-bug: [43072]
+ * Some objects were identified as the wrong object type. The identification
+   handling has been fixed.
+bug: [43072, 44976]
