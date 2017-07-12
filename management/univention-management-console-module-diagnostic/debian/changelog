@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-3) unstable; urgency=medium
+
+  * Bug #42155: Applied patch from Florian Best - Catch gateway not set error
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 12 Jul 2017 16:39:39 +0200
+
 univention-management-console-module-diagnostic (3.0.1-2) unstable; urgency=medium
 
   * Bug #36750: Applied patch from Florian Best - Change non-working proxy
