@@ -71,7 +71,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		options=[],
 		dontsearch=True,
-		required=False,
+		required=True,
 		may_change=True,
 		identifies=False,
 	),
