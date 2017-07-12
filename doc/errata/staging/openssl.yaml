@@ -10,6 +10,7 @@ desc: |-
  * SSL/TLS SSL3_AL_WARNING undefined alert DoS (CVE-2016-8610)
  * Truncated packet could crash via OOB read (CVE-2017-3731)
  * BN_mod_exp may produce incorrect results on x86_64 (CVE-2017-3732)
+ * EXPORT and LOW ciphers have been disabled
 bug: [42925]
 cve:
 - CVE-2016-7055
