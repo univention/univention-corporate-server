@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The sequence ": " in a UCR variable key is now prohibited.
 bug: [25095]
+erratum: 95
+announced: 2017-07-12
