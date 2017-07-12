@@ -1808,7 +1808,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				if UIDs:
 					new_uids.append(UIDs[0])
 					if len(UIDs) > 1:
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: A groupmember has multiple UIDs (%s %s)' % (memberDNstr, repr(uid_list)))
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: A groupmember has multiple UIDs (%s %r)' % (memberDNstr, UIDs))
 		self.lo.modify(group, [('memberUid', uids, new_uids)])
 
 	def __primary_group(self):

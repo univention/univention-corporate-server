@@ -1020,27 +1020,30 @@ def _doit(arglist):
 
 					out.append("  Policy-based Settings:")
 					policy = ''
+					attribute = ''
 					value = []
 					client = {}
 					for line in policyResults:
-						if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
-							out.append("    %s" % line.strip())
-							if policies_with_DN:
-								clsplit = string.split(line.strip(), ': ')
-								if clsplit[0] == 'Policy':
-									if policy:
-										client[attribute] = [policy, value]
-										value = []
-									policy = clsplit[1]
-								elif clsplit[0] == 'Attribute':
-									attribute = clsplit[1]
-								elif clsplit[0] == 'Value':
-									value.append(clsplit[1])
-							else:
-								clsplit = string.split(line.strip(), '=')
-								if not client.has_key(clsplit[0]):
-									client[clsplit[0]] = []
-								client[clsplit[0]].append(clsplit[1])
+						line = line.strip()
+						if not line or line.startswith("DN: ") or line.startswith("POLICY "):
+							continue
+						out.append("    %s" % line)
+
+						if not policies_with_DN:
+							ckey, cval = line.split('=', 1)
+							client.setdefault(ckey, []).append(cval)
+							continue
+
+						ckey, cval = line.split(': ', 1)
+						if ckey == 'Policy':
+							if policy:
+								client[attribute] = [policy, value]
+								value = []
+							policy = cval
+						elif ckey == 'Attribute':
+							attribute = cval
+						elif ckey == 'Value':
+							value.append(cval)
 
 					if policies_with_DN:
 						client[attribute] = [policy, value]

@@ -1,3 +1,6 @@
+from univention.admin.syntax import select
+
+
 class ExampleSyntax(select):
 
 	choices = [
