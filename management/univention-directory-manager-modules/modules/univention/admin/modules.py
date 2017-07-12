@@ -407,6 +407,8 @@ def update_extended_attributes(lo, module, position):
 				priority = attrs.get('univentionUDMPropertyLayoutPosition', ['-1'])[0]
 				try:
 					priority = int(priority)
+					if priority < 1:
+						priority = -1
 				except ValueError:
 					ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 					priority = -1

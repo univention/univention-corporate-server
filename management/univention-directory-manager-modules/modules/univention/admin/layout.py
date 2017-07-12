@@ -137,7 +137,7 @@ class ILayoutElement(dict):
 
 		currentLine = fline
 
-		if len(self.layout) <= currentLine:
+		if len(self.layout) <= currentLine or currentLine < 0:
 			self.layout.append(field)
 		else:
 			if isinstance(self.layout[currentLine], basestring):
