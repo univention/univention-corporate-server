@@ -1,3 +1,9 @@
+ucs-test (7.0.22-27) unstable; urgency=medium
+
+  * Bug #44992: Refactored a test in 40mail
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 12 Jul 2017 17:28:43 +0200
+
 ucs-test (7.0.22-26) unstable; urgency=medium
 
   * Bug #35074: enable test script
