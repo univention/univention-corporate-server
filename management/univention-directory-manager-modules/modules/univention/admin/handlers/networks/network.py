@@ -33,6 +33,7 @@
 import ipaddr
 import string
 import ldap
+import traceback
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
@@ -236,7 +237,6 @@ class object(univention.admin.handlers.simpleLdap):
 			try:
 				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn, '')])
 			except (univention.admin.uexceptions.base, ldap.LDAPError):
-				import traceback
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to remove network %s from %s: %s' % (self.dn, computer.dn, traceback.format_exc()))
 
 	def _ldap_addlist(self):
@@ -248,14 +248,13 @@ class object(univention.admin.handlers.simpleLdap):
 		]
 
 	def _ldap_modlist(self):
-
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		next_ip_changed = False
 
 		if self.hasChanged('ipRange'):
 			network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
-			currentIp = ipaddr.IPAddress(self['nextIp'])
+			ipaddr.IPAddress(self['nextIp'])
 			if self['ipRange']:
 				self.sort_ipranges()
 				self['nextIp'] = self['ipRange'][0][0]
@@ -285,12 +284,11 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP, ))
 				ipRange.append(string.join(i, ' '))
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
+			ml = [x for x in ml if x[0] != 'univentionIpRange']
 			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', ['']), ipRange))
 
 		if next_ip_changed:
-			for el in ml:  # mapping may have set nextIp already, we want our value
-				if el[0] == 'univentionNextIp':
-					ml.remove(el)
+			ml = [x for x in ml if x[0] != 'univentionNextIp']
 			ml.append(('univentionNextIp', self.oldattr.get('univentionNextIp', ''), self['nextIp']))
 
 		return ml
@@ -310,7 +308,6 @@ def rewrite(filter, mapping):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionNetworkClass'),
 	])
@@ -327,5 +324,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-
 	return 'univentionNetworkClass' in attr.get('objectClass', [])
