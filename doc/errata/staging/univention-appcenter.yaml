@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 6.0.8-11A~4.2.0.201707120128
+fix: 6.0.8-12A~4.2.0.201707121245
 desc: |
  This update addresses the following issues:
  * Apps may now ship a file describing settings that can be applied
