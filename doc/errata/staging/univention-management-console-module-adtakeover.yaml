@@ -2,7 +2,7 @@ product: ucs
 release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
-src: management-console-module-adtakeover
+src: univention-management-console-module-adtakeover
 fix: 
 desc: |
  This update addresses the following issue(s):
