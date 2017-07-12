@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 12.0.17-74A~4.2.0.201707101408
+fix: 12.0.17-81A~4.2.0.201707121205
 desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
