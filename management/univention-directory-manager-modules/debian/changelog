@@ -2,6 +2,7 @@ univention-directory-manager-modules (12.0.17-83) unstable; urgency=medium
 
   * Bug #35074: removing a ipRange property from a networks/network object is
   	possible again
+  * Bug #25187: add hosts property to settings/umc_operationset
 
  -- Florian Best <best@univention.de>  Wed, 12 Jul 2017 15:48:28 +0200
 

@@ -98,6 +98,17 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'hosts': univention.admin.property(
+		short_description=_('Restrict to host'),
+		long_description=_('Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_slave) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed.'),
+		syntax=udm_syntax.string,
+		multivalue=True,
+		options=[],
+		dontsearch=True,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 }
 
 layout = [
@@ -105,7 +116,8 @@ layout = [
 		Group(_('General UMC operation set settings'), layout=[
 			['name', 'description'],
 			'operation',
-			'flavor'
+			'flavor',
+			'hosts',
 		]),
 	]),
 ]
@@ -130,6 +142,7 @@ mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('description', 'description', None, udm_mapping.ListToString)
 mapping.register('operation', 'umcOperationSetCommand', mapUMC_CommandPattern, unmapUMC_CommandPattern)
 mapping.register('flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToString)
+mapping.register('hosts', 'umcOperationSetHost')
 
 
 class object(simpleLdap):
