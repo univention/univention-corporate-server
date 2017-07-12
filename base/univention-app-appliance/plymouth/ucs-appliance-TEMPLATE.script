@@ -644,7 +644,7 @@ Plymouth.SetDisplayPasswordFunction(display_password_callback);
 statusmsg.sprite = Sprite();
 statusmsg.font = "Sans 13";
 statusmsg.sprite.SetX(Window.GetX() + Window.GetWidth()  / 4);
-statusmsg.sprite.SetY(logo.sprite.GetY() - logo[0].image.GetHeight() - 10);
+statusmsg.sprite.SetY(logo.sprite.GetY() + logo[0].image.GetHeight() + 24);
 
 fun update_status_callback (text) {
 
@@ -676,7 +676,7 @@ fun update_status_callback (text) {
 		global.status = "normal";
 		normal_setup();
 	} else {
-		local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, statusmsg.font);
+		local.image = Image.Text(text, ${FONT_COLOR}, 1, statusmsg.font);
 		string_it = 0;
 		update_strings[string_it] = "";
 		for (i=0; (String(text).CharAt(i) != ""); i++) {
