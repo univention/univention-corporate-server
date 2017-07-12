@@ -9,3 +9,5 @@ desc: |
  * A regression has been fixed which was introduced in erratum 36. The
    regression prevented the delivery of mails to shared folders in Cyrus.
 bug: [44948]
+erratum: 89
+announced: 2017-07-12
