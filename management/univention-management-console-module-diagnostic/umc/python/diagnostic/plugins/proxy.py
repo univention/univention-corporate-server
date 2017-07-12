@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Warning, Conflict, MODULE
+from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
 
 from urlparse import urlparse
 import pycurl
@@ -70,7 +70,7 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 		elif code == 0:
 			MODULE.error(traceback.format_exc())
 
-		raise Conflict('\n'.join([description, msg]))
+		raise Critical('\n'.join([description, msg]))
 	else:
 		# page = buf.getvalue()
 		# MODULE.info(page[:100])

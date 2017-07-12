@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (3.0.1-2) unstable; urgency=medium
+
+  * Bug #36750: Applied patch from Florian Best - Change non-working proxy
+    server error from Conflict to Critical
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 12 Jul 2017 16:24:51 +0200
+
 univention-management-console-module-diagnostic (3.0.1-1) unstable; urgency=medium
 
   * Bug #44038: fix rerunning checks; regression in grid causes the success
