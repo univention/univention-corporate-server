@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-07-02 22:13+0200\n"
+"POT-Creation-Date: 2017-07-12 23:49+0200\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: DE\n"
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:42
+#: tests/86_umc/11_product_test_domainjoin_other_roles:38
 msgid "A reboot of the server is recommended"
 msgstr ""
 
@@ -20,15 +20,24 @@ msgstr ""
 msgid "Account"
 msgstr "Konto"
 
-#: tests/86_umc/13_miscellaneous:50 tests/86_umc/13_miscellaneous:82
+#: tests/86_umc/131_miscellaneous_module_availability:54
+#: tests/86_umc/131_miscellaneous_module_availability:98
+#: tests/86_umc/131_miscellaneous_module_availability:128
+#: tests/86_umc/131_miscellaneous_module_availability:158
+#: tests/86_umc/131_miscellaneous_module_availability:232
 msgid "App Center"
+msgstr ""
+
+#: tests/86_umc/131_miscellaneous_module_availability:233
+msgid "App Center is designed for easy"
 msgstr ""
 
 #: tests/86_umc/12_product_test_ucr:142
 msgid "Base Settings"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:41 tests/86_umc/13_miscellaneous:59
+#: tests/86_umc/131_miscellaneous_module_availability:45
+#: tests/86_umc/131_miscellaneous_module_availability:62
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
@@ -46,26 +55,39 @@ msgstr "Passwort bei der nächsten Anmeldung ändern"
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
-#: tests/86_umc/13_miscellaneous:136
+#: tests/86_umc/131_miscellaneous_module_availability:238
 msgid "Close"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:29
+#: tests/86_umc/131_miscellaneous_module_availability:33
+#: tests/86_umc/131_miscellaneous_module_availability:78
 msgid "Computers"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:32
+#: tests/86_umc/131_miscellaneous_module_availability:234
+msgid "Continue"
+msgstr ""
+
+#: tests/86_umc/131_miscellaneous_module_availability:36
+#: tests/86_umc/131_miscellaneous_module_availability:81
 msgid "DHCP"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:33
+#: tests/86_umc/131_miscellaneous_module_availability:37
+#: tests/86_umc/131_miscellaneous_module_availability:82
 msgid "DNS"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:34 tests/86_umc/13_miscellaneous:58
-#: tests/86_umc/13_miscellaneous:73 tests/86_umc/13_miscellaneous:89
-#: tests/86_umc/11_product_test_domainjoin_other_roles:37
-#: tests/86_umc/11_product_test_domainjoin_other_roles:65
+#: tests/86_umc/131_miscellaneous_module_availability:38
+#: tests/86_umc/131_miscellaneous_module_availability:61
+#: tests/86_umc/131_miscellaneous_module_availability:83
+#: tests/86_umc/131_miscellaneous_module_availability:105
+#: tests/86_umc/131_miscellaneous_module_availability:119
+#: tests/86_umc/131_miscellaneous_module_availability:135
+#: tests/86_umc/131_miscellaneous_module_availability:149
+#: tests/86_umc/131_miscellaneous_module_availability:165
+#: tests/86_umc/11_product_test_domainjoin_other_roles:33
+#: tests/86_umc/11_product_test_domainjoin_other_roles:57
 #: tests/86_umc/11_product_test_domainjoin_master:25
 msgid "Domain join"
 msgstr ""
@@ -74,17 +96,23 @@ msgstr ""
 msgid "Edit UCR variable"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:68
+#: tests/86_umc/11_product_test_domainjoin_other_roles:60
 msgid "Execute all pending join scripts"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:277
+#: tests/86_umc/130_miscellaneous:167
 #: tests/86_umc/10_product_test_password_change:144
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: tests/86_umc/13_miscellaneous:26 tests/86_umc/13_miscellaneous:57
-#: tests/86_umc/13_miscellaneous:72 tests/86_umc/13_miscellaneous:88
+#: tests/86_umc/131_miscellaneous_module_availability:30
+#: tests/86_umc/131_miscellaneous_module_availability:60
+#: tests/86_umc/131_miscellaneous_module_availability:75
+#: tests/86_umc/131_miscellaneous_module_availability:104
+#: tests/86_umc/131_miscellaneous_module_availability:118
+#: tests/86_umc/131_miscellaneous_module_availability:134
+#: tests/86_umc/131_miscellaneous_module_availability:148
+#: tests/86_umc/131_miscellaneous_module_availability:164
 msgid "Filesystem quotas"
 msgstr ""
 
@@ -92,46 +120,69 @@ msgstr ""
 msgid "Force execute"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:27
+#: tests/86_umc/131_miscellaneous_module_availability:31
+#: tests/86_umc/131_miscellaneous_module_availability:76
 msgid "Groups"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:42 tests/86_umc/13_miscellaneous:60
-#: tests/86_umc/13_miscellaneous:74 tests/86_umc/13_miscellaneous:90
+#: tests/86_umc/131_miscellaneous_module_availability:46
+#: tests/86_umc/131_miscellaneous_module_availability:63
+#: tests/86_umc/131_miscellaneous_module_availability:90
+#: tests/86_umc/131_miscellaneous_module_availability:106
+#: tests/86_umc/131_miscellaneous_module_availability:120
+#: tests/86_umc/131_miscellaneous_module_availability:136
+#: tests/86_umc/131_miscellaneous_module_availability:150
+#: tests/86_umc/131_miscellaneous_module_availability:166
 msgid "Hardware information"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:40
+#: tests/86_umc/11_product_test_domainjoin_other_roles:36
 msgid "Join system"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:35
+#: tests/86_umc/131_miscellaneous_module_availability:39
+#: tests/86_umc/131_miscellaneous_module_availability:84
 msgid "LDAP directory"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:43 tests/86_umc/13_miscellaneous:61
-#: tests/86_umc/13_miscellaneous:75 tests/86_umc/13_miscellaneous:91
+#: tests/86_umc/131_miscellaneous_module_availability:47
+#: tests/86_umc/131_miscellaneous_module_availability:64
+#: tests/86_umc/131_miscellaneous_module_availability:91
+#: tests/86_umc/131_miscellaneous_module_availability:107
+#: tests/86_umc/131_miscellaneous_module_availability:121
+#: tests/86_umc/131_miscellaneous_module_availability:137
+#: tests/86_umc/131_miscellaneous_module_availability:151
+#: tests/86_umc/131_miscellaneous_module_availability:167
 msgid "Language settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/13_miscellaneous:146 tests/86_umc/13_miscellaneous:148
+#: tests/86_umc/130_miscellaneous:38 tests/86_umc/130_miscellaneous:40
 msgid "Logout"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:36
+#: tests/86_umc/131_miscellaneous_module_availability:40
+#: tests/86_umc/131_miscellaneous_module_availability:85
 msgid "Mail"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:30
+#: tests/86_umc/131_miscellaneous_module_availability:34
+#: tests/86_umc/131_miscellaneous_module_availability:79
 msgid "Nagios"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:44 tests/86_umc/13_miscellaneous:62
-#: tests/86_umc/13_miscellaneous:76 tests/86_umc/13_miscellaneous:92
+#: tests/86_umc/131_miscellaneous_module_availability:48
+#: tests/86_umc/131_miscellaneous_module_availability:65
+#: tests/86_umc/131_miscellaneous_module_availability:92
+#: tests/86_umc/131_miscellaneous_module_availability:108
+#: tests/86_umc/131_miscellaneous_module_availability:122
+#: tests/86_umc/131_miscellaneous_module_availability:138
+#: tests/86_umc/131_miscellaneous_module_availability:152
+#: tests/86_umc/131_miscellaneous_module_availability:168
 msgid "Network settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/13_miscellaneous:37
+#: tests/86_umc/131_miscellaneous_module_availability:41
+#: tests/86_umc/131_miscellaneous_module_availability:86
 msgid "Networks"
 msgstr ""
 
@@ -140,43 +191,57 @@ msgstr ""
 msgid "Ok"
 msgstr "Ok"
 
-#: tests/86_umc/13_miscellaneous:51 tests/86_umc/13_miscellaneous:83
+#: tests/86_umc/131_miscellaneous_module_availability:55
+#: tests/86_umc/131_miscellaneous_module_availability:99
+#: tests/86_umc/131_miscellaneous_module_availability:129
+#: tests/86_umc/131_miscellaneous_module_availability:159
 msgid "Package Management"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:38
-#: tests/86_umc/11_product_test_domainjoin_other_roles:70
+#: tests/86_umc/11_product_test_domainjoin_other_roles:34
+#: tests/86_umc/11_product_test_domainjoin_other_roles:62
 msgid "Please enter credentials"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:38
+#: tests/86_umc/131_miscellaneous_module_availability:42
+#: tests/86_umc/131_miscellaneous_module_availability:87
 msgid "Policies"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:31
+#: tests/86_umc/131_miscellaneous_module_availability:35
+#: tests/86_umc/131_miscellaneous_module_availability:80
 msgid "Printers"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:45 tests/86_umc/13_miscellaneous:63
-#: tests/86_umc/13_miscellaneous:77 tests/86_umc/13_miscellaneous:93
-#: tests/86_umc/13_miscellaneous:165 tests/86_umc/13_miscellaneous:203
+#: tests/86_umc/131_miscellaneous_module_availability:49
+#: tests/86_umc/131_miscellaneous_module_availability:66
+#: tests/86_umc/131_miscellaneous_module_availability:93
+#: tests/86_umc/131_miscellaneous_module_availability:109
+#: tests/86_umc/131_miscellaneous_module_availability:123
+#: tests/86_umc/131_miscellaneous_module_availability:139
+#: tests/86_umc/131_miscellaneous_module_availability:153
+#: tests/86_umc/131_miscellaneous_module_availability:169
+#: tests/86_umc/130_miscellaneous:51 tests/86_umc/130_miscellaneous:123
 msgid "Process overview"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:43
+#: tests/86_umc/11_product_test_domainjoin_other_roles:39
 msgid "Reboot"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:52 tests/86_umc/13_miscellaneous:84
+#: tests/86_umc/131_miscellaneous_module_availability:56
+#: tests/86_umc/131_miscellaneous_module_availability:100
+#: tests/86_umc/131_miscellaneous_module_availability:130
+#: tests/86_umc/131_miscellaneous_module_availability:160
 msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:77
+#: tests/86_umc/11_product_test_domainjoin_other_roles:69
 #: tests/86_umc/11_product_test_domainjoin_master:35
 msgid "Restart"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:73
+#: tests/86_umc/11_product_test_domainjoin_other_roles:65
 msgid "Run"
 msgstr ""
 
@@ -184,7 +249,8 @@ msgstr ""
 msgid "Run join scripts"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:40
+#: tests/86_umc/131_miscellaneous_module_availability:44
+#: tests/86_umc/131_miscellaneous_module_availability:89
 msgid "SAML identity provider"
 msgstr ""
 
@@ -193,7 +259,10 @@ msgstr ""
 msgid "Save"
 msgstr "Speichern"
 
-#: tests/86_umc/13_miscellaneous:137 tests/86_umc/13_miscellaneous:289
+#: tests/86_umc/131_miscellaneous_module_availability:242
+#: tests/86_umc/131_miscellaneous_module_availability:246
+#: tests/86_umc/131_miscellaneous_module_availability:258
+#: tests/86_umc/130_miscellaneous:179
 msgid "Search query"
 msgstr "Suche Benutzer..."
 
@@ -201,40 +270,68 @@ msgstr "Suche Benutzer..."
 msgid "Search users..."
 msgstr "Suche Benutzer..."
 
-#: tests/86_umc/13_miscellaneous:39
+#: tests/86_umc/131_miscellaneous_module_availability:43
+#: tests/86_umc/131_miscellaneous_module_availability:88
 msgid "Shares"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:53 tests/86_umc/13_miscellaneous:67
-#: tests/86_umc/13_miscellaneous:85 tests/86_umc/13_miscellaneous:97
+#: tests/86_umc/131_miscellaneous_module_availability:57
+#: tests/86_umc/131_miscellaneous_module_availability:70
+#: tests/86_umc/131_miscellaneous_module_availability:101
+#: tests/86_umc/131_miscellaneous_module_availability:113
+#: tests/86_umc/131_miscellaneous_module_availability:131
+#: tests/86_umc/131_miscellaneous_module_availability:143
+#: tests/86_umc/131_miscellaneous_module_availability:161
+#: tests/86_umc/131_miscellaneous_module_availability:173
 msgid "Software update"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:46 tests/86_umc/13_miscellaneous:64
-#: tests/86_umc/13_miscellaneous:78 tests/86_umc/13_miscellaneous:94
+#: tests/86_umc/131_miscellaneous_module_availability:50
+#: tests/86_umc/131_miscellaneous_module_availability:67
+#: tests/86_umc/131_miscellaneous_module_availability:94
+#: tests/86_umc/131_miscellaneous_module_availability:110
+#: tests/86_umc/131_miscellaneous_module_availability:124
+#: tests/86_umc/131_miscellaneous_module_availability:140
+#: tests/86_umc/131_miscellaneous_module_availability:154
+#: tests/86_umc/131_miscellaneous_module_availability:170
 msgid "Statistics"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:268 tests/86_umc/13_miscellaneous:270
+#: tests/86_umc/130_miscellaneous:156 tests/86_umc/130_miscellaneous:158
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: tests/86_umc/13_miscellaneous:49 tests/86_umc/13_miscellaneous:81
+#: tests/86_umc/131_miscellaneous_module_availability:53
+#: tests/86_umc/131_miscellaneous_module_availability:97
+#: tests/86_umc/131_miscellaneous_module_availability:127
+#: tests/86_umc/131_miscellaneous_module_availability:157
 msgid "System diagnostic"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:47 tests/86_umc/13_miscellaneous:65
-#: tests/86_umc/13_miscellaneous:79 tests/86_umc/13_miscellaneous:95
+#: tests/86_umc/131_miscellaneous_module_availability:51
+#: tests/86_umc/131_miscellaneous_module_availability:68
+#: tests/86_umc/131_miscellaneous_module_availability:95
+#: tests/86_umc/131_miscellaneous_module_availability:111
+#: tests/86_umc/131_miscellaneous_module_availability:125
+#: tests/86_umc/131_miscellaneous_module_availability:141
+#: tests/86_umc/131_miscellaneous_module_availability:155
+#: tests/86_umc/131_miscellaneous_module_availability:171
 msgid "System services"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:66
+#: tests/86_umc/11_product_test_domainjoin_other_roles:58
 msgid "This page shows the status of all"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:48 tests/86_umc/13_miscellaneous:66
-#: tests/86_umc/13_miscellaneous:80 tests/86_umc/13_miscellaneous:96
-#: tests/86_umc/13_miscellaneous:163 tests/86_umc/13_miscellaneous:202
+#: tests/86_umc/131_miscellaneous_module_availability:52
+#: tests/86_umc/131_miscellaneous_module_availability:69
+#: tests/86_umc/131_miscellaneous_module_availability:96
+#: tests/86_umc/131_miscellaneous_module_availability:112
+#: tests/86_umc/131_miscellaneous_module_availability:126
+#: tests/86_umc/131_miscellaneous_module_availability:142
+#: tests/86_umc/131_miscellaneous_module_availability:156
+#: tests/86_umc/131_miscellaneous_module_availability:172
+#: tests/86_umc/130_miscellaneous:49 tests/86_umc/130_miscellaneous:122
 #: tests/86_umc/12_product_test_ucr:92
 msgid "Univention Configuration Registry"
 msgstr ""
@@ -243,7 +340,8 @@ msgstr ""
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/13_miscellaneous:28
+#: tests/86_umc/131_miscellaneous_module_availability:32
+#: tests/86_umc/131_miscellaneous_module_availability:77
 #: tests/86_umc/10_product_test_password_change:56
 #: tests/86_umc/10_product_test_password_change:94
 msgid "Users"
@@ -253,11 +351,11 @@ msgstr "Benutzer"
 msgid "apache"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:166
+#: tests/86_umc/130_miscellaneous:52
 msgid "generates an overview"
 msgstr ""
 
-#: tests/86_umc/13_miscellaneous:192
+#: tests/86_umc/130_miscellaneous:74
 #: tests/86_umc/10_product_test_password_change:145
 #: tests/86_umc/10_product_test_password_change:148
 msgid "no module available"
@@ -286,11 +384,11 @@ msgstr "Passwort ist zu kurz"
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
-#: tests/86_umc/13_miscellaneous:147
+#: tests/86_umc/130_miscellaneous:39
 msgid "really want to logout"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_other_roles:75
+#: tests/86_umc/11_product_test_domainjoin_other_roles:67
 #: tests/86_umc/11_product_test_domainjoin_master:33
 msgid "restart of the UMC server"
 msgstr ""

@@ -1,12 +1,13 @@
 #!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*-
-# desc: UMC miscellaneous tests
-# roles-not: [basesystem]
-# exposure: dangerous
+## desc: |
+##  Test if all expected modules are available for 'root' and 'administrator'
+##  users, with different join-states.
+## roles-not: [basesystem]
+## exposure: dangerous
 
-import psutil
+import os.path
 import subprocess
-import time
 from lib.umc_tester import BaseUMCTester
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
@@ -18,6 +19,7 @@ _ = translator.translate
 MASTER = 'master'
 BACKUP = 'backup'
 SLAVE = 'slave'
+MEMBER = 'member'
 
 ADMIN = 'Administrator'
 ROOT = 'root'
@@ -140,6 +142,36 @@ expected_modules_for_role = {
 			_('Univention Configuration Registry'),
 			_('Software update')
 		]
+	},
+	MEMBER: {
+		ADMIN: [
+			_('Filesystem quotas'),
+			_('Domain join'),
+			_('Hardware information'),
+			_('Language settings'),
+			_('Network settings'),
+			_('Process overview'),
+			_('Statistics'),
+			_('System services'),
+			_('Univention Configuration Registry'),
+			_('System diagnostic'),
+			_('App Center'),
+			_('Package Management'),
+			_('Repository Settings'),
+			_('Software update')
+		],
+		ROOT: [
+			_('Filesystem quotas'),
+			_('Domain join'),
+			_('Hardware information'),
+			_('Language settings'),
+			_('Network settings'),
+			_('Process overview'),
+			_('Statistics'),
+			_('System services'),
+			_('Univention Configuration Registry'),
+			_('Software update')
+		]
 	}
 }
 
@@ -151,17 +183,14 @@ class UmcError(Exception):
 class UMCTester(BaseUMCTester):
 	def test_umc(self):
 		role = self.determine_ucs_role()
+		users = self.determine_users_by_join_status()
+		self.main_user = users[0]
 
-		for user in [ADMIN, ROOT]:
+		for user in users:
 			self.selenium.do_login(username=user)
 			self.check_if_required_modules_are_visible(role, user)
+			self.open_and_close_all_modules()
 			self.selenium.end_umc_session()
-		self.selenium.do_login(username=ADMIN)
-		self.open_and_close_all_modules()
-		self.test_language_switch()
-		self.test_logout()
-		self.test_module_process_timeout()
-		self.test_module_visibility_for_regular_user()
 
 	def determine_ucs_role(self):
 		server_role = subprocess.check_output(['ucr', 'get', 'server/role']).strip()
@@ -171,8 +200,16 @@ class UMCTester(BaseUMCTester):
 			return BACKUP
 		elif server_role == 'domaincontroller_slave':
 			return SLAVE
+		elif server_role == 'memberserver':
+			return MEMBER
 		else:
 			raise UmcError('Test is run on invalid server-role %r.' % (server_role,))
+
+	def determine_users_by_join_status(self):
+		if os.path.isfile('/var/univention-join/joined'):
+			return [ADMIN, ROOT]
+		else:
+			return [ROOT]
 
 	def check_if_required_modules_are_visible(self, role, user):
 		available_modules = self.get_available_modules()
@@ -199,146 +236,14 @@ class UMCTester(BaseUMCTester):
 			for i in range(12):
 				try:
 					self.selenium.click_button(_('Close'))
+				except:
+					pass
+				try:
 					self.selenium.wait_for_text(_('Search query'), timeout=5)
 					break
 				except:
 					pass
 			self.selenium.wait_for_text(_('Search query'), timeout=1)
-
-	def test_language_switch(self):
-		switch_to_language = 'de' if (self.selenium.language == 'en') else 'en'
-		self.switch_language(switch_to_language)
-		self.switch_language(self.selenium.language)
-
-	def test_logout(self):
-		self.selenium.open_side_menu()
-		self.selenium.click_text(_('Logout'))
-		self.selenium.wait_for_text(_('really want to logout'))
-		self.selenium.click_button(_('Logout'))
-
-		self.selenium.do_login()
-
-	def test_module_process_timeout(self, timeout=30):
-		subprocess.call(['ucr', 'set', 'umc/module/timeout=%s' % (timeout,)])
-
-		self.kill_all_module_processes()
-
-		self.selenium.open_module(_('Univention Configuration Registry'))
-		self.selenium.wait_for_text('apache2')
-		self.selenium.open_module(_('Process overview'))
-		self.selenium.wait_for_text(_('generates an overview'))
-
-		loop_end = time.time() + timeout + 10
-		while time.time() < loop_end:
-			self.selenium.submit_input('pattern')
-			self.selenium.wait_until_all_standby_animations_disappeared()
-
-		if self.module_process_alive('ucr'):
-			raise UmcError(
-				'A module\'s process still exists after it\'s timeout.'
-			)
-		if not self.module_process_alive('top'):
-			raise UmcError('A module\'s process died before it\'s timeout.')
-
-		subprocess.call(['ucr', 'set', 'umc/module/timeout=600'])
-
-	def test_module_visibility_for_regular_user(self):
-		username = 'umc_test_user'
-		self.udm.create_user(username=username, password='univention')
-		self.selenium.end_umc_session()
-
-		self.selenium.do_login(username=username, password='univention')
-		self.selenium.wait_for_text(_('no module available'))
-		self.selenium.end_umc_session()
-
-		self.add_user_policy(username)
-		self.add_group_policy(username)
-
-		self.do_login(username=username, password='univention')
-		self.check_if_allowed_modules_are_visible()
-
-	def add_user_policy(self, username):
-		self.udm.create_object(
-			'policies/umc',
-			name='username_policy',
-			allow='cn=top-all,cn=operations,cn=UMC,cn=univention,%s' % (self.selenium.ldap_base,),
-			position='cn=policies,%s' % (self.selenium.ldap_base,)
-		)
-		self.udm.modify_object(
-			'users/user',
-			dn='uid=%s,cn=users,%s' % (username, self.selenium.ldap_base),
-			policy_reference='cn=username_policy,cn=policies,%s' % (self.selenium.ldap_base,)
-		)
-
-	def add_group_policy(self, username):
-		self.udm.create_object(
-			'groups/group',
-			name='umc_test_group',
-			position='cn=groups,%s' % (self.selenium.ldap_base,),
-		)
-		self.udm.modify_object(
-			'users/user',
-			dn='uid=%s,cn=users,%s' % (username, self.selenium.ldap_base),
-			append={'groups': ['cn=umc_test_group,cn=groups,%s' % (self.selenium.ldap_base,)]}
-		)
-		self.udm.create_object(
-			'policies/umc',
-			name='umc_test_group_policy',
-			allow='cn=ucr-all,cn=operations,cn=UMC,cn=univention,%s' % (self.selenium.ldap_base,),
-			position='cn=policies,%s' % (self.selenium.ldap_base,)
-		)
-		self.udm.modify_object(
-			'groups/group',
-			dn='cn=umc_test_group,cn=groups,%s' % (self.selenium.ldap_base,),
-			policy_reference='cn=umc_test_group_policy,cn=policies,%s' % (self.selenium.ldap_base,)
-		)
-
-	def check_if_allowed_modules_are_visible(self):
-		available_modules = self.get_available_modules()
-		requiered_modules = [
-			_('Univention Configuration Registry'),
-			_('Process overview')
-		]
-		differing_modules = set(
-			[module.lower() for module in requiered_modules]
-		).symmetric_difference(set(
-			[module.lower() for module in available_modules]
-		))
-		if len(differing_modules) > 0:
-			raise UmcError(
-				'Applying module-visibility-policies for a regular user did not'
-				' work.\nThese modules are missing or excess in the UMC: %r'
-				% (differing_modules,)
-			)
-
-	def kill_all_module_processes(self):
-		for process in psutil.process_iter():
-			if '/usr/sbin/univention-management-console-module' in process.cmdline():
-				process.kill()
-
-	def module_process_alive(self, module):
-		for process in psutil.process_iter():
-			if {'/usr/sbin/univention-management-console-module', '-m', module}.issubset(set(process.cmdline())):
-				return True
-		return False
-
-	def switch_language(self, target_language_code):
-		iso_639_1_to_name = {
-			'en': 'English',
-			'de': 'Deutsch',
-			'fr': u'Français'
-		}
-		target_language = iso_639_1_to_name[target_language_code]
-		self.selenium.open_side_menu()
-		self.selenium.click_text(_('Switch language'))
-		self.selenium.click_text(target_language)
-		self.selenium.click_button(_('Switch language'))
-
-		translator.set_language(target_language_code)
-
-		self.selenium.end_umc_session()
-		self.do_login(self.selenium.umcLoginUsername, self.selenium.umcLoginPassword)
-		self.selenium.wait_for_text(_('Favorites'))
 
 	def get_available_modules(self):
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
@@ -357,18 +262,7 @@ class UMCTester(BaseUMCTester):
 
 		return [tile_heading.text for tile_heading in tile_headings]
 
-	def do_login(self, username, password):
-		self.selenium.driver.get(self.selenium.base_url + 'univention/login/')
-		self.selenium.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.ID, "umcLoginUsername")
-			)
-		)
-		self.selenium.enter_input('username', username)
-		self.selenium.enter_input('password', password)
-		self.selenium.submit_input('password')
-
 
 if __name__ == '__main__':
-	with UMCTester(translator=translator, login=False) as umc_tester:
+	with UMCTester(translator=translator, login=False, udm=False) as umc_tester:
 		umc_tester.test_umc()
