@@ -54,6 +54,9 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 	for scase in tlh.get_special_cases_from_srcpkg(os.getcwd(), args.language_code):
 		pot_path = scase.create_po_template()
-		tlh.message_catalogs.merge_po(pot_path, scase.new_po_path)
-		os.unlink(pot_path)
+		if os.path.isfile(scase.new_po_path):
+			tlh.message_catalogs.merge_po(pot_path, scase.new_po_path)
+			os.unlink(pot_path)
+		else:
+			os.rename(pot_path, scase.new_po_path)
 		tlh.message_catalogs.univention_location_lines(scase.new_po_path, scase.package_dir)

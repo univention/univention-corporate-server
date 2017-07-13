@@ -1,3 +1,10 @@
+univention-ucs-translation-template (4.2.2-0) unstable; urgency=medium
+
+  * Bug #42286: fix PO build fail per source package when no PO file is
+    present initially (univention-l10n-build)
+
+ -- Eduard Mai <mai@univention.de>  Thu, 13 Jul 2017 15:42:39 +0200
+
 univention-ucs-translation-template (4.2.1-3) unstable; urgency=medium
 
   * Bug #43594: remove unnecessary inheritance from object
