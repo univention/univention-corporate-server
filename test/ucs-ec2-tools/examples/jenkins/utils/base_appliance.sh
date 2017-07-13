@@ -284,16 +284,16 @@ __EOF__
 		patch -d/ -p0 < /root/provide_joinpwdfile.patch
 		rm /root/provide_joinpwdfile.patch
 
-		# clear old app joinscript
-		cat >/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app_joinscript <<__EOF__
+		# clear old app
+		cat >/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app <<__EOF__
 #!/bin/bash
 APP=${app}
 
-[ -e /usr/lib/univention-install/50\${APP}.inst ] && rm /usr/lib/univention-install/50\${APP}.inst
+univention-app remove ${APP} --noninteractive --do-not-backup
 
 exit 0
 __EOF__
-		chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app_joinscript
+		chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app
 
 		# reinstall the app
 		cat >/usr/lib/univention-install/99setup_${app}.inst <<__EOF__
@@ -310,11 +310,6 @@ joinscript_save_current_version
 
 # Only install the app if joinscript is run during system-setup
 if is_ucr_true system/setup/boot/start; then
-	# uninstall old app
-	service docker-app-\$APP stop
-	docker rm -f \$(ucr get appcenter/apps/\${APP}/container)
-	univention-app register \${APP} --undo-it
-
 	# install app
 	python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
@@ -797,13 +792,13 @@ setup_pre_joined_environment ()
 {
 	# $1 = appid
 	# $2 = domainname / derived ldapbase
-	set -x
 	fastdemomode="unknown"
 	if app_appliance_AllowPreconfiguredSetup $1; then
 			fastdemomode="yes"
 	fi
 	if [ "ignore" != "$FORCEFASTDEMOMODE" ]; then
 			fastdemomode="$FORCEFASTDEMOMODE"
+			ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
 	fi
 	if [ "yes" = "$fastdemomode" ]; then
 		[ -z "${2}" ] && set -- "$1" "ucs.example"
