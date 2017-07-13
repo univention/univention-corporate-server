@@ -323,7 +323,9 @@ class base(object):
 		'''modify object'''
 
 		if not univention.admin.modules.supports(self.module, 'edit'):
-			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be modified.'))
+			# if the licence is exceeded 'edit' is removed from the modules operations. Nevertheless we need a way to make modifications then.
+			if not ignore_license:
+				raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be modified.'))
 
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject(self.dn)

@@ -228,7 +228,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.stepIp()
 			if self['nextIp'] == start_ip:
 				raise univention.admin.uexceptions.nextFreeIp
-		self.modify()
+		self.modify(ignore_license=1)
 
 	def _ldap_post_remove(self):
 		import univention.admin.handlers.computers.computer
