@@ -330,11 +330,10 @@ class object(univention.admin.handlers.simpleLdap):
 		# cut off '/' at the beginning of the destination if it exists and protocol is file:/
 		if self['uri'] and self['uri'][0] == 'file:/' and self['uri'][1][0] == '/':
 			self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
-		if self.hasChanged('setQuota') and self.info['setQuota'] == '0':
-			printergroups = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost'][0]]))
+		if self.hasChanged('setQuota') and self.info['setQuota'] == '0' and self.info.get('spoolHost'):
+			printergroups_filter = '(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 			group_cn = []
-			for pg_dn in printergroups:
-				member_list = self.lo.get(pg_dn, attr=['univentionPrinterGroupMember', 'cn'])
+			for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
 				for member_cn in member_list.get('univentionPrinterGroupMember', []):
 					if member_cn == self.info['name']:
 						group_cn.append(member_list['cn'][0])
@@ -342,15 +341,14 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 
 	def _ldap_pre_remove(self):  # check for last member in printerclass
-		printergroups = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost'][0]]))
+		printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 		rm_attrib = []
-		for pg_dn in printergroups:
-			member_list = self.lo.search(base=pg_dn, attr=['univentionPrinterGroupMember', 'cn'])
-			for member_cn in member_list[0][1]['univentionPrinterGroupMember']:
+		for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
+			for member_cn in member_list['univentionPrinterGroupMember']:
 				if member_cn == self.info['name']:
-					rm_attrib.append(member_list[0][0])
-					if len(member_list[0][1]['univentionPrinterGroupMember']) < 2:
-						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list[0][1]['cn'][0]})
+					rm_attrib.append(pg_dn)
+					if len(member_list['univentionPrinterGroupMember']) < 2:
+						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0]})
 		printergroup_module = univention.admin.modules.get('shares/printergroup')
 		for rm_dn in rm_attrib:
 			printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
@@ -360,7 +358,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPrinter'),
 	])
@@ -377,5 +374,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-
 	return 'univentionPrinter' in attr.get('objectClass', [])

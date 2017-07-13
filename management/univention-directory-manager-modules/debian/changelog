@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-88) unstable; urgency=medium
+
+  * Bug #40765: fix validation of modifying/removing of printers / printer
+  	groups
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jul 2017 14:18:50 +0200
+
 univention-directory-manager-modules (12.0.17-87) unstable; urgency=medium
 
   * Bug #29707: fix detection of group members in  a printer group if the
