@@ -30,7 +30,7 @@ desc: |
  * An LDAP error is prevented when changing the user password and the
    "Change password on next login" option at the same time.
  * Unused legacy code regarding container/dc objects has been removed.
- * Some undefined python references has been fixed.
+ * Some undefined python references have been fixed.
  * Removing the IP range from a network object is possible again.
  * The "hosts" property has been added to the settings/umc_operationset.
  * The "description" property of settings/umc_operationset is now a
