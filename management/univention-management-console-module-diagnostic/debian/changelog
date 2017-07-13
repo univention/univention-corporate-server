@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-5) unstable; urgency=medium
+
+  * Bug #36750: fix set proxy server without port
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jul 2017 15:41:10 +0200
+
 univention-management-console-module-diagnostic (3.0.1-4) unstable; urgency=medium
 
   * Bug #42155: fix translation

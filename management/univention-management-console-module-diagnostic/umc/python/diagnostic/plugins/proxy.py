@@ -32,8 +32,10 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 	MODULE.info('The proxy is configured, using host=%r, port=%r' % (proxy.hostname, proxy.port))
 	curl = pycurl.Curl()
 	curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP)
-	curl.setopt(pycurl.PROXY, proxy.hostname)
-	curl.setopt(pycurl.PROXYPORT, proxy.port)
+	if proxy.hostname:
+		curl.setopt(pycurl.PROXY, proxy.hostname)
+	if proxy.port:
+		curl.setopt(pycurl.PROXYPORT, proxy.port)
 	curl.setopt(pycurl.FOLLOWLOCATION, True)
 	curl.setopt(pycurl.MAXREDIRS, 5)
 	curl.setopt(pycurl.CONNECTTIMEOUT, connecttimeout)
