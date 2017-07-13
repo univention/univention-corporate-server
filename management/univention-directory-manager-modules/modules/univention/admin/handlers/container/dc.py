@@ -47,10 +47,6 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-def makeSambaDomainName(object, arg):
-	return [(object['name'].upper() + '.' + object.position.getPrintable()).upper()]
-
-
 module = 'container/dc'
 childs = 1
 operations = ['search', 'edit']
@@ -61,7 +57,12 @@ options = {
 		short_description=_('Kerberos realm'),
 		objectClasses=['krb5Realm', ],
 		default=1
-	)
+	),
+	'samba': univention.admin.option(
+		short_description=_('Samba'),
+		objectClasses=['sambaDomain'],
+		default=1
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -100,7 +101,7 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
+		options=['samba'],
 		required=False,
 		may_change=True,
 		default=(configRegistry.get('domainname', '').upper(), []),
@@ -111,7 +112,7 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=[],
+		options=['samba'],
 		required=False,
 		may_change=False,
 		identifies=False
@@ -121,7 +122,7 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=[],
+		options=['samba'],
 		required=False,
 		may_change=True,
 		default=('1000', []),
@@ -132,7 +133,7 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=[],
+		options=['samba'],
 		required=False,
 		may_change=True,
 		default=('1000', []),
