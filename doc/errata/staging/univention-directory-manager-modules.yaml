@@ -35,4 +35,6 @@ desc: |
  * The "hosts" property has been added to the settings/umc_operationset.
  * The "description" property of settings/umc_operationset is now a
    required field.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189]
+ * An error that occurs when trying to add a new computer object
+   with an exceeded license is now prevented.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351]
