@@ -87,8 +87,6 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
 			if not lo.get(dn):
 				raise univention.admin.uexceptions.noObject(dn)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'univention.admin.objects.get(): The object %s is not a %s. Ignoring this error.' % (dn, module.module,))
-			return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 			raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module,))
 
 	return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
