@@ -13,3 +13,5 @@ desc: |
  * A crash during creation of translation files when the name or description
    of an app is not set has been fixed.
 bug: [44872, 44036, 43896]
+erratum: 96
+announced: 2017-07-13
