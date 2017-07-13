@@ -37,4 +37,6 @@ desc: |
    required field.
  * An error that occurs when trying to add a new computer object
    with an exceeded license is now prevented.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351]
+ * The group members of printer groups with multiple spool hosts are now
+   detected correctly again.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707]
