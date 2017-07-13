@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.17-87) unstable; urgency=medium
+
+  * Bug #29707: fix detection of group members in  a printer group if the
+  	group has multiple spool hosts
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jul 2017 13:19:13 +0200
+
 univention-directory-manager-modules (12.0.17-86) unstable; urgency=medium
 
   * Bug #24374: Applied additional cleanup patch
