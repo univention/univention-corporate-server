@@ -289,7 +289,7 @@ __EOF__
 #!/bin/bash
 APP=${app}
 
-univention-app remove ${APP} --noninteractive --do-not-backup
+univention-app remove \${APP} --noninteractive --do-not-backup
 
 exit 0
 __EOF__
