@@ -54,7 +54,7 @@ import traceback
 from io import BytesIO
 import locale
 from operator import itemgetter
-from ldap.filter import filter_format
+from ldap.filter import filter_format, escape_filter_chars
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -3270,7 +3270,7 @@ class Printers(UDM_Objects):
 
 	@classmethod
 	def udm_filter(self, options):
-		return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(ldap.filter.escape_filter_chars, options[Printers.depends]))
+		return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends]))
 
 
 class PrinterNames(UDM_Objects):
@@ -3282,7 +3282,7 @@ class PrinterNames(UDM_Objects):
 
 	@classmethod
 	def udm_filter(self, options):
-		return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(ldap.filter.escape_filter_chars, options[Printers.depends]))
+		return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends]))
 
 
 class PrintQuotaGroup(complex):
