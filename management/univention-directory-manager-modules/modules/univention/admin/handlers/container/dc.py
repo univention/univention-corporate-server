@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
-
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry
 
@@ -80,18 +78,17 @@ property_descriptions = {
 	'dnsForwardZone': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
 		long_description='',
-		syntax=univention.admin.syntax.dnsName,
+		syntax=univention.admin.syntax.DNS_ForwardZone,
 		multivalue=True,
 		options=[],
 		required=False,
-		default=('<name>.%s' % configRegistry.get('domainname', ''), []),
 		may_change=False,
 		identifies=False
 	),
 	'dnsReverseZone': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
 		long_description='',
-		syntax=univention.admin.syntax.reverseLookupSubnet,
+		syntax=univention.admin.syntax.DNS_ReverseZone,
 		multivalue=True,
 		options=[],
 		required=False,
@@ -188,16 +185,8 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		if self.exists():
-			self['name'] = ldap.explode_dn(self.dn, 1)[0]
-
-			self['dnsForwardZone'] = ''
-			self['dnsReverseZone'] = ''
-			forward = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
-			for f in forward:
-				self['dnsForwardZone'].append(f)
-			reverse = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
-			for r in reverse:
-				self['dnsReverseZone'].append(r)
+			self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
+			self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
 
 	def _ldap_addlist(self):
 		return [
@@ -206,7 +195,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionBase'),
 	])
