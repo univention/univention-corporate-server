@@ -15,5 +15,6 @@ desc: |
  * The naming restrictions for bridge and bonding network interfaces have been
    adjusted so that is is not required to have any number in the name anymore.
  * The error handling when executing system setup scripts has been improved.
- * Start the welcome screen after the setup in appliance mode
-bug: [28070, 40212, 33132, 33131, 32817, 44061]
+ * The startup of the welcome screen after the setup in appliance mode has been fixed.
+ * The license check during an app appliance join has been fixed.
+bug: [28070, 40212, 33132, 33131, 32817, 44061, 44995]
