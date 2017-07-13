@@ -25,7 +25,7 @@ def run():
 	ucr.load()
 	gateway = ucr.get('gateway')
 	if not gateway:
-		raise Critical(_('The gateway is not set.'))
+		raise Critical(_('There is no gateway configured.'))
 	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 	if process.returncode:

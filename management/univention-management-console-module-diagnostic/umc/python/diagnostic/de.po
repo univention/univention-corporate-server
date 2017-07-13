@@ -161,8 +161,8 @@ msgstr ""
 "Netzwerkeinstellungen korrekt konfiguriert sind."
 
 #: umc/python/diagnostic/plugins/gateway.py:28
-msgid "The gateway is not set."
-msgstr "Das Gateway ist nicht gesetzt."
+msgid "There is no gateway configured."
+msgstr "Es ist kein Gateway eingerichtet."
 
 #: umc/python/diagnostic/plugins/proxy.py:67
 msgid ""
