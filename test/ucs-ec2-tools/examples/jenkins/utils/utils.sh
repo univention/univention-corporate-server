@@ -300,6 +300,8 @@ install_apps_master_packages ()
 		fi
 		univention-add-app -m --latest "$app" || rv=$?
 	done
+	username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
+	univention-app register --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)"
 	return $rv
 }
 
