@@ -152,7 +152,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Spool host (*)</entry>
+					<entry>Print server (*)</entry>
 					<entry>
 						<para>
 							A print server manages the printer queue for the printers to
@@ -438,7 +438,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Spool host (*)</entry>
+					<entry>Print server (*)</entry>
 					<entry>
 						A range of print servers (spoolers) can be specified here to expand
 						the list of printers available for selection. Printers which are
