@@ -103,7 +103,7 @@ property_descriptions = {
 		identifies=False
 	),
 	'spoolHost': univention.admin.property(
-		short_description=_('Spool host'),
+		short_description=_('Print server'),
 		long_description='',
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,

@@ -34,11 +34,11 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation = univention.admin.localization.translation('univention.admin.handlers.shares')
-_ = translation.translate
-
 import univention.admin.handlers.shares.printer
 import univention.admin.handlers.shares.printergroup
+
+translation = univention.admin.localization.translation('univention.admin.handlers.shares')
+_ = translation.translate
 
 module = 'shares/print'
 childmodules = ['shares/printer', 'shares/printergroup']
@@ -62,7 +62,7 @@ property_descriptions = {
 		identifies=True
 	),
 	'spoolHost': univention.admin.property(
-		short_description=_('Spool host'),
+		short_description=_('Print server'),
 		long_description='',
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,
