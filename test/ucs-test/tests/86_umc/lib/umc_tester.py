@@ -1,20 +1,24 @@
 import argparse
 import logging
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 import univention.testing.umc_selenium as umc_selenium_test
 
 
 class BaseUMCTester(object):
-	def __init__(self, login=True, translator=None):
+	def __init__(self, login=True, translator=None, ucr=True, udm=True):
 		self.args = self.parse_args()
 		if translator is not None:
 			translator.set_language(self.args.language)
 
 		logging.basicConfig(level=logging.INFO)
 
-		self.ucr = ucr_test.UCSTestConfigRegistry()
-		self.udm = udm_test.UCSTestUDM()
+		self.has_ucr = ucr
+		if self.has_ucr:
+			import univention.testing.ucr as ucr_test
+			self.ucr = ucr_test.UCSTestConfigRegistry()
+		self.has_udm = udm
+		if self.has_udm:
+			import univention.testing.udm as udm_test
+			self.udm = udm_test.UCSTestUDM()
 		self.selenium = umc_selenium_test.UMCSeleniumTest(
 			login=login,
 			language=self.args.language,
@@ -22,14 +26,18 @@ class BaseUMCTester(object):
 		)
 
 	def __enter__(self):
-		self.ucr.__enter__()
-		self.udm.__enter__()
+		if self.has_ucr:
+			self.ucr.__enter__()
+		if self.has_udm:
+			self.udm.__enter__()
 		self.selenium.__enter__()
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		self.ucr.__exit__(exc_type, exc_value, traceback)
-		self.udm.__exit__(exc_type, exc_value, traceback)
+		if self.has_ucr:
+			self.ucr.__exit__(exc_type, exc_value, traceback)
+		if self.has_udm:
+			self.udm.__exit__(exc_type, exc_value, traceback)
 		self.selenium.__exit__(exc_type, exc_value, traceback)
 
 	def parse_args(self):
