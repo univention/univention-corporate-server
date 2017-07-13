@@ -54,7 +54,7 @@ options = {}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description=_('Name'),
+		long_description='',
 		syntax=udm_syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
@@ -65,7 +65,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description=_('Description'),
+		long_description='',
 		syntax=udm_syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
