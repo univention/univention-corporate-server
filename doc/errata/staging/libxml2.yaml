@@ -1,6 +1,6 @@
 product: ucs
 release: "3.3"
-version: [0]
+version: [1]
 scope: ucs_3.3-0-errata3.3-0
 src: libxml2
 fix: 2.8.0+dfsg1-7~ucs3.3.56.201611091327
