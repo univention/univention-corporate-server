@@ -35,8 +35,8 @@ desc: |
  * The "hosts" property has been added to the settings/umc_operationset.
  * The "description" property of settings/umc_operationset is now a
    required field.
- * An error that occurs when trying to add a new computer object
-   with an exceeded license is now prevented.
+ * It was not possible to automatically get the next free IP address for
+   a newly created computer object when the license was exceeded.
  * The group members of printer groups with multiple spool hosts are now
    detected correctly again.
  * The validation when removing and modifying printers and printer groups
