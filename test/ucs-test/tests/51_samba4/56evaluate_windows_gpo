@@ -481,7 +481,7 @@ if __name__ == '__main__':
 	Win = univention.winexe.WinExe(domainname,
 		domain_admin, domain_admin_password,
 		windows_admin, windows_admin_password,
-		445, dns_get_host_ip(windows_client['hostname']), loglevel=0)
+		445, dns_get_host_ip(windows_client['hostname']), loglevel=4)
 	windows_check_domain()
 
 	test_username = 'ucs_test_gpo_user_' + random_username(4)
