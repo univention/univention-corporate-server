@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-28) unstable; urgency=medium
+
+  * Bug #44952: Fix typo 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 14 Jul 2017 13:49:50 +0200
+
 univention-app-appliance (1.0.2-27) unstable; urgency=medium
 
   * Bug #44952: Move bootsplash status text under the spinner

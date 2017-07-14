@@ -676,7 +676,7 @@ fun update_status_callback (text) {
 		global.status = "normal";
 		normal_setup();
 	} else {
-		local.image = Image.Text(text, ${FONT_COLOR}, 1, statusmsg.font);
+		local.image = Image.Text(text,${FONT_COLOR} 1, statusmsg.font);
 		string_it = 0;
 		update_strings[string_it] = "";
 		for (i=0; (String(text).CharAt(i) != ""); i++) {
