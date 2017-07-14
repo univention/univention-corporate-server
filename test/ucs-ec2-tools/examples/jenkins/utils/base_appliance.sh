@@ -288,8 +288,11 @@ __EOF__
 		cat >/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_app <<__EOF__
 #!/bin/bash
 APP=${app}
+DEMO_MODE=\$(echo "\$@" | grep -q "\\-\\-demo-mode" && echo 1)
 
-univention-app remove \${APP} --noninteractive --do-not-backup
+if [ "\$DEMO_MODE" != 1 ]; then
+	univention-app remove \${APP} --noninteractive --do-not-backup
+fi
 
 exit 0
 __EOF__
