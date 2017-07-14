@@ -191,7 +191,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'domain', 'sambaDomain', 'univentionDomain', 'univentionBase'])
+			('objectClass', ['top', 'domain', 'univentionDomain', 'univentionBase'])
 		]
 
 
