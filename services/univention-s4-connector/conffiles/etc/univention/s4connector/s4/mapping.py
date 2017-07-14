@@ -616,7 +616,7 @@ dns_section = '''
 			ucs_default_dn='cn=dns,%(ldap_base)s',
 			con_default_dn='CN=MicrosoftDNS,%(s4_dns_ldap_base)s',
 			ucs_module='dns/dns',
-			
+			ucs_module_others=['dns/forward_zone', 'dns/reverse_zone', 'dns/host_record', 'dns/txt_record', 'dns/alias', 'dns/ptr_record', 'dns/srv_record'],
 			identify=univention.s4connector.s4.dns.identify,
 			sync_mode='%(sync_mode_dns)s',
 

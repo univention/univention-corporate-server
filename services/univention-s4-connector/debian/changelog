@@ -1,6 +1,7 @@
 univention-s4-connector (11.0.7-14) unstable; urgency=medium
 
   * Bug #44976: fix identification of UCS module type
+  * Bug #44976: add dns subtypes to ucs_module_others
 
  -- Florian Best <best@univention.de>  Fri, 14 Jul 2017 09:34:32 +0200
 
