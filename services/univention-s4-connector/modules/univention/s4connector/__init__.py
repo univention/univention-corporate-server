@@ -738,33 +738,20 @@ class ucs:
 		# we should delete this object
 		ignore_subtree_match = False
 
-		if not new:
-			change_type = "delete"
-			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
-			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn, 'utf8'), old):
-					key = k
-					break
-				elif self.modules_others[k]:
-					for m in self.modules_others[k]:
-						if m and m.identify(unicode(dn, 'utf8'), old):
-							key = k
-							break
-				if key:
-					break
-		else:
-			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn, 'utf8'), new):
-					key = k
-					break
-				elif self.modules_others[k]:
-					for m in self.modules_others[k]:
-						if m and m.identify(unicode(dn, 'utf8'), new):
-							key = k
-							break
-				if key:
-					break
+		_attr = new or old
+		for k in self.property.keys():
+			if self.modules[k].identify(unicode(dn, 'utf8'), _attr):
+				key = k
+				break
+			elif self.modules_others[k]:
+				for m in self.modules_others[k]:
+					if m and m.identify(unicode(dn, 'utf8'), _attr):
+						key = k
+						break
+			if key:
+				break
 
+		if new:
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
@@ -821,6 +808,10 @@ class ucs:
 					change_type = "add"
 					old_dn = ''  # there may be an old_dn if object was moved from ignored container
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
+
+		if not new:
+			change_type = "delete"
+			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
 
 		if key:
 			if change_type == 'delete':
