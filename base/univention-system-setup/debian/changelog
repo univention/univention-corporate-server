@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-34) unstable; urgency=medium
+
+  * Bug #44995: Improved error message on license check errors
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 14 Jul 2017 11:10:33 +0200
+
 univention-system-setup (10.0.10-33) unstable; urgency=medium
 
   * Bug #44995: fix license check in appliance setup 

@@ -1099,9 +1099,10 @@ def domain_has_activated_license(nameserver, username, password):
 				'/usr/sbin/ucr',
 				'get',
 				'uuid/license'
-				]).rstrip()
-		except subprocess.CalledProcessError:
-			raise UMC_Error("Can't check license on master")
+				], stderr=subprocess.STDOUT).rstrip()
+		except subprocess.CalledProcessError as processError:
+			appliance_name = ucr["umc/web/appliance/name"]
+			raise UMC_Error(_('''To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller. During the check of the license status the following error occurred:\n{error}''').format(appliance_name=appliance_name, error=processError.output))
 	return len(license_uuid) == 36
 
 

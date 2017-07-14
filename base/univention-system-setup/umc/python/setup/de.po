@@ -248,6 +248,16 @@ msgid ""
 msgstr ""
 "Der folgende Wert ist zu lang, es sind nur %(max)s Zeichen erlaubt: %(name)s"
 
+#: umc/python/setup/util.py:1005
+msgid ""
+"To install the {appliance_name} appliance it is necessary to have an "
+"activated UCS license on the master domain controller. During the check of "
+"the license status the following error occurred:\n{error}"
+msgstr ""
+"Um die {appliance_name} Appliance zu installieren, wird eine aktivierte UCS "
+"Lizenz auf dem Domänencontroller Master benötigt. Während der Überprüfung "
+"des Lizenzstatus trat der folgende Fehler auf:\n{error}"
+
 #: umc/python/setup/util.py:1032
 msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
