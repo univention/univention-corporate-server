@@ -63,6 +63,7 @@ case "$1" in
 	ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
 	rm -rf /etc/pki/CA/cacert.pem
 	ln -sf /etc/univention/ssl/ucsCA/CAcert.pem /etc/pki/CA/cacert.pem
+	dpkg --compare-versions "$2" lt 1.0 &&
 	invoke-rc.d univention-directory-listener restart
 	;;
 

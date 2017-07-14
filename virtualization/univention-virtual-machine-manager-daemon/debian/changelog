@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (6.0.4-3) unstable; urgency=medium
+
+  * Bug #24721: Applied patch from Philipp Hahn - add 'Edit in new tab'
+    feature for virtual machines
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 Jul 2017 17:38:20 +0200
+
 univention-virtual-machine-manager-daemon (6.0.4-2) unstable; urgency=low
 
   * Bug #33702: Remove forgotten access file

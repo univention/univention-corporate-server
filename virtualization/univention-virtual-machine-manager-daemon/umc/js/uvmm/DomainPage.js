@@ -32,6 +32,8 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/topic",
+	"dojo/on",
 	"dojo/dom-attr",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
@@ -58,7 +60,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, domAttr, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
+], function(declare, lang, array, topic, on, domAttr, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
 	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
@@ -81,6 +83,8 @@ define([
 
 		_domain: null,
 
+		isClosable: false,
+
 		addNotification: dialog.notify,
 
 		postMixInProperties: function() {
@@ -89,8 +93,8 @@ define([
 				headerButtons: [{
 					iconClass: 'umcCloseIconWhite',
 					name: 'close',
-					label: _('Back to overview'),
-					callback: lang.hitch(this, 'onClose')
+					label: this.isClosable ? _('Cancel') : _('Back to overview'),
+					callback: lang.hitch(this, 'onCloseTab')
 				}, {
 					name: 'save',
 					iconClass: 'umcSaveIconWhite',
@@ -393,7 +397,7 @@ define([
 				nodeURI: this._domain.domainURI.split('#')[0],
 				domain: values
 			}).then(lang.hitch(this, function() {
-				this.onClose();
+				this.onCloseTab();
 				this.standby(false);
 			}), lang.hitch(this, function() {
 				this.standby(false);
@@ -495,7 +499,7 @@ define([
 			}));
 		},
 
-		onClose: function() {
+		onCloseTab: function() {
 			// event stub
 		},
 

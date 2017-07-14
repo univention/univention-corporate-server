@@ -38,6 +38,7 @@ define([
 	"dojo/string",
 	"dojo/query",
 	"dojo/Deferred",
+	"dojo/topic",
 	"dojo/on",
 	"dojo/aspect",
 	"dojo/sniff",
@@ -72,7 +73,7 @@ define([
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm",
 	"xstyle/css!./uvmm.css"
-], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, _) {
 
@@ -129,6 +130,9 @@ define([
 		_progressBar: null,
 		_progressContainer: null,
 
+		// open this domain by default
+		openDomain: null,
+
 		// internal flag to indicate that GridUpdater should show a notification
 		_itemCountChangedNoteShowed: false,
 
@@ -144,7 +148,9 @@ define([
 		uninitialize: function() {
 			this.inherited(arguments);
 
-			this._progressContainer.destroyRecursive();
+			if (this._progressContainer) {
+				this._progressContainer.destroyRecursive();
+			}
 		},
 
 		postMixInProperties: function() {
@@ -161,6 +167,19 @@ define([
 				this._ucr = ucr;
 				this._finishedDeferred.resolve(this._ucr);
 			}));
+
+			// directly open domain
+			if (this.openDomain) {
+				this._domainPage = new DomainPage({
+					isClosable: true,
+					moduleWidget: this
+				});
+				this._domainPage.on('closeTab', lang.hitch(this, 'closeDomainPage'));
+				this.addChild(this._domainPage);
+				this.selectChild(this._domainPage);
+				this.openDomainPage(this.openDomain);
+				return; // do not render the overview page
+			}
 
 			// setup search page
 			this._searchPage = new Page({
@@ -340,7 +359,7 @@ define([
 
 			// setup the detail page
 			this._domainPage = new DomainPage({
-				onClose: lang.hitch(this, function() {
+				onCloseTab: lang.hitch(this, function() {
 					this.selectChild(this._searchPage);
 					this.set( 'title', this.defaultTitle );
 				}),
@@ -361,33 +380,37 @@ define([
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
 			this._currentWidth = dojoWindow.getBox().w;
 
-			on.once(this._tree, 'load', lang.hitch(this, function() {
-				if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
-					this._searchForm.getWidget('type').set('value', 'instance');
-				}
-				this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
-					if (tools.isEqual(oldVal, newVal)) {
-						return;
+			if (this._tree) {
+				on.once(this._tree, 'load', lang.hitch(this, function() {
+					if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
+						this._searchForm.getWidget('type').set('value', 'instance');
 					}
-					var searchType = this._searchForm.getWidget('type').get('value');
-					if (searchType == 'domain' || searchType == 'instance') {
+					this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
+						if (tools.isEqual(oldVal, newVal)) {
+							return;
+						}
+						var searchType = this._searchForm.getWidget('type').get('value');
+						if (searchType == 'domain' || searchType == 'instance') {
+							this.filter();
+						}
+					})));
+					this.own(aspect.after(this._searchPage, '_onShow', lang.hitch(this, function() {
+						this._selectInputText();
 						this.filter();
-					}
-				})));
-				this.own(aspect.after(this._searchPage, '_onShow', lang.hitch(this, function() {
+					})));
 					this._selectInputText();
-					this.filter();
-				})));
-				this._selectInputText();
-				this._finishedDeferred.then(lang.hitch(this, function(ucr) {
-					if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
-						this.filter();
+					this._finishedDeferred.then(lang.hitch(this, function(ucr) {
+						if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
+							this.filter();
+						}
+					}));
+					if (this._tree._getLast().item.type == 'root') {
+						dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.2.html#uvmm:chapter">the manual</a>.'));
 					}
 				}));
-				if (this._tree._getLast().item.type == 'root') {
-					dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.2.html#uvmm:chapter">the manual</a>.'));
-				}
-			}));
+			}
+
+			this.on('close', lang.hitch(this, 'onCloseTab'));
 		},
 
 		_handleResize: function(evt) {
@@ -1415,6 +1438,21 @@ define([
 				description: _( 'Edit the configuration of the virtual machine' ),
 				callback: lang.hitch(this, 'openDomainPage')
 			}, {
+				name: 'editNewTab',
+				label: _( 'Edit in new tab' ),
+				isStandardAction: false,
+				isMultiAction: false,
+				description: _('Open a new tab to edit the configuration of the virtual machine'),
+				callback: lang.hitch(this, function(ids, items) {
+					var props = {
+						onCloseTab: lang.hitch(this, function() {
+							topic.publish('/umc/tabs/focus', this);
+						}),
+						openDomain: ids
+					};
+					topic.publish('/umc/modules/open', this.moduleID, this.moduleFlavor, props);
+				})
+			}, {
 				name: 'start',
 				label: _( 'Start' ),
 				iconClass: 'umcIconPlay',
@@ -1772,6 +1810,18 @@ define([
 			else {
 				progress.set('value', i);
 			}
-		}
+		},
+
+		closeDomainPage: function() {
+			// close the UVMM module
+			if (this._domainPage && this._domainPage.isClosable) {
+				topic.publish('/umc/tabs/close', this);
+				return;
+			}
+		},
+
+		onCloseTab: function() {
+			// event stub
+ 		}
 	});
 });
