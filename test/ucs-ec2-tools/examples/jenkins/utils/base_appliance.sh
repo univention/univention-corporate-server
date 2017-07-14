@@ -846,6 +846,8 @@ __EOF__
 		echo "root:univention" | chpasswd
 		# set same address as in the profile, otherwise the ldap will not be updated
 		ucr set system/setup/boot/old_ipv4=10.203.10.40
+		# We still need u-s-s-boot, so reinstall it
+		univention-install -y --force-yes --reinstall univention-system-setup-boot
 	else
 		ucr set umc/web/appliance/fast_setup_mode=false
 		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
@@ -907,7 +909,6 @@ __EOF__
 	download_system_setup_packages $@
 
 	# Cleanup apt archive
-	apt-get clean
 	apt-get update
 
 	# set initial system uuid (set to new value in setup-join.sh)
@@ -938,8 +939,8 @@ __EOF__
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
 	# Cleanup apt archive
-	apt-get update
 	apt-get clean
+	apt-get update
 
 	# Activate DHCP
 	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
@@ -969,7 +970,6 @@ __EOF__
 
 appliance_basesettings ()
 {
-	set -x
 	app=$1
 	
 	/usr/sbin/univention-app-appliance --not-configure-portal $app
