@@ -617,7 +617,7 @@ dns_section = '''
 			con_default_dn='CN=MicrosoftDNS,%(s4_dns_ldap_base)s',
 			ucs_module='dns/dns',
 			ucs_module_others=['dns/forward_zone', 'dns/reverse_zone', 'dns/host_record', 'dns/txt_record', 'dns/alias', 'dns/ptr_record', 'dns/srv_record'],
-			identify=univention.s4connector.s4.dns.identify,
+			#identify=univention.s4connector.s4.dns.identify,
 			sync_mode='%(sync_mode_dns)s',
 
 			scope='sub',
@@ -629,7 +629,7 @@ dns_section = '''
 	'ldap_base': configRegistry['ldap/base'],
 	'sync_mode_dns': sync_mode_dns,
 	's4_dns_ldap_base': s4_dns_ldap_base,
-	}
+}
 
 from univention.s4connector.s4.mapping import ignore_filter_from_attr
 ignore_filter = ignore_filter_from_attr('dc', 'connector/s4/mapping/dns/ignorelist')
