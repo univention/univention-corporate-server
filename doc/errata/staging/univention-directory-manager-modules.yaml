@@ -43,4 +43,5 @@ desc: |
    has been corrected.
  * The "Spool Host" label of printers and printer groups has been renamed
    into "Print server".
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888]
+ * The "e-mail" property of an user is no longer copyable.
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908]
