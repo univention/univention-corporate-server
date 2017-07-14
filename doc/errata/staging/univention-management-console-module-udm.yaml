@@ -9,4 +9,6 @@ desc: |
  * Unused legacy code has been removed.
  * The tab that is opened when editing a user in a new tab
    is now closable.
-bug: [43299, 40486]
+ * The default values for empty properties after copying an
+   object are now used.
+bug: [43299, 40486, 44908]
