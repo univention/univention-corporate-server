@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.10-18) unstable; urgency=medium
+
+  * Bug #44908: use the template functionality when copying objects
+    to set the default values of properties
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 Jul 2017 10:47:01 +0200
+
 univention-management-console-module-udm (7.0.10-17) unstable; urgency=medium
 
   * Bug #40486: Fix users opened in a new tab not being closable

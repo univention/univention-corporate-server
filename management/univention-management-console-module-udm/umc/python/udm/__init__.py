@@ -470,6 +470,12 @@ class Instance(Base, ProgressMixin):
 		thread.run()
 
 	def _get(self, request, copy=False):
+		def _remove_uncopyable_properties(obj):
+			if not copy:
+				return
+			for name, p in obj.descriptions.items():
+				if not p.copyable:
+					obj.info.pop(name, None)
 		result = []
 		for ldap_dn in request.options:
 			if request.flavor == 'users/self':
@@ -480,12 +486,10 @@ class Instance(Base, ProgressMixin):
 			else:
 				obj = module.get(ldap_dn)
 				if obj:
-					if copy:
-						for name, p in obj.descriptions.items():
-							if not p.copyable:
-								obj.info.pop(name, None)
+					_remove_uncopyable_properties(obj)
 					obj.set_defaults = True
 					obj.set_default_values()
+					_remove_uncopyable_properties(obj)
 					props = obj.info
 					for passwd in module.password_properties:
 						if passwd in props:

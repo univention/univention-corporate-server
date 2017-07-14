@@ -32,8 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"umc/tools"
-], function(declare, lang, array, tools) {
+	"dojo/promise/all",
+	"umc/tools",
+	"umc/widgets/CheckBox"
+], function(declare, lang, array, all, tools, CheckBox) {
 
 	return declare('umc.modules.udm.Template', null, {
 		// summary:
@@ -107,6 +109,32 @@ define([
 			// mixin the props
 			lang.mixin(this, props);
 
+			if (this.operation === 'copy') {
+				var deferredWidgets = {};
+				tools.forIn(this.widgets, lang.hitch(this, function(ikey, ival) {
+					if (ikey in this.widgets && this.widgets[ikey].ready) {
+						deferredWidgets[ikey] = this.widgets[ikey].ready();
+					}
+				}));
+				all(deferredWidgets).then(lang.hitch(this, function() {
+					this._constructor();
+				}));
+			} else {
+				this._constructor();
+			}
+		},
+
+		_constructor: function() {
+			var isEmptyValue = function(val) {
+				if (typeof val === 'string') {
+					return val === "";
+				}
+				if (val instanceof Array) {
+					return val.length === 0;
+				}
+				return false;
+			};
+
 			// initiate the dict of the last known values
 			this._lastValues = {};
 
@@ -129,7 +157,7 @@ define([
 					references: [], // ordered list of widgets that are referenced
 					modifiers: [], // ordered list of string modifiers per reference
 					globalModifiers: [], // string modifiers that are applied on the final string
-					update: function() {
+					getNewVal: function() {
 						// collect all necessary values
 						var vals = [];
 						array.forEach(this.references, function(iwidget, i) {
@@ -148,6 +176,10 @@ define([
 							}, this);
 						}
 
+						return newVal;
+					},
+					update: function() {
+						var newVal = this.getNewVal();
 						this.selfReference.set('value', newVal);
 						if (this.selfReference.setInitialValue) {
 							this.selfReference.setInitialValue(newVal, false);
@@ -167,6 +199,22 @@ define([
 
 				// match all variable references
 				this._parse(updater);
+
+				// Use the template mechanism only for empty values and copied values that are equal to the template value.
+				// If the copied value differs from the template value it will not be updated by the template.
+				if (this.operation === 'copy') {
+					var widget = this.widgets[ikey];
+					var doNotUseTemplate;
+					if (widget instanceof CheckBox) {
+						doNotUseTemplate = widget._initialValue != widget.get('value');
+					} else {
+						doNotUseTemplate = !isEmptyValue(widget.get('value')) && !tools.isEqual(updater.getNewVal(), widget.get('value'));
+					}
+					if (doNotUseTemplate) {
+						return;
+					}
+				}
+
 				if (updater.references.length) {
 					// we have a dynamic value with variable references
 					updaters.push(updater);

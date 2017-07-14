@@ -1166,7 +1166,7 @@ define([
 		},
 
 		buildTemplate: function(_template, properties, widgets) {
-			if (this.operation !== 'add' || this._multiEdit) {
+			if (this.operation === 'edit') {
 				return;
 			}
 
@@ -1212,7 +1212,8 @@ define([
 			// create a new template object that takes care of updating the elements in the form
 			return new Template({
 				widgets: widgets,
-				template: template
+				template: template,
+				operation: this.operation
 			});
 		},
 
