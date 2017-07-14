@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-virtual-machine-manager-daemon
+fix: 6.0.4-3A~4.2.0.201707141742
+desc: |
+ This update addresses the following issue(s):
+ * Virtual machine configurations can now be edited
+   in a new tab.
+bug: [24721]
