@@ -1279,7 +1279,6 @@ class ucs:
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
-		module = self.modules[property_type]
 
 		if 'olddn' in object:
 			dntype = 'olddn'
@@ -1293,7 +1292,6 @@ class ucs:
 
 	def move_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.move_in_ucs')
-		module = self.modules[property_type]
 		try:
 			if object['olddn'].lower() == object['dn'].lower():
 				ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same ( %s to %s)" % (object['olddn'], object['dn']))
@@ -1367,7 +1365,6 @@ class ucs:
 				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Domain Controller in OpenLDAP. The deletion will be skipped." % object['dn'])
 				return True
 
-		module = self.modules[property_type]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		try:
@@ -1437,7 +1434,6 @@ class ucs:
 		except:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
 
-		module = self.modules[property_type]
 		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
 		if object['dn'] != self.baseConfig['ldap/base']:
@@ -1486,6 +1482,9 @@ class ucs:
 			if hasattr(self.property[property_type], "ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
 			else:
+				module = self.modules[property_type]
+				if old_object:
+					module = univention.admin.modules.get(old_object.module)
 				if object['modtype'] == 'add':
 					result = self.add_in_ucs(property_type, object, module, position)
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
