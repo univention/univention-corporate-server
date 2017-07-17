@@ -1,3 +1,9 @@
+ucs-test (7.0.22-29) unstable; urgency=medium
+
+  * Bug #40735: ucs-test: fixup 45udm-cli
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 17 Jul 2017 17:15:34 +0200
+
 ucs-test (7.0.22-28) unstable; urgency=medium
 
   * Bug #44975: fix loglevel parameter (introduced by Bug #41571)
