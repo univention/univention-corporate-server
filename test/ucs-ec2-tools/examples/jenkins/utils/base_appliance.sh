@@ -312,7 +312,7 @@ joinscript_init
 joinscript_save_current_version
 
 # Only install the app if joinscript is run during system-setup
-if is_ucr_true system/setup/boot/start; then
+if [ -n "$(pgrep -f /usr/lib/univention-system-setup/scripts/setup-join.sh)" ]; then
 	# install app
 	python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
@@ -776,6 +776,17 @@ install_haveged ()
     ucr set repository/online/unmaintained="$_unmaintained_setting"
 }
 
+backup_current_local_packagecache ()
+{
+	mkdir -p /var/cache/univention-system-setup/packages_backup
+	cp -r /var/cache/univention-system-setup/packages /var/cache/univention-system-setup/packages_backup
+}
+
+restore_current_local_packagecache ()
+{
+	mv /var/cache/univention-system-setup/packages_backup /var/cache/univention-system-setup/packages
+}
+
 uninstall_packages ()
 {
 	# if upgraded, u-basesystem will be installed by postup.sh
@@ -908,6 +919,8 @@ __EOF__
 	apt-get update
 	download_system_setup_packages $@
 
+	backup_current_local_packagecache
+
 	# Cleanup apt archive
 	apt-get update
 
@@ -937,6 +950,8 @@ __EOF__
 	ucr set repository/online=no \
 		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
+
+	restore_current_local_packagecache
 
 	# Cleanup apt archive
 	apt-get clean
