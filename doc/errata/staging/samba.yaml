@@ -1,0 +1,13 @@
+product: ucs
+release: "3.3"
+version: [1]
+scope: ucs_3.3-0-errata3.3-1
+src: samba
+fix: 2:4.3.7-1.828.201707171641
+desc: |
+ This update addresses the following issue:
+ * Orpheus' Lyre KDC-REP service name validation (mutual auth bypass) in
+   embedded Heimdal (CVE-2017-11103)
+bug: [45027]
+cve:
+ - CVE-2017-11103
