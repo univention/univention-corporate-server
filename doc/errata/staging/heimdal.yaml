@@ -3,7 +3,7 @@ release: "3.3"
 version: [1]
 scope: ucs_3.3-0-errata3.3-1
 src: heimdal
-fix: 1.6~git20120403+dfsg1-2.229.201707171717
+fix: 1.6~git20120403+dfsg1-2.229.201707171735
 desc: |
  This update addresses the following issue:
  * Orpheus' Lyre KDC-REP service name validation (mutual auth bypass)
