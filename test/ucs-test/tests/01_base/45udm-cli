@@ -46,17 +46,15 @@ class cmd(object):
 		return cmd.returncode == 0
 
 
-def test_ldap_connection(user_dn, password):
+def test_ldap_connection(ucr, user_dn, password):
 	print("Testing ldap connection")
-	access = uldap.access(binddn=user_dn, bindpw=password)
+	access = uldap.access(ucr.get('ldap/master'), base=ucr.get('ldap/base'),
+		binddn=user_dn, bindpw=password)
 	for (key, value) in access.get(user_dn, required=True).items():
 		print("{} = {}".format(key, value))
 
 
-def test_samba_connection(username, password):
-	ucr = configRegistry.ConfigRegistry()
-	ucr.load()
-
+def test_samba_connection(ucr, username, password):
 	# In case of a memberserver in a S4 environment, we have to
 	# wait until the user has been synchonized to Samba 4. Otherwise
 	# we can't get a kerberos ticket
@@ -72,7 +70,8 @@ def test_samba_connection(username, password):
 	if utils.package_installed("univention-samba") or utils.package_installed("univention-samba4"):
 		print("Samba Logon with this new user")
 
-		smbclient = cmd("smbclient", "-L", "localhost", "-U", "{}%{}".format(username, password))
+		smbclient = cmd("smbclient", "-L", ucr.get('ldap/master'), "-U",
+			"{}%{}".format(username, password))
 
 		if not smbclient.check():
 			print("First Samba login failed. Wait for 30 seconds and try again ...")
@@ -82,11 +81,14 @@ def test_samba_connection(username, password):
 
 
 def test(password="univention"):
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
 	with udm_test.UCSTestUDM() as udm:
 		(user_dn, username) = udm.create_user()
 
-		test_ldap_connection(user_dn, password)
-		test_samba_connection(username, password)
+		test_ldap_connection(ucr, user_dn, password)
+		test_samba_connection(ucr, username, password)
 
 
 if __name__ == '__main__':
