@@ -33,7 +33,6 @@
 
 from __future__ import absolute_import
 import ldap
-import string
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
@@ -447,7 +446,7 @@ def __remove_dot(str):
 
 
 def __split_s4_dnsNode_dn(dn):
-	exploded_dn = ldap.dn.str2dn(dn)	## TODO: fix encoding
+	exploded_dn = ldap.dn.str2dn(dn)  # TODO: fix encoding
 
 	# split the DC= from the zoneName
 	(_, zoneName, _) = exploded_dn[1][0]
@@ -456,7 +455,7 @@ def __split_s4_dnsNode_dn(dn):
 
 
 def __split_ol_dNSZone_dn(dn, objectclasses):
-	exploded_dn = ldap.dn.str2dn(dn)	## TODO: fix encoding
+	exploded_dn = ldap.dn.str2dn(dn)  # TODO: fix encoding
 	(fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 	(snd_rdn_attribute_utf8, snd_rdn_value_utf8, _flags) = exploded_dn[1][0]
 
@@ -1689,12 +1688,4 @@ def con2ucs(s4connector, key, object):
 
 
 def s4connector_get_superordinate(module, lo, dn):
-	super_module = univention.admin.modules.superordinate(module)
-	if super_module:
-		while dn:
-			attr = lo.get(dn)
-			for mod in univention.admin.modules.identify(dn, attr):
-				if mod == super_module:
-					return univention.admin.objects.get(super_module, None, lo, None, dn)
-			dn = lo.parentDn(dn)
-	return None
+	return univention.admin.objects.get_superordinate(module, None, lo, dn)
