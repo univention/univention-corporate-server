@@ -6,6 +6,6 @@ src: univention-virtual-machine-manager-daemon
 fix: 6.0.4-3A~4.2.0.201707141742
 desc: |
  This update addresses the following issue(s):
- * Virtual machine configurations can now be edited
-   in a new tab.
+ * It is now possible to open virtual machines in a new tab via the UMC
+   module.
 bug: [24721]
