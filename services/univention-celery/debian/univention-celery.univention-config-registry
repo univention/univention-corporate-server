@@ -1,2 +1,2 @@
 Type: file
-File: conffiles/etc/rabbitmq/rabbitmq.config
+File: etc/rabbitmq/rabbitmq.config

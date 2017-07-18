@@ -11,9 +11,9 @@ Package: univention-celery
 Architecture: all
 Depends: python-univention-config-registry,
  python-univention-directory-manager,
- rabbitmq-server,
- celeryd,
- python-celery,
+ rabbitmq-server (>=3.3.5-1),
+ celeryd (>=3.1.13-3),
+ python-celery (>=3.1.13-3),
  ${misc:Depends}
 Description: Celery integration package
  Code to administer and use Celery.
