@@ -1688,33 +1688,6 @@ def con2ucs(s4connector, key, object):
 	return True
 
 
-'''
-	Override the identify function for dns/dns.py otherwise we
-	don't get one mapping for all dns childmodules.
-	Be careful, this function will be called for nearly every
-	object.
-'''
-
-
-def identify(dn, attr, canonical=0):
-	_d = ud.function('dns: identify')
-
-	return univention.admin.handlers.dns.forward_zone.identify(dn, attr) or\
-		univention.admin.handlers.dns.reverse_zone.identify(dn, attr) or\
-		univention.admin.handlers.dns.alias.identify(dn, attr) or\
-		univention.admin.handlers.dns.host_record.identify(dn, attr) or\
-		univention.admin.handlers.dns.srv_record.identify(dn, attr) or\
-		univention.admin.handlers.dns.ptr_record.identify(dn, attr) or\
-		univention.admin.handlers.dns.txt_record.identify(dn, attr)
-
-
-'''
-	Because the dns/dns.py identify function has been overwritten
-	we have to use our own get_superordinate function. Otherwise
-	identifyOne in udm will return two results
-'''
-
-
 def s4connector_get_superordinate(module, lo, dn):
 	super_module = univention.admin.modules.superordinate(module)
 	if super_module:
