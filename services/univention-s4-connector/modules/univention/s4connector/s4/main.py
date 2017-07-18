@@ -51,6 +51,7 @@ from univention.config_registry import ConfigRegistry
 
 parser = OptionParser()
 parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+parser.add_option('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
 (options, args) = parser.parse_args()
 
 CONFIGBASENAME = "connector"
@@ -62,6 +63,12 @@ sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 
 
 import mapping
+
+
+def bind_stdout():
+	if options.daemonize:
+		sys.stdout = open(STATUSLOGFILE, 'w+')
+	return sys.stdout
 
 
 def daemon(lock_file):
@@ -107,9 +114,7 @@ def daemon(lock_file):
 
 
 def connect():
-
-	f = open(STATUSLOGFILE, 'w+')
-	sys.stdout = f
+	f = bind_stdout()
 	print time.ctime()
 
 	baseConfig = ConfigRegistry()
@@ -202,8 +207,7 @@ def connect():
 	retry_rejected = 0
 	connected = True
 	while connected:
-		f = open(STATUSLOGFILE, 'w+')
-		sys.stdout = f
+		f = bind_stdout()
 		print time.ctime()
 		# Aenderungen pollen
 		sys.stdout.flush()
@@ -275,7 +279,8 @@ def main():
 		print >>sys.stderr, 'Error: Another S4 connector process is already running.'
 		sys.exit(1)
 
-	daemon(lock_file)
+	if options.daemonize:
+		daemon(lock_file)
 
 	while True:
 		try:
@@ -284,8 +289,7 @@ def main():
 			lock_file.close()
 			raise
 		except:
-			f = open(STATUSLOGFILE, 'w+')
-			sys.stdout = f
+			f = bind_stdout()
 			print time.ctime()
 
 			text = ''
