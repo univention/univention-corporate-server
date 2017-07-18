@@ -1,3 +1,12 @@
+univention-app-appliance (1.0.2-29) unstable; urgency=medium
+
+  Bug #44523:
+  * Add header to first steps help
+  * Use put() instead of add() for UCR variable setting
+  * Add offset to overlay
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Jul 2017 11:10:05 +0200
+
 univention-app-appliance (1.0.2-28) unstable; urgency=medium
 
   * Bug #44952: Fix typo 

@@ -54,14 +54,6 @@ define([
 	"umc/i18n!umc/hooks/appliance",
 	"xstyle/css!./appliance.css"
 ], function(lang, array, declare, all, Deferred, query, domClass, domConstruct, domGeometry, topic, cookie, request, on, win, login, tools, menu, store, i18nTools, ContainerWidget, Text, Button, _) {
-/*	var checkVisbilityOfFirstSteps = function(_hash) {
-		var isFirstStepsHidden = _hash.indexOf("category=_appliance_") === -1;
-		domClass.toggle(firstSteps.domNode, 'dijitDisplayNone', isFirstStepsHidden);
-	};*/
-
-/*	var saveStateOfFirstSteps = function() {
-	};*/
-
 	var _InfoBoxWidget = new declare('umc.hooks.appliance._InfoBoxWidget', [ContainerWidget], {
 		'class': 'umcApplianceInfoBox',
 
@@ -130,7 +122,7 @@ define([
 	var buildPortalOverlay = function() {
 		var resizeHandlers = [];
 
-		var _buildDomElements = function(readme, hideReadme) {
+		var _buildDomElements = function(applianceName, readme, hideReadme) {
 			// build up DOM elements
 			var overlayContainer = new ContainerWidget({
 				'class': 'umcApplianceOverlay'
@@ -140,6 +132,9 @@ define([
 				content: readme
 			});
 			overlayContainer.addChild(readmeWidget);
+
+			var h1Node = domConstruct.toDom('<h1>' + _('%s Appliance', applianceName) + '</h1>');
+			domConstruct.place(h1Node, readmeWidget.domNode, 'first');
 
 			var closeButton = new Button({
 				'class': 'umcApplianceReadmeCloseButton',
@@ -162,7 +157,8 @@ define([
 			var _updateOverlayHeight = function() {
 				var docSize = domGeometry.position(window.document.body);
 				domGeometry.setMarginBox(overlayContainer.domNode, {
-					h: docSize.h
+					// add a slight offset to have enough space for the hint at the bottom
+					h: docSize.h + 75
 				});
 			};
 			_updateOverlayHeight();
@@ -260,9 +256,10 @@ define([
 			}
 
 			// build DOM elements
+			var applianceName = lang.getObject('data.appliance_name', false, result);
 			var hideReadme = tools.isTrue(lang.getObject('data.close_first_steps', false, result));
-			var overlayContainer = _buildDomElements(readme, hideReadme);
-			_buildArrows(overlayContainer, lang.getObject('data.appliance_name', false, result));
+			var overlayContainer = _buildDomElements(applianceName, readme, hideReadme);
+			_buildArrows(overlayContainer, applianceName);
 
 			// put container into DOM
 			overlayContainer.startup();
@@ -278,7 +275,7 @@ define([
 	var _saveReadmeClose = function() {
 		if (cookie('UMCApplianceReadmeClose') == 'true') {
 			var ucrStore = store('key', 'ucr');
-			ucrStore.add({
+			ucrStore.put({
 				key: 'umc/web/appliance/close_first_steps',
 				value: 'yes'
 			});

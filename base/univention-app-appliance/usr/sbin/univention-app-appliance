@@ -104,8 +104,8 @@ def configure_portal(app):
 	else:
 		# if not specified, use a reasonable fallback
 		portal_obj.info['displayName'] = [
-			['en_US', app.appliance_name or '%s Appliance' % app.name],
-			['de_DE', app.appliance_name or '%s Appliance' % app.name],
+			['en_US', app.appliance_name or app.name],
+			['de_DE', app.appliance_name or app.name],
 		]
 
 	# portal background image
@@ -163,9 +163,9 @@ def main(app):
 			'repository/app_center/blacklist': app.appliance_blacklist,
 			'repository/app_center/whitelist': app.appliance_whitelist,
 			'umc/web/appliance/id': app.id,
-			'umc/web/appliance/name': app.appliance_name or '%s Appliance' % app.name,
+			'umc/web/appliance/name': app.appliance_name or app.name,
 			'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(),  # convert bool value to ('true', 'false')
-			'grub/title': "Start %s" % app.appliance_name or '%s Appliance' % app.name,
+			'grub/title': "Start %s" % app.appliance_name or app.name,
 			'appliance/apps/%s/version' % app.id: app.version,
 			'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
 		})
