@@ -132,6 +132,7 @@ Depends: ${misc:Depends},
  ntpdate,
  python-dns,
 Recommends: univention-portal
+Conflicts: univention-container-role-server-common (>= 12.0.0-10)
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
  .
@@ -149,6 +150,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools,
  univention-ifplugd | univention-network-manager,
  univention-mail-postfix | mail-transport-agent,
+Conflicts: univention-role-server-common (>= 12.0.0-10)
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
  .
