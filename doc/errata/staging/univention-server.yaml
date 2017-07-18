@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-server
+fix: 12.0.0-10A~4.2.0.201707182054
+desc: |
+ This update addresses the following issue(s):
+ * The script univention-fix-ucr-dns needs to be installed in docker
+   containers too.
+bug: [45040]
