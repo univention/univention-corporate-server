@@ -1,0 +1,2 @@
+modules/univention	usr/share/pyshared/
+shell/* usr/share/univention-celery/

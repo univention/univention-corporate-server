@@ -1,0 +1,7 @@
+univention-celery (0.0.1) unstable; urgency=low
+
+  * Bug #44950: provide celery integration package
+  * rabbitmq is configured to run on localhost
+  * example configuration and init.d files for celery workers provided
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 07 Jul 2017 08:15:43 +0200

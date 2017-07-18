@@ -1,0 +1,39 @@
+@%@UCRWARNING=# @%@
+# Edit the options in this file to match your projects environment.
+# See http://ask.github.com/celery/cookbook/daemonizing.html for the complete
+# documentation on the options.
+
+# WARNING: This script is only designed to run the worker(s) for a single
+# project. If you need to start workers for multiple projects you should
+# consider using supervisor.
+# Examples can be found in /usr/share/doc/python-celery/supervisord/
+
+# Change this to true when done to enable the init.d script.
+# Default: false
+ENABLED="true"
+
+# Name of nodes to start
+# here we have a single node
+CELERYD_NODES="???"
+
+# or we could have three nodes:
+#CELERYD_NODES="w1 w2 w3"
+
+# Where to chdir at start.
+CELERYD_CHDIR="/usr/share/univention-???/celery"  # /var/spool/univention-???/
+
+# Extra arguments to celeryd
+CELERYD_OPTS="--time-limit=300 --concurrency=8"
+
+# Name of the celery config module.
+CELERY_CONFIG_MODULE="univention.???.celeryconfig"
+
+# %n will be replaced with the nodename.
+CELERYD_LOG_FILE="/var/log/celery/%n.log"  # /var/log/???/%n.log
+
+# Workers should run as an unprivileged user.
+CELERYD_USER="celery"  # ???
+CELERYD_GROUP="celery" # ???
+
+# CELERY_APP="???:???"
+# CELERYD_PID_FILE="/var/spool/???/celery/%n.pid"
