@@ -374,10 +374,16 @@ class base(object):
 			raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
 
 		if not self.exists():
-			raise univention.admin.uexceptions.noObject()
+			raise univention.admin.uexceptions.noObject(self.dn)
 
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be moved.'))
+
+		def n(x):
+			return dn2str(str2dn(x))
+
+		newdn = n(newdn)
+		self.dn = n(self.dn)
 
 		goaldn = self.lo.parentDn(newdn)
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
@@ -391,11 +397,10 @@ class base(object):
 			else:
 				# We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
 				temporary_ou = self._create_temporary_ou()
-				temp_dn = dn2str([str2dn(newdn)[0]] + str2dn(temporary_ou) + str2dn(self.lo.base))
-				self.move(temp_dn, ignore_license, temporary_ou)
-				self.dn = temp_dn
+				temp_dn = dn2str(str2dn(newdn)[:1] + str2dn(temporary_ou) + str2dn(self.lo.base))
+				self.dn = n(self.move(temp_dn, ignore_license, temporary_ou))
 
-		if self.dn.lower() == newdn.lower()[-len(self.dn):]:  # FIXME
+		if newdn.lower().endswith(self.dn.lower()):
 			raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
 
 		if univention.admin.modules.supports(self.module, 'subtree_move'):
@@ -416,17 +421,17 @@ class base(object):
 				copyobject.policies = self.policies
 				copyobject.create()
 				moved = []
-				pattern = re.compile('%s$' % (re.escape(dn2str(str2dn(self.dn)))))
+				pattern = re.compile('%s$' % (re.escape(self.dn),), flags=re.I)
 				try:
 					for subolddn, suboldattrs in subelements:
 						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the python lib is
 						# used by the connector, for example:
-						#   subolddn: uid=user_test_h80,ou=TEST_H81,LDAP_BASE
-						#   self.dn: ou=test_h81,LDAP_BASE
+						#   subolddn: uid=user_test_h80,ou=TEST_H81,$LDAP_BASE
+						#   self.dn: ou=test_h81,$LDAP_BASE
 						#   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
-						rdn = str2dn(subolddn)[0]
-						subnew_position = str2dn(pattern.sub(newdn, dn2str(str2dn(self.lo.parentDn(subolddn)))))
-						subnewdn = dn2str([rdn] + subnew_position)
+						#   -> subnewdn: uid=user_test_h80,OU=TEST_H81,ou=test_h82,$LDAP_BASE
+						subnew_position = pattern.sub(dn2str(str2dn(self.lo.parentDn(subolddn))), newdn)
+						subnewdn = dn2str(str2dn(subolddn)[:1] + str2dn(subnew_position))
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %r to %r' % (subolddn, subnewdn))
 
 						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
@@ -457,12 +462,12 @@ class base(object):
 				return newdn
 			else:
 				# normal move, fails on subtrees
-				res = self._move(newdn, ignore_license=ignore_license)
+				res = n(self._move(newdn, ignore_license=ignore_license))
 				self._delete_temporary_ou_if_empty(temporary_ou)
 				return res
 
 		else:
-			res = self._move(newdn, ignore_license=ignore_license)
+			res = n(self._move(newdn, ignore_license=ignore_license))
 			self._delete_temporary_ou_if_empty(temporary_ou)
 			return res
 
@@ -473,7 +478,7 @@ class base(object):
 			try:
 				for subolddn, suboldattrs in subelements:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %s' % subolddn)
-					subnewdn = re.sub('%s$' % (re.escape(olddn),), newdn, subolddn, flags=re.I)  # FIXME: looks broken
+					subnewdn = re.sub('%s$' % (re.escape(olddn),), newdn, subolddn)  # FIXME: looks broken
 					submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 					submodule = univention.admin.modules.get(submodule)
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
@@ -951,7 +956,7 @@ class simpleLdap(base):
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = []
 				for member in members:
-					if not member.lower() in (olddn.lower(), self.dn.lower(), ):
+					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), ):
 						newmembers.append(member)
 				newmembers.append(self.dn)
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
@@ -973,6 +978,7 @@ class simpleLdap(base):
 			self.lo.rename(self.dn, olddn)
 			self.dn = olddn
 			raise
+		return self.dn
 
 	def _remove(self, remove_childs=0):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'handlers/__init__._remove() called for %r with remove_childs=%r' % (self.dn, remove_childs))

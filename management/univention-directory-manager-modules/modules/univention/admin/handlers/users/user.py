@@ -2467,7 +2467,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				'mailForwardAddress',
 				self.oldattr.get('mailForwardAddress'),
 				self['mailForwardAddress'][:]
-				)
+			)
 			if self['mailForwardAddress']:
 				self.__remove_old_mpa(mod_[2])
 				self.__set_mpa_for_forward_copy_to_self(mod_[2])
@@ -2598,7 +2598,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# stop moving and reraise
 				raise
 		try:
-			super(object, self)._move(newdn, modify_childs, ignore_license)
+			dn = super(object, self)._move(newdn, modify_childs, ignore_license)
 		except:
 			# self couldn't be moved
 			# move back subelements and reraise
@@ -2615,6 +2615,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				super(object, self)._move(olddn, modify_childs, ignore_license)
 				self.move_subelements(tmpdn, olddn, subelements, ignore_license)
 				raise
+		return dn
 
 	def __pwAlreadyUsed(self, password, pwhistory):
 		for line in pwhistory.split(" "):
