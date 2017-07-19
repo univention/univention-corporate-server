@@ -1,6 +1,7 @@
 univention-ad-connector (11.0.6-10) unstable; urgency=medium
 
   * Bug #45011: fix handling of object types
+  * Bug #45037: add possibility to start AD connector in foreground
 
  -- Florian Best <best@univention.de>  Wed, 19 Jul 2017 10:56:38 +0200
 
