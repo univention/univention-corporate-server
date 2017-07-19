@@ -54,7 +54,7 @@ case "$1" in
 		# save auto generated images
 		theme_dark=/usr/share/plymouth/themes/ucs-appliance-dark
 		theme_light=/usr/share/plymouth/themes/ucs-appliance-light
-		for image in bg.png logo_header_welcome_screen.svg.png logo_bootsplash.svg.png logo_welcome_screen.svg.png; do
+		for image in bg.png logo_bootsplash.svg.png logo_welcome_screen.svg.png; do
 			cp "$theme_dark"/"$image" "$theme_dark"/"$image".real || true
 			cp "$theme_light"/"$image" "$theme_light"/"$image".real || true
 		done

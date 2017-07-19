@@ -200,31 +200,30 @@ def main(app):
 			if os.path.exists(source):
 				os.symlink(source, target)
 
-	def set_grub_theme():
-		print_status("Applying branded boot splash and grub theme.")
-		ucr_vars = {
-			'grub/backgroundimage': '/boot/grub/uniboot.png',
-			'grub/color/highlight': 'white/green',
-			'grub/color/normal': 'black/black',
-			'grub/menu/color/highlight': 'white/green',
-			'grub/menu/color/normal': 'black/black',
-			'bootsplash/theme': 'ucs',
-		}
-		if primary_color and css_background and app.appliance_umc_header_logo and app.appliance_welcome_screen_logo and app.appliance_bootsplash_logo:
-			# only set branded grub theme if all necessary images are specified
+	def set_plymouth_theme():
+		print_status("Applying branded plymouth theme.")
+		if css_background:
 			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
-			if theme == 'dark':
-				grub_color = 'white/black'
-			elif theme == 'light':
-				grub_color = 'black/black'
-			ucr_vars = {
-				'grub/backgroundimage': '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
-				'grub/color/highlight': grub_color,
-				'grub/color/normal': grub_color,
-				'grub/menu/color/highlight': grub_color,
-				'grub/menu/color/normal': grub_color,
-				'bootsplash/theme': 'ucs-appliance-%s' % (theme,),
-			}
+		else:
+			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/bg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme)
+		if not app.appliance_bootsplash_logo:
+			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png' % theme)
+		if not app.appliance_welcome_screen_logo:
+			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png' % theme)
+		ucr_update(UCR, { 'bootsplash/theme': 'ucs-appliance-%s' % (theme,) })
+
+	def set_grub_theme():
+		print_status("Applying branded grub theme.")
+		grub_color = 'black/black'
+		if theme == 'dark':
+			grub_color = 'white/black'
+		ucr_vars = {
+			'grub/backgroundimage': '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
+			'grub/color/highlight': grub_color,
+			'grub/color/normal': grub_color,
+			'grub/menu/color/highlight': grub_color,
+			'grub/menu/color/normal': grub_color,
+		}
 		ucr_update(UCR, ucr_vars)
 
 	def commit_css_template_files():
@@ -261,13 +260,6 @@ def main(app):
 			header_logo = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
 			_download_resource(app, app.appliance_umc_header_logo, header_logo)
 
-			# welcome-screen (plymouth) needs it as png
-			params = 'no-repeat; background-size: auto 28px; background-position: left center;'
-			_svg_to_png(header_logo,
-				'/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen.svg.png' % theme,
-				params,
-				'400x30')
-
 		if app.appliance_welcome_screen_logo:
 			img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg' % theme
 			_download_resource(app, app.appliance_welcome_screen_logo, img)
@@ -284,6 +276,7 @@ def main(app):
 	adjust_svg_image_colors()
 	symlink_first_steps()
 	download_logo_images()
+	set_plymouth_theme()
 	set_grub_theme()
 	commit_css_template_files()
 
