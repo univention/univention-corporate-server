@@ -1,3 +1,11 @@
+ucs-test (7.0.23-1) unstable; urgency=medium
+
+  * Bug #37157: remove SKIP_UCSSCHOOL tag from 
+  63_udm-containers/06_container_ou_rename and
+  63_udm-containers/07_container_ou_rename_uppercase
+
+ -- Florian Best <best@univention.de>  Wed, 19 Jul 2017 10:24:49 +0200
+
 ucs-test (7.0.22-29) unstable; urgency=medium
 
   * Bug #40735: ucs-test: fixup 45udm-cli
