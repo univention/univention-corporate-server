@@ -3,7 +3,7 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-system-setup
-fix: 10.0.10-34A~4.2.0.201707141121
+fix: 10.0.10-35A~4.2.0.201707191158
 desc: |
  This update addresses the following issue(s):
  * A crash during startup of the settings UMC modules has been fixed which
