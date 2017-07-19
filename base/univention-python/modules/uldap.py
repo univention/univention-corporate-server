@@ -401,8 +401,10 @@ class access:
 			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
 		return self.__schema
 
-	def add(self, dn, al):
+	def add(self, dn, al, serverctrls=None, response=None):
 		"""Add LDAP entry with dn and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values)."""
+		if not serverctrls:
+			serverctrls = []
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.add dn=%s' % dn)
 		nal = {}
@@ -416,18 +418,27 @@ class access:
 			nal[key] |= set(val)
 
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
+
 		try:
-			self.lo.add_ext_s(dn, nal)
+			msgid = self.lo.add_ext(dn, nal, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			lo_ref.add_ext_s(dn, nal)
+			msgid = lo_ref.add_ext(dn, nal, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
 
-	def modify(self, dn, changes):
+		if serverctrls and isinstance(response, dict):
+			response['ctrls'] = resp_ctrls
+
+	def modify(self, dn, changes, serverctrls=None, response=None):
 		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.modify %s' % dn)
+
+		if not serverctrls:
+			serverctrls = []
 
 		ml = []
 		for key, oldvalue, newvalue in changes:
@@ -458,10 +469,11 @@ class access:
 		new_dn, new_rdn = self.__get_new_dn(dn, ml)
 		if not self.compare_dn(dn, new_dn):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
-			self.lo.rename_s(dn, new_rdn, None, delold=1)
+			self.rename_ext_s(dn, new_rdn, None, delold=1, serverctrls=serverctrls, response=response)
 			dn = new_dn
 		if ml:
-			self.modify_s(dn, ml)
+			self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
+
 		return dn
 
 	@classmethod
@@ -494,28 +506,57 @@ class access:
 			lo_ref = self._handle_referral(exc)
 			lo_ref.modify_ext_s(dn, ml)
 
-	def rename(self, dn, newdn):
+	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):
+		"""Redirect modify_ext_s directly to lo"""
+		if not serverctrls:
+			serverctrls = []
+
+		try:
+			msgid = self.lo.modify_ext(dn, ml, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
+		except ldap.REFERRAL as exc:
+			if not self.follow_referral:
+				raise
+			lo_ref = self._handle_referral(exc)
+			msgid = lo_ref.modify_ext(dn, ml, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
+
+		if serverctrls and isinstance(response, dict):
+			response['ctrls'] = resp_ctrls
+
+	def rename(self, dn, newdn, serverctrls=None, response=None):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
 		oldsdn = self.parentDn(dn)
 		newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
 		newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
 
+		if not serverctrls:
+			serverctrls = []
+
 		if not newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			self.rename_s(dn, newrdn, newsdn)
+			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
-			self.rename_s(dn, newrdn)
+			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
 
-	def rename_s(self, dn, newrdn, newsuperior=None):
-		"""Redirect rename_s directly to lo"""
+	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
+		"""Redirect rename_ext_s directly to lo"""
+		if not serverctrls:
+			serverctrls = []
+
 		try:
-			self.lo.rename_s(dn, newrdn, newsuperior)
+			msgid = self.lo.rename(dn, newrdn, newsuperior, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			lo_ref.rename_s(dn, newrdn, newsuperior)
+			lo_ref.rename(dn, newrdn, newsuperior, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
+
+		if serverctrls and isinstance(response, dict):
+			response['ctrls'] = resp_ctrls
 
 	def delete(self, dn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
