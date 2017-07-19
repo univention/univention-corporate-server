@@ -686,19 +686,13 @@ class ucs:
 		# we should delete this object
 		ignore_subtree_match = False
 
-		if not new:
-			change_type = "delete"
-			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was deleted")
-			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn, 'utf8'), old):
-					key = k
-					break
-		else:
-			for k in self.property.keys():
-				if self.modules[k].identify(unicode(dn, 'utf8'), new):
-					key = k
-					break
+		_attr = new or old
+		for k in self.property.keys():
+			if self.modules[k].identify(unicode(dn, 'utf8'), _attr):
+				key = k
+				break
 
+		if new:
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
@@ -761,6 +755,10 @@ class ucs:
 					old_dn = ''  # there may be an old_dn if object was moved from ignored container
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
 
+		if not new:
+			change_type = "delete"
+			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was deleted")
+
 		if key:
 			if change_type == 'delete':
 				if old_dn:
@@ -816,16 +814,26 @@ class ucs:
 	def get_ucs_object(self, property_type, dn):
 		_d = ud.function('ldap.get_ucs_object')
 		ucs_object = None
-		if isinstance(dn, type(u'')):
+		if isinstance(dn, unicode):
 			searchdn = dn
 		else:
 			searchdn = unicode(dn)
 		try:
-			if not self.get_ucs_ldap_object(searchdn):  # fails if object doesn't exist
+			attr = self.get_ucs_ldap_object(searchdn)
+			if not attr:
 				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
-			module = self.modules[property_type]
-			ucs_object = univention.admin.objects.get(module, co='', lo=self.lo, position='', dn=searchdn)  # does not fail if object doesn't exist
+			module = self.modules[property_type]  # old default
+			if not module.identify(searchdn, attr):
+				for m in self.modules_others.get(property_type, []):
+					if m and m.identify(searchdn, attr):
+						module = m
+						break
+				else:
+					ud.debug(ud.LDAP, ud.ERROR, "get_ucs_object: could not identify UDM object type: %s" % searchdn)
+					ud.debug(ud.LDAP, ud.PROCESS, "get_ucs_object: using default: %s" % module.module)
+
+			ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
@@ -1179,7 +1187,6 @@ class ucs:
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
-		module = self.modules[property_type]
 		if 'olddn' in object:
 			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
 		else:
@@ -1189,7 +1196,6 @@ class ucs:
 
 	def move_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.move_in_ucs')
-		module = self.modules[property_type]
 		try:
 			if object['olddn'].lower() == object['dn'].lower():
 				ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same ( %s to %s)" % (object['olddn'], object['dn']))
@@ -1237,7 +1243,6 @@ class ucs:
 
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.delete_in_ucs')
-		module = self.modules[property_type]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		if object['attributes'].get('objectGUID'):
@@ -1332,7 +1337,6 @@ class ucs:
 		except:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
 
-		module = self.modules[property_type]
 		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
 		parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
@@ -1353,6 +1357,10 @@ class ucs:
 			if old_ucs_ldap_object['attributes'] and self._ignore_object(property_type, old_ucs_ldap_object):
 				ud.debug(ud.LDAP, ud.PROCESS, 'The object (%s) will be ignored because a valid match filter for this object was not found.' % old_ucs_ldap_object['dn'])
 				return True
+
+			module = self.modules[property_type]
+			if old_object:
+				module = univention.admin.modules.get(old_object.module)
 
 			if object['modtype'] == 'add':
 				result = self.add_in_ucs(property_type, object, module, position)

@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-10) unstable; urgency=medium
+
+  * Bug #45011: fix handling of object types
+
+ -- Florian Best <best@univention.de>  Wed, 19 Jul 2017 10:56:38 +0200
+
 univention-ad-connector (11.0.6-9) unstable; urgency=medium
 
   * Bug #41619: Applied patch from Florian Best - Catch NoSuchProcess
