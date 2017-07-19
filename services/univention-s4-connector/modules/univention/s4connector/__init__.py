@@ -49,6 +49,7 @@ import univention.debug2 as ud
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
 from signal import signal, SIGTERM, SIG_DFL
+from ldap.controls.readentry import PostReadControl
 
 from univention.s4connector.s4cache import S4Cache
 from univention.s4connector.lockingdb import LockingDB
@@ -482,7 +483,7 @@ class ucs:
 
 		self.open_ucs()
 
-		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted']:
+		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
@@ -622,6 +623,41 @@ class ucs:
 				self._remove_config_option('DN Mapping CON', self._encode_dn_as_config_option(con.lower()))
 			if ucs:
 				self._remove_config_option('DN Mapping UCS', self._encode_dn_as_config_option(ucs.lower()))
+
+	def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
+		"""Remember the entryCSN of a change committed by the S4-Connector itself"""
+		_d = ud.function('ldap._remember_entryCSN_commited_by_connector')
+		value = self._get_config_option('UCS entryCSN', entryUUID)
+		if value:
+			entryCSN_set = set(value.split(','))
+			entryCSN_set.add(entryCSN)
+			value = ','.join(entryCSN_set)
+		else:
+			value = entryCSN
+		self._set_config_option('UCS entryCSN', entryUUID, value)
+
+	def _get_last_entryCSN_commited_by_connector(self, entryUUID):
+		"""Remember the entryCSN of a change committed by the S4-Connector itself"""
+		_d = ud.function('ldap._get_last_entryCSN_commited_by_connector')
+		return self._get_config_option('UCS entryCSN', entryUUID)
+
+	def _forget_entryCSN(self, entryUUID, entryCSN):
+		_d = ud.function('ldap._forget_entryCSN')
+		value = self._get_config_option('UCS entryCSN', entryUUID)
+		if not value:
+			return False
+
+		entryCSN_set = set(value.split(','))
+		if not entryCSN in entryCSN_set:
+			return False
+
+		entryCSN_set.remove(entryCSN)
+		if entryCSN_set:
+			value = ','.join(entryCSN_set)
+			self._set_config_option('UCS entryCSN', entryUUID, value)
+		else:
+			self._remove_config_option('UCS entryCSN', entryUUID)
+		return True
 
 	def _get_dn_by_ucs(self, dn_ucs):
 		_d = ud.function('ldap._get_dn_by_ucs')
@@ -763,6 +799,13 @@ class ucs:
 			else:
 				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s", (dn,))
 				return False
+
+			if key == 'msGPO':
+				entryCSN = new.get('entryCSN', [None])[0]
+				if self._forget_entryCSN(entryUUID, entryCSN):
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: Skipping back-sync of %s %s" % (key, dn))
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: because entryCSN %s was written by sync_to_ucs" % (entryCSN,))
+					return True
 
 			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
@@ -1224,7 +1267,7 @@ class ucs:
 					else:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
-	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
+	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify", serverctrls=None):
 		if 'custom_attributes' in object:
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
 			modlist = object['custom_attributes']['modlist']
@@ -1247,7 +1290,13 @@ class ucs:
 					modlist.append(('objectClass', oc[0][1]['objectClass'], noc))
 
 			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modlist: %s' % modlist)
-			self.lo.modify(ucs_object.dn, modlist)
+			response = {}
+			self.lo.modify(ucs_object.dn, modlist, serverctrls=serverctrls, response=response)
+			for c in response.get('ctrls', []):  # If the modify actually did something
+				if c.controlType == PostReadControl.controlType:
+					entryUUID = c.entry['entryUUID'][0]
+					entryCSN = c.entry['entryCSN'][0]
+					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
 
 			return True
 		else:
@@ -1266,7 +1315,20 @@ class ucs:
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
-		return ucs_object.create() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
+
+		serverctrls = []
+		response = {}
+		if property_type == 'msGPO':
+			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+		res = ucs_object.create(serverctrls=serverctrls, response=response)
+		if res:
+			for c in response.get('ctrls', []):
+				if c.controlType == PostReadControl.controlType:
+					entryUUID = c.entry['entryUUID'][0]
+					entryCSN = c.entry['entryCSN'][0]
+					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
+			res = self.__modify_custom_attributes(property_type, object, ucs_object, module, position, serverctrls=serverctrls)
+		return res
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
@@ -1279,7 +1341,20 @@ class ucs:
 		ucs_object_dn = object[dntype]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type, object, ucs_object)
-		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
+
+		serverctrls = []
+		response = {}
+		if property_type == 'msGPO':
+			serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+		res = ucs_object.modify(serverctrls=serverctrls, response=response)
+		if res:
+			for c in response.get('ctrls', []):
+				if c.controlType == PostReadControl.controlType:  # If the modify actually did something
+					entryUUID = c.entry['entryUUID'][0]
+					entryCSN = c.entry['entryCSN'][0]
+					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
+			res = self.__modify_custom_attributes(property_type, object, ucs_object, module, position, serverctrls=serverctrls)
+		return res
 
 	def move_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.move_in_ucs')
@@ -1362,6 +1437,8 @@ class ucs:
 			ucs_object.open()
 			ucs_object.remove()
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
+			if property_type == 'msGPO':
+				self._forget_entryCSN(entryUUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)

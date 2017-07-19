@@ -1,3 +1,11 @@
+univention-s4-connector (11.0.8-1) unstable; urgency=medium
+
+  * Bug #43628: during sync_to_ucs remember entryCSN of msGPO changes
+    to be able to identify and skip them later in sync_from_ucs.
+  * revert change of 11.0.2-6
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Jul 2017 19:16:32 +0200
+
 univention-s4-connector (11.0.7-16) unstable; urgency=medium
 
   * Bug #44976: remove now unused dns/dns identify() function

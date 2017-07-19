@@ -36,6 +36,7 @@ import ldap
 import univention.debug2 as ud
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
+from ldap.controls.readentry import PostReadControl
 
 
 def encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl):
@@ -144,4 +145,11 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 		ml.append(('msNTSecurityDescriptor', ucs_ntsd_sddl, s4_ntsd_sddl))
 	if ml:
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_ucs: modlist = %s' % ml)
-		s4connector.lo.lo.modify(ucs_dn, ml)
+		serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
+		response = {}
+		s4connector.lo.lo.modify(ucs_dn, ml, serverctrls=serverctrls, response=response)
+		for c in response.get('ctrls', []):   # If the modify actually did something
+			if c.controlType == PostReadControl.controlType:
+				entryUUID = c.entry['entryUUID'][0]
+				entryCSN = c.entry['entryCSN'][0]
+				s4connector._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
