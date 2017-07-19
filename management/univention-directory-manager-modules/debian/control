@@ -14,7 +14,8 @@ Package: python-univention-directory-manager
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python (>= 2.7),
- python-univention (>> 6.0.21),
+ python-pyasn1-modules,
+ python-univention (>= 10.0.4-2),
  python-univention-heimdal (>= 4.0.1-1),
  makepasswd,
  python-m2crypto,

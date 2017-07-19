@@ -458,7 +458,7 @@ class access:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
-	def add(self, dn, al, exceptions=False):
+	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
 		self._validateLicense()
 		if not self.allow_modify:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'add dn: %s' % dn)
@@ -466,9 +466,9 @@ class access:
 			return []
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s al=%s' % (dn, al))
 		if exceptions:
-			return self.lo.add(dn, al)
+			return self.lo.add(dn, al, serverctrls=serverctrls, response=response)
 		try:
-			return self.lo.add(dn, al)
+			return self.lo.add(dn, al, serverctrls=serverctrls, response=response)
 		except ldap.ALREADY_EXISTS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.objectExists(dn)
@@ -481,7 +481,7 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def modify(self, dn, changes, exceptions=False, ignore_license=0):
+	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modify dn: %s' % dn)
@@ -489,9 +489,9 @@ class access:
 			return []
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s ml=%s' % (dn, changes))
 		if exceptions:
-			return self.lo.modify(dn, changes)
+			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
 		try:
-			return self.lo.modify(dn, changes)
+			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
@@ -504,7 +504,7 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def rename(self, dn, newdn, move_childs=0, ignore_license=False):
+	def rename(self, dn, newdn, move_childs=0, ignore_license=False, serverctrls=None, response=None):
 		if not move_childs == 0:
 			raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
 		self._validateLicense()
@@ -514,7 +514,7 @@ class access:
 			return []
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s newdn=%s' % (dn, newdn))
 		try:
-			return self.lo.rename(dn, newdn)
+			return self.lo.rename(dn, newdn, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
