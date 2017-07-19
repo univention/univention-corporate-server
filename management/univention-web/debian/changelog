@@ -1,3 +1,9 @@
+univention-web (1.0.42-21) unstable; urgency=medium
+
+  * Bug #19928: add 'Select all' checkbox to MultiSelect widgets
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 19 Jul 2017 15:40:13 +0200
+
 univention-web (1.0.42-20) unstable; urgency=medium
 
   * Bug #43402: fix disabled text boxes in UMC cards being not

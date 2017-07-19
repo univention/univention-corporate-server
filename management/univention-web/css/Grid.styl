@@ -4,22 +4,55 @@
 	overflow-y: scroll
 	overflow-x: hidden
 
-.umc .umcMultiSelect .dojoxGridView
-	min-width: 100%
-	max-width: 100%
+.umc .umcMultiSelect
+	.dojoxGridMasterHeader
+		background-color: white
 
-	.dojoxGridContent
+		.dojoxGridHeader
+			background-color: @background-color
+			display: none
+
+			^[-2].umcMultiSelectWithContent ^[-2..-1]
+				display: block
+
+			.dojoxGridCell
+				background-color: @background-color
+				color: $text-color
+				^[-3].umcMultiSelectDisabled ^[-3..-1]
+					color: $text-color-lightest
+
+			.dijitCheckBox
+				icon-image(0, -48, "", "-small", 12px, 12px)
+				
+				&.dijitCheckBoxChecked
+					background-position: -48px -48px
+
+	.dojoxGridView
 		min-width: 100%
 		max-width: 100%
 
-		div[role="presentation"]
+		^[-1].umcMultiSelectWithContent ^[-1..-1]
+			border-top: 1px solid rgba(0, 0, 0, 1)
+		^[-1].umcMultiSelectDisabled ^[-1..-1]
+			border-color: rgba(0, 0, 0, 0.2)
+
+		.dojoxGridContent
+			min-width: 100%
 			max-width: 100%
 
-			.dojoxGridRow
+			div[role="presentation"]
 				max-width: 100%
 
-				.dojoxGridRowTable
-					width: 100% !important
+				.dojoxGridRow
+					max-width: 100%
+
+					.dojoxGridRowTable
+						width: 100% !important
+	&.umcMultiSelectNoHeader
+		.dojoxGridMasterHeader .dojoxGridHeader
+			display: none
+		.dojoxGridView
+			border-top: none
 
 .umc .umcGrid
 	background-color: #fff

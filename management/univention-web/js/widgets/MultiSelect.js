@@ -33,7 +33,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/Deferred",
-	"dojo/query",
 	"dojo/dom-class",
 	"dojox/grid/EnhancedGrid",
 	"../tools",
@@ -41,9 +40,10 @@ define([
 	"./_FormWidgetMixin",
 	"./StandbyMixin",
 	"./_RegisterOnShowMixin",
+	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/cells"
-], function(declare, lang, array, Deferred, query, domClass, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin, _RegisterOnShowMixin) {
+], function(declare, lang, array, Deferred, domClass, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin, _RegisterOnShowMixin, _) {
 	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
@@ -61,6 +61,11 @@ define([
 		// display the labe above the widget
 		labelPosition: 'top',
 
+		// bool wether a header to select all entries should be shown
+		showHeader: false,
+		// label of select all entries header
+		headerLabel: _('Select all'),
+
 		// we need the plugin for selection via checkboxes
 		plugins : {
 			indirectSelection: {
@@ -70,13 +75,6 @@ define([
 				styles: 'text-align: center;'
 			}
 		},
-
-		// simple grid structure, only one column
-		structure: [{
-			field: 'label',
-			name: 'Name',
-			width: '100%'
-		}],
 
 		// the widget's class name as CSS class
 		baseClass: EnhancedGrid.prototype.baseClass + ' umcMultiSelect',
@@ -90,6 +88,13 @@ define([
 
 			this.inherited(arguments);
 
+			// simple grid structure, only one column
+			this.structure = [{
+				field: 'label',
+				name: this.headerLabel,
+				width: '100%'
+			}];
+
 			// in case 'value' is not specified, generate a new array
 			if (!(this.value instanceof Array)) {
 				this.value = [];
@@ -99,8 +104,8 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			// hide the header
-			query('.dojoxGridHeader', this.domNode).style('height', '0px');
+			// hide header if showHeader is false
+			domClass.toggle(this.domNode, 'umcMultiSelectNoHeader', !this.showHeader);
 
 			// send an onChange event when the selection has changed
 			this.on('selectionChanged', lang.hitch(this, function() {
@@ -237,7 +242,7 @@ define([
 			// stop standby animation and re-render
 			this.standby(false);
 			this.render();
-		}
+		},
 
 		/*adaptHeight: function() {
 			this.inherited(arguments);
@@ -247,6 +252,11 @@ define([
 				this.scroller.windowHeight = parseInt(this.height, 10);
 			}
 		}*/
+
+		render: function() {
+			domClass.toggle(this.domNode, 'umcMultiSelectWithContent', this.get('rowCount'));
+			this.inherited(arguments);
+		}
 	});
 });
 

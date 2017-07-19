@@ -108,7 +108,8 @@ define([
 				// for visualizing the search results, use a MultiSelect
 				this._multiSelect = new MultiSelect({
 					height: '250px',
-					label: _('Search results:')
+					label: _('Search results:'),
+					showHeader: true
 				});
 				this._container.addChild(new LabelPane({
 					content: this._multiSelect,
@@ -283,7 +284,9 @@ define([
 			this.inherited(arguments);
 
 			// add the MultiSelect widget
-			this._multiSelect = new MultiSelect({});
+			this._multiSelect = new MultiSelect({
+				showHeader: true
+			});
 			this._attachObjectStore();
 			if ( 'setStore' in this._multiSelect ) {
 				this.own(aspect.after(this._multiSelect, 'setStore', lang.hitch(this, '_attachObjectStore')));
