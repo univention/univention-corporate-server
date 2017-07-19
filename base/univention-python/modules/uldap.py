@@ -502,22 +502,20 @@ class access:
 
 		if not newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			try:
-				self.lo.rename_s(dn, newrdn, newsdn)
-			except ldap.REFERRAL as exc:
-				if not self.follow_referral:
-					raise
-				lo_ref = self._handle_referral(exc)
-				lo_ref.rename_s(dn, newrdn, newsdn)
+			self.rename_s(dn, newrdn, newsdn)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
-			try:
-				self.lo.rename_s(dn, newrdn)
-			except ldap.REFERRAL as exc:
-				if not self.follow_referral:
-					raise
-				lo_ref = self._handle_referral(exc)
-				lo_ref.rename_s(dn, newrdn)
+			self.rename_s(dn, newrdn)
+
+	def rename_s(self, dn, newrdn, newsuperior=None):
+		"""Redirect rename_s directly to lo"""
+		try:
+			self.lo.rename_s(dn, newrdn, newsuperior)
+		except ldap.REFERRAL as exc:
+			if not self.follow_referral:
+				raise
+			lo_ref = self._handle_referral(exc)
+			lo_ref.rename_s(dn, newrdn, newsuperior)
 
 	def delete(self, dn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)

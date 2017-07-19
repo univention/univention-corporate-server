@@ -1,3 +1,9 @@
+univention-python (10.0.4-1) unstable; urgency=medium
+
+  * Bug #43628: Refactor rename() to match code of modify()
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Jul 2017 19:08:44 +0200
+
 univention-python (10.0.3-4) unstable; urgency=medium
 
   * Bug #41234: Revert changes made with Bug #36169 due to fix of Bug #36343
