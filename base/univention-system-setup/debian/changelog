@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-35) unstable; urgency=medium
+
+  * Bug #38342: add gettext-base dependency
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 19 Jul 2017 11:56:21 +0200
+
 univention-system-setup (10.0.10-34) unstable; urgency=medium
 
   * Bug #44995: Improved error message on license check errors
