@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.4-4) unstable; urgency=medium
+
+  * Bug #24721: Applied additional patch - dpkg version compare
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 19 Jul 2017 09:45:07 +0200
+
 univention-virtual-machine-manager-daemon (6.0.4-3) unstable; urgency=medium
 
   * Bug #24721: Applied patch from Philipp Hahn - add 'Edit in new tab'
