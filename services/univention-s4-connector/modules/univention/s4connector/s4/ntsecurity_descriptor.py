@@ -36,7 +36,6 @@ import ldap
 import univention.debug2 as ud
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
-from samba.dcerpc import misc
 
 
 def encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl):
@@ -88,7 +87,7 @@ def ntsd_to_s4(s4connector, key, object):
 		return
 
 	ucs_ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
-	s4_attributes = s4connector.lo_s4.get(s4_dn, attr=['nTSecurityDescriptor', 'uSNChanged', 'objectGUID'])
+	s4_attributes = s4connector.lo_s4.get(s4_dn, attr=['nTSecurityDescriptor'])
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 
 	if ntsd_ndr:
@@ -97,14 +96,6 @@ def ntsd_to_s4(s4connector, key, object):
 		if s4_ntsd_sddl == ucs_ntsd_sddl:
 			ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: nTSecurityDescriptors are equal')
 			return
-
-		guid_blob = s4_attributes.get('objectGUID')[0]
-		objectGUID = str(ndr_unpack(misc.GUID, guid_blob))
-		old_s4_object = s4connector.s4cache.get_entry(objectGUID)
-		if old_s4_object:
-			if old_s4_object.get('uSNChanged')[0] != s4_attributes.get('uSNChanged')[0]:
-				ud.debug(ud.LDAP, ud.PROCESS, "ntsd_to_s4: skipping, S4-Object changed: %s" % object['dn'])
-				return
 
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: changing nTSecurityDescriptor from %s to %s' % (s4_ntsd_sddl, ucs_ntsd_sddl))
 
