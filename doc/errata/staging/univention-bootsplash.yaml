@@ -3,9 +3,11 @@ release: "4.2"
 version: [0,1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-bootsplash
-fix: 8.0.0-12A~4.2.0.201707031225
+fix: 8.0.0-13A~4.2.0.201707191437
 desc: |
  This update addresses the following issue(s):
  * The transition from bootsplash to welcome screen is now flicker free.
    Improved systemd integration for the welcome screen.
-bug: [44061]
+ * Improved the welcome screen design by removing the fqdn
+   and concentrate on the ip addresses of the system.
+bug: [44061, 45031]
