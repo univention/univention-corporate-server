@@ -952,6 +952,10 @@ __EOF__
 		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
+	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
+		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+	fi
+
 	# Cleanup apt archive
 	apt-get clean
 	apt-get update
