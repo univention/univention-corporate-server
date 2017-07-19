@@ -9,8 +9,8 @@ bg.sprite.SetImage(resized.bg.image);
 # univention logo
 univention.image = Image("univention-logo.png");
 univention.sprite = Sprite(univention.image);
-univention.sprite.SetImage(univention.image);
-
+univention.sprite.SetX(Window.GetX() + Window.GetWidth() - 15 - univention.image.GetWidth());
+univention.sprite.SetY(Window.GetY() + 10);
 
 # box image
 box.image = Image("logo-box.png").Scale(250, 250);
@@ -371,43 +371,33 @@ fun welcome_screen_setup() {
 
 	# line
 	line.sprite = Sprite();
-	line.image = Image.Text("_", 0.23, 0.23, 0.23, 1, "Sans 1");
-	line.sprite.SetX(width_percent(5));
-	line.sprite.SetY(height_percent(16));
+	line.image = Image.Text("_", 0.23, 0.23, 0.23, 0, "Sans 1");
+	line.sprite.SetX(width_percent(4));
+	line.sprite.SetY(height_percent(3));
 	line.text = "";
 	while (width_percent(90) > line.image.GetWidth()) {
 		line.text += "_";
-		line.image = Image.Text(line.text, 0.23, 0.23, 0.23, 1, "Sans 1");
+		line.image = Image.Text(line.text, 0.23, 0.23, 0.23, 0, "Sans 1");
         }
 	line.sprite.SetImage(line.image);
 	global.welcome.line = line;
 
 	# welcome screen header - relative to line
 	header.sprite = Sprite();
-	header.sprite.SetX(width_percent(5));
-	header.sprite.SetY(line.sprite.GetY() - line.image.GetHeight() - 22);
+	header.sprite.SetX(width_percent(6));
+	header.sprite.SetY(line.sprite.GetY());
 	header.setText = fun (string) {
-		global.welcome.header.image = Image.Text(string, 0.23, 0.23, 0.23, 1, "Sans 14");
+		global.welcome.header.image = Image.Text(string, 0.23, 0.23, 0.23, 1, "Sans 24");
 		global.welcome.header.sprite.SetImage(global.welcome.header.image);
 	};
 	global.welcome.header = header;
-
-	# hostname - relative to line
-	hostname.sprite = Sprite();
-	hostname.sprite.SetX(width_percent(5));
-	hostname.sprite.SetY(line.sprite.GetY() + line.image.GetHeight());
-	hostname.setText = fun (string) {
-		global.welcome.hostname.image = Image.Text(string, 0.23, 0.23, 0.23, 1, "Sans 11");
-		global.welcome.hostname.sprite.SetImage(global.welcome.hostname.image);
-	};
-	global.welcome.hostname = hostname;
 
 	# logo step2
 	logo2.image = Image("logo-step2.png");
 	logo2.sprite = Sprite(logo2.image);
 	logo2.sprite.SetOpacity(1);
 	logo2.sprite.SetX(width_percent(50) - logo2.image.GetWidth() / 2);
-	logo2.sprite.SetY(height_percent(50) - 35 - logo2.image.GetHeight() / 2);
+	logo2.sprite.SetY(height_percent(40) - 35 - logo2.image.GetHeight() / 2);
 	global.welcome.logo2 = logo2;
 
 	# number step2
@@ -415,13 +405,13 @@ fun welcome_screen_setup() {
 	number2.sprite = Sprite(number2.image);
 	number2.sprite.SetOpacity(1);
 	number2.sprite.SetX(logo2.sprite.GetX() + (logo2.image.GetWidth() / 2) - number2.image.GetWidth() / 2);
-	number2.sprite.SetY(height_percent(50) + 68 - number2.image.GetHeight() / 2);
+	number2.sprite.SetY(height_percent(40) + 68 - number2.image.GetHeight() / 2);
 	global.welcome.number2 = number2;
 
 	# message step2
 	message2.sprite = Sprite();
 	message2.sprite.SetX(logo2.sprite.GetX());
-	message2.sprite.SetY(height_percent(50) + 105);
+	message2.sprite.SetY(height_percent(40) + 105);
 	message2.setText = fun (string) {
 		global.welcome.message2.image = Image.Text(
 			textWrapToSize(string, global.welcome.logo2.image.GetWidth(), "Sans 11"),
@@ -443,13 +433,13 @@ fun welcome_screen_setup() {
 	number1.sprite = Sprite(number1.image);
 	number1.sprite.SetOpacity(1);
 	number1.sprite.SetX(logo1.sprite.GetX() + (logo1.image.GetWidth() / 2) - number1.image.GetWidth() / 2);
-	number1.sprite.SetY(height_percent(50) + 68 - number2.image.GetHeight() / 2);
+	number1.sprite.SetY(height_percent(40) + 68 - number2.image.GetHeight() / 2);
 	global.welcome.number1 = number1;
 
 	# message step1
 	message1.sprite = Sprite();
 	message1.sprite.SetX(logo1.sprite.GetX());
-	message1.sprite.SetY(height_percent(50) + 105);
+	message1.sprite.SetY(height_percent(40) + 105);
 	message1.setText = fun (string) {
 		global.welcome.message1.image = Image.Text(
 			textWrapToSize(string, global.welcome.logo1.image.GetWidth(), "Sans 11"), 0.23, 0.23, 0.23, 1, "Sans 11");
@@ -489,13 +479,13 @@ fun welcome_screen_setup() {
 	number3.sprite = Sprite(number3.image);
 	number3.sprite.SetOpacity(1);
 	number3.sprite.SetX(logo3.sprite.GetX() + (logo3.image.GetWidth() / 2) - number3.image.GetWidth() / 2);
-	number3.sprite.SetY(height_percent(50) + 68 - number3.image.GetHeight() / 2);
+	number3.sprite.SetY(height_percent(40) + 68 - number3.image.GetHeight() / 2);
 	global.welcome.number3 = number3;
 
 	# message step3
 	message3.sprite = Sprite();
 	message3.sprite.SetX(logo3.sprite.GetX());
-	message3.sprite.SetY(height_percent(50) + 105);
+	message3.sprite.SetY(height_percent(40) + 105);
 	message3.setText = fun (string) {
 		global.welcome.message3.image = Image.Text(
 			textWrapToSize(string, global.welcome.logo3.image.GetWidth(), "Sans 11"), 0.23, 0.23, 0.23, 1, "Sans 11");
@@ -529,9 +519,9 @@ fun welcome_screen_setup() {
 	# console text
 	console.sprite = Sprite();
 	console.setText = fun (string) {
-		global.welcome.console.image = Image.Text(string, 0.23, 0.23, 0.23, 1, "Sans 11");
+		global.welcome.console.image = Image.Text(string, 0.23, 0.23, 0.23, 1, "Sans 12");
 		global.welcome.console.sprite.SetX(width_percent(50) - global.welcome.console.image.GetWidth() / 2);
-		global.welcome.console.sprite.SetY(height_percent(91));
+		global.welcome.console.sprite.SetY(height_percent(85));
 		global.welcome.console.sprite.SetImage(global.welcome.console.image);
 	};
 	global.welcome.console = console;
@@ -644,10 +634,6 @@ fun update_status_callback (text) {
 			global.welcome.console.setText(text.SubString(27, StringLength(text)));
 		} else if (stringStartsWith(text, "univention-welcome:addresses:")) {
 			global.welcome.addresses.setText(text.SubString(29, StringLength(text)));
-		} else if (stringStartsWith(text, "univention-welcome:hostname:")) {
-			global.welcome.hostname.setText(text.SubString(28, StringLength(text)));
-		} else if (text == "univention-welcome:appliance") {
-			global.welcome.logo3.setImage("appliance.png");
 		}
 	}
 	else if (text == "normal") {

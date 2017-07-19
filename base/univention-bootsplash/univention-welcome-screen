@@ -36,9 +36,14 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ucr.sh
 
 
+get_all_ip_addresses () {
+	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
+	-c 'from interfaces import Interfaces;print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
+}
+
 remove_welcome_screen () {
 	# plymouth quit --retain-splash lets the terminal stay in graphics mode.
-	# The terminal needs to be set into text mdoe again.
+	# The terminal needs to be set into text mode again.
 	# See also "man console_ioctl" keyword: KDSETMODE.
 	python -c "from fcntl import ioctl; fd = open('/dev/tty0', 'r'); ioctl(fd, 0x4B3A, 0x00);"
 	chvt 1
@@ -79,48 +84,30 @@ show_welcome_screen () {
 		exit 1
 	fi
 	echo "going to plymouth welcome screen mode..."
-	# check appliance logo
-	appliance=false
-	if [ -n "$umc_web_appliance_logo" ]; then
-		if [ -e "/var/www/$umc_web_appliance_logo" -a ! -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
-			cp "/var/www/$umc_web_appliance_logo" /usr/share/plymouth/themes/ucs/appliance.logo
-			if [ -x "$(which convert)" ]; then
-				convert -background None /usr/share/plymouth/themes/ucs/appliance.logo /usr/share/plymouth/themes/ucs/appliance.png
-			fi
-		fi
-		if [ -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
-			appliance=true
-		fi
-	fi
 	lang="${locale_default%%:*}"
 	if [ -n "$lang" ]; then
 		export LC_ALL="$lang"
 	fi
 	export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
-	if [ -n "$umc_web_appliance_name" ]; then
-		header="$(gettext -d univention-welcome-screen "Welcome to ")$umc_web_appliance_name"
+	if [ "$bootsplash_theme" != "ucs" -a -n "$umc_web_appliance_name" ]; then
+		header="$umc_web_appliance_name Appliance"
 	else
-		header="$(gettext -d univention-welcome-screen "Welcome to ")Univention Corporate Server"
+		header="Univention Corporate Server"
 	fi
 	console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
 	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
 	message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
 	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
-	hostname="$hostname.$domainname"
 	address="https://$(get_default_ip_address)"
-	addresses="$address https://$hostname"
+	addresses="https://$(get_all_ip_addresses)"
 	# show welcome screen
 	plymouth --show-splash
 	plymouth update --status=univention-welcome
 	plymouth display-message --text="$console"
-	if $appliance; then
-		plymouth update --status="univention-welcome:appliance"
-	fi
 	plymouth update --status="univention-welcome:header:$header"
 	plymouth update --status="univention-welcome:message1:$message1"
 	plymouth update --status="univention-welcome:message2:$message2"
 	plymouth update --status="univention-welcome:message3:$message3"
-	plymouth update --status="univention-welcome:hostname:$hostname"
 	plymouth update --status="univention-welcome:address:$address"
 	plymouth update --status="univention-welcome:addresses:$addresses"
 	plymouth update --status="univention-welcome:console:$console"
