@@ -690,7 +690,7 @@ class simpleLdap(base):
 	def create(self, serverctrls=None, response=None):
 		if not serverctrls:
 			serverctrls = []
-		if not response:
+		if not isinstance(response, dict):
 			response = {}
 
 		self.serverctrls = serverctrls
@@ -704,7 +704,7 @@ class simpleLdap(base):
 	def modify(self, modify_childs=1, ignore_license=0, serverctrls=None, response=None):
 		if not serverctrls:
 			serverctrls = []
-		if not response:
+		if not isinstance(response, dict):
 			response = {}
 
 		self.serverctrls = serverctrls
