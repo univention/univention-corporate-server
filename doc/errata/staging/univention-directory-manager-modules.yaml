@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 12.0.17-93A~4.2.0.201707181837
+fix: 12.0.18-1A~4.2.0.2017071919187
 desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
@@ -43,4 +43,5 @@ desc: |
  * The "Spool Host" label of printers and printer groups has been renamed
    into "Print server".
  * The "e-mail" property of a user is no longer copyable.
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908, 44976, 45011]
+ * Support lookup of specific attributes via PostReadControl (RFC 4527)
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908, 44976, 45011, 43628]

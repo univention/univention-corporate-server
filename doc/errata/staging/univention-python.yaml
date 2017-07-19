@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-python
+fix: 10.0.4-2A~4.2.0.201707191917
+desc: |
+ This update addresses the following issue(s):
+ * Support lookup of specific attributes via PostReadControl (RFC 4527)
+bug: [43628]
