@@ -6,5 +6,6 @@ src: univention-web
 fix: 1.0.42-21A~4.2.0.201707191541
 desc: |
  This update addresses the following issue(s):
- * The MultiSelect widget now contains a checkbox to select all entries.
+ * A check box to select all entries has been added to widgets with selection
+   choices.
 bug: [19928]
