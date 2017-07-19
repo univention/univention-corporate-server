@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-55) unstable; urgency=medium
+
+  * Bug #45043: fix detection of session id if browser sends multiple cookies
+
+ -- Florian Best <best@univention.de>  Wed, 19 Jul 2017 11:57:38 +0200
+
 univention-management-console (9.0.80-54) unstable; urgency=medium
 
   * Bug #44072: hide HTML tooltip

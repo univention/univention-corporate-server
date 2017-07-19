@@ -690,7 +690,7 @@ class CPgeneric(Ressource):
 		request.headers.pop('Cookie', None)
 		request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
 		for name, value in request.cookies.items():
-			if name.startswith('UMCSessionId'):
+			if name == self.suffixed_cookie_name('UMCSessionId'):
 				request.cookies['UMCSessionId'] = value
 
 	def add_response_headers(self, response):
