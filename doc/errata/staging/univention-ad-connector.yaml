@@ -3,9 +3,12 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-ad-connector
-fix: 11.0.6-9A~4.2.0.201707061806
+fix: 11.0.6-10A~4.2.0.201707191100
 desc: |
  This update addresses the following issue(s):
  * The AD-Connector skips (re)recreation of UDM deleted objects.
  * The error handling in the UMC module has been improved.
-bug: [40813, 41619]
+ * Some objects were identified as the wrong object type. The identification
+   handling has been fixed.
+ * It is possible to start the AD Connector service process in foreground.
+bug: [40813, 41619, 45011, 45037]
