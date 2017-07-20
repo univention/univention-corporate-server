@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-56) unstable; urgency=medium
+
+  * Bug #44966: Improve error handling if setting "umc/saml/idp-server" fails 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 20 Jul 2017 16:03:29 +0200
+
 univention-management-console (9.0.80-55) unstable; urgency=medium
 
   * Bug #45043: fix detection of session id if browser sends multiple cookies

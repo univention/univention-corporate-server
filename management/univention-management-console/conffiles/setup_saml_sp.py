@@ -36,6 +36,7 @@ from glob import glob
 from subprocess import call
 from time import sleep
 from urlparse import urlparse
+from xml.etree import ElementTree
 workaround = set()
 
 
@@ -49,19 +50,35 @@ def handler(config_registry, changes):
 	workaround.add(True)
 	cleanup()
 	metadata_download_failed = []
+	metadata_validation_failed = []
 	saml_idp = config_registry.get('umc/saml/idp-server')
 	if saml_idp and not download_idp_metadata(saml_idp):
 		metadata_download_failed.append(saml_idp)
+	elif not valid_metadata(saml_idp):
+		metadata_validation_failed.append(saml_idp)
 	reload_webserver()
 	if not rewrite_sasl_configuration():
 		raise SystemExit('Could not rewrite SASL configuration for UMC.')
 	if metadata_download_failed:
 		raise SystemExit('Could not download IDP metadata for %s' % (', '.join(metadata_download_failed),))
+	if metadata_validation_failed:
+		raise SystemExit('IDP metadata not valid for %s' % (', '.join(metadata_validation_failed),))
 
 
 def cleanup():
 	for metadata in glob('/usr/share/univention-management-console/saml/idp/*.xml'):
 		os.remove(metadata)
+
+
+def valid_metadata(saml_idp):
+	idp = bytes(urlparse(saml_idp).netloc)
+	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+	try:
+		ElementTree.parse(filename)
+	except ElementTree.ParseError:
+		os.remove(filename)
+		return False
+	return True
 
 
 def download_idp_metadata(metadata):
@@ -71,6 +88,7 @@ def download_idp_metadata(metadata):
 		print 'Try to download idp metadata (%s/60)' % (i + 1)
 		rc = call([
 			'/usr/bin/curl',
+			'--fail',
 			'--cacert', '/etc/univention/ssl/ucsCA/CAcert.pem',
 			'-o', filename,
 			metadata,

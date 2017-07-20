@@ -492,6 +492,10 @@ class SamlError(UMC_HTTPError):
 			def _decorated(self, *args, **kwargs):
 				message = func(self, *args, **kwargs) or ()
 				super(SamlError, self).__init__(status, message)
+				if "Passive authentication not supported." in message:
+					# This error just meens we need to do an active login. The frontend knows how to handle that and there is no need to log that. It still needs to be raised though.
+					return self
+				CORE.warn('SamlError: %s' % message)
 				return self
 			return _decorated
 		if func is None:
