@@ -1303,60 +1303,36 @@ class ucs:
 			return True
 
 		try:
-			if 'olddn' in object:
-				old_object = self.get_ucs_object(property_type, object['olddn'])
-			else:
-				old_object = self.get_ucs_object(property_type, object['dn'])
-		except (ldap.SERVER_DOWN, SystemExit):
-			# LDAP idletimeout? try once again
-			if retry:
-				self.open_ucs()
-				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
-			else:
-				raise
-
-		if old_object and object['modtype'] == 'add':
-			object['modtype'] = 'modify'
-		if not old_object and object['modtype'] == 'modify':
-			object['modtype'] = 'add'
-		if not old_object and object['modtype'] == 'move':
-			object['modtype'] = 'add'
-
-		if self.group_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			self.group_mapping_cache_ucs[object['dn'].lower()] = None
-
-		try:
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
-		except (ldap.SERVER_DOWN, SystemExit):
-			# LDAP idletimeout? try once again
-			if retry:
-				self.open_ucs()
-				return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
-			else:
-				raise
-		except:  # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
-
-		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
-
-		parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
-		ud.debug(ud.LDAP, ud.INFO, 'sync_to_ucs: set position to %s' % parent_dn)
-		position.setDn(parent_dn)
-
-		try:
 			result = False
 
 			# Check if the object on UCS side should be synchronized
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=37351
 			old_ucs_ldap_object = {}
-			old_ucs_ldap_object['dn'] = object['dn']
-			if object.get('olddn'):
-				old_ucs_ldap_object['dn'] = object['olddn']
+			old_ucs_ldap_object['dn'] = object.get('olddn', object['dn'])
 			old_ucs_ldap_object['attributes'] = self.get_ucs_ldap_object(old_ucs_ldap_object['dn'])
 
 			if old_ucs_ldap_object['attributes'] and self._ignore_object(property_type, old_ucs_ldap_object):
-				ud.debug(ud.LDAP, ud.PROCESS, 'The object (%s) will be ignored because a valid match filter for this object was not found.' % old_ucs_ldap_object['dn'])
+				ud.debug(ud.LDAP, ud.PROCESS, 'The object %r will be ignored because a valid match filter for this object was not found.' % (old_ucs_ldap_object['dn'],))
 				return True
+
+			old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
+
+			if old_object and object['modtype'] == 'add':
+				object['modtype'] = 'modify'
+			if not old_object and object['modtype'] == 'modify':
+				object['modtype'] = 'add'
+			if not old_object and object['modtype'] == 'move':
+				object['modtype'] = 'add'
+
+			if self.group_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
+				self.group_mapping_cache_ucs[object['dn'].lower()] = None
+
+			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
+			position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
+
+			parent_dn = self.lo.parentDn(object['dn'])
+			ud.debug(ud.LDAP, ud.INFO, 'sync_to_ucs: set position to %s' % parent_dn)
+			position.setDn(parent_dn)
 
 			module = self.modules[property_type]
 			if old_object:
@@ -1385,22 +1361,11 @@ class ucs:
 				ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%s)" % object['dn'])
 				return False
 
-			try:
-				if object['modtype'] in ['add', 'modify']:
-					for f in self.property[property_type].post_ucs_modify_functions:
-						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
-						f(self, property_type, object)
-						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
-			except (ldap.SERVER_DOWN, SystemExit):
-				# LDAP idletimeout? try once again
-				if retry:
-					self.open_ucs()
-					return self.sync_to_ucs(property_type, object, premapped_ad_dn, False)
-				else:
-					raise
-			except:  # FIXME: which exception is to be caught?
-				self._debug_traceback(ud.ERROR, "failed in post_con_modify_functions")
-				result = False
+			if object['modtype'] in ['add', 'modify']:
+				for f in self.property[property_type].post_ucs_modify_functions:
+					ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
+					f(self, property_type, object)
+					ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
 
 			ud.debug(ud.LDAP, ud.INFO, "Return  result for DN (%s)" % object['dn'])
 			return result

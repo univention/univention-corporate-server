@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.6-11) unstable; urgency=medium
+
+  * Bug #45011: don't log tracebacks for objects which are ignored
+  	nevertheless
+
+ -- Florian Best <best@univention.de>  Thu, 20 Jul 2017 15:38:55 +0200
+
 univention-ad-connector (11.0.6-10) unstable; urgency=medium
 
   * Bug #45011: fix handling of object types
