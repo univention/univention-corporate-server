@@ -33,3 +33,5 @@ cve:
  - CVE-2017-3463
  - CVE-2017-3464
  - CVE-2017-3600
+erratum: 42
+announced: 2017-07-20
