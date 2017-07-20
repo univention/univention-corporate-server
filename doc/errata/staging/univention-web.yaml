@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A check box to select all entries has been added to widgets with selection
    choices.
-bug: [19928]
+ * Text in grid cells is now selectable.
+bug: [19928, 44481]
