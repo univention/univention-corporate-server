@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Configure systemd-journald.service for time limited log retention
 bug: [44234]
+erratum: 97
+announced: 2017-07-20
