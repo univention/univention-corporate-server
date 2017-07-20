@@ -1,3 +1,9 @@
+univention-python (10.0.4-3) unstable; urgency=medium
+
+  * Bug #43628: fix typo: delold=1 and newsuperior=None is already the default
+
+ -- Florian Best <best@univention.de>  Thu, 20 Jul 2017 09:26:19 +0200
+
 univention-python (10.0.4-2) unstable; urgency=medium
 
   * Bug #43628: Support lookup of specific attributes via PostReadControl

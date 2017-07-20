@@ -469,7 +469,7 @@ class access:
 		new_dn, new_rdn = self.__get_new_dn(dn, ml)
 		if not self.compare_dn(dn, new_dn):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
-			self.rename_ext_s(dn, new_rdn, None, delold=1, serverctrls=serverctrls, response=response)
+			self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
 			dn = new_dn
 		if ml:
 			self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
