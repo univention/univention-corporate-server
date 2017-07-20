@@ -93,7 +93,7 @@
 		float: right
 		font-size: 12px
 		color: rgba(0, 0, 0, 0.54)
-		padding-right: 23px
+		padding-right: 24px
 
 
 	.dgrid
@@ -105,11 +105,24 @@
 			border: none
 			vertical-align: middle
 			padding: 0
+			-webkit-user-select: text
+			-moz-user-select: text
+			-ms-user-select: text
+			user-select: text
+			padding-left: 24px
+			^[-1] .dgrid-selector + .dgrid-cell
+				padding-left: 0
+			&:last-child
+				padding-right: 24px
 
 			&.dgrid-selector
 				box-sizing: content-box
 				width: 20px !important
 				padding: 0 23px
+				-webkit-user-select: none
+				-moz-user-select: none
+				-ms-user-select: none
+				user-select: none
 
 				&:after
 					content: ''
@@ -220,6 +233,10 @@
 	.dojoxGridCell
 		background-image: none
 		border: none
+		-webkit-user-select: text
+		-moz-user-select: text
+		-ms-user-select: text
+		user-select: text
 
 		.dijitButton
 			.dijitIcon
@@ -235,16 +252,6 @@
 			.dijitButtonNode
 				padding-top: 0
 				padding-bottom: 0
-
-		.selectable
-			-webkit-user-select: text
-			-moz-user-select: text
-			-ms-user-select: text
-			user-select: text
-
-		.selectable:hover
-			text-decoration: underline
-			cursor: pointer
 
 .umcGrid .dgrid-scroller
 	max-height: inherit

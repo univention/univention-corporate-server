@@ -1,3 +1,9 @@
+univention-web (1.0.42-22) unstable; urgency=medium
+
+  * Bug #44481: text content of grid cells is now selectable
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 20 Jul 2017 14:35:45 +0200
+
 univention-web (1.0.42-21) unstable; urgency=medium
 
   * Bug #19928: add 'Select all' checkbox to MultiSelect widgets
