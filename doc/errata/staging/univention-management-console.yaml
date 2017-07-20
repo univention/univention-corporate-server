@@ -3,12 +3,12 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-management-console
-fix: 9.0.80-56A~4.2.0.201707201612
+fix: 9.0.80-57A~4.2.0.201707201731
 desc: |
  This update addresses the following issue(s):
  * Using UMC was not possible with multiple docker instances on the system
    was not possible as the browser then sends multiple cookies which caused
    that the correct session was not detected.
- * Improved error handling and logging in case the identity provider for 
-   single sign-on is wrong or not configured.
+ * The error handling and logging in case the identity provider for 
+   single sign-on is wrong or not configured has been improved.
 bug: [45043, 44966]
