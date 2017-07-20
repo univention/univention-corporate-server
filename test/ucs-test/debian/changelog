@@ -1,3 +1,9 @@
+ucs-test (7.0.23-3) unstable; urgency=medium
+
+  * Bug #44704: test download of saml idp certificate 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 20 Jul 2017 16:38:43 +0200
+
 ucs-test (7.0.23-2) unstable; urgency=medium
 
   * Bug #40735: refine test 45udm-cli
