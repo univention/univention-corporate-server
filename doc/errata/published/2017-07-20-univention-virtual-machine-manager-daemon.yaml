@@ -9,3 +9,5 @@ desc: |
  * It is now possible to open virtual machines in a new tab via the UMC
    module.
 bug: [24721]
+erratum: 99
+announced: 2017-07-20
