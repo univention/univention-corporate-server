@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (6.0.4-5) unstable; urgency=medium
+
+  * Bug #44481: remove onclick-selection of the mac address. The possibility
+    to select grid content generally is added in univention-web package
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 20 Jul 2017 14:56:45 +0200
+
 univention-virtual-machine-manager-daemon (6.0.4-4) unstable; urgency=medium
 
   * Bug #24721: Applied additional patch - dpkg version compare

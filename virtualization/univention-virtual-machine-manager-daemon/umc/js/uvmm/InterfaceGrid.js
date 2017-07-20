@@ -35,11 +35,10 @@ define([
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/widgets/Grid",
-	"umc/widgets/Text",
 	"umc/modules/uvmm/InterfaceWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Dialog, dialog, Grid, Text, InterfaceWizard, types, _) {
+], function(declare, lang, array, Dialog, dialog, Grid, InterfaceWizard, types, _) {
 
 	return declare("umc.modules.uvmm.InterfaceGrid", [ Grid ], {
 		moduleStore: null,
@@ -79,7 +78,12 @@ define([
 				}, {
 					name: 'mac_address',
 					label: _('MAC address'),
-					formatter: lang.hitch(this, '_macAddressFormatter')
+					formatter: function(mac) {
+						if (!mac) {
+							mac = _('automatic');
+						}
+						return mac;
+					}
 				}],
 				actions: [{
 					name: 'edit',
@@ -117,38 +121,6 @@ define([
 
 		footerFormatter: function() {
 			return '';
-		},
-
-		_macAddressFormatter: function(mac) {
-			// if one click on the mac address it should be selected Bug: #33546
-			var selectText = function(domNode) {
-				var doc = document;
-				var range;
-				if (doc.body.createTextRange) { // IE
-					range = doc.body.createTextRange();
-					range.moveToElementText(domNode);
-					range.select();
-				} else if (window.getSelection) { // MOZ, OPERA, WEBKIT
-					var selection = window.getSelection();
-					range = doc.createRange();
-					range.selectNodeContents(domNode);
-					selection.removeAllRanges();
-					selection.addRange(range);
-				}
-			};
-			
-			if (!mac) {
-				mac = _('automatic');
-			}
-			var content = lang.replace('<span class="selectable">{mac}</span>', {
-				mac: mac
-			});
-			var widget = new Text({
-				content: content
-			});
-			widget.on('click', function() { selectText(widget.domNode); });
-			this.own(widget);
-			return widget;
 		},
 
 		_removeInterface: function(ids) {
