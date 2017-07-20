@@ -9,3 +9,5 @@ desc: |
  * A non-working proxy server is now classified as an critical error.
  * An unset gateway causes an error message to be shown.
 bug: [36750, 42155]
+erratum: 98
+announced: 2017-07-20
