@@ -87,7 +87,8 @@ define([
 				removePage: lang.hitch(this, 'removePage'),
 				selectPage: lang.hitch(this, 'onSelectPage'),
 				displayLabel: false,
-				label: ''
+				label: '',
+				sizeClass: 'Two'
 			}, {
 				type: ComboBox,
 				depends: 'interfaces',

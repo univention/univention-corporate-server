@@ -47,7 +47,6 @@ define([
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
-		style: 'width: 100%; height: 225px;',
 		query: {},
 		sortIndex: 1,
 

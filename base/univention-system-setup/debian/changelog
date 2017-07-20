@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-36) unstable; urgency=medium
+
+  * Bug #44194: Fix InterfaceGrid size for more than two entries
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 20 Jul 2017 11:11:28 +0200
+
 univention-system-setup (10.0.10-35) unstable; urgency=medium
 
   * Bug #38342: add gettext-base dependency
