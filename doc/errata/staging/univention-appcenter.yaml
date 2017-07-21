@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-appcenter
+fix: 6.0.8-14A~4.2.0.201707211415
+desc: |
+ This update addresses the following issues:
+ * Docker Apps are now stopped before backing up their data.
+bug: [44763]
