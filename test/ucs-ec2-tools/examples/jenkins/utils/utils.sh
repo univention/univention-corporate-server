@@ -421,6 +421,9 @@ run_appcenter_uninstall_tests ()
 
 run_admember_tests ()
 {
+	# temporary debug, Bug #44382
+	ucr set ldap/debug/level='stats'
+	service slapd restart
 	run_tests -p skip_admember -p docker "$@"
 }
 
