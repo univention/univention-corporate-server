@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.18-3) unstable; urgency=medium
+
+  * Bug #43628: fix create() in modules inheriting from simplePolicy
+
+ -- Florian Best <best@univention.de>  Fri, 21 Jul 2017 14:00:21 +0200
+
 univention-directory-manager-modules (12.0.18-2) unstable; urgency=medium
 
   * Bug #43628: Support passing of external result dict to simpleLdap.create

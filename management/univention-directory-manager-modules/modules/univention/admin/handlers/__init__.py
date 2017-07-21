@@ -109,7 +109,6 @@ class base(object):
 		self.options = []
 		self.old_options = []
 		self.alloc = []
-		self.serverctrls = []
 
 		if not isinstance(self.lo, univention.admin.uldap.access):
 			if not isinstance(self.lo, univention.uldap.access):
@@ -307,7 +306,7 @@ class base(object):
 		# return all items which belong to the current options - even if they are empty
 		return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
-	def create(self, response=None):
+	def create(self, serverctrls=None, response=None):
 		'''create object'''
 
 		if not univention.admin.modules.supports(self.module, 'add'):
@@ -316,12 +315,19 @@ class base(object):
 		if self.exists():
 			raise univention.admin.uexceptions.objectExists(self.dn)
 
+		if not isinstance(response, dict):
+			response = {}
+
 		self._ldap_pre_ready()
 		self.ready()
 
-		return self._create(response=response)
+		dn = self._create(response=response, serverctrls=serverctrls)
+		for c in response.get('ctrls', []):
+			if c.controlType == PostReadControl.controlType:
+				self.oldattr.update(c.entry)
+		return dn
 
-	def modify(self, modify_childs=1, ignore_license=0, response=None):
+	def modify(self, modify_childs=1, ignore_license=0, serverctrls=None, response=None):
 		'''modify object'''
 
 		if not univention.admin.modules.supports(self.module, 'edit'):
@@ -332,10 +338,17 @@ class base(object):
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject(self.dn)
 
+		if not isinstance(response, dict):
+			response = {}
+
 		self._ldap_pre_ready()
 		self.ready()
 
-		return self._modify(modify_childs, ignore_license=ignore_license, response=response)
+		dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
+		for c in response.get('ctrls', []):
+			if c.controlType == PostReadControl.controlType:
+				self.oldattr.update(c.entry)
+		return dn
 
 	def _create_temporary_ou(self):
 		name = 'temporary_move_container_%s' % time.time()
@@ -687,34 +700,6 @@ class simpleLdap(base):
 		self.call_udm_property_hook('hook_open', self)
 		self.save()
 
-	def create(self, serverctrls=None, response=None):
-		if not serverctrls:
-			serverctrls = []
-		if not isinstance(response, dict):
-			response = {}
-
-		self.serverctrls = serverctrls
-		res = base.create(self, response=response)
-
-		for c in response.get('ctrls', []):
-			if c.controlType == PostReadControl.controlType:
-				self.oldattr.update(c.entry)
-		return res
-
-	def modify(self, modify_childs=1, ignore_license=0, serverctrls=None, response=None):
-		if not serverctrls:
-			serverctrls = []
-		if not isinstance(response, dict):
-			response = {}
-
-		self.serverctrls = serverctrls
-		res = base.modify(self, modify_childs=1, ignore_license=0, response=response)
-
-		for c in response.get('ctrls', []):
-			if c.controlType == PostReadControl.controlType:
-				self.oldattr.update(c.entry)
-		return res
-
 	def _remove_option(self, name):
 		if name in self.options:
 			self.options.remove(name)
@@ -772,7 +757,7 @@ class simpleLdap(base):
 
 		return ml
 
-	def _create(self, response=None):
+	def _create(self, response=None, serverctrls=None):
 		self.exceptions = []
 		self._ldap_pre_create()
 		self._update_policies()
@@ -824,7 +809,7 @@ class simpleLdap(base):
 
 		# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
 		try:
-			self.lo.add(self.dn, al, serverctrls=self.serverctrls, response=response)
+			self.lo.add(self.dn, al, serverctrls=serverctrls, response=response)
 			self._exists = True
 			self._ldap_post_create()
 		except:
@@ -849,7 +834,7 @@ class simpleLdap(base):
 		self.save()
 		return self.dn
 
-	def _modify(self, modify_childs=1, ignore_license=0, response=None):
+	def _modify(self, modify_childs=1, ignore_license=0, response=None, serverctrls=None):
 		self.exceptions = []
 
 		self.__prevent_ad_property_change()
@@ -869,7 +854,7 @@ class simpleLdap(base):
 
 		# FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
-		self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=self.serverctrls, response=response)
+		self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
 
 		self._ldap_post_modify()
 		self.call_udm_property_hook('hook_ldap_post_modify', self)
@@ -1042,6 +1027,7 @@ class simpleLdap(base):
 		self._ldap_post_remove()
 
 		self.call_udm_property_hook('hook_ldap_post_remove', self)
+		self.oldattr = {}
 		self.save()
 
 	def loadPolicyObject(self, policy_type, reset=0):
@@ -2711,9 +2697,7 @@ class simpleComputer(simpleLdap):
 class simplePolicy(simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-
 		self.resultmode = 0
-		self.dn = dn
 
 		if not hasattr(self, 'cloned'):
 			self.cloned = None
@@ -2771,14 +2755,14 @@ class simplePolicy(simpleLdap):
 		self.info[identifier] = "%s_uv%d" % (components[0], n)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.__makeUnique: result: %s' % self.info[identifier])
 
-	def create(self):
+	def create(self, serverctrls=None, response=None):
 		if not self.resultmode:
-			return simpleLdap.create(self)
+			return super(simplePolicy, self).create(self, serverctrls=serverctrls, response=response)
 
 		self._exists = False
 		try:
 			self.oldinfo = {}
-			dn = simpleLdap.create(self)
+			dn = super(simplePolicy, self).create(self, serverctrls=serverctrls, response=response)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
 		except univention.admin.uexceptions.objectExists:
 			self.__makeUnique()
