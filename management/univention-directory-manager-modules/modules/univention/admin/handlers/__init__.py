@@ -2757,12 +2757,12 @@ class simplePolicy(simpleLdap):
 
 	def create(self, serverctrls=None, response=None):
 		if not self.resultmode:
-			return super(simplePolicy, self).create(self, serverctrls=serverctrls, response=response)
+			return super(simplePolicy, self).create(serverctrls=serverctrls, response=response)
 
 		self._exists = False
 		try:
 			self.oldinfo = {}
-			dn = super(simplePolicy, self).create(self, serverctrls=serverctrls, response=response)
+			dn = super(simplePolicy, self).create(serverctrls=serverctrls, response=response)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
 		except univention.admin.uexceptions.objectExists:
 			self.__makeUnique()
