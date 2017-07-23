@@ -81,6 +81,7 @@ class DockerActionMixin(object):
 				return False
 			if not Stop.call(app=app):
 				self.fatal('Stopping the container for %s failed' % app)
+				return False
 			image_name = 'appcenter-backup-%s:%d' % (app.id, time.time())
 			if backup_data == 'copy':
 				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
@@ -88,7 +89,6 @@ class DockerActionMixin(object):
 			elif backup_data == 'move':
 				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
 				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
-				return False
 			image_id = docker.commit(image_name)
 			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
 			return image_id
