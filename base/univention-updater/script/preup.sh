@@ -124,6 +124,26 @@ is_ucr_true () {
 	esac
 }
 
+# Bug #44915:
+echo "Trying to detect if migration to dependency based boot will fail:" >&3
+if insserv --dryrun 1>&3 2>&3
+then
+	echo "insserv --dryrun: OK" >&3
+else
+	echo "insserv --dryrun: FAILED" >&3
+	echo "WARNING: The /etc/init.d/*-scripts can not be migrated to dependency based boot order."
+	echo "         Check /etc/init.d/ for old init scripts."
+	if is_ucr_true update42/ignore_insserv
+	then
+		echo "WARNING: update42/ignore_insserv is set to true. Skipping as requested."
+	else
+		echo "         Aborting, because the update would fail."
+		echo "         (To ignore, set the UCRV variable update42/ignore_insserv to yes)"
+		exit 1
+	fi
+fi
+
+
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
