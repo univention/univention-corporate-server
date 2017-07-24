@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-2) unstable; urgency=medium
+
+  * Bug #45001: prevent IOError if f.close() was already called
+
+ -- Florian Best <best@univention.de>  Mon, 24 Jul 2017 14:48:34 +0200
+
 univention-s4-connector (11.0.8-1) unstable; urgency=medium
 
   * Bug #43628: during sync_to_ucs remember entryCSN of msGPO changes

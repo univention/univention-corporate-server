@@ -114,7 +114,6 @@ def daemon(lock_file):
 
 
 def connect():
-	f = bind_stdout()
 	print time.ctime()
 
 	baseConfig = ConfigRegistry()
@@ -122,25 +121,20 @@ def connect():
 
 	if '%s/s4/ldap/host' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/host not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/s4/ldap/port' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/port not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/s4/ldap/base' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/ldap/base not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 
 	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in baseConfig and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in baseConfig and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
 		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 
 	if '%s/s4/listener/dir' % CONFIGBASENAME not in baseConfig:
 		print '%s/s4/listener/dir not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 
 	if '%s/s4/retryrejected' % CONFIGBASENAME not in baseConfig:
@@ -203,11 +197,9 @@ def connect():
 			s4.open_s4()
 			s4.open_ucs()
 
-	f.close()
 	retry_rejected = 0
 	connected = True
 	while connected:
-		f = bind_stdout()
 		print time.ctime()
 		# Aenderungen pollen
 		sys.stdout.flush()
@@ -261,7 +253,6 @@ def connect():
 		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
-		f.close()
 	s4.close_debug()
 
 
@@ -281,6 +272,7 @@ def main():
 
 	if options.daemonize:
 		daemon(lock_file)
+	f = bind_stdout()
 
 	while True:
 		try:
@@ -289,23 +281,14 @@ def main():
 			lock_file.close()
 			raise
 		except:
-			f = bind_stdout()
 			print time.ctime()
 
-			text = ''
-			exc_info = sys.exc_info()
-			lines = apply(traceback.format_exception, exc_info)
-			text = text + '\n'
-			for line in lines:
-				text += line
 			print " --- connect failed, failure was: ---"
-			print text
+			print traceback.format_exc()
 			print " ---     retry in 30 seconds      ---"
 			sys.stdout.flush()
 			time.sleep(30)
-
-			f.close()
-
+	f.close()
 	lock_file.close()
 
 
