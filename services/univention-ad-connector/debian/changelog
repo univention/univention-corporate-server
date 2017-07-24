@@ -1,4 +1,4 @@
-univention-ad-connector (11.0.6-12) unstable; urgency=medium
+univention-ad-connector (11.0.6-13) unstable; urgency=medium
 
   * Bug #45037: prevent IOError if f.close() was already called
 

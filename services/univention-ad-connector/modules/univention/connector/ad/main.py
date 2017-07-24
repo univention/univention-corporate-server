@@ -295,8 +295,7 @@ def main():
 			print " ---     retry in 30 seconds      ---"
 			sys.stdout.flush()
 			time.sleep(30)
-		finally:
-			f.close()
+	f.close()
 
 
 if __name__ == "__main__":
