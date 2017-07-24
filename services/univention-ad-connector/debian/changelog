@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-12) unstable; urgency=medium
+
+  * Bug #45037: prevent IOError if f.close() was already called
+
+ -- Florian Best <best@univention.de>  Mon, 24 Jul 2017 14:39:20 +0200
+
 univention-ad-connector (11.0.6-11) unstable; urgency=medium
 
   * Bug #45011: don't log tracebacks for objects which are ignored

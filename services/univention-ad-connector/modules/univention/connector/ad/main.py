@@ -114,7 +114,6 @@ def daemon():
 
 
 def connect():
-	f = bind_stdout()
 	print time.ctime()
 
 	baseConfig = ConfigRegistry()
@@ -122,23 +121,18 @@ def connect():
 
 	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/host not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/port not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/base not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 
 	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -166,7 +160,6 @@ def connect():
 
 	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/listener/dir not set' % CONFIGBASENAME
-		f.close()
 		sys.exit(1)
 
 	if '%s/ad/retryrejected' % CONFIGBASENAME not in baseConfig:
@@ -226,11 +219,9 @@ def connect():
 			ad.open_ad()
 			ad.open_ucs()
 
-	f.close()
 	retry_rejected = 0
 	connected = True
 	while connected:
-		f = bind_stdout()
 		print time.ctime()
 		# Aenderungen pollen
 		sys.stdout.flush()
@@ -284,13 +275,13 @@ def connect():
 		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
-		f.close()
 	ad.close_debug()
 
 
 def main():
 	if options.daemonize:
 		daemon()
+	f = bind_stdout()
 
 	while True:
 		try:
@@ -298,21 +289,13 @@ def main():
 		except SystemExit:
 			raise
 		except:
-			f = bind_stdout()
 			print time.ctime()
-
-			text = ''
-			exc_info = sys.exc_info()
-			lines = apply(traceback.format_exception, exc_info)
-			text = text + '\n'
-			for line in lines:
-				text += line
 			print " --- connect failed, failure was: ---"
-			print text
+			print traceback.format_exc()
 			print " ---     retry in 30 seconds      ---"
 			sys.stdout.flush()
 			time.sleep(30)
-
+		finally:
 			f.close()
 
 
