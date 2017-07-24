@@ -168,10 +168,11 @@
 				&.dgrid-sort-down .dgrid-sort-arrow
 					icon-image(-260, -80)
 
+		.dgrid-row-table
+			height: 48px
+
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)
-			min-height: 48px
-			line-height: @min-height
 			border-top: 1px solid #e0e0e0
 			box-sizing: content-box
 			transition: background-color 0.2s
@@ -252,9 +253,8 @@
 	max-height: inherit
 
 .umcGrid .dgrid-cell div
-	display: inline-block
+	display: inline
 	vertical-align: middle
-	line-height: 1.4
 
 .umcGrid .umcGridDefaultAction:hover
 	text-decoration: underline
