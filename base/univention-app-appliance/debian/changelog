@@ -1,6 +1,13 @@
+univention-app-appliance (1.0.2-31) unstable; urgency=medium
+
+  * Bug #45025: Aligned welcome screen header; removed image copying from
+    pre/postinst.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 24 Jul 2017 09:58:33 +0200
+
 univention-app-appliance (1.0.2-30) unstable; urgency=medium
 
-  * Bug #45025:  Improve appearance of welcome screen for app appliances
+  * Bug #45025: Improve appearance of welcome screen for app appliances
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Jul 2017 14:30:18 +0200
 

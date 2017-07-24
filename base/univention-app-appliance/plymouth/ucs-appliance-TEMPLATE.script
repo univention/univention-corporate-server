@@ -406,16 +406,6 @@ fun welcome_screen_setup() {
 	line.sprite.SetImage(line.image);
 	global.welcome.line = line;
 
-	# welcome screen header - relative to line
-	header.sprite = Sprite();
-	header.sprite.SetX(width_percent(6));
-	header.sprite.SetY(line.sprite.GetY());
-	header.setText = fun (string) {
-		global.welcome.header.image = Image.Text(string,${FONT_COLOR} 1, "Sans 24");
-		global.welcome.header.sprite.SetImage(global.welcome.header.image);
-	};
-	global.welcome.header = header;
-
 	# logo step2
 	logo2.image = Image("logo-step2.png");
 	logo2.sprite = Sprite(logo2.image);
@@ -470,6 +460,16 @@ fun welcome_screen_setup() {
 		global.welcome.message1.sprite.SetImage(global.welcome.message1.image);
 	};
 	global.welcome.message1 = message1;
+
+	# welcome screen header - relative to line
+	header.sprite = Sprite();
+	header.sprite.SetX(logo1.sprite.GetX());
+	header.sprite.SetY(line.sprite.GetY());
+	header.setText = fun (string) {
+		global.welcome.header.image = Image.Text(string,${FONT_COLOR} 1, "Sans 24");
+		global.welcome.header.sprite.SetImage(global.welcome.header.image);
+	};
+	global.welcome.header = header;
 
 	# addresses
 	addresses.image = Image.Text(textWrapToSize(addresses.text, 1, "Sans 11"),${FONT_COLOR} 1, "Sans 11");
