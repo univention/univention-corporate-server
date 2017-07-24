@@ -9,7 +9,7 @@ desc: |
  * Adapt univention-app-appliance to changes in UCS 4.2 branding
  * Fix for hard to read status messages during boot
    because they were overlaid by the appliance logo.
- * Improved the welcome screen design by removing the fqdn
-   and concentrate on the ip addresses of the system.
+ * The welcome screen design has been improved and adapted to the
+   UCS 4.2 design style. The fqdn has been removed from the screen.
  * The package is now maintained
 bug: [44523, 44952, 45025, 44990]

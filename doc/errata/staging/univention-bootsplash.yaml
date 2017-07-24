@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The transition from bootsplash to welcome screen is now flicker free.
    Improved systemd integration for the welcome screen.
- * Improved the welcome screen design by removing the fqdn
-   and concentrate on the ip addresses of the system.
+ * The welcome screen design has been improved and adapted to the
+   UCS 4.2 design style. The fqdn has been removed from the screen.
 bug: [44061, 45031]
