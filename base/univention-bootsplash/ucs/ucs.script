@@ -6,12 +6,6 @@ bg.sprite = Sprite(bg.image);
 resized.bg.image = bg.image.Scale(Window.GetWidth(), Window.GetHeight());
 bg.sprite.SetImage(resized.bg.image);
 
-# univention logo
-univention.image = Image("univention-logo.png");
-univention.sprite = Sprite(univention.image);
-univention.sprite.SetX(Window.GetX() + Window.GetWidth() - 15 - univention.image.GetWidth());
-univention.sprite.SetY(Window.GetY() + 22);
-
 # box image
 box.image = Image("logo-box.png").Scale(250, 250);
 box.sprite = Sprite(box.image);
@@ -196,6 +190,12 @@ fun width_percent(percent) {
 fun height_percent(percent) {
 	return ((percent * Window.GetHeight()) / 100);
 }
+
+# univention logo
+univention.image = Image("univention-logo.png");
+univention.sprite = Sprite(univention.image);
+univention.sprite.SetX(Window.GetX() + Window.GetWidth() - 15 - univention.image.GetWidth());
+univention.sprite.SetY(height_percent(3));
 
 # ask-question dialog
 ASK_PROMPT_LINES = 15;
