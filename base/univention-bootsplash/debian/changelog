@@ -1,3 +1,9 @@
+univention-bootsplash (8.0.0-14) unstable; urgency=medium
+
+  * Bug #45031: Aligned welcome screen header
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 24 Jul 2017 09:49:12 +0200
+
 univention-bootsplash (8.0.0-13) unstable; urgency=medium
 
   * Bug #45031: Improved appearance of welcome screen 
