@@ -21,4 +21,4 @@ desc: |
  * The univention-system-setup package now depends on gettext-base.
  * The umc settings for interfaces has been fixed to show more than two
    interfaces without graphical errors.
-bug: [28070, 40212, 33132, 33131, 32817, 44061, 44995, 38342, 44194]
+bug: [28070, 40212, 33132, 33131, 32817, 44061, 44995, 38342, 44194, 44431]
