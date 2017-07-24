@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-59) unstable; urgency=medium
+
+  * Bug #44966: Added python-defusedxml dependency
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 24 Jul 2017 11:08:12 +0200
+
 univention-management-console (9.0.80-58) unstable; urgency=medium
 
   * Bug #44966: Use defusedxml instead of xml.etree

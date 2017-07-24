@@ -161,6 +161,7 @@ Depends: ${misc:Depends},
  python-daemon,
  python-ipaddr,
  python-pysaml2,
+ python-defusedxml,
  univention-saml-schema,
  shell-univention-lib
 Description: UCS Management Console - Web server
