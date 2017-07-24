@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-1
+src: phantomjs
+fix: 2.1.1.2A~4.2.0.201707241357
+desc: |
+ This update addresses the following issue:
+ * Phantomjs is now a maintained package
+bug: [44990]
