@@ -9,4 +9,6 @@ desc: |
  * A check box to select all entries has been added to widgets with selection
    choices.
  * Text in grid cells is now selectable.
-bug: [19928, 44481]
+ * Multi line entries inside grid cells such as DNS zones are now displayed
+   correctly.
+bug: [19928, 44481, 44431]
