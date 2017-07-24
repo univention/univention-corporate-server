@@ -9,6 +9,6 @@ desc: |
  * Using UMC was not possible with multiple docker instances on the system
    was not possible as the browser then sends multiple cookies which caused
    that the correct session was not detected.
- * The error handling and logging in case the identity provider for 
-   single sign-on is wrong or not configured has been improved.
+ * The error handling during the SAML configuration of the UMC service
+   provider has been improved.
 bug: [45043, 44966]
