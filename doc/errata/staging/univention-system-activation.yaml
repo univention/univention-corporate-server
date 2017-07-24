@@ -10,4 +10,4 @@ desc: |
  * The license upload step was displayed first even if no license mail
    was sent.
  * The package is now maintained
-bug: [44523, 44910. 44990]
+bug: [44523, 44910, 44990]
