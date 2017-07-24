@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-58) unstable; urgency=medium
+
+  * Bug #44966: Use defusedxml instead of xml.etree
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 24 Jul 2017 10:18:10 +0200
+
 univention-management-console (9.0.80-57) unstable; urgency=medium
 
   * Bug #44966: Changed logging for samlErrors

@@ -36,7 +36,7 @@ from glob import glob
 from subprocess import call
 from time import sleep
 from urlparse import urlparse
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 workaround = set()
 
 
