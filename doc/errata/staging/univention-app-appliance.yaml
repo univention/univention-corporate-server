@@ -6,10 +6,10 @@ src: univention-app-appliance
 fix: 1.0.2-31A~4.2.0.201707241135
 desc: |
  This update addresses the following issue(s):
- * Adapt univention-app-appliance to changes in UCS 4.2 branding
+ * Adapt univention-app-appliance to changes in UCS 4.2 branding.
  * Fix for hard to read status messages during boot
    because they were overlaid by the appliance logo.
  * The welcome screen design has been improved and adapted to the
    UCS 4.2 design style. The fqdn has been removed from the screen.
- * The package is now maintained
+ * The package is now maintained.
 bug: [44523, 44952, 45025, 44990]

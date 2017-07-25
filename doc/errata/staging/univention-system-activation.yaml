@@ -6,8 +6,8 @@ src: univention-system-activation
 fix: 2.0.2-11A~4.2.0.201707241142
 desc: |
  This update addresses the following issue(s):
- * The package has been updated to work with UCS 4.2 App Appliances
+ * The package has been updated to work with UCS 4.2 App Appliances.
  * The license upload step was displayed first even if no license mail
    was sent.
- * The package is now maintained
+ * The package is now maintained.
 bug: [44523, 44910, 44990]
