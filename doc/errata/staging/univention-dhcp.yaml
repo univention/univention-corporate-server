@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-dhcp
+fix: 11.0.0-9A~4.2.0.201707251103
+desc: |
+ This update addresses the following issue:
+ * The runsv service for the DHCP server is now always started, even when the
+   initial check of the configuration file /etc/dhcp/dhcpd.conf fails. This
+   sometimes happens when BIND and OpenLDAP start too slowly during boot, in
+   which case that is mis-detected as an error in that configuration file.
+bug: [45065]
