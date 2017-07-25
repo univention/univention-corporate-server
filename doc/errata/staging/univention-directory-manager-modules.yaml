@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 12.0.18-4A~4.2.0.201707221132
+fix: 12.0.18-5A~4.2.0.201707251539
 desc: |
  This update addresses the following issue(s):
  * Some spelling mistakes in the UDM CLI Client have been corrected.
@@ -17,8 +17,9 @@ desc: |
  * The temporary locking objects are removed when an error happens during
    object creation. This prevents that one needs to save an object
    twice to create it after resolving the error.
- * It was possible to supply a wrong object type when modifying objects. This
-   is now prevented and a error message is shown.
+ * It is currently possible to supply a wrong object type when modifying
+   objects. This erratum prepares for preventing this by adding more error
+   messages to the logfiles instead.
  * UDM objects with the object flags synced and docker can now be deleted.
  * Passing univention.uldap.access() instances to UDM objects is handled more
    gracefully.
@@ -44,4 +45,4 @@ desc: |
    into "Print server".
  * The "e-mail" property of a user is no longer copyable.
  * Support lookup of specific attributes via PostReadControl (RFC 4527)
-bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908, 44976, 43628]
+bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908, 43628]
