@@ -100,13 +100,16 @@ def stop_slapd():
 
     # look for process and wait up to 15 seconds for its termination:
     for proc in psutil.process_iter():
-        if 'slapd' in proc.name():
-            print "\nThe 'slapd' is still running, waiting..."
-            try:
-                proc.wait(15)
-                print "slapd terminated."
-            except psutil.TimeoutExpired:
-                fail("\nFailed to wait for slapd to terminate.\n")
+        try:
+            if 'slapd' in proc.name():
+                print "\nThe 'slapd' is still running, waiting..."
+                try:
+                    proc.wait(15)
+                    print "slapd terminated."
+                except psutil.TimeoutExpired:
+                    fail("\nFailed to wait for slapd to terminate.\n")
+        except psutil.NoSuchProcess:
+            pass
 
 
 def start_slapd():
