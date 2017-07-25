@@ -61,11 +61,14 @@ fi
 DHCPD_PID="${DHCPD_PID:-/var/run/dhcpd.pid}"
 
 test_config () {
-	if ! dhcpd -t $OPTIONS -q -cf "$DHCPD_CONF" > /dev/null 2>&1; then
-		echo "dhcpd self-test failed. Please fix $DHCPD_CONF."
+	local tmp rv
+	tmp=$(dhcpd -t $OPTIONS -cf "$DHCPD_CONF" 2>&1)
+	rv=$?
+	if [ $rv -ne 0 ]; then
+		echo "dhcpd self-test failed with $rv. Check $DHCPD_CONF."
 		echo "The error was: "
-		dhcpd -t $OPTIONS -cf "$DHCPD_CONF"
-		exit 1
+		echo "$tmp"
+		# exit 1  # Bug #45065
 	fi
 	touch /var/lib/dhcp/dhcpd.leases
 }
