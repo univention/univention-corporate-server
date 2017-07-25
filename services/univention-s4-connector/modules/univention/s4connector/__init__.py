@@ -787,7 +787,10 @@ class ucs:
 			if key:
 				break
 
-		if new:
+		if not new:
+			change_type = "delete"
+			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
+		else:
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
@@ -851,10 +854,6 @@ class ucs:
 					change_type = "add"
 					old_dn = ''  # there may be an old_dn if object was moved from ignored container
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
-
-		if not new:
-			change_type = "delete"
-			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
 
 		if key:
 			if change_type == 'delete':
@@ -953,7 +952,7 @@ class ucs:
 				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
 
-			module = self.modules[property_type]  # old default
+			module = self.modules[property_type]  # default, determined by mapping filter
 			if not module.identify(searchdn, attr):
 				for m in self.modules_others.get(property_type, []):
 					if m and m.identify(searchdn, attr):
@@ -1333,12 +1332,7 @@ class ucs:
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
 
-		if 'olddn' in object:
-			dntype = 'olddn'
-		else:
-			dntype = 'dn'
-
-		ucs_object_dn = object[dntype]
+		ucs_object_dn = object.get('olddn', object['dn'])
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type, object, ucs_object)
 
@@ -1481,10 +1475,8 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
 
-		if 'olddn' in object:
-			old_object = self.get_ucs_object(property_type, object['olddn'])
-		else:
-			old_object = self.get_ucs_object(property_type, object['dn'])
+		ucs_object_dn = object.get('olddn', object['dn'])
+		old_object = self.get_ucs_object(property_type, ucs_object_dn)
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
@@ -1550,8 +1542,9 @@ class ucs:
 			if hasattr(self.property[property_type], "ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
 			else:
-				module = self.modules[property_type]
+				module = self.modules[property_type]  # default, determined by mapping filter
 				if old_object:
+					ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: using existing target object type: %s" % (old_object.module,))
 					module = univention.admin.modules.get(old_object.module)
 				if object['modtype'] == 'add':
 					result = self.add_in_ucs(property_type, object, module, position)
