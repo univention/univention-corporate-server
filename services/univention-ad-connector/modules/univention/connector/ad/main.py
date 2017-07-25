@@ -34,6 +34,7 @@
 
 import sys
 import string
+import fcntl
 import os
 import time
 import signal
@@ -73,7 +74,7 @@ def bind_stdout():
 	return sys.stdout
 
 
-def daemon():
+def daemon(lock_file):
 	try:
 		pid = os.fork()
 	except OSError, e:
@@ -103,6 +104,8 @@ def daemon():
 		maxfd = 256       # default maximum
 
 	for fd in range(0, maxfd):
+		if fd == lock_file.fileno():
+			continue
 		try:
 			os.close(fd)
 		except OSError:   # ERROR (ignore)
@@ -278,15 +281,28 @@ def connect():
 	ad.close_debug()
 
 
+def lock(filename):
+	lock_file = open(filename, "a+")
+	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+	return lock_file
+
+
 def main():
+	try:
+		lock_file = lock('/var/lock/univention-ad-%s' % CONFIGBASENAME)
+	except IOError:
+		print >> sys.stderr, 'Error: Another AD connector process is already running.'
+		sys.exit(1)
+
 	if options.daemonize:
-		daemon()
+		daemon(lock_file)
 	f = bind_stdout()
 
 	while True:
 		try:
 			connect()
 		except SystemExit:
+			lock_file.close()
 			raise
 		except:
 			print time.ctime()
@@ -295,6 +311,7 @@ def main():
 			print " ---     retry in 30 seconds      ---"
 			sys.stdout.flush()
 			time.sleep(30)
+	lock_file.close()
 	f.close()
 
 

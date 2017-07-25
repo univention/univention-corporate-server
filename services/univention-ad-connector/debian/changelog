@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-15) unstable; urgency=medium
+
+  * Bug #41335: prevent starting multiple AD connector instances
+
+ -- Florian Best <best@univention.de>  Tue, 25 Jul 2017 18:39:51 +0200
+
 univention-ad-connector (11.0.6-14) unstable; urgency=medium
 
   * Bug #45011: merge S4 Connector changes
