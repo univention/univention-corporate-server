@@ -6,7 +6,7 @@ src: univention-updater
 fix: 12.0.11-4A~4.2.0.201707111440
 desc: |
  This update addresses the following issues:
- * The temporary APT sources.list used for release updates is now removed, if
+ * The temporary APT sources.list used for release updates is now removed if
    any of the pre-update scripts signals an abort condition.
  * The check for QEMU virtual machines has been removed from the pre-update
    script.
