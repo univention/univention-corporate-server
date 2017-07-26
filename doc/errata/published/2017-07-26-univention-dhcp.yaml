@@ -11,3 +11,5 @@ desc: |
    sometimes happens when BIND and OpenLDAP start too slowly during boot, in
    which case that is mis-detected as an error in that configuration file.
 bug: [45065]
+erratum: 101
+announced: 2017-07-26
