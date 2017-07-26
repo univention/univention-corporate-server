@@ -12,3 +12,5 @@ desc: |
  * The error handling during the SAML configuration of the UMC service
    provider has been improved.
 bug: [45043, 44966]
+erratum: 102
+announced: 2017-07-26
