@@ -1,3 +1,10 @@
+univention-appcenter (5.0.23-89) unstable; urgency=medium
+
+  * Bug #45080: Improve update performance (dev-tools)
+  * Bug #44977: Support new scripts in dev-tools
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Jul 2017 16:44:03 +0200
+
 univention-appcenter (5.0.23-88) unstable; urgency=medium
 
   * Bug #43816: Reverted (2)

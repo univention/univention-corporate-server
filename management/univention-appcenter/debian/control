@@ -82,6 +82,7 @@ Replaces: python-univention-appcenter-dev
 Depends: univention-appcenter (= ${source:Version}),
  dpkg,
  apt-utils,
+ zsync,
  ${misc:Depends},
  ${python:Depends},
 Description: Development tools for Univention App Center

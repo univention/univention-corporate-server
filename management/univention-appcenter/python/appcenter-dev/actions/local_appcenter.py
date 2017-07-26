@@ -51,7 +51,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppManager, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -241,7 +241,7 @@ class AppcenterApp(object):
 			yield self.file_info(basename, url, readme_filename)
 
 		# Adding ucr, schema, (un)joinscript, etc
-		for ext in ['univention-config-registry-variables', 'schema', 'attributes', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env']:
+		for ext in ['univention-config-registry-variables', 'schema', 'attributes', 'configure', 'configure_host', 'settings', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env']:
 			control_filename = self._components_dir(ext)
 			if os.path.exists(control_filename):
 				basename = os.path.basename(control_filename)
@@ -276,7 +276,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 
 	@classmethod
 	def generate_index_json(cls, meta_inf_dir, repo_dir, ucs_version, appcenter_host):
-		with tarfile.open(os.path.join(meta_inf_dir, 'all.tar.gz'), 'w:gz') as archive:
+		archive_name = os.path.join(meta_inf_dir, 'all.tar')
+		with tarfile.open(archive_name, 'w') as archive:
 			with gzip.open(os.path.join(meta_inf_dir, 'index.json.gz'), 'wb') as index_json:
 				apps = {}
 				for root, dirs, files in os.walk(meta_inf_dir):
@@ -294,6 +295,9 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						for filename_in_directory, filename_in_archive in app.tar_files():
 							archive.add(filename_in_directory, filename_in_archive)
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
+		if appcenter_host.startswith('https'):
+			appcenter_host = 'http://%s' % appcenter_host[8:]
+		call_process(['zsyncmake', '-u', '%s/meta-inf/%s/all.tar.gz' % (appcenter_host, ucs_version), '-q', '-z', '-o', archive_name + '.zsync', archive_name])
 
 	def main(self, args):
 		meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
@@ -324,6 +328,9 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('--ucr', help='Path to a file describing Univention Config Registry variables')
 		parser.add_argument('--schema', help='Path to an LDAP schema extension file')
 		parser.add_argument('--attributes', help='Path to the file describing Extended Attributes')
+		parser.add_argument('--configure', help='Path to a configure script that will be called when applying settings in a container')
+		parser.add_argument('--configure-host', help='Path to a configure_host script that will be called when applying settings in a container')
+		parser.add_argument('--settings', help='Path to the file describing Settings')
 		parser.add_argument('--preinst', help='Path to a preinst script that will be called by the App Center before installation')
 		parser.add_argument('--join', help='Path to a join script that will be called by the App Center after installation')
 		parser.add_argument('--prerm', help='Path to a prerm script that will be called by the App Center before uninstallation')
@@ -489,6 +496,12 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.schema, os.path.join(repo_dir, 'schema'))
 		if args.attributes:
 			self.copy_file(args.attributes, os.path.join(repo_dir, 'attributes'))
+		if args.configure:
+			self.copy_file(args.configure, os.path.join(repo_dir, 'configure'))
+		if args.configure_host:
+			self.copy_file(args.configure_host, os.path.join(repo_dir, 'configure_host'))
+		if args.settings:
+			self.copy_file(args.settings, os.path.join(repo_dir, 'settings'))
 		if args.preinst:
 			self.copy_file(args.preinst, os.path.join(repo_dir, 'preinst'))
 		if args.join:
@@ -647,7 +660,7 @@ class DevSet(UniventionAppAction):
 	help = 'Sets attributes for an App and clears cache. Also works for files like README, store_data'
 
 	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be altered')
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be altered')
 		parser.add_argument('--meta', action='store_true', help='Whether to change the .meta file instead of the .ini file')
 		parser.add_argument('attrs', action=StoreAttrActions, metavar='ATTR=VALUE', nargs='+', help='The attribute that shall be altered')
 
