@@ -9,3 +9,5 @@ desc: |
  * Fix crash and graphic errors on VirtualBox and VMware.
    Always use framebuffer driver to ensure a working welcome screen.
 bug: [44061]
+erratum: 111
+announced: 2017-07-26
