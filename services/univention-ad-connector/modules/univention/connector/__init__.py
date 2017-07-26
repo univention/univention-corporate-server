@@ -1186,11 +1186,11 @@ class ucs:
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
-		if 'olddn' in object:
-			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
-		else:
-			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+
+		ucs_object_dn = object.get('olddn', object['dn'])
+		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type, object, ucs_object)
+
 		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
 
 	def move_in_ucs(self, property_type, object, module, position):
