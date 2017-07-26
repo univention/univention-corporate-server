@@ -22,3 +22,5 @@ desc: |
  * A display error when configuring multiple network interfaces has been
    corrected.
 bug: [28070, 40212, 33132, 33131, 32817, 44061, 44995, 38342, 44194, 44431]
+erratum: 109
+announced: 2017-07-26
