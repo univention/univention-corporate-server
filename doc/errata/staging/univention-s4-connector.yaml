@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-s4-connector
+fix: 11.0.8-4A~4.2.0.201707261634
+desc: |
+ This update addresses the following issue(s):
+ * The S4 Connector now handles invalid pickle files.
+bug: [34648]
