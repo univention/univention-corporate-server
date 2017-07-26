@@ -14,3 +14,5 @@ desc: |
    UCS 4.2 design style. The fqdn has been removed from the screen.
  * The package is now maintained.
 bug: [44523, 44952, 45025, 44990]
+erratum: 106
+announced: 2017-07-26
