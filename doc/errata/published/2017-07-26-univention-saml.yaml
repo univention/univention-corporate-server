@@ -9,3 +9,5 @@ desc: |
  * The univention-saml apache site is now disabled upon package removal.
  * The path to the packages unjoin script has been fixed.
 bug: [41500,44815]
+erratum: 103
+announced: 2017-07-26
