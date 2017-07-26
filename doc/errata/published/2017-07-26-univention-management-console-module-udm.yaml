@@ -12,3 +12,5 @@ desc: |
  * The default values for empty properties are now properly
    evaluated after copying an object.
 bug: [43299, 40486, 44908]
+erratum: 113
+announced: 2017-07-26
