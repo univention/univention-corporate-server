@@ -46,3 +46,5 @@ desc: |
  * The "e-mail" property of a user is no longer copyable.
  * Support lookup of specific attributes via PostReadControl (RFC 4527)
 bug: [31927, 43299, 32781, 37623, 38362, 41294, 30368, 43846, 41368, 40839, 39201, 42015, 24374, 36631, 35074, 25187, 25189, 30351, 29707, 40765, 23888, 44908, 43628]
+erratum: 115
+announced: 2017-07-26
