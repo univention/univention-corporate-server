@@ -9,3 +9,5 @@ desc: |
  * The LDAP overlay module "pwd_scheme_kinit" has been adapted to return
    more error information if authentication at the kerberos server fails.
 bug: [44912]
+erratum: 100
+announced: 2017-07-26
