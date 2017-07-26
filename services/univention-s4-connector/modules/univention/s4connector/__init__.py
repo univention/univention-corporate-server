@@ -740,12 +740,19 @@ class ucs:
 		'''
 		sync changes from UCS stored in given file
 		'''
-		try:
-			f = file(filename, 'r')
-		except IOError:  # file not found so there's nothing to sync
-			return True
 
-		dn, new, old, old_dn = cPickle.load(f)
+		try:
+			with open(filename) as fob:
+				(dn, new, old, old_dn) = cPickle.load(fob)
+		except IOError:
+			return True  # file not found so there's nothing to sync
+		except (cPickle.UnpicklingError, EOFError) as e:
+			message = 'file emtpy' if isinstance(e, EOFError) else e.message
+			ud.debug(ud.LDAP, ud.WARN,
+				'__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
+			# ignore corrupted pickle file, but safe as rejected to not try again
+			self._save_rejected_ucs(filename, 'unknown')
+			return False
 
 		if dn == 'cn=Subschema':
 			return True
@@ -1081,11 +1088,17 @@ class ucs:
 			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
 				if filename not in self.rejected_files:
 					try:
-						f = file(filename, 'r')
-					except IOError:  # file not found so there's nothing to sync
+						with open(filename) as fob:
+							(dn, new, old, old_dn) = cPickle.load(fob)
+					except IOError:
+						continue  # file not found so there's nothing to sync
+					except (cPickle.UnpicklingError, EOFError) as e:
+						message = 'file emtpy' if isinstance(e, EOFError) else e.message
+						ud.debug(ud.LDAP, ud.WARN,
+							'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
+						# ignore corrupted pickle file, but safe as rejected to not try again
+						self._save_rejected_ucs(filename, 'unknown')
 						continue
-
-					dn, new, old, old_dn = cPickle.load(f)
 
 					for i in [0, 1]:  # do it twice if the LDAP connection was closed
 						try:
