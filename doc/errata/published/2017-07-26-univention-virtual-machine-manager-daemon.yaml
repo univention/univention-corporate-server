@@ -9,3 +9,5 @@ desc: |
  * The MAC address in the network interfaces view of a virtual machine can
    be selected again.
 bug: [44481]
+erratum: 110
+announced: 2017-07-26
