@@ -13,3 +13,5 @@ desc: |
  * During sync_to_ucs remember entryCSN of msGPO changes to be able to
    identify and skip them later in sync_from_ucs.
 bug: [43072, 44976, 45001, 43628]
+erratum: 114
+announced: 2017-07-26
