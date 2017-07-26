@@ -12,3 +12,5 @@ desc: |
    was sent.
  * The package is now maintained.
 bug: [44523, 44910, 44990]
+erratum: 107
+announced: 2017-07-26
