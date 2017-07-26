@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The script 'univention-fix-ucr-dns' is installed in Docker containers too.
 bug: [45040]
+erratum: 104
+announced: 2017-07-26
