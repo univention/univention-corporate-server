@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-4) unstable; urgency=medium
+
+  * Bug #34648: s4c: ignore corrupted pickle files
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 26 Jul 2017 16:33:07 +0200
+
 univention-s4-connector (11.0.8-3) unstable; urgency=medium
 
   * Bug #44976: apply patch from Arvid
