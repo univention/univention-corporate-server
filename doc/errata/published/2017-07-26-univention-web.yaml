@@ -12,3 +12,5 @@ desc: |
  * A display problem in tables with multiple lines per row has been corrected.
    Especially DNS zones were affected by this problem.
 bug: [19928, 44481, 44431]
+erratum: 108
+announced: 2017-07-26
