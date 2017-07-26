@@ -9,3 +9,5 @@ desc: |
  This update addresses the following issue:
  * Phantomjs is now a maintained package.
 bug: [44990]
+erratum: 105
+announced: 2017-07-26
