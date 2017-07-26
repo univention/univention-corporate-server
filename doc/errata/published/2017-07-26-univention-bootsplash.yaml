@@ -11,3 +11,5 @@ desc: |
  * The welcome screen design has been improved and adapted to the
    UCS 4.2 design style. The fqdn has been removed from the screen.
 bug: [44061, 45031]
+erratum: 112
+announced: 2017-07-26
