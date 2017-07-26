@@ -1,6 +1,7 @@
 product: ucs
 release: "4.2"
 version: [0, 1]
+maintained: true
 scope: ucs_4.2-0-errata4.2-1
 src: univention-app-appliance
 fix: 1.0.2-32A~4.2.0.201707251101
