@@ -50,6 +50,11 @@ case "$1" in
 
 		# update system to latest package status
 		ucr commit /etc/apt/sources.list.d/*
+		while [ -e /var/lock/univention-updater ]
+		do
+			# make sure that there is no other updater process running (Bug #45070)
+			sleep 1
+		done
 		univention-upgrade --noninteractive
 		univention-config-registry set update/reboot/required=false
 
