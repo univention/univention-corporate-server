@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Support lookup of specific attributes via PostReadControl (RFC 4527)
 bug: [43628]
+erratum: 116
+announced: 2017-07-26
