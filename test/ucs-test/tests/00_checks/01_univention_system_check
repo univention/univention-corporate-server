@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check system status with univention-system-check
-## tags:
-##  - basic
+## tags: [basic, apptest]
 ## exposure: safe
 
 RETVAL=100

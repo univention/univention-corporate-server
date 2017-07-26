@@ -1,3 +1,9 @@
+ucs-test (7.0.23-4) unstable; urgency=medium
+
+  * Bug #40461: added tag apptest to 01_univention_system_check
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Jul 2017 14:51:46 +0200
+
 ucs-test (7.0.23-3) unstable; urgency=medium
 
   * Bug #44704: test download of saml idp certificate 
