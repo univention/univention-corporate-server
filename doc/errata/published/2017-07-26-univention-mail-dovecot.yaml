@@ -9,3 +9,5 @@ desc: |
  * The use of UDM utility functions has been corrected in the listener script
    dovecot_shared_folder.py.
 bug: [41368]
+erratum: 117
+announced: 2017-07-26
