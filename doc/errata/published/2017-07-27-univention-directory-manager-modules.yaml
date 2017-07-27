@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * UDM objects with the object flags synced and docker can now be deleted.
 bug: [44954]
+erratum: 444
+announced: 2017-07-27
