@@ -323,7 +323,7 @@ def password_sync_kinit(connector, key, ucs_object):
 				modlist.append((ldap.MOD_REPLACE, attribute, expected_value))
 
 	if modlist:
-		connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), modlist)
+		connector.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), modlist)
 
 
 def password_sync(connector, key, ucs_object):
@@ -404,9 +404,9 @@ def password_sync(connector, key, ucs_object):
 				pwd_changed = True
 				modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))
 				if krb5Principal:
-					connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
+					connector.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
 		if pwd_changed:
-			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
+			connector.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
 			# Remove the POSIX and Kerberos password expiry interval
 			if 'shadowLastChange' in ucs_result[0][1]:
 				modlist.append(('shadowLastChange', ucs_result[0][1]['shadowLastChange'][0], None))
