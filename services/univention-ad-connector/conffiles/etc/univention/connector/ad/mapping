@@ -78,12 +78,11 @@ else:
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
 @!@
-ignore_filter = '(userAccountControl=2080)'
-for user in configRegistry.get('connector/ad/mapping/user/ignorelist', '').split(','):
-	if user:
-		ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
+from univention.connector.ad.mapping import ignore_filter_from_tmpl
+ignore_filter = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
+ignore_filter = '(|{}{}).format('(userAccountControl=2080)', ignore_filter)
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -313,14 +312,14 @@ else:
 			scope='sub',
 
 @!@
-ignore_filter = ''
-ignore_filter += '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
+from univention.connector.ad.mapping import ignore_filter_from_attr
+ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
 if configRegistry.is_false('connector/ad/mapping/group/grouptype', False):
-	ignore_filter += '(sambaGroupType=5)(groupType=5)'
-for group in configRegistry.get('connector/ad/mapping/group/ignorelist', '').split(','):
-	if group:
-		ignore_filter += '(cn=%s)' % (group)
-print "			ignore_filter='(|%s)'," % ignore_filter
+	ignore_filter_parts += '(sambaGroupType=5)(groupType=5)'
+ignore_filter_parts += ignore_filter_from_attr('cn', 'connector/ad/mapping/group/ignorelist')
+ignore_filter = '(|{})'.format(ignore_filter_parts)
+if ignore_filter:
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -460,12 +459,10 @@ else:
 
 			ignore_subtree = global_ignore_subtree,
 @!@
-ignore_filter = ''
-for computer in configRegistry.get('connector/ad/mapping/windowscomputer/ignorelist', '').split(','):
-	if computer:
-		ignore_filter += '(cn=%s)' % (computer)
+from univention.connector.ad.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/ad/mapping/windowscomputer/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			con_create_objectclass=['top', 'computer' ],
@@ -524,12 +521,10 @@ else:
 			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
 @!@
-ignore_filter = ''
-for cn in configRegistry.get('connector/ad/mapping/container/ignorelist', 'mail,kerberos').split(','):
-	if cn:
-		ignore_filter += '(cn=%s)' % (cn)
+from univention.connector.ad.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('cn', 'connector/ad/mapping/container/ignorelist', 'mail,kerberos')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -574,12 +569,10 @@ else:
 			con_search_filter='objectClass=organizationalUnit',
 
 @!@
-ignore_filter = ''
-for ou in configRegistry.get('connector/ad/mapping/ou/ignorelist', '').split(','):
-	if ou:
-		ignore_filter += '(ou=%s)' % (ou)
+from univention.connector.ad.mapping import ignore_filter_from_attr
+ignore_filter = ignore_filter_from_attr('ou', 'connector/ad/mapping/ou/ignorelist')
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
+	print "			ignore_filter=%r," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
