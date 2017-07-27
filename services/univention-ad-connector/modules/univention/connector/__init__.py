@@ -814,8 +814,6 @@ class ucs:
 			return self.lo.get(searchdn, required=1)
 		except ldap.NO_SUCH_OBJECT:
 			return None
-		except ldap.INVALID_DN_SYNTAX:
-			return None
 		except ldap.INVALID_SYNTAX:
 			return None
 
