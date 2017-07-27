@@ -1076,14 +1076,14 @@ class ad(univention.connector.ucs):
 
 		return max(usnchanged, usncreated)
 
-	def __search_ad(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
+	def __search_ad(self, filter='', attrlist=[], show_deleted=False):
 		'''
 		search ad
 		'''
 		_d = ud.function('ldap.__search_ad')
 
-		if not base:
-			base = self.lo_ad.base
+		scope = ldap.SCOPE_SUBTREE
+		base = self.lo_ad.base
 
 		ctrls = []
 		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
@@ -1303,7 +1303,7 @@ class ad(univention.connector.ucs):
 		'''
 		_d = ud.function('ldap.set_primary_group_to_ucs_user')
 
-		ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='samaccountname=%s' % compatible_modstring(object_ucs['username']), attrlist=['dn', 'primaryGroupID'])
+		ad_group_rid_resultlist = self.__search_ad(filter='samaccountname=%s' % compatible_modstring(object_ucs['username']), attrlist=['dn', 'primaryGroupID'])
 
 		if not ad_group_rid_resultlist[0][0] in ['None', '', None]:
 
@@ -1312,7 +1312,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "set_primary_group_to_ucs_user: AD rid: %s" % ad_group_rid)
 			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-			ldap_group_ad = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter="objectSid=" + object_sid_string)
+			ldap_group_ad = self.__search_ad(filter="objectSid=" + object_sid_string)
 
 			if not ldap_group_ad[0][0]:
 				ud.debug(ud.LDAP, ud.ERROR, "ad.set_primary_group_to_ucs_user: Primary Group in AD not found (not enough rights?), sync of this object will fail!")
@@ -1387,7 +1387,7 @@ class ad(univention.connector.ucs):
 			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26809
 			prev_samba_primary_group_id = ldap_object_ad.get('primaryGroupID', [])[0]
 			object_sid_string = str(self.ad_sid) + "-" + str(prev_samba_primary_group_id)
-			ad_group = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='objectSid=%s' % object_sid_string)
+			ad_group = self.__search_ad(filter='objectSid=%s' % object_sid_string)
 			ucs_group_object = self._object_mapping('group', {'dn': ad_group[0][0], 'attributes': ad_group[0][1]}, 'con')
 			ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
 			is_member = False
@@ -1416,7 +1416,7 @@ class ad(univention.connector.ucs):
 
 		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-		ldap_group_ad = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='objectSID=' + object_sid_string)
+		ldap_group_ad = self.__search_ad(filter='objectSID=' + object_sid_string)
 
 		ucs_group = self._object_mapping('group', {'dn': ldap_group_ad[0][0], 'attributes': ldap_group_ad[0][1]})
 
@@ -1596,7 +1596,7 @@ class ad(univention.connector.ucs):
 
 		if group_rid:
 			# search for members who have this as their primaryGroup
-			prim_members_ad = self.__search_ad(self.lo_ad.base, ldap.SCOPE_SUBTREE, 'primaryGroupID=%s' % group_rid, ['cn'])
+			prim_members_ad = self.__search_ad(filter='primaryGroupID=%s' % group_rid, attrlist=['cn'])
 
 			for prim_dn, prim_object in prim_members_ad:
 				if prim_dn not in ['None', '', None]:  # filter referrals
@@ -1774,7 +1774,7 @@ class ad(univention.connector.ucs):
 		ad_members = self.get_ad_members(ad_object['dn'], ldap_object_ad)
 
 		# search for members who have this as their primaryGroup
-		prim_members_ad = self.__search_ad(self.lo_ad.base, ldap.SCOPE_SUBTREE, 'primaryGroupID=%s' % group_rid)
+		prim_members_ad = self.__search_ad(filter='primaryGroupID=%s' % group_rid)
 
 		for prim_dn, prim_object in prim_members_ad:
 			if prim_dn not in ['None', '', None]:  # filter referrals
