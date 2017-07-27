@@ -2352,7 +2352,12 @@ class ad(univention.connector.ucs):
 					('post_attributes', self.property[property_type].post_attributes)]:
 				if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
 					for attr in attribute_list:
-						if not self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object):
+						has_changed = self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object)
+						# This is necessary, as with a `con_value_merge_function`, a mapping
+						# could access an attribute that is not listed in the definition.
+						attr_defs = (d for (a, d) in attribute_type.iteritems() if d.ldap_attribute == attr)
+						has_merge_function = any(d.con_value_merge_function for d in attr_defs)
+						if not has_changed and not has_merge_function:
 							continue
 
 						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The following attribute has been changed: %s" % attr)
@@ -2376,9 +2381,12 @@ class ad(univention.connector.ucs):
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
 
+							current_ad_values = find_case_independent(ad_object, ad_attribute)
+							merge_function = attribute_type[attribute].con_value_merge_function
+
 							compare_function = attribute_type[attribute].compare_function or \
 								univention.connector.compare_lowercase
-							if compare_function(list(old_values), list(new_values)):
+							if compare_function(list(old_values), list(new_values)) and merge_function is None:
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
 								continue
 
@@ -2401,7 +2409,6 @@ class ad(univention.connector.ucs):
 								# to two AD attributes. It also ensures, that the primary AD attribute keeps
 								# its value as long as that value is not removed. If removed the primary
 								# attribute is assigned a random value from the UCS attribute.
-								current_ad_values = find_case_independent(ad_object, ad_attribute)
 								current_ad_other_values = find_case_independent(ad_object, ad_other_attribute)
 
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
@@ -2418,8 +2425,24 @@ class ad(univention.connector.ucs):
 									modlist.append((ldap.MOD_REPLACE, ad_attribute, new_ad_values))
 								if current_ad_other_values != new_ad_other_values:
 									modlist.append((ldap.MOD_REPLACE, ad_other_attribute, new_ad_other_values))
+							elif merge_function:
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: merge_function branch")
+								# This is the case, where we merge several UCS attributes into one AD attribute.
+								# mail{Primary,Alternative}Address (UCS) to proxyAddresses (AD) would be an example.
+								mapped_attributes = object['attributes'][ad_attribute]
+								ud.debug(ud.LDAP, ud.INFO,
+									("sync_from_ucs: pre merge function: ad attr: %s, mapped attributes: %s ad attributes: %s")
+									% (ad_attribute, mapped_attributes, current_ad_values))
+								new_ad_values = set(merge_function(mapped_attributes, current_ad_values))
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: post merge function new_values: %s" % new_values)
+
+								ad_add = new_ad_values - current_ad_values
+								ad_remove = current_ad_values - new_ad_values
+								if ad_add:
+									modlist.append((ldap.MOD_ADD, ad_attribute, ad_add))
+								if ad_remove:
+									modlist.append((ldap.MOD_DELETE, ad_attribute, ad_remove))
 							else:
-								current_ad_values = find_case_independent(ad_object, ad_attribute)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 
 								if (to_add or to_remove) and attribute_type[attribute].single_value:
