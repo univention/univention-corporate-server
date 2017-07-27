@@ -277,7 +277,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 							pass  # values are not the same codec
 
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % value)
-				result = connector.lo_ad.lo.search_ext_s(connector.lo_ad.base, ldap.SCOPE_SUBTREE, compatible_modstring('(&(objectclass=%s)(samaccountname=%s))' % (ocad, value)))
+				result = connector.lo_ad.search(filter=compatible_modstring('(&(objectclass=%s)(samaccountname=%s))' % (ocad, value)))
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
 					adpos2 = len(univention.connector.ad.explode_unicode_dn(addn)[0])
@@ -302,9 +302,12 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					search_dn = dn
 					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
+					search_dn = compatible_modstring(search_dn)
+					search_filter = '(objectClass=%s)' % ocad
 					try:
-						samaccountname = encode_attrib(
-							connector.lo_ad.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, '(objectClass=%s)' % ocad, ['sAMAccountName'])[0][1]['sAMAccountName'][0])
+						search_result = connector.lo_ad.search(base=search_dn,
+							scope='base', filter=search_filter, attr=['sAMAccountName'])
+						samaccountname = encode_attrib(search_result[0][1]['sAMAccountName'][0])
 						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
 					except ldap.NO_SUCH_OBJECT:  # AD may need time
 						if i > 5:
@@ -400,7 +403,7 @@ def old_user_dn_mapping(connector, given_object):
 			if attrib == 'uid':
 				# lookup the uid as sAMAccountName in AD to get corresponding DN, if not found create new User
 				ud.debug(ud.LDAP, ud.INFO, "search in ad samaccountname=%s" % value)
-				result = connector.lo_ad.lo.search_ext_s(connector.lo_ad.base, ldap.SCOPE_SUBTREE, '(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value))
+				result = connector.lo_ad.search(filter='(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value))
 				ud.debug(ud.LDAP, ud.INFO, "search in result %s" % result)
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
@@ -420,9 +423,12 @@ def old_user_dn_mapping(connector, given_object):
 					search_dn = dn
 					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
+					search_dn = compatible_modstring(search_dn)
 					try:
-						samaccountname = encode_attrib(
-							connector.lo_ad.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, '(objectClass=user)', ['sAMAccountName'], serverctrls=ctrls)[0][1]['sAMAccountName'][0])
+						result = connector.lo_ad.search(base=search_dn,
+							scope='base', filter='(objectClass=user)',
+							attr=['sAMAccountName'], serverctrls=ctrls)
+						samaccountname = encode_attrib(result[0][1]['sAMAccountName'][0])
 					except ldap.NO_SUCH_OBJECT:  # AD may need time
 						if i > 5:
 							raise
@@ -768,9 +774,10 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
 		try:
-			self.ad_sid = univention.connector.ad.decode_sid(
-				self.lo_ad.lo.search_ext_s(ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)[0][1]['objectSid'][0])
-
+			result = self.lo_ad.search(filter='(objectclass=domain)',
+				base=ad_ldap_base, scope='base', attr=['objectSid'])
+			object_sid = result[0][1]['objectSid'][0]
+			self.ad_sid = univention.connector.ad.decode_sid(object_sid)
 		except Exception, msg:
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
@@ -877,9 +884,8 @@ class ad(univention.connector.ucs):
 				host=self.ad_ldap_host, port=int(self.ad_ldap_port),
 				base='', binddn=None, bindpw=None, start_tls=tls_mode,
 				use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
-			self.ad_ldap_base = self.lo_ad.lo.search_ext_s(
-				'', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'],
-				timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
+			default_naming_context = self.lo_ad.getAttr('', 'defaultNamingContext')
+			self.ad_ldap_base = default_naming_context[0]
 		except Exception as ex:
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
 
@@ -1049,7 +1055,7 @@ class ad(univention.connector.ucs):
 	def get_object(self, dn, attrlist=None):
 		_d = ud.function('ldap.get_object')
 		try:
-			dn, ad_object = self.lo_ad.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
+			ad_object = self.lo_ad.get(compatible_modstring(dn), attr=attrlist)
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 			except:  # FIXME: which exception is to be caught?
@@ -1283,15 +1289,8 @@ class ad(univention.connector.ucs):
 		'''
 		_d = ud.function('ldap.__get_highestCommittedUSN')
 		try:
-			res = self.lo_ad.lo.search_ext_s(
-				'',  # base
-				ldap.SCOPE_BASE,
-				'objectclass=*',  # filter
-				['highestCommittedUSN'],
-				timeout=-1, sizelimit=0
-			)[0][1]['highestCommittedUSN'][0]
-
-			return int(res)
+			usn = self.lo_ad.getAttr('', 'highestCommittedUSN')[0]
+			return int(usn)
 		except Exception:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
 			print "ERROR: initial search in AD failed, check network and configuration"
@@ -1501,7 +1500,7 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
 		# remove members which have this group as primary group (set same gidNumber)
-		prim_members_ucs = self.lo.lo.search(filter='gidNumber=%s' % ldap_object_ucs['gidNumber'][0], attr=['gidNumber'])
+		prim_members_ucs = self.lo.search(filter='(gidNumber=%s)' % ldap_object_ucs['gidNumber'][0], attr=['gidNumber'])
 
 		# all dn's need to be lower-case so we can compare them later and put them in the group ucs cache:
 		self.group_members_cache_ucs[object_ucs['dn'].lower()] = []
@@ -1590,7 +1589,9 @@ class ad(univention.connector.ucs):
 
 		# need to remove users from ad_members which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
-			group_rid = decode_sid(self.lo_ad.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0]).split('-')[-1]
+			object_dn = compatible_modstring(object['dn'])
+			object_sid = self.lo_ad.getAttr(object_dn, 'objectSid')[0]
+			group_rid = decode_sid(object_sid).split('-')[-1]
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = None
 
@@ -2264,7 +2265,7 @@ class ad(univention.connector.ucs):
 
 			# the old object was moved in UCS, but does this object exist in AD?
 			try:
-				old_object = self.lo_ad.lo.search_ext_s(compatible_modstring(old_dn), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)
+				old_object = self.lo_ad.get(compatible_modstring(old_dn))
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
 			except:
@@ -2275,11 +2276,13 @@ class ad(univention.connector.ucs):
 				try:
 					self.lo_ad.rename(unicode(old_dn), object['dn'])
 				except ldap.NO_SUCH_OBJECT:  # check if object is already moved (we may resync now)
-					new = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0))
+					new = self.lo_ad.get(compatible_modstring(object['dn']))
 					if not new:
 						raise
 				# need to actualise the GUID and DN-Mapping
-				self._set_DN_for_GUID(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)[0][1]['objectGUID'][0], object['dn'])
+				guid = self.lo_ad.getAttr(compatible_modstring(object['dn']),
+					'objectGUID')[0]
+				self._set_DN_for_GUID(guid, object['dn'])
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
@@ -2554,7 +2557,8 @@ class ad(univention.connector.ucs):
 			pass  # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
 			ud.debug(ud.LDAP, ud.INFO, "remove object from AD failed, need to delete subtree")
-			for result in self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, 'objectClass=*', timeout=-1, sizelimit=0):
+			object_dn = compatible_modstring(object['dn'])
+			for result in self.lo_ad.search(base=object_dn):
 				if univention.connector.compare_lowercase(result[0], object['dn']):
 					continue
 				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
