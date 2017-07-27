@@ -217,28 +217,26 @@ def password_sync_ucs(connector, key, object):
 	except:  # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
 
-	ucs_object = connector._object_mapping(key, object, 'con')
+	ucs_dn = connector._object_mapping(key, object, 'con')['dn']
 
 	try:
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_dn)
 	except:  # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	try:
-		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet'])
+		ucs_object = connector.lo.lo.get(ucs_dn, required=True,
+			attr=['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet'])
 	except ldap.NO_SUCH_OBJECT:
-		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
+		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_dn)
 		return
 
-	sambaPwdLastSet = None
-	if 'sambaPwdLastSet' in res[0][1]:
-		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
+	sambaPwdLastSet = ucs_object.get('sambaPwdLastSet', [None])[0]
+	pwd = ucs_object.get('sambaNTPassword', [None])[0]
+
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
-	pwd = None
-	if 'sambaNTPassword' in res[0][1]:
-		pwd = res[0][1]['sambaNTPassword'][0]
-	else:
+	if pwd is None:
 		pwd = 'NO PASSWORDXXXXXX'
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
 
