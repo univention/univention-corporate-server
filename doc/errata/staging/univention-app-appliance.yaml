@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-app-appliance
+fix: 1.0.2-33A~4.2.0.201707271048
+desc: |
+ This update addresses the following issue(s):
+ * Fixed a typo on the appliance first steps overlay
+bug: [45084]
