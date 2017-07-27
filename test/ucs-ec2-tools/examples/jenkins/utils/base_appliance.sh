@@ -956,6 +956,9 @@ __EOF__
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 	fi
 
+	# Until Bug #45084 is published
+	sed -i 's/Management content/Management Console/' /usr/share/univention-web/js/umc/hooks/i18n/de/appliance.json
+
 	# Cleanup apt archive
 	apt-get clean
 	apt-get update
