@@ -1580,22 +1580,22 @@ class ucs:
 		'''
 		_d = ud.function('ldap._ignore_object')
 		if 'dn' not in object:
-			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN")
+			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
 			return True  # ignore not existing object
 		for subtree in self.property[key].ignore_subtree:
 			if self._subtree_match(object['dn'], subtree):
-				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%s]" % object['dn'])
+				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%s] (key: %s)" % (object['dn'], key))
 				return True
 
 		if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
-			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter")
+			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter (key: {})".format(key))
 			return True
 
 		if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
-			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter")
+			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter (key: {})".format(key))
 			return True
 
-		ud.debug(ud.LDAP, ud.INFO, "_ignore_object: Do not ignore %s" % object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "_ignore_object: Do not ignore %s (key: %s)" % (object['dn'], key))
 
 		return False
 
