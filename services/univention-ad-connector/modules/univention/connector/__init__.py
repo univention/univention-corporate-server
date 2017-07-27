@@ -325,7 +325,7 @@ class configsaver:
 
 class attribute:
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync'):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
@@ -343,6 +343,7 @@ class attribute:
 		# Seee https://forge.univention.org/bugzilla/show_bug.cgi?id=25823
 		self.reverse_attribute_check = reverse_attribute_check
 		self.sync_mode = sync_mode
+		self.single_value = single_value
 
 
 class property:
