@@ -538,7 +538,9 @@ Virtualization=Virtualisierung''')
 			if not os.path.isdir(directory):
 				continue
 			print 'create_appcenter_json.py for %s' % vv
-			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s' %
+			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' %
+				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+			subprocess.call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 
 	def cleanup(self):

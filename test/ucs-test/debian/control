@@ -528,6 +528,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
  python-pytest,
+ zsync
 Recommends: ucs-test-framework
 Provides: ucs-test-module
 Description: Test scripts to test the Docker integration
