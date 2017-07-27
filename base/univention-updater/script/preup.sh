@@ -126,6 +126,27 @@ is_ucr_true () {
 
 # Bug #44915:
 echo "Trying to detect if migration to dependency based boot will fail:" >&3
+insserv_problem=0
+for service in $(LC_ALL=C insserv --dryrun 2>&1 | sed -nre 's/^insserv: script (.*?): service (.*?) already provided!$/\2/p')
+do
+	echo "WARNING: ${service} is provided by multiple scripts in /etc/init.d/"
+	insserv_problem=1
+done
+
+for initscript in /etc/init.d/*
+do
+	package=$(dpkg -S "$initscript" 2>/dev/zero | sed -nre 's|^([^ ]+): '"$initscript"'|\1|p')
+	if [ -n "$package" -a "$package" != "univention-system-setup-boot" ]
+	then
+		status=$(dpkg-query --showformat='${db:Status-Abbrev}\n' --show "$package")
+		if [ "$status" = 'rc ' ]
+		then
+			echo "WARNING: Removed, but configured, package $package left $initscript behind"
+			insserv_problem=1
+		fi
+	fi
+done
+
 if insserv --dryrun 1>&3 2>&3
 then
 	echo "insserv --dryrun: OK" >&3
@@ -133,11 +154,16 @@ else
 	echo "insserv --dryrun: FAILED" >&3
 	echo "WARNING: The /etc/init.d/*-scripts can not be migrated to dependency based boot order."
 	echo "         Check /etc/init.d/ for old init scripts."
+	insserv_problem=1
+fi
+if [ "$insserv_problem" -ne 0 ]
+then
 	if is_ucr_true update42/ignore_insserv
 	then
 		echo "WARNING: update42/ignore_insserv is set to true. Skipping as requested."
 	else
-		echo "         Aborting, because the update would fail."
+		echo "         Aborting, because the update would likely fail."
+		echo "         Please check and fix the aforementioned issues."
 		echo "         (To ignore, set the UCRV variable update42/ignore_insserv to yes)"
 		exit 1
 	fi
