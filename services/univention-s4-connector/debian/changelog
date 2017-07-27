@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-5) unstable; urgency=medium
+
+  * Bug #45088: Fix traceback when deleting a GPO
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Jul 2017 19:46:51 +0200
+
 univention-s4-connector (11.0.8-4) unstable; urgency=medium
 
   * Bug #34648: s4c: ignore corrupted pickle files

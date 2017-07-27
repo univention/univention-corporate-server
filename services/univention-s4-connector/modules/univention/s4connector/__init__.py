@@ -797,6 +797,10 @@ class ucs:
 		if not new:
 			change_type = "delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
+			if key == 'msGPO':
+				entryUUID = old.get('entryUUID', [None])[0]
+				entryCSN = old.get('entryCSN', [None])[0]
+				self._forget_entryCSN(entryUUID, entryCSN)
 		else:
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
@@ -1444,8 +1448,6 @@ class ucs:
 			ucs_object.open()
 			ucs_object.remove()
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
-			if property_type == 'msGPO':
-				self._forget_entryCSN(entryUUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
