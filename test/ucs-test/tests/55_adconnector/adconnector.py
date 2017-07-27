@@ -1,7 +1,12 @@
+import os
+import sys
+
+TEST_LIB_PATH = os.getenv('TESTLIBPATH')
+if TEST_LIB_PATH is not None:
+	sys.path.append(TEST_LIB_PATH)
+
 import ldap
 from univention.config_registry import ConfigRegistry
-from ldap.controls import LDAPControl
-import ldap.modlist as modlist
 import ldap_glue
 import univention.connector.ad as ad
 
@@ -24,7 +29,6 @@ class ADConnection(ldap_glue.LDAPConnection):
 		no_starttls = baseConfig.is_false('%s/ad/ldap/ssl' % configbase)
 		self.connect(no_starttls)
 
-
 	def add_to_group(self, group_dn, member_dn):
 		self.append_to_attribute(group_dn, 'member', member_dn)
 
@@ -32,7 +36,6 @@ class ADConnection(ldap_glue.LDAPConnection):
 		self.remove_from_attribute(group_dn, 'member', member_dn)
 
 	def getdn(self, filter):
-		res = []
 		for dn, attr in self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, filter, timeout=10):
 			if dn:
 				print dn
