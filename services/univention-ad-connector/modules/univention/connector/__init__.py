@@ -152,14 +152,14 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT value FROM '%s' WHERE key='%s'" % (section, option))
+				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error:
+			except lite.Error, e:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -169,9 +169,9 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("""
-		INSERT OR REPLACE INTO '%(table)s' (key,value)
-			VALUES (  '%(key)s', '%(value)s'
-		);""" % {'key': option, 'value': value, 'table': section})
+		INSERT OR REPLACE INTO '%s' (key,value)
+			VALUES (  ?, ?
+		);""" % section, [option, value])
 				self._dbcon.commit()
 				cur.close()
 				return
@@ -200,7 +200,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("DELETE FROM '%s' WHERE key='%s'" % (section, option))
+				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				cur.close()
 				return
@@ -246,7 +246,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT value FROM '%s' WHERE key='%s'" % (section, option))
+				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
