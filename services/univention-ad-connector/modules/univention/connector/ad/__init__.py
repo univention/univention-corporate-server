@@ -1901,7 +1901,7 @@ class ad(univention.connector.ucs):
 						cache[member_dn] = ucs_object_attr
 					ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': ucs_object_attr}
 
-					if not self._ignore_object('user', ucs_object) and not self._ignore_object('group', ucs_object):
+					if not self._ignore_object('user', ucs_object) or not self._ignore_object('group', ucs_object):
 						for k in self.property.keys():
 							# identify if DN is a user or a group (will be ignored it is a host)
 							if self.modules[k].identify(member_dn, ucs_object['attributes']):
