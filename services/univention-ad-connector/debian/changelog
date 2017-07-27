@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-18) unstable; urgency=medium
+
+  * Bug #38619: adc: update to class `configdb` as defined in s4c
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 27 Jul 2017 14:45:15 +0200
+
 univention-ad-connector (11.0.6-17) unstable; urgency=medium
 
   * Bug #11658: ad-connector: implement ldap filter escaping function
