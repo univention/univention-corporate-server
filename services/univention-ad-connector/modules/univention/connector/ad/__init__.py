@@ -277,7 +277,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 							pass  # values are not the same codec
 
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % value)
-				result = connector.lo_ad.search(filter=compatible_modstring('(&(objectclass=%s)(samaccountname=%s))' % (ocad, value)))
+				search_filter = format_escaped('(&(objectclass={0!e})(samaccountname={1!e}))', ocad, value)
+				result = connector.lo_ad.search(filter=compatible_modstring(search_filter))
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
 					adpos2 = len(univention.connector.ad.explode_unicode_dn(addn)[0])
@@ -303,7 +304,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
 					search_dn = compatible_modstring(search_dn)
-					search_filter = '(objectClass=%s)' % ocad
+					search_filter = format_escaped('(objectclass={0!e})', ocad)
 					try:
 						search_result = connector.lo_ad.search(base=search_dn,
 							scope='base', filter=search_filter, attr=['sAMAccountName'])
@@ -329,7 +330,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				# search for object with this dn in ucs, needed if it lies in a different container
 				ucsdn = ''
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname is:%s" % samaccountname)
-				ucsdn_result = connector.search_ucs(filter=unicode(u'(&(objectclass=%s)(%s=%s))' % (ocucs, ucsattrib, samaccountname)), base=connector.lo.base, scope='sub', attr=['objectClass'])
+
+				search_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
+				ucsdn_result = connector.search_ucs(filter=search_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
+
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
 					ucsdn = ucsdn_result[0][0]
 
@@ -403,7 +407,8 @@ def old_user_dn_mapping(connector, given_object):
 			if attrib == 'uid':
 				# lookup the uid as sAMAccountName in AD to get corresponding DN, if not found create new User
 				ud.debug(ud.LDAP, ud.INFO, "search in ad samaccountname=%s" % value)
-				result = connector.lo_ad.search(filter='(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value))
+				search_filter = format_escaped('(&(objectclass=user)(samaccountname={0!e}))', value)
+				result = connector.lo_ad.search(filter=search_filter)
 				ud.debug(ud.LDAP, ud.INFO, "search in result %s" % result)
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
@@ -748,7 +753,7 @@ class ad(univention.connector.ucs):
 
 		if init_group_cache:
 			ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
-			ad_groups = self.__search_ad(filter='objectClass=group', attrlist=['member'])
+			ad_groups = self.__search_ad(filter='(objectClass=group)', attrlist=['member'])
 			ud.debug(ud.LDAP, ud.INFO, "__init__: ad_groups: %s" % ad_groups)
 			for ad_group in ad_groups:
 				if not ad_group or not ad_group[0]:
@@ -762,7 +767,7 @@ class ad(univention.connector.ucs):
 						self.group_members_cache_con[group].append(member.lower())
 			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
-			ucs_groups = self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember'])
+			ucs_groups = self.search_ucs(filter='(objectClass=univentionGroup)', attr=['uniqueMember'])
 			for ucs_group in ucs_groups:
 				group = ucs_group[0].lower()
 				self.group_members_cache_ucs[group] = []
@@ -1139,9 +1144,11 @@ class ad(univention.connector.ucs):
 
 		def search_ad_changes_by_attribute(attribute, lowerUSN, higherUSN=''):
 			if higherUSN:
-				usnFilter = '(&(%s>=%s)(%s<=%s))' % (attribute, lowerUSN, attribute, higherUSN)
+				usn_filter_format = '(&({attribute}>={lower_usn!e})({attribute}<={higher_usn!e}))'
 			else:
-				usnFilter = '(%s>=%s)' % (attribute, lowerUSN)
+				usn_filter_format = '({attribute}>={lower_usn!e})'
+
+			usnFilter = format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
 
 			if filter != '':
 				usnFilter = '(&(%s)(%s))' % (filter, usnFilter)
@@ -1195,11 +1202,10 @@ class ad(univention.connector.ucs):
 		search ad for change with id
 		'''
 		_d = ud.function('ldap.__search_ad_changeUSN')
+		search_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
 		if filter != '':
-			filter = '(&(%s)(|(uSNChanged=%s)(uSNCreated=%s)))' % (filter, changeUSN, changeUSN)
-		else:
-			filter = '(|(uSNChanged=%s)(uSNCreated=%s))' % (changeUSN, changeUSN)
-		return self.__search_ad(filter=filter, show_deleted=show_deleted)
+			search_filter = '(&({}){})'.format(filter, search_filter)
+		return self.__search_ad(filter=search_filter, show_deleted=show_deleted)
 
 	def __dn_from_deleted_object(self, object, GUID):
 		'''
@@ -1302,7 +1308,8 @@ class ad(univention.connector.ucs):
 		'''
 		_d = ud.function('ldap.set_primary_group_to_ucs_user')
 
-		ad_group_rid_resultlist = self.__search_ad(filter='samaccountname=%s' % compatible_modstring(object_ucs['username']), attrlist=['dn', 'primaryGroupID'])
+		search_filter = format_escaped('(samaccountname={0!e})', compatible_modstring(object_ucs['username']))
+		ad_group_rid_resultlist = self.__search_ad(filter=search_filter, attrlist=['dn', 'primaryGroupID'])
 
 		if not ad_group_rid_resultlist[0][0] in ['None', '', None]:
 
@@ -1311,7 +1318,8 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "set_primary_group_to_ucs_user: AD rid: %s" % ad_group_rid)
 			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-			ldap_group_ad = self.__search_ad(filter="objectSid=" + object_sid_string)
+			search_filter = format_escaped('(objectSid={0!e})', object_sid_string)
+			ldap_group_ad = self.__search_ad(filter=search_filter)
 
 			if not ldap_group_ad[0][0]:
 				ud.debug(ud.LDAP, ud.ERROR, "ad.set_primary_group_to_ucs_user: Primary Group in AD not found (not enough rights?), sync of this object will fail!")
@@ -1339,7 +1347,8 @@ class ad(univention.connector.ucs):
 			return
 
 		ucs_group_id = ldap_object_ucs['gidNumber'][0]  # FIXME: fails if group does not exsist
-		ucs_group_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % ucs_group_id)  # is empty !?
+		search_filter = format_escaped('(&(objectClass=univentionGroup)(gidNumber={0!e}))', ucs_group_id)
+		ucs_group_ldap = self.search_ucs(filter=search_filter)  # is empty !?
 
 		if ucs_group_ldap == []:
 			ud.debug(ud.LDAP, ud.WARN, "primary_group_sync_from_ucs: failed to get UCS-Group with gid %s, can't sync to AD" % ucs_group_id)
@@ -1386,7 +1395,10 @@ class ad(univention.connector.ucs):
 			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26809
 			prev_samba_primary_group_id = ldap_object_ad.get('primaryGroupID', [])[0]
 			object_sid_string = str(self.ad_sid) + "-" + str(prev_samba_primary_group_id)
-			ad_group = self.__search_ad(filter='objectSid=%s' % object_sid_string)
+
+			search_filter = format_escaped('(objectSid={0!e})', object_sid_string)
+			ad_group = self.__search_ad(filter=search_filter)
+
 			ucs_group_object = self._object_mapping('group', {'dn': ad_group[0][0], 'attributes': ad_group[0][1]}, 'con')
 			ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
 			is_member = False
@@ -1415,7 +1427,8 @@ class ad(univention.connector.ucs):
 
 		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-		ldap_group_ad = self.__search_ad(filter='objectSID=' + object_sid_string)
+		search_filter = format_escaped('(objectSid={0!e})', object_sid_string)
+		ldap_group_ad = self.__search_ad(filter=search_filter)
 
 		ucs_group = self._object_mapping('group', {'dn': ldap_group_ad[0][0], 'attributes': ldap_group_ad[0][1]})
 
@@ -1446,7 +1459,9 @@ class ad(univention.connector.ucs):
 		object_ucs = self._object_mapping(key, object)
 
 		# Exclude primary group
-		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s)(!(gidNumber=%s)))' % (object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0]))
+		search_filter = format_escaped('(&(objectClass=univentionGroup)(uniqueMember={0!e})(!(gidNumber={1!e})))',
+			object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0])
+		ucs_groups_ldap = self.search_ucs(filter=search_filter)
 
 		if ucs_groups_ldap == []:
 			ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: No group-memberships in UCS for %s" % object['dn'])
@@ -1500,7 +1515,8 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
 		# remove members which have this group as primary group (set same gidNumber)
-		prim_members_ucs = self.lo.search(filter='(gidNumber=%s)' % ldap_object_ucs['gidNumber'][0], attr=['gidNumber'])
+		search_filter = format_escaped('(gidNumber={0!e})', ldap_object_ucs['gidNumber'][0])
+		prim_members_ucs = self.lo.search(filter=search_filter, attr=['gidNumber'])
 
 		# all dn's need to be lower-case so we can compare them later and put them in the group ucs cache:
 		self.group_members_cache_ucs[object_ucs['dn'].lower()] = []
@@ -1597,7 +1613,8 @@ class ad(univention.connector.ucs):
 
 		if group_rid:
 			# search for members who have this as their primaryGroup
-			prim_members_ad = self.__search_ad(filter='primaryGroupID=%s' % group_rid, attrlist=['cn'])
+			search_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
+			prim_members_ad = self.__search_ad(filter=search_filter, attrlist=['cn'])
 
 			for prim_dn, prim_object in prim_members_ad:
 				if prim_dn not in ['None', '', None]:  # filter referrals
@@ -1775,7 +1792,8 @@ class ad(univention.connector.ucs):
 		ad_members = self.get_ad_members(ad_object['dn'], ldap_object_ad)
 
 		# search for members who have this as their primaryGroup
-		prim_members_ad = self.__search_ad(filter='primaryGroupID=%s' % group_rid)
+		search_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
+		prim_members_ad = self.__search_ad(filter=search_filter)
 
 		for prim_dn, prim_object in prim_members_ad:
 			if prim_dn not in ['None', '', None]:  # filter referrals
