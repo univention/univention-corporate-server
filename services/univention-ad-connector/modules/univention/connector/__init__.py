@@ -561,7 +561,9 @@ class ucs:
 		return dn
 
 	def _decode_dn_from_config_option(self, dn):
-		return dn
+		if dn:
+			return dn
+		return ''
 
 	def _set_dn_mapping(self, dn_ucs, dn_con):
 		_d = ud.function('ldap._set_dn_mapping')
