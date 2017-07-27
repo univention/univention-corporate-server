@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.6-16) unstable; urgency=medium
+
+  * Bug #36480: ad-connector deduplicate UCS LDAP attribute values
+  * Bug #18501: ad-connector: implement diff-mode in `sync_from_ucs()`
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 27 Jul 2017 14:21:29 +0200
+
 univention-ad-connector (11.0.6-15) unstable; urgency=medium
 
   * Bug #41335: prevent starting multiple AD connector instances
