@@ -49,6 +49,7 @@ import univention.connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
+from ldap.filter import escape_filter_chars
 from samba.dcerpc import nbt
 from samba.param import LoadParm
 from samba.net import Net
@@ -636,6 +637,44 @@ def explode_unicode_dn(dn, notypes=0):
 	ret.append(dn[last + 1:])
 
 	return ret
+
+
+class LDAPEscapeFormatter(string.Formatter):
+	"""
+	A custom string formatter that supports a special `e` conversion, to employ
+	the function `ldap.filter.escape_filter_chars()` on the given value.
+
+	>>> LDAPEscapeFormatter().format("{0}", "*")
+	'*'
+	>>> LDAPEscapeFormatter().format("{0!e}", "*")
+	'\\2a'
+
+	Unfortunately this does not support the key/index-less variant
+	(see http://bugs.python.org/issue13598).
+
+	>>> LDAPEscapeFormatter().format("{!e}", "*")
+	Traceback (most recent call last):
+	KeyError: ''
+	"""
+	def convert_field(self, value, conversion):
+		if conversion == 'e':
+			if isinstance(value, basestring):
+				return escape_filter_chars(value)
+			return escape_filter_chars(str(value))
+		return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
+
+
+def format_escaped(format_string, *args, **kwargs):
+	"""
+	Convenience-wrapper arround `LDAPEscapeFormatter`.
+
+	Use `!e` do denote format-field that should be escaped using
+	`ldap.filter.escape_filter_chars()`'
+
+	>>> format_escaped("{0!e}", "*")
+	'\\2a'
+	"""
+	return LDAPEscapeFormatter().format(format_string, *args, **kwargs)
 
 
 class ad(univention.connector.ucs):
