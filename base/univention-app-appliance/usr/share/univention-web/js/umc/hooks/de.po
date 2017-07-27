@@ -29,7 +29,7 @@ msgstr "Erste Schritte Hilfe"
 msgid ""
 "Univention Management Console (UMC) for administrating users, computers, "
 "etc."
-msgstr "Univention Management content (UMC) zur Verwaltung von Benutzern, Computern etc."
+msgstr "Univention Management Console (UMC) zur Verwaltung von Benutzern, Computern etc."
 
 #~ msgid "Hide content next time."
 #~ msgstr "Diesen Inhalt das nächste Mal ausblenden."

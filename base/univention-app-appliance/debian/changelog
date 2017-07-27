@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-33) unstable; urgency=medium
+
+  * Bug #45084: Fix typo on first steps overlay
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 27 Jul 2017 10:46:58 +0200
+
 univention-app-appliance (1.0.2-32) unstable; urgency=medium
 
   * Bug #44523: Configure portal after update from 4.1-x
