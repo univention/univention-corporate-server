@@ -1,0 +1,110 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and delete GPO"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+. /usr/share/univention-lib/ldap.sh
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
+
+gpo_display_name="$(random_chars)"
+
+cleanup() {
+	ucr unset connector/s4/mapping/gpo/ntsd
+	service univention-s4-connector restart
+}
+
+trap cleanup EXIT
+
+ucr set connector/s4/mapping/gpo/ntsd=yes
+service univention-s4-connector restart
+
+# create GPO
+samba-tool gpo create "$gpo_display_name" \
+		-k no \
+		-H ldap://"$hostname.$domainname" \
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
+
+ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
+
+dn=$(sed -n 's/^dn: //p' <<<"$ldif")
+ntsd_orig=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+ntsd_mod1="$ntsd_orig(A;CI;RPLCLORC;;;DU)"
+ntsd_mod2="$ntsd_orig(A;CI;RPLCLORC;;;DU)(A;CI;RPLCLORC;;;PA)"
+
+
+tail -f /var/log/univention/connector-s4.log &
+tail_pid=$!
+cleanup2() {
+	cleanup
+	kill "$tail_pid"
+}
+
+trap cleanup2 EXIT
+
+eval "$(ucr shell connector/s4/poll/sleep)"
+
+for run in $(seq 25 -2 5); do
+	delay=$(python -c "print 0.1*$run")
+
+	echo "Change NTSD"
+	ldbmodify -H /var/lib/samba/private/sam.ldb >/dev/null 2>&1 <<-%EOF
+	dn: $dn
+	changetype: modify
+	replace: nTSecurityDescriptor
+	nTSecurityDescriptor: $ntsd_mod1
+	%EOF
+
+	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
+	# ntsd1=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+
+	echo "Wait $delay"
+	sleep $delay
+
+	echo "Change NTSD again"
+	ldbmodify -H /var/lib/samba/private/sam.ldb >/dev/null 2>&1 <<-%EOF
+	dn: $dn
+	changetype: modify
+	replace: nTSecurityDescriptor
+	nTSecurityDescriptor: $ntsd_mod2
+	%EOF
+
+	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
+	# ntsd2=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+
+	echo "Wait $delay"
+	sleep $delay
+
+
+	echo "Change NTSD back"
+	ldbmodify -H /var/lib/samba/private/sam.ldb >/dev/null 2>&1 <<-%EOF
+	dn: $dn
+	changetype: modify
+	replace: nTSecurityDescriptor
+	nTSecurityDescriptor: $ntsd_orig
+	%EOF
+
+	sleep $(($connector_s4_poll_sleep * 2))
+	ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
+	ntsd3=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+
+	if [ "$ntsd3" != "$ntsd_orig" ]; then
+		fail_fast 110 "NTSD sync inconsistent"
+	fi
+done
+
