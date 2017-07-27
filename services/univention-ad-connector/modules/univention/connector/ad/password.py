@@ -248,9 +248,6 @@ def password_sync_ucs(connector, key, object):
 	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
-	rid = None
-	if 'objectSid' in res[0][1]:
-		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	# Only sync passwords from UCS to AD when the password timestamp in UCS is newer
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
@@ -341,10 +338,6 @@ def password_sync(connector, key, ucs_object):
 	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet, res))
-
-	rid = None
-	if 'objectSid' in res[0][1]:
-		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
