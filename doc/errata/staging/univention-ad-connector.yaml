@@ -3,7 +3,7 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-ad-connector
-fix: 11.0.6-18A~4.2.0.201707271446
+fix: 11.0.6-19A~4.2.0.201707271453
 desc: |
  This update addresses the following issue(s):
  * The AD-Connector skips (re)recreation of UDM deleted objects.
@@ -17,4 +17,5 @@ desc: |
    concurrent modifications.
  * LDAP operations are now correctly escaped in the AD Connector.
  * Fixed errors in the SQLite escaping in the AD Connector.
-bug: [40813, 41619, 45011, 45037, 41335, 36480, 18501, 11658, 38619]
+ * Fixed a deletion problem with nested groups in the AD Connector.
+bug: [40813, 41619, 45011, 45037, 41335, 36480, 18501, 11658, 38619, 18680]
