@@ -39,13 +39,20 @@ samba-tool gpo create "$gpo_display_name" \
 		-k no \
 		-H ldap://"$hostname.$domainname" \
 		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
+UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | sed -ne 's|^cn: ||p')"
+if [ -z "$UDM_container_msgpo_name" ]; then
+	fail_fast 110 "New GPO not found in local Samba Directory service"
+fi
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 0 110
 
+# modify the nTSecurityDescriptor repeatedly with different delays
 ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
 
 dn=$(sed -n 's/^dn: //p' <<<"$ldif")
 ntsd_orig=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
-ntsd_mod1="$ntsd_orig(A;CI;RPLCLORC;;;DU)"
-ntsd_mod2="$ntsd_orig(A;CI;RPLCLORC;;;DU)(A;CI;RPLCLORC;;;PA)"
+ntsd_mod1=$(sed -n 's/)S:AI(/)(A;CI;RPLCLORC;;;DU)S:AI(/p' <<<"$ntsd_orig")
+ntsd_mod2=$(sed -n 's/)S:AI(/)(A;CI;RPLCLORC;;;PA)S:AI(/p' <<<"$ntsd_mod1")
 
 
 tail -f /var/log/univention/connector-s4.log &
@@ -57,10 +64,15 @@ cleanup2() {
 
 trap cleanup2 EXIT
 
-eval "$(ucr shell connector/s4/poll/sleep)"
+DELAY=( $(python -c "for i in range(23, 3, -2): print 0.1*i") )
+MOD="${#DELAY[@]}"
+RANDOM="$SECONDS"
 
-for run in $(seq 25 -2 5); do
-	delay=$(python -c "print 0.1*$run")
+MAX_RUNS=10
+
+for run in $(seq $MAX_RUNS); do
+	echo "===================================================================="
+	echo "RUN $run / $MAX_RUNS"
 
 	echo "Change NTSD"
 	ldbmodify -H /var/lib/samba/private/sam.ldb >/dev/null 2>&1 <<-%EOF
@@ -73,6 +85,7 @@ for run in $(seq 25 -2 5); do
 	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
 	# ntsd1=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
 
+	delay=${DELAY[$(($RANDOM % $MOD))]}
 	echo "Wait $delay"
 	sleep $delay
 
@@ -84,9 +97,15 @@ for run in $(seq 25 -2 5); do
 	nTSecurityDescriptor: $ntsd_mod2
 	%EOF
 
-	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
-	# ntsd2=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
+	ntsd2=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	if [ "$ntsd2" != "$ntsd_mod2" ]; then
+		echo "found   : $ntsd2"
+		echo "expected: $ntsd_mod2"
+		fail_fast 110 "NTSD sync inconsistent"
+	fi
 
+	delay=${DELAY[$(($RANDOM % $MOD))]}
 	echo "Wait $delay"
 	sleep $delay
 
@@ -108,3 +127,12 @@ for run in $(seq 25 -2 5); do
 	fi
 done
 
+# delete GPO
+samba-tool gpo del "$UDM_container_msgpo_name" \
+		-k no \
+		-H ldap://"$hostname.$domainname" \
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 1 110
+
+exit "$RETVAL"
