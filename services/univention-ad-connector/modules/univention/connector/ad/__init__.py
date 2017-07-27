@@ -1823,7 +1823,7 @@ class ad(univention.connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
 						continue
 
-					ucs_dn = self._object_mapping(key, {'dn': member_dn, 'attributes': member_object})['dn']
+					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped ad member to ucs DN %s" % ucs_dn)
 
 					dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
