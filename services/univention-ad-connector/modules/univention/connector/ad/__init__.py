@@ -257,10 +257,9 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 			if dn is None:
 				break
 
-			pos = string.find(dn, '=')
-			pos2 = len(univention.connector.ad.explode_unicode_dn(dn)[0])
-			attrib = dn[:pos]
-			value = dn[pos + 1:pos2]
+			exploded_dn = ldap.dn.str2dn(dn)
+			(_fst_rdn_attribute, fst_rdn_value, _flags) = exploded_dn[0][0]
+			value = fst_rdn_value
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in AD to get corresponding DN, if not found create new
@@ -281,15 +280,16 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				result = connector.lo_ad.search(filter=compatible_modstring(search_filter))
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
-					adpos2 = len(univention.connector.ad.explode_unicode_dn(addn)[0])
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
 						newdn = addn
 					else:
-						addn = addn[:adpos2] + dn[pos2:]
-						newdn = addn.lower().replace(connector.lo_ad.base.lower(), connector.lo.base.lower())
+						newdn_ad_rdn = ldap.dn.str2dn(addn)[0]
+						newdn_ad = ldap.dn.dn2str([newdn_ad_rdn] + exploded_dn[1:])
+						newdn = newdn_ad.lower().replace(connector.lo_ad.base.lower(), connector.lo.base.lower())
 
 				else:
-					newdn = 'cn' + dn[pos:]  # new object, don't need to change
+					newdn_rdn = [('cn', fst_rdn_value, ldap.AVA_STRING)]
+					newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])  # new object, don't need to change
 
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
@@ -315,9 +315,6 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 							raise
 						time.sleep(1)  # AD may need some time...
 
-				pos = string.find(dn, '=')
-				pos2 = len(univention.connector.ad.explode_unicode_dn(dn)[0])
-
 				if connector.property[propertyname].mapping_table and propertyattrib in connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in connector.property[propertyname].mapping_table[propertyattrib]:
 						if samaccountname.lower() == conval.lower():
@@ -342,9 +339,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
 					if dn_attr:
-						newdn = dn_attr + '=' + dn_attr_val + dn[pos2:]  # guess the old dn
+						newdn_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]  # guess the old dn
 					else:
-						newdn = ucsattrib + '=' + samaccountname + dn[pos2:]  # guess the old dn
+						newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]  # guess the old dn
+					newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -352,7 +350,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: dn-print failed")
 
-			object[dn_key] = newdn
+			object[dn_key] = encode_attrib(newdn)
 	return object
 
 
@@ -1927,7 +1925,7 @@ class ad(univention.connector.ucs):
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
-				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				(_attr, uid, _flags) = ldap.dn.str2dn(member)[0][0]
 				memberUid_add.append(uid)
 			for member in add_members['unknown'] + add_members['windowscomputer']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
@@ -1935,7 +1933,7 @@ class ad(univention.connector.ucs):
 				if uid:
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
-				uid = ldap.explode_dn(member)[0].split('=')[-1]
+				(_attr, uid, _flags) = ldap.dn.str2dn(member)[0][0]
 				memberUid_del.append(uid)
 			for member in del_members['windowscomputer']:
 				ucs_object_attr = self.lo.get(member)
