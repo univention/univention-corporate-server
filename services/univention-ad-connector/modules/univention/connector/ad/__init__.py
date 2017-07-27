@@ -267,13 +267,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 				if connector.property[propertyname].mapping_table and propertyattrib in connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in connector.property[propertyname].mapping_table[propertyattrib]:
-						try:
-							if value.lower() == ucsval.lower():
-								value = conval
-								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme regarding to mapping-table")
-								continue
-						except UnicodeDecodeError:
-							pass  # values are not the same codec
+						if value.lower() == ucsval.lower():
+							value = conval
+							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme regarding to mapping-table")
+							continue
 
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in ad samaccountname=%s" % value)
 				search_filter = format_escaped('(&(objectclass={0!e})(samaccountname={1!e}))', ocad, value)
