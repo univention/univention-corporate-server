@@ -2338,12 +2338,20 @@ class ad(univention.connector.ucs):
 			object['new_ucs_object'] = new_ucs_object
 			attribute_list = set(old_ucs_object.keys() + new_ucs_object.keys())
 
+			def find_case_independent(ad_object, attribute):
+				attr = attribute.lower()
+				matching = (v for (k, v) in ad_object.iteritems() if k.lower() == attr)
+				try:
+					values = next(matching)
+				except StopIteration:
+					values = []
+				return set(values)
+
 			# Iterate over attributes and post_attributes
 			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
 					('post_attributes', self.property[property_type].post_attributes)]:
 				if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
 					for attr in attribute_list:
-						value = new_ucs_object.get(attr)
 						if not self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object):
 							continue
 
@@ -2361,8 +2369,6 @@ class ad(univention.connector.ucs):
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attribute)
 								continue
 
-							modify = False
-
 							# Get the UCS attributes
 							old_values = set(old_ucs_object.get(attr, []))
 							new_values = set(new_ucs_object.get(attr, []))
@@ -2370,29 +2376,16 @@ class ad(univention.connector.ucs):
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
 
-							if attribute_type[attribute].compare_function:
-								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
-									modify = True
-							# FIXME: use defined compare-function from mapping.py
-							elif not univention.adconnector.compare_lowercase(list(old_values), list(new_values)):
-								modify = True
-
-							if not modify:
+							compare_function = attribute_type[attribute].compare_function or \
+								univention.connector.compare_lowercase
+							if compare_function(list(old_values), list(new_values)):
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
 								continue
 
 							# So, at this point we have the old and the new UCS object.
 							# Thus we can create the diff, but we have to check the current AD object
-
-							if not old_values:
-								to_add = new_values
-								to_remove = set([])
-							elif not new_values:
-								to_remove = old_values
-								to_add = set([])
-							else:
-								to_add = new_values - old_values
-								to_remove = old_values - new_values
+							to_add = new_values - old_values
+							to_remove = old_values - new_values
 
 							if ad_other_attribute:
 								# This is the case, where we map from a multi-valued UCS attribute to two AD attributes.
@@ -2408,56 +2401,36 @@ class ad(univention.connector.ucs):
 								# to two AD attributes. It also ensures, that the primary AD attribute keeps
 								# its value as long as that value is not removed. If removed the primary
 								# attribute is assigned a random value from the UCS attribute.
-								try:
-									current_ad_values = set([v for k, v in ad_object.iteritems() if ad_attribute.lower() == k.lower()][0])
-								except IndexError:
-									current_ad_values = set([])
-								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
+								current_ad_values = find_case_independent(ad_object, ad_attribute)
+								current_ad_other_values = find_case_independent(ad_object, ad_other_attribute)
 
-								try:
-									current_ad_other_values = set([v for k, v in ad_object.iteritems() if ad_other_attribute.lower() == k.lower()][0])
-								except IndexError:
-									current_ad_other_values = set([])
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD other values: %s" % current_ad_other_values)
 
+								# If we removed the value on the UCS side that was contained in the `ad_attribute`,
+								# but are adding new values, we choose a random value from the new values.
 								new_ad_values = current_ad_values - to_remove
 								if not new_ad_values and to_add:
-									for n_value in new_ucs_object.get(attr, []):
-										if n_value in to_add:
-											to_add = to_add - set([n_value])
-											new_ad_values = [n_value]
-											break
-
+									new_ad_values.add(to_add.pop())
 								new_ad_other_values = (current_ad_other_values | to_add) - to_remove - current_ad_values
-								if current_ad_values != new_ad_values:
-									if new_ad_values:
-										modlist.append((ldap.MOD_REPLACE, ad_attribute, new_ad_values))
-									else:
-										modlist.append((ldap.MOD_REPLACE, ad_attribute, []))
 
+								if current_ad_values != new_ad_values:
+									modlist.append((ldap.MOD_REPLACE, ad_attribute, new_ad_values))
 								if current_ad_other_values != new_ad_other_values:
 									modlist.append((ldap.MOD_REPLACE, ad_other_attribute, new_ad_other_values))
 							else:
-								try:
-									current_ad_values = set([v for k, v in ad_object.iteritems() if ad_attribute.lower() == k.lower()][0])
-								except IndexError:
-									current_ad_values = set([])
-
+								current_ad_values = find_case_independent(ad_object, ad_attribute)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 
 								if (to_add or to_remove) and attribute_type[attribute].single_value:
-									modify = False
-									if not current_ad_values or not value:
-										modify = True
-									elif attribute_type[attribute].compare_function:
-										if not attribute_type[attribute].compare_function(list(current_ad_values), list(value)):
-											modify = True
-									elif not univention.adconnector.compare_lowercase(list(current_ad_values), list(value)):
-										modify = True
+									value = new_ucs_object.get(attr)
+									modify = not current_ad_values or not value or \
+										not compare_function(list(current_ad_values), list(value))
 									if modify:
-										if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
+										mapping = getattr(attribute_type[attribute], 'mapping', ())
+										if len(mapping) > 0 and mapping[0]:
 											ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
-											value = attribute_type[attribute].mapping[0](self, None, object)
+											value = mapping[0](self, None, object)
 										modlist.append((ldap.MOD_REPLACE, ad_attribute, value))
 								else:
 									if to_remove:
