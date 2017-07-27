@@ -78,41 +78,45 @@ class ADConnection(ldap_glue.LDAPConnection):
 			if dn:
 				print dn
 
-	def createuser(self, username, position=None, cn=None, sn=None, description=None):
-		if not position:
-			position = 'cn=users,%s' % self.adldapbase
+	def createuser(self, username, position=None, **attributes):
+		"""
+		Create a AD user with attributes as given by the keyword-args
+		`attributes`. The created user will be populated with some defaults if
+		not otherwise set.
 
-		if not cn:
-			cn = username
+		Returns the dn of the created user.
+		"""
+		cn = attributes.get('cn', username)
+		sn = attributes.get('sn', 'SomeSurName')
 
-		if not sn:
-			sn = 'SomeSurName'
+		new_position = position or 'cn=users,%s' % self.adldapbase
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
 
-		newdn = 'cn=%s,%s' % (cn, position)
+		defaults = (('objectclass', ['top', 'user', 'person', 'organizationalPerson']),
+			('cn', cn), ('sn', sn), ('sAMAccountName', username),
+			('userPrincipalName', '%s@%s' % (username, self.addomain)),
+			('displayName', '%s %s' % (username, sn)))
 
-		attrs = {}
-		attrs['objectclass'] = ['top', 'user', 'person', 'organizationalPerson']
-		attrs['cn'] = cn
-		attrs['sn'] = sn
-		attrs['sAMAccountName'] = username
-		attrs['userPrincipalName'] = '%s@%s' % (username, self.addomain)
-		attrs['displayName'] = '%s %s' % (username, sn)
-		if description:
-			attrs['description'] = description
+		new_attributes = self._set_module_default_attr(attributes, defaults)
+		self.create(new_dn, new_attributes)
+		return new_dn
 
-		self.create(newdn, attrs)
+	def group_create(self, groupname, position=None, **attributes):
+		"""
+		Create a S4 group with attributes as given by the keyword-args
+		`attributes`. The created group will be populated with some defaults if
+		not otherwise set.
 
-	def group_create(self, groupname, position=None, description=None):
-		if not position:
-			position = 'cn=groups,%s' % self.adldapbase
+		Returns the dn of the created group.
+		"""
+		new_position = position or 'cn=groups,%s' % self.adldapbase
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
-		attrs = {}
-		attrs['objectclass'] = ['top', 'group']
-		attrs['sAMAccountName'] = groupname
-		if description:
-			attrs['description'] = description
+		defaults = (('objectclass', ['top', 'group']), ('sAMAccountName', groupname))
 
-		self.create('cn=%s,%s' % (groupname, position), attrs)
+		new_attributes = self._set_module_default_attr(attributes, defaults)
+		self.create(new_dn, new_attributes)
+		return new_dn
 
 	def getprimarygroup(self, user_dn):
 		try:
