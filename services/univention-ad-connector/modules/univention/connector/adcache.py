@@ -31,11 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.debug2 as ud
-import sqlite3
-import inspect
 import base64
-import binascii
+import inspect
+import sqlite3
+
+import univention.debug2 as ud
 
 
 def func_name():
@@ -224,7 +224,7 @@ class ADCache:
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
 		]
 
-		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
+		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id(self, attr):
 		_d = ud.function('ADCache.%s' % func_name())
