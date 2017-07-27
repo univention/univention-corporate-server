@@ -1,3 +1,15 @@
+univention-appcenter (6.0.8-17) unstable; urgency=medium
+
+  * Bug #43847: Vastly improve update performance
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 27 Jul 2017 13:21:22 +0200
+
+univention-appcenter (6.0.8-16) unstable; urgency=medium
+
+  * Bug #43079: Detect Apps as installed during package upgrades
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Jul 2017 17:47:58 +0200
+
 univention-appcenter (6.0.8-15) unstable; urgency=medium
 
   * Bug #44763: Fix forgotten line copy

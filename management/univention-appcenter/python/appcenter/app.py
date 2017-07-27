@@ -1072,7 +1072,7 @@ class App(object):
 					return False
 			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version():
 				return False
-			return packages_are_installed(self.default_packages)
+			return packages_are_installed(self.default_packages, strict=False)
 
 	def is_ucs_component(self):
 		cache = self.get_app_cache_obj()

@@ -35,16 +35,12 @@
 import os
 import os.path
 import shutil
-from math import ceil
 from argparse import SUPPRESS
-import time
-from threading import Thread
 from glob import glob
 from gzip import open as gzip_open
 from json import loads
-import tarfile
-from urlparse import urlsplit
-from urllib2 import quote, Request, HTTPError
+import zlib
+from urllib2 import Request, HTTPError
 
 from univention.config_registry import handler_commit
 
@@ -171,35 +167,33 @@ class Update(UniventionAppAction):
 		self._save_etags(cache, present_etags)
 		return updated
 
+	def _verify_file(self, fname):
+		if not ucr_is_false('appcenter/index/verify'):
+			detached_sig_path = fname + '.gpg'
+			(rc, gpg_error) = gpg_verify(fname, detached_sig_path)
+			if rc:
+				if gpg_error:
+					self.fatal(gpg_error)
+				raise Abort('Signature verification for %s failed' % fname)
+
 	def _download_apps(self, app_cache):
 		filenames = ['index.json.gz']
 		if not ucr_is_false('appcenter/index/verify'):
 			filenames.append('index.json.gz.gpg')
-		self._download_files(app_cache, filenames)
-		json_apps = self._load_index_json(app_cache)
-		files_to_download, something_changed_remotely = self._read_index_json(app_cache.get_cache_dir(), json_apps)
-		num_files_to_be_downloaded = len(files_to_download)
-		self.log('%d file(s) are new' % num_files_to_be_downloaded)
-		num_files_threshold = 5
-		if num_files_to_be_downloaded > num_files_threshold:
-			files_to_download = self._download_archive(app_cache, files_to_download)
-		threads = []
-		max_threads = 10
-		files_per_thread = max(num_files_threshold, int(ceil(float(len(files_to_download)) / max_threads)))
-		while files_to_download:
-			# normally, this should be only one thread as
-			# _download_archive() is used if many files are to be downloaded
-			# but if all.tar.gz fails, everything needs to be downloaded
-			# don't do this at once as this opens 100 connections.
-			files_to_download_in_thread, files_to_download = files_to_download[:files_per_thread], files_to_download[files_per_thread:]
-			self.log('Starting to download %d file(s) directly' % len(files_to_download_in_thread))
-			thread = Thread(target=self._download_directly, args=(app_cache, files_to_download_in_thread,))
-			thread.start()
-			threads.append(thread)
-			time.sleep(0.1)  # wait 100 milliseconds so that not all threads start at the same time
-		for thread in threads:
-			thread.join()
-		return something_changed_remotely
+			filenames.append('all.tar.gpg')
+		if self._download_files(app_cache, filenames):
+			appcenter_host = app_cache.get_server()
+			if appcenter_host.startswith('https'):
+				appcenter_host = 'http://%s' % appcenter_host[8:]
+			all_tar_file = os.path.join(app_cache.get_cache_dir(), '.all.tar')
+			all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
+			self.log('Downloading "%s"...' % all_tar_url)
+			if self._subprocess(['zsync', all_tar_url, '-q', '-o', all_tar_file]).returncode:
+				raise Abort('Failed to download "%s"' % all_tar_url)
+			self._verify_file(all_tar_file)
+			self._extract_archive(app_cache)
+			return True
+		return False
 
 	@possible_network_error
 	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
@@ -221,69 +215,6 @@ class Update(UniventionAppAction):
 		with open(os.path.join(cache_dir, '.%s' % filename), 'wb') as f:
 			f.write(content)
 		return etag
-
-	@possible_network_error
-	def _download_archive(self, app_cache, files_to_download):
-		# a lot of files to download? Do not download them
-		#   one at a time. Download the full archive!
-		files_still_to_download = []
-		archive_url = os.path.join(app_cache.get_server(), 'meta-inf', app_cache.get_ucs_version(), 'all.tar.gz')
-		try:
-			self.log('Downloading "%s"...' % archive_url)
-			# for some reason saving this in memory is flawed.
-			# using StringIO and GZip objects has issues
-			# with "empty" files in tar.gz archives, i.e.
-			# doublets like .png logos
-			with open(os.path.join(app_cache.get_cache_dir(), 'all.tar.gz'), 'wb') as f:
-				f.write(urlopen(archive_url).read())
-			archive = tarfile.open(f.name, 'r:*')
-			try:
-				for filename_url, filename, remote_md5sum in files_to_download:
-					self.debug('Extracting %s' % filename)
-					try:
-						archive.extract(filename, path=app_cache.get_cache_dir())
-						absolute_filename = os.path.join(app_cache.get_cache_dir(), filename)
-						os.chown(absolute_filename, 0, 0)
-						os.chmod(absolute_filename, 0o664)
-						local_md5sum = get_md5_from_file(absolute_filename)
-						if local_md5sum != remote_md5sum:
-							self.warn('Checksum for %s should be %r but was %r! Download manually' % (filename, remote_md5sum, local_md5sum))
-							raise KeyError(filename)
-						self._files_downloaded[filename] = remote_md5sum
-					except KeyError:
-						self.warn('%s not found in archive!' % filename)
-						files_still_to_download.append((filename_url, filename, remote_md5sum))
-			finally:
-				archive.close()
-				os.unlink(f.name)
-			return files_still_to_download
-		except Exception as exc:
-			self.fatal('Could not read "%s": %s' % (archive_url, exc))
-			return files_to_download
-
-	@possible_network_error
-	def _download_directly(self, app_cache, files_to_download):
-		for filename_url, filename, remote_md5sum in files_to_download:
-			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
-			# but dont quote https:// -> https%3A//
-			path = quote(urlsplit(filename_url).path)
-			filename_url = '%s%s' % (app_cache.get_server(), path)
-
-			cached_filename = os.path.join(app_cache.get_cache_dir(), filename)
-
-			self.debug('Downloading %s' % filename_url)
-			try:
-				urlcontent = urlopen(filename_url)
-			except Exception as e:
-				self.fatal('Error downloading %s: %s' % (filename_url, e))
-			else:
-				with open(cached_filename, 'wb') as f:
-					f.write(urlcontent.read())
-				local_md5sum = get_md5_from_file(cached_filename)
-				if local_md5sum != remote_md5sum:
-					self.fatal('Checksum for %s should be %r but was %r! Rather removing this file...' % (filename, remote_md5sum, local_md5sum))
-					os.unlink(cached_filename)
-				self._files_downloaded[filename] = remote_md5sum
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
@@ -349,61 +280,33 @@ class Update(UniventionAppAction):
 			return False
 		self.log('Filling the App Center file cache from our local archive %s!' % local_archive)
 		try:
-			archive = tarfile.open(local_archive, 'r:*')
-		except (tarfile.TarError, IOError) as e:
-			self.warn('Error while reading %s: %s' % (local_archive, e))
+			with gzip_open(local_archive) as zipped_file:
+				archive_content = zipped_file.read()
+				with open(os.path.join(app_cache.get_cache_dir(), '.all.tar'), 'wb') as extracted_file:
+					extracted_file.write(archive_content)
+		except (zlib.error, EnvironmentError) as exc:
+			self.warn('Error while reading %s: %s' % (local_archive, exc))
 			return
-		try:
-			for member in archive.getmembers():
-				filename = member.name
-				if os.path.sep in filename:
-					# just some paranoia
-					continue
-				self.debug('Extracting %s' % filename)
-				archive.extract(filename, path=app_cache.get_cache_dir())
-				self._files_downloaded[filename] = get_md5_from_file(os.path.join(app_cache.get_cache_dir(), filename))
-		finally:
-			archive.close()
+		else:
+			self._extract_archive(app_cache)
 		return True
+
+	def _extract_archive(self, app_cache):
+		self.debug('Extracting archive in %s' % app_cache.get_cache_dir())
+		self.debug('Removing old files...')
+		for fname in glob(os.path.join(app_cache.get_cache_dir(), '*')):
+			try:
+				os.unlink(fname)
+			except EnvironmentError as exc:
+				self.warn('Cannot delete %s: %s' % (fname, exc))
+		all_tar_file = os.path.join(app_cache.get_cache_dir(), '.all.tar')
+		self.debug('Unpacking %s...' % all_tar_file)
+		if self._subprocess(['tar', '-C', app_cache.get_cache_dir(), '-xf', all_tar_file]).returncode:
+			raise Abort('Failed to unpack "%s"' % all_tar_file)
 
 	def _load_index_json(self, app_cache):
 		index_json_gz_filename = os.path.join(app_cache.get_cache_dir(), '.index.json.gz')
-		if not ucr_is_false('appcenter/index/verify'):
-			detached_sig_path = index_json_gz_filename + '.gpg'
-			(rc, gpg_error) = gpg_verify(index_json_gz_filename, detached_sig_path)
-			if rc:
-				if gpg_error:
-					self.fatal(gpg_error)
-				raise Abort('Signature verification for %s failed' % index_json_gz_filename)
+		self._verify_file(index_json_gz_filename)
 		with gzip_open(index_json_gz_filename, 'rb') as fgzip:
 			content = fgzip.read()
 			return loads(content)
-
-	def _read_index_json(self, cache_dir, json_apps):
-		files_to_download = []
-		something_changed = False
-		files_in_json_file = []
-		for appname, appinfo in json_apps.iteritems():
-			for appfile, appfileinfo in appinfo.iteritems():
-				filename = os.path.basename('%s.%s' % (appname, appfile))
-				remote_md5sum = appfileinfo['md5']
-				remote_url = appfileinfo['url']
-				# compare with local cache
-				cached_filename = os.path.join(cache_dir, filename)
-				files_in_json_file.append(cached_filename)
-				local_md5sum = get_md5_from_file(cached_filename)
-				if remote_md5sum != local_md5sum:
-					# ask to re-download this file
-					files_to_download.append((remote_url, filename, remote_md5sum))
-					something_changed = True
-		# remove those files that apparently do not exist on server anymore
-		for cached_filename in glob(os.path.join(cache_dir, '*')):
-			if os.path.basename(cached_filename).startswith('.'):
-				continue
-			if os.path.isdir(cached_filename):
-				continue
-			if cached_filename not in files_in_json_file:
-				self.log('Deleting obsolete %s' % cached_filename)
-				something_changed = True
-				os.unlink(cached_filename)
-		return files_to_download, something_changed

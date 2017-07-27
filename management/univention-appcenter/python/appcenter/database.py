@@ -107,7 +107,7 @@ class DatabaseConnector(object):
 	def install(self):
 		packages = self._get_software_packages()
 		if packages:
-			if packages_are_installed(packages):
+			if packages_are_installed(packages, strict=False):
 				mark_packages_as_manually_installed(packages)
 			else:
 				database_logger.info('Installing/upgrading %s' % ', '.join(packages))
