@@ -1140,7 +1140,8 @@ class simpleLdap(base):
 			properties = self.descriptions
 		for pname, prop in properties.items():
 			if hasattr(prop.syntax, 'checkLdap'):
-				prop.syntax.checkLdap(self.lo, self.info.get(pname))
+				if not self.exists() or self.hasChanged(pname):
+					prop.syntax.checkLdap(self.lo, self.info.get(pname))
 
 	def __prevent_ad_property_change(self):
 		if not _prevent_to_change_ad_properties or not self._is_synced_object():

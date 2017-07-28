@@ -2,10 +2,12 @@ product: ucs
 release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
-src: 
+src: univention-directory-manager-modules
 fix: 
 desc: |
  This update addresses the following issue(s):
  * LDAP-Attributes which are required by their schema are now marked as
    required in UMC.
-bug: [24601]
+ * Some performance optimizations during modification of user and group
+   objects has been done.
+bug: [24601, 37081]
