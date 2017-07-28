@@ -1,3 +1,9 @@
+ucs-test (7.0.23-11) unstable; urgency=low
+
+  * Bug #45090: Fix password change mechanism with LDAP backend
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Jul 2017 11:19:04 +0200
+
 ucs-test (7.0.23-10) unstable; urgency=medium
 
   * Bug #45087: 52_s4connector/139sync_repeated_ntsd_modifications

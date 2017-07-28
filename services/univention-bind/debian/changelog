@@ -1,3 +1,9 @@
+univention-bind (11.0.1-2) unstable; urgency=low
+
+  * Bug #45090: Fix password change mechanism with LDAP backend
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Jul 2017 10:56:49 +0200
+
 univention-bind (11.0.1-1) unstable; urgency=medium
 
   * Execute univention-fix-ucr-dns in univention-bind postinst only if
