@@ -12,4 +12,6 @@ desc: |
    objects has been done.
  * The next free sambaRID is used when only a S4 Connector with IP v6 is part
    of the domain.
-bug: [24601, 37081, 25058]
+ * The error handling during creation of network objects with an invalid
+   netmask has been improved.
+bug: [24601, 37081, 25058, 24828]

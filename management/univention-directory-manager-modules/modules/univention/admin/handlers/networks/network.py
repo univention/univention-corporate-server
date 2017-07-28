@@ -180,7 +180,10 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def stepIp(self):
-		network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
+		try:
+			network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
+		except ValueError as exc:
+			raise univention.admin.uexceptions.valueError(str(exc))
 		if self['nextIp']:
 			# nextIP is already set:
 			#	- check range for actual ip
@@ -253,8 +256,11 @@ class object(univention.admin.handlers.simpleLdap):
 		next_ip_changed = False
 
 		if self.hasChanged('ipRange'):
-			network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
-			ipaddr.IPAddress(self['nextIp'])
+			try:
+				network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
+				ipaddr.IPAddress(self['nextIp'])
+			except ValueError as exc:
+				raise univention.admin.uexceptions.valueError(str(exc))
 			if self['ipRange']:
 				self.sort_ipranges()
 				self['nextIp'] = self['ipRange'][0][0]
