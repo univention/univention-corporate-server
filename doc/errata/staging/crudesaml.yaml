@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: crudesaml
+fix: 1.8.0-1A~4.2.0.201707281058
+desc: |
+ This update addresses the following issue(s):
+ * crudesaml has been updated to version 1.8. This fixes a segmentation
+   fault.
+bug: [45042]
