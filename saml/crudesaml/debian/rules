@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-TAR := crudesaml-1.5.tar.gz
+TAR := crudesaml-1.8.tar.gz
 export DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 export DH_VERBOSE=1
 

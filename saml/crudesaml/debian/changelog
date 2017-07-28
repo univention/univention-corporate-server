@@ -1,3 +1,9 @@
+crudesaml (1.8.0-1) unstable; urgency=medium
+
+  * Bug #45042: upgrade to crudesaml 1.8
+
+ -- Florian Best <best@univention.de>  Fri, 28 Jul 2017 10:54:09 +0200
+
 crudesaml (1.5.0-6) unstable; urgency=low
 
   * Bug #44164: Re-add missing .so link
