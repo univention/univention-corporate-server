@@ -124,6 +124,13 @@ is_ucr_true () {
 	esac
 }
 
+# Bug 44601
+if [ "$(update-alternatives --query nc|sed -nre 's/^Value:\s+//p')" != '/bin/nc.openbsd' ]
+then
+	echo "WARNING: Please install netcat-openbsd for the update to proceed."
+	exit 1
+fi
+
 # Bug #44915:
 echo "Trying to detect if migration to dependency based boot will fail:" >&3
 insserv_problem=0
