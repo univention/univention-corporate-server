@@ -1,3 +1,9 @@
+univention-directory-policy (8.0.0-3) unstable; urgency=medium
+
+  * Bug #40247: handle errors in the joinscript
+
+ -- Florian Best <best@univention.de>  Fri, 28 Jul 2017 15:59:23 +0200
+
 univention-directory-policy (8.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
