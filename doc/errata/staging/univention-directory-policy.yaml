@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-directory-policy
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The join script 20univention-directory-policy now aborts on errors.
+bug: [40247]

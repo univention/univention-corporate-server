@@ -1,6 +1,6 @@
 univention-directory-policy (8.0.0-3) unstable; urgency=medium
 
-  * Bug #40247: handle errors in the joinscript
+  * Bug #40247: let joinscript fail if errors happen
 
  -- Florian Best <best@univention.de>  Fri, 28 Jul 2017 15:59:23 +0200
 

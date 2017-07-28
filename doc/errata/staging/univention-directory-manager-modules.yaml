@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [0, 1]
+version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
-fix: 
+fix: 12.0.18-6A~4.2.0.201707281558
 desc: |
  This update addresses the following issue(s):
  * LDAP-Attributes which are required by their schema are now marked as
