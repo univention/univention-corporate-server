@@ -3,6 +3,8 @@ univention-directory-manager-modules (12.0.18-6) unstable; urgency=medium
   * Bug #24601: LDAP-Attributes which are required by their schema are now
   	marked as required in UMC.
   * Bug #37081 only call checkLdap if the property changed
+  * Bug #25058: S4 Connector instances which only have IPv6 are now detected
+  	as such
 
  -- Florian Best <best@univention.de>  Fri, 28 Jul 2017 15:25:56 +0200
 
