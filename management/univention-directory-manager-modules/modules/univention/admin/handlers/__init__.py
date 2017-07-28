@@ -609,7 +609,7 @@ class simpleLdap(base):
 		if s4connector_present is None:
 			s4connector_present = False
 			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
-			s4connector_present = any(ddn for (ddn, attr) in searchResult if set('aAAARecord', 'aRecord') & set(attr))
+			s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
 		self.s4connector_present = s4connector_present
 
 		if not univention.admin.modules.modules:

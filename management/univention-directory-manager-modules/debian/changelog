@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.18-7) unstable; urgency=medium
+
+  * Bug #25058: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 28 Jul 2017 16:41:32 +0200
+
 univention-directory-manager-modules (12.0.18-6) unstable; urgency=medium
 
   * Bug #24601: LDAP-Attributes which are required by their schema are now
