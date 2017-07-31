@@ -5,7 +5,6 @@
 ##   - univention-appcenter-dev
 ## exposure: dangerous
 
-
 import os
 import os.path
 import re
