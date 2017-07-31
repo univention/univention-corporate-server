@@ -81,15 +81,13 @@ def handler(dn, new, old, command):
 	try:
 		# object was renamed -> save old object
 		if command == "r" and old:
-			f = open(tmpFile, "w+")
-			os.chmod(tmpFile, 0o600)
-			cPickle.dump({"dn": dn, "old": old}, f)
-			f.close()
+			with open(tmpFile, "wb") as fp:
+				os.chmod(tmpFile, 0o600)
+				cPickle.dump({"dn": dn, "old": old}, fp)
 		elif command == "a" and not old:
 			if os.path.isfile(tmpFile):
-				f = open(tmpFile, "r")
-				p = cPickle.load(f)
-				f.close()
+				with open(tmpFile, "rb") as fp:
+					p = cPickle.load(fp)
 				oldObject = p.get("old", {})
 				os.remove(tmpFile)
 	except Exception as e:
