@@ -1,3 +1,9 @@
+crudesaml (1.8.0-2) unstable; urgency=medium
+
+  * Bug #39355: Fix SEGV if no idp config was found
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 31 Jul 2017 13:07:41 +0200
+
 crudesaml (1.8.0-1) unstable; urgency=medium
 
   * Bug #45042: upgrade to crudesaml 1.8

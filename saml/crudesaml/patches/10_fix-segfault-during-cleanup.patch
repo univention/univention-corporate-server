@@ -1,0 +1,49 @@
+diff --git a/pam_saml.c b/pam_saml.c
+index b92f18f..64735f2 100644
+--- a/pam_saml.c
++++ b/pam_saml.c
+@@ -278,7 +278,6 @@ pam_global_context_init(pamh, ac, av)
+ 		}
+ 	}
+ 
+-	int num_of_idps = 0;
+ 	for (i = 0; i < ac; i++) {
+ 		const char *idp;
+ 
+@@ -286,10 +285,11 @@ pam_global_context_init(pamh, ac, av)
+ 			continue;
+ 
+ 		if (access(idp, R_OK) != 0) {
++			error = PAM_OPEN_ERR;
+ 			syslog(LOG_ERR,
+ 			       "Unable to read IdP metadata file \"%s\"", 
+ 			       idp);
+-			continue;
++			goto cleanup;
+ 		}
+ 
+ 		if (lasso_server_add_provider(gctx->lasso_server,
+@@ -300,13 +300,9 @@ pam_global_context_init(pamh, ac, av)
+ 			       "Failed to load metadata from \"%s\"", idp);
+ 			goto cleanup;
+ 		}
+-		num_of_idps++;
++
+ 		syslog(LOG_DEBUG, "Loaded metadata from \"%s\"", idp);
+ 	}
+-	if (!num_of_idps) {
+-		error = PAM_OPEN_ERR;
+-		goto cleanup;
+-	}
+ 
+ 	if ((gctx->uid_attr = strdup(uid_attr)) == NULL) {
+ 		error = PAM_SYSTEM_ERR;
+@@ -324,7 +320,7 @@ pam_global_context_init(pamh, ac, av)
+ 	return gctx;
+ 
+ cleanup:
+-	gctx_cleanup(pamh, &gctx, error);
++	gctx_cleanup(pamh, gctx, error);
+ 	return NULL;
+ }
+ 
