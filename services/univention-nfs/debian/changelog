@@ -1,6 +1,7 @@
 univention-nfs (9.0.0-3) unstable; urgency=low
 
   * Bug #32272: Remove remaining HA support
+  * Bug #33254: Remove port 4660 from firewall
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 28 Jul 2017 15:49:19 +0200
 
