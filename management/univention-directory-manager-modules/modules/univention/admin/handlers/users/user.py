@@ -864,8 +864,20 @@ def posixSecondsToLocaltimeDate(seconds):
 	return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
 
 
+def posixSecondsToDate(seconds):
+	return time.strftime("%Y-%m-%d", time.gmtime(seconds))
+
+
 def posixDaysToDate(days):
-	return time.strftime("%Y-%m-%d", time.gmtime(long(days) * 3600 * 24))
+	return posixSecondsToDate(long(days) * 3600 * 24)
+
+
+def dateToPosixSeconds(iso_date):
+	return calendar.timegm(time.strptime(iso_date, "%Y-%m-%d"))
+
+
+def dateToPosixDays(iso_date):
+	return dateToPosixSeconds(iso_date) / 3600 / 24
 
 
 def sambaWorkstationsMap(workstations):
@@ -1052,7 +1064,7 @@ def unmapKrb5ValidEndToUserexpiry(oldattr):
 def unmapSambaKickoffTimeToUserexpiry(oldattr):
 	if 'sambaKickoffTime' in oldattr:
 		ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0])
-		return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
+		return posixSecondsToDate(oldattr['sambaKickoffTime'][0])
 
 
 def unmapPasswordExpiry(oldattr):
@@ -1970,7 +1982,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('userexpiry'):
 			sambaKickoffTime = ''
 			if self['userexpiry']:
-				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
+				sambaKickoffTime = str(dateToPosixSeconds(self['userexpiry']))
 				ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
 			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
 			if old_sambaKickoffTime != sambaKickoffTime:
@@ -1996,7 +2008,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
 				shadowExpire = '1'
 			elif self['userexpiry']:
-				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
+				shadowExpire = str(dateToPosixDays(self['userexpiry']))
 			elif self['disabled'] == '1':
 				shadowExpire = '1'
 			else:
