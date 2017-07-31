@@ -56,7 +56,6 @@ tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + 
 
 
 def handler(dn, new, old, command):
-
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
 	listener.setuid(0)
@@ -102,7 +101,6 @@ def handler(dn, new, old, command):
 	finally:
 		listener.unsetuid()
 
-	global __exports, __comment_pattern
 	# update exports file
 	fp = open(__exports)
 	new_lines = []
@@ -164,7 +162,6 @@ def handler(dn, new, old, command):
 				univention.debug.debug(
 					univention.debug.LISTENER, univention.debug.ERROR,
 					"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
-
 		finally:
 			listener.unsetuid()
 	else:
@@ -179,7 +176,6 @@ def handler(dn, new, old, command):
 
 
 def clean():
-	global __exports, __comment_pattern
 	# clear exports file
 	fp = open(__exports)
 	new_lines = []
