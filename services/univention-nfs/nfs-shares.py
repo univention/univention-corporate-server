@@ -200,6 +200,4 @@ def clean():
 
 
 def postrun():
-	initscript = '/etc/init.d/nfs-kernel-server'
-	listener.run(initscript, ['nfs-kernel-server', 'start'], uid=0)
-	listener.run(initscript, ['nfs-kernel-server', 'reload'], uid=0)
+	listener.run('/bin/systemctl', ['systemctl', 'reload-or-restart', 'nfs-kernel-server.service'], uid=0)
