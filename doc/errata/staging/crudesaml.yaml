@@ -3,9 +3,11 @@ release: "4.2"
 version: [0, 1]
 scope: ucs_4.2-0-errata4.2-1
 src: crudesaml
-fix: 1.8.0-1A~4.2.0.201707281058
+fix: 1.8.0-2A~4.2.0.201707311310
 desc: |
  This update addresses the following issue(s):
  * crudesaml has been updated to version 1.8. This fixes a segmentation
    fault.
-bug: [45042]
+ * Fix a segmentation fault which happened if the pam module from crudesaml
+   encountered any errors during the loading of identity provider metadata.
+bug: [45042, 39355]
