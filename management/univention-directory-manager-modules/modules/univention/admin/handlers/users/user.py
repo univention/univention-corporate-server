@@ -1364,7 +1364,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
 			self['pwdChangeNextLogin'] = '1'
 		elif self['passwordexpiry']:
-			today = time.strftime('%Y-%m-%d').split('-')
+			today = time.strftime('%Y-%m-%d', time.gmtime()).split('-')
 			expiry = self['passwordexpiry'].split('-')
 			# expiry.reverse()
 			# today.reverse()
