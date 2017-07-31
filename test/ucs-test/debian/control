@@ -462,6 +462,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  univention-appcenter-dev,
  python-lxml,
  python-requests,
+ python-pytest,
  python-cssselect
 Provides: ucs-test-module
 Description: Test scripts to test the app center
