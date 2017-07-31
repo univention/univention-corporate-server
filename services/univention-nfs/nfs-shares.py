@@ -102,14 +102,8 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 	# update exports file
-	fp = open(__exports)
-	new_lines = []
-	for line in fp.readlines():
-		line = line[0:-1]
-		s = __comment_pattern.findall(line)
-		if not s or s[0] != dn:
-			new_lines.append(line)
-	fp.close()
+	lines = _read(lambda match: not match or match.group(1) != dn)
+
 	if new and 'objectClass' in new and 'univentionShareNFS' in new['objectClass']:
 		path = new['univentionSharePath'][0]
 		options = ''
@@ -146,14 +140,12 @@ def handler(dn, new, old, command):
 		for p in permitted:
 			options += ' %s(%s,%s,%s,%s%s)' % (p, read_write, root_squash, sync_mode, subtree, custom_settings)
 
-		new_lines.append('"%s" %s # LDAP:%s' % (path, options, dn))
+		lines.append('"%s" %s # LDAP:%s' % (path, options, dn))
+
+		_write(lines)
 
 		listener.setuid(0)
 		try:
-			fp = open(__exports, 'w')
-			fp.write('\n'.join(new_lines) + '\n')
-			fp.close()
-
 			# object was renamed
 			if not old and oldObject and command == "a":
 				old = oldObject
@@ -165,32 +157,25 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 	else:
-		listener.setuid(0)
-		try:
-			fp = open(__exports, 'w')
-			fp.write('\n'.join(new_lines) + '\n')
-			fp.close()
-
-		finally:
-			listener.unsetuid()
+		_write(lines)
 
 
 def clean():
 	# clear exports file
-	fp = open(__exports)
-	new_lines = []
-	for line in fp.readlines():
-		line = line[0:-1]
-		s = __comment_pattern.findall(line)
-		if not s:
-			new_lines.append(line)
-	fp.close()
+	lines = _read(lambda match: not match)
+	_write(lines)
 
+
+def _read(keep=lambda match: True):
+	with open(__exports) as fp:
+		return [line.strip() for line in fp if keep(__comment_pattern.match(line))]
+
+
+def _write(lines):
 	listener.setuid(0)
 	try:
-		fp = open(__exports, 'w')
-		fp.write('\n'.join(new_lines) + '\n')
-		fp.close()
+		with open(__exports, 'w') as fp:
+			fp.write('\n'.join(lines) + '\n')
 	finally:
 		listener.unsetuid()
 
