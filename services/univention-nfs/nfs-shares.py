@@ -202,9 +202,6 @@ def clean():
 
 
 def postrun():
-	if 'nfsserver/ha/master' in listener.baseConfig and listener.baseConfig['nfsserver/ha/master']:
-		initscript = '/etc/heartbeat/resource.d/nfs-kernel-server'
-	else:
-		initscript = '/etc/init.d/nfs-kernel-server'
+	initscript = '/etc/init.d/nfs-kernel-server'
 	listener.run(initscript, ['nfs-kernel-server', 'start'], uid=0)
 	listener.run(initscript, ['nfs-kernel-server', 'reload'], uid=0)

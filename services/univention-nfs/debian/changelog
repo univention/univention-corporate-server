@@ -1,3 +1,9 @@
+univention-nfs (9.0.0-3) unstable; urgency=low
+
+  * Bug #32272: Remove remaining HA support
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Jul 2017 15:49:19 +0200
+
 univention-nfs (9.0.0-2) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
