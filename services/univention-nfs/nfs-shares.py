@@ -104,41 +104,18 @@ def handler(dn, new, old, command):
 
 	if new and 'objectClass' in new and 'univentionShareNFS' in new['objectClass']:
 		path = new['univentionSharePath'][0]
-		options = ''
-		if new.get('univentionShareNFSSync', [''])[0] == 'async':
-			sync_mode = 'async'
-		else:
-			sync_mode = 'sync'
-
-		if new.get('univentionShareWriteable', [''])[0] == 'yes':
-			read_write = 'rw'
-		else:
-			read_write = 'ro'
-
-		if new.get('univentionShareNFSRootSquash', [''])[0] == 'yes':
-			root_squash = 'root_squash'
-		else:
-			root_squash = 'no_root_squash'
-
-		if new.get('univentionShareNFSSubTree', [''])[0] == 'yes':
-			subtree = 'subtree_check'
-		else:
-			subtree = 'no_subtree_check'
-
-		custom_settings = ""
-		if 'univentionShareNFSCustomSetting' in new:
-			for custom_setting in new['univentionShareNFSCustomSetting']:
-				custom_settings += ",%s" % custom_setting
-
-		if 'univentionShareNFSAllowed' in new:
-			permitted = new['univentionShareNFSAllowed']
-		else:
-			permitted = ['*']
-
-		for p in permitted:
-			options += ' %s(%s,%s,%s,%s%s)' % (p, read_write, root_squash, sync_mode, subtree, custom_settings)
-
-		lines.append('"%s" %s # LDAP:%s' % (path, options, dn))
+		options = [
+			'rw' if new.get('univentionShareWriteable', [''])[0] == 'yes' else 'ro',
+			'root_squash' if new.get('univentionShareNFSRootSquash', [''])[0] == 'yes' else 'no_root_squash',
+			'async' if new.get('univentionShareNFSSync', [''])[0] == 'async' else 'sync',
+			'subtree_check' if new.get('univentionShareNFSSubTree', [''])[0] == 'yes' else 'no_subtree_check',
+		] + new.get('univentionShareNFSCustomSetting', [])
+		lines.append('%s -%s %s # LDAP:%s' % (
+			_exports_escape(path),
+			','.join(options),
+			' '.join(new.get('univentionShareNFSAllowed', ['*'])),
+			dn
+		))
 
 		_write(lines)
 
@@ -176,6 +153,23 @@ def _write(lines):
 			fp.write('\n'.join(lines) + '\n')
 	finally:
 		listener.unsetuid()
+
+
+def _exports_escape(text):
+	r"""
+	Escape path for /etc/exports.
+
+	According to nfs-utils/support/nfs/xio.c:82 xgettok().
+	Bug in parser: r'\134042' double-unescaped '\'
+
+	>>> _exports_escape('foo')
+	'"foo"'
+	>>> _exports_escape('a b')
+	'"a b"'
+	>>> _exports_escape('a"b')
+	'"a\\042b"'
+	"""
+	return '"%s"' % (''.join(r'\%03o' % (ord(c),) if c < ' ' or c == '"' else c for c in text),)
 
 
 def postrun():
