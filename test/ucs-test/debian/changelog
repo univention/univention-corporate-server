@@ -1,3 +1,9 @@
+ucs-test (7.0.23-17) unstable; urgency=medium
+
+  * Bug #44872: Execution bits? (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 31 Jul 2017 23:03:34 +0200
+
 ucs-test (7.0.23-16) unstable; urgency=medium
 
   * Bug #44872: Execution bits?
