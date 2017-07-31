@@ -78,7 +78,6 @@ def handler(dn, new, old, command):
 
 	# write old object to pickle file
 	oldObject = {}
-	oldDn = ""
 	listener.setuid(0)
 	try:
 		# object was renamed -> save old object
@@ -93,7 +92,6 @@ def handler(dn, new, old, command):
 				p = cPickle.load(f)
 				f.close()
 				oldObject = p.get("old", {})
-				oldDn = p.get("dn", {})
 				os.remove(tmpFile)
 	except Exception as e:
 		if os.path.isfile(tmpFile):
