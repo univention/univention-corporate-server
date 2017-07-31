@@ -42,13 +42,19 @@ class SyncedAppcenter(Appcenter):
 
 	def download_index_json(self):
 		self.download('meta-inf/%s/index.json.gz' % self.vv)
+		self.download('meta-inf/%s/all.tar.zsync' % self.vv)
+		self.download('meta-inf/%s/all.tar.gz' % self.vv)
 		if self.vv == '4.2':
 			self.download('meta-inf/4.1/index.json.gz')
+			self.download('meta-inf/4.2/all.tar.zsync')
+			self.download('meta-inf/4.2/all.tar.gz')
 
 	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
+		self.download('meta-inf/%s/all.tar.gpg' % self.vv)
 		if self.vv == '4.2':
 			self.download('meta-inf/4.1/index.json.gz.gpg')
+			self.download('meta-inf/4.1/all.tar.gpg')
 
 	def remove_from_cache(self, f):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
@@ -75,8 +81,12 @@ class SyncedAppcenter(Appcenter):
 	def test_modify_index(self):
 		self.download_index_json()
 		self.download_index_json_gpg()
-		f = '/var/www/meta-inf/%s/index.json' % self.vv
-		call('gunzip %(f)s.gz; echo "foo" >>%(f)s; gzip %(f)s' % {'f': f}, shell=True)
+		ucr = ConfigRegistry()
+		ucr.load()
+		f = '/var/www/meta-inf/%s' % self.vv
+		call('gunzip %(f)s/index.json.gz; echo "foo" >>%(f)s/index.json; gzip %(f)s/index.json' % {'f': f}, shell=True)  # this just so that all.tar gets newly synced. index.json.gz is now irrelevant except for docker image hashes
+		call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
+		call('zsyncmake -z -u %(server)s/meta-inf/%(vv)s/all.tar.gz %(f)s/all.tar -o %(f)s/all.tar.zsync' % {'server': ucr.get('repository/app_center/server'), 'vv': self.vv, 'f': f}, shell=True)
 		res = call('univention-app update', shell=True)
 		if res == 0:
 			fail('_test_modify_index failed')
