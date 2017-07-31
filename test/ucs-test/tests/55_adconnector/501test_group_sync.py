@@ -6,6 +6,8 @@
 ## - univention-ad-connector
 ## bugs:
 ##  - 11658
+## tags:
+##  - skip_admember
 
 import ldap
 import pytest
