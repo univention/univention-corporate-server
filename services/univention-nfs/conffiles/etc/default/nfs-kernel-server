@@ -2,7 +2,7 @@
 
 # Number of servers to start up
 @!@
-nfsdopt="8"
+nfsdopt = configRegistry.get('nfs/nfsd/services', '8')
 if configRegistry.is_false("nfs/nfsd/nfs4"):
 	nfsdopt += " --no-nfs-version 4"
 

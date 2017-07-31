@@ -16,6 +16,12 @@ Description[en]=This option activates the NFSv4 support of the NFS server. In ad
 Type=bool
 Categories=nfs
 
+[nfs/nfsd/services]
+Description[de]=Diese Option legt die Anzahl der NFS-Dienste fest. Standard ist 8.
+Description[en]=This option configures the count of NFS services. Default is 8.
+Type=int
+Categories=nfs
+
 [nfs/create/homesharepath]
 Description[de]=Ist diese Option aktiviert, wird das für einen Benutzer in den Attributen 'Heimatverzeichnisfreigabe' und 'Pfad zum Heimatverzeichnis' festgelegte Heimatverzeichnis durch ein Univention-Directory-Listener-Modul automatisch angelegt.
 Description[en]=If this option is activated, the home directory configured for a user in the attributes 'Home share' and 'Home share path' is automatically created through a Univention Directory Listener module.
