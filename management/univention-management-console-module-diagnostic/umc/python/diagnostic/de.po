@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 14:44+0200\n"
+"POT-Creation-Date: 2017-08-01 14:50+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,6 +16,11 @@ msgstr ""
 #, python-format
 msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:120
+#, python-format
+msgid "- Disk for mountpoint %(mp)s is %(pc)s%% full."
+msgstr "- Festplatte für Moint Point %(mp)s ist %(pc)s%% voll."
 
 #: umc/python/diagnostic/plugins/nameserver.py:46
 msgid "A timeout occurred while reaching the nameserver (is it online?)."
@@ -50,9 +55,17 @@ msgstr ""
 "Aufruf von /usr/lib/univention-server/server_password_change ist "
 "fehlgeschlagen."
 
+#: umc/python/diagnostic/plugins/disk_usage.py:42
+msgid "Check free disk space"
+msgstr "Überprüfe freien Festplatten Platz"
+
 #: umc/python/diagnostic/plugins/check_server_password.py:52
 msgid "Check machine password"
 msgstr "Password für das Rechnerkonto testen"
+
+#: umc/python/diagnostic/plugins/disk_usage.py:43
+msgid "Enough free disk space available."
+msgstr "Außreichend freier Festplatten Platz vorhanden."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:145
 msgid "Fix machine password"
@@ -200,6 +213,10 @@ msgstr "Setze server/password/change=True"
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
+#: umc/python/diagnostic/plugins/disk_usage.py:129
+msgid "Some disks are nearly full:"
+msgstr "Einige Festplatten sind beinahe voll:"
+
 #: umc/python/diagnostic/__init__.py:280
 msgid "Test again"
 msgstr "Erneut testen"
@@ -336,6 +353,32 @@ msgstr ""
 #: umc/python/diagnostic/plugins/check_server_password.py:57
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr ""
+
+#: umc/python/diagnostic/plugins/disk_usage.py:136
+msgid "You have configured some high log levels."
+msgstr "Sie haben erhöhten Detailgrad für Logmeldungen eingestellt."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:115
+msgid "You may want to exchange the hard drive."
+msgstr "Sie können die Festplatte austauschen."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:112
+msgid "You may want to move /var/log to another disk or storage."
+msgstr ""
+"Sie können /var/log auf eine andere Festplatte oder Speicher verschieben."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:114
+msgid "You may want to move the local repository to another server."
+msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:137
+#, python-brace-format
+msgid "You may want to reset them via {ucr}."
+msgstr "Sie können sie per {ucr} zurück setzen."
+
+#: umc/python/diagnostic/plugins/disk_usage.py:110
+msgid "You may want to uninstall software via {appcenter:appcenter}."
+msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:56
 msgid ""
