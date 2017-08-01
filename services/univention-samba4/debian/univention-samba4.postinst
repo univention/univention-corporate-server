@@ -187,7 +187,7 @@ divert_univention_heimdal_service_cfg() {
 
 run_dbcheck() {
 	## run dbcheck on update but backup first.
-	if [ -d /var/lib/samba/private ]; then
+	if ! [ -d /var/lib/samba/private ]; then  # Hmm, well
 		return 0
 	fi
 
