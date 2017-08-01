@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:39+0200\n"
+"POT-Creation-Date: 2017-08-01 15:41+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -147,6 +147,10 @@ msgstr "Überprüfe Rechnernamen auf RFC Konformität"
 msgid "Check join status"
 msgstr "Überprüfe den Zustand des Domänenbeitritts"
 
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:43
+msgid "Check kerberos authenticated DNS updates"
+msgstr "Überprüfe Kerberos authentifizierte DNS Updates"
+
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:44
 msgid "Check local AD database for errors"
 msgstr "Teste die locale AD Datenbank auf Fehler"
@@ -182,6 +186,10 @@ msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
 #: umc/python/diagnostic/plugins/check_ucr_templates.py:51
 msgid "Errors found by `univention-check-templates`."
 msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
+
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:132
+msgid "Errors occured while running `kinit` or `nsupdate`."
+msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
 #: umc/python/diagnostic/plugins/file_permissions.py:57
 msgid "File {path!r} does not exist."
@@ -372,6 +380,10 @@ msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 #: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:45
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
+
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:44
+msgid "No errors occured."
+msgstr "Es traten keine Fehler auf."
 
 #: umc/python/diagnostic/plugins/hostname_check.py:43
 msgid "No non-compliant hostnames found."
@@ -827,6 +839,26 @@ msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 #: umc/python/diagnostic/plugins/disk_usage.py:110
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
+
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:60
+#, python-brace-format
+msgid "`kinit` for principal {princ} with keytab {tab} failed."
+msgstr ""
+"`kinit` für den Principal {princ} mit der Password Tabelle {tab} ist "
+"fehlgeschlagen."
+
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:62
+#, python-brace-format
+msgid "`kinit` for principal {princ} with password file {file} failed."
+msgstr ""
+"`kinit` für den Principal {princ} mit der Password Datei {file} ist "
+"fehlgeschlagen."
+
+#: umc/python/diagnostic/plugins/kerberos_ddns_update.py:73
+#, python-brace-format
+msgid "`nsupdate` existence check for domain {domain} failed."
+msgstr ""
+"`nsupdate` Existenzprüfung für die Domänne {domain} ist fehlgeschlagen."
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:55
 msgid "`samba-tool dbcheck --fix --yes` failed."
