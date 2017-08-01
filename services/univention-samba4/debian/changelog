@@ -1,3 +1,11 @@
+univention-samba4 (5.0.4-1) unstable; urgency=medium
+
+  * Bug #44787: Skip Re-provision of Samba on DC Master and DC Backup
+    if the system already provides the S4-Connector service and sam.ldb
+    and secrets.ldb look functional.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 01 Aug 2017 14:23:00 +0200
+
 univention-samba4 (5.0.3-3) unstable; urgency=low
 
   * Bug #44646: added samba/client/min/protocol,
