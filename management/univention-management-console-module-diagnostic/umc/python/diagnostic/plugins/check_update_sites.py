@@ -31,31 +31,55 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import requests
-import univention.config_registry
+import socket
+import urlparse
 
+import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check for errors with update sites')
-description = _('No new problems were found while connecting to updates sites')
+title = _('Check resolving repository servers')
+description = _('No problems were found while resolving update respositories.')
+links = [{
+	'name': 'sdb',
+	'href': _('http://sdb.univention.de/1298'),
+	'label': _('Univention Support Database - DNS Server on DC does not resolve external names')
+}]
 
 
-def run():
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	description_items = []
-	sites = ucr.get("repository/credentials/Univention Software Repository/uris").split(" ")
-	for site in sites:
-		uri = "https://%s" % (site)
-		code = requests.get(uri).status_code
-		if not code == 200:
-			description_items.append("Errorcode %s during connecting to %s" % (code, uri))
-	if len(description_items) > 0:
-		description = "\n".join(description_items)
-		raise Warning(description)
+def repositories():
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+	if configRegistry.is_true('repository/online', True):
+		yield configRegistry.get('repository/online/server', 'updates.software-univention.de/')
+		yield configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de')
+
+
+def test_resolve(url):
+	parsed = urlparse.urlsplit(url if '//' in url else '//' + url)
+	try:
+		socket.getaddrinfo(parsed.hostname, parsed.scheme)
+	except socket.gaierror:
+		return False
+	return True
+
+
+def unresolvable_repositories():
+	for repository in repositories():
+		if not test_resolve(repository):
+			yield repository
+
+
+def run(_umc_instance):
+	error_descriptions = [_('The following FQDNs were not resolvable:')]
+	unresolvable = list(unresolvable_repositories())
+	if unresolvable:
+		error_descriptions.extend(unresolvable)
+		error_descriptions.append(_('Please see {sdb} for troubleshooting DNS problems.'))
+		raise Warning(description='\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
