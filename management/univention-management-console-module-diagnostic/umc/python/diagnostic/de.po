@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 14:56+0200\n"
+"POT-Creation-Date: 2017-08-01 14:59+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -86,6 +86,15 @@ msgstr "Außreichend freier Festplatten Platz vorhanden."
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:152
+#, python-brace-format
+msgid ""
+"Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more "
+"information."
+msgstr ""
+"{ucs} nicht synchronisierte UCS Objekte und {s4} nicht synchronisierte S4 "
+"Objekte. Weitere Hinweise finden Sie unter {{sdb}}."
+
 #: umc/python/diagnostic/plugins/gateway.py:11
 msgid "Gateway is not reachable"
 msgstr "Gateway ist nicht erreichbar"
@@ -160,6 +169,10 @@ msgstr ""
 msgid "Nameserver(s) are not responsive"
 msgstr "Nameserver sind nicht ansprechbar"
 
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:46
+msgid "No S4 Connector rejects were found."
+msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
+
 #: umc/python/diagnostic/plugins/check_server_password.py:163
 msgid ""
 "Note that password rotation is disabled via the UCR variable server/password/"
@@ -209,6 +222,19 @@ msgstr "Siehe {sdb} für weitere Informationen."
 msgid "Proxy server failure"
 msgstr "Proxy-Server-Fehler"
 
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:45
+msgid "S4 Connector rejects"
+msgstr "Nicht synchronisierte S4 Connector Objekte"
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:166
+#, python-brace-format
+msgid "S4 DN: {s4}, UCS DN: {ucs}"
+msgstr ""
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:163
+msgid "S4 rejected:"
+msgstr "Nicht synchronisierte S4 Objekte:"
+
 #: umc/python/diagnostic/plugins/ssh_connection.py:16
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
@@ -250,6 +276,13 @@ msgstr "Einige Festplatten sind beinahe voll:"
 #: umc/python/diagnostic/__init__.py:280
 msgid "Test again"
 msgstr "Erneut testen"
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:145
+msgid ""
+"The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
+msgstr ""
+"Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
+"Connector."
 
 #: umc/python/diagnostic/plugins/check_join_status.py:41
 msgid "The check for the join status was succsesful."
@@ -395,10 +428,27 @@ msgstr ""
 "dass Authentifikations-Zugangsdaten (falls existierend) korrekt sind und die "
 "ACL's des Proxy-Servers nicht verbieten, Anfragen an %s zu stellen."
 
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:159
+#, python-brace-format
+msgid "UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}"
+msgstr "UCS DN: {ucs}, S4 DN: {s4}, Dateiname: {fn}"
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:156
+msgid "UCS rejected:"
+msgstr "Nicht synchronisierte UCS Objekte:"
+
 #: umc/python/diagnostic/plugins/check_server_password.py:75
 msgid "Unable to fix machine password on {}"
 msgstr ""
 "Nicht im Stande das Password für das Rechnerkonto für {} zu korrigieren."
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:139
+msgid "Univention S4 Connector is not installed."
+msgstr "Univention S4 Connector ist nicht installiert."
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:50
+msgid "Univention Support Database - How to deal with s4-connector rejects"
+msgstr ""
 
 #: umc/python/diagnostic/plugins/check_server_password.py:57
 msgid "Univention Support Database - Manually trigger server password change"
@@ -448,6 +498,17 @@ msgid ""
 "http://sdb.univention.de/content/24/330/en/manually-trigger-server-password-"
 "change.html"
 msgstr ""
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:49
+msgid ""
+"http://sdb.univention.de/content/6/294/en/how-to-deal-with-s4_connector-"
+"rejects.html"
+msgstr ""
+
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:158
+#: umc/python/diagnostic/plugins/connectors4_rejects.py:165
+msgid "not found"
+msgstr "nicht gefunden"
 
 #: umc/python/diagnostic/plugins/package_status.py:28
 msgid "some"
