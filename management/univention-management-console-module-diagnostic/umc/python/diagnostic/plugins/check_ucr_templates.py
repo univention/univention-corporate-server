@@ -28,51 +28,34 @@
 #
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, seG
+# /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
 
-from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical
+import subprocess
+from univention.management.console.modules.diagnostic import Warning
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check for blocked ucr templates')
-description = _('No problems found with blocked ucr templates')
+title = _('Check for modified UCR templates')
+description = _('No problems found with modified UCR templates')
 
 
-def run():
-	ucr.load()
+def run(_umc_instance):
+	cmd = ['univention-check-templates']
 	try:
-		process = Popen(["univention-check-templates"], stdout=PIPE, stderr=STDOUT)
-		stdout, stderr = process.communicate()
-		if process.returncode:
-			description = _("Calling 'univention-check-templates failed")
-			raise Critical("\n".join([
-				description,
-				"Returncode of process: %s" % (process.returncode),
-				"stderr: %s" % (stderr)
-			]))
-		if stdout == "":
-			return
-		else:
-			description = _("Error from 'univention-check-templates' returned.")
-			raise Critical("\n".join([
-				description,
-				"Stdout: %s" % (stdout),
-				"Stderr: %s" % (stderr)
-			]))
-	except Critical:
-		raise
-	except Exception as ex:
-		description = _("Unknown problem during check of 'univention-check-templates")
-		raise Critical('\n'.join([
-			description,
-			"Exception-Type: %s" % (ex.__class__),
-			"Exception-Message: %s" % (ex.message)
-		]))
+		subprocess.check_output(cmd)
+	except subprocess.CalledProcessError as error:
+		error_description = [
+			_('Errors found by `univention-check-templates`.'),
+			_('The following UCR files are modified locally.'),
+			_('Updated versions will be named FILENAME.dpkg-*.'),
+			_('The files should be checked for differences.'),
+		]
+		if error.output:
+			error_description.extend(('\n\n', error.output))
+		raise Warning(' '.join(error_description))
 
 
 if __name__ == '__main__':
