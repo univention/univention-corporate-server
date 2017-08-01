@@ -1,3 +1,31 @@
+univention-management-console-module-diagnostic (3.0.1-6) unstable; urgency=medium
+
+  * Bug #35858: umc-diagnostic: pass umc-instance into check plugins
+  * Bug #35858: umc-diagnostic: new check_server_password
+  * Bug #35859: ucm-diagnostic: new check disk_usage.py
+  * Bug #36748: umc-diagnostic: new check check_join_status
+  * Bug #35859: ucm-diagnostic: new check heimdal_on_samba4_dc
+  * Bug #35865: umc-diagnostic: new connector_s4_rejects
+  * Bug #36012: umc-diagnostic: new check hostame_check.py
+  * Bug #36748: umc-diagnostic: add python-pyasn1 as dependency
+  * Bug #36748: umc-diagnostic: new check kdc_service
+  * Bug #37628: umc-diagnostic: new check check_update_sites
+  * Bug #38238: umc-diagnostic: new check well_known_sid_check.py
+  * Bug #38974: umc-diagnostic: new check sources_list_check.py
+  * Bug #40227: umc-diagnostic: new check file_permissions.py
+  * Bug #40228: umc-diagnostic: new check certificate_check.py
+  * Bug #40393: umc-diagnostic: new check check_nameserver.py
+  * Bug #40465: umc-diagnostic: add python-pexpect
+  * Bug #40465: umc-diagnostic: new check mail_acl_sync.py
+  * Bug #40605: umc-diagnostic: new check samba_tool_dbcheck.py.
+  * Bug #44874: umc-diagnostic: new check check_ucr_templates.py.
+  * Bug #44875: umc-diagnostic: new check check_notifier_replication.py.
+  * Bug #44876: umc-diagnostic: new check samba_tool_sysvolcheck.py
+  * Bug #44881: umc-diagnostic: new check samba_tool_showrepl.py
+  * Bug #44902: umc-diagnostic: new check kerberos_ddns_update.py
+
+ -- Lukas Oyen <oyen@univention.de>  Tue, 01 Aug 2017 16:02:45 +0200
+
 univention-management-console-module-diagnostic (3.0.1-5) unstable; urgency=medium
 
   * Bug #36750: fix set proxy server without port
