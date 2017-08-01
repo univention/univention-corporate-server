@@ -1,0 +1,29 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console-module-diagnostic
+fix: 3.0.1-6A~4.2.0.201708011610
+desc: |
+ This update addresses the following issue(s):
+ * Add new check_server_password.
+ * Add new check disk_usage.
+ * Add new check check_join_status.
+ * Add new check heimdal_on_samba4_dc.
+ * Add new connector_s4_rejects.
+ * Add new check hostame_check.
+ * Add new check kdc_service.
+ * Add new check check_update_sites.
+ * Add new check well_known_sid_check.
+ * Add new check sources_list_check.
+ * Add new check file_permissions.
+ * Add new check certificate_check.
+ * Add new check check_nameserver.
+ * Add new check mail_acl_sync.
+ * Add new check samba_tool_dbcheck.
+ * Add new check check_ucr_templates.
+ * Add new check check_notifier_replication.
+ * Add new check samba_tool_sysvolcheck.
+ * Add new check samba_tool_showrepl.
+ * Add new check kerberos_ddns_update.
+bug: [35858, 35859, 35860, 35863, 35865, 36012, 36748, 37628, 38238, 38974, 40227, 40228, 40393, 40465, 40605, 44874, 44875, 44876, 44881, 44902]
