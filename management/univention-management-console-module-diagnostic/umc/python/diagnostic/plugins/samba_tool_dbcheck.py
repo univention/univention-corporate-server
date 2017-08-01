@@ -31,9 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from subprocess import Popen, PIPE, STDOUT
+import ldap
+import socket
+import subprocess
 
-from univention.management.console.modules.diagnostic import Critical
+import univention.uldap
+from univention.management.console.modules.diagnostic import Critical, ProblemFixed
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -42,11 +45,75 @@ title = _('Check local AD database for errors')
 description = _('No errors found.'),
 
 
-def run():
-	process = Popen(['samba-tool', 'dbcheck'], stdout=PIPE, stderr=STDOUT)
-	stdout, stderr = process.communicate()
-	if process.returncode:
-		raise Critical('\n'.join([description, '', stdout]))
+def run_samba_tool_dbcheck_fix(umc_instance):
+	if not is_service_active('Samba 4'):
+		return
+
+	cmd = ['samba-tool', 'dbcheck', '--fix', '--yes']
+	(success, output) = run_with_output(cmd)
+	if success:
+		fix_log = [_('`samba-tool dbcheck --fix --yes` failed.')]
+	else:
+		fix_log = [_('`samba-tool dbcheck --fix --yes` succeeded.')]
+	fix_log.append(output)
+	run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
+
+
+actions = {
+	'run_samba_tool_dbcheck_fix': run_samba_tool_dbcheck_fix
+}
+
+
+def is_service_active(service):
+	lo = univention.uldap.getMachineConnection()
+	raw_filter = '(&(univentionService=%s)(cn=%s))'
+	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
+	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
+		if dn is not None:
+			return True
+	return False
+
+
+def run_with_output(cmd):
+	output = list()
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	(stdout, stderr) = process.communicate()
+	if stdout:
+		output.append('\nSTDOUT:\n{}'.format(stdout))
+	if stderr:
+		output.append('\nSTDERR:\n{}'.format(stderr))
+	return (process.returncode == 0, '\n'.join(output))
+
+
+def run(_umc_instance, rerun=False, fix_log=''):
+	if not is_service_active('Samba 4'):
+		return
+
+	error_descriptions = list()
+	if rerun and fix_log:
+		error_descriptions.append(fix_log)
+
+	buttons = [{
+		'action': 'run_samba_tool_dbcheck_fix',
+		'label': _('Run `samba-tool dbcheck --fix --yes`'),
+	}]
+
+	cmd = ['samba-tool', 'dbcheck']
+	(success, output) = run_with_output(cmd)
+	if not success:
+		error = _('`samba-tool dbcheck` returned a problem with the local AD database.')
+		error_descriptions.append(error)
+		error_descriptions.append(output)
+		if not rerun:
+			fix = _('You can run `samba-tool dbcheck --fix` to fix the issue.')
+			error_descriptions.append(fix)
+		raise Critical(description='\n'.join(error_descriptions), buttons=buttons)
+
+	if rerun:
+		fixed = _('`samba-tool dbcheck` found no problems with the local AD database.')
+		error_descriptions.append(fixed)
+		error_descriptions.append(output)
+		raise ProblemFixed(description='\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
