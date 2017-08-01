@@ -39,34 +39,25 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check join status')
 description = _('The check for the join status was succsesful.')
+links = [{
+	'name': 'erroranalysis',
+	'href': _('http://docs.software-univention.de/manual.html#domain:listenernotifier:erroranalysis'),
+	'label': _('Manual: Analysis of listener/notifier problems')
+}]
+umc_modules = [{'module': 'join'}]
 
 
-def run():
-	try:
-		process = Popen(['univention-check-join-status'], stdout=PIPE, stderr=STDOUT)
-		if process.returncode:
-			description = _('Call of "univention-check-join-status failed')
-			raise Critical('\n'.join([
-				description,
-				"Returncode of process: %s" % (process.returncode)
-			]))
-		stdout, stderr = process.communicate()
-		if "Joined successfully" not in stdout:
-			description = _('"univention-check-join-status" returned a problem with domain join.')
-			raise Critical('\n'.join([
-				description,
-				"stdout: %s" % (stdout),
-				"stderr: %s" % (stderr)
-			]))
-	except Critical:
-		raise
-	except Exception as ex:
-		description = _('Problem with plugin check_join_status.py.')
-		raise Critical('\n'.join([
-			description,
-			"Exception-Type: %s" % (ex.__class__),
-			"Exception-Message: %s" % (ex.message)
-		]))
+def run(_umc_instance):
+	process = Popen(['univention-check-join-status'], stdout=PIPE, stderr=STDOUT)
+	(stdout, stderr) = process.communicate()
+	if process.returncode != 0:
+		errors = [_('"univention-check-join-status" returned a problem with the domain join.')]
+		if stdout:
+			errors.append("\nSTDOUT:\n{}".format(stdout))
+		if stderr:
+			errors.append("\nSTDERR:\n{}".format(stderr))
+		errors.append(_('See {erroranalysis} or run the join-scripts via {join}.'))
+		raise Critical(description='\n'.join(errors))
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
