@@ -125,7 +125,7 @@ def check_existence_and_consistency():
 		except KeyError as error:
 			yield SIDNotFound(error.message, expected_name)
 		else:
-			if actual_name != expected_name:
+			if actual_name.lower() != expected_name.lower():
 				yield NameMismatch(sid, expected_name, actual_name)
 
 
