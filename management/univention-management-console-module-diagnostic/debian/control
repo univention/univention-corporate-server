@@ -21,6 +21,7 @@ Depends: ${misc:Depends},
  python-openssl,
  python-dateutil,
  python-requests,
+ python-pexpect,
  python-paramiko
 Description: System Diagnosis UMC module
  .
