@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:21+0200\n"
+"POT-Creation-Date: 2017-08-01 15:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -55,6 +55,10 @@ msgstr "Alle SSL Zertifikate sind gültig."
 #: umc/python/diagnostic/plugins/sources_list_check.py:43
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:49
+msgid "All nameserver entries are ok."
+msgstr "Alle Nameserver Einträge sind in Ordnung."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:150
 msgid "Authentication against the local LDAP failed with the machine password."
@@ -111,6 +115,10 @@ msgstr "Überprüfe den Zustand des Domänenbeitritts"
 msgid "Check machine password"
 msgstr "Password für das Rechnerkonto testen"
 
+#: umc/python/diagnostic/plugins/check_nameservers.py:48
+msgid "Check nameserver entries on DNS zones"
+msgstr "Überprüfe die Nameserver Einträge der DNS Zonen"
+
 #: umc/python/diagnostic/plugins/check_update_sites.py:43
 msgid "Check resolving repository servers"
 msgstr "Überprüfe DNS Auflösung der Repository Server"
@@ -145,6 +153,11 @@ msgstr ""
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
+#: umc/python/diagnostic/plugins/check_nameservers.py:217
+msgid "Found errors in the nameserver entries of the following zones."
+msgstr ""
+"Es wurden Fehler in den Nameserver Einträgen der folgenden Zonen gefunden."
+
 #: umc/python/diagnostic/plugins/sources_list_check.py:59
 msgid "Found exception in {path!r}: {exception}"
 msgstr "Fehler in {path!r} gefunden: {exception}"
@@ -153,6 +166,11 @@ msgstr "Fehler in {path!r} gefunden: {exception}"
 msgid "Found expired certificate {path!r}."
 msgstr "Abgelaufenes Zertifikat {path!r} gefunden."
 
+#: umc/python/diagnostic/plugins/check_nameservers.py:78
+#, python-brace-format
+msgid "Found illegal alias record (CNAME record) for nameserver {ns}."
+msgstr "Ungültiger Alias-Record (CNAME record) für Namenserver {ns} gefunden."
+
 #: umc/python/diagnostic/plugins/certificate_check.py:103
 msgid ""
 "Found invalid certificate {path!r}:\n"
@@ -160,6 +178,11 @@ msgid ""
 msgstr ""
 "Ungültiges Zertifikat {path!r} gefunden:\n"
 "{message}"
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:72
+#, python-brace-format
+msgid "Found no host record (A/AAAA record) for nameserver {ns}."
+msgstr "Kein Host-Record (A/AAAA record) für Namenserver {ns} gefunden."
 
 #: umc/python/diagnostic/plugins/certificate_check.py:87
 msgid "Found not yet valid certificate {path!r}."
@@ -195,6 +218,16 @@ msgstr ""
 msgid "If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
 "Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:220
+#, python-brace-format
+msgid "In forward zone {name} (see {{{link}}}):"
+msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:221
+#, python-brace-format
+msgid "In reverse zone {name} (see {{{link}}}):"
+msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
 
 #: umc/python/diagnostic/plugins/security_limits.py:19
 #, python-brace-format
@@ -313,6 +346,11 @@ msgstr ""
 #, python-brace-format
 msgid "Please refer to {rfc1123} for the syntax of host names."
 msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:218
+#, python-brace-format
+msgid "Please refer to {sdb} for further information."
+msgstr "Siehe {sdb} für weitere Informationen."
 
 #: umc/python/diagnostic/plugins/ssh_connection.py:56
 #, python-format
@@ -596,6 +634,10 @@ msgstr ""
 msgid "Univention S4 Connector is not installed."
 msgstr "Univention S4 Connector ist nicht installiert."
 
+#: umc/python/diagnostic/plugins/check_nameservers.py:53
+msgid "Univention Support Database - Bind: zone transfer failed"
+msgstr ""
+
 #: umc/python/diagnostic/plugins/check_update_sites.py:48
 msgid ""
 "Univention Support Database - DNS Server on DC does not resolve external "
@@ -663,6 +705,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/certificate_check.py:56
 msgid "http://sdb.univention.de/1183"
 msgstr "http://sdb.univention.de/1000"
+
+#: umc/python/diagnostic/plugins/check_nameservers.py:52
+msgid "http://sdb.univention.de/1273"
+msgstr ""
 
 #: umc/python/diagnostic/plugins/check_update_sites.py:47
 msgid "http://sdb.univention.de/1298"
