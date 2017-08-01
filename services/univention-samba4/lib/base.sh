@@ -150,24 +150,59 @@ disable_slapd_on_standard_port() {
 	sleep 1
 }
 
+is_ucs_school_domain() {
+	local ldif
+
+	ldif=$(univention-ldapsearch -LLL \
+		"(univentionService=UCS@school)" \
+		dn)
+
+	grep -q "^dn: " <<<"$ldif"
+}
+
 get_available_s4connector_dc() {
+	local s4cldapbase
+	local s4cldapfilter
+	local OU
+	local ldif
 	local s4connector_dc
-	local s4connector_dc_candidates
-	s4connector_dc=()
-	s4connector_dc_candidates=$(univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
-	if univention-ldapsearch -LLL univentionservice=UCS@school dn | grep -q ^dn; then
-		for dc in "${s4connector_dc_candidates[@]}"; do
-			if samba-tool drs showrepl "$dc" >/dev/null 2>&1; then
-				s4connector_dc+=( "$dc" )
+	local s4connector_dc_array
+
+	eval "$(ucr shell ldap/base ldap/hostdn)"
+
+	s4cldapbase="$ldap_base"
+	s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController))"
+	if is_ucs_school_domain; then
+		if [ -f /usr/share/ucs-school-lib/base.sh ]; then
+			. /usr/share/ucs-school-lib/base.sh
+			OU=$(school_ou "$ldap_hostdn")
+			if [ -z "$OU" ]; then
+				## We are in a central school department, ignore all S4 SlavePDC:
+				s4cldapfilter="(&(!(univentionService=S4 SlavePDC))(univentionService=S4 Connector)(objectClass=univentionDomainController))"
+				## or alternatively, defacto this should give the same result:
+				## s4cldapfilter="(&(univentionService=S4 Connector)(univentionServerRole=master)(univentionServerRole=backup))"
+			else
+				## We are in a central school department
+				s4cldapbase=$(school_dn "$ldap_hostdn")
 			fi
-			if [ "${#s4connector_dc[@]}" -gt 1 ]; then
-				echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc_candidates" 1>&2
-				return 1	## this is fatal
-			fi
-		done
-	else
-		s4connector_dc="$s4connector_dc_candidates"
+		else
+			echo "ERROR: We are joining to an UCS@school domain but shell-ucs-school is not installed" 1>&2
+			echo "ERROR: Make shure that UCS@school metapackages are installed properly" 1>&2
+			return 1	## this is fatal
+		fi
 	fi
+
+	ldif=$(univention-ldapsearch -b "$s4cldapbase" \
+		-LLLo ldif-wrap=no \
+		"$s4cldapfilter" cn)
+	s4connector_dc=$(sed -n 's/^cn: \(.*\)/\1/p' <<<"$ldif")
+
+	s4connector_dc_array=( $s4connector_dc )
+	if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
+		echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc" 1>&2
+		return 1	## this is fatal
+	fi
+
 	echo "$s4connector_dc"
 }
 
