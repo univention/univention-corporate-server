@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:36+0200\n"
+"POT-Creation-Date: 2017-08-01 15:39+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -110,6 +110,10 @@ msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 #: umc/python/diagnostic/plugins/mail_acl_sync.py:50
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
+
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:54
+msgid "Check Samba replication status for errors"
+msgstr "Überprüfe den Samba Replikations Status"
 
 #: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:44
 msgid "Check Samba sysvol ACLs for errors"
@@ -291,6 +295,10 @@ msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
 
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:123
+msgid "In {nc!r}: error during DRS replication from {source}."
+msgstr "In {nc!r}: Fehler während der DRS Replikation von {source}."
+
 #: umc/python/diagnostic/plugins/security_limits.py:19
 #, python-brace-format
 msgid ""
@@ -360,6 +368,7 @@ msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:45
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:55
 #: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:45
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
@@ -836,6 +845,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:104
 msgid "`samba-tool dbcheck` returned a problem with the local AD database."
 msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
+
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:147
+msgid "`samba-tool drs showrepl` returned a problem with the replication."
+msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
 #: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:77
 msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
