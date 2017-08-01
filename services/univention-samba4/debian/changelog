@@ -1,3 +1,9 @@
+univention-samba4 (5.0.4-2) unstable; urgency=medium
+
+  * Bug #45111: Don't remove /var/lib/samba in the uinst script
+
+ -- Arvid Requate <requate@univention.de>  Tue, 01 Aug 2017 14:25:14 +0200
+
 univention-samba4 (5.0.4-1) unstable; urgency=medium
 
   * Bug #45111: Skip Re-provision of Samba on DC Master and DC Backup
