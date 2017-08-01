@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 14:50+0200\n"
+"POT-Creation-Date: 2017-08-01 14:54+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,6 +11,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/python/diagnostic/plugins/check_join_status.py:54
+msgid ""
+"\"univention-check-join-status\" returned a problem with the domain join."
+msgstr ""
+"\"univention-check-join-status\" gab einen Fehler mit dem Domänenbeitritt "
+"zurück."
 
 #: umc/python/diagnostic/plugins/nameserver.py:15
 #, python-format
@@ -58,6 +65,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
+
+#: umc/python/diagnostic/plugins/check_join_status.py:40
+msgid "Check join status"
+msgstr "Überprüfe den Zustand des Domänenbeitritts"
 
 #: umc/python/diagnostic/plugins/check_server_password.py:52
 msgid "Check machine password"
@@ -130,6 +141,10 @@ msgstr ""
 "Stellen Sie sicher, dass die Hardware des Gateway-Geräts korrekt "
 "funktioniert."
 
+#: umc/python/diagnostic/plugins/check_join_status.py:45
+msgid "Manual: Analysis of listener/notifier problems"
+msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
+
 #: umc/python/diagnostic/plugins/package_status.py:15
 msgid ""
 "More information about the cause can be gained by executing \"dpkg --audit\"."
@@ -198,6 +213,13 @@ msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 msgid "Security limits exceeded"
 msgstr "Sicherheitslimits überschritten"
 
+#: umc/python/diagnostic/plugins/check_join_status.py:59
+#, python-brace-format
+msgid "See {erroranalysis} or run the join-scripts via {join}."
+msgstr ""
+"Siehe {erroranalysis} oder führen Sie ausstehende JOIN-Skripte via {join} "
+"aus."
+
 #: umc/python/diagnostic/plugins/check_server_password.py:167
 #, python-brace-format
 msgid "See {sdb} for information on manual server password change."
@@ -220,6 +242,10 @@ msgstr "Einige Festplatten sind beinahe voll:"
 #: umc/python/diagnostic/__init__.py:280
 msgid "Test again"
 msgstr "Erneut testen"
+
+#: umc/python/diagnostic/plugins/check_join_status.py:41
+msgid "The check for the join status was succsesful."
+msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
 
 #: umc/python/diagnostic/plugins/ssh_connection.py:52
 msgid ""
@@ -379,6 +405,14 @@ msgstr "Sie können sie per {ucr} zurück setzen."
 #: umc/python/diagnostic/plugins/disk_usage.py:110
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
+
+#: umc/python/diagnostic/plugins/check_join_status.py:44
+msgid ""
+"http://docs.software-univention.de/manual.html#domain:listenernotifier:"
+"erroranalysis"
+msgstr ""
+"http://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
+"erroranalysis"
 
 #: umc/python/diagnostic/plugins/check_server_password.py:56
 msgid ""
