@@ -1,3 +1,9 @@
+ucs-test (7.0.23-19) unstable; urgency=medium
+
+  * Bug #40228: add test case which runs every diagnostic check
+
+ -- Florian Best <best@univention.de>  Tue, 01 Aug 2017 19:16:01 +0200
+
 ucs-test (7.0.23-18) unstable; urgency=medium
 
   * Bug #45101: Fix and move nfs options test 
