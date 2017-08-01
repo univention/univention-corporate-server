@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 14:54+0200\n"
+"POT-Creation-Date: 2017-08-01 14:56+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -61,6 +61,10 @@ msgid "Calling /usr/lib/univention-server/server_password_change failed."
 msgstr ""
 "Aufruf von /usr/lib/univention-server/server_password_change ist "
 "fehlgeschlagen."
+
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:46
+msgid "Check Heimdal KDC on Samba 4 DC"
+msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
@@ -208,6 +212,10 @@ msgstr "Proxy-Server-Fehler"
 #: umc/python/diagnostic/plugins/ssh_connection.py:16
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
+
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:47
+msgid "Samba 4 KDC running."
+msgstr "Samba 4 KDC läuft."
 
 #: umc/python/diagnostic/plugins/security_limits.py:14
 msgid "Security limits exceeded"
@@ -360,6 +368,22 @@ msgstr ""
 "an Samba-Servern unmöglich, Dateioperationen (Kopieren, Verschieben) auf "
 "Freigaben kann fehlschlagen, uvm.)"
 
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:87
+msgid ""
+"This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`."
+msgstr ""
+"Dies ist ein Samba 4 DC, aber `samba-tool processes` zeigt keinen "
+"`kdc_server` an."
+
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:88
+msgid "This may be, because Heimdal KDC seems to be running."
+msgstr "Dies mag daher kommen, dass Heimdal KDC läuft."
+
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:89
+msgid "This may be, because `kerberos/autostart` is not disabled."
+msgstr ""
+"Dies mag daher kommen, dass `kerberos/autostart` nicht deaktiviert ist."
+
 #: umc/python/diagnostic/plugins/proxy.py:85
 #, python-format
 msgid ""
@@ -401,6 +425,11 @@ msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 #, python-brace-format
 msgid "You may want to reset them via {ucr}."
 msgstr "Sie können sie per {ucr} zurück setzen."
+
+#: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:90
+#, python-brace-format
+msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
+msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 
 #: umc/python/diagnostic/plugins/disk_usage.py:110
 msgid "You may want to uninstall software via {appcenter:appcenter}."
