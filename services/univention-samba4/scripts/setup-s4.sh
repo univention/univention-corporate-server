@@ -198,8 +198,46 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
+provision_is_ok() {
+	local client_kvno
+	local server_kvno
 
-start_provision() {
+	if ! [ -r /var/lib/samba/private/secrets.ldb ]; then
+		return 1
+	fi
+
+	if ! [ -r /var/lib/samba/private/sam.ldb ]; then
+		return 1
+	fi
+
+	client_kvno=$(ldbsearch -H /var/lib/samba/private/secrets.ldb -b "flatname=$windows_domain,cn=Primary Domains" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+
+	server_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(sAMAccountName=$hostname$)" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+
+	if [ "$client_kvno" != "$server_kvno" ]; then
+		return 1
+	fi
+}
+
+skip_reprovision() {
+	if [ "$server_role" == "domaincontroller_slave" ]; then
+		return 1	## allow reprovision
+	fi
+
+	s4connector_dc=$(get_available_s4connector_dc)
+	if [ -n "$s4connector_dc" ] && [ "$s4connector_dc" != "$hostname" ]; then
+		return 1	## allow reprovision
+	fi
+
+	if ! provision_is_ok; then
+		return 1	## allow reprovision
+	fi
+
+	echo "INFO: This system runs the S4-Connector and the sam.ldb looks functional"
+	echo "      skipping re-provision."
+}
+
+run_samba_domain_provision() {
 	samba-tool domain provision \
 	    --realm="$kerberos_realm" \
 	    --domain="$windows_domain" \
@@ -225,13 +263,13 @@ then
 	if [ -z "$DOMAIN_SID" ]; then
 		# No SID for this windows/domain has been generated
 		DOMAIN_SID="$(univention-newsid)"
-	fi
-
-	start_provision
-
-	if ! ldbsearch -H "$samba_sam" -b "$samba4_ldap_base" -s base dn 2>/dev/null| grep -qi ^"dn: $samba4_ldap_base"; then
-		echo "Samba4 provision failed, exiting $0"
-		exit 1
+		cleanup_var_lib_samba
+		run_samba_domain_provision
+	else
+		if ! skip_reprovision; then
+			cleanup_var_lib_samba
+			run_samba_domain_provision
+		fi
 	fi
 
 else
