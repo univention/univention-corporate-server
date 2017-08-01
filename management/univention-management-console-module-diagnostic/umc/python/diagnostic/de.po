@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:02+0200\n"
+"POT-Creation-Date: 2017-08-01 15:05+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -34,6 +34,10 @@ msgid "A timeout occurred while reaching the nameserver (is it online?)."
 msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
+
+#: umc/python/diagnostic/plugins/kdc_service.py:334
+msgid "Add lo to samba/interfaces"
+msgstr "Füge lo zu samba/interfaces hinzu"
 
 #: umc/python/diagnostic/plugins/security_limits.py:31
 msgid "Adjust to suggested limits"
@@ -131,6 +135,10 @@ msgstr ""
 "{ucr} oder durch automatische Anpassung auf die empfohlenen Limits zu "
 "erhöhen."
 
+#: umc/python/diagnostic/plugins/kdc_service.py:57
+msgid "KDC service check"
+msgstr "KDC Erreichbarkeit"
+
 #: umc/python/diagnostic/plugins/ssh_connection.py:59
 #, python-format
 msgid ""
@@ -180,6 +188,10 @@ msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 #: umc/python/diagnostic/plugins/hostname_check.py:43
 msgid "No non-compliant hostnames found."
 msgstr "Keine nicht konformen Rechnernamen gefunden."
+
+#: umc/python/diagnostic/plugins/kdc_service.py:341
+msgid "No reachable KDCs were found."
+msgstr "Keine erreichbaren KDCs gefunden."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:163
 msgid ""
@@ -238,6 +250,10 @@ msgstr "Proxy-Server-Fehler"
 #: umc/python/diagnostic/plugins/hostname_check.py:47
 msgid "RFC 1123 - 2.1 Host Names and Numbers"
 msgstr ""
+
+#: umc/python/diagnostic/plugins/kdc_service.py:337
+msgid "Reset kerberos/kdc to 127.0.0.1"
+msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:45
 msgid "S4 Connector rejects"
@@ -301,9 +317,17 @@ msgstr ""
 "Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
 
+#: umc/python/diagnostic/plugins/kdc_service.py:58
+msgid "The check for the KDC reachability was succesful."
+msgstr "Erreichbarkeitstest der KDCs war erfolgreich."
+
 #: umc/python/diagnostic/plugins/check_join_status.py:41
 msgid "The check for the join status was succsesful."
 msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
+
+#: umc/python/diagnostic/plugins/kdc_service.py:311
+msgid "The following KDCs were unreachable: {}"
+msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
 #: umc/python/diagnostic/plugins/ssh_connection.py:52
 msgid ""
@@ -540,6 +564,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:165
 msgid "not found"
 msgstr "nicht gefunden"
+
+#: umc/python/diagnostic/plugins/kdc_service.py:328
+msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
+msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
 #: umc/python/diagnostic/plugins/package_status.py:28
 msgid "some"
