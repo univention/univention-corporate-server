@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:22+0200\n"
+"POT-Creation-Date: 2017-08-01 15:24+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,6 +35,18 @@ msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
 
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:101
+msgid "ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
+msgstr ""
+"ACL Berechtigung für die Gruppe {id!r} ist {udm!r} in UDM, aber {imap!r} in "
+"IMAP."
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:95
+msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
+msgstr ""
+"ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
+"IMAP."
+
 #: umc/python/diagnostic/plugins/kdc_service.py:334
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
@@ -59,6 +71,10 @@ msgstr "Alle Dateien in Ordnung."
 #: umc/python/diagnostic/plugins/check_nameservers.py:49
 msgid "All nameserver entries are ok."
 msgstr "Alle Nameserver Einträge sind in Ordnung."
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:51
+msgid "All shared folder ACLs are in sync with UDM."
+msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:150
 msgid "Authentication against the local LDAP failed with the machine password."
@@ -90,6 +106,10 @@ msgstr "Zertifikat {path!r} wird in {days} Tagen ablaufen."
 #: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:46
 msgid "Check Heimdal KDC on Samba 4 DC"
 msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:50
+msgid "Check IMAP shared folder ACLs"
+msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 
 #: umc/python/diagnostic/plugins/sources_list_check.py:42
 msgid "Check errors in sources.list files"
@@ -153,6 +173,13 @@ msgstr ""
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:316
+msgid ""
+"Found differences in the ACLs for IMAP shared folders between UDM and IMAP."
+msgstr ""
+"Es wurde ein Unterschied in den ACL Einträge für die globalen IMAP Ordner "
+"zwischen UDM und IMAP gefunden."
+
 #: umc/python/diagnostic/plugins/check_nameservers.py:217
 msgid "Found errors in the nameserver entries of the following zones."
 msgstr ""
@@ -205,6 +232,12 @@ msgstr "Gateway ist nicht erreichbar"
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:82
+#, python-brace-format
+msgid "Identifier with whitespace: {ids}. This is not supported by Cyrus."
+msgstr ""
+"Es gibt Namen mit Leerzeichen: {ids}. Dies wird nicht von Cyrus unterstützt."
+
 #: umc/python/diagnostic/plugins/nameserver.py:17
 msgid ""
 "If the problem persists make sure the nameserver is connected to the network "
@@ -223,6 +256,11 @@ msgstr ""
 #, python-brace-format
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:323
+#, python-brace-format
+msgid "In mail folder {name} (see {{udm:mail/mail}}):"
+msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
 
 #: umc/python/diagnostic/plugins/check_nameservers.py:221
 #, python-brace-format
@@ -264,6 +302,10 @@ msgstr ""
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:64
+msgid "Mail folder {folder!r} does not exist in IMAP."
+msgstr "Globaler IMAP Order {folder!r} existiert nicht in IMAP."
+
 #: umc/python/diagnostic/plugins/gateway.py:15
 msgid "Make sure the hardware of the gateway device is working properly."
 msgstr ""
@@ -280,6 +322,10 @@ msgid ""
 msgstr ""
 "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
 "audit\" erhalten werden."
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:76
+msgid "Multiple ACL entries for {id!r} in UDM."
+msgstr "Mehrere ACL Einträge für {id!r} in UDM."
 
 #: umc/python/diagnostic/plugins/nameserver.py:13
 msgid "Nameserver(s) are not responsive"
@@ -591,6 +637,12 @@ msgid ""
 msgstr ""
 "Dies ist ein Samba 4 DC, aber `samba-tool processes` zeigt keinen "
 "`kdc_server` an."
+
+#: umc/python/diagnostic/plugins/mail_acl_sync.py:317
+msgid "This is not necessarily a problem, if the the ACL got changed via IMAP."
+msgstr ""
+"Dies ist nicht notwendigerweise ein Problem, wenn die ACL Einträge per IMAP "
+"geändert wurden."
 
 #: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:88
 msgid "This may be, because Heimdal KDC seems to be running."
