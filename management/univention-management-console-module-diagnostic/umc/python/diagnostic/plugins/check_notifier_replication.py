@@ -31,36 +31,56 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.modules.diagnostic import Critical
+import socket
+
+import univention.config_registry
+from univention.management.console.modules.diagnostic import Warning
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check for problems with ldap replication')
-description = _('No problems found with ldap replication')
+title = _('Check for problems with UDN replication')
+description = _('No problems found with UDN replication.')
+
+links = [{
+	'name': 'sdb',
+	'href': _('http://sdb.univention.de/content/14/295/en/troubleshooting-listener__notifier.html'),
+	'label': _('Univention Support Database - Troubleshooting: Listener-/Notifier')
+}]
 
 
-def run():
-	process = Popen(["/usr/share/univention-directory-listener/get_notifier_id.py"], stdout=PIPE, stderr=STDOUT)
-	if process.returncode:
-		description = _("Calling /usr/share/univention-directory-listener/get_notifier_id.py faield")
-		raise Critical("\n".join([
-			description,
-			"Returncode of process: %s" % (process.returncode)
-		]))
-	stdout, stderr = process.communicate()
-	f = open("/var/lib/univention-directory-listener/notifier_id", "r")
-	s = f.read()
-	if stdout.rstrip() == s:
-		return
+def get_id(master, cmd='GET_ID'):
+	sock = socket.create_connection((master, 6669))
+
+	sock.send('Version: 2\nCapabilities: \n\n')
+	sock.recv(100)
+
+	sock.send('MSGID: 1\n{cmd}\n\n'.format(cmd=cmd))
+	notifier_result = sock.recv(100).strip()
+
+	(msg_id, notifier_id) = notifier_result.split('\n', 1)
+	return notifier_id
+
+
+def run(_umc_instance):
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+	try:
+		notifier_id = get_id(configRegistry.get('ldap/master'))
+	except socket.error:
+		raise Warning(_('Error retrieving notifier ID from the UDN.'))
 	else:
-		description = _("Notifier ids are different.")
-		raise Critical("\n".join([
-			description,
-			"Id from Master: %s" % (stdout.rstrip()),
-			"Id from local system: %s" % (s)
-		]))
+		with open('/var/lib/univention-directory-listener/notifier_id') as fob:
+			id_from_file = fob.read().strip()
+
+		if notifier_id != id_from_file:
+			ed = [
+				_('Univention Directory Notifier ID and the locally stored version differ.'),
+				_('This might indicate an error or still processing transactions.')
+			]
+			raise Warning('\n'.join(ed))
+
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
