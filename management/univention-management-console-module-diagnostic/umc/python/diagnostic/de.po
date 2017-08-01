@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:33+0200\n"
+"POT-Creation-Date: 2017-08-01 15:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -110,6 +110,10 @@ msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 #: umc/python/diagnostic/plugins/mail_acl_sync.py:50
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
+
+#: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:44
+msgid "Check Samba sysvol ACLs for errors"
+msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
 #: umc/python/diagnostic/plugins/sources_list_check.py:42
 msgid "Check errors in sources.list files"
@@ -356,6 +360,7 @@ msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:45
+#: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:45
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -831,6 +836,12 @@ msgstr ""
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:104
 msgid "`samba-tool dbcheck` returned a problem with the local AD database."
 msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
+
+#: umc/python/diagnostic/plugins/samba_tool_sysvolcheck.py:77
+msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
+msgstr ""
+"`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
+"Einträgen."
 
 #: umc/python/diagnostic/plugins/check_join_status.py:44
 msgid ""
