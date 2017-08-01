@@ -41,7 +41,7 @@ def checkNTLM(host, passwd, url, http_code):
 
 
 def setAuthVariables(squid, (basic, ntlm)):
-	"""set ucr variables according to the auth states, and reconfigure Squid"""
+	"""set ucr variables according to the auth states, and restart Squid"""
 	if basic:
 		handler_set(['squid/basicauth=yes'])
 	else:
@@ -50,7 +50,7 @@ def setAuthVariables(squid, (basic, ntlm)):
 		handler_set(['squid/ntlmauth=yes'])
 	else:
 		handler_unset(['squid/ntlmauth'])
-	squid.reconfigure()
+	squid.restart()
 
 
 def printHeader(state, passwd, expect_wrong_password):
@@ -62,34 +62,33 @@ def printHeader(state, passwd, expect_wrong_password):
 
 def main():
 	squid = SimpleSquid()
-	try:
-		with ucr_test.UCSTestConfigRegistry() as ucr:
-			# url = ucr.get('proxy/filter/redirecttarget')
-			url = 'http://www.univention.de'
-			host = '%(hostname)s.%(domainname)s' % ucr
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		# url = ucr.get('proxy/filter/redirecttarget')
+		url = 'http://www.univention.de'
+		host = '%(hostname)s.%(domainname)s' % ucr
 
-			# list of tuples (passwd, expect_wrong_password) used in the test
-			account = utils.UCSTestDomainAdminCredentials()
-			passwords = [
-				(account.bindpw, False),
-				('wrong_passwd', True),
-			]
+		# list of tuples (passwd, expect_wrong_password) used in the test
+		account = utils.UCSTestDomainAdminCredentials()
+		passwords = [
+			(account.bindpw, False),
+			('wrong_passwd', True),
+		]
 
-			# Generate all the possibilities for the auth states
-			# [(0, 0), (0, 1), (1, 0), (1, 1)]
-			authStates = list(itertools.product([0, 1], repeat=2))
+		# Generate all the possibilities for the auth states
+		# [(0, 0), (0, 1), (1, 0), (1, 1)]
+		authStates = list(itertools.product([0, 1], repeat=2))
 
-			for passwd, expect_wrong_password in passwords:
-				for state in authStates:
-					printHeader(state, passwd, expect_wrong_password)
+		for passwd, expect_wrong_password in passwords:
+			for state in authStates:
+				printHeader(state, passwd, expect_wrong_password)
 
-					# set ucr variables according to the auth states
-					setAuthVariables(squid, state)
+				# set ucr variables according to the auth states
+				setAuthVariables(squid, state)
 
-					# Perform the checks
-					checkAuths(host, passwd, url, state, expect_wrong_password)
-	finally:
-		squid.reconfigure()
+				# Perform the checks
+				checkAuths(host, passwd, url, state, expect_wrong_password)
+
+	squid.restart()
 
 
 if __name__ == '__main__':
