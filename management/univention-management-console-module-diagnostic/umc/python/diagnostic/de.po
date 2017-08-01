@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 14:59+0200\n"
+"POT-Creation-Date: 2017-08-01 15:02+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -69,6 +69,10 @@ msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
+
+#: umc/python/diagnostic/plugins/hostname_check.py:42
+msgid "Check hostname RFC compliance"
+msgstr "Überprüfe Rechnernamen auf RFC Konformität"
 
 #: umc/python/diagnostic/plugins/check_join_status.py:40
 msgid "Check join status"
@@ -173,6 +177,10 @@ msgstr "Nameserver sind nicht ansprechbar"
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
+#: umc/python/diagnostic/plugins/hostname_check.py:43
+msgid "No non-compliant hostnames found."
+msgstr "Keine nicht konformen Rechnernamen gefunden."
+
 #: umc/python/diagnostic/plugins/check_server_password.py:163
 msgid ""
 "Note that password rotation is disabled via the UCR variable server/password/"
@@ -204,6 +212,11 @@ msgstr ""
 "Bitte sicherstellen, dass die DNS-Einstellungen in {setup:network} korrekt "
 "konfiguriert sind."
 
+#: umc/python/diagnostic/plugins/hostname_check.py:76
+#, python-brace-format
+msgid "Please refer to {rfc1123} for the syntax of host names."
+msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
+
 #: umc/python/diagnostic/plugins/ssh_connection.py:56
 #, python-format
 msgid ""
@@ -221,6 +234,10 @@ msgstr "Siehe {sdb} für weitere Informationen."
 #: umc/python/diagnostic/plugins/proxy.py:15
 msgid "Proxy server failure"
 msgstr "Proxy-Server-Fehler"
+
+#: umc/python/diagnostic/plugins/hostname_check.py:47
+msgid "RFC 1123 - 2.1 Host Names and Numbers"
+msgstr ""
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:45
 msgid "S4 Connector rejects"
@@ -295,6 +312,12 @@ msgid ""
 msgstr ""
 "Die folgende Liste zeigt die betroffenen entfernten Rechner und den Grund "
 "für die fehlgeschlagene SSH-Verbindung."
+
+#: umc/python/diagnostic/plugins/hostname_check.py:74
+#, python-brace-format
+msgid "The following non-compliant hostnames have been found: {hostnames}."
+msgstr ""
+"Die folgenden nicht konformen Rechnernamen wurden gefunden: {hostnames}."
 
 #: umc/python/diagnostic/plugins/gateway.py:13
 #, python-format
@@ -417,6 +440,10 @@ msgid "This may be, because `kerberos/autostart` is not disabled."
 msgstr ""
 "Dies mag daher kommen, dass `kerberos/autostart` nicht deaktiviert ist."
 
+#: umc/python/diagnostic/plugins/hostname_check.py:75
+msgid "This may lead to DNS problems."
+msgstr "Dies kann zu DNS Problemen führen."
+
 #: umc/python/diagnostic/plugins/proxy.py:85
 #, python-format
 msgid ""
@@ -503,6 +530,10 @@ msgstr ""
 msgid ""
 "http://sdb.univention.de/content/6/294/en/how-to-deal-with-s4_connector-"
 "rejects.html"
+msgstr ""
+
+#: umc/python/diagnostic/plugins/hostname_check.py:46
+msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr ""
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:158
