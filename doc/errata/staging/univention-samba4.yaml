@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: univention-samba4
+fix: 5.0.3-3.692.201708011734
+desc: |
+ This update addresses the following issue(s):
+ * Run samba-tool dbcheck --cross-ncs --fix --yes on update if there are
+   inconsistencies. A backup of /var/lib/samba/private is performed and
+   the fix is skipped if the available disk space is too low.
+ * Don't re-provision if univention-samba4 gets uninstalled and re-installed
+bug: [44634, 45111]
