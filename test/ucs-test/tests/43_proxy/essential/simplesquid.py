@@ -32,6 +32,11 @@ class SimpleSquid(object):
 		print 'Restarting squid'
 		return call([self.path, "restart"])
 
+	def reconfigure(self):
+		"""Reconfigure squid (faster than a restart)"""
+		print("Reconfigure squid")
+		return call([self.basename, "-k", "reconfigure"])
+
 	def is_not_running(self):
 		"""Check the current running status\n
 		:return boolean : True if not running, Flase if running
