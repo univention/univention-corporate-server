@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:10+0200\n"
+"POT-Creation-Date: 2017-08-01 15:14+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -47,6 +47,10 @@ msgstr "An vorgeschlagene Limits anpassen"
 msgid "All SIDs exist and names are consistent."
 msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
+#: umc/python/diagnostic/plugins/sources_list_check.py:43
+msgid "All files ok."
+msgstr "Alle Dateien in Ordnung."
+
 #: umc/python/diagnostic/plugins/check_server_password.py:150
 msgid "Authentication against the local LDAP failed with the machine password."
 msgstr ""
@@ -73,6 +77,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:46
 msgid "Check Heimdal KDC on Samba 4 DC"
 msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
+
+#: umc/python/diagnostic/plugins/sources_list_check.py:42
+msgid "Check errors in sources.list files"
+msgstr "Überprüfe Fehler in den sources.list Dateien"
 
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
@@ -105,6 +113,10 @@ msgstr "Außreichend freier Festplatten Platz vorhanden."
 #: umc/python/diagnostic/plugins/check_server_password.py:145
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
+
+#: umc/python/diagnostic/plugins/sources_list_check.py:59
+msgid "Found exception in {path!r}: {exception}"
+msgstr "Fehler in {path!r} gefunden: {exception}"
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:152
 #, python-brace-format
@@ -237,6 +249,10 @@ msgid ""
 msgstr ""
 "Bitte prüfen Sie /var/log/auth.log auf dem entfernten Rechner für weitere "
 "Informationen."
+
+#: umc/python/diagnostic/plugins/sources_list_check.py:79
+msgid "Please check the files for more details."
+msgstr "Überprüfen Sie die Dateine für mehr Details."
 
 #: umc/python/diagnostic/plugins/nameserver.py:16
 msgid ""
