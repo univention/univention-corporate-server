@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:25+0200\n"
+"POT-Creation-Date: 2017-08-01 15:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -119,6 +119,10 @@ msgstr "Überprüfe Fehler in den sources.list Dateien"
 msgid "Check file permissions"
 msgstr "Überprüfe Datei Berechtigungen"
 
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:41
+msgid "Check for modified UCR templates"
+msgstr "Überprüfe veränderte UCR Vorlagen"
+
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
@@ -158,6 +162,10 @@ msgstr "Überprüfe 'Well Known' SIDs"
 #: umc/python/diagnostic/plugins/disk_usage.py:43
 msgid "Enough free disk space available."
 msgstr "Außreichend freier Festplatten Platz vorhanden."
+
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:51
+msgid "Errors found by `univention-check-templates`."
+msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 
 #: umc/python/diagnostic/plugins/file_permissions.py:57
 msgid "File {path!r} does not exist."
@@ -347,6 +355,10 @@ msgstr "Keine Fehler gefunden."
 msgid "No non-compliant hostnames found."
 msgstr "Keine nicht konformen Rechnernamen gefunden."
 
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:42
+msgid "No problems found with modified UCR templates"
+msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
+
 #: umc/python/diagnostic/plugins/check_update_sites.py:44
 msgid "No problems were found while resolving update respositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
@@ -516,6 +528,10 @@ msgstr "Erreichbarkeitstest der KDCs war erfolgreich."
 msgid "The check for the join status was succsesful."
 msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
 
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:54
+msgid "The files should be checked for differences."
+msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
+
 #: umc/python/diagnostic/plugins/check_update_sites.py:77
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
@@ -523,6 +539,10 @@ msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 #: umc/python/diagnostic/plugins/kdc_service.py:311
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
+
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:52
+msgid "The following UCR files are modified locally."
+msgstr "Die folgenden UCR Vorlagen wurden lokal verändert."
 
 #: umc/python/diagnostic/plugins/ssh_connection.py:52
 msgid ""
@@ -719,6 +739,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/certificate_check.py:57
 msgid "Univention Support Database - Renewing the TLS/SSL certificates"
 msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
+
+#: umc/python/diagnostic/plugins/check_ucr_templates.py:53
+msgid "Updated versions will be named FILENAME.dpkg-*."
+msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
 #: umc/python/diagnostic/plugins/well_known_sid_check.py:73
 msgid ""
