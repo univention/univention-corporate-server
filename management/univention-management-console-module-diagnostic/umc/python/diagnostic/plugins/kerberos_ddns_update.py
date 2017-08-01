@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import subprocess
+import contextlib
 
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Critical
@@ -39,47 +40,99 @@ from univention.management.console.modules.diagnostic import Critical
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check for Kerberos-authenticated DNS Updates')
-description = _('The check for updating DNS-Records with Kerberos Authentication was successful.')
+title = _('Check kerberos authenticated DNS updates')
+description = _('No errors occured.')
 
 
-def run():
+class UpdateError(Exception):
+	pass
+
+
+class KinitError(UpdateError):
+	def __init__(self, principal, keytab, password_file):
+		super(KinitError, self).__init__(principal, keytab, password_file)
+		self.principal = principal
+		self.keytab = keytab
+		self.password_file = password_file
+
+	def __str__(self):
+		if self.keytab:
+			msg = _('`kinit` for principal {princ} with keytab {tab} failed.')
+		else:
+			msg = _('`kinit` for principal {princ} with password file {file} failed.')
+		return msg.format(princ=self.principal, tab=self.keytab, file=self.password_file)
+
+
+class NSUpdateError(UpdateError):
+	def __init__(self, hostname, domainname):
+		super(NSUpdateError, self).__init__(hostname, domainname)
+		self.hostname = hostname
+		self.domainname = domainname
+
+	def __str__(self):
+		msg = _('`nsupdate` existence check for domain {domain} failed.')
+		return msg.format(domain=self.domainname)
+
+
+@contextlib.contextmanager
+def kinit(principal, keytab=None, password_file=None):
+	auth = '--keytab={tab}' if keytab else '--password-file={file}'
+	cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
+	try:
+		subprocess.check_call(cmd)
+	except subprocess.CalledProcessError:
+		raise KinitError(principal, keytab, password_file)
+	else:
+		yield
+		subprocess.call(('kdestroy',))
+
+
+def nsupdate(hostname, domainname):
+	process = subprocess.Popen(('nsupdate', '-g'), stdin=subprocess.PIPE,
+		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	cmd = 'server {host}.{domain}\nprereq yxdomain {domain}\n'
+	_ = process.communicate(cmd.format(host=hostname, domain=domainname))
+	if process.poll() != 0:
+		raise NSUpdateError(hostname, domainname)
+
+
+def check_dns_machine_principal(hostname, domainname):
+	with kinit('{}$'.format(hostname), password_file='/etc/machine.secret'):
+		nsupdate(hostname, domainname)
+
+
+def check_dns_server_principal(hostname, domainname):
+	with kinit('dns-{}'.format(hostname), keytab='/var/lib/samba/private/dns.keytab'):
+		nsupdate(hostname, domainname)
+
+
+def check_nsupdate(hostname, domainname, is_dc=False):
+	try:
+		check_dns_machine_principal(hostname, domainname)
+	except UpdateError as error:
+		yield error
+
+	if is_dc:
+		try:
+			check_dns_server_principal(hostname, domainname)
+		except UpdateError as error:
+			yield error
+
+
+def run(_umc_instance):
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
 
-	pwdpath = config_registry.get("umc/module/diagnostic/umc_password")
-	hostname = config_registry.get("umc/module/diagnostic/umc_user")
-	domainname = config_registry.get("domainname")
-	kerberos_realm = config_registry.get("kerberos/realm")
-	process = subprocess.Popen(['testparm', '-sv'], stdout=subprocess.PIPE,
-		stderr=subprocess.STDOUT)
-	stdout, stderr = process.communicate()
-	samba_server_role = utils.get_string_between_strings(stdout, "server role = ", "\n")
+	hostname = config_registry.get('hostname')
+	domainname = config_registry.get('domainname')
+	is_dc = config_registry.get('samba4/role') == 'DC'
 
-	if not samba_server_role == "active directory domain controller":
-		return
+	problems = list(check_nsupdate(hostname, domainname, is_dc))
+	if problems:
+		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
+		ed.extend(str(error) for error in problems)
+		raise Critical(description='\n'.join(ed))
 
-	kinit = ['kinit', '--password-file=%s' % (pwdpath), '%s@%s' % (hostname, kerberos_realm)]
-	process = subprocess.Popen(kinit, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	if process.returncode:
-		description = _('Kinit with machine account failed')
-		raise Critical('\n'.join([
-			description,
-			"Returncode of process: %s" % (process.returncode)
-		]))
-	stdout, stderr = process.communicate()
-	nsupdate_process = subprocess.Popen(['nsupdate', '-g'],
-		stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-	nsupdate_process.stdin.write('prereq yxdomain %s\nsend\nquit\n' % (domainname))
-	stdout, stderr = nsupdate_process.communicate()
-	if nsupdate_process.returncode != 0:
-		description = _('nsupdate -g failed')
-		raise Critical('\n'.join([
-			description,
-			"Returncode of process: %s" % (nsupdate_process.returncode),
-			"stdout: %s" % (stdout),
-			"stderr: %s" % (stderr)
-		]))
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
