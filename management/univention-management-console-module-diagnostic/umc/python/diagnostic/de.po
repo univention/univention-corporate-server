@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:06+0200\n"
+"POT-Creation-Date: 2017-08-01 15:10+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -42,6 +42,10 @@ msgstr "Füge lo zu samba/interfaces hinzu"
 #: umc/python/diagnostic/plugins/security_limits.py:31
 msgid "Adjust to suggested limits"
 msgstr "An vorgeschlagene Limits anpassen"
+
+#: umc/python/diagnostic/plugins/well_known_sid_check.py:46
+msgid "All SIDs exist and names are consistent."
+msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:150
 msgid "Authentication against the local LDAP failed with the machine password."
@@ -89,6 +93,10 @@ msgstr "Password für das Rechnerkonto testen"
 #: umc/python/diagnostic/plugins/check_update_sites.py:43
 msgid "Check resolving repository servers"
 msgstr "Überprüfe DNS Auflösung der Repository Server"
+
+#: umc/python/diagnostic/plugins/well_known_sid_check.py:45
+msgid "Check well known SIDs"
+msgstr "Überprüfe 'Well Known' SIDs"
 
 #: umc/python/diagnostic/plugins/disk_usage.py:43
 msgid "Enough free disk space available."
@@ -200,6 +208,12 @@ msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 #: umc/python/diagnostic/plugins/kdc_service.py:341
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
+
+#: umc/python/diagnostic/plugins/well_known_sid_check.py:63
+msgid "No user or group with SID {sid} found, expected {expected!r}."
+msgstr ""
+"Kein Nutzer oder keine Gruppe mit SID {sid} gefunden, {expected!r} war "
+"erwartet."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:163
 msgid ""
@@ -527,6 +541,13 @@ msgstr ""
 #: umc/python/diagnostic/plugins/check_server_password.py:57
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr ""
+
+#: umc/python/diagnostic/plugins/well_known_sid_check.py:73
+msgid ""
+"User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
+msgstr ""
+"Der Nutzer oder die Gruppe mit der SID {sid} hat den Namen {actual!r}, "
+"sollte aber {expected!r} sein."
 
 #: umc/python/diagnostic/plugins/disk_usage.py:136
 msgid "You have configured some high log levels."
