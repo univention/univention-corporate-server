@@ -4,7 +4,7 @@
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
-##  - univention-samba | univention-samba4
+##  - univention-nfs-server
 ## roles-not: [basesystem]
 ## tags: [basic]
 ## join: true
@@ -59,7 +59,7 @@ if [ ! -f "$etc" ]; then
 	fail_fast 1 "nfs config file $etc not found"
 fi
 
-## set samba options via udm and check samba config file
+## set nfs options via udm and check nfs config file
 echo "----set options"
 while read option_line; do
 
@@ -107,13 +107,13 @@ while read search_line; do
 	nfs="$(echo "$search_line" | awk -F :DELIMETER: {'print $2'})"
 	value="$(echo "$search_line" | awk -F :DELIMETER: {'print $3'})"
 
-	echo "$conf_line" | grep --regex '^"/opt/'"$sharename" | grep -q --regex '[ (,"]/*'"$nfs"'[ ),"]'
+	echo "$conf_line" | grep --regex '^"/opt/'"$sharename" | grep -q --regex '[ (,"-]/*'"$nfs"'[ ),"]'
 	if [ $? != 0 ]; then
 		fail_fast 1 "nfs config file <-> udm settings mismatch udm option: $udm nfs options: $nfs udm value: $value"
 	fi
 done <<<"$search"
 
-## test if we checked all udm samba options
+## test if we checked all udm nfs options
 echo "----check whether all options have been tested"
 available_options="$(echo "$available_options" | sed 's/^ *//')"
 available_options="$(echo "$available_options" | sed 's/ *$//')"
