@@ -150,6 +150,26 @@ disable_slapd_on_standard_port() {
 	sleep 1
 }
 
+get_available_s4connector_dc() {
+	local s4connector_dc
+	local s4connector_dc_candidates
+	s4connector_dc=()
+	s4connector_dc_candidates=$(univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+	if univention-ldapsearch -LLL univentionservice=UCS@school dn | grep -q ^dn; then
+		for dc in "${s4connector_dc_candidates[@]}"; do
+			if samba-tool drs showrepl "$dc" >/dev/null 2>&1; then
+				s4connector_dc+=( "$dc" )
+			fi
+			if [ "${#s4connector_dc[@]}" -gt 1 ]; then
+				echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc_candidates" 1>&2
+				return 1	## this is fatal
+			fi
+		done
+	else
+		s4connector_dc="$s4connector_dc_candidates"
+	fi
+	echo "$s4connector_dc"
+}
 
 extract_rIDNextRID() {
 	local test_output
