@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:14+0200\n"
+"POT-Creation-Date: 2017-08-01 15:15+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -47,6 +47,7 @@ msgstr "An vorgeschlagene Limits anpassen"
 msgid "All SIDs exist and names are consistent."
 msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
+#: umc/python/diagnostic/plugins/file_permissions.py:47
 #: umc/python/diagnostic/plugins/sources_list_check.py:43
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
@@ -82,6 +83,10 @@ msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 msgid "Check errors in sources.list files"
 msgstr "Überprüfe Fehler in den sources.list Dateien"
 
+#: umc/python/diagnostic/plugins/file_permissions.py:46
+msgid "Check file permissions"
+msgstr "Überprüfe Datei Berechtigungen"
+
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
@@ -109,6 +114,20 @@ msgstr "Überprüfe 'Well Known' SIDs"
 #: umc/python/diagnostic/plugins/disk_usage.py:43
 msgid "Enough free disk space available."
 msgstr "Außreichend freier Festplatten Platz vorhanden."
+
+#: umc/python/diagnostic/plugins/file_permissions.py:57
+msgid "File {path!r} does not exist."
+msgstr "Datei {path!r} existiert nicht."
+
+#: umc/python/diagnostic/plugins/file_permissions.py:80
+msgid "File {path!r} has mode {actual:o}, {expected:o} was expected."
+msgstr "Datei {path!r} hat Datei-Modus {actual:o}, {expected:o} war erwartet."
+
+#: umc/python/diagnostic/plugins/file_permissions.py:67
+msgid "File {path!r} has owner {actual!r} while {expected!r} was expected."
+msgstr ""
+"Datei {path!r} hat den Besitzer {actual!r}, während {expected!r} erwartet "
+"war."
 
 #: umc/python/diagnostic/plugins/check_server_password.py:145
 msgid "Fix machine password"
