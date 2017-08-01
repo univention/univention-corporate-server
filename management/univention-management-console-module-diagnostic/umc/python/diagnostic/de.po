@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:15+0200\n"
+"POT-Creation-Date: 2017-08-01 15:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -47,6 +47,10 @@ msgstr "An vorgeschlagene Limits anpassen"
 msgid "All SIDs exist and names are consistent."
 msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
+#: umc/python/diagnostic/plugins/certificate_check.py:53
+msgid "All SSL certificates valid."
+msgstr "Alle SSL Zertifikate sind gültig."
+
 #: umc/python/diagnostic/plugins/file_permissions.py:47
 #: umc/python/diagnostic/plugins/sources_list_check.py:43
 msgid "All files ok."
@@ -74,6 +78,10 @@ msgid "Calling /usr/lib/univention-server/server_password_change failed."
 msgstr ""
 "Aufruf von /usr/lib/univention-server/server_password_change ist "
 "fehlgeschlagen."
+
+#: umc/python/diagnostic/plugins/certificate_check.py:76
+msgid "Certificate {path!r} will expire in {days} days."
+msgstr "Zertifikat {path!r} wird in {days} Tagen ablaufen."
 
 #: umc/python/diagnostic/plugins/heimdal_on_samba4_dc.py:46
 msgid "Check Heimdal KDC on Samba 4 DC"
@@ -107,6 +115,10 @@ msgstr "Password für das Rechnerkonto testen"
 msgid "Check resolving repository servers"
 msgstr "Überprüfe DNS Auflösung der Repository Server"
 
+#: umc/python/diagnostic/plugins/certificate_check.py:52
+msgid "Check validity of SSL certificates"
+msgstr "Überprüfe Gültigkeit der SSL Zertifikate"
+
 #: umc/python/diagnostic/plugins/well_known_sid_check.py:45
 msgid "Check well known SIDs"
 msgstr "Überprüfe 'Well Known' SIDs"
@@ -136,6 +148,22 @@ msgstr "Korrigiere Password für das Rechnerkonto"
 #: umc/python/diagnostic/plugins/sources_list_check.py:59
 msgid "Found exception in {path!r}: {exception}"
 msgstr "Fehler in {path!r} gefunden: {exception}"
+
+#: umc/python/diagnostic/plugins/certificate_check.py:93
+msgid "Found expired certificate {path!r}."
+msgstr "Abgelaufenes Zertifikat {path!r} gefunden."
+
+#: umc/python/diagnostic/plugins/certificate_check.py:103
+msgid ""
+"Found invalid certificate {path!r}:\n"
+"{message}"
+msgstr ""
+"Ungültiges Zertifikat {path!r} gefunden:\n"
+"{message}"
+
+#: umc/python/diagnostic/plugins/certificate_check.py:87
+msgid "Found not yet valid certificate {path!r}."
+msgstr "Noch nicht gültiges Zertifikat {path!r} gefunden."
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:152
 #, python-brace-format
@@ -304,6 +332,11 @@ msgstr "Siehe {sdb} für weitere Informationen."
 #, python-brace-format
 msgid "Please see {sdb} for troubleshooting DNS problems."
 msgstr "Siehe {sdb} für Problemhilfe bei DNS Problemen."
+
+#: umc/python/diagnostic/plugins/certificate_check.py:274
+#, python-brace-format
+msgid "Please see {sdb} on how to renew certificates."
+msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."
 
 #: umc/python/diagnostic/plugins/proxy.py:15
 msgid "Proxy server failure"
@@ -577,6 +610,10 @@ msgstr ""
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr ""
 
+#: umc/python/diagnostic/plugins/certificate_check.py:57
+msgid "Univention Support Database - Renewing the TLS/SSL certificates"
+msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
+
 #: umc/python/diagnostic/plugins/well_known_sid_check.py:73
 msgid ""
 "User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
@@ -622,6 +659,10 @@ msgid ""
 msgstr ""
 "http://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
 "erroranalysis"
+
+#: umc/python/diagnostic/plugins/certificate_check.py:56
+msgid "http://sdb.univention.de/1183"
+msgstr "http://sdb.univention.de/1000"
 
 #: umc/python/diagnostic/plugins/check_update_sites.py:47
 msgid "http://sdb.univention.de/1298"
