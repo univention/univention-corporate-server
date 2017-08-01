@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:31+0200\n"
+"POT-Creation-Date: 2017-08-01 15:33+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -123,6 +123,10 @@ msgstr "Überprüfe Datei Berechtigungen"
 msgid "Check for modified UCR templates"
 msgstr "Überprüfe veränderte UCR Vorlagen"
 
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:42
+msgid "Check for problems with UDN replication"
+msgstr "Überprüfe Probleme mit der UDN Replikation"
+
 #: umc/python/diagnostic/plugins/disk_usage.py:42
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
@@ -162,6 +166,10 @@ msgstr "Überprüfe 'Well Known' SIDs"
 #: umc/python/diagnostic/plugins/disk_usage.py:43
 msgid "Enough free disk space available."
 msgstr "Außreichend freier Festplatten Platz vorhanden."
+
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:72
+msgid "Error retrieving notifier ID from the UDN."
+msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
 
 #: umc/python/diagnostic/plugins/check_ucr_templates.py:51
 msgid "Errors found by `univention-check-templates`."
@@ -354,6 +362,10 @@ msgstr "Keine Fehler gefunden."
 #: umc/python/diagnostic/plugins/hostname_check.py:43
 msgid "No non-compliant hostnames found."
 msgstr "Keine nicht konformen Rechnernamen gefunden."
+
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:43
+msgid "No problems found with UDN replication."
+msgstr "Keine Prolbleme mit der UDN Replikation gefunden."
 
 #: umc/python/diagnostic/plugins/check_ucr_templates.py:42
 msgid "No problems found with modified UCR templates"
@@ -689,6 +701,11 @@ msgstr ""
 msgid "This may lead to DNS problems."
 msgstr "Dies kann zu DNS Problemen führen."
 
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:80
+msgid "This might indicate an error or still processing transactions."
+msgstr ""
+"Dies mag auf einen Fehler oder noch ausstehende Transaktionen hinweisen."
+
 #: umc/python/diagnostic/plugins/proxy.py:85
 #, python-format
 msgid ""
@@ -713,6 +730,12 @@ msgstr "Nicht synchronisierte UCS Objekte:"
 msgid "Unable to fix machine password on {}"
 msgstr ""
 "Nicht im Stande das Password für das Rechnerkonto für {} zu korrigieren."
+
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:79
+msgid "Univention Directory Notifier ID and the locally stored version differ."
+msgstr ""
+"Univention Directory Notifier ID und die lokal gespeicherte Version "
+"unterscheiden sich."
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:139
 msgid "Univention S4 Connector is not installed."
@@ -739,6 +762,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/certificate_check.py:57
 msgid "Univention Support Database - Renewing the TLS/SSL certificates"
 msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
+
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:48
+msgid "Univention Support Database - Troubleshooting: Listener-/Notifier"
+msgstr ""
 
 #: umc/python/diagnostic/plugins/check_ucr_templates.py:53
 msgid "Updated versions will be named FILENAME.dpkg-*."
@@ -823,6 +850,12 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/check_update_sites.py:47
 msgid "http://sdb.univention.de/1298"
+msgstr ""
+
+#: umc/python/diagnostic/plugins/check_notifier_replication.py:47
+msgid ""
+"http://sdb.univention.de/content/14/295/en/troubleshooting-"
+"listener__notifier.html"
 msgstr ""
 
 #: umc/python/diagnostic/plugins/check_server_password.py:56
