@@ -121,3 +121,113 @@ remove_non_samba4_dc_srv_records() {
 		done <<<"$sRVRecord_attrs"
 	done
 }
+ 
+remove_port()
+{
+	# Test:
+	# r 389
+	# r 7389,389
+	# r 389,7389
+	# r 389,7389,8389
+	# r 7389,389,8389
+	# r 7389,8389,389
+
+	if [ -n "$1" -a -n "$2" ]; then
+		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
+	fi
+
+}
+
+disable_slapd_on_standard_port() {
+	if [ -n "$slapd_port" ]; then
+		univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)"
+	fi
+	if [ -n "$slapd_port_ldaps" ]; then
+		univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
+	fi
+
+	/etc/init.d/slapd crestart
+	sleep 1
+}
+
+
+extract_rIDNextRID() {
+	local test_output
+	local ridset_dn
+	## Workaround for Bug #34754
+	if [ -r /var/lib/samba/private/sam.ldb ]; then
+		ridset_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb sAMAccountName="$hostname$" rIDSetReferences  | ldapsearch-wrapper | sed -n 's/^rIDSetReferences: //p')
+		if [ -n "$ridset_dn" ]; then
+			echo "extract_rIDNextRID: Saving rid pool"
+			test_output=$(ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b "$ridset_dn" | ldapsearch-wrapper)
+			old_rIDAllocationPool=$(sed -n 's/^rIDAllocationPool: //p' <<<"$test_output")
+			old_rIDPreviousAllocationPool=$(sed -n 's/^rIDPreviousAllocationPool: //p' <<<"$test_output")
+			old_rIDNextRID=$(sed -n 's/^rIDNextRID: //p' <<<"$test_output")
+		else
+			echo "extract_rIDNextRID: Attribute rIDSetReferences not found"
+		fi
+	fi
+}
+
+restore_rIDNextRID() {
+	local test_output
+	local ridset_dn
+	## Workaround for Bug #34754
+	if [ -r /var/lib/samba/private/sam.ldb ]; then
+		ridset_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb sAMAccountName="$hostname$" rIDSetReferences  | ldapsearch-wrapper | sed -n 's/^rIDSetReferences: //p')
+		if [ -n "$ridset_dn" ]; then
+			test_output=$(ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b "$ridset_dn" | ldapsearch-wrapper)
+			new_rIDAllocationPool=$(sed -n 's/^rIDAllocationPool: //p' <<<"$test_output")
+			new_rIDPreviousAllocationPool=$(sed -n 's/^rIDPreviousAllocationPool: //p' <<<"$test_output")
+			new_rIDNextRID=$(sed -n 's/^rIDNextRID: //p' <<<"$test_output")
+		else
+			echo "restore_rIDNextRID: Attribute rIDSetReferences not found"
+		fi
+	fi
+	if [ -n "$new_rIDAllocationPool" ] && [ -z "$new_rIDNextRID" ]; then
+		if [ "$new_rIDAllocationPool" = "$old_rIDAllocationPool" ] && [ -n "$old_rIDNextRID" ]; then
+			echo "restore_rIDNextRID: Restoring rid pool"
+			{
+			cat <<-%EOF
+			dn: $ridset_dn
+			changetype: modify
+			add: rIDNextRID
+			rIDNextRID: $old_rIDNextRID
+			%EOF
+
+			if [ -z "$new_rIDPreviousAllocationPool" ]; then
+				if [ -n "$old_rIDPreviousAllocationPool" ]; then
+					cat <<-%EOF
+					-
+					add: rIDPreviousAllocationPool
+					rIDPreviousAllocationPool: $old_rIDPreviousAllocationPool
+					%EOF
+				else
+					cat <<-%EOF
+					-
+					add: rIDPreviousAllocationPool
+					rIDPreviousAllocationPool: $new_rIDAllocationPool
+					%EOF
+				fi
+			fi
+			} | ldbmodify -H /var/lib/samba/private/sam.ldb
+		else
+			if [ -n "$old_rIDNextRID" ]; then
+				echo "restore_rIDNextRID: Not Restoring"
+				echo "restore_rIDNextRID: new_rIDAllocationPool: $new_rIDAllocationPool, old_rIDAllocationPool: $old_rIDAllocationPool"
+			fi
+		fi
+	fi
+}
+
+cleanup_var_lib_samba()
+{
+	local backup_folder
+	backup_folder="/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
+	if var_lib_samba_is_s4; then
+		extract_rIDNextRID
+		mv /var/lib/samba "$backup_folder"
+		## and copy everything back except private/*
+		rsync -a --exclude /private/* "$backup_folder/" /var/lib/samba
+	fi
+}

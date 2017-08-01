@@ -309,21 +309,6 @@ fi
 
 ### Next adjust OpenLDAP ports before starting Samba4
 
-# Test:
-# r 389
-# r 7389,389
-# r 389,7389
-# r 389,7389,8389
-# r 7389,389,8389
-# r 7389,8389,389
-remove_port ()
-{
-	if [ -n "$1" -a -n "$2" ]; then
-		echo "$1" | sed -e "s|^${2},||;s|,${2},|,|;s|,${2}$||;s|^${2}$||"
-	fi
-
-}
-
 if [ -n "$slapd_port" ]; then
 	univention-config-registry set slapd/port="$(remove_port "$slapd_port" 389)" 2>&1 | tee -a "$LOGFILE"
 fi
