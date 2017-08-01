@@ -96,7 +96,7 @@ class Instance(Base, ProgressMixin):
 		args = args or {}
 
 		def thread(self, request):
-			return plugin.execute(**args)
+			return plugin.execute(self, **args)
 		return thread
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
@@ -193,6 +193,7 @@ class Plugin(object):
 	The plugin module have to define at least a :method:`run()` function.
 	This function is executed as the primary default action for every interaction.
 	Every defined action callback may raise any of the following exceptions.
+	A callback gets the UMC instance as a first argument.
 	These exceptions allow the same attributes as the module so that an action is able to overwrite
 	the module attributes for the execution of that specific test.
 
@@ -253,13 +254,13 @@ class Plugin(object):
 			level=0
 		)
 
-	def execute(self, action=None, **kwargs):
+	def execute(self, umc_module, action=None, **kwargs):
 		success = True
 		errors = {}
 		execute = self.actions.get(action, self.module.run)
 		try:
 			try:
-				result = execute(**kwargs)
+				result = execute(umc_module, **kwargs)
 				if isinstance(result, dict):
 					errors.update(result)
 			except Problem:

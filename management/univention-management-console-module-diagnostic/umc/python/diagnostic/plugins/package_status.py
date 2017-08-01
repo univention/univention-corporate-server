@@ -16,7 +16,7 @@ description = '\n'.join([
 ])
 
 
-def run():
+def run(_umc_instance):
 	proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
 	stdout, stderr = proccess.communicate()
 

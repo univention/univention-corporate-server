@@ -23,7 +23,7 @@ umc_modules = [{
 }]
 
 
-def run():
+def run(_umc_instance):
 	ucr.load()
 	failed = []
 
