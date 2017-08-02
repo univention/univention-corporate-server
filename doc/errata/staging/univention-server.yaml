@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [0, 1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-server
+fix: 12.0.0-11A~4.2.0.201708021130
+desc: |
+ This update addresses the following issue:
+ * Fixed calling `univention-fix-ucr-dns` when not default gateway is set.
+bug: [45120]
