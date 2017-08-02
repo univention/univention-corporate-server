@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [0, 1]
+version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-nagios
 fix: 10.0.1-3A~4.2.0.201707061034
