@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-02 14:54+0200\n"
+"POT-Creation-Date: 2017-08-02 14:58+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -493,8 +493,8 @@ msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:98
-msgid "Run `samba-tool dbcheck --fix --yes`"
-msgstr "Führe `samba-tool dbcheck --fix --yes` aus"
+msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
+msgstr "Führe `samba-tool dbcheck --fix --cross-ncs --yes` aus"
 
 #: umc/python/diagnostic/plugins/connectors4_rejects.py:45
 msgid "S4 Connector rejects"
@@ -860,14 +860,6 @@ msgid "`nsupdate` existence check for domain {domain} failed."
 msgstr ""
 "`nsupdate` Existenzprüfung für die Domänne {domain} ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:55
-msgid "`samba-tool dbcheck --fix --yes` failed."
-msgstr "`samba-tool dbcheck --fix --yes` ist fehlgeschlagen."
-
-#: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:57
-msgid "`samba-tool dbcheck --fix --yes` succeeded."
-msgstr "`samba-tool dbcheck --fix --yes` war erfolgreich."
-
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:113
 msgid "`samba-tool dbcheck` found no problems with the local AD database."
 msgstr ""
@@ -887,6 +879,16 @@ msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
 msgstr ""
 "`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
 "Einträgen."
+
+#: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:55
+#, python-brace-format
+msgid "`{cmd}` failed."
+msgstr "`{cmd}` ist fehlgeschlagen."
+
+#: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:57
+#, python-brace-format
+msgid "`{cmd}` succeeded."
+msgstr "`{cmd}` war erfolgreich."
 
 #: umc/python/diagnostic/plugins/check_join_status.py:44
 msgid ""

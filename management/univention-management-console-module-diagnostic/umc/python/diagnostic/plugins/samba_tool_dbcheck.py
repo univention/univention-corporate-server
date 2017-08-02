@@ -49,12 +49,12 @@ def run_samba_tool_dbcheck_fix(umc_instance):
 	if not is_service_active('Samba 4'):
 		return
 
-	cmd = ['samba-tool', 'dbcheck', '--fix', '--yes']
+	cmd = ['samba-tool', 'dbcheck', '--fix', '--cross-ncs', '--yes']
 	(success, output) = run_with_output(cmd)
 	if success:
-		fix_log = [_('`samba-tool dbcheck --fix --yes` failed.')]
+		fix_log = [_('`{cmd}` failed.').format(cmd=' '.join(cmd))]
 	else:
-		fix_log = [_('`samba-tool dbcheck --fix --yes` succeeded.')]
+		fix_log = [_('`{cmd}` succeeded.').format(cmd=' '.join(cmd))]
 	fix_log.append(output)
 	run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
 
@@ -95,7 +95,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 
 	buttons = [{
 		'action': 'run_samba_tool_dbcheck_fix',
-		'label': _('Run `samba-tool dbcheck --fix --yes`'),
+		'label': _('Run `samba-tool dbcheck --fix --cross-ncs --yes`'),
 	}]
 
 	cmd = ['samba-tool', 'dbcheck']
