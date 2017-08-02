@@ -198,25 +198,127 @@ if [ -z "$samba4_function_level" ]; then
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 
+kinit_with_samba_secret_works() {
+	local t
+	local rc
+
+	for t in $(seq 5); do
+		sleep 1
+		kinit --password-file=<(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" secret  | sed -n 's/^secret: //p') ${hostname^^}$
+		rc=$?
+		if [ "$rc" -eq 0 ]; then
+			kdestroy
+			return 0
+		fi
+	done
+	return "$rc"
+}
+
+kinit_with_keytab_works() {
+	local t
+	local rc
+
+	for t in $(seq 3); do
+		sleep 1
+		kinit -t /etc/krb5.keytab ${hostname^^}$
+		rc=$?
+		if [ "$rc" -eq 0 ]; then
+			kdestroy
+			return 0
+		fi
+	done
+	return "$rc"
+}
+
+check_samba_secret_against_samdb() {
+	local secret
+	local count
+	local rc
+
+	eval "$(ucr shell hostname)"
+	secret=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" secret  | sed -n 's/^secret: //p')
+	if [ -z "$secret" ]; then
+		return 1
+	fi
+
+	count=$(pgrep -cx samba)
+	if [ "$count" -eq 0 ]; then
+		/etc/init.d/samba start
+		sleep 3
+	fi
+
+	if kinit_with_samba_secret_works; then
+		check_krb5_keytab_against_samdb
+		rc=$?
+	else
+		rc=1
+	fi
+	if [ "$count" -eq 0 ]; then
+		/etc/init.d/samba stop
+	fi
+	return ${rc:-0}
+}
+
+check_krb5_keytab_against_samdb() {
+	local count
+	local rc
+
+	count=$(pgrep -cx samba)
+	if [ "$count" -eq 0 ]; then
+		/etc/init.d/samba start
+	fi
+	eval "$(ucr shell hostname)"
+	if ! kinit_with_keytab_works; then
+		echo "Re-creating keytab from secrets.ldb"
+		/usr/share/univention-samba4/scripts/create-keytab.sh
+		if ! kinit_with_keytab_works; then
+			rc=1
+		fi
+	fi
+	if [ "$count" -eq 0 ]; then
+		/etc/init.d/samba stop
+	fi
+	return ${rc:-0}
+}
+
+assert_that_machine_secret_works_against_samdb() {
+	local secret
+
+	eval "$(ucr shell hostname)"
+	secret=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" secret  | sed -n 's/^secret: //p')
+	if [ -z "$secret" ]; then
+		return 1
+	fi
+	if [ "$(</etc/machine.secret)" != "$secret" ]; then
+		set_machine_secret
+	fi
+}
+
 provision_is_ok() {
 	local client_kvno
 	local server_kvno
 
-	if ! [ -r /var/lib/samba/private/secrets.ldb ]; then
+	if ! [ -r "$samba_secrets" ]; then
 		return 1
 	fi
 
-	if ! [ -r /var/lib/samba/private/sam.ldb ]; then
+	if ! [ -r "$samba_sam" ]; then
 		return 1
 	fi
 
-	client_kvno=$(ldbsearch -H /var/lib/samba/private/secrets.ldb -b "flatname=$windows_domain,cn=Primary Domains" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+	eval "$(ucr shell hostname)"
+	client_kvno=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
 
-	server_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(sAMAccountName=$hostname$)" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+	server_kvno=$(ldbsearch -H "$samba_sam" "(sAMAccountName=$hostname$)" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
 
 	if [ "$client_kvno" != "$server_kvno" ]; then
 		return 1
 	fi
+	if ! check_samba_secret_against_samdb; then
+		return 1
+	fi
+
+	assert_that_machine_secret_works_against_samdb
 }
 
 skip_reprovision() {

@@ -1,3 +1,10 @@
+univention-samba4 (5.0.4-11) unstable; urgency=medium
+
+  * Bug #45126:  Assure that /etc/machine.secret works against Samba on
+    re-joined S4-Connector DC.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 Aug 2017 19:19:08 +0200
+
 univention-samba4 (5.0.4-10) unstable; urgency=medium
 
   * Bug #45111: Backport of univention-samba4 patches for Bug #43478:
