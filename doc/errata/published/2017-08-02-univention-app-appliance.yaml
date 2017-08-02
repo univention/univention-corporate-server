@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fixed a typo on the appliance first steps overlay
 bug: [45084]
+erratum: 119
+announced: 2017-08-02
