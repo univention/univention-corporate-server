@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-9) unstable; urgency=medium
+
+  * Bug #40605: fix encoding issue in diagnostic: samba_tool_dbcheck
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 17:16:34 +0200
+
 univention-management-console-module-diagnostic (3.0.1-8) unstable; urgency=medium
 
   * Bug #40227: use 0700 as default mode for /var/cache/univention-* in file_permissions
