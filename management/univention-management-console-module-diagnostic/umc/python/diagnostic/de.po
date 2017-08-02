@@ -436,7 +436,7 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/sources_list_check.py:79
 msgid "Please check the files for more details."
-msgstr "Überprüfen Sie die Dateine für mehr Details."
+msgstr "Überprüfen Sie die Dateien für mehr Details."
 
 #: umc/python/diagnostic/plugins/nameserver.py:16
 msgid ""
