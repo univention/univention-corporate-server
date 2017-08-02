@@ -1,3 +1,12 @@
+univention-management-console-module-diagnostic (3.0.1-8) unstable; urgency=medium
+
+  * Bug #40227: use 0700 as default mode for /var/cache/univention-* in file_permissions
+  * Bug #40227: use only require some files on dc_master in file_permissions
+  * Bug #40227: require correct owner for ssl directory in file_permissions on memberserver
+  * Bug #40605: typo-fix in translation
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 16:35:17 +0200
+
 univention-management-console-module-diagnostic (3.0.1-7) unstable; urgency=medium
 
   * Bug #38974: fix typo in translation of sources_list_check
