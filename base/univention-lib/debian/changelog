@@ -1,3 +1,10 @@
+univention-lib (6.0.9-8) unstable; urgency=medium
+
+  * Bug #38554: u-lib: introduce UCR backup/clean/{max_age,min_backups}
+  * Bug #38554: u-lib: add backup.sh: clean_old_backups
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 17:54:08 +0200
+
 univention-lib (6.0.9-7) unstable; urgency=medium
 
   * Bug #44849: Catch NoNameservers exception in
