@@ -399,15 +399,19 @@ class UCSTestUDM(object):
 
         failedObjects = {}
         print('Performing UCSTestUDM cleanup...')
-        for module, objects in self._cleanup.items():
-            for dn in objects:
-                cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
+        objects = []
+        for module, objs in self._cleanup.items():
+            objects.extend((module, dn) for dn in objs)
 
-                child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-                (stdout, stderr) = child.communicate()
+        for module, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
+            cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
 
-                if child.returncode or 'Object removed:' not in stdout:
-                    failedObjects.setdefault(module, []).append(dn)
+            print 'removing DN:', dn
+            child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+            (stdout, stderr) = child.communicate()
+
+            if child.returncode or 'Object removed:' not in stdout:
+                failedObjects.setdefault(module, []).append(dn)
 
         # simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
         # (e.g groups can not be removed while there are still objects using it as primary group)
@@ -420,6 +424,7 @@ class UCSTestUDM(object):
 
                 if child.returncode or 'Object removed:' not in stdout:
                     print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
+                    print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
         self._cleanup = {}
 
         for lock_type, values in self._cleanupLocks.items():
