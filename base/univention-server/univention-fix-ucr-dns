@@ -32,7 +32,7 @@ Configure UCS-domain and forward DNS servers.
 from os import environ
 from sys import modules, stderr, exit
 from collections import OrderedDict
-from subprocess import check_output, check_call
+from subprocess import check_output, check_call, CalledProcessError
 from optparse import OptionParser, SUPPRESS_HELP, Values
 from logging import getLogger, basicConfig, DEBUG, INFO, WARNING, ERROR
 
@@ -380,6 +380,8 @@ def is_self(addr):
 	True
 	>>> is_self('8.8.8.8')
 	False
+	>>> is_self('0.0.0.1')
+	False
 	"""
 	log = getLogger(__name__).getChild('ip')
 
@@ -387,8 +389,12 @@ def is_self(addr):
 	env['LC_ALL'] = 'C'
 	cmd = ['ip', 'route', 'get', '%s' % addr]
 	log.debug('calling %r', cmd)
-	out = check_output(cmd, env=env)
-	return out.startswith('local ')
+	try:
+		out = check_output(cmd, env=env)
+		return out.startswith('local ')
+	except CalledProcessError as ex:
+		log.warn('Failed to determine route: %s', ex)
+		return False
 
 
 def run_tests():
