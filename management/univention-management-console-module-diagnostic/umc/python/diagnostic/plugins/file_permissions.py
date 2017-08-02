@@ -118,19 +118,21 @@ def file_and_permission_checks():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	yield check_file('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0640, must_exist=True)
+	is_master = configRegistry.get('server/role') == 'domaincontroller_master'
+
+	yield check_file('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0640, must_exist=is_master)
 	yield check_file('/etc/machine.secret', 'root', 'root', 0600, must_exist=True)
 	yield check_file('/etc/pam_ldap.secret', 'root', 'root', 0600, must_exist=True)
-	yield check_file('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0640, must_exist=True)
+	yield check_file('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0640, must_exist=is_master)
 	yield check_file('/etc/libnss-ldap.conf', 'messagebus', 'root', 0440, must_exist=True)
 	yield check_file('/var/run/slapd/ldapi', 'root', 'root', 0700)
 
 	(host, domain) = (configRegistry.get('hostname'), configRegistry.get('domainname'))
 	yield check_file('/etc/univention/ssl', 'root', 'DC Backup Hosts', 0755, must_exist=True)
-	yield check_file('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0660, must_exist=True)
-	yield check_file('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0660, must_exist=True)
+	yield check_file('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0660, must_exist=is_master)
+	yield check_file('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0660, must_exist=is_master)
 	yield check_file('/etc/univention/ssl/ucsCA', 'root', 'DC Backup Hosts', 0775, must_exist=True)
-	yield check_file('/etc/univention/ssl/ucs-sso.{}'.format(domain), 'root', 'DC Backup Hosts', 0750, must_exist=True)
+	yield check_file('/etc/univention/ssl/ucs-sso.{}'.format(domain), 'root', 'DC Backup Hosts', 0750, must_exist=is_master)
 	yield check_file('/etc/univention/ssl/{}.{}'.format(host, domain), '{}$'.format(host), 'DC Backup Hosts', 0750, must_exist=True)
 
 	yield check_file('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0600)
