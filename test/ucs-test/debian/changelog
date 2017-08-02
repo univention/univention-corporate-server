@@ -1,3 +1,9 @@
+ucs-test (7.0.23-21) unstable; urgency=medium
+
+  * Bug #43847: Fix signature tests (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Aug 2017 01:24:14 +0200
+
 ucs-test (7.0.23-20) unstable; urgency=medium
 
   * Bug #45122: fix univention.testing.udm cleanup: removal of parent objects

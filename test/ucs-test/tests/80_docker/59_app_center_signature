@@ -46,8 +46,8 @@ class SyncedAppcenter(Appcenter):
 		self.download('meta-inf/%s/all.tar.gz' % self.vv)
 		if self.vv == '4.2':
 			self.download('meta-inf/4.1/index.json.gz')
-			self.download('meta-inf/4.2/all.tar.zsync')
-			self.download('meta-inf/4.2/all.tar.gz')
+			self.download('meta-inf/4.1/all.tar.zsync')
+			self.download('meta-inf/4.1/all.tar.gz')
 
 	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
@@ -92,22 +92,6 @@ class SyncedAppcenter(Appcenter):
 			fail('_test_modify_index failed')
 		print '### _test_modify_index passed'
 
-	def test_modify_ini(self):
-		self.download_index_json()
-		self.download_index_json_gpg()
-		app_id = 'tecart'
-		app_version = '4.4.12'
-		filename = 'tecart_20151204.ini'
-		self.remove_from_cache(filename)
-		self.download('meta-inf/%s/%s/%s' % (self.vv, app_id, filename))
-		call('echo "## SIGNATURE TEST ###" >>/var/www/meta-inf/%s/%s/%s' % (self.vv, app_id, filename), shell=True)
-		res = call('univention-app update', shell=True)
-		# tecart must have been removed
-		res = call('univention-app get %s=%s name' % (app_id, app_version), shell=True)
-		if res == 0:
-			fail('_test_modify_ini failed')
-		print '### _test_modify_ini passed'
-
 	def test_modify_inst(self):
 		self.download_index_json()
 		self.download_index_json_gpg()
@@ -127,8 +111,6 @@ class SyncedAppcenter(Appcenter):
 		self.test_index_with_gpg()
 		self.reset_local_cache()
 		self.test_modify_index()
-		self.reset_local_cache()
-		self.test_modify_ini()
 		self.reset_local_cache()
 		self.test_modify_inst()
 		self.reset_local_cache()
