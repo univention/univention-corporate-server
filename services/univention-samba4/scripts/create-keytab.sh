@@ -32,10 +32,12 @@
 
 eval "$(univention-config-registry shell)"
 
-if [ -e /var/lib/samba/private/secrets.ldb ]; then
+samba_secrets=/var/lib/samba/private/secrets.ldb
+
+if [ -e "$samba_secrets" ]; then
 	tmpfile=$(mktemp)
 
-	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+	ldbmodify -H "$samba_secrets" <<-%EOF
 	dn: flatname=$windows_domain,cn=Primary Domains
 	changetype: modify
 	replace: krb5Keytab
@@ -44,9 +46,31 @@ if [ -e /var/lib/samba/private/secrets.ldb ]; then
 	%EOF
 
 	sleep 2
-	rm /etc/krb5.keytab
 
-	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+	if [ -f /etc/krb5.keytab ]; then
+		old_kvnos=( $(ktutil list | egrep "^ *[0-9]+ " | awk '{print $1;}' | sort -nu) )
+		current_kvno=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
+		if [ -n "$current_kvno" ] && [ -n "$old_kvnos" ]; then
+			rc=0
+			for kvno in "${old_kvnos[@]}"; do
+				if [ "$kvno" -lt "$current_kvno" ]; then
+					continue
+				fi
+				ktutil remove --kvno="$kvno"
+				if [ $? != 0 ]; then
+					rc=$?
+					break
+				fi
+			done
+			if [ $rc != 0 ]; then
+				rm /etc/krb5.keytab
+			fi
+		else
+			rm /etc/krb5.keytab
+		fi
+	fi
+
+	ldbmodify -H "$samba_secrets" <<-%EOF
 	dn: flatname=$windows_domain,cn=Primary Domains
 	changetype: modify
 	replace: krb5Keytab
@@ -56,7 +80,7 @@ if [ -e /var/lib/samba/private/secrets.ldb ]; then
 
 	rm $tmpfile
 else
-	echo "The file /var/lib/samba/private/secrets.ldb does not exist. Skip the modification."
+	echo "The file $samba_secrets does not exist. Skip the modification."
 fi
 
 exit 0
