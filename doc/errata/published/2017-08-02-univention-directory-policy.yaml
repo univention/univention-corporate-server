@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The join script 20univention-directory-policy now aborts on errors.
 bug: [40247]
+erratum: 122
+announced: 2017-08-02
