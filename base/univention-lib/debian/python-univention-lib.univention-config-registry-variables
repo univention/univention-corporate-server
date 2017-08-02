@@ -10,3 +10,15 @@ Mehrfache Einträge müssen durch einen Doppelpunkt getrennt werden. Ist die Var
 Description[en]=The automatic move of file shares - configurable through the variable listener/shares/rename - is only allowed for the filesystems defined here. Multiple entries need to be separated by a colon. If the variable isn't set 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs' applies.
 Type=str
 Categories=service-misc
+
+[backup/clean/max_age]
+Description[en]=Automatic deletion of backup-files in /var/univention-backup/, of files older than backup/clean/max_age. If unset, no files are deleted. If less than backup/clean/min_backups backup-files exist, no files are deleted.
+Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup, die älter als backup/clean/max_age sind. Wenn diese Variable nicht gesetzt ist, werden keine Dateien gelöscht. Wenn weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht.
+Type=int
+Categories=service-misc
+
+[backup/clean/min_backups]
+Description[en]=Automatic deletion of backup-files in /var/univention-backup/: if backup/clean/max_age is set and less than backup/clean/min_backups backup-files exist, no files are deleted. Defaults to 10.
+Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup: wenn backup/clean/max_age gesetzt ist und weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht. Standardwert ist 10.
+Type=int
+Categories=service-misc
