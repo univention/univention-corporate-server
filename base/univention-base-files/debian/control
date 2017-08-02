@@ -52,6 +52,7 @@ Description: UCS - base packages
 Package: univention-base-files
 Architecture: all
 Depends: ${misc:Depends},
+ univention-lib (>= 6.0.9-8),
  univention-config (>= 10.0.2-3)
 Provides: univention-config-registry
 Description: UCS - base configuration files

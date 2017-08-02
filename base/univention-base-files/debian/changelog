@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-15) unstable; urgency=medium
+
+  * Bug #38554: u-base-files: call clean_old_backups in ucr-backup
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 18:06:21 +0200
+
 univention-base-files (6.0.0-14) unstable; urgency=medium
 
   * Bug #40371: nscd init script: move cache invalidation after restart
