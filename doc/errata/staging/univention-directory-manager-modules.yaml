@@ -10,7 +10,7 @@ desc: |
    required in UMC.
  * Some performance optimizations during modification of user and group
    objects has been done.
- * The next free sambaRID is used when only a S4 Connector with IP v6 is part
+ * The next free sambaRID is used when only a S4 Connector with IPv6 is part
    of the domain.
  * The error handling during creation of network objects with an invalid
    netmask has been improved.
