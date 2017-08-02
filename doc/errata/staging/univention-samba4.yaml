@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-samba4
-fix: 5.0.4-11.697.201708021920
+fix: 5.0.4-12.698.201708022014
 desc: |
  This update addresses the following issue(s):
  * Run samba-tool dbcheck --cross-ncs --fix --yes on update if there are
@@ -11,5 +11,6 @@ desc: |
    the fix is skipped if the available disk space is too low.
  * Don't re-provision if univention-samba4 gets uninstalled and re-installed.
  * Assure that /etc/machine.secret works against Samba on re-joined
-   S4-Connector DC.
+   S4-Connector DC and abort re-provision if there are SIDs in sam.ldb which
+   would get re-assigned and syncronized to OpenLDAP.
 bug: [44634, 45111, 45126]
