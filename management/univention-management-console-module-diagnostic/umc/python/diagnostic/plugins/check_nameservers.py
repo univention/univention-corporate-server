@@ -140,12 +140,10 @@ class NameServer(object):
 
 	def _generate_splits(self, fqdn):
 		zn = fqdn
-		while True:
+		while '.' in zn and zn != self.zone.domainname:
 			(rdn, zn) = zn.split('.', 1)
 			if rdn and zn:
 				yield (rdn, zn)
-			if '.' not in zn or zn == self.zone.domainname:
-				break
 
 	def build_filter(self):
 		template = '(&(relativeDomainName=%s)(zoneName=%s))'

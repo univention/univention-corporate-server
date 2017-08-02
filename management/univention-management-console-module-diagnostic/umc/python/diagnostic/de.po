@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-01 15:41+0200\n"
+"POT-Creation-Date: 2017-08-02 14:54+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -216,7 +216,7 @@ msgstr ""
 "Es wurde ein Unterschied in den ACL Einträge für die globalen IMAP Ordner "
 "zwischen UDM und IMAP gefunden."
 
-#: umc/python/diagnostic/plugins/check_nameservers.py:217
+#: umc/python/diagnostic/plugins/check_nameservers.py:215
 msgid "Found errors in the nameserver entries of the following zones."
 msgstr ""
 "Es wurden Fehler in den Nameserver Einträgen der folgenden Zonen gefunden."
@@ -288,7 +288,7 @@ msgid "If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
 "Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
 
-#: umc/python/diagnostic/plugins/check_nameservers.py:220
+#: umc/python/diagnostic/plugins/check_nameservers.py:218
 #, python-brace-format
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
@@ -298,7 +298,7 @@ msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
 msgid "In mail folder {name} (see {{udm:mail/mail}}):"
 msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
 
-#: umc/python/diagnostic/plugins/check_nameservers.py:221
+#: umc/python/diagnostic/plugins/check_nameservers.py:219
 #, python-brace-format
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
@@ -451,7 +451,7 @@ msgstr ""
 msgid "Please refer to {rfc1123} for the syntax of host names."
 msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
 
-#: umc/python/diagnostic/plugins/check_nameservers.py:218
+#: umc/python/diagnostic/plugins/check_nameservers.py:216
 #, python-brace-format
 msgid "Please refer to {sdb} for further information."
 msgstr "Siehe {sdb} für weitere Informationen."
