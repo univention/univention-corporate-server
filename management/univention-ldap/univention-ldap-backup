@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/backup.sh
 eval "$(univention-config-registry shell server/role)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
@@ -48,4 +49,6 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		echo "LDAP could not be dumped!" >&2
 		exit 1
 	fi
+
+	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
 fi

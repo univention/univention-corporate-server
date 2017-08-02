@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-13) unstable; urgency=medium
+
+  * Bug #38554: u-ldap: call clean_old_backups in u-ldap-backup
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 18:16:54 +0200
+
 univention-ldap (13.0.7-12) unstable; urgency=medium
 
   * Bug #44909: index univentionUDMPropertyCopyable more carefully: If a DC
