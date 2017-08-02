@@ -1,6 +1,7 @@
 ucs-test (7.0.23-20) unstable; urgency=medium
 
   * Bug #45122: fix univention.testing.udm cleanup: removal of parent objects
+  * Bug #41552: show full diff in verify_ldap_object()
 
  -- Florian Best <best@univention.de>  Wed, 02 Aug 2017 13:50:23 +0200
 

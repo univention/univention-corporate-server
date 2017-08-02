@@ -155,18 +155,29 @@ def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=Tru
     if not should_exist:
         raise LDAPUnexpectedObjectFound('DN: %s' % baseDn)
 
+    values_missing = {}
+    unexpected_values = {}
     for attribute, expected_values in expected_attr.items():
         found_values = set(attr.get(attribute, []))
         expected_values = set(expected_values)
 
         difference = expected_values - found_values
         if difference:
-            raise LDAPObjectValueMissing('DN: %s\n%s: %r, missing: \'%s\'' % (baseDn, attribute, list(found_values), '\', '.join(difference)))
+            values_missing[attribute] = difference
 
         if strict:
             difference = found_values - expected_values
             if difference:
-                raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\', '.join(difference)))
+                unexpected_values[attribute] = difference
+
+    values_missing = '\n'.join('%s: %r, missing: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.iteritems())
+    unexpected_values = '\n'.join('%s: %r, unexpected: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in unexpected_values.iteritems())
+    msg = 'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
+
+    if values_missing:
+        raise LDAPObjectValueMissing(msg)
+    if unexpected_values:
+        raise LDAPObjectUnexpectedValue(msg)
 
 
 def s4connector_present():
