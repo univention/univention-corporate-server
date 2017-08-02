@@ -1,3 +1,11 @@
+univention-management-console-module-diagnostic (3.0.1-7) unstable; urgency=medium
+
+  * Bug #38974: fix typo in translation of sources_list_check
+  * Bug #40393: fix ValueError in check_nameservers
+  * Bug #40605: use --cross-ncs in samba-tool dbcheck diagnostic fix
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 15:10:06 +0200
+
 univention-management-console-module-diagnostic (3.0.1-6) unstable; urgency=medium
 
   * Bug #35858: umc-diagnostic: pass umc-instance into check plugins
