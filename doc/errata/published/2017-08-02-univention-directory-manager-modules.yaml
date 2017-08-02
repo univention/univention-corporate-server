@@ -18,3 +18,5 @@ desc: |
    that the Univention Corporate Client UMC configuration was not possible
    anymore.
 bug: [24601, 37081, 25058, 24828, 45116]
+erratum: 121
+announced: 2017-08-02
