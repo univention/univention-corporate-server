@@ -139,13 +139,24 @@ def file_and_permission_checks():
 	for path in glob.iglob('/var/run/univention-management-console/*.socket'):
 		yield check_file(path, 'root', 'root', 0700)
 
+	known_mode_755 = set((
+		'/var/cache/univention-appcenter',
+		'/var/cache/univention-bind-proxy',
+		'/var/cache/univention-config',
+		'/var/cache/univention-directory-listener',
+		'/var/cache/univention-directory-reports',
+		'/var/cache/univention-management-console',
+		'/var/cache/univention-management-console-module-diagnostic',
+		'/var/cache/univention-samba4',
+	))
+
 	for path in glob.iglob('/var/cache/univention-*'):
-		if path == '/var/cache/univention-quota':
-			yield check_file(path, 'root', 'root', 0750)
-		elif path == '/var/cache/univention-system-setup':
-			yield check_file(path, 'root', 'root', 0700)
-		else:
+		if path in known_mode_755:
 			yield check_file(path, 'root', 'root', 0755)
+		elif path == '/var/cache/univention-quota':
+			yield check_file(path, 'root', 'root', 0750)
+		else:
+			yield check_file(path, 'root', 'root', 0700)
 
 	for path in glob.iglob('/etc/univention/connector/*.sqlite'):
 		yield check_file(path, 'root', 'root', 0644)
