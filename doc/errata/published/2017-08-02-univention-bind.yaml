@@ -9,3 +9,5 @@ desc: |
  * The BIND9 name server was not restarted after the automatic password change
    when using the LDAP backend. This has been fixed.
 bug: [45090]
+erratum: 120
+announced: 2017-08-02
