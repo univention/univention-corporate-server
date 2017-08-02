@@ -122,6 +122,7 @@ stop_conflicting_services() {
 }
 
 set_machine_secret() {
+	echo "INFO: Storing /etc/machine.secret in secrets.ldb"
 	## 1. store password locally in secrets.ldb
 	old_kvno=$(ldbsearch -H "$samba_sam" samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
 	new_kvno=$(($old_kvno + 1))
@@ -235,25 +236,31 @@ check_samba_secret_against_samdb() {
 	local count
 	local rc
 
+	echo "INFO: Checking Samba machine password"
 	eval "$(ucr shell hostname)"
 	secret=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" secret  | sed -n 's/^secret: //p')
 	if [ -z "$secret" ]; then
+		echo "INFO: No machine password stored in Samba"
 		return 1
 	fi
 
 	count=$(pgrep -cx samba)
 	if [ "$count" -eq 0 ]; then
+		echo "INFO: Temporarily starting Samba for this check"
 		/etc/init.d/samba start
 		sleep 3
 	fi
 
 	if kinit_with_samba_secret_works; then
+		echo "INFO: The machine password stored in Samba works with kinit"
 		check_krb5_keytab_against_samdb
 		rc=$?
 	else
+		echo "INFO: The machine password stored in Samba doesn't work with kinit"
 		rc=1
 	fi
 	if [ "$count" -eq 0 ]; then
+		echo "INFO: Stopping Samba again"
 		/etc/init.d/samba stop
 	fi
 	return ${rc:-0}
@@ -263,19 +270,28 @@ check_krb5_keytab_against_samdb() {
 	local count
 	local rc
 
+	echo "INFO: Checking if krb5.keytab works with kinit"
 	count=$(pgrep -cx samba)
 	if [ "$count" -eq 0 ]; then
+		echo "INFO: Temporarily starting Samba for this check"
 		/etc/init.d/samba start
+		sleep 3
 	fi
-	eval "$(ucr shell hostname)"
 	if ! kinit_with_keytab_works; then
-		echo "Re-creating keytab from secrets.ldb"
+		echo "INFO: The krb5.keytab doesn't work with kinit"
+		echo "INFO: Re-creating keytab from secrets.ldb"
 		/usr/share/univention-samba4/scripts/create-keytab.sh
 		if ! kinit_with_keytab_works; then
+			echo "INFO: The krb5.keytab still doesn't work with kinit"
 			rc=1
+		else
+			echo "INFO: Ok, now the krb5.keytab works with kinit"
 		fi
+	else
+		echo "INFO: The krb5.keytab works with kinit"
 	fi
 	if [ "$count" -eq 0 ]; then
+		echo "INFO: Stopping Samba again"
 		/etc/init.d/samba stop
 	fi
 	return ${rc:-0}
@@ -290,12 +306,12 @@ assert_that_machine_secret_works_against_samdb() {
 		return 1
 	fi
 	if [ "$(</etc/machine.secret)" != "$secret" ]; then
+		echo "INFO: /etc/machine.secret not in secrets.ldb"
 		set_machine_secret
 	fi
 }
 
-provision_is_ok() {
-	local client_kvno
+machine_account_in_samdb() {
 	local server_kvno
 
 	if ! [ -r "$samba_secrets" ]; then
@@ -306,14 +322,16 @@ provision_is_ok() {
 		return 1
 	fi
 
+	echo "INFO: Looking for Samba machine account in sam.ldb"
+
 	eval "$(ucr shell hostname)"
-	client_kvno=$(ldbsearch -H "$samba_secrets" "(&(objectClass=primaryDomain)(sAMAccountName=${hostname^^}$))" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
-
 	server_kvno=$(ldbsearch -H "$samba_sam" "(sAMAccountName=$hostname$)" msDS-KeyVersionNumber 2>&1 /dev/null | sed -n 's/^msDS-KeyVersionNumber: //p')
-
-	if [ "$client_kvno" != "$server_kvno" ]; then
+	if [ -z "$server_kvno" ]; then
 		return 1
 	fi
+}
+
+secrets_are_ok() {
 	if ! check_samba_secret_against_samdb; then
 		return 1
 	fi
@@ -331,12 +349,21 @@ skip_reprovision() {
 		return 1	## allow reprovision
 	fi
 
-	if ! provision_is_ok; then
-		return 1	## allow reprovision
+	echo "INFO: Checking if a re-provision is really necessary or if it's dangerous"
+	if machine_account_in_samdb; then
+		if secrets_are_ok; then
+			echo "INFO: This system runs the S4-Connector and the sam.ldb looks functional, skipping re-provision."
+			return 0
+		fi
+		if is_ucr_true connector/s4/mapping/sid_to_ucs; then
+			echo "ERROR: Aborting re-provision, there seem to be objectSIDs in sam.ldb which we should preserve."
+			## Hard exit.
+			exit 1
+		fi
 	fi
 
-	echo "INFO: This system runs the S4-Connector and the sam.ldb looks functional"
-	echo "      skipping re-provision."
+	echo "INFO: Checks ok, re-provision can continue"
+	return 1	## allow reprovision
 }
 
 run_samba_domain_provision() {
@@ -350,7 +377,7 @@ run_samba_domain_provision() {
 	    ${sitename:+--site="$sitename"} \
 	    --machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 
-	if ! provision_is_ok; then
+	if ! machine_account_in_samdb; then
 		echo "Samba4 provision failed, exiting $0"
 		exit 1
 	fi

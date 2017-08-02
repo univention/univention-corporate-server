@@ -1,3 +1,11 @@
+univention-samba4 (5.0.4-12) unstable; urgency=medium
+
+  * Bug #45126:  Add more log output
+  * Additionally abort re-provision if sam.ldb is not functional but
+    connector/s4/mapping/sid_to_ucs is true.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 Aug 2017 20:14:28 +0200
+
 univention-samba4 (5.0.4-11) unstable; urgency=medium
 
   * Bug #45126:  Assure that /etc/machine.secret works against Samba on
