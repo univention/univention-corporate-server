@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [0,1]
+scope: ucs_4.2-0-errata4.2-1
+src: mysql-5.5
+fix: 5.5.57-0.A~4.2.1.201708021657
+desc: |
+ Multiple security issues have been fixed in MySQL 5.5.57.
+ Since Oracle does not disclose sufficient information to provide backported
+ patches, MySQL is updated to the new release.
+ * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-56.html
+ * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-57.html
+ * http://www.oracle.com/technetwork/security-advisory/cpujul2017-3236622.html
+bug: [44519]
+cve:
+ - CVE-2017-3635
+ - CVE-2017-3636
+ - CVE-2017-3641
+ - CVE-2017-3648
+ - CVE-2017-3651
+ - CVE-2017-3652
+ - CVE-2017-3653
