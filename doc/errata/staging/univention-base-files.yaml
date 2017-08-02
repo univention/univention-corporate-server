@@ -3,8 +3,9 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-base-files
-fix: 6.0.0-14A~4.2.0.201708011716
+fix: 6.0.0-15A~4.2.0.201708021808
 desc: |
  This update addresses the following issue(s):
  * Move cache invalidation after daemon restart for nscd.
-bug: [40371]
+ * Cleanup old backups in univention-config-registry-backup.
+bug: [40371, 38554]
