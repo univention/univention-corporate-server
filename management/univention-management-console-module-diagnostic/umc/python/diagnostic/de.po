@@ -153,7 +153,7 @@ msgstr "Überprüfe Kerberos authentifizierte DNS Updates"
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:44
 msgid "Check local AD database for errors"
-msgstr "Teste die locale AD Datenbank auf Fehler"
+msgstr "Teste die lokale AD Datenbank auf Fehler"
 
 #: umc/python/diagnostic/plugins/check_server_password.py:52
 msgid "Check machine password"
