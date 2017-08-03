@@ -161,6 +161,8 @@ def file_and_permission_checks():
 		else:
 			yield check_file(path, 'root', 'root', 0700)
 
+	yield check_file('/var/tmp/univention-management-console-frontend', 'root', 'root', 0755)
+
 	for path in glob.iglob('/etc/univention/connector/*.sqlite'):
 		yield check_file(path, 'root', 'root', 0644)
 
