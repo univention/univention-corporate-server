@@ -257,3 +257,9 @@ Description[de]=Dieser LDAP-Filter wird auf das Objekt der Bind-DN angewendet. T
 Description[en]=This LDAP filter is applied to the bind DN object during bind. If it matches, the shadowbind overlay does not check the shadow attributes for this object.
 Type=str
 Categories=service-ldap
+
+[ldap/unique/uid]
+Description[de]=Spezifiziert Werte für das Attribut "uid", die nur einmalig im LDAP-Verzeichnis vorkommen dürfen.
+Description[en]=Specifies values for the attribute "uid" which must be unique in the LDAP directory.
+Type=str
+Categories=service-ldap

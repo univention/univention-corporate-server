@@ -13,6 +13,7 @@ if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true(
 if configRegistry.is_true('ldap/shadowbind', True):
 	print 'moduleload\tshadowbind.so'
 print 'moduleload\tconstraint.so'
+print 'moduleload\tunique.so'
 
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
@@ -128,6 +129,11 @@ lastmod		on
 
 add_content_acl on
 
+overlay unique
 overlay constraint
 constraint_attribute uidNumber regex ^[^0]+[0-9]*$
 constraint_attribute gidNumber regex ^[^0]+[0-9]*$
+@!@
+import ldap.filter
+print 'unique_uri ldap:///%s?uid?sub?(!(|%s))' % (configRegistry['ldap/base'], ''.join(ldap.filter.filter_format('(uid=%s)', [uid]) for uid in configRegistry.get('ldap/unique/uid', 'root').split(',')))
+@!@

@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-14) unstable; urgency=medium
+
+  * Bug #11800: enforce uniqueness on uid's specified in ldap/unqiue/uid
+
+ -- Florian Best <best@univention.de>  Thu, 03 Aug 2017 12:02:16 +0200
+
 univention-ldap (13.0.7-13) unstable; urgency=medium
 
   * Bug #38554: u-ldap: call clean_old_backups in u-ldap-backup
