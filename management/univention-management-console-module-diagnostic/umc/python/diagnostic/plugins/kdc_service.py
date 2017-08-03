@@ -286,7 +286,7 @@ def run(_umc_instance, retest=False):
 
 	kdc_fqds = configRegistry.get('kerberos/kdc', '').split()
 	dns_lookup_kdc = configRegistry.is_true('kerberos/defaults/dns_lookup_kdc', True)
-	if not dns_lookup_kdc and not kdc_fqds:
+	if not kdc_fqds or dns_lookup_kdc:
 		kerberos_dns_fqdn_tcp = '_kerberos._tcp.{}'.format(configRegistry.get('domainname'))
 		result_tcp = dns.resolver.query(kerberos_dns_fqdn_tcp, 'SRV')
 		kdc_to_check = [(r.target.to_text(True), r.port, 'tcp') for r in result_tcp]
