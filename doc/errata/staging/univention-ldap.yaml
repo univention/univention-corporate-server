@@ -7,4 +7,6 @@ fix: 13.0.7-13A~4.2.0.201708021820
 desc: |
  This update addresses the following issue(s):
  * Cleanup old backups in univention-ldap-backup.
-bug: [38554]
+ * Unique usernames are now configurable. By default adding objects with uid
+   "root" is now prohibited.
+bug: [38554, 11800]
