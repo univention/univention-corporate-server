@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-16) unstable; urgency=medium
+
+  * Bug #11800: fix syntax error
+
+ -- Florian Best <best@univention.de>  Thu, 03 Aug 2017 15:57:31 +0200
+
 univention-ldap (13.0.7-15) unstable; urgency=medium
 
   * Bug #38554: fix shell-univention-lib dependency

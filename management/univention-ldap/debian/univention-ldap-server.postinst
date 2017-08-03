@@ -126,8 +126,8 @@ ucr set \
 	slapd/backup?true \
 	ldap/shadowbind?true \
 	ldap/shadowbind/ignorefilter?"(|(objectClass=univentionDomainController)(userPassword={KINIT}))" \
-	ldap/maxopenfiles?8192 \ # Bug #17705
-	ldap/unique/uid?"root"
+	ldap/unique/uid?"root" \
+	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	# disbale anonymous bind by default
