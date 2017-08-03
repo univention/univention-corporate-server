@@ -143,6 +143,7 @@ def file_and_permission_checks():
 		yield check_file(path, 'root', 'root', 0700)
 
 	known_mode_755 = set((
+		'/var/cache/univention-ad-connector',
 		'/var/cache/univention-appcenter',
 		'/var/cache/univention-bind-proxy',
 		'/var/cache/univention-config',
@@ -150,6 +151,7 @@ def file_and_permission_checks():
 		'/var/cache/univention-directory-reports',
 		'/var/cache/univention-management-console',
 		'/var/cache/univention-management-console-module-diagnostic',
+		'/var/cache/univention-printserver',
 		'/var/cache/univention-samba4',
 	))
 
@@ -162,6 +164,8 @@ def file_and_permission_checks():
 			yield check_file(path, 'root', 'root', 0700)
 
 	yield check_file('/var/tmp/univention-management-console-frontend', 'root', 'root', 0755)
+	for path in glob.iglob('/var/tmp/univention-management-console-frontend/*'):
+		yield check_file(path, 'root', 'root', 0600)
 
 	for path in glob.iglob('/etc/univention/connector/*.sqlite'):
 		yield check_file(path, 'root', 'root', 0644)
