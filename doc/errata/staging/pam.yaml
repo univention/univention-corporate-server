@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-0
+src: pam
+fix: 1.1.8-3.1+deb8u2A~4.2.0.201708031837
+desc: |-
+ This update addresses the following issue:
+ * UCS specific patches had been dropped in UCS 4.2, e.g. the
+   patch for Bug #29393
+bug: [45039]
