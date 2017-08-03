@@ -3,11 +3,12 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 6.0.8-17A~4.2.0.201707271323
+fix: 6.0.8-18A~4.2.0.201708031141
 desc: |
  This update addresses the following issues:
  * Docker Apps are now stopped before backing up their data.
  * Fixed an issue while detecting the installation status during package
    updates.
  * Vastly speeded up download routines for App meta data
-bug: [44763, 43079, 43847]
+ * Use docker cp to copy files into the container
+bug: [44763, 43079, 43847, 44814]
