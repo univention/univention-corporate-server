@@ -1,3 +1,9 @@
+univention-appcenter (6.0.8-18) unstable; urgency=medium
+
+  * Bug #44814: added cp_to_container, cp_from_container (docker cp)
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Aug 2017 11:38:12 +0200
+
 univention-appcenter (6.0.8-17) unstable; urgency=medium
 
   * Bug #43847: Vastly improve update performance
