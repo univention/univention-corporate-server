@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-16) unstable; urgency=medium
+
+  * Bug #38554: u-base-files: fix shell-univention-lib dependency
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 03 Aug 2017 15:41:02 +0200
+
 univention-base-files (6.0.0-15) unstable; urgency=medium
 
   * Bug #38554: u-base-files: call clean_old_backups in ucr-backup
