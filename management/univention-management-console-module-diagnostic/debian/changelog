@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (3.0.1-10) unstable; urgency=medium
+
+  * Bug #36748: fix logic error in kdc_service diagnostic check
+  * Bug #40227: check permissions of /var/tmp/univention-management-console-frontend in diagnostic module
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 03 Aug 2017 14:52:47 +0200
+
 univention-management-console-module-diagnostic (3.0.1-9) unstable; urgency=medium
 
   * Bug #40605: fix encoding issue in diagnostic: samba_tool_dbcheck
