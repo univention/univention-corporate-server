@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=6
+VERSION=5
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -111,6 +111,16 @@ wait_named
 wait_named
 
 if [ "$server_role" = "domaincontroller_master" ]; then
+
+	if ! univention-ldapsearch -LLLb "cn=unique-uid,cn=univention,$ldap_base" dn > /dev/null 2>&1; then
+		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR || die
+			dn: cn=unique-uid,cn=univention,$ldap_base
+			objectClass: uidObject
+			objectClass: organizationalRole
+			cn: unique-uid
+			uid: root
+		%EOR
+	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 
@@ -265,58 +275,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			%EOR
 	fi
 
-	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
-		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR
-			dn: cn=unique-uid,cn=univention,$ldap_base
-			objectClass: uidObject
-			objectClass: organizationalRole
-			cn: unique-uid
-			uid: root
-			uid: daemon
-			uid: bin
-			uid: sys
-			uid: sync
-			uid: games
-			uid: man
-			uid: lp
-			uid: mail
-			uid: news
-			uid: uucp
-			uid: proxy
-			uid: www-data
-			uid: backup
-			uid: list
-			uid: irc
-			uid: gnats
-			uid: nobody
-			uid: tss
-			uid: messagebus
-			uid: sshd
-			uid: listener
-			uid: postfix
-			uid: listfilter
-			uid: systemmail
-			uid: openldap
-			uid: nagios
-			uid: statd
-			uid: ntp
-			uid: bind
-			uid: stunnel4
-			uid: colord
-			uid: memcache
-			uid: saned
-			uid: avahi
-			uid: hplip
-			uid: celery
-			uid: epmd
-			uid: postgres
-			uid: rabbitmq
-			uid: systemd-timesync
-			uid: systemd-network
-			uid: systemd-resolve
-			uid: systemd-bus-proxy
-			%EOR
-	fi
 fi
 
 # Create kerberos principal for ldap/hostname.domainname
