@@ -53,6 +53,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  python,
  python-apt,
  python-lxml,
+ python-pytest,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Basic checks
