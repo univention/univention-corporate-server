@@ -78,7 +78,9 @@ define([
 		//		displayed above the content element.
 		fullWidth: false,
 
-		addNotification: lang.hitch(dialog, 'notify'),
+		addNotification: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			dialog.contextNotify(message, action, actionLabel);
+		},
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-4 col-lg-4',
 		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-8 col-lg-8',

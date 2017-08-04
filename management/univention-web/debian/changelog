@@ -1,3 +1,9 @@
+univention-web (1.0.42-26) unstable; urgency=medium
+
+  * Bug #43658: adjust design of notifications
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 04 Aug 2017 17:04:24 +0200
+
 univention-web (1.0.42-25) unstable; urgency=medium
 
   * Bug #44431: fix ellipses in grid

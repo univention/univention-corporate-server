@@ -113,8 +113,8 @@ define([
 
 		progressDeferred: null,
 
-		addNotification: function(message, component) {
-			dialog.notify(message, component);
+		addNotification: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			dialog.contextNotify(message, action, actionLabel);
 		},
 
 		postMixInProperties: function() {

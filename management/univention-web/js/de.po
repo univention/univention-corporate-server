@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-06-27 18:43+0200\n"
+"POT-Creation-Date: 2017-08-01 12:51+0200\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Access"
 msgstr "Zugriff"
 
-#: widgets/MultiObjectSelect.js:120 widgets/MultiObjectSelect.js:298
+#: widgets/MultiObjectSelect.js:121 widgets/MultiObjectSelect.js:301
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -113,8 +113,8 @@ msgstr "Zurück"
 msgid "Back to start site"
 msgstr "Zurück zur Startseite"
 
-#: dialog.js:254 tools.js:270 widgets/Wizard.js:174
-#: widgets/MultiObjectSelect.js:138 hooks/default_menu_entries.js:132
+#: dialog.js:257 tools.js:270 widgets/Wizard.js:174
+#: widgets/MultiObjectSelect.js:139 hooks/default_menu_entries.js:132
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -150,7 +150,11 @@ msgstr "Klicken Sie um sich anzumelden"
 msgid "Close"
 msgstr "Schließen"
 
-#: dialog.js:208 dialog.js:263
+#: dialog/NotificationDropDownButton.js:175
+msgid "Close all"
+msgstr "Alle Schließen"
+
+#: dialog.js:211 dialog.js:266
 msgid "Confirmation"
 msgstr "Bestätigung"
 
@@ -286,20 +290,24 @@ msgstr "Weiter"
 msgid "No entries could be found"
 msgstr "Es konnten keine Einträge gefunden werden"
 
-#: dialog/NotificationContainer.js:55
+#: dialog/NotificationContainer.js:55 dialog/NotificationDropDownButton.js:83
 msgid "No message"
 msgstr "Keine Nachricht"
 
-#: widgets/MultiUploader.js:218
+#: dialog/NotificationDropDownButton.js:174
+msgid "No messages"
+msgstr "Keine Benachrichtigungen"
+
+#: widgets/MultiUploader.js:219
 msgid "No upload in progress"
 msgstr "Keine laufende Dateiübertragung"
 
-#: dialog.js:67 dialog.js:96 dialog.js:120 dialog/NotificationContainer.js:54
-#: dialog/NotificationContainer.js:204
+#: dialog.js:68 dialog.js:99 dialog.js:123 dialog/NotificationContainer.js:54
+#: dialog/NotificationContainer.js:204 dialog/NotificationDropDownButton.js:80
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: dialog.js:99
+#: dialog.js:102
 msgid "Ok"
 msgstr "Ok"
 
@@ -333,7 +341,7 @@ msgstr "Neu laden"
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr "Bemerkungen (z.B. Schritte, den Fehler nachzustellen) (optional)"
 
-#: widgets/MultiObjectSelect.js:321 widgets/MultiUploader.js:135
+#: widgets/MultiObjectSelect.js:324 widgets/MultiUploader.js:136
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -357,7 +365,7 @@ msgstr "Suchergebnisse:"
 msgid "Search term"
 msgstr "Suchbegriff"
 
-#: widgets/MultiSelect.js:77
+#: widgets/MultiSelect.js:67
 msgid "Select all"
 msgstr "Alles auswählen"
 
@@ -407,7 +415,7 @@ msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 msgid "Sticky bit"
 msgstr "Sticky bit"
 
-#: dialog.js:258
+#: dialog.js:261
 msgid "Submit"
 msgstr "Absenden"
 
@@ -461,11 +469,11 @@ msgstr "Neues Bild hochladen"
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: widgets/MultiUploader.js:244
+#: widgets/MultiUploader.js:245
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr "Dateiübertragung... %(current)d von %(total)d Dateien verbleiben."
 
-#: widgets/MultiUploader.js:241
+#: widgets/MultiUploader.js:242
 msgid "Uploads finished"
 msgstr "Dateiübertragung beendet"
 
@@ -477,7 +485,7 @@ msgstr "Benutzereinstellungen"
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
-#: dialog.js:77
+#: dialog.js:79
 msgid "Warning"
 msgstr "Warnung"
 
@@ -729,6 +737,9 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Changing password failed"
 #~ msgstr "Passwortänderung fehlgeschlagen"
 
+#~ msgid "Close all notifications"
+#~ msgstr "Schließe alle Benachrichtigungen"
+
 #~ msgid "Completion of startup wizard"
 #~ msgstr "Ende des Begrüßungsassistenten"
 
@@ -836,9 +847,6 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid "Note"
 #~ msgstr "Hinweis"
-
-#~ msgid "Notifications"
-#~ msgstr "Benachrichtigungen"
 
 #~ msgid "One time password"
 #~ msgstr "Einmalpasswort"

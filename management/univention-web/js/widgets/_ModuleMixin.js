@@ -94,12 +94,12 @@ define([
 			return tools.umcpProgressCommand( progressBar, commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
 		},
 
-		addNotification: function(/*String*/ message, /*String?*/ component) {
-			dialog.notify(message, component || this.title);
+		addNotification: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			dialog.contextNotify(message, action, actionLabel);
 		},
 
-		addWarning: function(/*String*/ message, /*String?*/ component) {
-			dialog.warn(message, component || this.title);
+		addWarning: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			dialog.contextWarn(message, action, actionLabel);
 		}
 	});
 });

@@ -38,13 +38,15 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"umc/dialog/NotificationContainer",
+	"umc/dialog/NotificationDropDownButton",
+	"umc/dialog/NotificationSnackbar",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationContainer, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 
@@ -57,24 +59,48 @@ define([
 			return this._notificationMaster;
 		},
 
+		contextNotify: function(message, action, actionLabel) {
+			// summary:
+			//		Show a snackbar notification on the bottom of the screen.
+			//		(Snackbar notification from Google Material Design)
+			NotificationSnackbar.getInstance().then(function(snackbar) {
+				snackbar.notify(message, action, actionLabel);
+			});
+		},
+
+		contextWarn: function(message, action, actionLabel) {
+			// summary:
+			//		Show a snackbar warning notification on the bottom of the screen.
+			//		(Snackbar notification from Google Material Design)
+			NotificationSnackbar.getInstance().then(function(snackbar) {
+				snackbar.warn(message, action, actionLabel);
+			});
+		},
+
 		notify: function(/*String*/ message, /*String?*/ component) {
 			// summary:
-			//		Show a toaster notification with the given message string.
+			//		Add a notification to the notifications drop down menu.
 			// message:
 			//		The message that is displayed in the notification.
+			// component:
+			// 		The title for the notification.
 
-			this.createNotificationMaster();
-			this._notificationMaster.addMessage(message, component || _('Notification'), true);
+			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
+				dropDownButton.addNotification(message, component || _('Notification'));
+			});
 		},
 
 		warn: function(/*String*/ message, /*String?*/ component) {
 			// summary:
-			//		Show a toaster notification with the given message string.
+			//		Add a warning notification to the notifications drop down menu.
 			// message:
 			//		The message that is displayed in the notification.
+			// component:
+			// 		The title for the notification.
 
-			this.createNotificationMaster();
-			this._notificationMaster.addMessage(message, component || _('Warning'), false);
+			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
+				dropDownButton.addWarning(message, component || _('Warning'));
+			});
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog

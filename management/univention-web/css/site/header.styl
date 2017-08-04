@@ -9,6 +9,17 @@ insertBorder()
 	bottom: 0
 	border-bottom: arguments
 
+@keyframes shake {
+	10%, 90% {
+		transform: translate(-1px, 0);
+	}
+	20%, 40%, 60%, 80% {
+		transform: translate(2px, 0);
+	}
+	30%, 50%, 70% {
+		transform: translate(-2px, 0);
+	}
+}
 
 /* Header elements */
 
@@ -35,7 +46,6 @@ headerHeight = 48px
 		width: 60px
 		height: headerHeight
 		margin: 0
-		padding-top: 2px
 		transition: background-color 0.35s
 		box-shadow: none
 		border-radius: 0
@@ -153,6 +163,32 @@ headerHeight = 48px
 				.dijitInputField
 					opacity: 0
 					width: 0
+
+		.umcNotificationDropDownButton
+			width: 60px
+			height: 48px
+			display: inline-block
+			margin: 0
+			box-shadow: none
+
+			.dijitButtonNode
+				width: 100%
+				height: 100% !important
+
+				.dijitDownArrowButton
+					width: 100%
+					height: 100%
+
+					.umcNotificationIcon
+						margin: 14px 20px
+						icon-image(-220, -80, '../')
+						^[-3].hasNotifications ^[-3..-1]
+							background-position: -220px -100px
+							animation-name: shake
+							animation-duration: 1s
+
+					.dijitArrowButtonInner
+						display: none
 
 		.umcLoginButton
 			margin: 0
@@ -279,6 +315,9 @@ headerHeight = 48px
 			.umcLoggedOutIcon
 				background-image: url(../images/icons-white.svg)
 
+			.umcNotificationIcon
+				background-image: url(../images/icons-white.svg) !important
+
 			.umcMobileMenuToggleButton div
 				background-color: #fff
 
@@ -344,7 +383,6 @@ headerHeight = 48px
 .umc
 	.umcMobileMenuToggleButton
 		position: relative
-		margin-top: 1px
 		width: parentWidth = 60px
 		height: parentHeight = headerHeight
 		$stripeWidth = 20px
@@ -544,7 +582,7 @@ headerHeight = 48px
 				&.mainSlide
 					.menuSlideHeader
 						display: none
-				
+
 				.menuSlideItemsContainer
 					.menuItem
 						cursor: pointer
