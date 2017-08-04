@@ -1,17 +1,16 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check that the umc server does not stop if the idp metadata is not available.
-## tags: [saml, SKIP]
+## tags: [saml]
 ## bugs: [39355]
 ## join: true
 ## exposure: dangerous
 ## packages:
 ##   - python-requests
-## tags:
-##  - skip_admember
 
 import os
 import samltest
 import univention.testing.utils as utils
+import subprocess
 
 
 class move_idp_metadata(object):
@@ -51,5 +50,9 @@ def main():
 
 
 if __name__ == '__main__':
-	main()
+	try:
+		main()
+	finally:
+		# Make sure everything is in a working state again
+		subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
 	print("####Success: UMC server does not stop if the idp metadata is not available.####")

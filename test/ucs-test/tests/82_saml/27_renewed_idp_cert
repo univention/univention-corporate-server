@@ -1,0 +1,88 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check that umc and slapd do not stop if the sso cert is renewd.
+## tags: [saml]
+## bugs: [45042]
+## join: true
+## exposure: dangerous
+## packages:
+##   - python-requests
+## tags:
+##  - skip_admember
+
+import subprocess
+import samltest
+import univention.testing.utils as utils
+import univention.config_registry
+
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+
+def renew_sso_cert():
+	domainname = ucr.get('domainname')
+	subprocess.check_call(['univention-certificate', 'new', '-name', "ucs-sso." + domainname, '-days', '100'])
+	subprocess.check_call([
+		"cp",
+		"/etc/univention/ssl/ucs-sso.{domainname}/cert.pem".format(domainname=domainname),
+		"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.crt".format(domainname=domainname)
+	])
+	subprocess.check_call([
+		"cp",
+		"/etc/univention/ssl/ucs-sso.{domainname}/private.key".format(domainname=domainname),
+		"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.key".format(domainname=domainname)
+	])
+	subprocess.check_call(["systemctl", "restart", "univention-saml"])
+
+
+def reload_idp_metadata():
+	idp_metadata_umc = ucr.get('umc/saml/idp-server')
+	subprocess.check_call([
+		"ucr",
+		"set",
+		"umc/saml/idp-server={idp_metadata_umc}".format(idp_metadata_umc=idp_metadata_umc)
+	])
+
+
+def restart_slapd():
+	subprocess.check_call(["systemctl", "restart", "slapd"])
+
+
+def main():
+
+	renew_sso_cert()
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	try:
+		# Previously umc had a segfault here
+		SamlSession.login_with_new_session_at_IdP()
+	except samltest.SamlError as exc:
+		expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
+		if expected_error not in exc.message:
+			utils.fail(exc.message)
+	reload_idp_metadata()
+	SamlSession.test_login()
+	try:
+		# Previously slapd had a segfault here
+		SamlSession.test_slapd()
+	except samltest.SamlError as exc:
+		expected_error = "Wrong status code: 401, expected: 200"
+		if expected_error not in exc.message:
+			utils.fail(exc.message)
+	restart_slapd()
+	SamlSession.login_with_existing_session_at_IdP()
+	SamlSession.test_slapd()
+	SamlSession.logout_at_IdP()
+	SamlSession.test_logout_at_IdP()
+	SamlSession.test_logout()
+
+
+if __name__ == '__main__':
+	try:
+		main()
+	finally:
+		# Make sure everything is in a working state again
+		reload_idp_metadata()
+		subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+		restart_slapd()
+	print("####Success: Neither umc nor slapd have a segfault because of a renewed certificate.####")

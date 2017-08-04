@@ -76,6 +76,8 @@ class SamlTest(object):
 		"""does POST or GET requests and raises SamlError which encodes the login step
 		through position parameter."""
 		headers = {'Accept-Language': 'en-US;q=0.6,en;q=0.4', 'Referer': ''}
+		if "UMCSessionId" in self.session.cookies:
+			headers["X-Xsrf-Protection"] = self.session.cookies["UMCSessionId"]
 		_requests = {
 			'GET': self.session.get,
 			'POST': self.session.post}
@@ -156,6 +158,14 @@ class SamlTest(object):
 		if auth_type != 'SAML':
 			utils.fail("SAML wasn't used for login?")
 		print("Login success")
+
+	def test_slapd(self):
+		"""Test ldap login with saml"""
+		url = "https://%s/univention/command/udm/meta_info" % self.target_sp_hostname
+		print("Test ldap login @ %s" % url)
+		self.position = "testing ldap login"
+		self._request('POST', url, 200, data={"objectType": "dns/dns"})
+		print("LDAP login success")
 
 	def test_logout(self):
 		"""Test logout on umc"""
