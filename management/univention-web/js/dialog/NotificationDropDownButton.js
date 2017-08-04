@@ -537,7 +537,7 @@ define([
 
 			domClass.remove(this.dropDown.domNode, 'hasMultipleNotifications hasSingleNotification');
 			domClass.toggle(this.dropDown.domNode, (this._notificationCount > 1 ? 'hasMultipleNotifications' : 'hasSingleNotification'), this._notificationCount);
-		},
+		}
 	});
 
 	NotificationDropDownButton.getInstance = function() {
