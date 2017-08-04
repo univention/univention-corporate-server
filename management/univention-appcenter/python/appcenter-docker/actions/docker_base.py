@@ -247,7 +247,8 @@ docker inspect:
 				f.write(password)
 		docker.cp_to_container('/etc/timezone', '/etc/timezone')
 		docker.cp_to_container('/etc/localtime', '/etc/localtime')
-		docker.cp_to_container(database_password_file, database_password_file)
+		if database_password_file:
+			docker.cp_to_container(database_password_file, database_password_file)
 		after_image_configuration.update(set_vars)
 		configure = get_action('configure')
 		configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)

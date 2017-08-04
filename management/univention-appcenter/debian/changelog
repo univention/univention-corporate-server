@@ -1,3 +1,9 @@
+univention-appcenter (6.0.8-19) unstable; urgency=medium
+
+  * Bug #44814: ignore empty password file
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Aug 2017 10:21:12 +0200
+
 univention-appcenter (6.0.8-18) unstable; urgency=medium
 
   * Bug #44814: added cp_to_container, cp_from_container (docker cp)
