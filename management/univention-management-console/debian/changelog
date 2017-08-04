@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-60) unstable; urgency=medium
+
+  * Bug #43658: adjust notifications to new design
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 04 Aug 2017 17:38:20 +0200
+
 univention-management-console (9.0.80-59) unstable; urgency=medium
 
   * Bug #44966: Added python-defusedxml dependency

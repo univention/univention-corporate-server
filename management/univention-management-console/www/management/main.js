@@ -63,6 +63,8 @@ define([
 	"umc/tools",
 	"login",
 	"umc/dialog",
+	"umc/dialog/NotificationDropDownButton",
+	"umc/dialog/NotificationSnackbar",
 	"umc/store",
 	"dijit/_WidgetBase",
 	"dijit/Menu",
@@ -86,7 +88,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, store,
+		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {
@@ -621,6 +623,9 @@ define([
 			if (!tools.status('singleModule')) {
 				this.setupSearchField();
 			}
+			this._headerRight.addChild(new NotificationDropDownButton({
+				iconClass: 'umcNotificationIcon'
+			}));
 			this._setupMenu();
 			this._headerRight.addChild(new ContainerWidget({
 				'class': 'univentionLogo'
@@ -856,8 +861,8 @@ define([
 
 			// put everything together
 			this._topContainer.addChild(this._header);
-			this._topContainer.addChild(dialog.createNotificationMaster());
 			this._topContainer.addChild(this._tabContainer);
+			this._topContainer.addChild(new NotificationSnackbar({}));
 			this._topContainer.startup();
 			//this._updateScrolling();
 
@@ -1489,7 +1494,7 @@ define([
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
 			// color action buttons in an dgrid
 			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader .dijitButtonText', [tab.categoryColor]), lang.replace('color: {0}', [color]));
-			// color scroll to top floating button 
+			// color scroll to top floating button
 			styles.insertCssRule(lang.replace('.umcModule.color-{0} .scrollToTopFloatingButton', [tab.categoryColor]), lang.replace('background-color: {0}', [color]));
 		},
 
