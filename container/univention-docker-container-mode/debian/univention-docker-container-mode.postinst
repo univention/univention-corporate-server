@@ -37,14 +37,16 @@ if [ "$1" = configure ]; then
 		/etc/univention/docker/preinit.d/fix-cron-hardlinks
 	fi
 
-	if dpkg --compare-versions "$2" lt-nl '1.0.14-9'; then
+	if dpkg --compare-versions "$2" lt-nl '1.0.14-12'; then
 		ucr set update/check/cron/enabled=false
+		ucr set update/check/boot/enabled=false
 		invoke-rc.d cron reload || true
 	fi
 
 	# installation
 	if [ -z "$2" ]; then
 		ucr set update/check/cron/enabled=false
+		ucr set update/check/boot/enabled=false
 		invoke-rc.d cron reload || true
 	fi
 fi
