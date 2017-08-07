@@ -43,6 +43,25 @@ define([
 ], function(declare, lang, baseFx, domClass, domGeometry, domStyle, on, Deferred, _WidgetBase, _TemplatedMixin, _) {
 	var notificationSnackbarDeferred = new Deferred({});
 	var NotificationSnackbar = declare('umc.widgets.NotificationSnackbar', [_WidgetBase, _TemplatedMixin], {
+		// summary:
+		// 		A Snackbar defined by Google Material Design to show notifications on the bottom of the screen.
+		// 		There should only be one instance of this Widget.
+		// description:
+		// 		Use 'notify()' for a notification that disappear after this._maxVisibleTime.
+		// 		User 'warn()' for a warning notifications that need to be acknowledged to disappear by clicking an 'OK' button.
+		// 		They have the same parameters:
+		// 		notify(
+		// 			/*innerHTML*/ message,
+		// 			/*function*/ action,
+		// 			/*String*/ actionLabel
+		// 		)
+		//
+		// 		The notifications can have a single action in form of an function.
+		// 		When an action is specified a button appears in the notification
+		// 		and the action is performed when the button is pressed.
+		// 		(In an 'warn()' notification the action is added to the default behavior.)
+		// 		The label of the button can be specified with the actionLabel argument.
+
 		templateString: '' +
 			'<div class="umcNotificationSnackbar" data-dojo-attach-point="domNode">' +
 				'<div class="umcSnackbarNotification dijitOffScreen" data-dojo-attach-point="notificationNode">' +

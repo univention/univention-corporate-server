@@ -56,6 +56,9 @@ define([
 	"umc/i18n!"
 ], function(declare, lang, array, baseFx, baseWindow, domClass, domGeometry, domStyle, aspect, on, mouse, Deferred, win, fx, fxEasing, styles, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, DropDownButton, ContainerWidget, Button, put, _) {
 	var _Notification = declare('umc.widgets.NotificationDropDown.Notification', [_WidgetBase, _TemplatedMixin, _CssStateMixin], {
+		// summary:
+		// 		A single Notification inside the _NotificationDropDown widget
+
 		templateString: '' +
 			'<div class="umcDropDownNotification" data-dojo-attach-point="domNode">' +
 				'<div class="umcNotificationInnerWrapper" data-dojo-attach-point="wrapperNode">' +
@@ -196,6 +199,11 @@ define([
 	});
 
 	var _NotificationDropDown = declare('umc.widgets.NotificationDropDown', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		// summary:
+		// 		The dropDown for the NotificationDropDownButton widget.
+		// 		Consists of a button to close all notification and a container
+		// 		for the _Notification widgets.
+
 		templateString: lang.replace('' +
 			'<div class="umcNotificationDropDown" data-dojo-attach-point="domNode">' +
 				'<div class="noNotificationsText">{noNotificationsText}</div>' +
@@ -352,6 +360,13 @@ define([
 
 	var notificationDropDownButtonDeferred = new Deferred({});
 	var NotificationDropDownButton = declare('umc.widgets.NotificationDropDownButton', DropDownButton, {
+		// summary:
+		// 		A DropDownButton that opens a _NotificationDropDown Widget.
+		// 		There should only be one instance of this Widget.
+		// description:
+		// 		Use 'addNotification' for a normally styled notification.
+		// 		Use 'addWarning' for a warning that is always on top of normal notifications.
+
 		baseClass: 'umcNotificationDropDownButton',
 
 		// maxHeight 0 for no native scrollbars
