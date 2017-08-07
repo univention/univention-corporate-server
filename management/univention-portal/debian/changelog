@@ -1,3 +1,9 @@
+univention-portal (1.0.12-6) unstable; urgency=medium
+
+  * Bug #44371: Add JavaScript unit tests
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Aug 2017 18:06:33 +0200
+
 univention-portal (1.0.12-5) unstable; urgency=medium
 
   * Bug #44371: Try to make portal links relative if server FQDN matches
