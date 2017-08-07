@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-20) unstable; urgency=medium
+
+  * Bug #45124: adc: fix __get_highestCommittedUSN()
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 07 Aug 2017 08:50:21 +0200
+
 univention-ad-connector (11.0.6-19) unstable; urgency=medium
 
   * Bug #18680: adc: improve logging on `__ignore_object()`

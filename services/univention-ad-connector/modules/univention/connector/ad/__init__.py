@@ -1290,7 +1290,10 @@ class ad(univention.connector.ucs):
 		'''
 		_d = ud.function('ldap.__get_highestCommittedUSN')
 		try:
-			usn = self.lo_ad.getAttr('', 'highestCommittedUSN')[0]
+			# This will search for the `rootDSE` object. `uldap.get{Attr}()`
+			# are not usable, as they don't permit emtpy DNs.
+			result = self.lo_ad.lo.search_s('', ldap.SCOPE_BASE, '(objectClass=*)', ['highestCommittedUSN'])
+			usn = result[0][1]['highestCommittedUSN'][0]
 			return int(usn)
 		except Exception:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
