@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-web
-fix: 1.0.42-28A~4.2.0.201708071456
+fix: 1.0.42-29A~4.2.0.201708071706
 desc: |
  This update addresses the following issue(s):
  * The design of notifications has been adjusted.
