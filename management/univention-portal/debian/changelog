@@ -1,3 +1,9 @@
+univention-portal (1.0.12-4) unstable; urgency=medium
+
+  * Bug #44371: Rank all links of a portal entry and chose best match
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Aug 2017 12:52:20 +0200
+
 univention-portal (1.0.12-3) unstable; urgency=medium
 
   * Bug #44865: Add default portal entries on unjoined systems

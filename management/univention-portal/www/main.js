@@ -38,6 +38,7 @@ define([
 	"dojo/dom",
 	"dojo/dom-construct",
 	"dojo/dom-class",
+	"dojox/string/sprintf",
 	"./PortalCategory",
 	"umc/tools",
 	"umc/i18n/tools",
@@ -46,7 +47,214 @@ define([
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, kernel, registry, on, dom, domConstruct, domClass, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, kernel, registry, on, dom, domConstruct, domClass, sprintf, PortalCategory, tools, i18nTools, portalContent, installedApps, _) {
+
+	// convert IPv6 addresses to their canonical form:
+	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
+	//   1111:2222::192.168.1.1 -> 1111:2222:0000:0000:0000:0000:c0a8:0101
+	// but this can also be used for IPv4 addresses:
+	//   192.168.1.1 -> c0a8:0101
+	var canonicalizeIPAddress = function(address) {
+		if (tools.isFQDN(address)) {
+			return address;
+		}
+
+		// remove leading and trailing ::
+		address = address.replace(/^:|:$/g, '');
+
+		// split address into 2-byte blocks
+		var parts = address.split(':');
+
+		// replace IPv4 address inside IPv6 address
+		if (tools.isIPv4Address(parts[parts.length - 1])) {
+			// parse bytes of IPv4 address 
+			ipv4Parts = parts[parts.length - 1].split('.');
+			for (var i = 0; i < 4; ++i) {
+				var byte = parseInt(ipv4Parts[i], 10);
+				ipv4Parts[i] = sprintf('%02x', byte);
+			}
+
+			// remove IPv4 address and append bytes in IPv6 style
+			parts.splice(-1, 1);
+			parts.push(ipv4Parts[0] + ipv4Parts[1]);
+			parts.push(ipv4Parts[2] + ipv4Parts[3]);
+		}
+
+		// expand grouped zeros "::"
+		var iEmptyPart = array.indexOf(parts, '');
+		if (iEmptyPart >= 0) {
+			parts.splice(iEmptyPart, 1);
+			while (parts.length < 8) {
+				parts.splice(iEmptyPart, 0, '0');
+			}
+		}
+
+		// add leading zeros
+		parts = array.map(parts, function(ipart) {
+			return sprintf('%04s', ipart);
+		});
+	
+		return parts.join(':');
+	};
+
+	var getURIPart = function(uri, part) {
+		part = part || 'hostname';
+		var _linkElement = document.createElement('a');
+		_linkElement.setAttribute('href', uri);
+		return _linkElement[part];
+	};
+
+	var getURIHostname = function(uri) {
+		return getURIPart(uri, 'hostname').replace(/^\[|\]$/g, '');
+	};
+
+	var getURIProtocol = function(uri) {
+		return getURIPart(uri, 'protocol');
+	};
+
+	var _getAddressType = function(link) {
+		if (tools.isFQDN(link)) {
+			return 'fqdn';
+		}
+		if (tools.isIPv6Address(link)) {
+			return 'ipv6';
+		}
+		if (tools.isIPv4Address(link)) {
+			return 'ipv4';
+		}
+		return '';
+	};
+
+	var _getProtocolType = function(link) {
+		if (link.indexOf('//') === 0) {
+			return 'relative';
+		}
+		if (link.indexOf('https') === 0) {
+			return 'https';
+		}
+		if (link.indexOf('http') === 0) {
+			return 'http';
+		}
+		return '';
+	};
+
+	// return 1 if link is a relative link, otherwise 0
+	var _scoreRelativeURI = function(link) {
+		return link.indexOf('/') === 0 && link.indexOf('//') !== 0 ? 1 : 0;
+	};
+
+	// score according to the following matrix
+	//               Browser address bar
+	//              | FQDN | IPv4 | IPv6
+	//       / FQDN |  4   |  1   |  1
+	// link <  IPv4 |  2   |  4   |  2
+	//       \ IPv6 |  1   |  2   |  4
+	var _scoreAddressType = function(browserLinkType, linkType) {
+		var scores = {
+			fqdn: { fqdn: 4, ipv4: 2, ipv6: 1 },
+			ipv4: { fqdn: 1, ipv4: 4, ipv6: 2 },
+			ipv6: { fqdn: 1, ipv4: 2, ipv6: 4 }
+		};
+		try {
+			return scores[browserLinkType][linkType] || 0;
+		} catch(err) {
+			return 0;
+		}
+	};
+
+	// score according to the following matrix
+	//              Browser address bar
+	//               | https | http
+	//       / "//"  |   4   |  4
+	// link <  https |   2   |  1
+	//       \ http  |   1   |  =={1}
+	var _scoreProtocolType = function(browserProtocolType, protocolType) {
+		var scores = {
+			https: { relative: 4, https: 2, http: 1 },
+			http:  { relative: 4, https: 1, http: 2 }
+		};
+		try {
+			return scores[browserProtocolType][protocolType] || 0;
+		} catch(err) {
+			return 0;
+		}
+	};
+
+	// score is computed as the number of matched characters
+	var _scoreAddressMatch = function(browserHostname, hostname) {
+		var i;
+		for (i = 0; i < Math.min(browserHostname.length, hostname.length); ++i) {
+			if (browserHostname[i] != hostname[i]) {
+				break;
+			}
+		}
+		return i;
+	};
+
+	// Given the browser URI and a list of links, each link is ranked via a
+	// multi-part score. This effectively allows to chose the best matching
+	// link w.r.t. the browser session.
+	var _rankLinks = function(browserURI, links) {
+		// score all links
+		var browserHostname = getURIHostname(browserURI);
+		var browserLinkType = _getAddressType(browserHostname);
+		var canonicalizedBrowserHostname = canonicalizeIPAddress(browserHostname);
+		var browserProtocolType = _getProtocolType(browserURI);
+		links = array.map(links, function(ilink) {
+			var linkHostname = getURIHostname(ilink);
+			var canonicalizedLinkHostname = canonicalizeIPAddress(linkHostname);
+			var linkType = _getAddressType(linkHostname);
+			var linkProtocolType = _getProtocolType(ilink);
+			return {
+				scores: [
+					_scoreRelativeURI(ilink),
+					// only try to match IP addresses
+					!tools.isFQDN(browserHostname) ? _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname) : 0,
+					_scoreAddressType(browserLinkType, linkType),
+					_scoreProtocolType(browserProtocolType, linkProtocolType)
+				],
+				link: ilink
+			};
+		});
+
+		function _cmp(x, y) {
+			for (var i = 0; i < x.scores.length; ++i) {
+				if (x.scores[i] == y.scores[i]) {
+					continue;
+				}
+				if (x.scores[i] < y.scores[i]) {
+					return 1;
+				}
+				return -1;
+			}
+		}
+
+		// sort links descending w.r.t. their scores
+		links.sort(_cmp);
+
+		// return the best match
+		return links;
+	};
+	
+	var getHighestRankedLink = function(browserURI, links) {
+		return _rankLinks(browserURI, links)[0].link || '#';
+	};
+
+	var _getLogoName = function(logo) {
+		if (logo) {
+			if (hasAbsolutePath(logo)) {
+				// make sure that the path starts with http[s]:// ...
+				// just to make tools.getIconClass() leaving the URL untouched
+				logo = window.location.origin + logo;
+
+				if (!hasImageSuffix(logo)) {
+					// an URL starting with http[s]:// needs also to have a .svg suffix
+					logo = logo + '.svg';
+				}
+			}
+		}
+		return logo;
+	};
 
 	var _regHasImageSuffix = /\.(svg|jpg|jpeg|png|gif)$/i;
 	var hasImageSuffix = function(path) {
@@ -121,71 +329,13 @@ define([
 		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {
 			var apps = [];
 			array.forEach(categoryEntries, function(entry) {
-				var _getLogoName = function(logo) {
-					if (logo) {
-						if (hasAbsolutePath(logo)) {
-							// make sure that the path starts with http[s]:// ...
-							// just to make tools.getIconClass() leaving the URL untouched
-							logo = window.location.origin + logo;
-
-							if (!hasImageSuffix(logo)) {
-								// an URL starting with http[s]:// needs also to have a .svg suffix
-								logo = logo + '.svg';
-							}
-						}
-					}
-					return logo;
-				};
-
-				var _entry = {
+				var link = getHighestRankedLink(document.location.href, entry.links);
+				apps.push({
 					name: entry.name[locale] || entry.name.en_US,
 					description: entry.description[locale] || entry.description.en_US,
-					logo_name: _getLogoName(entry.logo_name)
-				};
-
-				var myProtocolSupported = array.some(entry.links, function(link) {
-					return link.indexOf(protocol) === 0;
-				});
-				var onlyOneKind = array.every(entry.links, function(link) {
-					var _linkElement = document.createElement('a');
-					_linkElement.setAttribute('href', link);
-					var linkHost = _linkElement.hostname;
-					return !tools.isIPAddress(linkHost);
-				});
-				onlyOneKind = onlyOneKind || array.every(entry.links, function(link) {
-					var _linkElement = document.createElement('a');
-					_linkElement.setAttribute('href', link);
-					var linkHost = _linkElement.hostname;
-					return tools.isIPAddress(linkHost);
-				});
-				array.forEach(entry.links, function(link) {
-					var _linkElement = document.createElement('a');
-					_linkElement.setAttribute('href', link);
-					var linkHost = _linkElement.hostname;
-					if (! onlyOneKind) {
-						if (myProtocolSupported) {
-							if (link.indexOf(protocol) !== 0) {
-								return;
-							}
-						}
-						if (isIPv4) {
-							if (! tools.isIPv4Address(linkHost)) {
-								return;
-							}
-						} else if (isIPv6) {
-							if (! tools.isIPv6Address(linkHost)) {
-								return;
-							}
-						} else {
-							if (! tools.isFQDN(linkHost)) {
-								return;
-							}
-						}
-					}
-					apps.push(lang.mixin({
-						web_interface: link,
-						host_name: linkHost
-					}, _entry));
+					logo_name: _getLogoName(entry.logo_name),
+					web_interface: link,
+					host_name: getURIHostname(link)
 				});
 			});
 			return apps;
