@@ -2,12 +2,11 @@
 ## desc: Check that umc and slapd do not stop if the sso cert is renewd.
 ## tags: [saml]
 ## bugs: [45042]
+## roles: [domaincontroller_master]
 ## join: true
 ## exposure: dangerous
 ## packages:
 ##   - python-requests
-## tags:
-##  - skip_admember
 
 import subprocess
 import samltest

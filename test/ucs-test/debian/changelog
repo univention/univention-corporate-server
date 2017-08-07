@@ -1,3 +1,9 @@
+ucs-test (7.0.23-27) unstable; urgency=medium
+
+  * Bug #45042: fix saml tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 07 Aug 2017 12:11:46 +0200
+
 ucs-test (7.0.23-26) unstable; urgency=medium
 
   * Bug #40228: fix pytest fixture

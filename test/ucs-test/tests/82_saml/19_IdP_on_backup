@@ -8,8 +8,6 @@
 ## exposure: dangerous
 ## packages:
 ##  - python-requests
-## tags:
-##  - skip_admember
 
 import time
 import socket
