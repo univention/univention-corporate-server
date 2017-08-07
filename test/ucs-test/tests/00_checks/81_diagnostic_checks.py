@@ -1,10 +1,12 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Run all diagnostic checks
-## exposure: dangerous
+## exposure: safe
 ## packages: [univention-management-console-module-diagnostic]
 
+from univention.testing.umc import Client
 
-def test_run_diagnostic_checks(Client):
+
+def test_run_diagnostic_checks():
 	client = Client.get_test_connection()
 	plugins = client.umc_command('diagnostic/query').result
 	failures = []
