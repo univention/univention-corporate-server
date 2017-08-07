@@ -1,3 +1,9 @@
+univention-portal (1.0.12-5) unstable; urgency=medium
+
+  * Bug #44371: Try to make portal links relative if server FQDN matches
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Aug 2017 18:00:36 +0200
+
 univention-portal (1.0.12-4) unstable; urgency=medium
 
   * Bug #44371: Rank all links of a portal entry and chose best match

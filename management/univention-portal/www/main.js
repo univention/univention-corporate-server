@@ -112,6 +112,10 @@ define([
 		return getURIPart(uri, 'protocol');
 	};
 
+	var getURIPath = function(uri) {
+		return getURIPart(uri, 'pathname');
+	};
+
 	var _getAddressType = function(link) {
 		if (tools.isFQDN(link)) {
 			return 'fqdn';
@@ -136,6 +140,11 @@ define([
 			return 'http';
 		}
 		return '';
+	};
+
+	var _regExpRelativeLink = /^\/([^/].*)?$/;
+	var _isRelativeLink = function(link) {
+		return _regExpRelativeLink.test(link);
 	};
 
 	// return 1 if link is a relative link, otherwise 0
@@ -167,7 +176,7 @@ define([
 	//               | https | http
 	//       / "//"  |   4   |  4
 	// link <  https |   2   |  1
-	//       \ http  |   1   |  =={1}
+	//       \ http  |   1   |  2
 	var _scoreProtocolType = function(browserProtocolType, protocolType) {
 		var scores = {
 			https: { relative: 4, https: 2, http: 1 },
@@ -238,6 +247,27 @@ define([
 	
 	var getHighestRankedLink = function(browserURI, links) {
 		return _rankLinks(browserURI, links)[0].link || '#';
+	};
+
+	var getRelativeLink = function(serverFQDN, links) {
+		// check whether there is any relative link 
+		var relativeLinks = array.filter(links, function(ilink) {
+			return _isRelativeLink(ilink);
+		});
+		if (relativeLinks.length) {
+			return relativeLinks[0];
+		}
+
+		// check whether there is a link containing the FQDN of the local server
+		var relativeLink = null;
+		array.some(links, function(ilink) {
+			var linkHostname = getURIHostname(ilink);
+			if (linkHostname == serverFQDN) {
+				relativeLink = getURIPath(ilink);
+				return true;
+			}
+		});
+		return relativeLink;
 	};
 
 	var _getLogoName = function(logo) {
@@ -329,7 +359,7 @@ define([
 		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {
 			var apps = [];
 			array.forEach(categoryEntries, function(entry) {
-				var link = getHighestRankedLink(document.location.href, entry.links);
+				var link = getRelativeLink(tools.status('fqdn'), entry.links) || getHighestRankedLink(document.location.href, entry.links);
 				apps.push({
 					name: entry.name[locale] || entry.name.en_US,
 					description: entry.description[locale] || entry.description.en_US,
@@ -375,6 +405,10 @@ define([
 			array.forEach(this.portalCategories, function(category) {
 				category.set('query', query);
 			});
-		}
+		},
+
+		getHighestRankedLink: getHighestRankedLink,
+		canonicalizeIPAddress: canonicalizeIPAddress,
+		getRelativeLink: getRelativeLink
 	};
 });
