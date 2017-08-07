@@ -180,7 +180,7 @@ def test_user_sync_from_s4_to_udm(udm_user, sync_mode):
 		print("\nModifying S4 user\n")
 		s4.set_attributes(s4_user_dn, **s4connector.map_udm_user_to_s4(udm_user))
 		s4connector.wait_for_sync()
-		s4connector.verify_udm_object("users/user", udm_user_dn, basic_udm_user)
+		s4connector.verify_udm_object("users/user", udm_user_dn, udm_user)
 
 		print("\nDeleting S4 user\n")
 		s4.delete(s4_user_dn)
