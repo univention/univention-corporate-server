@@ -1,3 +1,11 @@
+ucs-test (7.0.23-24) unstable; urgency=medium
+
+  * Bug #44374: s4-test: fix `verify_udm_object()`
+  * Bug #44374: s4-test: fix 500_test_user_sync
+  * Bug 44374: revert "Bug #43598: s4c-test: skip complex groups/users tests"
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 07 Aug 2017 08:59:58 +0200
+
 ucs-test (7.0.23-23) unstable; urgency=medium
 
   * Bug #40228: move diagnostic check to 00_checks
