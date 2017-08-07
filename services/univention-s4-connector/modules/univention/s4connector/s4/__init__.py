@@ -1455,7 +1455,8 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d = ud.function('ldap.set_primary_group_to_ucs_user')
 
-		s4_group_rid_resultlist = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter='samaccountname=%s' % compatible_modstring(object_ucs['username']), attrlist=['dn', 'primaryGroupID'])
+		rid_filter = format_escaped("(samaccountname={0!e})", compatible_modstring(object_ucs['username']))
+		s4_group_rid_resultlist = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
 		if not s4_group_rid_resultlist[0][0] in ['None', '', None]:
 
