@@ -124,10 +124,6 @@ if joinscript_check_version_in_range_executed 1 3; then
 		univention-directory-manager nagios/service modify "$@" --dn "cn=UNIVENTION_NTP,$NAGIOSCONTAINER" --set checkCommand="check_univention_ntp" --set checkArgs='10!60' || die
 	fi
 fi
-# change checkCommand Bug #42812
-if [ $JS_LAST_EXECUTED_VERSION -lt 5 ]; then
-	univention-directory-manager nagios/service modify "$@" --dn "cn=UNIVENTION_NSCD,$NAGIOSCONTAINER" --set checkCommand="check_univention_nscd" --set checkArgs='' || die
-fi
 
 joinscript_save_current_version
 

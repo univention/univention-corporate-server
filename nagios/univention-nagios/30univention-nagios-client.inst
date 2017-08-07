@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -127,6 +127,10 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 			echo "Skipping $dn (code $?)"
 		fi
     fi
+fi
+# change checkCommand Bug #42812
+if [ $JS_LAST_EXECUTED_VERSION -lt 4 ]; then
+	univention-directory-manager nagios/service modify "$@" --dn "cn=UNIVENTION_NSCD,$NAGIOSCONTAINER" --set checkCommand="check_univention_nscd" --set checkArgs='' || die
 fi
 
 joinscript_save_current_version
