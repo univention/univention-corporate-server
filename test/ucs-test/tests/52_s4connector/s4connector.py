@@ -256,8 +256,9 @@ def verify_udm_object(module, dn, expected_properties):
 	for (key, value) in expected_properties.iteritems():
 		udm_value = udm_object.info.get(key)
 		if isinstance(udm_value, basestring):
-			value = set([value])
 			udm_value = set([udm_value])
+		if not isinstance(value, (tuple, list)):
+			value = set([value])
 		value = set(to_unicode(v).lower() for v in value)
 		udm_value = set(to_unicode(v).lower() for v in udm_value)
 		if udm_value != value:
