@@ -103,6 +103,7 @@ $notification-transition ?= 0.75s
 
 /* styling of the snackbar notifications */
 .umcNotificationSnackbar
+	pointer-events: none
 	position: fixed
 	bottom: 0
 	left: 0
@@ -110,6 +111,7 @@ $notification-transition ?= 0.75s
 	text-align: center
 
 	.umcSnackbarNotification
+		pointer-events: auto
 		position: relative
 		display: inline-block
 		border-radius: 2px

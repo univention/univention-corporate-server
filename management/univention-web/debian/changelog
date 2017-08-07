@@ -1,3 +1,10 @@
+univention-web (1.0.42-29) unstable; urgency=medium
+
+  * Bug #43658: fix non clickable area on bottom of screen, caused
+    by snackbar notifications
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 07 Aug 2017 17:04:12 +0200
+
 univention-web (1.0.42-28) unstable; urgency=medium
 
   * Bug #43658: adjust styling of action button in snackbar notifications

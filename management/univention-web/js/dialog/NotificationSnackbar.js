@@ -194,6 +194,14 @@ define([
 				this._queue.shift(); // remove first (current) notification from _queue
 				if (this._queue.length) {
 					this.wipeIn(this._queue[0]);
+				} else {
+					// if this was the last notification add dijitOffScreen to
+					// notificationNode so this.domNode does not have the
+					// height of the notification anymore.
+					// The area underneath would be unclickable.
+					// This is a fallback in case the css property
+					// 'pointer-events: none' does not work
+					domClass.add(this.notificationNode, 'dijitOffScreen');
 				}
 			})));
 		},
