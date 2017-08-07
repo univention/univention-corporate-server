@@ -127,7 +127,9 @@ is_ucr_true () {
 # Bug 44601
 if [ "$(update-alternatives --query nc|sed -nre 's/^Value:\s+//p')" != '/bin/nc.openbsd' ]
 then
-	echo "WARNING: Please install netcat-openbsd for the update to proceed."
+	echo "WARNING: Please install netcat-openbsd and run"
+	echo "            update-alternatives --auto nc"
+	echo "         for the update to proceed."
 	exit 1
 fi
 
