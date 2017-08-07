@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-0
+src: texlive-base
+fix: 2014.20141024-2+deb8u1
+desc: |-
+ This update addresses the following issue:
+ * remove mpost from list of shell_escape_commands (CVE-2016-10243)
+bug: []
+cve:
+- CVE-2016-10243
