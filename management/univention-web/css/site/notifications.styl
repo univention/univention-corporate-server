@@ -116,6 +116,8 @@ $notification-transition ?= 0.75s
 		display: inline-block
 		border-radius: 2px
 		min-width: 288px
+		@media (max-width: @min-width)
+			min-width: 100%
 		max-width: 568px
 		min-height: 48px
 		padding: 14px 24px

@@ -39,7 +39,6 @@ define([
 	"dojo/dom-style",
 	"dojo/aspect",
 	"dojo/on",
-	"dojo/mouse",
 	"dojo/Deferred",
 	"dojo/window",
 	"dojo/fx",
@@ -54,7 +53,7 @@ define([
 	"umc/widgets/Button",
 	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, baseFx, baseWindow, domClass, domGeometry, domStyle, aspect, on, mouse, Deferred, win, fx, fxEasing, styles, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, DropDownButton, ContainerWidget, Button, put, _) {
+], function(declare, lang, array, baseFx, baseWindow, domClass, domGeometry, domStyle, aspect, on, Deferred, win, fx, fxEasing, styles, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, DropDownButton, ContainerWidget, Button, put, _) {
 	var _Notification = declare('umc.widgets.NotificationDropDown.Notification', [_WidgetBase, _TemplatedMixin, _CssStateMixin], {
 		// summary:
 		// 		A single Notification inside the _NotificationDropDown widget
@@ -110,27 +109,6 @@ define([
 		// only works if notification is in the DOM
 		setFullMessageheight: function() {
 			this.fullMessageHeight = domGeometry.getContentBox(this.messageCloneNode).h;
-		},
-
-		showFullMessage: function() {
-			domStyle.set(this.messageContainerNode, 'max-height', this.fullMessageHeight + 'px');
-			domStyle.set(this.messageNode, 'opacity', '0');
-			domStyle.set(this.messageCloneNode, 'opacity', '1');
-		},
-
-		showTruncatedMessage: function() {
-			if (this._keepFullMessageHeight) {
-				return;
-			}
-
-			domStyle.set(this.messageContainerNode, 'max-height', '');
-			domStyle.set(this.messageNode, 'opacity', '');
-			domStyle.set(this.messageCloneNode, 'opacity', '');
-		},
-
-		_addHoverListeners: function() {
-			// this.own(on(this.domNode, mouse.enter, lang.hitch(this, 'showFullMessage')));
-			// this.own(on(this.domNode, mouse.leave, lang.hitch(this, 'showTruncatedMessage')));
 		},
 
 		_addMaxHeightCssStyles: function() {
@@ -243,12 +221,6 @@ define([
 					easing: fxEasing.linear,
 					duration: 250
 				}).play();
-			} else {
-				// highlight the newly added notification for a short time
-				// domStyle.set(notification.wrapperNode, 'background-color', '#eee');
-				// setTimeout(function() {
-					// domStyle.set(notification.wrapperNode, 'background-color', '');
-				// }, 500);
 			}
 
 			on.once(notification, 'remove', lang.hitch(this, function(notification) {
@@ -373,11 +345,29 @@ define([
 		// see dijit/_HasDropDown.js and the 'open' function from dijit/popup.js for more information
 		maxHeight: 0,
 
+		// _notificationCount: Integer
+		// 		The count of the notifications in the _NotificationDropDown
 		_notificationCount: 0,
+
+		// _notificationCountNode: HTML span element
+		// 		HTML element to show the amount of notifications.
+		// 		Does not show when _notificationCount is 0.
+		_notificationCountNode: null,
+
+		_set_notificationCountAttr: function(count) {
+			this._notificationCount = count;
+			this._notificationCountNode.innerHTML = count;
+			this._set('_notificationCount', count);
+		},
 
 		postMixInProperties: function() {
 			this.dropDown = new _NotificationDropDown({});
 			this.inherited(arguments);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._notificationCountNode = put(this._buttonNode, 'span.notificationCountNode');
 		},
 
 		postCreate: function() {
@@ -535,7 +525,7 @@ define([
 		},
 
 		_updateNotificationCount: function(amount) {
-			this._notificationCount = this._notificationCount + amount;
+			this.set('_notificationCount', this.get('_notificationCount') + amount);
 
 			if (!this._notificationCount) {
 				this.closeDropDown().then(lang.hitch(this, function() {

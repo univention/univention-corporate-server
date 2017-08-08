@@ -1,3 +1,10 @@
+univention-web (1.0.42-30) unstable; urgency=medium
+
+  * Bug #43658: add notification counter to NotificationDropDownButton
+    and adjust width of snackbar notifications on small screens
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 08 Aug 2017 17:32:29 +0200
+
 univention-web (1.0.42-29) unstable; urgency=medium
 
   * Bug #43658: fix non clickable area on bottom of screen, caused

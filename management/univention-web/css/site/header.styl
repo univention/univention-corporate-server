@@ -165,11 +165,30 @@ headerHeight = 48px
 					width: 0
 
 		.umcNotificationDropDownButton
+			position: relative
 			width: 60px
 			height: 48px
 			display: inline-block
 			margin: 0
 			box-shadow: none
+
+			.notificationCountNode
+				position: absolute
+				width: 20px
+				height: 20px
+				border-radius: 50%
+				top: 8px
+				right: 12px
+				background-color: $error-color
+				display: flex
+				justify-content: center
+				align-items: center
+				font-size: 12px
+				color: white
+				opacity: 0
+				transition: opacity 0.2s
+			&.hasNotifications .notificationCountNode
+				opacity: 1
 
 			.dijitButtonNode
 				width: 100%
@@ -183,7 +202,6 @@ headerHeight = 48px
 						margin: 14px 20px
 						icon-image(-220, -80, '../')
 						^[-3].hasNotifications ^[-3..-1]
-							background-position: -220px -100px
 							animation-name: shake
 							animation-duration: 1s
 
@@ -315,8 +333,18 @@ headerHeight = 48px
 			.umcLoggedOutIcon
 				background-image: url(../images/icons-white.svg)
 
-			.umcNotificationIcon
-				background-image: url(../images/icons-white.svg) !important
+			.umcNotificationDropDownButton
+				.notificationCountNode
+					top: 7px
+					right: 11px
+					border-width: 1px
+					border-style: solid
+					background-color: white
+					box-sizing: content-box
+
+				.dijitButtonNode .dijitDownArrowButton .umcNotificationIcon
+					/* use !important to overwrite IE specific rule from icon-image in variables.styl */
+					background-image: url(../images/icons-white.svg) !important
 
 			.umcMobileMenuToggleButton div
 				background-color: #fff
