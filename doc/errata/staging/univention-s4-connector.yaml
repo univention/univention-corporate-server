@@ -7,6 +7,6 @@ fix: 11.0.8-6A~4.2.0.201708070901
 desc: |
  This update addresses the following issue(s):
  * The S4 Connector now handles invalid pickle files.
- * Fix traceback when deleting a GPO
+ * An error during removing a GPO has been corrected.
  * Fix an edge case in the LDAP escaping.
 bug: [34648, 45088, 44374]
