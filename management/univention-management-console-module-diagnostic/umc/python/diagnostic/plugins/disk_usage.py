@@ -47,7 +47,8 @@ DISK_USAGE_THRESHOLD = 90
 
 def mount_points():
 	for dp in psutil.disk_partitions():
-		yield dp.mountpoint
+		if dp.mountpoint != '/var/lib/docker/overlay':
+			yield dp.mountpoint
 
 
 def high_disk_usage():
