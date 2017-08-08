@@ -997,7 +997,7 @@ appliance_basesettings ()
 
 	app_fav_list="appcenter:appcenter,updater"
 	
-	for a in $(get_app_attr $app ApplianceCategoryModules); do
+	for a in $(get_app_attr $app ApplianceFavoriteModules); do
 		app_fav_list="$app_fav_list,$a"
 	done
 	
