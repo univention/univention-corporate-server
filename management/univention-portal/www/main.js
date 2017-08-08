@@ -265,6 +265,29 @@ define([
 		return localLinks;
 	};
 
+	var getFQDNHostname = function(links) {
+		// check for any relative link
+		var hasRelativeLink = array.some(links, function(ilink) {
+			return _isRelativeLink(ilink);
+		});
+		if (hasRelativeLink) {
+			return tools.status('fqdn');
+		}
+
+		// look for any links that refer to an FQDN
+		var fqdnLinks = [];
+		array.forEach(links, function(ilink) {
+			var linkHostname = getURIHostname(ilink);
+			if (tools.isFQDN(linkHostname)) {
+				fqdnLinks.push(linkHostname);
+			}
+		});
+		if (fqdnLinks.length) {
+			return fqdnLinks[0];
+		}
+		return null;
+	};
+
 	var _getLogoName = function(logo) {
 		if (logo) {
 			if (hasAbsolutePath(logo)) {
@@ -355,15 +378,19 @@ define([
 			var apps = [];
 			var browserHostname = getURIHostname(document.location.href);
 			array.forEach(categoryEntries, function(entry) {
+				// get the best link to be displayed
 				var links = getLocalLinks(browserHostname, tools.status('fqdn'), entry.links);
 				links = links.concat(entry.links);
 				var link = getHighestRankedLink(document.location.href, links);
+
+				// get the hostname to be displayed on the tile
+				var hostname = getFQDNHostname(entry.links) || getURIHostname(link);
 				apps.push({
 					name: entry.name[locale] || entry.name.en_US,
 					description: entry.description[locale] || entry.description.en_US,
 					logo_name: _getLogoName(entry.logo_name),
 					web_interface: link,
-					host_name: getURIHostname(link)
+					host_name: hostname
 				});
 			});
 			return apps;
@@ -407,6 +434,7 @@ define([
 
 		getHighestRankedLink: getHighestRankedLink,
 		canonicalizeIPAddress: canonicalizeIPAddress,
-		getLocalLinks: getLocalLinks
+		getLocalLinks: getLocalLinks,
+		getFQDNHostname: getFQDNHostname
 	};
 });

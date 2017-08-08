@@ -208,11 +208,34 @@ define([
 		});
 	}
 
+	function testGetFQDNHostname() {
+		// backup the original values of tools.status()
+		var origStatus = tools._status;
+		tools._status = {};
+		tools.status('fqdn', 'another-host.mydomain.de');
+
+		// run tests
+		log('<b>Testing the conversion of links to an FQDN hostname...</b>');
+		var _links = [
+			[['//192.168.0.2:8080/test'], null],
+			[['http://192.168.0.3/test', '//foo.bar.com:8080/test'], 'foo.bar.com'],
+			[['https://10.200.1.2/test', 'https://master.mydomain.de:8080/test', 'http://master.mydomain.de:8080/test'], 'master.mydomain.de'],
+			[['https://10.200.1.2/test', '/test', 'https://master.mydomain.de:8080/test', 'http://master.mydomain.de:8080/test'], tools.status('fqdn')]
+		];
+		array.forEach(_links, function(i) {
+			assertEquals(i[1], portal.getFQDNHostname(i[0]));
+		});
+
+		// revert to the original values of tools.status()
+		tools._status = origStatus;
+	}
+
 	return {
 		start: function() {
 			testCanonicalizedIPAddresses();
 			testLinkRanking();
 			testConversionToLocalLink();
+			testGetFQDNHostname();
 			summary();
 		}
 	};

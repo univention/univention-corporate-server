@@ -1,6 +1,8 @@
 univention-portal (1.0.12-7) unstable; urgency=medium
 
-  * Bug #44371: Improve handling of ports, query strings, fragments
+  Bug #44371:
+  * Improve handling of ports, query strings, fragments
+  * Show FQDN as hostname on portal 
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Aug 2017 12:11:26 +0200
 
