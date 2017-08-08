@@ -6,8 +6,10 @@ src: crudesaml
 fix: 1.8.0-3A~4.2.0.201708041146
 desc: |
  This update addresses the following issue(s):
- * crudesaml has been updated to version 1.8. This fixes a segmentation
-   fault.
- * Fix a segmentation fault which happened if the pam module from crudesaml
-   encountered any errors during the loading of identity provider metadata.
+ * crudesaml has been updated to version 1.8. This corrects a segmentation
+   fault in slapd which occurs during SAML authentication at the UMC server
+   if the certificates are expired.
+ * A segmentation fault in pam-saml has been corrected, which caused the UMC
+   server to crash in certain situations during loading of identity provider
+   metadata.
 bug: [45042, 39355]
