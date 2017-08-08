@@ -142,6 +142,8 @@ def file_and_permission_checks():
 	for path in glob.iglob('/var/run/univention-management-console/*.socket'):
 		yield check_file(path, 'root', 'root', 0700)
 
+	yield check_file('/var/lock/sysvol-sync-dir', 'root', 'DC Slave Hosts', 0664)
+
 	known_mode_755 = set((
 		'/var/cache/univention-ad-connector',
 		'/var/cache/univention-appcenter',
