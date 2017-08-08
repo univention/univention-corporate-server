@@ -1,3 +1,9 @@
+univention-web (1.0.42-33) unstable; urgency=medium
+
+  * Bug #43658: add shadow to snackbar notifications
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 08 Aug 2017 19:08:31 +0200
+
 univention-web (1.0.42-32) unstable; urgency=medium
 
   * Bug #43658: fix MouseEvent error due to MouseEvent.path
