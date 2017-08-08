@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-02 14:58+0200\n"
+"POT-Creation-Date: 2017-08-08 14:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -813,16 +813,12 @@ msgstr ""
 msgid "You have configured some high log levels."
 msgstr "Sie haben erhöhten Detailgrad für Logmeldungen eingestellt."
 
-#: umc/python/diagnostic/plugins/disk_usage.py:115
-msgid "You may want to exchange the hard drive."
-msgstr "Sie können die Festplatte austauschen."
-
-#: umc/python/diagnostic/plugins/disk_usage.py:112
+#: umc/python/diagnostic/plugins/disk_usage.py:113
 msgid "You may want to move /var/log to another disk or storage."
 msgstr ""
 "Sie können /var/log auf eine andere Festplatte oder Speicher verschieben."
 
-#: umc/python/diagnostic/plugins/disk_usage.py:114
+#: umc/python/diagnostic/plugins/disk_usage.py:115
 msgid "You may want to move the local repository to another server."
 msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 
@@ -836,7 +832,7 @@ msgstr "Sie können sie per {ucr} zurück setzen."
 msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
 msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 
-#: umc/python/diagnostic/plugins/disk_usage.py:110
+#: umc/python/diagnostic/plugins/disk_usage.py:111
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 

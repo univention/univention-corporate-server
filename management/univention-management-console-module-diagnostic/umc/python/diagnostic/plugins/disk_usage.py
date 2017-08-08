@@ -113,7 +113,6 @@ def solutions():
 		yield _('You may want to move /var/log to another disk or storage.')
 	if local_repository_exists():
 		yield _('You may want to move the local repository to another server.')
-	yield _('You may want to exchange the hard drive.')
 
 
 def run(_umc_instance):
