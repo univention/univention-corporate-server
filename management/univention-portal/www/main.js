@@ -97,23 +97,18 @@ define([
 		return parts.join(':');
 	};
 
-	var getURIPart = function(uri, part) {
-		part = part || 'hostname';
+	var getAnchorElement = function(uri) {
 		var _linkElement = document.createElement('a');
 		_linkElement.setAttribute('href', uri);
-		return _linkElement[part];
+		return _linkElement;
 	};
 
 	var getURIHostname = function(uri) {
-		return getURIPart(uri, 'hostname').replace(/^\[|\]$/g, '');
+		return getAnchorElement(uri).hostname.replace(/^\[|\]$/g, '');
 	};
 
 	var getURIProtocol = function(uri) {
-		return getURIPart(uri, 'protocol');
-	};
-
-	var getURIPath = function(uri) {
-		return getURIPart(uri, 'pathname');
+		return getAnchorElement(uri).protocol;
 	};
 
 	var _getAddressType = function(link) {
@@ -218,7 +213,7 @@ define([
 				scores: [
 					_scoreRelativeURI(ilink),
 					// only try to match IP addresses
-					!tools.isFQDN(browserHostname) ? _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname) : 0,
+					tools.isFQDN(browserHostname) || tools.isFQDN(linkHostname) ? 0 : _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname),
 					_scoreAddressType(browserLinkType, linkType),
 					_scoreProtocolType(browserProtocolType, linkProtocolType)
 				],
@@ -249,25 +244,25 @@ define([
 		return _rankLinks(browserURI, links)[0].link || '#';
 	};
 
-	var getRelativeLink = function(serverFQDN, links) {
+	var getLocalLinks = function(browserHostname, serverFQDN, links) {
 		// check whether there is any relative link 
 		var relativeLinks = array.filter(links, function(ilink) {
 			return _isRelativeLink(ilink);
 		});
 		if (relativeLinks.length) {
-			return relativeLinks[0];
+			return relativeLinks;
 		}
 
 		// check whether there is a link containing the FQDN of the local server
-		var relativeLink = null;
-		array.some(links, function(ilink) {
-			var linkHostname = getURIHostname(ilink);
-			if (linkHostname == serverFQDN) {
-				relativeLink = getURIPath(ilink);
-				return true;
+		var localLinks = [];
+		array.forEach(links, function(ilink) {
+			var uri = getAnchorElement(ilink);
+			if (uri.hostname == serverFQDN) {
+				uri.hostname = browserHostname;
+				localLinks.push(uri.href);
 			}
 		});
-		return relativeLink;
+		return localLinks;
 	};
 
 	var _getLogoName = function(logo) {
@@ -358,8 +353,11 @@ define([
 
 		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {
 			var apps = [];
+			var browserHostname = getURIHostname(document.location.href);
 			array.forEach(categoryEntries, function(entry) {
-				var link = getRelativeLink(tools.status('fqdn'), entry.links) || getHighestRankedLink(document.location.href, entry.links);
+				var links = getLocalLinks(browserHostname, tools.status('fqdn'), entry.links);
+				links = links.concat(entry.links);
+				var link = getHighestRankedLink(document.location.href, links);
 				apps.push({
 					name: entry.name[locale] || entry.name.en_US,
 					description: entry.description[locale] || entry.description.en_US,
@@ -409,6 +407,6 @@ define([
 
 		getHighestRankedLink: getHighestRankedLink,
 		canonicalizeIPAddress: canonicalizeIPAddress,
-		getRelativeLink: getRelativeLink
+		getLocalLinks: getLocalLinks
 	};
 });

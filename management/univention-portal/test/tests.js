@@ -33,8 +33,9 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/dom-construct",
+	"umc/tools",
 	"portal"
-], function(lang, array, win, domConstruct, portal) {
+], function(lang, array, win, domConstruct, tools, portal) {
 	function log(description) {
 		domConstruct.create('div', {
 			innerHTML: description
@@ -46,11 +47,11 @@ define([
 
 	function assertEquals(x, y, description) {
 		description = description || '';
-		if (x != y) { 
+		if (tools.isEqual(x, y)) {
+			_successfulAssertions += 1;
+		} else {
 			log(lang.replace('FAILURE: {0} and {1} are not equal! {2}', [x, y, description]));
 			_failedAssertiongs += 1; 
-		} else {
-			_successfulAssertions += 1;
 		}
 	}
 
@@ -126,6 +127,24 @@ define([
 		], [
 			'The link that matches the current protocol should be preferred.',
 			'https://www.example.com', ['http://foo.bar.com/http', 'https://foo.bar.com/https'], 'https://foo.bar.com/https'
+		], [
+			'The port in a link should be preserved.',
+			'http://192.168.10.33', ['https://192.177.10.10/test', '//192.168.10.10:8080/test', '//[1111::2222]/test', 'https://foo.bar.com/test'], '//192.168.10.10:8080/test'
+		], [
+			'The port in a link should be preserved.',
+			'http://[3333::1111:0011]', ['//192.168.10.10/test', '//[1111::2222]/test', 'https://[3333::2211:1122]:8080/test', 'https://foo.bar.com/test'], 'https://[3333::2211:1122]:8080/test'
+		], [
+			'The query string and the fragment in a link should be preserved.',
+			'http://192.168.10.33', ['https://192.177.10.10/test', '//192.168.10.10/test?key1=value1&key2=value2#fragment', '//[1111::2222]/test', 'https://foo.bar.com/test'], '//192.168.10.10/test?key1=value1&key2=value2#fragment'
+		], [
+			'The query string and the fragment in a link should be preserved.',
+			'http://[3333::1111:0011]', ['//192.168.10.10/test', '//[1111::2222]/test', 'https://[3333::2211:1122]/test?key1=value1&key2=value2#fragment', 'https://foo.bar.com/test'], 'https://[3333::2211:1122]/test?key1=value1&key2=value2#fragment'
+		], [
+			'Username and password embedded in a link should be preserved.',
+			'http://192.168.10.33', ['https://192.177.10.10/test', '//user:password@192.168.10.10/test', '//[1111::2222]/test', 'https://foo.bar.com/test'], '//user:password@192.168.10.10/test'
+		], [
+			'Username and password embedded in a link should be preserved.',
+			'http://[3333::1111:0011]', ['//192.168.10.10/test', '//[1111::2222]/test', 'https://user:password@[3333::2211:1122]/test', 'https://foo.bar.com/test'], 'https://user:password@[3333::2211:1122]/test'
 		]];
 
 		array.forEach(_links, function(i) {
@@ -133,17 +152,59 @@ define([
 		});
 	}
 
-	function testConversionToRelativeLink() {
-		log('<b>Testing conversion to relative link...</b>');
-		var _links = [
-			['master.mydomain.de', ['http://[1111:2222::]/test', '//192.168.3.2/test'], null],
-			['master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//192.168.3.2/test'], '/test'],
-			['master.mydomain.de', ['//foo.bar.com/test', 'https://master.mydomain.de/test'], '/test'],
-			['slave.mydomain.de', ['//foo.bar.com/test', 'http://master.mydomain.de/test'], null]
-		];
+	function testConversionToLocalLink() {
+		log('<b>Testing conversion to local links...</b>');
+		var _links = [[
+			// <description>
+			'Only links referring to an FQDN can be converted.',
+			// <browserHostname>, <localServerFQDN>, [<link1>, ...], [<expectedLink1>, ...]
+			'192.168.2.1', 'master.mydomain.de', ['http://[1111:2222::]/test', '//192.168.3.2/test'], []
+		], [
+			'Only links referring to an FQDN can be converted.',
+			'master.mydomain.de', 'master.mydomain.de', ['http://[1111:2222::]/test', '//192.168.3.2/test'], []
+		], [
+			'Relative links should be returned as local links.',
+			'192.168.2.1', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//192.168.3.2/test'], ['/test']
+		], [
+			'Relative links should be returned as local links.',
+			'master.mydomain.de', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//192.168.3.2/test'], ['/test']
+		], [
+			'All relative links should be returned as local links.',
+			'192.168.2.1', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//192.168.3.2/test', '/test2'], ['/test', '/test2']
+		], [
+			'All relative links should be returned as local links.',
+			'master.mydomain.de', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//192.168.3.2/test', '/test2'], ['/test', '/test2']
+		], [
+			'Relative links should be preferred over FQDN links.',
+			'192.168.2.1', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//master.mydomain.de', '//192.168.3.2/test', '/test2'], ['/test', '/test2']
+		], [
+			'Relative links should be preferred over FQDN links.',
+			'master.mydomain.de', 'master.mydomain.de', ['http://[1111:2222::]/test', '/test', '//master.mydomain.de', '//192.168.3.2/test', '/test2'], ['/test', '/test2']
+		], [
+			'All FQDN links returned containing the link address of the browser.',
+			'192.168.2.1', 'master.mydomain.de', ['//foo.bar.com/test', 'https://master.mydomain.de/test', '//master.mydomain.de/test'], ['https://192.168.2.1/test', document.location.protocol + '//192.168.2.1/test']
+		], [
+			'All FQDN links returned containing the link address of the browser.',
+			'foo.bar.external-host.com', 'master.mydomain.de', ['//foo.bar.com/test', 'https://master.mydomain.de/test', '//master.mydomain.de/test'], ['https://foo.bar.external-host.com/test', document.location.protocol + '//foo.bar.external-host.com/test']
+		], [
+			'No link will be returned if server FQDN does not match any FQDN link.',
+			'192.168.2.1', 'slave.mydomain.de', ['//foo.bar.com/test', 'http://master.mydomain.de/test'], []
+		], [
+			'No link will be returned if server FQDN does not match any FQDN link.',
+			'foo.mydomain.de', 'slave.mydomain.de', ['//foo.bar.com/test', 'http://master.mydomain.de/test'], [] 
+		], [
+			'The port of the original address should be preserved in the local links.',
+			'192.168.2.1', 'master.mydomain.de', ['//10.200.12.12:8080/test', 'https://master.mydomain.de:8080/test'], ['https://192.168.2.1:8080/test']
+		], [
+			'Username and password embedded in a link should be preserved in the local links.',
+			'192.168.2.1', 'master.mydomain.de', ['//user:password@10.200.12.12/test', 'https://user:password@master.mydomain.de/test'], ['https://user:password@192.168.2.1/test']
+		], [
+			'Query string and fragments embedded in a link should be preserved in the local links.',
+			'192.168.2.1', 'master.mydomain.de', ['//10.200.12.12/test?key1=value1&key2=value2#fragment', 'https://master.mydomain.de/test?key1=value1&key2=value2#fragment'], ['https://192.168.2.1/test?key1=value1&key2=value2#fragment']
+		]];
 
 		array.forEach(_links, function(i) {
-			assertEquals(i[2], portal.getRelativeLink(i[0], i[1]));
+			assertEquals(i[4], portal.getLocalLinks(i[1], i[2], i[3]), i[0]);
 		});
 	}
 
@@ -151,7 +212,7 @@ define([
 		start: function() {
 			testCanonicalizedIPAddresses();
 			testLinkRanking();
-			testConversionToRelativeLink();
+			testConversionToLocalLink();
 			summary();
 		}
 	};
