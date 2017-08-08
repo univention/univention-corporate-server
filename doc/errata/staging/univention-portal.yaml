@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-portal
-fix: 1.0.12-6A~4.2.0.201708071812
+fix: 1.0.12-7A~4.2.0.201708081338
 desc: |
  This update addresses the following issues:
  * The handling of portal links has been improved to be more robust.
