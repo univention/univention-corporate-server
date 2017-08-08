@@ -76,7 +76,7 @@ class SamlTest(object):
 		"""does POST or GET requests and raises SamlError which encodes the login step
 		through position parameter."""
 		headers = {'Accept-Language': 'en-US;q=0.6,en;q=0.4', 'Referer': ''}
-		umc_session_id = self.session.cookies.get("UMCSessionId", domain=self.target_sp_hostname)
+		umc_session_id = self.session.cookies.get("UMCSessionId", domain=self.target_sp_hostname.lower())
 		if umc_session_id:
 			headers["X-Xsrf-Protection"] = umc_session_id
 		_requests = {

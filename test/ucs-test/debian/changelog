@@ -1,3 +1,9 @@
+ucs-test (7.0.23-28) unstable; urgency=medium
+
+  * Bug #45042: fix saml tests2
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 08 Aug 2017 11:46:30 +0200
+
 ucs-test (7.0.23-27) unstable; urgency=medium
 
   * Bug #45042: fix saml tests
