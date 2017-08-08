@@ -458,8 +458,18 @@ define([
 				// (the dropDownButton was not clicked)
 				if (!this.focused) {
 					var closeHandler = on(baseWindow.doc, 'click', lang.hitch(this, function(evt) {
+						var path = evt.path;
+						if (!path) {
+							path = [];
+							currentElement = evt.target;
+							while (currentElement) {
+								path.push(currentElement);
+								currentElement = currentElement.parentElement;
+							}
+						}
+
 						var dropDownOrButtonCliked = array.some([this.domNode, this.dropDown.domNode], function(node) {
-							return evt.path.indexOf(node) !== -1;
+							return path.indexOf(node) !== -1;
 						});
 
 						if (dropDownOrButtonCliked) {
