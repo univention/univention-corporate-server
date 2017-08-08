@@ -1,3 +1,9 @@
+univention-web (1.0.42-31) unstable; urgency=medium
+
+  * Bug #43658: use float instead of flex
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 08 Aug 2017 18:30:16 +0200
+
 univention-web (1.0.42-30) unstable; urgency=medium
 
   * Bug #43658: add notification counter to NotificationDropDownButton

@@ -65,7 +65,7 @@ define([
 		templateString: '' +
 			'<div class="umcNotificationSnackbar" data-dojo-attach-point="domNode">' +
 				'<div class="umcSnackbarNotification dijitOffScreen" data-dojo-attach-point="notificationNode">' +
-					'<div class="umcNotificationFlexContainer">' +
+					'<div class="umcNotificationMessageContainer">' +
 						'<span class="umcNotificationMessage" data-dojo-attach-point="messageNode"></span>' +
 						'<button type="button" class="umcNotificationActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
 					'</div>' +

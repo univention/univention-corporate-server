@@ -125,15 +125,19 @@ $notification-transition ?= 0.75s
 		text-align: left
 		background-color: #323232
 
-		.umcNotificationFlexContainer
-			display: flex
-			justify-content: space-between
+		.umcNotificationMessageContainer
 			transition: opacity 0s 0.3s
+			&:after
+				content: ''
+				display: inline-block
+				clear: both
 
 			.umcNotificationMessage
+				float: left
 				line-height: 20px
 
 			.umcNotificationActionButton
+				float: right
 				text-transform: uppercase
 				font-weight: 500
 				height: 20px
@@ -143,20 +147,13 @@ $notification-transition ?= 0.75s
 				background-color: transparent
 				color: $ucs-green
 		
-		&.multiLineWithActionButton	.umcNotificationFlexContainer
-				flex-flow: column
-
-				.umcNotificationMessage
-					align-self: flex-start
-
-				.umcNotificationActionButton
-					align-self: flex-end
-					margin: 24px 0 0 0
+		&.multiLineWithActionButton	.umcNotificationMessageContainer .umcNotificationActionButton
+			margin: 24px 0 0 0
 
 		&.umcSnackbarNotificationWarning
 			background-color: $error-color
 
-			.umcNotificationFlexContainer .umcNotificationActionButton
+			.umcNotificationMessageContainer .umcNotificationActionButton
 					color: inherit
 
 /* styling of the notification dropdown menu */
