@@ -1487,6 +1487,8 @@ define([
 
 			// color the umcHeader
 			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
+			// color border and set color of NotificationDropDownButton notificationCountNode
+			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0} .umcNotificationDropDownButton .notificationCountNode', [tab.categoryColor]), lang.replace('border-color: {0}; color: {0};', [color]));
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
 			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
 			// color module tabs

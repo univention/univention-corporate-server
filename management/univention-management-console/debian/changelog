@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-61) unstable; urgency=medium
+
+  * Bug #43658: insert color specific stylings for NotificationDropDownButton
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 08 Aug 2017 17:35:27 +0200
+
 univention-management-console (9.0.80-60) unstable; urgency=medium
 
   * Bug #43658: adjust notifications to new design
