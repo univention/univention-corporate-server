@@ -8,11 +8,24 @@ desc: |
  Multiple security issues have been fixed in MySQL 5.5.57.
  Since Oracle does not disclose sufficient information to provide backported
  patches, MySQL is updated to the new release.
+ * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-55.html
  * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-56.html
  * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-57.html
  * http://www.oracle.com/technetwork/security-advisory/cpujul2017-3236622.html
 bug: [44519]
 cve:
+ - CVE-2017-3302
+ - CVE-2017-3305
+ - CVE-2017-3308
+ - CVE-2017-3309
+ - CVE-2017-3329
+ - CVE-2017-3453
+ - CVE-2017-3456
+ - CVE-2017-3461
+ - CVE-2017-3462
+ - CVE-2017-3463
+ - CVE-2017-3464
+ - CVE-2017-3600
  - CVE-2017-3635
  - CVE-2017-3636
  - CVE-2017-3641
