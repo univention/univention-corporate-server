@@ -40,6 +40,15 @@ NAME='univention-firewall'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 . /usr/share/univention-lib/ucr.sh
 
+apply_docker_rules () {
+	local rule="/etc/security/packetfilter.d/20_docker.sh"
+	if [ -x "$rule" ]; then
+		if ! is_ucr_true security/packetfilter/docker/disabled; then
+			$rule
+		fi
+	fi
+}
+
 case "$1" in
     start)
         if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
@@ -48,6 +57,8 @@ case "$1" in
             # Notice that only a proper "true" or "on" value switches firewall OFF.
             # Everything else like "false" or "off" or "muell" will leave firewall ON.
             log_warning_msg "$DESC has been disabled."
+            # always apply docker rules during start
+            apply_docker_rules
         else
             log_action_begin_msg "Starting $DESC"
             if [ -x /etc/security/packetfilter.d ] ; then
@@ -61,19 +72,18 @@ case "$1" in
             log_warning_msg "$NAME: iptables seems to be unsupported."
         else
             log_daemon_msg "Stopping $DESC"
-
             rc=0
             iptables --wait -P INPUT ACCEPT || rc=$?
             iptables --wait -P OUTPUT ACCEPT || rc=$?
             iptables --wait -F || rc=$?
             iptables --wait -F -t nat || rc=$?
             iptables --wait -F -t mangle || rc=$?
-
+            # always apply docker rules during stop
+            apply_docker_rules
             ip6tables --wait -P INPUT ACCEPT || rc=$?
             ip6tables --wait -P OUTPUT ACCEPT || rc=$?
             ip6tables --wait -F || rc=$?
             ip6tables --wait -F -t mangle || rc=$?
-
             log_action_end_msg $rc
         fi
         ;;

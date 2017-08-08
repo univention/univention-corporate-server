@@ -23,6 +23,12 @@ Description[en]=If this option is enabled, Univention Firewall isn't used. If th
 Type=bool
 Categories=service-security
 
+[security/packetfilter/docker/disabled]
+Description[de]=Ist diese Option aktiviert, werden die Docker Regeln für die Firewall nicht angewendet (dies führt zu Beeinträchtigungen bei der Installation und im Betrieb von Docker Apps).
+Description[en]=If this option is enabled, the Docker rules for the firewall are not applied (this affects the installation and operation of Docker Apps).
+Type=bool
+Categories=service-security
+
 [security/packetfilter/use_packages]
 Description[de]=In der Grundeinstellung werden eingehende Pakete für alle Ports blockiert/abgelehnt (siehe 'security/packetfilter/defaultpolicy'). Jedes UCS-Paket bringt dann Regeln mit, die die von dem Paket benötigten Ports wieder freigeben (siehe 'security/packetfilter/package/*'). Ist diese Option deaktiviert, werden die paketspezifischen Filterregel nicht verwendet. Ist die Variable nicht gesetzt, werden sie verwendet.
 Description[en]=In the default setting, all incoming ports are blocked (see 'security/packetfilter/defaultpolicy'). Every UCS package provides rules, which free up the ports required by the package again (see 'security/packetfilter/package/*'). If this option is disabled, the package-related filter rules are not used. If the variable is unset, the rules are used.

@@ -1,3 +1,9 @@
+univention-firewall (9.0.1-2) unstable; urgency=medium
+
+  * Bug #44829: always apply the iptables docker rules
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Aug 2017 12:23:57 +0200
+
 univention-firewall (9.0.1-1) unstable; urgency=medium
 
   * 20_docker.sh: Use 'pidof dockerd' instead of systemctl since the
