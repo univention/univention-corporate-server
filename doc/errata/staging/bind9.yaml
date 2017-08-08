@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-1
 src: bind9
 fix: 1:9.9.5.dfsg-9+deb8u13A~4.2.1.201708081700
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * denial of service (assertion failure and daemon exit) via a crafted query
    (CVE-2016-2776)
  * denial of service (daemon crash) via a long request that uses the
@@ -29,6 +29,8 @@ desc: |
    answer containing a CNAME or DNAME (CVE-2017-3137)
  * named exits with a REQUIRE assertion failure if it receives a null
    command string on its control channel (CVE-2017-3138)
+ * Assertion failure when using DNS64 and RPZ can lead to crash
+   (CVE-2017-3135)
 bug: [44656]
 cve:
 - CVE-2016-2775
