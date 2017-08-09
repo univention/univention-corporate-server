@@ -1,3 +1,9 @@
+univention-updater (11.0.12-2) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:39:51 +0200
+
 univention-updater (11.0.12-1) unstable; urgency=medium
 
   * Bug #43917: backport Bug #43625: Aquire an UpdaterLock also for --check

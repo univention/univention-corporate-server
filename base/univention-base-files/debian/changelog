@@ -1,3 +1,9 @@
+univention-base-files (5.0.1-7) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:38:05 +0200
+
 univention-base-files (5.0.1-6) unstable; urgency=low
 
   * Bug #41816: Fix QA issue

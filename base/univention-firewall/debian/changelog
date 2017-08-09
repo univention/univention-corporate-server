@@ -1,3 +1,9 @@
+univention-firewall (8.0.2-3) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:38:47 +0200
+
 univention-firewall (8.0.2-2) unstable; urgency=medium
 
   * Bug #42117: Fix UCR variables for template

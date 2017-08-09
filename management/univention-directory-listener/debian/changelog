@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-21) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:40:20 +0200
+
 univention-directory-listener (10.0.0-20) unstable; urgency=low
 
   * Bug #42725: Fix integer overflow

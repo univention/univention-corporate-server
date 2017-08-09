@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-60) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:41:19 +0200
+
 univention-management-console-frontend (5.0.63-59) unstable; urgency=low
 
   * Bug #44554: check info.result.display_feedback in __getErrorHandler and

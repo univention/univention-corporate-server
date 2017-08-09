@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.14-13) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:40:03 +0200
+
 univention-docker-container-mode (1.0.14-12) unstable; urgency=low
 
   * Bug #45142: disable update check cron job and limit update_available

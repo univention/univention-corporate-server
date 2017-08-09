@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-22) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:41:25 +0200
+
 univention-management-console (8.0.28-21) unstable; urgency=medium
 
   * Bug #31771: fix merge conflict introduced in svn r73939

@@ -1,3 +1,9 @@
+univention-bind (10.0.2-6) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:42:19 +0200
+
 univention-bind (10.0.2-5) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping

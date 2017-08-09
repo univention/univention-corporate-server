@@ -1,3 +1,9 @@
+univention-system-setup (9.0.7-5) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:39:38 +0200
+
 univention-system-setup (9.0.7-4) unstable; urgency=medium
 
   * Bug #43588: Add univention-printquota to download-packages

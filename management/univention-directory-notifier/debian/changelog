@@ -1,3 +1,9 @@
+univention-directory-notifier (10.0.1-2) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:40:33 +0200
+
 univention-directory-notifier (10.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

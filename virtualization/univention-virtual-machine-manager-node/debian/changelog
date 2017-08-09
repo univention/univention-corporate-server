@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (4.0.1-7) unstable; urgency=medium
+
+  * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Aug 2017 13:42:53 +0200
+
 univention-virtual-machine-manager-node (4.0.1-6) unstable; urgency=low
 
   * Bug #42622: More UCRV libvirt/group documentation
