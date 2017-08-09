@@ -139,11 +139,7 @@ if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/por
 	sys.exit(1)
 
 
-protocol = 'ldap'
-ldaps = configRegistry.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower()  # tls or ssl
-if ldaps in ['yes', 'true', 'enabled', '1']:
-	protocol = 'ldaps'
-
+protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldaps'
 ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME], int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
@@ -153,15 +149,12 @@ login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
 
-ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
+ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
 
-
-start_tls = 2
-if '%s/ad/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
-	start_tls = 0
-elif ca_file:
+start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
+if start_tls and ca_file:
 	ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_file)
-else:
+elif start_tls:
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 lo = ldap.initialize(ldapuri)
