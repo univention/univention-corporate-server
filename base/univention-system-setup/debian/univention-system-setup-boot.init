@@ -1,7 +1,12 @@
 #!/bin/bash
-#
-# Univention System Setup
-#  boot init script for univention system setup
+### BEGIN INIT INFO
+# Provides:          univention-system-setup-boot
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention System Setup on boot
+### END INIT INFO
 #
 # Copyright 2004-2017 Univention GmbH
 #

@@ -1,5 +1,15 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
+### BEGIN INIT INFO
+# Provides:          bind9
+# Required-Start:    $network $remote_fs univention-runit
+# Required-Stop:     $network $remote_fs univention-runit
+# Should-Start:      slapd samba-ad-dc
+# Should-Stop:       slapd samba-ad-dc
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: bind9 Domain Name Server (DNS)
+### END INIT INFO
 #
 # Copyright 2001-2017 Univention GmbH
 #

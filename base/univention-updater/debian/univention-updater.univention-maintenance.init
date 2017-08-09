@@ -1,7 +1,14 @@
 #!/bin/bash
-#
-# Univention Updater
-#  maintenance init script
+### BEGIN INIT INFO
+# Provides:          univention-maintenance
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Should-Start:      slapd univention-directory-policy
+# Should-Stop:       slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Updater
+### END INIT INFO
 #
 # Copyright 2004-2017 Univention GmbH
 #

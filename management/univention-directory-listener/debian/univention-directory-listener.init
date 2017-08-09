@@ -1,7 +1,14 @@
 #!/bin/sh
-#
-# Univention Directory Listener
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-directory-listener
+# Required-Start:    $network $remote_fs univention-runit
+# Required-Stop:     $network $remote_fs univention-runit
+# Should-Start:      univention-directory-notifier slapd
+# Should-Stop:       univention-directory-notifier slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Directory Listener Daemon
+### END INIT INFO
 #
 # Copyright 2004-2017 Univention GmbH
 #

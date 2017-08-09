@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention S4 Connector
-#  init script of the ad connector
+### BEGIN INIT INFO
+# Provides:          univention-s4-connector
+# Required-Start:    $network $remote_fs slapd samba-ad-dc
+# Required-Stop:     $network $remote_fs slapd samba-ad-dc
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention S4 Connector
+### END INIT INFO
 #
 # Copyright 2004-2017 Univention GmbH
 #

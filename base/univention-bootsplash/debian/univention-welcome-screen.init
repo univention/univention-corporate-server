@@ -1,7 +1,12 @@
 #!/bin/bash
-#
-# Univention Welcome Screen
-#  boot init script for univention welcome screen
+### BEGIN INIT INFO
+# Provides:          univention-welcome-screen
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Welcome Screen
+### END INIT INFO
 #
 # Copyright 2015-2017 Univention GmbH
 #

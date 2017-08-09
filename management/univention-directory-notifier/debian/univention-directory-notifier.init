@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention Directory Notifier
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-directory-notifier
+# Required-Start:    $remote_fs univention-runit slapd
+# Required-Stop:     $remote_fs univention-runit slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Directory Notifier Daemon
+### END INIT INFO
 #
 # Copyright 2004-2017 Univention GmbH
 #

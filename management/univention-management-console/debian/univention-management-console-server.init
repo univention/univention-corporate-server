@@ -1,7 +1,14 @@
 #!/bin/sh
-#
-# Univention Management Console
-#  init script for the UMC server
+### BEGIN INIT INFO
+# Provides:          univention-management-console-server
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Should-Start:      slapd
+# Should-Stop:       slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Management Console Server
+### END INIT INFO
 #
 # Copyright 2006-2017 Univention GmbH
 #
