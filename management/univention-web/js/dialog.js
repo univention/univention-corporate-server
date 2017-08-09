@@ -50,28 +50,37 @@ define([
 	var dialog = {};
 	lang.mixin(dialog, {
 
-		_notificationMaster: null,
-
-		createNotificationMaster: function() {
-			if (!this._notificationMaster) {
-				this._notificationMaster = new NotificationContainer({});
-			}
-			return this._notificationMaster;
-		},
-
-		contextNotify: function(message, action, actionLabel) {
+		contextNotify: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
 			// summary:
 			//		Show a snackbar notification on the bottom of the screen.
 			//		(Snackbar notification from Google Material Design)
+			// message:
+			// 		The message that is shown in the snackbar notification
+			// action:
+			// 		A optional function that is executed when the action button
+			// 		in the snackbar notification is pressed.
+			// 		(The action button is only visible when an action is specified)
+			// actionLabel:
+			// 		The label that is shown in the action button.
+			// 		(Only needed is action is specified)
 			NotificationSnackbar.getInstance().then(function(snackbar) {
 				snackbar.notify(message, action, actionLabel);
 			});
 		},
 
-		contextWarn: function(message, action, actionLabel) {
+		contextWarn: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
 			// summary:
 			//		Show a snackbar warning notification on the bottom of the screen.
 			//		(Snackbar notification from Google Material Design)
+			// message:
+			// 		The message that is shown in the snackbar notification
+			// action:
+			// 		A optional function that is executed when the action button
+			// 		in the snackbar notification is pressed.
+			// 		(The action button is only visible when an action is specified)
+			// actionLabel:
+			// 		The label that is shown in the action button.
+			// 		(Only needed is action is specified)
 			NotificationSnackbar.getInstance().then(function(snackbar) {
 				snackbar.warn(message, action, actionLabel);
 			});

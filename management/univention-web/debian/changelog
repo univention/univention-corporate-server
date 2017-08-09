@@ -1,3 +1,9 @@
+univention-web (1.0.42-36) unstable; urgency=medium
+
+  * Bug #43658: remove old unused javascript and css code
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 09 Aug 2017 17:49:02 +0200
+
 univention-web (1.0.42-35) unstable; urgency=medium
 
   * Bug #43658: use full window width for notificationsdropdown on
