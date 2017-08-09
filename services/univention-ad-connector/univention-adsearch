@@ -34,6 +34,7 @@
 
 import sys
 import os
+import re
 import univention.config_registry
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
@@ -193,13 +194,9 @@ page_size = 1000
 
 lc2 = SimplePagedResultsControl(True, page_size, '')
 
-filter = ""
 
-for i in filter_tmp.split(","):
-	j = i.split("=")
-	if j[0] == "objectSid":
-		j[1] = encode_object_sid_to_binary_ldapfilter(j[1])
-	filter += (j[0] + "=" + j[1])
+objectsid_pattern = re.compile('objectsid=([^)]+)', flags=re.I)
+filter = objectsid_pattern.sub(lambda m: 'objectSid=%s' % encode_object_sid_to_binary_ldapfilter(m.group(1)), filter_tmp)
 
 if filter_attributes:
 	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])

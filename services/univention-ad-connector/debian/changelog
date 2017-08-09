@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-21) unstable; urgency=medium
+
+  * Bug #45134: fix search filter in univention-adsearch
+
+ -- Florian Best <best@univention.de>  Wed, 09 Aug 2017 13:43:44 +0200
+
 univention-ad-connector (11.0.6-20) unstable; urgency=medium
 
   * Bug #45124: adc: fix __get_highestCommittedUSN()
