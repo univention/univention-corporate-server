@@ -12,3 +12,5 @@ desc: |
  * Vastly speeded up download routines for App meta data
  * Use docker cp to copy files into the container
 bug: [44763, 43079, 43847, 44814]
+erratum: 127
+announced: 2017-08-09
