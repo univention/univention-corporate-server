@@ -13,3 +13,5 @@ desc: |
    server to crash in certain situations during loading of identity provider
    metadata.
 bug: [45042, 39355]
+erratum: 124
+announced: 2017-08-09
