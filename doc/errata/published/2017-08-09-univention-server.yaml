@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fixed calling `univention-fix-ucr-dns` when not default gateway is set.
 bug: [45120]
+erratum: 131
+announced: 2017-08-09
