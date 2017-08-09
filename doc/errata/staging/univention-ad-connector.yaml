@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-ad-connector
-fix: 10.0.2-29.525.201708091345
+fix: 10.0.2-29.526.201708091418
 desc: |
  This update addresses the following issue(s):
  * Add missing "INIT INFO" headers to help the update to UCS 4.2

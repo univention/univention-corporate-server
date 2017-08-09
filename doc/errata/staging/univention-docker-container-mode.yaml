@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-docker-container-mode
-fix: 1.0.14-12.72.201708071503
+fix: 1.0.14-13.74.201708091417
 desc: |
  This update addresses the following issue(s):
  * Disable update check on boot in container mode.
