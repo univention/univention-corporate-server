@@ -3,8 +3,9 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-samba4
-fix: 6.0.10-23A~4.2.0.201708031544
+fix: 6.0.10-24A~4.2.0.201708091256
 desc: |
  This update addresses the following issue(s):
  * Improve cleanup of old backups in univention-samba4-backup.
-bug: [38554]
+ * Create Windows 10 default profile (default.V6) in univention-skel.
+bug: [38554,44895]
