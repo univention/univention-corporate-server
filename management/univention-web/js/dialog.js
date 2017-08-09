@@ -37,7 +37,6 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-style",
-	"umc/dialog/NotificationContainer",
 	"umc/dialog/NotificationDropDownButton",
 	"umc/dialog/NotificationSnackbar",
 	"umc/widgets/ConfirmDialog",
@@ -46,7 +45,7 @@ define([
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationContainer, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 

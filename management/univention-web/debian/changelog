@@ -1,3 +1,9 @@
+univention-web (1.0.42-37) unstable; urgency=medium
+
+  * Bug #43658: fix missing dependency
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 09 Aug 2017 18:03:19 +0200
+
 univention-web (1.0.42-36) unstable; urgency=medium
 
   * Bug #43658: remove old unused javascript and css code
