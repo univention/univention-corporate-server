@@ -1,4 +1,4 @@
-univention-bind (10.0.2-6) unstable; urgency=medium
+univention-bind (10.0.2-7) unstable; urgency=medium
 
   * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
 
