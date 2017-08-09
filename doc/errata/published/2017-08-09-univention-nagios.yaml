@@ -10,3 +10,5 @@ desc: |
    The check now inspects the processes on the nscd socket instead
    of just counting the number of running nscd processes.
 bug: [42812]
+erratum: 129
+announced: 2017-08-09
