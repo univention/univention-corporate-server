@@ -139,7 +139,7 @@ if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/por
 	sys.exit(1)
 
 
-protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldaps'
+protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
 ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME], int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
