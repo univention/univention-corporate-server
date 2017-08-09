@@ -7,4 +7,5 @@ fix: 1.0.14-12.72.201708071503
 desc: |
  This update addresses the following issue(s):
  * Disable update check on boot in container mode.
-bug: [45142]
+ * Add missing "INIT INFO" headers to help the update to UCS 4.2
+bug: [45142, 45109]
