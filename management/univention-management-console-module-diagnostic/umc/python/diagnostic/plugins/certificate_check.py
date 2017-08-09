@@ -174,7 +174,13 @@ class CertificateVerifier(object):
 		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = verify.communicate()
 		if verify.poll() != 0:
-			yield CertificateInvalid(path, stdout)
+			# `openssl` can not cope with both `-CAfile` and `-CApath` at the
+			# same time, so we need a second call. If omitted, `openssl` will
+			# use `/etc/ssl/certs`.
+			verify_sys = subprocess.Popen(('openssl', 'verify', path), stdout=subprocess.PIPE)
+			verify_sys.communicate()
+			if verify_sys.poll() != 0:
+				yield CertificateInvalid(path, stdout)
 
 	def verify_root(self):
 		for error in self.verify(self.root_cert_path):
