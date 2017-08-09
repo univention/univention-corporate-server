@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-24) unstable; urgency=medium
+
+  * Bug #44895: default.V6 skel
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Aug 2017 12:54:44 +0200
+
 univention-samba4 (6.0.10-23) unstable; urgency=medium
 
   * Bug #38554: u-samba4: fix shell-univention-lib dependency
