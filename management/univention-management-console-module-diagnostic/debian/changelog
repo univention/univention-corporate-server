@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-14) unstable; urgency=medium
+
+  * Bug #45118: open links in new tab
+
+ -- Florian Best <best@univention.de>  Wed, 09 Aug 2017 13:23:46 +0200
+
 univention-management-console-module-diagnostic (3.0.1-13) unstable; urgency=medium
 
   * Bug #40228: diagnostic: also test against system CAs in certificate_check
