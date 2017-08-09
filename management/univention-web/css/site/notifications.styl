@@ -168,30 +168,33 @@ $umcNotification-width = 300px
 	overflow: hidden
 	position: relative
 	&.openTransition
-		/* transition: width 0.22s 0.03s, height 0.22s */
-		transition: width 0.22s 0.03s, height 0.22s, opacity 0.2s
+		transition: width 0.22s 0.03s, height 0.22s, opacity 0.3s
 	&.closeTransition
-		/* transition: width 0.22s, height 0.22s 0.03s */
-		transition: width 0.22s, height 0.22s 0.03s, opacity 0.2s
+		transition: width 0.22s, height 0.22s 0.03s, opacity 0.3s
+	&.closeTransitionHeightOnly
+		transition: height 0.22s, opacity 0.3s
 	&.noTransition
 		transition: none
 
 	.notificationsContainerWrapper
+		width: $umcNotification-width
+		@media (max-width: 450px)
+			width: 100%
+
 		overflow-y: auto
 		overflow-x: hidden
-		max-height: inherit
 
-		.notificationsContainer
-			padding-top: 0
-			^[-2].hasNotifications ^[-2..-1]
-				padding-top: 44px
+		margin-top: 0
+		^[-1].hasNotifications ^[-1..-1]
+			margin-top: 44px
 
 	.noNotificationsText
 		font-size: $font-size-subheading
 		font-weight: 500
 		text-align: center
 		padding: 8px 0
-		width: $umcNotification-width
+		min-width: $umcNotification-width
+		width: 100%
 		display: block
 		^[-1].hasNotifications ^[-1..-1]
 			height: 0
@@ -200,7 +203,8 @@ $umcNotification-width = 300px
 	.removeAllNotificationsButton
 		margin: 0
 		text-align: center
-		width: $umcNotification-width
+		min-width: $umcNotification-width
+		width: 100%
 		position: absolute
 		z-index: 1
 		top: 0
@@ -219,7 +223,7 @@ $umcNotification-width = 300px
 .umc .umcDropDownNotification
 	$transition-duration = 0.25s
 
-	width: $umcNotification-width
+	/* width: $umcNotification-width */
 	overflow: hidden
 	&:not(:last-child)
 		border-bottom: 1px solid rgba(0, 0, 0, 0.12)

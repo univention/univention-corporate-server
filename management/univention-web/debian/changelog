@@ -1,3 +1,11 @@
+univention-web (1.0.42-35) unstable; urgency=medium
+
+  * Bug #43658: use full window width for notificationsdropdown on
+    small screens and adjusted NotificationDropDownButton notifications
+    coutner
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 09 Aug 2017 17:28:19 +0200
+
 univention-web (1.0.42-34) unstable; urgency=medium
 
   * Bug #43658: increase time snackbar notifications stay on screen

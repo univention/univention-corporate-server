@@ -105,16 +105,19 @@ define([
 			this._set('isWarning', isWarning);
 		},
 
-		fullMessageHeight: null,
-		// only works if notification is in the DOM
-		setFullMessageheight: function() {
-			this.fullMessageHeight = domGeometry.getContentBox(this.messageCloneNode).h;
-		},
-
 		_addMaxHeightCssStyles: function() {
+			if (this._insertedCssStyle) {
+				styles.removeCssRule(this._insertedCssStyle.selector, this._insertedCssStyle.declaration);
+			}
+
+			var fullMessageHeight = domGeometry.getContentBox(this.messageCloneNode).h;
 			var selector = lang.replace('#{0}.{1}Hover .umcNotificationMessageContainer,#{0}.{1}Focused .umcNotificationMessageContainer', [this.id, this.baseClass]);
-			var declaration = lang.replace('max-height: {0}px;', [this.fullMessageHeight]);
+			var declaration = lang.replace('max-height: {0}px;', [fullMessageHeight]);
 			styles.insertCssRule(selector, declaration);
+			this._insertedCssStyle = {
+				selector: selector,
+				declaration: declaration
+			};
 		},
 
 		_onCloseNodeClick: function(evt) {
@@ -203,17 +206,12 @@ define([
 				isWarning: isWarning
 			});
 
-			put(baseWindow.body(), notification.domNode, '.dijitOffScreen');
-			notification.setFullMessageheight();
-			this._truncateNotificationToTwoLines(notification);
-
 			if (isWarning) {
 				this._firstNonWarningIndex++;
 			}
 			var insertIndex = (isWarning) ? 0 : this._firstNonWarningIndex;
 			this.notificationsContainer.addChild(notification, insertIndex);
 
-			domClass.remove(notification.domNode, 'dijitOffScreen');
 			if (playWipeInAnimation) {
 				domStyle.set(notification.domNode, 'height', '0');
 				fx.wipeIn({
@@ -354,7 +352,18 @@ define([
 		// 		Does not show when _notificationCount is 0.
 		_notificationCountNode: null,
 
+		// _lastWindowWidth: Integer
+		// 		When openening the dropDown and the
+		// 		window width changed, the message truncation for
+		// 		all notifications is updated.
+		_lastWindowWidth: null,
+
+		// _lastOpenDropDownData: Object
+		// 		The previous return value of this.openDropDown()
+		_lastOpenDropDownData: null,
+
 		_set_notificationCountAttr: function(count) {
+			count = Math.min(count, 99);
 			this._notificationCount = count;
 			this._notificationCountNode.innerHTML = count;
 			this._set('_notificationCount', count);
@@ -394,34 +403,46 @@ define([
 		_addNotification: function(message, title, isWarning) {
 			this._updateNotificationCount(1);
 
+			var notification = this.dropDown.addNotification(message, title, isWarning, this._opened);
 			if (!this._opened) {
-				this.dropDown.addNotification(message, title, isWarning, false);
 				var dropDownData = this.openDropDown();
 				dropDownData.openDeferred.then(lang.hitch(this.dropDown, '_scrollToFirstNotification'));
-			} else {
-				this.dropDown.addNotification(message, title, isWarning, true);
 			}
+			this.dropDown._truncateNotificationToTwoLines(notification);
 		},
 
 		openDropDown: function() {
 			domClass.replace(this.dropDown.domNode, 'openTransition', 'closeTransition');
 
-			// set max height so the drop down does not exceed the window size
-			var maxHeight = win.getBox().h - (domGeometry.position(this.domNode).y + domGeometry.position(this.domNode).h) - 20;
-			domStyle.set(this.dropDown.domNode, 'max-height', maxHeight + 'px');
-
 			var dropDownData = this.inherited(arguments);
 			dropDownData.openDeferred = new Deferred();
+
+			var windowBox = win.getBox();
+
+			// set max height so the drop down does not exceed the window size
+			var dropDownMaxHeight = windowBox.h - (domGeometry.position(this.domNode).y + domGeometry.position(this.domNode).h) - 20;
+			// domStyle.set(this.dropDown.domNode, 'max-height', maxHeight + 'px');
+			var notificationWrapperMaxHeight = dropDownMaxHeight - domGeometry.getMarginExtents(this.dropDown.notificationsContainerWrapperNode).t;
+			domStyle.set(this.dropDown.notificationsContainerWrapperNode, 'max-height', lang.replace('{0}px', [notificationWrapperMaxHeight]));
 
 			// set 'right' instead of 'left' position when the right side
 			// of the drop down aligns with the right side of the
 			// drop down button so the width expands from the right
-			// and not from the left
-			if (dropDownData.corner === 'TR') {
+			// and not from the left. But only if the drop down fits
+			// completely to the left.
+			if (dropDownData.corner === 'TR' && !dropDownData.overflow) {
 				domStyle.set(this.dropDown.domNode.parentElement, {
 					'left': 'initial',
-					'right': win.getBox().w - (dropDownData.w + dropDownData.x) + 'px'
+					'right': windowBox.w - (dropDownData.w + dropDownData.x) + 'px'
 				});
+			}
+
+			if (windowBox.w !== this._lastWindowWidth) {
+				this._lastWindowWidth = windowBox.w;
+				array.forEach(this.dropDown.notificationsContainer.getChildren(), lang.hitch(this, function(notification) {
+					notification.set('message', notification.messageCloneNode.innerHTML);
+					this.dropDown._truncateNotificationToTwoLines(notification);
+				}));
 			}
 
 			// We want a css transition to the height and with of the dropDown.
@@ -431,14 +452,14 @@ define([
 			// before setting height and width to the dimensions of the dropDown.
 			domClass.add(this.dropDown.domNode, 'noTransition'); // no transition so opacity is instantly set
 			domStyle.set(this.dropDown.domNode, {
-				'width': '0',
+				'width': dropDownData.overflow ? dropDownData.w + dropDownData.overflow + 'px' : '0',
 				'height': '0',
 				'opacity': '0'
 			});
 			domClass.remove(this.dropDown.domNode, 'noTransition');
 			setTimeout(lang.hitch(this, function() {
 				domStyle.set(this.dropDown.domNode, {
-					'width': dropDownData.w + 'px',
+					'width': dropDownData.w + dropDownData.overflow + 'px',
 					'height': dropDownData.h + 'px',
 					'opacity': '1'
 				});
@@ -486,11 +507,13 @@ define([
 			// 300ms linked to transition duration for opening and closing
 			// .umcNotificationDropDown defined in header.styl
 
+			this._lastOpenDropDownData = dropDownData;
 			return dropDownData;
 		},
 
 		closeDropDown: function() {
 			domClass.replace(this.dropDown.domNode, 'closeTransition', 'openTransition');
+			domClass.toggle(this.dropDown.domNode, 'closeTransitionHeightOnly', this._lastOpenDropDownData.overflow);
 
 			var closeDeferred = new Deferred();
 			var origArgs = arguments;
@@ -510,7 +533,7 @@ define([
 			domClass.remove(this.dropDown.domNode, 'noTransition');
 			setTimeout(lang.hitch(this, function() {
 				domStyle.set(this.dropDown.domNode, {
-					'width': '0',
+					'width': this._lastOpenDropDownData.overflow ? box.w + 'px' : '0',
 					'height': '0',
 					'opacity': '0'
 				});
@@ -524,6 +547,7 @@ define([
 					'height': '',
 					'opacity': ''
 				});
+				domClass.remove(this.dropDown.domNode, 'closeTransitionHeightOnly');
 
 				this.inherited(origArgs);
 				closeDeferred.resolve();
