@@ -10,3 +10,5 @@ desc: |
    development tools
  * Vastly speeded up download routines for App meta data
 bug: [44977, 45080]
+erratum: 446
+announced: 2017-08-09
