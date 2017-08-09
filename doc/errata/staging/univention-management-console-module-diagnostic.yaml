@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-management-console-module-diagnostic
-fix: 3.0.1-13A~4.2.0.201708091037
+fix: 3.0.1-14A~4.2.0.201708091324
 desc: |
  This update addresses the following issue(s):
  * Add new check_server_password.
@@ -26,4 +26,5 @@ desc: |
  * Add new check samba_tool_sysvolcheck.
  * Add new check samba_tool_showrepl.
  * Add new check kerberos_ddns_update.
-bug: [35858, 35859, 35860, 35863, 35865, 36012, 36748, 37628, 38238, 38974, 40227, 40228, 40393, 40465, 40605, 44874, 44875, 44876, 44881, 44902]
+ * Links to SDB articles are now opened in a new tab.
+bug: [35858, 35859, 35860, 35863, 35865, 36012, 36748, 37628, 38238, 38974, 40227, 40228, 40393, 40465, 40605, 44874, 44875, 44876, 44881, 44902, 45118]
