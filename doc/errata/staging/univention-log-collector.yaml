@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: univention-log-collector
-fix: 
+fix: 9.0.1-2.34.201708091347
 desc: |
  This update addresses the following issue(s):
  * Add missing "INIT INFO" headers to help the update to UCS 4.2
