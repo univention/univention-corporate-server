@@ -11,3 +11,5 @@ desc: |
  * Bug #45101: Start NFS server for first NFS share
  * Bug #25446: Make RPCNFSDCOUNT configurable
 bug: [32272, 33254, 45101, 25446]
+erratum: 130
+announced: 2017-08-09
