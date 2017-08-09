@@ -109,6 +109,7 @@ $notification-transition ?= 0.75s
 	left: 0
 	right: 0
 	text-align: center
+	z-index: 2
 
 	.umcSnackbarNotification
 		pointer-events: auto
@@ -319,3 +320,11 @@ $umcNotification-width = 300px
 		&.umcDropDownNotificationActive
 			.umcNotificationInnerWrapper
 				background-color: hsl(0, 100%, 95%)
+
+html.dj_edge,
+html.dj_trident,
+html.dj_ie,
+html.dj_safari,
+html.has-mozilla
+	.umcNotificationCloseContainer
+		right: 9px !important

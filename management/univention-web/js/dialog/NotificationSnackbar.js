@@ -102,10 +102,18 @@ define([
 		// 		The current height of the notification.
 		_notificationHeight: null,
 
-		// _maxVisibleTimeReached: Integer (in ms)
-		// 		The maximum amount of time (in ms) a notification
+		// _baseMaxVisibleTime: Integer (in ms)
+		// 		The default maximum amount of time (in ms) a notification
 		// 		stays on screen.
-		_maxVisibleTime: 4000,
+		_baseMaxVisibleTime: 4000,
+
+		// _maxVisibleTimeReached: Integer (in ms)
+		// 		The actual maximum amount of time (in ms) the current notification
+		// 		stays on screen.
+		// 		This value is the maximum of this._baseMaxVisibleTime and
+		// 		the number of words in the message times 0.5.
+		// 		( Math.max(this._baseMaxVisibleTime, numberOfWords * 0.5) )
+		_maxVisibleTime: null,
 
 		// _maxVisibleTimeTimeout: return value of Window.setTimeout
 		// 		A timeout with the delay of this._maxVisibleTime.
@@ -281,6 +289,11 @@ define([
 			this.set('notificationMessage', notification.message);
 			this.set('notificationAction', notification.action);
 			this.set('notificationActionLabel', (this.isWarningShown && !notification.action) ? _('OK') : notification.actionLabel);
+			
+			// update _maxVisibleTime based on amount of text in message
+			var textContent = notification.message.textContent ? notification.message.textContent : notification.message;
+			var wordCount = textContent.split(' ').length;
+			this._maxVisibleTime = Math.max(this._baseMaxVisibleTime, wordCount * 0.5 /*2 words per second*/ * 1000 /*in milliseconds*/);
 
 			// set warning css class
 			domClass.toggle(this.notificationNode, 'umcSnackbarNotificationWarning', this.isWarningShown);
