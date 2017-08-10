@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 
+fix: 6.0.9-0A~4.2.0.201708101518
 desc: |
  This update addresses the following issue(s):
  * Fixed univention-app update zsync issue.
