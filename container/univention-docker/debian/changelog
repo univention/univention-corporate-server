@@ -1,3 +1,10 @@
+univention-docker (1.0.1-9) unstable; urgency=medium
+
+  * Bug #44987: restart dockerd on new installation to make sure custom
+    configuration is reread an overlayfs is set as the default storage backend
+
+ -- Eduard Mai <mai@univention.de>  Thu, 10 Aug 2017 17:37:57 +0200
+
 univention-docker (1.0.1-8) unstable; urgency=low
 
   * restart univention-firewall (Bug #42698)
