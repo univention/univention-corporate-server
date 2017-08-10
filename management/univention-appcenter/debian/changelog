@@ -1,3 +1,9 @@
+univention-appcenter (6.0.8-20) unstable; urgency=medium
+
+  * Bug #45180: fix zsync update
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Aug 2017 15:01:11 +0200
+
 univention-appcenter (6.0.8-19) unstable; urgency=medium
 
   * Bug #44814: ignore empty password file

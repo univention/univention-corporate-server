@@ -188,8 +188,12 @@ class Update(UniventionAppAction):
 			all_tar_file = os.path.join(app_cache.get_cache_dir(), '.all.tar')
 			all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
 			self.log('Downloading "%s"...' % all_tar_url)
+			cwd = os.getcwd()
+			os.chdir(os.path.dirname(all_tar_file))
 			if self._subprocess(['zsync', all_tar_url, '-q', '-o', all_tar_file]).returncode:
+				os.chdir(cwd)
 				raise Abort('Failed to download "%s"' % all_tar_url)
+			os.chdir(cwd)
 			self._verify_file(all_tar_file)
 			self._extract_archive(app_cache)
 			return True
