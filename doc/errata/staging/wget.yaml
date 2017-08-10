@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: wget
-fix: 2:7.3.547-7.57.201708101432
+fix: 1.13.4-3.32.201708101455
 desc: |
  This update addresses the following issues:
  * Lack of filename checking allows arbitrary file upload via FTP redirect
