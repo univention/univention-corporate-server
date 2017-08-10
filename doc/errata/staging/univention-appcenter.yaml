@@ -3,8 +3,8 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 
+fix: 6.0.8-20A~4.2.0.201708101305
 desc: |
  This update addresses the following issue(s):
- * The password for container based apps is now kept throughout container updates.
+ * The password for container based apps is now kept the same throughout container updates.
 bug: [43823]
