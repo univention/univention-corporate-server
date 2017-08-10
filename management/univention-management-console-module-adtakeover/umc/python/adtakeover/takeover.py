@@ -31,54 +31,49 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import samba.getopt
+import sys
 import os
 import re
-import sys
-import time
-import locale
-import shutil
-import string
-import logging
-import traceback
 import subprocess
-import ConfigParser
-from datetime import datetime, timedelta
-
+import shutil
 import ldb
 import samba
-import samba.getopt
-from samba import Ldb
 from samba.samdb import SamDB
 from samba.auth import system_session
 from samba.param import LoadParm
+import time
+import ldap
 from samba.ndr import ndr_unpack
 from samba.dcerpc import security
-# from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
-from samba.dcerpc import nbt
-from samba.net import Net
-from samba.credentials import Credentials, DONT_USE_KERBEROS
-
-import ldap
-import sqlite3
-import ipaddr
-from ldap.filter import filter_format
-from ldap.dn import escape_dn_chars
-
 import univention.admin.uldap
 import univention.admin.uexceptions as uexceptions
+import string
+import sqlite3
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.objects
 import univention.admin.config
 from univention.admincli import license_check
+import ipaddr
+import logging
+import traceback
+from univention.admin.handlers.dns.reverse_zone import mapSubnet
 import univention.lib
 import univention.lib.s4
+from datetime import datetime, timedelta
+import locale
 import univention.config_registry
+# from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
+from samba.dcerpc import nbt
+from samba.net import Net
+from samba.credentials import Credentials, DONT_USE_KERBEROS
+from univention.management.console.log import MODULE
+import univention.management.console as umc
+import ConfigParser
 import univention.lib.admember
 from univention.config_registry.interfaces import Interfaces
-from univention.management.console.log import MODULE
-from univention.management.console import Translation
-
+from samba import Ldb
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -103,7 +98,7 @@ except AttributeError:
 
 DEVNULL = open(os.devnull, 'w')
 
-_ = Translation('univention-management-console-module-adtakeover').translate
+_ = umc.Translation('univention-management-console-module-adtakeover').translate
 
 
 class Progress(object):
@@ -415,6 +410,8 @@ def set_status_done():
 	'''
 	state = AD_Takeover_State()
 	return state.set_done()
+
+#
 
 
 class AD_Takeover_State():
