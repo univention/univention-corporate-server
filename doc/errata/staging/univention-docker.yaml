@@ -3,8 +3,9 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-docker
-fix: 
+fix: 2.0.1-7A~4.2.0.201708101725
 desc: |
  This update addresses the following issue(s):
- * The docker service is now restarted with the correct storage back end right after new installations.
-bug: []
+ * The docker service is now restarted right after installation to ensure the correct storage back end
+   is used immediately.
+bug: [44986]
