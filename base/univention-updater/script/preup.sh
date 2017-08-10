@@ -427,6 +427,24 @@ check_app_appliance () {
 }
 check_app_appliance
 
+check_kopano_repo () {
+	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
+		if is_ucr_true "$repo"; then
+			echo "ERROR: An external repository for the Kopano Apps is currently configured."
+			echo "       There are known issues when updating to UCS 4.2 and using software"
+			echo "       from the Kopano software repository."
+			echo "       The update is blocked while Kopano and Univention are working"
+			echo "       on a solution."
+			if is_ucr_true update42/ignore_kopano_repo; then
+				echo "WARNING: update42/ignore_kopano_repo is set to true. Skipped as requested."
+			else
+				exit 1
+			fi
+		fi
+	done
+}
+check_kopano_repo
+
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
 case "$available_locales" in

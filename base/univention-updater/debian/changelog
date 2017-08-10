@@ -1,3 +1,9 @@
+univention-updater (12.0.11-5) unstable; urgency=medium
+
+  * Bug #45181: Block update if external kopano repository is used
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 10 Aug 2017 15:09:33 +0200
+
 univention-updater (12.0.11-4) unstable; urgency=medium
 
   * Bug #44623: Don't display apps with updatable containers as this is not
