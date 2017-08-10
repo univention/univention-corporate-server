@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-09 10:35+0200\n"
+"POT-Creation-Date: 2017-08-10 11:24+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -234,13 +234,21 @@ msgstr "Abgelaufenes Zertifikat {path!r} gefunden."
 msgid "Found illegal alias record (CNAME record) for nameserver {ns}."
 msgstr "Ungültiger Alias-Record (CNAME record) für Namenserver {ns} gefunden."
 
-#: umc/python/diagnostic/plugins/certificate_check.py:103
+#: umc/python/diagnostic/plugins/certificate_check.py:106
+msgid "Found invalid certificate {path!r}."
+msgstr "Ungültiges Zertifikat {path!r} gefunden."
+
+#: umc/python/diagnostic/plugins/certificate_check.py:104
 msgid ""
 "Found invalid certificate {path!r}:\n"
 "{message}"
 msgstr ""
 "Ungültiges Zertifikat {path!r} gefunden:\n"
 "{message}"
+
+#: umc/python/diagnostic/plugins/certificate_check.py:115
+msgid "Found malformed certificate {path!r}."
+msgstr "Korruptes Zertifikat {path!r} gefunden."
 
 #: umc/python/diagnostic/plugins/check_nameservers.py:72
 #, python-brace-format
@@ -475,7 +483,7 @@ msgstr "Siehe {sdb} für weitere Informationen."
 msgid "Please see {sdb} for troubleshooting DNS problems."
 msgstr "Siehe {sdb} für Problemhilfe bei DNS Problemen."
 
-#: umc/python/diagnostic/plugins/certificate_check.py:280
+#: umc/python/diagnostic/plugins/certificate_check.py:296
 #, python-brace-format
 msgid "Please see {sdb} on how to renew certificates."
 msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."

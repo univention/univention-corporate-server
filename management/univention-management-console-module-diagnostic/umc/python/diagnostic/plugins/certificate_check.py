@@ -100,8 +100,20 @@ class CertificateInvalid(CertificateError):
 		self.message = message
 
 	def __str__(self):
-		msg = _('Found invalid certificate {path!r}:\n{message}')
+		if self.message:
+			msg = _('Found invalid certificate {path!r}:\n{message}')
+		else:
+			msg = _('Found invalid certificate {path!r}.')
 		return msg.format(path=self.path, message=self.message)
+
+
+class CertificateMalformed(CertificateError):
+	def __init__(self, path):
+		super(CertificateMalformed, self).__init__(path)
+
+	def __str__(self):
+		msg = _('Found malformed certificate {path!r}.')
+		return msg.format(path=self.path)
 
 
 class CertificateVerifier(object):
@@ -151,19 +163,23 @@ class CertificateVerifier(object):
 		now = datetime.datetime.now(dateutil.tz.tzutc())
 
 		with open(cert_path) as fob:
-			cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
-			valid_from = self.parse_generalized_time(cert.get_notBefore())
+			try:
+				cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
+			except crypto.Error:
+				yield CertificateMalformed(cert_path)
+			else:
+				valid_from = self.parse_generalized_time(cert.get_notBefore())
 
-			if now < valid_from:
-				yield CertificateNotYetValid(cert_path)
+				if now < valid_from:
+					yield CertificateNotYetValid(cert_path)
 
-			valid_until = self.parse_generalized_time(cert.get_notAfter())
-			expires_in = valid_until - now
+				valid_until = self.parse_generalized_time(cert.get_notAfter())
+				expires_in = valid_until - now
 
-			if expires_in < datetime.timedelta():
-				yield CertificateExpired(cert_path)
-			elif expires_in < WARNING_PERIOD:
-				yield CertificateWillExpire(cert_path, expires_in)
+				if expires_in < datetime.timedelta():
+					yield CertificateExpired(cert_path)
+				elif expires_in < WARNING_PERIOD:
+					yield CertificateWillExpire(cert_path, expires_in)
 
 	def _openssl_verify(self, path):
 		# XXX It would be nice to do this in python. `python-openssl` has the
@@ -171,7 +187,7 @@ class CertificateVerifier(object):
 		# unfortunately only version 0.14 is available in debian.
 		cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path,
 			'-CRLfile', self.crl_path, '-crl_check', path)
-		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		(stdout, stderr) = verify.communicate()
 		if verify.poll() != 0:
 			# `openssl` can not cope with both `-CAfile` and `-CApath` at the
@@ -180,7 +196,7 @@ class CertificateVerifier(object):
 			verify_sys = subprocess.Popen(('openssl', 'verify', path), stdout=subprocess.PIPE)
 			verify_sys.communicate()
 			if verify_sys.poll() != 0:
-				yield CertificateInvalid(path, stdout)
+				yield CertificateInvalid(path, stdout.strip() or stdout.strip())
 
 	def verify_root(self):
 		for error in self.verify(self.root_cert_path):
