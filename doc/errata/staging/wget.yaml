@@ -1,0 +1,17 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: wget
+fix: 2:7.3.547-7.57.201708101432
+desc: |
+ This update addresses the following issues:
+ * Lack of filename checking allows arbitrary file upload via FTP redirect
+   (CVE-2016-4971)
+ * Injection of arbitrary HTTP headers via CRLF sequences in the host
+   subcomponent of a URL due to vulnerability in the url_parse function
+   (CVE-2017-6508)
+bug: [41662]
+cve:
+ - CVE-2016-4971
+ - CVE-2017-6508
