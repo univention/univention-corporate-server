@@ -52,6 +52,7 @@ from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, app_ports_with_protocol, currently_free_port_in_range, generate_password, container_mode
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys, ucr_instance
+from univention.appcenter.docker import docker_cp
 
 
 class Register(CredentialsAction):
@@ -258,8 +259,17 @@ class Register(CredentialsAction):
 		lo, pos = self._get_ldap_connection(args)
 		if hostdn:
 			if lo.get(hostdn):
-				self.log('Already found %s as a host for %s. Better do nothing...' % (hostdn, app.id))
-				return hostdn, None
+				self.log('Already found %s as a host for %s. Trying to retrieve machine secret.' % (hostdn, app.id))
+				docker = self._get_docker(self.old_app)
+				secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
+				status_code, response = docker_cp('{}:/etc/machine.secret'.format(docker.container), secret_on_host)
+				if status_code:
+					self.log('Couldn\'t copy machine secret for %s, container %s. Docker response:\n%s' % (hostdn, docker.container, response))
+					password = None
+				else:
+					with open(secret_on_host) as pwfile:
+						password = pwfile.read()
+				return hostdn, password
 			else:
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 14 chars
