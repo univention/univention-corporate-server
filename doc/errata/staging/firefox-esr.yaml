@@ -1,59 +1,150 @@
 product: ucs
 release: "4.2"
 version: [1]
-scope: ucs_4.2-0-errata4.2-0
+scope: ucs_4.2-0-errata4.2-1
 src: firefox-esr
-fix: 45.9.0esr-1~deb8u1
-desc: |-
- This update addresses the following issues:
- * Mozilla Network Security Services (NSS) before 3.21.4, 3.22.x through
-   3.28.x before 3.28.4, 3.29.x before 3.29.5, and 3.30.x before 3.30.1 allows
-   remote attackers to cause a denial of service (out-of-bounds write) or
-   possibly have unspecified other impact by leveraging incorrect base64
-   operations. (CVE-2017-5461)
- * Fixes for mfsa2017-11, also known as: CVE-2017-5433, CVE-2017-5435,
-   CVE-2017-5436, CVE-2017-5461, CVE-2017-5459, CVE-2017-5434, CVE-2017-5432,
-   CVE-2017-5460, CVE-2017-5438, CVE-2017-5439, CVE-2017-5440, CVE-2017-5441,
-   CVE-2017-5442, CVE-2017-5464, CVE-2017-5443, CVE-2017-5444, CVE-2017-5446,
-   CVE-2017-5447, CVE-2017-5465, CVE-2017-5448, CVE-2017-5469, CVE-2017-5445,
-   CVE-2017-5462, CVE-2017-5429.
- * accessible/generic/ApplicationAccessible.h: Add missing null checks causing
-   crashes with accessibility.
- * Fixes for mfsa2017-06, also known as: CVE-2017-5400, CVE-2017-5401,
-   CVE-2017-5402, CVE-2017-5404, CVE-2017-5407, CVE-2017-5410, CVE-2017-5408,
-   CVE-2017-5405, CVE-2017-5398.
-bug: []
+fix: 52.2.0esr-1~deb8u1
+desc: |
+ * Vulnerabilities in Libevent library (CVE-2016-10196)
+ * Use after free in ANGLE (CVE-2017-5031)
+ * Memory safety bugs fixed in Firefox 52 and Firefox ESR 45.8 (CVE-2017-5398)
+ * asm.js JIT-spray bypass of ASLR and DEP (CVE-2017-5400)
+ * Memory Corruption when handling ErrorResult (CVE-2017-5401)
+ * Use-after-free working with events in FontFace objects (CVE-2017-5402)
+ * Use-after-free working with ranges in selections (CVE-2017-5404)
+ * FTP response codes can cause use of uninitialized values for ports (CVE-2017-5405)
+ * Pixel and history stealing via floating-point timing side channel with SVG filters (CVE-2017-5407)
+ * Cross-origin reading of video captions in violation of CORS (CVE-2017-5408)
+ * Memory corruption during JavaScript garbage collection incremental sweeping (CVE-2017-5410)
+ * Memory safety bugs fixed in Firefox 53, Firefox ESR 45.9, and Firefox ESR 52.1 (CVE-2017-5429)
+ * Memory safety bugs fixed in Firefox 53 and Firefox ESR 52.1 (CVE-2017-5430)
+ * Use-after-free in text input selection (CVE-2017-5432)
+ * Use-after-free in SMIL animation functions (CVE-2017-5433)
+ * Use-after-free during focus handling (CVE-2017-5434)
+ * Use-after-free during transaction processing in the editor (CVE-2017-5435)
+ * Out-of-bounds write with malicious font in Graphite 2 (CVE-2017-5436)
+ * Use-after-free in nsAutoPtr during XSLT processing (CVE-2017-5438)
+ * Use-after-free in nsTArray Length() during XSLT processing (CVE-2017-5439)
+ * Use-after-free in txExecutionState destructor during XSLT processing (CVE-2017-5440)
+ * Use-after-free with selection during scroll events (CVE-2017-5441)
+ * Use-after-free during style changes (CVE-2017-5442)
+ * Out-of-bounds write during BinHex decoding (CVE-2017-5443)
+ * Buffer overflow while parsing application/http-index-format content (CVE-2017-5444)
+ * Uninitialized values used while parsing application/http-index-format content (CVE-2017-5445)
+ * Out-of-bounds read when HTTP/2 DATA frames are sent with incorrect data (CVE-2017-5446)
+ * Out-of-bounds read during glyph processing (CVE-2017-5447)
+ * Out-of-bounds write in ClearKeyDecryptor (CVE-2017-5448)
+ * Crash during bidirectional unicode manipulation with animation (CVE-2017-5449)
+ * Addressbar spoofing with onblur event (CVE-2017-5451)
+ * Sandbox escape allowing file system read access through file picker (CVE-2017-5454)
+ * Sandbox escape through internal feed reader APIs (CVE-2017-5455)
+ * Sandbox escape allowing local file system access (CVE-2017-5456)
+ * Buffer overflow in WebGL (CVE-2017-5459)
+ * Use-after-free in frame selection (CVE-2017-5460)
+ * Out-of-bounds write in Base64 encoding in NSS (CVE-2017-5461)
+ * DRBG flaw in NSS (CVE-2017-5462)
+ * Memory corruption with accessibility and DOM manipulation (CVE-2017-5464)
+ * Out-of-bounds read in ConvolvePixel (CVE-2017-5465)
+ * Origin confusion when reloading isolated data:text/html URL (CVE-2017-5466)
+ * Memory corruption when drawing Skia content (CVE-2017-5467)
+ * Potential Buffer overflow in flex-generated code (CVE-2017-5469)
+ * Memory safety bugs fixed in Firefox 54 and Firefox ESR 52.2 (CVE-2017-5470)
+ * Use-after-free using destroyed node when regenerating trees (CVE-2017-5472)
+ * Use-after-free during docshell reloading (CVE-2017-7749)
+ * Use-after-free with track elements (CVE-2017-7750)
+ * Use-after-free with content viewer listeners (CVE-2017-7751)
+ * Use-after-free with IME input (CVE-2017-7752)
+ * Out-of-bounds read with cached style data and pseudo-elements (CVE-2017-7753)
+ * Out-of-bounds read in WebGL with ImageInfo object (CVE-2017-7754)
+ * Privilege escalation through Firefox Installer with same directory DLL files (CVE-2017-7755)
+ * Use-after-free and use-after-scope logging XHR header errors (CVE-2017-7756)
+ * Use-after-free in IndexedDB (CVE-2017-7757)
+ * Out-of-bounds read in Opus encoder (CVE-2017-7758)
+ * File manipulation and privilege escalation via callback parameter in Mozilla Windows Updater and Maintenance Service (CVE-2017-7760)
+ * File deletion and privilege escalation through Mozilla Maintenance Service helper.exe application (CVE-2017-7761)
+ * Mac fonts render some unicode characters as spaces (CVE-2017-7763)
+ * Domain spoofing with combination of Canadian Syllabics and other unicode blocks (CVE-2017-7764)
+ * Mark of the Web bypass when saving executable files (CVE-2017-7765)
+ * File execution and privilege escalation through updater.ini, Mozilla Windows Updater, and Mozilla Maintenance Service (CVE-2017-7766)
+ * Privilege escalation and arbitrary file overwrites through Mozilla Windows Updater and Mozilla Maintenance Service (CVE-2017-7767)
+ * 32 byte arbitrary file read through Mozilla Maintenance Service (CVE-2017-7768)
+ * Vulnerabilities in the Graphite 2 library (CVE-2017-7778)
+ * Memory safety bugs fixed in Firefox 55 and Firefox ESR 52.3 (CVE-2017-7779)
+ * Use-after-free with image observers (CVE-2017-7784)
+ * Buffer overflow manipulating ARIA attributes in DOM (CVE-2017-7785)
+ * Buffer overflow while painting non-displayable SVG (CVE-2017-7786)
+ * Same-origin policy bypass with iframes through page reloads (CVE-2017-7787)
+ * Spoofing following page navigation with data: protocol and modal alerts (CVE-2017-7791)
+ * Buffer overflow viewing certificates with an extremely long OID (CVE-2017-7792)
+ * XUL injection in the style editor in devtools (CVE-2017-7798)
+ * Use-after-free in WebSockets during disconnection (CVE-2017-7800)
+ * Use-after-free with marquee during window resizing (CVE-2017-7801)
+ * Use-after-free resizing image elements (CVE-2017-7802)
+ * CSP containing 'sandbox' improperly applied (CVE-2017-7803)
+ * Domain hijacking through AppCache fallback (CVE-2017-7807)
+ * Use-after-free while deleting attached editor DOM node (CVE-2017-7809)
+bug: [44858]
 cve:
-- CVE-2017-5461
+- CVE-2016-10196
+- CVE-2017-5031
+- CVE-2017-5398
+- CVE-2017-5400
+- CVE-2017-5401
+- CVE-2017-5402
+- CVE-2017-5404
+- CVE-2017-5405
+- CVE-2017-5407
+- CVE-2017-5408
+- CVE-2017-5410
+- CVE-2017-5429
+- CVE-2017-5430
+- CVE-2017-5432
 - CVE-2017-5433
+- CVE-2017-5434
 - CVE-2017-5435
 - CVE-2017-5436
-- CVE-2017-5459
-- CVE-2017-5434
-- CVE-2017-5432
-- CVE-2017-5460
 - CVE-2017-5438
 - CVE-2017-5439
 - CVE-2017-5440
 - CVE-2017-5441
 - CVE-2017-5442
-- CVE-2017-5464
 - CVE-2017-5443
 - CVE-2017-5444
+- CVE-2017-5445
 - CVE-2017-5446
 - CVE-2017-5447
-- CVE-2017-5465
 - CVE-2017-5448
-- CVE-2017-5469
-- CVE-2017-5445
+- CVE-2017-5449
+- CVE-2017-5451
+- CVE-2017-5454
+- CVE-2017-5455
+- CVE-2017-5456
+- CVE-2017-5459
+- CVE-2017-5460
+- CVE-2017-5461
 - CVE-2017-5462
-- CVE-2017-5429
-- CVE-2017-5400
-- CVE-2017-5401
-- CVE-2017-5402
-- CVE-2017-5404
-- CVE-2017-5407
-- CVE-2017-5410
-- CVE-2017-5408
-- CVE-2017-5405
-- CVE-2017-5398
+- CVE-2017-5464
+- CVE-2017-5465
+- CVE-2017-5466
+- CVE-2017-5467
+- CVE-2017-5469
+- CVE-2017-5470
+- CVE-2017-5472
+- CVE-2017-7749
+- CVE-2017-7750
+- CVE-2017-7751
+- CVE-2017-7752
+- CVE-2017-7754
+- CVE-2017-7755
+- CVE-2017-7756
+- CVE-2017-7757
+- CVE-2017-7778
+- CVE-2017-7758
+- CVE-2017-7760
+- CVE-2017-7761
+- CVE-2017-7763
+- CVE-2017-7764
+- CVE-2017-7765
+- CVE-2017-7766
+- CVE-2017-7767
+- CVE-2017-7768
