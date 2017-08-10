@@ -1,9 +1,3 @@
-univention-appcenter (6.0.8-20) unstable; urgency=medium
-
-  * Bug #43823: don't use a new machine secret on container upgrades
-
- -- Eduard Mai <mai@univention.de>  Thu, 10 Aug 2017 12:55:26 +0200
-
 univention-appcenter (6.0.8-19) unstable; urgency=medium
 
   * Bug #44814: ignore empty password file
