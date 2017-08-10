@@ -44,6 +44,7 @@ eval "$(univention-config-registry shell)"
 
 if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then	# New installation
+		systemctl daemon-reload
 		systemctl restart docker.service
 	else			# Update installation
 
