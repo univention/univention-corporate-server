@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-91) unstable; urgency=medium
+
+  * Bug #45182: fix zsync update
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Aug 2017 15:32:58 +0200
+
 univention-appcenter (5.0.23-90) unstable; urgency=medium
 
   * Bug #45080: Improve update performance (user-tools)

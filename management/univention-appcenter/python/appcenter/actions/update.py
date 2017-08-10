@@ -191,8 +191,12 @@ class Update(UniventionAppAction):
 		if url.startswith('https'):
 			url = 'http://%s' % url[8:]
 		self.log('Downloading "%s"...' % url)
+		cwd = os.getcwd()
+		os.chdir(os.path.dirname(all_tar_file))
 		if self._subprocess(['zsync', url, '-q', '-o', all_tar_file]).returncode:
+			os.chdir(cwd)
 			raise Abort('Failed to download "%s"' % url)
+		os.chdir(cwd)
 		self._verify_file(all_tar_file)
 		new_md5 = get_md5_from_file(all_tar_file)
 		if old_md5 != new_md5:

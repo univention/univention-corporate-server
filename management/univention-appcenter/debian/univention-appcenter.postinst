@@ -69,6 +69,10 @@ if dpkg --compare-versions "$2" lt-nl 5.0.20-44; then
 	chmod 664 /var/cache/univention-appcenter/*
 fi
 
+if dpkg --compare-versions "$2" lt-nl 5.0.23-91; then
+	univention-app update || true
+fi
+
 if dpkg --compare-versions "$2" lt-nl 5.0.23-15; then
 	univention-app update  # in case the system updated from 4.0-5 -> 4.1-4 in (kind of) one step
 	python -c '
