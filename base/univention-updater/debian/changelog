@@ -1,3 +1,9 @@
+univention-updater (12.0.10-7) unstable; urgency=medium
+
+  * Bug #45181: Block update if external kopano repository is used
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 10 Aug 2017 16:32:26 +0200
+
 univention-updater (12.0.10-6) unstable; urgency=low
 
   * Bug #44650: check for slapd on member servers
