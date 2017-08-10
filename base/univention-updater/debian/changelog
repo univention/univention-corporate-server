@@ -1,3 +1,9 @@
+univention-updater (12.0.11-6) unstable; urgency=medium
+
+  * Revert changes from Bug #45181; Moved to 4.2-0 updater package
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 10 Aug 2017 16:32:30 +0200
+
 univention-updater (12.0.11-5) unstable; urgency=medium
 
   * Bug #45181: Block update if external kopano repository is used
