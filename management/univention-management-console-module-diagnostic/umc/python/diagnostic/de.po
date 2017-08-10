@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-10 11:24+0200\n"
+"POT-Creation-Date: 2017-08-10 14:23+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -64,7 +64,7 @@ msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
 #: umc/python/diagnostic/plugins/file_permissions.py:47
-#: umc/python/diagnostic/plugins/sources_list_check.py:43
+#: umc/python/diagnostic/plugins/sources_list_check.py:44
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
@@ -119,7 +119,7 @@ msgstr "Überprüfe den Samba Replikations Status"
 msgid "Check Samba sysvol ACLs for errors"
 msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
-#: umc/python/diagnostic/plugins/sources_list_check.py:42
+#: umc/python/diagnostic/plugins/sources_list_check.py:43
 msgid "Check errors in sources.list files"
 msgstr "Überprüfe Fehler in den sources.list Dateien"
 
@@ -221,7 +221,7 @@ msgid "Found errors in the nameserver entries of the following zones."
 msgstr ""
 "Es wurden Fehler in den Nameserver Einträgen der folgenden Zonen gefunden."
 
-#: umc/python/diagnostic/plugins/sources_list_check.py:59
+#: umc/python/diagnostic/plugins/sources_list_check.py:75
 msgid "Found exception in {path!r}: {exception}"
 msgstr "Fehler in {path!r} gefunden: {exception}"
 
@@ -442,7 +442,7 @@ msgstr ""
 "Bitte prüfen Sie /var/log/auth.log auf dem entfernten Rechner für weitere "
 "Informationen."
 
-#: umc/python/diagnostic/plugins/sources_list_check.py:79
+#: umc/python/diagnostic/plugins/sources_list_check.py:101
 msgid "Please check the files for more details."
 msgstr "Überprüfen Sie die Dateien für mehr Details."
 
@@ -495,6 +495,10 @@ msgstr "Proxy-Server-Fehler"
 #: umc/python/diagnostic/plugins/hostname_check.py:47
 msgid "RFC 1123 - 2.1 Host Names and Numbers"
 msgstr ""
+
+#: umc/python/diagnostic/plugins/sources_list_check.py:97
+msgid "Regenerate sources.list"
+msgstr "Source-Listen neu generieren"
 
 #: umc/python/diagnostic/plugins/kdc_service.py:337
 msgid "Reset kerberos/kdc to 127.0.0.1"
@@ -573,6 +577,12 @@ msgstr "Erreichbarkeitstest der KDCs war erfolgreich."
 #: umc/python/diagnostic/plugins/check_join_status.py:41
 msgid "The check for the join status was succsesful."
 msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
+
+#: umc/python/diagnostic/plugins/sources_list_check.py:103
+msgid "The error might be fixable by regenerating the sources.list."
+msgstr ""
+"Dieser Fehler mag durch eine erneute Generierung der Source-Listen zu "
+"beheben sein."
 
 #: umc/python/diagnostic/plugins/check_ucr_templates.py:54
 msgid "The files should be checked for differences."

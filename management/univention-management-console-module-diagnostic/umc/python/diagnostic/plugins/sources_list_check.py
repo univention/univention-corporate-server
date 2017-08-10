@@ -33,6 +33,7 @@
 
 import re
 import glob
+import subprocess
 
 from univention.management.console.modules.diagnostic import Warning
 
@@ -47,6 +48,21 @@ TRACEBACK_REGEX = re.compile((
 	'(?P<start>#\s+)Traceback \(most recent call last\):\n'  # start of exception
 	'(?:(?P=start).*\n)+?'                                   # irrelevant lines of detail
 	'(?P=start)(?P<exception>[^\s].*)\n'))                   # extract exception
+
+
+def run_ucr_commit(umc_instance):
+	cmd = [
+		'ucr', 'commit',
+		'/etc/apt/sources.list.d/15_ucs-online-version.list',
+		'/etc/apt/sources.list.d/20_ucs-online-component.list',
+	]
+	subprocess.call(cmd)
+	run(umc_instance, rerun=True)
+
+
+actions = {
+	'run_ucr_commit': run_ucr_commit,
+}
 
 
 class TracebackFound(Exception):
@@ -73,10 +89,19 @@ def check_for_tracebacks():
 			yield TracebackFound(path, exception)
 
 
-def run(_umc_instance):
+def run(_umc_instance, rerun=False):
 	error_descriptions = [str(exc) for exc in check_for_tracebacks()]
+
+	buttons = [{
+		'action': 'run_ucr_commit',
+		'label': _('Regenerate sources.list'),
+	}]
+
 	if error_descriptions:
 		error_descriptions.append(_('Please check the files for more details.'))
+		if not rerun:
+			error_descriptions.append(_('The error might be fixable by regenerating the sources.list.'))
+			raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 		raise Warning(description='\n'.join(error_descriptions))
 
 

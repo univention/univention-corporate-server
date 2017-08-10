@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-18) unstable; urgency=medium
+
+  * Bug #38974: diagnostic: implement `ucr commit` button for sources_list_check.py
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 10 Aug 2017 14:26:42 +0200
+
 univention-management-console-module-diagnostic (3.0.1-17) unstable; urgency=medium
 
   * Bug #40228: diagnostic: handle malformed certificates in check_certificates: fixup
