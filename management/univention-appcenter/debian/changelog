@@ -1,4 +1,4 @@
-univention-appcenter (6.0.8-20) unstable; urgency=medium
+univention-appcenter (6.0.9-0) unstable; urgency=medium
 
   * Bug #45180: fix zsync update
 
