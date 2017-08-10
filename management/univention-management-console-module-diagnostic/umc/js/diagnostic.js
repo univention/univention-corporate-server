@@ -127,7 +127,7 @@ define([
 
 			array.forEach(item.links, function(link) {
 				var a = domConstruct.create('div');
-				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href, target: '_blank'}));
+				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href, target: '_blank', rel: 'noopener noreferrer'}));
 				a = new Text({innerHTML: a.innerHTML});
 				var repl = '{' + link.name  + '}';
 				if (description.indexOf(repl) !== -1) {
