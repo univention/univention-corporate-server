@@ -1,3 +1,10 @@
+univention-docker (2.0.1-6) unstable; urgency=medium
+
+  * Bug #44986: restart dockerd on new installation to make sure the custom
+    configuration file is read and overlayfs is chossen as an storage backend
+
+ -- Eduard Mai <mai@univention.de>  Thu, 10 Aug 2017 16:53:38 +0200
+
 univention-docker (2.0.1-5) unstable; urgency=low
 
   * Bug #44536: more info

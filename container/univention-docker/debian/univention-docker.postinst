@@ -44,7 +44,7 @@ eval "$(univention-config-registry shell)"
 
 if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then	# New installation
-		:		# Nothing to do
+		systemctl restart docker.service
 	else			# Update installation
 
 		# remove docker/autostart[appcenter] variables set during
