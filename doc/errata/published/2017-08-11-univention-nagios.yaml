@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fix UNIVENTION_NSCD service.
 bug: [45186]
+erratum: 133
+announced: 2017-08-11
