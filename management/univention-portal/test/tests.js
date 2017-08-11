@@ -128,6 +128,9 @@ define([
 			'The link that matches the current protocol should be preferred.',
 			'https://www.example.com', ['http://foo.bar.com/http', 'https://foo.bar.com/https'], 'https://foo.bar.com/https'
 		], [
+			'The link that matches the current protocol should be preferred.',
+			'https://slave.mydomain.local', ['https://foo.bar.com/test', 'https://slave.mydomain.local/test'], 'https://slave.mydomain.local/test'
+		], [
 			'The port in a link should be preserved.',
 			'http://192.168.10.33', ['https://192.177.10.10/test', '//192.168.10.10:8080/test', '//[1111::2222]/test', 'https://foo.bar.com/test'], '//192.168.10.10:8080/test'
 		], [
