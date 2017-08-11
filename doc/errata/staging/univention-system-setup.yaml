@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-system-setup
+fix: 10.0.10-37A~4.2.0.201708111920
+desc: |
+ This update addresses the following issue(s):
+ * The error handling during the initial system configuration has been
+   improved.
+bug: [43152]
