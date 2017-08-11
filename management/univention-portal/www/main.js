@@ -185,7 +185,12 @@ define([
 	};
 
 	// score is computed as the number of matched characters
-	var _scoreAddressMatch = function(browserHostname, hostname) {
+	var _scoreAddressMatch = function(browserHostname, hostname, matchBackwards) {
+		if (matchBackwards) {
+			// match not from the beginning of the string, but from the end
+			browserHostname = browserHostname.split('').reverse().join('');
+			hostname = hostname.split('').reverse().join('');
+		}
 		var i;
 		for (i = 0; i < Math.min(browserHostname.length, hostname.length); ++i) {
 			if (browserHostname[i] != hostname[i]) {
@@ -209,11 +214,16 @@ define([
 			var canonicalizedLinkHostname = canonicalizeIPAddress(linkHostname);
 			var linkType = _getAddressType(linkHostname);
 			var linkProtocolType = _getProtocolType(ilink);
+			var addressMatchScore = 0;
+			if (browserLinkType == linkType) {
+				// FQDNs are matched backwards, IP addresses forwards
+				matchBackwards = linkType == 'fqdn' ? true : false;
+				addressMatchScore = _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname, matchBackwards);
+			}
 			return {
 				scores: [
 					_scoreRelativeURI(ilink),
-					// only try to match IP addresses
-					tools.isFQDN(browserHostname) || tools.isFQDN(linkHostname) ? 0 : _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname),
+					addressMatchScore,
 					_scoreAddressType(browserLinkType, linkType),
 					_scoreProtocolType(browserProtocolType, linkProtocolType)
 				],
