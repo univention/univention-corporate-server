@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-nagios
-fix: 
+fix: 10.0.1-6A~4.2.0.201708111130
 desc: |
  This update addresses the following issue(s):
  * Fix UNIVENTION_NSCD service.
