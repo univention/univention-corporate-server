@@ -27,6 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+set -x
+
 basic_setup ()
 {
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
@@ -70,6 +72,7 @@ jenkins_updates () {
 	ucr set update42/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
+	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 
@@ -236,12 +239,14 @@ switch_to_test_app_center ()
 	if [ -x "$(which univention-app)" ]; then
 		univention-install --yes univention-appcenter-dev
 		univention-app dev-use-test-appcenter
-		for app in $(< /var/cache/appcenter-installed.txt); do 
-			if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-				univention-app shell "$app" univention-install -y univention-appcenter-dev
-				univention-app shell "$app" univention-app dev-use-test-appcenter
-			fi
-		done
+		if [ -e /var/cache/appcenter-installed.txt ]; then
+			for app in $(< /var/cache/appcenter-installed.txt); do 
+				if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+					univention-app shell "$app" univention-install -y univention-appcenter-dev
+					univention-app shell "$app" univention-app dev-use-test-appcenter
+				fi
+			done
+		fi
 	fi
 }
 
@@ -704,7 +709,7 @@ monkeypatch () {
 }
 
 import_license () {
-	python -m univention.testing.license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+	python -m  shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
 	univention-license-import ./ValidTest.license && univention-license-check
 	return $?
 }
