@@ -3,10 +3,11 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 
+fix: 6.0.9-2A~4.2.0.201708111528
 desc: |
  This update addresses the following issue(s):
  * IPv6 addresses are now handled correctly and all available
    IP addresses of a system are writte to the portal entry
    (beforehand, only the default IP addresses were used).
-bug: [44117]
+ * Container passwords aren't changed anymore during container upgrades.
+bug: [44117, 43823]
