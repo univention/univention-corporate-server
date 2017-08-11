@@ -85,15 +85,20 @@ def _handler(ucr, changes):
 		return
 	lo, pos = get_machine_connection()
 	pos.setDn('cn=portal,cn=univention,%s' % ucr.get('ldap/base'))
-	interfaces = Interfaces(ucr)
 	hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-	default_ipv4_address = interfaces.get_default_ipv4_address()
-	if default_ipv4_address:
-		default_ipv4_address = str(default_ipv4_address.ip)
-	default_ipv6_address = interfaces.get_default_ipv6_address()
-	if default_ipv6_address:
-		default_ipv6_address = str(default_ipv6_address.ip)
-	local_hosts = [hostname, default_ipv4_address, default_ipv6_address]
+
+	# iterate over all ipv4 and ipv6 addresses and append them to the link
+	local_hosts = [hostname]
+	interfaces = Interfaces(ucr)
+	for idev, iconf in interfaces.all_interfaces:
+		# get ipv4 address of device
+		if iconf.ipv4_address():
+			local_hosts.append(str(iconf.ipv4_address().ip))
+
+		# get ipv6 addresses of device
+		for iname in iconf.ipv6_names:
+			local_hosts.append('[%s]' % (iconf.ipv6_address(iname).ip, ))
+
 	portal_logger.debug('Local hosts are: %r' % local_hosts)
 	attr_entries = {}
 	for changed_entry in changed_entries:

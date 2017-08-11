@@ -1,3 +1,9 @@
+univention-appcenter (6.0.9-2) unstable; urgency=medium
+
+  * Bug #44117: Fix IPv6 URI format + add all IP addresses to portal entry
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Aug 2017 15:09:13 +0200
+
 univention-appcenter (6.0.9-1) unstable; urgency=medium
 
   * Bug #43823: Don't set a new machine.secret when a container is updated.
