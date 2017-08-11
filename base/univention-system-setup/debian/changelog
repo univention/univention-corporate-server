@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-37) unstable; urgency=medium
+
+  * Bug #43152: improve error handling of SetupScript by sending tracebacks to
+  	the frontend.
+
+ -- Florian Best <best@univention.de>  Fri, 11 Aug 2017 19:17:47 +0200
+
 univention-system-setup (10.0.10-36) unstable; urgency=medium
 
   * Bug #44194: Fix InterfaceGrid size for more than two entries

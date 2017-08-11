@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 import os
 import sys
+import traceback
 from datetime import datetime
 
 from univention.config_registry import ConfigRegistry
@@ -311,11 +312,11 @@ class SetupScript(object):
 				# really returned and did not
 				# raise an exception
 				self.ucr.commit()
-		except Exception as e:
-			self.error(str(e))
+		except Exception:
+			exc = traceback.format_exc()
+			self.error(exc)
 			success = False
-			import traceback
-			self.log(traceback.format_exc(e))
+			self.log(exc)
 		finally:
 			try:
 				self.down()
