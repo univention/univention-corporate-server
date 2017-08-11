@@ -7,6 +7,4 @@ fix: 6.0.9-0A~4.2.0.201708101518
 desc: |
  This update addresses the following issue(s):
  * Fixed univention-app update zsync issue.
- * The password for container based apps is now kept throughout container
-   updates.
-bug: [45180, 43823]
+bug: [45180]
