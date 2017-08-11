@@ -128,10 +128,6 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		fi
     fi
 fi
-# change checkCommand Bug #42812
-if [ $JS_LAST_EXECUTED_VERSION -lt 4 ]; then
-	univention-directory-manager nagios/service modify "$@" --dn "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" --set checkCommand="check_univention_nscd" --set checkArgs='' || die
-fi
 
 joinscript_save_current_version
 

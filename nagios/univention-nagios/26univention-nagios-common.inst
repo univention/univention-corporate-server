@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -58,6 +58,14 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 3 ]; then
 				--set normalCheckInterval="180" --set retryCheckInterval="30"
 		fi
 	fi
+fi
+
+# revert UNIVENTION_NSCD change, better use a new service
+if [ $JS_LAST_EXECUTED_VERSION -eq 5 ]; then
+	 univention-directory-manager nagios/service modify "$@" \
+		--dn "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" \
+		--set checkCommand="check_univention_procs_name" \
+		--set checkArgs="1:1!1:!nscd"
 fi
 
 # create nagios container
@@ -107,7 +115,9 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
-univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NSCD" --set description="Default Service: check if nscd process is present" --set checkCommand="check_univention_nscd" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NSCD" --set description="Default Service: check if nscd process is present" --set checkCommand="check_univention_procs_name" --set checkArgs="1:1!1:!nscd" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
+
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NSCD2" --set description="Default Service: check if nscd process is present (ignores docker)" --set checkCommand="check_univention_nscd" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_KPASSWDD" --set description="Default Service: check if kpasswdd process is present" --set checkCommand="check_univention_procs_name" --set checkArgs="1:1!1:!kpasswdd" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 

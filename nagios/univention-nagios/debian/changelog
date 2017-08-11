@@ -1,3 +1,10 @@
+univention-nagios (10.0.1-6) unstable; urgency=medium
+
+  * Bug #45186: revert UNIVENTION_NSCD, added new
+    UNIVENTION_NSCD2 
+
+ -- Felix Botner <botner@univention.de>  Fri, 11 Aug 2017 11:27:00 +0200
+
 univention-nagios (10.0.1-5) unstable; urgency=medium
 
   * Bug #42812: Fix undefined variable
