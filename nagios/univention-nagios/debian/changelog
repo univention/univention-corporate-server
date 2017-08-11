@@ -1,3 +1,10 @@
+univention-nagios (10.0.1-7) unstable; urgency=medium
+
+  * Bug #45186: add hosts to NSCD2 and remove them
+    from NSCD
+
+ -- Felix Botner <botner@univention.de>  Fri, 11 Aug 2017 12:05:57 +0200
+
 univention-nagios (10.0.1-6) unstable; urgency=medium
 
   * Bug #45186: revert UNIVENTION_NSCD, added new
