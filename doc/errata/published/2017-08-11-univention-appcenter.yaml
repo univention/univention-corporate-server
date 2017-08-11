@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fixed univention-app update zsync issue. 
 bug: [45182]
+erratum: 447
+announced: 2017-08-11
