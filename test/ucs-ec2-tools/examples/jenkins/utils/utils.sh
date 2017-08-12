@@ -341,11 +341,11 @@ install_apps_test_packages ()
 			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb
 			univention-install -f --yes
 		else
-			univention-install --yes "ucs-test-$app" || rv=$?
+			univention-install --yes "ucs-test-$app"
 		fi
 	done
 	ucr set repository/online/unmaintained=no
-	return $rv
+	return 0
 }
 
 install_ucs_test_appcenter_uninstall ()
