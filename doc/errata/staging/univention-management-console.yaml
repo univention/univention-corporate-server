@@ -7,4 +7,6 @@ fix: 9.0.80-61A~4.2.0.201708081743
 desc: |
  This update addresses the following issue(s):
  * The design of notifications has been adjusted.
-bug: [43658]
+ * A memory leak in the UMC-Server has been corrected which caused the
+   UMC-Webserver to crash with "[Errno24] Too many open files" errors.
+bug: [43658, 44965]
