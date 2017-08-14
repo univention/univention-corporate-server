@@ -718,9 +718,11 @@ install_apps_via_umc () {
 	local username=$1; shift
 	local password=$1; shift
 	local ret=0
+	test -e /var/cache/appcenter-installed.txt && rm /var/cache/appcenter-installed.txt
 	for app in "$@"; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a $app
 		test $? -ne 0 && ret=1
+		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
 	return $ret
 }
@@ -740,9 +742,11 @@ remove_apps_via_umc () {
 	local username=$1; shift
 	local password=$1; shift
 	local ret=0
+	test -e /var/cache/appcenter-uninstalled.txt && rm /var/cache/appcenter-uninstalled.txt
 	for app in "$@"; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r
 		test $? -ne 0 && ret=1
+		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
 	return $ret
 }
