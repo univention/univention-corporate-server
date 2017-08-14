@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-08-10 14:23+0200\n"
+"POT-Creation-Date: 2017-08-14 11:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -311,9 +311,11 @@ msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:123
-msgid "In {nc!r}: error during DRS replication from {source}."
-msgstr "In {nc!r}: Fehler während der DRS Replikation von {source}."
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:141
+msgid "Inbound {nc!r}: error during DRS replication from {source} ({estring})"
+msgstr ""
+"In eingehend {nc!r}: Fehler während der DRS Replikation von {source} "
+"({estring})."
 
 #: umc/python/diagnostic/plugins/security_limits.py:19
 #, python-brace-format
@@ -430,6 +432,12 @@ msgstr ""
 #: umc/python/diagnostic/plugins/check_server_password.py:164
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
+
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:149
+msgid "Outbound {nc!r}: error during DRS replication to {source} ({estring})"
+msgstr ""
+"In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
+"({estring})."
 
 #: umc/python/diagnostic/plugins/package_status.py:11
 msgid "Package status corrupt"
@@ -884,7 +892,7 @@ msgstr ""
 msgid "`samba-tool dbcheck` returned a problem with the local AD database."
 msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
 
-#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:147
+#: umc/python/diagnostic/plugins/samba_tool_showrepl.py:162
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
 msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 

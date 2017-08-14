@@ -99,31 +99,30 @@ class DRSUAPI(object):
 		return (info_type, info)
 
 	def neighbours(self):
-		(info_type, info) = self._replica_info(drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS)
-		for neighbour in info.array:
-			yield neighbour
-
-		(info_type, info) = self._replica_info(drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO)
-		for neighbour in info.array:
-			yield neighbour
+		for replica_info_direction in (drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS,
+						drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO):
+			(info_type, info) = self._replica_info(replica_info_direction)
+			for neighbour in info.array:
+				yield (replica_info_direction, neighbour)
 
 	def replication_problems(self):
-		for neighbour in self.neighbours():
+		for replica_info, neighbour in self.neighbours():
 			(ecode, estring) = neighbour.result_last_attempt
 			if ecode != 0:
-				yield ReplicationProblem(neighbour)
+				yield ReplicationProblem.with_direction(replica_info, neighbour, estring)
 
 
 class ReplicationProblem(Exception):
-	def __init__(self, neighbour):
+	def __init__(self, neighbour, estring):
 		super(ReplicationProblem, self).__init__(neighbour)
 		self.neighbour = neighbour
+		self.estring = estring
 
-	def __str__(self):
-		msg = _('In {nc!r}: error during DRS replication from {source}.')
-		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
-		return msg.format(nc=self.neighbour.naming_context_dn.encode(),
-			source=source)
+	@classmethod
+	def with_direction(cls, direction, *args, **kwargs):
+		if direction == drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS:
+			return InboundReplicationProblem(*args, **kwargs)
+		return OutboundReplicationProblem(*args, **kwargs)
 
 	@staticmethod
 	def _parse_ntds_dn(dn):
@@ -135,6 +134,22 @@ class ReplicationProblem(Exception):
 			if valid_ntds_dn:
 				return '{}/{}'.format(fourth[0][1], second[0][1])
 		return dn
+
+
+class InboundReplicationProblem(ReplicationProblem):
+	def __str__(self):
+		msg = _('Inbound {nc!r}: error during DRS replication from {source} ({estring})')
+		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
+		return msg.format(nc=self.neighbour.naming_context_dn.encode(),
+			source=source, estring=self.estring)
+
+
+class OutboundReplicationProblem(ReplicationProblem):
+	def __str__(self):
+		msg = _('Outbound {nc!r}: error during DRS replication to {source} ({estring})')
+		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
+		return msg.format(nc=self.neighbour.naming_context_dn.encode(),
+			source=source, estring=self.estring)
 
 
 def run(_umc_instance):

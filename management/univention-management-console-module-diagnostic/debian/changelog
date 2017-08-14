@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-19) unstable; urgency=medium
+
+  * Bug #44881: diagnostic: improve error reporting in samba_tool_showrepl.
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 14 Aug 2017 11:33:25 +0200
+
 univention-management-console-module-diagnostic (3.0.1-18) unstable; urgency=medium
 
   * Bug #38974: diagnostic: implement `ucr commit` button for sources_list_check.py
