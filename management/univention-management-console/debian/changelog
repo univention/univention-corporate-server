@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-62) unstable; urgency=medium
+
+  * Bug #44965: fix a memory leak in the UMC-Server process
+
+ -- Florian Best <best@univention.de>  Mon, 14 Aug 2017 13:43:44 +0200
+
 univention-management-console (9.0.80-61) unstable; urgency=medium
 
   * Bug #43658: insert color specific stylings for NotificationDropDownButton
