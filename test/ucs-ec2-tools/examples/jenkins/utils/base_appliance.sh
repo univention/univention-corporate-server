@@ -939,6 +939,15 @@ ucr set grub/gfxmode=1024x768@16 \
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/screenresolution
 
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/postfix_restart <<__EOF__
+#!/bin/sh
+if [ -x /etc/init.d/postfix ]; then
+	service postfix restart
+fi
+exit 0
+__EOF__
+	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/postfix_restart
+
 	# deactivate kernel module; prevents bootsplash from freezing in vmware
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
 
@@ -955,9 +964,6 @@ __EOF__
 	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 	fi
-
-	# Until Bug #45084 is published
-	sed -i 's/Management content/Management Console/' /usr/share/univention-web/js/umc/hooks/i18n/de/appliance.json
 
 	# Cleanup apt archive
 	apt-get clean
