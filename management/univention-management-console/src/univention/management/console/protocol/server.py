@@ -205,7 +205,8 @@ class MagicBucket(object):
 					notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
 				state.resend_queue.append((msg.id, data[ret:]))
 			else:
-				del state.requests[msg.id]
+				if msg.id != -1:
+					del state.requests[msg.id]
 		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
 			CRYPT.info('UMCP: SSL error need to re-send chunk')
 			notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
