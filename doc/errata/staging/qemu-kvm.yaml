@@ -7,6 +7,6 @@ fix: 1.1.2+dfsg-6.54.201708011801
 desc: |
  This update addresses the following issue:
  * In some cases during live migration the KVM clock is not monotone, which
-   leads to the virtual machine being stuck until the clock has cough up
+   leads to the virtual machine being stuck until the clock has caught up
    again. This has been fixed.
 bug: [45117]
