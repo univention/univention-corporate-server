@@ -709,8 +709,41 @@ monkeypatch () {
 }
 
 import_license () {
-	python -m  shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
 	univention-license-import ./ValidTest.license && univention-license-check
 	return $?
+}
+
+install_apps_via_umc () {
+	local username=$1; shift
+	local password=$1; shift
+	local ret=0
+	for app in "$@"; do
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app
+		test $? -ne 0 && ret=1
+	done
+	return $ret
+}
+
+update_apps_via_umc () {
+	local username=$1; shift
+	local password=$1; shift
+	local ret=0
+	for app in "$@"; do
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u
+		test $? -ne 0 && ret=1
+	done
+	return $ret
+}
+
+remove_apps_via_umc () {
+	local username=$1; shift
+	local password=$1; shift
+	local ret=0
+	for app in "$@"; do
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r
+		test $? -ne 0 && ret=1
+	done
+	return $ret
 }
 # vim:set filetype=sh ts=4:
