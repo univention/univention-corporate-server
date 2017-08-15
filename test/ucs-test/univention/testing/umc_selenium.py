@@ -284,6 +284,13 @@ class UMCSeleniumTest(object):
 			% (name,)
 		)
 
+	def click_checkbox_of_grid_entry(self, name):
+		logger.info("Clicking the checkbox of the grid entry  %r", name)
+		self.click_element(
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
+			% (name,)
+		)
+
 	def click_tree_entry(self, name):
 		logger.info("Clicking the tree entry %r", name)
 		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]' % (name,))
