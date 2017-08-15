@@ -72,8 +72,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	Tests run on selenium grid server. To run tests locally use lacal varibable UCSTEST_SELENIUM=local.
 	Root privileges are required, also root needs the privilege to display the browser.
 	"""
-	def __init__(self, login=True, language='en', host='localhost'):
-		self.login = login
+	def __init__(self, language='en', host='localhost'):
 		self.max_exceptions = 3
 		self.browser = 'firefox'
 		self.selenium_grid = False
@@ -116,8 +115,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 		# FIXME: Workaround for Bug #44718.
 		self.driver.execute_script('document.cookie = "UMCLang=%s; path=/univention/"' % (self.language,))
-		if self.login:
-			self.do_login()
 
 		self.set_viewport_size(1200, 800)
 		return self
