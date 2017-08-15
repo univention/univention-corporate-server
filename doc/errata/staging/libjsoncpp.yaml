@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: libjsoncpp
+fix: 0.6.0~rc2-3.1A~4.2.0.201708141913
+desc: |
+ This update addresses the following issue(s):
+ * libjsoncpp is required by the updated firefox-esr package
+bug: [44858]
