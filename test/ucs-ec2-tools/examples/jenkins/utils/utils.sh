@@ -762,4 +762,13 @@ remove_apps_via_umc () {
 	done
 	return $ret
 }
+
+assert_app_is_installed_and_latest () {
+	local ret=0
+	for app in "$@"; do
+		local latest="$(python -m shared-utils/app-info -a $app -v)"
+		univention-app info | grep -q "Installed: .*\b$latest\b.*" || ret=$?
+	done
+	return $ret
+}
 # vim:set filetype=sh ts=4:
