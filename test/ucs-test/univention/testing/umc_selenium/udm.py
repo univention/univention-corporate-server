@@ -21,6 +21,16 @@ class Users(object):
 		self.selenium = selenium
 
 	def open_details(self, username):
+		self.search(username)
+
+		self.selenium.click_grid_entry(username)
+		self.selenium.wait_for_text(_('User name'))
+
+	def close_details(self):
+		self.selenium.click_button(_('Back'))
+		self.wait_for_main_grid_load()
+
+	def search(self, username):
 		xpath = '//input[@name="objectPropertyValue"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.selenium.get_all_enabled_elements
@@ -30,13 +40,14 @@ class Users(object):
 		elems[0].send_keys(Keys.RETURN)
 		time.sleep(5)
 		self.selenium.wait_until_all_standby_animations_disappeared()
+		elems[0].clear()
 
-		self.selenium.click_grid_entry(username)
-		self.selenium.wait_for_text(_('User name'))
-
-	def close_details(self):
-		self.selenium.click_button(_('Back'))
-		self.wait_for_main_grid_load()
+	def get_description(self):
+		xpath = '//input[@name="description"]'
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.selenium.get_all_enabled_elements
+		)
+		return elems[0].get_attribute('value')
 
 	def get_primary_mail(self):
 		xpath = '//input[@name="mailPrimaryAddress"]'
@@ -46,7 +57,10 @@ class Users(object):
 		return elems[0].get_attribute('value')
 
 	def wait_for_main_grid_load(self):
-		pass
+		time.sleep(5)
+		# FIXME: This won't work when there are no users in the default location.
+		self.selenium.wait_for_text(':/users')
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def add_user(
 		self,
@@ -87,3 +101,16 @@ class Users(object):
 		self.selenium.wait_until_all_dialogues_closed()
 
 		return username
+
+	def remove_user(self, username):
+		self.search(username)
+
+		self.selenium.click_checkbox_of_grid_entry(username)
+		self.selenium.click_button(_('Delete'))
+		self.selenium.wait_for_text(_("Please confirm the removal"))
+		self.selenium.click_element(
+			'//div[contains(concat(" ", normalize-space(@class), " "), " dijitDialog ")]'
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")]'
+			'[text() = "%s"]' % (_("Delete"),)
+		)
+		self.wait_for_main_grid_load()

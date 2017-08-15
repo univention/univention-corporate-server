@@ -1,0 +1,186 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: UMC UDM tests
+## roles-not: [basesystem]
+## join: true
+## exposure: dangerous
+
+from univention.admin import localization
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.umc_selenium as umc_selenium
+import univention.testing.umc_selenium.udm as selenium_udm
+
+translator = localization.translation('univention-ucs-test_umc-tests')
+_ = translator.translate
+
+PASSWORD = 'univention'
+
+
+class UmcUdmError(Exception):
+	pass
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		self.users = selenium_udm.Users(self.selenium)
+		userdn, username = self.udm.create_user(
+			password=PASSWORD
+		)
+		self.selenium.do_login()
+		self.selenium.open_module(_('Users'))
+		self.wait_for_main_grid_load()
+
+		self.move_user_into_containers_and_out_again(username)
+		self.test_options_effect_on_field_visibility()
+		self.test_user_templates()
+
+	def move_user_into_containers_and_out_again(self, username):
+		position = self.ucr.get('ldap/base')
+		cn_name = uts.random_string()
+		self.udm.create_object('container/cn', position=position, name=cn_name)
+		ou_name = uts.random_string()
+		self.udm.create_object('container/ou', position=position, name=ou_name)
+
+		self.move_user(username, cn_name)
+		self.move_user(username, ou_name)
+		self.move_user(username, 'users')
+
+	def test_options_effect_on_field_visibility(self):
+		self.selenium.click_button(_('Add'))
+		time.sleep(5)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		time.sleep(5)
+		self.selenium.click_button(_('Advanced'))
+
+		self.unselect_all_options()
+		self.check_if_only_expected_tabs_are_visisble()
+		self.check_if_only_expected_fields_are_visible()
+
+		self.select_posix_option()
+		self.check_if_posix_fields_are_available()
+
+		self.selenium.click_button(_('Back'))
+		self.wait_for_main_grid_load()
+
+	def test_user_templates(self):
+		self.test_description_template()
+
+		# This is a little workaround, because the second user-template would
+		# not be available when adding a user without it.
+		self.selenium.open_module(_('Users'))
+		self.wait_for_main_grid_load()
+
+		self.test_group_template()
+
+	def test_description_template(self):
+		description_template = uts.random_string()
+		self.udm.create_object(
+			'settings/usertemplate',
+			position='cn=templates,cn=univention,%s' % (self.ucr.get('ldap/base'),),
+			name=description_template,
+			# Using description instead of mailPrimaryAddress here, because
+			# mailPrimaryAddress always gets lower-cased.
+			description='<firstname:lower,umlauts>.<lastname>[0:2]@test.com'
+		)
+
+		username_description_template = self.users.add_user(
+			template=description_template, firstname=u'Bärbel', lastname='Edison'
+		)
+
+		self.users.open_details(username_description_template)
+		expected_description = 'baerbel.Ed@test.com'
+		if self.users.get_description() != expected_description:
+			raise UmcUdmError(
+				'Setting the description via a usertemplate did not work. '
+				'The generated description was %r instead of %r .'
+				% (self.users.get_description(), expected_description)
+			)
+		self.users.close_details()
+
+		self.users.remove_user(username_description_template)
+
+	def test_group_template(self):
+		secondary_group_template = uts.random_string()
+		self.udm.create_object(
+			'settings/usertemplate',
+			position='cn=templates,cn=univention,%s' % (self.ucr.get('ldap/base'),),
+			name=secondary_group_template,
+			groups='cn=Domain Admins,cn=groups,%s' % (self.ucr.get('ldap/base'),)
+		)
+
+		username_group_template = self.users.add_user(
+			template=secondary_group_template, firstname='Thomas', lastname='Edison'
+		)
+
+		self.users.open_details(username_group_template)
+		self.selenium.click_tab(_('Groups'))
+		self.selenium.wait_for_text(_('Domain Admins'))
+		self.users.close_details()
+
+		self.users.remove_user(username_group_template)
+
+	# container_name has to be a direct child of the LDAP-base.
+	def move_user(self, username, container_name):
+		self.selenium.click_checkbox_of_grid_entry(username)
+		self.selenium.click_text(_('more'))
+		self.selenium.click_text(_('Move to...'))
+		self.selenium.click_grid_entry(container_name, scroll_into_view=True)
+		self.selenium.click_button(_('Move user'))
+		self.wait_for_main_grid_load()
+
+	def unselect_all_options(self):
+		self.selenium.click_tab(_('[Options]'))
+		for option in [
+			_('Samba account'), _('Kerberos principal'), _('Mail account'),
+			_('Personal information'), _('POSIX account')
+		]:
+			self.selenium.click_text(option)
+
+	def check_if_only_expected_tabs_are_visisble(self):
+		amount_tabs = len(self.selenium.get_all_visible_elements([
+			'//div[contains(concat(" ", normalize-space(@class), " "), " umcPageNav ")]'
+			'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")]'
+		]))
+		if amount_tabs != 6:    # TODO: This 6 is here for test reasons. Should be 5 when committing.
+			raise UmcUdmError(
+				'%d tabs exist instead of 5, after unselecting all options.'
+				% (amount_tabs)
+			)
+
+	def check_if_only_expected_fields_are_visible(self):
+		self.selenium.click_tab(_('General'))
+		self.selenium.wait_for_text(_('Last name'))
+		if not self.selenium.elements_invisible('//input[@name= "password_1" ]'):
+			raise UmcUdmError(
+				'The "Password" field did not disappear when deactivating all options.'
+			)
+
+	def select_posix_option(self):
+		self.selenium.click_tab(_('[Options]'))
+		self.selenium.click_text(_('POSIX account'))
+
+	def check_if_posix_fields_are_available(self):
+		self.selenium.click_tab(_('General'))
+		self.selenium.wait_for_text(_('Last name'))
+		if self.selenium.elements_invisible('//input[@name= "password_1" ]'):
+			raise UmcUdmError(
+				'The "Password" field did not appear when activating the "POSIX account" option.'
+			)
+
+	def wait_for_main_grid_load(self):
+		time.sleep(5)
+		self.selenium.wait_for_text(':/users')
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, umc_selenium.base.UMCSeleniumTest() as selenium:
+		umc_tester = UMCTester()
+		umc_tester.ucr = ucr
+		umc_tester.udm = udm
+		umc_tester.selenium = selenium
+		umc_tester.test_umc()
