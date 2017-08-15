@@ -5,13 +5,14 @@
 ## join: true
 ## exposure: dangerous
 
-import psutil
-import subprocess
-import time
-from lib.umc_tester import BaseUMCTester
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from univention.admin import localization
+import psutil
+import subprocess
+import time
+import univention.testing.udm as udm_test
+import univention.testing.umc_selenium as umc_selenium
 
 translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
@@ -21,8 +22,9 @@ class UmcError(Exception):
 	pass
 
 
-class UMCTester(BaseUMCTester):
+class UMCTester(object):
 	def test_umc(self):
+		self.selenium.do_login()
 		self.test_language_switch()
 		self.test_logout()
 		self.test_module_process_timeout()
@@ -196,5 +198,9 @@ class UMCTester(BaseUMCTester):
 
 
 if __name__ == '__main__':
-	with UMCTester(translator=translator) as umc_tester:
+	with udm_test.UCSTestUDM() as udm, umc_selenium.base.UMCSeleniumTest() as selenium:
+		umc_tester = UMCTester()
+		umc_tester.udm = udm
+		umc_tester.selenium = selenium
+
 		umc_tester.test_umc()
