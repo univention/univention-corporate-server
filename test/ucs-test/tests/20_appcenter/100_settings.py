@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 ## desc: App Settings
-## tags: [basic]
+## tags: [basic, coverage]
 ## packages:
 ##   - univention-appcenter-dev
 ## exposure: dangerous
@@ -19,11 +19,12 @@ from univention.appcenter.actions import get_action, Abort
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
-from univention.appcenter.log import log_to_logfile
+from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.docker import Docker
 
 
 log_to_logfile()
+log_to_stream()
 
 
 class Configuring(object):
