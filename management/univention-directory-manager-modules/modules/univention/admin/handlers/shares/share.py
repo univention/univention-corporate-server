@@ -736,24 +736,22 @@ def unmapKeyAndValue(old):
 def insertQuotes(value):
 	'Turns @group name, user name into @"group name", "user name"'
 
-	entries = value.split(",")
-	new_entries = ""
-	for entry in entries:
+	new_entries = []
+	for entry in value.split(","):
 		new_entry = entry.strip()
-		if new_entry[0] == "@":
+		if not new_entry:
+			continue
+		if new_entry.startswith("@"):
 			is_group = True
 			new_entry = new_entry[1:].strip()
 		else:
 			is_group = False
-		if new_entry.find(" ") > -1:
+		if ' ' in new_entry:
 			new_entry = '"%s"' % new_entry
 		if is_group:
 			new_entry = "@%s" % new_entry
-		new_entries += "%s, " % new_entry
-	if new_entries[-2:] == ", ":
-		return new_entries[:-2]
-	else:
-		return new_entries
+		new_entries.append(new_entry)
+	return ', '.join(new_entries)
 
 
 mapping = univention.admin.mapping.mapping()
