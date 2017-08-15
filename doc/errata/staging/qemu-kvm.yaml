@@ -3,7 +3,7 @@ release: "4.1"
 version: [4]
 scope: ucs_4.1-0-errata4.1-4
 src: qemu-kvm
-fix: 1.1.2+dfsg-6.54.201708011801
+fix: 1.1.2+dfsg-6.55.201708152029
 desc: |
  This update addresses the following issue:
  * In some cases during live migration the KVM clock is not monotone, which
