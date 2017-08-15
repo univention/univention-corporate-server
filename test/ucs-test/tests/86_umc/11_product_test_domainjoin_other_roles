@@ -6,9 +6,9 @@
 ##  - memeberserver
 ## exposure: dangerous
 
-from lib.umc_tester import BaseUMCTester
 from univention.admin import localization
 import time
+import univention.testing.umc_selenium as umc_selenium
 
 translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
@@ -18,7 +18,7 @@ class PasswordChangeError(Exception):
 	pass
 
 
-class UMCTester(BaseUMCTester):
+class UMCTester(object):
 	def test_umc(self):
 		self.selenium.do_login(username='root')
 
@@ -72,5 +72,8 @@ class UMCTester(BaseUMCTester):
 
 
 if __name__ == '__main__':
-	with UMCTester(login=False, translator=translator) as umc_tester:
+	with umc_selenium.base.UMCSeleniumTest() as selenium:
+		umc_tester = UMCTester()
+		umc_tester.selenium = selenium
+
 		umc_tester.test_umc()
