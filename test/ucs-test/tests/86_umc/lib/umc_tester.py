@@ -11,12 +11,12 @@ class BaseUMCTester(object):
 
 		logging.basicConfig(level=logging.INFO)
 
-		self.has_ucr = ucr
-		if self.has_ucr:
+		self.ucr = None
+		if ucr:
 			import univention.testing.ucr as ucr_test
 			self.ucr = ucr_test.UCSTestConfigRegistry()
-		self.has_udm = udm
-		if self.has_udm:
+		self.udm = None
+		if udm:
 			import univention.testing.udm as udm_test
 			self.udm = udm_test.UCSTestUDM()
 		self.selenium = umc_selenium_test.UMCSeleniumTest(
@@ -26,17 +26,17 @@ class BaseUMCTester(object):
 		)
 
 	def __enter__(self):
-		if self.has_ucr:
+		if self.ucr is not None:
 			self.ucr.__enter__()
-		if self.has_udm:
+		if self.udm is not None:
 			self.udm.__enter__()
 		self.selenium.__enter__()
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		if self.has_ucr:
+		if self.ucr is not None:
 			self.ucr.__exit__(exc_type, exc_value, traceback)
-		if self.has_udm:
+		if self.udm is not None:
 			self.udm.__exit__(exc_type, exc_value, traceback)
 		self.selenium.__exit__(exc_type, exc_value, traceback)
 
