@@ -3,7 +3,7 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-samba4
-fix: 6.0.10-26A~4.2.0.201708101638
+fix: 6.0.10-27A~4.2.0.201708151711
 desc: |
  This update addresses the following issue(s):
  * Improve cleanup of old backups in univention-samba4-backup.
