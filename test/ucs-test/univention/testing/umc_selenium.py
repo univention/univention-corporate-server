@@ -32,8 +32,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from univention.admin import localization
+from univention.testing.umc_selenium_lib.checks_and_waits import ChecksAndWaits
+from univention.testing.umc_selenium_lib.interactions import Interactions
 import datetime
-import json
 import logging
 import os
 import selenium.common.exceptions as selenium_exceptions
@@ -67,7 +68,7 @@ class SeleniumSeeErrorDescriptionBehindFailingTestcase(SeleniumError):
 	pass
 
 
-class UMCSeleniumTest(object):
+class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	"""
 	This class provides selenium test for web ui tests.
 	Default browser is Firefox. Set local variable UCSTEST_SELENIUM_BROWSER to 'chrome' or 'ie' to switch browser.
@@ -138,30 +139,6 @@ class UMCSeleniumTest(object):
 
 		self.driver.set_window_size(width + width_delta, height + height_delta)
 
-	def do_login(self, username=None, password=None):
-		if username is None:
-			username = self.umcLoginUsername
-		if password is None:
-			password = self.umcLoginPassword
-
-		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
-
-		self.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.ID, "umcLoginUsername")
-			)
-		)
-		self.enter_input('username', username)
-		self.enter_input('password', password)
-		self.submit_input('password')
-		self.wait_for_any_text_in_list([_('Favorites'), _('no module available')])
-		logger.info('Successful login')
-
-	def wait_until(self, check_function, timeout=60):
-		webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
-			check_function
-		)
-
 	def save_screenshot(self, name='error', hide_notifications=True, xpath='/html/body', append_timestamp=False):
 		# FIXME: This is needed, because sometimes it takes some time until
 		# some texts are really visible (even if elem.is_displayed() is already
@@ -189,6 +166,31 @@ class UMCSeleniumTest(object):
 		if hide_notifications:
 			self.driver.execute_script('arguments[0].style.display=""', notifications_container)
 
+	def do_login(self, username=None, password=None):
+		if username is None:
+			username = self.umcLoginUsername
+		if password is None:
+			password = self.umcLoginPassword
+
+		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+
+		self.wait_until(
+			expected_conditions.presence_of_element_located(
+				(webdriver.common.by.By.ID, "umcLoginUsername")
+			)
+		)
+		self.enter_input('username', username)
+		self.enter_input('password', password)
+		self.submit_input('password')
+		self.wait_for_any_text_in_list([_('Favorites'), _('no module available')])
+		logger.info('Successful login')
+
+	def end_umc_session(self):
+		"""
+		Log out the logged in user.
+		"""
+		self.driver.get(self.base_url + 'univention/logout')
+
 	def open_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
@@ -205,213 +207,66 @@ class UMCSeleniumTest(object):
 
 		self.click_tile(name)
 
-	def check_checkbox_by_name(self, inputname, checked=True):
-		"""
-		This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
-		"""
-		elems = self.driver.find_elements_by_name(inputname)
-		elem = self.find_visible_element_from_list(elems)
-		if not elem:
-			elem = self.find_visible_checkbox_from_list(elems)
-		# workaround for selenium grid firefox the 'disabled' checkbox needs to be clicked three times to be selected
-		for i in range(0, 3):
-			if elem.is_selected() is not checked:
-				elem.click()
-		return elem
+	#def check_checkbox_by_name(self, inputname, checked=True):
+	#	"""
+	#	This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
+	#	"""
+	#	elems = self.driver.find_elements_by_name(inputname)
+	#	elem = self.find_visible_element_from_list(elems)
+	#	if not elem:
+	#		elem = self.find_visible_checkbox_from_list(elems)
+	#	# workaround for selenium grid firefox the 'disabled' checkbox needs to be clicked three times to be selected
+	#	for i in range(0, 3):
+	#		if elem.is_selected() is not checked:
+	#			elem.click()
+	#	return elem
 
-	def check_wizard_checkbox_by_name(self, inputname, checked=True):
-		elem = self.driver.find_element_by_xpath("//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
-		for i in range(0, 3):
-			if elem.is_selected() is not checked:
-				elem.click()
-		return elem
+	#def check_wizard_checkbox_by_name(self, inputname, checked=True):
+	#	elem = self.driver.find_element_by_xpath("//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
+	#	for i in range(0, 3):
+	#		if elem.is_selected() is not checked:
+	#			elem.click()
+	#	return elem
 
-	def find_combobox_by_name(self, inputname):
-		return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
+	#def find_combobox_by_name(self, inputname):
+	#	return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
-	def wait_for_text(self, text, timeout=60):
-		logger.info("Waiting for text: %r", text)
-		xpath = '//*[contains(text(), "%s")]' % (text,)
-		webdriver.support.ui.WebDriverWait([xpath], timeout).until(
-			self.get_all_visible_elements
-		)
+	#@staticmethod
+	#def find_visible_element_from_list(elements):
+	#	"""
+	#	returns first visible element from list
+	#	"""
+	#	for elem in elements:
+	#		if elem.is_displayed():
+	#			return elem
+	#	return None
 
-	def wait_for_any_text_in_list(self, texts, timeout=60):
-		logger.info("Waiting until any of those texts is visible: %r", texts)
-		xpaths = ['//*[contains(text(), "%s")]' % (text,) for text in texts]
-		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.get_all_visible_elements
-		)
+	#@staticmethod
+	#def find_visible_checkbox_from_list(elements):
+	#	for elem in elements:
+	#		if elem.location['x'] > 0 or elem.location['y'] > 0 and elem.get_attribute("type") == "checkbox" and "dijitCheckBoxInput" in elem.get_attribute("class"):
+	#			return elem
+	#	return None
 
-	def get_all_visible_elements(self, xpaths):
-		visible_elems = []
-		for xpath in xpaths:
-			elems = self.driver.find_elements_by_xpath(xpath)
-			[visible_elems.append(elem) for elem in elems if elem.is_displayed()]
-		if len(visible_elems) > 0:
-			return visible_elems
-		return False
+	#def find_error_symbol_for_inputfield(self, inputfield):
+	#	logger.info('check error symbol', inputfield)
+	#	elems = self.driver.find_elements_by_xpath("//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
+	#	elem = self.find_visible_element_from_list(elems)
+	#	if elem:
+	#		return True
+	#	return False
 
-	def wait_until_all_dialogues_closed(self):
-		logger.info("Waiting for all dialogues to close.")
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dijitDialogUnderlay ")]'
-		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
-			self.elements_invisible
-		)
+	#def error_symbol_displayed(self, inputfield, displayed=True):
+	#	if displayed:
+	#		if not self.find_error_symbol_for_inputfield(inputfield):
+	#			logger.error('Missing error symbol', inputfield)
+	#			raise SeleniumErrorSymbolException
+	#	else:
+	#		if self.find_error_symbol_for_inputfield(inputfield):
+	#			logger.error('Error symbol %r should not be displayed.', inputfield)
+	#			raise SeleniumErrorSymbolException
 
-	def wait_until_all_standby_animations_disappeared(self):
-		logger.info("Waiting for all standby animations to disappear.")
-		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
-		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
-			self.elements_invisible
-		)
-
-	def elements_invisible(self, xpath):
-		elems = self.driver.find_elements_by_xpath(xpath)
-		visible_elems = [elem for elem in elems if elem.is_displayed()]
-		if len(visible_elems) is 0:
-			return True
-		return False
-
-	def click_text(self, text):
-		logger.info("Clicking the text %r", text)
-		self.click_element('//*[contains(text(), "%s")]' % (text,))
-
-	def click_grid_entry(self, name):
-		logger.info("Clicking the grid entry %r", name)
-		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]'
-			% (name,)
-		)
-
-	def click_checkbox_of_grid_entry(self, name):
-		logger.info("Clicking the checkbox of the grid entry  %r", name)
-		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]//*[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
-			% (name,)
-		)
-
-	def click_tree_entry(self, name):
-		logger.info("Clicking the tree entry %r", name)
-		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]' % (name,))
-
-	def click_button(self, buttonname):
-		logger.info("Clicking the button %r", buttonname)
-		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]' % (buttonname,))
-
-	def click_tile(self, tilename):
-		logger.info("Clicking the tile %r", tilename)
-		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,))
-
-	def click_tab(self, tabname):
-		logger.info("Clicking the tab %r", tabname)
-		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]' % (tabname,))
-
-	def click_element(self, xpath):
-		"""
-		Click on the element which is found by the given xpath.
-
-		Only use with caution when there are multiple elements with that xpath.
-		Waits for the element to be clickable before attempting to click.
-		"""
-		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-			self.get_all_enabled_elements
-		)
-
-		if len(elems) != 1:
-			logger.warn(
-				"Found %d clickable elements instead of 1. Trying to click on "
-				"the first one." % (len(elems),)
-			)
-		elems[0].click()
-
-	def get_all_enabled_elements(self, xpath):
-		elems = self.driver.find_elements_by_xpath(xpath)
-		clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
-		if len(clickable_elems) > 0:
-			return clickable_elems
-		return False
-
-	def open_side_menu(self):
-		self.click_element('//*[@class="umcMobileMenuToggleButton"]')
-
-	@staticmethod
-	def find_visible_element_from_list(elements):
-		"""
-		returns first visible element from list
-		"""
-		for elem in elements:
-			if elem.is_displayed():
-				return elem
-		return None
-
-	@staticmethod
-	def find_visible_checkbox_from_list(elements):
-		for elem in elements:
-			if elem.location['x'] > 0 or elem.location['y'] > 0 and elem.get_attribute("type") == "checkbox" and "dijitCheckBoxInput" in elem.get_attribute("class"):
-				return elem
-		return None
-
-	def find_error_symbol_for_inputfield(self, inputfield):
-		logger.info('check error symbol', inputfield)
-		elems = self.driver.find_elements_by_xpath("//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
-		elem = self.find_visible_element_from_list(elems)
-		if elem:
-			return True
-		return False
-
-	def error_symbol_displayed(self, inputfield, displayed=True):
-		if displayed:
-			if not self.find_error_symbol_for_inputfield(inputfield):
-				logger.error('Missing error symbol', inputfield)
-				raise SeleniumErrorSymbolException
-		else:
-			if self.find_error_symbol_for_inputfield(inputfield):
-				logger.error('Error symbol %r should not be displayed.', inputfield)
-				raise SeleniumErrorSymbolException
-
-	def enter_input(self, inputname, inputvalue):
-		"""
-		Enter inputvalue into an input-element with the tag inputname.
-		"""
-		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
-		elem = self.get_input(inputname)
-		elem.clear()
-		elem.send_keys(inputvalue)
-
-	def submit_input(self, inputname):
-		"""
-		Submit the input in an input-element with the tag inputname.
-		"""
-		logger.info('Submitting input field %r.' % (inputname,))
-		elem = self.get_input(inputname)
-		# elem.submit() -> This doesn't work, when there is an html element
-		# named 'submit'.
-		elem.send_keys(Keys.RETURN)
-
-	def get_input(self, inputname):
-		"""
-		Get an input-element with the tag inputname.
-		"""
-		xpath = '//input[@name= %s ]' % (json.dumps(inputname),)
-		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-			self.get_all_enabled_elements
-		)
-
-		if len(elems) != 1:
-			logger.warn(
-				"Found %d input elements instead of 1. Trying to use the first "
-				"one." % (len(elems),)
-			)
-		return elems[0]
-
-	def end_umc_session(self):
-		"""
-		Log out the logged in user.
-		"""
-		self.driver.get(self.base_url + 'univention/logout')
-
-	def select_table_item_by_name(self, itemname):
-		elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
-		#TODO if not elem search itemname
-		elem.click()
+	#def select_table_item_by_name(self, itemname):
+	#	elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
+	#	#TODO if not elem search itemname
+	#	elem.click()
