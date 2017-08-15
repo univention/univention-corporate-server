@@ -5,13 +5,13 @@
 ## join: true
 ## exposure: dangerous
 
-from lib.umc_tester import BaseUMCTester
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from univention.admin import localization
 import time
 import univention.testing.strings as uts
+import univention.testing.umc_selenium as umc_selenium
 
 translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
@@ -21,8 +21,10 @@ class UmcUdmError(Exception):
 	pass
 
 
-class UMCTester(BaseUMCTester):
+class UMCTester(object):
 	def test_umc(self):
+		self.selenium.do_login()
+
 		# The product test requires to create and delete _some_ udm objects.
 		# I think those four should be enough.
 		modules = [
@@ -192,5 +194,8 @@ class Policies(object):
 
 
 if __name__ == '__main__':
-	with UMCTester(translator=translator) as umc_tester:
+	with umc_selenium.base.UMCSeleniumTest() as selenium:
+		umc_tester = UMCTester()
+		umc_tester.selenium = selenium
+
 		umc_tester.test_umc()
