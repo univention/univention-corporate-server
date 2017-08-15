@@ -3,11 +3,11 @@
 # roles-not: [basesystem]
 # exposure: dangerous
 
-from lib.umc_tester import BaseUMCTester
 from univention.admin import localization
 import subprocess
 import tempfile
 import time
+import univention.testing.umc_selenium as umc_selenium
 
 translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
@@ -87,8 +87,9 @@ class UcrSearchError(Exception):
 	pass
 
 
-class UMCTester(BaseUMCTester):
+class UMCTester(object):
 	def test_umc(self):
+		self.selenium.do_login()
 		self.selenium.open_module(_('Univention Configuration Registry'))
 		self.selenium.wait_for_text(_('apache'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
@@ -214,6 +215,9 @@ if __name__ == '__main__':
 		suffix=".cfg",
 		dir="/etc/univention/registry.info/variables/"
 	)
-	with UMCTester(translator=translator) as umc_tester, f as ucr_variable_file:
+	with f as ucr_variable_file, umc_selenium.base.UMCSeleniumTest() as selenium:
+		umc_tester = UMCTester()
+		umc_tester.selenium = selenium
+
 		create_testing_ucr_variables(ucr_variable_file)
 		umc_tester.test_umc()
