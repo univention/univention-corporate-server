@@ -1,7 +1,4 @@
-"""
-Common functions used by tests.
-"""
-# Copyright 2013-2016 Univention GmbH
+# Copyright 2013-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,8 +29,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from univention.admin import localization
-from univention.testing.umc_selenium_lib.checks_and_waits import ChecksAndWaits
-from univention.testing.umc_selenium_lib.interactions import Interactions
+from univention.testing.umc_selenium.checks_and_waits import ChecksAndWaits
+from univention.testing.umc_selenium.interactions import Interactions
 import datetime
 import logging
 import os
@@ -83,6 +80,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.language = language
 		self.base_url = 'https://' + host + '/'
 		translator.set_language(self.language)
+		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
 		if 'UCSTEST_SELENIUM_BROWSER' in os.environ:

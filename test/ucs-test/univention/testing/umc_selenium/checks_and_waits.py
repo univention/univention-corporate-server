@@ -6,6 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class ChecksAndWaits(object):
+
 	def wait_for_text(self, text, timeout=60):
 		logger.info("Waiting for text: %r", text)
 		xpath = '//*[contains(text(), "%s")]' % (text,)
