@@ -154,7 +154,7 @@ class UMCSeleniumTest(object):
 		self.enter_input('username', username)
 		self.enter_input('password', password)
 		self.submit_input('password')
-		self.wait_for_text(_('Favorites'))
+		self.wait_for_any_text_in_list([_('Favorites'), _('no module available')])
 		logger.info('Successful login')
 
 	def wait_until(self, check_function, timeout=60):
