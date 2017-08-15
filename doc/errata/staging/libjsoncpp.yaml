@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * libjsoncpp is required by the updated firefox-esr package
 bug: [44858]
+maintained: true
