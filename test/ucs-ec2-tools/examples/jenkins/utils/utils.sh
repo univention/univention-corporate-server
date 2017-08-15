@@ -502,6 +502,18 @@ assert_version () {
 	fi
 }
 
+assert_minor_version () {
+	local requested_version="$1"
+	eval "$(ucr shell '^version/version$')"
+	echo "Requested minor version $requested_version"
+	echo "Current minor version $version_version"
+	if [ "$requested_version" != "$version_version" ]; then
+		echo "Creating /DONT_START_UCS_TEST"
+		touch /DONT_START_UCS_TEST
+		exit 1
+	fi
+}
+
 assert_join () {
 	if ! univention-check-join-status; then
 		echo "Creating /DONT_START_UCS_TEST"
