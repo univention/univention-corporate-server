@@ -9,6 +9,6 @@ desc: |-
  * CRLF injection vulnerability in the url_parse function in url.c allows
    remote attackers to inject arbitrary HTTP headers via CRLF sequences in the
    host subcomponent of a URL (CVE-2017-6508)
-bug: []
+bug: [45179]
 cve:
 - CVE-2017-6508
