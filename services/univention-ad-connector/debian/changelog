@@ -1,3 +1,10 @@
+univention-ad-connector (11.0.6-23) unstable; urgency=medium
+
+  * Bug #11658: adc: fix typo in ad/mapping.py
+  * Bug #11658: adc: fix default_naming_context retrieval
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 16 Aug 2017 17:08:16 +0200
+
 univention-ad-connector (11.0.6-22) unstable; urgency=medium
 
   * Bug #45134: fixup
