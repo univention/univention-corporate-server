@@ -884,8 +884,8 @@ class ad(univention.connector.ucs):
 				host=self.ad_ldap_host, port=int(self.ad_ldap_port),
 				base='', binddn=None, bindpw=None, start_tls=tls_mode,
 				use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate)
-			default_naming_context = self.lo_ad.getAttr('', 'defaultNamingContext')
-			self.ad_ldap_base = default_naming_context[0]
+			default_naming_context = self._get_from_root_dse(['defaultNamingContext'])
+			self.ad_ldap_base = default_naming_context['defaultNamingContext'][0]
 		except Exception as ex:
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
 
@@ -1284,16 +1284,27 @@ class ad(univention.connector.ucs):
 		if self.__get_change_usn(object) > self._get_lastUSN():
 			self._set_lastUSN(self.__get_change_usn(object))
 
+	def _get_from_root_dse(self, attributes=[]):
+		'''
+		Get attributes from the `rootDSE` from AD.
+		'''
+		_d = ud.function('ldap._get_from_root_dse')
+		# This will search for the `rootDSE` object. `uldap.get{Attr}()`
+		# are not usable, as they don't permit emtpy DNs.
+		result = self.lo_ad.lo.search_s('', ldap.SCOPE_BASE, '(objectClass=*)', attributes)
+		if result:
+			(_dn, attr) = result[0]
+			return attr
+		return None
+
 	def __get_highestCommittedUSN(self):
 		'''
 		get highestCommittedUSN stored in AD
 		'''
 		_d = ud.function('ldap.__get_highestCommittedUSN')
 		try:
-			# This will search for the `rootDSE` object. `uldap.get{Attr}()`
-			# are not usable, as they don't permit emtpy DNs.
-			result = self.lo_ad.lo.search_s('', ldap.SCOPE_BASE, '(objectClass=*)', ['highestCommittedUSN'])
-			usn = result[0][1]['highestCommittedUSN'][0]
+			result = self._get_from_root_dse(['highestCommittedUSN'])
+			usn = result['highestCommittedUSN'][0]
 			return int(usn)
 		except Exception:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
