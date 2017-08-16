@@ -45,7 +45,16 @@ def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
 
 		print("\nRename UDM group\n")
+		old_udm_dn = udm_group_dn  # part of the workarround for bug #41694
 		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.rename)
+		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
+		if old_udm_dn == udm_group_dn:
+			udm_group_dn = ldap.dn.dn2str([[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)]] +
+				ldap.dn.str2dn(udm_group_dn)[1:])
+			if old_udm_dn in udm._cleanup.get('groups/group', []):
+				udm._cleanup.setdefault('groups/group', []).append(udm_group_dn)
+				udm._cleanup['groups/group'].remove(old_udm_dn)
+		# XXX end of workarround for bug #41694
 		s4connector.wait_for_sync()
 
 		s4.verify_object(s4_group_dn, None)
