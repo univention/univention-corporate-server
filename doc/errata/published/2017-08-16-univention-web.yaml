@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The design of notifications has been adjusted.
 bug: [43658]
+erratum: 138
+announced: 2017-08-16
