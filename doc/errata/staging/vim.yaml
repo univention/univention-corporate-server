@@ -12,7 +12,7 @@ desc: |-
  * Fix an integer overflow at a u_read_undo memory allocation site if it does
    not properly validate values for tree length when reading a corrupted undo
    file, which may lead to resultant buffer overflows (CVE-2017-6349)
-bug: []
+bug: [45178]
 cve:
 - CVE-2017-6350
 - CVE-2017-6349
