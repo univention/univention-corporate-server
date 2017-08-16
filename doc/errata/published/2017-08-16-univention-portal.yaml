@@ -11,3 +11,5 @@ desc: |
    EC2 DC master systems). For multiple links of one portal entry,
    the best matching link is now being chosen using a heuristic.
 bug: [44371]
+erratum: 135
+announced: 2017-08-16
