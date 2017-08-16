@@ -14,3 +14,5 @@ desc: |
    S4-Connector DC and abort re-provision if there are SIDs in sam.ldb which
    would get re-assigned and syncronized to OpenLDAP.
 bug: [44634, 45111, 45126]
+erratum: 448
+announced: 2017-08-16
