@@ -73,13 +73,12 @@ class UMCTester(object):
 		self.selenium.end_umc_session()
 
 		self.selenium.do_login(username=username, password='univention')
-		self.selenium.wait_for_text(_('no module available'))
 		self.selenium.end_umc_session()
 
 		self.add_user_policy(username)
 		self.add_group_policy(username)
 
-		self.do_login_without_waiting_for_favorites(username=username, password='univention')
+		self.selenium.do_login(username=username, password='univention')
 		self.check_if_allowed_modules_are_visible()
 
 	def add_user_policy(self, username):
@@ -162,11 +161,7 @@ class UMCTester(object):
 		translator.set_language(target_language_code)
 
 		self.selenium.end_umc_session()
-		self.do_login_without_waiting_for_favorites(
-			self.selenium.umcLoginUsername,
-			self.selenium.umcLoginPassword
-		)
-		self.selenium.wait_for_text(_('Favorites'))
+		self.selenium.do_login()
 
 	def get_available_modules(self):
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
@@ -184,17 +179,6 @@ class UMCTester(object):
 		tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
 
 		return [tile_heading.text for tile_heading in tile_headings]
-
-	def do_login_without_waiting_for_favorites(self, username, password):
-		self.selenium.driver.get(self.selenium.base_url + 'univention/login/')
-		self.selenium.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.ID, "umcLoginUsername")
-			)
-		)
-		self.selenium.enter_input('username', username)
-		self.selenium.enter_input('password', password)
-		self.selenium.submit_input('password')
 
 
 if __name__ == '__main__':
