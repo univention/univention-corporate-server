@@ -145,7 +145,7 @@ class UMCTester(object):
 			'//div[contains(concat(" ", normalize-space(@class), " "), " umcPageNav ")]'
 			'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")]'
 		]))
-		if amount_tabs != 6:    # TODO: This 6 is here for test reasons. Should be 5 when committing.
+		if amount_tabs != 5:
 			raise UmcUdmError(
 				'%d tabs exist instead of 5, after unselecting all options.'
 				% (amount_tabs)
