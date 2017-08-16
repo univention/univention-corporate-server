@@ -1,3 +1,16 @@
+ucs-test (7.0.23-29) unstable; urgency=medium
+
+  * Bug #11658: adc-test: introduce univention.testing.connector_common
+  * Bug #43598: s4c-test: rework 500test_user_sync.py (rename/move)
+  * Bug #43598: s4c-test: rework 501test_group_sync.py (rename/move)
+  * Bug #43598: s4c-test: UDM workarround 501test_group_sync.py
+  * Bug #11658: adc-test: add utility functions in adconnector.py
+  * Bug #11658: adc-test: rework 500test_user_sync.py (rename/move)
+  * Bug #11658: adc-test: rework 501test_group_sync.py (rename/move)
+  * Bug #11658: adc-test: UDM workarround 501test_group_sync.py
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 16 Aug 2017 17:21:21 +0200
+
 ucs-test (7.0.23-28) unstable; urgency=medium
 
   * Bug #45042: fix saml tests2
