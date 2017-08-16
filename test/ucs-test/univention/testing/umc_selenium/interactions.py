@@ -105,6 +105,17 @@ class Interactions(object):
 		# named 'submit'.
 		elem.send_keys(Keys.RETURN)
 
+	def force_full_grid_load(self):
+		elem = self.driver.find_element_by_xpath(
+			'//*[contains(concat(" ", normalize-space(@class), " "), '
+			'" dgrid-grid ")]'
+		)
+		self.driver.execute_script(
+			'arguments[0].style.maxHeight=""; '
+			'dijit.byNode(arguments[0]).resize()',
+			elem
+		)
+
 	def get_input(self, inputname):
 		"""
 		Get an input-element with the tag inputname.

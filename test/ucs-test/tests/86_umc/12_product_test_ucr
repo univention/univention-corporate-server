@@ -174,7 +174,7 @@ class UMCTester(object):
 		self.selenium.enter_input('pattern', pattern)
 		self.selenium.submit_input('pattern')
 		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.force_full_grid_load()
+		self.selenium.force_full_grid_load()
 		grid_rows = self.selenium.driver.find_elements_by_xpath(
 			'//*[contains(concat(" ", normalize-space(@class), " "), '
 			'" dgrid-row ")][@role="row"]'
@@ -183,17 +183,6 @@ class UMCTester(object):
 		for row in grid_rows:
 			search_results[self.get_key(row)] = self.get_value(row)
 		return search_results
-
-	def force_full_grid_load(self):
-		elem = self.selenium.driver.find_element_by_xpath(
-			'//*[contains(concat(" ", normalize-space(@class), " "), '
-			'" dgrid-grid ")]'
-		)
-		self.selenium.driver.execute_script(
-			'arguments[0].style.maxHeight=""; '
-			'dijit.byNode(arguments[0]).resize()',
-			elem
-		)
 
 	def get_key(self, grid_row):
 		elem = grid_row.find_element_by_xpath(
