@@ -12,178 +12,146 @@
 import ldap
 import pytest
 
-import univention.testing.strings as tstrings
-import univention.testing.ucr as testing_ucr
-from univention.config_registry import handler_set as ucr_set
-
 import adconnector
-from adconnector import ad_in_sync_mode
-from adconnector import restart_univention_cli_server
-from adconnector import connector_running_on_this_host
+from adconnector import (connector_running_on_this_host, connector_setup)
 
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
 from univention.testing.udm import UCSTestUDM
 
-UTF8_CHARSET = tstrings.STR_UMLAUT + u"КирилицаКириллицаĆirilicaЋирилица" + u"普通話普通话"
-SPECIAL_CHARSET = tstrings.STR_SPECIAL_CHARACTER
-# we exclude '$' as it has special meaning and '#' as the ADC sync can't handle
-# them (see bug #44373). A '.' (dot) may not be the last character in a
-# samAccountName, so we forbid it aswell.
-FORBIDDEN_SAMACCOUNTNAME = '"\\/[]:;|=,+*?<> @.' + '$' + '#'
-SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
+from univention.testing.connector_common import (NormalUser, Utf8User,
+	SpecialUser, create_udm_user, delete_udm_user, create_con_user,
+	delete_con_user)
+import univention.testing.connector_common as tcommon
 
 
-def random_string(length=10, alpha=False, numeric=False, charset=None, encoding='utf-8'):
-	return tstrings.random_string(length, alpha, numeric, charset, encoding)
+TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 
 
-NORMAL_SIMPLE_USER = {
-	"username": tstrings.random_username(),
-	"firstname": tstrings.random_name(),
-	"lastname": tstrings.random_name(),
-	"description": random_string(alpha=True, numeric=True)}
-
-NORMAL_COMPLEX_USER = {
-	"username": tstrings.random_username(),
-	"firstname": tstrings.random_name(),
-	"lastname": tstrings.random_name(),
-	"description": random_string(alpha=True, numeric=True),
-	"street": random_string(alpha=True, numeric=True),
-	"city": random_string(alpha=True, numeric=True),
-	"postcode": random_string(numeric=True),
-	"profilepath": random_string(alpha=True, numeric=True),
-	"scriptpath": random_string(alpha=True, numeric=True),
-	"homeTelephoneNumber": random_string(numeric=True),
-	"mobileTelephoneNumber": random_string(numeric=True),
-	"pagerTelephoneNumber": random_string(numeric=True),
-	"sambaUserWorkstations": random_string(numeric=True)}
-
-UTF8_SIMPLE_USER = {
-	"username": random_string(charset=UTF8_CHARSET),
-	"firstname": random_string(charset=UTF8_CHARSET),
-	"lastname": random_string(charset=UTF8_CHARSET),
-	"description": random_string(charset=UTF8_CHARSET)}
-
-UTF8_COMPLEX_USER = {
-	"username": random_string(charset=UTF8_CHARSET),
-	"firstname": random_string(charset=UTF8_CHARSET),
-	"lastname": random_string(charset=UTF8_CHARSET),
-	"description": random_string(charset=UTF8_CHARSET),
-	"street": random_string(charset=UTF8_CHARSET),
-	"city": random_string(charset=UTF8_CHARSET),
-	"postcode": random_string(numeric=True),
-	"profilepath": random_string(charset=UTF8_CHARSET),
-	"scriptpath": random_string(charset=UTF8_CHARSET),
-	"homeTelephoneNumber": random_string(numeric=True),
-	"mobileTelephoneNumber": random_string(numeric=True),
-	"pagerTelephoneNumber": random_string(numeric=True),
-	"sambaUserWorkstations": random_string(numeric=True)}
-
-SPECIAL_SIMPLE_USER = {
-	"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
-	"firstname": tstrings.random_name_special_characters(),
-	"lastname": tstrings.random_name_special_characters(),
-	"description": random_string(charset=SPECIAL_CHARSET)}
-
-SPECIAL_COMPLEX_USER = {
-	"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
-	"firstname": tstrings.random_name_special_characters(),
-	"lastname": tstrings.random_name_special_characters(),
-	"description": random_string(charset=SPECIAL_CHARSET),
-	"street": random_string(charset=SPECIAL_CHARSET),
-	"city": random_string(charset=SPECIAL_CHARSET),
-	"postcode": random_string(numeric=True),
-	"profilepath": random_string(charset=SPECIAL_CHARSET),
-	"scriptpath": random_string(charset=SPECIAL_CHARSET),
-	"homeTelephoneNumber": random_string(numeric=True),
-	"mobileTelephoneNumber": random_string(numeric=True),
-	"pagerTelephoneNumber": random_string(numeric=True),
-	"sambaUserWorkstations": random_string(numeric=True)}
-
-
-@pytest.mark.parametrize("udm_user", [
-	NORMAL_SIMPLE_USER, NORMAL_COMPLEX_USER, UTF8_SIMPLE_USER,
-	UTF8_COMPLEX_USER, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER
-], ids=[
-	"NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
-	"UTF8_COMPLEX_USER", "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"
-])
+@pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_udm_to_ad(udm_user, sync_mode):
-	print("\n###################")
-	print("running test_user_sync_from_udm_to_ad({}, {})".format(udm_user, sync_mode))
-	print("###################\n")
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_udm_to_ad(user_class, sync_mode):
+	with connector_setup(sync_mode), UCSTestUDM() as udm:
+		udm_user = user_class()
+		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
 
-	user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
-	with testing_ucr.UCSTestConfigRegistry():
-		ucr_set([user_syntax])
-		restart_univention_cli_server()
-		ad_in_sync_mode(sync_mode)
-		with UCSTestUDM() as udm:
-			selection = ("username", "firstname", "lastname")
-			basic_udm_user = {k: v for (k, v) in udm_user.iteritems() if k in selection}
+		print("\nModifying UDM user\n")
+		udm.modify_object('users/user', dn=udm_user_dn, **udm_user.user)
+		adconnector.wait_for_sync()
+		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.user))
 
-			print("\nCreating UDM user {}\n".format(basic_udm_user))
-			(udm_user_dn, username) = udm.create_user(**basic_udm_user)
-			ad_user_dn = ldap.dn.dn2str([
-				[("CN", username, ldap.AVA_STRING)],
-				[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
-			adconnector.wait_for_sync()
-			AD.verify_object(ad_user_dn, adconnector.map_udm_user_to_ad(basic_udm_user))
-
-			print("\nModifying UDM user\n")
-			udm.modify_object('users/user', dn=udm_user_dn, **udm_user)
-			adconnector.wait_for_sync()
-			AD.verify_object(ad_user_dn, adconnector.map_udm_user_to_ad(udm_user))
-
-			print("\nDeleting UDM user\n")
-			udm.remove_object('users/user', dn=udm_user_dn)
-			adconnector.wait_for_sync()
-			AD.verify_object(ad_user_dn, None)
+		delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
 
 
-@pytest.mark.parametrize("udm_user", [
-	NORMAL_SIMPLE_USER, NORMAL_COMPLEX_USER, UTF8_SIMPLE_USER,
-	UTF8_COMPLEX_USER, SPECIAL_SIMPLE_USER, SPECIAL_COMPLEX_USER
-], ids=[
-	"NORMAL_SIMPLE_USER", "NORMAL_COMPLEX_USER", "UTF8_SIMPLE_USER",
-	"UTF8_COMPLEX_USER", "SPECIAL_SIMPLE_USER", "SPECIAL_COMPLEX_USER"
-])
+@pytest.mark.parametrize("user_class", TEST_USERS)
+@pytest.mark.parametrize("sync_mode", ["write", "sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
+	with connector_setup(sync_mode), UCSTestUDM() as udm:
+		udm_user = user_class()
+		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
+
+		print("\nRename UDM user\n")
+		udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.rename)
+		adconnector.wait_for_sync()
+
+		AD.verify_object(ad_user_dn, None)
+		ad_user_dn = ldap.dn.dn2str([
+			[("CN", udm_user.rename.get("username"), ldap.AVA_STRING)],
+			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
+		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.rename))
+
+		delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
+
+
+@pytest.mark.parametrize("user_class", TEST_USERS)
+@pytest.mark.parametrize("sync_mode", ["write", "sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
+	with connector_setup(sync_mode), UCSTestUDM() as udm:
+		udm_user = user_class()
+		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
+
+		print("\nMove UDM user\n")
+		udm_container_dn = udm.create_object('container/cn', name=udm_user.container)
+		udm_user_dn = udm.move_object('users/user', dn=udm_user_dn,
+			position=udm_container_dn)
+
+		adconnector.wait_for_sync()
+		AD.verify_object(ad_user_dn, None)
+		ad_user_dn = ldap.dn.dn2str([
+			[("CN", udm_user.basic.get("username"), ldap.AVA_STRING)],
+			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
+		AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.basic))
+
+		delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
+
+
+@pytest.mark.parametrize("user_class", TEST_USERS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_ad_to_udm(udm_user, sync_mode):
-	print("\n###################")
-	print("running test_user_sync_from_ad_to_udm({}, {})".format(udm_user, sync_mode))
-	print("###################\n")
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_ad_to_udm(user_class, sync_mode):
+	with connector_setup(sync_mode):
+		udm_user = user_class()
+		(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 
-	user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
-	with testing_ucr.UCSTestConfigRegistry():
-		ucr_set([user_syntax])
-		restart_univention_cli_server()
-		ad_in_sync_mode(sync_mode)
+		print("\nModifying AD user\n")
+		AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.user))
+		adconnector.wait_for_sync()
+		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.user)
 
-		selection = ("username", "firstname", "lastname")
-		basic_udm_user = {k: v for (k, v) in udm_user.iteritems() if k in selection}
-		basic_ad_user = adconnector.map_udm_user_to_ad(basic_udm_user)
+		delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
 
-		print("\nCreating AD user {}\n".format(basic_ad_user))
-		username = udm_user.get("username")
-		ad_user_dn = AD.createuser(username, **basic_ad_user)
+
+@pytest.mark.parametrize("user_class", TEST_USERS)
+@pytest.mark.parametrize("sync_mode", ["read", "sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
+	with connector_setup(sync_mode):
+		udm_user = user_class()
+		(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+
+		print("\nRename AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.rename.get("username")))
+		ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn,
+			name=udm_user.rename.get("username"))
+		AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename))
+		adconnector.wait_for_sync()
+
+		tcommon.verify_udm_object("users/user", udm_user_dn, None)
 		udm_user_dn = ldap.dn.dn2str([
-			[("uid", username, ldap.AVA_STRING)],
+			[("uid", udm_user.rename.get("username"), ldap.AVA_STRING)],
 			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
-		adconnector.wait_for_sync()
-		adconnector.verify_udm_object("users/user", udm_user_dn, basic_udm_user)
+		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
 
-		print("\nModifying AD user {!r}\n".format(ad_user_dn))
-		AD.set_attributes(ad_user_dn, **adconnector.map_udm_user_to_ad(udm_user))
-		adconnector.wait_for_sync()
-		adconnector.verify_udm_object("users/user", udm_user_dn, udm_user)
+		delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
 
-		print("\nDeleting AD user {!r}\n".format(ad_user_dn))
-		AD.delete(ad_user_dn)
+
+@pytest.mark.parametrize("user_class", TEST_USERS)
+@pytest.mark.parametrize("sync_mode", ["read", "sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(),
+	reason="Univention AD Connector not configured.")
+def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
+	with connector_setup(sync_mode):
+		udm_user = user_class()
+		(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+
+		print("\nMove AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.container))
+		container_dn = AD.container_create(udm_user.container)
+		ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, position=container_dn)
+		AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.basic))
 		adconnector.wait_for_sync()
-		adconnector.verify_udm_object("users/user", udm_user_dn, None)
+
+		tcommon.verify_udm_object("users/user", udm_user_dn, None)
+		udm_user_dn = ldap.dn.dn2str([
+			[("uid", udm_user.basic.get("username"), ldap.AVA_STRING)],
+			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
+
+		delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
