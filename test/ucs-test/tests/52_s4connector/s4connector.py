@@ -2,10 +2,13 @@ import ldap
 import sys
 import copy
 import subprocess
+import contextlib
 import ldap_glue_s4
 import univention.s4connector.s4 as s4
 from time import sleep
 import univention.testing.utils as utils
+from univention.testing.udm import UCSTestUDM
+import univention.testing.ucr as testing_ucr
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -67,6 +70,14 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.create(new_dn, new_attributes)
 		return new_dn
 
+	def rename_or_move_user_or_group(self, dn, name=None, position=None):
+		exploded = ldap.dn.str2dn(dn)
+		new_rdn = [("cn", name, ldap.AVA_STRING)] if name else exploded[0]
+		new_position = ldap.dn.str2dn(position) if position else exploded[1:]
+		new_dn = ldap.dn.dn2str([new_rdn] + new_position)
+		self.move(dn, new_dn)
+		return new_dn
+
 	def group_create(self, groupname, position=None, **attributes):
 		"""
 		Create a S4 group with attributes as given by the keyword-args
@@ -122,7 +133,9 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		if description:
 			attrs['description'] = description
 
-		self.create('cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
+		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
+		self.create(container_dn, attrs)
+		return container_dn
 
 	def createou(self, name, position=None, description=None):
 
@@ -351,3 +364,90 @@ def map_udm_group_to_s4(group):
 		"description": "description"}
 	return {mapping.get(key): value for (key, value) in group.iteritems()
 			if key in mapping}
+
+
+@contextlib.contextmanager
+def connector_setup(sync_mode):
+	user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
+	group_syntax = "directory/manager/web/modules/groups/group/properties/name/syntax=string"
+	with testing_ucr.UCSTestConfigRegistry():
+		ucr_set([user_syntax, group_syntax])
+		restart_univention_cli_server()
+		s4_in_sync_mode(sync_mode)
+		yield S4Connection()
+
+
+def create_udm_user(udm, s4, user):
+	print("\nCreating UDM user {}\n".format(user.basic))
+	(udm_user_dn, username) = udm.create_user(**user.basic)
+	s4_user_dn = ldap.dn.dn2str([
+		[("CN", username, ldap.AVA_STRING)],
+		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
+	wait_for_sync()
+	s4.verify_object(s4_user_dn, map_udm_user_to_s4(user.basic))
+	return (udm_user_dn, s4_user_dn)
+
+
+def delete_udm_user(udm, s4, udm_user_dn, s4_user_dn):
+	print("\nDeleting UDM user\n")
+	udm.remove_object('users/user', dn=udm_user_dn)
+	wait_for_sync()
+	s4.verify_object(s4_user_dn, None)
+
+
+def create_s4_user(s4, udm_user):
+	basic_s4_user = map_udm_user_to_s4(udm_user.basic)
+
+	print("\nCreating S4 user {}\n".format(basic_s4_user))
+	username = udm_user.basic.get("username")
+	s4_user_dn = s4.createuser(username, **basic_s4_user)
+	udm_user_dn = ldap.dn.dn2str([
+		[("uid", username, ldap.AVA_STRING)],
+		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+	wait_for_sync()
+	verify_udm_object("users/user", udm_user_dn, udm_user.basic)
+	return (basic_s4_user, s4_user_dn, udm_user_dn)
+
+
+def delete_s4_user(s4, s4_user_dn, udm_user_dn):
+	print("\nDeleting S4 user\n")
+	s4.delete(s4_user_dn)
+	wait_for_sync()
+	verify_udm_object("users/user", udm_user_dn, None)
+
+
+def create_udm_group(udm, s4, group):
+	print("\nCreating UDM group {}\n".format(group))
+	(udm_group_dn, groupname) = udm.create_group(**group.group)
+	s4_group_dn = ldap.dn.dn2str([[("CN", groupname, ldap.AVA_STRING)],
+		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
+	wait_for_sync()
+	s4.verify_object(s4_group_dn, map_udm_group_to_s4(group.group))
+	return (udm_group_dn, s4_group_dn)
+
+
+def delete_udm_group(udm, s4, udm_group_dn, s4_group_dn):
+	print("\nDeleting UDM group\n")
+	udm.remove_object('groups/group', dn=udm_group_dn)
+	wait_for_sync()
+	s4.verify_object(s4_group_dn, None)
+
+
+def create_s4_group(s4, udm_group):
+	s4_group = map_udm_group_to_s4(udm_group.group)
+
+	print("\nCreating S4 group {}\n".format(s4_group))
+	groupname = udm_group.group.get("name")
+	s4_group_dn = s4.group_create(groupname, **s4_group)
+	udm_group_dn = ldap.dn.dn2str([[("cn", groupname, ldap.AVA_STRING)],
+		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+	wait_for_sync()
+	verify_udm_object("groups/group", udm_group_dn, udm_group.group)
+	return (s4_group, s4_group_dn, udm_group_dn)
+
+
+def delete_s4_group(s4, s4_group_dn, udm_group_dn):
+	print("\nDeleting S4 group\n")
+	s4.delete(s4_group_dn)
+	wait_for_sync()
+	verify_udm_object("groups/group", udm_group_dn, None)
