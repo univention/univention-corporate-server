@@ -242,8 +242,8 @@ switch_to_test_app_center ()
 		if [ -e /var/cache/appcenter-installed.txt ]; then
 			for app in $(< /var/cache/appcenter-installed.txt); do 
 				if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-					univention-app shell "$app" univention-install -y univention-appcenter-dev
-					univention-app shell "$app" univention-app dev-use-test-appcenter
+					univention-app shell "$app" univention-install -y univention-appcenter-dev || true
+					univention-app shell "$app" univention-app dev-use-test-appcenter || true
 				fi
 			done
 		fi
