@@ -11,13 +11,14 @@ import ldap
 import pytest
 
 from univention.testing.udm import UCSTestUDM
+from univention.testing.connector_common import (Utf8User, SpecialUser,
+	NormalGroup, Utf8Group, SpecialGroup, create_udm_group, delete_udm_group,
+	create_con_group, delete_con_group, create_udm_user, delete_udm_user,
+	create_con_user, delete_con_user)
+import univention.testing.connector_common as tcommon
 
 import s4connector
-from s4connector import (connector_running_on_this_host, connector_setup,
-	create_udm_group, delete_udm_group, create_s4_group, delete_s4_group,
-	create_udm_user, delete_udm_user, create_s4_user, delete_s4_user)
-from s4_users_groups import (Utf8User, SpecialUser, NormalGroup,
-	Utf8Group, SpecialGroup)
+from s4connector import (connector_running_on_this_host, connector_setup)
 
 TEST_GROUPS = [NormalGroup, Utf8Group, SpecialGroup]
 NESTED_USERS = [Utf8User, SpecialUser]
@@ -31,8 +32,8 @@ NESTED_GROUPS = [Utf8Group, SpecialGroup]
 def test_group_sync_from_udm_to_s4(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
-		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
-		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn)
+		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
+		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
@@ -42,7 +43,7 @@ def test_group_sync_from_udm_to_s4(group_class, sync_mode):
 def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
-		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
+		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nRename UDM group\n")
 		old_udm_dn = udm_group_dn  # part of the workarround for bug #41694
@@ -61,9 +62,9 @@ def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 		s4_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)],
 			[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
-		s4.verify_object(s4_group_dn, s4connector.map_udm_group_to_s4(udm_group.rename))
+		s4.verify_object(s4_group_dn, tcommon.map_udm_group_to_con(udm_group.rename))
 
-		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn)
+		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
@@ -73,7 +74,7 @@ def test_group_sync_from_udm_to_s4_with_rename(group_class, sync_mode):
 def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
-		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
+		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nMove UDM group\n")
 		udm_container_dn = udm.create_object('container/cn', name=udm_group.container)
@@ -85,9 +86,9 @@ def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 		s4_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.group.get("name"), ldap.AVA_STRING)],
 			[("CN", udm_group.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
-		s4.verify_object(s4_group_dn, s4connector.map_udm_group_to_s4(udm_group.group))
+		s4.verify_object(s4_group_dn, tcommon.map_udm_group_to_con(udm_group.group))
 
-		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn)
+		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
@@ -97,8 +98,8 @@ def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
-		(s4_group, s4_group_dn, udm_group_dn) = create_s4_group(s4, udm_group)
-		delete_s4_group(s4, s4_group_dn, udm_group_dn)
+		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
@@ -108,21 +109,21 @@ def test_group_sync_from_s4_to_udm(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
-		(s4_group, s4_group_dn, udm_group_dn) = create_s4_group(s4, udm_group)
+		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nRename S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.rename.get("name")))
 		s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn,
 			name=udm_group.rename.get("name"))
-		s4.set_attributes(s4_group_dn, **s4connector.map_udm_group_to_s4(udm_group.rename))
+		s4.set_attributes(s4_group_dn, **tcommon.map_udm_group_to_con(udm_group.rename))
 		s4connector.wait_for_sync()
 
-		s4connector.verify_udm_object("groups/group", udm_group_dn, None)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, None)
 		udm_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)],
 			[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
-		s4connector.verify_udm_object("groups/group", udm_group_dn, udm_group.rename)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_group.rename)
 
-		delete_s4_group(s4, s4_group_dn, udm_group_dn)
+		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", TEST_GROUPS)
@@ -132,21 +133,21 @@ def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
-		(s4_group, s4_group_dn, udm_group_dn) = create_s4_group(s4, udm_group)
+		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nMove S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.container))
 		container_dn = s4.container_create(udm_group.container)
 		s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn, position=container_dn)
-		s4.set_attributes(s4_group_dn, **s4connector.map_udm_group_to_s4(udm_group.group))
+		s4.set_attributes(s4_group_dn, **tcommon.map_udm_group_to_con(udm_group.group))
 		s4connector.wait_for_sync()
 
-		s4connector.verify_udm_object("groups/group", udm_group_dn, None)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, None)
 		udm_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.group.get("name"), ldap.AVA_STRING)],
 			[("CN", udm_group.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
-		s4connector.verify_udm_object("groups/group", udm_group_dn, udm_group.group)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_group.group)
 
-		delete_s4_group(s4, s4_group_dn, udm_group_dn)
+		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
@@ -158,18 +159,18 @@ def test_group_sync_from_udm_to_s4_with_nested_user(group_class, nested_class, s
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
 		nested_user = nested_class()
-		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
+		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nModifying UDM group\n")
 		(nested_user_dn, s4_nested_user_dn) = create_udm_user(udm, s4, nested_user, s4connector.wait_for_sync)
 		udm.modify_object('groups/group', dn=udm_group_dn, users=[nested_user_dn])
 		s4connector.wait_for_sync()
-		s4_group = s4connector.map_udm_group_to_s4(udm_group.group)
+		s4_group = tcommon.map_udm_group_to_con(udm_group.group)
 		s4_group.update({"member": [s4_nested_user_dn]})
 		s4.verify_object(s4_group_dn, s4_group)
-		delete_udm_user(udm, s4, nested_user_dn, s4_nested_user_dn)
+		delete_udm_user(udm, s4, nested_user_dn, s4_nested_user_dn, s4connector.wait_for_sync)
 
-		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn)
+		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
@@ -181,18 +182,18 @@ def test_group_sync_from_s4_to_udm_with_nested_user(group_class, nested_class, s
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
 		nested_user = nested_class()
-		(s4_group, s4_group_dn, udm_group_dn) = create_s4_group(s4, udm_group)
+		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nModifying S4 group\n")
-		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_s4_user(s4, nested_user)
+		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_user(s4, nested_user, s4connector.wait_for_sync)
 		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn])
 		s4connector.wait_for_sync()
 		udm_attributes = {"users": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)
-		s4connector.verify_udm_object("groups/group", udm_group_dn, udm_attributes)
-		delete_s4_user(s4, nested_s4_user_dn, nested_udm_user_dn)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_attributes)
+		delete_con_user(s4, nested_s4_user_dn, nested_udm_user_dn, s4connector.wait_for_sync)
 
-		delete_s4_group(s4, s4_group_dn, udm_group_dn)
+		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
@@ -204,18 +205,18 @@ def test_group_sync_from_udm_to_s4_with_nested_group(group_class, nested_class, 
 	with connector_setup(sync_mode) as s4, UCSTestUDM() as udm:
 		udm_group = group_class()
 		nested_group = nested_class()
-		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group)
+		(udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nModifying UDM group\n")
-		(nested_group_dn, s4_nested_group_dn) = create_udm_group(udm, s4, nested_group)
+		(nested_group_dn, s4_nested_group_dn) = create_udm_group(udm, s4, nested_group, s4connector.wait_for_sync)
 		udm.modify_object('groups/group', dn=udm_group_dn, nestedGroup=[nested_group_dn])
 		s4connector.wait_for_sync()
-		s4_group = s4connector.map_udm_group_to_s4(udm_group.group)
+		s4_group = tcommon.map_udm_group_to_con(udm_group.group)
 		s4_group.update({"member": [s4_nested_group_dn]})
 		s4.verify_object(s4_group_dn, s4_group)
-		delete_udm_group(udm, s4, nested_group_dn, s4_nested_group_dn)
+		delete_udm_group(udm, s4, nested_group_dn, s4_nested_group_dn, s4connector.wait_for_sync)
 
-		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn)
+		delete_udm_group(udm, s4, udm_group_dn, s4_group_dn, s4connector.wait_for_sync)
 
 
 @pytest.mark.parametrize("group_class", [SpecialGroup])
@@ -227,15 +228,15 @@ def test_group_sync_from_s4_to_udm_with_nested_group(group_class, nested_class, 
 	with connector_setup(sync_mode) as s4:
 		udm_group = group_class()
 		nested_group = nested_class()
-		(s4_group, s4_group_dn, udm_group_dn) = create_s4_group(s4, udm_group)
+		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
 		print("\nModifying S4 group\n")
-		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_s4_group(s4, nested_group)
+		(nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_group(s4, nested_group, s4connector.wait_for_sync)
 		s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn])
 		s4connector.wait_for_sync()
 		udm_attributes = {"nestedGroup": [nested_udm_user_dn]}
 		udm_attributes.update(udm_group.group)
-		s4connector.verify_udm_object("groups/group", udm_group_dn, udm_attributes)
-		delete_s4_group(s4, nested_s4_user_dn, nested_udm_user_dn)
+		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_attributes)
+		delete_con_group(s4, nested_s4_user_dn, nested_udm_user_dn, s4connector.wait_for_sync)
 
-		delete_s4_group(s4, s4_group_dn, udm_group_dn)
+		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
