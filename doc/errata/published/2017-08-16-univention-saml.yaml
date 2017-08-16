@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Add missing "INIT INFO" headers to help the update to UCS 4.2
 bug: [45109]
+erratum: 457
+announced: 2017-08-16
