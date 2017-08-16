@@ -68,12 +68,6 @@ class UMCTester(object):
 
 	def test_user_templates(self):
 		self.test_description_template()
-
-		# This is a little workaround, because the second user-template would
-		# not be available when adding a user without it.
-		self.selenium.open_module(_('Users'))
-		self.wait_for_main_grid_load()
-
 		self.test_group_template()
 
 	def test_description_template(self):
@@ -86,6 +80,11 @@ class UMCTester(object):
 			# mailPrimaryAddress always gets lower-cased.
 			description='<firstname:lower,umlauts>.<lastname>[0:2]@test.com'
 		)
+
+		# The user-template would not be available when adding a user without
+		# this, sometimes.
+		self.selenium.open_module(_('Users'))
+		self.wait_for_main_grid_load()
 
 		username_description_template = self.users.add_user(
 			template=description_template, firstname=u'Bärbel', lastname='Edison'
@@ -111,6 +110,11 @@ class UMCTester(object):
 			name=secondary_group_template,
 			groups='cn=Domain Admins,cn=groups,%s' % (self.ucr.get('ldap/base'),)
 		)
+
+		# The user-template would not be available when adding a user without
+		# this, sometimes.
+		self.selenium.open_module(_('Users'))
+		self.wait_for_main_grid_load()
 
 		username_group_template = self.users.add_user(
 			template=secondary_group_template, firstname='Thomas', lastname='Edison'
