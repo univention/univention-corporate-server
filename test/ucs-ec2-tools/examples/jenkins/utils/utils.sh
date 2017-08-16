@@ -771,4 +771,19 @@ assert_app_is_installed_and_latest () {
 	done
 	return $ret
 }
+
+assert_app_is_installed () {
+	local ret=0
+	for app in "$@"; do
+		 univention-app info | grep -q "Installed: .*\b$app\b.*" || ret=$?
+	done
+	return $ret
+}
+
+assert_app_master_packages () {
+	local ret=0
+	# TODO
+	# for app in "$@"; do
+	return $ret
+}
 # vim:set filetype=sh ts=4:
