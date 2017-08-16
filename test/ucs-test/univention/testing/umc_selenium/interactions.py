@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import json
 import logging
+import selenium.common.exceptions as selenium_exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -122,7 +123,10 @@ class Interactions(object):
 
 	def get_all_enabled_elements(self, xpath):
 		elems = self.driver.find_elements_by_xpath(xpath)
-		clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
-		if len(clickable_elems) > 0:
-			return clickable_elems
+		try:
+			clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
+			if len(clickable_elems) > 0:
+				return clickable_elems
+		except selenium_exceptions.StaleElementReferenceException:
+			pass
 		return False

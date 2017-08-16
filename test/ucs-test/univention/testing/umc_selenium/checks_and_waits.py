@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 import logging
+import selenium.common.exceptions as selenium_exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -50,16 +51,22 @@ class ChecksAndWaits(object):
 
 	def get_all_visible_elements(self, xpaths):
 		visible_elems = []
-		for xpath in xpaths:
-			elems = self.driver.find_elements_by_xpath(xpath)
-			[visible_elems.append(elem) for elem in elems if elem.is_displayed()]
+		try:
+			for xpath in xpaths:
+				elems = self.driver.find_elements_by_xpath(xpath)
+				[visible_elems.append(elem) for elem in elems if elem.is_displayed()]
+		except selenium_exceptions.StaleElementReferenceException:
+			pass
 		if len(visible_elems) > 0:
 			return visible_elems
 		return False
 
 	def elements_invisible(self, xpath):
 		elems = self.driver.find_elements_by_xpath(xpath)
-		visible_elems = [elem for elem in elems if elem.is_displayed()]
-		if len(visible_elems) is 0:
-			return True
+		try:
+			visible_elems = [elem for elem in elems if elem.is_displayed()]
+			if len(visible_elems) is 0:
+				return True
+		except selenium_exceptions.StaleElementReferenceException:
+			pass
 		return False
