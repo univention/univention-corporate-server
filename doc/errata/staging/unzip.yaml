@@ -8,7 +8,7 @@ desc: |-
  This update addresses the following issues:
  * buffer overflow in unzip (CVE-2014-9913)
  * buffer overflow in zipinfo (CVE-2016-9844)
-bug: []
+bug: [45177]
 cve:
 - CVE-2014-9913
 - CVE-2016-9844
