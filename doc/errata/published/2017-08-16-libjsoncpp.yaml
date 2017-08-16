@@ -9,3 +9,5 @@ desc: |
  * libjsoncpp is required by the updated firefox-esr package
 bug: [44858]
 maintained: true
+erratum: 137
+announced: 2017-08-16
