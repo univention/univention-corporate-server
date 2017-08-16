@@ -86,7 +86,7 @@ class UMCTester(object):
 		self.selenium.open_module(_('Users'))
 		self.wait_for_main_grid_load()
 
-		username_description_template = self.users.add_user(
+		username_description_template = self.users.add(
 			template=description_template, firstname=u'Bärbel', lastname='Edison'
 		)
 
@@ -100,7 +100,7 @@ class UMCTester(object):
 			)
 		self.users.close_details()
 
-		self.users.remove_user(username_description_template)
+		self.users.delete(username_description_template)
 
 	def test_group_template(self):
 		secondary_group_template = uts.random_string()
@@ -116,7 +116,7 @@ class UMCTester(object):
 		self.selenium.open_module(_('Users'))
 		self.wait_for_main_grid_load()
 
-		username_group_template = self.users.add_user(
+		username_group_template = self.users.add(
 			template=secondary_group_template, firstname='Thomas', lastname='Edison'
 		)
 
@@ -125,7 +125,7 @@ class UMCTester(object):
 		self.selenium.wait_for_text(_('Domain Admins'))
 		self.users.close_details()
 
-		self.users.remove_user(username_group_template)
+		self.users.delete(username_group_template)
 
 	# container_name has to be a direct child of the LDAP-base.
 	def move_user(self, username, container_name):

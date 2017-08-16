@@ -5,13 +5,9 @@
 ## join: true
 ## exposure: dangerous
 
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.keys import Keys
 from univention.admin import localization
-import time
-import univention.testing.strings as uts
 import univention.testing.umc_selenium as umc_selenium
+import univention.testing.umc_selenium.udm as selenium_udm
 
 translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
@@ -41,154 +37,45 @@ class UMCTester(object):
 			self.test_deleting_object(module, added_object)
 
 	def test_adding_object(self, module):
-		self.selenium.click_button(_('Add'))
-		added_object = module.go_through_add_dialog()
-		self.check_if_object_exists(added_object)
+		added_object = module.add()
+		if not module.exists(added_object):
+			raise UmcUdmError(
+				'Adding the object %r in the module %r did not work.'
+				% (added_object, module.name)
+			)
 		return added_object
 
 	def test_modifying_object(self, module, added_object):
-		self.search_object(added_object)
-		self.selenium.click_grid_entry(added_object)
+		module.open_details(added_object)
 		module.edit_some_property_of_the_open_object()
 		self.selenium.click_button(_('Save'))
 		module.wait_for_main_grid_load()
 
 	def test_deleting_object(self, module, added_object):
-		self.search_object(added_object)
-		self.selenium.click_checkbox_of_grid_entry(added_object)
-		self.selenium.click_button(_('Delete'))
-		self.selenium.wait_for_text(_('Please confirm the removal'))
-		self.selenium.click_element(
-			'//div[contains(concat(" ", normalize-space(@class), " "), " dijitDialog ")]'
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]'
-			% (_('Delete'),)
-		)
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.check_if_object_is_deleted(added_object)
-
-	def check_if_object_exists(self, object_name):
-		self.search_object(object_name)
-		self.selenium.wait_for_text(object_name, timeout=1)
-
-	def check_if_object_is_deleted(self, object_name):
-		try:
-			self.check_if_object_exists(object_name)
-			raise UmcUdmError("Deletion of object %r did not work." % (object_name,))
-		except TimeoutException:
-			pass
-
-	def search_object(self, search):
-		xpath = '//input[@name="objectPropertyValue"]'
-		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-			self.selenium.get_all_enabled_elements
-		)
-		elems[0].clear()
-		elems[0].send_keys(search)
-		elems[0].send_keys(Keys.RETURN)
-		# FIXME:
-		time.sleep(5)
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		module.delete(added_object)
+		if module.exists(added_object):
+			raise UmcUdmError(
+				'Deleting the object %r in the module %r did not work.'
+				% (added_object, module.name)
+			)
 
 
-class Users(object):
-	def __init__(self, selenium):
-		self.selenium = selenium
-		self.name = 'Users'
-
-	def wait_for_main_grid_load(self):
-		# FIXME:
-		time.sleep(5)
-		self.selenium.wait_for_text(':/users')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def go_through_add_dialog(self):
-		self.selenium.wait_for_text(_("First name"))
-		self.selenium.enter_input("lastname", "test")
-		username = uts.random_string()
-		self.selenium.enter_input("username", username)
-		self.selenium.click_button(_("Next"))
-		self.selenium.wait_for_text(_("Password *"))
-		self.selenium.enter_input("password_1", "univention")
-		self.selenium.enter_input("password_2", "univention")
-		self.selenium.click_button(_("Create user"))
-		self.selenium.wait_for_text(_('has been created'))
-		self.selenium.click_button(_('Cancel'))
-		self.selenium.wait_until_all_dialogues_closed()
-		return username
-
+class Users(selenium_udm.Users):
 	def edit_some_property_of_the_open_object(self):
 		self.selenium.enter_input('description', 'Test description')
 
 
-class Groups(object):
-	def __init__(self, selenium):
-		self.selenium = selenium
-		self.name = 'Groups'
-
-	def wait_for_main_grid_load(self):
-		# FIXME:
-		time.sleep(5)
-		self.selenium.wait_for_text(':/groups')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def go_through_add_dialog(self):
-		self.selenium.wait_for_text(_("Members of this group"))
-		group = uts.random_string()
-		self.selenium.enter_input("name", group)
-		self.selenium.click_button(_("Create group"))
-		self.wait_for_main_grid_load()
-		return group
-
+class Groups(selenium_udm.Groups):
 	def edit_some_property_of_the_open_object(self):
 		self.selenium.enter_input('description', 'Test description')
 
 
-class Computers(object):
-	def __init__(self, selenium):
-		self.selenium = selenium
-		self.name = 'Computers'
-
-	def wait_for_main_grid_load(self):
-		# FIXME:
-		time.sleep(5)
-		self.selenium.wait_for_text(':/computers')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def go_through_add_dialog(self):
-		self.selenium.wait_for_text(_("Container"))
-		self.selenium.click_button(_('Next'))
-		computer = uts.random_string()
-		self.selenium.enter_input("name", computer)
-		self.selenium.click_button(_("Create computer"))
-		self.selenium.wait_for_text(_('has been created'))
-		self.selenium.click_button(_('Cancel'))
-		self.selenium.wait_until_all_dialogues_closed()
-		return computer
-
+class Computers(selenium_udm.Computers):
 	def edit_some_property_of_the_open_object(self):
 		self.selenium.enter_input('description', 'Test description')
 
 
-class Policies(object):
-	def __init__(self, selenium):
-		self.selenium = selenium
-		self.name = 'Policies'
-
-	def wait_for_main_grid_load(self):
-		# FIXME:
-		time.sleep(5)
-		self.selenium.wait_for_text(':/policies')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def go_through_add_dialog(self):
-		self.selenium.wait_for_text(_("Container"))
-		self.selenium.click_button(_('Next'))
-		container = uts.random_string()
-		self.selenium.enter_input("name", container)
-		self.selenium.click_button(_("Create policy"))
-		self.wait_for_main_grid_load()
-		return container
-
+class Policies(selenium_udm.Policies):
 	def edit_some_property_of_the_open_object(self):
 		self.selenium.enter_input('releaseVersion', '4.0')
 

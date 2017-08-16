@@ -1,7 +1,7 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from univention.admin import localization
-from univention.testing.umc_selenium.base import UMCSeleniumTest
 import time
 import univention.testing.strings as uts
 
@@ -9,38 +9,128 @@ translator = localization.translation('univention-ucs-test_umc-tests')
 _ = translator.translate
 
 
-class UDMBase(UMCSeleniumTest):
-
-	def __init__(self, *args, **kwargs):
-		super(UDMBase, self).__init__(*args, **kwargs)
-
-
-class Users(object):
+class UDMBase(object):
 
 	def __init__(self, selenium):
 		self.selenium = selenium
 
-	def open_details(self, username):
-		self.search(username)
+	def exists(self, objectname):
+		# This method will work with *most* UDM modules.
+		self.search(objectname)
+		time.sleep(5)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		try:
+			self.selenium.wait_for_text(objectname, timeout=1)
+			return True
+		except TimeoutException:
+			pass
+		return False
 
-		self.selenium.click_grid_entry(username)
-		self.selenium.wait_for_text(_('User name'))
+	def open_details(self, objectname):
+		# This method will work with *most* UDM modules.
+		self.search(objectname)
+		self.selenium.click_grid_entry(objectname)
+		self.selenium.wait_for_text(_('Basic settings'))
 
 	def close_details(self):
 		self.selenium.click_button(_('Back'))
 		self.wait_for_main_grid_load()
 
-	def search(self, username):
+	def wait_for_main_grid_load(self, timeout=60):
+		time.sleep(5)
+		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
+		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
+			self.selenium.get_all_visible_elements
+		)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def delete(self, objectname):
+		# This method will work with *most* UDM modules.
+		self.search(objectname)
+
+		self.selenium.click_checkbox_of_grid_entry(objectname)
+		self.selenium.click_button(_('Delete'))
+		self.selenium.wait_for_text(_("Please confirm the removal"))
+		self.selenium.click_element(
+			'//div[contains(concat(" ", normalize-space(@class), " "), " dijitDialog ")]'
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")]'
+			'[text() = "%s"]' % (_("Delete"),)
+		)
+		self.wait_for_main_grid_load()
+
+	def search(self, objectname):
+		# This method will work with *most* UDM modules.
 		xpath = '//input[@name="objectPropertyValue"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.selenium.get_all_enabled_elements
 		)
 		elems[0].clear()
-		elems[0].send_keys(username)
+		elems[0].send_keys(objectname)
 		elems[0].send_keys(Keys.RETURN)
 		time.sleep(5)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 		elems[0].clear()
+
+
+class Computers(UDMBase):
+	name = _('Computers')
+
+	def add(self, computername=None):
+		if computername is None:
+			computername = uts.random_string()
+
+		self.selenium.click_button(_('Add'))
+		self.selenium.wait_for_text(_("Container"))
+		self.selenium.click_button(_('Next'))
+		self.selenium.enter_input("name", computername)
+		self.selenium.click_button(_("Create computer"))
+		self.selenium.wait_for_text(_('has been created'))
+		self.selenium.click_button(_('Cancel'))
+		self.selenium.wait_until_all_dialogues_closed()
+
+		return computername
+
+
+class Groups(UDMBase):
+	name = _("Groups")
+
+	def add(self, groupname=None):
+		if groupname is None:
+			groupname = uts.random_string()
+
+		self.selenium.click_button(_('Add'))
+		self.selenium.wait_for_text(_("Members of this group"))
+		self.selenium.enter_input("name", groupname)
+		self.selenium.click_button(_("Create group"))
+		self.wait_for_main_grid_load()
+
+		return groupname
+
+
+class Policies(UDMBase):
+	name = _('Policies')
+
+	def add(self, policyname=None):
+		if policyname is None:
+			policyname = uts.random_string()
+
+		self.selenium.click_button(_('Add'))
+		self.selenium.wait_for_text(_("Container"))
+		self.selenium.click_button(_('Next'))
+		self.selenium.enter_input("name", policyname)
+		self.selenium.click_button(_("Create policy"))
+		self.wait_for_main_grid_load()
+
+		return policyname
+
+	def open_details(self, objectname):
+		self.search(objectname)
+		self.selenium.click_grid_entry(objectname)
+		self.selenium.wait_for_text(_('Advanced settings'))
+
+
+class Users(UDMBase):
+	name = _("Users")
 
 	def get_description(self):
 		xpath = '//input[@name="description"]'
@@ -56,13 +146,7 @@ class Users(object):
 		)
 		return elems[0].get_attribute('value')
 
-	def wait_for_main_grid_load(self):
-		time.sleep(5)
-		# FIXME: This won't work when there are no users in the default location.
-		self.selenium.wait_for_text(':/users')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def add_user(
+	def add(
 		self,
 		template=None,
 		firstname='',
@@ -101,16 +185,3 @@ class Users(object):
 		self.selenium.wait_until_all_dialogues_closed()
 
 		return username
-
-	def remove_user(self, username):
-		self.search(username)
-
-		self.selenium.click_checkbox_of_grid_entry(username)
-		self.selenium.click_button(_('Delete'))
-		self.selenium.wait_for_text(_("Please confirm the removal"))
-		self.selenium.click_element(
-			'//div[contains(concat(" ", normalize-space(@class), " "), " dijitDialog ")]'
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")]'
-			'[text() = "%s"]' % (_("Delete"),)
-		)
-		self.wait_for_main_grid_load()
