@@ -36,13 +36,9 @@ class UDMBase(object):
 		self.selenium.click_button(_('Back'))
 		self.wait_for_main_grid_load()
 
-	def wait_for_main_grid_load(self, timeout=60):
-		time.sleep(5)
-		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
-		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.selenium.get_all_visible_elements
-		)
-		self.selenium.wait_until_all_standby_animations_disappeared()
+	def save_details(self):
+		self.selenium.click_button(_('Save'))
+		self.wait_for_main_grid_load()
 
 	def delete(self, objectname):
 		# This method will work with *most* UDM modules.
@@ -57,6 +53,14 @@ class UDMBase(object):
 			'[text() = "%s"]' % (_("Delete"),)
 		)
 		self.wait_for_main_grid_load()
+
+	def wait_for_main_grid_load(self, timeout=60):
+		time.sleep(5)
+		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
+		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
+			self.selenium.get_all_visible_elements
+		)
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def search(self, objectname):
 		# This method will work with *most* UDM modules.

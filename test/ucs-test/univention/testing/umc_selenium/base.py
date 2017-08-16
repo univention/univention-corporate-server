@@ -178,6 +178,12 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.enter_input('password', password)
 		self.submit_input('password')
 		self.wait_for_any_text_in_list([_('Favorites'), _('no module available')])
+		try:
+			self.wait_for_text(_('no module available'), timeout=1)
+			self.click_button(_('Ok'))
+			self.wait_until_all_dialogues_closed()
+		except selenium_exceptions.TimeoutException:
+			pass
 		logger.info('Successful login')
 
 	def end_umc_session(self):
