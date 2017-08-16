@@ -104,6 +104,14 @@ class ADConnection(ldap_glue.LDAPConnection):
 		self.create(new_dn, new_attributes)
 		return new_dn
 
+	def rename_or_move_user_or_group(self, dn, name=None, position=None):
+		exploded = ldap.dn.str2dn(dn)
+		new_rdn = [("cn", name, ldap.AVA_STRING)] if name else exploded[0]
+		new_position = ldap.dn.str2dn(position) if position else exploded[1:]
+		new_dn = ldap.dn.dn2str([new_rdn] + new_position)
+		self.move(dn, new_dn)
+		return new_dn
+
 	def group_create(self, groupname, position=None, **attributes):
 		"""
 		Create a S4 group with attributes as given by the keyword-args
@@ -159,7 +167,9 @@ class ADConnection(ldap_glue.LDAPConnection):
 		if description:
 			attrs['description'] = description
 
-		self.create('cn=%s,%s' % (name, position), attrs)
+		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
+		self.create(container_dn, attrs)
+		return container_dn
 
 	def createou(self, name, position=None, description=None):
 
