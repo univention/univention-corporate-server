@@ -43,13 +43,14 @@ from vminstall.vmconfig import Config as VmConfig
 
 
 class Installer(object):
-	def __init__(self):
+
+	def __init__(self, args=None, language="en"):
 		init_logger('info')
-		self.args = self.parse_args()
+		self.args = self.parse_args(args)
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = VmConfig(
 			ip=self.args.ip,
-			language="en",
+			language=language,
 		)
 
 		host = self.__get_host()
@@ -64,12 +65,12 @@ class Installer(object):
 	def __exit__(self, etype, exc, etraceback):
 		self.vnc_connection.__exit__(etype, exc, etraceback)
 
-	def parse_args(self):
+	def parse_args(self, args=None):
 		parser = argparse.ArgumentParser(description='VNC example test')
 		parser.add_argument('host', metavar='vnc_host', help='Host with VNC port to connect to')
 		parser.add_argument('--ip', dest='ip', required=True, help='The IP to assign to this virtual machine')
 		add_config_options_to_parser(parser)
-		args = parser.parse_args()
+		args = parser.parse_args(args)
 		return args
 
 	def __get_ocr_config(self):

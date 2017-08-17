@@ -39,7 +39,7 @@ config.read('tests.cfg')
 
 @pytest.fixture
 def language():
-	return config.get('General', 'language')
+	return config.get('General', 'language').split('-', 1)[0]
 
 
 @pytest.fixture

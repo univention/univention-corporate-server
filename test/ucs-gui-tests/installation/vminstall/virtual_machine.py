@@ -1,9 +1,40 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Python VNC automate
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 # vim: set fileencoding=utf-8 :
 # pylint: disable=R0903,R0201
 """
 Create installer VM programatically.
 """
+
 from os.path import (join, split, splitext, exists, extsep)
 from sys import (exit, stderr)
 import argparse
@@ -15,6 +46,7 @@ from lxml.builder import E
 from logging import (getLogger, basicConfig, DEBUG)
 from urlparse import urlparse
 
+__all__ = ('VirtualMachine')
 
 ENCODING = 'UTF-8'
 
@@ -31,11 +63,45 @@ QEMU = '/usr/bin/kvm'
 LOCAL = '127.0.0.1'  # TODO: IPv6
 
 
+class VirtualMachine(object):
+
+	def __init__(self, name, server, iso_image=None):
+		self.__created = False
+		self.name = name
+		self.vnc_host = None
+		self.server = server
+		self.iso_image = iso_image
+
+	def __enter__(self):
+		self.create()
+		return self
+
+	def __exit__(self, etype, exc, etraceback):
+		self.delete()
+
+	def create(self):
+		test_vm = VmCreator(['--name', self.name, '--server', self.server, '--ucs-iso', self.iso_image])
+		test_vm.create_vm_if_possible()
+		self.__created = True
+		with test_vm as created_test_vm:
+			(host, port) = created_test_vm.get_vnc()
+			self.vnc_host = '%s:%s' % (host, port - 5900)
+
+	def delete(self):
+		if not self.__created:
+			return
+		conn = libvirt.open('qemu+ssh://build@%s/system' % (self.server,))
+		dom = conn.lookupByName(self.name)
+		dom.destroy()
+		dom.undefine()
+
+
 class TestXml(object):
 	pass
 
 
 class TestVolume(TestXml):
+
 	def __init__(self, fname):
 		super(TestVolume, self).__init__()
 		if fname.startswith('/'):
@@ -221,9 +287,10 @@ class TestDomain(TestXml):
 
 
 class VmCreator(object):
-	def __init__(self):
+
+	def __init__(self, args=None):
 		self.logger = getLogger('test')
-		self.args = self.parse_args()
+		self.args = self.parse_args(args)
 		self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
 
 		self.boot_order_index = 1
@@ -232,7 +299,7 @@ class VmCreator(object):
 		self.domain_xml = None
 		self.dom = None
 
-	def parse_args(self):
+	def parse_args(self, args):
 		parser = argparse.ArgumentParser(description='Create a virtual machine on a kvm server.')
 		parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
 		parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
@@ -240,7 +307,7 @@ class VmCreator(object):
 		parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.')
 		parser.add_argument('--disks', dest='disk_count', default=1, type=int, help='The amount of hard disks the virtual machine should get.')
 		parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
-		return parser.parse_args()
+		return parser.parse_args(args)
 
 	def create_vm_if_possible(self):
 		try:
