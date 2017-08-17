@@ -29,8 +29,7 @@
 
 set -x
 
-basic_setup ()
-{
+basic_setup () {
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
 		echo "KVM detected"
 		ucr set --force updater/identify="UCS (EC2 Test)"
@@ -98,8 +97,7 @@ jenkins_updates () {
 	return $rc
 }
 
-upgrade_to_latest_patchlevel ()
-{
+upgrade_to_latest_patchlevel () {
 	local updateto="$(ucr get version/version)-99"
 	upgrade_to_latest --updateto "$updateto"
 }
@@ -156,8 +154,7 @@ _upgrade_to_latest () {
 	done
 }
 
-run_setup_join ()
-{
+run_setup_join () {
 	local srv rv=0
 	/usr/lib/univention-system-setup/scripts/setup-join.sh || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
@@ -169,8 +166,7 @@ run_setup_join ()
 	return $rv
 }
 
-run_setup_join_on_non_master ()
-{
+run_setup_join_on_non_master () {
 	local admin_password="${1:-univention}"
 	local srv rv=0
 	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
@@ -185,8 +181,7 @@ run_setup_join_on_non_master ()
 	return $rv
 }
 
-wait_until_update_server_is_resolvable ()
-{
+wait_until_update_server_is_resolvable () {
 	local i=0
 	while [ $i -lt 900 ]
 	do
@@ -196,14 +191,15 @@ wait_until_update_server_is_resolvable ()
 	done
 	if [ $i = 900 ]; then
 		echo "WARNING: host updates.software-univention.de did not succeed after 900 seconds"
+		return 1
 	else
 		echo "host updates.software-univention.de succeeded after $i seconds"
+		return 0
 	fi
 }
 
-wait_for_reboot ()
-{
-	local i=0
+wait_for_reboot () {
+	local i=0 rv=0
 	while [ $i -lt 900 ]
 	do
 		pidof apache2 && break
@@ -212,13 +208,14 @@ wait_for_reboot ()
 	done
 	if [ $i = 900 ]; then
 		echo "WARNING: wait_for_reboot: Did not find running apache after 900 seconds"
+		rv=1
 	fi
 	# Wait a little bit more otherwise other services are not available
 	sleep 30
+	return $rv
 }
 
-wait_for_replication ()
-{
+wait_for_replication () {
 	local timeout=${1:-3600}
 	local steps=${2:-10}
 	local timestamp=$(date +"%s")
@@ -233,33 +230,31 @@ wait_for_replication ()
 	return 0
 }
 
-switch_to_test_app_center ()
-{
+switch_to_test_app_center () {
+	local app rv=0
 	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
-	if [ -x "$(which univention-app)" ]; then
-		univention-install --yes univention-appcenter-dev
-		univention-app dev-use-test-appcenter
-		if [ -e /var/cache/appcenter-installed.txt ]; then
-			for app in $(< /var/cache/appcenter-installed.txt); do 
-				if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-					univention-app shell "$app" univention-install -y univention-appcenter-dev || true
-					univention-app shell "$app" univention-app dev-use-test-appcenter || true
-				fi
-			done
-		fi
+	[ -x "$(which univention-app)" ] || return 1
+	univention-install --yes univention-appcenter-dev
+	univention-app dev-use-test-appcenter
+	if [ -e /var/cache/appcenter-installed.txt ]; then
+		for app in $(< /var/cache/appcenter-installed.txt); do
+			if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+				univention-app shell "$app" univention-install -y univention-appcenter-dev || rv=$?
+				univention-app shell "$app" univention-app dev-use-test-appcenter || rv=$?
+			fi
+		done
 	fi
+	return $rv
 }
 
-switch_components_to_test_app_center ()
-{
-	ucr search --brief --value appcenter.software-univention.de | \
-		grep 'repository/online/component/.*/server' | \
-		awk -F ':' '{print $1}' | \
+switch_components_to_test_app_center () {
+	ucr search --brief --value appcenter.software-univention.de |
+		grep 'repository/online/component/.*/server' |
+		awk -F ':' '{print $1}' |
 		xargs -I % ucr set %=appcenter-test.software-univention.de
 }
 
-install_apps ()
-{
+install_apps () {
 	local app rv=0
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
@@ -279,8 +274,7 @@ install_apps ()
 	return $rv
 }
 
-uninstall_apps ()
-{
+uninstall_apps () {
 	local app rv=0
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-uninstalled.txt; done
 	for app in "$@"
@@ -295,14 +289,11 @@ uninstall_apps ()
 	return $rv
 }
 
-install_apps_master_packages ()
-{
+install_apps_master_packages () {
 	local app rv=0
 	for app in "$@"
 	do
-		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			continue
-		fi
+		[ -n "$(univention-app get "$app" DockerImage)" ] && continue
 		univention-add-app -m --latest "$app" || rv=$?
 	done
 	username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
@@ -318,43 +309,37 @@ install_with_unmaintained () {
 	return $rv
 }
 
-install_ucs_test ()
-{
+install_ucs_test () {
 	install_with_unmaintained ucs-test
 }
 
-install_additional_packages ()
-{
-	if [ -n "$1" ]; then
-		install_with_unmaintained "$@"
-	fi
+install_additional_packages () {
+	[ $# -ge 1 ] || return 0
+	install_with_unmaintained "$@"
 }
 
-install_apps_test_packages ()
-{
+install_apps_test_packages () {
 	local app rv=0
 	ucr set repository/online/unmaintained=yes
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get $app DockerImage)" ]; then
-			univention-app shell "$app" apt-get download "ucs-test-$app"
-			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb
-			univention-install -f --yes
+			univention-app shell "$app" apt-get download "ucs-test-$app" &&
+			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb &&
+			univention-install -f --yes || rv=$?
 		else
-			univention-install --yes "ucs-test-$app"
+			univention-install --yes "ucs-test-$app" || rv=$?
 		fi
 	done
 	ucr set repository/online/unmaintained=no
-	return 0
+	return $rv
 }
 
-install_ucs_test_appcenter_uninstall ()
-{
+install_ucs_test_appcenter_uninstall () {
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
-install_ucsschool ()
-{
+install_ucsschool () {
 	case "${ucsschool_release:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center
@@ -377,29 +362,24 @@ install_ucsschool ()
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
 	esac
-
 }
 
-install_coverage ()
-{
+install_coverage () {
 	install_with_unmaintained python-pip python-all-dev python-all-dbg python-setuptools python-docutils python-pkg-resources
 	pip install coverage
 }
 
-remove_s4connector_tests_and_mark_tests_manual_installed ()
-{
+remove_s4connector_tests_and_mark_tests_manual_installed () {
 	univention-remove --yes ucs-test-s4connector
 	apt-mark manual $(apt-mark showauto | grep ^ucs-test-)
 }
 
-install_ucs_windows_tools ()
-{
+install_ucs_windows_tools () {
 	install_with_unmaintained ucs-windows-tools
 }
 
-run_apptests ()
-{
-
+run_apptests () {
+	local app
 	# some tests create domaincontroller_master objects, the listener ldap_server.py
 	# sets these objects as ldap/server/name ldap/master in the docker container
 	# until this is fixed, force the variables in the docker container
@@ -414,45 +394,39 @@ run_apptests ()
 	run_tests -r apptest "$@"
 }
 
-run_minimal_apptests ()
-{
+run_minimal_apptests () {
 	run_apptests -s checks -s appcenter "$@"
 }
 
-run_appcenter_uninstall_tests ()
-{
+run_appcenter_uninstall_tests () {
 	run_tests -s appcenter-uninstall "$@"
 }
 
-run_admember_tests ()
-{
+run_admember_tests () {
 	# temporary debug, Bug #44382
 	ucr set ldap/debug/level='1'
 	service slapd restart
 	run_tests -p skip_admember -p docker "$@"
 }
 
-run_adconnector_tests ()
-{
+run_adconnector_tests () {
 	# Test if the failed Jenkins test are timing issues
 	sed -i 's|AD_ESTIMATED_MAX_COMPUTATION_TIME=3|AD_ESTIMATED_MAX_COMPUTATION_TIME=16|' /usr/share/ucs-test/55_adconnector/adconnector.sh
 	run_tests -s adconnector "$@"
 }
 
-run_win_member_gpo_tests ()
-{
+run_win_member_gpo_tests () {
 	run_tests -r windows_gpo_test "$@"
 }
 
-run_windows_native_client_tests ()
-{
+run_windows_native_client_tests () {
 	# tests that require a native windows client in the domain
 	run_tests -r native_win_client "$@"
 }
 
-run_tests ()
-{
-	[ ! -e /DONT_START_UCS_TEST ] && LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
+run_tests () {
+	[ -e /DONT_START_UCS_TEST ] && return 1
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
 run_tests_with_parameters() {
@@ -463,8 +437,7 @@ run_tests_with_parameters() {
 	ucs-test ${s:+-s "$s"} -E dangerous -F junit -l "ucs-test.log" "$@"
 }
 
-run_join_scripts ()
-{
+run_join_scripts () {
 	local admin_password="${1:-univention}"
 
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
@@ -475,11 +448,10 @@ run_join_scripts ()
 	fi
 }
 
-run_rejoin ()
-{
+run_rejoin () {
 	local admin_password="${1:-univention}"
 
- 	echo -n "$admin_password" >/tmp/univention
+	echo -n "$admin_password" >/tmp/univention
 	univention-join -dcaccount Administrator -dcpwd /tmp/univention
 }
 
@@ -489,7 +461,7 @@ do_reboot () {
 
 assert_version () {
 	local requested_version="$1"
-	local version
+	local version version_version version_patchlevel
 
 	eval "$(ucr shell '^version/(version|patchlevel)$')"
 	version="$version_version-$version_patchlevel"
@@ -500,10 +472,11 @@ assert_version () {
 		touch /DONT_START_UCS_TEST
 		exit 1
 	fi
+	return 0
 }
 
 assert_minor_version () {
-	local requested_version="$1"
+	local requested_version="$1" version_version
 	eval "$(ucr shell '^version/version$')"
 	echo "Requested minor version $requested_version"
 	echo "Current minor version $version_version"
@@ -512,6 +485,7 @@ assert_minor_version () {
 		touch /DONT_START_UCS_TEST
 		exit 1
 	fi
+	return 0
 }
 
 assert_join () {
@@ -520,6 +494,7 @@ assert_join () {
 		touch /DONT_START_UCS_TEST
 		exit 1
 	fi
+	return 0
 }
 
 assert_adconnector_configuration () {
@@ -528,30 +503,32 @@ assert_adconnector_configuration () {
 		touch /DONT_START_UCS_TEST
 		exit 1
 	fi
+	return 0
 }
 
 assert_packages () {
-	local packages="$@"
-	for package in $packages; do
+	local package
+	for package in "$@"
+	do
 		local installed=$(dpkg-query -W -f '${status}' "$package")
-    	if [ "$installed" != "install ok installed" ]; then
+		if [ "$installed" != "install ok installed" ]; then
 			echo "Failed: package status of $package is $installed"
 			echo "Creating /DONT_START_UCS_TEST"
 			touch /DONT_START_UCS_TEST
 			exit 1
 		fi
 	done
+	return 0
 }
 
-install_gpmc_windows ()
-{
+install_gpmc_windows () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local DOMAIN_ADMIN_ACCOUNT="${3:-administrator}"
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -559,8 +536,7 @@ win.add_gpo_management_console()
 "
 }
 
-join_windows_memberserver ()
-{
+join_windows_memberserver () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local DNS_SERVER="${3:?Missing DNS server address}"
@@ -568,7 +544,7 @@ join_windows_memberserver ()
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -576,8 +552,7 @@ win.domain_join('$DNS_SERVER')
 "
 }
 
-_promote_ad ()
-{
+_promote_ad () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local MODE="${3:?Missing mode}"
@@ -585,7 +560,7 @@ _promote_ad ()
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -593,39 +568,33 @@ win.promote_ad('$MODE', '$MODE')
 "
 }
 
-promote_ad_w2k12r2 ()
-{
+promote_ad_w2k12r2 () {
 	_promote_ad "$1" "$2" "Win2012R2" "$3"
 }
 
-promote_ad_w2k12 ()
-{
+promote_ad_w2k12 () {
 	_promote_ad "$1" "$2" "Win2012" "$3"
 }
 
-promote_ad_w2k8r2 ()
-{
+promote_ad_w2k8r2 () {
 	_promote_ad "$1" "$2" "Win2008R2" "$3"
 }
 
-promote_ad_w2k8 ()
-{
+promote_ad_w2k8 () {
 	_promote_ad "$1" "$2" "Win2008" "$3"
 }
 
-promote_ad_w2k3r2 ()
-{
+promote_ad_w2k3r2 () {
 	_promote_ad "$1" "$2" "Win2003R2" "$3"
 }
 
-reboot_windows_host ()
-{
+reboot_windows_host () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN_ADMIN_ACCOUNT="${2:-administrator}"
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -633,15 +602,14 @@ win.reboot_remote_win_host()
 "
 }
 
-shutdown_windows_host ()
-{
+shutdown_windows_host () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN_MODE="${2:-False}"
 	local DOMAIN_ADMIN_ACCOUNT="${3:-administrator}"
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -649,8 +617,7 @@ win.shutdown_remote_win_host($DOMAIN_MODE)
 "
 }
 
-set_windows_gateway ()
-{
+set_windows_gateway () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local GATEWAY="${3:?Missing gateway address}"
@@ -658,7 +625,7 @@ set_windows_gateway ()
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -666,8 +633,7 @@ win.set_gateway('$GATEWAY')
 "
 }
 
-create_ad_user_and_add_the_user_to_the_group ()
-{
+create_ad_user_and_add_the_user_to_the_group () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local NEW_USERNAME="${3:?Missing user name}"
@@ -677,7 +643,7 @@ create_ad_user_and_add_the_user_to_the_group ()
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
-	
+
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
@@ -685,14 +651,12 @@ win.create_user_and_add_to_group('$NEW_USERNAME', '$NEW_PASSWORD', '$NEW_GROUP')
 "
 }
 
-set_administrator_dn_for_ucs_test ()
-{
+set_administrator_dn_for_ucs_test () {
 	local dn="$(univention-ldapsearch sambaSid=*-500 -LLL dn | sed -ne 's|dn: ||p')"
 	ucr set tests/domainadmin/account="$dn"
 }
 
-set_administrator_password_for_ucs_test ()
-{
+set_administrator_password_for_ucs_test () {
 	local password="$1"
 
 	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
@@ -718,72 +682,67 @@ monkeypatch () {
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
+
+	return 0
 }
 
 import_license () {
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
 	univention-license-import ./ValidTest.license && univention-license-check
-	return $?
 }
 
 install_apps_via_umc () {
-	local username=$1; shift
-	local password=$1; shift
-	local ret=0
+	local username=${1:?missing username} password=${2:?missing password} rv=0 app
+	shift 2 || return $?
 	test -e /var/cache/appcenter-installed.txt && rm /var/cache/appcenter-installed.txt
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app
-		test $? -ne 0 && ret=1
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app || rv=$?
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
-	return $ret
+	return $rv
 }
 
 update_apps_via_umc () {
-	local username=$1; shift
-	local password=$1; shift
-	local ret=0
+	local username=${1:?missing username} password=${2:?missing password} rv=0 app
+	shift 2 || return $?
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u
-		test $? -ne 0 && ret=1
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u || rv=$?
 	done
-	return $ret
+	return $rv
 }
 
 remove_apps_via_umc () {
-	local username=$1; shift
-	local password=$1; shift
-	local ret=0
-	test -e /var/cache/appcenter-uninstalled.txt && rm /var/cache/appcenter-uninstalled.txt
+	local username=${1:?missing username} password=${2:?missing password} rv=0 app
+	shift 2 || return $?
+	rm -f /var/cache/appcenter-uninstalled.txt
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r
-		test $? -ne 0 && ret=1
+		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r || rv=$?
 		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
-	return $ret
+	return $rv
 }
 
 assert_app_is_installed_and_latest () {
-	local ret=0
+	local rv=0 app
 	for app in "$@"; do
 		local latest="$(python -m shared-utils/app-info -a $app -v)"
-		univention-app info | grep -q "Installed: .*\b$latest\b.*" || ret=$?
+		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
-	return $ret
+	return $rv
 }
 
 assert_app_is_installed () {
-	local ret=0
+	local rv=0 app
 	for app in "$@"; do
-		 univention-app info | grep -q "Installed: .*\b$app\b.*" || ret=$?
+		 univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
 	done
-	return $ret
+	return $rv
 }
 
 assert_app_master_packages () {
-	local ret=0
+	local rv=0 app
 	# TODO
 	# for app in "$@"; do
-	return $ret
+	return $rv
 }
 # vim:set filetype=sh ts=4:
