@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-07-12 23:49+0200\n"
+"POT-Creation-Date: 2017-08-15 18:36+0200\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -16,9 +16,17 @@ msgstr ""
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_umc/10_product_test_password_change:102
+#: tests/86_umc/10_product_test_password_change:105
 msgid "Account"
 msgstr "Konto"
+
+#: tests/86_umc/151_udm_users:53
+msgid "Add"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:57
+msgid "Advanced"
+msgstr ""
 
 #: tests/86_umc/131_miscellaneous_module_availability:54
 #: tests/86_umc/131_miscellaneous_module_availability:98
@@ -32,7 +40,11 @@ msgstr ""
 msgid "App Center is designed for easy"
 msgstr ""
 
-#: tests/86_umc/12_product_test_ucr:142
+#: tests/86_umc/151_udm_users:66
+msgid "Back"
+msgstr ""
+
+#: tests/86_umc/12_product_test_ucr:143
 msgid "Base Settings"
 msgstr ""
 
@@ -41,19 +53,27 @@ msgstr ""
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/10_product_test_password_change:157
-#: tests/86_umc/10_product_test_password_change:162
+#: tests/86_umc/14_password_self-service:78
+#: tests/86_umc/14_password_self-service:95
+#: tests/86_umc/14_password_self-service:105
+#: tests/86_umc/14_password_self-service:120
+#: tests/86_umc/10_product_test_password_change:155
+#: tests/86_umc/10_product_test_password_change:160
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: tests/86_umc/10_product_test_password_change:103
-#: tests/86_umc/10_product_test_password_change:104
+#: tests/86_umc/10_product_test_password_change:106
+#: tests/86_umc/10_product_test_password_change:107
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_umc/10_product_test_password_change:158
+#: tests/86_umc/10_product_test_password_change:156
 msgid "Change the password of"
 msgstr "Passwort ändern für"
+
+#: tests/86_umc/14_password_self-service:97
+msgid "Change your (expired) password."
+msgstr ""
 
 #: tests/86_umc/131_miscellaneous_module_availability:238
 msgid "Close"
@@ -78,6 +98,10 @@ msgstr ""
 msgid "DNS"
 msgstr ""
 
+#: tests/86_umc/151_udm_users:125
+msgid "Domain Admins"
+msgstr ""
+
 #: tests/86_umc/131_miscellaneous_module_availability:38
 #: tests/86_umc/131_miscellaneous_module_availability:61
 #: tests/86_umc/131_miscellaneous_module_availability:83
@@ -88,11 +112,11 @@ msgstr ""
 #: tests/86_umc/131_miscellaneous_module_availability:165
 #: tests/86_umc/11_product_test_domainjoin_other_roles:33
 #: tests/86_umc/11_product_test_domainjoin_other_roles:57
-#: tests/86_umc/11_product_test_domainjoin_master:25
+#: tests/86_umc/11_product_test_domainjoin_master:26
 msgid "Domain join"
 msgstr ""
 
-#: tests/86_umc/12_product_test_ucr:120
+#: tests/86_umc/12_product_test_ucr:121
 msgid "Edit UCR variable"
 msgstr ""
 
@@ -100,8 +124,7 @@ msgstr ""
 msgid "Execute all pending join scripts"
 msgstr ""
 
-#: tests/86_umc/130_miscellaneous:167
-#: tests/86_umc/10_product_test_password_change:144
+#: tests/86_umc/10_product_test_password_change:142
 msgid "Favorites"
 msgstr "Favoriten"
 
@@ -116,10 +139,19 @@ msgstr "Favoriten"
 msgid "Filesystem quotas"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_master:30
+#: tests/86_umc/11_product_test_domainjoin_master:31
 msgid "Force execute"
 msgstr ""
 
+#: tests/86_umc/14_password_self-service:122
+msgid "Forgot your password"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:159 tests/86_umc/151_udm_users:171
+msgid "General"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:124
 #: tests/86_umc/131_miscellaneous_module_availability:31
 #: tests/86_umc/131_miscellaneous_module_availability:76
 msgid "Groups"
@@ -140,6 +172,10 @@ msgstr ""
 msgid "Join system"
 msgstr ""
 
+#: tests/86_umc/151_udm_users:142
+msgid "Kerberos principal"
+msgstr ""
+
 #: tests/86_umc/131_miscellaneous_module_availability:39
 #: tests/86_umc/131_miscellaneous_module_availability:84
 msgid "LDAP directory"
@@ -156,13 +192,29 @@ msgstr ""
 msgid "Language settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_umc/130_miscellaneous:38 tests/86_umc/130_miscellaneous:40
+#: tests/86_umc/151_udm_users:160 tests/86_umc/151_udm_users:172
+msgid "Last name"
+msgstr ""
+
+#: tests/86_umc/130_miscellaneous:40 tests/86_umc/130_miscellaneous:42
 msgid "Logout"
 msgstr ""
 
 #: tests/86_umc/131_miscellaneous_module_availability:40
 #: tests/86_umc/131_miscellaneous_module_availability:85
 msgid "Mail"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:142
+msgid "Mail account"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:134
+msgid "Move to..."
+msgstr ""
+
+#: tests/86_umc/151_udm_users:136
+msgid "Move user"
 msgstr ""
 
 #: tests/86_umc/131_miscellaneous_module_availability:34
@@ -186,16 +238,42 @@ msgstr "Benutzereinstellungen"
 msgid "Networks"
 msgstr ""
 
-#: tests/86_umc/10_product_test_password_change:149
-#: tests/86_umc/10_product_test_password_change:178
+#: tests/86_umc/14_password_self-service:84
+#: tests/86_umc/14_password_self-service:124
+#: tests/86_umc/14_password_self-service:126
+msgid "Next"
+msgstr ""
+
+#: tests/86_umc/10_product_test_password_change:147
+#: tests/86_umc/10_product_test_password_change:176
 msgid "Ok"
 msgstr "Ok"
+
+#: tests/86_umc/151_udm_users:143 tests/86_umc/151_udm_users:168
+msgid "POSIX account"
+msgstr ""
 
 #: tests/86_umc/131_miscellaneous_module_availability:55
 #: tests/86_umc/131_miscellaneous_module_availability:99
 #: tests/86_umc/131_miscellaneous_module_availability:129
 #: tests/86_umc/131_miscellaneous_module_availability:159
 msgid "Package Management"
+msgstr ""
+
+#: tests/86_umc/14_password_self-service:96
+msgid "Password change"
+msgstr ""
+
+#: tests/86_umc/14_password_self-service:121
+msgid "Password forgotten"
+msgstr ""
+
+#: tests/86_umc/151_udm_users:143
+msgid "Personal information"
+msgstr ""
+
+#: tests/86_umc/14_password_self-service:125
+msgid "Please choose an option"
 msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:34
@@ -221,8 +299,12 @@ msgstr ""
 #: tests/86_umc/131_miscellaneous_module_availability:139
 #: tests/86_umc/131_miscellaneous_module_availability:153
 #: tests/86_umc/131_miscellaneous_module_availability:169
-#: tests/86_umc/130_miscellaneous:51 tests/86_umc/130_miscellaneous:123
+#: tests/86_umc/130_miscellaneous:53 tests/86_umc/130_miscellaneous:124
 msgid "Process overview"
+msgstr ""
+
+#: tests/86_umc/14_password_self-service:79
+msgid "Protect account"
 msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:39
@@ -237,7 +319,7 @@ msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:69
-#: tests/86_umc/11_product_test_domainjoin_master:35
+#: tests/86_umc/11_product_test_domainjoin_master:36
 msgid "Restart"
 msgstr ""
 
@@ -245,7 +327,7 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: tests/86_umc/11_product_test_domainjoin_master:31
+#: tests/86_umc/11_product_test_domainjoin_master:32
 msgid "Run join scripts"
 msgstr ""
 
@@ -254,20 +336,21 @@ msgstr ""
 msgid "SAML identity provider"
 msgstr ""
 
-#: tests/86_umc/10_product_test_password_change:105
-#: tests/86_umc/12_product_test_ucr:123
+#: tests/86_umc/151_udm_users:142
+msgid "Samba account"
+msgstr ""
+
+#: tests/86_umc/14_password_self-service:90
+#: tests/86_umc/150_udm_create_modify_delete_objects:51
+#: tests/86_umc/12_product_test_ucr:124
 msgid "Save"
 msgstr "Speichern"
 
 #: tests/86_umc/131_miscellaneous_module_availability:242
 #: tests/86_umc/131_miscellaneous_module_availability:246
 #: tests/86_umc/131_miscellaneous_module_availability:258
-#: tests/86_umc/130_miscellaneous:179
+#: tests/86_umc/130_miscellaneous:176
 msgid "Search query"
-msgstr "Suche Benutzer..."
-
-#: tests/86_umc/10_product_test_password_change:106
-msgid "Search users..."
 msgstr "Suche Benutzer..."
 
 #: tests/86_umc/131_miscellaneous_module_availability:43
@@ -297,7 +380,7 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: tests/86_umc/130_miscellaneous:156 tests/86_umc/130_miscellaneous:158
+#: tests/86_umc/130_miscellaneous:157 tests/86_umc/130_miscellaneous:159
 msgid "Switch language"
 msgstr "Sprache ändern"
 
@@ -331,68 +414,83 @@ msgstr ""
 #: tests/86_umc/131_miscellaneous_module_availability:142
 #: tests/86_umc/131_miscellaneous_module_availability:156
 #: tests/86_umc/131_miscellaneous_module_availability:172
-#: tests/86_umc/130_miscellaneous:49 tests/86_umc/130_miscellaneous:122
-#: tests/86_umc/12_product_test_ucr:92
+#: tests/86_umc/130_miscellaneous:51 tests/86_umc/130_miscellaneous:123
+#: tests/86_umc/12_product_test_ucr:93
 msgid "Univention Configuration Registry"
 msgstr ""
 
-#: tests/86_umc/10_product_test_password_change:156
+#: tests/86_umc/14_password_self-service:91
+#: tests/86_umc/14_password_self-service:106
+msgid "Univention Portal"
+msgstr ""
+
+#: tests/86_umc/10_product_test_password_change:154
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
+#: tests/86_umc/151_udm_users:34 tests/86_umc/151_udm_users:86
+#: tests/86_umc/151_udm_users:116
 #: tests/86_umc/131_miscellaneous_module_availability:32
 #: tests/86_umc/131_miscellaneous_module_availability:77
-#: tests/86_umc/10_product_test_password_change:56
-#: tests/86_umc/10_product_test_password_change:94
+#: tests/86_umc/10_product_test_password_change:61
+#: tests/86_umc/10_product_test_password_change:99
 msgid "Users"
 msgstr "Benutzer"
 
-#: tests/86_umc/12_product_test_ucr:93
+#: tests/86_umc/151_udm_users:140 tests/86_umc/151_udm_users:167
+msgid "[Options]"
+msgstr ""
+
+#: tests/86_umc/12_product_test_ucr:94
 msgid "apache"
 msgstr ""
 
-#: tests/86_umc/130_miscellaneous:52
+#: tests/86_umc/130_miscellaneous:54
 msgid "generates an overview"
 msgstr ""
 
-#: tests/86_umc/130_miscellaneous:74
-#: tests/86_umc/10_product_test_password_change:145
-#: tests/86_umc/10_product_test_password_change:148
+#: tests/86_umc/151_udm_users:133
+msgid "more"
+msgstr ""
+
+#: tests/86_umc/10_product_test_password_change:143
+#: tests/86_umc/10_product_test_password_change:146
 msgid "no module available"
 msgstr "kein Modul verfügbar"
 
-#: tests/86_umc/10_product_test_password_change:164
+#: tests/86_umc/10_product_test_password_change:162
 msgid "password has been changed"
 msgstr "Passwort wurde erfolgreich geändert"
 
-#: tests/86_umc/10_product_test_password_change:110
+#: tests/86_umc/10_product_test_password_change:112
 msgid "password has expired and must be renewed"
 msgstr "password has expired and must be renewed"
 
-#: tests/86_umc/10_product_test_password_change:65
-#: tests/86_umc/10_product_test_password_change:98
-msgid "password history"
-msgstr "Passwort-History"
-
-#: tests/86_umc/10_product_test_password_change:166
-#: tests/86_umc/10_product_test_password_change:174
+#: tests/86_umc/10_product_test_password_change:164
+#: tests/86_umc/10_product_test_password_change:172
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_umc/10_product_test_password_change:165
-#: tests/86_umc/10_product_test_password_change:169
+#: tests/86_umc/10_product_test_password_change:163
+#: tests/86_umc/10_product_test_password_change:167
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
-#: tests/86_umc/130_miscellaneous:39
+#: tests/86_umc/130_miscellaneous:41
 msgid "really want to logout"
 msgstr ""
 
 #: tests/86_umc/11_product_test_domainjoin_other_roles:67
-#: tests/86_umc/11_product_test_domainjoin_master:33
+#: tests/86_umc/11_product_test_domainjoin_master:34
 msgid "restart of the UMC server"
 msgstr ""
 
-#: tests/86_umc/12_product_test_ucr:122
+#: tests/86_umc/12_product_test_ucr:123
 msgid "value"
 msgstr ""
+
+#~ msgid "Search users..."
+#~ msgstr "Suche Benutzer..."
+
+#~ msgid "password history"
+#~ msgstr "Passwort-History"
