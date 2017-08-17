@@ -456,7 +456,7 @@ run_rejoin () {
 }
 
 do_reboot () {
-	reboot
+	reboot & logout
 }
 
 assert_version () {
