@@ -3,9 +3,10 @@ release: "4.2"
 version: [1]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-lib
-fix: 6.0.9-8A~4.2.0.201708021756
+fix: 6.0.9-9A~4.2.0.201708171943
 desc: |
  This update addresses the following issue(s):
  * Introduce UCR variables backup/clean/{max_age,min_backups} and new function
    clean_old_backups.
-bug: [38554]
+ * Fixed issue in AD Membermode check_ad_account.
+bug: [38554,44762]
