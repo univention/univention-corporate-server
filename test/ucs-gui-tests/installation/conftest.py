@@ -36,6 +36,8 @@ import ConfigParser
 config = ConfigParser.SafeConfigParser()
 config.read('tests.cfg')
 
+i = 1
+
 
 @pytest.fixture
 def language():
@@ -45,3 +47,15 @@ def language():
 @pytest.fixture
 def server():
 	return config.get('General', 'server')
+
+
+@pytest.fixture
+def iso_image():
+	return config.get('General', 'isoimage')
+
+
+@pytest.fixture(scope='function')
+def ip_address():
+	global i
+	i += 1
+	return '%s.%s' % (config.get('General', 'iprange'), i)

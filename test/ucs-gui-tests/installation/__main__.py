@@ -39,16 +39,20 @@ import ConfigParser
 class InstallerTests(object):
 
 	def __init__(self, args):
-		self.language = args.language
-		self.server = args.server
 		self.args = args
 
 	def run(self):
 		# TODO: mkdir screen_dumps
 		config = ConfigParser.RawConfigParser()
 		config.add_section('General')
-		config.set('General', 'language', self.language)
-		config.set('General', 'server', self.server)
+		cfg = {
+			'language': self.args.language,
+			'server': self.args.server,
+			'iprange': self.args.ip_range,
+			'isoimage': self.args.iso_image,
+		}
+		for key, value in cfg.iteritems():
+			config.set('General', key, value)
 		with open('tests.cfg', 'wb') as fd:
 			config.write(fd)
 		subprocess.call(['py.test', '--junitxml', self.args.junitxml])
@@ -56,9 +60,12 @@ class InstallerTests(object):
 	@classmethod
 	def main(cls, args):
 		argparser = argparse.ArgumentParser()
+		# FIXME: add help
 		argparser.add_argument('--junitxml')
 		argparser.add_argument('--language')
 		argparser.add_argument('--server')
+		argparser.add_argument('--ip-range')
+		argparser.add_argument('--iso-image')
 		cls(argparser.parse_args(args)).run()
 
 

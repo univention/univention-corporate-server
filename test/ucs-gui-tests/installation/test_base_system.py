@@ -37,14 +37,12 @@ from vminstall.installer import Installer
 from vminstall.virtual_machine import VirtualMachine
 
 
-def test_base_system(language, server, ip_address='10.200.13.10'):
-	# TODO: replace IP address by pytest fixture which reads a jenkins config parameter
+def test_base_system(language, server, ip_address, iso_image):
 	# TODO: move to some more general point
 	os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	# FIXME: the iso image is hardcoded. it should be defined by jenkins
-	with VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image='/mnt/omar/vmwares/kvm/iso/iso-tests/ucs_4.2-0-latest-amd64.iso') as vm:
+	with VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image) as vm:
 		installer = Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language)
 		installer.vm_config.update_ucs_after_install = False
 		installer.skip_boot_device_selection()
