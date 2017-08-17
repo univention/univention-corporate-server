@@ -39,7 +39,8 @@ from vminstall.virtual_machine import VirtualMachine
 
 def test_base_system(language, server, ip_address, iso_image):
 	# TODO: move to some more general point
-	os.makedirs('screen_dumps')
+	if not os.path.exists('screen_dumps'):
+		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
 	with VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language) as installer:
