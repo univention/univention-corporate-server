@@ -443,7 +443,7 @@ run_join_scripts () {
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		univention-run-join-scripts
 	else
- 		echo -n "$admin_password" >/tmp/univention
+		echo -n "$admin_password" >/tmp/univention
 		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
 	fi
 }
@@ -456,7 +456,7 @@ run_rejoin () {
 }
 
 do_reboot () {
-	reboot & logout
+	reboot & exit
 }
 
 assert_version () {
