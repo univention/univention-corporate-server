@@ -44,6 +44,7 @@ class InstallerTests(object):
 		self.args = args
 
 	def run(self):
+		# TODO: mkdir screen_dumps
 		config = ConfigParser.RawConfigParser()
 		config.add_section('General')
 		config.set('General', 'language', self.language)
