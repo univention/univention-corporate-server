@@ -43,6 +43,7 @@ import traceback
 import types
 import ldap
 import univention.uldap
+from univention.lib import ordered_set
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -1208,13 +1209,11 @@ class ucs:
 								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
 
 						if not attributes.compare_function(compare[0], compare[1]):
-							# This is deduplication of LDAP attribute values for S4 -> UCS.
-							# It destroys ordering of multi-valued attributes. This seems problematic
-							# as the handling of `con_other_attribute` assumes preserved ordering
-							# (this is not guaranteed by LDAP).
+							# This is deduplication of LDAP attribute values
+							# for S4 -> UCS with preserved order.
 							# See the MODIFY-case in `sync_from_ucs()` for more.
 							if isinstance(value, list):
-								ucs_object[ucs_key] = list(set(value))
+								ucs_object[ucs_key] = list(ordered_set.OrderedSet(value))
 							else:
 								ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
