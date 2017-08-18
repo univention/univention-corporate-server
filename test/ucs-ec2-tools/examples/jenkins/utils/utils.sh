@@ -456,7 +456,9 @@ run_rejoin () {
 }
 
 do_reboot () {
-	reboot & exit
+	nohup shutdown -r now &
+	sleep 1
+	exit
 }
 
 assert_version () {
