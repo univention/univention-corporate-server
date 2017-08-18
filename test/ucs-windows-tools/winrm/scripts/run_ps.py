@@ -1,9 +1,9 @@
 description = 'run powershell command'
-name = 'run_ps'
+name = 'run-ps'
 args = dict(
 	cmd=dict(help='powershell command'),
 )
 
 
-def post(winrm):
-	winrm.run(winrm.args.cmd, vars(winrm.args))
+def post(self):
+	self.run(self.args.cmd)

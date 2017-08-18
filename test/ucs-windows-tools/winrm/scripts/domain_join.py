@@ -7,7 +7,7 @@ $username = "%(domain)s\%(domainuser)s"
 $credential = New-Object System.Management.Automation.PSCredential($username,$password)
 Add-Computer -DomainName $domain -Credential $credential
 '''
-name = 'domain_join'
+name = 'domain-join'
 description = 'Join windows client into domain'
 args = dict(
 	dnsserver=dict(help='DNS Server to use for join'),
@@ -17,13 +17,13 @@ args = dict(
 )
 
 
-def pre(winrm):
-	winrm.set_dns_server(**vars(winrm.args))
-	winrm.disable_firewall(state='off')
+def pre(self):
+	self.plugins.set_dns_server(**vars(self.args))
+	self.plugins.disable_firewall(state='off')
 
 
 def post(winrm):
-	winrm.reboot()
-	winrm._wait_until_client_is_gone()
-	winrm._wait_for_client()
-	winrm.domain_user_validate_password(**vars(winrm.args))
+	winrm.plugins.reboot()
+	winrm.wait_until_client_is_gone()
+	winrm.wait_for_client()
+	winrm.plugins.domain_user_validate_password(**vars(winrm.args))

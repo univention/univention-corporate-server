@@ -5,5 +5,5 @@ args = dict(
 )
 
 
-def post(winrm):
-	winrm._wait_for_client(timeout=winrm.args.timeout)
+def post(self):
+	self.wait_for_client(timeout=self.args.timeout)

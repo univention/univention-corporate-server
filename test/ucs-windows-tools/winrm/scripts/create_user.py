@@ -1,3 +1,5 @@
+import time
+
 #$d = [adsi]"LDAP://w2k12.test"
 #$d.PSBase.UserName = "w2k12\Administrator"
 #$d.PSBase.Password = "univention"

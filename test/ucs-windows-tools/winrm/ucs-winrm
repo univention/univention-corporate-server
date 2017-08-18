@@ -1,5 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
+"""
+Run various powershell commands on windows clients via winrm
+"""
 #
 # Copyright (C) 2010-2017 Univention GmbH
 #
@@ -36,198 +39,211 @@ import socket
 import time
 import ConfigParser
 import pkgutil
+import importlib
 
 from functools import partial
 
 COMMAND_DIR = '/usr/share/ucs-winrm/scripts'
-
 if os.path.exists('./scripts'):
-    sys.path.append('./scripts')
-    COMMAND_DIR = './scripts'
+	COMMAND_DIR = './scripts'
 
 
 class UcsWinFail(Exception):
-    pass
+	pass
 
 
 class RedirectStdOut(object):
 
-    def __init__(self, stdout=None):
-        self._stdout = stdout or sys.stdout
+	def __init__(self, stdout=None):
+		self._stdout = stdout or sys.stdout
 
-    def __enter__(self):
-        self.old_stdout = sys.stdout
-        self.old_stdout.flush()
-        sys.stdout = self._stdout
+	def __enter__(self):
+		self.old_stdout = sys.stdout
+		self.old_stdout.flush()
+		sys.stdout = self._stdout
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        self._stdout.flush()
-        sys.stdout = self.old_stdout
+	def __exit__(self, exc_type, exc_value, traceback):
+		self._stdout.flush()
+		sys.stdout = self.old_stdout
+
+
+def check_debug(f):
+	def wrapped(self, *args, **kwargs):
+		if self.args.debug:
+			print('-> {name}({kwargs})'.format(name=f.func_name, kwargs=kwargs))
+			print('   args: {args}'.format(args=vars(self.args)))
+			for a in args:
+				print(a)
+			print
+		if self.args.dry_run:
+			return 0
+		return f(self, *args, **kwargs)
+	return wrapped
+
+
+class Plugins(object):
+	pass
 
 
 class UcsWin(object):
 
-    def __init__(self):
+	PS = '''
+		$ErrorActionPreference = "Stop"
+		$content = [IO.File]::ReadAllText("%(psfile)s");
+		$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
+		[System.Threading.Thread]::CurrentThread.CurrentCulture = 'en-US';
+		[System.Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US';
+		Invoke-Expression $code
+	'''
 
-        # get commands
-        self.commands = dict()
-        for importer, package_name, _ in pkgutil.iter_modules([COMMAND_DIR]):
-            full_package_name = '%s.%s' % (COMMAND_DIR, package_name)
-            if full_package_name not in sys.modules:
-                module = importer.find_module(package_name).load_module(full_package_name)
-                if not hasattr(module, 'name') or not hasattr(module, 'description'):
-                    continue
-                self.commands[module.name] = dict(description=module.description, module=module)
+	PS_AS = '''
+		$strUser = '%(run_as)s'
+		$strPass = ConvertTo-SecureString -String "%(run_as_password)s" -AsPlainText -Force
+		$objCred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($strUser, $strPass)
+		$content = [IO.File]::ReadAllText("%(psfile)s");
+		[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content)) > out.ps1
+		Invoke-Command -ComputerName localhost -Credential $objCred -FilePath "out.ps1"
+		#Start-Job -Credential $objCred -FilePath "out.ps1"
+		#Get-Job | Wait-Job
+		#Get-Job | Receive-Job
+		##Wait-Job $job
+		##Receive-Job b $job
+		##$r = Receive-Job $job
+		##$r
+		##get-job -job $job
+	'''
 
-        # parser
-        self.parser = argparse.ArgumentParser(description='Run various commands on windows clients')
-        self.parser.usage = '%(prog)s COMMAND [OPTIONS]\n'
-        self.parser.usage += 'Known commands are:\n'
-        for i in self.commands:
-            self.parser.usage += '\t%s - %s\n' % (i, self.commands[i]['description'])
-        self.parser.add_argument('command', help='Subcommand to run')
+	def __init__(self):
 
-        # command?
-        args = self.parser.parse_args(sys.argv[1:2])
-        if args.command not in self.commands:
-            print 'ERR: Unrecognized command'
-            self.parser.print_help()
-            sys.exit(1)
+		# read config file
+		self.config = ConfigParser.ConfigParser()
+		self.config.read(os.path.join(os.environ['HOME'], '.ucs-winrm.ini'))
 
-        # config file
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(os.path.join(os.environ['HOME'], '.ucs-winrm.ini'))
+		# parser
+		self.parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__)
+		self.parser.usage = '%(prog)s COMMAND [OPTIONS]'
+		self.subparsers = self.parser.add_subparsers(description='type %(prog)s <action> --help for further help and possible arguments', metavar='commands')
 
-        # global options
-        self.parser.add_argument('--client',
-                default=self.get_param_default('client'), help='The IP of the windows client')
-        self.parser.add_argument('--user',
-                default=self.get_param_default('user'), help='username')
-        self.parser.add_argument('--password',
-                default=self.get_param_default('password'), help='password')
-        self.parser.add_argument('--debug', action='store_true',
-                default=self.get_param_default('debug', default=False), help='enable debug')
-        self.parser.add_argument('--krb5', action='store_true',
-                default=self.get_param_default('krb5', default=False), help='use kerberos authentication')
+		# load plugins
+		self.plugins = Plugins()
+		for loader, name, is_pkg in pkgutil.walk_packages(COMMAND_DIR):
+			module = importlib.import_module(name)
+			if hasattr(module, 'name') and hasattr(module, 'description'):
+				# global options
+				subparser = self.subparsers.add_parser(module.name, description=module.description, help=module.description)
+				subparser.set_defaults(func=partial(self.__run_module, module))
+				subparser.add_argument('--client', default=self.__get_default('client'), help='The IP of the windows client')
+				subparser.add_argument('--user', default=self.__get_default('user'), help='username')
+				subparser.add_argument('--password', default=self.__get_default('password'), help='password')
+				subparser.add_argument('--debug', action='store_true', default=self.__get_default('debug', default=False), help='enable debug')
+				subparser.add_argument('--dry-run', action='store_true', default=self.__get_default('debug', default=False), help='dry run')
+				subparser.add_argument('--run-as', default=self.__get_default('run-as', default=False), help='dry run')
+				subparser.add_argument('--run-as-password', default=self.__get_default('run-as-password', default=False), help='dry run')
+				# command options
+				if hasattr(module, 'args'):
+					for arg in module.args:
+						if 'default' not in module.args[arg]:
+							module.args[arg]['default'] = self.__get_default(arg)
+						subparser.add_argument('--%s' % arg, **module.args[arg])
+				# make module a method of myself
+				setattr(self.plugins, module.name, partial(self.__run_module, module))
 
-        # make module a method of myself
-        for name in self.commands:
-            module = self.commands[name]['module']
-            setattr(self.__class__, module.name, partial(self.__run_module, module))
+		self.args = self.parser.parse_args()
+		self.__check_args()
+		self.args.func()
+		sys.exit(0)
 
-        # run command
-        getattr(self, args.command)()
+	def __run_module(self, module, **kwargs):
+		# execute pre hook
+		if hasattr(module, 'pre'):
+			module.pre(self)
+		if hasattr(module, 'ps'):
+			cmd = module.ps % kwargs if kwargs else module.ps % vars(self.args)
+			self.run(cmd)
+		# execute post hook
+		if hasattr(module, 'post'):
+			module.post(self)
 
-    def __run_module(self, module, **kwargs):
-        if not kwargs:
-            if hasattr(module, 'args'):
-                for arg in module.args:
-                    default = self.get_param_default(arg)
-                    if 'default' not in module.args[arg]:
-                        module.args[arg]['default'] = self.get_param_default(arg)
-                    self.parser.add_argument('--' + arg, **module.args[arg])
-            self.args = self.parser.parse_args()
-            self.__check_args()
+	def __check_args(self):
+		args = vars(self.args)
+		for arg in args:
+			if args[arg] is None:
+				print('ERR: argument --%s required!' % arg)
+				self.parser.print_help()
+				sys.exit(1)
 
-        # execute pre hook
-        if hasattr(module, 'pre'):
-            module.pre(self)
+	def __get_default(self, parameter, default=None):
+		val = None
+		# check env variable
+		env = 'WINRM_' + parameter.replace('-', '_').upper()
+		val = os.environ.get(env)
+		if self.config.has_section('default') and self.config.has_option('default', parameter):
+			val = self.config.get('default', parameter)
+		if val is None:
+			val = default
+		return val
 
-        if hasattr(module, 'ps'):
-            cmd = module.ps % kwargs if kwargs else module.ps % vars(self.args)
-            self.run(cmd, ps=True, verbose=True)
+	##########
+	# helper #
+	##########
 
-        # execute post hook
-        if hasattr(module, 'post'):
-            module.post(self)
+	def copy_file(self, session, remote_file, data=None, filename=None):
+		if filename:
+			# TODO get data
+			data = filename
+		chunks = 2500
+		b64 = data.encode('base64').replace('\n', '')
+		# remove remote file
+		with RedirectStdOut(stdout=open(os.devnull, 'w')):
+			session.run_ps('If (Test-Path "%(rfile)s") { Remove-Item "%(rfile)s" }' % dict(rfile=remote_file))
+		for i in range(0, len(b64), chunks):
+			r = session.run_ps('[System.IO.File]::AppendAllText("%s", "%s")' % (remote_file, b64[i:i + chunks]))
+			if r.status_code != 0:
+				raise UcsWinFail('failed to copy command \ncode: %s\nout: %s\nerr: %s' % (r.status_code, r.std_out, r.std_err))
 
-    def __check_args(self):
-        args = vars(self.args)
-        for i in args:
-            if self.args.krb5 and i == 'password':
-                # password not requierd if kerberos is used
-                continue
-            if args[i] is None:
-                print 'ERR: argument %s required!' % i
-                self.parser.print_help()
-                sys.exit(1)
+	@check_debug
+	def run(self, command):
+		s = winrm.Session(self.args.client, auth=(self.args.user, self.args.password), transport='plaintext')
+		# run_ps hits the windows Maximum Length of Command Line String
+		psfile = 'c:\\.tmp.winrm-ucs.ps1'
+		self.copy_file(s, psfile, data=command)
+		if self.args.run_as and self.args.run_as_password:
+			cmd = self.PS_AS % dict(psfile=psfile, run_as=self.args.run_as, run_as_password=self.args.run_as_password)
+		else:
+			cmd = self.PS % dict(psfile=psfile)
+		with RedirectStdOut(stdout=open(os.devnull, 'w')):
+			r = s.run_ps(cmd)
+		if r.status_code != 0:
+			raise UcsWinFail('command %s failed with\ncode: %s\nout: %s\nerr: %s' % (command, r.status_code, r.std_out, r.std_err))
+		if r.std_out:
+			print(r.std_out)
 
-    def get_param_default(self, parameter, default=None):
-        val = None
-        # check env variable
-        env = 'WINRM_' + parameter.replace('-', '_').upper()
-        val = os.environ.get(env)
-        if self.config.has_section('default') and self.config.has_option('default', parameter):
-            val = self.config.get('default', parameter)
-        if val is None:
-            val = default
-        return val
+	@check_debug
+	def client_reachable(self):
+		try:
+			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			s.settimeout(2)
+			s.connect((self.args.client, 5985))
+			return True
+		except socket.error:
+			return False
 
-    #
-    # helper #
-    #
+	@check_debug
+	def wait_until_client_is_gone(self, timeout=120):
+		for i in range(timeout):
+			if not self.client_reachable():
+				return True
+			time.sleep(1)
+		raise UcsWinFail('wait_until_client_is_gone for %s failed (timeout=%s)' % (self.args.client, timeout))
 
-    def run(self, command, ps=False, verbose=False, winrm_warnings=False):
-        if self.args.krb5:
-            s = winrm.Session(self.args.client, auth=(self.args.user, None), transport='kerberos')
-        else:
-            s = winrm.Session(self.args.client, auth=(self.args.user, self.args.password), transport='plaintext')
-        if self.args.debug:
-            print 'running command:\n%s' % command
-        if ps:
-            # run_ps hits the windows Maximum Length of Command Line String
-            w_file = 'c:\\.tmp.winrm-ucs.ps1'
-            s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
-            # copy script
-            _chunks = 2500
-            _b64 = command.encode('base64').replace('\n', '')
-            for i in range(0, len(_b64), _chunks):
-                _r = s.run_ps('[System.IO.File]::AppendAllText("%s", "%s")' % (w_file, _b64[i:i + _chunks]))
-                if _r.status_code != 0:
-                    raise UcsWinFail('failed to copy command \ncode: %s\nout: %s\nerr: %s' % (_r.status_code, _r.std_out, _r.std_err))
-            # run script, ignore some winrm warngins on stdout
-            _cmd = '''
-				$ErrorActionPreference = "Stop"
-				$content = [IO.File]::ReadAllText("%s")
-				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
-				[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
-			''' % w_file
-            if not winrm_warnings:
-                with RedirectStdOut(stdout=open(os.devnull, 'w')):
-                    r = s.run_ps(_cmd)
-            else:
-                r = s.run_ps(_cmd)
-            s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
-        else:
-            r = s.run_cmd(command)
-        if r.status_code != 0:
-            raise UcsWinFail('command %s failed with\ncode: %s\nout: %s\nerr: %s' % (command, r.status_code, r.std_out, r.std_err))
-        if verbose is True or self.args.debug:
-            print r.std_out
-
-    def _client_reachable(self):
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(2)
-            s.connect((self.args.client, 5985))
-            return True
-        except socket.error:
-            return False
-
-    def _wait_until_client_is_gone(self, timeout=120):
-        for i in range(timeout):
-            if not self._client_reachable():
-                return True
-            time.sleep(1)
-        raise UcsWinFail('wait_until_client_is_gone for %s failed (timeout=%s)' % (self.args.client, timeout))
-
-    def _wait_for_client(self, timeout=120):
-        for i in range(timeout):
-            if self._client_reachable():
-                return True
-            time.sleep(1)
-        raise UcsWinFail('wait_for_client for %s failed (timeout=%s)' % (self.args.client, timeout))
+	@check_debug
+	def wait_for_client(self, timeout=120):
+		for i in range(timeout):
+			if self.client_reachable():
+				return True
+			time.sleep(1)
+		raise UcsWinFail('wait_for_client for %s failed (timeout=%s)' % (self.args.client, timeout))
 
 
 if __name__ == '__main__':
-    UcsWin()
+	UcsWin()
