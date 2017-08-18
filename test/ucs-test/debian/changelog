@@ -1,3 +1,9 @@
+ucs-test (7.0.23-32) unstable; urgency=medium
+
+  * Bug #44640: rename 86_{umc,selenium} + create package ucs-test-selenium
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Aug 2017 16:13:12 +0200
+
 ucs-test (7.0.23-31) unstable; urgency=medium
 
   * Bug #44640: Updated .po file
@@ -6,7 +12,7 @@ ucs-test (7.0.23-31) unstable; urgency=medium
 
 ucs-test (7.0.23-30) unstable; urgency=medium
 
-  * Bug #44640: Improved the umc-selenium framework 
+  * Bug #44640: Improved the umc-selenium framework
 
  -- Richard Ulmer <ulmer@univention.de>  Thu, 17 Aug 2017 09:27:46 +0200
 

@@ -418,6 +418,16 @@ Depends: ${python:Depends},
 Description: Test UMC modules
  This package includes some test UMC modules
 
+Package: ucs-test-selenium
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ python-selenium,
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for UMC
+ This package includes some scripts for testing UMC
+
 #Package: ucs-test-system-setup
 #Architecture: all
 #Depends: ucs-test-framework (= ${source:Version}),
