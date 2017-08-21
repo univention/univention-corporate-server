@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: postgresql-9.1
+fix: 9.1.24-0.A~4.2.0.201708211719
+desc: |
+ This update addresses the following issues:
+ * Restrict visibility of pg_user_mappings.umoptions, to protect passwords
+   stored as user mapping options (CVE-2017-7486)
+ * In some authentication methods empty passwords were accepted
+   (CVE-2017-7546)
+ * User mappings could leak data to unprivileged users (CVE-2017-7547)
+bug: [45237]
+cve:
+- CVE-2017-7486
+- CVE-2017-7546
+- CVE-2017-7547
