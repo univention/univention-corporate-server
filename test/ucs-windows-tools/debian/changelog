@@ -1,3 +1,9 @@
+ucs-windows-tools (4.0.1-10) unstable; urgency=medium
+
+  * Bug #43974: move ucs-winrm to shared utils 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Aug 2017 15:24:32 +0200
+
 ucs-windows-tools (4.0.1-9) unstable; urgency=low
 
   * Bug #43974: new log file
