@@ -55,7 +55,7 @@ class InstallerTests(object):
 			config.set('General', key, value)
 		with open('tests.cfg', 'wb') as fd:
 			config.write(fd)
-		subprocess.call(['py.test', '--junitxml', self.args.junitxml])
+		subprocess.call(['py.test', '--junitxml', self.args.junitxml] + self.args.tests)
 
 	@classmethod
 	def main(cls, args):
@@ -66,6 +66,7 @@ class InstallerTests(object):
 		argparser.add_argument('--server')
 		argparser.add_argument('--ip-range')
 		argparser.add_argument('--iso-image')
+		argparser.add_argument('tests', nargs='+')
 		cls(argparser.parse_args(args)).run()
 
 
