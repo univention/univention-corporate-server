@@ -7,5 +7,5 @@ fix: 1.0.1-9.18.201708101752
 desc: |
  This update addresses the following issue(s):
  * The docker service is now restarted right after installation to ensure the
-   correct storage back end is used immediately.
+   correct storage backend is used immediately.
 bug: [44987]
