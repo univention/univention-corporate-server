@@ -119,6 +119,8 @@ def file_and_permission_checks():
 	configRegistry.load()
 
 	is_primary = configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
+	is_backup = configRegistry.get('server/role') == 'domaincontroller_backup'
+	is_dc = configRegistry.get('server/role').startswith('domaincontroller_')
 
 	yield check_file('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0640, must_exist=is_primary)
 	yield check_file('/etc/machine.secret', 'root', 'root', 0600, must_exist=True)
@@ -129,20 +131,21 @@ def file_and_permission_checks():
 
 	(host, domain) = (configRegistry.get('hostname'), configRegistry.get('domainname'))
 	yield check_file('/etc/univention/ssl', 'root',
-		'DC Backup Hosts' if is_primary else 'root', 0755, must_exist=True)
+		'DC Backup Hosts' if is_dc else 'root', 0755, must_exist=True)
 	yield check_file('/etc/univention/ssl/openssl.cnf', 'root',
 		'DC Backup Hosts', 0660, must_exist=is_primary)
 	yield check_file('/etc/univention/ssl/password', 'root',
 		'DC Backup Hosts', 0660, must_exist=is_primary)
 	yield check_file('/etc/univention/ssl/ucsCA', 'root',
-		'DC Backup Hosts' if is_primary else 'root',
-		0775 if is_primary else 755,
+		'DC Backup Hosts' if is_dc else 'root',
+		0775 if is_primary else 0755,
 		must_exist=True)
 	yield check_file('/etc/univention/ssl/ucs-sso.{}'.format(domain), 'root',
 		'DC Backup Hosts', 0750, must_exist=is_primary)
 	yield check_file('/etc/univention/ssl/{}.{}'.format(host, domain),
 		'{}$'.format(host) if is_primary else 'root',
-		'DC Backup Hosts' if is_primary else 'root', 0750, must_exist=True)
+		'DC Backup Hosts' if is_dc else 'root',
+		0750 if not is_backup else 0770, must_exist=True)
 
 	yield check_file('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0600)
 	yield check_file('/var/run/univention-saml/memcached.socket', 'samlcgi', 'root', 0600)

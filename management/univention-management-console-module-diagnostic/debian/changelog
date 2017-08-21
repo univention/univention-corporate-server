@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.1-21) unstable; urgency=medium
+
+  * Bug #40227: diagnostic update file_permissions check for certificates
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 21 Aug 2017 13:05:38 +0200
+
 univention-management-console-module-diagnostic (3.0.1-20) unstable; urgency=medium
 
   * Bug #40227: diagnostic update file_permissions check for certificates
