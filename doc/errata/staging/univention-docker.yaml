@@ -6,6 +6,6 @@ src: univention-docker
 fix: 2.0.1-7A~4.2.0.201708101725
 desc: |
  This update addresses the following issue(s):
- * The docker service is now restarted right after installation to ensure the correct storage back end
-   is used immediately.
+ * The docker service is now restarted right after installation to ensure the
+   correct storage backend is used immediately.
 bug: [44986]
