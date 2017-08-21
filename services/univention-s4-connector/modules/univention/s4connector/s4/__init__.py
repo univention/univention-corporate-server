@@ -42,6 +42,7 @@ import time
 import types
 import array
 import univention.uldap
+from univention.lib import ordered_set
 import univention.s4connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
@@ -50,6 +51,7 @@ from ldap.filter import escape_filter_chars
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 from samba.dcerpc import misc
+
 
 DECODE_IGNORELIST = ['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
 
@@ -2585,7 +2587,7 @@ class s4(univention.s4connector.ucs):
 				"sync_from_ucs: new_object: %s" % new_ucs_object)
 			object['old_ucs_object'] = old_ucs_object
 			object['new_ucs_object'] = new_ucs_object
-			attribute_list = set(old_ucs_object.keys() + new_ucs_object.keys())
+			attribute_list = ordered_set.OrderedSet(old_ucs_object.keys() + new_ucs_object.keys())
 
 			def find_case_independent(s4_object, attribute):
 				attr = attribute.lower()
@@ -2594,7 +2596,7 @@ class s4(univention.s4connector.ucs):
 					values = next(matching)
 				except StopIteration:
 					values = []
-				return set(values)
+				return ordered_set.OrderedSet(values)
 
 			# Iterate over attributes and post_attributes
 			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
@@ -2619,8 +2621,8 @@ class s4(univention.s4connector.ucs):
 								continue
 
 							# Get the UCS attributes
-							old_values = set(old_ucs_object.get(attr, []))
-							new_values = set(new_ucs_object.get(attr, []))
+							old_values = ordered_set.OrderedSet(old_ucs_object.get(attr, []))
+							new_values = ordered_set.OrderedSet(new_ucs_object.get(attr, []))
 
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
@@ -2636,29 +2638,52 @@ class s4(univention.s4connector.ucs):
 							to_add = new_values - old_values
 							to_remove = old_values - new_values
 
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: to_add: %s" % to_add)
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: to_remove: %s" % to_remove)
+
 							if s4_other_attribute:
 								# This is the case, where we map from a multi-valued UCS attribute to two S4 attributes.
 								# telephoneNumber/otherTelephone (S4) to telephoneNumber (UCS) would be an example.
 								#
-								# The direct mapping assumes preserved ordering of the multi-valued UCS
-								# attributes and places the first value in the primary S4 attribute,
-								# the rest in the secondary S4 attributes.
+								# In Active Directory, for attributes that are split in two the administrator is
+								# responsible for keeping a value in `telephoneNumber`. Imagine the following:
+								# (a) telephoneNumber = '123', otherTelephone = ['123', '456']
+								# In this case, if the administrator deletes the value of `telephoneNumber`,
+								# Active Directory does NOT automatically pull a new value from `otherTelephone`.
 								#
-								# The following code handles the correct distribution of the UCS attribute,
-								# to two S4 attributes. It also ensures, that the primary S4 attribute keeps
-								# its value as long as that value is not removed. If removed the primary
-								# attribute is assigned a random value from the UCS attribute.
+								# This is impossible to support with the connector. Imagine again case (a). If
+								# we delete `123` from `phone` via UDM, AD would be synced into the following
+								# state: (b) telephoneNumber = '', otherTelephone = ['456']
+								# From now on, whenever we add a new value to `phone` via UDM, for example:
+								# (c) phone = ['456', '789'] it MUST be synced as
+								# (d) telephoneNumber = '', otherTelephone = ['456', '789'] as '456' came
+								# before '789' and '456' is definitely in `otherTelephone`.
+								#
+								# We therefore implement, that `telephoneNumber` is never empty, as long as there
+								# are values in `otherTelephone`. If a modification would delete the value of
+								# `telephoneNumber` and at least one value exists in `otherTelephone`, the
+								# connector duplicates the first entry of `otherTelephone` into
+								# `telephoneNumber`.
 								current_s4_other_values = find_case_independent(s4_object, s4_other_attribute)
 
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
 
-								# If we removed the value on the UCS side that was contained in the `s4_attribute`,
-								# but are adding new values, we choose a random value from the new values.
 								new_s4_values = current_s4_values - to_remove
-								if not new_s4_values and to_add:
-									new_s4_values.add(to_add.pop())
-								new_s4_other_values = (current_s4_other_values | to_add) - to_remove - current_s4_values
+								retained_s4_other_values = current_s4_other_values - to_remove
+
+								# If we removed the value on the UCS side that was contained in the `current_s4_values`,
+								# but have values, we duplicate the first value from the `new_s4_other_values`.
+								if not new_s4_values:
+									if retained_s4_other_values:
+										new_s4_values.add(retained_s4_other_values[0])
+									elif to_add:
+										new_s4_values.add(to_add[0])
+
+								# Take the old values without those to be removed. Add the new ones
+								# (without duplicating the `new_s4_values`, but preserving existing
+								# duplicates in `con_other_attribute`)
+								new_s4_other_values = retained_s4_other_values | (to_add - new_s4_values)
 
 								if current_s4_values != new_s4_values:
 									modlist.append((ldap.MOD_REPLACE, s4_attribute, new_s4_values))
