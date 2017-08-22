@@ -12,3 +12,4 @@ desc: |-
 bug: [45179]
 cve:
 - CVE-2017-6508
+ignore: ['version.scope',]

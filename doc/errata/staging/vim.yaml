@@ -16,3 +16,4 @@ bug: [45178]
 cve:
 - CVE-2017-6350
 - CVE-2017-6349
+ignore: ['version.scope',]

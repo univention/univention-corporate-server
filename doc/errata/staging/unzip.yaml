@@ -12,3 +12,4 @@ bug: [45177]
 cve:
 - CVE-2014-9913
 - CVE-2016-9844
+ignore: ['version.scope',]
