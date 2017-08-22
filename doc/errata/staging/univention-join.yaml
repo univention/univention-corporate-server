@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-join
+fix: 9.0.3-4A~4.2.0.201708221512
+desc: |
+ This update addresses the following issue(s):
+ * Improved error message for failing server join in
+   univention-join.
+bug: [44429]
