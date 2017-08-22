@@ -126,7 +126,7 @@ Relative ID & <@attribute name="sambaRID"@> \\
 
 \section*{Mitglied in folgenden Gruppen}
 
-<@query module="groups/group" start="groups" next="memberOf" regex="name=^[^(s\-)([a\-)(i\-)(h\-)]" header="\begin{description}" footer="\end{description}" alternative="Der Benutzer ist in keiner weiteren Gruppen enthalten"@>
+<@query module="groups/group" start="groups" next="memberOf" header="\begin{description}" footer="\end{description}" alternative="Der Benutzer ist in keiner weiteren Gruppen enthalten"@>
   \item[<@attribute name="name"@>] (<@attribute name="description"@>)
 <@/query@>
 

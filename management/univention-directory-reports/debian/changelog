@@ -1,3 +1,9 @@
+univention-directory-reports (8.0.1-2) unstable; urgency=medium
+
+  * Bug #45241: all groups are shown in PDF user reports
+
+ -- Florian Best <best@univention.de>  Tue, 22 Aug 2017 11:50:35 +0200
+
 univention-directory-reports (8.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
