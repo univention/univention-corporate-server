@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-64) unstable; urgency=medium
+
+  * Bug #44894: allow UMC to be removed on a basesystem
+
+ -- Florian Best <best@univention.de>  Tue, 22 Aug 2017 18:12:31 +0200
+
 univention-management-console (9.0.80-63) unstable; urgency=medium
 
   * Bug #44965: fixup
