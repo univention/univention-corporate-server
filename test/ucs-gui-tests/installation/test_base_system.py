@@ -43,9 +43,7 @@ def test_base_system(language, server, ip_address, iso_image):
 		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	vm = VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image)
-	installer = Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='basesystem', language=language)
-	with vm as vm, installer as installer:
+	with VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='basesystem', language=language) as installer:
 		installer.vm_config.update_ucs_after_install = False
 		installer.skip_boot_device_selection()
 		installer.select_language()
