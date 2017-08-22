@@ -252,7 +252,7 @@ class Installer(object):
 			self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
 
 	def select_software_components(self):
-		if self.vm_config.role != "base":
+		if self.vm_config.role != "basesystem":
 			if self.vm_config.install_all_additional_components:
 				self.client.mouseMove(320, 215)
 				self.client.mousePress(1)
@@ -267,7 +267,7 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
-		if self.vm_config.role == "base":
+		if self.vm_config.role == "basesystem":
 			self.client.waitForText('login:', timeout=360)
 		else:
 			self.client.waitForText(self.locale_strings['welcome'], timeout=360)
