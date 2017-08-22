@@ -89,7 +89,7 @@
 
 <h3>Member of the following groups</h3>
 
-<@query module="groups/group" start="groups" next="memberOf" regex="name=^[^(s\-)([a\-)(i\-)(h\-)]" alternative="<para>The user is not member of any other group</para>"@>
+<@query module="groups/group" start="groups" next="memberOf" alternative="<para>The user is not member of any other group</para>"@>
 	<para bulletFontSize="5" bulletText="&#x25cf;"><b><@attribute name="name"@></b> (<@attribute name="description"@>)</para>
 <@/query@>
 
