@@ -44,6 +44,8 @@ import subprocess
 import string
 import base64
 
+objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
+
 
 class kerberosAuthenticationFailed(Exception):
 	pass
@@ -85,6 +87,37 @@ def encode_object_sid_to_binary_ldapfilter(sid_string):
 	return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
 
 
+def replace_filter(filter_s):
+	r"""
+	>>> replace_filter('(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)')
+	'(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)'
+	>>> replace_filter('(&(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)(!(lastLogoff=0)))')
+	'(&(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)(!(lastLogoff=0)))'
+	>>> replace_filter('(objectsid=*)')
+	'(objectSid=*)'
+	>>> replace_filter('(objectsid=S-1-5-21*)')
+	'(objectSid=S-1-5-21*)'
+	>>> replace_filter('objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001')
+	'objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00'
+	>>> replace_filter('objectsid=*')
+	'objectSid=*'
+	>>> replace_filter('objectsid=S-1-5-21*')
+	'objectSid=S-1-5-21*'
+	>>> replace_filter('(objectsid=\\))')
+	'(objectsid=\\))'
+	>>> replace_filter('objectsid=\\)')
+	'objectsid=\\)'
+	"""
+	return objectsid_pattern.sub(replace_object_sid, filter_s)
+
+
+def replace_object_sid(match):
+	sid = match.group(1)
+	if '*' not in sid:
+		sid = encode_object_sid_to_binary_ldapfilter(sid)
+	return 'objectSid=%s' % (sid,)
+
+
 def usage():
 	print ""
 	print "This is univention-adsearch"
@@ -116,7 +149,9 @@ if len(sys.argv) < oiterator + 1:
 	print "ERROR: no filter given"
 	usage()
 	sys.exit(1)
-filter_tmp = sys.argv[oiterator].decode('latin')
+
+filter = replace_filter(sys.argv[oiterator].decode('latin'))
+
 
 if len(sys.argv) > oiterator + 1:
 	filter_attributes = sys.argv[oiterator + 1].split(',')
@@ -186,10 +221,6 @@ lc1 = LDAPControl('1.2.840.113556.1.4.417', criticality=1)
 page_size = 1000
 
 lc2 = SimplePagedResultsControl(True, page_size, '')
-
-
-objectsid_pattern = re.compile('objectsid=([^)]+)', flags=re.I)
-filter = objectsid_pattern.sub(lambda m: 'objectSid=%s' % encode_object_sid_to_binary_ldapfilter(m.group(1)), filter_tmp)
 
 if filter_attributes:
 	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])
