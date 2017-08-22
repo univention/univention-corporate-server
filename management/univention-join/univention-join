@@ -606,6 +606,8 @@ univention-ssh --no-split "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
 res_message="$(sed -ne 's/^E:\s*//p' "$USERTMP/scrubbed")"
 if [ -z "$res_message" ]; then
 	echo -e "\033[60Gdone"
+else
+	failed_message "$res_message"
 fi
 
 [ -s "$USERTMP/secret" ] ||
