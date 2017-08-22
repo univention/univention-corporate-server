@@ -43,7 +43,9 @@ def test_base_system(language, server, ip_address, iso_image):
 		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	with VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language) as installer:
+	vm = VirtualMachine(name='installer_test-base_system_%s' % (language,), server=server, iso_image=iso_image)
+	installer = Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='basesystem', language=language)
+	with vm as vm, installer as installer:
 		installer.vm_config.update_ucs_after_install = False
 		installer.skip_boot_device_selection()
 		installer.select_language()
@@ -51,7 +53,7 @@ def test_base_system(language, server, ip_address, iso_image):
 		installer.network_setup()
 		installer.account_setup()
 		installer.hdd_setup()
-		installer.setup_ucs_base_system()
+		installer.setup_ucs()
 
 	# TODO: move to some more general point
 	subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])
