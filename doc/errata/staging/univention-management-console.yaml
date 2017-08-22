@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console
+fix: 9.0.80-64A~4.2.0.201708221830
+desc: |
+ This update addresses the following issue(s):
+ * The uninstallation on a base system is now possible.
+bug: [44894]
