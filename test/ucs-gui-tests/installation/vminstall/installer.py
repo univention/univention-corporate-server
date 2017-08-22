@@ -44,13 +44,14 @@ from vminstall.vmconfig import Config as VmConfig
 
 class Installer(object):
 
-	def __init__(self, args=None, language="en"):
+	def __init__(self, args=None, role='master', language='en'):
 		init_logger('info')
 		self.args = self.parse_args(args)
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = VmConfig(
 			ip=self.args.ip,
-			language=language,
+			role=role,
+			language=language
 		)
 
 		host = self.__get_host()
@@ -192,25 +193,73 @@ class Installer(object):
 		self.client.keyPress('enter')
 		self.client.waitForText(self.locale_strings['domain_setup'], timeout=1200, prevent_screen_saver=True)
 
-	def setup_ucs_master(self):
-		self.client.mouseClickOnText(self.locale_strings['setup_master'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
+	def setup_ucs(self):
+		self.choose_system_role()
+		self.set_domain_settings()
+		self.select_software_components()
+		self.confirm_settings()
 
-		self.client.waitForText(self.locale_strings['account_info'], timeout=30)
-		self.client.enterText(self.locale_strings['company'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
+	def choose_system_role(self):
+		if self.vm_config.role == "master":
+			self.client.mouseClickOnText(self.locale_strings['setup_master'])
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['account_info'], timeout=30)
+		elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+			self.client.mouseClickOnText(self.locale_strings['join_ucs'])
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['system_role'], timeout=30)
+		elif self.vm_config.role == "basesystem":
+			self.client.mouseClickOnText(self.locale_strings['no_domain'])
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['no_domain_warn'], timeout=30)
 
-		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['ldap_base'])
-		self.client.enterText(self.vm_config.ldap_base)
-		self.client.mouseClickOnText(self.locale_strings['next'])
+		if self.vm_config.role == "backup":
+			self.client.mouseClickOnText(self.locale_strings['next'])
+		if self.vm_config.role == "slave":
+			self.client.keyPress('down')
+			self.client.mouseClickOnText(self.locale_strings['next'])
+		if self.vm_config.role == "member":
+			self.client.keyPress('down')
+			self.client.keyPress('down')
+			self.client.mouseClickOnText(self.locale_strings['next'])
 
-		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
-		if self.vm_config.install_all_additional_components:
-			self.client.mouseMove(320, 215)
-			self.client.mousePress(1)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+	def set_domain_settings(self):
+		if self.vm_config.role == "master":
+			self.client.enterText(self.locale_strings['company'])
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+
+			self.client.mouseClickOnText(self.locale_strings['ldap_base'])
+			self.client.enterText(self.vm_config.ldap_base)
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['software_config'], timeout=30)
+
+		elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+			self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
+			self.client.mouseClickOnText(self.locale_strings['password_field'])
+			self.client.enterText(self.vm_config.password)
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['software_config'], timeout=30)
+
+		elif self.vm_config.role == "basesystem":
+			self.client.mouseClickOnText(self.locale_strings['next'])
+
+			self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
+			self.client.mouseClickOnText(self.locale_strings['next'])
+
+			self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+
+	def select_software_components(self):
+		if self.vm_config.role != "base":
+			if self.vm_config.install_all_additional_components:
+				self.client.mouseMove(320, 215)
+				self.client.mousePress(1)
+			self.client.mouseClickOnText(self.locale_strings['next'])
+			self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
+
+	def confirm_config(self):
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
@@ -218,117 +267,7 @@ class Installer(object):
 		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
-		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
-
-	def setup_ucs_backup(self):
-		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.vm_config.password)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
-		if self.vm_config.install_all_additional_components:
-			self.client.mouseMove(320, 215)
-			self.client.mousePress(1)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		if not self.vm_config.update_ucs_after_install:
-			self.client.mouseClickOnText(self.locale_strings['do_update'])
-		self.client.keyPress('enter')
-
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
-		self.client.mouseClickOnText(self.locale_strings['finish'])
-
-		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
-
-	def setup_ucs_slave(self):
-		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
-		self.client.keyPress('down')
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.vm_config.password)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
-		if self.vm_config.install_all_additional_components:
-			self.client.mouseMove(320, 215)
-			self.client.mousePress(1)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		if not self.vm_config.update_ucs_after_install:
-			self.client.mouseClickOnText(self.locale_strings['do_update'])
-		self.client.keyPress('enter')
-
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
-		self.client.mouseClickOnText(self.locale_strings['finish'])
-
-		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
-
-	def setup_ucs_member(self):
-		self.client.mouseClickOnText(self.locale_strings['join_ucs'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['system_role'], timeout=30)
-		self.client.keyPress('down')
-		self.client.keyPress('down')
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['password_field'])
-		self.client.enterText(self.vm_config.password)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['software_config'], timeout=30)
-		if self.vm_config.install_all_additional_components:
-			self.client.mouseMove(320, 215)
-			self.client.mousePress(1)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		if not self.vm_config.update_ucs_after_install:
-			self.client.mouseClickOnText(self.locale_strings['do_update'])
-		self.client.keyPress('enter')
-
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
-		self.client.mouseClickOnText(self.locale_strings['finish'])
-
-		self.client.waitForText(self.locale_strings['welcome'], timeout=360)
-
-	def setup_ucs_base_system(self):
-		self.client.mouseClickOnText(self.locale_strings['no_domain'])
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['no_domain_warn'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
-		self.client.mouseClickOnText(self.locale_strings['next'])
-
-		self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
-		if not self.vm_config.update_ucs_after_install:
-			self.client.mouseClickOnText(self.locale_strings['do_update'])
-		self.client.keyPress('enter')
-
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
-		self.client.mouseClickOnText(self.locale_strings['finish'])
-
-		self.client.waitForText('login:', timeout=360)
+		if self.vm_config.role == "base":
+			self.client.waitForText('login:', timeout=360)
+		else:
+			self.client.waitForText(self.locale_strings['welcome'], timeout=360)
