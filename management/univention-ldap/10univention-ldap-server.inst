@@ -112,16 +112,6 @@ wait_named
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 
-	if ! univention-ldapsearch -LLLb "cn=unique-uid,cn=univention,$ldap_base" dn > /dev/null 2>&1; then
-		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR || die
-			dn: cn=unique-uid,cn=univention,$ldap_base
-			objectClass: uidObject
-			objectClass: organizationalRole
-			cn: unique-uid
-			uid: root
-		%EOR
-	fi
-
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 
 		forwardZone=$(univention-directory-manager dns/forward_zone list "$@" --filter zone="$domainname" | sed -ne 's/DN: //p;T;q')
@@ -274,7 +264,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			pwdFailureCountInterval: 900
 			%EOR
 	fi
-
 fi
 
 # Create kerberos principal for ldap/hostname.domainname

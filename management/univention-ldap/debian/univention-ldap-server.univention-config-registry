@@ -86,7 +86,6 @@ Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
 Variables: ldap/shadowbind
 Variables: ldap/shadowbind/ignorefilter
-Variables: ldap/unique/uid
 
 Type: file
 File: etc/cron.d/univention-ldap

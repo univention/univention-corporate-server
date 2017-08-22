@@ -126,7 +126,6 @@ ucr set \
 	slapd/backup?true \
 	ldap/shadowbind?true \
 	ldap/shadowbind/ignorefilter?"(|(objectClass=univentionDomainController)(userPassword={KINIT}))" \
-	ldap/unique/uid?"root" \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then
@@ -215,16 +214,5 @@ if [ "$1" = "configure" ]; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
-if [ "$server_role" = "domaincontroller_master" -a "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.7-14; then
-	if ! univention-ldapsearch -LLLb "cn=unique-uid,cn=univention,$ldap_base" dn > /dev/null 2>&1; then
-		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR || die
-			dn: cn=unique-uid,cn=univention,$ldap_base
-			objectClass: uidObject
-			objectClass: organizationalRole
-			cn: unique-uid
-			uid: root
-		%EOR
-	fi
-fi
 
 exit 0
