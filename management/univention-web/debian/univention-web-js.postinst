@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-a2enconf univention-web
+a2enconf univention-web.conf
 a2enmod expires
 
 ucr set "ucs/server/languages/en_US?English" \

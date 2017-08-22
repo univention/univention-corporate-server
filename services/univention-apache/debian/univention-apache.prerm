@@ -35,7 +35,7 @@
 if [ "$1" = "remove" ]; then
 	a2disconf ucs
 	a2dissite default-ssl.conf || true
-	a2dissite default.conf || true
+	a2dissite 000-default.conf || true
 	service apache2 reload
 fi
 

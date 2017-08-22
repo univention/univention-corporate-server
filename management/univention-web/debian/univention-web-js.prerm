@@ -33,6 +33,7 @@
 case "$1" in
     remove|deconfigure)
 		# unregister JavaScript hook
+		a2disconf univention-web.conf || true
 		univention-config-registry unset "umc/web/hooks/univention-web-js"
 		;;
 

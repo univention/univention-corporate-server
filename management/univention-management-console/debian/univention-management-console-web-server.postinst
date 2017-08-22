@@ -39,7 +39,7 @@ a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http
 a2enmod headers
-a2ensite univention
+a2ensite univention.conf
 invoke-rc.d apache2 restart
 
 # update to UCS 4.2
