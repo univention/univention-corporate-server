@@ -36,13 +36,13 @@ import string
 import os
 import cPickle
 import types
-import collections
 import random
 import traceback
 import copy
 import time
 import ldap
 import univention.uldap
+from univention.lib import ordered_set
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -1064,7 +1064,7 @@ class ucs:
 							# It preserves ordering of the attribute values which is
 							# important for the handling of `con_other_attribute`.
 							if isinstance(value, list):
-								ucs_object[ucs_key] = list(collections.OrderedDict.fromkeys(value))
+								ucs_object[ucs_key] = list(ordered_set.OrderedSet(value))
 							else:
 								ucs_object[ucs_key] = value
 
