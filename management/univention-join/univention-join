@@ -420,13 +420,27 @@ fi
 
 echo -n "Check DC Master: "
 
-if ! ping -c 1 "$DCNAME" >/dev/null 2>&1 && ! ping6 -c 1 "$DCNAME" >/dev/null 2>&1; then
-	failed_message "ping to $DCNAME failed"
+nslookup_out="$(nslookup "$DCNAME" 2>&1)"
+if [ $? -ne 0 ]; then
+	nslookup_out="$(echo $nslookup_out | sed -e 's/[\r\n]//g')"
+	nameservers="$(cat /etc/resolv.conf | sed -ne 's/nameserver //p'| tr -d '\n')"
+	failed_message "The UCS master server's name \"$DCNAME\" is unknown to the DNS servers (dns servers: $nameservers, nslookup: $nslookup_out)."
 fi
 
-if ! univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" echo ssh-check 2>>/var/log/univention/join.log | grep -qs ssh-check
-then
-	failed_message "ssh-login for ${DCACCOUNT}@${DCNAME} failed. Maybe you entered a wrong password."
+ping_out="$(ping -q -c 3 "$DCNAME" 2>&1)"
+if [ $? -ne 0 ]; then
+	ping6_out="$(ping6 -q -c 3 "$DCNAME" 2>&1)"
+	if [ $? -ne 0 ]; then
+		ping_out="$(echo $ping_out | sed -e 's/[\r\n]//g')"
+		ping6_out="$(echo $ping6_out | sed -e 's/[\r\n]//g')"
+		failed_message "The UCS master server \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
+	fi
+fi 
+
+ssh_out="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" ls 2>&1)"
+if [ $? -ne 0 ]; then
+	ssh_out="$(echo $ssh_out | sed -e 's/[\r\n]//g')"
+	failed_message "The ssh-login to ${DCACCOUNT}@${DCNAME} failed with \"${ssh_out}\". Please make sure the account ${DCACCOUNT} exists and is a member of the Domain Admins group!"
 fi
 
 
