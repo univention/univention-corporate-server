@@ -17,3 +17,5 @@ cve:
 - CVE-2017-6350
 - CVE-2017-6349
 ignore: ['version.scope',]
+erratum: 143
+announced: 2017-08-23
