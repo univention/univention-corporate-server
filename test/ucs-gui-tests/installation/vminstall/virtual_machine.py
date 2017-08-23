@@ -82,7 +82,7 @@ class VirtualMachine(object):
 		self.delete()
 
 	def create(self):
-		test_vm = VmCreator(['--name', self.name, '--server', self.server, '--ucs-iso', self.iso_image, '--interfaces', self.interfaces, '--disks', self.disks])
+		test_vm = VmCreator(['--name', self.name, '--server', self.server, '--ucs-iso', self.iso_image, '--interfaces', str(self.interfaces), '--disks', str(self.disks)])
 		test_vm.create_vm_if_possible()
 		self.__created = True
 		with test_vm as created_test_vm:
