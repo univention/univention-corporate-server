@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The PDF user report did not include all groups of the user.
 bug: [45241]
+erratum: 473
+announced: 2017-08-23
