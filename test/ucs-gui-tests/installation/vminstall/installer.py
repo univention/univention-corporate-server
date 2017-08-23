@@ -197,7 +197,7 @@ class Installer(object):
 		self.choose_system_role()
 		self.set_domain_settings()
 		self.select_software_components()
-		self.confirm_settings()
+		self.confirm_config()
 
 	def choose_system_role(self):
 		if self.vm_config.role == "master":
