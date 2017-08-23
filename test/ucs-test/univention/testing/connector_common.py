@@ -50,8 +50,8 @@ def restart_univention_cli_server():
 
 
 class TestUser(object):
-	def __init__(self, user, rename={}, container=None):
-		selection = ("username", "firstname", "lastname")
+	def __init__(self, user, rename={}, container=None, selection=None):
+		selection = selection or ("username", "firstname", "lastname")
 		self.basic = {k: v for (k, v) in user.iteritems() if k in selection}
 		self.user = user
 		self.rename = dict(self.basic)
@@ -64,7 +64,7 @@ class TestUser(object):
 
 
 class NormalUser(TestUser):
-	def __init__(self):
+	def __init__(self, selection=None):
 		super(NormalUser, self).__init__(
 			user={
 				"username": tstrings.random_username(),
@@ -84,11 +84,12 @@ class NormalUser(TestUser):
 			},
 			rename={"username": tstrings.random_username()},
 			container=tstrings.random_name(),
+			selection=selection,
 		)
 
 
 class Utf8User(TestUser):
-	def __init__(self):
+	def __init__(self, selection=None):
 		super(Utf8User, self).__init__(
 			user={
 				"username": random_string(charset=UTF8_CHARSET),
@@ -108,11 +109,12 @@ class Utf8User(TestUser):
 			},
 			rename={"username": random_string(charset=UTF8_CHARSET)},
 			container=random_string(charset=UTF8_CHARSET),
+			selection=selection,
 		)
 
 
 class SpecialUser(TestUser):
-	def __init__(self):
+	def __init__(self, selection=None):
 		super(SpecialUser, self).__init__(
 			user={
 				"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
@@ -132,6 +134,7 @@ class SpecialUser(TestUser):
 			},
 			rename={"username": random_string(charset=SPECIAL_CHARSET_USERNAME)},
 			container=random_string(charset=SPECIAL_CHARSET),
+			selection=selection,
 		)
 
 
