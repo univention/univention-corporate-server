@@ -1,3 +1,9 @@
+univention-lib (6.0.9-10) unstable; urgency=medium
+
+  * Bug #45249: u-lib: add `ordered_set implementation
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 23 Aug 2017 14:12:33 +0200
+
 univention-lib (6.0.9-9) unstable; urgency=medium
 
   * Bug #44762: stop nscd for univention.lib.admember.check_ad_account
