@@ -10,3 +10,5 @@ desc: |
    leads to the virtual machine being stuck until the clock has caught up
    again. This has been fixed.
 bug: [45117]
+erratum: 472
+announced: 2017-08-23
