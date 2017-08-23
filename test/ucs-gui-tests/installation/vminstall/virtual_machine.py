@@ -65,12 +65,14 @@ LOCAL = '127.0.0.1'  # TODO: IPv6
 
 class VirtualMachine(object):
 
-	def __init__(self, name, server, iso_image=None):
+	def __init__(self, name, server, iso_image=None, disks=1, interfaces=1):
 		self.__created = False
 		self.name = name
 		self.vnc_host = None
 		self.server = server
 		self.iso_image = iso_image
+		self.disks = disks
+		self.interfaces = interfaces
 
 	def __enter__(self):
 		self.create()
@@ -80,7 +82,7 @@ class VirtualMachine(object):
 		self.delete()
 
 	def create(self):
-		test_vm = VmCreator(['--name', self.name, '--server', self.server, '--ucs-iso', self.iso_image])
+		test_vm = VmCreator(['--name', self.name, '--server', self.server, '--ucs-iso', self.iso_image, '--interfaces', self.interfaces, '--disks', self.disks])
 		test_vm.create_vm_if_possible()
 		self.__created = True
 		with test_vm as created_test_vm:
