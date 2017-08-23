@@ -43,7 +43,7 @@ def test_master_with_multiple_partitions(language, server, ip_address, iso_image
 		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	with VirtualMachine(name='installer_test_master_multi-partitions-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language) as installer:
+	with VirtualMachine(name='installer_test_master_multi-partitions-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='master', language=language) as installer:
 		installer.vm_config.update_ucs_after_install = False
 		installer.vm_config.use_multiple_partitions = True
 		installer.skip_boot_device_selection()
@@ -52,7 +52,7 @@ def test_master_with_multiple_partitions(language, server, ip_address, iso_image
 		installer.network_setup()
 		installer.account_setup()
 		installer.hdd_setup()
-		installer.setup_ucs_master()
+		installer.setup_ucs()
 
 	# TODO: move to some more general point
 	subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])

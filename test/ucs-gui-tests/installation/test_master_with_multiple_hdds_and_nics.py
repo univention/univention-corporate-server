@@ -43,7 +43,7 @@ def test_master_with_multiple_hdds_and_nics(language, server, ip_address, iso_im
 		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	with VirtualMachine(name='installer_test_master_multi-hdds-and-nics-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language) as installer:
+	with VirtualMachine(name='installer_test_master_multi-hdds-and-nics-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='master', language=language) as installer:
 		installer.vm_config.update_ucs_after_install = False
 		installer.skip_boot_device_selection()
 		installer.select_language()
@@ -51,7 +51,7 @@ def test_master_with_multiple_hdds_and_nics(language, server, ip_address, iso_im
 		installer.network_setup(has_multiple_network_devices=True)
 		installer.account_setup()
 		installer.hdd_setup()
-		installer.setup_ucs_master()
+		installer.setup_ucs()
 
 	# TODO: move to some more general point
 	subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])

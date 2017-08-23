@@ -54,9 +54,9 @@ def test_installing_all_roles(language, server, ip_address, iso_image):
 		os.makedirs('screen_dumps')
 
 	# TODO: the name parameter should be automatically generated
-	with VirtualMachine(name='installer_test_multi_roles-master-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], language=language) as installer:
+	with VirtualMachine(name='installer_test_multi_roles-master-%s' % (language,), server=server, iso_image=iso_image) as vm, Installer(args=['--ip', ip_address, '--dump-dir', 'screen_dumps', vm.vnc_host], role='master', language=language) as installer:
 		configure_it(installer)
-		installer.setup_ucs_master()
+		installer.setup_ucs()
 
 		contexts = []
 		i = 20
@@ -72,13 +72,12 @@ def test_installing_all_roles(language, server, ip_address, iso_image):
 			role_vm = VirtualMachine(name='installer_test_multi_roles-%s-%s' % (role, language,), server=server, iso_image=iso_image)
 			contexts.append(role_vm)
 			role_vm.__enter__()
-			role_installer = Installer(args=['--ip', role_ip_address, '--dump-dir', 'screen_dumps/%s' % (role,), '--dns-server', ip_address, role_vm.vnc_host], language=language)
+			role_installer = Installer(args=['--ip', role_ip_address, '--dump-dir', 'screen_dumps/%s' % (role,), '--dns-server', ip_address, role_vm.vnc_host], role=role, language=language)
 			contexts.append(role_installer)
 			role_installer.__enter__()
 
 			configure_it(role_installer)
-			setup_system = getattr(role_installer, 'setup_ucs_%s' % (role,))
-			setup_system()
+			role_installer.setup_ucs()
 
 		try:
 			for role in ('slave', 'backup', 'member'):
