@@ -9,3 +9,5 @@ desc: |
  * The mapping of the "sambaWriteList" property of shares has been corrected
    to not raise an exception if the value is not set.
 bug: [45207]
+erratum: 140
+announced: 2017-08-23
