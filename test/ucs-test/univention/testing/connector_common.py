@@ -76,6 +76,7 @@ class NormalUser(TestUser):
 				"postcode": random_string(numeric=True),
 				"profilepath": random_string(alpha=True, numeric=True),
 				"scriptpath": random_string(alpha=True, numeric=True),
+				"phone": random_string(numeric=True),
 				"homeTelephoneNumber": random_string(numeric=True),
 				"mobileTelephoneNumber": random_string(numeric=True),
 				"pagerTelephoneNumber": random_string(numeric=True),
@@ -99,6 +100,7 @@ class Utf8User(TestUser):
 				"postcode": random_string(numeric=True),
 				"profilepath": random_string(charset=UTF8_CHARSET),
 				"scriptpath": random_string(charset=UTF8_CHARSET),
+				"phone": random_string(numeric=True),
 				"homeTelephoneNumber": random_string(numeric=True),
 				"mobileTelephoneNumber": random_string(numeric=True),
 				"pagerTelephoneNumber": random_string(numeric=True),
@@ -122,6 +124,7 @@ class SpecialUser(TestUser):
 				"postcode": random_string(numeric=True),
 				"profilepath": random_string(charset=SPECIAL_CHARSET),
 				"scriptpath": random_string(charset=SPECIAL_CHARSET),
+				"phone": random_string(numeric=True),
 				"homeTelephoneNumber": random_string(numeric=True),
 				"mobileTelephoneNumber": random_string(numeric=True),
 				"pagerTelephoneNumber": random_string(numeric=True),
@@ -196,6 +199,7 @@ def map_udm_user_to_con(user):
 		"postcode": "postalCode",
 		"profilepath": "profilePath",
 		"scriptpath": "scriptPath",
+		"phone": "telephoneNumber",
 		"homeTelephoneNumber": "homePhone",
 		"mobileTelephoneNumber": "mobile",
 		"pagerTelephoneNumber": "pager",
@@ -241,7 +245,7 @@ def verify_udm_object(module, dn, expected_properties):
 		raise AssertionError("UDM object {} should not exist".format(dn))
 
 	for (key, value) in expected_properties.iteritems():
-		udm_value = udm_object.info.get(key)
+		udm_value = udm_object.info.get(key, [])
 		if isinstance(udm_value, basestring):
 			udm_value = set([udm_value])
 		if not isinstance(value, (tuple, list)):
