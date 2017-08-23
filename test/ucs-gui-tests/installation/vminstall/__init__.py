@@ -4,7 +4,7 @@ from vminstall.installer import Installer
 from vminstall.virtual_machine import VirtualMachine
 
 
-@contextlib.context_manager
+@contextlib.contextmanager
 def create_virtual_machine(language, role, environment, server, iso_image, ip_address, output_directory, dns_server=None):
 	name = 'installer_test_%s-%s-%s' % (language, role, environment)
 	installer_args = ['--ip', ip_address, '--dump-dir', output_directory]
