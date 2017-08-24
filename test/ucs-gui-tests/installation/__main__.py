@@ -45,6 +45,7 @@ class InstallerTests(object):
 	def __init__(self, args):
 		self.args = args
 		self.i = 1
+		self.ip_address = ''
 		self.ip_master = ''
 		self.password = ''
 
@@ -60,7 +61,8 @@ class InstallerTests(object):
 			vm_kwargs['dns_server'] = self.ip_master
 			managers.append(create_virtual_machine(self.args.language, 'master', 'regular', self.args.server, self.args.iso_image, self.ip_master, 'screen_dumps_master'))
 
-		managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.get_ip_address(), 'screen_dumps', **vm_kwargs))
+		self.ip_address = self.get_ip_address()
+		managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address(), 'screen_dumps', **vm_kwargs))
 		with contextlib.nested(*managers) as foo:
 			vm, installer = foo.pop()
 			self.password = installer.vm_config.password
@@ -83,6 +85,7 @@ class InstallerTests(object):
 			'isoimage': self.args.iso_image,
 			'role': self.args.role,
 			'environment': self.args.environment,
+			'ip_address': self.ip_address,
 			'master_ip': self.ip_master,
 			'password': self.password,
 		}
