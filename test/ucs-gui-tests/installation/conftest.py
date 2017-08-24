@@ -70,3 +70,8 @@ def master_ip():
 @pytest.fixture
 def ip_address():
 	return config.get('General', 'ip_address')
+
+
+@pytest.fixture
+def password():
+	return config.get('General', 'password')
