@@ -64,7 +64,7 @@ class InstallerTests(object):
 			managers.append(create_virtual_machine(self.args.language, 'master', 'regular', self.args.server, self.args.iso_image, self.ip_master, 'screen_dumps_master'))
 
 		self.ip_address = self.get_ip_address()
-		managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address(), 'screen_dumps', **vm_kwargs))
+		managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address, 'screen_dumps', **vm_kwargs))
 		with contextlib.nested(*managers) as foo:
 			vm, installer = foo.pop()
 			self.password = installer.vm_config.password
