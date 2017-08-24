@@ -536,12 +536,11 @@ check_qemu () {
 		echo ""
 		issues=true
 	fi
-
-	if grep -q -s machine=\[\"\'\]pc-\[01\]\[.\] /etc/libvirt/qemu/*.xml
+	if dpkg --compare-versions "$(dpkg-query -f '${Version}' -W seabios 2>/dev/null)" lt-nl 1.10.2-1
 	then
-		echo "ERROR: Found QEMU virtual machines using old machines"
-		echo "       Virtual machines using old QEMU virtual machine configurations may experience"
-		echo "       reboot problems and should be upgraded."
+		echo "ERROR: Minimum version of SeaBIOS is not 1.10.2-1"
+		echo "       Please install all errata updates and restart all virtual machines before"
+		echo "       upgrading. Otherwise virtual machines may not reboot."
 		echo ""
 		issues=true
 	fi
