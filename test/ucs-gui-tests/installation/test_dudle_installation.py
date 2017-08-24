@@ -5,12 +5,10 @@ class TestDudleInstallation(object):
 
 	def test_install_dudle(self, role, ip_address, master_ip, password):
 		self.ip = ip_address
-		self.master_ip = master_ip
+		self.master_ip = master_ip if role != 'master' else self.ip
 		self.password = password
 		if role != 'basesystem':
 			self.import_license_on_vm()
-		if role == 'master':
-			self.master_ip = self.ip
 
 		self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
 		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
