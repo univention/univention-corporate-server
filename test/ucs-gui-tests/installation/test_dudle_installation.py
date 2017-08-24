@@ -9,6 +9,8 @@ class TestDudleInstallation(object):
 		self.password = password
 		if role != 'basesystem':
 			self.import_license_on_vm()
+		if role == 'master':
+			self.master_ip = self.ip
 
 		self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
 		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
