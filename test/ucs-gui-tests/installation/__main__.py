@@ -53,6 +53,8 @@ class InstallerTests(object):
 		# TODO: screen dumps is static currently
 		if not os.path.exists('screen_dumps'):
 			os.makedirs('screen_dumps')
+		if not os.path.exists('screen_dumps_master') and self.args.role not in ('master', 'basesystem'):
+			os.makedirs('screen_dumps_master')
 
 		vm_kwargs = {}
 		managers = []
@@ -70,6 +72,8 @@ class InstallerTests(object):
 			subprocess.call(['py.test', '--junitxml', self.args.junitxml] + self.args.tests)
 
 		subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])
+		if self.args.role not in ('master', 'basesystem'):
+			subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps_master.tar.gz', 'screen_dumps_master'])
 
 	def get_ip_address(self):
 		self.i += 1
