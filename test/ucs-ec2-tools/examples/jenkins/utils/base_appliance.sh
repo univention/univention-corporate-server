@@ -292,6 +292,9 @@ DEMO_MODE=\$(echo "\$@" | grep -q "\\-\\-demo-mode" && echo 1)
 
 if [ "\$DEMO_MODE" != 1 ]; then
 	univention-app remove \${APP} --noninteractive --do-not-backup
+	if [ -d "/var/lib/univention-appcenter/apps/\${APP}/" ]; then
+		rm -rf "/var/lib/univention-appcenter/apps/\${APP}/"
+	fi
 fi
 
 exit 0
