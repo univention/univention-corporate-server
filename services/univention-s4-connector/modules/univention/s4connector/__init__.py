@@ -750,7 +750,7 @@ class ucs:
 			message = 'file emtpy' if isinstance(e, EOFError) else e.message
 			ud.debug(ud.LDAP, ud.WARN,
 				'__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
-			# ignore corrupted pickle file, but safe as rejected to not try again
+			# ignore corrupted pickle file, but save as rejected to not try again
 			self._save_rejected_ucs(filename, 'unknown')
 			return False
 
