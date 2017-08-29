@@ -190,10 +190,17 @@ class Update(UniventionAppAction):
 			self.log('Downloading "%s"...' % all_tar_url)
 			cwd = os.getcwd()
 			os.chdir(os.path.dirname(all_tar_file))
-			if self._subprocess(['zsync', all_tar_url, '-q', '-o', all_tar_file]).returncode:
+			try:
+				if self._subprocess(['zsync', all_tar_url, '-q', '-o', all_tar_file]).returncode:
+					# fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
+					#   * Range requests are not supported
+					#   * HTTP requests are altered
+					self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
+					self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
+					self._download_files(app_cache, ['all.tar.gz'])
+					self._uncompress_archive(app_cache, os.path.join(app_cache.get_cache_dir(), '.all.tar.gz'))
+			finally:
 				os.chdir(cwd)
-				raise Abort('Failed to download "%s"' % all_tar_url)
-			os.chdir(cwd)
 			self._verify_file(all_tar_file)
 			self._extract_archive(app_cache)
 			return True
@@ -283,6 +290,9 @@ class Update(UniventionAppAction):
 			# we already have a cache. our archive is just outdated...
 			return False
 		self.log('Filling the App Center file cache from our local archive %s!' % local_archive)
+		return self._uncompress_archive(app_cache, local_archive)
+
+	def _uncompress_archive(self, app_cache, local_archive):
 		try:
 			with gzip_open(local_archive) as zipped_file:
 				archive_content = zipped_file.read()
@@ -290,10 +300,10 @@ class Update(UniventionAppAction):
 					extracted_file.write(archive_content)
 		except (zlib.error, EnvironmentError) as exc:
 			self.warn('Error while reading %s: %s' % (local_archive, exc))
-			return
+			return False
 		else:
 			self._extract_archive(app_cache)
-		return True
+			return True
 
 	def _extract_archive(self, app_cache):
 		self.debug('Extracting archive in %s' % app_cache.get_cache_dir())

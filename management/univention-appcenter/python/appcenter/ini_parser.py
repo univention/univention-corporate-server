@@ -172,6 +172,7 @@ class IniSectionObject(object):
 			ret[key] = getattr(self, value.name)
 		return ret
 
+	# TODO: REMOVE, nowhere used
 	@classmethod
 	def _find_attr(cls, name):
 		canonical_name = filter(str.isalnum, name).lower()
