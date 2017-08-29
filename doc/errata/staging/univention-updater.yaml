@@ -10,6 +10,7 @@ desc: |
    any of the pre-update scripts signals an abort condition.
  * The check for QEMU virtual machines has been removed from the pre-update
    script.
- * Container updates for apps aren't displayed anymore as those are currently
-   only supported through the Appcenter module.
+ * App updates that merely update software packages inside the App's Docker
+   container are not displayed anymore as these updates are currently not
+   supported through the App Center module.
 bug: [44821, 44842, 44623]
