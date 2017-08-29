@@ -882,23 +882,6 @@ setup_appliance ()
 	  xorg/resolution=800x600
 	# xorg/device/driver=''
 
-	# Use fbdev as xorg driver
-	mkdir -p /etc/X11/xorg.conf.d
-	cat >/etc/X11/xorg.conf.d/use-fbdev-driver.conf <<__EOF__
-Section "Device"
-	Identifier  "Card0"
-	Driver      "fbdev"
-EndSection
-__EOF__
-
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config <<__EOF__
-#!/bin/sh
-rm /etc/X11/xorg.conf.d/use-fbdev-driver.conf
-ucr set xorg/autodetect=yes
-exit 0
-__EOF__
-	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
-	 
 	# Disable kernel mode set
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
 	 
@@ -954,6 +937,23 @@ exit 0
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/postfix_restart
 
+	# Use fbdev as xorg driver
+	mkdir -p /etc/X11/xorg.conf.d
+	cat >/etc/X11/xorg.conf.d/use-fbdev-driver.conf <<__EOF__
+Section "Device"
+	Identifier  "Card0"
+	Driver      "fbdev"
+EndSection
+__EOF__
+
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config <<__EOF__
+#!/bin/sh
+rm /etc/X11/xorg.conf.d/use-fbdev-driver.conf
+ucr set xorg/autodetect=yes
+exit 0
+__EOF__
+	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
+	 
 	# deactivate kernel module; prevents bootsplash from freezing in vmware
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
 
