@@ -1,3 +1,9 @@
+univention-join (9.0.3-6) unstable; urgency=medium
+
+  * Bug #42021 #42425: Improve join script error messages
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Aug 2017 16:34:38 +0200
+
 univention-join (9.0.3-5) unstable; urgency=medium
 
   * Bug #42021 #42425: Improve join script error messages 
