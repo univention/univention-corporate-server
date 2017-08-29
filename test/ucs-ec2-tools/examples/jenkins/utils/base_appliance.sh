@@ -916,7 +916,7 @@ __EOF__
 	# univention-install -y --no-install-recommends univention-x-core
 
 	# Until Bug #45280 is fixed:
-	univention-install firefox-esr=45.7.0esr-1~deb8u1
+	univention-install -y --force-yes --no-install-recommends firefox-esr=45.7.0esr-1~deb8u1
 
 	# shrink appliance image size
 	appliance_preinstall_non_univention_packages
