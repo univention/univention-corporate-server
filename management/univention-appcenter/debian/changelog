@@ -1,3 +1,9 @@
+univention-appcenter (6.0.9-4) unstable; urgency=medium
+
+  * Bug #43823: Don't set a new machine.secret when a container is updated.
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Aug 2017 15:19:34 +0200
+
 univention-appcenter (6.0.9-3) unstable; urgency=medium
 
   * Bug #45227: Fallback to download all.tar.gz via HTTPS if zsync does not
