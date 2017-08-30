@@ -12,3 +12,5 @@ bug: [45216]
 cve:
 - CVE-2016-10253
 ignore: [version.scope]
+erratum: 154
+announced: 2017-08-30
