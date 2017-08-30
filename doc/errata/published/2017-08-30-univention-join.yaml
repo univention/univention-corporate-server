@@ -9,3 +9,5 @@ desc: |
  * Improved error message for failing server join in
    univention-join.
 bug: [44429,42021,42425]
+erratum: 149
+announced: 2017-08-30
