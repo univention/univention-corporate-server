@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The uninstallation on a base system is now possible.
 bug: [44894]
+erratum: 156
+announced: 2017-08-30
