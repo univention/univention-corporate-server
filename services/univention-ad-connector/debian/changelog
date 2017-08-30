@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-26) unstable; urgency=medium
+
+  * Bug #41335: restart AD Connector in postinst
+
+ -- Florian Best <best@univention.de>  Wed, 30 Aug 2017 17:34:24 +0200
+
 univention-ad-connector (11.0.6-25) unstable; urgency=medium
 
   * Bug #36480: adc: bump python-univention-lib dependency
