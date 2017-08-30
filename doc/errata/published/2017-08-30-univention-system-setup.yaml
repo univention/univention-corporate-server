@@ -9,3 +9,5 @@ desc: |
  * The error handling during the initial system configuration has been
    improved.
 bug: [43152]
+erratum: 150
+announced: 2017-08-30
