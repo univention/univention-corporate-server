@@ -10,3 +10,5 @@ desc: |
    univention-firewall is disabled). Can be configured
    with the UCR variable "security/packetfilter/docker/disabled".
 bug: [44829]
+erratum: 148
+announced: 2017-08-30
