@@ -14,3 +14,5 @@ desc: |
    container are not displayed anymore as these updates are currently not
    supported through the App Center module.
 bug: [44821, 44842, 44623]
+erratum: 151
+announced: 2017-08-30
