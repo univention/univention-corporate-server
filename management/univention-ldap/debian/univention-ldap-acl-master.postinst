@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 eval "$(univention-config-registry shell)"
 
 restart_slapd ()
@@ -50,3 +52,5 @@ restart_slapd ()
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 13.0.7-18 && [ "$server_role" = "domaincontroller_master" ] && test -x /etc/init.d/slapd; then
 	restart_slapd
 fi
+
+exit 0

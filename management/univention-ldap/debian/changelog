@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-19) unstable; urgency=medium
+
+  * Bug #11800: fix ucslint postinst
+
+ -- Florian Best <best@univention.de>  Wed, 30 Aug 2017 13:01:09 +0200
+
 univention-ldap (13.0.7-18) unstable; urgency=medium
 
   * Bug #11800: restart slapd during this upgrade in postinst
