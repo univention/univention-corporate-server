@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 11.0.6-26;; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 11.0.6-26; then
 	/etc/init.d/univention-ad-connector crestart || true
 fi
 
