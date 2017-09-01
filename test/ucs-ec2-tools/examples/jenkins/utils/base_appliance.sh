@@ -390,7 +390,7 @@ install_pre_packages ()
 	fi
 
 	# Bug #45280 workaround
-	univention-install -y --force-yes univention-management-console-server=9.0.80-59A~4.2.0.201707241109 python-univention-management-console=9.0.80-59A~4.2.0.201707241109 univention-management-console=9.0.80-59A~4.2.0.201707241109  univention-management-console-web-server=9.0.80-59A~4.2.0.201707241109 firefox-esr=45.7.0esr-1~deb8u1
+	# univention-install -y --force-yes univention-management-console-server=9.0.80-59A~4.2.0.201707241109 python-univention-management-console=9.0.80-59A~4.2.0.201707241109 univention-management-console=9.0.80-59A~4.2.0.201707241109  univention-management-console-web-server=9.0.80-59A~4.2.0.201707241109 firefox-esr=45.7.0esr-1~deb8u1
 
 }
 
