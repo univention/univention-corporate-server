@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-1) unstable; urgency=medium
+
+  * Bug #44240: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 01 Sep 2017 12:07:42 +0200
+
 univention-appcenter (6.0.9-5) unstable; urgency=medium
 
   * Bug #44240: Update initial archives
