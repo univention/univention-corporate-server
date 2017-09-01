@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-management-console
+fix: 9.0.80-65A~4.2.0.201709011305
+desc: |
+ This update addresses the following issue(s):
+ * Since erratum 139 the umc/module/timeout was not evaluated anymore which
+   caused that the connection to module processes was closed after 30 seconds.
+bug: [45307]
