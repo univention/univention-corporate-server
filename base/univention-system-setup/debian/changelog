@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-39) unstable; urgency=medium
+
+  * Bug #45280: ignore setup/net/apply timeouts and errors
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Sep 2017 13:54:39 +0200
+
 univention-system-setup (10.0.10-38) unstable; urgency=medium
 
   * Bug #45280: add a progress polling to setup/net/apply command
