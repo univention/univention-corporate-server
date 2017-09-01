@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.2-1-en">
+<book lang="en" id="releasenotes-4.2-2-en">
 	<bookinfo>
-		<title>UCS 4.2-1 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-1</subtitle>
+		<title>UCS 4.2-2 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,23 +44,13 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-1, the first point release of Univention Corporate Server (UCS) is now
+			With Univention Corporate Server 4.2-2, the first point release of Univention Corporate Server (UCS) is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Forwarding of e-mails can now be stored per mail user in the management system.
-			</para></listitem>
-			<listitem><para>
-				Changing the password via UMC has been improved. This allows users from a Microsoft
-				Active Directory domain to change their expired password. In addition, more information
-				is shown if the password change fails.
-			</para></listitem>
-			<listitem><para>
-				The IPv6 configuration of several services have been improved, for example
-				the Nagios or proxy server configuration and the management system.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -201,10 +191,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.2-0</wordasword>:
+			Listed are the changes since UCS <wordasword>4.2-1</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.2-1-de">
+<book lang="de" id="releasenotes-4.2-2-de">
 	<bookinfo>
-		<title>UCS 4.2-1 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-1</subtitle>
+		<title>UCS 4.2-2 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,23 +44,13 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.2-1 steht das erste Point-Release für Univention Corporate Server (UCS) zur
+			Mit Univention Corporate Server 4.2-2 steht das erste Point-Release für Univention Corporate Server (UCS) zur
 			Verfügung. Es umfasst eine Reihe Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Eine Weiterleitung der E-Mails kann nun pro Mailbenutzer im Managementsystem hinterlegt werden.
-			</para></listitem>
-			<listitem><para>
-				Das Ändern des Passworts an UMC wurde verbessert. So können nun
-				auch Benutzer aus einer Microsoft Active Directory Domänen ihr abgelaufenes Passwort
-				ändern. Zusätzlich werden mehr Hinweise angezeigt, falls die Passwort Änderung fehlschlägt.
-			</para></listitem>
-			<listitem><para>
-				Die IPv6 Konfigurationsmöglichkeiten diverser Dienste wurde verbessert, bspw. in
-				der Nagios oder Proxy Server Konfiguration und im Managementsystem.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -201,10 +191,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-0</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-1</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
