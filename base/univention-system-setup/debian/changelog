@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-38) unstable; urgency=medium
+
+  * Bug #45280: add a progress polling to setup/net/apply command
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Sep 2017 13:44:18 +0200
+
 univention-system-setup (10.0.10-37) unstable; urgency=medium
 
   * Bug #43152: improve error handling of SetupScript by sending tracebacks to
