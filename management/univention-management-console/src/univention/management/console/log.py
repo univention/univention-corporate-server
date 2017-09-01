@@ -48,7 +48,7 @@ from univention.config_registry import ConfigRegistry
 logging.raiseExceptions = 0
 
 #: list of available debugging components
-COMPONENTS = (ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
+COMPONENTS = (ud.MAIN, ud.LDAP, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
 
 _ucr = ConfigRegistry()
 _debug_ready = False
