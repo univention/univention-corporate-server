@@ -164,6 +164,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The initial archives for the App Center meta data have been updated. This also adds <package>Self Service</package> to the software selection during system setup (<u:bug>44240</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
