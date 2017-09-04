@@ -228,7 +228,7 @@ define([
 			var atype = priority[a.type] || 0;
 			var btype = priority[b.type] || 0;
 			if (atype === btype) {
-				return 0;
+				return a.plugin.localeCompare(b.plugin);
 			} else if (atype > btype) {
 				return -1;
 			} else {
