@@ -21,7 +21,7 @@ umc_modules = [{
 actions = {}
 
 
-def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeout=30):
+def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 	ucr.load()
 
 	proxy = ucr.get('proxy/http')

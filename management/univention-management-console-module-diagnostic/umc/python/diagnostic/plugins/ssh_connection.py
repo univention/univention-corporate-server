@@ -22,7 +22,7 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 		pass
 
 
-def run(_umc_instance):
+def run():
 	ucr.load()
 
 	try:

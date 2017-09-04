@@ -21,7 +21,7 @@ umc_modules = [{
 }]
 
 
-def run(_umc_instance):
+def run():
 	ucr.load()
 	gateway = ucr.get('gateway')
 	if not gateway:

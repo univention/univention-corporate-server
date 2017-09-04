@@ -34,7 +34,7 @@ buttons = [{
 actions = {}  # filled at bottom
 
 
-def run(_umc_instance):
+def run():
 	MODULE.info('Checking samba logfiles for "Too many open files" messages')
 	counter = 0
 	try:
@@ -54,7 +54,7 @@ def run(_umc_instance):
 		raise Critical(umc_modules=[{'module': 'ucr'}])
 
 
-def adjust(_umc_instance):
+def adjust():
 	handler_set([
 		'samba/max_open_files=%d' % (suggested_max_open_files,)
 	])

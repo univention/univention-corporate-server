@@ -127,7 +127,7 @@ define([
 
 			array.forEach(item.links, function(link) {
 				var a = domConstruct.create('div');
-				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href, target: '_blank', rel: 'noopener noreferrer'}));
+				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href}));
 				a = new Text({innerHTML: a.innerHTML});
 				var repl = '{' + link.name  + '}';
 				if (description.indexOf(repl) !== -1) {
@@ -228,7 +228,7 @@ define([
 			var atype = priority[a.type] || 0;
 			var btype = priority[b.type] || 0;
 			if (atype === btype) {
-				return a.plugin.localeCompare(b.plugin);
+				return 0;
 			} else if (atype > btype) {
 				return -1;
 			} else {

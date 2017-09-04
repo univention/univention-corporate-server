@@ -17,11 +17,6 @@ Depends: ${misc:Depends},
  python-pycurl,
  python-psutil,
  python-dnspython,
- python-pyasn1,
- python-openssl,
- python-dateutil,
- python-requests,
- python-pexpect,
  python-paramiko
 Description: System Diagnosis UMC module
  .
