@@ -2581,7 +2581,7 @@ define([
 					this.umcpCommand('setup/net/apply', {
 						values: values,
 						demo_mode: this._isUsingPreconfiguredSetup()
-					});
+					}, false);
 
 					// wait a moment and then check the status
 					var requestDeferred = tools.defer(lang.hitch(this, function() {
