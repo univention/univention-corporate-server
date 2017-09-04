@@ -1,3 +1,9 @@
+univention-lib (6.0.9-11) unstable; urgency=medium
+
+  * Bug #38554: ulib: fix typo in `clean_old_backup()`
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 04 Sep 2017 11:41:09 +0200
+
 univention-lib (6.0.9-10) unstable; urgency=medium
 
   * Bug #45249: u-lib: add `ordered_set implementation
