@@ -44,7 +44,7 @@ import univention.admin.modules as udm_modules
 import univention.config_registry
 from univention.config_registry import handler_set as ucr_set
 from univention.config_registry import handler_unset as ucr_unset
-from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import Critical, ProblemFixed
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -180,7 +180,7 @@ def run(_umc_instance, retest=False):
 				'label': _('Set server/password/interval=21'),
 			})
 
-		raise Warning(description=' '.join(error_descriptions), buttons=buttons)
+		raise Critical(description=' '.join(error_descriptions), buttons=buttons)
 	if retest:
 		raise ProblemFixed(buttons=[])
 
