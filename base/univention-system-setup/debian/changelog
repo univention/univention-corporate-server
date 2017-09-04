@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-40) unstable; urgency=medium
+
+  * Bug #45321: disable e10s in system setup firefox profile
+    (otherwise setup page can not be displayed)
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Sep 2017 16:19:58 +0200
+
 univention-system-setup (10.0.10-39) unstable; urgency=medium
 
   * Bug #45280: ignore setup/net/apply timeouts and errors
