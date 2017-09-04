@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-04 12:53+0200\n"
+"POT-Creation-Date: 2017-09-04 13:52+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -55,7 +55,7 @@ msgstr "Füge lo zu samba/interfaces hinzu"
 msgid "Adjust to suggested limits"
 msgstr "An vorgeschlagene Limits anpassen"
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:46
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:47
 msgid "All SIDs exist and names are consistent."
 msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
@@ -171,7 +171,7 @@ msgstr "Überprüfe DNS Auflösung der Repository Server"
 msgid "Check validity of SSL certificates"
 msgstr "Überprüfe Gültigkeit der SSL Zertifikate"
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:45
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:46
 msgid "Check well known SIDs"
 msgstr "Überprüfe 'Well Known' SIDs"
 
@@ -415,7 +415,7 @@ msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:63
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:64
 msgid "No user or group with SID {sid} found, expected {expected!r}."
 msgstr ""
 "Kein Nutzer oder keine Gruppe mit SID {sid} gefunden, {expected!r} war "
@@ -823,12 +823,19 @@ msgstr ""
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:73
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:84
 msgid ""
 "User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
 msgstr ""
 "Der Nutzer oder die Gruppe mit der SID {sid} hat den Namen {actual!r}, "
 "sollte aber {expected!r} sein."
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:74
+msgid ""
+"User or group with name {name!r} has sid {actual_sid}, but should be {sid}."
+msgstr ""
+"Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
+"sollte aber {sid} haben."
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:108
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
