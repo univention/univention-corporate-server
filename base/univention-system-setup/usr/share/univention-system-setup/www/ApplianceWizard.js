@@ -2578,9 +2578,25 @@ define([
 
 					// apply network settings
 					var values = this.getValues();
-					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values, demo_mode:  this._isUsingPreconfiguredSetup()}).then(function() {
+					this.umcpCommand('setup/net/apply', {
+						values: values,
+						demo_mode: this._isUsingPreconfiguredSetup()
+					});
+
+					// wait a moment and then check the status
+					var requestDeferred = tools.defer(lang.hitch(this, function() {
+						// query state of applying the network settings
+						return this.umcpCommand('setup/net/apply_check_finished', {}, false, null, {
+							xhrTimeout: 5,
+							maxTimeoutRetry: 5,
+							messageInterval: 400
+						});
+					}), 2000).then(function() {
 						return page;
-					}));
+					});
+
+					this.standbyDuring(requestDeferred);
+					return requestDeferred;
 				});
 
 				// check fallback devices

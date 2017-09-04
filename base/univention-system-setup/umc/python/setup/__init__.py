@@ -85,6 +85,11 @@ RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
 
 
+class RequestTimeout(UMC_Error):
+	msg = _('Request Timeout')
+	status = 408
+
+
 class Instance(Base, ProgressMixin):
 
 	def __init__(self, *args, **kwargs):
@@ -94,6 +99,7 @@ class Instance(Base, ProgressMixin):
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
 		self.__keep_alive_request = None
+		self._net_apply_running = 0
 		# reset umask to default
 		os.umask(0o022)
 
@@ -621,12 +627,34 @@ class Instance(Base, ProgressMixin):
 
 		self.finished(request.id, countries)
 
+	def net_apply(self, request):
+		if self._net_apply_running > 0:
+			# do not start another process applying the network settings
+			return False
+
+		values = request.options.get('values', {})
+		demo_mode = request.options.get('demo_mode', False)
+
+		def _thread(obj):
+			obj._net_apply_running += 1
+			MODULE.process('Applying network settings')
+			with util.written_profile(values):
+				util.run_networkscrips(demo_mode)
+
+		def _finished(thread, result):
+			self._net_apply_running -= 1
+			self.finished(request.id, True)
+
+		thread = notifier.threads.Simple('net_apply', notifier.Callback(_thread, self), _finished)
+		thread.run()
+
 	@simple_response
-	def net_apply(self, values, demo_mode=False):
-		MODULE.process('Applying network settings')
-		with util.written_profile(values):
-			util.run_networkscrips(demo_mode)
-		return True
+	def net_apply_check_finished(self):
+		if self._net_apply_running > 0:
+			# raise an error if net_apply command is still running...
+			# this allows long polling on the client side (poll until successful request)
+			raise RequestTimeout()
+		return self._net_apply_running == 0
 
 	@simple_response
 	def net_interfaces(self):
