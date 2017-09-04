@@ -255,7 +255,6 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 
 	# Ok, ready and set for kerberized LDAP lookup
 	try:
-		subprocess.call(['systemctl', 'stop', 'nscd'])
 		lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
 		lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
@@ -263,7 +262,6 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
 		raise connectionFailed()
 	finally:
-		subprocess.call(['systemctl', 'start', 'nscd'])
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
