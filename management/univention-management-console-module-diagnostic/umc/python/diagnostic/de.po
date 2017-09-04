@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-04 12:27+0200\n"
+"POT-Creation-Date: 2017-09-04 12:43+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/kdc_service.py:334
+#: umc/python/diagnostic/plugins/kdc_service.py:342
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
@@ -327,7 +327,7 @@ msgstr ""
 "{ucr} oder durch automatische Anpassung auf die empfohlenen Limits zu "
 "erhöhen."
 
-#: umc/python/diagnostic/plugins/kdc_service.py:57
+#: umc/python/diagnostic/plugins/kdc_service.py:58
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
@@ -411,7 +411,7 @@ msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
 msgid "No problems were found while resolving update respositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
-#: umc/python/diagnostic/plugins/kdc_service.py:341
+#: umc/python/diagnostic/plugins/kdc_service.py:349
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
@@ -508,7 +508,7 @@ msgstr ""
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: umc/python/diagnostic/plugins/kdc_service.py:337
+#: umc/python/diagnostic/plugins/kdc_service.py:345
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
@@ -578,7 +578,7 @@ msgstr ""
 "Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
 
-#: umc/python/diagnostic/plugins/kdc_service.py:58
+#: umc/python/diagnostic/plugins/kdc_service.py:59
 msgid "The check for the KDC reachability was succesful."
 msgstr "Erreichbarkeitstest der KDCs war erfolgreich."
 
@@ -600,7 +600,7 @@ msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 
-#: umc/python/diagnostic/plugins/kdc_service.py:311
+#: umc/python/diagnostic/plugins/kdc_service.py:319
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
@@ -958,7 +958,7 @@ msgstr ""
 msgid "not found"
 msgstr "nicht gefunden"
 
-#: umc/python/diagnostic/plugins/kdc_service.py:328
+#: umc/python/diagnostic/plugins/kdc_service.py:336
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
