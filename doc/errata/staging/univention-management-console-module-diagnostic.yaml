@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-management-console-module-diagnostic
+fix: 3.0.1-23A~4.2.0.201709041543
+desc: |
+ This update addresses the following issue(s):
+ * Add new check sources_list_check.
+ * Add new check kerberos_ddns_update.
+ * Add new check kdc_service.
+ * Add new check well_known_sid_check.
+ * Add new check_server_password.
+bug: [35858,36748,38238,38974,44902]
