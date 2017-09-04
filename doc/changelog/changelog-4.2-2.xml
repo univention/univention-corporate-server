@@ -607,9 +607,6 @@
 					A display error when configuring multiple network interfaces has been corrected (<u:bug>44194</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A display error when configuring multiple network interfaces has been corrected. (<u:bug>44194</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
 					Fixed a typo on the appliance first steps overlay (<u:bug>45084</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -1142,7 +1139,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The package <package>python-trml2pdf</package>has been moved to maintained (<u:bug>39239</u:bug>).
+				The package <package>python-trml2pdf</package> has been moved to maintained (<u:bug>39239</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Configure systemd-journald.service for time limited log retention (<u:bug>44234</u:bug>).
@@ -1151,7 +1148,7 @@
 				Phantomjs is now a maintained package (<u:bug>44990</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The package <package>univention-app-appliance</package>is now maintained (<u:bug>44990</u:bug>).
+				The package <package>univention-app-appliance</package> is now maintained (<u:bug>44990</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The transition from bootsplash to welcome screen is now flicker free. Improved systemd integration for the welcome screen (<u:bug>44061</u:bug>).
