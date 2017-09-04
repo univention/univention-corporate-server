@@ -36,20 +36,20 @@
 # Example to cleanup LDAP-backups:
 # clean_old_backups 'ldap-backup_*.\(log\|ldif\)'
 clean_old_backups () {
-	arg_pattern="$1"
-	arg_max_age="$2"
+	local arg_pattern="$1"
+	local arg_max_age="$2"
 	[ -z "$arg_pattern" ] && return 1
 	eval "$(univention-config-registry shell backup/clean/.*)"
 
-	backup_dir="/var/univention-backup"
-	pattern="$backup_dir/$arg_pattern"
-	max_age="${arg_max_age:-$backup_clean_max_age}"
+	local backup_dir="/var/univention-backup"
+	local pattern="$backup_dir/$arg_pattern"
+	local max_age="${arg_max_age:-$backup_clean_max_age}"
 
 	if [ -n "$max_age" ]; then
 		echo find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern"
-		count=$(find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" | wc -l)
+		local count=$(find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" | wc -l)
 		if [ "$count" -ge "${backup_clean_min_backups:-10}" ]; then
-				find "$backup_dir" -type f -mtime +"$backup_clean_max_age" -regex "$pattern" -delete
+				find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" -delete
 		fi
 	fi
 }
