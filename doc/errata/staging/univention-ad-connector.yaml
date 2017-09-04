@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [1,2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-ad-connector
+fix: 11.0.6-27A~4.2.0.201708311048
+desc: |
+ This update addresses the following issue(s):
+ * The AD-Connector skips (re)recreation of UDM deleted objects.
+ * The error handling in the UMC module has been improved.
+ * Some objects were identified as the wrong object type. The identification
+   handling has been fixed.
+ * It is possible to start the AD Connector service process in foreground.
+ * It is now prevented to start multiple instances of the AD Connector.
+ * The AD Connector now handles duplicate phone numbers.
+ * The AD Connector now implements the diff-mode which fixes problems with
+   concurrent modifications.
+ * LDAP operations are now correctly escaped in the AD Connector.
+ * Fixed errors in the SQLite escaping in the AD Connector.
+ * Fixed a deletion problem with nested groups in the AD Connector.
+ * univention-adsearch now accepts multiple attributes in the ldap filter.
+bug: [40813, 41619, 45011, 45037, 41335, 36480, 18501, 11658, 38619, 18680, 45134]
