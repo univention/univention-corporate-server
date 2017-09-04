@@ -9,3 +9,4 @@ desc: |
  * On reset the original BIOS code was not copied back completely, which could
    result in virtual machines getting stuck after reboots.
 bug: [44084]
+ignore: [version.scope]
