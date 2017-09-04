@@ -34,6 +34,7 @@
 import cPickle
 import copy
 import os
+import re
 import random
 import string
 import sys
@@ -569,8 +570,12 @@ class ucs:
 		_d = ud.function('ldap._get_config_items')
 		return self.config.items(section)
 
-	def _save_rejected_ucs(self, filename, dn):
+	def _save_rejected_ucs(self, filename, dn, resync=True, reason=''):
 		_d = ud.function('ldap._save_rejected_ucs')
+		if not resync:
+			# Note that unescaped <> are invalid in DNs. See also:
+			# `_list_rejected_ucs()`.
+			dn = '<NORESYNC{}>;{}'.format('=' + reason if reason else '', dn)
 		modstring_dn = univention.s4connector.s4.compatible_modstring(dn)
 		self._set_config_option('UCS rejected', filename, modstring_dn)
 
@@ -582,22 +587,21 @@ class ucs:
 		_d = ud.function('ldap._remove_rejected_ucs')
 		self._remove_config_option('UCS rejected', filename)
 
+	def list_rejected_ucs(self, filter_noresync=False):
+		rejected = self._get_config_items('UCS rejected')
+		if filter_noresync:
+			no_resync = re.compile('^<NORESYNC(=.*?)?>;')
+			return [(fn, dn) for (fn, dn) in rejected if
+				no_resync.match(dn) is None]
+		return rejected
+
 	def _list_rejected_ucs(self):
 		_d = ud.function('ldap._list_rejected_ucs')
-		result = []
-		for i in self._get_config_items('UCS rejected'):
-			result.append(i)
-		return result
+		return self.list_rejected_ucs(filter_noresync=True)
 
 	def _list_rejected_filenames_ucs(self):
 		_d = ud.function('ldap._list_rejected_filenames_ucs')
-		result = []
-		for filename, dn in self._get_config_items('UCS rejected'):
-			result.append(filename)
-		return result
-
-	def list_rejected_ucs(self):
-		return self._get_config_items('UCS rejected')
+		return [fn for (fn, dn) in self.list_rejected_ucs()]
 
 	def _encode_dn_as_config_option(self, dn):
 		return dn
@@ -748,10 +752,10 @@ class ucs:
 			return True  # file not found so there's nothing to sync
 		except (cPickle.UnpicklingError, EOFError) as e:
 			message = 'file emtpy' if isinstance(e, EOFError) else e.message
-			ud.debug(ud.LDAP, ud.WARN,
+			ud.debug(ud.LDAP, ud.ERROR,
 				'__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
 			# ignore corrupted pickle file, but save as rejected to not try again
-			self._save_rejected_ucs(filename, 'unknown')
+			self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 			return False
 
 		if dn == 'cn=Subschema':
@@ -1098,10 +1102,10 @@ class ucs:
 						continue  # file not found so there's nothing to sync
 					except (cPickle.UnpicklingError, EOFError) as e:
 						message = 'file emtpy' if isinstance(e, EOFError) else e.message
-						ud.debug(ud.LDAP, ud.WARN,
+						ud.debug(ud.LDAP, ud.ERROR,
 							'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
 						# ignore corrupted pickle file, but save as rejected to not try again
-						self._save_rejected_ucs(filename, 'unknown')
+						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
 
 					for i in [0, 1]:  # do it twice if the LDAP connection was closed
