@@ -38,6 +38,7 @@ import random
 import ldap
 import ipaddr
 import dns.resolver
+import dns.exception
 from pyasn1.type import tag
 from pyasn1.type import char
 from pyasn1.type import univ
@@ -277,6 +278,17 @@ def is_service_active(service):
 	return False
 
 
+def resolve_kdc_record(protocol, domainname):
+	kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
+	try:
+		result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
+	except dns.exception.DNSException:
+		result = list()
+
+	for record in result:
+		yield (record.target.to_text(True), record.port, protocol)
+
+
 def run(_umc_instance, retest=False):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
@@ -287,13 +299,9 @@ def run(_umc_instance, retest=False):
 	kdc_fqds = configRegistry.get('kerberos/kdc', '').split()
 	dns_lookup_kdc = configRegistry.is_true('kerberos/defaults/dns_lookup_kdc', True)
 	if not kdc_fqds or dns_lookup_kdc:
-		kerberos_dns_fqdn_tcp = '_kerberos._tcp.{}'.format(configRegistry.get('domainname'))
-		result_tcp = dns.resolver.query(kerberos_dns_fqdn_tcp, 'SRV')
-		kdc_to_check = [(r.target.to_text(True), r.port, 'tcp') for r in result_tcp]
-
-		kerberos_dns_fqdn_udp = '_kerberos._udp.{}'.format(configRegistry.get('domainname'))
-		result_udp = dns.resolver.query(kerberos_dns_fqdn_udp, 'SRV')
-		kdc_to_check.extend((r.target.to_text(True), r.port, 'udp') for r in result_udp)
+		domainname = configRegistry.get('domainname')
+		kdc_to_check = list(resolve_kdc_record('tcp', domainname))
+		kdc_to_check.extend(resolve_kdc_record('udp', domainname))
 	else:
 		kdc_to_check = [(kdc, 88, 'tcp') for kdc in kdc_fqds]
 		kdc_to_check.extend((kdc, 88, 'udp') for kdc in kdc_fqds)
