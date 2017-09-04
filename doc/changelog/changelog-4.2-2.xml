@@ -17,6 +17,79 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
+						<package>postgresql-9.4</package> (<u:cve>2017-7486</u:cve> <u:cve>2017-7484</u:cve> <u:cve>2017-7485</u:cve> <u:cve>2017-7546</u:cve> <u:cve>2017-7547</u:cve> <u:cve>2017-7548</u:cve>) (<u:bug>44679</u:bug> <u:bug>45211</u:bug>). 
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>postgresql-9.1</package> (<u:cve>2017-7486</u:cve> <u:cve>2017-7546</u:cve> <u:cve>2017-7547</u:cve>) (<u:bug>45237</u:bug>). 
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>erlang</package> (<u:cve>2016-10253</u:cve>) (<u:bug>45216</u:bug>). 
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wget</package> (<u:cve>2017-6508</u:cve>) (<u:bug>45179</u:bug>). 
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vim</package> (<u:cve>2017-6350</u:cve> <u:cve>2017-6349</u:cve>) (<u:bug>45178</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>unzip</package> (<u:cve>2014-9913</u:cve> <u:cve>2016-9844</u:cve>) (<u:bug>45177</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sudo</package> (<u:cve>2017-1000367</u:cve>) (<u:bug>44730</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-esr</package> (<u:cve>2016-10196</u:cve> <u:cve>2017-5031</u:cve> <u:cve>2017-5398</u:cve> <u:cve>2017-5400</u:cve> <u:cve>2017-5401</u:cve> <u:cve>2017-5402</u:cve> <u:cve>2017-5404</u:cve> <u:cve>2017-5405</u:cve> <u:cve>2017-5407</u:cve> <u:cve>2017-5408</u:cve> <u:cve>2017-5410</u:cve> <u:cve>2017-5429</u:cve> <u:cve>2017-5430</u:cve> <u:cve>2017-5432</u:cve> <u:cve>2017-5433</u:cve> <u:cve>2017-5434</u:cve> <u:cve>2017-5435</u:cve> <u:cve>2017-5436</u:cve> <u:cve>2017-5438</u:cve> <u:cve>2017-5439</u:cve> <u:cve>2017-5440</u:cve> <u:cve>2017-5441</u:cve> <u:cve>2017-5442</u:cve> <u:cve>2017-5443</u:cve> <u:cve>2017-5444</u:cve> <u:cve>2017-5445</u:cve> <u:cve>2017-5446</u:cve> <u:cve>2017-5447</u:cve> <u:cve>2017-5448</u:cve> <u:cve>2017-5449</u:cve> <u:cve>2017-5451</u:cve> <u:cve>2017-5454</u:cve> <u:cve>2017-5455</u:cve> <u:cve>2017-5456</u:cve> <u:cve>2017-5459</u:cve> <u:cve>2017-5460</u:cve> <u:cve>2017-5461</u:cve> <u:cve>2017-5462</u:cve> <u:cve>2017-5464</u:cve> <u:cve>2017-5465</u:cve> <u:cve>2017-5466</u:cve> <u:cve>2017-5467</u:cve> <u:cve>2017-5469</u:cve> <u:cve>2017-5470</u:cve> <u:cve>2017-5472</u:cve> <u:cve>2017-7749</u:cve> <u:cve>2017-7750</u:cve> <u:cve>2017-7751</u:cve> <u:cve>2017-7752</u:cve> <u:cve>2017-7753</u:cve> <u:cve>2017-7754</u:cve> <u:cve>2017-7755</u:cve> <u:cve>2017-7756</u:cve> <u:cve>2017-7757</u:cve> <u:cve>2017-7758</u:cve> <u:cve>2017-7760</u:cve> <u:cve>2017-7761</u:cve> <u:cve>2017-7763</u:cve> <u:cve>2017-7764</u:cve> <u:cve>2017-7765</u:cve> <u:cve>2017-7766</u:cve> <u:cve>2017-7767</u:cve> <u:cve>2017-7768</u:cve> <u:cve>2017-7778</u:cve> <u:cve>2017-7779</u:cve> <u:cve>2017-7784</u:cve> <u:cve>2017-7785</u:cve> <u:cve>2017-7786</u:cve> <u:cve>2017-7787</u:cve> <u:cve>2017-7791</u:cve> <u:cve>2017-7792</u:cve> <u:cve>2017-7798</u:cve> <u:cve>2017-7800</u:cve> <u:cve>2017-7801</u:cve> <u:cve>2017-7802</u:cve> <u:cve>2017-7803</u:cve> <u:cve>2017-7807</u:cve> <u:cve>2017-7809</u:cve>) (<u:bug>44858</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mysql-5.5</package> (<u:cve>2017-3302</u:cve> <u:cve>2017-3305</u:cve> <u:cve>2017-3308</u:cve> <u:cve>2017-3309</u:cve> <u:cve>2017-3329</u:cve> <u:cve>2017-3453</u:cve> <u:cve>2017-3456</u:cve> <u:cve>2017-3461</u:cve> <u:cve>2017-3462</u:cve> <u:cve>2017-3463</u:cve> <u:cve>2017-3464</u:cve> <u:cve>2017-3600</u:cve> <u:cve>2017-3635</u:cve> <u:cve>2017-3636</u:cve> <u:cve>2017-3641</u:cve> <u:cve>2017-3648</u:cve> <u:cve>2017-3651</u:cve> <u:cve>2017-3652</u:cve> <u:cve>2017-3653</u:cve>) (<u:bug>44519</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bind9</package> (<u:cve>2016-2775</u:cve> <u:cve>2016-2776</u:cve> <u:cve>2016-8864</u:cve> <u:cve>2016-9131</u:cve> <u:cve>2016-9147</u:cve> <u:cve>2016-9444</u:cve> <u:cve>2017-3142</u:cve> <u:cve>2017-3143</u:cve> <u:cve>2017-3136</u:cve> <u:cve>2017-3137</u:cve> <u:cve>2017-3138</u:cve> <u:cve>2017-3135</u:cve>) (<u:bug>44656</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2017-11103</u:cve> <u:cve>2017-2619</u:cve> <u:cve>2017-2619</u:cve>) (<u:bug>44982</u:bug> <u:bug>44891</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>heimdal</package> (<u:cve>2017-11103</u:cve>) (<u:bug>44984</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>eject</package> (<u:cve>2017-6964</u:cve>) (<u:bug>44410</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wireshark</package> (<u:cve>2017-5596</u:cve> <u:cve>2017-5597</u:cve> <u:cve>2017-6467</u:cve> <u:cve>2017-6468</u:cve> <u:cve>2017-6469</u:cve> <u:cve>2017-6470</u:cve> <u:cve>2017-6471</u:cve> <u:cve>2017-6473</u:cve> <u:cve>2017-6474</u:cve> <u:cve>2017-6472</u:cve> <u:cve>2017-6014</u:cve>) (<u:bug>44401</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image</package>, <package>univention-kernel-image-signed</package>, <package>linux</package> (<u:cve>2017-2636</u:cve> <u:cve>2017-6874</u:cve> <u:cve>2016-2188</u:cve> <u:cve>2017-7184</u:cve> <u:cve>2017-7187</u:cve> <u:cve>2017-7261</u:cve> <u:cve>2017-7294</u:cve> <u:cve>2017-7308</u:cve> <u:cve>2016-9604</u:cve> <u:cve>2017-2596</u:cve> <u:cve>2017-2671</u:cve> <u:cve>2017-5986</u:cve> <u:cve>2017-6353</u:cve> <u:cve>2017-6951</u:cve> <u:cve>2017-7374</u:cve> <u:cve>2017-7472</u:cve> <u:cve>2017-7477</u:cve> <u:cve>2017-7487</u:cve> <u:cve>2017-7618</u:cve> <u:cve>2017-7645</u:cve> <u:cve>2017-7889</u:cve> <u:cve>2017-8061</u:cve> <u:cve>2017-8063</u:cve> <u:cve>2017-8064</u:cve> <u:cve>2017-8067</u:cve> <u:cve>2017-9150</u:cve> <u:cve>2017-1000363</u:cve> <u:cve>2017-8890</u:cve> <u:cve>2017-9074</u:cve> <u:cve>2017-9075</u:cve> <u:cve>2017-9076</u:cve> <u:cve>2017-9077</u:cve> <u:cve>2017-9242</u:cve> <u:cve>2017-9211</u:cve> <u:cve>2017-7346</u:cve> <u:cve>2017-9605</u:cve> <u:cve>2017-1000380</u:cve> <u:cve>2017-0605</u:cve> <u:cve>2017-7895</u:cve> <u:cve>2017-8924</u:cve> <u:cve>2017-8925</u:cve> <u:cve>2017-1000364</u:cve>) (<u:bug>44416</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>shadow</package> (<u:cve>2017-2616</u:cve>) (<u:bug>44673</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rtmpdump</package> (<u:cve>2015-8270</u:cve> <u:cve>2015-8271</u:cve> <u:cve>2015-8272</u:cve>) (<u:bug>44681</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openldap</package> (<u:cve>2017-9287</u:cve>) (<u:bug>44731</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>nss</package> (<u:cve>2017-5461</u:cve> <u:cve>2017-5462</u:cve> <u:cve>2017-7502</u:cve>) (<u:bug>44777</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libtasn1-6</package> (<u:cve>2017-6891</u:cve>) (<u:bug>44689</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>jbig2dec</package> (<u:cve>2017-7885</u:cve> <u:cve>2017-7975</u:cve> <u:cve>2017-7976</u:cve> <u:cve>2016-9601</u:cve>) (<u:bug>44407</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libreoffice</package> (<u:cve>2017-7870</u:cve>) (<u:bug>44664</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>imagemagick</package> (<u:cve>2017-7606</u:cve> <u:cve>2017-7619</u:cve> <u:cve>2017-7941</u:cve> <u:cve>2017-7943</u:cve> <u:cve>2017-8343</u:cve> <u:cve>2017-8344</u:cve> <u:cve>2017-8345</u:cve> <u:cve>2017-8346</u:cve> <u:cve>2017-8347</u:cve> <u:cve>2017-8348</u:cve> <u:cve>2017-8349</u:cve> <u:cve>2017-8350</u:cve> <u:cve>2017-8351</u:cve> <u:cve>2017-8352</u:cve> <u:cve>2017-8353</u:cve> <u:cve>2017-8354</u:cve> <u:cve>2017-8355</u:cve> <u:cve>2017-8356</u:cve> <u:cve>2017-8357</u:cve> <u:cve>2017-8765</u:cve> <u:cve>2017-8830</u:cve> <u:cve>2017-9144</u:cve> <u:cve>2017-9142</u:cve> <u:cve>2017-9143</u:cve> <u:cve>2017-9098</u:cve> <u:cve>2017-6498</u:cve> <u:cve>2017-6500</u:cve> <u:cve>2017-6499</u:cve> <u:cve>2017-6501</u:cve> <u:cve>2017-6497</u:cve>) (<u:bug>44403</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>git</package> (<u:cve>2017-8386</u:cve>) (<u:bug>44677</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ghostscript</package> (<u:cve>2016-10219</u:cve> <u:cve>2016-10220</u:cve> <u:cve>2017-5951</u:cve> <u:cve>2017-7207</u:cve> <u:cve>2017-8291</u:cve>) (<u:bug>44569</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
