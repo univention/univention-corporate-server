@@ -909,8 +909,6 @@ setup_appliance ()
 	apt-get update
 	download_system_setup_packages $@
 
-	backup_current_local_packagecache
-
 	# Cleanup apt archive
 	apt-get update
 
