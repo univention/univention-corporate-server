@@ -70,7 +70,7 @@ class NSUpdateError(UpdateError):
 		self.domainname = domainname
 
 	def __str__(self):
-		msg = _('`nsupdate` existence check for domain {domain} failed.')
+		msg = _('`nsupdate` check for domain {domain} failed.')
 		return msg.format(domain=self.domainname)
 
 
@@ -88,9 +88,9 @@ def kinit(principal, keytab=None, password_file=None):
 
 
 def nsupdate(hostname, domainname):
-	process = subprocess.Popen(('nsupdate', '-g'), stdin=subprocess.PIPE,
+	process = subprocess.Popen(('nsupdate', '-g' , '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	cmd = 'server {host}.{domain}\nprereq yxdomain {domain}\n'
+	cmd = 'server {host}.{domain}\nprereq yxdomain {domain}\nsend\n'
 	_ = process.communicate(cmd.format(host=hostname, domain=domainname))
 	if process.poll() != 0:
 		raise NSUpdateError(hostname, domainname)

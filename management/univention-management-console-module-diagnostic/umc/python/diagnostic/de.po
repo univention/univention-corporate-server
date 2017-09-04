@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-04 12:25+0200\n"
+"POT-Creation-Date: 2017-09-04 12:27+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -878,9 +878,8 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/kerberos_ddns_update.py:73
 #, python-brace-format
-msgid "`nsupdate` existence check for domain {domain} failed."
-msgstr ""
-"`nsupdate` Existenzprüfung für die Domänne {domain} ist fehlgeschlagen."
+msgid "`nsupdate` check for domain {domain} failed."
+msgstr "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen."
 
 #: umc/python/diagnostic/plugins/samba_tool_dbcheck.py:113
 msgid "`samba-tool dbcheck` found no problems with the local AD database."
