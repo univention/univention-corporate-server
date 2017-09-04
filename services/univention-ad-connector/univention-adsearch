@@ -34,7 +34,6 @@
 
 import sys
 import os
-import re
 import univention.config_registry
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
@@ -43,8 +42,6 @@ import ldap.sasl
 import subprocess
 import string
 import base64
-
-objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
 
 
 class kerberosAuthenticationFailed(Exception):
@@ -87,37 +84,6 @@ def encode_object_sid_to_binary_ldapfilter(sid_string):
 	return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
 
 
-def replace_filter(filter_s):
-	r"""
-	>>> replace_filter('(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)')
-	'(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)'
-	>>> replace_filter('(&(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)(!(lastLogoff=0)))')
-	'(&(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)(!(lastLogoff=0)))'
-	>>> replace_filter('(objectsid=*)')
-	'(objectSid=*)'
-	>>> replace_filter('(objectsid=S-1-5-21*)')
-	'(objectSid=S-1-5-21*)'
-	>>> replace_filter('objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001')
-	'objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00'
-	>>> replace_filter('objectsid=*')
-	'objectSid=*'
-	>>> replace_filter('objectsid=S-1-5-21*')
-	'objectSid=S-1-5-21*'
-	>>> replace_filter('(objectsid=\\))')
-	'(objectsid=\\))'
-	>>> replace_filter('objectsid=\\)')
-	'objectsid=\\)'
-	"""
-	return objectsid_pattern.sub(replace_object_sid, filter_s)
-
-
-def replace_object_sid(match):
-	sid = match.group(1)
-	if '*' not in sid:
-		sid = encode_object_sid_to_binary_ldapfilter(sid)
-	return 'objectSid=%s' % (sid,)
-
-
 def usage():
 	print ""
 	print "This is univention-adsearch"
@@ -149,9 +115,7 @@ if len(sys.argv) < oiterator + 1:
 	print "ERROR: no filter given"
 	usage()
 	sys.exit(1)
-
-filter = replace_filter(sys.argv[oiterator].decode('latin'))
-
+filter_tmp = sys.argv[oiterator].decode('latin')
 
 if len(sys.argv) > oiterator + 1:
 	filter_attributes = sys.argv[oiterator + 1].split(',')
@@ -174,7 +138,11 @@ if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/por
 	sys.exit(1)
 
 
-protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
+protocol = 'ldap'
+ldaps = configRegistry.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower()  # tls or ssl
+if ldaps in ['yes', 'true', 'enabled', '1']:
+	protocol = 'ldaps'
+
 ldapuri = "%s://%s:%d" % (protocol, configRegistry['%s/ad/ldap/host' % CONFIGBASENAME], int(configRegistry['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]
@@ -184,12 +152,15 @@ login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
 
-ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
 
-start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
-if start_tls and ca_file:
+
+start_tls = 2
+if '%s/ad/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
+	start_tls = 0
+elif ca_file:
 	ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_file)
-elif start_tls:
+else:
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 lo = ldap.initialize(ldapuri)
@@ -221,6 +192,14 @@ lc1 = LDAPControl('1.2.840.113556.1.4.417', criticality=1)
 page_size = 1000
 
 lc2 = SimplePagedResultsControl(True, page_size, '')
+
+filter = ""
+
+for i in filter_tmp.split(","):
+	j = i.split("=")
+	if j[0] == "objectSid":
+		j[1] = encode_object_sid_to_binary_ldapfilter(j[1])
+	filter += (j[0] + "=" + j[1])
 
 if filter_attributes:
 	msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1, lc2])

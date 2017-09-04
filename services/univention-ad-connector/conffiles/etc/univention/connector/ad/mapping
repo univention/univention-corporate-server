@@ -78,11 +78,12 @@ else:
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
 @!@
-from univention.connector.ad.mapping import ignore_filter_from_tmpl
-ignore_filter = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
-ignore_filter = '(|{}{})'.format('(userAccountControl=2080)', ignore_filter)
+ignore_filter = '(userAccountControl=2080)'
+for user in configRegistry.get('connector/ad/mapping/user/ignorelist', '').split(','):
+	if user:
+		ignore_filter += '(uid=%s)(CN=%s)' % (user, user)
 if ignore_filter:
-	print "			ignore_filter=%r," % ignore_filter
+	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -99,19 +100,16 @@ if ignore_filter:
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
-							single_value=True,
 						),
 					'givenName' : univention.connector.attribute (
 							ucs_attribute='firstname',
 							ldap_attribute='givenName',
 							con_attribute='givenName',
-							single_value=True,
 						),
 					'sn': univention.connector.attribute (
 							ucs_attribute='lastname',
 							ldap_attribute='sn',
 							con_attribute='sn',
-							single_value=True,
 						),
 				},
 
@@ -150,7 +148,6 @@ if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True):
 							@!@
 print 'con_attribute=\'%s\',' % (configRegistry.get('connector/ad/mapping/organisation', 'company'))
 							@!@
-							single_value=True,
 						),
 						@!@
 if 'connector/ad/mapping/user/exchange' in configRegistry and configRegistry['connector/ad/mapping/user/exchange'] in ['yes','true']:
@@ -159,19 +156,16 @@ if 'connector/ad/mapping/user/exchange' in configRegistry and configRegistry['co
 							ucs_attribute='Exchange-Homeserver',
 							ldap_attribute='univentionADmsExchHomeServerName',
 							con_attribute='msExchHomeServerName',
-							single_value=True,
 					),
 					'Exchange-homeMDB': univention.connector.attribute (
 							ucs_attribute='Exchange-homeMDB',
 							ldap_attribute='univentionADhomeMDB',
 							con_attribute='homeMDB',
-							single_value=True,
 					),
 					'Exchange-Nickname': univention.connector.attribute (
 							ucs_attribute='Exchange-Nickname',
 							ldap_attribute='univentionADmailNickname',
 							con_attribute='mailNickname',
-							single_value=True,
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/user/primarymail'):
@@ -194,7 +188,6 @@ if configRegistry.is_true('connector/ad/mapping/user/primarymail'):
 						ucs_attribute='mailPrimaryAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
-						single_value=True,
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
@@ -220,31 +213,26 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 						ucs_attribute='description',
 						ldap_attribute='description',
 						con_attribute='description',
-						single_value=True,
 					),
 					'street': univention.connector.attribute (
 							ucs_attribute='street',
 							ldap_attribute='street',
 							con_attribute='streetAddress',
-							single_value=True,
 						),
 					'city': univention.connector.attribute (
 							ucs_attribute='city',
 							ldap_attribute='l',
 							con_attribute='l',
-							single_value=True,
 						),
 					'postcode': univention.connector.attribute (
 							ucs_attribute='postcode',
 							ldap_attribute='postalCode',
 							con_attribute='postalCode',
-							single_value=True,
 						),
 					'sambaWorkstations': univention.connector.attribute (
 							ucs_attribute='sambaUserWorkstations',
 							ldap_attribute='sambaUserWorkstations',
 							con_attribute='userWorkstations',
-							single_value=True,
 						),
 					#'sambaLogonHours': univention.connector.attribute (
 					#		ucs_attribute='sambaLogonHours',
@@ -255,13 +243,11 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 							ucs_attribute='profilepath',
 							ldap_attribute='sambaProfilePath',
 							con_attribute='profilePath',
-							single_value=True,
 						),
 					'scriptpath': univention.connector.attribute (
 							ucs_attribute='scriptpath',
 							ldap_attribute='sambaLogonScript',
 							con_attribute='scriptPath',
-							single_value=True,
 						),
 					'telephoneNumber': univention.connector.attribute (
 							ucs_attribute='phone',
@@ -291,7 +277,6 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
 							con_attribute='displayName',
-							single_value=True,
 						),
 			},
 
@@ -312,14 +297,14 @@ else:
 			scope='sub',
 
 @!@
-from univention.connector.ad.mapping import ignore_filter_from_attr
-ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
+ignore_filter = ''
+ignore_filter += '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
 if configRegistry.is_false('connector/ad/mapping/group/grouptype', False):
-	ignore_filter_parts += '(sambaGroupType=5)(groupType=5)'
-ignore_filter_parts += ignore_filter_from_attr('cn', 'connector/ad/mapping/group/ignorelist')
-ignore_filter = '(|{})'.format(ignore_filter_parts)
-if ignore_filter:
-	print "			ignore_filter=%r," % ignore_filter
+	ignore_filter += '(sambaGroupType=5)(groupType=5)'
+for group in configRegistry.get('connector/ad/mapping/group/ignorelist', '').split(','):
+	if group:
+		ignore_filter += '(cn=%s)' % (group)
+print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -345,7 +330,6 @@ if ignore_filter:
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
-							single_value=True,
 						),
 @!@
 if configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
@@ -353,14 +337,12 @@ if configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
 	print "							ucs_attribute='adGroupType',"
 	print "							ldap_attribute='univentionGroupType',"
 	print "							con_attribute='groupType',"
-	print "							single_value=True,"
 	print "					),"
 @!@
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
-							single_value=True,
 						),
 						@!@
 if configRegistry.is_true('connector/ad/mapping/group/primarymail'):
@@ -384,7 +366,6 @@ if configRegistry.is_true('connector/ad/mapping/group/primarymail'):
 						ucs_attribute='mailAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
-						single_value=True,
 					),
 					"""
 if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
@@ -411,7 +392,6 @@ if 'connector/ad/mapping/group/exchange' in configRegistry and configRegistry['c
 						ucs_attribute='Exchange-Nickname',
 						ldap_attribute='univentionADmailNickname',
 						con_attribute='mailNickname',
-						single_value=True,
 					),
 					"""
 					@!@
@@ -459,10 +439,12 @@ else:
 
 			ignore_subtree = global_ignore_subtree,
 @!@
-from univention.connector.ad.mapping import ignore_filter_from_attr
-ignore_filter = ignore_filter_from_attr('cn', 'connector/ad/mapping/windowscomputer/ignorelist')
+ignore_filter = ''
+for computer in configRegistry.get('connector/ad/mapping/windowscomputer/ignorelist', '').split(','):
+	if computer:
+		ignore_filter += '(cn=%s)' % (computer)
 if ignore_filter:
-	print "			ignore_filter=%r," % ignore_filter
+	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			con_create_objectclass=['top', 'computer' ],
@@ -476,32 +458,27 @@ if ignore_filter:
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
-							single_value=True,
 						),
 					'samAccountName': univention.connector.attribute (
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
 							compare_function=univention.connector.compare_lowercase,
 							sync_mode='write',
-							single_value=True,
 						),
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 					'operatingSystem': univention.connector.attribute (
 							ucs_attribute='operatingSystem',
 							ldap_attribute='univentionOperatingSystem',
-							con_attribute='operatingSystem',
-							single_value=True,
+							con_attribute='operatingSystem'
 						),
 					'operatingSystemVersion': univention.connector.attribute (
 							ucs_attribute='operatingSystemVersion',
 							ldap_attribute='univentionOperatingSystemVersion',
-							con_attribute='operatingSystemVersion',
-							single_value=True,
+							con_attribute='operatingSystemVersion'
 						),
 				},
 
@@ -521,10 +498,12 @@ else:
 			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))', # builtinDomain is cn=builtin (with group cn=Administrators)
 
 @!@
-from univention.connector.ad.mapping import ignore_filter_from_attr
-ignore_filter = ignore_filter_from_attr('cn', 'connector/ad/mapping/container/ignorelist', 'mail,kerberos')
+ignore_filter = ''
+for cn in configRegistry.get('connector/ad/mapping/container/ignorelist', 'mail,kerberos').split(','):
+	if cn:
+		ignore_filter += '(cn=%s)' % (cn)
 if ignore_filter:
-	print "			ignore_filter=%r," % ignore_filter
+	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -542,13 +521,11 @@ if ignore_filter:
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 				},
 
@@ -569,10 +546,12 @@ else:
 			con_search_filter='objectClass=organizationalUnit',
 
 @!@
-from univention.connector.ad.mapping import ignore_filter_from_attr
-ignore_filter = ignore_filter_from_attr('ou', 'connector/ad/mapping/ou/ignorelist')
+ignore_filter = ''
+for ou in configRegistry.get('connector/ad/mapping/ou/ignorelist', '').split(','):
+	if ou:
+		ignore_filter += '(ou=%s)' % (ou)
 if ignore_filter:
-	print "			ignore_filter=%r," % ignore_filter
+	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -590,13 +569,11 @@ if ignore_filter:
 							con_attribute='ou',
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 				},
 		),

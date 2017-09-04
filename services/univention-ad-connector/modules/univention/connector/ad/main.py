@@ -34,7 +34,6 @@
 
 import sys
 import string
-import fcntl
 import os
 import time
 import signal
@@ -54,7 +53,6 @@ parser = OptionParser()
 parser.add_option(
 	"--configbasename", dest="configbasename",
 	help="", metavar="CONFIGBASENAME", default="connector")
-parser.add_option('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
 (options, args) = parser.parse_args()
 
 CONFIGBASENAME = "connector"
@@ -68,13 +66,7 @@ sys.path = ['/etc/univention/%s/ad/' % CONFIGBASENAME] + sys.path
 import mapping
 
 
-def bind_stdout():
-	if options.daemonize:
-		sys.stdout = open(STATUSLOGFILE, 'w+')
-	return sys.stdout
-
-
-def daemon(lock_file):
+def daemon():
 	try:
 		pid = os.fork()
 	except OSError, e:
@@ -104,8 +96,6 @@ def daemon(lock_file):
 		maxfd = 256       # default maximum
 
 	for fd in range(0, maxfd):
-		if fd == lock_file.fileno():
-			continue
 		try:
 			os.close(fd)
 		except OSError:   # ERROR (ignore)
@@ -117,6 +107,9 @@ def daemon(lock_file):
 
 
 def connect():
+
+	f = open(STATUSLOGFILE, 'w+')
+	sys.stdout = f
 	print time.ctime()
 
 	baseConfig = ConfigRegistry()
@@ -124,18 +117,23 @@ def connect():
 
 	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/host not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/port not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/base not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 
 	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -163,6 +161,7 @@ def connect():
 
 	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
 		print '%s/ad/listener/dir not set' % CONFIGBASENAME
+		f.close()
 		sys.exit(1)
 
 	if '%s/ad/retryrejected' % CONFIGBASENAME not in baseConfig:
@@ -222,9 +221,12 @@ def connect():
 			ad.open_ad()
 			ad.open_ucs()
 
+	f.close()
 	retry_rejected = 0
 	connected = True
 	while connected:
+		f = open(STATUSLOGFILE, 'w+')
+		sys.stdout = f
 		print time.ctime()
 		# Aenderungen pollen
 		sys.stdout.flush()
@@ -278,41 +280,37 @@ def connect():
 		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
+		f.close()
 	ad.close_debug()
 
 
-def lock(filename):
-	lock_file = open(filename, "a+")
-	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-	return lock_file
-
-
 def main():
-	try:
-		lock_file = lock('/var/lock/univention-ad-%s' % CONFIGBASENAME)
-	except IOError:
-		print >> sys.stderr, 'Error: Another AD connector process is already running.'
-		sys.exit(1)
 
-	if options.daemonize:
-		daemon(lock_file)
-	f = bind_stdout()
+	daemon()
 
 	while True:
 		try:
 			connect()
 		except SystemExit:
-			lock_file.close()
 			raise
 		except:
+			f = open(STATUSLOGFILE, 'w+')
+			sys.stdout = f
 			print time.ctime()
+
+			text = ''
+			exc_info = sys.exc_info()
+			lines = apply(traceback.format_exception, exc_info)
+			text = text + '\n'
+			for line in lines:
+				text += line
 			print " --- connect failed, failure was: ---"
-			print traceback.format_exc()
+			print text
 			print " ---     retry in 30 seconds      ---"
 			sys.stdout.flush()
 			time.sleep(30)
-	lock_file.close()
-	f.close()
+
+			f.close()
 
 
 if __name__ == "__main__":

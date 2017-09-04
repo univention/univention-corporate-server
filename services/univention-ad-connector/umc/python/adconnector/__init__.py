@@ -367,10 +367,7 @@ class Instance(Base, ProgressMixin):
 
 	def __is_process_running(self, command):
 		for proc in psutil.process_iter():
-			try:
-				cmdline = proc.cmdline() if callable(proc.cmdline) else proc.cmdline
-			except psutil.NoSuchProcess:
-				continue
+			cmdline = proc.cmdline() if callable(proc.cmdline) else proc.cmdline
 			if cmdline and fnmatch.fnmatch(' '.join(cmdline), command):
 				return True
 		return False
