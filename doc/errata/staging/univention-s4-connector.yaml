@@ -1,10 +1,13 @@
 product: ucs
 release: "4.2"
-version: [2]
+version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-s4-connector
 fix: 11.0.8-7A~4.2.0.201709041432
 desc: |
  This update addresses the following issue(s):
  * The S4 Connector now handles invalid pickle files.
-bug: [34648]
+ * An error during removing a GPO has been corrected.
+ * The detection of the primary group during creation of user objects with
+   special characters in their samAccountName has been fixed.
+bug: [34648, 45088, 44374]
