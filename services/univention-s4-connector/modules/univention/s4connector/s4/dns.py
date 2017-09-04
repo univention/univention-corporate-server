@@ -1688,16 +1688,4 @@ def con2ucs(s4connector, key, object):
 
 
 def s4connector_get_superordinate(module, lo, dn):
-	'''
-	We have to use our own get_superordinate function. Otherwise
-	identifyOne in udm will return two results
-	'''
-	super_module = univention.admin.modules.superordinate(module)
-	if super_module:
-		while dn:
-			attr = lo.get(dn)
-			for mod in univention.admin.modules.identify(dn, attr):
-				if mod == super_module:
-					return univention.admin.objects.get(super_module, None, lo, None, dn)
-			dn = lo.parentDn(dn)
-	return None
+	return univention.admin.objects.get_superordinate(module, None, lo, dn)
