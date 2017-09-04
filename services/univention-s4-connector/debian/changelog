@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-7) unstable; urgency=medium
+
+  * Bug #34648: s4c: save invalid pickle files as `<NORESYNC>`
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 04 Sep 2017 14:31:35 +0200
+
 univention-s4-connector (11.0.8-6) unstable; urgency=medium
 
   * Bug #44374: fix LDAP filter escaping in s4c
