@@ -1,3 +1,9 @@
+univention-samba (11.0.1-11) unstable; urgency=medium
+
+  * Bug #38688: encode filesystem path of shares
+
+ -- Florian Best <best@univention.de>  Tue, 05 Sep 2017 21:53:15 +0200
+
 univention-samba (11.0.1-10) unstable; urgency=low
 
   * Bug #44591: added samba/client/min/protocol,

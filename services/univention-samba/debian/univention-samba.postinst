@@ -56,6 +56,9 @@ fi
 if [ "$1" = "configure" ]; then
 
 	if [ -n "$2" ]; then
+		if dpkg --compare-versions "$2" lt 11.0.1-11; then
+			univention-directory-listener-ctrl resync samba-shares
+		fi
 		if dpkg --compare-versions "$2" lt 6.0.37-1 ; then
 			mkdir -p /etc/univention/skel/windows-profiles/default
 			mkdir -p /etc/univention/skel/windows-profiles/default.V2
