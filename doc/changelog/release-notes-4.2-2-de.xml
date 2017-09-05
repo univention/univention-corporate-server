@@ -69,7 +69,7 @@
 			</para></listitem>
 			<listitem><para>
 				Diverse Security Updates wurden in UCS 4.2-2 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL
-				oder PostgreSQL.
+				und PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

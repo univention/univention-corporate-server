@@ -46,7 +46,7 @@
 		<para>
 			With Univention Corporate Server 4.2-2, the second point release of Univention Corporate Server (UCS) 4.2 is now
 			available. It provides several feature improvements and extensions, new properties as well as
-			various improvements and bugfixes. An overview of the most important changes:
+			various improvements and bugfixes. An overview of the most important changes are:
 		</para>
 
 		<itemizedlist>
@@ -61,13 +61,13 @@
 			</para></listitem>
 			<listitem><para>
 				Every app provider can now create simple app appliances through the App Provider Portal. App appliances
-				bundle an app with UCS into an directly usable virtual machine. In addition, the integration depth of the
+				bundle an app with UCS into a directly usable virtual machine. In addition, the integration depth of the
 				apps can be significantly increased by so-called app settings. These can be created by the app provider
 				simply via the provider portal without additional programming knowledge.
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.2-2, e.g. OpenLDAP, the Linux kernel, Samba, MySQL
-				or PostgreSQL.
+				and PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
