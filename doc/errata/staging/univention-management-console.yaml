@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [1]
+version: [1,2]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-management-console
-fix: 9.0.80-65A~4.2.0.201709011305
+fix: 9.0.80-65A~4.2.0.201709051330
 desc: |
  This update addresses the following issue(s):
  * Since erratum 139 the umc/module/timeout was not evaluated anymore which
