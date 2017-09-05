@@ -198,7 +198,6 @@ def rmdir(directory):
 	if os.path.exists(directory):
 		shutil.rmtree(directory)
 
-
 def call_process2(args, logger=None, env=None):
 	if logger:
 		logger.info('Calling %s', args)
@@ -217,7 +216,6 @@ def call_process2(args, logger=None, env=None):
 			if logger:
 				logger.info(stdout)
 	return p.returncode, out
-
 
 def call_process(args, logger=None, env=None):
 	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env)

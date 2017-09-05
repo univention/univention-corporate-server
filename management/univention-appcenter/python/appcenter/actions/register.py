@@ -258,13 +258,8 @@ class Register(CredentialsAction):
 		lo, pos = self._get_ldap_connection(args)
 		if hostdn:
 			if lo.get(hostdn):
-				self.log('Already found %s as a host for %s. Trying to retrieve machine secret.' % (hostdn, app.id))
-				secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
-				password = None
-				if os.path.isfile(secret_on_host):
-					with open(secret_on_host) as pwfile:
-						password = pwfile.read()
-				return hostdn, password
+				self.log('Already found %s as a host for %s. Better do nothing...' % (hostdn, app.id))
+				return hostdn, None
 			else:
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 14 chars
