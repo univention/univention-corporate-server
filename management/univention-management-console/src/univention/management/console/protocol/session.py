@@ -919,10 +919,6 @@ class SessionHandler(ProcessorBase):
 		self.__locale = None
 		self._reload_acls_and_permitted_commands()
 
-	def has_active_module_processes(self):
-		if self.processor:
-			return self.processor._ProcessorBase__processes
-
 	def _reload_acls(self):
 		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
 		self.acls = ACLs()

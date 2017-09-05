@@ -1,11 +1,3 @@
-univention-management-console (9.0.80-65) unstable; urgency=medium
-
-  * Bug #45307: fix regression by Bug #44965 which caused that the
-  	umc/module/timeout was not evaluated anymore but the connection to the
-  	module processes was closed after 30 seconds
-
- -- Florian Best <best@univention.de>  Fri, 01 Sep 2017 12:50:51 +0200
-
 univention-management-console (9.0.80-64) unstable; urgency=medium
 
   * Bug #44894: allow UMC to be removed on a basesystem

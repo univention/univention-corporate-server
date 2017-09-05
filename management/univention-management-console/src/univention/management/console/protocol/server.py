@@ -89,7 +89,7 @@ class MagicBucket(object):
 		"""Closes the connection after a specified timeout"""
 		state.time_remaining -= 1
 
-		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
+		if state.time_remaining <= 0 and not state.requests:
 			CORE.process('Connection timed out.')
 			self._cleanup(state.socket)
 		else:
@@ -192,7 +192,6 @@ class MagicBucket(object):
 			CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
 			return
 
-		state.reset_connection_timeout()
 		try:
 			data = str(msg)
 			# there is no data from another request in the send queue
