@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [1]
+version: [1,2]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-appcenter
-fix: 6.0.9-4A~4.2.0.201708291521
+fix: 6.0.9-4A~4.2.0.201709051317
 desc: |
  This update addresses the following issue(s):
  * IPv6 addresses are now handled correctly and all available
