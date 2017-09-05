@@ -89,13 +89,6 @@ status()
 	return 0
 }
 
-invalidate_cache()
-{
-	for table in passwd group hosts ; do
-		$DAEMON --invalidate $table
-	done
-}
-
 case "$1" in
 start)
 	log_daemon_msg "Starting $DESC" "$NAME"
@@ -117,12 +110,15 @@ stop)
 	;;
 restart|force-reload|reload)
 	log_daemon_msg "Restarting $DESC" "$NAME"
+	for table in passwd group hosts ; do
+		$DAEMON --invalidate $table
+	done
 	stop_nscd
 	case "$?" in
 	0|1)
 		start_nscd
 		case "$?" in
-			0) invalidate_cache; log_end_msg 0 ; exit 0 ;;
+			0) log_end_msg 0 ; exit 0 ;;
 			1) log_failure_msg " (failed -- old process is still running)." ; exit 1 ;;
 			*) log_failure_msg " (failed to start)." ; exit 1 ;;
 		esac

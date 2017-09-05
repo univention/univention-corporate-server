@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/backup.sh
-
 cd /etc/univention
 TARGET="/var/univention-backup/ucr-backup_$(date +%Y%m%d).tgz"
 touch "$TARGET"
@@ -39,5 +37,4 @@ chmod 600 "$TARGET"
 chown root:root "$TARGET"
 tar cfz "$TARGET" ./base*.conf
 
-clean_old_backups 'ucr-backup_.*\.tgz'
 exit 0
