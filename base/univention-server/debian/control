@@ -1,6 +1,6 @@
 Source: univention-server
 Section: univention
-Priority: standard
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  univention-config-dev,

@@ -1,3 +1,9 @@
+univention-server (12.0.0-12) unstable; urgency=low
+
+  * Bug #45272: Change Priotity: standard to optional
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Sep 2017 09:05:18 +0200
+
 univention-server (12.0.0-11) unstable; urgency=low
 
   * Bug #45120: Handle not default gateway set
