@@ -22,6 +22,7 @@ class TestDudleInstallation(object):
 
 	def import_license_on_vm(self):
 		self.copy_through_ssh('utils/license_client.py', 'root@%s:/root/' % (self.master_ip,))
+		self.copy_through_ssh('/root/ec2/license/license.secret', 'root@%s:/etc/license.secret' % (self.master_ip,))
 		self.execute_through_ssh('python license_client.py "$(ucr get ldap/base)" "$(date -d +1\ year +%d.%m.%Y)"', self.master_ip)
 		self.execute_through_ssh('univention-license-import ./ValidTest.license && univention-license-check', self.master_ip)
 
