@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-samba4
+fix: 6.0.10-27A~4.2.0.201708151711
+desc: |
+ This update addresses the following issue(s):
+ * Improve cleanup of old backups in univention-samba4-backup.
+ * Run samba-tool dbcheck --cross-ncs --fix --yes on update if there are
+   inconsistencies. A backup of /var/lib/samba/private is performed and
+   the fix is skipped if the available disk space is too low.
+ * Create Windows 10 default profile (default.V6) in univention-skel.
+bug: [38554, 44635, 44895]
