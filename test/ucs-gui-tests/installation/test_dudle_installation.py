@@ -8,14 +8,21 @@ class TestDudleInstallation(object):
 		self.master_ip = master_ip if role != 'master' else self.ip
 		self.password = password
 		if role != 'basesystem':
+			self.remove_old_sshkey()
 			self.import_license_on_vm()
+			self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
+			self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
 
-		self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
-		self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
+	def remove_old_sshkey(self):
+		subprocess.check_call((
+			'ssh-keygen',
+			'-R',
+			self.ip
+		))
 
 	def import_license_on_vm(self):
 		self.copy_through_ssh('utils/license_client.py', 'root@%s:/root/' % (self.master_ip,))
-		self.execute_through_ssh('python -m ./license_client "$(ucr get ldap/base)" "$(date -d \'+1 year\' \'+%d.%m.%Y\')"', self.master_ip)
+		self.execute_through_ssh('python license_client.py "$(ucr get ldap/base)" "$(date -d +1\ year +%d.%m.%Y)"', self.master_ip)
 		self.execute_through_ssh('univention-license-import ./ValidTest.license && univention-license-check', self.master_ip)
 
 	def execute_through_ssh(self, command, ip=None):
