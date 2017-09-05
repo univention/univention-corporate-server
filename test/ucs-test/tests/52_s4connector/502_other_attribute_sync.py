@@ -8,6 +8,11 @@
 ##  - 35903
 ##  - 36480
 ##  - 45252
+## versions:
+##  4.2-2: skip
+
+# We skip this since 4.2-2, as the corresponding implementation is not yet committed.
+# See https://forge.univention.org/bugzilla/show_bug.cgi?id=45252.
 
 import pytest
 
