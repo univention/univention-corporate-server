@@ -22,7 +22,7 @@ Depends: ${misc:Depends},
  makepasswd,
  univention-ipcalc,
  bind9-host,
- shell-univention-lib (>= 6.0.9-8),
+ shell-univention-lib (>= 3.0.26-14),
  python-univention-lib (>= 3.0.26-14),
  univention-newsid,
  univention-join
