@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [1]
-scope: ucs_4.2-0-errata4.2-1
+version: [1,2]
+scope: ucs_4.2-0-errata4.2-2
 src: univention-celery
-fix: 1.0.0-2A~4.2.0.201707182051
+fix: 1.0.0-2A~4.2.0.201709051338
 maintained: true
 desc: |
  This update addresses the following issue(s):
