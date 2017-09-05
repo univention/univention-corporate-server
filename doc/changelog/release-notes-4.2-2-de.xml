@@ -62,9 +62,10 @@
 			</para></listitem>
 			<listitem><para>
 				Jeder App Anbieter kann sich nun über das App Provider Portal einfache App Appliances erstellen. App 
-				ppliances bündeln ein App mit UCS in eine sofort nutzbare virtuelle Maschine. Zusätzlich kann die
-				Integrationstiefe der Apps durch so genannte App Settings deutlich erhöht werden. Diese können vom App
-				Anbieter einfach über das Provider Portal ohne zusätzliche Programmierkenntnisse erstellt werden.
+				Appliances bündeln ein App mit UCS in eine sofort nutzbare virtuelle Maschine. Zusätzlich kann die
+				Integrationstiefe der Apps durch so genannte <wordasword>App Settings</wordasword> deutlich erhöht werden.
+				Diese können vom App Anbieter einfach über das Provider Portal ohne zusätzliche Programmierkenntnisse erstellt
+				werden.
 			</para></listitem>
 			<listitem><para>
 				Diverse Security Updates wurde in UCS 4.2-2 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL
