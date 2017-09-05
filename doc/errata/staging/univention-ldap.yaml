@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [1]
+scope: ucs_4.2-0-errata4.2-1
+src: univention-ldap
+fix: 13.0.7-19A~4.2.0.201708301301
+desc: |
+ This update addresses the following issue(s):
+ * Cleanup old backups in univention-ldap-backup.
+ * An LDAP ACL which prevents access to objects with uid "root" has been added.
+bug: [38554, 11800]
