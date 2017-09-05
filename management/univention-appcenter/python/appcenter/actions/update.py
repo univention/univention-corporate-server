@@ -80,11 +80,10 @@ class Update(UniventionAppAction):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
-	@possible_network_error
-	def _download_supra_files(self):
-		present_etags = {}
+	def _get_etags(self):
 		etags_file = os.path.join(self._get_cache_dir(), '.etags')
-		if os.path.exists(etags_file):
+		ret = {}
+		try:
 			with open(etags_file, 'rb') as f:
 				for line in f:
 					try:
@@ -92,42 +91,52 @@ class Update(UniventionAppAction):
 					except ValueError:
 						pass
 					else:
-						present_etags[fname] = etag.rstrip('\n')
+						ret[fname] = etag.rstrip('\n')
+		except EnvironmentError:
+			pass
+		return ret
 
-		def _download_supra_file(filename, version_specific):
-			if version_specific:
-				url = urljoin('%s/' % self._get_metainf_url(), '%s' % filename)
-			else:
-				url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
-			self.log('Downloading "%s"...' % url)
-			headers = {}
-			if filename in present_etags:
-				headers['If-None-Match'] = present_etags[filename]
-			request = Request(url, headers=headers)
-			try:
-				response = urlopen(request)
-			except HTTPError as exc:
-				if exc.getcode() == 304:
-					self.debug('  ... Not Modified')
-					return
-				raise
-			etag = response.headers.get('etag')
-			present_etags[filename] = etag
-			content = response.read()
-			with open(os.path.join(self._get_cache_dir(), '.%s' % filename), 'wb') as f:
-				f.write(content)
-			AppManager.clear_cache()
-
-		_download_supra_file('index.json.gz', version_specific=True)
-		if not ucr_is_false('appcenter/index/verify'):
-			_download_supra_file('index.json.gz.gpg', version_specific=True)
-			_download_supra_file('all.tar.gpg', version_specific=True)
-		_download_supra_file('categories.ini', version_specific=False)
-		_download_supra_file('rating.ini', version_specific=False)
-		_download_supra_file('license_types.ini', version_specific=False)
+	def _save_etags(self, etags):
+		etags_file = os.path.join(self._get_cache_dir(), '.etags')
 		with open(etags_file, 'wb') as f:
-			for fname, etag in present_etags.iteritems():
+			for fname, etag in etags.iteritems():
 				f.write('%s\t%s\n' % (fname, etag))
+
+	@possible_network_error
+	def _download_supra_file(self, filename, version_specific):
+		present_etags = self._get_etags()
+		if version_specific:
+			url = urljoin('%s/' % self._get_metainf_url(), '%s' % filename)
+		else:
+			url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
+		self.log('Downloading "%s"...' % url)
+		headers = {}
+		if filename in present_etags:
+			headers['If-None-Match'] = present_etags[filename]
+		request = Request(url, headers=headers)
+		try:
+			response = urlopen(request)
+		except HTTPError as exc:
+			if exc.getcode() == 304:
+				self.debug('  ... Not Modified')
+				return
+			raise
+		etag = response.headers.get('etag')
+		present_etags[filename] = etag
+		content = response.read()
+		with open(os.path.join(self._get_cache_dir(), '.%s' % filename), 'wb') as f:
+			f.write(content)
+		self._save_etags(present_etags)
+		AppManager.clear_cache()
+
+	def _download_supra_files(self):
+		self._download_supra_file('index.json.gz', version_specific=True)
+		if not ucr_is_false('appcenter/index/verify'):
+			self._download_supra_file('index.json.gz.gpg', version_specific=True)
+			self._download_supra_file('all.tar.gpg', version_specific=True)
+		self._download_supra_file('categories.ini', version_specific=False)
+		self._download_supra_file('rating.ini', version_specific=False)
+		self._download_supra_file('license_types.ini', version_specific=False)
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
@@ -193,15 +202,33 @@ class Update(UniventionAppAction):
 		self.log('Downloading "%s"...' % url)
 		cwd = os.getcwd()
 		os.chdir(os.path.dirname(all_tar_file))
-		if self._subprocess(['zsync', url, '-q', '-o', all_tar_file]).returncode:
+		try:
+			if self._subprocess(['zsync', url, '-q', '-o', all_tar_file]).returncode:
+				# fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
+				#   * Range requests are not supported
+				#   * HTTP requests are altered
+				self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
+				self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % url)
+				self._download_supra_file('all.tar.gz', version_specific=True)
+				self._uncompress_archive()
+		finally:
 			os.chdir(cwd)
-			raise Abort('Failed to download "%s"' % url)
-		os.chdir(cwd)
 		self._verify_file(all_tar_file)
 		new_md5 = get_md5_from_file(all_tar_file)
 		if old_md5 != new_md5:
 			self._extract_archive()
 			return True
+
+	def _uncompress_archive(self):
+		# copied from _extract_local_archive(), but 4.2 does it differently, so no need to be super clean
+		archive = os.path.join(self._get_cache_dir(), '.all.tar.gz')
+		try:
+			with gzip_open(archive) as zipped_file:
+				archive_content = zipped_file.read()
+				with open(os.path.join(self._get_cache_dir(), '.all.tar'), 'wb') as extracted_file:
+					extracted_file.write(archive_content)
+		except (zlib.error, EnvironmentError) as exc:
+			self.warn('Error while reading %s: %s' % (archive, exc))
 
 	def _extract_archive(self):
 		for fname in glob(os.path.join(self._get_cache_dir(), '*')):
