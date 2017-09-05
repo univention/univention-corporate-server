@@ -51,7 +51,23 @@
 
 		<itemizedlist>
 			<listitem><para>
-				TODO
+				The portal is now also easily usable in cloud setups. The services installed on UCS are directly accessible
+				without further configuration steps. For this purpose, the portal converts existing links into relative
+				links. For portal entries with multiple links, heuristic procedures are used to determine the best link.
+			</para></listitem>
+			<listitem><para>
+				The usability of the management system has been improved further. Users and groups can be copied, the error
+				handling has been enhanced in various places and the performance has been improved.
+			</para></listitem>
+			<listitem><para>
+				Every app provider can now create simple app appliances through the App Provider Portal. App appliances
+				bundle an app with UCS into an directly usable virtual machine. In addition, the integration depth of the
+				apps can be significantly increased by so-called app settings. These can be created by the app provider
+				simply via the provider portal without additional programming knowledge.
+			</para></listitem>
+			<listitem><para>
+				Various security updates have been integrated into UCS 4.2-2, e.g. OpenLDAP, the Linux kernel, Samba, MySQL
+				or PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

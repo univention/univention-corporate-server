@@ -51,6 +51,24 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Das Portal ist nun auch einfach in Cloud Setups nutzbar. So sind die auf UCS installierten Dienste, ohne
+				weitere Konfigurationsschritte, direkt erreichbar. Dafür wandelt das Portal vorhandene Links in relative
+				Links um. Bei Portaleinträgen mit mehreren Links sorgen heuristische Verfahren für die Ermittlung der
+				besten Verlinkung.
+			</para></listitem>
+			<listitem><para>
+				Die Usability des Managementsystems wurde weiter ausgebaut. So können Benutzer und Gruppen kopiert werden,
+				die Fehlerbehandlung wurde an diversen Stellen verbessert und die Performance verbessert.
+			</para></listitem>
+			<listitem><para>
+				Jeder App Anbieter kann sich nun über das App Provider Portal einfache App Appliances erstellen. App 
+				ppliances bündeln ein App mit UCS in eine sofort nutzbare virtuelle Maschine. Zusätzlich kann die
+				Integrationstiefe der Apps durch so genannte App Settings deutlich erhöht werden. Diese können vom App
+				Anbieter einfach über das Provider Portal ohne zusätzliche Programmierkenntnisse erstellt werden.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurde in UCS 4.2-2 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL
+				oder PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
