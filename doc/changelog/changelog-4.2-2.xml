@@ -314,6 +314,9 @@
 				<listitem><simpara>
 					The uninstallation on a base system is now possible (<u:bug>44894</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Since erratum 139 the umc/module/timeout was not evaluated anymore which caused that the connection to module processes was closed after 30 seconds bug (<u:bug>45307</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -610,6 +613,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The error handling during the initial system configuration has been improved (<u:bug>43152</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The handling of applying network settings in the setup wizard has been improved to be more robust against network timeouts (<u:bug>45280</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
