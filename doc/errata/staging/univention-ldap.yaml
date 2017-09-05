@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [1]
+version: [1,2]
 scope: ucs_4.2-0-errata4.2-1
 src: univention-ldap
-fix: 13.0.7-19A~4.2.0.201708301301
+fix: 13.0.7-19A~4.2.0.201709051324
 desc: |
  This update addresses the following issue(s):
  * Cleanup old backups in univention-ldap-backup.
