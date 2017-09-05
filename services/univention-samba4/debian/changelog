@@ -1,33 +1,3 @@
-univention-samba4 (6.0.10-27) unstable; urgency=medium
-
-  * Bug #44635: Run dbcheck on update if required. Backup first.
-
- -- Arvid Requate <requate@univention.de>  Tue, 15 Aug 2017 17:10:59 +0200
-
-univention-samba4 (6.0.10-26) unstable; urgency=medium
-
-  * Bug #44635: Run dbcheck on update if required. Backup first.
-
- -- Arvid Requate <requate@univention.de>  Thu, 10 Aug 2017 16:36:43 +0200
-
-univention-samba4 (6.0.10-24) unstable; urgency=medium
-
-  * Bug #44895: default.V6 skel
-
- -- Felix Botner <botner@univention.de>  Wed, 09 Aug 2017 12:54:44 +0200
-
-univention-samba4 (6.0.10-23) unstable; urgency=medium
-
-  * Bug #38554: u-samba4: fix shell-univention-lib dependency
-
- -- Lukas Oyen <oyen@univention.de>  Thu, 03 Aug 2017 15:43:39 +0200
-
-univention-samba4 (6.0.10-22) unstable; urgency=medium
-
-  * Bug #38554: u-samba4: call clean_old_backups in u-s4-backup.
-
- -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 18:10:34 +0200
-
 univention-samba4 (6.0.10-21) unstable; urgency=medium
 
   * Bug #33235: Fix error message due to missing phpldapadmin-config.php

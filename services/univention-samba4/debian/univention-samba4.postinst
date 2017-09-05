@@ -52,7 +52,7 @@ if [ -z "$2" ]; then
 	mkdir -p /home/groups
 
 	mkdir -p /etc/univention/skel/windows-profiles
-	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2 default.V3 default.V4 default.V5 default.V6; do
+	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2 default.V3 default.V4 default.V5; do
 		mkdir -p /etc/univention/skel/windows-profiles/$dname
 	done
 fi
@@ -84,10 +84,6 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-6 
 	for dname in default.V3 default.V4 default.V5; do
 		mkdir -p "/etc/univention/skel/windows-profiles/$dname"
 	done
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-24 ; then
-	mkdir -p "/etc/univention/skel/windows-profiles/default.V6"
 fi
 
 ## samba3 defaults copied from univention-samba
@@ -187,39 +183,6 @@ divert_univention_heimdal_service_cfg() {
 	dpkg-divert --local --rename \
 		--divert "$univention_heimdal_service_cfg".disabled \
 		--add "$univention_heimdal_service_cfg" || true
-}
-
-run_dbcheck() {
-	backup_name="samba4_update_to_errata4.2-1"
-
-	## run dbcheck on update but backup first.
-	if ! [ -d /var/lib/samba/private ]; then  # Hmm, well
-		return 0
-	fi
-
-	if samba-tool dbcheck --cross-ncs --quiet > /dev/null; then
-		return 0
-	fi
-
-	required_space=$(du -s -B 1024 /var/lib/samba/private | awk '{print $1}')
-	free_space=$(df -P -B 1024 /var/backups | tail -n1 | awk '{print $4}')
-	safety_margin=102400
-	if [ "$free_space" -lt $(($required_space + $safety_margin)) ]; then
-		echo "ERROR: Not enough space for backup, skipping samba-tool dbcheck --cross-ncs --fix --yes"
-		return 1
-	fi
-
-	backup_id=$(date +%Y%m%d-%H%M%S)
-	backup_dir="/var/backups/$backup_name.$backup_id"
-	if [ -d "$backup_dir" ]; then
-		rm -rf "$backup_dir"
-	fi
-	service samba stop
-	mkdir "$backup_dir" && \
-	cp -a /var/lib/samba/private "$backup_dir" && \
-	samba-tool dbcheck --cross-ncs --fix --yes \
-	> "/var/backups/$backup_name.log" 2>&1
-	service samba start
 }
 
 if [ "$1" = "configure" ]; then
@@ -349,9 +312,21 @@ secret: $machine_secret
 		if dpkg --compare-versions "$2" lt-nl "5.0.1-27"; then
 			divert_univention_heimdal_service_cfg
 		fi
-		### The following block of code may be removed after errata4.2-1
-		if dpkg --compare-versions "$2" lt-nl "6.0.10-26"; then
-			run_dbcheck
+		### The following block of code may be removed after ucs_4.1-4
+		if dpkg --compare-versions "$2" lt-nl "5.0.1-53"; then
+			## run dbcheck on update but backup first.
+			if [ -d /var/lib/samba/private ]; then
+				backup_id=$(date +%Y%m%d-%H%M%S)
+				backup_dir="/var/backups/samba4_update_to_ucs4.1-4.$backup_id"
+				if [ -d "$backup_dir" ]; then
+					rm -rf "$backup_dir"
+ 				fi
+				/etc/init.d/samba stop
+				mkdir "$backup_dir" && \
+				cp -a /var/lib/samba/private "$backup_dir" && \
+				samba-tool dbcheck --cross-ncs --fix --yes
+				/etc/init.d/samba start
+ 			fi
 		fi
 
 		# bug #41190 / bug #39806 - restart bind9 after bind-dlz changes

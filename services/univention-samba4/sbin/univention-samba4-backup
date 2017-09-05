@@ -56,8 +56,6 @@
 #    - Fix retention period bug when deleting old backups ($DAYS variable
 #      could be set, but was ignored).
 
-. /usr/share/univention-lib/backup.sh
-
 display_help() {
 	cat <<-EOL
 		univention-samba4-backup: backups the samba provision directory
@@ -75,7 +73,7 @@ display_help() {
 
 FROMWHERE=/var/lib/samba
 WHERE=/var/univention-backup/samba
-DAYS=""
+DAYS=365
 DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
 
@@ -171,4 +169,5 @@ for d in $DIRS; do
 	fi
 done
 
-clean_old_backups 'samba/\(samba4_\|sysvol\).*.bz2' "$DAYS"
+find $WHERE -name "samba4_*bz2" -mtime +$DAYS -exec rm  {} \;
+find $WHERE -name "sysvol\.*bz2" -mtime +$DAYS -exec rm  {} \;
