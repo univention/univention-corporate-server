@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-samba
+fix: 11.0.1-11A~4.2.0.201709052207
+desc: |
+ This update addresses the following issue(s):
+ * The listener module for samba shares now correctly encodes filenames. Share
+   names containing special characters caused errors.
+bug: [38688]
