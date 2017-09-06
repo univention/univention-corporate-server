@@ -51,7 +51,7 @@ from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
 from univention.appcenter.actions import Abort
-from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter
+from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
 
 _logger = get_base_logger().getChild('docker')
 
@@ -348,6 +348,9 @@ class Docker(object):
 			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.add(cert_volume)
+		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
+			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
+				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro') # apt proxy
 		env_file = self.ucr_filter_env_file(env)
 		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))

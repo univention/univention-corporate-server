@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-93) unstable; urgency=medium
+
+  * Bug #44785: apply host proxy settings for container
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Sep 2017 10:38:08 +0200
+
 univention-appcenter (5.0.23-92) unstable; urgency=medium
 
   * Bug #45291: Fallback to download all.tar.gz via HTTPS if zsync does not
