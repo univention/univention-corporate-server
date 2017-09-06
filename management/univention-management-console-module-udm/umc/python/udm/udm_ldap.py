@@ -1142,7 +1142,7 @@ def info_syntax_choices(syn, options={}):
 			if filter_s is not None:
 				try:
 					size += len(module.search(filter=filter_s, simple=not syn.use_objects))
-				except udm_errors.ldapSizelimitExceeded:
+				except (udm_errors.ldapSizelimitExceeded, SearchLimitReached):
 					return {'performs_well': True, 'size_limit_exceeded': True}
 		return {'size': size, 'performs_well': True}
 	return {'size': 0, 'performs_well': False}
