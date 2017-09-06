@@ -142,6 +142,10 @@ def dictonary_lowercase(dict):
 			pass
 
 
+def compare_normal(val1, val2):
+	return val1 == val2
+
+
 def compare_lowercase(val1, val2):
 	try:  # TODO: failes if conversion to ascii-str raises exception
 		if dictonary_lowercase(val1) == dictonary_lowercase(val2):

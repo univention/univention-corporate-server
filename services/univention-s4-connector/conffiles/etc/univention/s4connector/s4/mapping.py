@@ -127,18 +127,21 @@ if ignore_filter:
 							ucs_attribute='firstname',
 							ldap_attribute='givenName',
 							con_attribute='givenName',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
 							con_attribute='displayName',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'sn': univention.s4connector.attribute (
 							ucs_attribute='lastname',
 							ldap_attribute='sn',
 							con_attribute='sn',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					@!@
@@ -199,12 +202,14 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='organisation',
 							ldap_attribute='o',
 							con_attribute='company',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'mailPrimaryAddress': univention.s4connector.attribute (
@@ -218,12 +223,14 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='street',
 							ldap_attribute='street',
 							con_attribute='streetAddress',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'city': univention.s4connector.attribute (
 							ucs_attribute='city',
 							ldap_attribute='l',
 							con_attribute='l',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'postcode': univention.s4connector.attribute (
@@ -364,6 +371,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 @!@
@@ -480,6 +488,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'operatingSystem': univention.s4connector.attribute (
@@ -573,6 +582,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'operatingSystem': univention.s4connector.attribute (
@@ -679,6 +689,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'displayName': univention.s4connector.attribute (
@@ -803,12 +814,14 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
 							con_attribute='displayName',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'author': univention.s4connector.attribute (
@@ -919,12 +932,14 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
 							con_attribute='displayName',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 					'msPrintAttributes': univention.s4connector.attribute (
@@ -993,6 +1008,7 @@ if ignore_filter:
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 @!@
@@ -1047,6 +1063,7 @@ if ignore_filter:
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
+							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
 @!@
