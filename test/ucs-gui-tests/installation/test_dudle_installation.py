@@ -8,16 +8,21 @@ class TestDudleInstallation(object):
 		self.master_ip = master_ip if role != 'master' else self.ip
 		self.password = password
 		if role != 'basesystem':
-			self.remove_old_sshkey()
+			self.remove_old_sshkeys()
 			self.import_license_on_vm()
 			self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
 			self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
 
-	def remove_old_sshkey(self):
+	def remove_old_sshkeys(self):
 		subprocess.check_call((
 			'ssh-keygen',
 			'-R',
 			self.ip
+		))
+		subprocess.check_call((
+			'ssh-keygen',
+			'-R',
+			self.master_ip
 		))
 
 	def import_license_on_vm(self):
