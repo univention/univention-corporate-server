@@ -2609,8 +2609,6 @@ class s4(univention.s4connector.ucs):
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attribute)
 									continue
 
-								modify = False
-
 								# Get the UCS attributes
 								old_values = set(old_ucs_object.get(attr, []))
 								new_values = set(new_ucs_object.get(attr, []))
@@ -2618,13 +2616,7 @@ class s4(univention.s4connector.ucs):
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
 
-								if attribute_type[attribute].compare_function:
-									if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
-										modify = True
-								elif not univention.s4connector.compare_lowercase(list(old_values), list(new_values)):  # FIXME: use defined compare-function from mapping.py
-									modify = True
-
-								if not modify:
+								if attribute_type[attribute].compare_function(list(old_values), list(new_values)):
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
 									continue
 
@@ -2693,15 +2685,9 @@ class s4(univention.s4connector.ucs):
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
 									if (to_add or to_remove) and attribute_type[attribute].single_value:
-										modify = False
-										if not current_s4_values or not value:
-											modify = True
-										elif attribute_type[attribute].compare_function:
-											if not attribute_type[attribute].compare_function(list(current_s4_values), list(value)):
-												modify = True
-										elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
-											modify = True
-										if modify:
+										modified = (not current_s4_values or not value) or \
+											not attribute_type[attribute].compare_function(list(current_s4_values), list(value))
+										if modified:
 											if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
 												ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
 												value = attribute_type[attribute].mapping[0](self, None, object)
