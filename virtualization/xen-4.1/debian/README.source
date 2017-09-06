@@ -1,5 +1,0 @@
-xen-4.1 for UCS-3.x
-
-Do NOT modify the upstream-version in debian/changelog when patching or doing
-UCS-only changes of the package; only change the Debian version after the dash
-'-'.

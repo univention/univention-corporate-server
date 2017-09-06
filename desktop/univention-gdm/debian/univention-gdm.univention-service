@@ -1,6 +1,0 @@
-[gdm]
-Description[de]=GNOME Display Manager
-Description[en]=GNOME Display Manager
-start_type=gdm/autostart
-programs=/usr/sbin/gdm
-icon=service/gdm

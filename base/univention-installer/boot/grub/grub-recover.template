@@ -1,6 +1,0 @@
-menuentry 'Boot from first harddisk partition' {
-	insmod chain
-	set root=(hd0)
-	chainloader +1
-}
-

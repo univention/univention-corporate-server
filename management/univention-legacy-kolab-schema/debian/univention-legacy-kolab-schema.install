@@ -1,2 +1,0 @@
-schema/*.schema usr/share/univention-ldap/schema/legacy/
-add-legacy-objectclasses usr/share/univention-legacy-kolab-schema

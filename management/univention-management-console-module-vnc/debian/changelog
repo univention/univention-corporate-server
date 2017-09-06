@@ -1,5 +1,0 @@
-univention-management-console-module-vnc (3.0.0-1) unstable; urgency=low
-
-  *  Remove package; Bug #30158
-
- -- Florian Best <best@univention.de>  Thu, 15 Aug 2013 16:18:32 +0200

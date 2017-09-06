@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Linux-Arbeitsplatz
-Comment=Linux Arbeitsplatz
-Exec=/etc/gdm/Sessions/Linux-Arbeitsplatz
-Icon=
-Type=Application
-

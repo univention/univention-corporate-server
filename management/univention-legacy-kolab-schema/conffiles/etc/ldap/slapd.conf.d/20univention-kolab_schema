@@ -1,8 +1,0 @@
-@!@
-import os
-if configRegistry.get('ldap/server/type') == 'master':
-	# only add legacy schema if old schema file is missing
-	for fn in [ 'rfc2739.schema', 'kolab2.schema', 'univention-kolab2.schema', 'kolab-legacy.schema' ]:
-		if not os.path.isfile('/usr/share/univention-ldap/schema/%s' % fn):
-			print 'include         /usr/share/univention-ldap/schema/legacy/%s' % fn
-@!@

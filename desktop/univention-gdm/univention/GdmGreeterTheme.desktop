@@ -1,9 +1,0 @@
-# This is not really a .desktop file like the rest, but it's useful to treat
-# it as such
-
-[GdmGreeterTheme]
-Greeter=univention.xml
-Name=Univention_
-Description=univention_ GDM Greeter
-Author=Stefan Gohmann (gohmann@univention.de)
-#Screenshot=screenshot.png

@@ -1,7 +1,0 @@
-W32API_PATH=/home/agrover/temp/w32api-3.11
-
-CFLAGS = -O2 -Wall -L$(W32API_PATH)/lib/ddk -I$(W32API_PATH)/include/ddk -I../common/include -I../common/include/public -Wno-multichar -Wno-unknown-pragmas -DDBG
-
-xennet.sys: xennet.c xennet_oid.c xennet_tx.c xennet_rx.c xennet_common.c ../mingw/mingw_extras.c
-	i586-mingw32msvc-gcc $(CFLAGS) -o $@ -shared -Wl,--entry,_DriverEntry@8 -nostartfiles -nostdlib $^ -lntoskrnl -lhal -lndis
-

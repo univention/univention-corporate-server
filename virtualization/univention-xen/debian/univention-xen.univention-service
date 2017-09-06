@@ -1,6 +1,0 @@
-[xend]
-description[de]=Xen Hypervisor 
-description[en]=Xen Hypervisor
-icon=virtualization/xen
-programs=/usr/sbin/xend
-start_type=xen/xend/autostart

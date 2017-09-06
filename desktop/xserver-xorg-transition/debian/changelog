@@ -1,6 +1,0 @@
-xserver-xorg-transition (1.0.0-1) unstable; urgency=low
-
-  * Initial release (Bug #23344)
-
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Oct 2011 15:58:32 +0200
-
