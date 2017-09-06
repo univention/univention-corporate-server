@@ -13,3 +13,5 @@ desc: |
  * If the download of App meta data via zsync fails, the archive is downloaded
    via an HTTPS request
 bug: [44117, 43823, 45227]
+erratum: 158
+announced: 2017-09-06
