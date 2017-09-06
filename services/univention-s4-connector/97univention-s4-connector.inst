@@ -76,6 +76,15 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	test -e "$internal_db" && mv "$internal_db" "${internal_db}_$(date +%Y%m%d%H%M%S)"
 fi
 
+if [ -z "$samba4_ldap_base" ]; then
+	echo "ERROR: samba4/ldap/base is empty (most likely the"
+	echo "       univention-samba4 join script has not been executed)."
+	echo "       Stopping at this point because samba4/ldap/base is the"
+	echo "       default for connector/s4/ldap/base and without this the"
+	echo "       s4-connector can not work properly."
+	exit 1
+fi
+
 univention-config-registry set \
 	connector/s4/ldap/host?"$ldap_master" \
 	connector/s4/ldap/base?"$samba4_ldap_base" \
