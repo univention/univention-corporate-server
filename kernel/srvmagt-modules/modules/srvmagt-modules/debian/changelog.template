@@ -1,9 +1,0 @@
-srvmagt-modules-__KVERS__ (1.0) unstable; urgency=low
-
-  * Built from fsc-packages
-
- -- __KMAINT__ <__KEMAIL__>  __DATE__
-
-Local variables:
-mode: debian-changelog
-End:

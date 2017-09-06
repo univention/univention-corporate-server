@@ -1,9 +1,0 @@
-2010-05-06  Gunnar Wrobel  <p@rdus.de>
-
-	* patches/Horde_Share-0.0.3dev20091215/t_framework_HK_GW_ZpushAnnotations.diff:
-
-	Support setting Zpush configuration values.
-
-2009-07-21  Gunnar Wrobel  <p@rdus.de>
-
-	* package.info: Added package to Kolab CVS.

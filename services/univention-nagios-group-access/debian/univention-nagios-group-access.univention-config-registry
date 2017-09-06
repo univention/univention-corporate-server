@@ -1,3 +1,0 @@
-Type: file
-File: etc/security/access-nagios-webinterface.conf
-Variables: nagios/server/webaccess/groups

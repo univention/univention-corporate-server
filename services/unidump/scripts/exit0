@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# this just returns exit code 0
-exit 0

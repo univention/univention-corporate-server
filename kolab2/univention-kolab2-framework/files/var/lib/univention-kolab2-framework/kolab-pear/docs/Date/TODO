@@ -1,8 +1,0 @@
-- Fix once the timezone problem
-
-- Once TZ works nicely, update the testunit_date and use
-  the real timezone and dct to check the expected time offset
-
-- Clean the test cases and atomic display instead of a global ok or failed
-
-- write the docs....

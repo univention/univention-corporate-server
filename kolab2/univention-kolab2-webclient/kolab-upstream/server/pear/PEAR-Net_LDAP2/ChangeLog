@@ -1,8 +1,0 @@
-2009-07-12  Gunnar Wrobel  <p@rdus.de>
-
-	* package.info: Converted to new packaging style.
-
-2009-04-23  Gunnar Wrobel  <p@rdus.de>
-
-	* PEAR-Net_LDAP2.spec: Added package to Kolab CVS.
-

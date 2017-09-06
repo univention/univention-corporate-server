@@ -1,4 +1,0 @@
-#!/bin/sh
-# stop unicode
-kbd_mode -a
-echo -n -e '\033%@'

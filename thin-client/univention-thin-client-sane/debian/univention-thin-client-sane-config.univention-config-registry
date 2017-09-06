@@ -1,6 +1,0 @@
-Type: file
-File: etc/udev/rules.d/z60_libsane.rules
-
-Type: file
-File: etc/sane.d/saned.conf
-Variables: saned/networks

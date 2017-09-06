@@ -1,4 +1,0 @@
-@%@BCWARNING=# @%@
-
-# re-create squatter index
-@%@mail/cyrus/squatter/cron@%@	cyrus	[ -x /usr/sbin/squatter ] && /usr/sbin/squatter -C /etc/imapd/imapd.conf -r "*"

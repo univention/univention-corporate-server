@@ -1,8 +1,0 @@
-^CVS/
-/CVS/
-^Makefile$
-~$
-\.old$
-\.bak$
-^blib/
-^pm_to_blib$

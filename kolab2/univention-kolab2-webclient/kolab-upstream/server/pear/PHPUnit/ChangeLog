@@ -1,8 +1,0 @@
-2008-11-08  Gunnar Wrobel  <p@rdus.de>
-
-	* PHPUnit.spec: Update to 3.3.3
-
-2008-09-10  Gunnar Wrobel  <p@rdus.de>
-
-	* Horde_DOM.spec: Added package to Kolab CVS.
-

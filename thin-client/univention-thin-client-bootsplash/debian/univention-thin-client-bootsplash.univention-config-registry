@@ -1,3 +1,0 @@
-Type: script
-Script: thin-client-bootsplash.py
-Variables: pxe/vga

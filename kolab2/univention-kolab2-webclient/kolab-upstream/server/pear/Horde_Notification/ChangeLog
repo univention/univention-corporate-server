@@ -1,8 +1,0 @@
-2009-05-11  Gunnar Wrobel  <p@rdus.de>
-
-	* Horde_Notification.spec: Update to the HORDE_3_3_4 release tag.
-
-2009-02-24  Gunnar Wrobel  <p@rdus.de>
-
-	* Horde_Notification.spec: Added package to Kolab CVS.
-

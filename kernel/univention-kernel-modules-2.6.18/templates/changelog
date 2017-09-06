@@ -1,5 +1,0 @@
-drbd8 (2:8.0.13-2) unstable; urgency=low
-
-  * Build kernel modules
-
- -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 03 Sep 2008 12:07:22 +0200

@@ -1,9 +1,0 @@
-usr/share/univention-management-console/www/
-usr/share/univention-management-console/www/vnc/
-usr/share/univention-webui-style/icon/applications/scalable
-usr/share/univention-webui-style/icon/applications/24x24
-usr/share/univention-webui-style/icon/applications/32x32
-usr/share/univention-webui-style/icon/applications/64x64
-usr/share/univention-webui-style/icon/applications/128x128
-usr/share/locale/de/LC_MESSAGES
-var/lib/univention-management-console

@@ -1,8 +1,0 @@
-2009-05-20  Gunnar Wrobel  <p@rdus.de>
-
-	* Horde_Framework.spec: Updated to the HORDE_3_3_4 tag.
-
-2008-09-11  Gunnar Wrobel  <p@rdus.de>
-
-	* Horde_Framework.spec: Added package to Kolab CVS.
-

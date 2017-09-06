@@ -1,7 +1,0 @@
-[Desktop Entry]
-Exec=xine
-InitialPreference=2
-MimeType=video/mpeg
-Name=xine
-Terminal=false
-Type=Application

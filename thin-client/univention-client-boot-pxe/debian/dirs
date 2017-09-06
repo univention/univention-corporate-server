@@ -1,5 +1,0 @@
-usr/lib/univention-directory-listener/system
-var/lib/univention-client-boot/
-var/lib/univention-client-boot/pxelinux.cfg
-usr/sbin
-usr/lib/univention-install/

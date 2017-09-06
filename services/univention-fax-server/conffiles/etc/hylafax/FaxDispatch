@@ -1,3 +1,0 @@
-FILETYPE=pdf
-SENDTO=@%@fax/in/mailto@%@
-BASE64ENCODE=/usr/bin/base64-encode

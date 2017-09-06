@@ -1,5 +1,0 @@
-[mail/hosteddomains]
-Description[de]=Alle Maildomänen die dieser Server verwaltet
-Description[en]=All maildomains hosted by this server
-Type=str
-Categories=service-mail

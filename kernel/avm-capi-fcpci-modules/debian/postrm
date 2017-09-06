@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-depmod -a
-
-exit 0

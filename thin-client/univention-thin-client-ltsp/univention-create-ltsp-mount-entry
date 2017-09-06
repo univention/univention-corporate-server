@@ -1,7 +1,0 @@
-#!/bin/sh
-
-datestring=`date +%F-%s`
-spooldir=/var/lib/univention/ltsp/
-
-echo $1 $2 $3 $4 > $spooldir$datestring-$5.mnt
-

@@ -1,4 +1,0 @@
-Type: file
-File: etc/pam.d/pop
-Variables: mail/cyrus/imap/quotawarnpercent
-Variables: mail/cyrus/imap/quotawarnkb

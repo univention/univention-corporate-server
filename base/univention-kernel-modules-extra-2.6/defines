@@ -1,4 +1,0 @@
-[base]
-modules:
- squashfs
- drbd8
