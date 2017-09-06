@@ -109,9 +109,7 @@ class Installer(object):
 
 		self.client.waitForText('select a language', timeout=30)
 		self.client.mouseClickOnText('English')
-		#self.client.enterText(language_english_name)
-		self.client.enterText(self.vm_config.password)  # TODO: Remove after testing!
-		self.client.waitForText('sea lanage', timeout=30)
+		self.client.enterText(language_english_name)
 		self.client.keyPress('enter')
 
 		self.__set_language(self.vm_config.language)
@@ -142,7 +140,9 @@ class Installer(object):
 		self.client.mouseClickOnText(self.locale_strings['manual_network_config'])
 		self.client.keyPress('enter')
 		self.client.waitForText(self.locale_strings['ip_address'], timeout=30)
-		self.client.enterText(self.vm_config.ip)
+		#self.client.enterText(self.vm_config.ip)
+		self.client.enterText(self.vm_config.password)  # TODO: Remove after testing!
+		self.client.waitForText('sea lanage', timeout=30)
 		self.client.keyPress('enter')
 
 		self.client.waitForText(self.locale_strings['netmask'], timeout=30)
