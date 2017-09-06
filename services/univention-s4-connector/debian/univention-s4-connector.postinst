@@ -69,14 +69,6 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"_ldap._tcp.Default-First-Site-Name._site"
 
-# deactivate sambaDomain sync to ucs for slaves in ucs@school
-if [ "$server_role" = "domaincontroller_slave" ]; then
-	if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-		ucr set connector/s4/mapping/dc/syncmode?'write'
-	fi
-fi
-
-
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4
 	chown 0.0 /var/lib/univention-connector/s4
@@ -94,6 +86,16 @@ call_joinscript 97univention-s4-connector.inst
 stop_udm_cli_server
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
+
+	# bug 45210
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.8-8; then
+		# deactivate sambaDomain sync to ucs for slaves in ucs@school
+		if [ "$server_role" = "domaincontroller_slave" ]; then
+			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
+				ucr set connector/s4/mapping/dc/syncmode?'write'
+			fi
+		fi
+	fi
 
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1  && is_ucr_true connector/s4/mapping/gpo; then
 		## Write the MS GPO settings from Samba 4 to UCS

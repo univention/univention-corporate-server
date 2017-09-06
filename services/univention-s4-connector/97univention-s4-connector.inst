@@ -109,19 +109,19 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 
 # Be sure theses containers exists
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
-udm container/cn create "$@" --ignore_exists \
-			--set name=Builtin || die
+	udm container/cn create "$@" --ignore_exists \
+		--set name=Builtin || die
 
-udm container/cn create "$@" --ignore_exists \
-			--set name=System || die
+	udm container/cn create "$@" --ignore_exists \
+		--set name=System || die
 
-udm container/cn create "$@" --ignore_exists \
-			--position "cn=System,$ldap_base" \
-			--set name=Policies || die
+	udm container/cn create "$@" --ignore_exists \
+		--position "cn=System,$ldap_base" \
+		--set name=Policies || die
 
-udm container/ou create "$@" --ignore_exists \
-			--set name="Domain Controllers" \
-			--set description="Default container for domain controllers" || die
+	udm container/ou create "$@" --ignore_exists \
+		--set name="Domain Controllers" \
+		--set description="Default container for domain controllers" || die
 fi
 
 udm container/cn create "$@" --ignore_exists \
@@ -147,6 +147,13 @@ ucs_registerLDAPExtension "$@" \
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
 
+fi
+
+# deactivate sambaDomain sync to ucs for slaves in ucs@school
+if [ "$server_role" = "domaincontroller_slave" ]; then
+	if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
+		ucr set connector/s4/mapping/dc/syncmode?'write'
+	fi
 fi
 
 if [ -z "$s4connector_dc" ] \

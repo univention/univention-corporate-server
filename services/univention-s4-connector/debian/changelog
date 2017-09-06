@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-8) unstable; urgency=medium
+
+  * Bug #45210: move connector/s4/mapping/dc/syncmode to join script
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Sep 2017 12:04:27 +0200
+
 univention-s4-connector (11.0.8-7) unstable; urgency=medium
 
   * Bug #34648: s4c: save invalid pickle files as `<NORESYNC>`
