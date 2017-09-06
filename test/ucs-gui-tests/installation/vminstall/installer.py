@@ -109,7 +109,9 @@ class Installer(object):
 
 		self.client.waitForText('select a language', timeout=30)
 		self.client.mouseClickOnText('English')
-		self.client.enterText(language_english_name)
+		#self.client.enterText(language_english_name)
+		self.client.enterText(self.vm_config.password)  # TODO: Remove after testing!
+		self.client.waitForText('sea lanage', timeout=30)
 		self.client.keyPress('enter')
 
 		self.__set_language(self.vm_config.language)
