@@ -121,7 +121,6 @@ if ignore_filter:
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'givenName' : univention.s4connector.attribute (
@@ -359,7 +358,6 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ldap_attribute='cn',
 							con_attribute='sAMAccountName',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
@@ -471,13 +469,11 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'samAccountName': univention.s4connector.attribute (
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
@@ -566,13 +562,11 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'samAccountName': univention.s4connector.attribute (
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
@@ -679,7 +673,6 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
@@ -921,7 +914,6 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 							con_attribute='cn',
 							required=1,
 							single_value=True,
-							compare_function=univention.s4connector.compare_lowercase,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
@@ -995,7 +987,6 @@ if ignore_filter:
 							ldap_attribute='cn',
 							con_attribute='cn',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
@@ -1050,7 +1041,6 @@ if ignore_filter:
 							ldap_attribute='ou',
 							con_attribute='ou',
 							required=1,
-							compare_function=univention.s4connector.compare_lowercase,
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
