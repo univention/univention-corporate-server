@@ -197,11 +197,6 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='organisation',
 							ldap_attribute='o',
 							con_attribute='company',
-						),
-					'organisation': univention.s4connector.attribute (
-							ucs_attribute='organisation',
-							ldap_attribute='o',
-							con_attribute='company',
 							compare_function=univention.s4connector.compare_normal,
 							single_value=True,
 						),
