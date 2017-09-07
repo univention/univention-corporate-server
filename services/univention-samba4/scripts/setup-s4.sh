@@ -33,6 +33,7 @@
 eval "$(univention-config-registry shell)"
 
 samba_private_dir="/var/lib/samba/private"
+samba_sysvol_dir="/var/lib/samba/sysvol"
 samba_sam="$samba_private_dir/sam.ldb"
 samba_secrets="$samba_private_dir/secrets.ldb"
 SCRIPTDIR=/usr/share/univention-samba4/scripts
@@ -241,6 +242,18 @@ skip_reprovision() {
 }
 
 run_samba_domain_provision() {
+
+	local deads="$(find "$samba_sysvol_dir" -type l -xtype l)"
+	if [ -n "$deads" ]; then
+		echo "ERROR: found dead symbolic links in $samba_sysvol_dir:"
+		while read -r dead; do
+			echo "        * $dead"
+		done <<< "$deads"
+		echo "       The samba provisioning will fail with dead links in"
+		echo "       $samba_sysvol_dir, so please remove those links and try again."
+		exit 1
+	fi
+
 	samba-tool domain provision \
 	    --realm="$kerberos_realm" \
 	    --domain="$windows_domain" \
@@ -252,7 +265,7 @@ run_samba_domain_provision() {
 	    --machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 
 	if ! provision_is_ok; then
-		echo "Samba4 provision failed, exiting $0"
+		echo "ERROR: Samba4 provision failed, exiting $0"
 		exit 1
 	fi
 }
