@@ -575,7 +575,8 @@ class ucs:
 		if not resync:
 			# Note that unescaped <> are invalid in DNs. See also:
 			# `_list_rejected_ucs()`.
-			dn = '<NORESYNC{}>;{}'.format('=' + reason if reason else '', dn)
+			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '',
+				os.path.basename(filename), dn)
 		modstring_dn = univention.s4connector.s4.compatible_modstring(dn)
 		self._set_config_option('UCS rejected', filename, modstring_dn)
 
