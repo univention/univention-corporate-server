@@ -3,7 +3,7 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-27A~4.2.0.201709051351
+fix: 6.0.10-28A~4.2.0.201709071450
 desc: |
  This update addresses the following issue(s):
  * Improve cleanup of old backups in univention-samba4-backup.
@@ -11,4 +11,5 @@ desc: |
    inconsistencies. A backup of /var/lib/samba/private is performed and
    the fix is skipped if the available disk space is too low.
  * Create Windows 10 default profile (default.V6) in univention-skel.
-bug: [38554, 44635, 44895]
+ * Abort samba provision during join if dead links in sysvol.
+bug: [38554, 44635, 44895, 45062]
