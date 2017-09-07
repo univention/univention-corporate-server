@@ -51,10 +51,10 @@ ec2-start-job-async () {
 	# <EXAMPLE>: update all servers at once instead of waiting for each one
 	# in command N on all affected servers:
 	# commandN:
-	#   LOCAL examples/jenkins/utils/utils-local.sh ec2-start-job-async job-upgrade [hostX_IP] hostX ". utils.sh; upgrade_to_latest --updateto 3.2-99"
+	#   LOCAL utils/utils-local.sh ec2-start-job-async job-upgrade [hostX_IP] hostX ". utils.sh; upgrade_to_latest --updateto 3.2-99"
 	# Now all async jobs are running. Wait for them in command N+1 on one server:
 	# commandN+1:
-	#   LOCAL examples/jenkins/utils/utils-local.sh ec2-wait-for-async-job job-upgrade
+	#   LOCAL utils/utils-local.sh ec2-wait-for-async-job job-upgrade
 	# </Example>
 	# Warning: this will make your logfile mostly useless for the timespan a job is run on multiple hosts
 	#   as the logs will get mixed. Use only for predictable jobs (update, serverjoin, ...)
