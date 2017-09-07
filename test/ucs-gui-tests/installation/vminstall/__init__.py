@@ -20,7 +20,9 @@ def adapt_vm_config(installer, environment, dns_server):
 	installer.vm_config.update_ucs_after_install = False
 	installer.vm_config.install_all_additional_components = environment == 'additional_software_components'
 	if environment == 'difficult_password':
-		installer.vm_config.password = "@fooBar99Extr4L4rg3Size"  # FIXME: generate a random one!
+		# FIXME: generate a random one! But be careful: vncdotool has problems
+		# with transmitting some special keys, like '@'.
+		installer.vm_config.password = "=fooBar99Extr4L4rg3Size"
 	installer.vm_config.use_multiple_partitions = environment == 'multiple_partitions'
 	if dns_server:
 		installer.vm_config.dns_server_ip = dns_server
