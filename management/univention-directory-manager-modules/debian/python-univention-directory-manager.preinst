@@ -32,8 +32,8 @@
 
 #DEBHELPER#
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 10.0.29-53; then
-	ln -s /usr/share/pyshared/univention/admin/policy.py /usr/lib/pymodules/python2.7/univention/admin/policy.py
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 12.0.17-53; then
+	ln -s /usr/share/pyshared/univention/admin/handlers/computers/base.py /usr/lib/pymodules/python2.7/univention/admin/handlers/computers/base.py
 fi
 
 exit 0
