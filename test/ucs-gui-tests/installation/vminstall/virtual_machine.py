@@ -92,7 +92,7 @@ class VirtualMachine(object):
 	def delete(self):
 		if not self.__created:
 			return
-		conn = libvirt.open('qemu+ssh://build@%s/system' % (self.server,))
+		conn = libvirt.open('qemu+ssh://rulmer@%s/system' % (self.server,))
 		dom = conn.lookupByName(self.name)
 		dom.destroy()
 		dom.undefine()
@@ -293,7 +293,7 @@ class VmCreator(object):
 	def __init__(self, args=None):
 		self.logger = getLogger('test')
 		self.args = self.parse_args(args)
-		self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
+		self.kvm_server = 'qemu+ssh://rulmer@' + self.args.kvm_server + '/system'
 
 		self.boot_order_index = 1
 
