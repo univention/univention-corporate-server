@@ -1,8 +1,0 @@
-0009-2: ucs-ec2-list
-0009-2: ucs-ec2-create
-0009-2: ucs-ec2-terminate
-0009-2: ucs-kvm-create
-0009-2: change-ami
-0009-2: examples/jenkins/utils/uninstall-app.py
-0009-2: examples/jenkins/utils/schoolinstaller.py
-0010-2: change-ami
