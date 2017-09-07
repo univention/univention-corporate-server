@@ -2463,7 +2463,7 @@ define([
 			var address, username, password, dns;
 			var isAdMember = this._isAdMember();
 			if (isAdMember) {
-				dns = false;
+				dns = !this._domainReplaceMaster;
 				address = this.getWidget('credentials-ad', 'ad/address').get('value');
 				username = this.getWidget('credentials-ad', 'ad/username').get('value');
 				password = this.getWidget('credentials-ad', 'ad/password').get('value');
@@ -2642,6 +2642,28 @@ define([
 					}));
 				});
 
+				var _adJoinWithUnreachableMaster = lang.hitch(this, function(infos) {
+					this._domainReplaceMaster = false;
+					return dialog.confirm(_('A previous UCS system has already joined into the Active Directory domain. Please make sure the system "%(ucs_master_fqdn)s" is reachable via SSH. If you continue the registration of the previous UCS system will be removed.', infos), [{
+						label: _('Retry connection'),
+						name: pageName
+					}, {
+						label: _('Replace system'),
+						name: 'credentials-ad'
+					}], _('Warning')).then(lang.hitch(this, function(response) {
+						var forcedPage = this._forcePageTemporarily(response);
+						if (response == 'credentials-ad') {
+							this._domainHasMaster = false;
+							this._domainReplaceMaster = true;
+							return forcedPage;
+						}
+						tools.defer(lang.hitch(this, function() {
+							this._next(forcedPage);
+						}), 1000);
+						return forcedPage;
+					}));
+				});
+
 				var _noAdDcFoundWarning = lang.hitch(this, function() {
 					dialog.alert(_('No domain controller was found at the address of the name server. Please adjust your network settings.'));
 					return this._forcePageTemporarily('network');
@@ -2662,6 +2684,14 @@ define([
 							this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
 							if (info.ucs_master) {
 								// UCS DC master already has joined into the AD domain
+								if (!info.ucs_master_reachable) {
+									// The DC Master is not reachable via SSH.
+									// This might be the case if the system was thrown away.
+									// Let the user choose:
+									// - Either retry the connection or
+									// - configure this system as DC Master and replace the old DC Master entry in the DNS of the AD server
+									return _adJoinWithUnreachableMaster(info);
+								}
 								// let the user choose a system role
 								if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
 									return _adJoinWithNonMasterNotPossibleWarning();
@@ -2704,17 +2734,12 @@ define([
 								return this._forcePageTemporarily(nextPage);
 							}));
 						}
-					} else if (domain === false) {
-						msg = _('Connection refused. Please recheck the password');
-						nextPage = pageName;
-					} else if (domain === null) {
-						msg = _('Connection failed. Please recheck the address');
-						nextPage = pageName;
 					}
-					if (msg) {
-						dialog.alert(msg);
-					}
-
+				}), lang.hitch(this, function() {
+					// in case of errors don't switch the page
+					nextPage = pageName;
+					return nextPage;
+				})).then(lang.hitch(this, function() {
 					if (nextPage == 'credentials-nonmaster') {
 						this.getWidget('credentials-nonmaster', '_ucs_password').reset();
 					} else if (nextPage == 'credentials-ad') {

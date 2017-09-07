@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-44) unstable; urgency=medium
+
+  * Bug #43745: make joining into AD domains possible if a dead
+  	_domaincontroller_master._tcp SRV record exists
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2017 17:25:15 +0100
+
 univention-system-setup (10.0.10-43) unstable; urgency=medium
 
   * Bug #43999: Fix style error for local setup wizard
