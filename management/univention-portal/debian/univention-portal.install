@@ -2,3 +2,4 @@ www/univention-management-console.svg usr/share/univention-management-console-fr
 www/* usr/share/univention-portal/
 listener/*.py usr/lib/univention-directory-listener/system
 apache/univention-portal.conf etc/apache2/ucs-sites.conf.d/
+univention-blog.png usr/share/univention-portal/

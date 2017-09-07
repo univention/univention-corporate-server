@@ -1,3 +1,9 @@
+univention-portal (1.0.12-11) unstable; urgency=medium
+
+  * Bug #45412: Add Univention Blog portal entry
+
+ -- Florian Best <best@univention.de>  Wed, 20 Sep 2017 13:39:24 +0200
+
 univention-portal (1.0.12-10) unstable; urgency=medium
 
   * Bug #44371: Adjust test description
