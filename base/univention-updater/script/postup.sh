@@ -156,6 +156,12 @@ ucr set \
 	repository/online/component/4.2-1-errata/description="Errata updates for UCS 4.2-1" \
 	repository/online/component/4.2-1-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
 
+# Bug 45328
+# update/register appcenter at this point because 4.2-0 postup still is in 4.1 mode
+univention-app update || true
+univention-app register || true
+# Bug 45328
+
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
