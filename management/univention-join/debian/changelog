@@ -1,3 +1,9 @@
+univention-join (9.0.3-7) unstable; urgency=medium
+
+  * Bug #42505: Added memberOf test in univention-join
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Sep 2017 10:03:43 +0200
+
 univention-join (9.0.3-6) unstable; urgency=medium
 
   * Bug #42021 #42425: Improve join script error messages
