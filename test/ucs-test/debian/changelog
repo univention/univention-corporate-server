@@ -1,3 +1,10 @@
+ucs-test (7.0.23-40) unstable; urgency=medium
+
+  * 00_checks/81_diagnostic_checks.py: skip 01_ssh_connection
+    (Bug #43854)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Sep 2017 20:06:36 +0200
+
 ucs-test (7.0.23-39) unstable; urgency=medium
 
   * 00_checks/81_diagnostic_checks.py: added the possibility to skip
