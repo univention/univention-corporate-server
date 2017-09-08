@@ -30,12 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import os
 import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
+import urllib
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers, ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
@@ -95,7 +96,6 @@ def handler(dn, new, old, command):
 
 	# write old object to pickle file
 	oldObject = {}
-	oldDn = ""
 	listener.setuid(0)
 	try:
 		# object was renamed -> save old object
@@ -110,7 +110,6 @@ def handler(dn, new, old, command):
 				p = cPickle.load(f)
 				f.close()
 				oldObject = p.get("old", {})
-				oldDn = p.get("dn", {})
 				os.remove(tmpFile)
 	except Exception as e:
 		if os.path.isfile(tmpFile):
@@ -122,7 +121,8 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 	if old:
-		filename = '/etc/samba/shares.conf.d/%s' % old['univentionShareSambaName'][0]
+		share_name_mapped = urllib.quote(old.get('univentionShareSambaName', [''])[0], safe='')
+		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
 		listener.setuid(0)
 		try:
 			if os.path.exists(filename):
@@ -131,8 +131,8 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 
 	if new:
-
-		filename = '/etc/samba/shares.conf.d/%s' % new['univentionShareSambaName'][0]
+		share_name_mapped = urllib.quote(new.get('univentionShareSambaName', [''])[0], safe='')
+		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
 		listener.setuid(0)
 		try:
 			fp = open(filename, 'w')
@@ -205,7 +205,6 @@ def handler(dn, new, old, command):
 					print >>fp, '%s = %s' % (var, new[attr][0])
 			# try to create directory to share
 			if new['univentionShareSambaName'][0] != 'homes':
-				directory = os.path.join('/', new['univentionSharePath'][0])
 				# object was renamed
 				if not old and oldObject and command == "a":
 					old = oldObject
