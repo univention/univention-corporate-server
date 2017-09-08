@@ -2,6 +2,8 @@ ucs-test (7.0.23-39) unstable; urgency=medium
 
   * 00_checks/81_diagnostic_checks.py: added the possibility to skip
     tests (Bug #45277)
+  * 00_checks/81_diagnostic_checks.py: skip 40_samba_tool_dbcheck
+    (Bug #45277)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Sep 2017 19:41:41 +0200
 

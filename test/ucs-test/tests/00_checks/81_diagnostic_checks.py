@@ -5,7 +5,7 @@
 
 from univention.testing.umc import Client
 
-SKIPPED_TESTS = []
+SKIPPED_TESTS = ['40_samba_tool_dbcheck']
 
 
 def test_run_diagnostic_checks():
