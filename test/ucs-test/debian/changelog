@@ -1,3 +1,10 @@
+ucs-test (7.0.23-41) unstable; urgency=medium
+
+  * 01_base/110_ucr_cronjobs: The test case is flaky, give it some more
+    time (Bug #45371)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Sep 2017 20:29:46 +0200
+
 ucs-test (7.0.23-40) unstable; urgency=medium
 
   * 00_checks/81_diagnostic_checks.py: skip 01_ssh_connection
