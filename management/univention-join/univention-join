@@ -489,6 +489,20 @@ fi
 
 echo -e "\033[60Gdone"
 
+# check for memberof overlay
+master_member_of="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr get ldap/overlay/memberof)"
+ucr set tmp/join/test/master/memberof="$master_member_of"
+if is_ucr_true tmp/join/test/master/memberof; then
+	ucr unset tmp/join/test/master/memberof
+	msg="The OpenLDAP extension memberOf is activated on the UCS master (UCR variable ldap/overlay/memberof is true). In order to join this system successfully"
+	if ! dpkg-query -W -f '${status}' "univention-ldap-overlay-memberof" | grep -q 'install ok installed'; then
+		failed_message "$msg the package \"univention-ldap-overlay-memberof\" has to be installed."
+	fi
+	if ! is_ucr_true ldap/overlay/memberof; then
+		failed_message "$msg the UCR variable ldap/overlay/memberof has to be set to true."
+	fi
+fi
+
 if [ -x /etc/init.d/univention-s4-connector ]; then
 	echo -n "Stop S4-Connector: "
 	/etc/init.d/univention-s4-connector stop >>/var/log/univention/join.log 2>&1
