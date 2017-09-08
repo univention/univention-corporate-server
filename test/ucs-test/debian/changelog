@@ -1,3 +1,14 @@
+ucs-test (7.0.23-39) unstable; urgency=medium
+
+  * 00_checks/81_diagnostic_checks.py: added the possibility to skip
+    tests (Bug #45277)
+  * 00_checks/81_diagnostic_checks.py: skip 40_samba_tool_dbcheck
+    (Bug #45277)
+  * 00_checks/81_diagnostic_checks.py: skip 46_kerberos_ddns_update
+    since it doesn't work in S3 environments (Bug #44902)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Sep 2017 19:41:41 +0200
+
 ucs-test (7.0.23-38) unstable; urgency=medium
 
   * 10_ldap/11anonymous: Wait a few seconds after restarting slapd
