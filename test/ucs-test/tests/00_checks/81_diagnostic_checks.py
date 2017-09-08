@@ -5,7 +5,7 @@
 
 from univention.testing.umc import Client
 
-SKIPPED_TESTS = ['40_samba_tool_dbcheck']
+SKIPPED_TESTS = ['40_samba_tool_dbcheck', '46_kerberos_ddns_update']
 
 
 def test_run_diagnostic_checks():
