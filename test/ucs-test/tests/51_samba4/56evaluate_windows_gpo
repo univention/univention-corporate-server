@@ -2,7 +2,7 @@
 ## desc: Test if GPOs created on a native Windows Server work with S4
 ## exposure: dangerous
 ## packages: [univention-samba4, ucs-windows-tools]
-## tags: [basic, windows_gpo_test, native_win_client]
+## tags: [basic, windows_gpo_test, native_win_client, SKIP]
 ## bugs: [37568]
 ## roles:
 ## - domaincontroller_master
