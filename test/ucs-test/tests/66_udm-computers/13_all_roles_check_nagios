@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
-			forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string())
+			forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False))
 			nagiosService = udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string())
 
 			nagiosParentProperties = {

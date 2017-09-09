@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
 			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
 
-			forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=uts.random_string())
-			reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=uts.random_string())
+			forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=uts.random_string(numeric=False))
+			reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=uts.random_string(numeric=False))
 			dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
 			networkProperties = {
 				'name': uts.random_name(),

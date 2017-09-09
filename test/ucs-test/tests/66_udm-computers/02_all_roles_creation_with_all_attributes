@@ -46,8 +46,8 @@ if __name__ == '__main__':
 				'mac': '01:23:45:67:89:%s' % rand_mac,
 				'network': udm.create_object('networks/network', name=uts.random_name(), network='10.20.30.0', netmask='24'),
 				'ip': '10.20.30.%s' % rand_ip,
-				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string()),
-				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string()),
+				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
+				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string(numeric=False)),
 				'inventoryNumber': uts.random_string(),
 				'domain': '%s.%s' % (uts.random_name(), uts.random_name())
 			}
