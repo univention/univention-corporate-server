@@ -1,3 +1,10 @@
+ucs-test (7.0.23-42) unstable; urgency=medium
+
+  * 00_checks/81_diagnostic_checks.py: skip 31_file_permissions
+    (Bug #45372)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 09 Sep 2017 08:17:01 +0200
+
 ucs-test (7.0.23-41) unstable; urgency=medium
 
   * 01_base/110_ucr_cronjobs: The test case is flaky, give it some more
