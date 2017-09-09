@@ -33,7 +33,7 @@ if __name__ == '__main__':
 			computer = udm.create_object(
 				role,
 				options=['posix', 'nagios'],
-				dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string()),
+				dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
 				name=computerName,
 				ip=computerIp,
 			)
