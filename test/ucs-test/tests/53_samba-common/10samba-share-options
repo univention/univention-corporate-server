@@ -15,7 +15,8 @@
 
 eval "$(/usr/sbin/univention-config-registry shell)"
 
-sharename="$(random_share)"
+sharename_tmp="$(random_share)"
+sharename="$(echo ${sharename_tmp//[[:blank:]]/})"
 SHARE_POSITION="cn=shares,$ldap_base"
 fqdn="$hostname.$domainname"
 samba_etc="/etc/samba/shares.conf.d/"

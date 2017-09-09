@@ -1,3 +1,10 @@
+ucs-test (7.0.23-44) unstable; urgency=medium
+
+  * 53_samba-common/10samba-share-options: Remove spaces from share name
+    (Bug #45375)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 09 Sep 2017 20:13:46 +0200
+
 ucs-test (7.0.23-43) unstable; urgency=medium
 
   * 51_samba4/56evaluate_windows_gpo: skip test case (Bug #45373)
