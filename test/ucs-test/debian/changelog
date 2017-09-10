@@ -1,3 +1,14 @@
+ucs-test (7.0.23-46) unstable; urgency=medium
+
+  * 00_checks/81_diagnostic_checks.py: disable 11_nameserver check since
+    it doesn't work in AD member setup (Bug #40393)
+  * 20_appcenter/100_settings.py: Skip test in admember setup
+    (Bug #45377)
+  * 55_adconnector/502_other_attribute_sync.py: Skip test case in AD
+    member mode (Bug #36480)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 10 Sep 2017 14:38:10 +0200
+
 ucs-test (7.0.23-45) unstable; urgency=medium
 
   * 66_udm-computers/*: A numeric nameserver entry is not allowed
