@@ -3,7 +3,7 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-lib
-fix: 6.0.9-11A~4.2.0.201709041313
+fix: 6.0.9-12A~4.2.0.201709111501
 desc: |
  This update addresses the following issue(s):
  * Introduce UCR variables backup/clean/{max_age,min_backups} and new function
