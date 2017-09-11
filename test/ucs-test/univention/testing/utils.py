@@ -33,7 +33,6 @@ import subprocess
 import ldap
 import time
 import socket
-import logging
 import os
 
 import univention.config_registry
@@ -392,7 +391,7 @@ def is_udp_port_open(port, ip=None):
         os.write(udp_sock.fileno(), 'X')
         return True
     except OSError as ex:
-        logging.debug('is_port_open(%r) failed: %s', port, ex, exc_info=True)
+        print('is_udp_port_open({0}) failed: {1}'.format(port, ex))
     return False
 
 
@@ -410,7 +409,7 @@ def is_port_open(port, hosts=None, timeout=60):
             connection.close()
             return True
         except EnvironmentError as ex:
-            logging.debug('is_port_open(%r) failed: %s', address, ex, exc_info=True)
+            print('is_port_open({0}) failed: {1}'.format(port, ex))
     return False
 
 
