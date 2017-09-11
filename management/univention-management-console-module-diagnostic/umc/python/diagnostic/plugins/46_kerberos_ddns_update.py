@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
+import socket
 import subprocess
 import contextlib
 
@@ -133,7 +135,20 @@ def check_nsupdate(config_registry):
 			yield error
 
 
+def is_service_active(service):
+	lo = univention.uldap.getMachineConnection()
+	raw_filter = '(&(univentionService=%s)(cn=%s))'
+	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
+	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
+		if dn is not None:
+			return True
+	return False
+
+
 def run(_umc_instance):
+	if is_service_active('Samba 3'):
+		return  # ddns updates are not possible
+
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
 
