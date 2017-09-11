@@ -142,6 +142,10 @@ def dictonary_lowercase(dict):
 			pass
 
 
+def compare_normal(val1, val2):
+	return val1 == val2
+
+
 def compare_lowercase(val1, val2):
 	try:  # TODO: failes if conversion to ascii-str raises exception
 		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
@@ -345,7 +349,8 @@ class attribute:
 		self.con_attribute = con_attribute
 		self.con_other_attribute = con_other_attribute
 		self.required = required
-		self.compare_function = compare_function
+		# If no compare_function is given, we default to `compare_lowercase()`
+		self.compare_function = compare_function or compare_lowercase
 		if mapping:
 			self.mapping = mapping
 		# Make a reverse check of this mapping. This is necassary if the attribute is
@@ -1193,7 +1198,6 @@ class ucs:
 					if not detected_ca:
 						if isinstance(value, type(types.ListType())) and len(value) == 1:
 							value = value[0]
-						equal = False
 
 						# set encoding
 						compare = [ucs_object[ucs_key], value]
@@ -1203,11 +1207,7 @@ class ucs:
 							else:
 								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
 
-						if attributes.compare_function:
-							equal = attributes.compare_function(compare[0], compare[1])
-						else:
-							equal = compare[0] == compare[1]
-						if not equal:
+						if not attributes.compare_function(compare[0], compare[1]):
 							# This is deduplication of LDAP attribute values for S4 -> UCS.
 							# It destroys ordering of multi-valued attributes. This seems problematic
 							# as the handling of `con_other_attribute` assumes preserved ordering

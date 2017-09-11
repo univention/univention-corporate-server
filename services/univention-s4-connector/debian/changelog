@@ -1,3 +1,12 @@
+univention-s4-connector (11.0.8-11) unstable; urgency=medium
+
+  * Bug #39309: s4c: always use `compare_function`
+  * Bug #39309: s4c: remove redundant `compare_lowercase()` from mapping
+  * Bug #39309: s4c: add `compare_normal()`, set case-sensitive compare for some attrs
+  * Bug #39309: s4c: remove redundant organisation-mapping
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 11 Sep 2017 15:19:21 +0200
+
 univention-s4-connector (11.0.8-10) unstable; urgency=medium
 
   * Bug #34648: s4c: include filename on NORESYNC rejected files
