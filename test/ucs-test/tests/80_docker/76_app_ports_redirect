@@ -74,6 +74,3 @@ if __name__ == '__main__':
 		for port in ports:
 			host_port, container_port = port.split(':')
 			assert not is_port_open(host_port)
-		for port in udp_ports:
-			host_port, container_port = port.split(':')
-			assert not is_udp_port_open(host_port)
