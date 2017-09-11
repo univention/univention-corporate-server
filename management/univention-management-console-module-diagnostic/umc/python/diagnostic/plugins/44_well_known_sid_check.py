@@ -32,13 +32,13 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
-import socket
 
 import univention.uldap
 import univention.lib.s4 as s4
 import univention.lib.misc
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -167,18 +167,8 @@ def check_existence_and_consistency():
 				yield NameMismatch(sid, mapped_name, actual_name)
 
 
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
-
-
 def run(_umc_instance):
-	if not is_service_active('S4 Connector'):
+	if not util.is_service_active('S4 Connector'):
 		return
 
 	check_errors = list(check_existence_and_consistency())

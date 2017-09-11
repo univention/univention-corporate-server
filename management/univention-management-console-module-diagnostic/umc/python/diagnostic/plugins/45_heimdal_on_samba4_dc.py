@@ -31,14 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
-import socket
 import psutil
 
 import univention.uldap
 
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -46,16 +45,6 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('Check Heimdal KDC on Samba 4 DC')
 description = _('Samba 4 KDC running.')
 umc_modules = [{'module': 'services'}]
-
-
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
 
 
 def samba_kdc_running():
@@ -89,7 +78,7 @@ def run(_umc_instance):
 	autostart_error = _('This may be, because `kerberos/autostart` is not disabled.')
 	solution = _('You may want to stop Heimdal KDC and restart Samba via {services}')
 
-	if is_service_active('Samba 4') and not samba_kdc_running():
+	if util.is_service_active('Samba 4') and not samba_kdc_running():
 		error_descriptions = [error]
 		if is_heimdal_kdc_running():
 			error_descriptions.append(heimdal_error)
