@@ -31,12 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
-import socket
 import subprocess
 
-import univention.uldap
 from univention.management.console.modules.diagnostic import Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -46,7 +44,7 @@ description = _('No errors found.'),
 
 
 def run_samba_tool_dbcheck_fix(umc_instance):
-	if not is_service_active('Samba 4'):
+	if not util.is_service_active('Samba 4'):
 		return
 
 	cmd = ['samba-tool', 'dbcheck', '--fix', '--cross-ncs', '--yes']
@@ -64,16 +62,6 @@ actions = {
 }
 
 
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
-
-
 def run_with_output(cmd):
 	output = list()
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -86,7 +74,7 @@ def run_with_output(cmd):
 
 
 def run(_umc_instance, rerun=False, fix_log=''):
-	if not is_service_active('Samba 4'):
+	if not util.is_service_active('Samba 4'):
 		return
 
 	error_descriptions = list()

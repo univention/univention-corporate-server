@@ -35,7 +35,6 @@ import struct
 import socket
 import random
 
-import ldap
 import ipaddr
 import dns.resolver
 import dns.exception
@@ -51,6 +50,7 @@ import pyasn1.error
 from univention.config_registry import handler_set as ucr_set
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -268,16 +268,6 @@ def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	return True
 
 
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
-
-
 def resolve_kdc_record(protocol, domainname):
 	kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
 	try:
@@ -323,7 +313,7 @@ def run(_umc_instance, retest=False):
 
 	if not reachable_kdc:
 		is_dc = configRegistry.get('server/role') == 'domaincontroller_master'
-		is_s4_dc = is_dc and is_service_active('Samba 4')
+		is_s4_dc = is_dc and util.is_service_active('Samba 4')
 		if is_s4_dc and configRegistry.is_true('samba/interfaces/bindonly', False):
 			local_included = False
 			for interface in configRegistry.get('samba/interfaces', '').split():

@@ -33,7 +33,6 @@
 
 import os
 import ldap
-import socket
 
 try:
 	import samba.param
@@ -45,24 +44,14 @@ except ImportError:
 else:
 	SAMBA_AVAILABLE = True
 
-import univention.uldap
 from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba replication status for errors')
 description = _('No errors found.'),
-
-
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
 
 
 class DRSUAPI(object):
@@ -153,7 +142,7 @@ class OutboundReplicationProblem(ReplicationProblem):
 
 
 def run(_umc_instance):
-	if not is_service_active('Samba 4') or not SAMBA_AVAILABLE:
+	if not util.is_service_active('Samba 4') or not SAMBA_AVAILABLE:
 		return
 
 	drs = DRSUAPI()

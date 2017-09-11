@@ -32,12 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-import ldap
-import socket
 
 import univention
 import univention.uldap
 from univention.management.console.modules.diagnostic import Critical, Warning
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -118,18 +117,8 @@ def get_s4_rejected(s4):
 		yield (s4_id, encoded_dn.strip(), encoded_ucs_dn.strip())
 
 
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
-
-
 def run(_umc_instance):
-	if not is_service_active('S4 Connector'):
+	if not util.is_service_active('S4 Connector'):
 		return
 
 	try:

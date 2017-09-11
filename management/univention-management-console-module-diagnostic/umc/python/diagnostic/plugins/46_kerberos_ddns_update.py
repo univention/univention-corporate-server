@@ -34,8 +34,10 @@
 import subprocess
 import contextlib
 
+import univention.lib.admember
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -87,18 +89,26 @@ def kinit(principal, keytab=None, password_file=None):
 		subprocess.call(('kdestroy',))
 
 
-def nsupdate(hostname, domainname):
+def nsupdate(server, domainname):
 	process = subprocess.Popen(('nsupdate', '-g' , '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	cmd = 'server {host}.{domain}\nprereq yxdomain {domain}\nsend\n'
-	_ = process.communicate(cmd.format(host=hostname, domain=domainname))
+	cmd = 'server {server}\nprereq yxdomain {domain}\nsend\n'
+	_ = process.communicate(cmd.format(server=server, domain=domainname))
 	if process.poll() != 0:
-		raise NSUpdateError(hostname, domainname)
+		raise NSUpdateError(server, domainname)
 
 
-def check_dns_machine_principal(hostname, domainname):
+def get_server(config_registry):
+	server = '{}.{}'.format(config_registry.get('hostname'), config_registry.get('domainname'))
+	if config_registry.is_true('ad/member'):
+		ad_domain_info = univention.lib.admember.lookup_adds_dc()
+		return ad_domain_info.get('DC IP', server)
+	return server
+
+
+def check_dns_machine_principal(server, hostname, domainname):
 	with kinit('{}$'.format(hostname), password_file='/etc/machine.secret'):
-		nsupdate(hostname, domainname)
+		nsupdate(server, domainname)
 
 
 def check_dns_server_principal(hostname, domainname):
@@ -106,9 +116,14 @@ def check_dns_server_principal(hostname, domainname):
 		nsupdate(hostname, domainname)
 
 
-def check_nsupdate(hostname, domainname, is_dc=False):
+def check_nsupdate(config_registry):
+	server = get_server(config_registry)
+	hostname = config_registry.get('hostname')
+	domainname = config_registry.get('domainname')
+	is_dc = config_registry.get('samba4/role') == 'DC'
+
 	try:
-		check_dns_machine_principal(hostname, domainname)
+		check_dns_machine_principal(server, hostname, domainname)
 	except UpdateError as error:
 		yield error
 
@@ -120,14 +135,13 @@ def check_nsupdate(hostname, domainname, is_dc=False):
 
 
 def run(_umc_instance):
+	if util.is_service_active('Samba 3'):
+		return  # ddns updates are not possible
+
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
 
-	hostname = config_registry.get('hostname')
-	domainname = config_registry.get('domainname')
-	is_dc = config_registry.get('samba4/role') == 'DC'
-
-	problems = list(check_nsupdate(hostname, domainname, is_dc))
+	problems = list(check_nsupdate(config_registry))
 	if problems:
 		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
 		ed.extend(str(error) for error in problems)

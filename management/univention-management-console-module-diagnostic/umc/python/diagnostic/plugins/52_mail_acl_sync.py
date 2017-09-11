@@ -31,8 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
-import socket
 import pexpect
 import subprocess
 import itertools as it
@@ -43,6 +41,7 @@ import univention.admin.modules as udm_modules
 
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -288,18 +287,8 @@ def udm_mail_link(folder):
 	}
 
 
-def is_service_active(service):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
-	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
-		if dn is not None:
-			return True
-	return False
-
-
 def run(_umc_instance):
-	if not is_service_active('IMAP'):
+	if not util.is_service_active('IMAP'):
 		return
 
 	configRegistry = univention.config_registry.ConfigRegistry()
