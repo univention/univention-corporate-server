@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-mail-postfix
+fix: 11.0.1-16A~4.2.0.201709111427
+desc: |
+ This update addresses the following issue(s):
+ * The listfilter policy service can now write debugging information to the
+   mail log, when the UCR variable mail/postfix/policy/listfilter/debug is
+   set to "yes".
+bug: [44922]
