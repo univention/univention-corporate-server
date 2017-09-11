@@ -3,7 +3,7 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-management-console-module-diagnostic
-fix: 3.0.1-23A~4.2.0.201709041543
+fix: 3.0.1-24A~4.2.0.201709111759
 desc: |
  This update addresses the following issue(s):
  * Add new check_server_password.

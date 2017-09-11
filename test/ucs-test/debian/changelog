@@ -1,3 +1,9 @@
+ucs-test (7.0.23-49) unstable; urgency=medium
+
+  * Bug #44902: reenable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
+
+ -- Lukas Oyen <oyen@univention.de>  Mon, 11 Sep 2017 18:02:26 +0200
+
 ucs-test (7.0.23-48) unstable; urgency=medium
 
   * 01_base/110_ucr_cronjobs: Give cron more time, thanks to Daniel for

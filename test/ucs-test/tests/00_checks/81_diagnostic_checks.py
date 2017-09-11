@@ -5,7 +5,7 @@
 
 from univention.testing.umc import Client
 
-SKIPPED_TESTS = ['01_ssh_connection', '11_nameserver', '31_file_permissions', '40_samba_tool_dbcheck', '46_kerberos_ddns_update']
+SKIPPED_TESTS = ['01_ssh_connection', '11_nameserver', '31_file_permissions', '40_samba_tool_dbcheck']
 
 
 def test_run_diagnostic_checks():
