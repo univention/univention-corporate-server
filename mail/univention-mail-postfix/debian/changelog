@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-16) unstable; urgency=low
+
+  * Bug #44922: add logging to mailinglist/groups listfilter
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 11 Sep 2017 12:50:02 +0200
+
 univention-mail-postfix (11.0.1-15) unstable; urgency=low
 
   * Bug #44948: fixed regression in delivery of mails to cyrus shared folders

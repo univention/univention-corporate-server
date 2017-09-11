@@ -52,6 +52,16 @@ syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG
 ucr = ConfigRegistry()
 ucr.load()
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
+_do_debug = ucr.is_true("mail/postfix/policy/listfilter/debug", False)
+
+
+def debug(msg, *args):
+	if _do_debug:
+		msg = "listfilter: {}".format(msg % args)
+		if options.test:
+			sys.stderr.write("{}\n".format(msg))
+		else:
+			syslog.syslog(syslog.LOG_DEBUG, msg)
 
 
 def listfilter(attrib):
@@ -60,6 +70,9 @@ def listfilter(attrib):
 	else:
 		sender = attrib.get("sender", None)
 	recipient = attrib.get("recipient", None)
+
+	debug("sender=%r recipient=%r check_sasl_username=%r", sender, recipient, check_sasl_username)
+	debug("attrib=%r", attrib)
 
 	if not options.ldap_base:
 		return "443 LDAP base not set."
@@ -94,6 +107,7 @@ def listfilter(attrib):
 
 				# check if there are restrictions, check sender first
 				if allowed_user_dns or allowed_group_dns:
+					debug("allowed_user_dns=%r allowed_group_dns=%r", allowed_user_dns, allowed_group_dns)
 					if not sender:
 						if check_sasl_username:
 							return "REJECT Access denied for not authenticated sender to restricted list %s" % (recipient, )
@@ -110,6 +124,7 @@ def listfilter(attrib):
 					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]
+						debug("user_dn=%r", user_dn)
 						ldap_filter = filter_format('(uniqueMember=%s)', (user_dn,))
 						group_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 						if group_result:
@@ -124,6 +139,7 @@ def listfilter(attrib):
 
 					# check groups
 					if allowed_group_dns:
+						debug("users_groups=%r", users_groups)
 						if users_groups:
 							# check user groups in univentionAllowedEmailGroups
 							for j in users_groups:
@@ -132,6 +148,7 @@ def listfilter(attrib):
 							# check nested group in univentionAllowedEmailGroups, depth 1!
 							for a in allowed_group_dns:
 								nested = ldap.getAttr(a, 'uniqueMember')
+								debug("nested=%r", nested)
 								for b in users_groups:
 									if b in nested:
 										return "DUNNO allowed per nested group"
@@ -150,6 +167,7 @@ attr = {}
 
 # testing
 if options.test:
+	_do_debug = True
 	if not options.sender or not options.recipient:
 		sys.stderr.write("sender and recipient are required\n")
 		parser.print_help()
@@ -169,6 +187,7 @@ else:
 		elif data == "\n":
 			if attr.get("request", None) == "smtpd_access_policy":
 				action = listfilter(attr)
+				debug("action=%s", action)
 				sys.stdout.write("action=%s\n\n" % action)
 			else:
 				sys.stderr.write("unknown action in %s\n" % attr)
@@ -178,6 +197,7 @@ else:
 			attr = {}
 		elif data == "":
 			# Postfix telling us to shutdown (max_idle).
+			debug("shutting down (max_idle)")
 			sys.exit(0)
 		else:
 			syslog.syslog(syslog.LOG_ERR, "received bad data: '{}', exiting.".format(data))

@@ -149,6 +149,12 @@ Description[en]=In the default settings, everyone can write to mail groups or ma
 Type=bool
 Categories=service-mail
 
+[mail/postfix/policy/listfilter/debug]
+Description[de]=Ist diese Variable auf den Wert "yes" gesetzt, werden beim Filtern von Mails an Gruppen und Mailinglisten log Informationen an die "mail" facility (/var/log/mail.*) gesendet.
+Description[en]=If this variable is set to "yes", log information is sent to the mail facility (/var/log/mail.*), when filtering messages to groups and mailing lists..
+Type=bool
+Categories=service-mail
+
 [mail/postfix/policy/listfilter/maxproc]
 Description[de]=Sind Sendeeinschränkungen konfiguriert (siehe 'mail/postfix/policy/listfilter'), kann mit dieser Variable die Anzahl der maximal gestarteten Filterprozesse konfiguriert werden.
 Description[en]=If sender restrictions are configured (see 'mail/postfix/policy/listfilter'), this variable configures the maximum amount of filter processes started.
