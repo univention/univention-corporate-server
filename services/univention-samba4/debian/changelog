@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-30) unstable; urgency=medium
+
+  * Bug 45062: move dead link test to join script
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Sep 2017 13:05:22 +0200
+
 univention-samba4 (6.0.10-29) unstable; urgency=medium
 
   * Bug #45338: escape share names
