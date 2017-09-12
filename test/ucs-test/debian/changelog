@@ -1,3 +1,9 @@
+ucs-test (7.0.23-50) unstable; urgency=medium
+
+  * 51_samba4/43access_sysvol: Added more debug (Bug #45382)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Sep 2017 07:42:30 +0200
+
 ucs-test (7.0.23-49) unstable; urgency=medium
 
   * Bug #44902: reenable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
