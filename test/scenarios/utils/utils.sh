@@ -675,6 +675,22 @@ set_windows_localadmin_password_for_ucs_test () {
 		tests/windows/localadmin/pwd="$password"
 }
 
+set_userpassword_for_administrator ()
+{
+	local password="$1"
+	local user="${2:-Administrator}"
+
+	eval "$(ucr shell)"
+
+	local passwordhash="$(mkpasswd -m sha-512 $password)"
+	echo "dn: uid=$user,cn=users,$ldap_base
+changetype: modify
+replace: userPassword
+userPassword: {crypt}$passwordhash
+" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret
+}
+
+
 monkeypatch () {
 	# this function can be used to monkeypatch all UCS@school systems before running the tests
 
