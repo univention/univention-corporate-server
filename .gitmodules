@@ -1,3 +1,6 @@
 [submodule "test/ucs-ec2-tools"]
 	path = test/ucs-ec2-tools
 	url = ../ucs-ec2-tools/
+[submodule "management/python-notifier/python-notifier"]
+	path = management/python-notifier/python-notifier
+	url = ../python-notifier
