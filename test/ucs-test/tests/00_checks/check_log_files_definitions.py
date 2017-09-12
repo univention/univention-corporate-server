@@ -88,6 +88,7 @@ class Errors(LogMessage):
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.',  # Bug #38911
 		r'Checking grub-pc/install_devices for errors[.]+',  # Bug #40733
 		r'Done checking grub-pc/install_devices for errors[.]',  # Bug #40733
+		'.*well-known-sid-name-mapping.d/univention-ldap-server.py.*slapd.service.', #44904
 		'.*failed to receive current ID.*',  # Bug 40962
 		'.*error 104: Connection reset by peer while receiving from notifier.*',  # Bug 40962
 	]

@@ -1,3 +1,10 @@
+ucs-test (7.0.23-51) unstable; urgency=medium
+
+  * 00_checks/99check_log_files: Move ignore line to
+    check_log_files_definitions.py (Bug #44904)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Sep 2017 10:23:12 +0200
+
 ucs-test (7.0.23-50) unstable; urgency=medium
 
   * 51_samba4/43access_sysvol: Added more debug (Bug #45382)
