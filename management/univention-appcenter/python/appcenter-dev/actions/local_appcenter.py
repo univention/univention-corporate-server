@@ -51,7 +51,8 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
 from univention.appcenter.app_cache import default_server
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action, Abort
+from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
+from univention.appcenter.exceptions import LocalAppCenterError
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process
 from univention.appcenter.ucr import ucr_save, ucr_get
 from univention.appcenter.ini_parser import read_ini_file
@@ -378,7 +379,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 							continue
 						break
 					else:
-						raise Abort('Could not determine app id. Specify an --ini file!')
+						raise LocalAppCenterError('Could not determine app id. Specify an --ini file!')
 				app = App.from_ini(ini_file)
 				app_id = app.id
 			meta_inf_dir = os.path.join(meta_inf_dir, app_id)
@@ -400,10 +401,10 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 
 	def _create_new_repo(self, args):
 		if not args.ini or not os.path.exists(args.ini):
-			raise Abort('An ini file is needed for new apps')
+			raise LocalAppCenterError('An ini file is needed for new apps')
 		app = App.from_ini(args.ini)
 		if not app:
-			raise Abort('Cannot continue with flawed ini file')
+			raise LocalAppCenterError('Cannot continue with flawed ini file')
 		if args.component_id:
 			component_id = args.component_id
 		else:
@@ -452,7 +453,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		if args.clear:
 			self._build_repo_dir(app_en, component_id, args.path, args.ucs_version)
 		if not app_en or not app_de:
-			raise Abort('Cannot continue with flawed ini file')
+			raise LocalAppCenterError('Cannot continue with flawed ini file')
 		if args.logo:
 			if LooseVersion(args.ucs_version) >= '4.1':
 				parser = ConfigParser()
@@ -489,7 +490,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				try:
 					self.copy_file(thumbnail, os.path.join(meta_inf_dir, thumbnails[i]))
 				except IndexError:
-					raise Abort('The ini file must state as much Thumbnails= as --thumbnails are given')
+					raise LocalAppCenterError('The ini file must state as much Thumbnails= as --thumbnails are given')
 		if args.readme:
 			for readme in args.readme:
 				self.copy_file(readme, repo_dir)
@@ -672,7 +673,7 @@ class DevSet(UniventionAppAction):
 
 	def set_ini_value(self, section, attr, value, parser):
 		if not re.match('^[a-zA-Z0-9_]+$', attr):
-			raise Abort('May not use %s as attribute' % attr)
+			raise LocalAppCenterError('May not use %s as attribute' % attr)
 		try:
 			items = parser.items(section)
 		except NoSectionError:
@@ -736,7 +737,7 @@ class DevSet(UniventionAppAction):
 				for locale in ['en', 'de']:
 					new_app = App.from_ini(tmp_ini_file.name, locale=locale, cache=args.app.get_app_cache_obj())
 					if new_app is None:
-						raise Abort('ini file would be malformed. Not saving attributes!')
+						raise LocalAppCenterError('ini file would be malformed. Not saving attributes!')
 			shutil.copy2(tmp_ini_file.name, ini_file)
 			os.chmod(ini_file, 0o644)
 			args.app.get_app_cache_obj().clear_cache()

@@ -36,7 +36,8 @@ import subprocess
 import shlex
 from argparse import REMAINDER
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction, Abort
+from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.exceptions import ShellNoCommandError, ShellAppNotRunning
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.utils import app_is_running
 
@@ -65,8 +66,8 @@ class Shell(UniventionAppAction, DockerActionMixin):
 		if args.tty:
 			docker_exec.append('-t')
 		if not commands:
-			raise Abort('Cannot run command: No command specified')
+			raise ShellNoCommandError()
 		if not app_is_running(args.app):
-			raise Abort('Cannot run command: %s is not running in a container' % args.app.id)
+			raise ShellAppNotRunning(args.app)
 		self.debug('Calling %s' % commands[0])
 		return subprocess.call(docker_exec + [docker.container] + commands)

@@ -34,7 +34,7 @@
 #
 
 from univention.appcenter.app import AppManager
-from univention.appcenter.actions import Abort
+from univention.appcenter.exceptions import RemovePluginUnsupported, RemoveBackupFailed
 from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.service import Stop
@@ -63,7 +63,7 @@ class Remove(Remove, DockerActionMixin):
 			super(Remove, self)._remove_app(app, args)
 		else:
 			if app.plugin_of:
-				raise Abort('Uninstallation of a plugin is not supported!')
+				raise RemovePluginUnsupported()
 			else:
 				self._remove_docker_container(app, args)
 
@@ -71,7 +71,7 @@ class Remove(Remove, DockerActionMixin):
 		self._configure(app, args)
 		if args.backup:
 			if self._backup_container(app, backup_data='move') is False:
-				raise Abort('Could not backup container!')
+				raise RemoveBackupFailed()
 		docker = self._get_docker(app)
 		if docker.container:
 			Stop.call(app=app)

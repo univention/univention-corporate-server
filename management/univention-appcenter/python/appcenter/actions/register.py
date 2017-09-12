@@ -47,7 +47,8 @@ from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute
-from univention.appcenter.actions import StoreAppAction, Abort
+from univention.appcenter.actions import StoreAppAction
+from univention.appcenter.exceptions import DatabaseConnectorError, RegisterSchemaFailed, RegisterSchemaFileFailed
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, app_ports_with_protocol, currently_free_port_in_range, generate_password, container_mode
 from univention.appcenter.log import catch_stdout
@@ -215,12 +216,16 @@ class Register(CredentialsAction):
 					if exc.code == 4:
 						self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
 					else:
-						raise Abort('Registration of schema extension failed (Code: %s)' % exc.code)
+						raise RegisterSchemaFailed(exc.code)
 				else:
 					if not schema_obj.wait_for_activation():
-						raise Abort('Registering schema file %s failed' % schema_file)
+						raise RegisterSchemaFileFailed(schema_file)
 				finally:
-					del os.environ['UNIVENTION_APP_IDENTIFIER']
+					try:
+						del os.environ['UNIVENTION_APP_IDENTIFIER']
+					except KeyError:
+						# strange...
+						self.warn('Could not delete UNIVENTION_APP_IDENTIFIER from env vars. Probably not set anymore?')
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
@@ -345,7 +350,7 @@ class Register(CredentialsAction):
 			try:
 				database_connector.create_database()
 			except DatabaseError as exc:
-				raise Abort(str(exc))
+				raise DatabaseConnectorError(str(exc))
 
 	def _register_docker_variables(self, app):
 		updates = {}

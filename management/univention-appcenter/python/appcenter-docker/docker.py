@@ -45,7 +45,7 @@ from contextlib import contextmanager
 
 from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.actions import Abort
+from univention.appcenter.exceptions import DockerVerificationFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
 
 _logger = get_base_logger().getChild('docker')
@@ -197,6 +197,7 @@ def dockerd_logs(logger=None):
 	ret, out = call_process2(args, logger=logger)
 	return out
 
+
 def docker_cp(src, dest, logger=None, followlink=False):
 	args = ['docker', 'cp']
 	if followlink is True:
@@ -204,6 +205,7 @@ def docker_cp(src, dest, logger=None, followlink=False):
 	args.append(src)
 	args.append(dest)
 	return call_process2(args, logger=logger)
+
 
 class Docker(object):
 
@@ -261,7 +263,7 @@ class Docker(object):
 			verify(self.app, self.image)
 		except Exception as exc:
 			self.logger.fatal(str(exc))
-			raise Abort()
+			raise DockerVerificationFailed()
 
 	@contextmanager
 	def tmp_file(self):

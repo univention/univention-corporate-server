@@ -34,7 +34,8 @@
 
 from tempfile import NamedTemporaryFile
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction, Abort
+from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.exceptions import ConfigureFailed
 from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_save
@@ -101,7 +102,7 @@ class Configure(UniventionAppAction):
 					try:
 						setting.set_value_together(app, value, together_config_settings)
 					except SettingValueError as exc:
-						raise Abort('Failed to configure %s: %s' % (app.name, exc))
+						raise ConfigureFailed(app.name, exc)
 					break
 			else:
 				other_settings[key] = value
