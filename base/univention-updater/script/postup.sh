@@ -159,7 +159,7 @@ ucr set \
 # Bug 45328
 # update/register appcenter at this point because 4.2-0 postup still is in 4.1 mode
 univention-app update || true
-univention-app register || true
+univention-app register --app || true
 # Bug 45328
 
 # run remaining joinscripts
