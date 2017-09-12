@@ -71,14 +71,24 @@ SYSVOL_PATH='/var/lib/samba/sysvol'
 # check for dead links in sysvol (provisioning and sysvol reset fail with
 # dead links in sysvol)
 if [ -d "$SYSVOL_PATH" ]; then
-	dead_links="$(find "$SYSVOL_PATH" -type l -xtype l)"
+	correct_message="Please correct this problem on this host"
+	test -n "$samba4_sysvol_sync_host" && correct_message="$correct_message and on the sysvol sync host \"${samba4_sysvol_sync_host}\""
+	correct_message="${correct_message}."
+	dead_links="$(find "$SYSVOL_PATH" -type l -xtype l 2>&1)"
+	if [ $? -ne 0 ]; then
+		echo "ERROR: The test for dead links in $SYSVOL_PATH failed with:"
+		echo "       $dead_links"
+		echo "       $correct_message"
+		exit 1
+	fi
 	if [ -n "$dead_links" ]; then
-		echo "ERROR: found dead symbolic links in $SYSVOL_PATH:"
+		echo "ERROR: Found dead symbolic links in $SYSVOL_PATH:"
 		while read -r dead; do
 			echo "        * $dead"
 		done <<< "$dead_links"
 		echo "       The samba provisioning will fail with dead links in"
 		echo "       $SYSVOL_PATH, so please remove those links and try again."
+		echo "       $correct_message"
 		exit 1
 	fi
 fi
