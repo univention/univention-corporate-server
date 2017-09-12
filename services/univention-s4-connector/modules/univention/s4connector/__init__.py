@@ -349,8 +349,8 @@ class attribute:
 		self.con_attribute = con_attribute
 		self.con_other_attribute = con_other_attribute
 		self.required = required
-		# If no compare_function is given, we default to `compare_lowercase()`
-		self.compare_function = compare_function or compare_lowercase
+		# If no compare_function is given, we default to `compare_normal()`
+		self.compare_function = compare_function or compare_normal
 		if mapping:
 			self.mapping = mapping
 		# Make a reverse check of this mapping. This is necassary if the attribute is

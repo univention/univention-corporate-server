@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-12) unstable; urgency=medium
+
+  * Bug #39309: s4c: set `compare_normal()` as default in mapping
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 13 Sep 2017 09:34:01 +0200
+
 univention-s4-connector (11.0.8-11) unstable; urgency=medium
 
   * Bug #39309: s4c: always use `compare_function`
