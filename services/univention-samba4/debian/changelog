@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-32) unstable; urgency=medium
+
+  * Bug #41849: setfacl for Printer-Admins
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Sep 2017 16:43:21 +0200
+
 univention-samba4 (6.0.10-31) unstable; urgency=medium
 
   * Bug 45062: also check find return value

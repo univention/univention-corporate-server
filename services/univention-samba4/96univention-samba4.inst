@@ -1023,17 +1023,13 @@ if [ -n "$samba4_join_site" ] && [ "$samba4_role" != "MEMBER" ]; then
 fi
 
 SAMBA_DRIVERS="/var/lib/samba/drivers"
-mkdir -p $SAMBA_DRIVERS
-chgrp -R "Printer-Admins" $SAMBA_DRIVERS
-chmod g+w $SAMBA_DRIVERS
-chmod +s $SAMBA_DRIVERS
-
+mkdir -p "$SAMBA_DRIVERS"
 for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do
-	mkdir -p $SAMBA_DRIVERS/$X;
-	chgrp -R "Printer-Admins" $SAMBA_DRIVERS/$X
-	chmod g+w $SAMBA_DRIVERS/$X
-	chmod +s $SAMBA_DRIVERS/$X
+	mkdir -p "$SAMBA_DRIVERS/$X"
 done
+chgrp -R "Printer-Admins" "$SAMBA_DRIVERS"
+chmod -R g+rws "$SAMBA_DRIVERS"
+setfacl -R -d -m g:Printer-Admins:rwx "$SAMBA_DRIVERS"
 
 # do create and modify in two steps, maybe the share already exists
 univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
