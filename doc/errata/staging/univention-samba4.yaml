@@ -3,7 +3,7 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-31A~4.2.0.201709121412
+fix: 6.0.10-32A~4.2.0.201709121647
 desc: |
  This update addresses the following issue(s):
  * Improve cleanup of old backups in univention-samba4-backup.
@@ -14,4 +14,5 @@ desc: |
  * Abort samba provision during join if dead links in sysvol.
  * The listener module for samba shares now correctly encodes filenames. Share
    names containing special characters caused errors.
-bug: [38554, 44635, 44895, 45062, 45338]
+ * Fixed samba drivers permission in join script.
+bug: [38554, 44635, 44895, 45062, 45338, 41849]
