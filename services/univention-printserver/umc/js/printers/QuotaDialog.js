@@ -47,13 +47,6 @@ define([
 
 			var buttons = [
 				{
-					name:			'submit',
-					label:			_("Save changes")
-					// no callback here: the onSubmit() event of the form
-					// will automatically be fired if our button has
-					// the name 'submit'
-				},
-				{
 					name:			'cancel',
 					label:			_("Cancel"),
 					// no special meaning of the button name 'cancel', so we
@@ -61,6 +54,13 @@ define([
 					callback: lang.hitch(this, function() {
 						this.onCancel();
 					})
+				},
+				{
+					name:			'submit',
+					label:			_("Save changes")
+					// no callback here: the onSubmit() event of the form
+					// will automatically be fired if our button has
+					// the name 'submit'
 				}
 			];
 

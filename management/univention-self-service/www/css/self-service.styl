@@ -21,7 +21,7 @@ div.PasswordServiceContent {
 }
 
 ol.PasswordOl {
-	margin-left: 0;
+	margin: 0
 	padding-right: 0;
 	padding-left: 0;
 	list-style-type: none;
@@ -45,7 +45,11 @@ ol.PasswordOl {
 		text-align: right;
 
 		.dijitButton {
-			margin: 0.6em 0 0 0.6em;
+			margin: 24px 0 0 !important; 
+
+			&:not(:first-child) {
+				margin-left: 8px !important;
+			}
 		}
 	}
 
@@ -53,6 +57,15 @@ ol.PasswordOl {
 		margin-bottom: 1.5em;
 	}
 
+	li:last-of-type .dijitTextBox:last-child {
+		margin-bottom: 0;
+	}
+
+	&#PasswordForgottenSteps {
+		li:last-of-type .dijitTextBox {
+			margin-bottom: 0;
+		}
+	}
 }
 
 ol#PasswordForgottenSteps li.step::before {
@@ -133,3 +146,18 @@ div.step .dijitButton {
 	padding: 1.3em;
 	background-color: rgb(20, 240, 10);
 }
+
+div.PasswordServiceContent
+	padding: 24px 24px 8px !important
+	padding: 0 !important
+
+	.PasswordServiceContentChild
+		padding: 24px 24px 8px
+		overflow: visible
+
+		h2
+			line-height: 28px
+			margin: 20px 0
+		
+		.PasswordOl .buttonRow
+			margin: 0 -16px

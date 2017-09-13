@@ -104,6 +104,7 @@ define([
 
 					// create page object
 					var subpage = new ContentPane({
+						"class": "PasswordServiceContentChild",
 						content: content,
 						page_name: page_name
 					});

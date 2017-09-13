@@ -1802,8 +1802,7 @@ define([
 				}, {
 					name: 'remove',
 					label: _('Delete'),
-					callback: _remove,
-					style: 'float:right'
+					callback: _remove
 				}]
 				//layout: [ 'text', [ 'deleteReferring', 'submit' ] ]
 			});

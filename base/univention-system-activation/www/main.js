@@ -90,7 +90,7 @@ define([
 
 		createWizard: function() {
 			this._wizard = new ActivationWizard({
-				'class': 'umcCard',
+				'class': 'umcInlineDialog',
 				entries: entries
 			});
 			var contentNode = dom.byId('content');

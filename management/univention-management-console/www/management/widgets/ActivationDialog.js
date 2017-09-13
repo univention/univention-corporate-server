@@ -41,14 +41,15 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/Text",
 	"umc/widgets/ProgressBar",
+	"umc/widgets/StandbyMixin",
 	"./ActivationPage!",  // needs to be loaded as AMD plugin
 	"./LicenseImportPage!",  // needs to be loaded as AMD plugin
 	"./FinishedActivationPage",
 	"umc/i18n!management"
 ], function(declare, lang, array, domClass, when, topic, Dialog, tools, dialog, Wizard, Text, ProgressBar,
-		ActivationPage, LicenseImportPage, FinishedActivationPage, _) {
+		StandbyMixin, ActivationPage, LicenseImportPage, FinishedActivationPage, _) {
 
-	return declare(Dialog, {
+	return declare([Dialog, StandbyMixin], {
 		// summary:
 		//		The dialog which is shown during the first login of Administrator.
 
@@ -98,7 +99,7 @@ define([
 						return success ? nextPage : pageName;
 					});
 					thisDialog._progressBar.setInfo(_('Sending activation email...'), null, Infinity);
-					this.standbyDuring(deferred, thisDialog._progressBar);
+					thisDialog.standbyDuring(deferred, thisDialog._progressBar);
 					return deferred;
 				},
 
@@ -137,7 +138,7 @@ define([
 			licenseUploader.onImportLicense = lang.hitch(this, function(deferred) {
 				this._progressBar.setInfo(_('Importing license data...'), null, Infinity);
 				topic.publish('/umc/actions', 'activation-wizard', 'licenseImport', 'upload');
-				this._wizard.standbyDuring(deferred, this._progressBar);
+				this.standbyDuring(deferred, this._progressBar);
 				deferred.then(lang.hitch(this, function() {
 					// activation has been successful -> close dialogue
 					topic.publish('/umc/actions', 'activation-wizard', 'licenseImport', 'success');

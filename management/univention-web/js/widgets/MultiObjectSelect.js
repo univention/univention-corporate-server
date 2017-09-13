@@ -117,9 +117,22 @@ define([
 				}));
 
 				// add the final buttons to close the dialog
-				this._container.addChild(new Button({
+				var btnContainer = new ContainerWidget({
+					'class': 'umcButtonRow'
+				});
+				btnContainer.addChild(new Button({
+					label: _('Cancel'),
+					onClick: lang.hitch(this, function() {
+						// hide the dialog
+						this.hide();
+
+						// unselect all elements
+						this._multiSelect.selection.clear();
+
+					})
+				}));
+				btnContainer.addChild(new Button({
 					label: _('Add'),
-					style: 'float: right;',
 					onClick: lang.hitch(this, function() {
 						// get all elements an trigger onAdd event
 						var ids = this._multiSelect.get('value');
@@ -135,18 +148,7 @@ define([
 						this._multiSelect.selection.clear();
 					})
 				}));
-				this._container.addChild(new Button({
-					label: _('Cancel'),
-					defaultButton: true,
-					onClick: lang.hitch(this, function() {
-						// hide the dialog
-						this.hide();
-
-						// unselect all elements
-						this._multiSelect.selection.clear();
-
-					})
-				}));
+				this._container.addChild(btnContainer);
 
 				// put focus to last widget in the SearchForm
 				this.on('focus', lang.hitch(this, function() {

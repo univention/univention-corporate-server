@@ -173,7 +173,7 @@ define([
 				label: _('Next'),
 				onClick: lang.hitch(this, '_requestToken')
 			});
-			var buttonRow = put(step, 'div.buttonRow');
+			var buttonRow = put(step, 'div.buttonRow.umcPageFooter');
 			put(buttonRow, this._requestTokenButton.domNode);
 			put(this.steps, step);
 			var firstRenewOptions = renewOptions.firstChild.children[2].firstChild;

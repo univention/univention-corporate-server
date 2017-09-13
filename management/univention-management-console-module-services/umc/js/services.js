@@ -230,15 +230,15 @@ define([
 			confirmMessage += '</ul>';
 
 			dialog.confirm(confirmMessage, [{
+				'default': true,
+				label: _('Cancel')
+			}, {
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					this.standbyDuring(tools.umcpCommand(command, data)).then(lang.hitch(this, function(response) {
 						this.reloadGrid();
 					}));
 				})
-			}, {
-				'default': true,
-				label: _('Cancel')
 			}]);
 		}
 	});

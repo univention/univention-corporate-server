@@ -36,12 +36,12 @@ define([
 	"dojo/Deferred",
 	"dojo/when",
 	"dojo/promise/all",
-	"dojo/dom-style",
+	"dojo/dom-class",
 	"dijit/form/Form",
 	"umc/tools",
 	"umc/render",
 	"umc/i18n!"
-], function(declare, lang, array, kernel, Deferred, when, all, style, Form, tools, render, _) {
+], function(declare, lang, array, kernel, Deferred, when, all, domClass, Form, tools, render, _) {
 
 	// in order to break circular dependencies (umc.dialog needs a Form and
 	// Form needs umc/dialog), we define umc/dialog as an empty object and
@@ -135,20 +135,20 @@ define([
 
 			// in case no submit button has been defined, we define one and hide it
 			// this allows us to connect to the onSubmit event in any case
-			var submitButtonDefined = false;
-			array.forEach(this.buttons, function(ibutton) {
+			this.submitButtonDefined = false;
+			array.forEach(this.buttons, lang.hitch(this, function(ibutton) {
 				if ('submit' == ibutton.name) {
-					submitButtonDefined = true;
+					this.submitButtonDefined = true;
 					return false; // break loop
 				}
-			});
-			if (!submitButtonDefined) {
+			}));
+			if (!this.submitButtonDefined) {
 				// no submit button defined, add a hidden one :)
 				this.buttons = this.buttons instanceof Array ? this.buttons : [];
 				this.buttons.push({
 					label: 'submit',
 					name: 'submit',
-					style: 'border: 0; height: 0; overflow: hidden; margin: 0; padding: 0;' // using display=none will prevent button from being called
+					'class': 'dijitOffScreen'
 				});
 			}
 
@@ -184,6 +184,11 @@ define([
 				this._widgets = render.widgets(this.widgets, this);
 				this._buttons = render.buttons(this.buttons || [], this);
 				this._container = render.layout(this.layout, this._widgets, this._buttons);
+				// if the submit button was not defined and no other buttons were specified we hide
+				// the row of the default submit button
+				if (!this.submitButtonDefined && this.buttons.length === 1) {
+					domClass.add(this._buttons.submit.getParent().domNode, 'dijitOffScreen');
+				}
 
 				// start processing the layout information
 				this._container.placeAt(this.containerNode);

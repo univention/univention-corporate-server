@@ -194,6 +194,9 @@ define([
 				dialogMessage = _('Please confirm quota support deactivation on device: %s', [partitionDevice]);
 			}
 			dialog.confirm(dialogMessage, [{
+				label: _('Cancel'),
+				'default': true
+			}, {
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					var cmd = 'quota/partitions/' + (doActivate ? 'activate' : 'deactivate');
@@ -206,9 +209,6 @@ define([
 						}
 					}));
 				})
-			}, {
-				label: _('Cancel'),
-				'default': true
 			}]);
 		},
 

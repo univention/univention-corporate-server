@@ -215,6 +215,9 @@ define([
 				dialogMessage = _('Please confirm to remove the following %(length)s users: %(usernames)s', {'usernames': usernames, 'length': usernames.length});
 			}
 			dialog.confirm(dialogMessage, [{
+				label: _('Cancel'),
+				'default': true
+			}, {
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					var transaction = this.moduleStore.transaction();
@@ -237,8 +240,6 @@ define([
 						}
 					}));
 				})
-			}, {
-				label: _('Cancel')
 			}]);
 		}
 	});

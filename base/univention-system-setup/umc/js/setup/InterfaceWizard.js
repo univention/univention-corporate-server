@@ -630,8 +630,8 @@ define([
 					var description = string.substitute('<ul><li>${0}: ${1}</li><li>${2}: ${3}</li></ul>', [_('Gateway'), result.gateway || _('None'), _('Nameserver'), nameservers]);
 
 					dialog.confirm(_('Should the nameserver and gateway be set: %s', description), [
-						{label: _('set'), name: 'yes', 'default': true},
-						{label: _("don't set"), name: 'no'}
+						{label: _("don't set"), name: 'no'},
+						{label: _('set'), name: 'yes', 'default': true}
 					]).then(lang.hitch(this, function(answer) {
 						if (answer === 'yes') {
 							this.setValues({

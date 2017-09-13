@@ -26,8 +26,8 @@ if app and has_required_props:
 	background-size: auto 20px;
 }
 
-.umc .umcWizard.umcCard .dijitDefaultButton .dijitButtonText,
-.umc .umcWizard.umcCard .dijitUploader .dijitButtonText {
+.umc .umcWizard.umcInlineDialog .dijitDefaultButton .dijitButtonText,
+.umc .umcWizard.umcInlineDialog .dijitUploader .dijitButtonText {
 	color: %(primary_color)s;
 }
 

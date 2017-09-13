@@ -187,12 +187,12 @@ define([
 
 			// confirm applying of snapshot
 			dialog.confirm(_('Are you sure to revert to the selected snapshot?'), [{
-				name: 'revert',
-				label: _('Revert')
-			}, {
 				name: 'cancel',
 				'default': true,
 				label: _('Cancel')
+			}, {
+				name: 'revert',
+				label: _('Revert')
 			}]).then(lang.hitch(this, function(response) {
 				if (response != 'revert') {
 					return;
@@ -224,12 +224,12 @@ define([
 				msg = _('Are you sure to delete the selected snapshot?');
 			}
 			dialog.confirm(msg, [{
-				name: 'delete',
-				label: _('Delete')
-			}, {
 				name: 'cancel',
 				'default': true,
 				label: _('Cancel')
+			}, {
+				name: 'delete',
+				label: _('Delete')
 			}]).then(lang.hitch(this, function(response) {
 				if (response != 'delete') {
 					return;

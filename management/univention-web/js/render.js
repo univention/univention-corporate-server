@@ -318,7 +318,7 @@ define([
 				// add all buttons that have not been rendered so far to a separate container
 				// and respect their correct order (i.e., using the interal array field $order$)
 				var buttonContainer = new ContainerWidget({
-					'class': 'umcLayoutRow'
+					'class': 'umcLayoutRow umcButtonRow'
 				});
 				array.forEach(buttons.$order$, function(ibutton) {
 					if (!ibutton.$isRendered$) {

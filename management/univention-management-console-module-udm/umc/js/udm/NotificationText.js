@@ -66,7 +66,7 @@ define([
 
 			domStyle.set(this.domNode, {
 				height: "0",
-				margin: "-1.61em -1.6em 1em -1.6em",
+				margin: "0 -24px",
 				position: "relative",
 				"-webkit-transition": "height 1s",
 				"transition": "height 1s",
@@ -101,6 +101,7 @@ define([
 				this.set('message', message);
 				domStyle.set(this.domNode, {
 					padding: "0.3em 1.6em",
+					"margin-bottom": "8px",
 					height: "auto"
 				});
 			}));
@@ -109,6 +110,7 @@ define([
 		_hideMessage: function(stopDeferred) {
 			domStyle.set(this.domNode, {
 				padding: "0",
+				"margin-bottom": "",
 				height: "0"
 			});
 

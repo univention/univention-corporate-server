@@ -129,12 +129,12 @@ define([
 				msg = _('Should the %d network interfaces be removed?', ids.length);
 			}
 			dialog.confirm(msg, [{
-				name: 'remove',
-				label: _('Remove')
-			}, {
 				name: 'cancel',
 				'default': true,
 				label: _('Cancel')
+			}, {
+				name: 'remove',
+				label: _('Remove')
 			}]).then(lang.hitch(this, function(response) {
 				if (response == 'cancel') {
 					return;
