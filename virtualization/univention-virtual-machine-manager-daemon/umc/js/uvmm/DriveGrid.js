@@ -324,15 +324,15 @@ define([
 			var disk = items[ 0 ];
 
 			var buttons = [ {
+				name: 'cancel',
+				'default': true,
+				label: _('Cancel')
+			}, {
 				name: 'detach',
 				label: _('Detach')
 			}, {
 				name: 'delete',
 				label: _('Delete')
-			}, {
-				name: 'cancel',
-				'default': true,
-				label: _('Cancel')
 			} ];
 
 			// confirm removal of drive

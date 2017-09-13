@@ -38,14 +38,15 @@ define([
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
 	"umc/tools",
+	"umc/widgets/StandbyMixin",
 	"umc/modules/udm/cache",
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/modules/udm/NotificationText",
 	"umc/modules/udm/UsernameMaxLengthChecker",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, NotificationText, UsernameMaxLengthChecker, _) {
+], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, StandbyMixin, cache, FirstPageWizard, NotificationText, UsernameMaxLengthChecker, _) {
 
-	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
+	return declare("umc.modules.udm.NewObjectDialog", [ Dialog, StandbyMixin ], {
 		// summary:
 		//		Dialog class for creating a new LDAP object.
 
@@ -201,7 +202,7 @@ define([
 				wizardDeferred.reject();
 			}
 			this._readyForCreateWizard = new Deferred();
-			this._preWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
+			this.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
 			this.onFirstPageFinished(firstPageValues);
 
 			wizardDeferred.then(
@@ -227,7 +228,7 @@ define([
 						this._wizardContainer.selectChild(createWizard);
 						this.createWizardAdded.resolve();
 						var finishWizard = lang.hitch(this, function(wizardFormValues, submit) {
-							createWizard.standbyDuring(detailsValues.detailPage.ready()).then(lang.hitch(this, function() {
+							this.standbyDuring(detailsValues.detailPage.ready()).then(lang.hitch(this, function() {
 								lang.mixin(detailsValues.detailPage.templateObject._userChanges, createWizard.templateObject._userChanges);
 								tools.forIn(wizardFormValues, lang.hitch(this, function(key, val) {
 									detailsValues.detailPage._form.getWidget(key).set('value', val);
@@ -237,7 +238,7 @@ define([
 									detailsValues.detailPage._form.ready().then(lang.hitch(this, function() {
 										var saveDeferred = detailsValues.detailPage.save();
 										if (saveDeferred.then) {
-											createWizard.standbyDuring(saveDeferred);
+											this.standbyDuring(saveDeferred);
 											saveDeferred.then(
 												lang.hitch(this, function() {
 													this._notificationText.showSuccess(_('The %s has been created.', createWizard.objectName()));

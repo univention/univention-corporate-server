@@ -133,7 +133,7 @@ define([
 
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
-				'class': this.local_mode ? '' : 'umcCard',
+				'class': this.local_mode ? '' : 'umcInlineDialog',
 				moduleID: this.moduleID,
 				disabledPages: pageBlacklist,
 				disabledFields: fieldBlacklist,

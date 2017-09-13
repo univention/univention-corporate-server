@@ -240,15 +240,15 @@ define([
 				if (this._serverRole == 'domaincontroller_master') {
 					// we do not need credentials on DC master
 					dialog.confirm(_('The following join scripts will be executed: ') + txtscripts, [{
+						name: 'cancel',
+						label: 'Cancel',
+						'default': true
+					}, {
 						name: 'run',
 						label: _('Run join scripts'),
 						callback: lang.hitch(this, function() {
 							this.runJoinScripts(scripts, force, {});
 						})
-					}, {
-						name: 'cancel',
-						label: 'Cancel',
-						'default': true
 					}]);
 				} else {
 					this.getCredentials(txtscripts).then(lang.hitch(this, function(credentials) {

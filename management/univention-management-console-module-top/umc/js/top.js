@@ -64,6 +64,9 @@ define([
 				msg = _('Please confirm sending %(signal)s to the %(processid)s selected processes!', {signal: signal, processid: pids.length});
 			}
 			dialog.confirm(msg, [{
+				'default': true,
+				label: _('Cancel')
+			}, {
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					this.standbyDuring(this.umcpCommand('top/kill', params)).then(lang.hitch(this, function() {
@@ -71,9 +74,6 @@ define([
 						this.reloadGrid();
 					}));
 				})
-			}, {
-				'default': true,
-				label: _('Cancel')
 			}]);
 		},
 

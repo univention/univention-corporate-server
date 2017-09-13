@@ -102,18 +102,17 @@ define([
 			}];
 
 			var buttons = [{
-				name: 'submit',
-				label: _( 'Save' ),
-				style: 'float: right',
-				callback: lang.hitch(this, function() {
-					this._form.save();
-				})
-			}, {
 				//FIXME: Should be much simpler. The key name should be enough
 				name: 'cancel',
 				label: _( 'Cancel' ),
 				callback: lang.hitch(this, function() {
 					this.hide();
+				})
+			}, {
+				name: 'submit',
+				label: _( 'Save' ),
+				callback: lang.hitch(this, function() {
+					this._form.save();
 				})
 			}];
 
@@ -257,6 +256,9 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
 					dialog.confirm(_('Are you sure to delete the %d selected UCR variable(s)?', ids.length), [{
+						label: _('Cancel'),
+						'default': true
+					}, {
 						label: _('Delete'),
 						callback: lang.hitch(this, function() {
 							// remove the selected elements via a transaction on the module store
@@ -264,9 +266,6 @@ define([
 							array.forEach(ids, lang.hitch(this.moduleStore, 'remove'));
 							transaction.commit();
 						})
-					}, {
-						label: _('Cancel'),
-						'default': true
 					}]);
 
 				})

@@ -156,13 +156,13 @@ define([
 					var values = this._form.get('value');
 					if ( values.message ) {
 						dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
+							label: _( 'Cancel' ),
+							'default': true
+						}, {
 							label: _( 'Close' ),
 							callback: lang.hitch( this, function() {
 								topic.publish('/umc/tabs/close', [ this ] );
 							} )
-						}, {
-							label: _( 'Cancel' ),
-							'default': true
 						} ] );
 					} else {
 						topic.publish('/umc/tabs/close', [ this ] );

@@ -123,7 +123,8 @@ define([
 			// add the new message
 			if (typeof this.message == "string") {
 				var widget = new Text({
-					content: message
+					content: message,
+					'class': 'umcConfirmDialogText'
 				});
 				this._container.addChild(widget, 0);
 			}
@@ -152,12 +153,16 @@ define([
 			}
 		},
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.baseClass += ' umcConfirmDialog';
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			// put buttons into separate container
 			var buttons = new ContainerWidget({
-				style: 'text-align: center;',
 				'class': 'umcButtonRow'
 			});
 			var defaultButton = null;

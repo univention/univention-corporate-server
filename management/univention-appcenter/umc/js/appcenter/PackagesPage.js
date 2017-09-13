@@ -192,7 +192,7 @@ define([
 
 					this._grid.standby(false);
 
-					var head_style	= 'font-size:120%;font-weight:bold;margin:.5em;text-decoration:underline;';
+					var head_style	= 'font-size:120%;font-weight:bold;margin-bottom:.5em;text-decoration:underline;';
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
@@ -228,6 +228,13 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
+					// always: a button to close the dialog.
+					buttons.push({
+						name: 'cancel',
+						'default': true,
+						label: _("Close")
+					});
+
 					if (this._can_install(data.result)) {
 						buttons.push({
 							name: 'install',
@@ -255,12 +262,6 @@ define([
 							})
 						});
 					}
-					// always: a button to close the dialog.
-					buttons.push({
-						name: 'cancel',
-						'default': true,
-						label: _("Close")
-					});
 
 					var confirmDialog = new ConfirmDialog({
 						title: _('Package details'),
@@ -436,7 +437,7 @@ define([
 					];
 				}
 
-				dialog.confirm('<h2>' + headline + '</h2>' + txt, buttons);
+				dialog.confirm('<h2 style="margin-top:0;">' + headline + '</h2>' + txt, buttons);
 			}));
 		},
 

@@ -94,17 +94,16 @@ define([
 
 			// buttons
 			var buttons = [ {
-				name: 'create',
-				label: _('Create'),
-				defaultButton: true,
-				callback: lang.hitch(this, function() {
-					this.onDone(this._form.get('value'));
-				})
-			}, {
 				name: 'cancel',
 				label: _('Cancel'),
 				callback: lang.hitch(this, function() {
 					this.destroyRecursive();
+				})
+			}, {
+				name: 'submit',
+				label: _('Create'),
+				callback: lang.hitch(this, function() {
+					this.onDone(this._form.get('value'));
 				})
 			} ];
 
@@ -209,13 +208,11 @@ define([
 				this._container.addChild(new Text({content: message}));
 
 				var btnContainer = new ContainerWidget({
-					style: 'text-align: center;',
 					'class' : 'umcButtonRow'
 				});
 				btnContainer.addChild(new Button({
 					defaultButton: true,
 					label: _('Close'),
-					style: 'margin-left: auto;',
 					callback: lang.hitch(this, function() {
 						this.destroyRecursive();
 					})

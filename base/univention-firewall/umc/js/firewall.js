@@ -221,11 +221,11 @@ define([
 			var _confirmDialog = lang.hitch(this, function() {
 				var message = _('Are you sure to delete the %d selected firewall rule(s)?', ids.length);
 				dialog.confirm(message, [{
-					label: _('Delete'),
-					callback: _remove
-				}, {
 					label: _('Cancel'),
 					'default': true
+				}, {
+					label: _('Delete'),
+					callback: _remove
 				}]);
 			});
 

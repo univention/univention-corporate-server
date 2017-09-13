@@ -42,8 +42,9 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/Uploader",
 	"umc/widgets/ProgressBar",
+	"umc/widgets/Button",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, domClass, tools, dialog, render, ContainerWidget, ConfirmDialog, StandbyMixin, Text, TextArea, Uploader, ProgressBar, _) {
+], function(declare, lang, domClass, tools, dialog, render, ContainerWidget, ConfirmDialog, StandbyMixin, Text, TextArea, Uploader, ProgressBar, Button, _) {
 
 	return declare('umc.modules.udm.LicenseImportDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
@@ -96,9 +97,8 @@ define([
 					}
 					this._handleUploaded(result);
 				})
-			}]);
-
-			var buttons = [{
+			}, {
+				type: Button,
 				name : 'btnLicenseText',
 				label : _('Import from text field'),
 				callback: lang.hitch(this, function() {
@@ -114,9 +114,11 @@ define([
 						})
 					), this._progressBar);
 				})
-			}, {
-				name: 'submit', // workaround for a style as default button
-				style: 'float: right',
+			}]);
+
+			this.options = [{
+				'default': true,
+				name: 'close',
 				label: _('Close'),
 				callback: lang.hitch(this, function() {
 					this.close();
@@ -128,9 +130,10 @@ define([
 				'message',
 				'licenseUpload',
 				'licenseText',
-				['btnLicenseText', 'submit']
-			], this._widgets, render.buttons(buttons));
+				'btnLicenseText'
+			], this._widgets);
 			domClass.add(content.domNode, 'col-xxs-12 col-xs-8');
+			domClass.add(this._widgets.btnLicenseText.$refLabel$.domNode, 'umcUploader');
 			this.message.addChild(content);
 		},
 
