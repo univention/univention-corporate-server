@@ -10,3 +10,5 @@ desc: |
    via an HTTPS request
  * Start App container with the hosts proxy settings by default.
 bug: [45291, 44785]
+erratum: 476
+announced: 2017-09-13
