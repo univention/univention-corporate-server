@@ -16,3 +16,5 @@ desc: |
    names containing special characters caused errors.
  * Fixed samba drivers permission in join script and postinst.
 bug: [38554, 44635, 44895, 45062, 45338, 41849]
+erratum: 164
+announced: 2017-09-13

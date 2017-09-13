@@ -9,3 +9,5 @@ desc: |
  * The listener module for samba shares now correctly encodes filenames. Share
    names containing special characters caused errors.
 bug: [38688]
+erratum: 163
+announced: 2017-09-13

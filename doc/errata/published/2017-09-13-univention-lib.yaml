@@ -11,3 +11,5 @@ desc: |
  * Fixed issue in AD Membermode check_ad_account.
  * Add OrderedSet implementation.
 bug: [38554,44762,45249]
+erratum: 160
+announced: 2017-09-13
