@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A test to check whether the UCS master uses the memberOf LDAP
    extension has been added to univention-join.
-bug: [42505]
+ * The styling of dialogs has been adapted to the new design.
+bug: [42505, 43999]
