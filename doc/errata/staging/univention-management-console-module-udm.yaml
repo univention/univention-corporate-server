@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-management-console-module-udm
-fix: 7.0.10-19A~4.2.0.201709061019
+fix: 7.0.10-20A~4.2.0.201709131941
 desc: |
  This update addresses the following issue(s):
  * The search field in combobox widgets is shown again when the LDAP size
