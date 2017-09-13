@@ -1,3 +1,11 @@
+ucs-test (7.0.23-52) unstable; urgency=medium
+
+  * 10_ldap/74schema_update: after removing the schema, the LDAP server
+    is restarted. In some AD member mode setups, it takes a little bit
+    more time (Bug #43885)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Sep 2017 21:42:34 +0200
+
 ucs-test (7.0.23-51) unstable; urgency=medium
 
   * 00_checks/99check_log_files: Move ignore line to
