@@ -3,9 +3,10 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-extsec3.2
 src: linux
-fix: 3.10.104-0.1.226.201704180954
-desc: |-
- This update addresses the following issues:
+fix: 3.10.104-0.1.228.201709081326
+maintained: true
+desc: |
+ This update of the Linux kernel to 3.10.107 addresses the following issues:
  * Xen, when used on a system providing PV backends, allows local guest OS
    administrators to cause a denial of service (host OS crash) or gain
    privileges by writing to memory shared between the frontend and backend,
@@ -72,20 +73,296 @@ desc: |-
    allows local users to cause a denial of service (use-after-free) or
    possibly have unspecified other impact via a crafted
    SNDRV_PCM_TRIGGER_START command (CVE-2016-9794)
+ * The dccp_rcv_state_process function in net/dccp/input.c in the Linux kernel
+   through 4.9.11 mishandles DCCP_PKT_REQUEST packet data structures in the
+   LISTEN state, which allows local users to obtain root privileges or cause a
+   denial of service (double free) via an application that makes an
+   IPV6_RECVPKTINFO setsockopt system call (CVE-2017-6074)
+ * Linux drivers/char/lp.c Out-of-Bounds Write. Due to a missing bounds check,
+   and the fact that parport_ptr integer is static, a 'secure boot' kernel
+   command line adversary (can happen due to bootloader vulns, e.g. Google
+   Nexus 6's CVE-2016-10277, where due to a vulnerability the adversary has
+   partial control over the command line) can overflow the parport_nr array in
+   the following code, by appending many (>LP_NO) 'lp=none' arguments to the
+   command line (CVE-2017-1000363)
+ * The inet_csk_clone_lock function in net/ipv4/inet_connection_sock.c in the
+   Linux kernel through 4.10.15 allows attackers to cause a denial of service
+   (double free) or possibly have unspecified other impact by leveraging use
+   of the accept system call (CVE-2017-8890)
+ * Race condition in drivers/tty/n_hdlc.c in the Linux kernel through 4.10.1
+   allows local users to gain privileges or cause a denial of service (double
+   free) by setting the HDLC line discipline (CVE-2017-2636)
+ * net/sctp/socket.c in the Linux kernel through 4.10.1 does not properly
+   restrict association peel-off operations during certain wait states, which
+   allows local users to cause a denial of service (invalid unlock and double
+   free) via a multithreaded application. NOTE: this vulnerability exists
+   because of an incorrect fix for CVE-2017-5986 (CVE-2017-6353)
+ * Race condition in the sctp_wait_for_sndbuf function in net/sctp/socket.c in
+   the Linux kernel before 4.9.11 allows local users to cause a denial of
+   service (assertion failure and panic) via a multithreaded application that
+   peels off an association in a certain buffer-full state (CVE-2017-5986)
+ * The xc2028_set_config function in drivers/media/tuners/tuner-xc2028.c in
+   the Linux kernel before 4.6 allows local users to gain privileges or cause
+   a denial of service (use-after-free) via vectors involving omission of the
+   firmware name from a certain data structure (CVE-2016-7913)
+ * The ping_unhash function in net/ipv4/ping.c in the Linux kernel through
+   4.10.8 is too late in obtaining a certain lock and consequently cannot
+   ensure that disconnect function calls are safe, which allows local users to
+   cause a denial of service (panic) by leveraging access to the protocol
+   value of IPPROTO_ICMP in a socket system call (CVE-2017-2671)
+ * drivers/net/usb/rtl8150.c in the Linux kernel 4.9.x before 4.9.11 interacts
+   incorrectly with the CONFIG_VMAP_STACK option, which allows local users to
+   cause a denial of service (system crash or memory corruption) or possibly
+   have unspecified other impact by leveraging use of more than one virtual
+   page for a DMA scatterlist (CVE-2017-8068, CVE-2017-8069)
+ * The edge_bulk_in_callback function in drivers/usb/serial/io_ti.c in the
+   Linux kernel before 4.10.4 allows local users to obtain sensitive
+   information (in the dmesg ringbuffer and syslog) from uninitialized kernel
+   memory by using a crafted USB device (posing as an io_ti USB serial device)
+   to trigger an integer underflow (CVE-2017-8924)
+ * The iowarrior_probe function in drivers/usb/misc/iowarrior.c in the Linux
+   kernel before 4.5.1 allows physically proximate attackers to cause a denial
+   of service (NULL pointer dereference and system crash) via a crafted
+   endpoints value in a USB device descriptor (CVE-2016-2188)
+ * The omninet_open function in drivers/usb/serial/omninet.c in the Linux
+   kernel before 4.10.4 allows local users to cause a denial of service (tty
+   exhaustion) by leveraging reference count mishandling (CVE-2017-8925)
+ * Race condition in net/packet/af_packet.c in the Linux kernel before 4.9.13
+   allows local users to cause a denial of service (use-after-free) or
+   possibly have unspecified other impact via a multithreaded application that
+   makes PACKET_FANOUT setsockopt system calls (CVE-2017-6346)
+ * The ip6gre_err function in net/ipv6/ip6_gre.c in the Linux kernel allows
+   remote attackers to have unspecified impact via vectors involving GRE flags
+   in an IPv6 packet, which trigger an out-of-bounds access (CVE-2017-5897)
+ * The ipv4_pktinfo_prepare function in net/ipv4/ip_sockglue.c in the Linux
+   kernel through 4.9.9 allows attackers to cause a denial of service (system
+   crash) via (1) an application that makes crafted system calls or possibly
+   (2) IPv4 traffic with invalid IP options (CVE-2017-5970)
+ * The klsi_105_get_line_state function in drivers/usb/serial/kl5kusb105.c in
+   the Linux kernel before 4.9.5 places uninitialized heap-memory contents
+   into a log entry upon a failure to read the line status, which allows local
+   users to obtain sensitive information by reading the log (CVE-2017-5549)
+ * fs/ext4/inode.c in the Linux kernel before 4.6.2, when ext4 data=ordered
+   mode is used, mishandles a needs-flushing-before-commit list, which allows
+   local users to obtain sensitive information from other users' files in
+   opportunistic circumstances by waiting for a hardware reset, creating a new
+   file, making write system calls, and reading this file (CVE-2017-7495)
+ * The KEYS subsystem in the Linux kernel before 4.10.13 allows local users to
+   cause a denial of service (memory consumption) via a series of
+   KEY_REQKEY_DEFL_THREAD_KEYRING keyctl_set_reqkey_keyring calls
+   (CVE-2017-7472)
+ * The keyring_search_aux function in security/keys/keyring.c in the Linux
+   kernel through 3.14.79 allows local users to cause a denial of service
+   (NULL pointer dereference and OOPS) via a request_key system call for the
+   "dead" type (CVE-2017-6951)
+ * The built-in keyrings for security tokens can be joined as a session and
+   then modified by the root user (CVE-2016-9604)
+ * The xfrm_replay_verify_len function in net/xfrm/xfrm_user.c in the Linux
+   kernel through 4.10.6 does not validate certain size data after an
+   XFRM_MSG_NEWAE update, which allows local users to obtain root privileges
+   or cause a denial of service (heap-based out-of-bounds access) by
+   leveraging the CAP_NET_ADMIN capability, as demonstrated during a Pwn2Own
+   competition at CanSecWest 2017 for the Ubuntu 16.10 linux-image-* package
+   4.8.0.41.52 (CVE-2017-7184)
+ * The tcp_splice_read function in net/ipv4/tcp.c in the Linux kernel before
+   4.9.11 allows remote attackers to cause a denial of service (infinite loop
+   and soft lockup) via vectors involving a TCP packet with the URG flag
+   (CVE-2017-6214)
+ * Off-by-one error in selinux_setprocattr (/proc/self/attr/fscreate)
+   (CVE-2017-2618)
+ * An information disclosure vulnerability in kernel components including the
+   ION subsystem, Binder, USB driver and networking subsystem could enable a
+   local malicious application to access data outside of its permission
+   levels. This issue is rated as Moderate because it first requires
+   compromising a privileged process. Product: Android. Versions: Kernel-3.10,
+   Kernel-3.18. Android ID: A-31651010 (CVE-2016-8405)
+ * The simple_set_acl function in fs/posix_acl.c in the Linux kernel before
+   4.9.6 preserves the setgid bit during a setxattr call involving a tmpfs
+   filesystem, which allows local users to gain group privileges by leveraging
+   the existence of a setgid program with restrictions on execute permissions.
+   NOTE: this vulnerability exists because of an incomplete fix for
+   CVE-2016-7097 (CVE-2017-5551)
+ * The filesystem implementation in the Linux kernel through 4.8.2 preserves
+   the setgid bit during a setxattr call, which allows local users to gain
+   group privileges by leveraging the existence of a setgid program with
+   restrictions on execute permissions (CVE-2016-7097)
+ * arch/x86/kvm/emulate.c in the Linux kernel through 4.9.3 allows local users
+   to obtain sensitive information from kernel memory or cause a denial of
+   service (use-after-free) via a crafted application that leverages
+   instruction emulation for fxrstor, fxsave, sgdt, and sidt (CVE-2017-2584)
+ * The load_segment_descriptor implementation in arch/x86/kvm/emulate.c in the
+   Linux kernel before 4.9.5 improperly emulates a "MOV SS, NULL selector"
+   instruction, which allows guest OS users to cause a denial of service
+   (guest OS crash) or gain guest OS privileges via a crafted application
+   (CVE-2017-2583)
+ * The evm_verify_hmac function in security/integrity/evm/evm_main.c in the
+   Linux kernel before 4.5 does not properly copy data, which makes it easier
+   for local users to forge MAC values via a timing side-channel attack
+   (CVE-2016-2085)
+ * Race condition in net/packet/af_packet.c in the Linux kernel through 4.8.12
+   allows local users to gain privileges or cause a denial of service
+   (use-after-free) by leveraging the CAP_NET_RAW capability to change a
+   socket version, related to the packet_set_ring and packet_setsockopt
+   functions (CVE-2016-8655)
+ * An issue was discovered in the size of the stack guard page on Linux,
+   specifically a 4k stack guard page is not sufficiently large and can be
+   "jumped" over (the stack guard page is bypassed), this affects Linux Kernel
+   versions 4.11.5 and earlier (the stackguard page was introduced in 2010)
+   (CVE-2017-1000364)
+ * The arch_pick_mmap_layout function in arch/x86/mm/mmap.c in the Linux
+   kernel through 4.5.2 does not properly randomize the legacy base address,
+   which makes it easier for local users to defeat the intended restrictions
+   on the ADDR_NO_RANDOMIZE flag, and bypass the ASLR protection mechanism for
+   a setuid or setgid program, by disabling stack-consumption resource limits
+   (CVE-2016-3672)
+ * arch/x86/kvm/vmx.c in the Linux kernel through 4.9 mismanages the #BP and
+   #OF exceptions, which allows guest OS users to cause a denial of service
+   (guest OS crash) by declining to handle an exception thrown by an L2 guest
+   (CVE-2016-9588)
+ * The NFSv2/NFSv3 server in the nfsd subsystem in the Linux kernel through
+   4.10.11 allows remote attackers to cause a denial of service (system crash)
+   via a long RPC reply, related to net/sunrpc/svc.c, fs/nfsd/nfs3xdr.c, and
+   fs/nfsd/nfsxdr.c (CVE-2017-7645)
+ * The packet_set_ring function in net/packet/af_packet.c in the Linux kernel
+   through 4.10.6 does not properly validate certain block-size data, which
+   allows local users to cause a denial of service (integer signedness error
+   and out-of-bounds write), or gain privileges (if the CAP_NET_RAW capability
+   is held), via crafted system calls (CVE-2017-7308)
+ * drivers/net/usb/catc.c in the Linux kernel 4.9.x before 4.9.11 interacts
+   incorrectly with the CONFIG_VMAP_STACK option, which allows local users to
+   cause a denial of service (system crash or memory corruption) or possibly
+   have unspecified other impact by leveraging use of more than one virtual
+   page for a DMA scatterlist (CVE-2017-8070)
+ * drivers/char/virtio_console.c in the Linux kernel 4.9.x and 4.10.x before
+   4.10.12 interacts incorrectly with the CONFIG_VMAP_STACK option, which
+   allows local users to cause a denial of service (system crash or memory
+   corruption) or possibly have unspecified other impact by leveraging use of
+   more than one virtual page for a DMA scatterlist (CVE-2017-8067)
+ * The mm subsystem in the Linux kernel through 4.10.10 does not properly
+   enforce the CONFIG_STRICT_DEVMEM protection mechanism, which allows local
+   users to read or write to kernel memory locations in the first megabyte
+   (and bypass slab-allocation access restrictions) via an application that
+   opens the /dev/mem file, related to arch/x86/mm/init.c and
+   drivers/char/mem.c (CVE-2017-7889)
+ * Incorrect error handling in the set_mempolicy and mbind compat syscalls in
+   mm/mempolicy.c in the Linux kernel through 4.10.9 allows local users to
+   obtain sensitive information from uninitialized stack data by triggering
+   failure of a certain bitmap operation (CVE-2017-7616)
+ * The vmw_surface_define_ioctl function in
+   drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel through 4.10.6
+   does not validate addition of certain levels data, which allows local users
+   to trigger an integer overflow and out-of-bounds write, and cause a denial
+   of service (system hang or crash) or possibly gain privileges, via a
+   crafted ioctl call for a /dev/dri/renderD* device (CVE-2017-7294)
+ * The vmw_surface_define_ioctl function in
+   drivers/gpu/drm/vmwgfx/vmwgfx_surface.c in the Linux kernel through 4.10.5
+   does not check for a zero value of certain levels data, which allows local
+   users to cause a denial of service (ZERO_SIZE_PTR dereference, and GPF and
+   possibly panic) via a crafted ioctl call for a /dev/dri/renderD* device
+   (CVE-2017-7261)
+ * The do_shmat function in ipc/shm.c in the Linux kernel through 4.9.12 does
+   not restrict the address calculated by a certain rounding operation, which
+   allows local users to map page zero, and consequently bypass a protection
+   mechanism that exists for the mmap system call, by making crafted shmget
+   and shmat system calls in a privileged context (CVE-2017-5669)
+ * The hashbin_delete function in net/irda/irqueue.c in the Linux kernel
+   before 4.9.13 improperly manages lock dropping, which allows local users to
+   cause a denial of service (deadlock) via crafted operations on IrDA devices
+   (CVE-2017-6348)
+ * Double free vulnerability in the sg_common_write function in
+   drivers/scsi/sg.c in the Linux kernel before 4.4 allows local users to gain
+   privileges or cause a denial of service (memory corruption and system
+   crash) by detaching a device during an SG_IO ioctl call (CVE-2015-8962)
+ * drivers/vfio/pci/vfio_pci.c in the Linux kernel through 4.8.11 allows local
+   users to bypass integer overflow checks, and cause a denial of service
+   (memory corruption) or have unspecified other impact, by leveraging access
+   to a vfio PCI device file for a VFIO_DEVICE_SET_IRQS ioctl call, aka a
+   "state machine confusion bug." (CVE-2016-9083)
+ * The cp_report_fixup function in drivers/hid/hid-cypress.c in the Linux
+   kernel 4.x before 4.9.4 allows physically proximate attackers to cause a
+   denial of service (integer underflow) or possibly have unspecified other
+   impact via a crafted HID report (CVE-2017-7273)
+ * The sg implementation in the Linux kernel through 4.9 does not properly
+   restrict write operations in situations where the KERNEL_DS option is set,
+   which allows local users to read or write to arbitrary kernel memory
+   locations or cause a denial of service (use-after-free) by leveraging
+   access to a /dev/sg device, related to block/bsg.c and drivers/scsi/sg.c.
+   NOTE: this vulnerability exists because of an incomplete fix for
+   CVE-2016-9576 (CVE-2016-10088)
+ * Race condition in the get_task_ioprio function in block/ioprio.c in the
+   Linux kernel before 4.6.6 allows local users to gain privileges or cause a
+   denial of service (use-after-free) via a crafted ioprio_get system call
+   (CVE-2016-7911)
+ * The ext4_fill_super function in fs/ext4/super.c in the Linux kernel through
+   4.9.8 does not properly validate meta block groups, which allows physically
+   proximate attackers to cause a denial of service (out-of-bounds read and
+   system crash) via a crafted ext4 image (CVE-2016-10208)
 note: This is the first part of the update.
-bug: [43602]
+bug: [43602, 45244]
 cve:
 - CVE-2015-8550
 - CVE-2015-8551
+- CVE-2015-8962
 - CVE-2015-8964
 - CVE-2015-8970
+- CVE-2016-2085
+- CVE-2016-2188
+- CVE-2016-3672
 - CVE-2016-3961
 - CVE-2016-6828
 - CVE-2016-7042
+- CVE-2016-7097
 - CVE-2016-7425
+- CVE-2016-7911
+- CVE-2016-7913
+- CVE-2016-8405
 - CVE-2016-8633
 - CVE-2016-8645
 - CVE-2016-8650
+- CVE-2016-8655
 - CVE-2016-8658
+- CVE-2016-9083
 - CVE-2016-9555
+- CVE-2016-9588
+- CVE-2016-9604
 - CVE-2016-9794
+- CVE-2016-10088
+- CVE-2016-10208
+- CVE-2017-2583
+- CVE-2017-2584
+- CVE-2017-2618
+- CVE-2017-2636
+- CVE-2017-2671
+- CVE-2017-5549
+- CVE-2017-5551
+- CVE-2017-5669
+- CVE-2017-5897
+- CVE-2017-5970
+- CVE-2017-5986
+- CVE-2017-6074
+- CVE-2017-6214
+- CVE-2017-6346
+- CVE-2017-6348
+- CVE-2017-6353
+- CVE-2017-6951
+- CVE-2017-7184
+- CVE-2017-7261
+- CVE-2017-7273
+- CVE-2017-7294
+- CVE-2017-7308
+- CVE-2017-7472
+- CVE-2017-7495
+- CVE-2017-7616
+- CVE-2017-7645
+- CVE-2017-7889
+- CVE-2017-8067
+- CVE-2017-8068
+- CVE-2017-8069
+- CVE-2017-8070
+- CVE-2017-8890
+- CVE-2017-8924
+- CVE-2017-8925
+- CVE-2017-1000363
+- CVE-2017-1000364
+- CVE-2016-10277
+- CVE-2016-9576
