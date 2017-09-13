@@ -2,6 +2,9 @@ import contextlib
 
 from vminstall.installer import Installer
 from vminstall.virtual_machine import VirtualMachine
+import logging
+
+logging.basicConfig()
 
 
 @contextlib.contextmanager
