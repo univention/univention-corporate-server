@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * UCS@school specific settings have been moved into the join script.
 bug: [45329]
+erratum: 477
+announced: 2017-09-13
