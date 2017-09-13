@@ -9,3 +9,5 @@ desc: |
  * Cleanup old backups in univention-ldap-backup.
  * An LDAP ACL preventing access to objects with uid "root" has been added.
 bug: [38554, 11800]
+erratum: 162
+announced: 2017-09-13

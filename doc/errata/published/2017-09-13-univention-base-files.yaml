@@ -9,3 +9,5 @@ desc: |
  * Move cache invalidation after daemon restart for nscd.
  * Cleanup old backups in univention-config-registry-backup.
 bug: [40371, 38554]
+erratum: 161
+announced: 2017-09-13
