@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.4-6) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:41:09 +0200
+
 univention-virtual-machine-manager-daemon (6.0.4-5) unstable; urgency=medium
 
   * Bug #44481: remove onclick-selection of the mac address. The possibility

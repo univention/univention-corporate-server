@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-20) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:39:45 +0200
+
 univention-management-console-module-udm (7.0.10-19) unstable; urgency=medium
 
   * Bug #44905: fix searchable combobox if sizelimit is reached

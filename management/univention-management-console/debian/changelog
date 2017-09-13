@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-66) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:40:02 +0200
+
 univention-management-console (9.0.80-65) unstable; urgency=medium
 
   * Bug #45307: fix regression by Bug #44965 which caused that the
