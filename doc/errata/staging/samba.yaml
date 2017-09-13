@@ -3,9 +3,10 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: samba
-fix: 2:4.6.1-1A~4.2.0.201709111211
+fix: 2:4.6.1-1A~4.2.0.201709131155
 desc: |
  This update addresses the following issue(s):
+ * Samba tool sysvolcheck does not longer check the netlogon share.
  * Samba tools regarding the creation of users with User Principal
    Names have been fixed.
-bug: [45063]
+bug: [44305, 45063]
