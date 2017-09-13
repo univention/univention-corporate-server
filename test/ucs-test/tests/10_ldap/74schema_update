@@ -14,6 +14,7 @@ from univention.testing.strings import random_name, random_int
 from univention.testing.utils import fail
 from univention.config_registry import ConfigRegistry
 from ldap_extension_utils import *
+from time import sleep
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -125,5 +126,8 @@ finally:
     package.remove()
     package2.remove()
     package.uninstall()
+
+# Wait 10 seconds, in some AD member scenarios it takes some time
+time.sleep(10)
 
 # vim: set ft=python :
