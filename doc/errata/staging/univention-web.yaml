@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-web
-fix: 
+fix: 1.0.42-39A~4.2.0.201709131945
 desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
