@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-33) unstable; urgency=medium
+
+  * Bug #41849: setfacl for Printer-Admins in postinst too
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Sep 2017 12:14:54 +0200
+
 univention-samba4 (6.0.10-32) unstable; urgency=medium
 
   * Bug #41849: setfacl for Printer-Admins

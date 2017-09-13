@@ -79,6 +79,15 @@ if rewrite:
 EOF
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-33; then
+	SAMBA_DRIVERS="/var/lib/samba/drivers"
+	if [ -d "$SAMBA_DRIVERS" ]; then
+		chgrp -R "Printer-Admins" "$SAMBA_DRIVERS"
+		chmod -R g+rws "$SAMBA_DRIVERS"
+		setfacl -R -d -m g:Printer-Admins:rwx "$SAMBA_DRIVERS"
+	fi
+fi
+
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.148-1 ; then
 	mkdir -p /etc/univention/skel/windows-profiles/default
 	mkdir -p /etc/univention/skel/windows-profiles/default.V2
