@@ -1,9 +1,6 @@
 #!/usr/bin/make -f
 #
-# restricted configuration for demo.univention.de
-#  debian/rules file
-#
-# Copyright 2012-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,28 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	univention-l10n-build de
-	dh_auto_build
+build: usr/share/univention-web/js/umc/hooks/univention_demo.css
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-l10n-install de
-	univention-install-config-registry
+%.css: %.styl
+	stylus "$<"
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-demo-configuration.conffiles
+clean:
+	rm -f usr/share/univention-web/js/umc/hooks/univention_demo.css
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
-override_dh_install:
-	dh_install -X*.po
-
-override_dh_installinit:
-	dh_installinit --no-start
-
-%:
-	dh $@

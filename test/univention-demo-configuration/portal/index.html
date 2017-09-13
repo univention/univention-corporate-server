@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Univention Server Overview</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="/favicon.ico"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<style type="text/css">
+			#content {
+				position: relative;
+				padding: 30px;
+				padding-left: 125px;
+				max-width: 600px;
+			}
+
+			#icon {
+				width: 100px;
+				height: auto;
+				position: absolute;
+				left: 15px;
+				top: 30px;
+			}
+		</style>
+		<script type="text/javascript">
+			var _de = {
+				'This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.': 'Das ist ein Demo-System, auf dem keine externen Apps installiert sind. Um mehr über {label} zu erfahren, besuchen Sie den <a href="https://www.univention.de/produkte/univention-app-center/app-katalog/{catalogID}/">Univention App Katalog</a> auf der Univention Webseite oder <a href="https://www.univention.de/download/">laden Sie UCS herunter</a> und installieren Sie sich ein System selber.'
+			};
+
+			var umcConfig = {
+				deps: ["dojo/_base/lang", "dojo/_base/kernel", "dojo/io-query", "dojo/dom", "dojo/topic"],
+				forceLogin: false,
+				loadHooks: false,
+				callback: function(lang, dojo, ioQuery, dom, topic) {
+					function _(text, args) {
+						if (dojo.locale == 'de-DE' || dojo.locale == 'de_DE') {
+							text = _de[text] || text;
+						};
+						return lang.replace(text, args || {});
+					}
+
+					var data = {};
+					var query = window.location.search;
+					if (query) {
+						data = ioQuery.queryToObject(query.substring(1));
+					}
+					topic.publish('/umc/actions', 'demo-app', data.catalogID);
+					dom.byId('title').innerHTML = data.label;
+					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.', data);
+					dom.byId('icon').src = lang.replace("/univention/portal/icons/entries/{cn}.svg", data);
+				}
+			};
+		</script>
+		<script type="text/javascript" src="/univention/js/config.js"></script>
+		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+	</head>
+	<body class="umc">
+		<div id="umcHeader" class="umcHeader">
+			<div class="umcHeaderRight" id="umcHeaderRight">
+				<div class="univentionLogo"></div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+			<div id="content" class="umcCard">
+				<h1 id="title"></h1>
+				<img id="icon" />
+				<div id="message"></div>
+			</div>
+		</div>
+	</body>
+</html>
