@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The search field in combobox widgets is shown again when the LDAP size
    limits are reached.
-bug: [44905]
+ * The styling of dialogs has been adapted to the new design.
+bug: [44905, 43999]

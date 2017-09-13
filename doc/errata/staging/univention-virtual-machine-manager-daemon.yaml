@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-virtual-machine-manager-daemon
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The styling of dialogs has been adapted to the new design.
+bug: [43999]
