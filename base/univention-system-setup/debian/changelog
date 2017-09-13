@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-41) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:38:24 +0200
+
 univention-system-setup (10.0.10-40) unstable; urgency=medium
 
   * Bug #45321: disable e10s in system setup firefox profile

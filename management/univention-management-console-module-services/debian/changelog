@@ -1,3 +1,9 @@
+univention-management-console-module-services (6.0.0-6) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:39:12 +0200
+
 univention-management-console-module-services (6.0.0-5) unstable; urgency=medium
 
   * Bug #36563: fix fuzzy, add translation

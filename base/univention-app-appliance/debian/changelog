@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.2-34) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:36:19 +0200
+
 univention-app-appliance (1.0.2-33) unstable; urgency=medium
 
   * Bug #45084: Fix typo on first steps overlay

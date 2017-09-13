@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-12) unstable; urgency=medium
+
+  * Bug #43999: Adjust styling of dialogs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:37:53 +0200
+
 univention-system-activation (2.0.2-11) unstable; urgency=medium
 
   * Bug #44523: Adjust apache rules to allow UMCP commands and auth requests
