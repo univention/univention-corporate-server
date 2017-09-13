@@ -37,4 +37,4 @@ def go_through_setup_process(installer, language, environment):
 	if language in ('en',):
 		installer.set_time_zone()
 	installer.hdd_setup()
-	installer.setup_ucs()
+	installer.setup_ucs(expect_login_screen=environment == 'additional_software_components')

@@ -193,11 +193,11 @@ class Installer(object):
 		self.client.keyPress('enter')
 		self.client.waitForText(self.locale_strings['domain_setup'], timeout=1200, prevent_screen_saver=True)
 
-	def setup_ucs(self):
+	def setup_ucs(self, expect_login_screen=False):
 		self.choose_system_role()
 		self.set_domain_settings()
 		self.select_software_components()
-		self.confirm_config()
+		self.confirm_config(expect_login_screen)
 
 	def choose_system_role(self):
 		if self.vm_config.role == "master":
@@ -259,7 +259,7 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['next'])
 			self.client.waitForText(self.locale_strings['confirm_config'], timeout=30)
 
-	def confirm_config(self):
+	def confirm_config(self, expect_login_screen):
 		if not self.vm_config.update_ucs_after_install:
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
@@ -269,5 +269,7 @@ class Installer(object):
 
 		if self.vm_config.role == "basesystem":
 			self.client.waitForText('login:', timeout=360)
+		elif expect_login_screen:
+			self.client.findSubimage('expected_welcome_screen_with_kde.png', timeout=360)
 		else:
 			self.client.waitForText(self.locale_strings['welcome'], timeout=360)
