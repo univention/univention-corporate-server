@@ -1,0 +1,89 @@
+.umc .content
+	padding-bottom: 100px
+
+.umc .umcDemoOverlay
+	background-color: rgba(0, 0, 0, 0.5)
+	height: 100%
+	width: 100%
+	min-height: 100%
+	position: absolute
+	top: 0
+	left: 0
+	color: white
+	z-index: 1
+
+	a
+		color: white
+
+	h1, h2
+		font-size: 20px
+		font-weight: 500
+
+	.umcDemoReadme
+		padding: 0 15px
+		position: relative
+		float: right
+		width: 100%
+		max-width: 600px
+
+		& > *:nth-child(2)
+			margin-top: 0
+
+	.dijitButton.umcDemoReadmeCloseButton
+		float: right
+		margin-top: -8px
+		box-shadow: none
+
+		.dijitButtonNode
+			background-color: transparent
+
+		.dijitButtonText
+			display: none
+
+	.umcDemoInfoBox
+		position: absolute
+		width: 400px
+
+		&.top .infoText
+			margin-top: 17px
+
+		&.bottom .infoText
+			margin-bottom: 17px
+
+		&.left
+			padding-left: 55px
+
+		&.right
+			padding-right: 55px
+			.umcText
+				text-align: right
+
+.umcDemoArrowBottomRightIcon,
+.umcDemoArrowBottomLeftIcon,
+.umcDemoArrowTopRightIcon,
+.umcDemoArrowTopLeftIcon
+	background: url("univention_demo_arrows.svg") 0px 0px no-repeat
+	background-size: 100px 70px
+	width: 50px
+	height: 35px
+	position: absolute
+
+.umcDemoArrowBottomRightIcon
+	background-position: -50px 0
+	right: 0
+	bottom: 0
+
+.umcDemoArrowBottomLeftIcon
+	background-position: 0 0
+	left: 0
+	bottom: 0
+
+.umcDemoArrowTopRightIcon
+	background-position: -50px -35px
+	right: 0
+	top: 0
+
+.umcDemoArrowTopLeftIcon
+	background-position: 0 -35px
+	left: 0
+	top: 0

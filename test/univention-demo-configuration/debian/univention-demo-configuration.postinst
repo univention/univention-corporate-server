@@ -88,6 +88,7 @@ case "$1" in
 		# add test data only upon initial installation
 		if [ -z "$2" ]; then
 			/usr/share/univention-demo-configuration/data/create_import_commands.py | bash
+			/usr/share/univention-demo-configuration/portal/register_portal_entries.sh
 		fi
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
