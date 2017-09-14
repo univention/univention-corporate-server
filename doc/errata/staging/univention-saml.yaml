@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * It is possible to configure whether errors and stack traces are displayed
+   to the user via the UCR variable saml/idp/show-errors.
+bug: [45393]
