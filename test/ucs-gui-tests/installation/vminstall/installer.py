@@ -35,6 +35,7 @@ import argparse
 from vncautomate import init_logger, VNCConnection
 from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 
+import os
 import vminstall.utils as utils
 import vminstall.languages.german as german
 import vminstall.languages.english as english
@@ -270,6 +271,7 @@ class Installer(object):
 		if self.vm_config.role == "basesystem":
 			self.client.waitForText('login:', timeout=360)
 		elif expect_login_screen:
-			self.client.findSubimage('expected_welcome_screen_with_kde.png', timeout=360)
+			this_dir, _ = os.path.split(__file__)
+			self.client.findSubimage(os.path.join(this_dir, 'expected_welcome_screen_with_kde.png'), timeout=360)
 		else:
 			self.client.waitForText(self.locale_strings['welcome'], timeout=360)
