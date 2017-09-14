@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-67) unstable; urgency=medium
+
+  * Bug #45396: add piwik to CSP only if umc/web/piwik is not disabled
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 16:02:13 +0200
+
 univention-management-console (9.0.80-66) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs
