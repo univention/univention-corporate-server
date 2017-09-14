@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (3.0.1-25) unstable; urgency=medium
+
+  * Bug #44902: diagnostic/util: pass optional hostname to `is_service_active()`
+  * Bug #44902: diagnostic/46_kerberos_ddns_update: fix service recognition
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 14 Sep 2017 15:59:28 +0200
+
 univention-management-console-module-diagnostic (3.0.1-24) unstable; urgency=medium
 
   * Bug #44902: diagnostic: fix 46_kerberos_ddns_update for AD member
