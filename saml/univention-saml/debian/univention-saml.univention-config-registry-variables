@@ -58,6 +58,12 @@ Description[en]=Identity provider loglevel (valid values: ERR, WARNING, NOTICE, 
 Type=str
 Categories=saml
 
+[saml/idp/show-errors]
+Description[de]=Definiert, ob Fehler informationen wie Stack Traces dem Benutzer angezeigt werden.
+Description[en]=Defines if error information and stack traces allowed to be shown to the user.
+Type=bool
+Categories=saml
+
 [saml/idp/lookandfeel/theme]
 Description[de]=Das verwendete Theme der Webseiten des Identity Providers. (default: univentiontheme:univention)
 Description[en]=The theme used by the identity Provider webpages. (default: univentiontheme:univention)

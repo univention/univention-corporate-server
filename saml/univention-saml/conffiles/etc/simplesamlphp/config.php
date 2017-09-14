@@ -64,9 +64,9 @@ print "	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegi
 	 */
 	//'debug' => FALSE,
 
-
-	'showerrors'            =>	TRUE,
-
+@!@
+print "	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE')
+@!@
 	/**
 	 * Custom error show function called from SimpleSAML_Error_Error::show.
 	 * See docs/simplesamlphp-errorhandling.txt for function code example.
