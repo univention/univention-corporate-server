@@ -1,3 +1,9 @@
+univention-web (1.0.42-40) unstable; urgency=medium
+
+  * Bug #45391: remove build-report.txt from debian package
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 12:54:11 +0200
+
 univention-web (1.0.42-39) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs

@@ -64,6 +64,7 @@ install:
 	cd $(BUILD_DIR); find . -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
 	cd $(BUILD_DIR); find . -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
 	rm -rf $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/dijit/themes/umc
+	rm -f $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/build-report.txt
 	# copy all files for univention-web-style
 	cd $(BUILD_DIR); find dijit/themes/umc -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
 	cd $(BUILD_DIR); find dijit/themes/umc -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
