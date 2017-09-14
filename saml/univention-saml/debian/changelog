@@ -1,3 +1,9 @@
+univention-saml (4.0.14-9) unstable; urgency=medium
+
+  * Bug #45394: protect against information disclosure
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 14:01:00 +0200
+
 univention-saml (4.0.14-8) unstable; urgency=medium
 
   * Bug #45393: make displaying of simplesamlphp exceptions configurable

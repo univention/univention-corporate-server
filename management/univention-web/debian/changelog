@@ -1,3 +1,10 @@
+univention-web (1.0.42-41) unstable; urgency=medium
+
+  * Bug #45394: protect /var/www/univention/ against information disclosure by
+  	disabling directory listings
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 14:06:42 +0200
+
 univention-web (1.0.42-40) unstable; urgency=medium
 
   * Bug #45391: remove build-report.txt from debian package

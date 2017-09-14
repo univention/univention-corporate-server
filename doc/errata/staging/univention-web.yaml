@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
  * build-report.txt was removed from the debian package.
-bug: [43999, 45391]
+ * The directory listing of /var/www/univention/ has been disabled.
+bug: [43999, 45391, 45394]
