@@ -89,17 +89,17 @@ def kinit(principal, keytab=None, password_file=None):
 		subprocess.call(('kdestroy',))
 
 
-def nsupdate(server, domainname):
+def nsupdate(server, hostname, domainname):
 	process = subprocess.Popen(('nsupdate', '-g' , '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	cmd = 'server {server}\nprereq yxdomain {domain}\nsend\n'
-	_ = process.communicate(cmd.format(server=server, domain=domainname))
+	cmd = 'server {server}\nprereq yxdomain {host}.{domain}\nsend\n'
+	_ = process.communicate(cmd.format(server=server, host=hostname, domain=domainname))
 	if process.poll() != 0:
 		raise NSUpdateError(server, domainname)
 
 
 def get_server(config_registry):
-	server = '{}.{}'.format(config_registry.get('hostname'), config_registry.get('domainname'))
+	server = config_registry.get('ldap/master')
 	if config_registry.is_true('ad/member'):
 		ad_domain_info = univention.lib.admember.lookup_adds_dc()
 		return ad_domain_info.get('DC IP', server)
@@ -108,12 +108,12 @@ def get_server(config_registry):
 
 def check_dns_machine_principal(server, hostname, domainname):
 	with kinit('{}$'.format(hostname), password_file='/etc/machine.secret'):
-		nsupdate(server, domainname)
+		nsupdate(server, hostname, domainname)
 
 
 def check_dns_server_principal(hostname, domainname):
 	with kinit('dns-{}'.format(hostname), keytab='/var/lib/samba/private/dns.keytab'):
-		nsupdate(hostname, domainname)
+		nsupdate(hostname, hostname, domainname)
 
 
 def check_nsupdate(config_registry):
@@ -135,11 +135,12 @@ def check_nsupdate(config_registry):
 
 
 def run(_umc_instance):
-	if util.is_service_active('Samba 3'):
-		return  # ddns updates are not possible
-
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
+
+	master_hostname = config_registry.get('ldap/master').split('.')[0]
+	if not util.is_service_active('Samba 4', master_hostname):
+		return  # ddns updates are not possible
 
 	problems = list(check_nsupdate(config_registry))
 	if problems:
