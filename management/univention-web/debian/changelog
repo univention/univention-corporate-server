@@ -1,3 +1,9 @@
+univention-web (1.0.42-43) unstable; urgency=medium
+
+  * Bug #45390: replace username cookie with HTML5 storage
+
+ -- Florian Best <best@univention.de>  Mon, 18 Sep 2017 14:13:24 +0200
+
 univention-web (1.0.42-42) unstable; urgency=medium
 
   * Bug #43999: Fix collision between identically named css classes
