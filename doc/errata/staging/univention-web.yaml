@@ -3,8 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-web
-fix: 1.0.42-39A~4.2.0.201709131945
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
-bug: [43999]
+ * build-report.txt was removed from the debian package.
+bug: [43999, 45391]
