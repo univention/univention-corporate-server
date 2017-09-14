@@ -36,10 +36,10 @@ import socket
 import univention.uldap
 
 
-def is_service_active(service):
+def is_service_active(service, hostname=socket.gethostname()):
 	lo = univention.uldap.getMachineConnection()
 	raw_filter = '(&(univentionService=%s)(cn=%s))'
-	filter_expr = ldap.filter.filter_format(raw_filter, (service, socket.gethostname()))
+	filter_expr = ldap.filter.filter_format(raw_filter, (service, hostname))
 	for (dn, _attr) in lo.search(filter_expr, attr=['cn']):
 		if dn is not None:
 			return True
