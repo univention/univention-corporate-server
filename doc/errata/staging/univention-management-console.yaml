@@ -7,4 +7,6 @@ fix: 9.0.80-66A~4.2.0.201709131944
 desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
-bug: [43999]
+ * The Content-Security-Policy does not include https://piwik.univention.de if
+   umc/web/piwik is set to false.
+bug: [43999, 45396]
