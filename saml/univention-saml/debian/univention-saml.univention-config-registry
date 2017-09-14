@@ -24,6 +24,7 @@ Variables: saml/idp/enableSAML20-IdP
 Variables: saml/idp/timezone
 Variables: saml/idp/log/debug/enabled
 Variables: saml/idp/log/level
+Variables: saml/idp/show-errors
 Variables: locale/default
 Variables: saml/idp/lookandfeel/theme
 Variables: saml/idp/technicalcontactname
