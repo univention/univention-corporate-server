@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * It is possible to configure whether errors and stack traces are displayed
    to the user via the UCR variable saml/idp/show-errors.
-bug: [45393]
+ * The apache directory listing for /var/www/saml/ has been disabled.
+bug: [45393, 45394]
