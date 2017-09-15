@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-lib
+fix: 6.0.9-13A~4.2.0.201709151224
+desc: |
+ This update addresses the following issue(s):
+ * More debug output has been added to admember.py
+bug: [38442]
