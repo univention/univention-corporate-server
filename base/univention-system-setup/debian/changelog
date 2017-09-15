@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-43) unstable; urgency=medium
+
+  * Bug #43999: Fix style error for local setup wizard
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Sep 2017 17:50:08 +0200
+
 univention-system-setup (10.0.10-42) unstable; urgency=medium
 
   * Bug #40657: Set primary interface to first configured interface during

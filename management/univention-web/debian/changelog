@@ -1,3 +1,9 @@
+univention-web (1.0.42-42) unstable; urgency=medium
+
+  * Bug #43999: Fix collision between identically named css classes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Sep 2017 17:47:37 +0200
+
 univention-web (1.0.42-41) unstable; urgency=medium
 
   * Bug #45394: protect /var/www/univention/ against information disclosure by
