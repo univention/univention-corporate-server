@@ -42,6 +42,7 @@ from univention.appcenter.actions.service import Start
 from univention.appcenter.actions.configure import Configure, StoreConfigAction
 from univention.appcenter.ucr import ucr_save
 
+import os
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
 
@@ -148,6 +149,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Saving data from old container (%s)' % self.old_app)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
+		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
+		old_docker.cp_from_container('/etc/machine.secret', secret_on_host)
 		if self._backup_container(self.old_app, backup_data='copy') is False:
 			raise Abort('Could not backup container!')
 		self._had_image_upgrade = True
