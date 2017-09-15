@@ -1,3 +1,10 @@
+univention-lib (6.0.9-15) unstable; urgency=medium
+
+  * Re-create sources.list entiries if installation of package
+    univention-samba failed (Bug #43885)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Sep 2017 22:27:13 +0200
+
 univention-lib (6.0.9-14) unstable; urgency=medium
 
   * Make initialize_debug call explicit. Otherwise it will break the

@@ -670,7 +670,12 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 	if install:
 		ud.debug(ud.MODULE, ud.PROCESS, "Install univention-samba")
 		if not pm.install('univention-samba'):
-			return False
+			ud.debug(ud.MODULE, ud.PROCESS, "Installation of univention-samba failed. Try to re-create sources.list and try again.")
+			univention.config_registry.handler_commit(['/etc/apt/sources.list.d/15_ucs-online-version.list', '/etc/apt/sources.list.d/20_ucs-online-component.list'])
+			if not pm.update():
+				return False
+			if not pm.install('univention-samba'):
+				return False
 
 	return True
 
