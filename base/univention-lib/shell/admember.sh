@@ -37,6 +37,7 @@ add_host_record_in_ad () {
 python -c "
 import univention.lib.admember
 import sys
+univention.lib.admember.initialize_debug()
 if univention.lib.admember.add_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3', fqdn='$4', ip='$5'):
 	sys.exit(0)
 else:
@@ -48,6 +49,7 @@ is_domain_in_admember_mode () {
 python -c "
 import univention.lib.admember
 import sys
+univention.lib.admember.initialize_debug()
 if univention.lib.admember.is_domain_in_admember_mode():
 	sys.exit(0)
 else:
@@ -59,6 +61,7 @@ is_localhost_in_admember_mode () {
 python -c "
 import univention.lib.admember
 import sys
+univention.lib.admember.initialize_debug()
 if univention.lib.admember.is_localhost_in_admember_mode():
         sys.exit(0)
 else:
@@ -69,6 +72,7 @@ else:
 configure_backup_as_ad_member() {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.configure_backup_as_ad_member()
 "
 }
@@ -76,6 +80,7 @@ univention.lib.admember.configure_backup_as_ad_member()
 configure_slave_as_ad_member () {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.configure_slave_as_ad_member()
 "
 }
@@ -83,6 +88,7 @@ univention.lib.admember.configure_slave_as_ad_member()
 configure_member_as_ad_member () {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.configure_member_as_ad_member()
 "
 }
@@ -90,6 +96,7 @@ univention.lib.admember.configure_member_as_ad_member()
 revert_backup_ad_member () {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.revert_backup_ad_member()
 "
 }
@@ -97,6 +104,7 @@ univention.lib.admember.revert_backup_ad_member()
 configure_container_as_ad_member () {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.configure_container_as_ad_member()
 "
 }
@@ -104,6 +112,7 @@ univention.lib.admember.configure_container_as_ad_member()
 revert_slave_ad_member() {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.revert_slave_ad_member()
 "
 }
@@ -111,6 +120,7 @@ univention.lib.admember.revert_slave_ad_member()
 revert_member_ad_member() {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.revert_member_ad_member()
 "
 }
@@ -118,6 +128,7 @@ univention.lib.admember.revert_member_ad_member()
 revert_container_ad_member() {
 python -c "
 import univention.lib.admember
+univention.lib.admember.initialize_debug()
 univention.lib.admember.revert_container_ad_member()
 "
 }
