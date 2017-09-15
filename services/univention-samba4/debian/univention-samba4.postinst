@@ -146,6 +146,13 @@ univention-config-registry set \
 	samba/acl/allow/execute/always?yes \
 	samba/register/exclude/interfaces='docker0'
 
+# Set defaults during new installation
+if [ "$1" = "configure" -a -z "$2" ]; then
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=41057
+	ucr set samba/interfaces?"lo <interfaces/primary>" \
+			samba/interfaces/bindonly?yes
+fi
+
 ## more samba3 defaults copied from univention-samba
 if [ "$server_role" != "memberserver" ]
 then

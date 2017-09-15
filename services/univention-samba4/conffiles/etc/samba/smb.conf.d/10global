@@ -82,7 +82,10 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/socket_options', 'socket options'),
 		       ('samba/netbios/aliases', 'netbios aliases'),]:
 	if configRegistry.get(key):
-		print '\t%s\t= %s' % (smbstring, configRegistry[key])
+		if key == 'samba/interfaces':
+			print '\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', '')))
+		else:
+			print '\t%s\t= %s' % (smbstring, configRegistry[key])
 
 print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'yes'))
 

@@ -1,3 +1,15 @@
+univention-samba4 (6.0.10-34) unstable; urgency=medium
+
+  * Support <interfaces/primary> as a keyword for the UCR variable
+    samba/interfaces. Now, newly installed Samba 4 systems will set
+    samba/interfaces to lo and the primary interface which is
+    represented via interfaces/primary. Thus, Samba will by default only
+    listen on those two interfaces. This can be configured afterwards
+    via samba/interfaces, samba/interfaces/bindonly and
+    samba/register/exclude/interfaces (Bug #41057)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Sep 2017 06:26:50 +0200
+
 univention-samba4 (6.0.10-33) unstable; urgency=medium
 
   * Bug #41849: setfacl for Printer-Admins in postinst too
