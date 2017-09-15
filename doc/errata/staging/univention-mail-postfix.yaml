@@ -3,10 +3,14 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-mail-postfix
-fix: 11.0.1-16A~4.2.0.201709111427
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The listfilter policy service can now write debugging information to the
    mail log, when the UCR variable mail/postfix/policy/listfilter/debug is
-   set to "yes".
-bug: [44922]
+   set to "yes" (Bug #44922).
+ * The content of the files main.cf.local and master.cf.local will now be
+   appended to /etc/postfix/main.cf and /etc/postfix/master.cf respectively.
+   After editing the *.local files, ucr commit /etc/postfix/*.cf must be
+   called (Bug # 44473).
+bug: [44473, 44922]

@@ -35,6 +35,13 @@
 
 eval "$(univention-config-registry shell)"
 
+if ! [ -e /etc/postfix/main.cf.local ]; then
+	touch /etc/postfix/main.cf.local
+fi
+if ! [ -e /etc/postfix/master.cf.local ]; then
+	touch /etc/postfix/master.cf.local
+fi
+
 univention-config-registry set \
 	postfix/autostart?yes \
 	mail/postfix/virtual/enabled?no \
