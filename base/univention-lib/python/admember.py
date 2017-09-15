@@ -70,6 +70,24 @@ finally:
 	if orig_path:
 		sys.path = orig_path
 
+# Ensure unviention debug is initialized
+def _initaialize_debug():
+	# Use a little hack to determine if univention.debug has been initialized
+	# get_level(..) returns always ud.ERROR if univention.debug is not initialized
+	oldLevel = ud.get_level(ud.MODULE)
+	if oldLevel == ud.PROCESS:
+		ud.set_level(ud.MODULE, ud.DEBUG)
+		is_ready = (ud.get_level(ud.MODULE) == ud.DEBUG)
+	else:
+		ud.set_level(ud.MODULE, ud.PROCESS)
+		is_ready = (ud.get_level(ud.MODULE) == ud.PROCESS)
+	if not is_ready:
+		ud.init('stdout', ud.FLUSH, ud.FUNCTION)
+		ud.set_level(ud.MODULE, ud.PROCESS)
+	else:
+		ud.set_level(ud.MODULE, oldLevel)
+
+_initaialize_debug()
 
 class failedToSetService(Exception):
 
