@@ -3,8 +3,10 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-lib
-fix: 6.0.9-14A~4.2.0.201709151438
+fix: 6.0.9-15A~4.2.0.201709152230
 desc: |
  This update addresses the following issue(s):
  * More debug output has been added to admember.py
-bug: [38442]
+ * The installation of univention-samba while joining a DC Slave into
+   a Active Directory domain is now more robust.
+bug: [38442, 43885]
