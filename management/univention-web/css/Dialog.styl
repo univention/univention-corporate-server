@@ -85,7 +85,8 @@
 
 .umc .dijitDialogPaneContent
 	background: $pane-background-color
-	padding: 0 24px 8px 24px
+	/* have 1px padding on top to capture overflowing margins */
+	padding: 1px 24px 8px 24px
 	position: relative
 
 .umc .dijitDialogPaneContent,
@@ -124,7 +125,7 @@
 .umc .dijitDialogTitleBar
 	/* outer container for the titlebar of the dialog */
 	background-color: white
-	padding: 24px 24px 20px 24px
+	padding: 24px 24px 19px 24px
 
 
 .umc .dijitDialogTitle
