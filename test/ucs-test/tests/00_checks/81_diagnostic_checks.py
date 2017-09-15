@@ -18,7 +18,11 @@ def test_run_diagnostic_checks():
 			continue
 		result = client.umc_command('diagnostic/run', {'plugin': plugin['id']}).result
 		if result['type'] != 'success':
-			failures.append(result)
-	error = ''.join('###############\n%s\n%s###############\n\n' % (x['title'], x['description']) for x in failures)
+			failures.extend([
+				'############################',
+				'## Check failed: %s - %s' % (plugin['id'], result['title']),
+				result['description'],
+				'########### End #############',
+			])
 	if failures:
-		raise Exception(error)
+		raise Exception('\n'.join(failures))
