@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-42) unstable; urgency=medium
+
+  * Bug #40657: Set primary interface to first configured interface during
+    setup.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 15 Sep 2017 15:24:03 +0200
+
 univention-system-setup (10.0.10-41) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs
