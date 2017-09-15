@@ -135,3 +135,27 @@ Description[de]=Der Debuglevel des stunnel daemons. Gültige Werte 0-7 (default:
 Description[en]=Debug level of the stunnel daemon. Valid values are 0-7 (default: 4)
 Type=int
 Categories=stunnel
+
+[saml/apache2/ssl/certificate]
+Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl des SAML VirtualHost. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucs-sso.$domainname/cert.pem).
+Description[en]=The absolute path to the SSL certificate file for mod_ssl of the SAML virtualhost. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucs-sso.$domainname/cert.pem).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/key]
+Description[de]=Der absolute Pfad zum privaten RSA/DSA-Schlüssel der SSL-Zertifikatsdatei für mod_ssl des SAML VirtualHost. Der Schlüssel muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucs-sso.$domainname/private.key).
+Description[en]=The absolute path to the private RSA/DSA key of the SSL certificate file for mod_ssl of the SAML virtualhost. The key needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucs-sso.$domainname/private.key).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/ca]
+Description[de]=Der absolute Pfad zum Zertifikat der Zertifizierungsstelle (CA) für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucsCA/CAcert.pem).
+Description[en]=The absolute path to the certificate of the certificate authority (CA) for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucsCA/CAcert.pem).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/certificatechain]
+Description[de]=Der Pfad zu einer Datei mit den CA-Zerifikaten. Diese werden dem Clientbrowser eines Benutzers übermittelt, damit ein Zertifikat für die Authentifizierung des Benutzers ausgewählt werden kann, das von einer dieser CAs ausgestellt wurde.
+Description[en]=The path to a file containing CA certificates. They are sent to the client browser of a user, so that a certificate for authentication the user can be selected, which is issued by one of the CAs.
+Type=str
+Categories=saml
