@@ -226,13 +226,6 @@ def dockerd_logs(logger=None):
 	ret, out = call_process2(args, logger=logger)
 	return out
 
-def docker_cp(src, dest, logger=None, followlink=False):
-	args = ['docker', 'cp']
-	if followlink is True:
-		args.append('-L')
-	args.append(src)
-	args.append(dest)
-	return call_process2(args, logger=logger)
 
 class Docker(object):
 
@@ -380,6 +373,3 @@ class Docker(object):
 
 	def dockerd_logs(self):
 		return dockerd_logs(logger=self.logger)
-
-	def cp_from_container(self, src, dest, **kwargs):
-		return docker_cp(self.container + ':' + src, dest, logger=self.logger, **kwargs)
