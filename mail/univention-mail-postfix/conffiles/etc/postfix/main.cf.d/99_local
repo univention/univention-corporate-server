@@ -1,0 +1,15 @@
+@!@
+import os
+
+try:
+	if os.stat('/etc/postfix/main.cf.local').st_size > 0:
+		print('# --- main.cf.local ---')
+		for line in open('/etc/postfix/main.cf.local', 'rb'):
+			print(line.rstrip())
+except (IOError, OSError) as exc:
+	if exc.errno == 2:
+		# No such file or directory
+		pass
+	else:
+		print('# ERROR: {}'.format(exc))
+@!@

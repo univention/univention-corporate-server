@@ -84,6 +84,10 @@ Subfile: etc/postfix/main.cf.d/80_delivery
 Variables: mail/antivir
 Variables: mail/archivefolder
 
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/99_local
+
 Type: multifile
 Multifile: etc/postfix/master.cf
 
@@ -109,6 +113,10 @@ Subfile: etc/postfix/master.cf.d/70_policy
 Variables: mail/postfix/policy/listfilter
 Variables: mail/postfix/policy/listfilter/maxproc
 Variables: ldap/base
+
+Type: subfile
+Multifile: etc/postfix/master.cf
+Subfile: etc/postfix/master.cf.d/99_local
 
 Type: file
 File: etc/postfix/sasl/smtpd.conf

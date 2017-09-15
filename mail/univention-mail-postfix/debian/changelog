@@ -1,3 +1,10 @@
+univention-mail-postfix (11.0.1-17) unstable; urgency=low
+
+  * Bug #44473: include main.cf.local in /etc/postfix/main.cf
+  * include master.cf.local in /etc/postfix/master.cf
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 15 Sep 2017 10:32:55 +0200
+
 univention-mail-postfix (11.0.1-16) unstable; urgency=low
 
   * Bug #44922: add logging to mailinglist/groups listfilter
