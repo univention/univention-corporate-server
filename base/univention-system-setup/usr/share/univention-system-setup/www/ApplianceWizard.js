@@ -2896,11 +2896,6 @@ define([
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
-					// set primary interface
-					if (i === 0) {
-						vals['interfaces/primary'] = idev;
-					}
-
 					// prepare interface entry
 					var iconf = {
 						name: idev,
@@ -2914,6 +2909,11 @@ define([
 					var ipIsSet = iip && imask;
 					if (!_vals._dhcp && !ipIsSet) {
 						return;
+					}
+
+					// set primary interface
+					if (!('interfaces/primary' in vals)) {
+						vals['interfaces/primary'] = idev;
 					}
 
 					// set IP address and mask
