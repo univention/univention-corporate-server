@@ -133,6 +133,7 @@ define([
 				}];
 				var buttons = [{
 					name: 'start',
+					'class': 'umcFlatButton',
 					visible: !result.is_running,
 					label: _('Start the application'),
 					callback: lang.hitch(this, function() {
@@ -140,6 +141,7 @@ define([
 					})
 				}, {
 					name: 'stop',
+					'class': 'umcFlatButton',
 					visible: result.is_running,
 					label: _('Stop the application'),
 					callback: lang.hitch(this, function() {

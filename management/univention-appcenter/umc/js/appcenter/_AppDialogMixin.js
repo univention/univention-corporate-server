@@ -34,7 +34,7 @@ define([
 	return declare("umc.modules.appcenter._AppDialogMixin", null, {
 		app: null,
 		noFooter: true,
-		'class': 'umcAppDialog',
+		'class': 'umcAppCenterDialog',
 		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
 		headerTextAllowHTML: false,
 		helpTextAllowHTML: false,

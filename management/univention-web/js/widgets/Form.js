@@ -184,9 +184,9 @@ define([
 				this._widgets = render.widgets(this.widgets, this);
 				this._buttons = render.buttons(this.buttons || [], this);
 				this._container = render.layout(this.layout, this._widgets, this._buttons);
-				// if the submit button was not defined and no other buttons were specified we hide
-				// the row of the default submit button
-				if (!this.submitButtonDefined && this.buttons.length === 1) {
+				// if the submit button was not defined and no other buttons are in the same
+				// layout row then we hide the layout row
+				if (!this.submitButtonDefined && this._buttons.submit.getParent().getChildren().length === 1) {
 					domClass.add(this._buttons.submit.getParent().domNode, 'dijitOffScreen');
 				}
 

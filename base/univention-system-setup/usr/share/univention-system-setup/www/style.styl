@@ -65,17 +65,20 @@ $header-color ?= #787878
 				margin-left: 12px
 				width: 100%
 
-	.umcPage
-		margin-top: 41px
+	.umcWizard
+		.umcPage
+			margin-top: 61px
+			^[-1].umcInlineDialog ^[-1..-1]
+				margin-top: 41px
 
-		.umcPageNav .umcPageHeader
-			position: absolute
-			top: -45px
+			.umcPageNav .umcPageHeader
+				position: absolute
+				top: -45px
 
-			h1
-				font-size: 24px
-				font-weight: normal
-				width: 600px
+				h1
+					font-size: 24px
+					font-weight: normal
+					width: 600px
 
 	.umcInlineDialog
 		/* the content is displayed as a Google Material Card in an external browser */
