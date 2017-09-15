@@ -1,15 +1,16 @@
 @!@
 import os
 
+filename = '/etc/postfix/main.cf.local'
 try:
-	if os.stat('/etc/postfix/main.cf.local').st_size > 0:
-		print('# --- main.cf.local ---')
-		for line in open('/etc/postfix/main.cf.local', 'rb'):
-			print(line.rstrip())
+	if os.path.isfile(filename) and os.path.getsize(filename):
+		print('\n# The following section is included from the file {}.'.format(filename))
+		print('# Please note, that custom options in this file may interfere with the')
+		print('# standard Postfix configuration of Univention Corporate Server!')
+		with open(filename, 'rb') as fd:
+			for line in fd:
+				print(line.rstrip())
+		print('# --- end of {} ---\n'.format(filename))
 except (IOError, OSError) as exc:
-	if exc.errno == 2:
-		# No such file or directory
-		pass
-	else:
-		print('# ERROR: {}'.format(exc))
+	print('\n# ERROR: {}'.format(exc))
 @!@
