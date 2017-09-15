@@ -339,6 +339,16 @@ install_ucs_test_appcenter_uninstall () {
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
+prevent_ucstest_on_fail () {
+	local rv=0
+	"$@" || rv=$?
+	if [ ! "$rv" = "0" ] ; then
+		echo "Creating /DONT_START_UCS_TEST"
+		touch /DONT_START_UCS_TEST
+	fi
+	return $rv
+}
+
 install_ucsschool () {
 	case "${ucsschool_release:-scope}" in
 		appcenter.test)
