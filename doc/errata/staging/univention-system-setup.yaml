@@ -7,4 +7,6 @@ fix: 10.0.10-41A~4.2.0.201709131856
 desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
-bug: [43999]
+ * The primary interface is set to the first configured one,
+   avoiding not configured interfaces.
+bug: [43999, 40657]
