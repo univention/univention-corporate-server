@@ -675,6 +675,7 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 			if not pm.update():
 				return False
 			if not pm.install('univention-samba'):
+				ud.debug(ud.MODULE, ud.ERROR, "Installation of univention-samba failed. Abort.")
 				return False
 
 	return True
