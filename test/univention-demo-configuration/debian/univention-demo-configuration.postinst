@@ -44,23 +44,7 @@ _undivert() {
 
 case "$1" in
 	configure)
-		# umc overview
-		univention-config-registry set \
-			ucs/web/overview/entries/admin/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
-			ucs/web/overview/entries/admin/demo-configuration/description?'The Univention support database' \
-			ucs/web/overview/entries/admin/demo-configuration/label?'Univention SDB' \
-			ucs/web/overview/entries/admin/demo-configuration/label/de?'Univention SDB' \
-			ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
-			ucs/web/overview/entries/admin/demo-configuration/priority?'80'
-
-		univention-config-registry set \
-			ucs/web/overview/entries/admin/demo-configuration-forum/description/de?'Das Univention-Community-Forum' \
-			ucs/web/overview/entries/admin/demo-configuration-forum/description?'The Univention-community-forum' \
-			ucs/web/overview/entries/admin/demo-configuration-forum/label?'Univention Forum' \
-			ucs/web/overview/entries/admin/demo-configuration-forum/label/de?'Univention Forum' \
-			ucs/web/overview/entries/admin/demo-configuration-forum/link?'https://help.univention.com' \
-			ucs/web/overview/entries/admin/demo-configuration-forum/priority?'80'
-
+		# register JavaScript hook
 		univention-config-registry set umc/web/hooks/univention-demo-configuration=univention_demo
 
 		# disable update checks and hints for available updates
@@ -89,6 +73,23 @@ case "$1" in
 		if [ -z "$2" ]; then
 			/usr/share/univention-demo-configuration/data/create_import_commands.py | bash
 			/usr/share/univention-demo-configuration/portal/register_portal_entries.sh
+		fi
+
+		# update from version prior to 5.0.2-9 (UCS 4.2-2)
+		if dpkg --compare-versions "$2" lt-nl 5.0.2-9; then
+			# add test data upon update from versions
+			/usr/share/univention-demo-configuration/portal/register_portal_entries.sh
+
+			# remove obsolete portal entries
+			for ikey in demo-configuration demo-configuration-forum; do
+				ucr_keys=""
+				for jkey in description description/de label label/de link priority; do
+					ucr_keys="$ucr_keys ucs/web/overview/entries/admin/$ikey/$jkey"
+				done
+				ucr unset $ucr_keys
+				dn="cn=$ikey,cn=portal,cn=univention,$ldap_base"
+				udm settings/portal_entry remove --dn "$dn"
+			done
 		fi
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
