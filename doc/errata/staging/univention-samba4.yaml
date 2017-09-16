@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-34A~4.2.0.201709150649
+fix: 6.0.10-35A~4.2.0.201709162019
 desc: |
  This update addresses the following issue(s):
  * Support <interfaces/primary> as a keyword for the UCR variable 
