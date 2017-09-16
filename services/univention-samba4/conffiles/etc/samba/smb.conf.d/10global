@@ -83,7 +83,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/netbios/aliases', 'netbios aliases'),]:
 	if configRegistry.get(key):
 		if key == 'samba/interfaces':
-			print '\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', '')))
+			print '\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', 'eth0')))
 		else:
 			print '\t%s\t= %s' % (smbstring, configRegistry[key])
 
