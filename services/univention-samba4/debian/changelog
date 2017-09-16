@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-35) unstable; urgency=medium
+
+  * Use eth0 in case interfaces/primary is not set (Bug #41057)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 16 Sep 2017 20:16:12 +0200
+
 univention-samba4 (6.0.10-34) unstable; urgency=medium
 
   * Support <interfaces/primary> as a keyword for the UCR variable
