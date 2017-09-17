@@ -72,11 +72,11 @@ class Errors(LogMessage):
 		r'invoke-rc.d: initscript apache2, action "restart" failed',
 		r"E: Unable to locate package could-initramfs-growroot",
 		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
-		'.*MODULE      ( ERROR   ) :',	# Bug 45406
+		r'.*MODULE *\( *ERROR *\) *: *$',     # Bug 45406
 		'Further information regarding this error:',	# Bug 45406
 		'Error: Unable to correct problems, you have held broken packages.',	# Bug 45406
-		'.*MODULE      ( ERROR   ) : univention-samba: Failed to install',	# Bug 45406
-		'.*MODULE      ( PROCESS ) : Installation of univention-samba failed. Try to re-create sources.list and try again.',	# Bug 45406
+		'.*MODULE      \( ERROR   \) : univention-samba: Failed to install',	# Bug 45406
+		'.*MODULE      \( PROCESS \) : Installation of univention-samba failed. Try to re-create sources.list and try again.',	# Bug 45406
 		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
 		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
 		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*',  # Bug #39123
