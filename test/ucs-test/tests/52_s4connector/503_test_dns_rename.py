@@ -53,6 +53,14 @@ def test_attribute_sync_from_udm_to_s4(sync_mode):
 
 		print 'Modifying host record..\n'
 		new_host_dn = udm.modify_object('dns/host_record', dn=host_dn, name=random_host_b)
+		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
+		if new_host_dn == host_dn:
+			new_host_dn = ldap.dn.dn2str([[("relativeDomainName", random_host_b, ldap.AVA_STRING)]] +
+				ldap.dn.str2dn(host_dn)[1:])
+			if host_dn in udm._cleanup.get('dns/host_record', []):
+				udm._cleanup.setdefault('dns/host_record', []).append(new_host_dn)
+				udm._cleanup['dns/host_record'].remove(host_dn)
+		# XXX end of workarround for bug #41694
 
 		s4connector.wait_for_sync()
 		s4_new_host_dn = build_s4_host_dn(random_host_b, random_zone, base)
