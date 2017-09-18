@@ -170,7 +170,7 @@ define([
 
 		setUsernameCookie: function(value) {
 			var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
-			localStorage.setItem(key, value);
+			localStorage.setItem(key, value || '');
 		},
 
 		closeSession: function() {
