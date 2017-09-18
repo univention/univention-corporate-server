@@ -100,7 +100,14 @@ create_admin_entry () {
 	icon="$DIR/admin-entry-logo-$1.svg"
 	position="cn=portal,cn=univention,$ldap_base"
 	dn="cn=$cn,$position"
-	udm settings/portal_entry remove --dn "$dn"
+
+	# remove previous entry
+	search_result="$(univention-ldapsearch -LLL -b "$position" "cn=$cn" dn)"
+	if [ -n "$search_result" ]; then
+		udm settings/portal_entry remove --dn "$dn"
+	fi
+
+	# add new entry
 	udm settings/portal_entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
@@ -126,7 +133,6 @@ create_admin_entry \
 	"Univention SDB" \
 	"The Univention support database" \
 	"Die Univention-Support-Datenbank" \
-	"http://sdb.univention.com" \
 	"http://sdb.univention.de"
 
 function has_portal_background {
