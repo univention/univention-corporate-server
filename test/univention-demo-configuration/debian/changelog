@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-11) unstable; urgency=medium
+
+  * Bug #45385: fix address to Univention SDB
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Sep 2017 11:51:20 +0200
+
 univention-demo-configuration (5.0.2-10) unstable; urgency=medium
 
   * Bug #45385: fix handling of portal entries
