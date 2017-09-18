@@ -3,10 +3,11 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: samba
-fix: 2:4.6.1-1A~4.2.0.201709140917
+fix: 2:4.6.1-1A~4.2.0.201709181525
 desc: |
  This update addresses the following issue(s):
+ * Samba tool sysvolreset logs ACL operation errors instead of aborting.
  * Samba tool sysvolcheck does not longer check the netlogon share.
  * Samba tools regarding the creation of users with User Principal
    Names have been fixed.
-bug: [44305, 45063, 45388]
+bug: [38217, 44305, 45063, 45388]
