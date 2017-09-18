@@ -221,11 +221,7 @@ class Register(CredentialsAction):
 					if not schema_obj.wait_for_activation():
 						raise RegisterSchemaFileFailed(schema_file)
 				finally:
-					try:
-						del os.environ['UNIVENTION_APP_IDENTIFIER']
-					except KeyError:
-						# strange...
-						self.warn('Could not delete UNIVENTION_APP_IDENTIFIER from env vars. Probably not set anymore?')
+					del os.environ['UNIVENTION_APP_IDENTIFIER']
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
