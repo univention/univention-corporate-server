@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-27 18:07+0200\n"
+"POT-Creation-Date: 2017-09-18 15:37+0200\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/tools.js:1705
+#: js/tools.js:1718
 msgid "\"${moduleName}\" module"
 msgstr ""
 
@@ -24,35 +24,35 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr ""
 
-#: js/widgets/Form.js:620
+#: js/widgets/Form.js:625
 msgid "%(label)s: %(message)s"
 msgstr ""
 
-#: js/widgets/Grid.js:860
+#: js/widgets/Grid.js:900
 msgid "%(num)d entries of %(total)d selected"
 msgstr ""
 
-#: js/widgets/Form.js:612
+#: js/widgets/Form.js:617
 msgid "%s (%.1f%)"
 msgstr ""
 
-#: js/widgets/Form.js:600 js/widgets/Form.js:616
+#: js/widgets/Form.js:605 js/widgets/Form.js:621
 #, javascript-format
 msgid "%s loaded"
 msgstr ""
 
-#: js/widgets/Grid.js:865
+#: js/widgets/Grid.js:905
 #, javascript-format
 msgid "1 entry of %d selected"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:112
+#: js/hooks/default_menu_entries.js:124
 msgid ""
 "<b>Warning</b>: The current session with all opened modules and unsaved "
 "settings gets lost and a page reload is done when switching the language."
 msgstr ""
 
-#: js/tools.js:268
+#: js/tools.js:275
 msgid ""
 "A reload of the Univention Management Console is required to use new modules."
 "<br>Currently opened modules may not work properly.<br>Do you want to reload "
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: js/widgets/MultiObjectSelect.js:120 js/widgets/MultiObjectSelect.js:298
+#: js/widgets/MultiObjectSelect.js:135 js/widgets/MultiObjectSelect.js:303
 msgid "Add"
 msgstr ""
 
@@ -71,40 +71,41 @@ msgstr ""
 msgid "Add objects"
 msgstr ""
 
-#: js/tools.js:1078
+#: js/tools.js:1091
 msgid "An assert statement failed"
 msgstr ""
 
-#: js/tools.js:632 js/tools.js:914
+#: js/tools.js:645 js/tools.js:927
 msgid "An error occurred"
 msgstr ""
 
-#: js/tools.js:638
+#: js/tools.js:651
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 
-#: js/widgets/ProgressBar.js:175
+#: js/widgets/ProgressBar.js:177
 msgid "An error occurred: "
 msgstr ""
 
-#: js/tools.js:635
+#: js/tools.js:648
 #, javascript-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
 msgstr ""
 
-#: js/widgets/Wizard.js:159
+#: js/widgets/Wizard.js:162
 msgid "Back"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:180
+#: js/hooks/default_menu_entries.js:198
 msgid "Back to start site"
 msgstr ""
 
-#: js/widgets/Wizard.js:174 js/widgets/MultiObjectSelect.js:138
-#: js/hooks/default_menu_entries.js:120 js/dialog.js:254 js/tools.js:270
+#: js/dialog.js:288 js/hooks/default_menu_entries.js:126
+#: js/widgets/MultiObjectSelect.js:124 js/widgets/Wizard.js:177
+#: js/tools.js:277
 msgid "Cancel"
 msgstr ""
 
@@ -112,11 +113,11 @@ msgstr ""
 msgid "Certificate revocation list"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:66
+#: js/hooks/default_menu_entries.js:75
 msgid "Certificates"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:121
+#: js/hooks/default_menu_entries.js:133
 msgid "Changing language"
 msgstr ""
 
@@ -136,35 +137,39 @@ msgstr ""
 msgid "Click to login"
 msgstr ""
 
-#: js/widgets/Module.js:230 js/tools.js:891
+#: js/widgets/Module.js:230 js/tools.js:904
 msgid "Close"
 msgstr ""
 
-#: js/dialog.js:208 js/dialog.js:263
+#: js/dialog/NotificationDropDownButton.js:197
+msgid "Close all"
+msgstr ""
+
+#: js/dialog.js:242 js/dialog.js:297
 msgid "Confirmation"
 msgstr ""
 
-#: js/tools.js:723
+#: js/tools.js:736
 msgid "Could not fulfill the request."
 msgstr ""
 
-#: js/widgets/Grid.js:957
+#: js/widgets/Grid.js:997
 msgid "Could not load search results"
 msgstr ""
 
-#: js/tools.js:743
+#: js/tools.js:756
 msgid "Could not process the request."
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:163
+#: js/hooks/default_menu_entries.js:175
 msgid "Feedback"
 msgstr ""
 
-#: js/widgets/ProgressBar.js:147
+#: js/widgets/ProgressBar.js:149
 msgid "Fetching information from the server failed!"
 msgstr ""
 
-#: js/widgets/Wizard.js:170
+#: js/widgets/Wizard.js:173
 msgid "Finish"
 msgstr ""
 
@@ -172,65 +177,65 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:138
+#: js/hooks/default_menu_entries.js:150
 msgid "Help"
 msgstr ""
 
-#: js/tools.js:870
+#: js/tools.js:883
 msgid "Hide server error message"
 msgstr ""
 
-#: js/tools.js:905
+#: js/tools.js:918
 msgid "Inform vendor"
 msgstr ""
 
-#: js/tools.js:368
+#: js/tools.js:375
 msgid "Information"
 msgstr ""
 
-#: js/tools.js:925
+#: js/tools.js:938
 msgid ""
 "Information about the error will be sent to the vendor along with some data "
 "about the operating system."
 msgstr ""
 
-#: js/tools.js:740
+#: js/tools.js:753
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 
-#: js/tools.js:739
+#: js/tools.js:752
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 
-#: js/tools.js:742
+#: js/tools.js:755
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 
-#: js/tools.js:744
+#: js/tools.js:757
 msgid ""
 "Internal module error: The initialization of the module caused a fatal error."
 msgstr ""
 
-#: js/tools.js:733
+#: js/tools.js:746
 msgid "Internal server error."
 msgstr ""
 
-#: js/tools.js:736
+#: js/tools.js:749
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 
-#: js/tools.js:737
+#: js/tools.js:750
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
 msgstr ""
 
-#: js/tools.js:735
+#: js/tools.js:748
 msgid "Internal server error: The module process died unexpectedly."
 msgstr ""
 
-#: js/tools.js:734
+#: js/tools.js:747
 msgid "Internal server error: The service is temporarily not available."
 msgstr ""
 
@@ -238,11 +243,11 @@ msgstr ""
 msgid "Logged in as <i>%(username)s</i>"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:192
+#: js/hooks/default_menu_entries.js:210
 msgid "Login"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:204
+#: js/hooks/default_menu_entries.js:222
 msgid "Logout"
 msgstr ""
 
@@ -254,29 +259,38 @@ msgstr ""
 msgid "New entry"
 msgstr ""
 
-#: js/widgets/Wizard.js:165
+#: js/widgets/Wizard.js:168
 msgid "Next"
 msgstr ""
 
-#: js/widgets/Grid.js:862
+#: js/widgets/Grid.js:902
 msgid "No entries could be found"
 msgstr ""
 
-#: js/dialog/NotificationContainer.js:55
+#: js/dialog/NotificationDropDownButton.js:86
+#: js/dialog/NotificationDropDownButton.js:93
 msgid "No message"
 msgstr ""
 
-#: js/widgets/MultiUploader.js:218
+#: js/dialog/NotificationDropDownButton.js:196
+msgid "No messages"
+msgstr ""
+
+#: js/widgets/MultiUploader.js:219
 msgid "No upload in progress"
 msgstr ""
 
-#: js/dialog.js:67 js/dialog.js:96 js/dialog.js:120
-#: js/dialog/NotificationContainer.js:54
-#: js/dialog/NotificationContainer.js:204
+#: js/dialog.js:97 js/dialog.js:130 js/dialog.js:154
+#: js/dialog/NotificationDropDownButton.js:85
+#: js/dialog/NotificationDropDownButton.js:90
 msgid "Notification"
 msgstr ""
 
-#: js/dialog.js:99
+#: js/dialog/NotificationSnackbar.js:291
+msgid "OK"
+msgstr ""
+
+#: js/dialog.js:133
 msgid "Ok"
 msgstr ""
 
@@ -288,11 +302,11 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: js/widgets/Grid.js:163
+#: js/widgets/Grid.js:164
 msgid "Please perform a search"
 msgstr ""
 
-#: js/tools.js:853
+#: js/tools.js:866
 msgid "Please take a second to provide the following information:"
 msgstr ""
 
@@ -300,16 +314,20 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: js/tools.js:276
+#: js/tools.js:283
 msgid "Reload"
 msgstr ""
 
-#: js/tools.js:937
+#: js/tools.js:950
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr ""
 
-#: js/widgets/MultiUploader.js:135 js/widgets/MultiObjectSelect.js:321
+#: js/widgets/MultiUploader.js:136 js/widgets/MultiObjectSelect.js:326
 msgid "Remove"
+msgstr ""
+
+#: js/widgets/MultiInput.js:596
+msgid "Remove entry"
 msgstr ""
 
 #: js/hooks/default_menu_entries.js:81
@@ -328,19 +346,23 @@ msgstr ""
 msgid "Search term"
 msgstr ""
 
-#: js/tools.js:866
+#: js/widgets/MultiSelect.js:67
+msgid "Select all"
+msgstr ""
+
+#: js/tools.js:879
 msgid "Send as email"
 msgstr ""
 
-#: js/tools.js:921
+#: js/tools.js:934
 msgid "Send to vendor"
 msgstr ""
 
-#: js/tools.js:948
+#: js/tools.js:961
 msgid "Sending the information to the vendor failed"
 msgstr ""
 
-#: js/tools.js:632
+#: js/tools.js:645
 msgid "Server error message:"
 msgstr ""
 
@@ -348,22 +370,22 @@ msgstr ""
 msgid "Setgid"
 msgstr ""
 
-#: js/tools.js:929
+#: js/tools.js:942
 msgid "Show error message"
 msgstr ""
 
-#: js/tools.js:871
+#: js/tools.js:884
 msgid "Show server error message"
 msgstr ""
 
-#: js/tools.js:353
+#: js/tools.js:360
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
 "continue to establish the connection."
 msgstr ""
 
-#: js/tools.js:731
+#: js/tools.js:744
 msgid "Specified locale is not available."
 msgstr ""
 
@@ -371,15 +393,15 @@ msgstr ""
 msgid "Sticky bit"
 msgstr ""
 
-#: js/dialog.js:258
+#: js/dialog.js:292
 msgid "Submit"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:101 js/hooks/default_menu_entries.js:114
+#: js/hooks/default_menu_entries.js:113 js/hooks/default_menu_entries.js:129
 msgid "Switch language"
 msgstr ""
 
-#: js/tools.js:946
+#: js/tools.js:959
 msgid "Thank you for your help"
 msgstr ""
 
@@ -398,20 +420,24 @@ msgstr ""
 msgid "The passwords do not match, please retype again."
 msgstr ""
 
-#: js/tools.js:267
+#: js/tools.js:274
 msgid "UMC reload required"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:157
-msgid "Univention Help"
+#: js/hooks/default_menu_entries.js:190
+msgid "Univention Blog"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:151
+#: js/hooks/default_menu_entries.js:169
+msgid "Univention Forum \"Help\""
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:163
 msgid "Univention Website"
 msgstr ""
 
-#: js/widgets/Uploader.js:120 js/widgets/MultiUploader.js:110
-#: js/widgets/InfoUploader.js:43
+#: js/widgets/InfoUploader.js:43 js/widgets/MultiUploader.js:110
+#: js/widgets/Uploader.js:120
 msgid "Upload"
 msgstr ""
 
@@ -423,11 +449,11 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:244
+#: js/widgets/MultiUploader.js:245
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:241
+#: js/widgets/MultiUploader.js:242
 msgid "Uploads finished"
 msgstr ""
 
@@ -435,27 +461,27 @@ msgstr ""
 msgid "User settings"
 msgstr ""
 
-#: js/tools.js:730
+#: js/tools.js:743
 msgid "Validation error"
 msgstr ""
 
-#: js/dialog.js:77
+#: js/dialog.js:110
 msgid "Warning"
 msgstr ""
 
-#: js/tools.js:728
+#: js/tools.js:741
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
 msgstr ""
 
-#: js/tools.js:729
+#: js/tools.js:742
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
 msgstr ""
 
-#: js/tools.js:727
+#: js/tools.js:740
 msgid "Webfrontend error: The specified request is unknown."
 msgstr ""
 
@@ -463,56 +489,60 @@ msgstr ""
 msgid "Write"
 msgstr ""
 
-#: js/tools.js:725
+#: js/tools.js:738
 msgid "You are not authorized to perform this action."
 msgstr ""
 
-#: js/tools.js:950
+#: js/tools.js:963
 msgid "You can also send the information via mail:"
 msgstr ""
 
-#: js/tools.js:941
+#: js/tools.js:954
 msgid "Your email address (optional)"
 msgstr ""
 
-#: js/tools.js:724
+#: js/tools.js:737
 msgid "Your session has expired, please login again."
 msgstr ""
 
-#: js/tools.js:856
+#: js/tools.js:869
 msgid "actual result"
 msgstr ""
 
-#: js/tools.js:855
+#: js/tools.js:868
 msgid "expected result"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:159
+#: js/hooks/default_menu_entries.js:171
 msgid "http://help.univention.com"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:153
+#: js/hooks/default_menu_entries.js:165
 msgid "http://www.univention.com"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:173
+#: js/hooks/default_menu_entries.js:185
 msgid "https://www.univention.com/feedback/"
 msgstr ""
 
-#: js/widgets/Grid.js:702
+#: js/hooks/default_menu_entries.js:192
+msgid "https://www.univention.com/news/blog-en/"
+msgstr ""
+
+#: js/widgets/Grid.js:742
 msgid "more"
 msgstr ""
 
-#: js/tools.js:854
+#: js/tools.js:867
 msgid "steps to reproduce the failure"
 msgstr ""
 
-#: js/widgets/ProgressBar.js:177
+#: js/widgets/ProgressBar.js:179
 msgid "{number} errors occurred: "
 msgstr ""
 
-msgid "umcFeedbackUrl"
-msgstr "https://www.univention.com/feedback/"
+#~ msgid "umcFeedbackUrl"
+#~ msgstr "https://www.univention.com/feedback/"
 
 #~ msgid "umcLogoTitle"
 #~ msgstr "Website Univention GmbH"

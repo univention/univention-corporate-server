@@ -9,4 +9,5 @@ desc: |
  * The styling of dialogs has been adapted to the new design.
  * The Content-Security-Policy did not include https://piwik.univention.de if
    umc/web/piwik had been set to false.
-bug: [43999, 45396]
+ * The help menu entries have been optimized.
+bug: [43999, 45396, 45281]

@@ -166,7 +166,7 @@ define([
 		});
 		menu.addEntry({
 			parentMenuId: 'umcMenuHelp',
-			label: _('Univention Help'),
+			label: _('Univention Forum "Help"'),
 			priority: 110,
 			onClick: lang.hitch(this, _openPage, _('http://help.univention.com'), 'discourse')
 		});
@@ -184,6 +184,12 @@ define([
 				}
 				_openPage(_('https://www.univention.com/feedback/'), 'feedback', query);
 			}
+		});
+		menu.addEntry({
+			parentMenuId: 'umcMenuHelp',
+			label: _('Univention Blog'),
+			priority: 90,
+			onClick: lang.hitch(this, _openPage, _('https://www.univention.com/news/blog-en/'), 'blog')
 		});
 	}
 

@@ -674,7 +674,7 @@ define([
 
 			menu.addEntry({
 				parentMenuId: 'umcMenuHelp',
-				label: _('Help'),
+				label: _('Documentation and Support'),
 				priority: 40,
 				onClick: lang.hitch(this, 'showPageDialog', 'HelpPage', 'help', null, null)
 			});

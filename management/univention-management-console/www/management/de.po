@@ -844,3 +844,6 @@ msgstr ""
 #: www/management/widgets/AboutPage.js:59
 msgid "Date of expiry of the SSL certificate for this system"
 msgstr ""
+
+msgid "Documentation and Support"
+msgstr "Dokumentation und Support"

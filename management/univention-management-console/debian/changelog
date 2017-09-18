@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-69) unstable; urgency=medium
+
+  * Bug #45281: rename Help into Documentation and Support
+
+ -- Florian Best <best@univention.de>  Mon, 18 Sep 2017 15:36:02 +0200
+
 univention-management-console (9.0.80-68) unstable; urgency=medium
 
   * Bug #45396: add umc/web/piwik to triggered variables
