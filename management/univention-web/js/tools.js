@@ -159,7 +159,7 @@ define([
 		getCookies: function() {
 			return {
 				sessionID: cookie('UMCSessionId-' + document.location.port) || cookie('UMCSessionId'),
-				username: cookie('UMCUsername-' + document.location.port) || cookie('UMCUsername')
+				username: localStorage.getItem('UMCUsername-' + document.location.port) || localStorage.getItem('UMCUsername')
 			};
 		},
 
@@ -168,9 +168,9 @@ define([
 			cookie(key, value, params);
 		},
 
-		setUsernameCookie: function(value, params) {
+		setUsernameCookie: function(value) {
 			var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
-			cookie(key, value, params);
+			localStorage.setItem(key, value);
 		},
 
 		closeSession: function() {
@@ -205,6 +205,13 @@ define([
 			// summary:
 			//		Reset timestamp of last received request
 			this.status('sessionLastRequest', new Date());
+			var username = cookie('UMCUsername-' + document.location.port) || cookie('UMCUsername');
+			if (username) {
+				// if we receive a UMCUsername cookie, we need to immediately remove it and store it in a html5 Storage for privacy reasons
+				var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
+				cookie(key, '', { expires: -1, path: '/univention/' });
+				this.setUsernameCookie(username);
+			}
 		},
 
 		_checkSessionTimer: null,
