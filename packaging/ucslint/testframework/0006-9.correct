@@ -1,0 +1,8 @@
+W:0006-9: debian/postinst:10: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:11: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:12: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:13: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:6: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:7: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:8: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!
+W:0006-9: debian/postinst:9: script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!

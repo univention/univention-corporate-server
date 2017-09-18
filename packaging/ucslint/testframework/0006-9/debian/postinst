@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+
+#DEBHELPER#
+
+eval "$(ucr shell server/role)"
+if [ "$server_role" = "memberserver" ] ; then echo "Is a memberserver" ; fi
+echo "role=$(ucr get server/role)"
+echo "role=$(ucr get "server/role")"
+echo "role=$server_role"
+echo "role=${server_role}"
+echo "role=$server_role and some comments"
+echo "role=${server_role} and some comments"
+#echo "Fooo server/role"
+
+exit 0
