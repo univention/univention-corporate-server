@@ -42,7 +42,8 @@ from ldap.dn import explode_dn
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
-from univention.appcenter.actions import Abort, get_action, AppCenterErrorContainerStart
+from univention.appcenter.actions import get_action
+from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
@@ -212,13 +213,13 @@ class DockerActionMixin(object):
 				if autostart_variable:
 					set_vars[autostart_variable] = 'no'
 			except DatabaseError as exc:
-				raise Abort(str(exc))
+				raise DatabaseConnectorError(str(exc))
 
 		container = docker.create(hostname, set_vars)
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'
 		if not Start.call(app=app):
-			raise Abort('Unable to start the container!')
+			raise DockerCouldNotStartContainer()
 		time.sleep(3)
 		if not docker.is_running():
 			dlogs = docker.dockerd_logs()

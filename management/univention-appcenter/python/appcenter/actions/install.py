@@ -33,10 +33,11 @@
 #
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.actions import get_action
+from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
-from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save
+from univention.appcenter.ucr import ucr_get, ucr_save
 
 
 class ControlScriptException(Exception):
@@ -65,7 +66,7 @@ class Install(InstallRemoveUpgrade):
 				app = sorted(apps)[-1]
 				self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
 			else:
-				raise Abort('Cannot use %s as docker is to be ignored, yet, only non-docker versions could be found' % args.app)
+				raise InstallNonDockerVersionError(args.app)
 		args.app = app
 		return self.do_it(args)
 
@@ -90,7 +91,7 @@ class Install(InstallRemoveUpgrade):
 				self._call_join_script(app, args)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			else:
-				raise Abort('Failed to install the App')
+				raise InstallFailed()
 
 	def _install_packages(self, packages, percentage_end, update=True):
 		return self._apt_get('install', packages, percentage_end, update=update)
@@ -120,11 +121,11 @@ class Install(InstallRemoveUpgrade):
 		username = 'root@%s' % host
 		try:
 			if args.noninteractive:
-				raise Abort()
+				raise InstallMasterPackagesNoninteractiveError()
 			password = self._get_password_for(username)
 			with self._get_password_file(password=password) as password_file:
 				if not password_file:
-					raise Abort()
+					raise InstallMasterPackagesPasswordError()
 				# TODO: fallback if univention-app is not installed
 				process = self._subprocess(['/usr/sbin/univention-ssh', password_file, username, 'univention-app', 'install', '%s=%s' % (app.id, app.version), '--only-master-packages', '--noninteractive', '--do-not-send-info'])
 				if process.returncode != 0:

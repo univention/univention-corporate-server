@@ -37,9 +37,9 @@ from argparse import SUPPRESS
 
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_save
-from univention.appcenter.utils import _
+from univention.appcenter.exceptions import InstallSetupFailed
 
 
 class Install(Install, DockerActionMixin):
@@ -87,5 +87,5 @@ class Install(Install, DockerActionMixin):
 		if app.docker_script_setup:
 			process = self._execute_container_script(app, 'setup', args)
 			if not process or process.returncode != 0:
-				raise Abort(_('Setup script failed!'))
+				raise InstallSetupFailed()
 		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)

@@ -58,4 +58,8 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 6.0.8-1; then
 	ln -s /usr/share/pyshared/univention/appcenter/actions/docker_configure.py /usr/lib/pymodules/python2.7/univention/appcenter/actions/docker_configure.py
 fi
 
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 6.0.10-3; then
+	ln -s /usr/share/pyshared/univention/appcenter/exceptions.py /usr/lib/pymodules/python2.7/univention/appcenter/exceptions.py
+fi
+
 exit 0

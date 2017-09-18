@@ -41,33 +41,10 @@ import time
 
 import ldap
 
-from univention.appcenter.actions import UniventionAppAction, Abort
+from univention.appcenter.actions import UniventionAppAction
+from univention.appcenter.exceptions import CredentialsNoUsernameError, CredentialsNoPasswordError, ConnectionFailed, ConnectionFailedSecretFile, ConnectionFailedInvalidUserCredentials, ConnectionFailedInvalidMachineCredentials, ConnectionFailedServerDown, ConnectionFailedInvalidAdminCredentials
 from univention.appcenter.udm import search_objects, get_machine_connection, get_admin_connection, get_connection
 from univention.appcenter.ucr import ucr_get
-
-
-class ConnectionFailed(Abort):
-	pass
-
-
-class ConnectionFailedSecretFile(ConnectionFailed):
-	pass
-
-
-class ConnectionFailedInvalidCredentials(ConnectionFailed):
-	pass
-
-
-class ConnectionFailedInvalidMachineCredentials(ConnectionFailedInvalidCredentials):
-	pass
-
-
-class ConnectionFailedInvalidUserCredentials(ConnectionFailedInvalidCredentials):
-	pass
-
-
-class ConnectionFailedServerDown(ConnectionFailed):
-	pass
 
 
 class CredentialsAction(UniventionAppAction):
@@ -93,7 +70,7 @@ class CredentialsAction(UniventionAppAction):
 			try:
 				username = raw_input('Username [Administrator]: ') or 'Administrator'
 			except (EOFError, KeyboardInterrupt):
-				raise Abort()
+				raise CredentialsNoUsernameError()
 			self._username = username
 			return username
 
@@ -116,7 +93,7 @@ class CredentialsAction(UniventionAppAction):
 		try:
 			return getpass('Password for %s: ' % username)
 		except (EOFError, KeyboardInterrupt):
-			raise Abort()
+			raise CredentialsNoPasswordError()
 
 	@contextmanager
 	def _get_password_file(self, args=None, password=None):
@@ -145,28 +122,28 @@ class CredentialsAction(UniventionAppAction):
 		try:
 			return get_machine_connection()
 		except IOError:
-			raise ConnectionFailedSecretFile('/etc/machine.secret not readable')
+			raise ConnectionFailedSecretFile()
 		except ldap.INVALID_CREDENTIALS:
-			raise ConnectionFailedInvalidMachineCredentials('LDAP server does not accept machine password!')
+			raise ConnectionFailedInvalidMachineCredentials()
 		except ldap.SERVER_DOWN:
-			raise ConnectionFailedServerDown('LDAP server is not running!')
+			raise ConnectionFailedServerDown()
 
 	def _get_admin_connection(self):
 		try:
 			return get_admin_connection()
 		except IOError:
-			raise ConnectionFailedSecretFile('/etc/ldap.secret not readable')
+			raise ConnectionFailedSecretFile()
 		except ldap.INVALID_CREDENTIALS:
-			raise ConnectionFailedInvalidMachineCredentials('LDAP server does not accept admin password!')
+			raise ConnectionFailedInvalidAdminCredentials()
 		except ldap.SERVER_DOWN:
-			raise ConnectionFailedServerDown('LDAP server is not running!')
+			raise ConnectionFailedServerDown()
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
 		if allow_admin_connection:
 			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
 				try:
 					return self._get_admin_connection()
-				except Abort:
+				except ConnectionFailed:
 					if allow_machine_connection or args is not None:
 						# try to get another connection
 						pass
@@ -175,7 +152,7 @@ class CredentialsAction(UniventionAppAction):
 		if allow_machine_connection:
 			try:
 				return self._get_machine_connection()
-			except Abort:
+			except ConnectionFailed:
 				if args is not None:
 					# try to get another connection
 					pass
@@ -193,7 +170,7 @@ class CredentialsAction(UniventionAppAction):
 						raise ldap.INVALID_CREDENTIALS()
 					return get_connection(userdn, password)
 				except ldap.SERVER_DOWN:
-					raise ConnectionFailedServerDown('LDAP server is not running!')
+					raise ConnectionFailedServerDown()
 				except ldap.INVALID_CREDENTIALS:
 					time.sleep(0.1)
 					self.warn('Invalid credentials')
@@ -201,5 +178,5 @@ class CredentialsAction(UniventionAppAction):
 					self._username = None
 					args.pwdfile = None
 					self._password = None
-			raise ConnectionFailedInvalidUserCredentials('Too many failed attempts!')
-		raise ConnectionFailed('No connection possible')
+			raise ConnectionFailedInvalidUserCredentials()
+		raise ConnectionFailed()

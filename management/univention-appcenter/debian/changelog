@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-4) unstable; urgency=medium
+
+  * Bug #43061: Better error codes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Sep 2017 14:16:40 +0200
+
 univention-appcenter (6.0.10-3) unstable; urgency=medium
 
   * Bug #43999: Fix collision between identically names css classes and

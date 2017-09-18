@@ -371,6 +371,12 @@ def flatten(list_of_lists):
 	return ret
 
 
+def unique(sequence):
+	# uniquifies any list; preserves ordering
+	seen = set()
+	return [val for val in sequence if val not in seen and not seen.add(val)]
+
+
 def get_locale():
 	# returns currently set locale: de_AT.UTF-8 -> de
 	# may return None if not set (i.e. 'C')

@@ -35,7 +35,8 @@
 
 from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.actions import get_action
+from univention.appcenter.exceptions import UpgradeStartContainerFailed, UpgradePackagesFailed, UpgradeReleaseFailed, UpgradeAppFailed, UpgradeBackupFailed
 from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
@@ -43,6 +44,7 @@ from univention.appcenter.actions.service import Start
 from univention.appcenter.ucr import ucr_save
 
 import os
+
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
 
@@ -76,7 +78,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if not self.old_app.docker:
 			return 'docker', None
 		if not Start.call(app=self.old_app):
-			raise Abort('Could not start the app container. It needs to be running to be upgraded!')
+			raise UpgradeStartContainerFailed()
 		mode = self._execute_container_script(self.old_app, 'update_available', credentials=False, output=True) or ''
 		mode = mode.strip()
 		if mode.startswith('release:'):
@@ -120,17 +122,17 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _upgrade_packages(self, app, args):
 		process = self._execute_container_script(app, 'update_packages', args)
 		if not process or process.returncode != 0:
-			raise Abort('Package upgrade script failed')
+			raise UpgradePackagesFailed()
 
 	def _upgrade_release(self, app, release):
 		process = self._execute_container_script(app, 'update_release', credentials=False, cmd_kwargs={'release': release})
 		if not process or process.returncode != 0:
-			raise Abort('Release upgrade script failed')
+			raise UpgradeReleaseFailed()
 
 	def _upgrade_app(self, app, args):
 		process = self._execute_container_script(app, 'update_app_version', args)
 		if not process or process.returncode != 0:
-			raise Abort('App upgrade script failed')
+			raise UpgradeAppFailed()
 		self._register_app(app, args)
 		self._configure(app, args)
 		self._call_join_script(app, args)
@@ -151,7 +153,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
 		old_docker.cp_from_container('/etc/machine.secret', secret_on_host)
 		if self._backup_container(self.old_app, backup_data='copy') is False:
-			raise Abort('Could not backup container!')
+			raise UpgradeBackupFailed()
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})

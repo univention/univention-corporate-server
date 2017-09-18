@@ -47,7 +47,8 @@ from univention.config_registry import handler_commit
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR
 from univention.appcenter.app_cache import Apps, AppCenterCache
-from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
+from univention.appcenter.actions import UniventionAppAction, possible_network_error
+from univention.appcenter.exceptions import UpdateUnpackArchiveFailed, UpdateSignatureVerificationFailed
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode, mkdir
 from univention.appcenter.ucr import ucr_save, ucr_is_false
 
@@ -174,7 +175,7 @@ class Update(UniventionAppAction):
 			if rc:
 				if gpg_error:
 					self.fatal(gpg_error)
-				raise Abort('Signature verification for %s failed' % fname)
+				raise UpdateSignatureVerificationFailed(fname)
 
 	def _download_apps(self, app_cache):
 		filenames = ['index.json.gz']
@@ -316,7 +317,7 @@ class Update(UniventionAppAction):
 		all_tar_file = os.path.join(app_cache.get_cache_dir(), '.all.tar')
 		self.debug('Unpacking %s...' % all_tar_file)
 		if self._subprocess(['tar', '-C', app_cache.get_cache_dir(), '-xf', all_tar_file]).returncode:
-			raise Abort('Failed to unpack "%s"' % all_tar_file)
+			raise UpdateUnpackArchiveFailed(all_tar_file)
 
 	def _load_index_json(self, app_cache):
 		index_json_gz_filename = os.path.join(app_cache.get_cache_dir(), '.index.json.gz')
