@@ -41,7 +41,8 @@ from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App
-from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action, AppCenterError
+from univention.appcenter.actions import StoreAppAction, get_action
+from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get

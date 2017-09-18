@@ -42,8 +42,8 @@ from ldap.dn import explode_dn
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
-from univention.appcenter.actions import get_action, AppCenterErrorContainerStart
-from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError
+from univention.appcenter.actions import get_action
+from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true

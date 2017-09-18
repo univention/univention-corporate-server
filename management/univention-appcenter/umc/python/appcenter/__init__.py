@@ -56,7 +56,8 @@ from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.appcenter.actions import get_action, Abort, NetworkError, AppCenterError
+from univention.appcenter.actions import get_action
+from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.packages import reload_package_manager, get_package_manager
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running

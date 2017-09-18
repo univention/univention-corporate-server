@@ -35,7 +35,7 @@
 
 import re
 
-from univention.appcenter.utils import unique
+from univention.appcenter.utils import unique, _
 
 
 class Abort(Exception):
@@ -135,7 +135,7 @@ class UpdateSignatureVerificationFailed(Abort):
 	default_error_msg = 'Signature verification for %(filename)s failed'
 
 
-class UnpackArchiveError(Abort):
+class UpdateUnpackArchiveFailed(Abort):
 	code = 412
 	default_error_msg = 'Failed to unpack "%(filename)s"'
 
@@ -239,3 +239,25 @@ class UpgradePackagesFailed(Abort):
 class UpgradeReleaseFailed(Abort):
 	code = 433
 	default_error_msg = 'Release upgrade script failed'
+
+
+class AppCenterError(Exception):
+	'''A "real" exception that developers cannot handle very well.
+	The difference between AppCenterError and Abort is that Abort is a
+	somewhat defined behaviour, i.e. App installation has to fail if the
+	setup script fails. AppCenterError happens where it was not supposed
+	to.
+	The difference between AppCenterError and Exception is that
+	AppCenterError gives a nicer feedback for the Administrator than a
+	scary traceback. You can even put custom information into the proposed
+	feedback mail (raise AppCenterError(str(custom))).
+	As with Abort, AppCenterError should be subclassed and get a different
+	code.'''
+	code = 500
+	title = _('An error occurred!')
+	info = _('We are sorry for the inconvenience. Please help us to improve the App Center and the Apps by sending us the information below.')
+
+
+class AppCenterErrorContainerStart(AppCenterError):
+	code = 501
+	title = _('The docker container could not be started!')

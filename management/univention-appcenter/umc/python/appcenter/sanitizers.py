@@ -39,7 +39,7 @@ from univention.management.console.base import LDAP_ServerDown
 from univention.management.console.modules.sanitizers import Sanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 from univention.management.console.modules.appcenter.app_center import AppcenterServerContactFailed
 from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
-from univention.appcenter.actions import Abort
+from univention.appcenter.exceptions import Abort
 from univention.appcenter.app_cache import Apps
 
 
