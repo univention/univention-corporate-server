@@ -1,3 +1,9 @@
+univention-web (1.0.42-45) unstable; urgency=medium
+
+  * Bug #45281: adjust menu entries
+
+ -- Florian Best <best@univention.de>  Mon, 18 Sep 2017 15:40:50 +0200
+
 univention-web (1.0.42-44) unstable; urgency=medium
 
   * Bug #45390: add safe default
