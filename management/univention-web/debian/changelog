@@ -1,3 +1,9 @@
+univention-web (1.0.42-44) unstable; urgency=medium
+
+  * Bug #45390: add safe default
+
+ -- Florian Best <best@univention.de>  Mon, 18 Sep 2017 15:06:28 +0200
+
 univention-web (1.0.42-43) unstable; urgency=medium
 
   * Bug #45390: replace username cookie with HTML5 storage
