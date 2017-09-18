@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-06-21 16:09+0200\n"
+"POT-Creation-Date: 2017-09-18 15:33+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,8 +35,8 @@ msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
 msgid "Argument required"
 msgstr "Argument erforderlich"
 
-#: univention/management/console/protocol/definitions.py:62
 #: univention/management/console/error.py:57
+#: univention/management/console/protocol/definitions.py:62
 msgid "Bad request"
 msgstr "Fehlerhafte Anfrage"
 
@@ -131,8 +131,8 @@ msgstr ""
 msgid "For using this request a login is required."
 msgstr ""
 
-#: univention/management/console/protocol/definitions.py:64
 #: univention/management/console/error.py:67
+#: univention/management/console/protocol/definitions.py:64
 msgid "Forbidden"
 msgstr "Verboten"
 
@@ -153,15 +153,17 @@ msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 msgid ""
 "In case the SSL certificates are expired or a recent renewal of the root SSL "
 "CA has been done, please consider http://sdb.univention.de/1183"
-msgstr "Falls die SSL Zertifikate abgelaufen sind oder das Wurzelzertifikat kürzlich erneuert worden ist, bitte ziehen Sie http://sdb.univention.de/1000 zu rat."
+msgstr ""
+"Falls die SSL Zertifikate abgelaufen sind oder das Wurzelzertifikat kürzlich "
+"erneuert worden ist, bitte ziehen Sie http://sdb.univention.de/1000 zu rat."
 
 #: univention/management/console/error.py:129
 #: univention/management/console/error.py:153
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
-#: univention/management/console/protocol/definitions.py:69
 #: univention/management/console/error.py:90
+#: univention/management/console/protocol/definitions.py:69
 msgid "Internal error"
 msgstr "Interner Fehler"
 
@@ -212,8 +214,8 @@ msgstr ""
 "\n"
 "%(traceback)s"
 
-#: univention/management/console/protocol/definitions.py:66
 #: univention/management/console/error.py:77
+#: univention/management/console/protocol/definitions.py:66
 msgid "Method not allowed"
 msgstr ""
 
@@ -234,8 +236,8 @@ msgstr "Ist kein \"dict\""
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
-#: univention/management/console/protocol/definitions.py:65
 #: univention/management/console/error.py:72
+#: univention/management/console/protocol/definitions.py:65
 msgid "Not found"
 msgstr "Nicht gefunden"
 
@@ -435,8 +437,8 @@ msgstr "Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar."
 msgid "This action requires you to supply your password."
 msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 
-#: univention/management/console/protocol/definitions.py:63
 #: univention/management/console/error.py:62
+#: univention/management/console/protocol/definitions.py:63
 msgid "Unauthorized"
 msgstr "Nicht authorisiert"
 
