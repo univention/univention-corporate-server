@@ -9,4 +9,5 @@ desc: |
  * The styling of dialogs has been adapted to the new design.
  * build-report.txt was removed from the debian package.
  * The directory listing of /var/www/univention/ has been disabled.
-bug: [43999, 45391, 45394]
+ * The Univention Blog has been added to the help menu entries.
+bug: [43999, 45391, 45394, 45281]
