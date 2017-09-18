@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+# Automatically added by univention-install-config-registry
+if [ "$1" = "remove" ] && [ -e /etc/univention/templates/info/univention-system-check-downloader.info ] ; then
+  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister univention-system-check-downloader || true
+  mv /etc/univention/templates/info/univention-system-check-downloader.info /etc/univention/templates/removed/univention-system-check-downloader.info || true
+fi
+# End automatically added section

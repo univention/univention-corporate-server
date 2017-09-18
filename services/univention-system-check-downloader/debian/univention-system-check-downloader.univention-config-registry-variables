@@ -1,0 +1,9 @@
+[univention-system-check-downloader/enabled]
+Description[en]=Activates or deactivates automatic updating of univention-system-check via cron
+Type=bool
+Categories=univention-system-check-downloader
+
+[univention-system-check-downloader/cron]
+Description[en]= Cron variable for univention-system-check-downloader
+Type=str
+Categories=univention-system-check-downloader

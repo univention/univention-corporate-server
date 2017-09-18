@@ -1,0 +1,14 @@
+@%@UCRWARNING=# @%@
+
+@!@
+roles = ["domaincontroller_backup", "domaincontroller_master", "domaincontroller_slave", "memberserver"]
+print "#check for new version of univention-system-check"
+if configRegistry.is_true("univention-system-check-downloader", False) and configRegistry["server/role"] in roles:
+	cron = configRegistry.get("univention-system-check-downloader/cron", "23 59 * * * ")
+	file = "/usr/sbin/univention-system-check-downloader"
+	print "SHELL=/bin/sh"
+	print "PATH=/sbin:/bin:/usr/sbin:/usr/bin"
+	print "%s root [ -x %s ] && %s >/dev/null" % (cron, file, file)
+else:
+	print "# not enabled via univention-system-check-downloader or not one of those system roles:\n#%s" % roles
+@!@

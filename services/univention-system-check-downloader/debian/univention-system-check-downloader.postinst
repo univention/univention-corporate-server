@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+ucr set univention-system-check-downloader/enabled=true
+ucr set univention-system-check-downloader/cron='23 59 * * *'
+
+exit 0

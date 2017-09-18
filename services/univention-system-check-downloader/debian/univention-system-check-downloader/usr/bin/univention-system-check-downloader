@@ -1,0 +1,16 @@
+#!/bin/bash
+
+curl -Os https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz.gpg
+if !(cmp -s univention-system-check.tar.gz.gpg /usr/lib/univention-system-check-downloader/univention-system-check.tar.gz.gpg)
+then
+	#echo "New version available, will be downloaded!"
+	curl -Os https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz
+	gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
+	     univention-system-check.tar.gz.gpg univention-system-check.tar.gz
+	tar -xzf  univention-system-check.tar.gz
+	mv univention-system-check.tar.gz.gpg /usr/lib/univention-system-check-downloader/
+	rm univention-system-check.tar.gz 
+else
+	#echo "No new version available!"
+	rm univention-system-check.tar.gz.gpg
+fi

@@ -1,0 +1,2 @@
+/etc/univention/templates/files/etc/cron.d/univention-system-check-downloader
+/etc/univention/templates/info/univention-system-check-downloader.info

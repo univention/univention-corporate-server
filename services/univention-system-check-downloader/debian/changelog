@@ -1,0 +1,5 @@
+univention-system-check-downloader (1.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 07 Sep 2017 08:18:38 +0200

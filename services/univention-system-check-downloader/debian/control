@@ -1,0 +1,14 @@
+Source: univention-system-check-downloader
+Section: univention
+Priority: optional
+Maintainer: Jannik Ahlers <ahlers@univention.de>
+Build-Depends: debhelper (>= 8.0.0),
+ univention-config-dev
+Standards-Version: 3.9.4
+Homepage: univention.com
+
+Package: univention-system-check-downloader
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Downloader for univention-system-check
+ This package downloads the newest version of univention-system-check and updates it automatically.
