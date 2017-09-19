@@ -167,18 +167,24 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 			exploded_dn = ldap.dn.str2dn(unicode_to_utf8(dn))
 			(fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 
+			attributes_from_dn = {attr: value for rdn in exploded_dn
+				for (attr, value, _flags) in rdn}
+
 			if isUCSobject:
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got an UCS-Object")
 				# lookup the relativeDomainName as DC/dnsNode in S4 to get corresponding DN, if not found create new
 
 				try:
-					relativeDomainName = obj['attributes'][ol_RR_attr][0]
-				except (KeyError, IndexError):
-					# Safety fallback for the unexpected case, where relativeDomainName would not be set
-					if 'zoneName' == fst_rdn_attribute_utf8:
-						relativeDomainName = '@'
-					else:
-						raise  # can't determine relativeDomainName
+					relativeDomainName = attributes_from_dn[ol_RR_attr]
+				except KeyError:
+					try:
+						relativeDomainName = obj['attributes'][ol_RR_attr][0]
+					except (KeyError, IndexError):
+						# Safety fallback for the unexpected case, where relativeDomainName would not be set
+						if 'zoneName' == fst_rdn_attribute_utf8:
+							relativeDomainName = '@'
+						else:
+							raise  # can't determine relativeDomainName
 
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
@@ -191,15 +197,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							pass  # values are not the same codec
 
 				try:
+					ol_zone_name = attributes_from_dn['zoneName']
+				except KeyError:
+					# let exceptions pass through, we have no other fallback
 					ol_zone_name = obj['attributes']['zoneName'][0]
-				except (KeyError, IndexError):
-					# Safety fallback for the unexpected case, where zoneName would not be set
-					if ol_RR_attr == fst_rdn_attribute_utf8:
-						(snd_rdn_attribute_utf8, snd_rdn_value_utf8, _flags) = exploded_dn[1][0]
-						if 'zoneName' == snd_rdn_attribute_utf8:
-							ol_zone_name = snd_rdn_value_utf8
-						else:
-							raise  # can't determine zoneName for this relativeDomainName
 
 				target_RR_val = relativeDomainName
 				target_zone_name = ol_zone_name

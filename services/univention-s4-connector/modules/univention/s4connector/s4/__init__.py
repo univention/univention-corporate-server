@@ -2418,6 +2418,7 @@ class s4(univention.s4connector.ucs):
 			if hasattr(self.property[property_type], 'dn_mapping_function'):
 				tmp_object = copy.deepcopy(object)
 				tmp_object['dn'] = old_dn
+				del tmp_object['olddn']
 				for function in self.property[property_type].dn_mapping_function:
 					tmp_object = function(self, tmp_object, [], isUCSobject=True)
 				old_dn = tmp_object['dn']
