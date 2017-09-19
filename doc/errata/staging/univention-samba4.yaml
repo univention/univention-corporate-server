@@ -3,9 +3,10 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-35A~4.2.0.201709162019
+fix: 6.0.10-36A~4.2.0.201709191609
 desc: |
  This update addresses the following issue(s):
+ * Add the scripts univention-samba-lockedout and univention-samba-unlock.
  * Support <interfaces/primary> as a keyword for the UCR variable 
    samba/interfaces has been added. Now, newly installed Samba 4
    systems will set samba/interfaces to lo and the primary interface
@@ -13,4 +14,4 @@ desc: |
    default only listen on those two interfaces. This can be configured
    afterwards via samba/interfaces, samba/interfaces/bindonly and
    samba/register/exclude/interfaces.
-bug: [41057]
+bug: [35071, 35072, 41057]
