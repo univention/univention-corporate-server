@@ -63,6 +63,10 @@ Variables: domainname
 Variables: ucs/server/sso/fqdn
 Variables: saml/idp/certificate/certificate
 Variables: ucs/server/sso/virtualhost
+Variables: saml/apache2/ssl/certificate
+Variables: saml/apache2/ssl/key
+Variables: saml/apache2/ssl/ca
+Variables: saml/apache2/ssl/certificatechain
 
 Type: file
 File: etc/stunnel/univention_saml.conf
