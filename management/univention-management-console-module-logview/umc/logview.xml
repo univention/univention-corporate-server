@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="logview" version="1.0">
+	<name>Logview</name>
+	<description>View logfiles</description>
+	<keywords>logview</keywords>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="logview/query" function="query" />
+	<command name="logview/load_text" function="load_text" />
+	<command name="logview/search_pattern" function="search_pattern" />
+	</module>
+</umc>

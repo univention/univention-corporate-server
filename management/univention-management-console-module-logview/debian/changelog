@@ -1,0 +1,5 @@
+univention-management-console-module-logview (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Bug #35955)
+
+ -- Julius Hinrichs <hinrichs@univention.de>  Mon, 21 Nov 2016 16:32:10 +0100

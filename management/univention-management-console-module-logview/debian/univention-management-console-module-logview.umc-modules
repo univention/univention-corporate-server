@@ -1,0 +1,6 @@
+Module: logview
+Python: umc/python
+Definition: umc/logview.xml
+Category: umc/categories/logview.xml
+Javascript: umc/js
+Icons: umc/icons

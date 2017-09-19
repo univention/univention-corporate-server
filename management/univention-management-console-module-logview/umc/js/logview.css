@@ -1,0 +1,36 @@
+.umc-logview.text {
+	font-family: monospace;
+	white-space: pre-wrap;
+}
+
+.umc-logview.line {
+	display: block;
+	padding-left: 4.5em;
+	text-indent: -4.5em;
+}
+
+.umc-logview.zebra-line {
+	display: block;
+	padding-left: 4.5em;
+	text-indent: -4.5em;
+	background-color: #EEEEEE;
+}
+
+.umc-logview.number {
+	color: gray;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-moz-tab-size: 7;
+	-o-tab-size: 7;
+	tab-size: 7;
+}
+
+.umc-logview.highlight {
+	color: red;
+	font-weight: bold;
+	text-transform: uppercase;
+}
