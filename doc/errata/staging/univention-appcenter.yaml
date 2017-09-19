@@ -7,5 +7,6 @@ fix: 6.0.10-5A~4.2.0.201709191530
 desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
- * Minor styling adjustments when displaying README information before installation
+ * Minor styling adjustments when displaying README information before
+   installation
 bug: [43999, 44002]
