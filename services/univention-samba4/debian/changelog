@@ -1,3 +1,11 @@
+univention-samba4 (6.0.10-36) unstable; urgency=medium
+
+  * Bug #35072: implement samba unlock user
+  * Bug #35071: implement samba lockedout overview
+  * Bug #35071, Bug #35071: u-samba4: install all files matching `sbin/*`
+
+ -- Lukas Oyen <oyen@univention.de>  Tue, 19 Sep 2017 16:06:31 +0200
+
 univention-samba4 (6.0.10-35) unstable; urgency=medium
 
   * Use eth0 in case interfaces/primary is not set (Bug #41057)
