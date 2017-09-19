@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-04 13:52+0200\n"
+"POT-Creation-Date: 2017-09-19 15:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -115,7 +115,7 @@ msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 msgid "Check Samba replication status for errors"
 msgstr "Überprüfe den Samba Replikations Status"
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:44
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:42
 msgid "Check Samba sysvol ACLs for errors"
 msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
@@ -385,9 +385,9 @@ msgstr "Nameserver sind nicht ansprechbar"
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:45
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:55
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:45
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:43
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:54
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:43
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -516,7 +516,11 @@ msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
 msgstr "Führe `samba-tool dbcheck --fix --cross-ncs --yes` aus"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:45
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:86
+msgid "Run `samba-tool ntacl sysvolreset`"
+msgstr "Führe `samba-tool ntacl sysvolreset` aus"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:44
 msgid "S4 Connector rejects"
 msgstr "Nicht synchronisierte S4 Connector Objekte"
 
@@ -837,10 +841,16 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:108
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:96
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
 "Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
+
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:96
+msgid "You can run `samba-tool ntacl sysvolreset` to fix the issue."
+msgstr ""
+"Sie können `samba-tool ntacl sysvolreset` ausführen um die Probleme zu "
+"beheben."
 
 #: umc/python/diagnostic/plugins/30_disk_usage.py:136
 msgid "You have configured some high log levels."
@@ -902,18 +912,24 @@ msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
 msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:77
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:101
+msgid "`samba-tool ntacl sysvolcheck` found no problems."
+msgstr "`samba-tool ntacl sysvolcheck` hat keine Probleme gefunden."
+
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:92
 msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
 msgstr ""
 "`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
 "Einträgen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:55
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:53
 #, python-brace-format
 msgid "`{cmd}` failed."
 msgstr "`{cmd}` ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:57
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:55
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:55
 #, python-brace-format
 msgid "`{cmd}` succeeded."
 msgstr "`{cmd}` war erfolgreich."

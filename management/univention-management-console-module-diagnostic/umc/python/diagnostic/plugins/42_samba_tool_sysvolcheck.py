@@ -33,7 +33,7 @@
 
 import subprocess
 
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, ProblemFixed
 from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
@@ -41,6 +41,25 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba sysvol ACLs for errors')
 description = _('No errors found.'),
+
+
+def run_samba_tool_ntacl_sysvolreset(umc_instance):
+	if not util.is_service_active('Samba 4'):
+		return
+
+	cmd = ['samba-tool', 'ntacl', 'sysvolreset']
+	(success, output) = run_with_output(cmd)
+	if success:
+		fix_log = [_('`{cmd}` succeeded.').format(cmd=' '.join(cmd))]
+	else:
+		fix_log = [_('`{cmd}` failed.').format(cmd=' '.join(cmd))]
+	fix_log.append(output.decode('utf-8', 'replace'))
+	run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
+
+
+actions = {
+	'run_samba_tool_ntacl_sysvolreset': run_samba_tool_ntacl_sysvolreset,
+}
 
 
 def run_with_output(cmd):
@@ -54,18 +73,35 @@ def run_with_output(cmd):
 	return (process.returncode == 0, '\n'.join(output))
 
 
-def run(_umc_instance):
+def run(_umc_instance, rerun=False, fix_log=''):
 	if not util.is_service_active('Samba 4'):
 		return
 
 	error_descriptions = list()
+	if rerun and fix_log:
+		error_descriptions.append(fix_log)
+
+	buttons = [{
+		'action': 'run_samba_tool_ntacl_sysvolreset',
+		'label': _('Run `samba-tool ntacl sysvolreset`'),
+	}]
+
 	cmd = ['samba-tool', 'ntacl', 'sysvolcheck']
 	(success, output) = run_with_output(cmd)
 	if not success or output:
 		error = _('`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs.')
 		error_descriptions.append(error)
 		error_descriptions.append(output)
-		raise Warning(description='\n'.join(error_descriptions))
+		if not rerun:
+			fix = _('You can run `samba-tool ntacl sysvolreset` to fix the issue.')
+			error_descriptions.append(fix)
+		raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
+
+	if rerun:
+		fixed = _('`samba-tool ntacl sysvolcheck` found no problems.')
+		error_descriptions.append(fixed)
+		error_descriptions.append(output)
+		raise ProblemFixed(description='\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
