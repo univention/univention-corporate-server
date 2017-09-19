@@ -818,8 +818,7 @@ define([
 						'default': true
 					}];
 				}
-				var content = '<h1>' + title + '</h1>';  //?
-				content += '<div style="max-height:250px; overflow:auto;">' +
+				var content = '<div style="max-height:250px; overflow:auto;">' +
 						readme +  // no HTML escape!
 					'</div>';
 				dialog.confirm(content, buttons, title).then(function(response) {
