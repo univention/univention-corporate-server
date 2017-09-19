@@ -1,3 +1,10 @@
+univention-appcenter (6.0.10-5) unstable; urgency=medium
+
+  * Bug #44002: Minor sytling adjustments when displaying README files before
+    install
+
+ -- Eduard Mai <mai@univention.de>  Tue, 19 Sep 2017 13:52:12 +0200
+
 univention-appcenter (6.0.10-4) unstable; urgency=medium
 
   * Bug #43061: Better error codes
