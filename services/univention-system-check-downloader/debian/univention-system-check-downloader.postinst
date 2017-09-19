@@ -1,9 +1,8 @@
 #!/bin/sh
 #
-# Python Univention Package Database
 #  postinst script for the debian package
 #
-# Copyright 2010-2017 Univention GmbH
+# Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
 #

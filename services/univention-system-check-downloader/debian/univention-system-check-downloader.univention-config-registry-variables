@@ -1,11 +1,11 @@
 [univention-system-check-downloader/enabled]
-Description[en]=Activates or deactivates automatic updating of univention-system-check via cron
-Description[de]=Aktiviert oder deaktiviert automatische Updates für univention-system-check via cron
+Description[en]=The program 'univention-system-check' gets updated automatically in the interval configured in the ucr variable 'univention-system-check-downloader/cron'. This variable activates or deactivates the automatic updating process.
+Description[de]=Das Programm 'univention-system-check' wird automatisch im in der UCR-Variable 'univention-system-check-downloader/cron' angegebenen Intervall aktualisiert. Diese Variable aktiviert oder deaktiviert den automatischen Update-Prozess.
 Type=bool
 Categories=univention-system-check-downloader
 
 [univention-system-check-downloader/cron]
-Description[en]=Cron variable for univention-system-check-downloader
-Description[de]=Cron Variable für univention-system-check-downloader
+Description[de]=Diese Variable konfiguriert den Zeitpunkt/intervall, zu dem für das Programm 'univention-system-check' nach Updates gesucht und ggfs. installiert werden soll. Das Format ist unter 'man 5 crontab' dokumentiert. Ist die Variable nicht gesetzt, wird 'univention-system-check' nicht aktuell gehalten.
+Description[en]=This variable configures the time/interval when updates for 'univention-system-check' are searched for and installed when found. The format is documented under 'man 5 crontab'. If the variable is unset, 'univention-system-check' will not be kept updated.
 Type=str
 Categories=univention-system-check-downloader

@@ -12,9 +12,8 @@ Architecture: all
 Depends: ${shlibs:Depends},
  ${misc:Depends},
  curl,
- locales,
- ca-certificates,
- openssl
+ tar,
+ ucslint
 Description: Downloader for univention-system-check
  This package downloads the newest version of univention-system-check and updates it automatically.
  .

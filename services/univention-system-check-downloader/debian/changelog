@@ -1,5 +1,5 @@
-univention-system-check-downloader (1.1) unstable; urgency=low
+univention-system-check-downloader (1.1-1) unstable; urgency=low
 
-  * Initial Release.
+  * Initial Release (Bug #45340)
 
- -- Jannik Ahlers <ahlers@univention.de>  Thu, 07 Sep 2017 08:18:38 +0200
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 19 Sep 2017 15:57:38 +0200

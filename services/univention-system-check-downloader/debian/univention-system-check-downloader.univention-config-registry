@@ -2,3 +2,4 @@ Type: file
 File: etc/cron.d/univention-system-check-downloader
 Variables: univention-system-check-downloader/enabled
 Variables: univention-system-check-downloader/cron
+Variables: server/role
