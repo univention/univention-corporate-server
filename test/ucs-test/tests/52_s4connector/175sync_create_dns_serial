@@ -8,6 +8,8 @@
 ##   - dnsutils
 ## bugs:
 ##   - 32156
+## tags:
+##  - s4c_dns
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils

@@ -6,6 +6,8 @@
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
 ##   - dnsutils
+## tags:
+##  - s4c_dns
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils
