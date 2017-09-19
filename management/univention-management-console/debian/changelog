@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-70) unstable; urgency=medium
+
+  * Bug #45396: fix KeyError due to unset variables
+
+ -- Florian Best <best@univention.de>  Tue, 19 Sep 2017 14:11:24 +0200
+
 univention-management-console (9.0.80-69) unstable; urgency=medium
 
   * Bug #45281: rename Help into Documentation and Support
