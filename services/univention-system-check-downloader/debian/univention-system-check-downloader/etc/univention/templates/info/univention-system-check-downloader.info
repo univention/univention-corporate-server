@@ -1,4 +1,0 @@
-Type: file
-File: etc/cron.d/univention-system-check-downloader
-Variables: univention-system-stats-downloader/enabled
-Variables: univention-system-stats-downloader/cron

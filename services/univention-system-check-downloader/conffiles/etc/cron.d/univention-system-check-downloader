@@ -2,7 +2,7 @@
 
 @!@
 roles = ["domaincontroller_backup", "domaincontroller_master", "domaincontroller_slave", "memberserver"]
-print "#check for new version of univention-system-check"
+print "# check for new version of univention-system-check"
 if configRegistry.is_true("univention-system-check-downloader/enabled", False) and configRegistry["server/role"] in roles:
 	cron = configRegistry.get("univention-system-check-downloader/cron", "23 59 * * * ")
 	file = "/usr/bin/univention-system-check-downloader"
