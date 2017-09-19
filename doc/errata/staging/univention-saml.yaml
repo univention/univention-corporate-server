@@ -1,12 +1,14 @@
 product: ucs
 release: "4.2"
-version: [2]
+version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-saml
-fix: 4.0.14-9A~4.2.0.201709141417
+fix: 4.0.14-10A~4.2.0.201709191622
 desc: |
  This update addresses the following issue(s):
  * It is now possible to configure whether SAML errors and stack traces
    are displayed to the user via the UCR variable saml/idp/show-errors.
  * The apache directory listing for /var/www/saml/ has been disabled.
-bug: [45393, 45394]
+ * The apache certificates for the SAML virtual host (ucs-sso.$domainname) are
+   now configurable via Univention Config Registry variables.
+bug: [45393, 45394, 40927]
