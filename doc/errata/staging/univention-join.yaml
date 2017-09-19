@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [1,2]
+version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-join
 fix: 9.0.3-9A~4.2.0.201709151409
