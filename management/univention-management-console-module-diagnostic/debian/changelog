@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (3.0.1-26) unstable; urgency=medium
+
+  * Bug #44876: diagnostic: add fix-button to 42_samba_tool_sysvolcheck.py
+  * Bug #44876: diagnostic: move `run_with_output()` into util.py
+
+ -- Lukas Oyen <oyen@univention.de>  Tue, 19 Sep 2017 15:48:14 +0200
+
 univention-management-console-module-diagnostic (3.0.1-25) unstable; urgency=medium
 
   * Bug #44902: diagnostic/util: pass optional hostname to `is_service_active()`

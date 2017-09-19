@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-04 13:52+0200\n"
+"POT-Creation-Date: 2017-09-19 15:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,19 +35,19 @@ msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:101
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:100
 msgid "ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für die Gruppe {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:95
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:94
 msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:342
+#: umc/python/diagnostic/plugins/22_kdc_service.py:332
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
@@ -72,7 +72,7 @@ msgstr "Alle Dateien in Ordnung."
 msgid "All nameserver entries are ok."
 msgstr "Alle Nameserver Einträge sind in Ordnung."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:51
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:50
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
@@ -103,19 +103,19 @@ msgstr ""
 msgid "Certificate {path!r} will expire in {days} days."
 msgstr "Zertifikat {path!r} wird in {days} Tagen ablaufen."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:46
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:45
 msgid "Check Heimdal KDC on Samba 4 DC"
 msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:50
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:49
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:54
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:53
 msgid "Check Samba replication status for errors"
 msgstr "Überprüfe den Samba Replikations Status"
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:44
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:40
 msgid "Check Samba sysvol ACLs for errors"
 msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
@@ -147,11 +147,11 @@ msgstr "Überprüfe Rechnernamen auf RFC Konformität"
 msgid "Check join status"
 msgstr "Überprüfe den Zustand des Domänenbeitritts"
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:43
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:45
 msgid "Check kerberos authenticated DNS updates"
 msgstr "Überprüfe Kerberos authentifizierte DNS Updates"
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:44
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
 msgid "Check local AD database for errors"
 msgstr "Teste die lokale AD Datenbank auf Fehler"
 
@@ -187,7 +187,7 @@ msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
 msgid "Errors found by `univention-check-templates`."
 msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:132
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:147
 msgid "Errors occured while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
@@ -209,7 +209,7 @@ msgstr ""
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:316
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:305
 msgid ""
 "Found differences in the ACLs for IMAP shared folders between UDM and IMAP."
 msgstr ""
@@ -259,7 +259,7 @@ msgstr "Kein Host-Record (A/AAAA record) für Namenserver {ns} gefunden."
 msgid "Found not yet valid certificate {path!r}."
 msgstr "Noch nicht gültiges Zertifikat {path!r} gefunden."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:152
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:141
 #, python-brace-format
 msgid ""
 "Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more "
@@ -276,7 +276,7 @@ msgstr "Gateway ist nicht erreichbar"
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:82
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:81
 #, python-brace-format
 msgid "Identifier with whitespace: {ids}. This is not supported by Cyrus."
 msgstr ""
@@ -301,7 +301,7 @@ msgstr ""
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:323
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:312
 #, python-brace-format
 msgid "In mail folder {name} (see {{udm:mail/mail}}):"
 msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
@@ -311,7 +311,7 @@ msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:141
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:130
 msgid "Inbound {nc!r}: error during DRS replication from {source} ({estring})"
 msgstr ""
 "In eingehend {nc!r}: Fehler während der DRS Replikation von {source} "
@@ -352,7 +352,7 @@ msgstr ""
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:64
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:63
 msgid "Mail folder {folder!r} does not exist in IMAP."
 msgstr "Globaler IMAP Order {folder!r} existiert nicht in IMAP."
 
@@ -373,7 +373,7 @@ msgstr ""
 "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
 "audit\" erhalten werden."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:76
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:75
 msgid "Multiple ACL entries for {id!r} in UDM."
 msgstr "Mehrere ACL Einträge für {id!r} in UDM."
 
@@ -381,17 +381,17 @@ msgstr "Mehrere ACL Einträge für {id!r} in UDM."
 msgid "Nameserver(s) are not responsive"
 msgstr "Nameserver sind nicht ansprechbar"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:46
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:45
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:45
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:55
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:45
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:41
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:54
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:41
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:44
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:46
 msgid "No errors occured."
 msgstr "Es traten keine Fehler auf."
 
@@ -411,7 +411,7 @@ msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
 msgid "No problems were found while resolving update respositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:349
+#: umc/python/diagnostic/plugins/22_kdc_service.py:339
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
@@ -433,7 +433,7 @@ msgstr ""
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:149
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:138
 msgid "Outbound {nc!r}: error during DRS replication to {source} ({estring})"
 msgstr ""
 "In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
@@ -508,24 +508,28 @@ msgstr ""
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:345
+#: umc/python/diagnostic/plugins/22_kdc_service.py:335
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:98
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:73
 msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
 msgstr "Führe `samba-tool dbcheck --fix --cross-ncs --yes` aus"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:45
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:73
+msgid "Run `samba-tool ntacl sysvolreset`"
+msgstr "Führe `samba-tool ntacl sysvolreset` aus"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:44
 msgid "S4 Connector rejects"
 msgstr "Nicht synchronisierte S4 Connector Objekte"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:166
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:155
 #, python-brace-format
 msgid "S4 DN: {s4}, UCS DN: {ucs}"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:163
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:152
 msgid "S4 rejected:"
 msgstr "Nicht synchronisierte S4 Objekte:"
 
@@ -533,7 +537,7 @@ msgstr "Nicht synchronisierte S4 Objekte:"
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:47
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:46
 msgid "Samba 4 KDC running."
 msgstr "Samba 4 KDC läuft."
 
@@ -571,7 +575,7 @@ msgstr "Einige Festplatten sind beinahe voll:"
 msgid "Test again"
 msgstr "Erneut testen"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:145
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:134
 msgid ""
 "The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
 msgstr ""
@@ -600,7 +604,7 @@ msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:319
+#: umc/python/diagnostic/plugins/22_kdc_service.py:309
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
@@ -727,24 +731,24 @@ msgstr ""
 "an Samba-Servern unmöglich, Dateioperationen (Kopieren, Verschieben) auf "
 "Freigaben kann fehlschlagen, uvm.)"
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:87
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:76
 msgid ""
 "This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`."
 msgstr ""
 "Dies ist ein Samba 4 DC, aber `samba-tool processes` zeigt keinen "
 "`kdc_server` an."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:317
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:306
 msgid "This is not necessarily a problem, if the the ACL got changed via IMAP."
 msgstr ""
 "Dies ist nicht notwendigerweise ein Problem, wenn die ACL Einträge per IMAP "
 "geändert wurden."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:88
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:77
 msgid "This may be, because Heimdal KDC seems to be running."
 msgstr "Dies mag daher kommen, dass Heimdal KDC läuft."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:89
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:78
 msgid "This may be, because `kerberos/autostart` is not disabled."
 msgstr ""
 "Dies mag daher kommen, dass `kerberos/autostart` nicht deaktiviert ist."
@@ -769,12 +773,12 @@ msgstr ""
 "dass Authentifikations-Zugangsdaten (falls existierend) korrekt sind und die "
 "ACL's des Proxy-Servers nicht verbieten, Anfragen an %s zu stellen."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:159
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:148
 #, python-brace-format
 msgid "UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}"
 msgstr "UCS DN: {ucs}, S4 DN: {s4}, Dateiname: {fn}"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:156
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:145
 msgid "UCS rejected:"
 msgstr "Nicht synchronisierte UCS Objekte:"
 
@@ -789,7 +793,7 @@ msgstr ""
 "Univention Directory Notifier ID und die lokal gespeicherte Version "
 "unterscheiden sich."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:139
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:128
 msgid "Univention S4 Connector is not installed."
 msgstr "Univention S4 Connector ist nicht installiert."
 
@@ -803,7 +807,7 @@ msgid ""
 "names"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:50
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:49
 msgid "Univention Support Database - How to deal with s4-connector rejects"
 msgstr ""
 
@@ -837,10 +841,16 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:108
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:83
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
 "Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
+
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:83
+msgid "You can run `samba-tool ntacl sysvolreset` to fix the issue."
+msgstr ""
+"Sie können `samba-tool ntacl sysvolreset` ausführen um die Probleme zu "
+"beheben."
 
 #: umc/python/diagnostic/plugins/30_disk_usage.py:136
 msgid "You have configured some high log levels."
@@ -860,7 +870,7 @@ msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 msgid "You may want to reset them via {ucr}."
 msgstr "Sie können sie per {ucr} zurück setzen."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:90
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:79
 #, python-brace-format
 msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
 msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
@@ -869,51 +879,57 @@ msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:60
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:62
 #, python-brace-format
 msgid "`kinit` for principal {princ} with keytab {tab} failed."
 msgstr ""
 "`kinit` für den Principal {princ} mit der Password Tabelle {tab} ist "
 "fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:62
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:64
 #, python-brace-format
 msgid "`kinit` for principal {princ} with password file {file} failed."
 msgstr ""
 "`kinit` für den Principal {princ} mit der Password Datei {file} ist "
 "fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:73
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:75
 #, python-brace-format
 msgid "`nsupdate` check for domain {domain} failed."
 msgstr "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:113
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:88
 msgid "`samba-tool dbcheck` found no problems with the local AD database."
 msgstr ""
 "`samba-tool dbcheck` hat keine Probleme mit der lokalen AD Datenbank "
 "gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:104
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:79
 msgid "`samba-tool dbcheck` returned a problem with the local AD database."
 msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:162
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:151
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
 msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:77
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:88
+msgid "`samba-tool ntacl sysvolcheck` found no problems."
+msgstr "`samba-tool ntacl sysvolcheck` hat keine Probleme gefunden."
+
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:79
 msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
 msgstr ""
 "`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
 "Einträgen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:55
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:51
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:53
 #, python-brace-format
 msgid "`{cmd}` failed."
 msgstr "`{cmd}` ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:57
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:51
 #, python-brace-format
 msgid "`{cmd}` succeeded."
 msgstr "`{cmd}` war erfolgreich."
@@ -950,7 +966,7 @@ msgid ""
 "change.html"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:49
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:48
 msgid ""
 "http://sdb.univention.de/content/6/294/en/how-to-deal-with-s4_connector-"
 "rejects.html"
@@ -960,12 +976,12 @@ msgstr ""
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:158
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:165
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:147
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:154
 msgid "not found"
 msgstr "nicht gefunden"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:336
+#: umc/python/diagnostic/plugins/22_kdc_service.py:326
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 

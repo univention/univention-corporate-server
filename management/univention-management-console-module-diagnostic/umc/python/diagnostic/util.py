@@ -33,6 +33,7 @@
 
 import ldap
 import socket
+import subprocess
 import univention.uldap
 
 
@@ -45,3 +46,13 @@ def is_service_active(service, hostname=socket.gethostname()):
 			return True
 	return False
 
+
+def run_with_output(cmd):
+	output = list()
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	(stdout, stderr) = process.communicate()
+	if stdout:
+		output.append('\nSTDOUT:\n{}'.format(stdout))
+	if stderr:
+		output.append('\nSTDERR:\n{}'.format(stderr))
+	return (process.returncode == 0, '\n'.join(output))

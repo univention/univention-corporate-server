@@ -31,8 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
-
 from univention.management.console.modules.diagnostic import Critical, ProblemFixed
 from univention.management.console.modules.diagnostic import util
 
@@ -48,7 +46,7 @@ def run_samba_tool_dbcheck_fix(umc_instance):
 		return
 
 	cmd = ['samba-tool', 'dbcheck', '--fix', '--cross-ncs', '--yes']
-	(success, output) = run_with_output(cmd)
+	(success, output) = util.run_with_output(cmd)
 	if success:
 		fix_log = [_('`{cmd}` failed.').format(cmd=' '.join(cmd))]
 	else:
@@ -60,17 +58,6 @@ def run_samba_tool_dbcheck_fix(umc_instance):
 actions = {
 	'run_samba_tool_dbcheck_fix': run_samba_tool_dbcheck_fix
 }
-
-
-def run_with_output(cmd):
-	output = list()
-	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	(stdout, stderr) = process.communicate()
-	if stdout:
-		output.append('\nSTDOUT:\n{}'.format(stdout))
-	if stderr:
-		output.append('\nSTDERR:\n{}'.format(stderr))
-	return (process.returncode == 0, '\n'.join(output))
 
 
 def run(_umc_instance, rerun=False, fix_log=''):
@@ -87,7 +74,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 	}]
 
 	cmd = ['samba-tool', 'dbcheck']
-	(success, output) = run_with_output(cmd)
+	(success, output) = util.run_with_output(cmd)
 	if not success:
 		error = _('`samba-tool dbcheck` returned a problem with the local AD database.')
 		error_descriptions.append(error)
