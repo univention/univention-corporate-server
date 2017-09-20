@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [1,2]
+version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-appcenter
 fix: 6.0.10-5A~4.2.0.201709191530
