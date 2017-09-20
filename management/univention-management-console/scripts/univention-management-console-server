@@ -199,7 +199,7 @@ class UMC_Daemon(DaemonRunner):
 		from univention.management.console.protocol.server import Server
 
 		try:
-			resource.setrlimit(resource.RLIMIT_NOFILE, (4096, 64512))
+			resource.setrlimit(resource.RLIMIT_NOFILE, (64512, 64512))
 		except (ValueError, resource.error) as exc:
 			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 		notifier.init(notifier.GENERIC)
