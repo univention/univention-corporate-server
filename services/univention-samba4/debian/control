@@ -42,7 +42,8 @@ Depends: ${misc:Depends},
  univention-config,
  rsync (>=3.0.7-2),
  util-linux,
- shell-univention-lib
+ shell-univention-lib,
+ dnsutils
 Breaks: univention-samba4 ( << 1.0.139-2)
 Description: UCS - Samba4 sysvol synchronization
  This package contains the scripts and configuration

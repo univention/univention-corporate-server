@@ -48,6 +48,9 @@ stderr_log_debug() {
 }
 
 eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)"
+bin/host hostname
+if $? != 0; then
+	echo Error: Connection to host can't be established >&2
 
 DEBUG=false
 SYSVOL_PATH='/var/lib/samba/sysvol'
@@ -336,6 +339,12 @@ chmod g+w "$SYSVOL_SYNC_TRIGGERDIR"
 
 if is_ucr_true samba4/sysvol/sync/debug; then
 	DEBUG=true
+fi
+
+/usr/bin/host $samba4_sysvol_sync_host
+if [ ! $? -eq 0 ]; then
+        stderr_log_error "[$samba4_sysvol_sync_host] Couldn't connect to samba4-host"
+        exit 1
 fi
 
 is_ucr_true samba4/sysvol/sync/setfacl/AU
