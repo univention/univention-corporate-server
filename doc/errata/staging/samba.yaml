@@ -6,8 +6,16 @@ src: samba
 fix: 2:4.6.1-1A~4.2.0.201709181525
 desc: |
  This update addresses the following issue(s):
+ * Some code path don't enforce smb signing, when they should (CVE-2017-12150)
+ * Keep required encryption across SMB3 dfs redirects (CVE-2017-12151)
+ * Client with write access to a share can cause server memory contents to be
+   written into a file or printer (CVE-2017-12163)
  * Samba tool sysvolreset logs ACL operation errors instead of aborting.
  * Samba tool sysvolcheck does not longer check the netlogon share.
- * Samba tool regarding the creation of users with User Principal
-   Names has been fixed.
+ * Samba tools regarding the creation of users with User Principal
+   Names have been fixed.
 bug: [38217, 44305, 45063, 45388]
+cve:
+ - CVE-2017-12150
+ - CVE-2017-12151
+ - CVE-2017-12163
