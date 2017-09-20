@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-join
-fix: 9.0.3-9A~4.2.0.201709151409
+fix: 9.0.3-10A~4.2.0.201709200939
 desc: |
  This update addresses the following issue(s):
  * A test to check whether the UCS master uses the memberOf LDAP
