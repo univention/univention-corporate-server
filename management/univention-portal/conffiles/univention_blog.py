@@ -38,7 +38,7 @@ from subprocess import check_call
 
 
 def handler(config_registry, changes):
-	if config_registry.get('server/role') != 'domaincontroller_master' or config_registry.is_false('portal/create-univention-blog-entry', False):
+	if config_registry.get('server/role') != 'domaincontroller_master':
 		return
 	ldap_base = config_registry.get('ldap/base')
 
@@ -48,6 +48,8 @@ def handler(config_registry, changes):
 		new_val = changes['license/base']
 
 	if new_val in ("UCS Core Edition", "Free for personal use edition"):
+		if config_registry.is_false('portal/create-univention-blog-entry', False):
+			return
 		with open('/usr/share/univention-portal/univention-blog.png') as fd:
 			icon = base64.b64encode(fd.read())
 		check_call([
@@ -57,9 +59,9 @@ def handler(config_registry, changes):
 			'--set', 'activated=TRUE',
 			'--set', 'icon=%s' % (icon,),
 			'--append', 'link=https://www.univention.com/news/blog-en/',
-			'--append', 'description="en_US" "News, Tipps & Best practices"',
-			'--append', 'description="de_DE" "News, Tipps & Best practices"',
-			'--append', 'description="fr_FR" "Nouvelles, conseils & bonne pratique"',
+			'--append', 'description="en_US" "News, tips and best practices"',
+			'--append', 'description="de_DE" "News, Tipps und Best Practices"',
+			'--append', 'description="fr_FR" "Nouvelles, conseils et bonne pratique"',
 			'--append', 'displayName="en_US" "Univention Blog"',
 			'--append', 'displayName="de_DE" "Univention Blog"',
 			'--append', 'displayName="fr_FR" "Univention Blog"',
