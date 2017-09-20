@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-updater
+fix: 12.0.11-9A~4.2.0.201709200937
+desc: |
+ This update addresses the following issue:
+ * The default value of the UCR variable 'repository/mirror/recreate_packages'
+   has been changed to 'no', as re-creating the "Packages" files without the
+   corresponding "override" files breaks `debootstrap`.
+bug: [45185]
