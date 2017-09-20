@@ -5,5 +5,14 @@ scope: ucs_4.1-0-errata4.1-4
 src: samba
 fix: 2:4.5.1-1.864.201709151857
 desc: |
- * TODO
+ This update addresses the following issue(s):
+ * Some code path don't enforce smb signing, when they should (CVE-2017-12150)
+ * Keep required encryption across SMB3 dfs redirects (CVE-2017-12151)
+ * Client with write access to a share can cause server memory contents to be
+   written into a file or printer (CVE-2017-12163)
 bug: [45389]
+cve:
+ - CVE-2017-12150
+ - CVE-2017-12151
+ - CVE-2017-12163
+
