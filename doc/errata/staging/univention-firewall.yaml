@@ -2,7 +2,7 @@ product: ucs
 release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
-src: univenion-firewall
+src: univention-firewall
 fix: 9.0.1-4A~4.2.0.201709131853
 desc: |
  This update addresses the following issue(s):
