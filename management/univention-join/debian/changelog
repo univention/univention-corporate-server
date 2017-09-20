@@ -1,3 +1,9 @@
+univention-join (9.0.3-10) unstable; urgency=medium
+
+  * Bug #42505: memberOf test only for dc's
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Sep 2017 09:23:47 +0200
+
 univention-join (9.0.3-9) unstable; urgency=medium
 
   * Bug #42505: memberOf test only for dc's
