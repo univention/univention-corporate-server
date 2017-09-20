@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+import sys
+from ConfigParser import SafeConfigParser
+from subprocess import call
+
+if __name__ == '__main__':
+	config = SafeConfigParser()
+	config.read(sys.argv[1])
+	kvm = config.get('Global', 'kvm_server')
+
+	CMD = [
+		'ssh',
+		'-o', 'StrictHostKeyChecking=no',
+		'-l' 'build',
+		kvm,
+		'ucs-kt-remove', '--terminate',
+	]
+	for host in config.sections():
+		if host.startswith('UCS'):
+			cmd = CMD + [host]
+			call(cmd)
