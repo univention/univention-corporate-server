@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-portal
-fix: 1.0.12-11A~4.2.0.201709201409
+fix: 1.0.12-12A~4.2.0.201709201705
 desc: |
  This update addresses the following issue(s):
  * A portal entry to the Univention Blog has been added for Core Edition
