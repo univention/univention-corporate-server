@@ -8,5 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * A new plugin has been added that checks the debian package status
   * The nscd check has been fixed and should not incorrectly report the
-	unknown program bound to nscd socket error anymore.
+    unknown program bound to nscd socket error anymore.
 bug: [40370, 45414]
