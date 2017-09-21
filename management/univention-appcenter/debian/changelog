@@ -1,3 +1,10 @@
+univention-appcenter (6.0.10-6) unstable; urgency=medium
+
+  * Bug #44384: Fix problems when trying to upgrade an App that has no newer
+    version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Sep 2017 19:46:49 +0200
+
 univention-appcenter (6.0.10-5) unstable; urgency=medium
 
   * Bug #44002: Minor sytling adjustments when displaying README files before

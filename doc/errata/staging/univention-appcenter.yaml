@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-appcenter
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Fix problems when trying to upgrade an App that has no newer version
+bug: [44384]

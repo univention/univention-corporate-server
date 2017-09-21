@@ -382,11 +382,19 @@ class Instance(umcm.Base, ProgressMixin):
 			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
 				if values.get(setting.name):
 					values[setting.name] = values[setting.name].decode('base64')
-		if function == 'upgrade':
-			app = Apps().find_candidate(app)
+		progress.title = _('%s: Running tests') % app.name
 		serious_problems = False
-		progress.title = _('%s: Running tests') % (app.name,)
-		errors, warnings = app.check(function)
+		if function == 'upgrade':
+			_original_app = app
+			app = Apps().find_candidate(app)
+		if app is None:
+			# Bug #44384: Under mysterious circumstances, app may be None after the .find_candidate()
+			# This may happen in global App Center when the system the user is logged in has different ini files
+			# than the system the App shall be upgraded on. E.g., in mixed appcenter / appcenter-test environments
+			app = _original_app
+			errors, warnings = {'must_have_candidate': False}, {}
+		else:
+			errors, warnings = app.check(function)
 		can_continue = force  # "dry_run"
 		if errors:
 			MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
