@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the update_available script
-## tags: [docker,SKIP]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
@@ -55,12 +55,14 @@ if __name__ == '__main__':
 			test_package_v2.build()
 			copy_package_to_appcenter('4.1', app.app_directory, test_package_v2.get_binary_name())
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
+			app.execute_command_in_container('ucr unset update/container/check/type update/container/check/last')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
 			if res != 'packages\n':
 				fail('update_available returned [%s] instead of [packages\n]' % res)
 
 			app.execute_command_in_container('ucr set version/version=4.0 version/patchlevel=12')
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
+			app.execute_command_in_container('ucr unset update/container/check/type update/container/check/last')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
 			if res != 'release: 4.1-0\n':
 				fail('update_available returned [%s] instead of [release: 4.1-0\n]' % res)

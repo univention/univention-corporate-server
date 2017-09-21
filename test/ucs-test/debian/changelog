@@ -1,6 +1,13 @@
+ucs-test (7.0.23-56) unstable; urgency=medium
+
+  * Bug #44888: Test case 80_docker.62_app_update_available.test fails in UCS
+    4.2-1
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Sep 2017 11:13:25 +0200
+
 ucs-test (7.0.23-55) unstable; urgency=medium
 
-  * Test case 20_appcenter/75_umc_query_app_data fails in UCS 4.2
+  * Bug #44768: Test case 20_appcenter/75_umc_query_app_data fails in UCS 4.2
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Sep 2017 10:24:52 +0200
 
