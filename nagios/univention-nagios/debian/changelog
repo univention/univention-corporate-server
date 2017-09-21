@@ -1,3 +1,9 @@
+univention-nagios (10.1.1-2) unstable; urgency=medium
+
+  * Bug #45414: fix false reports in the nscd check due to a bug in lsof
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 21 Sep 2017 11:01:04 +0200
+
 univention-nagios (10.1.1-1) unstable; urgency=medium
 
   * Bug #40370: Version bump
