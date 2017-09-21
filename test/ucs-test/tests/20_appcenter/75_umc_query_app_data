@@ -4,13 +4,13 @@
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-management-console-module-appcenter
-## tags: [appcenter,SKIP]
+## tags: [appcenter]
 ## exposure: safe
 ## bugs: [44768]
 
 import os
 import sys
-from univention.appcenter import AppManager
+from univention.appcenter.app_cache import AppCache
 from univention.testing.umc import Client
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as str_test
@@ -34,8 +34,8 @@ def cleanup():
 			os.unlink(ipath)
 
 
-def get_temp_app_prefix():
-	return '/var/cache/univention-appcenter/testapp_%s' % str_test.random_name()
+def get_temp_app_prefix(app_cache):
+	return '%s/testapp_%s' % (app_cache.get_cache_dir(), str_test.random_name())
 
 
 def write_ini_file(app_prefix):
@@ -150,8 +150,9 @@ def get_app_from_umc(lang='en_US'):
 
 
 def test_all():
-	AppManager.clear_cache()
-	app_prefix = get_temp_app_prefix()
+	cache = AppCache()
+	cache.clear_cache()
+	app_prefix = get_temp_app_prefix(cache)
 	write_ini_file(app_prefix)
 	write_readme_files(app_prefix)
 
@@ -172,7 +173,7 @@ def test_all():
 		(RATINGS[1],),
 		(RATINGS[0], RATINGS[1], RATINGS[2]),
 	):
-		AppManager.clear_cache()
+		cache.clear_cache()
 		write_ratings(app_prefix, *rating)
 		app = get_app_from_umc()
 		test_ratings(app, *rating)
