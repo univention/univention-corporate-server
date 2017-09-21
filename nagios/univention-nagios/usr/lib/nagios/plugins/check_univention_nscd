@@ -100,15 +100,14 @@ if [ ! -S $nscd_socket ]; then
 	exit $state
 fi
 
-pids_on_nscd_socket=$(lsof -tV $nscd_socket)
+pids_on_nscd_socket=$(fuser "$nscd_socket" 2>/dev/zero)
 RET=$?
 if (( $RET != 0 )); then
-	if [[ "$pids_on_nscd_socket" == "lsof: no file use located: "$nscd_socket ]]; then
-		pids_on_nscd_socket=""
-	else
+	fuser_error=$(fuser "$nscd_socket" 2>&1)
+	if [[ "$fuser_error" != "" ]]; then
 		state=$STATE_UNKNOWN
 		get_state_string $state
-		echo "${STATE_STRING}: lsof command failed"
+		echo "${STATE_STRING}: fuser command failed"
 		exit $state
 	fi
 fi
@@ -144,7 +143,7 @@ elif (( $nscd_processes_on_nscd_socket > 1 )); then
 elif (( $nscd_processes_on_nscd_socket == 0 )); then
 	state=$STATE_CRITICAL
 	get_state_string $state
-	echo "${STATE_STRING}: no instance of nscd bound to nscd socket."
+	echo "${STATE_STRING}: no instance of nscd bound to nscd socket. nscd might have crashed."
 	exit $state
 fi
 
