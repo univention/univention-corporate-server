@@ -1601,7 +1601,7 @@ class AppManager(object):
 	@classmethod
 	def _relevant_master_files(cls):
 		ret = set()
-		ret.add(os.path.join(CACHE_DIR, '.index.json.gz'))
+		ret.add(os.path.join(CACHE_DIR, '.all.tar'))
 		classes_visited = set()
 
 		def add_class(klass):

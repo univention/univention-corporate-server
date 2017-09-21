@@ -242,7 +242,7 @@ class AppCache(_AppCache):
 
 	def _relevant_master_files(self):
 		ret = set()
-		ret.add(os.path.join(self.get_cache_dir(), '.index.json.gz'))
+		ret.add(os.path.join(self.get_cache_dir(), '.all.tar'))
 		classes_visited = set()
 
 		def add_class(klass):

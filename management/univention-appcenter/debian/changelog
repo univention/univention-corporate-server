@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-7) unstable; urgency=medium
+
+  * Bug #45434: The App cache may be outdated, resulting in errors
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Sep 2017 20:51:01 +0200
+
 univention-appcenter (6.0.10-6) unstable; urgency=medium
 
   * Bug #44384: Fix problems when trying to upgrade an App that has no newer
