@@ -3,5 +3,5 @@ MAIN := developer-reference-4.0
 STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
