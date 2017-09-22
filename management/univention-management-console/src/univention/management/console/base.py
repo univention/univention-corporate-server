@@ -346,13 +346,17 @@ class Base(signals.Provider, Translation):
 			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
 
 	def bind_user_connection(self, lo):
-		if self.auth_type == 'SAML':
-			lo.lo.bind_saml(self._password)
-			if not lo.lo.compare_dn(lo.binddn, self._user_dn):
-				CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
-				self._user_dn = lo.binddn
-		else:
-			lo.lo.bind(self._user_dn, self._password)
+		try:
+			if self.auth_type == 'SAML':
+				lo.lo.bind_saml(self._password)
+				if not lo.lo.compare_dn(lo.binddn, self._user_dn):
+					CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
+					self._user_dn = lo.binddn
+			else:
+				lo.lo.bind(self._user_dn, self._password)
+		except ldap.INVALID_CREDENTIALS as exc:
+			exc = ldap.INVALID_CREDENTIALS('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 20 else False, len(self._user_dn or ''), exc))
+			raise ldap.INVALID_CREDENTIALS, exc, sys.exc_info()[2]
 
 	def require_password(self):
 		if self.auth_type is not None:
