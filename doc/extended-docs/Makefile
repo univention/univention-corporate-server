@@ -3,7 +3,7 @@ MAIN := installation-3.3 performance-guide-3.3 networks-3.3 printers-3.3
 MAIN += domain-3.3 windows-3.3 uvmm-3.3
 STYLESHEET := univention_extdocs
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
 
 $(addsuffix .epub,$(MAIN)): %.epub: $(SOURCES)

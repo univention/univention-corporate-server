@@ -2,7 +2,7 @@
 MAIN := quickstart-de-3.3 quickstart-en-3.3
 STYLESHEET := univention_extdocs
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
 
 $(addsuffix .epub,$(MAIN)): %.epub: $(SOURCES)

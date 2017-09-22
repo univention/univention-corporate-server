@@ -3,7 +3,7 @@ MAIN := developer-reference-3.3
 STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
 
 $(addsuffix .epub,$(MAIN)): %.epub: $(SOURCES)
