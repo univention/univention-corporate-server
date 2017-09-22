@@ -3,8 +3,10 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-management-console
-fix: 9.0.80-71A~4.2.0.201709201733
+fix: 9.0.80-72A~4.2.0.201709221539
 desc: |
  This update addresses the following issue(s):
  * The max open files soft limit of the UMC-Server has been raised.
-bug: [45309]
+ * Errors during LDAP authentication now contain more information about the
+   cause.
+bug: [45309, 45438]
