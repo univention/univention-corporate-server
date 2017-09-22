@@ -3,7 +3,7 @@ MAIN := release-notes-4.0-0-en release-notes-4.0-0-de
 STYLESHEET := univention_extdocs
 OPTIONS += --stringparam ulink.show 0
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
 
 check:: $(addsuffix .xml,$(MAIN))
