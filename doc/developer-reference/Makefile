@@ -4,5 +4,5 @@ STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 OPTIONS += --stringparam keep.relative.image.uris 1
 
-COMMON_DIR ?= ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile

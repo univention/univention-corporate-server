@@ -6,3 +6,7 @@
 	path = management/python-notifier/python-notifier
 	url = ../python-notifier
 	branch = ucs
+[submodule "doc/doc-common"]
+	path = doc/doc-common
+	url = ../doc-common
+	branch = master
