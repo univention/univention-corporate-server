@@ -5,7 +5,7 @@ MAIN := $(MAIN_de) $(MAIN_en)
 STYLESHEET := univention
 scenarios-de%: lang := de
 
-COMMON_DIR := ../../../doc-common/docbook
+COMMON_DIR ?= ../doc-common
 include $(COMMON_DIR)/Makefile
 
 SOURCES_de := $(shell find . $(COMMON_DIR)/stylesheets -name \*-de.xml -o -name \*-de.ent -o -name \*.xsl)
