@@ -128,7 +128,7 @@
 	The web interface of an installed UCS system is directly available via its IP address
 	(<uri>https://<replaceable>server_ip</replaceable></uri> or <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended).
 	By default, a portal page is configured on the &ucsMaster; where all applications are listed that are installed in the domain.
-	For all other system roles, the startsite consists of an overview of all locally installed applications.
+	For all other system roles, the start site consists of an overview of all locally installed applications.
 	(View as well as the partitioning of entries can be customized in a very flexible manner, see also <biblioref linkend="ucs-portal"/>.)
   </para>
 
