@@ -194,55 +194,60 @@ class AppCache(_AppCache):
 	def get_appcenter_cache_obj(self):
 		return AppCenterCache(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
 
-	def _invalidate_cache_file(self):
-		cache_dir = self.get_cache_dir()
-		for cache_file in glob(os.path.join(cache_dir, '.*apps*.json')):
-			try:
-				os.unlink(cache_file)
-			except EnvironmentError:
-				pass
-
 	def _save_cache(self):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
 				with open(cache_file, 'wb') as fd:
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
-			except (IOError, TypeError):
+			except (EnvironmentError, TypeError):
 				return False
 			else:
-				cache_modified = os.stat(cache_file).st_mtime
-				self._cache_modified = cache_modified
+				archive_modified = self._archive_modified()
+				os.utime(cache_file, (archive_modified, archive_modified))
+				self._cache_modified = archive_modified
 				return True
 
 	def _load_cache(self):
 		cache_file = self.get_cache_file()
-		if cache_file:
+		try:
+			cache_modified = os.stat(cache_file).st_mtime
+			archive_modified = self._archive_modified()
+			if '{:.3f}'.format(cache_modified) != '{:.3f}'.format(archive_modified):
+				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r != %r' % (cache_modified, archive_modified))
+				return None
+			for master_file in self._relevant_master_files():
+				master_file_modified = os.stat(master_file).st_mtime
+				if cache_modified < master_file_modified:
+					cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
+					return None
+			with open(cache_file, 'rb') as fd:
+				cache = load(fd)
+			self._cache_modified = cache_modified
+		except (EnvironmentError, ValueError, TypeError):
+			cache_logger.debug('Cannot load cache: getting mtimes failed')
+			return None
+		else:
 			try:
-				cache_modified = os.stat(cache_file).st_mtime
-				for master_file in self._relevant_master_files():
-					master_file_modified = os.stat(master_file).st_mtime
-					if cache_modified < master_file_modified:
-						return None
-				with open(cache_file, 'rb') as fd:
-					cache = load(fd)
-				self._cache_modified = cache_modified
-			except (OSError, IOError, ValueError):
+				cache_attributes = set(cache[0].keys())
+			except (TypeError, AttributeError, IndexError, KeyError):
+				cache_logger.debug('Cannot load cache: Getting cached attributes failed')
 				return None
 			else:
-				try:
-					cache_attributes = set(cache[0].keys())
-				except (TypeError, AttributeError, IndexError, KeyError):
+				code_attributes = set(attr.name for attr in self.get_app_class()._attrs)
+				if cache_attributes != code_attributes:
+					cache_logger.debug('Cannot load cache: Attributes in cache file differ from attribute in code')
 					return None
-				else:
-					code_attributes = set(attr.name for attr in self.get_app_class()._attrs)
-					if cache_attributes != code_attributes:
-						return None
-					return [self._build_app_from_attrs(attrs) for attrs in cache]
+				return [self._build_app_from_attrs(attrs) for attrs in cache]
+
+	def _archive_modified(self):
+		try:
+			return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
+		except (EnvironmentError, AttributeError):
+			return None
 
 	def _relevant_master_files(self):
 		ret = set()
-		ret.add(os.path.join(self.get_cache_dir(), '.all.tar'))
 		classes_visited = set()
 
 		def add_class(klass):
@@ -283,7 +288,6 @@ class AppCache(_AppCache):
 		ucr_load()
 		self._cache[:] = []
 		self._cache_modified = None
-		self._invalidate_cache_file()
 
 	@contextmanager
 	def _locked(self):
@@ -304,10 +308,7 @@ class AppCache(_AppCache):
 		with self._locked():
 			cache_file = self.get_cache_file()
 			if cache_file:
-				try:
-					cache_modified = os.stat(cache_file).st_mtime
-				except (EnvironmentError, ValueError):
-					cache_modified = None
+				cache_modified = self._archive_modified()
 				if cache_modified is None or cache_modified > self._cache_modified:
 					cache_logger.debug('Cache outdated. Need to rebuild')
 					self._cache[:] = []

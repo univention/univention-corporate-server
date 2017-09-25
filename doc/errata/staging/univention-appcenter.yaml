@@ -8,4 +8,4 @@ desc: |-
   This update addresses the following issue(s):
   * Fix problems when trying to upgrade an App that has no newer version.
   * The App Center could operate on an outdated cache. This has been fixed.
-bug: [44384, 45434]
+bug: [44384, 44607]
