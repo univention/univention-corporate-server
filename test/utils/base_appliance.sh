@@ -316,7 +316,8 @@ joinscript_save_current_version
 
 # Only install the app if joinscript is run during system-setup
 if [ -n "\$(pgrep -f /usr/lib/univention-system-setup/scripts/setup-join.sh)" ]; then
-	# install app
+	# install app, without index verification (needs internet)
+	ucr set --force appcenter/index/verify=false
 	python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
@@ -333,6 +334,7 @@ fi
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 # fix docker app image name
+ucr unset --force appcenter/index/verify
 ucr set appcenter/apps/${app}/image="${dockerimage}"
 __EOF__
 		chmod 755 /usr/lib/univention-install/99setup_${app}.inst
