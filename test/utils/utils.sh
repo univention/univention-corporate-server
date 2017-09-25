@@ -749,9 +749,14 @@ update_apps_via_umc () {
 
 remove_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
+	local reverse=""
 	shift 2 || return $?
 	rm -f /var/cache/appcenter-uninstalled.txt
+	# un-install in reverse order (requiredApps)
 	for app in "$@"; do
+		reverse="$app $reverse"
+	done
+	for app in $reverse; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r || rv=$?
 		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
