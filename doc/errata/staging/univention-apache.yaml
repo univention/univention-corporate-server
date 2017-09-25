@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-apache
+fix: 9.0.5-13A~4.2.0.201709251216
+desc: |
+ This update addresses the following issue(s):
+ * The exclusion rules for the force http now support regex pattern.
+bug: [45449]
