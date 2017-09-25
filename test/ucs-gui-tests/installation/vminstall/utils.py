@@ -30,9 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import subprocess
+
+
 # TODO: Use the pycountry library here. (Adds additional dependency...)
-
-
 def iso_639_1_to_iso_639_2(language_code):
 	if language_code == 'en':
 		return 'eng'
@@ -49,3 +50,25 @@ def iso_639_1_to_english_name(language_code):
 		return "German"
 	elif language_code == 'fr':
 		return "French"
+
+
+def execute_through_ssh(password, command, ip):
+	subprocess.check_call((
+		'sshpass',
+		'-p', password,
+		'ssh',
+		'-o', 'StrictHostKeyChecking=no',
+		'root@%s' % (ip,),
+		command
+	))
+
+
+def copy_through_ssh(password, source_file, target_file):
+	subprocess.check_call((
+		'sshpass',
+		'-p', password,
+		'scp',
+		'-r',
+		'-o', 'StrictHostKeyChecking=no',
+		source_file, target_file
+	))
