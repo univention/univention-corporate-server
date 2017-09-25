@@ -1,3 +1,4 @@
+from vminstall.utils import copy_through_ssh, execute_through_ssh
 import subprocess
 
 
@@ -10,8 +11,8 @@ class TestDudleInstallation(object):
 		if role != 'basesystem':
 			self.remove_old_sshkeys()
 			self.import_license_on_vm()
-			self.execute_through_ssh('echo %s > pwdfile' % (self.password,))
-			self.execute_through_ssh('univention-app install dudle --noninteractive --pwdfile=pwdfile')
+			execute_through_ssh(self.password, 'echo %s > pwdfile' % (self.password,), self.ip)
+			execute_through_ssh(self.password, 'univention-app install dudle --noninteractive --pwdfile=pwdfile', self.ip)
 
 	def remove_old_sshkeys(self):
 		subprocess.check_call((
@@ -26,26 +27,7 @@ class TestDudleInstallation(object):
 		))
 
 	def import_license_on_vm(self):
-		self.copy_through_ssh('utils/license_client.py', 'root@%s:/root/' % (self.master_ip,))
-		self.copy_through_ssh('/var/lib/jenkins/ec2/license/license.secret', 'root@%s:/etc/license.secret' % (self.master_ip,))
-		self.execute_through_ssh('python license_client.py "$(ucr get ldap/base)" "$(date -d +1\ year +%d.%m.%Y)"', self.master_ip)
-		self.execute_through_ssh('univention-license-import ./ValidTest.license && univention-license-check', self.master_ip)
-
-	def execute_through_ssh(self, command, ip=None):
-		subprocess.check_call((
-			'sshpass',
-			'-p', self.password,
-			'ssh',
-			'-o', 'StrictHostKeyChecking=no',
-			'root@%s' % (ip or self.ip,),
-			command
-		))
-
-	def copy_through_ssh(self, source_file, target_file):
-		subprocess.check_call((
-			'sshpass',
-			'-p', self.password,
-			'scp',
-			'-o', 'StrictHostKeyChecking=no',
-			source_file, target_file
-		))
+		copy_through_ssh(self.password, 'utils/license_client.py', 'root@%s:/root/' % (self.master_ip,))
+		copy_through_ssh(self.password, '/var/lib/jenkins/ec2/license/license.secret', 'root@%s:/etc/license.secret' % (self.master_ip,))
+		execute_through_ssh(self.password, 'python license_client.py "$(ucr get ldap/base)" "$(date -d +1\ year +%d.%m.%Y)"', self.master_ip)
+		execute_through_ssh(self.password, 'univention-license-import ./ValidTest.license && univention-license-check', self.master_ip)

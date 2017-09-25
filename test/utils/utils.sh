@@ -408,6 +408,10 @@ run_apptests () {
 	run_tests -r apptest "$@"
 }
 
+run_minimal_tests () {
+	run_tests -s checks "$@"
+}
+
 run_minimal_apptests () {
 	run_apptests -s checks -s appcenter "$@"
 }
