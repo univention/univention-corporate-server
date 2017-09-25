@@ -12,3 +12,5 @@ desc: |
  * The apache certificates for the SAML virtual host (ucs-sso.$domainname) are
    now configurable via Univention Config Registry variables.
 bug: [45393, 45394, 40927]
+erratum: 170
+announced: 2017-09-20

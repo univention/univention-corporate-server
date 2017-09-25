@@ -12,3 +12,5 @@ desc: |
  * Minor styling adjustments when displaying README information before
    installation.
 bug: [43999, 43061, 44002]
+erratum: 182
+announced: 2017-09-20

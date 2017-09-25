@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The styling of dialogs has been adapted to the new design.
 bug: [43999]
+erratum: 178
+announced: 2017-09-20

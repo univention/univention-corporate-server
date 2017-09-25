@@ -10,3 +10,5 @@ desc: |
    limits are reached.
  * The styling of dialogs has been adapted to the new design.
 bug: [44905, 43999]
+erratum: 180
+announced: 2017-09-20

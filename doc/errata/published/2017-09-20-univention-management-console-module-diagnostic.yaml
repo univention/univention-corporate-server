@@ -28,3 +28,5 @@ desc: |
  * Add new check kerberos_ddns_update.
  * Links to SDB articles are now opened in a new tab.
 bug: [35858, 35859, 35860, 35863, 35865, 36012, 36748, 37628, 38238, 38974, 40227, 40228, 40393, 40465, 40605, 44874, 44875, 44876, 44881, 44902, 45118]
+erratum: 166
+announced: 2017-09-20

@@ -10,3 +10,5 @@ desc: |
  * The primary interface is set to the first configured one,
    avoiding not configured interfaces.
 bug: [43999, 40657]
+erratum: 177
+announced: 2017-09-20

@@ -13,3 +13,5 @@ desc: |
  * For privacy reasons the username is not stored anymore in a cookie but in a
    HTML5 local storage, to remember the last logged in user.
 bug: [43999, 45391, 45394, 45281, 45390]
+erratum: 179
+announced: 2017-09-20

@@ -11,3 +11,5 @@ desc: |
    umc/web/piwik had been set to false.
  * The help menu entries have been optimized.
 bug: [43999, 45396, 45281]
+erratum: 171
+announced: 2017-09-20
