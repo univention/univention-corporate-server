@@ -221,7 +221,8 @@ class Register(CredentialsAction):
 					if not schema_obj.wait_for_activation():
 						raise RegisterSchemaFileFailed(schema_file)
 				finally:
-					del os.environ['UNIVENTION_APP_IDENTIFIER']
+					if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
+						del os.environ['UNIVENTION_APP_IDENTIFIER']
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)

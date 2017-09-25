@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-9) unstable; urgency=medium
+
+  * Bug #44502: check before deleting UNIVENTION_APP_IDENTIFIER
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Sep 2017 12:58:15 +0200
+
 univention-appcenter (6.0.10-8) unstable; urgency=medium
 
   * Bug #45434: The App cache may be outdated, resulting in errors (2)
