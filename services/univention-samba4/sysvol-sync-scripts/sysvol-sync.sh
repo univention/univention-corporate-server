@@ -340,7 +340,7 @@ fi
 
 /usr/bin/host $samba4_sysvol_sync_host
 if [ ! $? -eq 0 ]; then
-        stderr_log_error "[$samba4_sysvol_sync_host] Could not connect to samba4-host"
+        stderr_log_error "[$samba4_sysvol_sync_host] Could not connect to samba4-host."
         exit 1
 fi
 
