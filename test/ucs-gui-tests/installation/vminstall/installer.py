@@ -46,7 +46,7 @@ from vminstall.vmconfig import Config as VmConfig
 class Installer(object):
 
 	def __init__(self, args=None, role='master', language='en'):
-		init_logger('debug')
+		init_logger('info')
 		self.args = self.parse_args(args)
 		self.ocr_config = self.__get_ocr_config()
 		self.vm_config = VmConfig(
