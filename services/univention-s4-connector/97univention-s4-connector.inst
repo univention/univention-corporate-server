@@ -210,20 +210,13 @@ if [ -z "$s4connector_dc" ] \
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true connector/s4/mapping/gpo; then
 		/etc/init.d/univention-s4-connector stop
 
-		# By default the connector will overwrite all Samba 4 objects by the UCS objects.
-		# On a normal Samba 4 DC is is necessary that the MS GPO links will not be overwritten.
-		# But on a "Slave PDC" the settings from the Master must be used
-		if [ -z "$s4connector_dc" ] \
-			|| [ "$s4connector_dc" = "$hostname" ]; then
-			# First or only Sama 4 server
-			/usr/share/univention-s4-connector/msgpo.py --write2ucs "$@"
-		elif ! is_ucr_true 'connector/s4/allow/secondary'; then
-			# Normal Samba 4 DC
-			/usr/share/univention-s4-connector/msgpo.py --write2ucs "$@"
-		else
-			# Slave PDC
-			/usr/share/univention-s4-connector/msgpo.py --write2samba4 "$@"
-		fi
+		# If OpenLDAP msgpo link is empty, it can be overwritten by the Samba 4 value. This
+		# is important in case the S4 connector is installed on a School DC. Anyway, before
+		# changing it, read the following issues:
+		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=45439
+		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=43478
+		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=26926
+		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty "$@"
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
