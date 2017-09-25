@@ -152,7 +152,7 @@ def search_ucs(configRegistry, binddn, bindpwd):
 	return result
 
 
-def write_to_ucs(configRegistry, s4_result, binddn, bindpwd):
+def write_to_ucs(configRegistry, s4_result, binddn, bindpwd, only_override_empty=False):
 	''' Write the result from search_s4 to UCS LDAP '''
 
 	lo = _connect_ucs(configRegistry, binddn, bindpwd)
@@ -164,6 +164,8 @@ def write_to_ucs(configRegistry, s4_result, binddn, bindpwd):
 		ml = []
 		try:
 			for dn, attributes in lo.search(base=ucs_dn, scope=ldap.SCOPE_BASE):
+				if only_override_empty and attributes.get('msGPOLink'):
+					continue
 				if 'msGPO' not in attributes.get('objectClass'):
 					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']))
 				ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
@@ -181,6 +183,7 @@ if __name__ == '__main__':
 	parser = OptionParser(usage='msgpo.py (--write2ucs|--write2samba4)')
 	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS GPO settings from Samba 4 to UCS", default=False)
 	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS GPO settings from UCS to Samba 4", default=False)
+	parser.add_option("--only-override-empty", dest="only_override_empty", action="store_true", help="The parameter controls that the attribute is only overwritten in case it is empty. This can only be used in write2ucs mode.", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
 	(options, args) = parser.parse_args()
@@ -190,7 +193,7 @@ if __name__ == '__main__':
 
 	if options.write2ucs:
 		result = search_s4()
-		write_to_ucs(configRegistry, result, options.binddn, options.bindpwd)
+		write_to_ucs(configRegistry, result, options.binddn, options.bindpwd, options.only_override_empty)
 	elif options.write2samba4:
 		result = search_ucs(configRegistry, options.binddn, options.bindpwd)
 		write_to_s4(configRegistry, result)

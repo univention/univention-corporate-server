@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-13) unstable; urgency=medium
+
+  * Overwrite msgpo link while joining only in case it is empty (Bug #45439)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Sep 2017 15:17:25 +0200
+
 univention-s4-connector (11.0.8-12) unstable; urgency=medium
 
   * Bug #39309: s4c: set `compare_normal()` as default in mapping
