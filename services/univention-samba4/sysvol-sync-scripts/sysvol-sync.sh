@@ -353,7 +353,6 @@ if [ ! $? -eq 1 ]; then
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 fi
 
-
 if [ "$1" = '--overwrite-local' ]; then
 	default_rsync_options=("-aAX")
 else
