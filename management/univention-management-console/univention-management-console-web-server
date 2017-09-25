@@ -1028,6 +1028,7 @@ class CPAuth(CPgeneric):
 		response = self.make_queue_request(sessionid, req)
 
 		self._log(99, 'auth: creating session with sessionid=%r' % (sessionid,))
+		CORE.process('auth_type=%r' % (req.body.get('auth_type'),))
 
 		username = req.body.get('username')
 		password = req.body.get('password')

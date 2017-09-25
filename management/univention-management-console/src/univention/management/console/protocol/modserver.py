@@ -88,16 +88,20 @@ class ModuleServer(Server):
 		self.__handler = None
 		self._load_module()
 		Server.__init__(self, ssl=False, unix=socket, magic=False, load_ressources=False)
+		MODULE.process('Module socket initialized.')
 		self.signal_connect('session_new', self._client)
 
 	def _load_module(self):
+		MODULE.process('Loading python module.')
 		modname = self.__module
 		from ..error import UMC_Error
 		try:
 			try:
 				file_ = 'univention.management.console.modules.%s' % (modname,)
 				self.__module = __import__(file_, [], [], modname)
+				MODULE.process('Imported python module.')
 				self.__handler = self.__module.Instance()
+				MODULE.process('Module instance created.')
 			except Exception as exc:
 				error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
 				MODULE.error(error)
@@ -283,6 +287,7 @@ class ModuleServer(Server):
 			# 'credentials' it is the initialization of the module
 			# process
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
+				MODULE.process('Initializing module.')
 				try:
 					self.__handler.init()
 				except BaseException:
