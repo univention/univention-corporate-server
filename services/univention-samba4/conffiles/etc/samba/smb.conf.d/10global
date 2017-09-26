@@ -15,9 +15,13 @@ else:
 samba4_role = configRegistry.get('samba4/role')
 if samba4_role in ('DC', 'RODC'):
 	print '\tserver role\t= active directory domain controller'
+	print '\tname resolve order\t=', configRegistry.get('samba/name/resolve/order', 'wins host bcast')
+
 elif samba4_role == 'MEMBER':
 	print '\tserver role\t= member server'
 	print '\tsecurity\t= ads'
+	print '\tname resolve order\t=', configRegistry.get('samba/name/resolve/order', 'wins bcast')
+
 
 samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')
 print '\tserver string\t=', samba_serverstring
