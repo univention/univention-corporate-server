@@ -127,8 +127,8 @@ Type=bool
 Categories=service-ldap
 
 [ldap/acl/read/anonymous]
-Description[de]=Ist diese Option aktiviert, erlaubt der LDAP-Server keinen anonymen Zugriff auf das LDAP-Verzeichnis, d.h. LDAP-Suchen müssen authentifiziert erfolgen. Ist die Variable nicht gesetzt, wird ein anonymer Zugriff erlaubt.
-Description[en]=If this option is activated, the LDAP server does not allow anonymous access to the LDAP directory, i.e. LDAP searches are authenticated. If the variable is unset, anonymous access is allowed.
+Description[de]=Ist diese Option aktiviert, erlaubt der LDAP-Server den anonymen Zugriff auf das LDAP-Verzeichnis ohne Authentifizierung. Ist die Variable nicht gesetzt, wird ein anonymer Zugriff verboten.
+Description[en]=If this option is activated, the LDAP server does allow anonymous access to the LDAP directory without authentication. If the variable is unset, anonymous access is denied.
 Type=bool
 Categories=service-ldap
 

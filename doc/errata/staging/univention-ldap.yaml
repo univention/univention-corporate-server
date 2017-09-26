@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-ldap
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The description of UCR variable 'ldap/acl/read/anonymous' has been fixed.
+bug: [37976]

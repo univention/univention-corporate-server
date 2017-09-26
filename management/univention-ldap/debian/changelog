@@ -1,3 +1,9 @@
+univention-ldap (13.0.7-20) unstable; urgency=low
+
+  * Bug #37976: Fix description for UCRV 'ldap/acl/read/anonymous'.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Sep 2017 11:37:43 +0200
+
 univention-ldap (13.0.7-19) unstable; urgency=medium
 
   * Bug #11800: fix ucslint postinst
