@@ -6,5 +6,7 @@ src: univention-apache
 fix: 9.0.5-13A~4.2.0.201709251216
 desc: |
  This update addresses the following issue(s):
- * The exclusion rules for the force http now support regex pattern.
+ * The exclusion rules defined in the UCR variables
+   apache2/force_https/exclude/.* are now interpreted as regular expression
+   patterns.
 bug: [45449]
