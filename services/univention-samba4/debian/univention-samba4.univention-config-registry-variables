@@ -524,6 +524,12 @@ Description[en]=This variable can be used to adjust the Samba option "server sig
 Type=str
 Categories=service-samba
 
+[samba/name/resolve/order]
+Description[de]=Über diese Variable lässt sich die Samba Option "name resolve order" anpassen (siehe man smb.conf). Ist die Rolle als DC oder RODC konfiguriert, ist der UCS default "wins host bcast". Ist die Rolle MEMBER, wird als Standardwert "wins bcast" verwendet.
+Description[en]=This variable can be used to adjust the Samba option "name resolve order" (see man smb.conf). If the role is configured as DC or RODC, the UCS default is "wins host bcast". If the role MEMBER is configured, "wins bcast" is the default value.
+Type=str
+Categories=service-samba
+
 [samba/winbind/nested/groups]
 Description[de]=UCS unterstützt die Verschachtelung von Gruppen (Gruppen in Gruppen). Ist diese Variable auf 'yes' gesetzt, werden diese verschachtelten Gruppen in Winbind aufgelöst.
 Description[en]=UCS supports nested groups (groups as members of groups). If this variable is set to 'yes', Winbind resolves these nested groups.
