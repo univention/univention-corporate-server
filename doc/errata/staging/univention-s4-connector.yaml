@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-2
 src: univention-s4-connector
 fix: 11.0.8-13A~4.2.0.201709251956
 desc: |
- This update addresses the following issue(s):
- * The S4 connector no longer overwrites the msGPO links in OpenLDAP
-   while joining the UCS system.
+ This update addresses the following issue:
+ * The S4 connector no longer overwrites the msGPO links in OpenLDAP while
+   joining the UCS system.
 bug: [45439]
