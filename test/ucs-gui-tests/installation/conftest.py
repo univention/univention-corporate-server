@@ -30,11 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pytest
+from vminstall.utils import remove_old_sshkey
 import ConfigParser
+import pytest
 
 config = ConfigParser.SafeConfigParser()
 config.read('tests.cfg')
+
+
+@pytest.fixture(scope="session", autouse=True)
+def execute_before_any_test():
+	ip = config.get('General', 'ip_address')
+	master_ip = config.get('General', 'master_ip')
+	remove_old_sshkey(ip)
+	if master_ip:
+		remove_old_sshkey(master_ip)
 
 
 @pytest.fixture

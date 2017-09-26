@@ -72,3 +72,11 @@ def copy_through_ssh(password, source_file, target_file):
 		'-o', 'StrictHostKeyChecking=no',
 		source_file, target_file
 	))
+
+
+def remove_old_sshkey(ip):
+	subprocess.check_call((
+		'ssh-keygen',
+		'-R',
+		ip
+	))
