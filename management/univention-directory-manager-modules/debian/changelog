@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.18-10) unstable; urgency=medium
+
+  * Bug #45287: the sambaAcctFlags are now correctly set when "locked" and
+  	"deactivated" is set at once during modification of user objects
+
+ -- Florian Best <best@univention.de>  Tue, 26 Sep 2017 17:33:28 +0200
+
 univention-directory-manager-modules (12.0.18-9) unstable; urgency=medium
 
   * Bug #45207: fix mapping of sambaWriteList in shares when the value is

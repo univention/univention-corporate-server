@@ -1924,12 +1924,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if 'samba' in self.options:
 				self.userSid = self.__generate_user_sid(self.uidNum)
 
-			# due to the fact that the modlist is appended to the addlist this would be added twice
-			# leave commented out for now!
-			# acctFlags=univention.admin.samba.acctFlags(flags={'U':1})
-			# if self['disabled']:
-			#	acctFlags.set('D')
-
 			ocs = ['top', 'person', 'univentionPWHistory']
 			self.pwhistory_active = 1
 			al = [('uid', [uid])]
@@ -1952,7 +1946,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if 'samba' in self.options:
 				ocs.extend(['sambaSamAccount'])
 				al.append(('sambaSID', [self.userSid]))
-				#('sambaAcctFlags', [acctFlags.decode()])
 			if 'person' in self.options:
 				ocs.extend(['organizationalPerson', 'inetOrgPerson'])
 			if 'ldap_pwd' in self.options:
@@ -2197,15 +2190,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 						ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
 
 			disabled = ""
-			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
 			krb_kdcflags = '126'
-			if self.__is_windows_disabled():
-				acctFlags.set('D')
 			if self.__is_kerberos_disabled():
 				krb_kdcflags = '254'
 
-			if self["locked"] in ['all', 'windows']:
-				acctFlags.set('L')
 			if self["locked"] in ['all', 'posix']:
 				disabled = "!"
 
@@ -2220,8 +2208,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					#		shadowLastChangeValue = shadowlastchange
 			if 'samba' in self.options:
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-				if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
-					ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
 				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 				sambaPwdLastSetValue = str(long(time.time()))
@@ -2259,21 +2245,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					krb_kdcflags = '126'
 					ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
 
-			if 'samba' in self.options:
-				if self.__is_windows_disabled():
-					# disable samba account
-					acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
-					acctFlags.set('D')
-					ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
-				else:
-					# enable samba account
-					acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
-					acctFlags.unset('D')
-					# lock account, if necessary (this is unset by removing flag D)
-					if self['locked'] in ['all', 'windows']:
-						acctFlags.set("L")
-					if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
-						ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
 		if self.hasChanged('locked'):
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root'):
 				# if self.modifypassword is set the password was already locked
@@ -2289,19 +2260,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 							ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 
 			if 'samba' in self.options:
-				if self['locked'] in ['all', 'windows']:
-					# lock samba account
-					acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
-					acctFlags.set("L")
-					ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
-				else:
-					# unlock samba account
-					acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
-					acctFlags.unset("L")
-					if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
-						ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
+				if self['locked'] not in ['all', 'windows']:
 					# reset bad pw count
 					ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+
+		ml = self.__modlist_sambaAcctFlags(ml)
 
 		if self.hasChanged(['userexpiry']):
 			if 'samba' in self.options:
@@ -2527,6 +2490,34 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if set(old_object_classes) != new_object_classes:
 			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
 
+		return ml
+
+	def __modlist_sambaAcctFlags(self, ml):
+		if 'samba' not in self.options:
+			return ml
+		if not self.modifypassword and not self.hasChanged('disabled') and not self.hasChanged('locked'):
+			return ml
+
+		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
+		acctFlags = univention.admin.samba.acctFlags(old_flags)
+
+		acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
+		if self.__is_windows_disabled():
+			# disable samba account
+			acctFlags.set('D')
+		else:
+			# enable samba account
+			acctFlags.unset('D')
+
+		if self["locked"] in ['all', 'windows']:
+			# lock samba account
+			acctFlags.set('L')
+		else:
+			# unlock samba account
+			acctFlags.unset("L")
+
+		if str(old_flags) != str(acctFlags.decode()):
+			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
 		return ml
 
 	# FIXME: this functions seems deprecated, there is no call to it in any UCS package below dev/trunk/ucs
