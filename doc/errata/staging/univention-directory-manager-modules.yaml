@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The "sambaAcctFlags" attribute is now correctly set when the "locked" and
+  "deactivated" properties are changed at once during modification of user
+  objects.
+bug: [45287]
