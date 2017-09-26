@@ -9,3 +9,5 @@ desc: |
  * The S4 connector no longer overwrites the msGPO links in OpenLDAP while
    joining the UCS system.
 bug: [45452]
+erratum: 185
+announced: 2017-09-26
