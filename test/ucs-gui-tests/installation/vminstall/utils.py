@@ -53,14 +53,17 @@ def iso_639_1_to_english_name(language_code):
 
 
 def execute_through_ssh(password, command, ip):
-	subprocess.check_call((
+	p = subprocess.Popen((
 		'sshpass',
 		'-p', password,
 		'ssh',
 		'-o', 'StrictHostKeyChecking=no',
 		'root@%s' % (ip,),
 		command
-	))
+	), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	stdout, _ = p.communicate()
+	if p.returncode:
+		raise Exception(p.returncode, stdout)
 
 
 def copy_through_ssh(password, source_file, target_file):
