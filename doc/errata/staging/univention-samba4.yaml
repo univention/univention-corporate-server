@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-36A~4.2.0.201709191609
+fix: 6.0.10-36A~4.2.0.201709261547
 desc: |
  This update addresses the following issue(s):
  * Add the scripts univention-samba-lockedout and univention-samba-unlock.
@@ -14,4 +14,6 @@ desc: |
    default only listen on those two interfaces. This can be configured
    afterwards via samba/interfaces, samba/interfaces/bindonly and
    samba/register/exclude/interfaces.
-bug: [35071, 35072, 41057]
+ * sysvol-sync.sh now exits with exit code 1 when samba4/sysvol/sync/host
+   can not be reached.
+bug: [35071, 35072, 41057, 32696]
