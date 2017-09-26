@@ -55,6 +55,12 @@ CACHE_DIR = '/var/cache/univention-appcenter'
 cache_logger = get_base_logger().getChild('cache')
 
 
+def _cmp_mtimes(mtime1, mtime2):
+	if mtime1 is None or mtime2 is None:
+		return cmp(mtime1, mtime2)
+	return '{:.3f}'.format(mtime1) != '{:.3f}'.format(mtime2)
+
+
 class _AppCache(object):
 	def get_every_single_app(self):
 		raise NotImplementedError()
@@ -213,12 +219,12 @@ class AppCache(_AppCache):
 		try:
 			cache_modified = os.stat(cache_file).st_mtime
 			archive_modified = self._archive_modified()
-			if '{:.3f}'.format(cache_modified) != '{:.3f}'.format(archive_modified):
+			if _cmp_mtimes(cache_modified, archive_modified) != 0:
 				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r != %r' % (cache_modified, archive_modified))
 				return None
 			for master_file in self._relevant_master_files():
 				master_file_modified = os.stat(master_file).st_mtime
-				if cache_modified < master_file_modified:
+				if _cmp_mtimes(cache_modified, master_file_modified) == -1:
 					cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
 					return None
 			with open(cache_file, 'rb') as fd:
@@ -309,7 +315,8 @@ class AppCache(_AppCache):
 			cache_file = self.get_cache_file()
 			if cache_file:
 				cache_modified = self._archive_modified()
-				if cache_modified is None or cache_modified > self._cache_modified:
+
+				if _cmp_mtimes(cache_modified, self._cache_modified) == 1:
 					cache_logger.debug('Cache outdated. Need to rebuild')
 					self._cache[:] = []
 			if not self._cache:
