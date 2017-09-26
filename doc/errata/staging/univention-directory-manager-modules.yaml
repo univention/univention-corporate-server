@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-directory-manager-modules
-fix: 
+fix: 12.0.18-10A~4.2.0.201709261808
 desc: |
  This update addresses the following issue(s):
  * The "sambaAcctFlags" attribute is now correctly set when the "locked" and
