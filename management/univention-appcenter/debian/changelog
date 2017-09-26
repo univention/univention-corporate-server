@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-11) unstable; urgency=medium
+
+  * Bug #45429: Fix operating on Apps while upgrading UCS
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Sep 2017 11:36:32 +0200
+
 univention-appcenter (6.0.10-10) unstable; urgency=medium
 
   * Bug #45429: Fix operating on Apps while upgrading UCS

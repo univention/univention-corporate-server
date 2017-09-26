@@ -355,6 +355,27 @@ class AppCenterCache(_AppCache):
 		self._license_type_cache = None
 		self._ratings_cache = None
 
+	def _get_current_ucs_version(self):
+		try:
+			still_running = False
+			next_version = None
+			status_file = '/var/lib/univention-updater/univention-updater.status'
+			if os.path.exists(status_file):
+				with open(status_file, 'r') as status:
+					for line in status:
+						line = line.strip()
+						key, value = line.split('=', 1)
+						if key == 'status':
+							still_running = value == 'RUNNING'
+						elif key == 'next_version':
+							next_version = value.split('-')[0]
+					if still_running and next_version:
+						cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
+						return next_version
+		except (EnvironmentError, ValueError) as exc:
+			cache_logger.warn('Could not parse univention-updater.status: %s' % exc)
+		return ucr_get('version/version')
+
 	def get_app_cache_class(self):
 		if self._cache_class is None:
 			self._cache_class = AppCache
@@ -371,7 +392,7 @@ class AppCenterCache(_AppCache):
 	def get_ucs_versions(self):
 		if self._ucs_versions is None:
 			cache_file = self.get_cache_file('.ucs.ini')
-			ucs_version = ucr_get('version/version')
+			ucs_version = self._get_current_ucs_version()
 			versions = AppCenterVersion.all_from_file(cache_file)
 			for version in versions:
 				if version.name == ucs_version:

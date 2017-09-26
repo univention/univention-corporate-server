@@ -3,10 +3,12 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-appcenter
-fix: 6.0.10-9A~4.2.0.201709251301
+fix:
 desc: |-
   This update addresses the following issue(s):
   * Fix problems when trying to upgrade an App that has no newer version.
   * The App Center could operate on an outdated cache. This has been fixed.
   * Fixed problems during the registrations of Apps.
-bug: [44384, 44607, 44502]
+  * The App Center now operates on Apps of the next UCS version while the
+    upgrade to that version is running.
+bug: [44384, 44607, 44502, 45429]
