@@ -63,7 +63,11 @@ def execute_through_ssh(password, command, ip):
 	), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	stdout, _ = p.communicate()
 	if p.returncode:
-		raise Exception(p.returncode, stdout)
+		p = subprocess.Popen((
+			'ps', 'aux'
+		), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		stdout_ps, _ = p.communicate()
+		raise Exception(p.returncode, stdout, stdout_ps)
 
 
 def copy_through_ssh(password, source_file, target_file):
