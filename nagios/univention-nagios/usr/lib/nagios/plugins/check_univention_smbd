@@ -126,7 +126,7 @@ if [ $RET != 0 ]; then
 else
 	state=$STATE_OK
 	get_state_string $state
-	echo "${STATE_STRING}: smbd is alive: smbclient -U $SMB_USER -N -L $SMB_HOST"
+	echo "${STATE_STRING}: smbd is alive: smbclient -N -L $SMB_HOST"
 	exit $state
 fi
 

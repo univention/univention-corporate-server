@@ -1,3 +1,9 @@
+univention-nagios (10.1.1-4) unstable; urgency=medium
+
+  * Bug #45454: for the time being, test with -U in check_univention_smbd
+
+ -- Felix Botner <botner@univention.de>  Wed, 27 Sep 2017 18:21:29 +0200
+
 univention-nagios (10.1.1-3) unstable; urgency=medium
 
   * Bug #45454: for the time being, test with -U in check_univention_smbd
