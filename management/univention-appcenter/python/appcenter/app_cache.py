@@ -58,7 +58,7 @@ cache_logger = get_base_logger().getChild('cache')
 def _cmp_mtimes(mtime1, mtime2):
 	if mtime1 is None or mtime2 is None:
 		return cmp(mtime1, mtime2)
-	return '{:.3f}'.format(mtime1) != '{:.3f}'.format(mtime2)
+	return cmp(float('{:.3f}'.format(mtime1)), float('{:.3f}'.format(mtime2)))
 
 
 class _AppCache(object):
@@ -210,7 +210,8 @@ class AppCache(_AppCache):
 				return False
 			else:
 				archive_modified = self._archive_modified()
-				os.utime(cache_file, (archive_modified, archive_modified))
+				if archive_modified is not None:
+					os.utime(cache_file, (archive_modified, archive_modified))
 				self._cache_modified = archive_modified
 				return True
 
@@ -249,7 +250,8 @@ class AppCache(_AppCache):
 	def _archive_modified(self):
 		try:
 			return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
-		except (EnvironmentError, AttributeError):
+		except (EnvironmentError, AttributeError) as exc:
+			cache_logger.debug('Unable to get mtime for archive: %s' % exc)
 			return None
 
 	def _relevant_master_files(self):
@@ -294,6 +296,15 @@ class AppCache(_AppCache):
 		ucr_load()
 		self._cache[:] = []
 		self._cache_modified = None
+		self._invalidate_cache_files()
+
+	def _invalidate_cache_files(self):
+		cache_dir = self.get_cache_dir()
+		for cache_file in glob(os.path.join(cache_dir, '.*apps*.json')):
+			try:
+				os.unlink(cache_file)
+			except EnvironmentError:
+				pass
 
 	@contextmanager
 	def _locked(self):
