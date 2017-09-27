@@ -164,8 +164,13 @@ class MagicBucket(object):
 		try:
 			state = self.__states[socket]
 		except KeyError:
+			CORE.warn('The socket was already removed.')
 			return False
-		id, first = state.resend_queue.pop(0)
+		try:
+			id, first = state.resend_queue.pop(0)
+		except KeyError:
+			CORE.error('The response queue for %r is empty.' % (state,))
+			return False
 		try:
 			ret = socket.send(first)
 			if ret < len(first):
@@ -418,3 +423,6 @@ class State(object):
 
 	def reset_connection_timeout(self):
 		self.time_remaining = SERVER_CONNECTION_TIMEOUT
+
+	def __repr__(self):
+		return '<State(%s %r buffer=%d requests=%d time_remaining=%r)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.time_remaining)
