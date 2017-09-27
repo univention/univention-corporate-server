@@ -214,12 +214,6 @@ Description[en]=If this variable is set to 'yes' or unset, kernel support for Op
 Type=str
 Categories=service-samba
 
-[samba/logonscript]
-Description[de]=Der Dateiname eines Netlogon-Anmeldeskripts, das für alle Benutzer verwendet wird. Der Dateiname is relativ zum Netlogon-Pfad (siehe 'samba/share/netlogon/path').
-Description[en]=The filename of a Netlogon script, which is used for all users. The filename is relative to the Netlogon path (see 'samba/share/netlogon/path').
-Type=str
-Categories=service-samba
-
 [samba/map_to_guest]
 Description[de]=Ist diese Variable auf 'Bad User' gesetzt oder nicht gesetzt, werden Samba-Anmeldungen von Benutzern ohne gültiges Konto auf den Gastbenutzer abgebildet (siehe Variable 'samba/guest_account'). Ist die Variable auf 'Never' gesetzt, wird die Anmeldung verweigert.
 Description[en]=If this variable is set to 'Bad User' or unset, Samba logins from users without a valid account are mapped to the guest user (see variable 'samba/guest_account'). If the variable is set to 'Never', the login is denied.
