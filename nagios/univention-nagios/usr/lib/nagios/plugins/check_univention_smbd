@@ -110,7 +110,10 @@ if [ -z "$CMD" ] ; then
 	exit $STATE_UNKNOWN
 fi
 
-output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2> /dev/null)
+# See Bug #45454, since samba erratum 165 this no longer works
+# for now only remove the -U "$SMB_USER"
+#output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2> /dev/null)
+output=$($CMD -N -L "$SMB_HOST" 2> /dev/null)
 RET=$?
 
 msg=$(echo -n "$output" | head -n1)
