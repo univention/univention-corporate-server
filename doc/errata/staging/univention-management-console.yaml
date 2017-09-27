@@ -9,4 +9,5 @@ desc: |
  * The max open files soft limit of the UMC-Server has been raised.
  * The SAML authentication robustness has been improved. Errors during LDAP
    authentication now contain more information about the cause.
-bug: [45309, 44382]
+ * An UMC-Server crash which happened occasionally is prevented.
+bug: [45309, 44382, 45254]
