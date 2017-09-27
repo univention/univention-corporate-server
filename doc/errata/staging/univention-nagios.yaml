@@ -3,10 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-nagios
-fix: 10.1.1-2A~4.2.0.201709211123
-desc: |-
-  This update addresses the following issue(s):
-  * A new plugin has been added that checks the debian package status
-  * The nscd check has been fixed and should not incorrectly report the
-    unknown program bound to nscd socket error anymore.
-bug: [40370, 45414]
+fix: 10.1.1-3A~4.2.0.201709271812
+desc: |
+ This update addresses the following issue(s):
+ * Since (samba) erratum 165 the UNIVENTION_SMBD nagios service failed.
+   The service plugin has been fixed.
+bug: [45454]
