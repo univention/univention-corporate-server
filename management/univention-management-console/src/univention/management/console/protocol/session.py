@@ -378,8 +378,9 @@ class ProcessorBase(Base):
 		self.update_language([locale])
 
 	def update_module_passwords(self):
+		CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
 		for module_name, proc in self.__processes.items():
-			CORE.info('Changing password for module %s' % (module_name,))
+			CORE.info('Update the users password in the running %r module instance.' % (module_name,))
 			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)

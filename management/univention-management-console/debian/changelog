@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-73) unstable; urgency=medium
+
+  * Bug #44382: try to authenticate via SAML if simple bind failed. Add more
+  	logging.
+
+ -- Florian Best <best@univention.de>  Wed, 27 Sep 2017 11:21:48 +0200
+
 univention-management-console (9.0.80-72) unstable; urgency=medium
 
   * Bug #44382: be more verbose about LDAP authentication failures

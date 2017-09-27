@@ -197,7 +197,7 @@ class Base(signals.Provider, Translation):
 	@user_dn.setter
 	def user_dn(self, user_dn):
 		self._user_dn = user_dn
-		MODULE.info('Setting user LDAP DN %r' % (self._user_dn,))
+		MODULE.process('Setting user LDAP DN %r' % (self._user_dn,))
 
 	@property
 	def password(self):
@@ -221,6 +221,7 @@ class Base(signals.Provider, Translation):
 
 	@auth_type.setter
 	def auth_type(self, auth_type):
+		MODULE.process('Setting auth type to %r' % (auth_type,))
 		self.__auth_type = auth_type
 
 	def init(self):
@@ -346,6 +347,7 @@ class Base(signals.Provider, Translation):
 			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
 
 	def bind_user_connection(self, lo):
+		CORE.process('LDAP bind for user %r.' % (self._user_dn,))
 		try:
 			if self.auth_type == 'SAML':
 				lo.lo.bind_saml(self._password)
@@ -353,10 +355,25 @@ class Base(signals.Provider, Translation):
 					CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
 					self._user_dn = lo.binddn
 			else:
-				lo.lo.bind(self._user_dn, self._password)
-		except ldap.INVALID_CREDENTIALS as exc:
-			exc = ldap.INVALID_CREDENTIALS('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 20 else False, len(self._user_dn or ''), exc))
-			raise ldap.INVALID_CREDENTIALS, exc, sys.exc_info()[2]
+				try:
+					lo.lo.bind(self._user_dn, self._password)
+				except ldap.INVALID_CREDENTIALS:  # workaround for Bug #44382: the password might be a SAML message, try to authenticate via SAML
+					etype, exc, etraceback = sys.exc_info()
+					CORE.error('LDAP authentication for %r failed: %s' % (self._user_dn, exc))
+					if self._password < 25:
+						raise
+					CORE.warn('Trying to authenticate via SAML.')
+					try:
+						lo.lo.bind_saml(self._password)
+					except ldap.OTHER:
+						CORE.error('SAML authentication failed.')
+						raise etype, exc, etraceback
+					CORE.error('Wrong authentication type. Resetting.')
+					self.auth_type = 'SAML'
+		except ldap.INVALID_CREDENTIALS:
+			etype, exc, etraceback = sys.exc_info()
+			exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 25 else False, len(self._user_dn or ''), exc))
+			raise etype, exc, etraceback
 
 	def require_password(self):
 		if self.auth_type is not None:
