@@ -3,9 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: linux
-fix: 4.9.30-2A~4.2.0.201710161640
+fix: 4.9.30-2A~4.2.0.201711031638
 desc: |
- This update of the Linux kernel to version 4.9.56 addresses the following
+ This update of the Linux kernel to version 4.9.60 addresses the following
  issues:
  * [x86] drm/vmwgfx: limit the number of mip levels in
    vmw_gb_surface_define_ioctl() (CVE-2017-7346)
@@ -132,6 +132,24 @@ desc: |
    (assertion failure, and hypervisor hang or crash) via an out-of bounds
    guest_irq value, related to arch/x86/kvm/vmx.c and virt/kvm/eventfd.c.
    (CVE-2017-1000252)
+ * arch/x86/kvm/mmu.c when nested virtualisation is used, does not properly
+   traverse guest pagetable entries to resolve a guest virtual address, which
+   allows L1 guest OS users to execute arbitrary code on the host OS or cause
+   a denial of service (incorrect index during page walking, and host OS
+   crash), aka an "MMU potential stack buffer overrun." (CVE-2017-12188)
+ * The keyctl_read_key function in security/keys/keyctl.c in the Key
+   Management subcomponent. (CVE-2017-12192)
+ * A elevation of privilege vulnerability in the Broadcom wi-fi driver.
+   (CVE-2017-0786)
+ * KVM: x86: fix singlestepping over syscall (CVE-2017-7518)
+ * [PowerPC]: Arbitrary stack overwrite causing oops via crafted signal frame
+   (CVE-2017-1000255)
+ * Race condition in the ALSA subsystem allows local users to cause a denial
+   of service (use-after-free) or possibly have unspecified other impact via
+   crafted /dev/snd/seq ioctl calls, related to sound/core/seq/seq_clientmgr.c
+   and sound/core/seq/seq_ports.c. (CVE-2017-15265)
+ * A flaw was found in the Linux kernel's implementation of associative arrays
+   (CVE-2017-12193)
 note: This is the first of three parts.
 bug: [45242]
 cve:
@@ -168,6 +186,9 @@ cve:
 - CVE-2017-14156
 - CVE-2017-14489
 - CVE-2017-14991
+- CVE-2017-15265
+- CVE-2017-12188
+- CVE-2017-12193
 - CVE-2017-1000111
 - CVE-2017-1000112
 - CVE-2017-1000252
