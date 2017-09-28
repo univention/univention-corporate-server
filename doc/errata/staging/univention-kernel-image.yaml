@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-2
 src: univention-kernel-image
 fix: 10.0.0-8A~4.2.0.201709281400
 desc: |
- This update of the Linux kernel to version 4.9.52 addresses the following
+ This update of the Linux kernel to version 4.9.56 addresses the following
  issues:
  * [x86] drm/vmwgfx: limit the number of mip levels in
    vmw_gb_surface_define_ioctl() (CVE-2017-7346)
@@ -108,6 +108,30 @@ desc: |
    their privileges on the system. (CVE-2017-1000111)
  * Exploitable memory corruption due to UFO (UDP fragment offload) to non-UFO
    path switch (CVE-2017-1000112)
+ * A security flaw was discovered in the nl80211_set_rekey_data() function in
+   net/wireless/nl80211.c. This function does not check whether the required
+   attributes are present in a Netlink request. This request can be issued by
+   a user with the CAP_NET_ADMIN capability and may result in a NULL pointer
+   dereference and system crash. (CVE-2017-12153)
+ * The prepare_vmcs02 function in arch/x86/kvm/vmx.c does not ensure that the
+   "CR8-load exiting" and "CR8-store exiting" L0 vmcs02 controls exist in
+   cases where L1 omits the "use TPR shadow" vmcs12 control, which allows KVM
+   L2 guest OS users to obtain read and write access to the hardware CR8
+   register. (CVE-2017-12154)
+ * The atyfb_ioctl function in drivers/video/fbdev/aty/atyfb_base.c does not
+   initialize a certain data structure, which allows local users to obtain
+   sensitive information from kernel stack memory by reading locations
+   associated with padding bytes. (CVE-2017-14156)
+ * The iscsi_if_rx function in drivers/scsi/scsi_transport_iscsi.c allows
+   local users to cause a denial of service (panic) by leveraging incorrect
+   length validation. (CVE-2017-14489)
+ * The sg_ioctl function in drivers/scsi/sg.c allows local users to obtain
+   sensitive information from uninitialized kernel heap-memory locations via
+   an SG_GET_REQUEST_TABLE ioctl call for /dev/sg0. (CVE-2017-14991)
+ * The KVM subsystem allows guest OS users to cause a denial of service
+   (assertion failure, and hypervisor hang or crash) via an out-of bounds
+   guest_irq value, related to arch/x86/kvm/vmx.c and virt/kvm/eventfd.c.
+   (CVE-2017-1000252)
 note: This is the third of three parts.
 bug: [45242]
 cve:
@@ -115,30 +139,40 @@ cve:
 - CVE-2016-9191
 - CVE-2016-6213
 - CVE-2016-8405
-- CVE-2017-1000111
-- CVE-2017-1000112
+- CVE-2017-0786
+- CVE-2017-2583
+- CVE-2017-2584
+- CVE-2017-2618
+- CVE-2017-6951
 - CVE-2017-7184
 - CVE-2017-7346
-- CVE-2017-1000364
-- CVE-2017-1000365
-- CVE-2017-1000370
-- CVE-2017-1000371
 - CVE-2017-7472
 - CVE-2017-7482
+- CVE-2017-7518
 - CVE-2017-7533
 - CVE-2017-7541
 - CVE-2017-7542
 - CVE-2017-7558
-- CVE-2017-2583
-- CVE-2017-2584
+- CVE-2017-8831
 - CVE-2017-9605
-- CVE-2017-2618
 - CVE-2017-10663
 - CVE-2017-10810
-- CVE-2017-8831
 - CVE-2017-10911
-- CVE-2017-6951
 - CVE-2017-11176
 - CVE-2017-11473
 - CVE-2017-11600
+- CVE-2017-12153
+- CVE-2017-12154
+- CVE-2017-12192
 - CVE-2017-12762
+- CVE-2017-14156
+- CVE-2017-14489
+- CVE-2017-14991
+- CVE-2017-1000111
+- CVE-2017-1000112
+- CVE-2017-1000252
+- CVE-2017-1000255
+- CVE-2017-1000364
+- CVE-2017-1000365
+- CVE-2017-1000370
+- CVE-2017-1000371
