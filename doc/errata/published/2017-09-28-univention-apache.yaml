@@ -10,3 +10,5 @@ desc: |
    apache2/force_https/exclude/.* are now interpreted as regular expression
    patterns.
 bug: [45449]
+erratum: 187
+announced: 2017-09-28
