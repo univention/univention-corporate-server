@@ -1,0 +1,79 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-extsec3.2
+src: freetype
+fix: 2.4.2-2.1.76.201704181421
+maintained: true
+desc: |
+ Multiple vulnerabilities have been found in the FreeType font engine:
+ * Remote denial of service (out-of-bounds read) or possibly unspecified
+   other impact via a crafted OpenType font (CVE-2014-9656)
+ * Remote denial of service (out-of-bounds read) or possibly unspecified
+   other impact via a crafted TrueType font (CVE-2014-9657)
+ * Remote denial of service (out-of-bounds read) or possibly unspecified
+   other impact via a crafted TrueType font (CVE-2014-9658)
+ * Remote denial of service (NULL pointer dereference) or possibly
+   unspecified other impact via a crafted BDF font (CVE-2014-9660)
+ * Remote denial of service (use-after-free) or possibly unspecified other
+   impact via a crafted Type42 font (CVE-2014-9661)
+ * Remote denial of service (out-of-bounds read) or possibly unspecified
+   other impact via a crafted cmap SFNT table (CVE-2014-9663)
+ * Remote denial of service (out-of-bounds read) or possibly unspecified
+   other impact via a crafted Type42 font (CVE-2014-9664)
+ * Remote denial of service (integer overflow and heap-based buffer overflow)
+   or possibly unspecified other impact by embedding a PNG file in a .ttf
+   font file (CVE-2014-9665)
+ * Remote denial of service (integer overflow and out-of-bounds read) or
+   possibly unspecified other impact via a crafted embedded bitmap
+   (CVE-2014-9666)
+ * Remote denial of service (integer overflow and out-of-bounds read) or
+   possibly unspecified other impact via a crafted SFNT table (CVE-2014-9667)
+ * Remote denial of service (out-of-bounds read or memory corruption)
+   or possibly unspecified other impact via a crafted cmap SFNT table
+   (CVE-2014-9669)
+ * Remote denial of service (integer overflow, NULL pointer dereference,
+   and application crash) via a crafted PCF file that specifies negative
+   values for the first column and first row (CVE-2014-9670)
+ * Remote denial of service (NULL pointer dereference and application crash)
+   via a crafted PCF file with a 0xffffffff size value that is improperly
+   incremented (CVE-2014-9671)
+ * Remote denial of service (out-of-bounds read) or disclosure of
+   sensitive information from process memory via a crafted FOND resource
+   in a Mac font file (CVE-2014-9672)
+ * Remote denial of service (heap-based buffer overflow) or possibly
+   unspecified other impact via a crafted Mac font (CVE-2014-9673)
+ * Remote denial of service (integer overflow and heap-based buffer overflow)
+   or possibly unspecified other impact via a crafted Mac font (CVE-2014-9674)
+ * Remote bypass ASLR protection mechanism via a crafted BDF font
+   (CVE-2014-9675)
+ * Remote denial of service (infinite loop) via a "broken number-with-base"
+   in a Postscript stream (CVE-2014-9745)
+ * Uninitialized memory access and application crash or possibly unspecified
+   other impact via a crafted font (CVE-2014-9746)
+ * Remote denial of service (infinite loop) via a Type42 font (CVE-2014-9747)
+ * out-of-bounds write caused by a heap-based buffer overflow related to
+   the cff_parser_run function in cff/cffparse.c (CVE-2016-10328)
+bug: [39558]
+cve:
+- CVE-2014-9656
+- CVE-2014-9657
+- CVE-2014-9658
+- CVE-2014-9660
+- CVE-2014-9661
+- CVE-2014-9663
+- CVE-2014-9664
+- CVE-2014-9665
+- CVE-2014-9666
+- CVE-2014-9667
+- CVE-2014-9669
+- CVE-2014-9670
+- CVE-2014-9671
+- CVE-2014-9672
+- CVE-2014-9673
+- CVE-2014-9674
+- CVE-2014-9675
+- CVE-2014-9745
+- CVE-2014-9746
+- CVE-2014-9747
+- CVE-2016-10328
