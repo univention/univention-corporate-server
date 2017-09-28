@@ -9,3 +9,5 @@ desc: |
  * A portal entry to the Univention Blog has been added for Core Edition
    systems.
 bug: [45412]
+erratum: 188
+announced: 2017-09-28
