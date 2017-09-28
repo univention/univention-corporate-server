@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-36A~4.2.0.201709271659
+fix: 6.0.10-36A~4.2.0.201709281102
 desc: |
  This update addresses the following issue(s):
  * Add the scripts univention-samba-lockedout and univention-samba-unlock.
@@ -17,4 +17,7 @@ desc: |
  * sysvol-sync.sh now exits with exit code 1 when samba4/sysvol/sync/host
    can not be reached.
  * Removed UCR-variable samba/logonscript
-bug: [35071, 35072, 41057, 32696, 37946]
+ * Added "name resolve order" to smb.conf; the Samba parameter
+   "name resolve order" can now be set through UCS variable
+   samba/name/resolve/order.
+bug: [35071, 35072, 41057, 32696, 37946, 36089]
