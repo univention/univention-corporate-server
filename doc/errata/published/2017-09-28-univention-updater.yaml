@@ -10,3 +10,5 @@ desc: |
    has been changed to 'no', as re-creating the "Packages" files without the
    corresponding "override" files breaks `debootstrap`.
 bug: [45185]
+erratum: 189
+announced: 2017-09-28
