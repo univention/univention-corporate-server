@@ -1,3 +1,10 @@
+univention-server (12.0.0-13) unstable; urgency=medium
+
+  * Bug #39283: Check pending listener transactions in server
+    password change script
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Sep 2017 17:15:39 +0200
+
 univention-server (12.0.0-12) unstable; urgency=low
 
   * Bug #45272: Change Priotity: standard to optional
