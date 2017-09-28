@@ -1,0 +1,25 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-extsec3.2
+src: libxslt
+fix: 1.1.26-6.43.201704191032
+maintained: true
+desc: |
+ Multiple vulnerabilities have been found in libxslt:
+ * The xsltStylePreCompute function in preproc.c does not check if
+   the parent nonfusion" issue. (CVE-2015-7995)
+ * numbers.c mishandles nssibly have unspecified other impact via a
+   crafted document. (CVE-2016-1683)
+ * numbers.c mishandles t or resource consumption) or possibly have
+   unspecified other impact via a crafted document. (CVE-2016-1684)
+ * heap overread can cause arbitrary code execution or denial of
+   service (CVE-2016-4738)
+ * integer overflow in libxslt (CVE-2017-5029)
+bug: [42891]
+cve:
+- CVE-2015-7995
+- CVE-2016-1683
+- CVE-2016-1684
+- CVE-2016-4738
+- CVE-2017-5029
