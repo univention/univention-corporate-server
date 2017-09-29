@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from vminstall.utils import remove_old_sshkey
+from vminstall.utils import copy_through_ssh, execute_through_ssh, remove_old_sshkey
 import ConfigParser
 import pytest
 
@@ -40,6 +40,19 @@ config.read('tests.cfg')
 
 @pytest.fixture(scope="session", autouse=True)
 def execute_before_any_test():
+	copy_out_logs()
+	remove_old_sshkeys()
+
+
+def copy_out_logs():
+	ip = config.get('General', 'ip_address')
+	password = config.get('General', 'password')
+
+	execute_through_ssh(password, 'cd /var; tar czf log.tar.gz log', ip)
+	copy_through_ssh(password, 'root@%s:/var/log.tar.gz' % (ip), '.')
+
+
+def remove_old_sshkeys():
 	ip = config.get('General', 'ip_address')
 	master_ip = config.get('General', 'master_ip')
 	remove_old_sshkey(ip)
