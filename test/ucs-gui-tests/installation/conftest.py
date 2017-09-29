@@ -40,8 +40,8 @@ config.read('tests.cfg')
 
 @pytest.fixture(scope="session", autouse=True)
 def execute_before_any_test():
-	copy_out_logs()
 	remove_old_sshkeys()
+	copy_out_logs()
 
 
 def copy_out_logs():
