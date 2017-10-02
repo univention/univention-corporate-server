@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -77,6 +77,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
               "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_LOAD,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NTP,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_PACKAGE_STATUS,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" \
               "cn=UNIVENTION_NSCD2,cn=nagios,$ldap_base" ; do
 		rdn="$(echo $dn | sed -e 's|,.*||')"

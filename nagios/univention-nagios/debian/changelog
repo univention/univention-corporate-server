@@ -1,3 +1,9 @@
+univention-nagios (10.1.1-5) unstable; urgency=medium
+
+  * Bug #40370: Find broken packages (and register on host...)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Oct 2017 16:58:32 +0200
+
 univention-nagios (10.1.1-4) unstable; urgency=medium
 
   * Bug #45454: for the time being, test with -U in check_univention_smbd
