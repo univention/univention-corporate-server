@@ -11,4 +11,4 @@ desc: |
    a Active Directory domain is now more robust.
  * Ignore stdout in backup cleanup cron job (to avoid unnecessary
    cron mails)
-bug: [38442, 43885, 45408]
+bug: [38442, 45406, 45408]
