@@ -242,10 +242,16 @@ switch_to_test_app_center () {
 	univention-app dev-use-test-appcenter
 	if [ -e /var/cache/appcenter-installed.txt ]; then
 		for app in $(< /var/cache/appcenter-installed.txt); do
-			if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			if univention-app get "$app" DockerImage | grep -q ucs-appbox; then
+				# update appbox at this point
+				univention-app shell "$app" univention-upgrade --noninteractive --disable-app-updates
 				univention-app shell "$app" univention-install -y univention-appcenter-dev || rv=$?
 				univention-app shell "$app" univention-app dev-use-test-appcenter || rv=$?
 			fi
+			#if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			#	univention-app shell "$app" univention-install -y univention-appcenter-dev || rv=$?
+			#	univention-app shell "$app" univention-app dev-use-test-appcenter || rv=$?
+			#fi
 		done
 	fi
 	return $rv
