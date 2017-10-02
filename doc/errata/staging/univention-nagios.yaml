@@ -6,6 +6,9 @@ src: univention-nagios
 fix: 10.1.1-4A~4.2.0.201709271824
 desc: |
  This update addresses the following issue(s):
+ * A new plugin has been added that checks the debian package status
+ * The nscd check has been fixed and should not incorrectly report the
+   unknown program bound to nscd socket error anymore.
  * Since (samba) erratum 165 the UNIVENTION_SMBD nagios service failed.
    The service plugin has been fixed.
-bug: [45454]
+bug: [40370, 45414, 45454]
