@@ -150,6 +150,16 @@ define([
 			var overlayContainer = new ContainerWidget({
 				'class': 'umcDemoOverlay'
 			});
+			var close = function(ev) {
+				domClass.add(overlayContainer.domNode, 'dijitDisplayNone');
+
+				if (!hideReadme) {
+					// flag via cookie information that the readme has been read
+					cookie('UMCDemoReadmeClose', 'true', { path: '/univention' });
+				}
+			};
+			on(overlayContainer.domNode, 'click', close);
+			
 			var readmeWidget = new Text({
 				'class': 'umcDemoReadme',
 				content: readme
@@ -158,15 +168,8 @@ define([
 
 			var closeButton = new Button({
 				'class': 'umcDemoReadmeCloseButton',
-				iconClass: 'umcCloseIconWhite',
-				onClick: function() {
-					domClass.add(overlayContainer.domNode, 'dijitDisplayNone');
-
-					if (!hideReadme) {
-						// flag via cookie information that the readme has been read
-						cookie('UMCDemoReadmeClose', 'true', { path: '/univention' });
-					}
-				}
+				iconClass: 'umcCloseIconWhite'
+				// onClick: close // not needed since clicking the whole overlay closes the overlay
 			});
 			domConstruct.place(closeButton.domNode, readmeWidget.domNode, 'first');
 
