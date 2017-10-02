@@ -82,7 +82,7 @@ def initialize_debug():
 		ud.set_level(ud.MODULE, ud.PROCESS)
 		is_ready = (ud.get_level(ud.MODULE) == ud.PROCESS)
 	if not is_ready:
-		ud.init('stdout', ud.FLUSH, ud.FUNCTION)
+		ud.init('/var/log/univention/join.log', ud.FLUSH, ud.FUNCTION)
 		ud.set_level(ud.MODULE, ud.PROCESS)
 	else:
 		ud.set_level(ud.MODULE, oldLevel)
