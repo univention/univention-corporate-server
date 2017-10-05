@@ -10,4 +10,6 @@ desc: |
  * The SAML authentication robustness has been improved. Errors during LDAP
    authentication now contain more information about the cause.
  * An UMC-Server crash which happened occasionally is prevented.
-bug: [45309, 44382, 45254]
+ * The text for gallery items in the UMC overview was not
+   always resized. This has been prevented.
+bug: [45309, 44382, 45254, 45477]

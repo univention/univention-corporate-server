@@ -1258,7 +1258,10 @@ define([
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
 
-			aspect.after(this._overviewPage, '_onShow', lang.hitch(this, '_focusSearchField'));
+			aspect.after(this._overviewPage, '_onShow', lang.hitch(this, function() {
+				this._focusSearchField();
+				this._grid._resizeItemNames();
+			}));
 			this._registerGridEvents();
 
 			// show the first visible category
