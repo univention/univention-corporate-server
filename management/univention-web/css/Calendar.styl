@@ -186,6 +186,7 @@
 
 		.dijitCalendarYearLabel
 			font-size: $font-size-button
+			cursor: default
 
 			.dijitCalendarSelectedYear
 				color: $selected-text-color
@@ -201,6 +202,26 @@
 
 				&Active
 					background-color: $primary-color
+
+			.currentYearInput
+				color: white
+				background-color: transparent
+				font-weight: bold
+				font-size: $font-size-button
+				width: 60px
+				border-color: $primary-color
+				&:before,
+				&:after
+					border-color: $primary-color
+
+				.dijitSpinnerButtonContainer
+					display: none
+
+				.dijitInputContainer
+					padding: 0
+
+					.dijitInputInner
+						text-align: center
 
 /* Styling for month drop down list */
 .umc .dijitCalendarMonthMenu
