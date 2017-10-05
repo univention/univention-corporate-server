@@ -168,7 +168,7 @@ class MagicBucket(object):
 			return False
 		try:
 			id, first = state.resend_queue.pop(0)
-		except KeyError:
+		except IndexError:
 			CORE.error('The response queue for %r is empty.' % (state,))
 			return False
 		try:

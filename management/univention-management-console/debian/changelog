@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-75) unstable; urgency=medium
+
+  * Bug #45254: fix s/KeyError/IndexError/
+
+ -- Florian Best <best@univention.de>  Thu, 05 Oct 2017 12:34:16 +0200
+
 univention-management-console (9.0.80-74) unstable; urgency=medium
 
   * Bug #45254: fix UMC server crash in do_send()
