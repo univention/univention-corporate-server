@@ -420,14 +420,12 @@ class access:
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 
 		try:
-			msgid = self.lo.add_ext(dn, nal, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			msgid = lo_ref.add_ext(dn, nal, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
@@ -512,14 +510,12 @@ class access:
 			serverctrls = []
 
 		try:
-			msgid = self.lo.modify_ext(dn, ml, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			msgid = lo_ref.modify_ext(dn, ml, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext(dn, ml, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
@@ -546,14 +542,12 @@ class access:
 			serverctrls = []
 
 		try:
-			msgid = self.lo.rename(dn, newrdn, newsuperior, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			lo_ref.rename(dn, newrdn, newsuperior, serverctrls=serverctrls)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(msgid)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
