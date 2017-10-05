@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-76) unstable; urgency=medium
+
+  * Bug #45477: Resize gallery item names when changing to overview
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 05 Oct 2017 16:54:43 +0200
+
 univention-management-console (9.0.80-75) unstable; urgency=medium
 
   * Bug #45254: fix s/KeyError/IndexError/
