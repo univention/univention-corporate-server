@@ -33,10 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojox/string/sprintf",
 	"dijit/form/DateTextBox",
+	"umc/widgets/Calendar",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, sprintf, DateTextBox, ContainerWidget, _FormWidgetMixin, tools) {
+], function(declare, lang, sprintf, DateTextBox, Calendar, ContainerWidget, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
 		_dateBox: null,
 
@@ -50,6 +51,7 @@ define([
 			this.inherited(arguments);
 
 			this._dateBox = this.own(new DateTextBox({
+				popupClass: Calendar,
 				name: this.name,
 				disabled: this.disabled
 			}))[0];
