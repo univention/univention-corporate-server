@@ -50,19 +50,46 @@ define([
 			put(this.currentYearLabelNode, '+', this._yearInput.domNode, '.currentYearInput');
 			put(this.currentYearLabelNode, '!');
 
-			var keyDownHandler = on(this._yearInput, 'keyDown', lang.hitch(this, function(evt) {
+			var yearInputKeyDownHandler = on(this._yearInput, 'keyDown', lang.hitch(this, function(evt) {
 				if (evt.key === 'Enter') {
 					// focus the Calender when Enter key is pressed in _yearInput to
 					// activate the Calendar keyboard navigation
 					this.focus();
 				}
 
-				if (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight') {
+				var isLeftOrRightKey = (evt.key === 'ArrowLeft' || evt.key === 'Left' || evt.key === 'ArrowRight' || evt.key === 'Right');
+				if (isLeftOrRightKey) {
 					// we do not want the calender to pick up the keyevents
 					// for the right and left arrow key while typing in the input
 					// so we can move the cursor left and right instead of focusing the
 					// previous/next date cell
 					evt.stopPropagation();
+				}
+
+				if (evt.key === 'Tab') {
+					// prevent native tab behaviour for _yearInput
+					evt.preventDefault();
+				}
+			}));
+
+			var calendarKeyDownHandler = on(this, 'keyDown', lang.hitch(this, function(evt) {
+				if (evt.key === 'Tab') {
+					// tabbing backwards while _yearInput is focused
+					// focuses the date cells again
+					if (evt.shiftKey && this._yearInput.focused) {
+						evt.preventDefault();
+						evt.stopPropagation();
+						this._yearInput.focusNode.blur();
+						this.focus();
+					}
+
+					// tabbing forward while the date cells are focused
+					// focuses _yearInput
+					if (!evt.shiftKey && !this._yearInput.focused) {
+						evt.preventDefault();
+						evt.stopPropagation();
+						this._yearInput.focusNode.select();
+					}
 				}
 			}));
 
@@ -99,7 +126,8 @@ define([
 
 			// remove handlers on destroy
 			this.own(
-				keyDownHandler,
+				calendarKeyDownHandler,
+				yearInputKeyDownHandler,
 				changeHandler,
 				watchHandler
 			);
