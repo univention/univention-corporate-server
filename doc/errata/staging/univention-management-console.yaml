@@ -10,6 +10,6 @@ desc: |
  * The SAML authentication robustness has been improved. Errors during LDAP
    authentication now contain more information about the cause.
  * An UMC-Server crash which happened occasionally is prevented.
- * The text for gallery items in the UMC overview was not
-   always resized. This has been prevented.
+ * The text of app and module tiles is now resized dynamically e.g. when the
+   screen size changes.
 bug: [45309, 44382, 45254, 45477]

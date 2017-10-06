@@ -6,6 +6,6 @@ src: univention-web
 fix: 1.0.42-46A~4.2.0.201710051735
 desc: |
  This update addresses the following issue(s):
- * Long words in the item descriptions on the
-   UMC overview are now broken onto a new line.
+ * Long words in the descriptions of app and module tiles are now wrapped
+   into a new line.
 bug: [45477]
