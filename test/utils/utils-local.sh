@@ -61,6 +61,10 @@ fetch-results () {
 		'/var/log/univention/ucs-windows-tools.log'
 	)
 	local FILE
+    # ipv6 !
+    if [[ $ADDR =~ .*:.* ]]; then
+        ADDR="\\[$ADDR\\]"
+    fi
 	for FILE in "${FILES[@]}"; do
 		fetch-files root@${ADDR} "$FILE" "$TARGETDIR"
 	done
