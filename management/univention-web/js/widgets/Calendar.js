@@ -31,12 +31,23 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/on",
+	"dijit/Tooltip",
 	"dijit/Calendar",
 	"umc/widgets/NumberSpinner",
-	"put-selector/put"
-], function(declare, lang, on, Calendar, NumberSpinner, put) {
+	"put-selector/put",
+	"umc/i18n!"
+], function(declare, lang, array, on, Tooltip, Calendar, NumberSpinner, put, _) {
 	return declare("umc.widgets.Calendar", [ Calendar ], {
+		// string that is shown as tooltip when '?' key is pressed
+		tooltipString: null,
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.tooltipString = this._getTooltipString();
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -91,6 +102,10 @@ define([
 						this._yearInput.focusNode.select();
 					}
 				}
+
+				if (evt.key === '?') {
+					this.showTooltip();
+				}
 			}));
 
 			// update the current focus (which dates are being shown)
@@ -131,6 +146,75 @@ define([
 				changeHandler,
 				watchHandler
 			);
+		},
+
+		_getTooltipString: function() {
+			var keysAndActionPairs = [{
+						key: '<kbd>&larr;</kbd> , <kbd>&uarr;</kbd> , <kbd>&darr;</kbd> , <kbd>&rarr;</kbd>',
+						action: _('Move between date cells')
+					}, {
+						key: lang.replace('<kbd>{0} &darr;</kbd>', [_('Page')]),
+						action: _('Move to same day in next month')
+					}, {
+						key: lang.replace('<kbd>{0} &uarr;</kbd>', [_('Page')]),
+						action: _('Move to same day in previous month')
+					}, {
+						key: lang.replace('<kbd>Alt</kbd> + <kbd>{0} &darr;</kbd>', [_('Page')]),
+						action: _('Move to same day in next year')
+					}, {
+						key: lang.replace('<kbd>Alt</kbd> + <kbd>{0} &uarr;</kbd>', [_('Page')]),
+						action: _('Move to same day in previous year')
+					}, {
+						key: lang.replace('<kbd>{0}</kbd>', [_('Home')]),
+						action: _('Move to first day in month')
+					}, {
+						key: lang.replace('<kbd>{0}</kbd>', [_('End')]),
+						action: _('Move to last day in month')
+					}, {
+						key: lang.replace('<kbd>{0}</kbd> , <kbd>{1}</kbd>', [_('Space'), _('Enter')]),
+						action: _('Select the date')
+					}];
+
+			// create beginning of table with header
+			var tableDomString = '' +
+					'<table class="calendarHotKeysTable">' +
+						'<thead>' +
+							'<tr>' +
+								'<th>{keyHeader}</th>' +
+								'<th>{actionHeader}</th>' +
+							'</tr>' +
+						'</thead>' +
+						'<tbody>';
+			tableDomString = lang.replace(tableDomString, {
+				keyHeader: _('Key'),
+				actionHeader: _('Action')
+			});
+
+			// fill in key and action pairs
+			array.forEach(keysAndActionPairs, function(pair) {
+				var string = '' +
+						'<tr>' +
+							'<td>{key}</td>' +
+							'<td>{action}</td>' +
+						'</tr>';
+				tableDomString += lang.replace(string, {
+					key: pair.key,
+					action: pair.action
+				});
+			});
+
+			// close table
+			tableDomString += '</tbody></table>';
+
+			return tableDomString;
+		},
+
+		showTooltip: function() {
+			Tooltip.show(this.tooltipString, this.domNode);
+		},
+
+		hideTooltip: function() {
+			Tooltip.hide(this.domNode);
 		}
 	});
 });
