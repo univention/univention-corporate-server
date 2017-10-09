@@ -1,3 +1,10 @@
+univention-web (1.0.42-47) unstable; urgency=medium
+
+  * Bug #45491: Adjust styling of Calendar widget and add input field for the
+    year
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 09 Oct 2017 14:01:13 +0200
+
 univention-web (1.0.42-46) unstable; urgency=medium
 
   * Bug #45477: Break long words in the description of gallery items
