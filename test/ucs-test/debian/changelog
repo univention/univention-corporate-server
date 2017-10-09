@@ -1,3 +1,9 @@
+ucs-test (7.0.23-58) unstable; urgency=medium
+
+  * Bug #45474: chmod +x 27reconnect_uldap_2
+
+ -- Florian Best <best@univention.de>  Mon, 09 Oct 2017 12:06:09 +0200
+
 ucs-test (7.0.23-57) unstable; urgency=medium
 
   * Bug #45474: add test case 27reconnect_uldap_2
