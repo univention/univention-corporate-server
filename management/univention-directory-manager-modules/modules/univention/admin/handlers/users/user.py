@@ -2500,8 +2500,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
 		acctFlags = univention.admin.samba.acctFlags(old_flags)
-
-		acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0])
 		if self.__is_windows_disabled():
 			# disable samba account
 			acctFlags.set('D')
