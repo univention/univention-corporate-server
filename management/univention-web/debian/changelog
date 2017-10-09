@@ -1,3 +1,9 @@
+univention-web (1.0.42-48) unstable; urgency=medium
+
+  * Bug #45491: Fix typo
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 09 Oct 2017 15:50:12 +0200
+
 univention-web (1.0.42-47) unstable; urgency=medium
 
   * Bug #45491: Adjust styling of Calendar widget and add input field for the

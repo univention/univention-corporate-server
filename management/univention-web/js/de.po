@@ -324,7 +324,7 @@ msgstr "Zum selben Tag im letzten Monat bewegen"
 
 #: widgets/Calendar.js:162
 msgid "Move to same day in previous year"
-msgstr "Zum selben Tag im letztn Jahr bewegen"
+msgstr "Zum selben Tag im letzten Jahr bewegen"
 
 #: widgets/MultiInput.js:439
 msgid "New entry"
