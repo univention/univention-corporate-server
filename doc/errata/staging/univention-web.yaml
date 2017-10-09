@@ -3,9 +3,10 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-web
-fix: 1.0.42-46A~4.2.0.201710051735
+fix: 1.0.42-47A~4.2.0.201710091407
 desc: |
  This update addresses the following issue(s):
  * Long words in the descriptions of app and module tiles are now wrapped
    into a new line.
-bug: [45477]
+ * The styling for calendars has been adjusted.
+bug: [45477, 45491]
