@@ -77,9 +77,11 @@ define([
 			this._searchTextBox.on('focus', lang.hitch(this, 'onFocus'));
 			this._searchTextBox.on('blur', lang.hitch(this, 'onBlur'));
 			if (this.collapsible) {
-				this._searchTextBox.on(mouse.enter, lang.hitch(this, 'expandSearch'));
+				this._searchTextBox.on('click', lang.hitch(this, function() {
+					this.expandSearch();
+					this._searchTextBox._updateInlineLabelVisibility();
+				}));
 				this._searchTextBox.on('focus', lang.hitch(this, 'expandSearch'));
-				this._searchTextBox.on(mouse.leave, lang.hitch(this, 'collapseSearch', false));
 				this._searchTextBox.on('blur', lang.hitch(this, 'collapseSearch', true));
 				// this.collapseSearch(true); // called in startup
 			}
