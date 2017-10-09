@@ -1,5 +1,5 @@
 /* Calendar
- * 
+ *
  * Styling Calendar mainly includes:
  * 
  * 1. Calendar container
@@ -34,283 +34,216 @@
 
 @import "variables"
 
-.umc .dijitCalendar td, .umc .dijitCalendar th
-	padding: 0px
-
-
+/* Styling of Calendar container */
 .umc .dijitCalendar
 	border: solid 1px $base-border-color
-	border-collapse: separate	// in case user CSS has set border-collapse: collapse for tables
-	//border-radius: 4px
+	vertical-gradient-and-filter($secondary-color, $grey-medium)
+	material-shadow(1)
+	padding: 6px 0px 3px
 
-	// Background color and alpha-gradient
-	//background-color: $calendar-background-color
-	//background-image: url("images/calendar.png")	// fallback for browsers that don't support CSS gradients
-	//background-repeat: repeat-x	// so bottom of calendar isn't affected by gradient image repeating
-	//alpha-white-gradient((1 0px), (0.4 2px), (0 100%))
-	vertical-gradient-and-filter($secondary-color, $grey-medium)	
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 10px	
+	/* Styling for month container (previous/next month and month dropdown button) */
+	.dijitCalendarMonthContainer
+		padding-bottom: 8px
 
-	text-align:center
-	padding:6px 0px 3px 0px
+		/* Styling for month arrows */
+		.dijitCalendarArrow
+			height: 36px
+			width: @height
+			display: flex
+			justify-content: center
+			align-items: center
+			cursor: pointer
 
-.dj_ie6 .umc .dijitCalendar
-	//background-image:none	// because on IE6 background-image overrides background-color
+			// icons
+			.dijitCalendarIncrease
+				icon-image(-72, -12, "", "-small", 12px, 12px)
 
-.umc .dijitCalendar img
-	border:none
+			.dijitCalendarDecrease
+				icon-image(-48, -12, "", "-small", 12px, 12px)
 
-.umc .dijitCalendarHover, .umc .dijitCalendar:hover,
-.umc .dijitCalendarActive
-	/* treat dijitCalendarActive like hover since there's
-	 * no concept of clicking a Calendar as a whole (although you can click things inside the calendar)
-	 */
-	background-color: $hovered-background-color
-	border:solid 1px $hovered-border-color
+			&.dijitCalendarArrowHover
+				opacity: 0.66
 
-.umc .dijitCalendarMonthContainer th
-	text-align:center
-	padding-bottom:4px
-	vertical-align:middle
+				.dijitCalendarIncrease
+					icon-image(-84, -12, "", "-small", 12px, 12px)
 
-.umc .dijitCalendarMonthLabel
-	color: $text-color
-	//font-size: 1.091em
-	padding: 0 4px
+				.dijitCalendarDecrease
+					icon-image(-60, -12, "", "-small", 12px, 12px)
 
+			&.dijitCalendarArrowActive
+				opacity: 1
 
-/* next/previous month arrows */
-.umc .dijitCalendarIncrementControl
-	width:18px
-	height:16px
-	//background-image: url($image-calendar-arrows)
-	
-	background-repeat: no-repeat
+				.dijitCalendarIncrease
+					icon-image(-84, -12, "", "-small", 12px, 12px)
 
-.dj_ie6 .umc .dijitCalendarIncrementControl
-	//background-image: url($image-calendar-arrows-ie6)
+				.dijitCalendarDecrease
+					icon-image(-60, -12, "", "-small", 12px, 12px)
 
-.umc .dijitCalendarIncrease
-	//background-position:-18px 0
-	icon-image(-72, -12, "", "-small", 12px, 12px)
+			.dijitA11ySideArrow
+				/* text +/- labels instead of arrow icons, for high contrast mode */
+				display: none
 
-.umc .dijitCalendarDecrease
-	icon-image(-48, -12, "", "-small", 12px, 12px)
+		/* Styling for month DropDownButton */
+		.dijitDropDownButton
+			margin: 0
+			box-shadow: none
 
+			.dijitButtonNode
+				background-color: transparent
 
-.umc .dijitCalendarArrowHover .dijitCalendarDecrease,
-.umc .dijitCalendarArrow:hover .dijitCalendarDecrease
-	icon-image(-60, -12, "", "-small", 12px, 12px)
-	opacity: 0.66
+				.dijitButtonContents
+					line-height: inherit
 
-.umc .dijitCalendarArrowHover .dijitCalendarIncrease,
-.umc .dijitCalendarArrow:hover .dijitCalendarIncrease
-	icon-image(-84, -12, "", "-small", 12px, 12px)
-	opacity: 0.66
+					.dijitButtonText
+						padding: 0
+						font-size: 1em
+						font-weight: bold
 
-.umc .dijitCalendarArrowActive .dijitCalendarDecrease,
-.umc .dijitCalendarArrow:active .dijitCalendarDecrease
-	icon-image(-60, -12, "", "-small", 12px, 12px)
-	opacity: 1
+						.dijitCalendarMonthLabel
+							color: $text-color
 
-.umc .dijitCalendarArrowActive .dijitCalendarIncrease,
-.umc .dijitCalendarArrow:active .dijitCalendarIncrease
-	icon-image(-84, -12, "", "-small", 12px, 12px)
-	opacity: 1
+			// arrow styling
+			.dijitArrowButtonInner
+				icon-image(0, -12, "", "-small", 12px, 12px)
+				margin: 0 8px
 
-.umc .dijitA11ySideArrow
-	/* text +/- labels instead of arrow icons, for high contrast mode */
-	display: none
+			&.dijitDropDownButtonHover .dijitArrowButtonInner
+				icon-image(-12, -12, "", "-small", 12px, 12px)
+				opacity: 0.66
 
+			&.dijitDropDownButtonActive .dijitArrowButtonInner
+				icon-image(-12, -12, "", "-small", 12px, 12px)
+				opacity: 1
 
-.umc .dijitCalendarDayLabelTemplate
-	padding-bottom:0
-	text-align:center
-	border-bottom:1px solid $border-color
-	padding:0 3px 2px !important
-	font-weight: bold
+	/* Styling for the date cells */
+	table
+		width: 100%
 
-.umc .dijitCalendarDayLabel
-	padding:0 4px 0 4px
-	//font-weight:bold
-	font-size:0.909em
-	text-align:center
-	color: $text-color
+		/* day label style (monday - sunday) */
+		.dijitCalendarDayLabelTemplate
+			text-align: center
+			border-bottom: 1px solid $border-color
+			padding: 0 3px 2px
+			font-weight: bold
 
-.umc .dijitCalendarDateTemplate
-	//background-color:$calendar-currentmonth-background-color
-	border-bottom: 1px solid $base-border-color
-	padding-top:0
-	font-size:0.909em
-	font-family: 'Roboto', sans-serif
-	//font-weight:bold
-	letter-spacing:.05em
-	text-align:center
-	color: $text-color
+			.dijitCalendarDayLabel
+				font-size:0.909em
 
-.dj_ie6 .umc .dijitCalendarDateTemplate
-	background-image: none
+		/* date cells style - basic*/
+		.dijitCalendarDateTemplate
+			font-size: 0.909em
+			letter-spacing: 0.05em
+			text-align: center
+			padding: 0
 
-.umc .dijitCalendarPreviousMonth,
-.umc .dijitCalendarNextMonth
-	background-color: $primary-color
-	background-image:none
-	//border-bottom:solid 1px $minor-border-color	/* todo: redundant with above .dijitCalendarDateTemplate rule */	
+			&:focus
+				outline: 1px solid $text-color
 
-.umc .dijitCalendarDateTemplate .dijitCalendarDateLabel
-	text-decoration:none
-	display:block
-	padding:4px 6px 4px 6px
-	//border:solid 1px $calendar-currentmonth-background-color	/* intentionally matches background-color, no visible border until hover/selection */
-	background-color:rgba(171,212,251,0)	/* transparent causes black-flash animation problem on webkit */
-	transition-property: background-color, border, color
-	transition-duration(.35s)
+			.dijitCalendarDateLabel
+				display: block
+				padding: 6px
 
-.umc .dijitCalendarPreviousMonth .dijitCalendarDateLabel,
-.umc .dijitCalendarNextMonth .dijitCalendarDateLabel
-	color: $calendar-adjacentmonth-text-color
-	border-color: $calendar-adjacentmonth-background-color	/* intentionally matches background-color, no visible border until hover/selection */
+		/* Dates of previous next months */
+		.dijitCalendarPreviousMonth,
+		.dijitCalendarNextMonth
+			background-color: $primary-color
+			
+			.dijitCalendarDateLabel
+				color: $calendar-adjacentmonth-text-color
 
+		/* Hovored date */
+		.dijitCalendarHoveredDate
+			background-color: $base-border-color
 
-.umc .dijitCalendarYearContainer
-	vertical-align:middle
+			.dijitCalendarDateLabel
+				color: $hovered-text-color
 
-.umc .dijitCalendarYearControl
-	padding: 1px 2px 2px 2px
+		/* Active date */
+		.dijitCalendarActiveDate
+			background-color: $calendar-date-pressed-background-color
 
-.umc .dijitCalendarYearLabel
-	padding: 2px 0 0 0
-	margin: 0
-	font-size: $font-size-button
+			.dijitCalendarDateLabel
+				color: $hovered-text-color
 
-.umc .dijitCalendarYearLabel span
-	/* trying to center next/current/previous year vertically, doesn't work on IE6/7 though */
-	vertical-align:middle
+		/* Selected date */
+		.dijitCalendarSelectedDate
+			background-color: $calendar-date-selected-background-color
 
-.umc .dijitCalendarSelectedYear
-	padding:0 3px
+			.dijitCalendarDateLabel
+				color: $selected-text-color
+				font-weight: bold
 
-.umc .dijitCalendarNextYear,
-.umc .dijitCalendarPreviousYear
-	padding: 1px 6px 1px 6px
-	//font-size:0.909em
+		/* Disabled Calendar Style*/
+		.dijitCalendarDisabledDate
+			.dijitCalendarDateLabel
+				color: $disabled-text-color
+				text-decoration: line-through
 
-.umc .dijitCalendarSelectedYear
-	//font-size:1.091em
-	color:$selected-text-color
-	font-weight: bold
+	/* Styling for year container */
+	.dijitCalendarYearContainer
+		padding-top: 3px
+		text-align: center
 
-/* End Normal Calendar Style */
-/* Hovered Calendar Style */
-.umc .dijitCalendarHoveredDate .dijitCalendarDateLabel,
-.umc .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel
-	background-color:$base-border-color
-	//border:solid 1px $hovered-border-color
-	color:$hovered-text-color
-	transition-duration: .2s
+		.dijitCalendarYearLabel
+			font-size: $font-size-button
+			cursor: default
 
-.umc .dijitCalendarNextYearHover, .umc .dijitCalendarNextYear:hover,
-.umc .dijitCalendarPreviousYearHover, .umc .dijitCalendarPreviousYear:hover
-	color:$text-color-dark-background
-	//border:solid 1px $calendar-button-hovered-border-color
-	//padding: 0 5px 0 5px	/* reduced by 1 to make room for border */
-	//background-color: $calendar-button-hovered-background-color
+			.dijitCalendarSelectedYear
+				color: $selected-text-color
+				font-weight: bold
+				padding: 0 3px
 
-/* End Hovered Calendar Style */
-/* Active Calendar Style */
-.umc .dijitCalendarNextYearActive, .umc .dijitCalendarNextYear:active
-.umc .dijitCalendarPreviousYearActive, .umc .dijitCalendarPreviousYear:active
-	border: solid 1px $calendar-button-pressed-border-color
-	padding: 0 5px 0 5px	/* reduced by 1 to make room for border */
-	background-color: $calendar-date-selected-background-color
-	//background-color:$calendar-button-pressed-background-color
+			.dijitCalendarNextYear,
+			.dijitCalendarPreviousYear
+				padding: 1px 6px
 
-.umc .dijitCalendarActiveDate .dijitCalendarDateLabel,
-.umc .dijitCalendarEnabledDate:active .dijitCalendarDateLabel
-	background-color: $calendar-date-pressed-background-color
-	//border:solid 1px $calendar-date-pressed-border-color
-	transition-duration: .1s
+				&Hover
+					color: $text-color-dark-background
 
-.dj_ie6 .umc .dijitCalendarActiveDate .dijitCalendarDateLabel
-	background-image:none
+				&Active
+					background-color: $primary-color
 
-/* End Active Calendar Style */
-/* Selected Calendar Style */
-.umc .dijitCalendarSelectedDate .dijitCalendarDateLabel
-	color:$selected-text-color
-	background-color: $calendar-date-selected-background-color
-	border-color: $calendar-date-selected-border-color
-	font-weight: bold
+			.currentYearInput
+				color: white
+				background-color: transparent
+				font-weight: bold
+				font-size: $font-size-button
+				width: 60px
+				border-color: $primary-color
+				&:before,
+				&:after
+					border-color: $primary-color
 
-/* End Selected Calendar Style */
-/* Disabled Calendar Style*/
-.umc .dijitCalendarDisabledDate .dijitCalendarDateLabel
-	color: $disabled-text-color
-	text-decoration:line-through
+				.dijitSpinnerButtonContainer
+					display: none
 
+				.dijitInputContainer
+					padding: 0
 
-/* End Disabled Calendar Style */
-
-/* Styling for month DropDownButton */
-
-.umc .dijitCalendar .dijitDropDownButton
-	margin: 0
-
-.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner
-	icon-image(0, -12, "", "-small", 12px, 12px)
-
-.umc .dijitCalendar .dijitDropDownButtonHover .dijitArrowButtonInner,
-.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:hover
-	icon-image(-12, -12, "", "-small", 12px, 12px)
-	opacity: 0.66
-
-.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:active,
-.umc .dijitCalendar .dijitDropDownButtonActive .dijitArrowButtonInner
-	icon-image(-12, -12, "", "-small", 12px, 12px)
-	opacity: 1
-
-
-
-.umc .dijitCalendar .dijitButtonText
-	padding: 1px 0 3px
-	margin-right:-4px
-	font-size: 1em
-	font-weight: bold
-
-.umc .dijitCalendar .dijitDropDownButton .dijitButtonNode
-	padding: 0 3px 0 2px
-	border:solid 1px $border-color
-	box-shadow: 0 0 0 rgba(0,0,0,0)
-
-	// Override background settings from vanilla .dijitButtonNode.   We want to inherit background of Calendar.
-	background-color: transparent
-	background-image: none
-	border: none
-
-.umc .dijitCalendar .dijitDropDownButtonHover .dijitButtonNode,
-.umc .dijitCalendar .dijitDropDownButton:hover .dijitButtonNode
-	//background-color: $calendar-button-hovered-background-color
-	//border:solid 1px $calendar-button-hovered-border-color
-
+					.dijitInputInner
+						text-align: center
 
 /* Styling for month drop down list */
-
 .umc .dijitCalendarMonthMenu
 	border-color: $popup-border-color
 	background-color: $menu-background-color
-	text-align:center
+	text-align: center
 	background-image: none
 
-.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabel
-	border-top: solid 1px $menu-background-color		/* intentionally invisible until hover */
-	border-bottom: solid 1px $menu-background-color
-	padding: 2px 0
+	.dijitCalendarMonthLabel
+		border-top: 1px solid $menu-background-color
+		border-bottom: solid 1px $menu-background-color
+		padding: 2px 0
 
-.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabelHover,
-.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabel:hover
-	border-color: $hovered-border-color
-	border-width:1px 0
-	background-color: $hovered-background-color
-	color:$text-color-dark-background
-	//gradient-and-filter($hovered-background-color, 70, 0)
+		&Hover
+			border-color: $hovered-border-color
+			border-width: 1px 0
+			background-color: $hovered-background-color
+			color: $text-color-dark-background
 
+		&Active
+			background-color: $primary-color
+
+/* Styling for the hot keys tootip table */
+.umc .calendarHotKeysTable th
+	font-weight: bold

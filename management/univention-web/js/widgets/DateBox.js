@@ -31,12 +31,14 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/aspect",
 	"dojox/string/sprintf",
 	"dijit/form/DateTextBox",
+	"umc/widgets/Calendar",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, sprintf, DateTextBox, ContainerWidget, _FormWidgetMixin, tools) {
+], function(declare, lang, aspect, sprintf, DateTextBox, Calendar, ContainerWidget, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
 		_dateBox: null,
 
@@ -50,6 +52,7 @@ define([
 			this.inherited(arguments);
 
 			this._dateBox = this.own(new DateTextBox({
+				popupClass: Calendar,
 				name: this.name,
 				disabled: this.disabled
 			}))[0];
@@ -58,6 +61,10 @@ define([
 			// hook to the onChange event
 			this.own(this._dateBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', this._dateToString(newVal));
+			})));
+
+			this.own(aspect.after(this._dateBox, 'closeDropDown', lang.hitch(this, function() {
+				this._dateBox.dropDown.hideTooltip();
 			})));
 		},
 
