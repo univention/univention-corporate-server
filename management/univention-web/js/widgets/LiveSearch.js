@@ -30,13 +30,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
+	"dojo/dom-style",
 	"dojo/mouse",
 	"dojo/regexp",
 	"./ContainerWidget",
 	"./SearchBox",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, mouse, regexp, ContainerWidget, SearchBox, _) {
+], function(declare, lang, array, on, domClass, domGeometry, domStyle, mouse, regexp, ContainerWidget, SearchBox, _) {
 	return declare("umc.widgets.LiveSearch", [ContainerWidget], {
 		// summary:
 		//		Offers a text box for live searching.
@@ -78,17 +81,23 @@ define([
 				this._searchTextBox.on('focus', lang.hitch(this, 'expandSearch'));
 				this._searchTextBox.on(mouse.leave, lang.hitch(this, 'collapseSearch', false));
 				this._searchTextBox.on('blur', lang.hitch(this, 'collapseSearch', true));
-				this.collapseSearch(true);
+				// this.collapseSearch(true); // called in startup
 			}
 		},
 
 		expandSearch: function() {
 			domClass.remove(this.domNode, 'collapsed');
+			this.onSearchTextBoxSizeChanged(this._searchTextBoxExpandedWidth);
 		},
 
 		collapseSearch: function(ignoreFocus) {
 			var shouldCollapse = (ignoreFocus || !this.focused) && !this.get('value');
 			domClass.toggle(this.domNode, 'collapsed', shouldCollapse);
+			this.onSearchTextBoxSizeChanged(this._searchTextBoxCollapsedWidth);
+		},
+
+		onSearchTextBoxSizeChanged: function(widthAfterTransition) {
+			// event stub
 		},
 
 		_getValueAttr: function() {
@@ -153,6 +162,17 @@ define([
 				}
 			};
 			return query;
+		},
+		
+		startup: function() {
+			this.inherited(arguments);
+			if (this.collapsible) {
+				this._searchTextBoxExpandedWidth = domGeometry.getMarginBox(this.domNode).w;
+				domStyle.set(this.domNode, 'transition', 'none');
+				this.collapseSearch(true);
+				this._searchTextBoxCollapsedWidth = domGeometry.getMarginBox(this.domNode).w;
+				domStyle.set(this.domNode, 'transition', '');
+			}
 		}
 	});
 });

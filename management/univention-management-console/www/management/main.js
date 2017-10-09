@@ -570,7 +570,7 @@ define([
 			domClass.toggle(this._moreTabsDropDownButton.domNode, 'dijitDisplayNone', tools.isTrue(tools.status('mobileView')));
 		},
 
-		_updateMoreTabsVisibility: function() {
+		_updateMoreTabsVisibility: function(searchFieldWidth) {
 			this._resetMoreTabsVisibility();
 
 			// get available width for tabs and the width the tabs currently occupy
@@ -578,6 +578,10 @@ define([
 			var moreTabsWidth = domGeometry.getMarginBox(this._moreTabsDropDownButton.domNode).w;
 			var backToOverviewWidth = domGeometry.getMarginBox(this._backToOverviewButton.domNode).w;
 			var headerRightWidth = domGeometry.getMarginBox(this._headerRight.domNode).w;
+			if (searchFieldWidth) {
+				headerRightWidth -= domGeometry.getMarginBox(this._search.domNode).w;
+				headerRightWidth += searchFieldWidth;
+			}
 			var extraPadding = 10;
 			var availableWidthForTabs = headerWidth - (headerRightWidth + backToOverviewWidth + moreTabsWidth + extraPadding);
 			var tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
@@ -636,6 +640,9 @@ define([
 			this._search = new LiveSearch({
 				searchLabel: _('Module search')
 			});
+			on(this._search, 'searchTextBoxSizeChanged', lang.hitch(this, function(widthAfterTransition) {
+				this._updateMoreTabsVisibility(widthAfterTransition);
+			}));
 
 			this._headerRight.addChild(this._search);
 		},
