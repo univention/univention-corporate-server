@@ -12,3 +12,5 @@ desc: |
  * Ignore stdout in backup cleanup cron job (to avoid unnecessary
    cron mails)
 bug: [38442, 45406, 45408]
+erratum: 192
+announced: 2017-10-10
