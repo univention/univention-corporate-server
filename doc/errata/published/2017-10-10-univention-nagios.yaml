@@ -16,3 +16,5 @@ desc: |
  * Since (samba) erratum 165 the UNIVENTION_SMBD nagios service failed.
    The service plugin has been fixed.
 bug: [40370, 45414, 45454]
+erratum: 193
+announced: 2017-10-10
