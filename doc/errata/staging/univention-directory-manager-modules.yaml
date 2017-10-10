@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * It was not possible to enable checkboxes which used the boolean syntax in
+   an extended attribute with an default value of "1" because they were
+   detected as already activated. This behavior has been corrected.
+bug: [45066]
