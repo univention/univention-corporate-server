@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The description of UCR variable 'ldap/acl/read/anonymous' has been fixed.
 bug: [37976]
+erratum: 191
+announced: 2017-10-10
