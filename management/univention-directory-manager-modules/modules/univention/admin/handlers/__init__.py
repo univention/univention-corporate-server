@@ -802,6 +802,7 @@ class simpleLdap(base):
 				# raise univention.admin.uexceptions.wrongObjectType()
 			oldinfo = univention.admin.mapping.mapDict(self.mapping, self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
+			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
 			self.info.update(oldinfo)
 
 		self.policies = self.oldattr.get('univentionPolicyReference', [])
@@ -809,6 +810,13 @@ class simpleLdap(base):
 		self.save()
 
 		self._validate_superordinate()
+
+	def _falsy_boolean_extended_attributes(self, info):
+		m = univention.admin.modules.get(self.module)
+		for prop in getattr(m, 'extended_udm_attributes', []):
+			if prop.syntax == 'boolean' and not info.get(prop.name):
+				info[prop.name] = '0'
+		return info
 
 	def exists(self):
 		"""Indicates that this object exists in LDAP."""
