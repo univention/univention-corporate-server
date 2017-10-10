@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.18-12) unstable; urgency=medium
+
+  * Bug #45066: unmap boolean extended attributes so that default values don't
+  	overwrite the value
+
+ -- Florian Best <best@univention.de>  Tue, 10 Oct 2017 18:36:49 +0200
+
 univention-directory-manager-modules (12.0.18-11) unstable; urgency=medium
 
   * Bug #45287: remove code redundancy
