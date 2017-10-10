@@ -10,3 +10,5 @@ desc: |
    into a new line.
  * The styling of calendar and date selection widgets has been improved.
 bug: [45477, 45491]
+erratum: 195
+announced: 2017-10-10
