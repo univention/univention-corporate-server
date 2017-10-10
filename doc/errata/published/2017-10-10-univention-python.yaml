@@ -9,3 +9,5 @@ desc: |
  * The re-connecting methods for "add" and "modify" of Python-LDAP are used to
    better handle SERVER_DOWN conditions. This was broken since erratum 116.
 bug: [45474]
+erratum: 194
+announced: 2017-10-10
