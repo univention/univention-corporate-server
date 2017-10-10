@@ -10,3 +10,5 @@ desc: |
   "deactivated" properties are changed at once during modification of user
   objects.
 bug: [45287]
+erratum: 190
+announced: 2017-10-10
