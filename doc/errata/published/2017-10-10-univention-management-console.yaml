@@ -13,3 +13,5 @@ desc: |
  * The text of app and module tiles is now resized dynamically e.g. when the
    screen size changes.
 bug: [45309, 44382, 45254, 45477]
+erratum: 196
+announced: 2017-10-10
