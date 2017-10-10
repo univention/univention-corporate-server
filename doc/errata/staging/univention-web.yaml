@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Long words in the descriptions of app and module tiles are now wrapped
    into a new line.
- * The styling for calendars has been adjusted.
+ * The styling of calendar and date selection widgets has been improved.
 bug: [45477, 45491]
