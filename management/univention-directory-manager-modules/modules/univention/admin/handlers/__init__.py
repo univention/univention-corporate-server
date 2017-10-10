@@ -930,12 +930,40 @@ class simpleLdap(base):
 	def _post_unmap(self, info, values):
 		"""This method can be overwritten to define special un-map
 		methods that can not be done with the default mapping API"""
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules/__init__.py _post_unmap called with info=[%r] values=[%r]' % (info, values))
+		# Allow the fromLDAP() method of the syntax class to convert
+		# a raw LDAP value into UDM-specific representation
+		for field in info:
+			property_ = self.description.get(field)
+			if not property_ or not hasattr(property_.syntax, 'fromLDAP'):
+				continue
+			value = info[field]
+			if isinstance(value, (list, tuple)):
+				value = [property_.syntax.fromLDAP(x) for x in value]
+			else:
+				value = property_.syntax.fromLDAP(value)
+			info[field] = value
+
 		return info
 
 	def _post_map(self, modlist, diff):
 		"""This method can be overwritten to define special map methods
 		that can not be done with the default mapping API"""
-		return modlist
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules/__init__.py _post_map called with modlist=[%r] diff=[%r]' % (modlist, diff))
+		ml = []
+		for tuple_ in modlist:
+			try:
+				key, old, new = tuple_
+			except ValueError:
+				old = None
+				key, new = tuple_
+			property_ = self.descriptions.get(key)
+			if not property_ or not hasattr(property_.syntax, 'toLDAP'):
+				ml.append(tuple_)
+				continue
+			new = property_.syntax.toLDAP(new)
+			ml.append((key, old, new))
+		return ml
 
 	def _ldap_modlist(self):
 		"""Builds the list of modifications when creating and modifying this object.
