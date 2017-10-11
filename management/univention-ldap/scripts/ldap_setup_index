@@ -251,6 +251,8 @@ UDM_PROP_ATTRS = set((
     'univentionUDMPropertyValueMayChange',
     'univentionUDMPropertyValueRequired',
     'univentionUDMPropertyVersion',
+    'univentionUDMPropertyMapMethod',
+    'univentionUDMPropertyUnMapMethod',
 ))
 
 RECOMMENDED_LDAP_INDEX = {
