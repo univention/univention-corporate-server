@@ -1,3 +1,9 @@
+univention-python (10.0.4-5) unstable; urgency=medium
+
+  * Bug #45505: fix typo in modify_ext is called instead of modify_ext_s()
+
+ -- Florian Best <best@univention.de>  Wed, 11 Oct 2017 15:48:53 +0200
+
 univention-python (10.0.4-4) unstable; urgency=medium
 
   * Bug #45474: fix reconnecting in add() / modify() and rename() during

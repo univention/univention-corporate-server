@@ -515,7 +515,7 @@ class access:
 			if not self.follow_referral:
 				raise
 			lo_ref = self._handle_referral(exc)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext(dn, ml, serverctrls=serverctrls)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext_s(dn, ml, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
