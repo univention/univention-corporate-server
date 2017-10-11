@@ -378,6 +378,28 @@ property_descriptions = {
 		identifies=False,
 		copyable=True,
 	),
+	'mapMethod': univention.admin.property(
+		short_description=_('Map method'),
+		long_description=_('Defines a custom UDM property to LDAP attribute mapping method.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		copyable=True,
+	),
+	'unmapMethod': univention.admin.property(
+		short_description=_('Unmap method'),
+		long_description=_('Defines a custom LDAP attribute to UDM property mapping method.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		copyable=True,
+	),
 }
 
 layout = [
@@ -425,6 +447,7 @@ layout = [
 	]),
 	Tab(_('Data type'), _('Data type definition'), layout=[
 		["syntax", "default"],
+		["mapMethod", "unmapMethod"],
 		["multivalue"],
 		["valueRequired"],
 		["mayChange"],
@@ -459,6 +482,8 @@ mapping.register('valueRequired', 'univentionUDMPropertyValueRequired', None, un
 mapping.register('notEditable', 'univentionUDMPropertyValueNotEditable', None, univention.admin.mapping.ListToString)
 mapping.register('doNotSearch', 'univentionUDMPropertyDoNotSearch', None, univention.admin.mapping.ListToString)
 mapping.register('copyable', 'univentionUDMPropertyCopyable', None, univention.admin.mapping.ListToString)
+mapping.register('mapMethod', 'univentionUDMPropertyMapMethod', None, univention.admin.mapping.ListToString)
+mapping.register('unmapMethod', 'univentionUDMPropertyUnMapMethod', None, univention.admin.mapping.ListToString)
 mapping.register('version', 'univentionUDMPropertyVersion', None, univention.admin.mapping.ListToString)
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')

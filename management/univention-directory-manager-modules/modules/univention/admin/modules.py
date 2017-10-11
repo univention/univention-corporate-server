@@ -311,20 +311,26 @@ def update_extended_attributes(lo, module, position):
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
+		map_method = ''
+		unmap_method = ''
+
 		# check if CA is multivalue property
-		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
-			multivalue = 1
-			map_method = None
-			unmap_method = None
-		else:
-			multivalue = 0
-			map_method = univention.admin.mapping.ListToString
-			unmap_method = None
+		multivalue = attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1'
+		if not multivalue:
+			map_method = 'ListToString'
 			if propertySyntaxString == 'boolean':
-				map_method = univention.admin.mapping.BooleanListToString
-				unmap_method = univention.admin.mapping.BooleanUnMap
+				map_method = 'BooleanListToString'
+				unmap_method = 'BooleanUnMap'
 			# single value ==> use only first value
 			propertyDefault = propertyDefault[0]
+
+		# extended attribute for objectClass should not be mapped to any attribute/property
+		if attrs['univentionUDMPropertyLdapMapping'][0].lower() == 'objectClass'.lower():
+			map_method = 'nothing'
+			unmap_method = 'nothing'
+
+		map_method = getattr(univention.admin.mapping, attrs.get('univentionUDMPropertyMapMethod', [map_method])[0], None)
+		unmap_method = getattr(univention.admin.mapping, attrs.get('univentionUDMPropertyUnMapMethod', [unmap_method])[0], None)
 
 		# Show this attribute in UDM/UMC?
 		if attrs.get('univentionUDMPropertyLayoutDisable', [''])[0] == '1':
@@ -363,10 +369,7 @@ def update_extended_attributes(lo, module, position):
 		)
 
 		# add LDAP mapping
-		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != 'objectClass'.lower():
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], unmap_method, map_method)
-		else:
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
+		module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], unmap_method, map_method)
 
 		if hasattr(module, 'layout'):
 			tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName', [_('Custom')]))[0]
