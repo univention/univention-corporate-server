@@ -3,7 +3,7 @@ release: "4.2"
 version: [2, 1]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-python
-fix: 
+fix: 10.0.4-5A~4.2.0.201710111553
 desc: |
  This update addresses the following issue(s):
  * The referral handling for modify operations has been fixed.
