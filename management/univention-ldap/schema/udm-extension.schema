@@ -116,3 +116,34 @@ objectclass ( univentionUDMExtensionObjectClass:3 NAME 'univentionUDMSyntax'
 		$ univentionMessageCatalog
 		)
 	)
+
+### Definition for univentionUDMMapping
+
+attributetype ( univentionUDMExtensionAttributeType:41 NAME 'univentionUDMMappingFilename'
+	DESC 'UDM mapping filename'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionUDMExtensionAttributeType:42 NAME 'univentionUDMMappingData'
+	DESC 'UDM mapping data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:43 NAME 'univentionUDMMappingActive'
+	DESC 'Flag indicating availability of the UDM mapping'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+objectclass ( univentionUDMExtensionObjectClass:4 NAME 'univentionUDMMapping'
+	DESC 'UCS UDM mapping'
+	SUP 'univentionObjectMetadata' STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionUDMMappingFilename
+		$ univentionUDMMappingData
+		$ univentionUDMMappingActive
+		$ univentionMessageCatalog
+		)
+	)

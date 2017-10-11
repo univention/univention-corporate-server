@@ -819,6 +819,13 @@ class UniventionUDMHook(UniventionUDMExtension):
 	filesuffix = ".py"
 
 
+class UniventionUDMMapping(UniventionUDMExtension):
+	target_container_name = "udm_mapping"
+	udm_module_name = "settings/udm_mapping"
+	active_flag_attribute = "univentionUDMMappingActive"
+	filesuffix = ".py"
+
+
 def option_validate_existing_filename(option, opt, value):
 	if not os.path.exists(value):
 		raise OptionValueError("%s: file does not exist: %s" % (opt, value))
@@ -926,6 +933,10 @@ def ucs_registerLDAPExtension():
 	parser.add_option("--udm_hook", dest="udm_hook",
 			action="append", type="existing_filename", default=[],
 			help="UDM hook", metavar="<filename>")
+
+	parser.add_option("--udm_mapping", dest="udm_mapping",
+			action="append", type="existing_filename", default=[],
+			help="UDM mapping", metavar="<filename>")
 
 	parser.add_option("--packagename", dest="packagename",
 			help="Package name")
@@ -1041,6 +1052,15 @@ def ucs_registerLDAPExtension():
 			univentionUDMHook.register(udm_hook, opts, udm_passthrough_options)
 			objects.append(univentionUDMHook)
 
+	if opts.udm_mapping:
+		if UniventionUDMMapping.create_base_container(ucr, udm_passthrough_options) != 0:
+			sys.exit(1)
+
+		for udm_mapping in opts.udm_mapping:
+			univentionUDMMapping = UniventionUDMMapping(ucr)
+			univentionUDMMapping.register(udm_mapping, opts, udm_passthrough_options)
+			objects.append(univentionUDMMapping)
+
 	if opts.udm_module:
 		if UniventionUDMModule.create_base_container(ucr, udm_passthrough_options) != 0:
 			sys.exit(1)
@@ -1085,6 +1105,10 @@ def ucs_unregisterLDAPExtension():
 			action="append", type="string",
 			help="UDM hook", metavar="<hook name>")
 
+	parser.add_option("--udm_mapping", dest="udm_mapping",
+			action="append", type="string",
+			help="UDM mapping", metavar="<mapping name>")
+
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
@@ -1115,6 +1139,11 @@ def ucs_unregisterLDAPExtension():
 		for udm_hook in opts.udm_hook:
 			univentionUDMHook = UniventionUDMHook(ucr)
 			univentionUDMHook.unregister(udm_hook, opts, udm_passthrough_options)
+
+	if opts.udm_mapping:
+		for udm_mapping in opts.udm_mapping:
+			univentionUDMMapping = UniventionUDMMapping(ucr)
+			univentionUDMMapping.unregister(udm_mapping, opts, udm_passthrough_options)
 
 	if opts.udm_syntax:
 		for udm_syntax in opts.udm_syntax:
