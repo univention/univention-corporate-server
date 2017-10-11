@@ -33,6 +33,27 @@
 import univention.debug
 import types
 import base64
+import traceback
+import sys
+import os
+
+
+def import_mapping_files():
+	for dir_ in sys.path:
+		mapping_py = os.path.join(dir_, 'univention/admin/mapping.py')
+		mapping_d = os.path.join(dir_, 'univention/admin/mapping.d/')
+
+		if os.path.exists(mapping_py) and os.path.isdir(mapping_d):
+			mapping_files = (os.path.join(mapping_d, f) for f in os.listdir(mapping_d) if f.endswith('.py'))
+
+			for fn in mapping_files:
+				try:
+					with open(fn, 'r') as fd:
+						exec fd in sys.modules[__name__].__dict__
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.mapping.import_mapping_files: importing "%s"' % fn)
+				except (EnvironmentError, ImportError):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.mapping.import_mapping_files: loading %s failed' % fn)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.mapping.import_mapping_files: TRACEBACK:\n%s' % traceback.format_exc())
 
 
 def DaysToSeconds(days):

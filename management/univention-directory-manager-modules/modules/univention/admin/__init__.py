@@ -513,6 +513,7 @@ univention.admin = sys.modules[__name__]
 from univention.admin import modules, objects, syntax, hook, mapping
 syntax.import_syntax_files()
 hook.import_hook_files()
+mapping.import_mapping_files()
 
 if __name__ == '__main__':
 	prop = property('_replace')
