@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The referral handling for modify operations has been fixed.
 bug: [45505]
+erratum: 197
+announced: 2017-10-11
