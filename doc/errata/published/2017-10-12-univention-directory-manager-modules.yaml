@@ -10,3 +10,5 @@ desc: |
    an extended attribute with a default value of "1" because they were
    detected as already activated. This behavior has been corrected.
 bug: [45066]
+erratum: 198
+announced: 2017-10-12
