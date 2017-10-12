@@ -1,3 +1,9 @@
+univention-web (1.0.42-49) unstable; urgency=medium
+
+  * Bug #45261: Keep selection when sorting grids or changing grid view
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 12 Oct 2017 15:34:39 +0200
+
 univention-web (1.0.42-48) unstable; urgency=medium
 
   * Bug #45491: Fix typo

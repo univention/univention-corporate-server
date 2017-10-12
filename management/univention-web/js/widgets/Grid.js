@@ -73,6 +73,28 @@ define([
 			// For legacy dojox grid compability
 			// e.g. formaters that expect to be working with a dojox grid
 			return item;
+		},
+
+		getSelectedIDs: function() {
+			// summary:
+			//		Return the currently selected items.
+			// returns:
+			//		An array of id strings (as specified by moduleStore.idProperty).
+			return array.filter(Object.keys(this.selection), function(id) {
+				return this.selection[id];
+			}, this);
+		},
+
+		selectIDs: function(ids) {
+			array.forEach(ids, lang.hitch(this, function(id) {
+				this.select(id);
+			}));
+		},
+
+		_setSort: function() {
+			var selectedIDs = this.getSelectedIDs();
+			this.inherited(arguments);
+			this.selectIDs(selectedIDs);
 		}
 	});
 
@@ -449,6 +471,7 @@ define([
 				console.warn("unknown grid view selected");
 				return;
 			}
+			var selectedIDs = this.getSelectedIDs();
 			this._grid.renderRow = this._views[newView].renderRow;
 			var allBaseClasses = array.map(Object.keys(this._views), function(view) {
 				return this._views[view].baseClass;
@@ -456,6 +479,7 @@ define([
 			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
 			this._grid.refresh();
 			this._grid.resize();
+			this._grid.selectIDs(selectedIDs);
 			this.activeViewMode = newView;
 		},
 
@@ -1027,13 +1051,7 @@ define([
 		},
 
 		getSelectedIDs: function() {
-			// summary:
-			//		Return the currently selected items.
-			// returns:
-			//		An array of id strings (as specified by moduleStore.idProperty).
-			return array.filter(Object.keys(this._grid.selection), function(id) {
-				return this._grid.selection[id];
-			}, this);
+			return this._grid.getSelectedIDs();
 		},
 
 		getRowValues: function(row) {
