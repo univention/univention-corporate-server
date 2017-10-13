@@ -1236,6 +1236,7 @@ define([
 					},
 					callback: lang.hitch(this, function(id, item) {
 						this._toggleFavoriteModule(item);
+						this._updateQuery(this.category);
 					})
 				}]
 			});
