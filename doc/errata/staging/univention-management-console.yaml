@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-management-console
+fix: 9.0.80-77A~4.2.0.201710131357
+desc: |
+ This update addresses the following issue(s):
+ * Adding and removing favorite modules now works properly again.
+bug: [44526]

@@ -3,9 +3,11 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-web
-fix: 1.0.42-49A~4.2.0.201710121541
+fix: 1.0.42-50A~4.2.0.201710131424
 desc: |
  This update addresses the following issue(s):
  * The selection in grids is now kept when changing the
    sort order or the visual presentation.
-bug: [45261]
+ * The transition for hiding and showing the 'Favorites' category
+   works properly again.
+bug: [45261, 44526]
