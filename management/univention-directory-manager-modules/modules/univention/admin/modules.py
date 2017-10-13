@@ -59,15 +59,14 @@ containers = []
 def update():
 	'''scan handler modules'''
 	global modules, _superordinates
-	modules = {}
-	_superordinates = set()
+	_modules = {}
+	superordinates = set()
 
 	# since last update(), syntax.d and hooks.d may have changed (Bug #31154)
 	univention.admin.syntax.import_syntax_files()
 	univention.admin.hook.import_hook_files()
 
 	def _walk(root, dir, files):
-		global modules, _superordinates
 		for file in files:
 			if not file.endswith('.py') or file.startswith('__'):
 				continue
@@ -81,17 +80,19 @@ def update():
 			if not hasattr(m, 'module'):
 				ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (mod,))
 				continue
-			modules[m.module] = m
+			_modules[m.module] = m
 			if isContainer(m):
 				containers.append(m)
 
-			_superordinates.update(superordinate_names(m))
+			superordinates.update(superordinate_names(m))
 
 	for p in sys.path:
 		dir = os.path.join(p, 'univention/admin/handlers')
 		if not os.path.isdir(dir):
 			continue
 		os.path.walk(dir, _walk, p)
+	modules = _modules
+	_superordinates = superordinates
 
 
 def get(module):
