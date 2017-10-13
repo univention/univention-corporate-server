@@ -88,7 +88,6 @@
 //
 
 
-
 /* LiveSearchSidebar */
 .umcLiveSearchSidebar
 	.dijitButton
@@ -103,17 +102,13 @@
 		.dijitButtonContents
 			outline: none
 
-
 		.dijitButtonText
 			text-decoration: none
 			padding-left: 0.416em
 			padding-right: 0.416em
 
-
-
 	.umcButton.umcCategorySelected .dijitButtonText
 		font-weight: bold
-
 
 	.dijitButtonHover,
 	.dijitButtonActive
@@ -125,10 +120,6 @@
 			text-shadow: none
 			background: none
 			filter: none
-
-
-
-
 
 
 .warning
@@ -150,13 +141,11 @@
 	a:hover
 		opacity: 1
 
-		
 	.title
 		font-size: $font-size-title
 		line-height: 1em
 		font-weight: bold
 		margin-bottom: 1em
-
 
 	.icon
 		background-image: url(../images/info.svg)
@@ -166,34 +155,27 @@
 		margin-right: 15px
 		float: left
 
-
-
 .warning.umc_ie
 	min-height: 0px
 	.icon
 		background-image: url(../images/info.gif)
-
 
 .warningWrapper
 	position: absolute
 	height: 100%
 	width: 100%
 
-
 .warningCenterer
 	height: 50%
 	margin-bottom: -156px
 
-
 /*favorites category fade in/out*/
-.umcCategoryBar .umcCategory-_favorites_.favoritesHidden
-	opacity: 0
-	max-width: 0 !important
-	min-width: 0
-	transition: opacity 0.5s, max-width 0.7s 0.2s, min-width 0.7s 0.2s
+.umcCategoryBar .umcCategory-_favorites_
+		opacity: 1
+		transition: opacity 0.7s 0.3s, max-width 0.7s, min-width 0.7s
 
-
-.umcCategory-_favorites_
-	opacity: 1
-	transition: opacity 0.7s 0.3s, max-width 0.7s, min-width 0.7s
-
+		&.favoritesHidden
+			opacity: 0
+			max-width: 0 !important
+			min-width: 0
+			transition: opacity 0.5s, max-width 0.7s 0.2s, min-width 0.7s 0.2s
