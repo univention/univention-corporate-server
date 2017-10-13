@@ -1,3 +1,9 @@
+ucs-test (7.0.23-60) unstable; urgency=medium
+
+  * Bug #45501: print UCS and ucs-test version before starting ucs-test
+
+ -- Florian Best <best@univention.de>  Fri, 13 Oct 2017 14:27:46 +0200
+
 ucs-test (7.0.23-59) unstable; urgency=low
 
   * Bug #45287: test changing disabled and locked user attrs simultaneously

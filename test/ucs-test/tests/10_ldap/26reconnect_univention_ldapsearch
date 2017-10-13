@@ -1,9 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest]
-## roles-not:
-##  - basesystem
-##  - memberserver
+## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
 ## packages: [python-psutil]
 ## bugs: [34293, 37299]
 ## exposure: dangerous

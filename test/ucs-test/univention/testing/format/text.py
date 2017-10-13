@@ -2,8 +2,10 @@
 """Format UCS Test results as simple text report."""
 import sys
 from univention.testing.data import TestFormatInterface, TestCodes
+import univention.config_registry
 import curses
 import time
+import subprocess
 from weakref import WeakValueDictionary
 import re
 
@@ -59,6 +61,13 @@ class Text(TestFormatInterface):
         now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         print >> self.stream, "Starting %s ucs-test at %s to %s" % \
             (count, now, environment.log.name)
+        try:
+            ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework'])
+        except subprocess.CalledProcessError:
+            ucs_test_version = 'not installed'
+        ucr = univention.config_registry.ConfigRegistry()
+        ucr.load()
+        print >> self.stream, "UCS %s-%s-e%s ucs-test %s" % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'), ucs_test_version)
 
     def begin_section(self, section):
         """Called before each secion."""
