@@ -338,12 +338,6 @@ if is_ucr_true samba4/sysvol/sync/debug; then
 	DEBUG=true
 fi
 
-/usr/bin/host $samba4_sysvol_sync_host
-if [ ! $? -eq 0 ]; then
-        stderr_log_error "[$samba4_sysvol_sync_host] Could not connect to samba4-host."
-        exit 1
-fi
-
 is_ucr_true samba4/sysvol/sync/setfacl/AU
 if [ ! $? -eq 1 ]; then
 	stderr_log_debug "[local] setfacl on /var/lib/samba/sysvol"
