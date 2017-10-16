@@ -241,6 +241,24 @@ class UpgradeReleaseFailed(Abort):
 	default_error_msg = 'Release upgrade script failed'
 
 
+class ConnectionFailedConnectError(ConnectionFailed):
+	code = 434
+
+	def __str__(self):
+		msg = _('LDAP connection refused. There may be an issue with the certificate of the LDAP server. Please also check the proxy and firewall settings, if any.')
+		details = None
+		try:
+			exc = self.args[0].args[0]
+			details = exc.get('info', 'No further details')
+			if exc.get('desc'):
+				details = exc.get('desc') + ': ' + details
+		except (IndexError, KeyError):
+			pass
+		if details:
+			msg += ' (' + details + ')'
+		return msg
+
+
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a
