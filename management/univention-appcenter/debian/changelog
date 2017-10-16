@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-15) unstable; urgency=medium
+
+  * Bug #40110: Verify that the Docker image could be downloaded
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Oct 2017 14:11:02 +0200
+
 univention-appcenter (6.0.10-14) unstable; urgency=medium
 
   * Bug #39325: Handle CONNECT_ERROR for LDAP connections

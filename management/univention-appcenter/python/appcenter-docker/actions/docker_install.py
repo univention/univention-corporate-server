@@ -46,6 +46,7 @@ class Install(Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
+		parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
 		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS)  # debugging
 
 	def _install_app(self, app, args):

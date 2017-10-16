@@ -96,7 +96,7 @@ def pull(image):
 			retcode = call(['docker', 'login', '-e', 'invalid', '-u', DOCKER_READ_USER_CRED['username'], '-p', DOCKER_READ_USER_CRED['password'], hub])
 			if retcode != 0:
 				_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
-	call(['docker', 'pull', image])
+	return call(['docker', 'pull', image]) == 0
 
 
 def verify(app, image):

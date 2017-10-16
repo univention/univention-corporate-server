@@ -244,19 +244,24 @@ class UpgradeReleaseFailed(Abort):
 class ConnectionFailedConnectError(ConnectionFailed):
 	code = 434
 
+	def __init__(self, exc):
+		self.details = exc.args[0]
+
 	def __str__(self):
 		msg = _('LDAP connection refused. There may be an issue with the certificate of the LDAP server. Please also check the proxy and firewall settings, if any.')
 		details = None
 		try:
-			exc = self.args[0].args[0]
-			details = exc.get('info', 'No further details')
-			if exc.get('desc'):
-				details = exc.get('desc') + ': ' + details
+			details = self.details.get('info', 'No further details')
 		except (IndexError, KeyError):
 			pass
 		if details:
 			msg += ' (' + details + ')'
 		return msg
+
+
+class DockerImagePullFailed(Abort):
+	code = 435
+	default_error_msg = 'Downloading Docker image %(image)s failed.'
 
 
 class AppCenterError(Exception):
