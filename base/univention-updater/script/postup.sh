@@ -220,9 +220,12 @@ service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
 # Bug #43835: update app cache and portal entries
 test -x /usr/bin/univention-app && univention-app update >>"$UPDATER_LOG" 2>&1
+test -x /etc/init.d/slapd && /etc/init.d/slapd restart >>"$UPDATER_LOG" 2>&1
 python -c '
 import sys
 from univention.appcenter.ucr import ucr_keys, ucr_instance
+from univention.appcenter import log
+log.LOG_FILE = "/dev/stdout"
 sys.path.append("/etc/univention/templates/modules")
 import create_portal_entries
 import re
