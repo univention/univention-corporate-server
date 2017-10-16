@@ -238,7 +238,7 @@ def do_app_updates(options, checkForUpdates, silent):
     interactive = not (options.noninteractive or checkForUpdates)
     try:
         from univention.appcenter.actions import get_action, Abort
-        from univention.appcenter.app import AppManager
+        from univention.appcenter.app_cache import Apps
         import univention.appcenter.log as appcenter_log
         app_upgrade_search = get_action('upgrade-search')
         app_upgrade = get_action('upgrade')
@@ -278,7 +278,7 @@ def do_app_updates(options, checkForUpdates, silent):
     dprint(silent, 'found\n')
     dprint(silent, 'The following apps can be upgraded:\n')
     for app in new_apps:
-        newer_app = AppManager.find_candidate(app)
+        newer_app = Apps().find_candidate(app)
         if newer_app:
             dprint(silent, '%(name)s: Version %(old)s can be upgraded to %(new)s' % {
                 'name': app.name,
