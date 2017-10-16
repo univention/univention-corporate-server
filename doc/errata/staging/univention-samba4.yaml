@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-samba4
-fix: 6.0.10-37A~4.2.0.201710160944
+fix: 6.0.10-38A~4.2.0.201710161420
 desc: |
  This update addresses the following issue(s):
  * Add the scripts univention-samba-lockedout and univention-samba-unlock.
