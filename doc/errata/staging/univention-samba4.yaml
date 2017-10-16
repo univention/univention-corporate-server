@@ -15,7 +15,7 @@ desc: |
    afterwards via samba/interfaces, samba/interfaces/bindonly and
    samba/register/exclude/interfaces.
  * Removed UCR-variable samba/logonscript
- * Added "name resolve order" to smb.conf; the Samba parameter
-   "name resolve order" can now be set through UCS variable
+ * Added ucr variable "samba/name/resolve/order" to smb.conf. The Samba 
+   parameter "name resolve order" can now be set through UCR variable
    samba/name/resolve/order.
 bug: [35071, 35072, 41057, 37946, 36089]
