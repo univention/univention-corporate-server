@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-37) unstable; urgency=medium
+
+  * Bug #36089: Set "name resolve order" in smb.conf via new ucr variable samba/name/resolve/order 
+
+ -- Jannik Ahlers <jahlers@hemmahos.knut.univention.de>  Mon, 16 Oct 2017 09:30:53 +0200
+
 univention-samba4 (6.0.10-36) unstable; urgency=medium
 
   * Bug #35072: implement samba unlock user
