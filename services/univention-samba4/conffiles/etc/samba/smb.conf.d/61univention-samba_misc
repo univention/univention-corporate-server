@@ -54,9 +54,6 @@ if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 		elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
 			print '\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'],configRegistry['samba/profilepath'])
 
-		if 'samba/logonscript' in configRegistry:
-			print '\tlogon script = %s' % configRegistry['samba/logonscript']
-
 	print '\tpreserve case = %s' % configRegistry.get('samba/preserve_case', 'yes')
 	print '\tshort preserve case = %s' % configRegistry.get('samba/short_preserve_case', 'yes')
 
