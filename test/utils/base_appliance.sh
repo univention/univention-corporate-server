@@ -985,7 +985,6 @@ __EOF__
 	ucr unset dns/forwarder2 dns/forwarder3
 
     ucr set update/secure_apt=yes
-	ucr unset appcenter/index/verify
 	# Manual cleanup
 	rm -rf /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
